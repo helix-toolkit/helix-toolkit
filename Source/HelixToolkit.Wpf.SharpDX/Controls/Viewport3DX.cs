@@ -223,7 +223,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Get current render context
         /// </summary>
-        public RenderContext RenderContext { get { return this.renderHostInternal?.RenderContext; } }
+        public IRenderContext RenderContext { get { return this.renderHostInternal?.RenderContext; } }
 
         /// <summary>
         /// <para>Return enumerable of all the rederable elements</para>
@@ -927,11 +927,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Renders the scene.
         /// </summary>
-        void IRenderer.Render(RenderContext context)
+        void IRenderer.Render(IRenderContext context)
         {
             this.FpsCounter.AddFrame(context.TimeStamp);
             context.Camera = this.Camera;
-            context.worldMatrix = this.worldMatrixInternal;
+            context.WorldMatrix = this.worldMatrixInternal;
             int counter = 0; 
             foreach(IRenderable e in this.Renderables.Take(LightsBufferModel.MaxLights).Where(x=>x is ILight3D))
             {
@@ -939,13 +939,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 ++counter;
             }
             context.UpdatePerFrameData();
-            foreach (IRenderable e in this.Renderables.Skip(counter))
+            foreach (IRenderable e in this.Renderables.Where(x=>!(x is ILight3D)))
             {
                 e.Render(context);
             }
         }
 
-        void IRenderer.RenderD2D(RenderContext context)
+        void IRenderer.RenderD2D(IRenderContext context)
         {
             foreach (IRenderable e in this.D2DRenderables)
             {

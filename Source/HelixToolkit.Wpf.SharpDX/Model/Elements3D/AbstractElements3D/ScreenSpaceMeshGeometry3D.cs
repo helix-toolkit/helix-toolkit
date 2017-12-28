@@ -106,7 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        protected override void OnRender(RenderContext renderContext)
+        protected override void OnRender(IRenderContext renderContext)
         {
             screenSpaceCore.SetScreenSpacedCoordinates(renderContext);
             base.OnRender(renderContext);

@@ -75,7 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new MeshGeometryOctree(Positions, Indices, ref region, objList, parent, parent.Parameter, this.queue);
         }
 
-        public override bool HitTestCurrentNodeExcludeChild(IRenderMatrices context, GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect)
+        public override bool HitTestCurrentNodeExcludeChild(IRenderContext context, GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect)
         {
             isIntersect = false;
             if (!this.treeBuilt)
@@ -155,7 +155,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return isHit;
         }
 
-        public override bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
             var tempResult = new HitTestResult();
@@ -267,7 +267,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public override bool HitTestCurrentNodeExcludeChild(IRenderMatrices context, GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect)
+        public override bool HitTestCurrentNodeExcludeChild(IRenderContext context, GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect)
         {
             isIntersect = false;
             if (!this.treeBuilt || !(model is PointGeometryModel3D))
@@ -343,7 +343,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new BoundingBox(Positions[item] - BoundOffset, Positions[item] + BoundOffset);
         }
 
-        public override bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
             var resultTemp = new HitTestResult();
@@ -427,7 +427,7 @@ namespace HelixToolkit.Wpf.SharpDX
             : base(ref bound, objList, parent, paramter, queueCache)
         { }
 
-        public override bool HitTestCurrentNodeExcludeChild(IRenderMatrices context, GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect)
+        public override bool HitTestCurrentNodeExcludeChild(IRenderContext context, GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect)
         {
             isIntersect = false;
             if (!this.treeBuilt)
@@ -651,7 +651,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
         {
             throw new NotImplementedException();
         }
@@ -682,12 +682,12 @@ namespace HelixToolkit.Wpf.SharpDX
             InstanceMatrix = instanceMatrix;
         }
 
-        public override bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
         {
             throw new NotImplementedException();
         }
 
-        public override bool HitTestCurrentNodeExcludeChild(IRenderMatrices context, GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect)
+        public override bool HitTestCurrentNodeExcludeChild(IRenderContext context, GeometryModel3D model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect)
         {
             isIntersect = false;
             if (!this.treeBuilt)

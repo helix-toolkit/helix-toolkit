@@ -53,10 +53,9 @@ namespace ShadowMapDemo
         public Camera Camera2 { private set; get; }
         public MainViewModel()
         {
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
 
+            EffectsManager = new DefaultShaderTechniqueManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             Title = "Shadow Map Demo";
             SubTitle = "WPF & SharpDX";
 

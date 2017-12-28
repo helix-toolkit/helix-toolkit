@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        bool HitTest(IRenderMatrices context, ModelType model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
+        bool HitTest(IRenderContext context, ModelType model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
 
         /// <summary>
         /// Hit test for only this node, not its child node
@@ -68,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        bool HitTestCurrentNodeExcludeChild(IRenderMatrices context, ModelType model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect);
+        bool HitTestCurrentNodeExcludeChild(IRenderContext context, ModelType model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect);
 
         /// <summary>
         /// Search nearest point by a search sphere at this node only
@@ -77,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="result"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect);
+        bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect);
 
         /// <summary>
         /// Search nearest point by a search sphere for whole octree
@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="sphere"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        bool FindNearestPointBySphere(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result);
+        bool FindNearestPointBySphere(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result);
 
         /// <summary>
         /// Search nearest point from point on mesh
@@ -94,7 +94,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="result"></param>
         /// <param name="heuristic">Use huristic search, return proximated nearest point. Set to 1.0f to disable heuristic. Value must be 0.1f ~ 1.0f</param>
         /// <returns></returns>
-        bool FindNearestPointFromPoint(IRenderMatrices context, ref Vector3 point, ref List<HitTestResult> result, float heuristicSearchFactor = 1f);
+        bool FindNearestPointFromPoint(IRenderContext context, ref Vector3 point, ref List<HitTestResult> result, float heuristicSearchFactor = 1f);
         /// <summary>
         /// Search nearest point by a point and search radius
         /// </summary>
@@ -102,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="radius"></param>
         /// <param name="points"></param>
         /// <returns></returns>
-        bool FindNearestPointByPointAndSearchRadius(IRenderMatrices context, ref Vector3 point, float radius, ref List<HitTestResult> points);
+        bool FindNearestPointByPointAndSearchRadius(IRenderContext context, ref Vector3 point, float radius, ref List<HitTestResult> points);
         /// <summary>
         /// Build the whole tree from top to bottom iteratively.
         /// </summary>
@@ -589,7 +589,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Array.Clear(ChildNodes, 0, ChildNodes.Length);
         }
 
-        public virtual bool HitTest(IRenderMatrices context, ModelType model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+        public virtual bool HitTest(IRenderContext context, ModelType model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (hits == null)
             {
@@ -644,10 +644,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 
-        public abstract bool HitTestCurrentNodeExcludeChild(IRenderMatrices context, ModelType model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
+        public abstract bool HitTestCurrentNodeExcludeChild(IRenderContext context, ModelType model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
             ref List<HitTestResult> hits, ref bool isIntersect);
 
-        public virtual bool FindNearestPointBySphere(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points)
+        public virtual bool FindNearestPointBySphere(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points)
         {
             if (points == null)
             {
@@ -678,7 +678,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return isHit;
         }
 
-        public virtual bool FindNearestPointFromPoint(IRenderMatrices context, ref Vector3 point, ref List<HitTestResult> results, float heuristicSearchFactor = 1f)
+        public virtual bool FindNearestPointFromPoint(IRenderContext context, ref Vector3 point, ref List<HitTestResult> results, float heuristicSearchFactor = 1f)
         {
             if (results == null)
             {
@@ -718,7 +718,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return isHit;
         }
 
-        public abstract bool FindNearestPointBySphereExcludeChild(IRenderMatrices context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
+        public abstract bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
 
         public bool Add(T item)
         {
@@ -1130,7 +1130,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return node;
         }
 
-        public bool FindNearestPointByPointAndSearchRadius(IRenderMatrices context, ref Vector3 point, float radius, ref List<HitTestResult> result)
+        public bool FindNearestPointByPointAndSearchRadius(IRenderContext context, ref Vector3 point, float radius, ref List<HitTestResult> result)
         {
             var sphere = new global::SharpDX.BoundingSphere(point, radius);
             return FindNearestPointBySphere(context, ref sphere, ref result);

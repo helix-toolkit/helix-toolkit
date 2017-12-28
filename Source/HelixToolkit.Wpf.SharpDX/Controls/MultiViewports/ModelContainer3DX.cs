@@ -183,7 +183,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set;get;
         }
 
-        public RenderContext RenderContext
+        public IRenderContext RenderContext
         {
             get
             {

@@ -167,17 +167,17 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             base.OnDetach();
         }        
 
-        protected override bool CanRender(RenderContext context)
+        protected override bool CanRender(IRenderContext context)
         {
             return IsAttached && isRenderingInternal;
         }
 
-        protected override void PreRender(RenderContext context)
+        protected override void PreRender(IRenderContext context)
         {
             
         }
 
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(IRenderContext context)
         {
             foreach (var c in this.Items)
             {

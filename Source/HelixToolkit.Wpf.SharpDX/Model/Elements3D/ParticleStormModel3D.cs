@@ -577,7 +577,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return true;
         }
 
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(IRenderContext context)
         {
             if (blendChanged)
             {

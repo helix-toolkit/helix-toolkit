@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             this.transformMatrix = matrixStack.Pop();
         }
 
-        protected override void PreRender(RenderContext context)
+        protected override void PreRender(IRenderContext context)
         {
             base.PreRender(context);
             if (RenderCore != null)

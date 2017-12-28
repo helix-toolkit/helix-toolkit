@@ -49,7 +49,7 @@ namespace HelixToolkit.UWP.Core
         public bool RenderDiffuseAlphaMap { set; get; } = true;
         public bool RenderNormalMap { set; get; } = true;
         public bool RenderDisplacementMap { set; get; } = true;
-        public bool HasShadowMap { set; get; } = false;
+       // public bool HasShadowMap { set; get; } = false;
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
@@ -88,14 +88,14 @@ namespace HelixToolkit.UWP.Core
         {
             if (!IsAttached)
             { return; }
-            materialVariables.HasShadowMap = this.HasShadowMap;
+            //materialVariables.HasShadowMap = this.HasShadowMap;
             materialVariables.RenderDiffuseMap = this.RenderDiffuseMap;
             materialVariables.RenderNormalMap = this.RenderNormalMap;
             materialVariables.RenderDisplacementMap = this.RenderDisplacementMap;
             materialVariables.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
             SetMaterialVariables();

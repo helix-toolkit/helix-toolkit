@@ -114,7 +114,7 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(IRenderContext context)
         {
             if (InstanceBuffer.Changed)
             {
@@ -141,12 +141,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool CanHitTest(IRenderMatrices context)
+        protected override bool CanHitTest(IRenderContext context)
         {
             return base.CanHitTest(context);
         }
 
-        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             bool isHit = false;
             if (CanHitTest(context) && OctreeManager!=null && OctreeManager.Octree != null)

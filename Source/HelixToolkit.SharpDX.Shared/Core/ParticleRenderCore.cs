@@ -272,7 +272,7 @@ namespace HelixToolkit.UWP.Core
 
         
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
@@ -323,7 +323,7 @@ namespace HelixToolkit.UWP.Core
             InsertElapseThrottle = (8.0f * InsertVariables.InitialEnergy / InsertVariables.EnergyDissipationRate / System.Math.Max(0, (particleCount + 8)));
         }
 
-        private void UpdateTime(IRenderMatrices context, ref float totalElapsed)
+        private void UpdateTime(IRenderContext context, ref float totalElapsed)
         {
             float timeElapsed = ((float)context.TimeStamp.TotalMilliseconds - prevTimeMillis) / 1000;
             prevTimeMillis = (float)context.TimeStamp.TotalMilliseconds;
@@ -425,12 +425,12 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool CanRender()
+        protected override bool CanRender(IRenderContext context)
         {
-            return base.CanRender() && BufferProxies != null && !isInitialParticleChanged;
+            return base.CanRender(context) && BufferProxies != null && !isInitialParticleChanged;
         }
 
-        protected override void OnRender(IRenderMatrices context)
+        protected override void OnRender(IRenderContext context)
         {
             OnTextureChanged();
             OnBlendStateChanged();

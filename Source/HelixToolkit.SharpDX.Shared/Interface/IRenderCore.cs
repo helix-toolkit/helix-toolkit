@@ -37,23 +37,14 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         /// <param name="context"></param>
-        void Render(IRenderMatrices context);
+        void Render(IRenderContext context);
         /// <summary>
         /// Unsubscribe all OnInvalidateRenderer event handler;
         /// </summary>
         void ResetInvalidateHandler();
     }
 
-    public interface IRenderShadow
-    {
-        /// <summary>
-        /// Render shadow map
-        /// </summary>
-        /// <param name="context"></param>
-        void RenderShadow(IRenderMatrices context);
-    }
-
-    public interface IGeometryRenderCore : IRenderShadow
+    public interface IGeometryRenderCore : IThrowingShadow
     {
         InputLayout VertexLayout { get; }
         IElementsBufferModel InstanceBuffer { set; get; }
@@ -68,6 +59,6 @@ namespace HelixToolkit.UWP
         bool RenderDiffuseAlphaMap { set; get; }
         bool RenderNormalMap { set; get; }
         bool RenderDisplacementMap { set; get; }
-        bool HasShadowMap { set; get; }
+        //bool HasShadowMap { set; get; }
     }
 }

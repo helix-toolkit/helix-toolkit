@@ -1,13 +1,12 @@
+#ifndef VSPOINT_HLSL
+#define VSPOINT_HLSL
 #define MATERIAL
-#include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
-#pragma pack_matrix( row_major )
+#include"..\Common\Common.hlsl"
 
-PSShadow main(VSInput input) : SV_Position
+GSInputPS main(VSInputPS input)
 {
-    PSShadow output = (PSShadow)0;
-	output.p = input.p;
-	// compose instance matrix
+    GSInputPS output = (GSInputPS) 0;
     if (bHasInstances)
     {
         matrix mInstance =
@@ -17,10 +16,14 @@ PSShadow main(VSInput input) : SV_Position
 			input.mr2,
 			input.mr3
         };
-        output.p = mul(input.p, mInstance);
+        input.p = mul(input.p, mInstance);
     }
 
-	//set position into world space	
+    output.p = input.p;
+
+	//set position into clip space	
     output.p = mul(output.p, mul(mWorld, vLightViewProjection));
     return output;
 }
+
+#endif

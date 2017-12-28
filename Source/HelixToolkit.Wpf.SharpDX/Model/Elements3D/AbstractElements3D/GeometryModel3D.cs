@@ -405,7 +405,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.MouseDown3D += OnMouse3DDown;
             this.MouseUp3D += OnMouse3DUp;
             this.MouseMove3D += OnMouse3DMove;
-            this.IsThrowingShadow = true;
         }
 
         protected virtual IGeometryBufferModel OnCreateBufferModel() { return new EmptyGeometryBufferModel(); }
@@ -548,17 +547,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        protected override bool CanRender(RenderContext context)
+        protected override bool CanRender(IRenderContext context)
         {
-            if (context.EnableBoundingFrustum && !CheckBoundingFrustum(ref context.boundingFrustum))
+            if (context.EnableBoundingFrustum && !CheckBoundingFrustum(context.BoundingFrustum))
             {
                 return false;
             }
             if (base.CanRender(context) && GeometryValid)
             {
-                if (context.IsShadowPass)
-                    if (!IsThrowingShadow)
-                        return false;
                 return true;
             }
             else
@@ -566,7 +562,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
         }
-        protected virtual bool CheckBoundingFrustum(ref BoundingFrustum viewFrustum)
+        protected virtual bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
         {
             return viewFrustum.Intersects(ref boundsWithTransform);
         }
@@ -607,7 +603,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS">Hitring ray from the camera.</param>
         /// <param name="hits">results of the hit.</param>
         /// <returns>True if the ray hits one or more times.</returns>
-        public virtual bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        public virtual bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (CanHitTest(context))
             {
@@ -619,17 +615,28 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected abstract bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits);
+        protected abstract bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits);
 
-        protected virtual bool CanHitTest(IRenderMatrices context)
+        protected virtual bool CanHitTest(IRenderContext context)
         {
             return visibleInternal && isRenderingInternal && isHitTestVisibleInternal && GeometryValid;
         }
 
+        private bool isThrowingShadow = false;
         public bool IsThrowingShadow
         {
-            get;
-            set;
+            get
+            {
+                return isThrowingShadow;
+            }
+            set
+            {
+                isThrowingShadow = value;
+                if(RenderCore is IThrowingShadow)
+                {
+                    (RenderCore as IThrowingShadow).IsThrowingShadow = value;
+                }
+            }
         }
     }
 

@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(IRenderContext context)
         {
             Light3DSceneShared.LightModels.Lights[lightIndex].LightColor = this.ColorInternal;
             // --- set lighting parameters

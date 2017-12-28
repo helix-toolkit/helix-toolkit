@@ -20,12 +20,12 @@ namespace HelixToolkit.UWP.Core
             return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
         }
 
-        protected override void OnRender(IRenderMatrices context)
+        protected override void OnRender(IRenderContext context)
         {
 
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
            
         }

@@ -47,7 +47,7 @@ namespace HelixToolkit.UWP
 #endif
         IRenderer Renderable { get; set; }
 
-        RenderContext RenderContext { get; }
+        IRenderContext RenderContext { get; }
         /// <summary>
         /// Invalidates the current render and requests an update.
         /// </summary>
@@ -56,8 +56,6 @@ namespace HelixToolkit.UWP
         void SetDefaultColorTargets(DepthStencilView dsv);
 
         IEffectsManager EffectsManager { get; set; }
-
-        //IRenderTechniquesManager RenderTechniquesManager { get; }
 
         /// <summary>
         /// This technique is used for the entire render pass 

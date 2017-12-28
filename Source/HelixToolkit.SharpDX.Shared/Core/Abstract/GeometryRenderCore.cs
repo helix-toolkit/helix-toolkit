@@ -87,7 +87,7 @@ namespace HelixToolkit.UWP.Core
         protected IShaderPass DefaultShaderPass { private set; get; }
         protected IShaderPass ShadowPass { private set; get; }
 
-        public bool IsThrowShadow { set; get; } = false;
+        public bool IsThrowingShadow { set; get; } = false;
 
         protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
         {
@@ -130,26 +130,12 @@ namespace HelixToolkit.UWP.Core
             InstanceBuffer?.AttachBuffer(context, 1);           
         }
 
-        protected override bool CanRender()
+        protected override bool CanRender(IRenderContext context)
         {
-            return base.CanRender() && GeometryBuffer != null;
+            return base.CanRender(context) && GeometryBuffer != null;
         }
 
-        public void RenderShadow(IRenderMatrices context)
-        {
-            if (CanRender())
-            {
-                OnUpdatePerModelStruct(ref modelStruct, context);
-                OnAttachBuffers(context.DeviceContext);
-                OnUploadPerModelConstantBuffers(context.DeviceContext);
-                OnBindRasterState(context.DeviceContext);
-                OnRenderShadow(context);
-            }
-        }
-
-        protected virtual void OnRenderShadow(IRenderMatrices context) { }
-
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;

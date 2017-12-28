@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Compute hit-testing for all children
         /// </summary>
-        protected override bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
 
@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context">
         /// The context.
         /// </param>
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(IRenderContext context)
         {
             foreach (var item in this.children)
             {

@@ -36,9 +36,9 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool CanRender()
+        protected override bool CanRender(IRenderContext context)
         {
-            return base.CanRender()&& VertexBoneIdBuffer != null && VertexBoneIdBuffer.HasElements;
+            return base.CanRender(context) && VertexBoneIdBuffer != null && VertexBoneIdBuffer.HasElements;
         }
 
         protected override void OnAttachBuffers(DeviceContext context)
@@ -47,7 +47,7 @@ namespace HelixToolkit.UWP.Core
             VertexBoneIdBuffer?.AttachBuffer(context, 2);
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);     
             model.HasBones = BoneMatrices.Bones != null ? 1 : 0;                 

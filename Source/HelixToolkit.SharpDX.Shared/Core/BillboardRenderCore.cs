@@ -66,7 +66,7 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
             model.BoolParams.X = FixedSize;
@@ -74,7 +74,7 @@ namespace HelixToolkit.UWP.Core
             model.Params.X = (int)type;
         }
 
-        protected override void OnRender(IRenderMatrices context)
+        protected override void OnRender(IRenderContext context)
         {
             DefaultShaderPass.BindShader(context.DeviceContext);
             DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);

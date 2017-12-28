@@ -93,12 +93,12 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)
+        protected override bool CheckBoundingFrustum(BoundingFrustum boundingFrustum)
         {
             return true;
         }
 
-        protected override bool CanHitTest(IRenderMatrices context)
+        protected override bool CanHitTest(IRenderContext context)
         {
             return false;//return base.CanHitTest(context) && !hasBoneParameter;
         }

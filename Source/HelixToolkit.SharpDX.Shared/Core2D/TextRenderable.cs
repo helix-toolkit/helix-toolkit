@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             return base.CanRender(target) && Foreground != null;
         }
 
-        protected override void OnRender(IRenderMatrices matrices)
+        protected override void OnRender(IRenderContext matrices)
         {
             RenderTarget.DrawText(Text, new TextFormat(TextFactory, Font, FontWeight, FontStyle, FontSize), 
                LocalDrawingRect, Foreground, DrawingOptions);

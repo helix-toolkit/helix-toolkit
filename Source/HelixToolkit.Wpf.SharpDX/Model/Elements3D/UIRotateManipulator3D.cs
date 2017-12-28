@@ -130,7 +130,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Geometry = mb.ToMeshGeometry3D();
         }
 
-        protected override void OnRender(RenderContext renderContext)
+        protected override void OnRender(IRenderContext renderContext)
         {
             base.OnRender(renderContext);
             var position = this.totalModelMatrix.TranslationVector;

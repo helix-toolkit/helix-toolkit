@@ -142,7 +142,6 @@
     <Compile Include="Controls\DPFCanvasThreading.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChain.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChainThreading.cs" />
-    <Compile Include="Controls\IRenderHost.cs" />
     <Compile Include="Controls\MultiViewports\IModelContainer.cs" />
     <Compile Include="Controls\MultiViewports\ModelContainer3DX.cs" />
     <Compile Include="Controls\RenderControl.cs">
@@ -154,7 +153,6 @@
     <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\Geometry3DExtensions.cs" />
     <Compile Include="Helpers\EventSkipper.cs" />
-    <Compile Include="Controls\IRenderable.cs" />
     <Compile Include="Controls\RenderTechniqueConverter.cs" />
     <Compile Include="Controls\Trackball.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
@@ -332,6 +330,7 @@
     <None Include="Resources\vsMeshXRay.cso" />
     <None Include="Resources\vsParticle.cso" />
     <None Include="Resources\vsPoint.cso" />
+    <None Include="Resources\vsPointShadow.cso" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Model\ReadMe.txt" />

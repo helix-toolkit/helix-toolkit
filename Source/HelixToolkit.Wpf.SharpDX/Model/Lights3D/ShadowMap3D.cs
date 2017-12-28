@@ -8,6 +8,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using System.ComponentModel;
     using System.Windows;
+    using System.Linq;
 
     using global::SharpDX;
 
@@ -18,45 +19,51 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.DXGI;
 
     using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Core;
+    using Model;
+    using System;
 
     public class ShadowMap3D : Element3D
     {
-        private Texture2D depthBufferSM;
+        //private Texture2D depthBufferSM;
         //private Texture2D colorBufferSM;
-        private DepthStencilView depthViewSM;
+        //private DepthStencilView depthViewSM;
        // private RenderTargetView renderTargetSM;
-        private ShaderResourceView texShadowMapView;
+        //private ShaderResourceView texShadowMapView;
        // private ShaderResourceView texColorMapView;
         //private EffectShaderResourceVariable texShadowMapVariable;
         //private EffectVectorVariable vShadowMapInfoVariable;
         //private EffectVectorVariable vShadowMapSizeVariable;
-        private RenderContext shadowPassContext;
+        //private RenderContext shadowPassContext;
         //private int faktor = 1;
         //private int oneK = 1024;
-        private int width = 1024, height = 1024;
+        //private int width = 1024, height = 1024;
 
         public static readonly DependencyProperty ResolutionProperty =
-            DependencyProperty.Register("Resolution", typeof(Vector2), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(new Vector2(1024, 1024), ResolutionChanged));
-
-        private static void ResolutionChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
-        {            
-            var obj = (ShadowMap3D)d;
-            if (obj.IsAttached)
+            DependencyProperty.Register("Resolution", typeof(Vector2), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(new Vector2(1024, 1024), (d, e) =>
             {
-                obj.Detach();
-                obj.Attach(obj.renderHost);
-            }
-        }
+                var resolution = (Vector2)e.NewValue;
+                ((d as ShadowMap3D).RenderCore as ShadowMapCore).Width = (int)resolution.X;
+                ((d as ShadowMap3D).RenderCore as ShadowMapCore).Height = (int)resolution.Y;
+            }));
 
         public static readonly DependencyProperty FactorPCFProperty =
-                DependencyProperty.Register("FactorPCF", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(1.5));
+                DependencyProperty.Register("FactorPCF", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(1.5, (d,e)=>
+                {
+                    ((d as ShadowMap3D).RenderCore as ShadowMapCore).FactorPCF = (float)(double)e.NewValue;
+                }));
 
         public static readonly DependencyProperty BiasProperty =
-                DependencyProperty.Register("Bias", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(0.0015));
+                DependencyProperty.Register("Bias", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(0.0015, (d, e)=>
+                {
+                    ((d as ShadowMap3D).RenderCore as ShadowMapCore).Bias = (float)(double)e.NewValue;
+                }));
 
         public static readonly DependencyProperty IntensityProperty =
-                DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(0.5));
-
+                DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(0.5, (d, e)=>
+                {
+                    ((d as ShadowMap3D).RenderCore as ShadowMapCore).Intensity = (float)(double)e.NewValue;
+                }));
 
         [TypeConverter(typeof(Vector2Converter))]
         public Vector2 Resolution
@@ -83,36 +90,51 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(IntensityProperty, value); }
         }
 
-        protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
+        public Light3DSceneShared Light3DSceneShared
         {
-            return host.EffectsManager[DefaultRenderTechniqueNames.Colors];
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected override IRenderCore OnCreateRenderCore()
+        {
+            return new ShadowMapCore();
+        }
+
+        private ShadowMapCore shadowCore;
+
+        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        {
+            base.AssignDefaultValuesToCore(core);
+            var c = core as ShadowMapCore;
+            c.FactorPCF = (float)FactorPCF;
+            c.Intensity = (float)Intensity;
+            c.Bias = (float)Bias;
+            c.Width = (int)(Resolution.X);
+            c.Height = (int)(Resolution.Y);
         }
 
         protected override bool OnAttach(IRenderHost host)
         {
-            this.width = (int)(Resolution.X + 0.5f); //faktor* oneK;
-            this.height = (int)(this.Resolution.Y + 0.5f); // faktor* oneK;
-
-            if (!host.IsShadowMapEnabled)
-            {
-                return false;
-            }
-
+            base.OnAttach(host);
+            shadowCore = RenderCore as ShadowMapCore;            
             // gen shadow map
-            this.depthBufferSM = new Texture2D(Device, new Texture2DDescription()
-            {
-                Format = Format.R32_Typeless, //!!!! because of depth and shader resource
-                //Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
-                ArraySize = 1,
-                MipLevels = 1,
-                Width = width,
-                Height = height,
-                SampleDescription = new SampleDescription(1, 0),
-                Usage = ResourceUsage.Default,
-                BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource, //!!!!
-                CpuAccessFlags = CpuAccessFlags.None,
-                OptionFlags = ResourceOptionFlags.None,
-            });
+            //this.depthBufferSM = new Texture2D(Device, new Texture2DDescription()
+            //{
+            //    Format = Format.R32_Typeless, //!!!! because of depth and shader resource
+            //    //Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
+            //    ArraySize = 1,
+            //    MipLevels = 1,
+            //    Width = width,
+            //    Height = height,
+            //    SampleDescription = new SampleDescription(1, 0),
+            //    Usage = ResourceUsage.Default,
+            //    BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource, //!!!!
+            //    CpuAccessFlags = CpuAccessFlags.None,
+            //    OptionFlags = ResourceOptionFlags.None,
+            //});
 
             //this.colorBufferSM = new Texture2D(this.Device, new Texture2DDescription
             //{
@@ -132,26 +154,26 @@ namespace HelixToolkit.Wpf.SharpDX
             //{
             //};
 
-            this.depthViewSM = new DepthStencilView(Device, depthBufferSM, new DepthStencilViewDescription()
-            {
-                Format = Format.D32_Float,
-                Dimension = DepthStencilViewDimension.Texture2D,
-                Texture2D = new DepthStencilViewDescription.Texture2DResource()
-                {
-                    MipSlice = 0
-                }
-            });
+            //this.depthViewSM = new DepthStencilView(Device, depthBufferSM, new DepthStencilViewDescription()
+            //{
+            //    Format = Format.D32_Float,
+            //    Dimension = DepthStencilViewDimension.Texture2D,
+            //    Texture2D = new DepthStencilViewDescription.Texture2DResource()
+            //    {
+            //        MipSlice = 0
+            //    }
+            //});
 
-            this.texShadowMapView = new ShaderResourceView(Device, depthBufferSM, new ShaderResourceViewDescription()
-            {
-                Format = Format.R32_Float,
-                Dimension = ShaderResourceViewDimension.Texture2D,
-                Texture2D = new ShaderResourceViewDescription.Texture2DResource()
-                {
-                    MipLevels = 1,
-                    MostDetailedMip = 0,
-                }
-            }); //!!!!
+            //this.texShadowMapView = new ShaderResourceView(Device, depthBufferSM, new ShaderResourceViewDescription()
+            //{
+            //    Format = Format.R32_Float,
+            //    Dimension = ShaderResourceViewDimension.Texture2D,
+            //    Texture2D = new ShaderResourceViewDescription.Texture2DResource()
+            //    {
+            //        MipLevels = 1,
+            //        MostDetailedMip = 0,
+            //    }
+            //}); //!!!!
 
             //this.texColorMapView = new ShaderResourceView(this.Device, colorBufferSM, new ShaderResourceViewDescription()
             //{
@@ -167,52 +189,42 @@ namespace HelixToolkit.Wpf.SharpDX
             //this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource();
             //this.vShadowMapInfoVariable = effect.GetVariableByName("vShadowMapInfo").AsVector();
             //this.vShadowMapSizeVariable = effect.GetVariableByName("vShadowMapSize").AsVector();
-            this.shadowPassContext = new RenderContext(host, Device.ImmediateContext, host.EffectsManager.ConstantBufferPool);
+            //this.shadowPassContext = new RenderContext(host, Device.ImmediateContext, host.EffectsManager.ConstantBufferPool);
             return true;
         }
 
-        protected override void OnDetach()
+        //protected override void OnDetach()
+        //{
+        //    Disposer.RemoveAndDispose(ref this.depthBufferSM);
+        //    Disposer.RemoveAndDispose(ref this.depthViewSM);
+        //    //Disposer.RemoveAndDispose(ref this.colorBufferSM);
+        //    //Disposer.RemoveAndDispose(ref this.renderTargetSM);
+        //    //Disposer.RemoveAndDispose(ref this.texColorMapView);
+        //    Disposer.RemoveAndDispose(ref this.texShadowMapView);  
+
+        //    //Disposer.RemoveAndDispose(ref this.texShadowMapVariable);
+        //    //Disposer.RemoveAndDispose(ref this.vShadowMapInfoVariable);
+        //    //Disposer.RemoveAndDispose(ref this.vShadowMapSizeVariable);
+
+        //    Disposer.RemoveAndDispose(ref this.shadowPassContext);
+        //    //this.renderHost.IsShadowMapEnabled = false;            
+        //    base.OnDetach();
+        //}
+
+        protected override bool CanRender(IRenderContext context)
         {
-            Disposer.RemoveAndDispose(ref this.depthBufferSM);
-            Disposer.RemoveAndDispose(ref this.depthViewSM);
-            //Disposer.RemoveAndDispose(ref this.colorBufferSM);
-            //Disposer.RemoveAndDispose(ref this.renderTargetSM);
-            //Disposer.RemoveAndDispose(ref this.texColorMapView);
-            Disposer.RemoveAndDispose(ref this.texShadowMapView);  
-
-            //Disposer.RemoveAndDispose(ref this.texShadowMapVariable);
-            //Disposer.RemoveAndDispose(ref this.vShadowMapInfoVariable);
-            //Disposer.RemoveAndDispose(ref this.vShadowMapSizeVariable);
-
-            Disposer.RemoveAndDispose(ref this.shadowPassContext);
-            //this.renderHost.IsShadowMapEnabled = false;            
-            base.OnDetach();
+            return base.CanRender(context) && renderHost.IsShadowMapEnabled;
         }
+        protected override void OnRender(IRenderContext context)
+        {
 
-        protected override bool CanRender(RenderContext context)
-        {
-            if (base.CanRender(context))
-            {
-                if (!this.renderHost.IsShadowMapEnabled)
-                {
-                    return false;
-                }
-                return true;
-            }
-            return false;
-        }
-        protected override void OnRender(RenderContext context)
-        {
             // --- set rasterizes state here with proper shadow-bias, as depth-bias and slope-bias in the rasterizer            
-            this.Device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
-            this.Device.ImmediateContext.OutputMerger.SetTargets(depthViewSM);            
-            this.Device.ImmediateContext.ClearDepthStencilView(depthViewSM, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
-            var root = context.Canvas.Renderable.Renderables;
-            foreach (var item in root)
+            //this.Device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
+            //this.Device.ImmediateContext.OutputMerger.SetTargets(depthViewSM);            
+            //this.Device.ImmediateContext.ClearDepthStencilView(depthViewSM, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+            var root = context.RenderHost.Renderable.Renderables.Where(x=>x is Light3D).Select(x=>(Light3D)x);
+            foreach (var light in root)
             {
-                var light = item as Light3D;
-                if (light != null)
-                {
                     Camera lightCamera = null;
                     //if (light is PointLightBase3D)
                     //{
@@ -246,36 +258,38 @@ namespace HelixToolkit.Wpf.SharpDX
                             LookDirection = dir.ToVector3D(),
                             Position = (System.Windows.Media.Media3D.Point3D)(pos.ToVector3D()),                            
                             UpDirection = Vector3.UnitZ.ToVector3D(),
-                            Width = 100,
+                            Width = 25,
                             NearPlaneDistance = 1,
                             FarPlaneDistance = 500,
                         };
+                        shadowCore.LightViewProjectMatrix = lightCamera.GetViewMatrix() * lightCamera.GetProjectionMatrix(shadowCore.Width/shadowCore.Height);
+                        shadowCore.Render(context);
                     }
 
-                    if (lightCamera != null)
-                    {
-                        var sceneCamera = context.Camera;
-                        
+                    //if (lightCamera != null)
+                    //{
+                    //    var sceneCamera = context.Camera;
+
                     //    light.LightViewMatrix = CameraExtensions.GetViewMatrix(lightCamera);
                     //    light.LightProjectionMatrix = CameraExtensions.GetProjectionMatrix(lightCamera, context.Canvas.ActualWidth / context.Canvas.ActualHeight);
 
-                        this.shadowPassContext.IsShadowPass = true;
-                        this.shadowPassContext.Camera = lightCamera;
-                        foreach (var e in root)
-                        {
-                            var smodel = e as IThrowingShadow;
-                            if (smodel != null)
-                            {
-                                if (smodel.IsThrowingShadow)
-                                {
-                                    var model = smodel as IRenderable;
-                                    model.Render(this.shadowPassContext);
-                                }
-                            }
-                        }
-                        context.Camera = sceneCamera;
-                    }
-                }
+                    //    this.shadowPassContext.IsShadowPass = true;
+                    //     this.shadowPassContext.Camera = lightCamera;
+
+                        //foreach (var e in root)
+                        //{
+                        //    var smodel = e as IThrowingShadow;
+                        //    if (smodel != null)
+                        //    {
+                        //        if (smodel.IsThrowingShadow)
+                        //        {
+                        //            var model = smodel as IRenderable;
+                        //            model.Render(this.shadowPassContext);
+                        //        }
+                        //    }
+                        //}
+                        //context.Camera = sceneCamera;
+                    //}
             }
 
             //this.texShadowMapVariable.SetResource(this.texShadowMapView);            
@@ -284,7 +298,7 @@ namespace HelixToolkit.Wpf.SharpDX
             //this.vShadowMapSizeVariable.Set(new Vector2(width, height));
 
             //System.Console.WriteLine("ShadowMap rendered!");
-            context.Canvas.SetDefaultRenderTargets(false);
+            //context.Canvas.SetDefaultRenderTargets(false);
         }
     }
 }

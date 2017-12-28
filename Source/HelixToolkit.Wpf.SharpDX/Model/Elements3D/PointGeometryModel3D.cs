@@ -130,7 +130,7 @@
             pointRenderCore.PointColor = Color;
         }
 
-        protected override bool CanHitTest(IRenderMatrices context)
+        protected override bool CanHitTest(IRenderContext context)
         {
             return base.CanHitTest(context) && context != null;
         }
@@ -142,7 +142,7 @@
         /// <param name="rayWS">Hitring ray from the camera.</param>
         /// <param name="hits">results of the hit.</param>
         /// <returns>True if the ray hits one or more times.</returns>
-        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (geometryInternal.Octree != null)
             {
@@ -227,7 +227,7 @@
         }
 
 
-        protected override bool CanRender(RenderContext context)
+        protected override bool CanRender(IRenderContext context)
         {
             if(base.CanRender(context))
             {

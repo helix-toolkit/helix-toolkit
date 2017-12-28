@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
             }
         }
 
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(IRenderContext context)
         {
             foreach (var c in this.Items)
             {

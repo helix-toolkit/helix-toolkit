@@ -82,18 +82,28 @@ namespace HelixToolkit.UWP.Core
         /// Trigger OnRender function delegate if CanRender()==true
         /// </summary>
         /// <param name="context"></param>
-        public void Render(IRenderMatrices context)
+        public void Render(IRenderContext context)
         {
-            if (CanRender())
+            if (CanRender(context))
             {
                 OnUpdatePerModelStruct(ref modelStruct, context);
                 OnAttachBuffers(context.DeviceContext);
                 OnUploadPerModelConstantBuffers(context.DeviceContext);
                 OnBindRasterState(context.DeviceContext);
-                OnRender(context);
+                switch (context.IsShadowPass)
+                {
+                    case false:
+                        OnRender(context);
+                        break;
+                    case true:                        
+                        OnRenderShadow(context);
+                        break;
+                }
                 PostRender(context);
             }
         }
+
+        protected virtual void OnRenderShadow(IRenderContext context) { }
 
         /// <summary>
         /// Attach vertex buffer routine
@@ -113,9 +123,9 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Actual render function. Used to attach different render states and call the draw call.
         /// </summary>
-        protected abstract void OnRender(IRenderMatrices context);
+        protected abstract void OnRender(IRenderContext context);
 
-        protected abstract void OnUpdatePerModelStruct(ref TModelStruct model, IRenderMatrices context);
+        protected abstract void OnUpdatePerModelStruct(ref TModelStruct model, IRenderContext context);
 
         protected virtual void OnUploadPerModelConstantBuffers(DeviceContext context)
         {
@@ -126,13 +136,13 @@ namespace HelixToolkit.UWP.Core
         /// After calling OnRender. Restore some variables, such as HasInstance etc.
         /// </summary>
         /// <param name="context"></param>
-        protected virtual void PostRender(IRenderMatrices context) { }
+        protected virtual void PostRender(IRenderContext context) { }
 
         /// <summary>
         /// Check if can render
         /// </summary>
         /// <returns></returns>
-        protected virtual bool CanRender()
+        protected virtual bool CanRender(IRenderContext context)
         {
             return IsAttached;
         }

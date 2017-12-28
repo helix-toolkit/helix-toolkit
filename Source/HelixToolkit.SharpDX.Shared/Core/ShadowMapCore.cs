@@ -5,6 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System;
 using SharpDX;
 using SharpDX.Direct3D11;
+using System.Linq;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -14,20 +15,40 @@ namespace HelixToolkit.UWP.Core
     using global::SharpDX.Direct3D;
     using global::SharpDX.DXGI;
     using Shaders;
+    using System.Collections.Generic;
     using Utilities;
     public class ShadowMapCore : RenderCoreBase<ShadowMapParamStruct>
     {
-        protected ShaderResouceViewProxy viewResource { private set; get; }
+        protected ShaderResouceViewProxy viewResource;
 
-        public Vector2 Resolution
+        private bool resolutionChanged = true;
+        private int width = 1024;
+        public int Width
         {
             set
             {
-                modelStruct.ShadowMapSize = value;
+                if (width == value) { return; }
+                width = value;
+                resolutionChanged = true;
             }
             get
             {
-                return modelStruct.ShadowMapSize;
+                return width;
+            }
+        }
+
+        private int height = 1024;
+        public int Height
+        {
+            set
+            {
+                if (height == value) { return; }
+                height = value;
+                resolutionChanged = true;
+            }
+            get
+            {
+                return height;
             }
         }
 
@@ -35,17 +56,7 @@ namespace HelixToolkit.UWP.Core
         public float Bias { set; get; } = 0.0015f;
 
         public float Intensity { set; get; } = 0.5f;
-
-        public ShadowMapCore()
-        {
-            Resolution = new Vector2(1024, 1024);
-        }
-
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.ShadowParamCB, ShadowMapParamStruct.SizeInBytes);
-        }
-
+        public Matrix LightViewProjectMatrix { set; get; }
         protected virtual Texture2DDescription ShadowMapTextureDesc
         {
             get
@@ -56,8 +67,8 @@ namespace HelixToolkit.UWP.Core
                                                   //Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
                     ArraySize = 1,
                     MipLevels = 1,
-                    Width = (int)Resolution.X,
-                    Height = (int)Resolution.Y,
+                    Width = Width,
+                    Height = Height,
                     SampleDescription = new SampleDescription(1, 0),
                     Usage = ResourceUsage.Default,
                     BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource, //!!!!
@@ -100,29 +111,63 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool OnAttach(IRenderTechnique technique)
+        protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
-            if (base.OnAttach(technique))
+            return new ConstantBufferDescription(DefaultBufferNames.ShadowParamCB, ShadowMapParamStruct.SizeInBytes);
+        }
+
+        protected override bool CanRender(IRenderContext context)
+        {
+            return base.CanRender(context) && !context.IsShadowPass;
+        }
+
+        protected override void OnRender(IRenderContext context)
+        {
+            context.IsShadowPass = true;
+            if (resolutionChanged)
             {
+                RemoveAndDispose(ref viewResource);
                 viewResource = Collect(new ShaderResouceViewProxy(Device, ShadowMapTextureDesc));
                 viewResource.CreateView(DepthStencilViewDesc);
                 viewResource.CreateView(ShaderResourceViewDesc);
-                return true;
+                resolutionChanged = false;
             }
-            else
+            context.DeviceContext.Rasterizer.SetViewport(0, 0, Width, Height);
+            DepthStencilView orgDSV;
+            var orgRT = context.DeviceContext.OutputMerger.GetRenderTargets(1, out orgDSV);
+            context.DeviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
+            context.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
+            try
             {
-                return false;
+                foreach (var item in context.RenderHost.Renderable.Renderables.Where(x => x is IThrowingShadow && ((IThrowingShadow)x).IsThrowingShadow))
+                {
+                    item.Render(context);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                context.IsShadowPass = false;
+                context.DeviceContext.OutputMerger.SetRenderTargets(orgDSV, orgRT);
+                orgDSV?.Dispose();
+                foreach (var rt in orgRT)
+                {
+                    rt?.Dispose();
+                }
+                context.DeviceContext.Rasterizer.SetViewport(0, 0, (float)context.ActualWidth, (float)context.ActualHeight);
+                context.SharedResource.ShadowView = viewResource.TextureView;
             }
         }
 
-        protected override void OnRender(IRenderMatrices context)
-        {
-            
-        }
-
-        protected override void OnUpdatePerModelStruct(ref ShadowMapParamStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ShadowMapParamStruct model, IRenderContext context)
         {
             model.ShadowMapInfo = new Vector4(Intensity, FactorPCF, Bias, 0);
+            model.ShadowMapSize = new Vector2(Width, Height);
+            model.LightViewProjection = LightViewProjectMatrix;
+            model.HasShadowMap = context.RenderHost.IsShadowMapEnabled ? 1 : 0;
         }
     }
 }

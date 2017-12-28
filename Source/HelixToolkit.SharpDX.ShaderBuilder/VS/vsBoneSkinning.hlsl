@@ -83,12 +83,7 @@ PSInput main(VSBoneSkinInput input)
 	//set position into light-clip space
     if (bHasShadowMap)
     {
-		//for (int i = 0; i < 1; i++)
-		{
-            output.sp = mul(inputp, mWorld);
-            output.sp = mul(output.sp, Lights[0].mLightView);
-            output.sp = mul(output.sp, Lights[0].mLightProj);
-        }
+        output.sp = mul(output.wp, vLightViewProjection);
     }
 
 	//set texture coords and color

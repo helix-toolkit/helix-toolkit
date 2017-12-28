@@ -178,7 +178,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public RenderTargetView ColorBufferView { get { return colorBufferView; } }
         public DepthStencilView DepthStencilBufferView { get { return depthStencilBufferView; } }
         public bool IsRendering { set; get; } = true;
-        public RenderContext RenderContext { get { return renderContext; } }
+        public IRenderContext RenderContext { get { return renderContext; } }
         /// <summary>
         /// Light3D shared data per each secne
         /// </summary>

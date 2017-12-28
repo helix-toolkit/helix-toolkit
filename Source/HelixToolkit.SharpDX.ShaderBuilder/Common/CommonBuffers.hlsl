@@ -91,9 +91,8 @@ cbuffer cbMaterial
     bool bHasAlphaMap = false;
     bool bHasNormalMap = false;
     bool bHasDisplacementMap = false;
-    bool bHasShadowMap = false;
     bool bHasCubeMap = false;
-    float paddingMaterial0;
+    float2 paddingMaterial0;
 	float4 displacementMapScaleMask = float4(0,0,0,1);
 };
 
@@ -155,7 +154,8 @@ SamplerComparisonState samplerShadow
 cbuffer cbShadow
 {
     float2 vShadowMapSize = float2(1024, 1024);
-    float2 paddingShadow0;
+    bool bHasShadowMap = false;
+    float paddingShadow0;
     float4 vShadowMapInfo = float4(0.005, 1.0, 0.5, 0.0);
 	float4x4 vLightViewProjection;
 };

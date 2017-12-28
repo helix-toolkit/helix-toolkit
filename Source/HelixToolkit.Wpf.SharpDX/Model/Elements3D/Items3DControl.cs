@@ -315,7 +315,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Compute hit-testing for all children
         /// </summary>
-        public bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        public bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             if (CanHitTest(context))
             {
@@ -324,12 +324,12 @@ namespace HelixToolkit.Wpf.SharpDX
             else return false;
         }
 
-        protected virtual bool CanHitTest(IRenderMatrices context)
+        protected virtual bool CanHitTest(IRenderContext context)
         {
             return IsAttached && visibleInternal && isHitTestVisibleInternal;
         }
 
-        protected virtual bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        protected virtual bool OnHitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
 
@@ -376,7 +376,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context">
         /// The context.
         /// </param>
-        public void Render(RenderContext context)
+        public void Render(IRenderContext context)
         {
             if (CanRender(context))
             {
@@ -384,7 +384,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected virtual void OnRender(RenderContext context)
+        protected virtual void OnRender(IRenderContext context)
         {
             foreach (var item in this.children)
             {
@@ -414,7 +414,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected bool CanRender(RenderContext context)
+        protected bool CanRender(IRenderContext context)
         {
             return IsAttached && visibleInternal;
         }

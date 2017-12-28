@@ -234,7 +234,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             fillChanged = strokeChanged = strokeStyleChanged = true;
         }
 
-        protected override void PreRender(RenderContext context)
+        protected override void PreRender(IRenderContext context)
         {
             base.PreRender(context);
             if (fillChanged)

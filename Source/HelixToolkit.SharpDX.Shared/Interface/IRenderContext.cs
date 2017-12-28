@@ -17,14 +17,14 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
-    public interface IRenderMatrices
+    public interface IRenderContext : IDisposable
     {
-        ICamera Camera { get; }
+        ICamera Camera { set; get; }
         Matrix ViewMatrix { get; }
 
         Matrix ProjectionMatrix { get; }
 
-        Matrix WorldMatrix { get; }
+        Matrix WorldMatrix { set; get; }
 
         Matrix ViewportMatrix { get; }
 
@@ -39,5 +39,17 @@ namespace HelixToolkit.Wpf.SharpDX
         Light3DSceneShared LightScene { get; }
         GlobalTransformStruct GlobalTransform { get; }
         void UpdatePerFrameData();
+
+        bool IsShadowPass { set; get; }
+        bool EnableBoundingFrustum { set; get; }
+        BoundingFrustum BoundingFrustum { get; }
+        IRenderHost RenderHost { get; }
+
+        IContextSharedResource SharedResource { get; }
+    }
+
+    public interface IContextSharedResource : IDisposable
+    {
+        ShaderResourceView ShadowView { set; get; }
     }
 }

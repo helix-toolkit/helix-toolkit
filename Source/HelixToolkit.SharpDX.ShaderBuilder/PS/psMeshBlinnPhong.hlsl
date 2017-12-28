@@ -27,7 +27,6 @@ float4 main(PSInput input) : SV_Target
     {
         s = shadowStrength(input.sp);
     }
-
     // add diffuse sampling
     float4 vMaterialTexture = 1.0f;
     if (bHasDiffuseMap)

@@ -104,6 +104,7 @@ float shadowStrength(float4 sp)
             div++;
         }
     }
+   // return sum;
 
     float shadowFactor = sum / (float) div;
     float fixTeil = vShadowMapInfo.x;

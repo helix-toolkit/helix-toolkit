@@ -42,6 +42,7 @@
             UseDefaultGestures="False"   
             IsShadowMappingEnabled="True"
             RenderTechnique="{Binding RenderTechnique}"
+            EffectsManager="{Binding EffectsManager}"
             >
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>
@@ -55,18 +56,16 @@
                 <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
                 <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
             </hx:Viewport3DX.InputBindings>
-
-            <hx:ShadowMap3D x:Name="shadowMap" Resolution="{Binding ShadowMapResolution}" />
+            
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
             <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction="{Binding DirectionalLightDirection}"  DirectionTransform="{Binding LightDirectionTransform}"/>            
-            
-            <hx:MeshGeometryModel3D x:Name="model1" Geometry="{Binding Model}" Transform="{Binding Model1Transform}" Material="{Binding RedMaterial}"  />
-            <hx:MeshGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform="{Binding Model2Transform}" Material="{Binding GreenMaterial}" Instances="{Binding Instances}"/>
-            <hx:MeshGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform="{Binding Model3Transform}" Material="{Binding BlueMaterial}" />
-            <hx:MeshGeometryModel3D x:Name="plane"  Geometry="{Binding Plane}" Transform="{Binding PlaneTransform}"  Material="{Binding GrayMaterial}" />
-            <hx:LineGeometryModel3D x:Name="lines"  Geometry="{Binding Lines}" Transform="{Binding Model1Transform}" Color="{x:Static sdxm:Color.Black}"/>
-            <hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform="{Binding GridTransform}"   Color="{Binding GridColor}"/>
-            
+            <hx:ShadowMap3D x:Name="shadowMap" Resolution="{Binding ShadowMapResolution}" />
+            <hx:MeshGeometryModel3D x:Name="model1" IsThrowingShadow="True" Geometry="{Binding Model}" Transform="{Binding Model1Transform}" Material="{Binding RedMaterial}"  />
+            <hx:MeshGeometryModel3D x:Name="model2" IsThrowingShadow="True"  Geometry="{Binding Model}" Transform="{Binding Model2Transform}" Material="{Binding GreenMaterial}" Instances="{Binding Instances}"/>
+            <hx:MeshGeometryModel3D x:Name="model3" IsThrowingShadow="True"  Geometry="{Binding Model}" Transform="{Binding Model3Transform}" Material="{Binding BlueMaterial}" />
+            <hx:MeshGeometryModel3D x:Name="plane"  IsThrowingShadow="false"  Geometry="{Binding Plane}" Transform="{Binding PlaneTransform}"  Material="{Binding GrayMaterial}" />
+            <!--<hx:LineGeometryModel3D x:Name="lines" IsThrowingShadow="True"   Geometry="{Binding Lines}" Transform="{Binding Model1Transform}" Color="{x:Static sdxm:Color.Black}"/>
+            <hx:LineGeometryModel3D x:Name="grid"  IsThrowingShadow="True"   Geometry="{Binding Grid}"  Transform="{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
         </hx:Viewport3DX>
         
         <StackPanel Grid.Row="1" >

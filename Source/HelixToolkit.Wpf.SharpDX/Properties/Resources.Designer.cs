@@ -509,5 +509,15 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsPointShadow {
+            get {
+                object obj = ResourceManager.GetObject("vsPointShadow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

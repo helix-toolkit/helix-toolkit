@@ -79,7 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Get RenderContext
         /// </summary>
-        public RenderContext RenderContext { get { return renderContext; } }
+        public IRenderContext RenderContext { get { return renderContext; } }
 
         /// <summary>
         /// Light3D shared data per each secne
@@ -392,7 +392,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             surfaceD3D.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
             Source = null;
-            RenderContext?.Dispose();
+            renderContext?.Dispose();
        //     Disposer.RemoveAndDispose(ref deferredRenderer);
             Disposer.RemoveAndDispose(ref surfaceD3D);
             Disposer.RemoveAndDispose(ref colorBufferView);

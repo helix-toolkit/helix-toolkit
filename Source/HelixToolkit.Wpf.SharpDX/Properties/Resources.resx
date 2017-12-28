@@ -253,4 +253,7 @@
   <data name="vsMeshShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsmeshshadow.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="vsPointShadow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vspointshadow.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

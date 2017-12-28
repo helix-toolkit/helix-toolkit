@@ -101,20 +101,20 @@ namespace HelixToolkit.UWP.Model
                 return renderDisplacementMap;
             }
         }
-        private bool hasShadowMap = false;
-        public bool HasShadowMap
-        {
-            set
-            {
-                if (hasShadowMap == value) { return; }
-                hasShadowMap = value;
-                needUpdate = true;
-            }
-            get
-            {
-                return hasShadowMap;
-            }
-        }
+        //private bool hasShadowMap = false;
+        //public bool HasShadowMap
+        //{
+        //    set
+        //    {
+        //        if (hasShadowMap == value) { return; }
+        //        hasShadowMap = value;
+        //        needUpdate = true;
+        //    }
+        //    get
+        //    {
+        //        return hasShadowMap;
+        //    }
+        //}
 
         private bool needUpdate = true;
         private MaterialStruct materialStruct;
@@ -246,7 +246,6 @@ namespace HelixToolkit.UWP.Model
                 HasDiffuseAlphaMap = RenderDiffuseAlphaMap && ShaderResourceDict[ShaderAlphaTexName].TextureView != null ? 1 : 0,
                 HasNormalMap = RenderNormalMap && ShaderResourceDict[ShaderNormalTexName].TextureView != null ? 1 : 0,
                 HasDisplacementMap = RenderDisplacementMap && ShaderResourceDict[ShaderDisplaceTexName].TextureView != null ? 1 : 0,
-                HasShadowMap = HasShadowMap ? 1 : 0,
                 DisplacementMapScaleMask = material.DisplacementMapScaleMask,
                 HasCubeMap = 0               
             };

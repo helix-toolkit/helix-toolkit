@@ -56,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.modelMatrix = trafo.ToMatrix();
         }
 
-        protected override void OnRender(RenderContext renderContext)
+        protected override void OnRender(IRenderContext renderContext)
         {
             foreach (var c in this.Items)
             {
@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return IsAttached && visibleInternal && isRenderingInternal && isHitTestVisibleInternal;
         }
 
-        public bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        public bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             if (CanHitTest())
             {
@@ -94,7 +94,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }        
 
-        protected virtual bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        protected virtual bool OnHitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
             foreach (var c in this.Items)

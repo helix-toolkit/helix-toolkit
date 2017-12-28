@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.LightType = LightType.Ambient;
         }
 
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(IRenderContext context)
         {
             Light3DSceneShared.LightModels.AmbientLight = this.ColorInternal;
         }

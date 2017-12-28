@@ -81,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        protected override bool CanRender(RenderContext context)
+        protected override bool CanRender(IRenderContext context)
         {
             return IsAttached && isRenderingInternal && visibleInternal;
         }
@@ -91,7 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context">
         /// The context.
         /// </param>
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(IRenderContext context)
         {
             // you mean like this?
             foreach (var c in this.Children)
@@ -193,7 +193,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Bounds = bb;
         }
 
-        protected override bool CanHitTest(IRenderMatrices context)
+        protected override bool CanHitTest(IRenderContext context)
         {
             return IsAttached && visibleInternal && isRenderingInternal && isHitTestVisibleInternal;
         }
@@ -205,7 +205,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Compute hit-testing for all children
         /// </summary>
-        protected override bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
             foreach (var c in this.Children)

@@ -72,7 +72,7 @@ namespace HelixToolkit.UWP
                             DefaultVSShaderDescriptions.VSMeshShadow,
                             DefaultPSShaderDescriptions.PSShadow
                         },
-                        BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
                     }
                 }
@@ -387,9 +387,9 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSPoint,
+                            DefaultVSShaderDescriptions.VSPointShadow,
                             DefaultGSShaderDescriptions.GSLine,
-                            DefaultPSShaderDescriptions.PSLineColor
+                            DefaultPSShaderDescriptions.PSShadow
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess

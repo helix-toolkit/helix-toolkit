@@ -227,7 +227,7 @@ namespace CustomShaderDemo
             return result;
         }
 
-        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             return false;
         }

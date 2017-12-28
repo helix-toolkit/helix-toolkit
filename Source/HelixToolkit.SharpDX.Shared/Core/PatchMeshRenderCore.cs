@@ -177,7 +177,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnRender(IRenderMatrices context)
+        protected override void OnRender(IRenderContext context)
         {
             if (EnableTessellation)
             {
@@ -189,7 +189,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected virtual void OnRenderTessellation(IRenderMatrices context)
+        protected virtual void OnRenderTessellation(IRenderContext context)
         {
             switch (meshType)
             {

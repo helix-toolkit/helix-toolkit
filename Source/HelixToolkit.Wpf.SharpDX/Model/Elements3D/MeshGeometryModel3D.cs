@@ -215,7 +215,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return base.CheckGeometry() && geometryInternal is MeshGeometry3D;
         }
 
-        protected override bool CanHitTest(IRenderMatrices context)
+        protected override bool CanHitTest(IRenderContext context)
         {
             if (MeshTopology != MeshTopologyEnum.PNTriangles)
             {
@@ -224,7 +224,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return base.CanHitTest(context);
         }
 
-        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             var g = this.geometryInternal as MeshGeometry3D;
             bool isHit = false;

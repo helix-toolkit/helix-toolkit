@@ -136,7 +136,7 @@ namespace HelixToolkit.UWP.Core
             context.Rasterizer.State = rasterState;
         }
 
-        protected Matrix CreateViewMatrix(IRenderMatrices renderContext, out Vector3 eye)
+        protected Matrix CreateViewMatrix(IRenderContext renderContext, out Vector3 eye)
         {
 #if !NETFX_CORE
             eye = -renderContext.Camera.LookDirection.ToVector3().Normalized() * 20 / SizeScale;
@@ -186,26 +186,26 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = 0;
         }
 
-        protected override bool CanRender()
+        protected override bool CanRender(IRenderContext context)
         {
             return false;
         }
 
-        protected override void OnRender(IRenderMatrices renderContext)
+        protected override void OnRender(IRenderContext renderContext)
         {           
         }
 
-        protected override void PostRender(IRenderMatrices context)
+        protected override void PostRender(IRenderContext context)
         {
         }
 
-        public virtual void SetScreenSpacedCoordinates(IRenderMatrices context, bool clearDepthBuffer = true)
+        public virtual void SetScreenSpacedCoordinates(IRenderContext context, bool clearDepthBuffer = true)
         {
             DepthStencilView dsView;
             context.DeviceContext.OutputMerger.GetRenderTargets(out dsView);

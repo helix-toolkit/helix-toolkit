@@ -24,15 +24,14 @@ namespace HelixToolkit.Wpf.SharpDX
     /// The render-context is currently generated per frame
     /// Optimizations might be possible
     /// </summary>
-    public class RenderContext : IRenderMatrices, IDisposable
+    public class RenderContext : IRenderContext
     {       
-        internal Matrix worldMatrix = Matrix.Identity;
-        internal Matrix viewMatrix;
-        internal Matrix projectionMatrix;
-        internal BoundingFrustum boundingFrustum;
+        private Matrix worldMatrix = Matrix.Identity;
+        private Matrix viewMatrix;
+        private Matrix projectionMatrix;
+        public BoundingFrustum BoundingFrustum { private set; get; }
         private ICamera camera; 
-        //private EffectVectorVariable vEyePos, vFrustum, vViewport;        
-        //private EffectMatrixVariable mView, mProjection;
+
         private bool matrixChanged = true;
 
         public Matrix ViewMatrix
@@ -94,7 +93,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public bool EnableBoundingFrustum = false;
+        public bool EnableBoundingFrustum { set; get; } = false;
 
         public DeviceContext DeviceContext { set; get; }
 
@@ -108,8 +107,8 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {                
                 this.camera = value;
-                ActualHeight = this.Canvas.ActualHeight;
-                ActualWidth = this.Canvas.ActualWidth;
+                ActualHeight = this.RenderHost.ActualHeight;
+                ActualWidth = this.RenderHost.ActualWidth;
                 ViewMatrix = this.camera.CreateViewMatrix();
                 var aspectRatio = this.ActualWidth / this.ActualHeight;
                 ProjectionMatrix = this.camera.CreateProjectionMatrix(aspectRatio);
@@ -128,16 +127,16 @@ namespace HelixToolkit.Wpf.SharpDX
                     // frustum: FOV,AR,N,F
                     globalTransform.Frustum = new Vector4((float)fov, (float)ar, (float)zn, (float)zf);
                     if(EnableBoundingFrustum)
-                        boundingFrustum = new BoundingFrustum(ViewMatrix * ProjectionMatrix);
+                        BoundingFrustum = new BoundingFrustum(ViewMatrix * ProjectionMatrix);
                     globalTransform.EyePos = this.camera.Position.ToVector3();
                 }
             }
         }
             
 
-        public IRenderHost Canvas { get; private set; }
+        public IRenderHost RenderHost { get; private set; }
 
-        public bool IsShadowPass { get; set; }
+        public bool IsShadowPass { get; set; } = false;
 
         public bool IsDeferredPass { get; set; }
 
@@ -151,14 +150,20 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public GlobalTransformStruct GlobalTransform { get { return globalTransform; } }
 
-        public RenderContext(IRenderHost canvas, DeviceContext renderContext, IConstantBufferPool pool)
+        public IContextSharedResource SharedResource
         {
-            this.Canvas = canvas;
+            private set;get;
+        }
+
+        public RenderContext(IRenderHost renderHost, DeviceContext renderContext, IConstantBufferPool pool)
+        {
+            this.RenderHost = renderHost;
             this.IsShadowPass = false;
             this.IsDeferredPass = false;
             cbuffer = pool.Register(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
             DeviceContext = renderContext;
             LightScene = new Light3DSceneShared(pool);
+            SharedResource = new ContextSharedResource();
         }
 
         public Matrix GetScreenViewProjectionMatrix()
@@ -190,6 +195,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void Dispose()
         {
             LightScene.Dispose();
+            SharedResource.Dispose();
             //Disposer.RemoveAndDispose(ref this.mView);
             //Disposer.RemoveAndDispose(ref this.mProjection);
             //Disposer.RemoveAndDispose(ref this.vViewport);

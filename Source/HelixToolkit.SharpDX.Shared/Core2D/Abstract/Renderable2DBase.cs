@@ -116,7 +116,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             Collect(borderLineStyle);
         }
 
-        public void Render(IRenderMatrices matrices, D2D.RenderTarget target)
+        public void Render(IRenderContext matrices, D2D.RenderTarget target)
         {
             if (CanRender(target))
             {
@@ -146,7 +146,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
-        protected abstract void OnRender(IRenderMatrices matrices);
+        protected abstract void OnRender(IRenderContext matrices);
 
         protected virtual bool CanRender(D2D.RenderTarget target)
         {

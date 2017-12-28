@@ -78,7 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(IRenderContext context)
         {
             RenderCore.ModelMatrix = this.ModelMatrix;
             base.OnRender(context);

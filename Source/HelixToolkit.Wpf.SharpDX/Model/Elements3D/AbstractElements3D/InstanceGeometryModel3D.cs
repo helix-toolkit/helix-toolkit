@@ -74,14 +74,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool CanHitTest(IRenderMatrices context)
+        protected override bool CanHitTest(IRenderContext context)
         {
             return base.CanHitTest(context) && geometryInternal != null && geometryInternal.Positions != null && geometryInternal.Positions.Count > 0;
         }
         /// <summary>
         /// 
         /// </summary>        
-        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (CanHitTest(context))
             {
@@ -117,9 +117,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)
+        protected override bool CheckBoundingFrustum(BoundingFrustum boundingFrustum)
         {
-            return !HasInstances && base.CheckBoundingFrustum(ref boundingFrustum) || boundingFrustum.Intersects(ref instancesBound);
+            return !HasInstances && base.CheckBoundingFrustum(boundingFrustum) || boundingFrustum.Intersects(ref instancesBound);
         }
 
         protected override bool OnAttach(IRenderHost host)

@@ -64,14 +64,14 @@ namespace HelixToolkit.UWP.Core
             return base.OnAttach(technique);
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {            
             base.OnUpdatePerModelStruct(ref model, context);
             model.Color = Color;
             model.Params.Y = OutlineFadingFactor;
         }
 
-        protected override void OnRender(IRenderMatrices context)
+        protected override void OnRender(IRenderContext context)
         {
             if (DrawOutlineBeforeMesh)
             {

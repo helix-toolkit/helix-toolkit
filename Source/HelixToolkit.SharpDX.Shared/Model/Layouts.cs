@@ -189,8 +189,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public Color4 Specular;
         public Color4 Reflect;
         public float Shininess;       
-        public int HasDiffuseMap, HasDiffuseAlphaMap, HasNormalMap, HasDisplacementMap, HasShadowMap, HasCubeMap;
-        float Padding;
+        public int HasDiffuseMap, HasDiffuseAlphaMap, HasNormalMap, HasDisplacementMap, HasCubeMap;
+        Vector2 Padding;
         public Vector4 DisplacementMapScaleMask; // Use to select which channel will be used after displacement map sampling, also scaling the value
         public const int SizeInBytes = 4 * (4 * 6 + 1 + 5 + 2);
     }
@@ -199,9 +199,11 @@ namespace HelixToolkit.Wpf.SharpDX
     public struct ShadowMapParamStruct
     {
         public Vector2 ShadowMapSize;
-        Vector2 paddingShadow0;
+        public int HasShadowMap;
+        float paddingShadow0;
         public Vector4 ShadowMapInfo;
-        public const int SizeInBytes = 4 * (4 * 2);
+        public Matrix LightViewProjection;
+        public const int SizeInBytes = 4 * (4 * 2 + 4*4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

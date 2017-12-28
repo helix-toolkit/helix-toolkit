@@ -85,7 +85,7 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
             clipParameter.CrossSectionColors = SectionColor;
@@ -99,7 +99,7 @@ namespace HelixToolkit.UWP.Core
             clipParamCB.UploadDataToBuffer(context, ref clipParameter);
         }
 
-        protected override void OnRender(IRenderMatrices renderContext)
+        protected override void OnRender(IRenderContext renderContext)
         {
             base.OnRender(renderContext);
             // Draw backface into stencil buffer
@@ -122,13 +122,14 @@ namespace HelixToolkit.UWP.Core
             renderContext.DeviceContext.Rasterizer.State = RasterState;
             drawScreenQuadPass.BindShader(renderContext.DeviceContext);
             drawScreenQuadPass.BindStates(renderContext.DeviceContext, StateType.BlendState);
-            renderContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, renderTargets[0]);//Rebind render target
+            renderContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, renderTargets);//Rebind render target
             renderContext.DeviceContext.OutputMerger.SetDepthStencilState(drawScreenQuadPass.DepthStencilState, 1); //Only pass stencil buffer test if value is 1
             renderContext.DeviceContext.Draw(4, 0);
 
             //Decrement ref count. See OutputMerger.GetRenderTargets remarks
             dsView.Dispose();
-            renderTargets[0].Dispose();
+            foreach (var t in renderTargets)
+            { t.Dispose(); }
         }
     }
 }

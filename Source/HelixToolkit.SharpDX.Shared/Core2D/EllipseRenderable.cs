@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     {
         private D2D.Ellipse ellipse = new D2D.Ellipse();
 
-        protected override void OnRender(IRenderMatrices matrices)
+        protected override void OnRender(IRenderContext matrices)
         {
             ellipse.Point = LocalDrawingRect.Center;
             ellipse.RadiusX = LocalDrawingRect.Width / 2;

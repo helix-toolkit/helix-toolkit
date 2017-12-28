@@ -153,6 +153,20 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
+        public static byte[] VSPointShadow
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsPointShadow;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         public static byte[] VSBillboard
         {
             get
@@ -421,7 +435,12 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription VSPoint = new ShaderDescription(nameof(VSPoint), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSPoint);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSPointShadow = new ShaderDescription(nameof(VSPointShadow), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSPointShadow);
         /// <summary>
         /// 
         /// </summary>

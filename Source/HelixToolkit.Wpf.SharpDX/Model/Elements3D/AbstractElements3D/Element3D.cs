@@ -261,7 +261,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        protected virtual bool CanRender(RenderContext context)
+        protected virtual bool CanRender(IRenderContext context)
         {
             return isRenderingInternal && visibleInternal;
         }
@@ -270,7 +270,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
         /// </summary>
         /// <param name="context">The context.</param>
-        public void Render(RenderContext context)
+        public void Render(IRenderContext context)
         {
             if (CanRender(context))
             {
@@ -278,7 +278,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected virtual void OnRender(RenderContext context)
+        protected virtual void OnRender(IRenderContext context)
         {
             RenderCore?.Render(context);
         }

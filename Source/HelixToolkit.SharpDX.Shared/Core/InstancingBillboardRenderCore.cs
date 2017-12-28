@@ -12,12 +12,12 @@ namespace HelixToolkit.UWP.Core
     public class InstancingBillboardRenderCore : BillboardRenderCore
     {
         public IElementsBufferModel ParameterBuffer { set; get; }
-        protected override bool CanRender()
+        protected override bool CanRender(IRenderContext context)
         {
-            return base.CanRender() && InstanceBuffer != null && InstanceBuffer.HasElements;
+            return base.CanRender(context) && InstanceBuffer != null && InstanceBuffer.HasElements;
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
             model.HasInstanceParams = ParameterBuffer != null && ParameterBuffer.HasElements ? 1 : 0;

@@ -138,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        protected override bool CanRender(RenderContext context)
+        protected override bool CanRender(IRenderContext context)
         {
             var render = base.CanRender(context) && !renderHost.IsDeferredLighting;
             Light3DSceneShared.LightModels.Lights[lightIndex].LightEnabled = render ? 1 : 0;

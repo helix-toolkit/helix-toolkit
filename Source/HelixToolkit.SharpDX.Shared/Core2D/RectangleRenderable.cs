@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 {
     public class RectangleRenderable : ShapeRenderable2DBase
     {
-        protected override void OnRender(IRenderMatrices matrices)
+        protected override void OnRender(IRenderContext matrices)
         {
             if (FillBrush != null)
             {

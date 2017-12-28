@@ -19,18 +19,17 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public Color4 PointColor = Color.Black;
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderMatrices context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
             modelStruct.Color = PointColor;
             modelStruct.Params = PointParams;
         }
 
-        protected override void OnRender(IRenderMatrices context)
+        protected override void OnRender(IRenderContext context)
         {
             DefaultShaderPass.BindShader(context.DeviceContext);
             DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            context.DeviceContext.Rasterizer.State = RasterState;
             OnDraw(context.DeviceContext, InstanceBuffer);
         }
     }

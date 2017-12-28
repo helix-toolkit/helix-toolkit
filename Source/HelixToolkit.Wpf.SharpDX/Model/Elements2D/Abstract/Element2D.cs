@@ -316,7 +316,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        protected virtual bool CanRender(RenderContext context)
+        protected virtual bool CanRender(IRenderContext context)
         {
             return IsAttached && isRenderingInternal && RenderHost.D2DControls.D2DTarget != null && renderCore != null;
         }
@@ -325,7 +325,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
         /// </summary>
         /// <param name="context">The context.</param>
-        public void Render(RenderContext context)
+        public void Render(IRenderContext context)
         {
             if (CanRender(context))
             {
@@ -343,12 +343,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// Used to overriding <see cref="Render"/> routine.
         /// </summary>
         /// <param name="context"></param>
-        protected virtual void OnRender(RenderContext context)
+        protected virtual void OnRender(IRenderContext context)
         {
             renderCore.Render(context, RenderTarget);
         }
 
-        protected virtual void PreRender(RenderContext context)
+        protected virtual void PreRender(IRenderContext context)
         {
             RenderTarget = RenderHost.D2DControls.D2DTarget;
             if (renderCore != null)
