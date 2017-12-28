@@ -71,7 +71,10 @@ PSInput main(HSConstantDataOutput input, float3 barycentricCoords : SV_DomainLoc
     }
 
     output.wp = output.p;
-
+    if (bHasShadowMap)
+    {
+        output.sp = mul(output.wp, vLightViewProjection);
+    }
     output.p = mul(output.p, mView);
     output.p = mul(output.p, mProjection);
 

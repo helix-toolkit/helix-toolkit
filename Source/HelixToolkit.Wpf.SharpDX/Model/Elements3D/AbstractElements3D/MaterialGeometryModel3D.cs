@@ -75,7 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty MaterialProperty =
-            DependencyProperty.Register("Material", typeof(IPhongMaterial), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(null, MaterialChanged));
+            DependencyProperty.Register("Material", typeof(IMaterial), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(null, MaterialChanged));
 
 
         /// <summary>
@@ -125,9 +125,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public IPhongMaterial Material
+        public IMaterial Material
         {
-            get { return (IPhongMaterial)this.GetValue(MaterialProperty); }
+            get { return (IMaterial)this.GetValue(MaterialProperty); }
             set { this.SetValue(MaterialProperty, value); }
         }
         /// <summary>

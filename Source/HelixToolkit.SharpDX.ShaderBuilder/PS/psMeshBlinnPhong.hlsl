@@ -43,7 +43,7 @@ float4 main(PSInput input) : SV_Target
         color[3] = 1;
         vMaterialTexture *= color;
     }
-
+    float4 DI = float4(0, 0, 0, 0);
     // compute lighting
     for (int i = 0; i < LIGHTS; ++i)
     {
@@ -62,7 +62,7 @@ float4 main(PSInput input) : SV_Target
         {
             float3 d = normalize((float3) Lights[i].vLightDir); // light dir	
             float3 h = normalize(eye + d);
-            I += calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
+            DI += calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
         }
         else if (Lights[i].iLightType == 2)  // point
         {
@@ -71,7 +71,7 @@ float4 main(PSInput input) : SV_Target
             d = d / dl; // normalized light dir						
             float3 h = normalize(eye + d); // half direction for specular
             float att = 1.0f / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
-            I += att * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
+            DI += att * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
         }
         else if (Lights[i].iLightType == 3)  // spot
         {
@@ -93,10 +93,11 @@ float4 main(PSInput input) : SV_Target
             float rho = dot(-d, sd);
             float spot = pow(saturate((rho - Lights[i].vLightSpot.x) / (Lights[i].vLightSpot.y - Lights[i].vLightSpot.x)), Lights[i].vLightSpot.z);
             float att = spot / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
-            I += att * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
+            DI += att * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
         }
     }
-    I *= s;
+    DI.rgb *= s;
+    I += DI;
     I.a = input.cDiffuse.a;
     if (bHasAlphaMap)
     {
