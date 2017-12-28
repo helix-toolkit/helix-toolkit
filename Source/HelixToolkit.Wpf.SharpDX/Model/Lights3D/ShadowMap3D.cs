@@ -139,7 +139,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         orthoCamera.LookDirection = dir.ToVector3D();
                         orthoCamera.Position = pos.ToPoint3D();
                         orthoCamera.UpDirection = Vector3.UnitZ.ToVector3D();
-                        orthoCamera.Width = 25;
+                        orthoCamera.Width = 50;
                         camera = orthoCamera;
                     }
                     else if (light is SpotLight3D)
