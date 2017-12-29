@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public AmbientLight3D()
         {
-            this.Color = new global::SharpDX.Color4(0.2f, 0.2f, 0.2f, 1f);
+            this.Color = System.Windows.Media.Colors.DarkGray;
             this.LightType = LightType.Ambient;
         }
 

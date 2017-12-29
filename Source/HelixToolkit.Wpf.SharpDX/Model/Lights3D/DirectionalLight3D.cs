@@ -9,7 +9,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public DirectionalLight3D()
         {
-            this.Color = global::SharpDX.Color.White;
+            this.Color = System.Windows.Media.Colors.White;
             this.LightType = LightType.Directional;
         }
 
@@ -33,13 +33,6 @@ namespace HelixToolkit.Wpf.SharpDX
             Light3DSceneShared.LightModels.Lights[lightIndex].LightColor = this.ColorInternal;
             // --- set lighting parameters
             Light3DSceneShared.LightModels.Lights[lightIndex].LightDir = -this.DirectionInternal.Normalized().ToVector4();
-            // --- if shadow-map enabled
-            if (this.renderHost.IsShadowMapEnabled)
-            {
-                // update shader
-                //this.mLightView.SetMatrix(Light3DSceneShared.LightViewMatrices);
-                //this.mLightProj.SetMatrix(Light3DSceneShared.LightProjMatrices);
-            }
         }
     }
 }

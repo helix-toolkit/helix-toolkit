@@ -15,14 +15,10 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.ComponentModel;
     using System.Windows;
     using System.Windows.Media.Media3D;
-
+    using Media = System.Windows.Media;
     using global::SharpDX;
 
-    using global::SharpDX.Direct3D11;
-
     using Utilities;
-
-    using Matrix = global::SharpDX.Matrix;
     using Model;
 
     public enum LightType : ushort
@@ -43,16 +39,16 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public Light3DSceneShared Light3DSceneShared { private set; get; }
         public static readonly DependencyProperty DirectionProperty =
-            DependencyProperty.Register("Direction", typeof(Vector3), typeof(Light3D), new AffectsRenderPropertyMetadata(new Vector3(), 
+            DependencyProperty.Register("Direction", typeof(Vector3D), typeof(Light3D), new AffectsRenderPropertyMetadata(new Vector3D(), 
                 (d,e)=> {
-                    (d as Light3D).DirectionInternal = (Vector3)e.NewValue;
+                    (d as Light3D).DirectionInternal = ((Vector3D)e.NewValue).ToVector3();
                 }));
 
         public static readonly DependencyProperty DirectionTransformProperty =
             DependencyProperty.Register("DirectionTransform", typeof(Transform3D), typeof(Light3D), new AffectsRenderPropertyMetadata(Transform3D.Identity, DirectionTransformPropertyChanged));
 
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Color4), typeof(Light3D), new AffectsRenderPropertyMetadata(new Color4(0.2f, 0.2f, 0.2f, 1.0f), ColorChanged));
+            DependencyProperty.Register("Color", typeof(Media.Color), typeof(Light3D), new AffectsRenderPropertyMetadata(Media.Colors.Gray, ColorChanged));
 
 
         public LightType LightType { get; protected set; }
@@ -60,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private static void ColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((Light3D)d).ColorInternal = (Color4)e.NewValue;
+            ((Light3D)d).ColorInternal = ((Media.Color)e.NewValue).ToColor4();
             ((Light3D)d).OnColorChanged(e);
         }
 
@@ -72,9 +68,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// for all other lights it is ignored.
         /// </summary>
         [TypeConverter(typeof(Vector3Converter))]
-        public Vector3 Direction
+        public Vector3D Direction
         {
-            get { return (Vector3)this.GetValue(DirectionProperty); }
+            get { return (Vector3D)this.GetValue(DirectionProperty); }
             set { this.SetValue(DirectionProperty, value); }
         }
         internal Vector3 DirectionInternal { private set; get; }
@@ -91,10 +87,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Color of the light.
         /// For simplicity, this color applies to the diffuse and specular properties of the light.
         /// </summary>
-        [TypeConverter(typeof(Color4Converter))]
-        public Color4 Color
+        public Media.Color Color
         {
-            get { return (Color4)this.GetValue(ColorProperty); }
+            get { return (Media.Color)this.GetValue(ColorProperty); }
             set { this.SetValue(ColorProperty, value); }
         }
 
@@ -110,7 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (light.DirectionTransformInternal != null)
             {
                 var trafo = light.DirectionTransformInternal.Value;
-                light.Direction = new Vector3((float)trafo.OffsetX, (float)trafo.OffsetY, (float)trafo.OffsetZ);
+                light.Direction = new Vector3D(trafo.OffsetX, trafo.OffsetY, trafo.OffsetZ);
             }
         }
 
@@ -153,9 +148,9 @@ namespace HelixToolkit.Wpf.SharpDX
     public abstract class PointLightBase3D : Light3D
     {
         public static readonly DependencyProperty AttenuationProperty =
-            DependencyProperty.Register("Attenuation", typeof(Vector3), typeof(PointLightBase3D), new AffectsRenderPropertyMetadata(new Vector3(1.0f, 0.0f, 0.0f),
+            DependencyProperty.Register("Attenuation", typeof(Vector3D), typeof(PointLightBase3D), new AffectsRenderPropertyMetadata(new Vector3D(1.0f, 0.0f, 0.0f),
                 (d, e) => {
-                    (d as PointLightBase3D).AttenuationInternal = (Vector3)e.NewValue;
+                    (d as PointLightBase3D).AttenuationInternal = ((Vector3D)e.NewValue).ToVector3();
                 }));
 
         public static readonly DependencyProperty RangeProperty =
@@ -196,9 +191,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Z = quadratic attenuation.
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb172279(v=vs.85).aspx
         /// </summary>
-        public Vector3 Attenuation
+        public Vector3D Attenuation
         {
-            get { return (Vector3)this.GetValue(AttenuationProperty); }
+            get { return (Vector3D)this.GetValue(AttenuationProperty); }
             set { this.SetValue(AttenuationProperty, value); }
         }
         internal Vector3 AttenuationInternal { private set; get; } = new Vector3(1.0f, 0.0f, 0.0f);
