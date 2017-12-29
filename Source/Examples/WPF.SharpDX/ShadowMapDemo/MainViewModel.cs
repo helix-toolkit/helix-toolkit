@@ -20,10 +20,12 @@ namespace ShadowMapDemo
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
+    using System.Diagnostics;
 
     public class MainViewModel : BaseViewModel
     {
         public MeshGeometry3D Model { get; private set; }        
+        public MeshGeometry3D LightCameraModel { private set; get; }
         public MeshGeometry3D Plane { get; private set; }
         public LineGeometry3D Lines { get; private set; }
         public LineGeometry3D Grid { get; private set; }
@@ -33,6 +35,8 @@ namespace ShadowMapDemo
         public PhongMaterial GreenMaterial { get; private set; }
         public PhongMaterial BlueMaterial { get; private set; }
         public PhongMaterial GrayMaterial { get; private set; }
+
+        public PhongMaterial LightCameraMaterial { get; private set; } = PhongMaterials.Yellow;
         public SharpDX.Color GridColor { get; private set; }
 
         public Media3D.Transform3D Model1Transform { get; private set; }
@@ -40,7 +44,7 @@ namespace ShadowMapDemo
         public Media3D.Transform3D Model3Transform { get; private set; }
         public Media3D.Transform3D GridTransform { get; private set; }
         public Media3D.Transform3D PlaneTransform { get; private set; }
-        
+        public Media3D.Transform3DGroup LightCameraTransform { get; private set; } = new Media3D.Transform3DGroup();
         public Media3D.Transform3D LightDirectionTransform { get; set; }
         public Vector3 DirectionalLightDirection { get; private set; }
         public Color4 DirectionalLightColor { get; private set; }
@@ -51,6 +55,7 @@ namespace ShadowMapDemo
         public bool IsAnimated { get { return this.isAnimated; } set { this.OnAnimatedChanged(value); } }
         public Camera Camera1 { private set; get; }
         public Camera Camera2 { private set; get; }
+
         public MainViewModel()
         {
 
@@ -62,13 +67,14 @@ namespace ShadowMapDemo
             // setup lighting            
             this.AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
             this.DirectionalLightColor = Color.White;
-            this.DirectionalLightDirection = new Vector3(-0, -1, -1);
-            this.LightDirectionTransform = CreateAnimatedTransform(-DirectionalLightDirection.ToVector3D(), new Vector3D(0, 1, -1), 24);
+            this.DirectionalLightDirection = new Vector3(-1, -1, -1);
+           // this.LightDirectionTransform = CreateAnimatedTransform(-DirectionalLightDirection.ToVector3D(), new Vector3D(0, 1, -1), 24);
             this.ShadowMapResolution = new Vector2(2048, 2048);
 
             // camera setup
             this.Camera = new PerspectiveCamera { Position = (Point3D)(-DirectionalLightDirection.ToVector3D()), LookDirection = DirectionalLightDirection.ToVector3D(), UpDirection = new Vector3D(0, 1, 0) };
             Camera1 = new PerspectiveCamera { Position = (Point3D)(-DirectionalLightDirection.ToVector3D()), LookDirection = DirectionalLightDirection.ToVector3D(), UpDirection = new Vector3D(0, 1, 0) };
+
             Camera2 = new PerspectiveCamera { Position = (Point3D)(-DirectionalLightDirection.ToVector3D()), LookDirection = DirectionalLightDirection.ToVector3D(), UpDirection = new Vector3D(0, 1, 0) };
             // floor plane grid
             //Grid = LineBuilder.GenerateGrid();
@@ -101,6 +107,26 @@ namespace ShadowMapDemo
             RedMaterial = PhongMaterials.Glass;
             GreenMaterial = PhongMaterials.Green;
             BlueMaterial = PhongMaterials.Blue;
+
+            var b3 = new MeshBuilder();
+            b3.AddBox(new Vector3(), 0.3f, 0.3f, 0.3f, BoxFaces.All);
+            b3.AddCone(new Vector3(0, 0.3f, 0), new Vector3(0, 0f, 0), 0.2f, true, 24);
+            LightCameraModel = b3.ToMesh();
+            LightCameraTransform.Children.Add(new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(1, 0, 0), -135)));
+            LightCameraTransform.Children.Add(new Media3D.TranslateTransform3D(0, 3, 3));
+            this.PropertyChanged += MainViewModel_PropertyChanged;
+        }
+
+        private void MainViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName.Equals(nameof(LightCameraTransform)))
+            {
+                //Vector4 v = new Vector4(0, 1, 0, 0);
+                var m = LightCameraTransform.ToMatrix();
+                var v = new Vector3(m.M21, m.M22, m.M23);
+                DirectionalLightDirection = v.Normalized();
+                Debug.WriteLine($"m11:{m.M31}, m22:{m.M32}, m23:{m.M33}");
+            }
         }
 
         private void SetXValue(double x)

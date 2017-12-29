@@ -79,6 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             OnModelChanged();
             this.Material = PhongMaterials.Red;
+            this.Transform = new TranslateTransform3D();
         }
 
         /// <summary>
@@ -133,8 +134,15 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.TargetTransform = this.TargetTransform.AppendTransform(deltaTranslateTrafo);
                 }
                 else
-                {                                        
-                    this.Transform = this.Transform.AppendTransform(deltaTranslateTrafo);
+                {
+                    if (this.Transform == null)
+                    {
+                        this.Transform = deltaTranslateTrafo;
+                    }
+                    else
+                    {
+                        this.Transform = this.Transform.AppendTransform(deltaTranslateTrafo);
+                    }
                 }
 
                 this.lastHitPosWS = newHit.Value;

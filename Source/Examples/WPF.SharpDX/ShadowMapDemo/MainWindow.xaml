@@ -58,8 +58,13 @@
             </hx:Viewport3DX.InputBindings>
             
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
-            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction="{Binding DirectionalLightDirection}"  DirectionTransform="{Binding LightDirectionTransform}"/>            
-            <hx:ShadowMap3D x:Name="shadowMap" Resolution="{Binding ShadowMapResolution}" />
+            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction="{Binding DirectionalLightDirection}"/>
+            <hx:ShadowMap3D x:Name="shadowMap" Resolution="{Binding ShadowMapResolution}" LightCamera="{Binding Camera2}"/>
+            <hx:DraggableGeometryModel3D x:Name="lightCamera" Geometry="{Binding LightCameraModel}" Transform="{Binding LightCameraTransform, Mode=TwoWay}" Material="{Binding LightCameraMaterial}"/>
+            <hx:UICompositeManipulator3D  CanRotateX="true" CanRotateY="true" CanRotateZ="true"                                                                                    
+                                          CanTranslateX="False" CanTranslateY="False" CanTranslateZ="False"
+                                          Diameter="1"                                                                                                
+                                          TargetTransform="{Binding Transform,ElementName=lightCamera}"/>
             <hx:MeshGeometryModel3D x:Name="model1" CullMode="Back" IsThrowingShadow="True" Geometry="{Binding Model}" Transform="{Binding Model1Transform}" Material="{Binding RedMaterial}"  />
             <hx:MeshGeometryModel3D x:Name="model2" CullMode="Back" IsThrowingShadow="True"  Geometry="{Binding Model}" Transform="{Binding Model2Transform}" Material="{Binding GreenMaterial}" Instances="{Binding Instances}"/>
             <hx:MeshGeometryModel3D x:Name="model3" CullMode="Back" IsThrowingShadow="True"  Geometry="{Binding Model}" Transform="{Binding Model3Transform}" Material="{Binding BlueMaterial}" />

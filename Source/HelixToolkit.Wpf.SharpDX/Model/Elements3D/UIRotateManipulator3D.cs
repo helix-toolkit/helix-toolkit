@@ -109,7 +109,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public UIRotateManipulator3D()
         {
-            OnModelChanged();            
+            OnModelChanged();
+            this.Transform = new System.Windows.Media.Media3D.RotateTransform3D();
         }
 
         /// <summary>
@@ -176,7 +177,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else
                 {
-                    this.Transform = rotateTransform.AppendTransform(this.Transform);
+                    if (this.Transform == null)
+                    {
+                        this.Transform = rotateTransform;
+                    }
+                    else
+                    {
+                        this.Transform = rotateTransform.AppendTransform(Transform);
+                    }
                 }
                 this.lastHitPosWS = newHitPos;
             }
