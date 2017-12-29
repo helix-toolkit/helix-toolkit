@@ -16,9 +16,8 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
     {
         public CanvasMock()
         {
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];           
             Device = EffectsManager.Device;
         }
         private int renderCycles = 1;
@@ -32,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         public bool IsShadowMapEnabled { get; private set; }
         public MSAALevel MSAA { get; set; }
         public IRenderer Renderable { get; set; }
-        public RenderTechnique RenderTechnique { get; private set; }
+        public IRenderTechnique RenderTechnique { get; private set; }
         public double ActualHeight { get; private set; }
         public double ActualWidth { get; private set; }
 
@@ -47,7 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             get;private set;
         }
 
-        private readonly Light3DSceneShared light3DSceneShared = new Light3DSceneShared();
+        private readonly Light3DSceneShared light3DSceneShared;
         public Light3DSceneShared Light3DSceneShared
         {
             get
@@ -55,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
                 return light3DSceneShared;
             }
         }
-        public RenderContext RenderContext { get; }
+        public IRenderContext RenderContext { get; }
         public bool EnableRenderFrustum
         {
             set;get;

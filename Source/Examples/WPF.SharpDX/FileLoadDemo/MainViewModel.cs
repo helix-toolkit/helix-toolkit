@@ -60,15 +60,14 @@ namespace FileLoadDemo
         }
         public DefaultEffectsManager EffectsManager { get; private set; }
 
-        public DefaultRenderTechniquesManager RenderTechniquesManager { get; private set; }
+
         public MainViewModel()
         {
             this.OpenFileCommand = new DelegateCommand(this.OpenFile);
             this.ModelTransform = new TranslateTransform3D(0, 0, 0);
 
             this.ModelGeometry = new Element3DCollection();
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            EffectsManager = new DefaultEffectsManager();
         }
 
         private void OpenFile()

@@ -119,11 +119,11 @@
                         <Slider x:Name="sliderInt" Width="70" Value="{Binding Intensity, ElementName=shadowMap}" Minimum="0" Maximum="1" Margin="3"/>
                         <TextBox Margin="3" Width="35" Text="{Binding Value, ElementName=sliderInt}"></TextBox>
                     </StackPanel>
-                    <StackPanel  Grid.Row="7"  Orientation="Horizontal" IsEnabled="{Binding IsRendering, ElementName=shadowMap}" Margin="0">
+                    <!--<StackPanel  Grid.Row="7"  Orientation="Horizontal" IsEnabled="{Binding IsRendering, ElementName=shadowMap}" Margin="0">
                         <TextBlock Margin="3">PCF:</TextBlock>
                         <Slider x:Name="sliderPcf" Width="70" Value="{Binding FactorPCF, ElementName=shadowMap}" Minimum="0" Maximum="10" Margin="3"/>
                         <TextBox Margin="3" Width="35" Text="{Binding Value, ElementName=sliderPcf}"></TextBox>
-                    </StackPanel>
+                    </StackPanel>-->
                     <StackPanel  Grid.Row="8"  Orientation="Horizontal" IsEnabled="{Binding IsRendering, ElementName=shadowMap}" Margin="0">
                         <TextBlock Margin="3">Bias:</TextBlock>
                         <Slider x:Name="sliderBias" Width="70" Value="{Binding Bias, ElementName=shadowMap}" Minimum="0" Maximum="0.1" Margin="3"/>

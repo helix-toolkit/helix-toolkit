@@ -51,7 +51,7 @@ namespace SimpleDemo
 
         public MainViewModel()
         {
-            EffectsManager = new DefaultShaderTechniqueManager();
+            EffectsManager = new DefaultEffectsManager();
             RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // titles
             Title = "Simple Demo";

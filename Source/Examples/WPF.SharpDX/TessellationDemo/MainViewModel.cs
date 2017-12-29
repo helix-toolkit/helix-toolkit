@@ -28,9 +28,8 @@ namespace TessellationDemo
     public class MainViewModel : BaseViewModel
     {
         public Geometry3D DefaultModel { get; private set; }
-        public Geometry3D Lines { get; private set; }
         public Geometry3D Grid { get; private set; }
-
+        public Geometry3D FloorModel { private set; get; }
         public PhongMaterial DefaultMaterial { get; private set; }
         public SharpDX.Color GridColor { get; private set; }
 
@@ -111,7 +110,7 @@ namespace TessellationDemo
 
         public MainViewModel()
         {
-            EffectsManager = new DefaultShaderTechniqueManager();
+            EffectsManager = new DefaultEffectsManager();
             RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // ----------------------------------------------
             // titles
@@ -126,7 +125,7 @@ namespace TessellationDemo
             // setup lighting            
             this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
             this.DirectionalLightColor = Color.White;
-            this.DirectionalLightDirection1 = new Vector3(-0, -50, -20);
+            this.DirectionalLightDirection1 = new Vector3(-0, -20, -20);
             this.DirectionalLightDirection2 = new Vector3(-0, -1, +50);
             this.DirectionalLightDirection3 = new Vector3(0, +1, 0);
 
@@ -156,6 +155,10 @@ namespace TessellationDemo
             this.Grid = LineBuilder.GenerateGrid(10);
             this.GridColor = SharpDX.Color.Black;
             this.GridTransform = new Media3D.TranslateTransform3D(-5, -4, -5);
+
+            var builder = new MeshBuilder(true, true, true);
+            builder.AddBox(new Vector3(0, -5, 0), 60, 0.5, 60, BoxFaces.All);
+            FloorModel = builder.ToMesh();
 
             Instances = new Matrix[] { Matrix.Identity, Matrix.Translation(10, 0, 10), Matrix.Translation(-10, 0, 10), Matrix.Translation(10, 0, -10), Matrix.Translation(-10, 0, -10), };
         }

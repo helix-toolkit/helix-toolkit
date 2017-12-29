@@ -42,11 +42,8 @@
             this.Title = "Simple Demo (Workitem 10048 and 10052)";
             this.SubTitle = "Select lines with left mouse button.\nRotate or zoom around a point on a line if the cursor is above one.";
 
-            if (this.RenderTechniquesManager != null)
-            {
-                // default render technique
-                this.RenderTechnique = this.RenderTechniquesManager.RenderTechniques.Get(DefaultRenderTechniqueNames.Blinn);
-            }
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
         }
 
         public void OnMouseDown3D(object sender, RoutedEventArgs e)

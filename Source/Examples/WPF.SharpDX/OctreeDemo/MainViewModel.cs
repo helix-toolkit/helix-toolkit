@@ -237,7 +237,7 @@ namespace OctreeDemo
         {            // titles
             this.Title = "DynamicTexture Demo";
             this.SubTitle = "WPF & SharpDX";
-            EffectsManager = new DefaultShaderTechniqueManager();
+            EffectsManager = new DefaultEffectsManager();
             RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {

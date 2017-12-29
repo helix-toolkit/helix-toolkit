@@ -54,7 +54,7 @@ namespace ShadowMapDemo
         public MainViewModel()
         {
 
-            EffectsManager = new DefaultShaderTechniqueManager();
+            EffectsManager = new DefaultEffectsManager();
             RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             Title = "Shadow Map Demo";
             SubTitle = "WPF & SharpDX";

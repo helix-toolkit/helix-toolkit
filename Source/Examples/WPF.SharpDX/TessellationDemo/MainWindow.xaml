@@ -32,21 +32,18 @@
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
-            TextBrush="Black"
+            TextBrush="Black" IsShadowMappingEnabled="True"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="Shift+RightClick" />
             </hx:Viewport3DX.InputBindings>
-
-            <!--<hx:AmbientLight3D Color="{Binding AmbientLightColor}" />-->
+            <hx:ShadowMap3D/>
+            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection1}" Color="{Binding DirectionalLightColor}" />
-            <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection2}" Color="{Binding DirectionalLightColor}" />
-            <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection3}" Color="{Binding DirectionalLightColor}" />
-
             <hx:PatchGeometryModel3D
-                x:Name="model1"
+                x:Name="model1" IsThrowingShadow="True"
                 Geometry="{Binding DefaultModel}"
                 Material="{Binding DefaultMaterial}" EnableTessellation="True"
                 Transform="{Binding DefaultTransform}" MeshTopology="{Binding MeshTopology}"
@@ -57,12 +54,7 @@
                 Material="{Binding DefaultMaterial}"
                 Transform="{Binding DefaultTransform}" 
                 FillMode="{Binding FillMode}" ReuseVertexArrayBuffer="True"/>-->
-            <hx:LineGeometryModel3D
-                x:Name="grid"
-                Geometry="{Binding Grid}"
-                Transform="{Binding GridTransform}"
-                Color="#000000" />
-
+            <hx:MeshGeometryModel3D Geometry="{Binding FloorModel}" Material="{Binding DefaultMaterial}"/>
         </hx:Viewport3DX>
 
         <StackPanel Grid.Row="1">

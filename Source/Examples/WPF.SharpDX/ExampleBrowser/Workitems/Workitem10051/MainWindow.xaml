@@ -58,6 +58,7 @@
             ShowCoordinateSystem="False"
             CoordinateSystemLabelForeground="White"
             UseDefaultGestures="False"
+                           EffectsManager="{Binding EffectsManager}"
             RenderTechnique="{Binding RenderTechnique}"
             RenderException="{Binding RenderException, Mode=OneWayToSource}"
             MessageText="{Binding ViewportMessage}">

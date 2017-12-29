@@ -56,7 +56,7 @@ namespace InstancingDemo
         public MainViewModel()
         {
             Title = "Instancing Demo";
-            EffectsManager = new DefaultShaderTechniqueManager();
+            EffectsManager = new DefaultEffectsManager();
             RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // camera setup
             Camera = new PerspectiveCamera { Position = new Point3D(40, 40, 40), LookDirection = new Vector3D(-40, -40, -40), UpDirection = new Vector3D(0, 1, 0) };

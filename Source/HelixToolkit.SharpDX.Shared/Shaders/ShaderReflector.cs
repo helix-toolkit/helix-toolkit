@@ -33,6 +33,8 @@ namespace HelixToolkit.UWP.Shaders
         {
             ConstantBufferMappings.Clear();
             TextureMappings.Clear();
+            UAVMappings.Clear();
+            SamplerMappings.Clear();
             using (var reflection = new ShaderReflection(byteCode))
             {
                 FeatureLevel = reflection.MinFeatureLevel;

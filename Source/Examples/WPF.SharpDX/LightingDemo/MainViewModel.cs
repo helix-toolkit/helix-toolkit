@@ -166,7 +166,7 @@ namespace LightingDemo
         public MainViewModel()
         {
             //    RenderTechniquesManager = new DefaultRenderTechniquesManager();           
-            EffectsManager = new DefaultShaderTechniqueManager();
+            EffectsManager = new DefaultEffectsManager();
             RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // ----------------------------------------------
             // titles

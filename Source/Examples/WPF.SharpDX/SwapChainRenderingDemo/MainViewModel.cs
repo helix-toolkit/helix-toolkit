@@ -142,7 +142,7 @@
         public LineGeometry3D LineGeo { set; get; }
         public MainViewModel()
         {
-            EffectsManager = new DefaultShaderTechniqueManager();
+            EffectsManager = new DefaultEffectsManager();
             RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             
 

@@ -31,7 +31,7 @@
             Title="{Binding Title}"
             SubTitle="{Binding SubTitle}"                
             TextBrush="Black"           
-            ShowCoordinateSystem="True"
+            ShowCoordinateSystem="True" EffectsManager="{Binding EffectsManager}"
             CoordinateSystemLabelForeground="White"
             RenderTechnique="{Binding RenderTechnique}"
             UseDefaultGestures="False">

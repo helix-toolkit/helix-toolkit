@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// Shader and Technique manager
     /// </summary>
-    public abstract class ShaderTechniqueManager : DisposeObject, IEffectsManager
+    public abstract class EffectsManager : DisposeObject, IEffectsManager
     {       
         /// <summary>
         /// The minimum supported feature level.
@@ -66,7 +66,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public bool Initialized { private set; get; } = false;
 
-        public ShaderTechniqueManager()
+        public EffectsManager()
         {
             Initialize();
         }

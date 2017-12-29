@@ -14,7 +14,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// Default shader technique manager, includes all internal shaders
     /// </summary>
-    public class DefaultShaderTechniqueManager : ShaderTechniqueManager
+    public class DefaultEffectsManager : EffectsManager
     {
         protected override IList<TechniqueDescription> LoadTechniqueDescriptions()
         {

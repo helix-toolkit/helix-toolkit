@@ -434,7 +434,7 @@ namespace ParticleSystemDemo
         public SharpDX.Color4 Light1Color { get; set; } = SharpDX.Color.White;
         public MainViewModel()
         {
-            EffectsManager = new DefaultShaderTechniqueManager();
+            EffectsManager = new DefaultEffectsManager();
             var lineBuilder = new LineBuilder();
             lineBuilder.AddBox(new SharpDX.Vector3(), 1, 1, 1);
             BoundingLines = lineBuilder.ToLineGeometry3D();
