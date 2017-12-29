@@ -15,17 +15,35 @@ namespace HelixToolkit.UWP.Core
 {
     using Shaders;
     using Utilities;
+    public interface IScreenSpacedRenderParams
+    {
+        float RelativeScreenLocationX { set; get; }
 
+        float RelativeScreenLocationY { set; get; }
+
+        float SizeScale { set; get; }
+
+        bool IsPerspective { set; get; }
+        bool IsRightHand { set; get; }
+
+        float Width { get; }
+        float Height { get; }
+        float ScreenRatio { get; }
+        void SetScreenSpacedCoordinates(IRenderContext context, bool clearDepthBuffer);
+        void SetScreenSpacedCoordinates(IRenderContext context);
+
+        GlobalTransformStruct GlobalTransform { get; }
+    }
     /// <summary>
     /// Used to change view matrix and projection matrix to screen spaced coordinate system.
     /// <para>Usage: Call SetScreenSpacedCoordinates(RenderHost) to move coordinate system. Call other render functions for sub models. Finally call RestoreCoordinates(RenderHost) to restore original coordinate system.</para>
     /// </summary>
-    public class ScreenSpacedMeshRenderCore : RenderCoreBase<ModelStruct>
+    public class ScreenSpacedMeshRenderCore : RenderCoreBase<ModelStruct>, IScreenSpacedRenderParams
     {
         private IBufferProxy globalTransformCB;
         private Matrix projectionMatrix;
         public GlobalTransformStruct GlobalTransform { private set; get; }
-        public float ScreenRatio = 1f;
+        public float ScreenRatio { private set; get; } = 1f;
         private float relativeScreenLocX = -0.8f;
         public float RelativeScreenLocationX
         {
@@ -204,8 +222,11 @@ namespace HelixToolkit.UWP.Core
         protected override void PostRender(IRenderContext context)
         {
         }
-
-        public virtual void SetScreenSpacedCoordinates(IRenderContext context, bool clearDepthBuffer = true)
+        public void SetScreenSpacedCoordinates(IRenderContext context)
+        {
+            SetScreenSpacedCoordinates(context, true);
+        }
+        public virtual void SetScreenSpacedCoordinates(IRenderContext context, bool clearDepthBuffer)
         {
             DepthStencilView dsView;
             context.DeviceContext.OutputMerger.GetRenderTargets(out dsView);

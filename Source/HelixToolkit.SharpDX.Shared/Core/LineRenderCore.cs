@@ -10,22 +10,37 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    public class LineRenderCore : GeometryRenderCore
+    public interface ILineRenderParams
     {
         /// <summary>
-        /// Line parameters, X is Thickness, Y is Smoothness, ZW are unused
+        /// 
         /// </summary>
-        public Vector4 LineParams = new Vector4();
+        float Thickness { set; get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        float Smoothness { set; get; }
         /// <summary>
         /// Final Line Color = LineColor * PerVertexLineColor
         /// </summary>
-        public Color4 LineColor = Color.Black;
+        Color4 LineColor { set; get; }
+    }
+    public class LineRenderCore : GeometryRenderCore, ILineRenderParams
+    {
+        public float Thickness { set; get; } = 0.5f;
+        public float Smoothness { set; get; }
+        /// <summary>
+        /// Final Line Color = LineColor * PerVertexLineColor
+        /// </summary>
+        public Color4 LineColor { set; get; } = Color.Black;
 
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
             model.Color = LineColor;
-            model.Params = LineParams;
+            model.Params.X = Thickness;
+            model.Params.Y = Smoothness;
         }
 
         protected override void OnRender(IRenderContext context)

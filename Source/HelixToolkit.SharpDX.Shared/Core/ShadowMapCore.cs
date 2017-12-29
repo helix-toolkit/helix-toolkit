@@ -17,10 +17,26 @@ namespace HelixToolkit.UWP.Core
     using global::SharpDX.DXGI;
     using Shaders;
     using Utilities;
+
+    public interface IShadowMapRenderParams
+    {
+        int Width { set; get; }
+
+        int Height { set; get; }
+
+        float Bias { set; get; }
+
+        float Intensity { set; get; }
+        Matrix LightViewProjectMatrix { set; get; }
+        /// <summary>
+        /// Update shadow map every N frames
+        /// </summary>
+        int UpdateFrequency { set; get; }
+    }
     /// <summary>
     /// 
     /// </summary>
-    public class ShadowMapCore : RenderCoreBase<ShadowMapParamStruct>
+    public class ShadowMapCore : RenderCoreBase<ShadowMapParamStruct>, IShadowMapRenderParams
     {
         protected ShaderResouceViewProxy viewResource;
 

@@ -40,7 +40,7 @@ namespace HelixToolkit.UWP.Core
 {
     using Utilities;
     using Shaders;
-    public interface IPatchRenderCore
+    public interface IPatchRenderParams
     {
         float MinTessellationDistance { set; get; }
         float MaxTessellationDistance { set; get; }
@@ -50,7 +50,7 @@ namespace HelixToolkit.UWP.Core
         bool EnableTessellation { set; get; }
     }
 
-    public class PatchMeshRenderCore : MeshRenderCore, IPatchRenderCore
+    public class PatchMeshRenderCore : MeshRenderCore, IPatchRenderParams
     {
         public float MinTessellationDistance
         {

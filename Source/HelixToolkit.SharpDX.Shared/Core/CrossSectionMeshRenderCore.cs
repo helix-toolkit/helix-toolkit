@@ -14,7 +14,25 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using Utilities;
 
-    public class CrossSectionMeshRenderCore : PatchMeshRenderCore
+    public interface ICrossSectionRenderParams
+    {
+        Color4 SectionColor { set; get; }
+
+        bool Plane1Enabled { set; get; }
+        bool Plane2Enabled { set; get; }
+        bool Plane3Enabled { set; get; }
+        bool Plane4Enabled { set; get; }
+
+        /// <summary>
+        /// Defines the plane (Normal + d)
+        /// </summary>
+        Vector4 Plane1Params { set; get; }
+        Vector4 Plane2Params { set; get; }
+        Vector4 Plane3Params { set; get; }
+        Vector4 Plane4Params { set; get; }
+    }
+
+    public class CrossSectionMeshRenderCore : PatchMeshRenderCore, ICrossSectionRenderParams
     {
         #region Shader Variables
 
@@ -28,17 +46,23 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Defines the sectionColor
         /// </summary>
-        public Color4 SectionColor = Color.Firebrick;
+        public Color4 SectionColor { set; get; } = Color.Firebrick;
 
         /// <summary>
         /// Defines the planeEnabled
         /// </summary>
-        public Bool4 PlaneEnabled = new Bool4(false, false, false, false);
+        public bool Plane1Enabled { set; get; } = false;
+        public bool Plane2Enabled { set; get; } = false;
+        public bool Plane3Enabled { set; get; } = false;
+        public bool Plane4Enabled { set; get; } = false;
 
         /// <summary>
-        /// Defines the planeParams
+        /// Defines the plane (Normal + d)
         /// </summary>
-        public Matrix PlaneParams = new Matrix();
+        public Vector4 Plane1Params { set; get; }
+        public Vector4 Plane2Params { set; get; }
+        public Vector4 Plane3Params { set; get; }
+        public Vector4 Plane4Params { set; get; }
 
         private ClipPlaneStruct clipParameter;
 
@@ -89,8 +113,11 @@ namespace HelixToolkit.UWP.Core
         {
             base.OnUpdatePerModelStruct(ref model, context);
             clipParameter.CrossSectionColors = SectionColor;
-            clipParameter.EnableCrossPlane = PlaneEnabled;
-            clipParameter.CrossPlaneParams = PlaneParams;
+            clipParameter.EnableCrossPlane = new Bool4(Plane1Enabled, Plane2Enabled, Plane3Enabled, Plane4Enabled);
+            clipParameter.CrossPlaneParams.Row1 = Plane1Params;
+            clipParameter.CrossPlaneParams.Row2 = Plane2Params;
+            clipParameter.CrossPlaneParams.Row3 = Plane3Params;
+            clipParameter.CrossPlaneParams.Row4 = Plane4Params;
         }
 
         protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
