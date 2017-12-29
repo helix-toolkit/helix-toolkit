@@ -15,7 +15,13 @@ namespace InstancingDemo
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
-    using HelixToolkit.Wpf;
+    using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
+    using Color = System.Windows.Media.Color;
+    using Plane = SharpDX.Plane;
+    using Vector3 = SharpDX.Vector3;
+    using Colors = System.Windows.Media.Colors;
+    using Color4 = SharpDX.Color4;
     using System;
     using System.IO;
     using System.Windows.Threading;
@@ -39,11 +45,11 @@ namespace InstancingDemo
         public BillboardInstanceParameter[] BillboardInstanceParams { private set; get; }
 
         public PhongMaterial ModelMaterial { get; private set; }
-        public Media3D.Transform3D ModelTransform { get; private set; }
+        public Transform3D ModelTransform { get; private set; }
 
-        public Vector3 DirectionalLightDirection { get; private set; }
-        public Color4 DirectionalLightColor { get; private set; }
-        public Color4 AmbientLightColor { get; private set; }
+        public Vector3D DirectionalLightDirection { get; private set; }
+        public Color DirectionalLightColor { get; private set; }
+        public Color AmbientLightColor { get; private set; }
 
         public bool EnableAnimation { set; get; }
 
@@ -62,9 +68,9 @@ namespace InstancingDemo
             Camera = new PerspectiveCamera { Position = new Point3D(40, 40, 40), LookDirection = new Vector3D(-40, -40, -40), UpDirection = new Vector3D(0, 1, 0) };
 
             // setup lighting            
-            this.AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
-            this.DirectionalLightColor = (Color4)Color.White;
-            this.DirectionalLightDirection = new Vector3(-2, -5, -2);
+            this.AmbientLightColor = Colors.DarkGray;
+            this.DirectionalLightColor = Colors.White;
+            this.DirectionalLightDirection = new Vector3D(-2, -5, -2);
 
             // scene model3d
             var b1 = new MeshBuilder(true, true, true);
@@ -78,7 +84,7 @@ namespace InstancingDemo
             var l1 = new LineBuilder();
             l1.AddBox(new Vector3(0, 0, 0), 1.1, 1.1, 1.1);
             Lines = l1.ToLineGeometry3D();
-            Lines.Colors = new HelixToolkit.Wpf.SharpDX.Core.Color4Collection(Enumerable.Repeat(Color.White.ToColor4(), Lines.Positions.Count));
+            Lines.Colors = new HelixToolkit.Wpf.SharpDX.Core.Color4Collection(Enumerable.Repeat(Colors.White.ToColor4(), Lines.Positions.Count));
             // model trafo
             ModelTransform = Media3D.Transform3D.Identity;// new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(0, 0, 1), 45));
 
@@ -210,7 +216,7 @@ namespace InstancingDemo
                 if (hitTests[0].ModelHit is InstancingMeshGeometryModel3D)
                 {
                     
-                    InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor == Color.Transparent? Color.Yellow : Color.Transparent;
+                    InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor.Alpha == 0? Colors.Yellow.ToColor4() : Colors.Transparent.ToColor4();
                     InstanceParam = (InstanceParameter[])InstanceParam.Clone();
                 }
                 else if(hitTests[0].ModelHit is LineGeometryModel3D)

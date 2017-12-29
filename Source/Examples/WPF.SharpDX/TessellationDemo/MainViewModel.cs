@@ -17,13 +17,13 @@ namespace TessellationDemo
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using System.Windows.Media.Imaging;
+    using Color = System.Windows.Media.Color;
+    using Vector3 = SharpDX.Vector3;
+    using Colors = System.Windows.Media.Colors;
+    using Color4 = SharpDX.Color4;
     using HelixToolkit.Wpf.SharpDX.Core;
-    using System.IO;
     using SharpDX.Direct3D11;
-    using System.Collections;
     using System.Collections.Generic;
-    using static HelixToolkit.Wpf.SharpDX.Core.PatchMeshRenderCore;
 
     public class MainViewModel : BaseViewModel
     {
@@ -31,16 +31,16 @@ namespace TessellationDemo
         public Geometry3D Grid { get; private set; }
         public Geometry3D FloorModel { private set; get; }
         public PhongMaterial DefaultMaterial { get; private set; }
-        public SharpDX.Color GridColor { get; private set; }
+        public Color GridColor { get; private set; }
 
         public Transform3D DefaultTransform { get; private set; }
         public Transform3D GridTransform { get; private set; }
 
-        public Vector3 DirectionalLightDirection1 { get; private set; }
-        public Vector3 DirectionalLightDirection2 { get; private set; }
-        public Vector3 DirectionalLightDirection3 { get; private set; }
-        public Color4 DirectionalLightColor { get; private set; }
-        public Color4 AmbientLightColor { get; private set; }
+        public Vector3D DirectionalLightDirection1 { get; private set; }
+        public Vector3D DirectionalLightDirection2 { get; private set; }
+        public Vector3D DirectionalLightDirection3 { get; private set; }
+        public Color DirectionalLightColor { get; private set; }
+        public Color AmbientLightColor { get; private set; }
 
         private FillMode fillMode = FillMode.Solid;
         public FillMode FillMode
@@ -123,11 +123,11 @@ namespace TessellationDemo
 
             // ---------------------------------------------
             // setup lighting            
-            this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
-            this.DirectionalLightColor = Color.White;
-            this.DirectionalLightDirection1 = new Vector3(-0, -20, -20);
-            this.DirectionalLightDirection2 = new Vector3(-0, -1, +50);
-            this.DirectionalLightDirection3 = new Vector3(0, +1, 0);
+            this.AmbientLightColor = Color.FromArgb(1, 12, 12, 12);
+            this.DirectionalLightColor = Colors.White;
+            this.DirectionalLightDirection1 = new Vector3D(-0, -20, -20);
+            this.DirectionalLightDirection2 = new Vector3D(-0, -1, +50);
+            this.DirectionalLightDirection3 = new Vector3D(0, +1, 0);
 
             // ---------------------------------------------
             // model trafo
@@ -137,9 +137,9 @@ namespace TessellationDemo
             // model material
             this.DefaultMaterial = new PhongMaterial
             {
-                AmbientColor = Color.Gray,
+                AmbientColor = Colors.Gray.ToColor4(),
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f), // Colors.LightGray,
-                SpecularColor = Color.White,
+                SpecularColor = Colors.White.ToColor4(),
                 SpecularShininess = 100f,
                 DiffuseMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString()),
                 NormalMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString()),
@@ -153,7 +153,7 @@ namespace TessellationDemo
             // ---------------------------------------------
             // floor plane grid
             this.Grid = LineBuilder.GenerateGrid(10);
-            this.GridColor = SharpDX.Color.Black;
+            this.GridColor = Colors.Black;
             this.GridTransform = new Media3D.TranslateTransform3D(-5, -4, -5);
 
             var builder = new MeshBuilder(true, true, true);

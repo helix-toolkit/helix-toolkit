@@ -79,7 +79,7 @@
                 Geometry="{Binding Lines}"
                 Thickness="1.5"
                 Transform="{Binding Model1Transform}"
-                Color="{x:Static sdxm:Color.Black}" />
+                Color="Black" />
             <hx:BillboardTextModel3D Geometry="{Binding Billboard1Model}" FixedSize="True"/>
             <hx:BillboardTextModel3D Geometry="{Binding Billboard2Model}" FixedSize="True"/>
             <hx:BillboardTextModel3D Geometry="{Binding Billboard3Model}" FixedSize="False"/>

@@ -102,7 +102,7 @@
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />
-            <hx:LineGeometryModel3D Geometry="{Binding LineGeo}" Color="0,1,1,1"/>
+            <hx:LineGeometryModel3D Geometry="{Binding LineGeo}" Color="Blue"/>
             <hx:CoordinateSystemModel3D/>
             <hx:ViewBoxModel3D/>
         </hx:Viewport3DX>

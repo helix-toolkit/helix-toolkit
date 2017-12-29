@@ -62,11 +62,11 @@
                 x:Name="lines"
                 Geometry="{Binding Lines}" Thickness="0.4"
                 Instances="{Binding ModelInstances}"
-                Transform="{Binding ModelTransform}" Color="{x:Static dx:Color.White}"/>
+                Transform="{Binding ModelTransform}" Color="White"/>
             <hx:LineGeometryModel3D
                 Geometry="{Binding Lines}"
                 Instances="{Binding SelectedLineInstances}"
-                Color="{x:Static dx:Color.Orange}"/>
+                Color="Orange"/>
             <hx:InstancingBillboardModel3D x:Name="billboardModel3D" Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}" InstanceParamArray="{Binding BillboardInstanceParams}"/>
         </hx:Viewport3DX>
 

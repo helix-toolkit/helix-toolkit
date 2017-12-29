@@ -171,7 +171,7 @@ namespace MouseDragDemo
                 {
                     Thickness = 3,
                     Smoothness = 2,
-                    Color = Color.Red,
+                    Color = System.Windows.Media.Colors.Red,
                     IsThrowingShadow = false,
                     Geometry = g.ToLineGeometry3D(),
                 };

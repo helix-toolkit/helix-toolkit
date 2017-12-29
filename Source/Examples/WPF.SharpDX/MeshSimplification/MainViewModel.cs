@@ -16,9 +16,11 @@ namespace MeshSimplification
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-    using HelixToolkit.Wpf;
-    using System.IO;
+    using Color = System.Windows.Media.Color;
+    using Plane = SharpDX.Plane;
+    using Vector3 = SharpDX.Vector3;
+    using Colors = System.Windows.Media.Colors;
+    using Color4 = SharpDX.Color4;
     using System.Collections.Generic;
     using System.Linq;
     using SharpDX.Direct3D11;
@@ -53,11 +55,11 @@ namespace MeshSimplification
 
         public Transform3D ModelTransform { private set; get; }
 
-        public Vector3 Light1Direction { get; set; }
-        public Color4 Light1Color { get; set; }
-        public Color4 AmbientLightColor { get; set; }
-        private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-100, -100, -100);
-        public Media3D.Vector3D CamLookDir
+        public Vector3D Light1Direction { get; set; }
+        public Color Light1Color { get; set; }
+        public Color AmbientLightColor { get; set; }
+        private Vector3D camLookDir = new Vector3D(-100, -100, -100);
+        public Vector3D CamLookDir
         {
             set
             {
@@ -65,7 +67,7 @@ namespace MeshSimplification
                 {
                     camLookDir = value;
                     OnPropertyChanged();
-                    Light1Direction = value.ToVector3();
+                    Light1Direction = value;
                 }
             }
             get
@@ -123,11 +125,11 @@ namespace MeshSimplification
             this.Camera = new PerspectiveCamera { Position = new Point3D(100, 100, 100), LookDirection = new Vector3D(-100, -100, -100), UpDirection = new Vector3D(0, 1, 0) };
             // ----------------------------------------------
             // setup scene
-            this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
-            this.Light1Color = (Color4)Color.Gray;
+            this.AmbientLightColor = Colors.DimGray;
+            this.Light1Color = Colors.Gray;
 
 
-            this.Light1Direction = new Vector3(-100, -100, -100);
+            this.Light1Direction = new Vector3D(-100, -100, -100);
             SetupCameraBindings(Camera);
             // ----------------------------------------------
             // ----------------------------------------------

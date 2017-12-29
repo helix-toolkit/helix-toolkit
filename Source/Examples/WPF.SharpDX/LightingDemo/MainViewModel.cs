@@ -12,15 +12,17 @@ namespace LightingDemo
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
     using SharpDX;
+
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-    using HelixToolkit.Wpf;
-    using System.IO;
-    using System.Collections.Generic;
-    using System.Linq;
+    using Color = System.Windows.Media.Color;
+    using Plane = SharpDX.Plane;
+    using Vector3 = SharpDX.Vector3;
+    using Colors = System.Windows.Media.Colors;
+    using Color4 = SharpDX.Color4;
 
     public class MainViewModel : BaseViewModel
     {
@@ -43,17 +45,17 @@ namespace LightingDemo
         public PhongMaterial FloorMaterial { get; set; }
         public PhongMaterial LightModelMaterial { get; set; }
 
-        public Vector3 Light1Direction { get; set; }
-        public Vector3 Light4Direction { get; set; }
+        public Vector3D Light1Direction { get; set; }
+        public Vector3D Light4Direction { get; set; }
         public Vector3D LightDirection4 { get; set; }
-        public Color4 Light1Color { get; set; }
-        public Color4 Light2Color { get; set; }
-        public Color4 Light3Color { get; set; }
-        public Color4 Light4Color { get; set; }
-        public Color4 AmbientLightColor { get; set; }
-        public Vector3 Light2Attenuation { get; set; }
-        public Vector3 Light3Attenuation { get; set; }
-        public Vector3 Light4Attenuation { get; set; }
+        public Color Light1Color { get; set; }
+        public Color Light2Color { get; set; }
+        public Color Light3Color { get; set; }
+        public Color Light4Color { get; set; }
+        public Color AmbientLightColor { get; set; }
+        public Vector3D Light2Attenuation { get; set; }
+        public Vector3D Light3Attenuation { get; set; }
+        public Vector3D Light4Attenuation { get; set; }
         public bool RenderLight1 { get; set; }
         public bool RenderLight2 { get; set; }
         public bool RenderLight3 { get; set; }
@@ -179,32 +181,32 @@ namespace LightingDemo
 
             // ----------------------------------------------
             // setup scene
-            this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
+            this.AmbientLightColor = Colors.DarkGray;
 
             this.RenderLight1 = true;
             this.RenderLight2 = true;
             this.RenderLight3 = true;
             this.RenderLight4 = true;
 
-            this.Light1Color = (Color4)Color.White;
-            this.Light2Color = (Color4)Color.Red;
-            this.Light3Color = (Color4)Color.LightYellow;
-            this.Light4Color = (Color4)Color.LightBlue;
+            this.Light1Color = Colors.White;
+            this.Light2Color = Colors.Red;
+            this.Light3Color = Colors.LightYellow;
+            this.Light4Color = Colors.LightBlue;
 
-            this.Light2Attenuation = new Vector3(1.0f, 0.5f, 0.10f);
-            this.Light3Attenuation = new Vector3(1.0f, 0.1f, 0.05f);
-            this.Light4Attenuation = new Vector3(0.1f, 0.1f, 0.0f);
+            this.Light2Attenuation = new Vector3D(1.0f, 0.5f, 0.10f);
+            this.Light3Attenuation = new Vector3D(1.0f, 0.1f, 0.05f);
+            this.Light4Attenuation = new Vector3D(0.1f, 0.1f, 0.0f);
 
-            this.Light1Direction = new Vector3(0, 0, -10);
-            this.Light1Transform = new TranslateTransform3D(-Light1Direction.ToVector3D());
-            this.Light1DirectionTransform = CreateAnimatedTransform2(-Light1Direction.ToVector3D(), new Vector3D(0, 1, -1), 24);
+            this.Light1Direction = new Vector3D(0, 0, -10);
+            this.Light1Transform = new TranslateTransform3D(-Light1Direction);
+            this.Light1DirectionTransform = CreateAnimatedTransform2(-Light1Direction, new Vector3D(0, 1, -1), 24);
 
             this.Light2Transform = CreateAnimatedTransform1(new Vector3D(-4, 0, 0), new Vector3D(0, 0, 1), 3);
             this.Light3Transform = CreateAnimatedTransform1(new Vector3D(0, 0, 4), new Vector3D(0, 1, 0), 5);
 
-            this.Light4Direction = new Vector3(0, -5, -1);
-            this.Light4Transform = CreateAnimatedTransform2(-Light4Direction.ToVector3D() * 2, new Vector3D(0,1,0), 24);
-            this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction.ToVector3D(), new Vector3D(1, 0, 0), 12);
+            this.Light4Direction = new Vector3D(0, -5, -1);
+            this.Light4Transform = CreateAnimatedTransform2(-Light4Direction * 2, new Vector3D(0,1,0), 24);
+            this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction, new Vector3D(1, 0, 0), 12);
 
             // ----------------------------------------------
             // light model3d
@@ -213,10 +215,10 @@ namespace LightingDemo
             Sphere = sphere.ToMeshGeometry3D();
             this.LightModelMaterial = new PhongMaterial
             {
-                AmbientColor = Color.Gray,
-                DiffuseColor = Color.Gray,
-                EmissiveColor = Color.Yellow,
-                SpecularColor = Color.Black,
+                AmbientColor = Colors.Gray.ToColor4(),
+                DiffuseColor = Colors.Gray.ToColor4(),
+                EmissiveColor = Colors.Yellow.ToColor4(),
+                SpecularColor = Colors.Black.ToColor4(),
             };
 
             // ----------------------------------------------
@@ -246,9 +248,9 @@ namespace LightingDemo
             this.FloorTransform = new Media3D.TranslateTransform3D(0, 0, 0);
             this.FloorMaterial = new PhongMaterial
             {
-                AmbientColor = Color.Gray,
+                AmbientColor = Colors.Gray.ToColor4(),
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
-                SpecularColor = Color.White,
+                SpecularColor = Colors.White.ToColor4(),
                 SpecularShininess = 100f,
                 DiffuseMap = LoadFileToMemory(new System.Uri(SelectedDiffuseTexture, System.UriKind.RelativeOrAbsolute).ToString()),
                 NormalMap = ModelMaterial.NormalMap,

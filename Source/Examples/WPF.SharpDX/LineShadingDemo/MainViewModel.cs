@@ -20,6 +20,11 @@ namespace LineShadingDemo
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
+    using Color = System.Windows.Media.Color;
+    using Plane = SharpDX.Plane;
+    using Vector3 = SharpDX.Vector3;
+    using Colors = System.Windows.Media.Colors;
+    using Color4 = SharpDX.Color4;
 
     public class MainViewModel : BaseViewModel
     {
@@ -34,16 +39,16 @@ namespace LineShadingDemo
         public PhongMaterial Material1 { get; private set; }
         public PhongMaterial Material2 { get; private set; }
         public PhongMaterial Material3 { get; private set; }        
-        public Media.Color GridColor { get; private set; }
+        public Color GridColor { get; private set; }
 
         public Transform3D Model1Transform { get; private set; }
         public Transform3D Model2Transform { get; private set; }
         public Transform3D Model3Transform { get; private set; }
         public Transform3D GridTransform { get; private set; }
 
-        public Vector3 DirectionalLightDirection { get; private set; }
-        public Color4 DirectionalLightColor { get; private set; }
-        public Color4 AmbientLightColor { get; private set; }
+        public Vector3D DirectionalLightDirection { get; private set; }
+        public Color DirectionalLightColor { get; private set; }
+        public Color AmbientLightColor { get; private set; }
 
       
         public MainViewModel()
@@ -58,9 +63,9 @@ namespace LineShadingDemo
             this.Camera = new PerspectiveCamera { Position = new Point3D(0, 5, 5), LookDirection = new Vector3D(-0, -5, -5), UpDirection = new Vector3D(0, 1, 0) };
 
             // setup lighting            
-            this.AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
-            this.DirectionalLightColor = Color.White;
-            this.DirectionalLightDirection = new Vector3(-2, -5, -2);
+            this.AmbientLightColor = Colors.DimGray;
+            this.DirectionalLightColor = Colors.White;
+            this.DirectionalLightDirection = new Vector3D(-2, -5, -2);
 
             // floor plane grid
             this.Grid = LineBuilder.GenerateGrid();

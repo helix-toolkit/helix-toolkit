@@ -32,8 +32,8 @@ namespace ParticleSystemDemo
             }
         }
 
-        private float emitterRadius = 0.5f;
-        public float EmitterRadius
+        private double emitterRadius = 0.5;
+        public double EmitterRadius
         {
             set
             {
@@ -91,8 +91,8 @@ namespace ParticleSystemDemo
             }
         }
 
-        private float consumerRadius = 0.5f;
-        public float ConsumerRadius
+        private double consumerRadius = 0.5;
+        public double ConsumerRadius
         {
             set
             {
@@ -431,7 +431,7 @@ namespace ParticleSystemDemo
         public readonly string[] Textures = new string[] { @"Snowflake.png", @"FXT_Explosion_Fireball_Atlas_d.png", @"FXT_Sparks_01_Atlas_d.png", @"Smoke30Frames_0.png" };
         public readonly int[] DefaultParticleSizes = new int[] { 20, 90, 40, 90 };
 
-        public SharpDX.Color4 Light1Color { get; set; } = SharpDX.Color.White;
+        public Media.Color Light1Color { get; set; } = Media.Colors.White;
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();

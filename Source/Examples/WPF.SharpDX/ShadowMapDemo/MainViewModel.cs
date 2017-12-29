@@ -8,6 +8,7 @@ namespace ShadowMapDemo
 {
     using System;
     using System.Windows.Media.Animation;
+    using Media = System.Windows.Media;
     using HelixToolkit.Wpf;
 
     using DemoCore;
@@ -47,7 +48,7 @@ namespace ShadowMapDemo
         public Media3D.Transform3DGroup LightCameraTransform { get; private set; } = new Media3D.Transform3DGroup();
         public Media3D.Transform3D LightDirectionTransform { get; set; }
         //public Vector3 DirectionalLightDirection { get; private set; }
-        public Color4 DirectionalLightColor { get; private set; }
+        public Media.Color DirectionalLightColor { get; private set; }
         public Color4 AmbientLightColor { get; private set; }
         public Vector2 ShadowMapResolution { get; private set; }
 
@@ -65,7 +66,7 @@ namespace ShadowMapDemo
 
             // setup lighting            
             this.AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
-            this.DirectionalLightColor = Color.White;
+            this.DirectionalLightColor = Media.Colors.White;
             //this.DirectionalLightDirection = new Vector3(-1, -1, -1);
            // this.LightDirectionTransform = CreateAnimatedTransform(-DirectionalLightDirection.ToVector3D(), new Vector3D(0, 1, -1), 24);
             this.ShadowMapResolution = new Vector2(2048, 2048);
