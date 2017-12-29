@@ -223,7 +223,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             if(value is Color)
             {
                 var val = (Color)value;
-                if (destinationType == typeof(string) && value is Color)
+                if (destinationType == typeof(string))
                 {
                    
                     var str = string.Format("{0},{1},{2},{3}", val.R, val.G, val.B, val.A);
@@ -240,80 +240,164 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 
     public sealed class Color4Converter : FromToStringTypeConverter
     {
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            if (sourceType == typeof(System.Windows.Media.Color))
+            {
+                return true;
+            }
+            return base.CanConvertFrom(context, sourceType);
+        }
+
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
+            if (destinationType == typeof(System.Windows.Media.Color))
+            {
+                return true;
+            }
+            return base.CanConvertTo(context, destinationType);
+        }
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             if (value == null)
             {
                 throw GetConvertFromException(value);
             }
-
-            var source = value as string;
-
-            if (source != null)
+            if(value is System.Windows.Media.Color)
             {
-                var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
-                var result = new Color4(
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
-                return result;
+                return ((System.Windows.Media.Color)value).ToColor4();
             }
+            else
+            {
+                var source = value as string;
 
+                if (source != null)
+                {
+                    var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
+                    var result = new Color4(
+                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
+                    return result;
+                }
+            }
             return base.ConvertFrom(context, culture, value);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType == typeof(string) && value is Color4)
+            if(value is Color4)
             {
                 var val = (Color4)value;
-                var str = string.Format("{0},{1},{2},{3}", val.Red, val.Green, val.Blue, val.Alpha);
-                return str;
+                if(destinationType == typeof(System.Windows.Media.Color))
+                {
+                    return val.ToColor();
+                }
+                else if (destinationType == typeof(string))
+                {                    
+                    var str = string.Format("{0},{1},{2},{3}", val.Red, val.Green, val.Blue, val.Alpha);
+                    return str;
+                }
             }
-
             return base.ConvertTo(context, culture, value, destinationType);
         }
     }
 
     public sealed class Vector2Converter : FromToStringTypeConverter
     {
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            if (sourceType == typeof(System.Windows.Vector) || sourceType == typeof(System.Windows.Point))
+            {
+                return true;
+            }
+            return base.CanConvertFrom(context, sourceType);
+        }
+
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
+            if (destinationType == typeof(System.Windows.Vector) || destinationType == typeof(System.Windows.Point))
+            {
+                return true;
+            }
+            return base.CanConvertTo(context, destinationType);
+        }
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             if (value == null)
             {
                 throw GetConvertFromException(value);
             }
-
-            var source = value as string;
-
-            if (source != null)
+            if (value is System.Windows.Vector)
             {
-                var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
-                var result = new Vector2(
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
-                return result;
+                var source = (System.Windows.Vector)value;
+                return new Vector2((float)source.X, (float)source.Y);
             }
+            else if (value is System.Windows.Media.Media3D.Point3D)
+            {
+                var source = (System.Windows.Media.Media3D.Point3D)value;
+                return new Vector2((float)source.X, (float)source.Y);
+            }
+            else
+            {
+                var source = value as string;
 
+                if (source != null)
+                {
+                    var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
+                    var result = new Vector2(
+                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
+                    return result;
+                }
+            }
             return base.ConvertFrom(context, culture, value);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType == typeof(string) && value is Vector2)
+            if(value is Vector2)
             {
                 var val = (Vector2)value;
-                var str = string.Format("{0},{1}", val.X, val.Y);
-                return str;
+                if (destinationType == typeof(System.Windows.Vector))
+                {
+                    return new System.Windows.Vector(val.X, val.Y);
+                }
+                else if (destinationType == typeof(System.Windows.Point))
+                {
+                    return new System.Windows.Point(val.X, val.Y);
+                }
+                else if (destinationType == typeof(string))
+                {
+                    var str = string.Format("{0},{1}", val.X, val.Y);
+                    return str;
+                }
             }
-
             return base.ConvertTo(context, culture, value, destinationType);
         }
     }
 
     public sealed class Vector3Converter : FromToStringTypeConverter
     {
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            if(sourceType == typeof(System.Windows.Media.Media3D.Vector3D) || sourceType == typeof(System.Windows.Media.Media3D.Point3D))
+            {
+                return true;
+            }
+            return base.CanConvertFrom(context, sourceType);
+        }
+
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
+            if (destinationType == typeof(System.Windows.Media.Media3D.Vector3D) || destinationType == typeof(System.Windows.Media.Media3D.Point3D))
+            {
+                return true;
+            }
+            return base.CanConvertTo(context, destinationType);
+        }
+
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             if (value == null)
