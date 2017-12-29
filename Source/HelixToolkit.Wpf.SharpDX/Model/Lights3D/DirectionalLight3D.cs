@@ -3,6 +3,7 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+using SharpDX;
 namespace HelixToolkit.Wpf.SharpDX
 {
     public sealed class DirectionalLight3D : Light3D

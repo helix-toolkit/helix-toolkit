@@ -67,7 +67,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// It applies to Directional Light and to Spot Light,
         /// for all other lights it is ignored.
         /// </summary>
-        [TypeConverter(typeof(Vector3Converter))]
         public Vector3D Direction
         {
             get { return (Vector3D)this.GetValue(DirectionProperty); }

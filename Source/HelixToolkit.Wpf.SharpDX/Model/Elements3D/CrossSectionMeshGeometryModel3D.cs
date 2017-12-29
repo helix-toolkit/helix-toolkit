@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new AffectsRenderPropertyMetadata(false,
            (d, e) =>
            {
-               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.PlaneEnabled.X = (bool)e.NewValue;
+               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane1Enabled = (bool)e.NewValue;
            }));
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new AffectsRenderPropertyMetadata(false,
            (d, e) =>
            {
-               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.PlaneEnabled.Y = (bool)e.NewValue;
+               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane2Enabled = (bool)e.NewValue;
            }));
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new AffectsRenderPropertyMetadata(false,
            (d, e) =>
            {
-               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.PlaneEnabled.Z = (bool)e.NewValue;
+               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane3Enabled = (bool)e.NewValue;
            }));
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new AffectsRenderPropertyMetadata(false,
            (d, e) =>
            {
-               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.PlaneEnabled.W = (bool)e.NewValue;
+               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane4Enabled = (bool)e.NewValue;
            }));
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new AffectsRenderPropertyMetadata(new Plane(),
            (d, e) =>
            {
-               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.PlaneParams.Row1 = PlaneToVector((Plane)e.NewValue);
+               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane1Params = PlaneToVector((Plane)e.NewValue);
            }));
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new AffectsRenderPropertyMetadata(new Plane(),
            (d, e) =>
            {
-               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.PlaneParams.Row2 = PlaneToVector((Plane)e.NewValue);
+               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane2Params = PlaneToVector((Plane)e.NewValue);
            }));
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new AffectsRenderPropertyMetadata(new Plane(),
            (d, e) =>
            {
-               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.PlaneParams.Row3 = PlaneToVector((Plane)e.NewValue);
+               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane3Params = PlaneToVector((Plane)e.NewValue);
            }));
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new AffectsRenderPropertyMetadata(new Plane(),
            (d, e) =>
            {
-               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.PlaneParams.Row4 = PlaneToVector((Plane)e.NewValue);
+               (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane4Params = PlaneToVector((Plane)e.NewValue);
            }));
 
         /// <summary>
@@ -252,8 +252,8 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         #region Private Variables
-        private CrossSectionMeshRenderCore crossSectionCore
-        { get { return (CrossSectionMeshRenderCore)RenderCore; } }
+        private ICrossSectionRenderParams crossSectionCore
+        { get { return (ICrossSectionRenderParams)RenderCore; } }
 
         #endregion
         /// <summary>

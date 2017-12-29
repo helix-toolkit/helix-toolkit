@@ -68,15 +68,15 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty EmitterRadiusProperty = DependencyProperty.Register("EmitterRadius", typeof(float), typeof(ParticleStormModel3D),
-            new PropertyMetadata(DefaultConsumerRadius,
+        public static DependencyProperty EmitterRadiusProperty = DependencyProperty.Register("EmitterRadius", typeof(double), typeof(ParticleStormModel3D),
+            new PropertyMetadata(0.0,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.InsertVariables.EmitterRadius = ((float)e.NewValue);
+                (d as ParticleStormModel3D).particleCore.InsertVariables.EmitterRadius = (float)(double)e.NewValue;
             }
             ));
 
-        public float EmitterRadius
+        public double EmitterRadius
         {
             set
             {
@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (float)GetValue(EmitterRadiusProperty);
+                return (double)GetValue(EmitterRadiusProperty);
             }
         }
 
@@ -108,15 +108,15 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty ConsumerGravityProperty = DependencyProperty.Register("ConsumerGravity", typeof(float), typeof(ParticleStormModel3D),
-            new PropertyMetadata(DefaultConsumerGravity,
+        public static DependencyProperty ConsumerGravityProperty = DependencyProperty.Register("ConsumerGravity", typeof(double), typeof(ParticleStormModel3D),
+            new PropertyMetadata(0.0,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.FrameVariables.ConsumerGravity = ((float)e.NewValue);
+                (d as ParticleStormModel3D).particleCore.FrameVariables.ConsumerGravity = ((float)(double)e.NewValue);
             }
             ));
 
-        public float ConsumerGravity
+        public double ConsumerGravity
         {
             set
             {
@@ -124,19 +124,19 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (float)GetValue(ConsumerGravityProperty);
+                return (double)GetValue(ConsumerGravityProperty);
             }
         }
 
-        public static DependencyProperty ConsumerRadiusProperty = DependencyProperty.Register("ConsumerRadius", typeof(float), typeof(ParticleStormModel3D),
-            new PropertyMetadata(DefaultConsumerRadius,
+        public static DependencyProperty ConsumerRadiusProperty = DependencyProperty.Register("ConsumerRadius", typeof(double), typeof(ParticleStormModel3D),
+            new PropertyMetadata(0.0,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.FrameVariables.ConsumerRadius = ((float)e.NewValue);
+                (d as ParticleStormModel3D).particleCore.FrameVariables.ConsumerRadius = (float)(double)e.NewValue;
             }
             ));
 
-        public float ConsumerRadius
+        public double ConsumerRadius
         {
             set
             {
@@ -144,20 +144,20 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (float)GetValue(ConsumerRadiusProperty);
+                return (double)GetValue(ConsumerRadiusProperty);
             }
         }
 
-        public static DependencyProperty InitialEnergyProperty = DependencyProperty.Register("InitialEnergy", typeof(float), typeof(ParticleStormModel3D),
-            new PropertyMetadata(DefaultInitialEnergy,
+        public static DependencyProperty InitialEnergyProperty = DependencyProperty.Register("InitialEnergy", typeof(double), typeof(ParticleStormModel3D),
+            new PropertyMetadata(5.0,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.InsertVariables.InitialEnergy = System.Math.Max(1f, (float)e.NewValue);
+                (d as ParticleStormModel3D).particleCore.InsertVariables.InitialEnergy = System.Math.Max(1f, (float)(double)e.NewValue);
                 (d as ParticleStormModel3D).particleCore.UpdateInsertThrottle();
             }
             ));
 
-        public float InitialEnergy
+        public double InitialEnergy
         {
             set
             {
@@ -165,19 +165,19 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (float)GetValue(InitialEnergyProperty);
+                return (double)GetValue(InitialEnergyProperty);
             }
         }
 
-        public static DependencyProperty EnergyDissipationRateProperty = DependencyProperty.Register("EnergyDissipationRate", typeof(float), typeof(ParticleStormModel3D),
-            new PropertyMetadata(DefaultEnergyDissipationRate,
+        public static DependencyProperty EnergyDissipationRateProperty = DependencyProperty.Register("EnergyDissipationRate", typeof(double), typeof(ParticleStormModel3D),
+            new PropertyMetadata(1.0,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.InsertVariables.EnergyDissipationRate = System.Math.Max(1f, (float)e.NewValue);
+                (d as ParticleStormModel3D).particleCore.InsertVariables.EnergyDissipationRate = System.Math.Max(1f, (float)(double)e.NewValue);
             }
             ));
 
-        public float EnergyDissipationRate
+        public double EnergyDissipationRate
         {
             set
             {
@@ -185,7 +185,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (float)GetValue(EnergyDissipationRateProperty);
+                return (double)GetValue(EnergyDissipationRateProperty);
             }
         }
 
@@ -290,15 +290,15 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 
-        public static DependencyProperty InitialVelocityProperty = DependencyProperty.Register("InitialVelocity", typeof(float), typeof(ParticleStormModel3D),
-            new PropertyMetadata(ParticleRenderCore.DefaultInitialVelocity,
+        public static DependencyProperty InitialVelocityProperty = DependencyProperty.Register("InitialVelocity", typeof(double), typeof(ParticleStormModel3D),
+            new PropertyMetadata(1.0,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.InsertVariables.InitialVelocity = (float)e.NewValue;
+                (d as ParticleStormModel3D).particleCore.InsertVariables.InitialVelocity = (float)(double)e.NewValue;
             }
             ));
 
-        public float InitialVelocity
+        public double InitialVelocity
         {
             set
             {
@@ -306,12 +306,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (float)GetValue(InitialVelocityProperty);
+                return (double)GetValue(InitialVelocityProperty);
             }
         }
 
         public static DependencyProperty AccelerationProperty = DependencyProperty.Register("Acceleration", typeof(Media3D.Vector3D), typeof(ParticleStormModel3D),
-            new PropertyMetadata(ParticleRenderCore.DefaultAcceleration.ToVector3D(),
+            new PropertyMetadata(DefaultAcceleration.ToVector3D(),
             (d, e) =>
             {
                 (d as ParticleStormModel3D).particleCore.InsertVariables.InitialAcceleration = ((Media3D.Vector3D)e.NewValue).ToVector3();
@@ -573,7 +573,7 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnAttach(host);
             InstanceBuffer.Initialize();
             particleCore.InstanceBuffer = InstanceBuffer;
-            System.Windows.Media.CompositionTarget.Rendering += CompositionTarget_Rendering;
+            Media.CompositionTarget.Rendering += CompositionTarget_Rendering;
             return true;
         }
 
@@ -606,7 +606,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnDetach()
         {
-            System.Windows.Media.CompositionTarget.Rendering -= CompositionTarget_Rendering;
+            Media.CompositionTarget.Rendering -= CompositionTarget_Rendering;
             InstanceBuffer.Dispose();
             base.OnDetach();
         }

@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new AffectsRenderPropertyMetadata(-0.8,
                 (d, e) =>
                 {
-                   ((d as ScreenSpacedElement3D).RenderCore as ScreenSpacedMeshRenderCore).RelativeScreenLocationX = (float)(double)e.NewValue;
+                   ((d as ScreenSpacedElement3D).RenderCore as IScreenSpacedRenderParams).RelativeScreenLocationX = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// <see cref="RelativeScreenLocationY"/>
@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new AffectsRenderPropertyMetadata(-0.8,
                 (d, e) =>
                 {
-                    ((d as ScreenSpacedElement3D).RenderCore as ScreenSpacedMeshRenderCore).RelativeScreenLocationY = (float)(double)e.NewValue;
+                    ((d as ScreenSpacedElement3D).RenderCore as IScreenSpacedRenderParams).RelativeScreenLocationY = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// <see cref="SizeScale"/>
@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new AffectsRenderPropertyMetadata(1.0,
                 (d, e) =>
                 {
-                    ((d as ScreenSpacedElement3D).RenderCore as ScreenSpacedMeshRenderCore).SizeScale = (float)(double)e.NewValue;
+                    ((d as ScreenSpacedElement3D).RenderCore as IScreenSpacedRenderParams).SizeScale = (float)(double)e.NewValue;
                 }));
 
         /// <summary>
@@ -86,17 +86,19 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 
-        protected ScreenSpacedMeshRenderCore screenSpaceCore;
+        protected IScreenSpacedRenderParams screenSpaceCore { get { return (IScreenSpacedRenderParams)RenderCore; } }
 
         protected override IRenderCore OnCreateRenderCore()
         {
-            screenSpaceCore = new ScreenSpacedMeshRenderCore();
-            return screenSpaceCore;
-        }
+            return new ScreenSpacedMeshRenderCore();
+        }      
 
         protected override bool OnAttach(IRenderHost host)
         {
             RenderCore.Attach(renderTechnique);
+            screenSpaceCore.RelativeScreenLocationX = (float)this.RelativeScreenLocationX;
+            screenSpaceCore.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
+            screenSpaceCore.SizeScale = (float)this.SizeScale;
             return base.OnAttach(host);
         }
 

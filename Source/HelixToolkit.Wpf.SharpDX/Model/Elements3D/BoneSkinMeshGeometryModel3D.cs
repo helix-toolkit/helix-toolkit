@@ -52,9 +52,9 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected readonly IElementsBufferModel<BoneIds> bonesBufferModel = new VertexBoneIdBufferModel<BoneIds>(BoneIds.SizeInBytes);
-        private BoneSkinRenderCore boneSkinRenderCore
+        private IBoneSkinRenderParams boneSkinRenderCore
         {
-            get { return (BoneSkinRenderCore)RenderCore; }
+            get { return (IBoneSkinRenderParams)RenderCore; }
         }
 
         protected override IRenderTechnique SetRenderTechnique(IRenderHost host)

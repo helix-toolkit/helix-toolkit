@@ -41,31 +41,31 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty MaxTessellationFactorProperty =
             DependencyProperty.Register("MaxTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new AffectsRenderPropertyMetadata(1.0, (d, e) =>
             {
-                if (((GeometryModel3D)d).RenderCore is IPatchRenderCore)
+                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
                 {
-                    (((GeometryModel3D)d).RenderCore as IPatchRenderCore).MaxTessellationFactor = (float)(double)e.NewValue;
+                    (((GeometryModel3D)d).RenderCore as IPatchRenderParams).MaxTessellationFactor = (float)(double)e.NewValue;
                 }
             }));
 
         public static readonly DependencyProperty MinTessellationFactorProperty =
             DependencyProperty.Register("MinTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new AffectsRenderPropertyMetadata(2.0, (d, e) =>
             {
-                if (((GeometryModel3D)d).RenderCore is IPatchRenderCore)
-                    (((GeometryModel3D)d).RenderCore as IPatchRenderCore).MinTessellationFactor = (float)(double)e.NewValue;
+                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
+                    (((GeometryModel3D)d).RenderCore as IPatchRenderParams).MinTessellationFactor = (float)(double)e.NewValue;
             }));
 
         public static readonly DependencyProperty MaxTessellationDistanceProperty =
             DependencyProperty.Register("MaxTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new AffectsRenderPropertyMetadata(50.0, (d, e) =>
             {
-                if (((GeometryModel3D)d).RenderCore is IPatchRenderCore)
-                    (((GeometryModel3D)d).RenderCore as IPatchRenderCore).MaxTessellationDistance = (float)(double)e.NewValue;
+                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
+                    (((GeometryModel3D)d).RenderCore as IPatchRenderParams).MaxTessellationDistance = (float)(double)e.NewValue;
             }));
 
         public static readonly DependencyProperty MinTessellationDistanceProperty =
             DependencyProperty.Register("MinTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new AffectsRenderPropertyMetadata(1.0, (d, e) =>
             {
-                if (((GeometryModel3D)d).RenderCore is IPatchRenderCore)
-                    (((GeometryModel3D)d).RenderCore as IPatchRenderCore).MinTessellationDistance = (float)(double)e.NewValue;
+                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
+                    (((GeometryModel3D)d).RenderCore as IPatchRenderParams).MinTessellationDistance = (float)(double)e.NewValue;
             }));
 
 
@@ -73,8 +73,8 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("MeshTopology", typeof(MeshTopologyEnum), typeof(MeshGeometryModel3D), new AffectsRenderPropertyMetadata(
                 MeshTopologyEnum.PNTriangles, (d, e) =>
                 {
-                    if (((GeometryModel3D)d).RenderCore is IPatchRenderCore)
-                        (((GeometryModel3D)d).RenderCore as IPatchRenderCore).MeshType = (MeshTopologyEnum)e.NewValue;
+                    if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
+                        (((GeometryModel3D)d).RenderCore as IPatchRenderParams).MeshType = (MeshTopologyEnum)e.NewValue;
                 }));
 
         public bool FrontCounterClockwise
@@ -183,7 +183,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var c = core as IInvertNormal;
             c.InvertNormal = this.InvertNormal;
-            var tessCore = core as IPatchRenderCore;
+            var tessCore = core as IPatchRenderParams;
             if (tessCore != null)
             {
                 tessCore.MaxTessellationFactor = (float)this.MaxTessellationFactor;

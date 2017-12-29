@@ -64,12 +64,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 
-        public static DependencyProperty OutlineFadingFactorProperty = DependencyProperty.Register("OutlineFadingFactor", typeof(float), typeof(OutLineMeshGeometryModel3D),
-            new AffectsRenderPropertyMetadata(1.5f, (d, e) => {
-                ((d as OutLineMeshGeometryModel3D).RenderCore as MeshOutlineRenderCore).OutlineFadingFactor = (float)e.NewValue;
+        public static DependencyProperty OutlineFadingFactorProperty = DependencyProperty.Register("OutlineFadingFactor", typeof(double), typeof(OutLineMeshGeometryModel3D),
+            new AffectsRenderPropertyMetadata(1.5, (d, e) => {
+                ((d as OutLineMeshGeometryModel3D).RenderCore as MeshOutlineRenderCore).OutlineFadingFactor = (float)(double)e.NewValue;
             }));
 
-        public float OutlineFadingFactor
+        public double OutlineFadingFactor
         {
             set
             {
@@ -77,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (float)GetValue(OutlineFadingFactorProperty);
+                return (double)GetValue(OutlineFadingFactorProperty);
             }
         }
 
@@ -91,7 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var c = core as MeshOutlineRenderCore;
             c.Color = this.OutlineColor.ToColor4();
             c.OutlineEnabled = this.EnableOutline;
-            c.OutlineFadingFactor = this.OutlineFadingFactor;
+            c.OutlineFadingFactor = (float)this.OutlineFadingFactor;
             c.DrawMesh = this.IsDrawGeometry;
             base.AssignDefaultValuesToCore(core);
         }

@@ -23,7 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new AffectsRenderPropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as BillboardTextModel3D).RenderCore as BillboardRenderCore).FixedSize = (bool)e.NewValue;
+                    ((d as BillboardTextModel3D).RenderCore as IBillboardRenderParams).FixedSize = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
             base.AssignDefaultValuesToCore(core);
-            (core as BillboardRenderCore).FixedSize = FixedSize;
+            (core as IBillboardRenderParams).FixedSize = FixedSize;
         }
 
         protected override IGeometryBufferModel OnCreateBufferModel()

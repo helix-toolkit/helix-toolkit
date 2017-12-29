@@ -10,8 +10,8 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public AmbientLight3D()
         {
-            this.Color = System.Windows.Media.Colors.DarkGray;
             this.LightType = LightType.Ambient;
+            Color = System.Windows.Media.Colors.DimGray;
         }
 
         protected override void OnRender(IRenderContext context)

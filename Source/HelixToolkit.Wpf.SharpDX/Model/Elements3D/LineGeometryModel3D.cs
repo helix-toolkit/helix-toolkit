@@ -11,42 +11,41 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
     using System.Windows;
     using Core;
     using global::SharpDX;
     using global::SharpDX.Direct3D11;
+    using Media = System.Windows.Media;
 
     public class LineGeometryModel3D : InstanceGeometryModel3D
     {
         #region Dependency Properties
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Color), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(Color.Black, (d, e) =>
+            DependencyProperty.Register("Color", typeof(Media.Color), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(Media.Colors.Black, (d, e) =>
             {
-                ((d as LineGeometryModel3D).RenderCore as LineRenderCore).LineColor = (Color)e.NewValue;
+                ((d as LineGeometryModel3D).RenderCore as LineRenderCore).LineColor = ((Media.Color)e.NewValue).ToColor4();
             }));
 
         public static readonly DependencyProperty ThicknessProperty =
             DependencyProperty.Register("Thickness", typeof(double), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(1.0, (d, e) =>
             {
-                ((d as LineGeometryModel3D).RenderCore as LineRenderCore).LineParams.X = (float)(double)e.NewValue;
+                ((d as LineGeometryModel3D).RenderCore as LineRenderCore).Thickness = (float)(double)e.NewValue;
             }));
 
         public static readonly DependencyProperty SmoothnessProperty =
             DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new AffectsRenderPropertyMetadata(0.0,
             (d, e) =>
             {
-                ((d as LineGeometryModel3D).RenderCore as LineRenderCore).LineParams.Y = (float)(double)e.NewValue;
+                ((d as LineGeometryModel3D).RenderCore as LineRenderCore).Smoothness = (float)(double)e.NewValue;
             }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
             DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0));
 
-        [TypeConverter(typeof(Utilities.ColorConverter))]
-        public Color Color
+        public Media.Color Color
         {
-            get { return (Color)this.GetValue(ColorProperty); }
+            get { return (Media.Color)this.GetValue(ColorProperty); }
             set { this.SetValue(ColorProperty, value); }
         }
 
@@ -81,11 +80,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IRenderCore OnCreateRenderCore()
         {
-            var core = new LineRenderCore();
-            core.LineColor = Color;
-            core.LineParams.X = (float)Thickness;
-            core.LineParams.Y = (float)Smoothness;
-            return core;
+            return new LineRenderCore();
+        }
+
+        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        {
+            var c = core as ILineRenderParams;
+            c.LineColor = Color.ToColor4();
+            c.Thickness = (float)Thickness;
+            c.Smoothness = (float)Smoothness;
+            base.AssignDefaultValuesToCore(core);
         }
 
         protected override bool CheckGeometry()
@@ -203,29 +207,18 @@ namespace HelixToolkit.Wpf.SharpDX
             var positions = geometry.Positions;
             var vertexCount = geometry.Positions.Count;
             var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new LinesVertex[vertexCount];
+            var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
             if (ReuseVertexArrayBuffer)
             {
                 vertexArrayBuffer = array;
             }
-            if (geometry.Colors != null && geometry.Colors.Any())
-            {
-                var colors = geometry.Colors;
 
-                for (var i = 0; i < vertexCount; i++)
-                {
-                    array[i].Position = new Vector4(positions[i], 1f);
-                    array[i].Color = colors[i];
-                }
-            }
-            else
+            for (var i = 0; i < vertexCount; i++)
             {
-                for (var i = 0; i < vertexCount; i++)
-                {
-                    array[i].Position = new Vector4(positions[i], 1f);
-                    array[i].Color = Color.White;
-                }
-            }
-
+                colors.MoveNext();
+                array[i].Position = new Vector4(positions[i], 1f);
+                array[i].Color = colors.Current;
+            }           
             return array;
         }
     }

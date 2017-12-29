@@ -5,24 +5,20 @@
     using System.Linq;
     using System.Windows;
     using global::SharpDX;
-    using global::SharpDX.Direct3D;
     using global::SharpDX.Direct3D11;
-
-    using HelixToolkit.Wpf.SharpDX.Extensions;
-    using HelixToolkit.Wpf.SharpDX.Utilities;
-
-    using Color = global::SharpDX.Color;
+    using Utilities;
     using System;
     using Core;
+    using Media = System.Windows.Media;
 
     public class PointGeometryModel3D : InstanceGeometryModel3D
     {
         #region Dependency Properties
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Color), typeof(PointGeometryModel3D),
-                new AffectsRenderPropertyMetadata(Color.Black, (d, e) =>
+            DependencyProperty.Register("Color", typeof(Media.Color), typeof(PointGeometryModel3D),
+                new AffectsRenderPropertyMetadata(Media.Colors.Black, (d, e) =>
                 {
-                    (d as PointGeometryModel3D).pointRenderCore.PointColor = (Color)e.NewValue;
+                    (d as PointGeometryModel3D).pointRenderCore.PointColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
         public static readonly DependencyProperty SizeProperty =
@@ -30,33 +26,31 @@
                 (d,e)=> 
                 {
                     var size = (Size)e.NewValue;
-                    (d as PointGeometryModel3D).pointRenderCore.PointParams.X = (float)size.Width;
-                    (d as PointGeometryModel3D).pointRenderCore.PointParams.Y = (float)size.Height;
+                    (d as PointGeometryModel3D).pointRenderCore.Width = (float)size.Width;
+                    (d as PointGeometryModel3D).pointRenderCore.Height = (float)size.Height;
                 }));
 
         public static readonly DependencyProperty FigureProperty =
             DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(PointFigure.Rect,
                 (d, e)=> 
                 {
-                    var figure = (PointFigure)e.NewValue;
-                    (d as PointGeometryModel3D).pointRenderCore.PointParams.Z = (float)figure;
+                    (d as PointGeometryModel3D).pointRenderCore.Figure = (PointFigure)e.NewValue;
                 }));
 
         public static readonly DependencyProperty FigureRatioProperty =
             DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(0.25,
                 (d, e)=> 
                 {
-                    var ratio = (double)e.NewValue;
-                    (d as PointGeometryModel3D).pointRenderCore.PointParams.W = (float)ratio;
+                    (d as PointGeometryModel3D).pointRenderCore.FigureRatio = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
             DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new UIPropertyMetadata(4.0));
 
-        [TypeConverter(typeof(ColorConverter))]
-        public Color Color
+
+        public Media.Color Color
         {
-            get { return (Color)this.GetValue(ColorProperty); }
+            get { return (Media.Color)this.GetValue(ColorProperty); }
             set { this.SetValue(ColorProperty, value); }
         }
 
@@ -87,11 +81,11 @@
         [ThreadStatic]
         private static PointsVertex[] vertexArrayBuffer;
 
-        private PointRenderCore pointRenderCore
+        private IPointRenderParams pointRenderCore
         {
             get
             {
-                return (PointRenderCore)RenderCore;
+                return (IPointRenderParams)RenderCore;
             }
         }
 
@@ -123,11 +117,12 @@
         protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
             base.AssignDefaultValuesToCore(core);
-            pointRenderCore.PointParams.X = (float)Size.Width;
-            pointRenderCore.PointParams.Y = (float)Size.Height;
-            pointRenderCore.PointParams.Z = (float)Figure;
-            pointRenderCore.PointParams.W = (float)FigureRatio;
-            pointRenderCore.PointColor = Color;
+            var c = core as IPointRenderParams;
+            c.Width = (float)Size.Width;
+            c.Height = (float)Size.Height;
+            c.Figure = Figure;
+            c.FigureRatio = (float)FigureRatio;
+            c.PointColor = Color.ToColor4();
         }
 
         protected override bool CanHitTest(IRenderContext context)
@@ -247,36 +242,22 @@
             var positions = geometry.Positions;
             var vertexCount = geometry.Positions.Count;
             var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new PointsVertex[vertexCount];
+            var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
             if (ReuseVertexArrayBuffer)
             {
                 vertexArrayBuffer = array;
             }
             if (geometry.Colors != null && geometry.Colors.Any())
             {
-                var colors = geometry.Colors;
                 for (var i = 0; i < vertexCount; i++)
                 {
+                    colors.MoveNext();
                     array[i].Position = new Vector4(positions[i], 1f);
-                    array[i].Color = colors[i];
-                }
-            }
-            else
-            {
-                for (var i = 0; i < vertexCount; i++)
-                {
-                    array[i].Position = new Vector4(positions[i], 1f);
-                    array[i].Color = Color.White;
+                    array[i].Color = colors.Current;
                 }
             }
 
             return array;
-        }
-
-        public enum PointFigure
-        {
-            Rect,
-            Ellipse,
-            Cross,
         }
     }
 
