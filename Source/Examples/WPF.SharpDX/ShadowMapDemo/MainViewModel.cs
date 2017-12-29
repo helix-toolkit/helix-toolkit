@@ -46,15 +46,14 @@ namespace ShadowMapDemo
         public Media3D.Transform3D PlaneTransform { get; private set; }
         public Media3D.Transform3DGroup LightCameraTransform { get; private set; } = new Media3D.Transform3DGroup();
         public Media3D.Transform3D LightDirectionTransform { get; set; }
-        public Vector3 DirectionalLightDirection { get; private set; }
+        //public Vector3 DirectionalLightDirection { get; private set; }
         public Color4 DirectionalLightColor { get; private set; }
         public Color4 AmbientLightColor { get; private set; }
         public Vector2 ShadowMapResolution { get; private set; }
 
         public double XValue { get { return this.xvalue; } set { this.SetXValue(value); } }
-        public bool IsAnimated { get { return this.isAnimated; } set { this.OnAnimatedChanged(value); } }
         public Camera Camera1 { private set; get; }
-        public Camera Camera2 { private set; get; }
+        //public Camera Camera2 { private set; get; }
 
         public MainViewModel()
         {
@@ -67,15 +66,15 @@ namespace ShadowMapDemo
             // setup lighting            
             this.AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
             this.DirectionalLightColor = Color.White;
-            this.DirectionalLightDirection = new Vector3(-1, -1, -1);
+            //this.DirectionalLightDirection = new Vector3(-1, -1, -1);
            // this.LightDirectionTransform = CreateAnimatedTransform(-DirectionalLightDirection.ToVector3D(), new Vector3D(0, 1, -1), 24);
             this.ShadowMapResolution = new Vector2(2048, 2048);
 
             // camera setup
-            this.Camera = new PerspectiveCamera { Position = (Point3D)(-DirectionalLightDirection.ToVector3D()), LookDirection = DirectionalLightDirection.ToVector3D(), UpDirection = new Vector3D(0, 1, 0) };
-            Camera1 = new PerspectiveCamera { Position = (Point3D)(-DirectionalLightDirection.ToVector3D()), LookDirection = DirectionalLightDirection.ToVector3D(), UpDirection = new Vector3D(0, 1, 0) };
+            this.Camera = new PerspectiveCamera { Position =new Point3D(0,1,1), LookDirection = new Vector3D(0,-1,-1), UpDirection = new Vector3D(0, 1, 0) };
+            Camera1 = new PerspectiveCamera { Position = new Point3D(0,1,1), LookDirection = new Vector3D(0,-1,-1), UpDirection = new Vector3D(0, 1, 0) };
 
-            Camera2 = new PerspectiveCamera { Position = (Point3D)(-DirectionalLightDirection.ToVector3D()), LookDirection = DirectionalLightDirection.ToVector3D(), UpDirection = new Vector3D(0, 1, 0) };
+            //Camera2 = new PerspectiveCamera { Position = (Point3D)(-DirectionalLightDirection.ToVector3D()), LookDirection = DirectionalLightDirection.ToVector3D(), UpDirection = new Vector3D(0, 1, 0) };
             // floor plane grid
             //Grid = LineBuilder.GenerateGrid();
             //GridColor = SharpDX.Color.Black;
@@ -124,7 +123,7 @@ namespace ShadowMapDemo
                 //Vector4 v = new Vector4(0, 1, 0, 0);
                 var m = LightCameraTransform.ToMatrix();
                 var v = new Vector3(m.M21, m.M22, m.M23);
-                DirectionalLightDirection = v.Normalized();
+                Camera1.LookDirection = v.Normalized().ToVector3D();
                 Debug.WriteLine($"m11:{m.M31}, m22:{m.M32}, m23:{m.M33}");
             }
         }
@@ -159,19 +158,5 @@ namespace ShadowMapDemo
             lightTrafo.Children.Add(rotateTransform);            
             return lightTrafo;
         }
-
-        private void OnAnimatedChanged(bool value)
-        {
-            this.isAnimated = value;
-            if (value)
-            {
-                this.LightDirectionTransform = CreateAnimatedTransform(-DirectionalLightDirection.ToVector3D(), new Vector3D(0, 1, -1), 24);
-            }
-            else
-            {
-                this.LightDirectionTransform = Media3D.Transform3D.Identity;
-            }
-        }
-        private bool isAnimated = true;
     }
 }

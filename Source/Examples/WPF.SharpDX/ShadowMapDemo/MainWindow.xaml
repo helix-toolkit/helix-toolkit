@@ -58,7 +58,7 @@
             </hx:Viewport3DX.InputBindings>
             
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
-            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction="{Binding DirectionalLightDirection}"/>
+            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction="{Binding Camera1.LookDirection}"/>
             <hx:ShadowMap3D x:Name="shadowMap" Resolution="{Binding ShadowMapResolution}" LightCamera="{Binding Camera2}"/>
             <hx:DraggableGeometryModel3D x:Name="lightCamera" Geometry="{Binding LightCameraModel}" Transform="{Binding LightCameraTransform, Mode=TwoWay}" Material="{Binding LightCameraMaterial}"/>
             <hx:UICompositeManipulator3D  CanRotateX="true" CanRotateY="true" CanRotateZ="true"                                                                                    
