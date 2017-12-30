@@ -226,7 +226,6 @@ namespace HelixToolkit.UWP.Utilities
                 context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
                 using (stream)
                 {
-                    stream.Seek(offset, System.IO.SeekOrigin.Begin);
                     stream.Write(data);
                     context.UnmapSubresource(buffer, 0);
                 }
