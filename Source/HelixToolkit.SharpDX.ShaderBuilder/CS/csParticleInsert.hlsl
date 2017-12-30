@@ -33,8 +33,6 @@ static const float3 direction[8] =
 	normalize(float3(1.0f, -1.0f, -1.0f))
 };
 
-AppendStructuredBuffer<Particle> NewSimulationState : register(u1);
-
 [numthreads(8, 1, 1)]
 void main(uint3 GroupThreadID : SV_GroupThreadID)
 {

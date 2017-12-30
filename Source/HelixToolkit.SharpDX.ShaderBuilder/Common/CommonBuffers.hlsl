@@ -1,12 +1,13 @@
 #ifndef CBUFFERS_HLSL
 #define CBUFFERS_HLSL
-
+#include"DataStructs.hlsl"
 #pragma pack_matrix( row_major )
 
+///------------------Constant Buffers-----------------------
 //--------------------------------------------------------------------------------------
 // Perframe Buffers
 //--------------------------------------------------------------------------------------
-cbuffer cbTransforms
+cbuffer cbTransforms : register(b0)
 {
     float4x4 mView;
     float4x4 mProjection;
@@ -23,7 +24,7 @@ cbuffer cbTransforms
 };
 
 //Per model
-cbuffer cbModel
+cbuffer cbModel : register(b1)
 {
     float4x4 mWorld;
     bool bInvertNormal = false;
@@ -35,37 +36,26 @@ cbuffer cbModel
     bool4 bParams = bool4(false, false, false, false); // Shared with models for enable/disable features
 };
 
-#ifdef TESSELLATION
-cbuffer cbTessellation
+
+cbuffer cbTessellation : register(b2)
 {
 	float minTessDistance = 1;
 	float maxTessDistance = 100;
 	float minTessFactor = 4;
 	float maxTessFactor = 1;
 };
-#endif
 
-#ifdef MATERIAL
-#define LIGHTS 8
-//--------------------------------------------------------------------------------------
-// Light Buffer
-//--------------------------------------------------------------------------------------
-struct LightStruct
+#define MaxBones 128
+
+static const int4 minBoneV = { 0, 0, 0, 0 };
+static const int4 maxBoneV = { MaxBones - 1, MaxBones - 1, MaxBones - 1, MaxBones - 1 };
+
+cbuffer BoneSkinning : register(b3)
 {
-    int iLightType; //4
-    bool bLightEnable;
-    float2 paddingL;
-	// the light direction is here the vector which looks towards the light
-    float4 vLightDir; //8
-    float4 vLightPos; //12
-    float4 vLightAtt; //16
-    float4 vLightSpot; //(outer angle , inner angle, falloff, free), 20
-    float4 vLightColor; //24
-    matrix mLightView; //40
-    matrix mLightProj; //56
+    matrix cbSkinMatrices[MaxBones];
 };
 
-cbuffer cbLights
+cbuffer cbLights : register(b4)
 {
     LightStruct Lights[LIGHTS];
     float4 vLightAmbient = float4(0.2f, 0.2f, 0.2f, 1.0f);
@@ -78,7 +68,7 @@ cbuffer cbLights
 //--------------------------------------------------------------------------------------
 // CONSTANT BUFF FOR MATERIAL
 //--------------------------------------------------------------------------------------
-cbuffer cbMaterial
+cbuffer cbMaterial : register(b5)
 {
     float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient
     float4 vMaterialDiffuse = 0.5f; //Kd := surface material's diffuse coefficient
@@ -96,26 +86,7 @@ cbuffer cbMaterial
 	float4 displacementMapScaleMask = float4(0,0,0,1);
 };
 
-Texture2D texDiffuseMap;
-Texture2D texAlphaMap;
-Texture2D texNormalMap;
-Texture2D texDisplacementMap;
-TextureCube texCubeMap;
-Texture2D texShadowMap;
-
-SamplerState samplerDiffuse;
-
-SamplerState samplerAlpha;
-
-SamplerState samplerNormal;
-
-SamplerState samplerDisplace;
-
-SamplerState samplerCube;
-
-SamplerComparisonState samplerShadow;
-
-cbuffer cbShadow
+cbuffer cbShadow : register(b6)
 {
     float2 vShadowMapSize = float2(1024, 1024);
     bool bHasShadowMap = false;
@@ -123,10 +94,8 @@ cbuffer cbShadow
     float4 vShadowMapInfo = float4(0.005, 1.0, 0.5, 0.0);
 	float4x4 vLightViewProjection;
 };
-#endif
 
-#ifdef CLIPPLANE
-cbuffer cbClipping
+cbuffer cbClipping : register(b7)
 {
 	bool4 EnableCrossPlane;
     float4 CrossSectionColors;
@@ -137,63 +106,80 @@ cbuffer cbClipping
 	// M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin
 	float4x4 CrossPlaneParams;
 }
-#endif
 
-
-#ifdef PARTICLE
-cbuffer cbParticleRandoms
+cbuffer cbParticleFrame : register(b8)
 {
+    uint NumParticles;
+    float3 ExtraAccelation;
 
+    float TimeFactors;
+    float3 DomainBoundsMax;
+
+    float3 DomainBoundsMin;
+    uint CumulateAtBound;
+
+    float3 ConsumerLocation;
+    float ConsumerGravity;
+
+    float ConsumerRadius;
+    float3 RandomVector;
+
+    uint RandomSeed;
+    uint NumTexCol;
+    uint NumTexRow;
+    bool AnimateByEnergyLevel;
+    float2 ParticleSize;
+    float2 pad0;
 };
 
-cbuffer cbParticleFrame
+cbuffer cbParticleCreateParameters : register(b9)
 {
-	uint NumParticles;
-	float3 ExtraAccelation;
+    float3 EmitterLocation;
+    float InitialEnergy;
 
-    float TimeFactors; 
-	float3 DomainBoundsMax;
+    float EmitterRadius;
+    float2 pad2;
+    float InitialVelocity;
 
-	float3 DomainBoundsMin;         
-	uint CumulateAtBound;
+    float4 ParticleBlendColor;
 
-	float3 ConsumerLocation;
-	float ConsumerGravity;
-
-	float ConsumerRadius;
-	float3 RandomVector;
-
-	uint RandomSeed;
-	uint NumTexCol;
-	uint NumTexRow;
-	bool AnimateByEnergyLevel;
-	float2 ParticleSize;
-	float2 pad0;
+    float EnergyDissipationRate; //Energy dissipation rate per second
+    float3 InitialAcceleration;
 };
 
-cbuffer cbParticleCreateParameters
-{
-	float3 EmitterLocation;
-	float InitialEnergy;
+///------------------Textures---------------------
+Texture2D texDiffuseMap : register(t0);
+Texture2D texAlphaMap : register(t1);
+Texture2D texNormalMap : register(t2);
+Texture2D texDisplacementMap : register(t3);
+TextureCube texCubeMap : register(t4);
+Texture2D texShadowMap : register(t5);
 
-	float EmitterRadius;
-	float2 pad2;
-	float InitialVelocity;
+Texture2D texParticle : register(t0);
+StructuredBuffer<Particle> SimulationState : register(t0);
+Texture2D billboardTexture : register(t0);; // billboard text image
 
-	float4 ParticleBlendColor;
+///------------------Samplers-------------------
+SamplerState samplerDiffuse : register(s0);
 
-	float EnergyDissipationRate; //Energy dissipation rate per second
-	float3 InitialAcceleration;
-};
+SamplerState samplerAlpha : register(s1);
 
-Texture2D texParticle;
-SamplerState samplerParticle
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = Wrap;
-    AddressV = Wrap;
-    MaxAnisotropy = 2;
-};
-#endif
+SamplerState samplerNormal : register(s2);
+
+SamplerState samplerDisplace : register(s3);
+
+SamplerState samplerCube : register(s4);
+
+SamplerComparisonState samplerShadow : register(s5);
+
+SamplerState samplerParticle : register(s6);
+
+SamplerState samplerBillboard : register(s7);
+
+///---------------------UAV-----------------------------
+
+ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);
+AppendStructuredBuffer<Particle> NewSimulationState : register(u1);
+
 
 #endif

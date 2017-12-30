@@ -4,8 +4,6 @@
 #include"..\Common\CommonBuffers.hlsl"
 #include"..\Common\DataStructs.hlsl"
 
-StructuredBuffer<Particle> SimulationState;
-
 //--------------------------------------------------------------------------------
 ParticleGS_INPUT main(in ParticleVS_INPUT input, in uint vertexid : SV_VertexID)
 {

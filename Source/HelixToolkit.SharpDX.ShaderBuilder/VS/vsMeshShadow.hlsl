@@ -3,7 +3,7 @@
 #include"..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )
 
-PSShadow main(VSInput input) : SV_Position
+PSShadow main(VSInput input)
 {
     PSShadow output = (PSShadow)0;
 	output.p = input.p;

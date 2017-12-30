@@ -95,8 +95,10 @@ namespace HelixToolkit.UWP.Shaders
 
         /// <summary>
         /// Create Shader.
+        /// <para>All constant buffers for all shaders are created here./></para>
         /// </summary>
         /// <param name="device"></param>
+        /// <param name="pool"></param>
         /// <returns></returns>
         public IShader CreateShader(Device device, IConstantBufferPool pool)
         {

@@ -16,36 +16,51 @@ namespace HelixToolkit.UWP.Utilities
     ///
     /// </summary>
     /// <typeparam name="INDEXTYPE"></typeparam>
+    /// <typeparam name="NAMETYPE"></typeparam>
     /// <typeparam name="DATATYPE"></typeparam>
     public class MappingCollection<INDEXTYPE, NAMETYPE, DATATYPE>
     {
-        private readonly Dictionary<INDEXTYPE, Tuple<NAMETYPE, DATATYPE>> indexMapping = new Dictionary<INDEXTYPE, Tuple<NAMETYPE, DATATYPE>>();
-        private readonly Dictionary<NAMETYPE, INDEXTYPE> nameMapping = new Dictionary<NAMETYPE, INDEXTYPE>();
+        private readonly Dictionary<INDEXTYPE, NAMETYPE> indexNameMapping = new Dictionary<INDEXTYPE, NAMETYPE>();
+        private readonly Dictionary<NAMETYPE, INDEXTYPE> nameIndexMapping = new Dictionary<NAMETYPE, INDEXTYPE>();
+        private readonly Dictionary<INDEXTYPE, DATATYPE> indexDataMapping = new Dictionary<INDEXTYPE, DATATYPE>();
 
-        public IEnumerable<DATATYPE> Datas { get { return indexMapping.Values.Select(x => x.Item2); } }
-        public IEnumerable<Tuple<INDEXTYPE, DATATYPE>> DataMapping { get { return indexMapping.Select(x => Tuple.Create(x.Key, x.Value.Item2)); } }
-        public int Count { get { return indexMapping.Count; } }
-
+        public IEnumerable<DATATYPE> Datas { get { return indexDataMapping.Values; } }
+        /// <summary>
+        /// 
+        /// </summary>
+        public IEnumerable<KeyValuePair<INDEXTYPE, DATATYPE>> DataMapping { get { return indexDataMapping; } }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Count { get { return indexNameMapping.Count; } }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="name"></param>
+        /// <param name="item"></param>
         public void Add(INDEXTYPE index, NAMETYPE name,  DATATYPE item)
         {
-            if (nameMapping.ContainsKey(name))
+            if (nameIndexMapping.ContainsKey(name))
             {
                 throw new ArgumentException("Cannot add duplicate name.");
             }
-            if (indexMapping.ContainsKey(index))
+            if (indexNameMapping.ContainsKey(index))
             {
                 throw new ArgumentException("Cannot add duplicate index");
             }
-            indexMapping.Add(index, Tuple.Create(name, item));
-            nameMapping.Add(name, index);
+            indexNameMapping.Add(index, name);
+            nameIndexMapping.Add(name, index);
+            indexDataMapping.Add(index, item);
         }
 
         public bool Remove(INDEXTYPE index)
         {
-            if (indexMapping.ContainsKey(index))
+            if (indexNameMapping.ContainsKey(index))
             {
-                nameMapping.Remove(indexMapping[index].Item1);
-                indexMapping.Remove(index);
+                nameIndexMapping.Remove(indexNameMapping[index]);
+                indexNameMapping.Remove(index);
+                indexDataMapping.Remove(index);
                 return true;
             }
             else
@@ -56,10 +71,10 @@ namespace HelixToolkit.UWP.Utilities
 
         public bool Remove(NAMETYPE name)
         {
-            if (nameMapping.ContainsKey(name))
+            if (nameIndexMapping.ContainsKey(name))
             {
-                indexMapping.Remove(nameMapping[name]);
-                nameMapping.Remove(name);
+                indexNameMapping.Remove(nameIndexMapping[name]);
+                nameIndexMapping.Remove(name);
                 return true;
             }
             else
@@ -67,46 +82,106 @@ namespace HelixToolkit.UWP.Utilities
                 return false;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool HasItem(INDEXTYPE id)
         {
-            return indexMapping.ContainsKey(id);
+            return indexNameMapping.ContainsKey(id);
         }
-
-        public bool TryGetItem(INDEXTYPE id, out Tuple<NAMETYPE, DATATYPE> data)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public bool TryGetItem(INDEXTYPE id, out DATATYPE data)
         {
-            return indexMapping.TryGetValue(id, out data);
+            return indexDataMapping.TryGetValue(id, out data);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public bool TryGetSlot(NAMETYPE name, out INDEXTYPE index)
+        {
+            return nameIndexMapping.TryGetValue(name, out index);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool TryGetName(INDEXTYPE id, out NAMETYPE name)
+        {
+            return indexNameMapping.TryGetValue(id, out name);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public bool HasItem(NAMETYPE name)
         {
-            return nameMapping.ContainsKey(name);
+            return nameIndexMapping.ContainsKey(name);
         }
-
-        public bool TryGetItem(NAMETYPE name, out INDEXTYPE type)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public bool TryGetItem(NAMETYPE name, out DATATYPE data)
         {
-            return nameMapping.TryGetValue(name, out type);
+            INDEXTYPE idx;
+            if(nameIndexMapping.TryGetValue(name, out idx) && indexDataMapping.TryGetValue(idx, out data))
+            {
+                return true;
+            }
+            else
+            {
+                data = default(DATATYPE);
+                return false;
+            }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void Clear()
         {
-            nameMapping.Clear();
-            indexMapping.Clear();
+            nameIndexMapping.Clear();
+            indexNameMapping.Clear();
+            indexDataMapping.Clear();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public IEnumerable<INDEXTYPE> Keys
         {
-            get { return indexMapping.Keys; }
+            get { return indexNameMapping.Keys; }
         }
-
-        public Tuple<NAMETYPE, DATATYPE> this[INDEXTYPE key]
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public DATATYPE this[INDEXTYPE key]
         {
-            get { return indexMapping[key]; }
+            get { return indexDataMapping[key]; }
         }
-
-        public Tuple<NAMETYPE, DATATYPE> this[NAMETYPE name]
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public INDEXTYPE this[NAMETYPE name]
         {
-            get { return indexMapping[nameMapping[name]]; }
+            get { return nameIndexMapping[name]; }
         }
     }
 }

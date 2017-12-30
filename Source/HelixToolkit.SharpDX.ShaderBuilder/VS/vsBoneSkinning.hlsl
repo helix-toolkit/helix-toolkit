@@ -5,15 +5,6 @@
 #include"..\Common\Common.hlsl"
 
 #pragma pack_matrix( row_major )
-#define MaxBones 128
-
-static const int4 minBoneV = { 0, 0, 0, 0 };
-static const int4 maxBoneV = { MaxBones - 1, MaxBones - 1, MaxBones - 1, MaxBones - 1 };
-
-cbuffer cbBoneSkinning
-{
-    matrix cbSkinMatrices[MaxBones];
-};
 
 PSInput main(VSBoneSkinInput input)
 {

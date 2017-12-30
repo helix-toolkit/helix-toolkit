@@ -3,15 +3,7 @@
 
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
-
-Texture2D billboardTexture; // billboard text image
-SamplerState samplerBillboard
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = Wrap;
-    AddressV = Wrap;
-    MaxAnisotropy = 4;
-};
+#include"..\Common\CommonBuffers.hlsl"
 
 static const uint BillboardSingleText = 1;
 static const uint BillboardMultiText = 2;

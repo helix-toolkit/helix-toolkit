@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP.Shaders
     public sealed class MappingProxy<MappingType> where MappingType : class
     {
         private readonly MappingCollection<int, string, MappingType> mappingCollection = new MappingCollection<int, string, MappingType>();
-        public IEnumerable<Tuple<int, MappingType>> Mappings { get { return mappingCollection.DataMapping; } }
+        public IEnumerable<KeyValuePair<int, MappingType>> Mappings { get { return mappingCollection.DataMapping; } }
 
         public int Count { get { return mappingCollection.Count; } }
 
@@ -49,7 +49,7 @@ namespace HelixToolkit.UWP.Shaders
         public int TryGetBindSlot(string name)
         {
             int item;
-            return mappingCollection.TryGetItem(name, out item) ? item : -1;
+            return mappingCollection.TryGetSlot(name, out item) ? item : -1;
         }
         /// <summary>
         /// Try to get name by register slot. If failed, return empty string;
@@ -58,8 +58,8 @@ namespace HelixToolkit.UWP.Shaders
         /// <returns></returns>
         public string TryGetName(int slot)
         {
-            Tuple<string, MappingType> item;
-            return mappingCollection.TryGetItem(slot, out item) ? item.Item1 : "";
+            string item;
+            return mappingCollection.TryGetName(slot, out item) ? item : "";
         }
         /// <summary>
         /// 
@@ -68,21 +68,27 @@ namespace HelixToolkit.UWP.Shaders
         /// <returns></returns>
         public MappingType GetMapping(string name)
         {
-            if (mappingCollection.HasItem(name))
+            MappingType item;
+            if(mappingCollection.TryGetItem(name, out item))
             {
-                return mappingCollection[name].Item2;
+                return item;
             }
             else
             {
                 return null;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="slot"></param>
+        /// <returns></returns>
         public MappingType GetMapping(int slot)
         {
-            if (mappingCollection.HasItem(slot))
+            MappingType item;
+            if (mappingCollection.TryGetItem(slot, out item))
             {
-                return mappingCollection[slot].Item2;
+                return item;
             }
             else
             {

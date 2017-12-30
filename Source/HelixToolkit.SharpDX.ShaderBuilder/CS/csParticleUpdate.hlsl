@@ -4,9 +4,6 @@
 #include"..\Common\CommonBuffers.hlsl"
 #include"..\Common\DataStructs.hlsl"
 
-ConsumeStructuredBuffer<Particle> CurrentSimulationState;
-AppendStructuredBuffer<Particle> NewSimulationState;
-
 bool PointInBoundingBox(in float3 boundMax, in float3 boundMin, in float3 p)
 {
     return p.x < boundMax.x && p.x > boundMin.x && p.y < boundMax.y && p.y > boundMin.y && p.z < boundMax.z && p.z > boundMin.z;

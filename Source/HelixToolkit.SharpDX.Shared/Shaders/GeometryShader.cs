@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             foreach (var buff in this.ConstantBufferMapping.Mappings)
             {
-                context.GeometryShader.SetConstantBuffer(buff.Item1, buff.Item2.Buffer);
+                context.GeometryShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
             }
         }
 

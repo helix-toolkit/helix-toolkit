@@ -38,15 +38,18 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 
         public void UploadToBuffer(IBufferProxy buffer, DeviceContext context)
         {
-            if (buffer.Buffer.Description.Usage == ResourceUsage.Dynamic && buffer.StructureSize == SizeInBytes)
+            if (buffer.StructureSize == SizeInBytes)
             {
-                DataStream stream;
-                context.MapSubresource(buffer.Buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
-                using (stream)
+                if(buffer.Buffer.Description.Usage == ResourceUsage.Dynamic)
                 {
-                    stream.WriteRange(Lights, 0, Lights.Length);
-                    stream.Write(AmbientLight);
-                    context.UnmapSubresource(buffer.Buffer, 0);
+                    DataStream stream;
+                    context.MapSubresource(buffer.Buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
+                    using (stream)
+                    {
+                        stream.WriteRange(Lights, 0, Lights.Length);
+                        stream.Write(AmbientLight);
+                        context.UnmapSubresource(buffer.Buffer, 0);
+                    }
                 }
             }
             else

@@ -180,7 +180,7 @@ namespace HelixToolkit.UWP.Utilities
 
     public class ConstantBufferProxy : BufferProxyBase
     {
-        private readonly BufferDescription bufferDesc;
+        private BufferDescription bufferDesc;
         public ConstantBufferProxy(int structSize, BindFlags bindFlags = BindFlags.ConstantBuffer, 
             CpuAccessFlags cpuAccessFlags = CpuAccessFlags.None, ResourceOptionFlags optionFlags = ResourceOptionFlags.None, ResourceUsage usage = ResourceUsage.Default, int strideSize = 0)
             :base(structSize, bindFlags)
@@ -238,6 +238,18 @@ namespace HelixToolkit.UWP.Utilities
 
         public override void CreateBuffer(Device device)
         {
+            buffer = new SDX11.Buffer(device, bufferDesc);
+        }
+
+        /// <summary>
+        /// Special function to recreate existing constant buffer to new size.
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="structSize"></param>
+        public void ResizeBuffer(Device device, int structSize)
+        {
+            bufferDesc.SizeInBytes = structSize;
+            Disposer.RemoveAndDispose(ref buffer);
             buffer = new SDX11.Buffer(device, bufferDesc);
         }
 

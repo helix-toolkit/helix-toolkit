@@ -31,6 +31,10 @@ namespace HelixToolkit.UWP.Shaders
         public ResourceOptionFlags OptionFlags { set; get; } = ResourceOptionFlags.None;
         [DataMember]
         public ResourceUsage Usage { set; get; } = ResourceUsage.Dynamic;
+        [DataMember]
+        public ShaderStage Stage { set; get; }
+        [DataMember]
+        public int Slot { set; get; }
 
         public ConstantBufferDescription() { }
 

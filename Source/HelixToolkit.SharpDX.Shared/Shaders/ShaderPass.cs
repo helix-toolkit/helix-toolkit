@@ -105,7 +105,13 @@ namespace HelixToolkit.UWP.Shaders
         /// <see cref="IShaderPass.Name"/>
         /// </summary>
         public string Name { private set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsNULL { get; } = false;
+        /// <summary>
+        /// 
+        /// </summary>
         public const int VertexIdx = 0, HullIdx = 1, DomainIdx = 2, GeometryIdx = 3, PixelIdx = 4, ComputeIdx = 5;
         private readonly IShader[] shaders = new IShader[6];
         /// <summary>
@@ -202,7 +208,11 @@ namespace HelixToolkit.UWP.Shaders
                     return -1;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="arrayIndex"></param>
+        /// <returns></returns>
         public static ShaderStage GetShaderStageByArrayIndex(int arrayIndex)
         {
             switch (arrayIndex)

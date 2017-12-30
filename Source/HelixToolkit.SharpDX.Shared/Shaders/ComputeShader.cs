@@ -44,7 +44,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             foreach (var buff in this.ConstantBufferMapping.Mappings)
             {
-                context.ComputeShader.SetConstantBuffer(buff.Item1, buff.Item2.Buffer);
+                context.ComputeShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
             }
         }
         /// <summary>
