@@ -131,6 +131,11 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Geometry = mb.ToMeshGeometry3D();
         }
 
+        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+        {
+            return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse];
+        }
+
         protected override void OnRender(IRenderContext renderContext)
         {
             base.OnRender(renderContext);

@@ -169,7 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-        protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
+        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.Lines];
         }

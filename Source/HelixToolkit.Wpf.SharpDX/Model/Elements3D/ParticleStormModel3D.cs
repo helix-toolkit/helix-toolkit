@@ -563,7 +563,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new ParticleRenderCore();
         }
 
-        protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
+        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.ParticleStorm];
         }

@@ -87,7 +87,7 @@ namespace CustomShaderDemo
             return new RasterizerState(Device, rasterStateDesc);         
         }
 
-        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        protected override RenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.RenderTechniquesManager.RenderTechniques["RenderCustom"];
         }

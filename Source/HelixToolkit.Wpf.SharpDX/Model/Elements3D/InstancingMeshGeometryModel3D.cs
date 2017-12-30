@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
             model.instanceParamBuffer.Elements = e.NewValue as IList<InstanceParameter>;
         }
 
-        protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
+        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.InstancingBlinn];
         }

@@ -24,8 +24,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// A delegate function to change render technique. 
         /// <para>There are two ways to set render technique, one is use this <see cref="OnSetRenderTechnique"/> delegate.
-        /// The other one is to override the <see cref="SetRenderTechnique"/> function.</para>
-        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="SetRenderTechnique"/> function will be called.</para>
+        /// The other one is to override the <see cref="OnCreateRenderTechnique"/> function.</para>
+        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
         /// </summary>
         public SetRenderTechniqueFunc OnSetRenderTechnique;
         /// <summary>
@@ -167,11 +167,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="SetRenderTechnique"/> function will be called.</para>
+        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
         /// </summary>
         /// <param name="host"></param>
         /// <returns>Return RenderTechnique</returns>
-        protected virtual IRenderTechnique SetRenderTechnique(IRenderHost host)
+        protected virtual IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;           
         }
@@ -181,8 +181,8 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual void AssignDefaultValuesToCore(IRenderCore core) { }
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
-        /// <para>To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/></para>
-        /// <para>Attach Flow: <see cref="SetRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttached"/> -> <see cref="InvalidateRender"/></para>
+        /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
+        /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttached"/> -> <see cref="InvalidateRender"/></para>
         /// </summary>
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
@@ -196,7 +196,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new ArgumentException("EffectManger does not exist. Please make sure the proper EffectManager has been bind from view model.");
             }
-            this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : SetRenderTechnique(host);
+            this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : OnCreateRenderTechnique(host);
             if (renderTechnique != null)
             {
                 renderTechnique = RenderHost.EffectsManager[renderTechnique.Name];

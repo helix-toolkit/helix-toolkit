@@ -44,23 +44,12 @@ namespace HelixToolkit.Wpf.SharpDX
                     (d as Light3D).DirectionInternal = ((Vector3D)e.NewValue).ToVector3();
                 }));
 
-        public static readonly DependencyProperty DirectionTransformProperty =
-            DependencyProperty.Register("DirectionTransform", typeof(Transform3D), typeof(Light3D), new AffectsRenderPropertyMetadata(Transform3D.Identity, DirectionTransformPropertyChanged));
-
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Media.Color), typeof(Light3D), new AffectsRenderPropertyMetadata(Media.Colors.Gray, ColorChanged));
-
-
-        public LightType LightType { get; protected set; }
-
-
-        private static void ColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((Light3D)d).ColorInternal = ((Media.Color)e.NewValue).ToColor4();
-            ((Light3D)d).OnColorChanged(e);
-        }
-
-        protected virtual void OnColorChanged(DependencyPropertyChangedEventArgs e) { }
+            DependencyProperty.Register("Color", typeof(Media.Color), typeof(Light3D), new AffectsRenderPropertyMetadata(Media.Colors.Gray, (d,e)=>
+            {
+                ((Light3D)d).ColorInternal = ((Media.Color)e.NewValue).ToColor4();
+                ((Light3D)d).OnColorChanged(e);
+            }));
 
         /// <summary>
         /// Direction of the light.
@@ -72,16 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Vector3D)this.GetValue(DirectionProperty); }
             set { this.SetValue(DirectionProperty, value); }
         }
-        internal Vector3 DirectionInternal { private set; get; }
-        /// <summary>
-        /// Transforms the Direction Vector of the Light.
-        /// </summary>
-        public Transform3D DirectionTransform
-        {
-            get { return (Transform3D)this.GetValue(DirectionTransformProperty); }
-            set { this.SetValue(DirectionTransformProperty, value); }
-        }
-        internal Transform3D DirectionTransformInternal { private set; get; } = Transform3D.Identity;
+
         /// <summary>
         /// Color of the light.
         /// For simplicity, this color applies to the diffuse and specular properties of the light.
@@ -92,23 +72,16 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(ColorProperty, value); }
         }
 
+
+        public LightType LightType { get; protected set; }
+
+        internal Vector3 DirectionInternal { private set; get; }
+
         internal Color4 ColorInternal { private set; get; } = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private static void DirectionTransformPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var light = d as Light3D;
-            light.DirectionTransformInternal = e.NewValue == null ? null : (Transform3D)e.NewValue;
-            if (light.DirectionTransformInternal != null)
-            {
-                var trafo = light.DirectionTransformInternal.Value;
-                light.Direction = new Vector3D(trafo.OffsetX, trafo.OffsetY, trafo.OffsetZ);
-            }
-        }
-
         protected int lightIndex { private set; get; }
+
+        protected virtual void OnColorChanged(DependencyPropertyChangedEventArgs e) { }
 
         protected override bool OnAttach(IRenderHost host)
         {
@@ -117,11 +90,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.lightIndex = host.Light3DSceneShared.LightCount++;
                 host.Light3DSceneShared.LightCount = host.Light3DSceneShared.LightCount % LightsBufferModel.MaxLights;
-                if (host.IsShadowMapEnabled)
-                {
-                    //this.mLightView = this.effect.GetVariableByName("mLightView").AsMatrix();
-                    //this.mLightProj = this.effect.GetVariableByName("mLightProj").AsMatrix();
-                }
             }
             return true;
         }
@@ -158,29 +126,19 @@ namespace HelixToolkit.Wpf.SharpDX
                     (d as PointLightBase3D).RangeInternal = (double)e.NewValue;
                 }));
 
+        public static readonly DependencyProperty PositionProperty =
+            DependencyProperty.Register("Position", typeof(Point3D), typeof(PointLightBase3D), new AffectsRenderPropertyMetadata(new Point3D(),
+                (d,e)=> {
+                    (d as PointLightBase3D).PositionInternal = ((Point3D)e.NewValue).ToVector3();
+                }));
+
         /// <summary>
         /// The position of the model in world space.
         /// </summary>
         public Point3D Position
         {
             get { return (Point3D)this.GetValue(PositionProperty); }
-            private set { this.SetValue(PositionPropertyKey, value); }
-        }
-
-        internal Point3D PositionInternal { private set; get; }
-
-        private static readonly DependencyPropertyKey PositionPropertyKey =
-            DependencyProperty.RegisterReadOnly("Position", typeof(Point3D), typeof(PointLightBase3D), new AffectsRenderPropertyMetadata(new Point3D(),
-                (d,e)=> {
-                    (d as PointLightBase3D).PositionInternal = (Point3D)e.NewValue;
-                }));
-
-        public static readonly DependencyProperty PositionProperty = PositionPropertyKey.DependencyProperty;
-
-        protected override void OnTransformChanged(DependencyPropertyChangedEventArgs e)
-        {
-            base.OnTransformChanged(e);
-            this.Position = this.modelMatrix.TranslationVector.ToPoint3D();
+            set { this.SetValue(PositionProperty, value); }
         }
 
         /// <summary>
@@ -195,7 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Vector3D)this.GetValue(AttenuationProperty); }
             set { this.SetValue(AttenuationProperty, value); }
         }
-        internal Vector3 AttenuationInternal { private set; get; } = new Vector3(1.0f, 0.0f, 0.0f);
+
         /// <summary>
         /// Range of this light. This is the maximum distance 
         /// of a pixel being lit by this light.
@@ -207,6 +165,8 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(RangeProperty, value); }
         }
 
+        internal Vector3 PositionInternal { private set; get; }
+        internal Vector3 AttenuationInternal { private set; get; } = new Vector3(1.0f, 0.0f, 0.0f);
         internal double RangeInternal { private set; get; } = 1000;
     }
 }

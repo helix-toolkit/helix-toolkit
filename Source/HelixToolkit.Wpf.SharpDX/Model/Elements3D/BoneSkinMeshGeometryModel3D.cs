@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (IBoneSkinRenderParams)RenderCore; }
         }
 
-        protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
+        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.BoneSkinBlinn];
         }

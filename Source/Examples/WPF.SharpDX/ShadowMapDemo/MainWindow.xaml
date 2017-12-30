@@ -39,8 +39,8 @@
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"                       
             CoordinateSystemLabelForeground="White"
-            UseDefaultGestures="False"   
-            IsShadowMappingEnabled="True"
+            UseDefaultGestures="False"   ModelUpDirection="0,1,0"
+            IsShadowMappingEnabled="True" ShowCoordinateSystem="True"
             RenderTechnique="{Binding RenderTechnique}"
             EffectsManager="{Binding EffectsManager}"
             >
@@ -57,13 +57,16 @@
                 <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
             </hx:Viewport3DX.InputBindings>
             
-            <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
-            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction="{Binding Camera1.LookDirection}"/>
-            <hx:ShadowMap3D x:Name="shadowMap" Resolution="{Binding ShadowMapResolution}" LightCamera="{Binding Camera2}"/>
-            <hx:DraggableGeometryModel3D x:Name="lightCamera" Geometry="{Binding LightCameraModel}" Transform="{Binding LightCameraTransform, Mode=TwoWay}" Material="{Binding LightCameraMaterial}"/>
+            <hx:AmbientLight3D Color="#717171"/>
+            <hx:SpotLight3D x:Name="spotLight" Direction="{Binding Camera1.LookDirection, Mode=OneWay}" Range="{Binding Camera1.FarPlaneDistance}" OuterAngle="{Binding Camera1.FieldOfView}"
+                            Position="{Binding Camera1.Position, Mode=OneWay}"
+                            Color="{Binding DirectionalLightColor}"/>
+            <!--<hx:DirectionalLight3D Color="#646464" Direction="0,-1,0"/>-->
+            <hx:ShadowMap3D x:Name="shadowMap" Resolution="{Binding ShadowMapResolution}" LightCamera="{Binding Camera1}"/>
+            <hx:CameraModel3D x:Name="lightCamera" Camera="{Binding Camera1}"/>
             <hx:UICompositeManipulator3D  CanRotateX="true" CanRotateY="true" CanRotateZ="true"                                                                                    
                                           CanTranslateX="False" CanTranslateY="False" CanTranslateZ="False"
-                                          Diameter="1"                                                                                                
+                                          Diameter="2"                                                                                                
                                           TargetTransform="{Binding Transform,ElementName=lightCamera}"/>
             <hx:MeshGeometryModel3D x:Name="model1" CullMode="Back" IsThrowingShadow="True" Geometry="{Binding Model}" Transform="{Binding Model1Transform}" Material="{Binding RedMaterial}"  />
             <hx:MeshGeometryModel3D x:Name="model2" CullMode="Back" IsThrowingShadow="True"  Geometry="{Binding Model}" Transform="{Binding Model2Transform}" Material="{Binding GreenMaterial}" Instances="{Binding Instances}"/>
@@ -101,41 +104,51 @@
                 <Expander.Background>
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke"/>
                 </Expander.Background>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>                    
-                    <CheckBox Grid.Row="0"  IsChecked="{Binding IsThrowingShadow, ElementName=model1}" Margin="3">Model 1</CheckBox>
-                    <CheckBox Grid.Row="1"  IsChecked="{Binding IsThrowingShadow, ElementName=model2}" Margin="3">Model 2</CheckBox>
-                    <CheckBox Grid.Row="2"  IsChecked="{Binding IsThrowingShadow, ElementName=model3}" Margin="3">Model 3</CheckBox>
-                    <CheckBox Grid.Row="3"  IsChecked="{Binding IsThrowingShadow, ElementName=lines}" Margin="3">Bounding Box</CheckBox>
-                    <Separator Grid.Row="4"></Separator>
-                    <CheckBox Grid.Row="5"  IsChecked="{Binding IsShadowMappingEnabled, ElementName=view1}" Margin="3">Shadow Mapping</CheckBox>
-                    <StackPanel  Grid.Row="6"  Orientation="Horizontal" IsEnabled="{Binding IsRendering, ElementName=shadowMap}" Margin="0">
+                <StackPanel Orientation="Vertical">
+                    <CheckBox IsChecked="{Binding IsThrowingShadow, ElementName=model1}" Margin="3">Model 1</CheckBox>
+                    <CheckBox IsChecked="{Binding IsThrowingShadow, ElementName=model2}" Margin="3">Model 2</CheckBox>
+                    <CheckBox IsChecked="{Binding IsThrowingShadow, ElementName=model3}" Margin="3">Model 3</CheckBox>
+                    <CheckBox IsChecked="{Binding IsThrowingShadow, ElementName=lines}" Margin="3">Bounding Box</CheckBox>
+                    <Separator></Separator>
+                    <CheckBox IsChecked="{Binding IsShadowMappingEnabled, ElementName=view1}" Margin="3">Shadow Mapping</CheckBox>
+                    <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsRendering, ElementName=shadowMap}" Margin="0">
                         <TextBlock Margin="3">Int:</TextBlock>
                         <Slider x:Name="sliderInt" Width="70" Value="{Binding Intensity, ElementName=shadowMap}" Minimum="0" Maximum="1" Margin="3"/>
                         <TextBox Margin="3" Width="35" Text="{Binding Value, ElementName=sliderInt}"></TextBox>
                     </StackPanel>
-                    <!--<StackPanel  Grid.Row="7"  Orientation="Horizontal" IsEnabled="{Binding IsRendering, ElementName=shadowMap}" Margin="0">
-                        <TextBlock Margin="3">PCF:</TextBlock>
-                        <Slider x:Name="sliderPcf" Width="70" Value="{Binding FactorPCF, ElementName=shadowMap}" Minimum="0" Maximum="10" Margin="3"/>
-                        <TextBox Margin="3" Width="35" Text="{Binding Value, ElementName=sliderPcf}"></TextBox>
-                    </StackPanel>-->
-                    <StackPanel  Grid.Row="8"  Orientation="Horizontal" IsEnabled="{Binding IsRendering, ElementName=shadowMap}" Margin="0">
+                    <StackPanel  Orientation="Horizontal" IsEnabled="{Binding IsRendering, ElementName=shadowMap}" Margin="0">
                         <TextBlock Margin="3">Bias:</TextBlock>
                         <Slider x:Name="sliderBias" Width="70" Value="{Binding Bias, ElementName=shadowMap}" Minimum="0" Maximum="0.1" Margin="3"/>
                         <TextBox Margin="3" Width="35" Text="{Binding Value, ElementName=sliderBias}"></TextBox>
                     </StackPanel>
-                    
-                </Grid>
+                </StackPanel>
+            </Expander>
+            <Expander Header="Spot Light" HorizontalAlignment="Right" Width="200" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">
+                <Expander.Background>
+                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke"/>
+                </Expander.Background>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel  Orientation="Horizontal" Margin="0">
+                        <TextBlock Margin="3">Fall off:</TextBlock>
+                        <Slider Width="70" Value="{Binding Falloff, ElementName=spotLight}" Minimum="0.1" Maximum="5" Margin="3"/>
+                        <TextBox Margin="3" Width="35" Text="{Binding Falloff, ElementName=spotLight}"></TextBox>
+                    </StackPanel>
+                    <StackPanel  Orientation="Horizontal" Margin="0">
+                        <TextBlock Margin="3">Outer Angle:</TextBlock>
+                        <Slider Width="70" Value="{Binding OuterAngle, ElementName=spotLight}" Minimum="15" Maximum="90" Margin="3"/>
+                        <TextBox Margin="3" Width="35" Text="{Binding Falloff, ElementName=spotLight}"></TextBox>
+                    </StackPanel>
+                    <StackPanel  Orientation="Horizontal" Margin="0">
+                        <TextBlock Margin="3">Inner Angle:</TextBlock>
+                        <Slider Width="70" Value="{Binding InnerAngle, ElementName=spotLight}" Minimum="0" Maximum="75" Margin="3"/>
+                        <TextBox Margin="3" Width="35" Text="{Binding Falloff, ElementName=spotLight}"></TextBox>
+                    </StackPanel>
+                    <StackPanel  Orientation="Horizontal" Margin="0">
+                        <TextBlock Margin="3">Range:</TextBlock>
+                        <Slider Width="70" Value="{Binding Range, ElementName=spotLight}" Minimum="1" Maximum="100" Margin="3"/>
+                        <TextBox Margin="3" Width="35" Text="{Binding Range, ElementName=spotLight}"></TextBox>
+                    </StackPanel>
+                </StackPanel>
             </Expander>
             <Button HorizontalAlignment="Right" Click="Button_Click">MultiViewports</Button>
         </StackPanel>

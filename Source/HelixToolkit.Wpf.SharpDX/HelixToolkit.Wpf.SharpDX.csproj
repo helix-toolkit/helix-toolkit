@@ -189,6 +189,7 @@
     <Compile Include="Model\Elements2D\TextModel2D.cs" />
     <Compile Include="Model\Elements2D\Abstract\Element2D.cs" />
     <Compile Include="Model\Elements2D\Canvas2D.cs" />
+    <Compile Include="Model\Elements3D\CameraModel3D.cs" />
     <Compile Include="Model\Elements3D\CrossSectionMeshGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\InstanceGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\ScreenSpaceMeshGeometry3D.cs" />
