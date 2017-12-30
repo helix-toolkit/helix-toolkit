@@ -68,6 +68,10 @@ float4 main(PSInput input) : SV_Target
         {
             float3 d = (float3) (Lights[i].vLightPos - input.wp); // light dir
             float dl = length(d); // light distance
+            if (Lights[i].vLightAtt.w < dl)
+            {
+                continue;
+            }
             d = d / dl; // normalized light dir						
             float3 h = normalize(eye + d); // half direction for specular
             float att = 1.0f / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
@@ -77,6 +81,10 @@ float4 main(PSInput input) : SV_Target
         {
             float3 d = (float3) (Lights[i].vLightPos - input.wp); // light dir
             float dl = length(d); // light distance
+            if (Lights[i].vLightAtt.w < dl)
+            {
+                continue;
+            }
             d = d / dl; // normalized light dir					
             float3 h = normalize(eye + d); // half direction for specular
             float3 sd = normalize((float3) Lights[i].vLightDir); // missuse the vLightDir variable for spot-dir

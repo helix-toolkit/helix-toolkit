@@ -121,7 +121,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
         public static readonly DependencyProperty RangeProperty =
-            DependencyProperty.Register("Range", typeof(double), typeof(PointLightBase3D), new AffectsRenderPropertyMetadata(1000.0,
+            DependencyProperty.Register("Range", typeof(double), typeof(PointLightBase3D), new AffectsRenderPropertyMetadata(100.0,
                 (d, e) => {
                     (d as PointLightBase3D).RangeInternal = (double)e.NewValue;
                 }));

@@ -118,7 +118,7 @@
                     </StackPanel>
                     <StackPanel  Orientation="Horizontal" IsEnabled="{Binding IsRendering, ElementName=shadowMap}" Margin="0">
                         <TextBlock Margin="3">Bias:</TextBlock>
-                        <Slider x:Name="sliderBias" Width="70" Value="{Binding Bias, ElementName=shadowMap}" Minimum="0" Maximum="0.1" Margin="3"/>
+                        <Slider x:Name="sliderBias" Width="70" Value="{Binding Bias, ElementName=shadowMap}" Minimum="0.00001" Maximum="0.002" Margin="3"/>
                         <TextBox Margin="3" Width="35" Text="{Binding Value, ElementName=sliderBias}"></TextBox>
                     </StackPanel>
                 </StackPanel>
@@ -145,7 +145,7 @@
                     </StackPanel>
                     <StackPanel  Orientation="Horizontal" Margin="0">
                         <TextBlock Margin="3">Range:</TextBlock>
-                        <Slider Width="70" Value="{Binding Range, ElementName=spotLight}" Minimum="1" Maximum="100" Margin="3"/>
+                        <Slider Width="70" Value="{Binding Range, ElementName=spotLight}" Minimum="1" Maximum="500" Margin="3"/>
                         <TextBox Margin="3" Width="35" Text="{Binding Range, ElementName=spotLight}"></TextBox>
                     </StackPanel>
                 </StackPanel>
