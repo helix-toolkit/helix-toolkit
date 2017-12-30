@@ -14,37 +14,84 @@ namespace HelixToolkit.UWP.Model
 #endif
 {
     using Shaders;
+    using System;
     using System.Collections.Generic;
     using Utilities;
 
     /// <summary>
     /// Default PhongMaterial Variables
     /// </summary>
-    public class PhongMaterialVariables : DisposeObject, IEffectMaterialVariables
+    public sealed class PhongMaterialVariables : DisposeObject, IEffectMaterialVariables
     {
+        /// <summary>
+        /// <see cref="IEffectMaterialVariables.OnInvalidateRenderer"/> 
+        /// </summary>
         public event System.EventHandler<bool> OnInvalidateRenderer;
         private IPhongMaterial material;
+        /// <summary>
+        ///
+        /// </summary>
         public Device Device { private set; get; }
 
-        private readonly Dictionary<string, ShaderResouceViewProxy> ShaderResourceDict = new Dictionary<string, ShaderResouceViewProxy>();
-        private readonly Dictionary<string, SamplerProxy> SamplerResourceDict = new Dictionary<string, SamplerProxy>();
+        private const int NUMTEXTURES = 4;
+        private const int NUMSAMPLERS = 5;
+        private const int DiffuseIdx = 0, AlphaIdx = 1, NormalIdx = 2, DisplaceIdx = 3,
+            SamplerDiffuseIdx = 0, SamplerAlphaIdx = 1, SamplerNormalIdx = 2, SamplerDisplaceIdx = 3, SamplerShadowIdx = 4;
 
+        private ShaderResouceViewProxy[] TextureResources = new ShaderResouceViewProxy[NUMTEXTURES];
+        private int[,] TextureBindingMap = new int[Constants.NumShaderStages, NUMTEXTURES];
+
+        private SamplerProxy[] SamplerResources = new SamplerProxy[NUMSAMPLERS];
+        private int[,] SamplerBindingMap = new int[Constants.NumShaderStages, NUMSAMPLERS];
+
+        private IShaderPass currentPass;
+        /// <summary>
+        /// 
+        /// </summary>
         public string ShaderAlphaTexName { set; get; } = DefaultBufferNames.AlphaMapTB;
+        /// <summary>
+        /// 
+        /// </summary>
         public string ShaderDiffuseTexName { set; get; } = DefaultBufferNames.DiffuseMapTB;
+        /// <summary>
+        /// 
+        /// </summary>
         public string ShaderNormalTexName { set; get; } = DefaultBufferNames.NormalMapTB;
+        /// <summary>
+        /// 
+        /// </summary>
         public string ShaderDisplaceTexName { set; get; } = DefaultBufferNames.DisplacementMapTB;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string ShaderSamplerAlphaTexName { set; get; } = DefaultSamplerStateNames.AlphaMapSampler;
+        /// <summary>
+        /// 
+        /// </summary>
         public string ShaderSamplerDiffuseTexName { set; get; } = DefaultSamplerStateNames.DiffuseMapSampler;
+        /// <summary>
+        /// 
+        /// </summary>
         public string ShaderSamplerNormalTexName { set; get; } = DefaultSamplerStateNames.NormalMapSampler;
+        /// <summary>
+        /// 
+        /// </summary>
         public string ShaderSamplerDisplaceTexName { set; get; } = DefaultSamplerStateNames.DisplacementMapSampler;
+        /// <summary>
+        /// 
+        /// </summary>
         public string ShaderSamplerShadowMapName { set; get; } = DefaultSamplerStateNames.ShadowMapSampler;
 
         private bool renderDiffuseMap = true;
+        /// <summary>
+        /// <see cref="IMaterialRenderCore.RenderDiffuseMap"/> 
+        /// </summary>
         public bool RenderDiffuseMap
         {
             set
             {
-                if(renderDiffuseMap == value)
+                if (renderDiffuseMap == value)
                 {
                     return;
                 }
@@ -57,6 +104,9 @@ namespace HelixToolkit.UWP.Model
             }
         }
         private bool renderDiffuseAlphaMap = true;
+        /// <summary>
+        /// <see cref="IMaterialRenderCore.RenderDiffuseAlphaMap"/> 
+        /// </summary>
         public bool RenderDiffuseAlphaMap
         {
             set
@@ -74,6 +124,9 @@ namespace HelixToolkit.UWP.Model
             }
         }
         private bool renderNormalMap = true;
+        /// <summary>
+        /// <see cref="IMaterialRenderCore.RenderNormalMap"/> 
+        /// </summary>
         public bool RenderNormalMap
         {
             set
@@ -88,6 +141,9 @@ namespace HelixToolkit.UWP.Model
             }
         }
         private bool renderDisplacementMap = true;
+        /// <summary>
+        /// <see cref="IMaterialRenderCore.RenderDisplacementMap"/> 
+        /// </summary>
         public bool RenderDisplacementMap
         {
             set
@@ -103,10 +159,31 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
+        private bool renderShadowMap = true;
+        /// <summary>
+        /// <see cref="IMaterialRenderCore.RenderShadowMap"/> 
+        /// </summary>
+        public bool RenderShadowMap
+        {
+            set
+            {
+                if (renderShadowMap == value)
+                { return; }
+                renderShadowMap = value;
+                needUpdate = true;
+            }
+            get
+            {
+                return renderDisplacementMap;
+            }
+        }
+
         private bool needUpdate = true;
         private MaterialStruct materialStruct;
         private readonly IBufferProxy materialBuffer;
-
+        /// <summary>
+        /// <see cref="IMaterialRenderCore.Material"/> 
+        /// </summary>
         public IMaterial Material
         {
             set
@@ -131,62 +208,65 @@ namespace HelixToolkit.UWP.Model
                 return material;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="manager"></param>
         public PhongMaterialVariables(IEffectsManager manager)
         {
             materialBuffer = manager.ConstantBufferPool.Register(new ConstantBufferDescription(DefaultBufferNames.MaterialCB, MaterialStruct.SizeInBytes));
             Device = manager.Device;
-            ShaderResourceDict.Add(ShaderDiffuseTexName, Collect(new ShaderResouceViewProxy(Device)));
-            ShaderResourceDict.Add(ShaderNormalTexName, Collect(new ShaderResouceViewProxy(Device)));
-            ShaderResourceDict.Add(ShaderDisplaceTexName, Collect(new ShaderResouceViewProxy(Device)));
-            ShaderResourceDict.Add(ShaderAlphaTexName, Collect(new ShaderResouceViewProxy(Device)));
-            SamplerResourceDict.Add(ShaderSamplerDiffuseTexName, Collect(new SamplerProxy(Device)));
-            SamplerResourceDict.Add(ShaderSamplerNormalTexName, Collect(new SamplerProxy(Device)));
-            SamplerResourceDict.Add(ShaderSamplerDisplaceTexName, Collect(new SamplerProxy(Device)));
-            SamplerResourceDict.Add(ShaderSamplerAlphaTexName, Collect(new SamplerProxy(Device)));
-            SamplerResourceDict.Add(ShaderSamplerShadowMapName, Collect(new SamplerProxy(Device)));
+            TextureResources[DiffuseIdx] = Collect(new ShaderResouceViewProxy(Device));
+            TextureResources[NormalIdx] = Collect(new ShaderResouceViewProxy(Device));
+            TextureResources[DisplaceIdx] = Collect(new ShaderResouceViewProxy(Device));
+            TextureResources[AlphaIdx] = Collect(new ShaderResouceViewProxy(Device));
+            SamplerResources[SamplerDiffuseIdx] = Collect(new SamplerProxy(Device));
+            SamplerResources[SamplerNormalIdx] = Collect(new SamplerProxy(Device));
+            SamplerResources[SamplerDisplaceIdx] = Collect(new SamplerProxy(Device));
+            SamplerResources[SamplerAlphaIdx] = Collect(new SamplerProxy(Device));
+            SamplerResources[SamplerShadowIdx] = Collect(new SamplerProxy(Device));
             CreateTextureViews();
             CreateSamplers();
-        }               
+        }
 
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             needUpdate = true;
             if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseMap)))
             {
-                CreateTextureView((sender as IPhongMaterial).DiffuseMap, ShaderResourceDict[ShaderDiffuseTexName]);
+                CreateTextureView((sender as IPhongMaterial).DiffuseMap, TextureResources[DiffuseIdx]);
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.NormalMap)))
             {
-                CreateTextureView((sender as IPhongMaterial).NormalMap, ShaderResourceDict[ShaderNormalTexName]);
+                CreateTextureView((sender as IPhongMaterial).NormalMap, TextureResources[NormalIdx]);
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.DisplacementMap)))
             {
-                CreateTextureView((sender as IPhongMaterial).DisplacementMap, ShaderResourceDict[ShaderDisplaceTexName]);
+                CreateTextureView((sender as IPhongMaterial).DisplacementMap, TextureResources[DisplaceIdx]);
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseAlphaMap)))
             {
-                CreateTextureView((sender as IPhongMaterial).DiffuseAlphaMap, ShaderResourceDict[ShaderAlphaTexName]);
-            }           
+                CreateTextureView((sender as IPhongMaterial).DiffuseAlphaMap, TextureResources[AlphaIdx]);
+            }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseMapSampler)))
             {
-                SamplerResourceDict[ShaderSamplerDiffuseTexName].Description = (sender as IPhongMaterial).DiffuseMapSampler;
+                SamplerResources[SamplerDiffuseIdx].Description = (sender as IPhongMaterial).DiffuseMapSampler;
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseAlphaMapSampler)))
             {
-                SamplerResourceDict[ShaderSamplerAlphaTexName].Description = (sender as IPhongMaterial).DiffuseAlphaMapSampler;
+                SamplerResources[SamplerAlphaIdx].Description = (sender as IPhongMaterial).DiffuseAlphaMapSampler;
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.DisplacementMapSampler)))
             {
-                SamplerResourceDict[ShaderSamplerDisplaceTexName].Description = (sender as IPhongMaterial).DisplacementMapSampler;
+                SamplerResources[SamplerDisplaceIdx].Description = (sender as IPhongMaterial).DisplacementMapSampler;
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.NormalMapSampler)))
             {
-                SamplerResourceDict[ShaderSamplerNormalTexName].Description = (sender as IPhongMaterial).NormalMapSampler;
+                SamplerResources[SamplerNormalIdx].Description = (sender as IPhongMaterial).NormalMapSampler;
             }
             OnInvalidateRenderer?.Invoke(this, true);
         }
-       
+
         private void CreateTextureView(System.IO.Stream stream, ShaderResouceViewProxy proxy)
         {
             proxy.CreateView(stream);
@@ -196,14 +276,14 @@ namespace HelixToolkit.UWP.Model
         {
             if (material != null)
             {
-                CreateTextureView(material.DiffuseMap, ShaderResourceDict[ShaderDiffuseTexName]);
-                CreateTextureView(material.NormalMap, ShaderResourceDict[ShaderNormalTexName]);
-                CreateTextureView(material.DisplacementMap, ShaderResourceDict[ShaderDisplaceTexName]);
-                CreateTextureView(material.DiffuseAlphaMap, ShaderResourceDict[ShaderAlphaTexName]);
+                CreateTextureView(material.DiffuseMap, TextureResources[DiffuseIdx]);
+                CreateTextureView(material.NormalMap, TextureResources[NormalIdx]);
+                CreateTextureView(material.DisplacementMap, TextureResources[DisplaceIdx]);
+                CreateTextureView(material.DiffuseAlphaMap, TextureResources[AlphaIdx]);
             }
             else
             {
-                foreach(var item in ShaderResourceDict.Values)
+                foreach (var item in TextureResources)
                 {
                     item.CreateView(null);
                 }
@@ -214,11 +294,11 @@ namespace HelixToolkit.UWP.Model
         {
             if (material != null)
             {
-                SamplerResourceDict[ShaderSamplerDiffuseTexName].Description = material.DiffuseMapSampler;
-                SamplerResourceDict[ShaderSamplerNormalTexName].Description = material.NormalMapSampler;
-                SamplerResourceDict[ShaderSamplerAlphaTexName].Description = material.DiffuseAlphaMapSampler;
-                SamplerResourceDict[ShaderSamplerDisplaceTexName].Description = material.DisplacementMapSampler;
-                SamplerResourceDict[ShaderSamplerShadowMapName].Description = DefaultSamplers.ShadowSampler;
+                SamplerResources[SamplerDiffuseIdx].Description = material.DiffuseMapSampler;
+                SamplerResources[SamplerNormalIdx].Description = material.NormalMapSampler;
+                SamplerResources[SamplerAlphaIdx].Description = material.DiffuseAlphaMapSampler;
+                SamplerResources[SamplerDisplaceIdx].Description = material.DisplacementMapSampler;
+                SamplerResources[SamplerShadowIdx].Description = DefaultSamplers.ShadowSampler;
             }
         }
 
@@ -232,12 +312,13 @@ namespace HelixToolkit.UWP.Model
                 Reflect = material.ReflectiveColor,
                 Specular = material.SpecularColor,
                 Shininess = material.SpecularShininess,
-                HasDiffuseMap = RenderDiffuseMap && ShaderResourceDict[ShaderDiffuseTexName].TextureView != null ? 1 : 0,
-                HasDiffuseAlphaMap = RenderDiffuseAlphaMap && ShaderResourceDict[ShaderAlphaTexName].TextureView != null ? 1 : 0,
-                HasNormalMap = RenderNormalMap && ShaderResourceDict[ShaderNormalTexName].TextureView != null ? 1 : 0,
-                HasDisplacementMap = RenderDisplacementMap && ShaderResourceDict[ShaderDisplaceTexName].TextureView != null ? 1 : 0,
+                HasDiffuseMap = RenderDiffuseMap && TextureResources[DiffuseIdx].TextureView != null ? 1 : 0,
+                HasDiffuseAlphaMap = RenderDiffuseAlphaMap && TextureResources[AlphaIdx].TextureView != null ? 1 : 0,
+                HasNormalMap = RenderNormalMap && TextureResources[NormalIdx].TextureView != null ? 1 : 0,
+                HasDisplacementMap = RenderDisplacementMap && TextureResources[DisplaceIdx].TextureView != null ? 1 : 0,
                 DisplacementMapScaleMask = material.DisplacementMapScaleMask,
-                HasCubeMap = 0               
+                RenderShadowMap = RenderShadowMap ? 1 : 0,
+                HasCubeMap = 0
             };
         }
         /// <summary>
@@ -258,11 +339,11 @@ namespace HelixToolkit.UWP.Model
         /// 
         /// </summary>
         /// <param name="context"></param>
-        protected virtual void OnUpdateMaterialConstantBuffer(DeviceContext context)
+        private void OnUpdateMaterialConstantBuffer(DeviceContext context)
         {
             if (needUpdate)
             {
-                AssignVariables();                
+                AssignVariables();
                 needUpdate = false;
             }
             materialBuffer.UploadDataToBuffer(context, ref materialStruct);
@@ -283,42 +364,70 @@ namespace HelixToolkit.UWP.Model
             return true;
         }
         /// <summary>
-        /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContext, IEnumerable{IShader})"/>
+        /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContext, IShaderPass)"/>
         /// </summary>
         /// <param name="context"></param>
-        /// <param name="shader"></param>
+        /// <param name="shaderPass"></param>
         /// <returns></returns>
-        public bool BindMaterialTextures(DeviceContext context, IEnumerable<IShader> shader)
+        public bool BindMaterialTextures(DeviceContext context, IShaderPass shaderPass)
         {
             if (material == null)
             {
                 return false;
             }
-            var flag = ShaderStage.Vertex | ShaderStage.Pixel | ShaderStage.Domain;
-            foreach (var s in shader.Where(x=> !x.IsNULL && flag.HasFlag(x.ShaderType)))
+            UpdateMappings(shaderPass);
+            foreach (var s in shaderPass.Shaders.Where(x => !x.IsNULL && Constants.CanBindTextureStages.HasFlag(x.ShaderType)))
             {
                 OnBindMaterialTextures(context, s);
             }
             return true;
         }
+
+        private void UpdateMappings(IShaderPass shaderPass)
+        {
+            if (currentPass == shaderPass)
+            {
+                return;
+            }
+            currentPass = shaderPass;
+
+            foreach (var shader in shaderPass.Shaders.Where(x => !x.IsNULL && Constants.CanBindTextureStages.HasFlag(x.ShaderType)))
+            {
+                int idx = Constants.Convert(shader.ShaderType);
+                TextureBindingMap[idx, DiffuseIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderDiffuseTexName);
+                TextureBindingMap[idx, AlphaIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderAlphaTexName);
+                TextureBindingMap[idx, NormalIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderNormalTexName);
+                TextureBindingMap[idx, DisplaceIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderDisplaceTexName);
+
+                SamplerBindingMap[idx, SamplerDiffuseIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerDiffuseTexName);
+                SamplerBindingMap[idx, SamplerAlphaIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerAlphaTexName);
+                SamplerBindingMap[idx, SamplerNormalIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerNormalTexName);
+                SamplerBindingMap[idx, SamplerDisplaceIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerDisplaceTexName);
+                SamplerBindingMap[idx, SamplerShadowIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerShadowMapName);
+            }
+        }
+
+
         /// <summary>
         /// Actual bindings
         /// </summary>
         /// <param name="context"></param>
         /// <param name="shader"></param>
-        protected virtual void OnBindMaterialTextures(DeviceContext context, IShader shader)
+        private void OnBindMaterialTextures(DeviceContext context, IShader shader)
         {
-            if(shader.IsNULL)
+            if (shader.IsNULL)
             {
                 return;
             }
-            foreach(var item in ShaderResourceDict)
+            int idx = Constants.Convert(shader.ShaderType);
+            for (int i = 0; i < NUMTEXTURES; ++i)
             {
-                shader.BindTexture(context, item.Key, item.Value);
+                if (TextureResources[i] == null) { continue; }
+                shader.BindTexture(context, TextureBindingMap[idx, i], TextureResources[i]);
             }
-            foreach (var item in SamplerResourceDict)
+            for (int i = 0; i < NUMSAMPLERS; ++i)
             {
-                shader.BindSampler(context, item.Key, item.Value);
+                shader.BindSampler(context, SamplerBindingMap[idx, i], SamplerResources[i]);
             }
         }
         /// <summary>
@@ -328,8 +437,10 @@ namespace HelixToolkit.UWP.Model
         protected override void Dispose(bool disposeManagedResources)
         {
             this.material = null;
-            ShaderResourceDict.Clear();
-            SamplerResourceDict.Clear();
+            TextureResources = null;
+            SamplerResources = null;
+            TextureBindingMap = null;
+            SamplerBindingMap = null;
             OnInvalidateRenderer = null;
             base.Dispose(disposeManagedResources);
         }

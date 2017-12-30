@@ -23,12 +23,14 @@ namespace HelixToolkit.UWP.Utilities
         private readonly Dictionary<INDEXTYPE, NAMETYPE> indexNameMapping = new Dictionary<INDEXTYPE, NAMETYPE>();
         private readonly Dictionary<NAMETYPE, INDEXTYPE> nameIndexMapping = new Dictionary<NAMETYPE, INDEXTYPE>();
         private readonly Dictionary<INDEXTYPE, DATATYPE> indexDataMapping = new Dictionary<INDEXTYPE, DATATYPE>();
-
-        public IEnumerable<DATATYPE> Datas { get { return indexDataMapping.Values; } }
         /// <summary>
         /// 
         /// </summary>
-        public IEnumerable<KeyValuePair<INDEXTYPE, DATATYPE>> DataMapping { get { return indexDataMapping; } }
+        public KeyValuePair<INDEXTYPE, DATATYPE>[] MappingArray { private set; get; } = new KeyValuePair<INDEXTYPE, DATATYPE>[0];
+        /// <summary>
+        /// 
+        /// </summary>
+        public IEnumerable<DATATYPE> Datas { get { return indexDataMapping.Values; } }
         /// <summary>
         /// 
         /// </summary>
@@ -52,8 +54,13 @@ namespace HelixToolkit.UWP.Utilities
             indexNameMapping.Add(index, name);
             nameIndexMapping.Add(name, index);
             indexDataMapping.Add(index, item);
+            MappingArray = indexDataMapping.ToArray();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public bool Remove(INDEXTYPE index)
         {
             if (indexNameMapping.ContainsKey(index))
@@ -61,6 +68,7 @@ namespace HelixToolkit.UWP.Utilities
                 nameIndexMapping.Remove(indexNameMapping[index]);
                 indexNameMapping.Remove(index);
                 indexDataMapping.Remove(index);
+                MappingArray = indexDataMapping.ToArray();
                 return true;
             }
             else
@@ -68,13 +76,19 @@ namespace HelixToolkit.UWP.Utilities
                 return false;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public bool Remove(NAMETYPE name)
         {
             if (nameIndexMapping.ContainsKey(name))
             {
-                indexNameMapping.Remove(nameIndexMapping[name]);
+                indexNameMapping.Remove(nameIndexMapping[name]);                
+                indexDataMapping.Remove(nameIndexMapping[name]);
                 nameIndexMapping.Remove(name);
+                MappingArray = indexDataMapping.ToArray();
                 return true;
             }
             else

@@ -49,7 +49,7 @@ namespace HelixToolkit.UWP.Core
         public bool RenderDiffuseAlphaMap { set; get; } = true;
         public bool RenderNormalMap { set; get; } = true;
         public bool RenderDisplacementMap { set; get; } = true;
-       // public bool HasShadowMap { set; get; } = false;
+        public bool RenderShadowMap { set; get; } = true;
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
@@ -88,7 +88,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (!IsAttached)
             { return; }
-            //materialVariables.HasShadowMap = this.HasShadowMap;
+            materialVariables.RenderShadowMap = this.RenderShadowMap;
             materialVariables.RenderDiffuseMap = this.RenderDiffuseMap;
             materialVariables.RenderNormalMap = this.RenderNormalMap;
             materialVariables.RenderDisplacementMap = this.RenderDisplacementMap;
@@ -107,12 +107,7 @@ namespace HelixToolkit.UWP.Core
             MaterialVariables.UpdateMaterialConstantBuffer(context);
         }
         
-        protected bool BindMaterialTextures(DeviceContext context, IShader shader)
-        {
-            return MaterialVariables.BindMaterialTextures(context, shader);
-        }
-
-        protected bool BindMaterialTextures(DeviceContext context, IEnumerable<IShader> shader)
+        protected bool BindMaterialTextures(DeviceContext context, IShaderPass shader)
         {
             return MaterialVariables.BindMaterialTextures(context, shader);
         }

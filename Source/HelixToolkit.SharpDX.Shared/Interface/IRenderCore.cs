@@ -59,6 +59,6 @@ namespace HelixToolkit.UWP
         bool RenderDiffuseAlphaMap { set; get; }
         bool RenderNormalMap { set; get; }
         bool RenderDisplacementMap { set; get; }
-        //bool HasShadowMap { set; get; }
+        bool RenderShadowMap { set; get; }
     }
 }

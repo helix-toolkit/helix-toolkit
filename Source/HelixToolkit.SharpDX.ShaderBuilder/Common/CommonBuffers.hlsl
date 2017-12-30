@@ -82,7 +82,8 @@ cbuffer cbMaterial : register(b5)
     bool bHasNormalMap = false;
     bool bHasDisplacementMap = false;
     bool bHasCubeMap = false;
-    float2 paddingMaterial0;
+    bool bRenderShadowMap = false;
+    float paddingMaterial0;
 	float4 displacementMapScaleMask = float4(0,0,0,1);
 };
 

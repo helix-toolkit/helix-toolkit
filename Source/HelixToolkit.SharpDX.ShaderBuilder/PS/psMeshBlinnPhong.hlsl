@@ -23,7 +23,7 @@ float4 main(PSInput input) : SV_Target
 
     // get shadow color
     float s = 1;
-    if (bHasShadowMap)
+    if (bHasShadowMap && bRenderShadowMap)
     {
         s = shadowStrength(input.sp);
     }

@@ -67,11 +67,13 @@ namespace HelixToolkit.UWP.Shaders
         /// <see cref="IShader.BindTexture(DeviceContext, int, ShaderResourceView)"/>
         /// </summary>
         /// <param name="context"></param>
-        /// <param name="index"></param>
+        /// <param name="slot"></param>
         /// <param name="texture"></param>
-        public override void BindTexture(DeviceContext context, int index, ShaderResourceView texture)
+        public override void BindTexture(DeviceContext context, int slot, ShaderResourceView texture)
         {
-            context.VertexShader.SetShaderResource(index, texture);
+            if (slot < 0)
+            { return; }
+            context.VertexShader.SetShaderResource(slot, texture);
         }
         /// <summary>
         /// <see cref="IShader.BindTextures(DeviceContext, IEnumerable{Tuple{int, ShaderResourceView}})"/>
@@ -93,6 +95,8 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="sampler"></param>
         public override void BindSampler(DeviceContext context, int slot, SamplerState sampler)
         {
+            if (slot < 0)
+            { return; }
             context.VertexShader.SetSampler(slot, sampler);
         }
         /// <summary>

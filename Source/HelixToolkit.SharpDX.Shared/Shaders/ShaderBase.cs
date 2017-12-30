@@ -19,16 +19,30 @@ namespace HelixToolkit.UWP.Shaders
     /// </summary>
     public abstract class ShaderBase : DisposeObject, IShader
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public MappingProxy<IBufferProxy> ConstantBufferMapping { get; } = new MappingProxy<IBufferProxy>();
+        /// <summary>
+        /// 
+        /// </summary>
         public MappingProxy<TextureMapping> ShaderResourceViewMapping { get; } = new MappingProxy<TextureMapping>();
+        /// <summary>
+        /// 
+        /// </summary>
         public MappingProxy<UAVMapping> UnorderedAccessViewMapping { get; } = new MappingProxy<UAVMapping>();
+        /// <summary>
+        /// 
+        /// </summary>
         public MappingProxy<SamplerMapping> SamplerMapping { get; } = new MappingProxy<SamplerMapping>();
 
         /// <summary>
-        /// Bind Stage
+        /// <see cref="IShader.ShaderType"/>
         /// </summary>
         public ShaderStage ShaderType { private set; get; }
-
+        /// <summary>
+        /// <see cref="IShader.IsNULL"/>
+        /// </summary>
         public bool IsNULL { private set; get; }
         /// <summary>
         /// Shader Name
