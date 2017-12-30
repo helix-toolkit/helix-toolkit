@@ -38,6 +38,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty DepthBiasProperty =
             DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(0, RasterStateChanged));
 
+        public static readonly DependencyProperty SlopeScaledDepthBiasProperty =
+            DependencyProperty.Register("SlopeScaledDepthBias", typeof(double), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(0.0, RasterStateChanged));
+
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new AffectsRenderPropertyMetadata(false));
 
@@ -92,6 +95,18 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 this.SetValue(DepthBiasProperty, value);
+            }
+        }
+
+        public double SlopeScaledDepthBias
+        {
+            get
+            {
+                return (double)this.GetValue(SlopeScaledDepthBiasProperty);
+            }
+            set
+            {
+                this.SetValue(SlopeScaledDepthBiasProperty, value);
             }
         }
 

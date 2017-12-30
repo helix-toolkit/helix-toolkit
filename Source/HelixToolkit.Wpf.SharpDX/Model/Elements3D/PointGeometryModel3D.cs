@@ -203,7 +203,7 @@
                 CullMode = CullMode.Back,
                 DepthBias = DepthBias,
                 DepthBiasClamp = -1000,
-                SlopeScaledDepthBias = -2,
+                SlopeScaledDepthBias = (float)SlopeScaledDepthBias,
                 IsDepthClipEnabled = true,
                 IsFrontCounterClockwise = false,
                 IsMultisampleEnabled = false,

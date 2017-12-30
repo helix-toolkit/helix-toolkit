@@ -252,7 +252,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 CullMode = CullMode.None,
                 DepthBias = DepthBias,
                 DepthBiasClamp = -1000,
-                SlopeScaledDepthBias = +0,
+                SlopeScaledDepthBias = (float)SlopeScaledDepthBias,
                 IsDepthClipEnabled = true,
                 IsFrontCounterClockwise = false,
 
