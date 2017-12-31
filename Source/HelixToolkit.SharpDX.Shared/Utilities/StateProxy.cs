@@ -1,4 +1,5 @@
-﻿using SharpDX.Direct3D11;
+﻿using SharpDX;
+using SharpDX.Direct3D11;
 using System;
 
 #if !NETFX_CORE
@@ -7,10 +8,11 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
-    public abstract class StateProxy<StateType, StateTypeDescription> : IDisposable where StateType : class where StateTypeDescription : struct
+    public abstract class StateProxy<StateType, StateTypeDescription> : IDisposable where StateType : ComObject where StateTypeDescription : struct
     {
         public string Name { set; get; }
-        public StateType State { get; private set; }
+        private StateType state;
+        public StateType State { get { return state; } }
         private StateTypeDescription description;
         public StateTypeDescription Description
         {
@@ -18,7 +20,8 @@ namespace HelixToolkit.UWP.Utilities
             {
                 if(description.Equals(value)) { return; }
                 description = value;
-                State = CreateState(poolManager, ref description);
+                Disposer.RemoveAndDispose(ref state);
+                state = CreateState(poolManager, ref description);
             }
             get
             {
@@ -59,7 +62,7 @@ namespace HelixToolkit.UWP.Utilities
             {
                 if (disposing)
                 {
-                    State = null;
+                    Disposer.RemoveAndDispose(ref state);
                     // TODO: dispose managed state (managed objects).
                 }
 

@@ -418,7 +418,7 @@ namespace HelixToolkit.UWP.Core
             if (isBlendChanged)
             {
                 RemoveAndDispose(ref blendState);
-                blendState = Collect(new BlendState(this.Device, blendDesc));
+                blendState = Collect(EffectTechnique.EffectsManager.StateManager.Register(blendDesc));
                 isBlendChanged = false;
             }
         }

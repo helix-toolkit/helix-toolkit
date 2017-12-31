@@ -95,7 +95,7 @@ namespace HelixToolkit.UWP.Core
             if (!IsAttached && !force)
             { return false; }
             RemoveAndDispose(ref rasterState);
-            rasterState = Collect(new RasterizerState(Device, description));
+            rasterState = Collect(EffectTechnique.EffectsManager.StateManager.Register(description));
             return true;
         }
 

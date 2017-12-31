@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.ShaderManager
 {
     ///Not Used
     ///
-    public class BlendStatePool : ResourcePoolBase<BlendStateDescription, BlendState, BlendStateDescription>
+    public class BlendStatePool : ComPoolBase<BlendStateDescription, BlendState, BlendStateDescription>
     {
         public BlendStatePool(Device device) : base(device) { }
 
@@ -30,7 +30,7 @@ namespace HelixToolkit.UWP.ShaderManager
         }
     }
 
-    public class DepthStencilStatePool : ResourcePoolBase<DepthStencilStateDescription, DepthStencilState, DepthStencilStateDescription>
+    public class DepthStencilStatePool : ComPoolBase<DepthStencilStateDescription, DepthStencilState, DepthStencilStateDescription>
     {
         public DepthStencilStatePool(Device device) : base(device) { }
 
@@ -45,7 +45,7 @@ namespace HelixToolkit.UWP.ShaderManager
         }
     }
 
-    public class RasterStatePool : ResourcePoolBase<RasterizerStateDescription, RasterizerState, RasterizerStateDescription>
+    public class RasterStatePool : ComPoolBase<RasterizerStateDescription, RasterizerState, RasterizerStateDescription>
     {
         public RasterStatePool(Device device) : base(device) { }
 
@@ -60,7 +60,7 @@ namespace HelixToolkit.UWP.ShaderManager
         }
     }
 
-    public class SamplerStatePool : ResourcePoolBase<SamplerStateDescription, SamplerState, SamplerStateDescription>
+    public class SamplerStatePool : ComPoolBase<SamplerStateDescription, SamplerState, SamplerStateDescription>
     {
         public SamplerStatePool(Device device) : base(device)
         {

@@ -2,6 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+#define DEBUGRESOURCE
+using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,57 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
 namespace HelixToolkit.UWP.ShaderManager
 #endif
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TKEY"></typeparam>
+    /// <typeparam name="TVALUE"></typeparam>
+    /// <typeparam name="TDescription"></typeparam>
+    public abstract class ComPoolBase<TKEY, TVALUE, TDescription> : DisposeObject where TVALUE : ComObject
+    {
+        protected readonly Dictionary<TKEY, TVALUE> pool = new Dictionary<TKEY, TVALUE>();
+
+        public Device Device { private set; get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="cbPool"></param>
+        public ComPoolBase(Device device)
+        {
+            this.Device = device;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="description"></param>
+        /// <returns></returns>
+        public TVALUE Register(TDescription description)
+        {
+            TVALUE value;
+            TKEY key = GetKey(ref description);
+            if (pool.TryGetValue(key, out value))
+            {                
+                return value.QueryInterfaceOrNull<TVALUE>();
+            }
+            else
+            {
+                value = Collect(Create(Device, ref description));
+                pool.Add(key, value);
+                value.Disposed += (s, e) => 
+                {
+                    pool.Remove(key);
+                };
+                return value;
+            }
+        }
+
+        protected abstract TKEY GetKey(ref TDescription description);
+        protected abstract TVALUE Create(Device device, ref TDescription description);
+    }
+
+
     /// <summary>
     /// 
     /// </summary>
