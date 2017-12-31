@@ -43,12 +43,12 @@ namespace HelixToolkit.UWP
         /// </summary>
         public IShaderPoolManager ShaderManager { get { return shaderPoolManager; } }
 
-        //private IStatePoolManager statePoolManager;
+        private IStatePoolManager statePoolManager;
 
         /// <summary>
         /// <see cref="IEffectsManager.StateManager"/> 
         /// </summary>
-       // public IStatePoolManager StateManager { get { return statePoolManager; } }
+        public IStatePoolManager StateManager { get { return statePoolManager; } }
         /// <summary>
         /// 
         /// </summary>
@@ -106,8 +106,8 @@ namespace HelixToolkit.UWP
             RemoveAndDispose(ref shaderPoolManager);
             shaderPoolManager = Collect(new ShaderPoolManager(Device, constantBufferPool));
 
-            //RemoveAndDispose(ref statePoolManager);
-            //statePoolManager = Collect(new StatePoolManager(Device));
+            RemoveAndDispose(ref statePoolManager);
+            statePoolManager = Collect(new StatePoolManager(Device));
             #endregion
             #region Initial Techniques
             var techniqueDescs = LoadTechniqueDescriptions();

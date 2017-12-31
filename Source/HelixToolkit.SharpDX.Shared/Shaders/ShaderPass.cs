@@ -176,11 +176,11 @@ namespace HelixToolkit.UWP.Shaders
                 }
             }
 
-            BlendState = passDescription.BlendStateDescription != null ? Collect(new BlendStateProxy(manager.Device, ((BlendStateDescription)passDescription.BlendStateDescription))) : null;
+            BlendState = passDescription.BlendStateDescription != null ? Collect(new BlendStateProxy(manager.StateManager, ((BlendStateDescription)passDescription.BlendStateDescription))) : null;
 
-            DepthStencilState = passDescription.DepthStencilStateDescription != null ? Collect(new DepthStencilStateProxy(manager.Device, ((DepthStencilStateDescription)passDescription.DepthStencilStateDescription))) : null;
+            DepthStencilState = passDescription.DepthStencilStateDescription != null ? Collect(new DepthStencilStateProxy(manager.StateManager, ((DepthStencilStateDescription)passDescription.DepthStencilStateDescription))) : null;
 
-            RasterState = passDescription.RasterStateDescription != null ? Collect(new RasterizerStateProxy(manager.Device, ((RasterizerStateDescription)passDescription.RasterStateDescription))) : null;
+            RasterState = passDescription.RasterStateDescription != null ? Collect(new RasterizerStateProxy(manager.StateManager, ((RasterizerStateDescription)passDescription.RasterStateDescription))) : null;
         }
 
         /// <summary>

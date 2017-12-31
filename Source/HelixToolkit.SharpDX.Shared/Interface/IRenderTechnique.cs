@@ -121,7 +121,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        //IStatePoolManager StateManager { get; }
+        IStatePoolManager StateManager { get; }
 
         /// <summary>
         /// 

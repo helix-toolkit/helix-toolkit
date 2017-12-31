@@ -220,11 +220,11 @@ namespace HelixToolkit.UWP.Model
             TextureResources[NormalIdx] = Collect(new ShaderResouceViewProxy(Device));
             TextureResources[DisplaceIdx] = Collect(new ShaderResouceViewProxy(Device));
             TextureResources[AlphaIdx] = Collect(new ShaderResouceViewProxy(Device));
-            SamplerResources[SamplerDiffuseIdx] = Collect(new SamplerProxy(Device));
-            SamplerResources[SamplerNormalIdx] = Collect(new SamplerProxy(Device));
-            SamplerResources[SamplerDisplaceIdx] = Collect(new SamplerProxy(Device));
-            SamplerResources[SamplerAlphaIdx] = Collect(new SamplerProxy(Device));
-            SamplerResources[SamplerShadowIdx] = Collect(new SamplerProxy(Device));
+            SamplerResources[SamplerDiffuseIdx] = Collect(new SamplerProxy(manager.StateManager));
+            SamplerResources[SamplerNormalIdx] = Collect(new SamplerProxy(manager.StateManager));
+            SamplerResources[SamplerDisplaceIdx] = Collect(new SamplerProxy(manager.StateManager));
+            SamplerResources[SamplerAlphaIdx] = Collect(new SamplerProxy(manager.StateManager));
+            SamplerResources[SamplerShadowIdx] = Collect(new SamplerProxy(manager.StateManager));
             CreateTextureViews();
             CreateSamplers();
         }

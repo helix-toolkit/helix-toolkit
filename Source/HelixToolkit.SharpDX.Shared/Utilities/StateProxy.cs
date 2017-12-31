@@ -7,7 +7,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
-    public abstract class StateProxy<StateType, StateTypeDescription> : IDisposable where StateType : class, IDisposable where StateTypeDescription : struct
+    public abstract class StateProxy<StateType, StateTypeDescription> : IDisposable where StateType : class where StateTypeDescription : struct
     {
         public string Name { set; get; }
         public StateType State { get; private set; }
@@ -18,28 +18,27 @@ namespace HelixToolkit.UWP.Utilities
             {
                 if(description.Equals(value)) { return; }
                 description = value;
-                State?.Dispose();
-                State = CreateState(device, ref description);
+                State = CreateState(poolManager, ref description);
             }
             get
             {
                 return description;
             }
         }
-        private readonly Device device;
-        public StateProxy(Device device, string name = "")
+        private readonly IStatePoolManager poolManager;
+        public StateProxy(IStatePoolManager poolManager, string name = "")
         {
-            this.device = device;
+            this.poolManager = poolManager;
             Name = name;
         }
 
-        public StateProxy(Device device, StateTypeDescription description, string name = "") : this(device)
+        public StateProxy(IStatePoolManager poolManager, StateTypeDescription description, string name = "") : this(poolManager)
         {
             Description = description;
             Name = name;
         }
 
-        protected abstract StateType CreateState(Device device, ref StateTypeDescription description);
+        protected abstract StateType CreateState(IStatePoolManager poolManager, ref StateTypeDescription description);
 
         public static implicit operator StateType(StateProxy<StateType, StateTypeDescription> proxy)
         {
@@ -53,14 +52,13 @@ namespace HelixToolkit.UWP.Utilities
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
-     
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
                 if (disposing)
                 {
-                    State?.Dispose();
                     State = null;
                     // TODO: dispose managed state (managed objects).
                 }
@@ -91,60 +89,60 @@ namespace HelixToolkit.UWP.Utilities
 
     public sealed class SamplerProxy : StateProxy<SamplerState, SamplerStateDescription>
     {
-        public SamplerProxy(Device device, string name = "") : base(device, name)
+        public SamplerProxy(IStatePoolManager poolManager, string name = "") : base(poolManager, name)
         {
         }
-        public SamplerProxy(Device device, SamplerStateDescription desc, string name = "") : base(device, desc, name)
+        public SamplerProxy(IStatePoolManager poolManager, SamplerStateDescription desc, string name = "") : base(poolManager, desc, name)
         {
         }
-        protected override SamplerState CreateState(Device device, ref SamplerStateDescription desc)
+        protected override SamplerState CreateState(IStatePoolManager poolManager, ref SamplerStateDescription desc)
         {
-            return new SamplerState(device, desc);
+            return poolManager.Register(desc);
         }
     }
 
     public sealed class RasterizerStateProxy : StateProxy<RasterizerState, RasterizerStateDescription>
     {
-        public RasterizerStateProxy(Device device, string name = "") : base(device, name)
+        public RasterizerStateProxy(IStatePoolManager poolManager, string name = "") : base(poolManager, name)
         {
         }
-        public RasterizerStateProxy(Device device, RasterizerStateDescription desc, string name = "") : base(device, desc, name)
+        public RasterizerStateProxy(IStatePoolManager poolManager, RasterizerStateDescription desc, string name = "") : base(poolManager, desc, name)
         {
         }
-        protected override RasterizerState CreateState(Device device, ref RasterizerStateDescription desc)
+        protected override RasterizerState CreateState(IStatePoolManager poolManager, ref RasterizerStateDescription desc)
         {
-            return new RasterizerState(device, desc);
+            return poolManager.Register(desc);
         }
     }
 
     public sealed class BlendStateProxy : StateProxy<BlendState, BlendStateDescription>
     {
-        public BlendStateProxy(Device device, string name = "") : base(device, name)
+        public BlendStateProxy(IStatePoolManager poolManager, string name = "") : base(poolManager, name)
         {
         }
-        public BlendStateProxy(Device device, BlendStateDescription desc, string name = "") : base(device, desc, name)
+        public BlendStateProxy(IStatePoolManager poolManager, BlendStateDescription desc, string name = "") : base(poolManager, desc, name)
         {
         }
 
-        protected override BlendState CreateState(Device device, ref BlendStateDescription desc)
+        protected override BlendState CreateState(IStatePoolManager poolManager, ref BlendStateDescription desc)
         {
-            return new BlendState(device, desc);
+            return poolManager.Register(desc);
         }
     }
 
     public sealed class DepthStencilStateProxy : StateProxy<DepthStencilState, DepthStencilStateDescription>
     {
-        public DepthStencilStateProxy(Device device, string name = "") : base(device, name)
+        public DepthStencilStateProxy(IStatePoolManager poolManager, string name = "") : base(poolManager, name)
         {
         }
 
-        public DepthStencilStateProxy(Device device, DepthStencilStateDescription desc, string name = "") : base(device, desc, name)
+        public DepthStencilStateProxy(IStatePoolManager poolManager, DepthStencilStateDescription desc, string name = "") : base(poolManager, desc, name)
         {
         }
 
-        protected override DepthStencilState CreateState(Device device, ref DepthStencilStateDescription desc)
+        protected override DepthStencilState CreateState(IStatePoolManager poolManager, ref DepthStencilStateDescription desc)
         {
-            return new DepthStencilState(device, desc);
+            return poolManager.Register(desc);
         }
     }
 }
