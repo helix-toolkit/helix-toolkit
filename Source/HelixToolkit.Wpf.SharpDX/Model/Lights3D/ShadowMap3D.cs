@@ -9,7 +9,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.ComponentModel;
     using System.Windows;
     using System.Linq;
-
+    using Media3D = System.Windows.Media.Media3D;
     using global::SharpDX;
 
     using Utilities;
@@ -134,10 +134,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (light is DirectionalLight3D)
                     {
                         var dlight = (DirectionalLight3D)light;
-                        var dir = dlight.DirectionInternal.Normalized();
+                        var dir = Vector4.Transform(dlight.DirectionInternal.ToVector4(0), dlight.ModelMatrix).Normalized();
                         var pos = -100 * dir;
-                        orthoCamera.LookDirection = dir.ToVector3D();
-                        orthoCamera.Position = pos.ToPoint3D();
+                        orthoCamera.LookDirection = new Media3D.Vector3D(dir.X, dir.Y, dir.Z);
+                        orthoCamera.Position = new Media3D.Point3D(pos.X, pos.Y, pos.Z);
                         orthoCamera.UpDirection = Vector3.UnitZ.ToVector3D();
                         orthoCamera.Width = 50;
                         camera = orthoCamera;
@@ -145,8 +145,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     else if (light is SpotLight3D)
                     {
                         var splight = (SpotLight3D)light;
-                        persCamera.Position = splight.Position;
-                        persCamera.LookDirection = splight.DirectionInternal.Normalized().ToVector3D();
+                        persCamera.Position = splight.Position + new Media3D.Vector3D(splight.ModelMatrix.M41, splight.ModelMatrix.M42, splight.ModelMatrix.M43);
+                        var look = Vector4.Transform(splight.DirectionInternal.ToVector4(0), splight.ModelMatrix);
+                        persCamera.LookDirection = new Media3D.Vector3D(look.X, look.Y, look.Z);
                         persCamera.FarPlaneDistance = splight.Range;
                         persCamera.FieldOfView = splight.OuterAngle;
                         persCamera.UpDirection = Vector3.UnitZ.ToVector3D();
