@@ -103,7 +103,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private readonly Dictionary<object, Model3D> mDictionary = new Dictionary<object, Model3D>();
+        private readonly Dictionary<object, Element3D> mDictionary = new Dictionary<object, Element3D>();
         //private bool loaded = false;
         private IOctree<GeometryModel3D> Octree
         {
@@ -153,7 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (e.OldValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
             }
 
-            foreach (Model3D item in Children)
+            foreach (Element3D item in Children)
             {
                 item.DataContext = null;
             }
@@ -180,7 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         continue;
                     }
-                    var model = item as Model3D;
+                    var model = item as Element3D;
                     if (model != null)
                     {
                         this.Children.Add(model);
@@ -200,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         continue;
                     }
-                    var model = this.ItemTemplate.LoadContent() as Model3D;
+                    var model = this.ItemTemplate.LoadContent() as Element3D;
                     if (model != null)
                     {
                         model.DataContext = item;
@@ -269,7 +269,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in this.ItemsSource)
                             {
-                                var model = item as Model3D;
+                                var model = item as Element3D;
                                 if (model != null)
                                 {
                                     this.Children.Add(model);
@@ -285,7 +285,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in this.ItemsSource)
                             {
-                                var model = this.ItemTemplate.LoadContent() as Model3D;
+                                var model = this.ItemTemplate.LoadContent() as Element3D;
                                 if (model != null)
                                 {
                                     model.DataContext = item;
@@ -313,7 +313,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 {
                                     continue;
                                 }
-                                var model = this.ItemTemplate.LoadContent() as Model3D;
+                                var model = this.ItemTemplate.LoadContent() as Element3D;
                                 if (model != null)
                                 {
                                     OctreeManager?.AddPendingItem(model);
@@ -335,7 +335,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 {
                                     continue;
                                 }
-                                var model = item as Model3D;
+                                var model = item as Element3D;
                                 if (model != null)
                                 {
                                     OctreeManager?.AddPendingItem(model);

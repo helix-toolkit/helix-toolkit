@@ -197,8 +197,8 @@ namespace LightingDemo
             this.Light3Attenuation = new Vector3D(1.0f, 0.1f, 0.05f);
             this.Light4Attenuation = new Vector3D(0.1f, 0.1f, 0.0f);
 
-            this.Light1Direction = new Vector3D(0, 0, -10);
-            this.Light1Transform = new TranslateTransform3D(-Light1Direction);
+            this.Light1Direction = new Vector3D(0, -10, 0);
+            this.Light1Transform = CreateAnimatedTransform1(-Light1Direction, new Vector3D(1, 0, 0), 24);
             this.Light1DirectionTransform = CreateAnimatedTransform2(-Light1Direction, new Vector3D(0, 1, -1), 24);
 
             this.Light2Transform = CreateAnimatedTransform1(new Vector3D(-4, 0, 0), new Vector3D(0, 0, 1), 3);

@@ -94,22 +94,14 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRender(IRenderContext context)
         {
             // you mean like this?
-            foreach (var c in this.Children)
+            foreach (var model in this.Children)
             {
-                var model = c as ITransformable;
-                if (model != null)
-                {
-                    // push matrix                    
-                    model.PushMatrix(this.modelMatrix);
-                    // render model
-                    c.Render(context);
-                    // pop matrix                   
-                    model.PopMatrix();
-                }
-                else
-                {
-                    c.Render(context);
-                }
+                // push matrix                    
+                model.PushMatrix(this.modelMatrix);
+                // render model
+                model.Render(context);
+                // pop matrix                   
+                model.PopMatrix();
             }
         }
 
@@ -131,7 +123,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     case NotifyCollectionChangedAction.Reset:
                     case NotifyCollectionChangedAction.Remove:
                     case NotifyCollectionChangedAction.Replace:
-                        foreach (Model3D item in e.OldItems)
+                        foreach (Element3D item in e.OldItems)
                         {
                             // todo: detach?
                             // yes, always
@@ -152,7 +144,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     case NotifyCollectionChangedAction.Reset:
                     case NotifyCollectionChangedAction.Add:
                     case NotifyCollectionChangedAction.Replace:
-                        foreach (Model3D item in e.NewItems)
+                        foreach (Element3D item in e.NewItems)
                         {
                             if (this.IsAttached)
                             {

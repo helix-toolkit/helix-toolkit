@@ -144,9 +144,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override void OnTransformChanged(DependencyPropertyChangedEventArgs e)
+        protected override void OnTransformChanged()
         {
-            base.OnTransformChanged(e);
+            base.OnTransformChanged();
             if(camera != null)
             {
                 var m = Transform.Value;

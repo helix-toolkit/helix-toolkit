@@ -939,7 +939,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 ++counter;
             }
             context.UpdatePerFrameData();
-            foreach (IRenderable e in this.Renderables.Where(x=>!(x is ILight3D)))
+            foreach (IRenderable e in this.Renderables)
             {
                 e.Render(context);
             }

@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
     /// </summary>
-    public abstract class GeometryModel3D : Model3D, IHitable, IBoundable, IVisible, IThrowingShadow, ISelectable, IMouse3D
+    public abstract class GeometryModel3D : Element3D, IHitable, IBoundable, IVisible, IThrowingShadow, ISelectable, IMouse3D
     {
         #region DependencyProperties
         public static readonly DependencyProperty ReuseVertexArrayBufferProperty =
@@ -344,13 +344,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #region Events
         public static readonly RoutedEvent MouseDown3DEvent =
-            EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
+            EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element3D));
 
         public static readonly RoutedEvent MouseUp3DEvent =
-            EventManager.RegisterRoutedEvent("MouseUp3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
+            EventManager.RegisterRoutedEvent("MouseUp3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element3D));
 
         public static readonly RoutedEvent MouseMove3DEvent =
-            EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
+            EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element3D));
 
         public delegate void BoundChangedEventHandler(object sender, ref BoundingBox newBound, ref BoundingBox oldBound);
 
@@ -477,9 +477,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         }
 
-        protected override void OnTransformChanged(DependencyPropertyChangedEventArgs e)
+        protected override void OnTransformChanged()
         {
-            base.OnTransformChanged(e);
             if (this.geometryInternal != null)
             {
                 BoundsWithTransform = Bounds.Transform(this.modelMatrix);

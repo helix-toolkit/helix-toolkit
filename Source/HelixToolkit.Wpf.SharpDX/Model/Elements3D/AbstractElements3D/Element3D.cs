@@ -6,19 +6,23 @@
 //   Base class for renderable elements.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using SharpDX;
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using SharpDX;
+
     using System;
     using System.Diagnostics;
     using System.Windows;
-    using System.Windows.Media;
+    using Media = System.Windows.Media;
     using Core;
+    using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using System.Collections.Generic;
+
+
     /// <summary>
     /// Base class for renderable elements.
     /// </summary>    
-    public abstract class Element3D : FrameworkContentElement, IDisposable, IRenderable, IGUID
+    public abstract class Element3D : FrameworkContentElement, IDisposable, IRenderable, IGUID, ITransformable
     {
         public delegate IRenderTechnique SetRenderTechniqueFunc(IRenderHost host);
         /// <summary>
@@ -28,6 +32,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
         /// </summary>
         public SetRenderTechniqueFunc OnSetRenderTechnique;
+
+        #region Dependency Properties
         /// <summary>
         /// Indicates, if this element should be rendered,
         /// default is true
@@ -93,6 +99,27 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+
+        public static readonly DependencyProperty TransformProperty =
+            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new AffectsRenderPropertyMetadata(Transform3D.Identity, (d,e)=>
+            {
+                ((Element3D)d).modelMatrix = e.NewValue != null ? ((Transform3D)e.NewValue).Value.ToMatrix() : Matrix.Identity;
+                ((Element3D)d).OnTransformChanged();
+            }));
+
+        public Transform3D Transform
+        {
+            get { return (Transform3D)this.GetValue(TransformProperty); }
+            set { this.SetValue(TransformProperty, value); }
+        }
+        #endregion
+
+        protected Matrix totalModelMatrix = Matrix.Identity;
+
+        protected Matrix modelMatrix = Matrix.Identity;
+
+        private readonly Stack<Matrix> matrixStack = new Stack<Matrix>();
+
         private IRenderCore renderCore = null;
         public IRenderCore RenderCore
         {
@@ -121,8 +148,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 return renderCore;
             }
         }
-
-       // protected global::SharpDX.Direct3D11.Effect effect;
 
         protected IRenderTechnique renderTechnique;
 
@@ -179,6 +204,32 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual IRenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
 
         protected virtual void AssignDefaultValuesToCore(IRenderCore core) { }
+        #region Handling Transforms
+
+        public void PushMatrix(Matrix matrix)
+        {
+            matrixStack.Push(this.modelMatrix);
+            this.modelMatrix = this.modelMatrix * matrix;
+            this.totalModelMatrix = this.modelMatrix;
+        }
+
+        public void PopMatrix()
+        {
+            this.modelMatrix = matrixStack.Pop();
+        }
+
+        public Matrix ModelMatrix
+        {
+            get { return this.modelMatrix; }
+        }
+
+        public Matrix TotalModelMatrix
+        {
+            get { return this.totalModelMatrix; }
+        }
+
+        protected virtual void OnTransformChanged() { }
+        #endregion
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
@@ -274,6 +325,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (CanRender(context))
             {
+                RenderCore.ModelMatrix = this.ModelMatrix;
                 OnRender(context);
             }
         }
@@ -303,7 +355,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (obj != null)
             {
-                var parent = VisualTreeHelper.GetParent(obj);
+                var parent = Media.VisualTreeHelper.GetParent(obj);
                 while (parent != null)
                 {
                     var typed = parent as T;
@@ -312,7 +364,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         return typed;
                     }
 
-                    parent = VisualTreeHelper.GetParent(parent);
+                    parent = Media.VisualTreeHelper.GetParent(parent);
                 }
             }
 

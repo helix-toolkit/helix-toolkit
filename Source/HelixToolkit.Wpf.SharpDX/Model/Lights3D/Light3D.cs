@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
         Light3DSceneShared Light3DSceneShared { get; }
     }
 
-    public abstract class Light3D : Model3D, ILight3D, IDisposable
+    public abstract class Light3D : Element3D, ILight3D, IDisposable
     {
         public Light3DSceneShared Light3DSceneShared { private set; get; }
         public static readonly DependencyProperty DirectionProperty =

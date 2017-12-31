@@ -23,11 +23,11 @@
             CameraMode="WalkAround"
             CameraRotationMode="Trackball"
             CoordinateSystemLabelForeground="White"
-            EnableRenderFrustum="True"
+            EnableRenderFrustum="False" EnableSwapChainRendering="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             ShowFrameRate="True"
-            TextBrush="Black"
+            TextBrush="Black" MaxFPS="120"
             UseDefaultGestures="False" EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -64,14 +64,14 @@
                 Size="5 5" ReuseVertexArrayBuffer="True"
                 Color="{Binding PointHitColor}" />
             <hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding Items}">
-                <hx:ItemsModel3D.OctreeManager>
+                <!--<hx:ItemsModel3D.OctreeManager>
                     <hx:GeometryModel3DOctreeManager
                         x:Name="groupOctreeMgr"
                         AutoDeleteIfEmpty="{Binding AutoDeleteEmptyNode}"
                         Cubify="True"
                         MinObjectSizeToSplit="4"
                         RecordHitPathBoundingBoxes="False" />
-                </hx:ItemsModel3D.OctreeManager>
+                </hx:ItemsModel3D.OctreeManager>-->
                 <hx:ItemsModel3D.ItemTemplate>
                     <DataTemplate>
                         <hx:MeshGeometryModel3D

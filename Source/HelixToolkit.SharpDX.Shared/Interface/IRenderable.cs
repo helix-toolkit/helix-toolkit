@@ -23,6 +23,7 @@ namespace HelixToolkit.UWP
         //void Update(TimeSpan timeSpan);
         void Render(IRenderContext context);
         bool IsAttached { get; }
+       // IRenderCore RenderCore { get; }
     }
 
     public interface IRenderer

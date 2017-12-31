@@ -251,7 +251,6 @@
     <Compile Include="Model\Elements3D\AbstractElements3D\GroupElement3D.cs" />
     <Compile Include="Model\Lights3D\Light3D.cs" />
     <Compile Include="Model\Elements3D\LineGeometryModel3D.cs" />
-    <Compile Include="Model\Elements3D\AbstractElements3D\Model3D.cs" />
     <Compile Include="Model\Lights3D\PointLight3D.cs" />
     <Compile Include="Model\Lights3D\ShadowMap3D.cs" />
     <Compile Include="Model\Lights3D\SpotLight3D.cs" />

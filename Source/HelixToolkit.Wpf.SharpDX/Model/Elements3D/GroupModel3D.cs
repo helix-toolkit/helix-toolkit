@@ -13,49 +13,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX;
 
-    public class GroupModel3D : GroupElement3D, ITransformable, IHitable, IVisible
+    public class GroupModel3D : GroupElement3D, IHitable, IVisible
     {
-        private Stack<Matrix> matrixStack = new Stack<Matrix>();
-
-        protected Matrix modelMatrix = Matrix.Identity;
-       
-        public Matrix ModelMatrix
-        {
-            get { return this.modelMatrix; }
-        }
-
-        public void PushMatrix(Matrix matrix)
-        {
-            matrixStack.Push(this.modelMatrix);
-            this.modelMatrix = this.modelMatrix * matrix;
-        }
-
-        public void PopMatrix()
-        {
-            this.modelMatrix = matrixStack.Pop();
-        }     
-
-        public Transform3D Transform
-        {
-            get { return (Transform3D)this.GetValue(TransformProperty); }
-            set { this.SetValue(TransformProperty, value); }
-        }
-
-        public static readonly DependencyProperty TransformProperty =
-            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(GroupModel3D), new FrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.AffectsRender, TransformPropertyChanged));
-
-        private static void TransformPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((GroupModel3D)d).OnTransformChanged(e);
-        }
-
-
-        protected virtual void OnTransformChanged(DependencyPropertyChangedEventArgs e)
-        {
-            var trafo = this.Transform.Value;            
-            this.modelMatrix = trafo.ToMatrix();
-        }
-
         protected override void OnRender(IRenderContext renderContext)
         {
             foreach (var c in this.Items)

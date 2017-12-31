@@ -30,7 +30,7 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             IsShadowMappingEnabled="True"
-            ShowCoordinateSystem="False"
+            ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False"
@@ -52,13 +52,13 @@
             <!--<hx:AmbientLight3D Color="{Binding AmbientLightColor}" />-->
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
-                DirectionTransform="{Binding Light1DirectionTransform}"
+                Transform="{Binding Light1Transform}"
                 IsRendering="{Binding RenderLight1}"
                 Color="{Binding Light1Color}" />
             <hx:PointLight3D
                 Attenuation="{Binding Light2Attenuation}"
-                IsRendering="{Binding RenderLight2}"
                 Transform="{Binding Light2Transform}"
+                IsRendering="{Binding RenderLight2}"
                 Color="{Binding Light2Color}" />
             <hx:PointLight3D
                 Attenuation="{Binding Light3Attenuation}"
@@ -68,7 +68,6 @@
             <hx:SpotLight3D Range="100" 
                 Attenuation="{Binding Light4Attenuation}"
                 Direction="{Binding Light4Direction}"
-                DirectionTransform="{Binding Light4DirectionTransform}"
                 IsRendering="{Binding RenderLight4}"
                 Transform="{Binding Light4Transform}"
                 Color="{Binding Light1Color}" />
