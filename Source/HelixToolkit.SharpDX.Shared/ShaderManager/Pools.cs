@@ -39,7 +39,24 @@ namespace HelixToolkit.UWP.ShaderManager
         /// </summary>
         /// <param name="description"></param>
         /// <returns></returns>
-        public abstract TVALUE Register(TDescription description);
+        public TVALUE Register(TDescription description)
+        {
+            TVALUE value;
+            TKEY key = GetKey(ref description);
+            if (pool.TryGetValue(key, out value))
+            {
+                return value;
+            }
+            else
+            {
+                value = Collect(Create(Device, ref description));
+                pool.Add(key, value);
+                return value;
+            }
+        }
+
+        protected abstract TKEY GetKey(ref TDescription description);
+        protected abstract TVALUE Create(Device device, ref TDescription description);
         /// <summary>
         /// 
         /// </summary>

@@ -19,18 +19,14 @@ namespace HelixToolkit.UWP.ShaderManager
     {
         public BlendStatePool(Device device) : base(device) { }
 
-        public override BlendState Register(BlendStateDescription description)
+        protected override BlendState Create(Device device, ref BlendStateDescription description)
         {
-            if (pool.ContainsKey(description))
-            {
-                return pool[description];
-            }
-            else
-            {
-                var state = Collect(new BlendState(Device, description));
-                pool.Add(description, state);
-                return state;
-            }
+            return new BlendState(device, description);
+        }
+
+        protected override BlendStateDescription GetKey(ref BlendStateDescription description)
+        {
+            return description;
         }
     }
 
@@ -38,18 +34,14 @@ namespace HelixToolkit.UWP.ShaderManager
     {
         public DepthStencilStatePool(Device device) : base(device) { }
 
-        public override DepthStencilState Register(DepthStencilStateDescription description)
+        protected override DepthStencilState Create(Device device, ref DepthStencilStateDescription description)
         {
-            if (pool.ContainsKey(description))
-            {
-                return pool[description];
-            }
-            else
-            {
-                var state = Collect(new DepthStencilState(Device, description));
-                pool.Add(description, state);
-                return state;
-            }
+            return new DepthStencilState(device, description);
+        }
+
+        protected override DepthStencilStateDescription GetKey(ref DepthStencilStateDescription description)
+        {
+            return description;
         }
     }
 
@@ -57,18 +49,14 @@ namespace HelixToolkit.UWP.ShaderManager
     {
         public RasterStatePool(Device device) : base(device) { }
 
-        public override RasterizerState Register(RasterizerStateDescription description)
+        protected override RasterizerState Create(Device device, ref RasterizerStateDescription description)
         {
-            if (pool.ContainsKey(description))
-            {
-                return pool[description];
-            }
-            else
-            {
-                var state = Collect(new RasterizerState(Device, description));
-                pool.Add(description, state);
-                return state;
-            }
+            return new RasterizerState(device, description);
+        }
+
+        protected override RasterizerStateDescription GetKey(ref RasterizerStateDescription description)
+        {
+            return description;
         }
     }
 
@@ -78,18 +66,14 @@ namespace HelixToolkit.UWP.ShaderManager
         {
         }
 
-        public override SamplerState Register(SamplerStateDescription description)
+        protected override SamplerState Create(Device device, ref SamplerStateDescription description)
         {
-            if (pool.ContainsKey(description))
-            {
-                return pool[description];
-            }
-            else
-            {
-                var state = Collect(new SamplerState(Device, description));
-                pool.Add(description, state);
-                return state;
-            }
+            return new SamplerState(device, description);
+        }
+
+        protected override SamplerStateDescription GetKey(ref SamplerStateDescription description)
+        {
+            return description;
         }
     }
 

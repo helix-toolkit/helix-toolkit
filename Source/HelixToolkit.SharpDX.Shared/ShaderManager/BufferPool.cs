@@ -19,24 +19,5 @@ namespace HelixToolkit.UWP.ShaderManager
         public BufferPool(Device device) : base(device)
         {
         }
-
-        public override IBufferProxy Register(TBUFFERDESC description)
-        {
-            var key = GetKey(description);
-            if (pool.ContainsKey(key))
-            {
-                return pool[key];
-            }
-            else
-            {
-                var buffer = Collect(CreateBuffer(description));
-                buffer.CreateBuffer(Device);
-                pool.Add(key, buffer);
-                return buffer;
-            }
-        }
-
-        protected abstract TKEY GetKey(TBUFFERDESC description);
-        protected abstract IBufferProxy CreateBuffer(TBUFFERDESC description);
     }
 }

@@ -24,22 +24,14 @@ namespace HelixToolkit.UWP.ShaderManager
             ConstantBufferPool = cbPool;
         }
 
-        public override IShader Register(ShaderDescription description)
+        protected override byte[] GetKey(ref ShaderDescription description)
         {
-            if (description.ByteCode == null)
-            {
-                return new NullShader(description.ShaderType);
-            }
-            else if (pool.ContainsKey(description.ByteCode))
-            {
-                return pool[description.ByteCode];
-            }
-            else
-            {
-                var shader = Collect(description.CreateShader(Device, ConstantBufferPool));
-                pool.Add(description.ByteCode, shader);
-                return shader;
-            }
+            return description.ByteCode;
+        }
+
+        protected override IShader Create(Device device, ref ShaderDescription description)
+        {
+            return description.ByteCode == null ? new NullShader(description.ShaderType) : description.CreateShader(device, ConstantBufferPool);
         }
     }
 
@@ -49,22 +41,14 @@ namespace HelixToolkit.UWP.ShaderManager
             :base(device)
         { }
 
-        public override InputLayout Register(Tuple<byte[], InputElement[]> description)
+        protected override InputLayout Create(Device device, ref Tuple<byte[], InputElement[]> description)
         {
-            if (description.Item1 == null || description.Item2 == null)
-            {
-                return null;
-            }
-            else if (pool.ContainsKey(description.Item1))
-            {
-                return pool[description.Item1];
-            }
-            else
-            {
-                var layout = Collect(new InputLayout(Device, description.Item1, description.Item2));
-                pool.Add(description.Item1, layout);
-                return layout;
-            }
+            return description.Item1 == null || description.Item2 == null ? null : new InputLayout(Device, description.Item1, description.Item2);
+        }
+
+        protected override byte[] GetKey(ref Tuple<byte[], InputElement[]> description)
+        {
+            return description.Item1;
         }
     }
 

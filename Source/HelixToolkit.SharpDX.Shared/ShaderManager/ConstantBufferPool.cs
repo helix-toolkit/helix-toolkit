@@ -12,6 +12,7 @@ namespace HelixToolkit.UWP.ShaderManager
     using Utilities;
     using Shaders;
     using global::SharpDX.Direct3D11;
+    using System;
 
     public interface IConstantBufferPool
     {
@@ -27,12 +28,15 @@ namespace HelixToolkit.UWP.ShaderManager
         {
 
         }
-        protected override IBufferProxy CreateBuffer(ConstantBufferDescription description)
+
+        protected override IBufferProxy Create(Device device, ref ConstantBufferDescription description)
         {
-            return description.CreateBuffer();
+            var buffer = description.CreateBuffer();
+            buffer.CreateBuffer(device);
+            return buffer;
         }
 
-        protected override string GetKey(ConstantBufferDescription description)
+        protected override string GetKey(ref ConstantBufferDescription description)
         {
             return description.Name + description.StructSize;
         }
