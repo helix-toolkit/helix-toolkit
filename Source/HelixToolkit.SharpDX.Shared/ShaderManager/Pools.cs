@@ -46,8 +46,9 @@ namespace HelixToolkit.UWP.ShaderManager
             TVALUE value;
             TKEY key = GetKey(ref description);
             if (pool.TryGetValue(key, out value))
-            {                
-                return value.QueryInterfaceOrNull<TVALUE>();
+            {
+                ((IUnknown)value).AddReference();
+                return value;
             }
             else
             {
