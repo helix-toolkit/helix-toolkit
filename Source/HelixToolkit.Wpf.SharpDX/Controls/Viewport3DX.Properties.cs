@@ -154,9 +154,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemLabelForegroundProperty = DependencyProperty.Register(
                 "CoordinateSystemLabelForeground",
-                typeof(Brush),
+                typeof(Color),
                 typeof(Viewport3DX),
-                new PropertyMetadata(Brushes.Black));
+                new PropertyMetadata(Colors.Black));
 
         /// <summary>
         /// The coordinate system label X property
@@ -1018,11 +1018,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The color of the coordinate system label.
         /// </value>
-        public Brush CoordinateSystemLabelForeground
+        public Color CoordinateSystemLabelForeground
         {
             get
             {
-                return (Brush)this.GetValue(CoordinateSystemLabelForegroundProperty);
+                return (Color)this.GetValue(CoordinateSystemLabelForegroundProperty);
             }
 
             set

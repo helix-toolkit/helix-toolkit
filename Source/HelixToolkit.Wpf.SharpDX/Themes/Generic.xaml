@@ -85,7 +85,15 @@
                             </Grid>
                             <ItemsControl>
                                 <hx:ViewBoxModel3D x:Name="PART_ViewCube" IsRendering="{TemplateBinding ShowViewCube}" SizeScale="{TemplateBinding ViewCubeSize}" RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}" RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"/>
-                                <hx:CoordinateSystemModel3D x:Name="PART_CoordinateView" IsRendering="{TemplateBinding ShowCoordinateSystem}" SizeScale="{TemplateBinding CoordinateSystemSize}" RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}" RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"/>
+                                <hx:CoordinateSystemModel3D x:Name="PART_CoordinateView" 
+                                                            IsRendering="{TemplateBinding ShowCoordinateSystem}" 
+                                                            SizeScale="{TemplateBinding CoordinateSystemSize}" 
+                                                            LabelColor="{TemplateBinding CoordinateSystemLabelForeground}"
+                                                            RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}" 
+                                                            RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"
+                                                            CoordinateSystemLabelX="{TemplateBinding CoordinateSystemLabelX}"
+                                                            CoordinateSystemLabelY="{TemplateBinding CoordinateSystemLabelY}"
+                                                            CoordinateSystemLabelZ="{TemplateBinding CoordinateSystemLabelZ}"/>
                             </ItemsControl>
                             <!-- Coordinate system --><!--
                             <Viewport3D x:Name="PART_CoordinateView" 
