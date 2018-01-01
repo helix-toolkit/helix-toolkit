@@ -35,11 +35,6 @@ cbuffer cbModel : register(b1)
     float4 vParams = float4(0, 0, 0, 0); //Shared with line, points and billboard
     float4 vColor = float4(1, 1, 1, 1); //Shared with line, points and billboard
     bool4 bParams = bool4(false, false, false, false); // Shared with models for enable/disable features
-};
-
-
-cbuffer cbTessellation : register(b2)
-{
 	float minTessDistance = 1;
 	float maxTessDistance = 100;
 	float minTessFactor = 4;
@@ -51,15 +46,16 @@ cbuffer cbTessellation : register(b2)
 static const int4 minBoneV = { 0, 0, 0, 0 };
 static const int4 maxBoneV = { MaxBones - 1, MaxBones - 1, MaxBones - 1, MaxBones - 1 };
 
-cbuffer cbBoneSkinning : register(b3)
+cbuffer cbBoneSkinning : register(b2)
 {
     matrix skinMatrices[MaxBones];
 };
 
-cbuffer cbLights : register(b4)
+cbuffer cbLights : register(b3)
 {
     LightStruct Lights[LIGHTS];
     float4 vLightAmbient = float4(0.2f, 0.2f, 0.2f, 1.0f);
+
 };
 
 // File: Materials header for HelixToolkit.Wpf.SharpDX
@@ -69,7 +65,7 @@ cbuffer cbLights : register(b4)
 //--------------------------------------------------------------------------------------
 // CONSTANT BUFF FOR MATERIAL
 //--------------------------------------------------------------------------------------
-cbuffer cbMaterial : register(b5)
+cbuffer cbMaterial : register(b4)
 {
     float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient
     float4 vMaterialDiffuse = 0.5f; //Kd := surface material's diffuse coefficient
@@ -88,7 +84,7 @@ cbuffer cbMaterial : register(b5)
 	float4 displacementMapScaleMask = float4(0,0,0,1);
 };
 
-cbuffer cbShadow : register(b6)
+cbuffer cbShadow : register(b5)
 {
     float2 vShadowMapSize = float2(1024, 1024);
     bool bHasShadowMap = false;
@@ -97,7 +93,7 @@ cbuffer cbShadow : register(b6)
 	float4x4 vLightViewProjection;
 };
 
-cbuffer cbClipping : register(b7)
+cbuffer cbClipping : register(b6)
 {
 	bool4 EnableCrossPlane;
     float4 CrossSectionColors;
@@ -109,7 +105,7 @@ cbuffer cbClipping : register(b7)
 	float4x4 CrossPlaneParams;
 }
 
-cbuffer cbParticleFrame : register(b8)
+cbuffer cbParticleFrame : register(b7)
 {
     uint NumParticles;
     float3 ExtraAccelation;
@@ -134,7 +130,7 @@ cbuffer cbParticleFrame : register(b8)
     float2 pad0;
 };
 
-cbuffer cbParticleCreateParameters : register(b9)
+cbuffer cbParticleCreateParameters : register(b8)
 {
     float3 EmitterLocation;
     float InitialEnergy;

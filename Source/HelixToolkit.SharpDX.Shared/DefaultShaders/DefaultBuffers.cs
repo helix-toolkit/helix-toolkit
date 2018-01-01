@@ -20,7 +20,6 @@ namespace HelixToolkit.UWP.Shaders
         public static string MaterialCB = "cbMaterial";
         public static string BoneCB = "cbBoneSkinning";
         public static string ClipParamsCB = "cbClipping";
-        public static string TessellationParamsCB = "cbTessellation";
 
         //-----------Materials--------------------
         public static string DiffuseMapTB = "texDiffuseMap";

@@ -235,7 +235,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector4 Params;
         public Vector4 Color;
         public Bool4 BoolParams;
-        public const int SizeInBytes = 4 * (4 * 4 + 4 * 4);
+        public float MinTessDistance; // Minimum distance to do tessellation
+        public float MaxTessDistance; // Maximum distance to do tessellation
+        public float MinTessFactor; // Tessellation factor when at minimum distance, usually MinTessFactor > MaxTessFactor
+        public float MaxTessFactor; // Tessellation factor when at maximum distance
+        public const int SizeInBytes = 4 * (4 * 4 + 4 * 4 + 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
@@ -266,15 +270,5 @@ namespace HelixToolkit.Wpf.SharpDX
         // M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin
         public Matrix CrossPlaneParams;
         public const int SizeInBytes = 4 * (4 * 2 + 4 * 4);
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct TessellationStruct
-    {
-        public float MinTessDistance; // Minimum distance to do tessellation
-        public float MaxTessDistance; // Maximum distance to do tessellation
-        public float MinTessFactor; // Tessellation factor when at minimum distance, usually MinTessFactor > MaxTessFactor
-        public float MaxTessFactor; // Tessellation factor when at maximum distance
-        public const int SizeInBytes = 4 * 4;
     }
 }

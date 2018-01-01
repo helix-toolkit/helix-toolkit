@@ -54,55 +54,23 @@ namespace HelixToolkit.UWP.Core
     {
         public float MinTessellationDistance
         {
-            set
-            {
-                TessellationParameters.MinTessDistance = value;
-                tessParamUpdated = true;
-            }
-            get
-            {
-                return TessellationParameters.MinTessDistance;
-            }
-        }
+            set;get;
+        } = 10;
 
         public float MaxTessellationDistance
         {
-            set
-            {
-                TessellationParameters.MaxTessDistance = value;
-                tessParamUpdated = true;
-            }
-            get
-            {
-                return TessellationParameters.MaxTessDistance;
-            }
-        }
+            set;get;
+        } = 100;
 
         public float MinTessellationFactor
         {
-            set
-            {
-                TessellationParameters.MinTessFactor = value;
-                tessParamUpdated = true;
-            }
-            get
-            {
-                return TessellationParameters.MinTessFactor;
-            }
-        }
+            set; get;
+        } = 2;
 
         public float MaxTessellationFactor
         {
-            set
-            {
-                TessellationParameters.MaxTessFactor = value;
-                tessParamUpdated = true;
-            }
-            get
-            {
-                return TessellationParameters.MaxTessFactor;
-            }
-        }
+            set; get;
+        } = 1;
 
         private MeshTopologyEnum meshType = MeshTopologyEnum.PNTriangles;
         public MeshTopologyEnum MeshType
@@ -150,41 +118,18 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-
-        private bool tessParamUpdated = true;
-        private TessellationStruct TessellationParameters = new TessellationStruct()
-        { MaxTessDistance = 50, MinTessDistance = 1, MaxTessFactor = 1, MinTessFactor = 4 };
-
-        private IConstantBufferProxy tessParamBuffer;
-
         public PatchMeshRenderCore()
         {
             DefaultShaderPassName = DefaultPassNames.Default;
         }
 
-
-        protected override bool OnAttach(IRenderTechnique technique)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
-            if (base.OnAttach(technique))
-            {
-                tessParamBuffer = technique.ConstantBufferPool.Register(DefaultBufferNames.TessellationParamsCB, TessellationStruct.SizeInBytes);
-                tessParamUpdated = true;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
-        {
-            base.OnUploadPerModelConstantBuffers(context);
-            if (tessParamUpdated)
-            {
-                tessParamBuffer.UploadDataToBuffer(context, ref TessellationParameters);
-                tessParamUpdated = false;
-            }
+            base.OnUpdatePerModelStruct(ref model, context);
+            model.MaxTessDistance = this.MaxTessellationDistance;
+            model.MinTessDistance = this.MinTessellationDistance;
+            model.MaxTessFactor = this.MaxTessellationFactor;
+            model.MinTessFactor = this.MinTessellationFactor;
         }
 
         protected override void OnRender(IRenderContext context)
