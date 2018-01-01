@@ -26,6 +26,7 @@ namespace SimpleDemo
     using HelixToolkit.Wpf;
     using System.Windows.Media.Imaging;
     using System.IO;
+    using System.Windows.Input;
 
     public class MainViewModel : BaseViewModel
     {
@@ -53,6 +54,12 @@ namespace SimpleDemo
         public Vector3D DirectionalLightDirection { get; private set; }
         public Color DirectionalLightColor { get; private set; }
         public Color AmbientLightColor { get; private set; }
+
+        public Vector3D UpDirection { set; get; } = new Vector3D(0, 1, 0);
+
+        public ICommand UpXCommand { private set; get; }
+        public ICommand UpYCommand { private set; get; }
+        public ICommand UpZCommand { private set; get; }
 
         public MainViewModel()
         {
@@ -174,6 +181,10 @@ namespace SimpleDemo
             //BillboardImageModel = new BillboardSingleImage3D(CreateBitmapSample()) { MaskColor = Color.Black };
             BillboardImageModel = new BillboardSingleImage3D(CreatePNGSample(), 1, 1);
             BillboardImageModel.Center = new Vector3(2, 2, 0);
+
+            UpXCommand = new RelayCommand(x => { UpDirection = new Vector3D(1, 0, 0); });
+            UpYCommand = new RelayCommand(x => { UpDirection = new Vector3D(0, 1, 0); });
+            UpZCommand = new RelayCommand(x => { UpDirection = new Vector3D(0, 0, 1); });
         }
 
         private BitmapSource CreateBitmapSample()
