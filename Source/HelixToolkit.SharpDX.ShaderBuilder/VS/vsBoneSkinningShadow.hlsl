@@ -1,9 +1,6 @@
-#define MATERIAL
-#include"..\Common\DataStructs.hlsl"
+#ifndef VSBONESKINNINGSHADOW_HLSL
+#define VSBONESKINNINGSHADOW_HLSL
 #include"..\Common\Common.hlsl"
-
-#pragma pack_matrix( row_major )
-
 
 float4 main(VSBoneSkinInput input) : SV_Position
 {
@@ -13,13 +10,13 @@ float4 main(VSBoneSkinInput input) : SV_Position
     {
         int4 bones = clamp(input.bones, minBoneV, maxBoneV);
 
-        inputp = mul(input.p, cbSkinMatrices[bones.x]) * input.boneWeights.x;
+        inputp = mul(input.p, skinMatrices[bones.x]) * input.boneWeights.x;
 
-        inputp += mul(input.p, cbSkinMatrices[bones.y]) * input.boneWeights.y;
+        inputp += mul(input.p, skinMatrices[bones.y]) * input.boneWeights.y;
 
-        inputp += mul(input.p, cbSkinMatrices[bones.z]) * input.boneWeights.z;
+        inputp += mul(input.p, skinMatrices[bones.z]) * input.boneWeights.z;
 
-        inputp += mul(input.p, cbSkinMatrices[bones.w]) * input.boneWeights.w;
+        inputp += mul(input.p, skinMatrices[bones.w]) * input.boneWeights.w;
     }
 
 	// compose instance matrix
@@ -40,3 +37,4 @@ float4 main(VSBoneSkinInput input) : SV_Position
     inputp = mul(inputp, vLightViewProjection);
     return inputp;
 }
+#endif

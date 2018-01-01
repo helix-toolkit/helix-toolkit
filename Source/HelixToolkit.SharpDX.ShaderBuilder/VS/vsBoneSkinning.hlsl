@@ -1,10 +1,7 @@
 #ifndef VSBONESKINNING_HLSL
 #define VSBONESKINNING_HLSL
-#define MATERIAL
-#include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
 
-#pragma pack_matrix( row_major )
+#include"..\Common\Common.hlsl"
 
 PSInput main(VSBoneSkinInput input)
 {
@@ -22,17 +19,17 @@ PSInput main(VSBoneSkinInput input)
     {
         int4 bones = clamp(input.bones, minBoneV, maxBoneV);
 
-        output.p = mul(inputp, cbSkinMatrices[bones.x]) * input.boneWeights.x;
-        output.n = mul(inputn, (float3x3) cbSkinMatrices[bones.x]) * input.boneWeights.x;
+        output.p = mul(inputp, skinMatrices[bones.x]) * input.boneWeights.x;
+        output.n = mul(inputn, (float3x3) skinMatrices[bones.x]) * input.boneWeights.x;
 
-        output.p += mul(inputp, cbSkinMatrices[bones.y]) * input.boneWeights.y;
-        output.n += mul(inputn, (float3x3) cbSkinMatrices[bones.y]) * input.boneWeights.y;
+        output.p += mul(inputp, skinMatrices[bones.y]) * input.boneWeights.y;
+        output.n += mul(inputn, (float3x3) skinMatrices[bones.y]) * input.boneWeights.y;
 
-        output.p += mul(inputp, cbSkinMatrices[bones.z]) * input.boneWeights.z;
-        output.n += mul(inputn, (float3x3) cbSkinMatrices[bones.z]) * input.boneWeights.z;
+        output.p += mul(inputp, skinMatrices[bones.z]) * input.boneWeights.z;
+        output.n += mul(inputn, (float3x3) skinMatrices[bones.z]) * input.boneWeights.z;
 
-        output.p += mul(inputp, cbSkinMatrices[bones.w]) * input.boneWeights.w;
-        output.n += mul(inputn, (float3x3) cbSkinMatrices[bones.w]) * input.boneWeights.w;
+        output.p += mul(inputp, skinMatrices[bones.w]) * input.boneWeights.w;
+        output.n += mul(inputn, (float3x3) skinMatrices[bones.w]) * input.boneWeights.w;
     }
 
     float3 inputt1 = input.t1;

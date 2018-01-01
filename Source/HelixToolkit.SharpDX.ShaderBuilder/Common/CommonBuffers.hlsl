@@ -1,7 +1,8 @@
 #ifndef CBUFFERS_HLSL
 #define CBUFFERS_HLSL
-#include"DataStructs.hlsl"
 #pragma pack_matrix( row_major )
+#include"DataStructs.hlsl"
+
 
 ///------------------Constant Buffers-----------------------
 //--------------------------------------------------------------------------------------
@@ -50,9 +51,9 @@ cbuffer cbTessellation : register(b2)
 static const int4 minBoneV = { 0, 0, 0, 0 };
 static const int4 maxBoneV = { MaxBones - 1, MaxBones - 1, MaxBones - 1, MaxBones - 1 };
 
-cbuffer BoneSkinning : register(b3)
+cbuffer cbBoneSkinning : register(b3)
 {
-    matrix cbSkinMatrices[MaxBones];
+    matrix skinMatrices[MaxBones];
 };
 
 cbuffer cbLights : register(b4)
