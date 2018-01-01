@@ -35,8 +35,7 @@ namespace HelixToolkit.UWP.Model
 
         private const int NUMTEXTURES = 4;
         private const int NUMSAMPLERS = 5;
-        private const int DiffuseIdx = 0, AlphaIdx = 1, NormalIdx = 2, DisplaceIdx = 3,
-            SamplerDiffuseIdx = 0, SamplerAlphaIdx = 1, SamplerNormalIdx = 2, SamplerDisplaceIdx = 3, SamplerShadowIdx = 4;
+        private const int DiffuseIdx = 0, AlphaIdx = 1, NormalIdx = 2, DisplaceIdx = 3, ShadowIdx = 4;
 
         private ShaderResouceViewProxy[] TextureResources = new ShaderResouceViewProxy[NUMTEXTURES];
         private int[,] TextureBindingMap = new int[Constants.NumShaderStages, NUMTEXTURES];
@@ -220,11 +219,11 @@ namespace HelixToolkit.UWP.Model
             TextureResources[NormalIdx] = Collect(new ShaderResouceViewProxy(Device));
             TextureResources[DisplaceIdx] = Collect(new ShaderResouceViewProxy(Device));
             TextureResources[AlphaIdx] = Collect(new ShaderResouceViewProxy(Device));
-            SamplerResources[SamplerDiffuseIdx] = Collect(new SamplerProxy(manager.StateManager));
-            SamplerResources[SamplerNormalIdx] = Collect(new SamplerProxy(manager.StateManager));
-            SamplerResources[SamplerDisplaceIdx] = Collect(new SamplerProxy(manager.StateManager));
-            SamplerResources[SamplerAlphaIdx] = Collect(new SamplerProxy(manager.StateManager));
-            SamplerResources[SamplerShadowIdx] = Collect(new SamplerProxy(manager.StateManager));
+            SamplerResources[DiffuseIdx] = Collect(new SamplerProxy(manager.StateManager));
+            SamplerResources[NormalIdx] = Collect(new SamplerProxy(manager.StateManager));
+            SamplerResources[DisplaceIdx] = Collect(new SamplerProxy(manager.StateManager));
+            SamplerResources[AlphaIdx] = Collect(new SamplerProxy(manager.StateManager));
+            SamplerResources[ShadowIdx] = Collect(new SamplerProxy(manager.StateManager));
             CreateTextureViews();
             CreateSamplers();
         }
@@ -250,19 +249,19 @@ namespace HelixToolkit.UWP.Model
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseMapSampler)))
             {
-                SamplerResources[SamplerDiffuseIdx].Description = (sender as IPhongMaterial).DiffuseMapSampler;
+                SamplerResources[DiffuseIdx].Description = (sender as IPhongMaterial).DiffuseMapSampler;
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseAlphaMapSampler)))
             {
-                SamplerResources[SamplerAlphaIdx].Description = (sender as IPhongMaterial).DiffuseAlphaMapSampler;
+                SamplerResources[AlphaIdx].Description = (sender as IPhongMaterial).DiffuseAlphaMapSampler;
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.DisplacementMapSampler)))
             {
-                SamplerResources[SamplerDisplaceIdx].Description = (sender as IPhongMaterial).DisplacementMapSampler;
+                SamplerResources[DisplaceIdx].Description = (sender as IPhongMaterial).DisplacementMapSampler;
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.NormalMapSampler)))
             {
-                SamplerResources[SamplerNormalIdx].Description = (sender as IPhongMaterial).NormalMapSampler;
+                SamplerResources[NormalIdx].Description = (sender as IPhongMaterial).NormalMapSampler;
             }
             OnInvalidateRenderer?.Invoke(this, true);
         }
@@ -294,11 +293,11 @@ namespace HelixToolkit.UWP.Model
         {
             if (material != null)
             {
-                SamplerResources[SamplerDiffuseIdx].Description = material.DiffuseMapSampler;
-                SamplerResources[SamplerNormalIdx].Description = material.NormalMapSampler;
-                SamplerResources[SamplerAlphaIdx].Description = material.DiffuseAlphaMapSampler;
-                SamplerResources[SamplerDisplaceIdx].Description = material.DisplacementMapSampler;
-                SamplerResources[SamplerShadowIdx].Description = DefaultSamplers.ShadowSampler;
+                SamplerResources[DiffuseIdx].Description = material.DiffuseMapSampler;
+                SamplerResources[NormalIdx].Description = material.NormalMapSampler;
+                SamplerResources[AlphaIdx].Description = material.DiffuseAlphaMapSampler;
+                SamplerResources[DisplaceIdx].Description = material.DisplacementMapSampler;
+                SamplerResources[ShadowIdx].Description = DefaultSamplers.ShadowSampler;
             }
         }
 
@@ -399,11 +398,11 @@ namespace HelixToolkit.UWP.Model
                 TextureBindingMap[idx, NormalIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderNormalTexName);
                 TextureBindingMap[idx, DisplaceIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderDisplaceTexName);
 
-                SamplerBindingMap[idx, SamplerDiffuseIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerDiffuseTexName);
-                SamplerBindingMap[idx, SamplerAlphaIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerAlphaTexName);
-                SamplerBindingMap[idx, SamplerNormalIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerNormalTexName);
-                SamplerBindingMap[idx, SamplerDisplaceIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerDisplaceTexName);
-                SamplerBindingMap[idx, SamplerShadowIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerShadowMapName);
+                SamplerBindingMap[idx, DiffuseIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerDiffuseTexName);
+                SamplerBindingMap[idx, AlphaIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerAlphaTexName);
+                SamplerBindingMap[idx, NormalIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerNormalTexName);
+                SamplerBindingMap[idx, DisplaceIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerDisplaceTexName);
+                SamplerBindingMap[idx, ShadowIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerShadowMapName);
             }
         }
 
@@ -424,10 +423,11 @@ namespace HelixToolkit.UWP.Model
             {
                 if (TextureResources[i].TextureView == null) { continue; }
                 shader.BindTexture(context, TextureBindingMap[idx, i], TextureResources[i]);
-            }
-            for (int i = 0; i < NUMSAMPLERS; ++i)
-            {
                 shader.BindSampler(context, SamplerBindingMap[idx, i], SamplerResources[i]);
+            }
+            if (materialStruct.RenderShadowMap == 1)
+            {
+                shader.BindSampler(context, SamplerBindingMap[idx, NUMSAMPLERS-1], SamplerResources[NUMSAMPLERS-1]);
             }
         }
         /// <summary>
