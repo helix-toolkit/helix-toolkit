@@ -189,9 +189,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
             ray = new Ray(zn, r);
             List<HitTestResult> viewBoxHit = new List<HitTestResult>();
-#if DEBUG
+
             if (base.OnHitTest(context, ray, ref viewBoxHit))
             {
+                hits?.Clear();
                 hits = viewBoxHit;
                 Debug.WriteLine("View box hit.");
                 var hit = viewBoxHit[0];
@@ -211,9 +212,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
-#else
-            return base.OnHitTest(context, ray, ref hits);
-#endif
         }
     }
 }

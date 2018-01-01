@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [TemplatePart(Name = "PART_Canvas", Type = typeof(ContentPresenter))]
     [TemplatePart(Name = "PART_AdornerLayer", Type = typeof(AdornerDecorator))]
     [TemplatePart(Name = "PART_CoordinateView", Type = typeof(Viewport3D))]
-    [TemplatePart(Name = "PART_ViewCubeViewport", Type = typeof(Viewport3D))]
+    [TemplatePart(Name = "PART_ViewCube", Type = typeof(Viewport3D))]
     [Localizability(LocalizationCategory.NeverLocalize)]
     public partial class Viewport3DX : ItemsControl, IRenderer
     {
@@ -65,11 +65,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The view cube part name.
         /// </summary>
         private const string PartViewCube = "PART_ViewCube";
-
-        /// <summary>
-        /// The view cube viewport part name.
-        /// </summary>
-        private const string PartViewCubeViewport = "PART_ViewCubeViewport";
 
         /// <summary>
         ///   The is move enabled property.
@@ -138,14 +133,9 @@ namespace HelixToolkit.Wpf.SharpDX
         private CameraController cameraController;
 
         /// <summary>
-        /// The coordinate system lights.
-        /// </summary>
-        private Model3DGroup coordinateSystemLights;
-
-        /// <summary>
         /// The coordinate view.
         /// </summary>
-        private Viewport3D coordinateView;
+        private Element3D coordinateView;
 
         /// <summary>
         /// The nearest valid result during a hit test.
@@ -203,17 +193,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The view cube.
         /// </summary>
-        private ViewCubeVisual3D viewCube;
-
-        /// <summary>
-        /// The view cube lights.
-        /// </summary>
-        private Model3DGroup viewCubeLights;
-
-        /// <summary>
-        /// The view cube view.
-        /// </summary>
-        private Viewport3D viewCubeViewport;
+        private Element3D viewCube;
 
         /// <summary>
         /// Fired whenever an exception occurred at rendering subsystem.
@@ -245,7 +225,9 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             yield return item;
                         }
-                    }
+                    }                  
+                    yield return viewCube;
+                    yield return coordinateView;
                 }
             }
         }
@@ -465,7 +447,14 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return ViewportExtensions.FindNearestPoint(this, pt);
         }
-
+        public static bool IsInDesignMode
+        {
+            get
+            {
+                var prop = DesignerProperties.IsInDesignModeProperty;
+                return (bool)DependencyPropertyDescriptor.FromProperty(prop, typeof(FrameworkElement)).Metadata.DefaultValue;
+            }
+        }
         /// <summary>
         /// Hides the target adorner.
         /// </summary>
@@ -589,7 +578,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-
+            if (IsInDesignMode)
+            { return; }
             if (this.renderHostInternal != null)
             {
                 this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
@@ -659,53 +649,21 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (this.coordinateView == null)
             {
-                this.coordinateView = this.Template.FindName(PartCoordinateView, this) as Viewport3D;
-
-                this.coordinateSystemLights = new Model3DGroup();
-
-                // coordinateSystemLights.Children.Add(new DirectionalLight(Colors.White, new Vector3D(1, 1, 1)));
-                // coordinateSystemLights.Children.Add(new AmbientLight(Colors.DarkGray));
-                this.coordinateSystemLights.Children.Add(new System.Windows.Media.Media3D.AmbientLight(Colors.LightGray));
-
-                if (this.coordinateView != null)
-                {
-                    this.coordinateView.Camera = new System.Windows.Media.Media3D.PerspectiveCamera();
-                    this.coordinateView.Children.Add(new ModelVisual3D { Content = this.coordinateSystemLights });
-                }
+                this.coordinateView = this.Template.FindName(PartCoordinateView, this) as Element3D;
             }
-
             if (this.coordinateView == null)
             {
                 throw new HelixToolkitException("{0} is missing from the template.", PartCoordinateView);
             }
-
-            if (this.viewCubeViewport == null)
+            if (this.viewCube == null)
             {
-                this.viewCubeViewport = this.Template.FindName(PartViewCubeViewport, this) as Viewport3D;
-
-                this.viewCubeLights = new Model3DGroup();
-                this.viewCubeLights.Children.Add(new System.Windows.Media.Media3D.AmbientLight(Colors.White));
-                if (this.viewCubeViewport != null)
-                {
-                    this.viewCubeViewport.Camera = new System.Windows.Media.Media3D.PerspectiveCamera();
-                    this.viewCubeViewport.Children.Add(new ModelVisual3D { Content = this.viewCubeLights });
-                    this.viewCubeViewport.MouseEnter += this.ViewCubeViewportMouseEnter;
-                    this.viewCubeViewport.MouseLeave += this.ViewCubeViewportMouseLeave;
-                }
-
-                this.viewCube = this.Template.FindName(PartViewCube, this) as ViewCubeVisual3D;
-                if (this.viewCube != null)
-                {
-                    this.viewCube.Clicked += this.ViewCubeClicked;
-
-                    // this.viewCube.Viewport = this.Viewport;
-                }
+                this.viewCube = this.Template.FindName(PartViewCube, this) as Element3D;
             }
-            if (EnableSwapChainRendering)
+            if (this.viewCube == null)
             {
-                ShowCoordinateSystem = false;
-                ShowViewCube = false;
+                throw new HelixToolkitException("{0} is missing from the template.", PartViewCube);
             }
+
             // update the coordinateview camera
             this.OnCameraChanged();           
         }
@@ -890,14 +848,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host">The host.</param>
         void IRenderer.Attach(IRenderHost host)
         {
-            foreach (IRenderable e in this.Items)
+            foreach (IRenderable e in this.Renderables)
             {
                 e.Attach(host);
             }
-            if (EnableSharedModelMode && SharedModelContainer != null)
-            {
-                SharedModelContainer.Attach(host);
-            }
+            //if (EnableSharedModelMode && SharedModelContainer != null)
+            //{
+            //    SharedModelContainer.Attach(host);
+            //}
             if (this.Items2D != null)
             {
                 this.Items2D.Attach(host);
@@ -910,14 +868,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         void IRenderer.Detach()
         {
-            foreach (IRenderable e in this.Items)
+            foreach (IRenderable e in this.Renderables)
             {
                 e.Detach();
             }
-            if (EnableSharedModelMode && SharedModelContainer != null)
-            {
-                SharedModelContainer.Detach();
-            }
+            //if (EnableSharedModelMode && SharedModelContainer != null)
+            //{
+            //    SharedModelContainer.Detach();
+            //}
             if (this.Items2D != null)
             {
                 this.Items2D.Detach();
@@ -979,38 +937,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var lookdir = projectionCamera.LookDirection;
             lookdir.Normalize();
-            var origin = new Point3D();
-
-            // update the camera of the coordinate system
-            if (this.coordinateView != null)
-            {
-                var pc = (System.Windows.Media.Media3D.PerspectiveCamera)this.coordinateView.Camera;
-                pc.LookDirection = lookdir * 30;
-                pc.Position = origin - pc.LookDirection;
-                pc.UpDirection = projectionCamera.UpDirection;
-            }
-
-            // update the camera of the view cube
-            if (this.viewCubeViewport != null)
-            {
-                var pc = (System.Windows.Media.Media3D.PerspectiveCamera)this.viewCubeViewport.Camera;
-                pc.LookDirection = lookdir * 20;
-                pc.Position = origin - pc.LookDirection;
-                pc.UpDirection = projectionCamera.UpDirection;
-            }
-
-            // update the headlight and coordinate system light
-            if (this.Camera != null)
-            {
-                if (this.coordinateSystemLights != null)
-                {
-                    var cshl = this.coordinateSystemLights.Children[0] as System.Windows.Media.Media3D.DirectionalLight;
-                    if (cshl != null)
-                    {
-                        cshl.Direction = projectionCamera.LookDirection;
-                    }
-                }
-            }
 
             if (this.ShowFieldOfView)
             {
@@ -1692,26 +1618,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Handles clicks on the view cube.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="ViewCubeVisual3D.ClickedEventArgs" /> instance containing the event data.</param>
-        private void ViewCubeClicked(object sender, ViewCubeVisual3D.ClickedEventArgs e)
-        {
-            var pc = this.Camera as ProjectionCamera;
-            if (pc == null)
-            {
-                return;
-            }
-
-            var target = pc.Position + pc.LookDirection;
-            double distance = pc.LookDirection.Length;
-            e.LookDirection *= distance;
-            var newPosition = target - e.LookDirection;
-            pc.AnimateTo(newPosition, e.LookDirection, e.UpDirection, 500);
-        }
-
-        /// <summary>
         /// Called when the mouse enters the view cube.
         /// </summary>
         /// <param name="sender">
@@ -1722,7 +1628,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void ViewCubeViewportMouseEnter(object sender, MouseEventArgs e)
         {
-            AnimateOpacity(this.viewCubeViewport, 1.0, 200);
+           // AnimateOpacity(this.viewCubeViewport, 1.0, 200);
         }
 
         /// <summary>
@@ -1736,7 +1642,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void ViewCubeViewportMouseLeave(object sender, MouseEventArgs e)
         {
-            AnimateOpacity(this.viewCubeViewport, this.ViewCubeOpacity, 200);
+          //  AnimateOpacity(this.viewCubeViewport, this.ViewCubeOpacity, 200);
         }
 
         /// <summary>
@@ -1780,7 +1686,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             var hits = this.FindHits(pt);
-            this.CameraPropertyChanged();
+            //this.CameraPropertyChanged();
             if (hits.Count > 0)
             {
                 // We can't capture Touch because that would disable the CameraController which uses Manipulation,

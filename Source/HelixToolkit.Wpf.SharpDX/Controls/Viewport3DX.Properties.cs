@@ -140,19 +140,14 @@ namespace HelixToolkit.Wpf.SharpDX
             "Children", typeof(Element3DCollection), typeof(Viewport3DX));
 
         /// <summary>
-        /// The coordinate system height property.
-        /// </summary>
-        public static readonly DependencyProperty CoordinateSystemHeightProperty = DependencyProperty.Register(
-                "CoordinateSystemHeight", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(80.0));
-
-        /// <summary>
-        /// The coordinate system horizontal position property.
+        /// The coordinate system horizontal position property. Relative to viewport center
+        /// <para>Default: -0.8</para>
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemHorizontalPositionProperty = DependencyProperty.Register(
                 "CoordinateSystemHorizontalPosition",
-                typeof(HorizontalAlignment),
+                typeof(double),
                 typeof(Viewport3DX),
-                new UIPropertyMetadata(HorizontalAlignment.Left));
+                new UIPropertyMetadata(-0.8));
 
         /// <summary>
         /// The coordinate system label foreground property
@@ -182,19 +177,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 "CoordinateSystemLabelZ", typeof(string), typeof(Viewport3DX), new PropertyMetadata("Z"));
 
         /// <summary>
-        /// The coordinate system vertical position property.
+        /// The coordinate system vertical position property. Relative to viewport center.
+        /// <para>Default: -0.8</para>
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemVerticalPositionProperty = DependencyProperty.Register(
                 "CoordinateSystemVerticalPosition",
-                typeof(VerticalAlignment),
+                typeof(double),
                 typeof(Viewport3DX),
-                new UIPropertyMetadata(VerticalAlignment.Bottom));
+                new UIPropertyMetadata(-0.8));
 
         /// <summary>
-        /// The coordinate system width property.
+        /// The coordinate system size property.
         /// </summary>
-        public static readonly DependencyProperty CoordinateSystemWidthProperty = DependencyProperty.Register(
-                "CoordinateSystemWidth", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(80.0));
+        public static readonly DependencyProperty CoordinateSystemSizeProperty = DependencyProperty.Register(
+                "CoordinateSystemSize", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(1.0));
 
         /// <summary>
         /// The current position property.
@@ -601,19 +597,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 "ViewCubeFrontText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("L"));
 
         /// <summary>
-        /// The view cube height property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeHeightProperty = DependencyProperty.Register(
-            "ViewCubeHeight", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(80.0));
-
-        /// <summary>
-        /// The view cube horizontal position property.
+        /// The view cube horizontal position property. Relative to viewport center.
+        /// <para>Default: 0.8</para>
         /// </summary>
         public static readonly DependencyProperty ViewCubeHorizontalPositionProperty = DependencyProperty.Register(
                 "ViewCubeHorizontalPosition",
-                typeof(HorizontalAlignment),
+                typeof(double),
                 typeof(Viewport3DX),
-                new UIPropertyMetadata(HorizontalAlignment.Right));
+                new UIPropertyMetadata(0.8));
 
         /// <summary>
         /// The view cube left text property.
@@ -647,19 +638,20 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         /// <summary>
-        /// The view cube vertical position property.
+        /// The view cube vertical position property. Relative to viewport center.
+        /// <para>Default: -0.8</para>
         /// </summary>
         public static readonly DependencyProperty ViewCubeVerticalPositionProperty = DependencyProperty.Register(
                 "ViewCubeVerticalPosition",
-                typeof(VerticalAlignment),
+                typeof(double),
                 typeof(Viewport3DX),
-                new UIPropertyMetadata(VerticalAlignment.Bottom));
+                new UIPropertyMetadata(-0.8));
 
         /// <summary>
-        /// The view cube width property.
+        /// The view cube size property.
         /// </summary>
-        public static readonly DependencyProperty ViewCubeWidthProperty = DependencyProperty.Register(
-            "ViewCubeWidth", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(80.0));
+        public static readonly DependencyProperty ViewCubeSizeProperty = DependencyProperty.Register(
+            "ViewCubeSize", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(1.0));
 
         /// <summary>
         /// The zoom around mouse down point property
@@ -1000,57 +992,18 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        ///// <summary>
-        ///// Gets the children.
-        ///// </summary>
-        ///// <value>
-        ///// The children.
-        ///// </value>
-        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        //[Bindable(true)]
-        //public Element3DCollection Children
-        //{
-        //    get
-        //    {
-        //        return (Element3DCollection)this.GetValue(ChildrenProperty);
-        //    }
-
-        //    private set
-        //    {
-        //        this.SetValue(ChildrenProperty, value);
-        //    }
-        //}
-
         /// <summary>
-        /// Gets or sets the height of the coordinate system viewport.
-        /// </summary>
-        /// <value>
-        /// The height of the coordinate system viewport.
-        /// </value>
-        public double CoordinateSystemHeight
-        {
-            get
-            {
-                return (double)this.GetValue(CoordinateSystemHeightProperty);
-            }
-
-            set
-            {
-                this.SetValue(CoordinateSystemHeightProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the horizontal position of the coordinate system viewport.
+        /// Gets or sets the horizontal position of the coordinate system viewport. Relative to the viewport center.
+        /// <para>Default: -0.8</para>
         /// </summary>
         /// <value>
         /// The horizontal position.
         /// </value>
-        public HorizontalAlignment CoordinateSystemHorizontalPosition
+        public double CoordinateSystemHorizontalPosition
         {
             get
             {
-                return (HorizontalAlignment)this.GetValue(CoordinateSystemHorizontalPositionProperty);
+                return (double)this.GetValue(CoordinateSystemHorizontalPositionProperty);
             }
 
             set
@@ -1136,16 +1089,17 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets the vertical position of the coordinate system viewport.
+        /// Gets or sets the vertical position of the coordinate system viewport. Relative to the viewport center
+        /// <para>Default: -0.8</para>
         /// </summary>
         /// <value>
         /// The vertical position.
         /// </value>
-        public VerticalAlignment CoordinateSystemVerticalPosition
+        public double CoordinateSystemVerticalPosition
         {
             get
             {
-                return (VerticalAlignment)this.GetValue(CoordinateSystemVerticalPositionProperty);
+                return (double)this.GetValue(CoordinateSystemVerticalPositionProperty);
             }
 
             set
@@ -1160,16 +1114,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The width of the coordinate system viewport.
         /// </value>
-        public double CoordinateSystemWidth
+        public double CoordinateSystemSize
         {
             get
             {
-                return (double)this.GetValue(CoordinateSystemWidthProperty);
+                return (double)this.GetValue(CoordinateSystemSizeProperty);
             }
 
             set
             {
-                this.SetValue(CoordinateSystemWidthProperty, value);
+                this.SetValue(CoordinateSystemSizeProperty, value);
             }
         }
 
@@ -2265,35 +2219,17 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets the height of the view cube viewport.
-        /// </summary>
-        /// <value>
-        /// The height of the view cube viewport.
-        /// </value>
-        public double ViewCubeHeight
-        {
-            get
-            {
-                return (double)this.GetValue(ViewCubeHeightProperty);
-            }
-
-            set
-            {
-                this.SetValue(ViewCubeHeightProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the horizontal position of the view cube viewport.
+        /// Gets or sets the horizontal position of the view cube viewport. Relative to viewport center
+        /// <para>Default: 0.8</para>
         /// </summary>
         /// <value>
         /// The horizontal position.
         /// </value>
-        public HorizontalAlignment ViewCubeHorizontalPosition
+        public double ViewCubeHorizontalPosition
         {
             get
             {
-                return (HorizontalAlignment)this.GetValue(ViewCubeHorizontalPositionProperty);
+                return (double)this.GetValue(ViewCubeHorizontalPositionProperty);
             }
 
             set
@@ -2389,16 +2325,17 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         /// <summary>
-        /// Gets or sets the vertical position of view cube viewport.
+        /// Gets or sets the vertical position of view cube viewport. Relative to viewport center
+        /// <para>Default: -0.8</para>
         /// </summary>
         /// <value>
         /// The vertical position.
         /// </value>
-        public VerticalAlignment ViewCubeVerticalPosition
+        public double ViewCubeVerticalPosition
         {
             get
             {
-                return (VerticalAlignment)this.GetValue(ViewCubeVerticalPositionProperty);
+                return (double)this.GetValue(ViewCubeVerticalPositionProperty);
             }
 
             set
@@ -2413,16 +2350,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The width of the view cube viewport.
         /// </value>
-        public double ViewCubeWidth
+        public double ViewCubeSize
         {
             get
             {
-                return (double)this.GetValue(ViewCubeWidthProperty);
+                return (double)this.GetValue(ViewCubeSizeProperty);
             }
 
             set
             {
-                this.SetValue(ViewCubeWidthProperty, value);
+                this.SetValue(ViewCubeSizeProperty, value);
             }
         }
 

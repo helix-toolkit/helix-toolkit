@@ -83,8 +83,11 @@
                                     <TextBlock Text="{TemplateBinding DebugInfo}" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding DebugInfo, Converter={StaticResource NotNullToVisibilityConverter}}"/>
                                 </StackPanel>
                             </Grid>
-
-                            <!-- Coordinate system -->
+                            <ItemsControl>
+                                <hx:ViewBoxModel3D x:Name="PART_ViewCube" IsRendering="{TemplateBinding ShowViewCube}" SizeScale="{TemplateBinding ViewCubeSize}" RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}" RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"/>
+                                <hx:CoordinateSystemModel3D x:Name="PART_CoordinateView" IsRendering="{TemplateBinding ShowCoordinateSystem}" SizeScale="{TemplateBinding CoordinateSystemSize}" RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}" RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"/>
+                            </ItemsControl>
+                            <!-- Coordinate system --><!--
                             <Viewport3D x:Name="PART_CoordinateView" 
                                         Width="{TemplateBinding CoordinateSystemWidth}" Height="{TemplateBinding CoordinateSystemHeight}" Margin="0" 
                                         HorizontalAlignment="{TemplateBinding CoordinateSystemHorizontalPosition}" VerticalAlignment="{TemplateBinding CoordinateSystemVerticalPosition}" 
@@ -98,12 +101,12 @@
                                 <h:BillboardTextVisual3D Position="0 10 0" Foreground="{Binding CoordinateSystemLabelForeground, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding CoordinateSystemLabelY, RelativeSource={RelativeSource TemplatedParent}}" HeightFactor="0.6"  />
                                 <h:BillboardTextVisual3D Position="0 0 10" Foreground="{Binding CoordinateSystemLabelForeground, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding CoordinateSystemLabelZ, RelativeSource={RelativeSource TemplatedParent}}" HeightFactor="0.6"  />
                                 
-                                <!--<local:PieSliceVisual3D Normal="1,0,0" UpVector="0,0,1" InnerRadius="3" OuterRadius="6"  Fill="#80ff0000"/>
+                                --><!--<local:PieSliceVisual3D Normal="1,0,0" UpVector="0,0,1" InnerRadius="3" OuterRadius="6"  Fill="#80ff0000"/>
                                 <local:PieSliceVisual3D Normal="0,1,0" UpVector="1,0,0" InnerRadius="3" OuterRadius="6"  Fill="#8000ff00"/>
-                                <local:PieSliceVisual3D Normal="0,0,1" UpVector="0,1,0" InnerRadius="3" OuterRadius="6"  Fill="#800000ff"/>-->
+                                <local:PieSliceVisual3D Normal="0,0,1" UpVector="0,1,0" InnerRadius="3" OuterRadius="6"  Fill="#800000ff"/>--><!--
                             </Viewport3D>
 
-                            <!-- View cube -->
+                            --><!-- View cube --><!--
                             <Viewport3D x:Name="PART_ViewCubeViewport" 
                                         Width="{TemplateBinding ViewCubeWidth}" Height="{TemplateBinding ViewCubeHeight}" Margin="0" 
                                         HorizontalAlignment="{TemplateBinding ViewCubeHorizontalPosition}" VerticalAlignment="{TemplateBinding ViewCubeVerticalPosition}" 
@@ -118,7 +121,7 @@
                                                     RightText="{Binding ViewCubeRightText, RelativeSource={RelativeSource TemplatedParent}}"
                                                     EnableEdgeClicks="{Binding IsViewCubeEdgeClicksEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                                     />
-                            </Viewport3D>
+                            </Viewport3D>-->
 
                             <!-- Message TextBox -->
                             <TextBox HorizontalAlignment="Center" VerticalAlignment="Center" Margin="6" 

@@ -41,7 +41,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as ScreenSpacedElement3D).RenderCore as IScreenSpacedRenderParams).SizeScale = (float)(double)e.NewValue;
                 }));
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register("UpDirection", typeof(Media3D.Vector3D), typeof(ScreenSpacedElement3D),
             new AffectsRenderPropertyMetadata(new Media3D.Vector3D(0, 1, 0),
             (d, e) =>

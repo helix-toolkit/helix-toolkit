@@ -30,6 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Helpers;
     using Core2D;
     using Model;
+    using Utility;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
@@ -721,6 +722,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private readonly EventSkipper skipper = new EventSkipper();
+        private readonly LatencyProfiler profiler = new LatencyProfiler();
         /// <summary>
         /// Updates and renders the scene.
         /// </summary>
@@ -769,6 +771,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
 
                 lastRenderingDuration = renderTimer.Elapsed - t0;
+                profiler.Push(lastRenderingDuration.TotalMilliseconds);
             }
         }
 
