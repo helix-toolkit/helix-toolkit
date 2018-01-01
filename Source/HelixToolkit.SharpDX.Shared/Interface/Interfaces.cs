@@ -16,6 +16,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IResourceSharing : IDisposable
     {
+        /// <summary>
+        /// Get reference count
+        /// </summary>
         int ReferenceCount { get; }
 
         /// <summary>
@@ -23,20 +26,5 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <returns>Current count</returns>
         int AddReference();
-
-        /// <summary>
-        /// Decrease reference counter. When counter reach 0, release all internal resources if release = true
-        /// </summary>
-        /// <returns>Current count</returns>
-        int RemoveReference(bool release);
-        /// <summary>
-        /// Decrease reference counter. When counter reach 0, release all internal resources automatically
-        /// </summary>
-        /// <returns>Current count</returns>
-        int RemoveReference();
     }
-
-
-
-
 }

@@ -30,8 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new AffectsRenderPropertyMetadata(true, RasterStateChanged));
         public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(MeshGeometryModel3D), 
             new AffectsRenderPropertyMetadata(CullMode.None, RasterStateChanged));
-        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(MeshGeometryModel3D),
-            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
+
         public static readonly DependencyProperty InvertNormalProperty = DependencyProperty.Register("InvertNormal", typeof(bool), typeof(MeshGeometryModel3D),
             new AffectsRenderPropertyMetadata(false, (d,e)=> { ((d as GeometryModel3D).RenderCore as MeshRenderCore).InvertNormal = (bool)e.NewValue; }));
 
@@ -102,18 +101,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-
-        public bool IsDepthClipEnabled
-        {
-            set
-            {
-                SetValue(IsDepthClipEnabledProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(IsDepthClipEnabledProperty);
-            }
-        }
         /// <summary>
         /// Invert the surface normal during rendering
         /// </summary>

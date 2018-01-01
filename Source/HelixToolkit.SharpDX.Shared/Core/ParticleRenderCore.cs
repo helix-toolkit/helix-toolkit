@@ -158,8 +158,8 @@ namespace HelixToolkit.UWP.Core
         private IShaderPass insertPass;
         private IShaderPass renderPass;
 
-        private IBufferProxy perFrameCB;
-        private IBufferProxy insertCB;
+        private IConstantBufferProxy perFrameCB;
+        private IConstantBufferProxy insertCB;
 
         private ShaderResourceView textureView;
         #endregion

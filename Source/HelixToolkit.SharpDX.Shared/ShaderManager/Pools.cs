@@ -23,15 +23,16 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <typeparam name="TDescription"></typeparam>
     public abstract class ComPoolBase<TKEY, TVALUE, TDescription> : DisposeObject where TVALUE : ComObject
     {
-        protected readonly Dictionary<TKEY, TVALUE> pool = new Dictionary<TKEY, TVALUE>();
-
+        private readonly Dictionary<TKEY, TVALUE> pool = new Dictionary<TKEY, TVALUE>();
+        /// <summary>
+        /// 
+        /// </summary>
         public Device Device { private set; get; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="device"></param>
-        /// <param name="cbPool"></param>
         public ComPoolBase(Device device)
         {
             this.Device = device;
@@ -47,8 +48,7 @@ namespace HelixToolkit.UWP.ShaderManager
             TKEY key = GetKey(ref description);
             if (pool.TryGetValue(key, out value))
             {
-                ((IUnknown)value).AddReference();
-                return value;
+                return value.QueryInterface<TVALUE>();
             }
             else
             {
@@ -64,6 +64,12 @@ namespace HelixToolkit.UWP.ShaderManager
 
         protected abstract TKEY GetKey(ref TDescription description);
         protected abstract TVALUE Create(Device device, ref TDescription description);
+
+        protected override void Dispose(bool disposeManagedResources)
+        {
+            pool.Clear();
+            base.Dispose(disposeManagedResources);
+        }
     }
 
 
@@ -75,8 +81,10 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <typeparam name="TDescription"></typeparam>
     public abstract class ResourcePoolBase<TKEY, TVALUE, TDescription> : DisposeObject
     {
-        protected readonly Dictionary<TKEY, TVALUE> pool = new Dictionary<TKEY, TVALUE>();
-
+        private readonly Dictionary<TKEY, TVALUE> pool = new Dictionary<TKEY, TVALUE>();
+        /// <summary>
+        /// 
+        /// </summary>
         public Device Device { private set; get; }
 
         /// <summary>
@@ -111,30 +119,10 @@ namespace HelixToolkit.UWP.ShaderManager
 
         protected abstract TKEY GetKey(ref TDescription description);
         protected abstract TVALUE Create(Device device, ref TDescription description);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public bool Remove(TKEY key)
+        protected override void Dispose(bool disposeManagedResources)
         {
-            TVALUE v;
-            pool.TryGetValue(key, out v);
-            if (v != null)
-            {
-                RemoveAndDispose(ref v);
-            }
-            return pool.Remove(key);
-        }
-
-        public TVALUE this[TKEY key]
-        {
-            get
-            {
-                TVALUE v;
-                pool.TryGetValue(key, out v);
-                return v;
-            }
+            pool.Clear();
+            base.Dispose(disposeManagedResources);
         }
     }
 }

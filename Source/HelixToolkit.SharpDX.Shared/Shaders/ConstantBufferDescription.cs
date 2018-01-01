@@ -45,7 +45,7 @@ namespace HelixToolkit.UWP.Shaders
             StrideSize = strideSize;
         }
 
-        public IBufferProxy CreateBuffer()
+        public IConstantBufferProxy CreateBuffer()
         {
             return new ConstantBufferProxy(this);
         }

@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP.Core
         {
         }
 
-        protected override void OnCreateVertexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry)
+        protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
         {
             // -- set geometry if given
             if (geometry != null && geometry.Positions != null && OnBuildVertexArray != null)
@@ -37,7 +37,7 @@ namespace HelixToolkit.UWP.Core
                 // --- get geometry
                 var mesh = geometry as PointGeometry3D;
                 var data = OnBuildVertexArray(mesh);
-                buffer.CreateBufferFromDataArray(context.Device, data, geometry.Positions.Count);
+                buffer.UploadDataToBuffer(context, data, geometry.Positions.Count);
             }
             else
             {
@@ -45,7 +45,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnCreateIndexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry)
+        protected override void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
         {
             
         }

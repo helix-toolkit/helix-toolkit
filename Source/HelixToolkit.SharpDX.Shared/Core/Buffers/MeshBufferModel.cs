@@ -33,7 +33,7 @@ namespace HelixToolkit.UWP.Core
         {
         }
 
-        public MeshGeometryBufferModel(int structSize, PrimitiveTopology topology, IBufferProxy vertexBuffer, IBufferProxy indexBuffer) 
+        public MeshGeometryBufferModel(int structSize, PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer) 
             : base(topology, vertexBuffer, indexBuffer)
         {
         }
@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP.Core
             return base.IsVertexBufferChanged(propertyName) || propertyName.Equals(nameof(MeshGeometry3D.Colors)) || propertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates));
         }
 
-        protected override void OnCreateVertexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry)
+        protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
         {
             // -- set geometry if given
             if (geometry != null && geometry.Positions != null && OnBuildVertexArray != null)
@@ -51,7 +51,7 @@ namespace HelixToolkit.UWP.Core
                 // --- get geometry
                 var mesh = geometry as MeshGeometry3D;
                 var data = OnBuildVertexArray(mesh);
-                (buffer as IBufferProxy).CreateBufferFromDataArray(context.Device, data, geometry.Positions.Count);
+                buffer.UploadDataToBuffer(context, data, geometry.Positions.Count);
             }
             else
             {
@@ -59,11 +59,11 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnCreateIndexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry)
+        protected override void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
         {
             if (geometry.Indices != null)
             {
-                buffer.CreateBufferFromDataArray(context.Device, geometry.Indices, geometry.Indices.Count);
+                buffer.UploadDataToBuffer(context, geometry.Indices, geometry.Indices.Count);
             }
             else
             {

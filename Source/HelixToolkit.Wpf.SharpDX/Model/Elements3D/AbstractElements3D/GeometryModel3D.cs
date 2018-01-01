@@ -53,12 +53,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsScissorEnabledProperty =
             DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(true, RasterStateChanged));
 
-        public static readonly DependencyProperty BufferModelProperty =
-            DependencyProperty.Register("BufferModel", typeof(IGeometryBufferModel), typeof(GeometryModel3D), new PropertyMetadata(null, (d,e)=> 
-            {
-                (d as GeometryModel3D).BufferModelInternal = e.NewValue as IGeometryBufferModel;
-            }));
-
+        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(GeometryModel3D),
+            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
         public Geometry3D Geometry
         {
             get
@@ -160,22 +156,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(IsScissorEnabledProperty);
             }
         }
-        /// <summary>
-        /// <para>BufferModel property is used for external buffer model sharing. 
-        /// If two models are binding to same geometry model, sharing buffer model only creates one buffer for both models, reduces video card memory usage and buffer creation time
-        /// </para>
-        /// </summary>
-        public IGeometryBufferModel BufferModel
+
+        public bool IsDepthClipEnabled
         {
             set
             {
-                SetValue(BufferModelProperty, value);
+                SetValue(IsDepthClipEnabledProperty, value);
             }
             get
             {
-                return (IGeometryBufferModel)GetValue(BufferModelProperty);
+                return (bool)GetValue(IsDepthClipEnabledProperty);
             }
         }
+
         #endregion
 
         #region Static Methods
@@ -231,15 +224,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (bufferModelInternal != null)
                 {
                     bufferModelInternal.InvalidateRenderer -= BufferModel_InvalidateRenderer;
-                    if (IsAttached)
-                    { bufferModelInternal.Detach(); }//Only call Detach if already attached
                 }
                 bufferModelInternal = value;
                 if (bufferModelInternal != null)
                 {
                     bufferModelInternal.InvalidateRenderer += BufferModel_InvalidateRenderer;
-                    if (IsAttached)
-                    { bufferModelInternal.Attach(); }//Only call Attach if already attached
                 }
                 if(RenderCore is IGeometryRenderCore)
                 {
@@ -250,7 +239,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if(bufferModelInternal == null)
                 {
-                    BufferModel = OnCreateBufferModel();
+                    BufferModelInternal = OnCreateBufferModel();
                 }
                 return bufferModelInternal;
             }
@@ -512,7 +501,6 @@ namespace HelixToolkit.Wpf.SharpDX
             if (GeometryValid && base.OnAttach(host))
             {
                 AttachOnGeometryPropertyChanged();
-                BufferModelInternal?.Attach();
                 if (RenderCore is IGeometryRenderCore)
                 {
                     ((IGeometryRenderCore)RenderCore).GeometryBuffer = BufferModelInternal;
@@ -533,7 +521,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnDetach()
         {
-            BufferModelInternal?.Detach();
             DetachOnGeometryPropertyChanged();
             base.OnDetach();
         }

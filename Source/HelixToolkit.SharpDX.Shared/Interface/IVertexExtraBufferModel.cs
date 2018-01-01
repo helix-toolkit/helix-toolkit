@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP
 
         bool Changed { get; }
 
-        IBufferProxy Buffer { get; }
+        IElementsBufferProxy Buffer { get; }
 
         void AttachBuffer(DeviceContext context, int vertexBufferSlot);
         void Initialize();

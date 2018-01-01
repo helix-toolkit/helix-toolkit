@@ -66,7 +66,7 @@ namespace HelixToolkit.UWP.Core
 
         private ClipPlaneStruct clipParameter;
 
-        private IBufferProxy clipParamCB;
+        private IConstantBufferProxy clipParamCB;
 
         private IShaderPass drawBackfacePass;
         private IShaderPass drawScreenQuadPass;

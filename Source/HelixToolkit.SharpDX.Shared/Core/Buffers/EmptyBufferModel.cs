@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Core
             get;
         } = Guid.NewGuid();
 
-        public IBufferProxy IndexBuffer
+        public IElementsBufferProxy IndexBuffer
         {
             get
             {
@@ -42,7 +42,7 @@ namespace HelixToolkit.UWP.Core
             set { }
         }
 
-        public IBufferProxy VertexBuffer
+        public IElementsBufferProxy VertexBuffer
         {
             get
             {
@@ -63,6 +63,11 @@ namespace HelixToolkit.UWP.Core
         }
 
         public void Detach()
+        {
+
+        }
+
+        public void Dispose()
         {
 
         }

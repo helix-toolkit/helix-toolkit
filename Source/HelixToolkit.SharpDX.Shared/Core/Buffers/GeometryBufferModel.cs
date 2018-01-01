@@ -28,8 +28,8 @@ namespace HelixToolkit.UWP.Core
         protected bool VertexChanged { private set; get; } = true;
         protected bool IndexChanged { private set; get; } = true;
 
-        public IBufferProxy VertexBuffer { private set; get; }
-        public IBufferProxy IndexBuffer { private set; get; }
+        public IElementsBufferProxy VertexBuffer { private set; get; }
+        public IElementsBufferProxy IndexBuffer { private set; get; }
         public PrimitiveTopology Topology { set; get; }
 
         private Geometry3D geometry = null;
@@ -59,7 +59,7 @@ namespace HelixToolkit.UWP.Core
         }
 
         #region Constructors
-        public GeometryBufferModel(PrimitiveTopology topology, IBufferProxy vertexBuffer, IBufferProxy indexBuffer)
+        public GeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer)
         {
             Topology = topology;
             VertexBuffer = Collect(vertexBuffer);
@@ -68,20 +68,6 @@ namespace HelixToolkit.UWP.Core
         }
 
         #endregion
-
-        public void Attach()
-        {
-            if(AddReference() == 1)
-            {
-                VertexChanged = true;
-                IndexChanged = true;
-            }
-        }
-
-        public void Detach()
-        {
-            RemoveReference();
-        }
 
 
         private void Geometry_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -129,8 +115,8 @@ namespace HelixToolkit.UWP.Core
             return OnAttachBuffer(context, vertexLayout, vertexBufferSlot);
         }
 
-        protected abstract void OnCreateVertexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry);
-        protected abstract void OnCreateIndexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry);
+        protected abstract void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry);
+        protected abstract void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry);
 
         protected virtual bool OnAttachBuffer(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot)
         {

@@ -22,7 +22,7 @@ namespace HelixToolkit.UWP.Core
         public Guid GUID { get; } = Guid.NewGuid();
 
         protected TModelStruct modelStruct;
-        protected IBufferProxy modelCB { private set; get; }
+        protected IConstantBufferProxy modelCB { private set; get; }
         public event EventHandler<bool> OnInvalidateRenderer;
         /// <summary>
         /// Model matrix

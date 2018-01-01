@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Children.Add(body);
             b1 = new MeshBuilder();
             b1.AddCone(new Vector3(0, 0, -1.2f), new Vector3(0, 0f, 0), 0.4f, true, 12);
-            var lens = new MeshGeometryModel3D() { CullMode = CullMode.Back };
+            var lens = new MeshGeometryModel3D() { CullMode = CullMode.Back};
             lens.Geometry = b1.ToMeshGeometry3D();
             lens.Material = PhongMaterials.Yellow;
             lens.OnSetRenderTechnique = (h) => { return h.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };

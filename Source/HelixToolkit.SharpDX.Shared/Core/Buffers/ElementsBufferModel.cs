@@ -23,8 +23,8 @@ namespace HelixToolkit.UWP.Core
         public Guid GUID { get; } = Guid.NewGuid();
         public bool Initialized { private set; get; }
         public bool HasElements { private set; get; } = false;
-        public IBufferProxy Buffer { get { return elementBuffer; } }
-        private IBufferProxy elementBuffer;
+        public IElementsBufferProxy Buffer { get { return elementBuffer; } }
+        private IElementsBufferProxy elementBuffer;
 
         public bool Changed { get { return instanceChanged; } }
         private bool instanceChanged = true;

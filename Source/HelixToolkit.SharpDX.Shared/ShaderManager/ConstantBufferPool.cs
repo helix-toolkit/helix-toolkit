@@ -17,11 +17,11 @@ namespace HelixToolkit.UWP.ShaderManager
     public interface IConstantBufferPool
     {
         Device Device { get; }
-        IBufferProxy Register(ConstantBufferDescription description);
-        IBufferProxy Register(string name, int structSize);
+        IConstantBufferProxy Register(ConstantBufferDescription description);
+        IConstantBufferProxy Register(string name, int structSize);
     }
 
-    public class ConstantBufferPool : BufferPool<string, ConstantBufferDescription>, IConstantBufferPool
+    public class ConstantBufferPool : ResourcePoolBase<string, IConstantBufferProxy, ConstantBufferDescription>, IConstantBufferPool
     {
         public ConstantBufferPool(Device device)
             :base(device)
@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP.ShaderManager
 
         }
 
-        protected override IBufferProxy Create(Device device, ref ConstantBufferDescription description)
+        protected override IConstantBufferProxy Create(Device device, ref ConstantBufferDescription description)
         {
             var buffer = description.CreateBuffer();
             buffer.CreateBuffer(device);
@@ -41,7 +41,7 @@ namespace HelixToolkit.UWP.ShaderManager
             return description.Name + description.StructSize;
         }
 
-        public IBufferProxy Register(string name, int structSize)
+        public IConstantBufferProxy Register(string name, int structSize)
         {
             return Register(new ConstantBufferDescription(name, structSize));
         }

@@ -32,12 +32,12 @@ namespace HelixToolkit.UWP.Core
         {
         }
 
-        protected override void OnCreateIndexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry)
+        protected override void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
         {
 
         }
 
-        protected override void OnCreateVertexBuffer(DeviceContext context, IBufferProxy buffer, Geometry3D geometry)
+        protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
         {
             RemoveAndDispose(ref textureView);
             var billboardGeometry = geometry as IBillboardText;
@@ -46,7 +46,7 @@ namespace HelixToolkit.UWP.Core
             {
                 Type = billboardGeometry.Type;              
                 var data = OnBuildVertexArray(billboardGeometry);
-                buffer.CreateBufferFromDataArray(context.Device, data, billboardGeometry.BillboardVertices.Count);
+                buffer.UploadDataToBuffer(context, data, billboardGeometry.BillboardVertices.Count);
               
                 if (billboardGeometry.Texture != null)
                 {

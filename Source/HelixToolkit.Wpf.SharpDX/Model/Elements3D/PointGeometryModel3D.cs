@@ -204,7 +204,7 @@
                 DepthBias = DepthBias,
                 DepthBiasClamp = -1000,
                 SlopeScaledDepthBias = (float)SlopeScaledDepthBias,
-                IsDepthClipEnabled = true,
+                IsDepthClipEnabled = IsDepthClipEnabled,
                 IsFrontCounterClockwise = false,
                 IsMultisampleEnabled = false,
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled

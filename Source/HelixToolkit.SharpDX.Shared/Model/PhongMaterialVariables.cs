@@ -159,7 +159,7 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        private bool renderShadowMap = true;
+        private bool renderShadowMap = false;
         /// <summary>
         /// <see cref="IMaterialRenderCore.RenderShadowMap"/> 
         /// </summary>
@@ -180,7 +180,7 @@ namespace HelixToolkit.UWP.Model
 
         private bool needUpdate = true;
         private MaterialStruct materialStruct;
-        private readonly IBufferProxy materialBuffer;
+        private readonly IConstantBufferProxy materialBuffer;
         /// <summary>
         /// <see cref="IMaterialRenderCore.Material"/> 
         /// </summary>
@@ -422,7 +422,7 @@ namespace HelixToolkit.UWP.Model
             int idx = Constants.Convert(shader.ShaderType);
             for (int i = 0; i < NUMTEXTURES; ++i)
             {
-                if (TextureResources[i] == null) { continue; }
+                if (TextureResources[i].TextureView == null) { continue; }
                 shader.BindTexture(context, TextureBindingMap[idx, i], TextureResources[i]);
             }
             for (int i = 0; i < NUMSAMPLERS; ++i)

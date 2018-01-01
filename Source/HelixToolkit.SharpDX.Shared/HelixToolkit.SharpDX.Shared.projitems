@@ -163,8 +163,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\IComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\AffectsRenderPropertyMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\BufferProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ConstantBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DisposeObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Disposer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ElementsBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\LatencyProfiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\MappingCollection.cs" />
@@ -175,6 +177,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ShaderResourceViewProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\UAVBufferViewProxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)HelixToolkit.SharpDX.Shared.licenseheader" />

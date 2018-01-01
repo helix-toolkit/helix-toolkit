@@ -123,6 +123,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         IStatePoolManager StateManager { get; }
 
+        IBufferPool VertexBufferPool { get; }
+
+        IBufferPool IndexBufferPool { get; }
+
         /// <summary>
         /// 
         /// </summary>

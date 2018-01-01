@@ -155,7 +155,7 @@ namespace HelixToolkit.UWP.Core
         private TessellationStruct TessellationParameters = new TessellationStruct()
         { MaxTessDistance = 50, MinTessDistance = 1, MaxTessFactor = 1, MinTessFactor = 4 };
 
-        private IBufferProxy tessParamBuffer;
+        private IConstantBufferProxy tessParamBuffer;
 
         public PatchMeshRenderCore()
         {

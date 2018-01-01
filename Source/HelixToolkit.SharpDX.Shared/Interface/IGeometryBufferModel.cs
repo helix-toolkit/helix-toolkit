@@ -13,22 +13,19 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Utilities;
-    public interface IGeometryBufferModel : IGUID
+    public interface IGeometryBufferModel : IGUID, IDisposable
     {
         Geometry3D Geometry { get; set; }
         PrimitiveTopology Topology { set; get; }
 
         event EventHandler<bool> InvalidateRenderer;
-        IBufferProxy VertexBuffer { get; }
-        IBufferProxy IndexBuffer { get; }
-
-        void Attach();
-        void Detach();
+        IElementsBufferProxy VertexBuffer { get; }
+        IElementsBufferProxy IndexBuffer { get; }
 
         bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot);
     }
 
-    public interface IBillboardBufferModel
+    public interface IBillboardBufferModel : IDisposable
     {
         ShaderResourceView TextureView { get; }
         BillboardType Type { get; }

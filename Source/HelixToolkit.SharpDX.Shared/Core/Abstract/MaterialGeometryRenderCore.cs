@@ -49,7 +49,7 @@ namespace HelixToolkit.UWP.Core
         public bool RenderDiffuseAlphaMap { set; get; } = true;
         public bool RenderNormalMap { set; get; } = true;
         public bool RenderDisplacementMap { set; get; } = true;
-        public bool RenderShadowMap { set; get; } = true;
+        public bool RenderShadowMap { set; get; } = false;
 
         protected override bool OnAttach(IRenderTechnique technique)
         {

@@ -144,7 +144,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public Light3DSceneShared LightScene { private set; get; }
 
-        private IBufferProxy cbuffer;
+        private IConstantBufferProxy cbuffer;
 
         private GlobalTransformStruct globalTransform;
 

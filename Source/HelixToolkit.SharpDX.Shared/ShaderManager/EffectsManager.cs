@@ -49,6 +49,12 @@ namespace HelixToolkit.UWP
         /// <see cref="IEffectsManager.StateManager"/> 
         /// </summary>
         public IStatePoolManager StateManager { get { return statePoolManager; } }
+
+
+        private IBufferPool vertexbufferPool;
+        public IBufferPool VertexBufferPool { get { return vertexbufferPool; } }
+        private IBufferPool indexBufferPool;
+        public IBufferPool IndexBufferPool { get { return indexBufferPool; } }
         /// <summary>
         /// 
         /// </summary>
@@ -108,6 +114,12 @@ namespace HelixToolkit.UWP
 
             RemoveAndDispose(ref statePoolManager);
             statePoolManager = Collect(new StatePoolManager(Device));
+
+            RemoveAndDispose(ref vertexbufferPool);
+            vertexbufferPool = Collect(new ElementsBufferPool(Device));
+
+            RemoveAndDispose(ref indexBufferPool);
+            indexBufferPool = Collect(new ElementsBufferPool(Device));
             #endregion
             #region Initial Techniques
             var techniqueDescs = LoadTechniqueDescriptions();

@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP.Core
             set;get;
         }
 
-        private IBufferProxy boneCB;
+        private IConstantBufferProxy boneCB;
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
@@ -64,7 +64,7 @@ namespace HelixToolkit.UWP.Core
             base.OnUploadPerModelConstantBuffers(context);
             if (BoneMatrices.Bones != null)
             {
-                boneCB.UploadDataToBuffer(context, BoneMatrices.Bones);
+                boneCB.UploadDataToBuffer(context, BoneMatrices.Bones, BoneMatricesStruct.NumberOfBones);
             }
         }
     }

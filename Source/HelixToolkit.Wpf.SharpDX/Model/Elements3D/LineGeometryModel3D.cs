@@ -71,6 +71,11 @@ namespace HelixToolkit.Wpf.SharpDX
         [ThreadStatic]
         private static LinesVertex[] vertexArrayBuffer = null;
 
+        public LineGeometryModel3D()
+        {
+            SlopeScaledDepthBias = 5;
+        }
+
         protected override IGeometryBufferModel OnCreateBufferModel()
         {
             var buffer = new LineGeometryBufferModel<LinesVertex>(LinesVertex.SizeInBytes);
@@ -160,7 +165,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 DepthBias = DepthBias,
                 DepthBiasClamp = -1000,
                 SlopeScaledDepthBias = (float)SlopeScaledDepthBias,
-                IsDepthClipEnabled = true,
+                IsDepthClipEnabled = IsDepthClipEnabled,
                 IsFrontCounterClockwise = false,
 
                 IsMultisampleEnabled = IsMultisampleEnabled,
