@@ -8,9 +8,13 @@ using SharpDX.Direct3D11;
 using System.Linq;
 using System.Windows;
 using Media = System.Windows.Media;
+using System;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class CoordinateSystemModel3D : ScreenSpacedElement3D
     {
         /// <summary>
@@ -86,13 +90,15 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private readonly BillboardTextModel3D[] axisBillboards = new BillboardTextModel3D[3];
         private readonly MeshGeometryModel3D arrowMeshModel = new MeshGeometryModel3D();
-
+        /// <summary>
+        /// 
+        /// </summary>
         public CoordinateSystemModel3D()
         {
             var builder = new MeshBuilder(true, false, false);
-            builder.AddArrow(Vector3.Zero, new Vector3(5, 0, 0), 0.5, 1.2, 10);
-            builder.AddArrow(Vector3.Zero, new Vector3(0, 5, 0), 0.5, 1.2, 10);
-            builder.AddArrow(Vector3.Zero, new Vector3(0, 0, 5), 0.5, 1.2, 10);
+            builder.AddArrow(Vector3.Zero, new Vector3(5, 0, 0), 0.7, 1.8, 10);
+            builder.AddArrow(Vector3.Zero, new Vector3(0, 5, 0), 0.7, 1.8, 10);
+            builder.AddArrow(Vector3.Zero, new Vector3(0, 0, 5), 0.7, 1.8, 10);
             var mesh = builder.ToMesh();
             arrowMeshModel.Material = PhongMaterials.White;
             arrowMeshModel.Geometry = mesh;
@@ -113,12 +119,22 @@ namespace HelixToolkit.Wpf.SharpDX
             Children.Add(axisBillboards[2]);
         }
 
+        protected override void UpdateModel(Vector3 upDirection)
+        {
+            
+        }
+
         private void UpdateAxisColor(int which, Color4 color)
         {
             UpdateAxisColor(arrowMeshModel.Geometry, which, color);
         }
-
-        private void UpdateAxisColor(Geometry3D mesh, int which, Color4 color)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mesh"></param>
+        /// <param name="which"></param>
+        /// <param name="color"></param>
+        protected virtual void UpdateAxisColor(Geometry3D mesh, int which, Color4 color)
         {
             switch (which)
             {

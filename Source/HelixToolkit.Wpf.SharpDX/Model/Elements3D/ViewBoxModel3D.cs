@@ -28,27 +28,6 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class ViewBoxModel3D : ScreenSpacedElement3D
     {
-        public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register("UpDirection", typeof(Media3D.Vector3D), typeof(ViewBoxModel3D), 
-            new AffectsRenderPropertyMetadata(new Media3D.Vector3D(0, 1, 0),
-            (d,e)=> 
-            {
-                (d as ViewBoxModel3D).UpdateModel();
-            }));
-
-        public Media3D.Vector3D UpDirection
-        {
-            set
-            {
-                SetValue(UpDirectionProperty, value);
-            }
-            get
-            {
-                return (Media3D.Vector3D)GetValue(UpDirectionProperty);
-            }
-        }
-
-        //public event EventHandler<ClickedEventArgs> Clicked;
-
         private MeshGeometryModel3D ViewBoxMeshModel;
 
         public static readonly RoutedEvent ViewBoxClickedEvent =
@@ -68,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
             /// <value>Up direction.</value>
             public Media3D.Vector3D UpDirection { get; set; }
             public ViewBoxClickedEventArgs(object source, Media3D.Vector3D lookDir, Media3D.Vector3D upDir)
-                :base(ViewBoxClickedEvent, source)
+                : base(ViewBoxClickedEvent, source)
             {
                 LookDirection = lookDir;
                 UpDirection = upDir;
@@ -100,12 +79,11 @@ namespace HelixToolkit.Wpf.SharpDX
             ViewBoxMeshModel.CullMode = CullMode.Back;
             ViewBoxMeshModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.ViewCube]; };
             this.Children.Add(ViewBoxMeshModel);
-            UpdateModel();
+            UpdateModel(UpDirection.ToVector3());
         }
 
-        private void UpdateModel()
+        protected override void UpdateModel(Vector3 up)
         {
-            var up = UpDirection.ToVector3();
             var left = new Vector3(up.Y, up.Z, up.X);
             var front = Vector3.Cross(left, up);
             var builder = new MeshBuilder(true, true, false);
@@ -160,14 +138,14 @@ namespace HelixToolkit.Wpf.SharpDX
             int faces = 6;
             int segment = 4;
             float inc = 1f / faces;
-            for(int i=0; i<mesh.TextureCoordinates.Count; ++i)
+            for (int i = 0; i < mesh.TextureCoordinates.Count; ++i)
             {
-                mesh.TextureCoordinates[i] = new Vector2(mesh.TextureCoordinates[i].X * inc + inc * (int)(i/segment), mesh.TextureCoordinates[i].Y);
+                mesh.TextureCoordinates[i] = new Vector2(mesh.TextureCoordinates[i].X * inc + inc * (int)(i / segment), mesh.TextureCoordinates[i].Y);
             }
         }
 
         protected override bool OnHitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
-        {          
+        {
             var p = Vector4.Transform(new Vector4(ray.Position, 1), context.ScreenViewProjectionMatrix);
             if (Math.Abs(p.W) > 1e-7)
             {
@@ -206,19 +184,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 Vector3.TransformCoordinate(ref v, ref matrix, out zn);
             }
 
-    Vector3 r = zf - zn;
+            Vector3 r = zf - zn;
             r.Normalize();
 
             ray = new Ray(zn, r);
             List<HitTestResult> viewBoxHit = new List<HitTestResult>();
 #if DEBUG
-            if(base.OnHitTest(context, ray, ref viewBoxHit))
+            if (base.OnHitTest(context, ray, ref viewBoxHit))
             {
                 hits = viewBoxHit;
                 Debug.WriteLine("View box hit.");
                 var hit = viewBoxHit[0];
                 var normal = -hit.NormalAtHit;
-                if(Media3D.Vector3D.CrossProduct(normal, UpDirection).LengthSquared < 1e-5)
+                if (Media3D.Vector3D.CrossProduct(normal, UpDirection).LengthSquared < 1e-5)
                 {
                     var vecLeft = new Media3D.Vector3D(-normal.Y, -normal.Z, -normal.X);
                     RaiseEvent(new ViewBoxClickedEventArgs(this, normal, vecLeft));

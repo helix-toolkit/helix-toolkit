@@ -3,10 +3,12 @@
 //   Author: Lunci Hua
 // </copyright>
 using System.Windows;
-
+using Media3D = System.Windows.Media.Media3D;
 namespace HelixToolkit.Wpf.SharpDX
 {
     using Core;
+    using global::SharpDX;
+
     /// <summary>
     /// Base class for screen space rendering, such as Coordinate System or ViewBox
     /// </summary>
@@ -40,6 +42,24 @@ namespace HelixToolkit.Wpf.SharpDX
                     ((d as ScreenSpacedElement3D).RenderCore as IScreenSpacedRenderParams).SizeScale = (float)(double)e.NewValue;
                 }));
 
+        public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register("UpDirection", typeof(Media3D.Vector3D), typeof(ScreenSpacedElement3D),
+            new AffectsRenderPropertyMetadata(new Media3D.Vector3D(0, 1, 0),
+            (d, e) =>
+            {
+                (d as ScreenSpacedElement3D).UpdateModel(((Media3D.Vector3D)e.NewValue).ToVector3());
+            }));
+
+        public Media3D.Vector3D UpDirection
+        {
+            set
+            {
+                SetValue(UpDirectionProperty, value);
+            }
+            get
+            {
+                return (Media3D.Vector3D)GetValue(UpDirectionProperty);
+            }
+        }
         /// <summary>
         /// Relative Location X on screen. Range from -1~1
         /// </summary>
@@ -87,6 +107,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         protected IScreenSpacedRenderParams screenSpaceCore { get { return (IScreenSpacedRenderParams)RenderCore; } }
+
+        protected abstract void UpdateModel(Vector3 upDirection);
 
         protected override IRenderCore OnCreateRenderCore()
         {
