@@ -186,15 +186,18 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private readonly BillboardTextModel3D[] axisBillboards = new BillboardTextModel3D[3];
         private readonly MeshGeometryModel3D arrowMeshModel = new MeshGeometryModel3D();
+        private static readonly float arrowSize = 5;
+        private static readonly float arrowWidth = 0.6f;
+        private static readonly float arrowHead = 1.7f;
         /// <summary>
         /// 
         /// </summary>
         public CoordinateSystemModel3D()
         {
             var builder = new MeshBuilder(true, false, false);
-            builder.AddArrow(Vector3.Zero, new Vector3(4, 0, 0), 0.5, 1.6, 8);
-            builder.AddArrow(Vector3.Zero, new Vector3(0, 4, 0), 0.5, 1.6, 8);
-            builder.AddArrow(Vector3.Zero, new Vector3(0, 0, 4), 0.5, 1.6, 8);
+            builder.AddArrow(Vector3.Zero, new Vector3(arrowSize, 0, 0), arrowWidth, arrowHead, 8);
+            builder.AddArrow(Vector3.Zero, new Vector3(0, arrowSize, 0), arrowWidth, arrowHead, 8);
+            builder.AddArrow(Vector3.Zero, new Vector3(0, 0, arrowSize), arrowWidth, arrowHead, 8);
             var mesh = builder.ToMesh();
             arrowMeshModel.Material = PhongMaterials.White;
             arrowMeshModel.Geometry = mesh;
@@ -276,15 +279,15 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 case 0:
                     axisBillboards[which].Geometry = new BillboardSingleText3D()
-                    { TextInfo = new TextInfo(label, new Vector3(5, 0, 0)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = labelColor };
+                    { TextInfo = new TextInfo(label, new Vector3(arrowSize + 1, 0, 0)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = labelColor };
                     break;
                 case 1:
                     axisBillboards[which].Geometry = new BillboardSingleText3D()
-                    { TextInfo = new TextInfo(label, new Vector3(0, 5, 0)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = labelColor };
+                    { TextInfo = new TextInfo(label, new Vector3(0, arrowSize + 1, 0)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = labelColor };
                     break;
                 case 2:
                     axisBillboards[which].Geometry = new BillboardSingleText3D()
-                    { TextInfo = new TextInfo(label, new Vector3(0, 0, 5)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = labelColor };
+                    { TextInfo = new TextInfo(label, new Vector3(0, 0, arrowSize + 1)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = labelColor };
                     break;
             }
             int segment = mesh.Positions.Count / 3;

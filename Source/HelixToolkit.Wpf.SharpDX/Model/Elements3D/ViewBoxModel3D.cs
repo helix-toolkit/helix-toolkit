@@ -103,7 +103,6 @@ namespace HelixToolkit.Wpf.SharpDX
             ViewBoxMeshModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.ViewCube]; };
             this.Children.Add(ViewBoxMeshModel);
             UpdateModel(UpDirection.ToVector3());
-            NeedClearDepthBuffer = false;
         }
 
         private void UpdateTexture(Stream texture)
@@ -144,14 +143,14 @@ namespace HelixToolkit.Wpf.SharpDX
             builder.AddTriangleStrip(pts);
             var pie = builder.ToMesh();
             int count = pie.Indices.Count;
-            var newMesh = MeshGeometry3D.Merge(new MeshGeometry3D[] { pie, mesh });
-
             for (int i = 0; i < count; i += 3)
             {
-                newMesh.Indices.Add(pie.Indices[i + 2]);
-                newMesh.Indices.Add(pie.Indices[i + 1]);
-                newMesh.Indices.Add(pie.Indices[i]);
+                pie.Indices.Add(pie.Indices[i + 2]);
+                pie.Indices.Add(pie.Indices[i + 1]);
+                pie.Indices.Add(pie.Indices[i]);
             }
+            
+            var newMesh = MeshGeometry3D.Merge(new MeshGeometry3D[] { pie, mesh });
 
             newMesh.TextureCoordinates = new Core.Vector2Collection(Enumerable.Repeat(new Vector2(-1,-1), pie.Positions.Count));
             newMesh.Colors = new Core.Color4Collection(Enumerable.Repeat(new Color4(1f, 1f, 1f, 1f), pie.Positions.Count));
@@ -184,22 +183,19 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
-            var px = p.X - (float)(screenSpaceCore.RelativeScreenLocationX * context.ActualWidth / 2);
-            var py = p.Y + (float)(screenSpaceCore.RelativeScreenLocationY * context.ActualHeight / 2);
-            float scale = (float)(context.ActualHeight / screenSpaceCore.Height);
-            px /= scale;
-            py /= scale;
+            float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale;
+            var px = p.X - (float)(context.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
+            var py = p.Y - (float)(context.ActualHeight/ 2 * (1 - screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
+
             var viewMatrix = screenSpaceCore.GlobalTransform.View;
             Vector3 v = new Vector3();
 
             var matrix = CameraExtensions.InverseViewMatrix(ref viewMatrix);
             var aspectRatio = screenSpaceCore.ScreenRatio;
-            float w = screenSpaceCore.Width;
-            float h = screenSpaceCore.Height;
             var projMatrix = screenSpaceCore.GlobalTransform.Projection;
             Vector3 zn, zf;
-            v.X = (2 * px / w - 1) / projMatrix.M11;
-            v.Y = -(2 * py / h - 1) / projMatrix.M22;
+            v.X = (2 * px / viewportSize - 1) / projMatrix.M11;
+            v.Y = -(2 * py / viewportSize - 1) / projMatrix.M22;
             v.Z = 1 / projMatrix.M33;
             Vector3.TransformCoordinate(ref v, ref matrix, out zf);
 

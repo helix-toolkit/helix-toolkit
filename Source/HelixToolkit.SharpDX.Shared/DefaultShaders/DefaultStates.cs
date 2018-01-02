@@ -19,6 +19,7 @@ namespace HelixToolkit.UWP.Shaders
     public static class DefaultBlendStateDescriptions
     {
         public readonly static BlendStateDescription BSNormal;
+        public readonly static BlendStateDescription BSSourceAlways;
         public readonly static BlendStateDescription NoBlend;
         public readonly static BlendStateDescription BSOverlayBlending;
         static DefaultBlendStateDescriptions()
@@ -30,6 +31,18 @@ namespace HelixToolkit.UWP.Shaders
                 DestinationBlend = BlendOption.InverseSourceAlpha,
                 SourceBlend = BlendOption.SourceAlpha,
                 DestinationAlphaBlend = BlendOption.DestinationAlpha,
+                SourceAlphaBlend = BlendOption.SourceAlpha,
+                IsBlendEnabled = true,
+                RenderTargetWriteMask = ColorWriteMaskFlags.All
+            };
+
+            BSSourceAlways.RenderTarget[0] = new RenderTargetBlendDescription()
+            {
+                AlphaBlendOperation = BlendOperation.Add,
+                BlendOperation = BlendOperation.Add,
+                DestinationBlend = BlendOption.Zero,
+                SourceBlend = BlendOption.SourceAlpha,
+                DestinationAlphaBlend = BlendOption.Zero,
                 SourceAlphaBlend = BlendOption.SourceAlpha,
                 IsBlendEnabled = true,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All
@@ -139,9 +152,10 @@ namespace HelixToolkit.UWP.Shaders
             StencilWriteMask = 0
         };
 
-        public readonly static DepthStencilStateDescription DSSNoDepthNoStencil = new DepthStencilStateDescription()
+        public readonly static DepthStencilStateDescription DSSDepthAlwaysNoStencil = new DepthStencilStateDescription()
         {
-            IsDepthEnabled = false,
+            IsDepthEnabled = true,
+            DepthComparison = Comparison.Always,
             IsStencilEnabled = false,
         };
     }
