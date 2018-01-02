@@ -67,6 +67,63 @@ namespace HelixToolkit.Wpf.SharpDX
             return tbX.ToBitmapSource();
         }
 
+        public static BitmapSource CreateViewBoxBitmapSource(string front, string back, string left, string right, string top, string down, Media.Color frontColor, 
+            Media.Color backColor, Media.Color leftColor, Media.Color rightColor, Media.Color topColor, Media.Color bottomColor)
+        {
+            var family = new Media.FontFamily("Arial");
+            var bfront = GetFontBorderContainer(front, Media.Colors.White, frontColor, family, FontWeights.SemiBold);
+            var bback = GetFontBorderContainer(back, Media.Colors.White, backColor, family, FontWeights.SemiBold);
+            var bleft = GetFontBorderContainer(left, Media.Colors.White, leftColor, family, FontWeights.SemiBold);
+            var bright = GetFontBorderContainer(right, Media.Colors.White, rightColor, family, FontWeights.SemiBold);
+            var btop = GetFontBorderContainer(top, Media.Colors.White, topColor, family, FontWeights.SemiBold);
+            var bbottom = GetFontBorderContainer(down, Media.Colors.White, bottomColor, family, FontWeights.SemiBold);
+            StackPanel panel = new StackPanel();
+            panel.Orientation = Orientation.Horizontal;
+            panel.Children.Add(bfront);
+            panel.Children.Add(bback);
+            panel.Children.Add(bleft);
+            panel.Children.Add(bright);
+            panel.Children.Add(btop);
+            panel.Children.Add(bbottom);
+            panel.Measure(new Size(100 * 6, 100));
+            panel.Arrange(new Rect(new Size(100 * 6, 100)));
+            return panel.ToBitmapSource(100 * 6, 100, true);
+        }
+
+        public static BitmapSource ToBitmapSource(this Media.Visual element, int width, int height, bool freeze = true)
+        {
+            var target = new RenderTargetBitmap(width, height, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
+            target.Render(element);
+            if (freeze)
+            {
+                target.Freeze();
+            }
+            return target;
+        }
+
+        private static Border GetFontBorderContainer(string text, Media.Color foregroundColor, Media.Color backgroundColor,
+            Media.FontFamily family, FontWeight fontWeight, int fontSize = 64,
+            int width = 100, int height = 100)
+        {
+            Border bf = new Border();
+            bf.Background = new Media.SolidColorBrush(backgroundColor);
+            bf.Width = width; bf.Height = height;
+            TextBlock tbX = new TextBlock();
+            tbX.FontFamily = family;
+            tbX.Foreground = new Media.SolidColorBrush(foregroundColor);
+            tbX.TextAlignment = TextAlignment.Center;
+            tbX.FontSize = fontSize;
+            tbX.FontWeight = fontWeight;
+            tbX.FontStretch = FontStretches.Normal;
+            tbX.HorizontalAlignment = HorizontalAlignment.Center;
+            tbX.VerticalAlignment = VerticalAlignment.Center;
+            tbX.Text = text;
+            bf.Child = tbX;
+            bf.Measure(new Size(bf.Width, bf.Height));
+            bf.Arrange(new Rect(new Size(bf.Width, bf.Height)));
+            return bf;
+        }
+
         public static Size MeasureString(this TextBlock textBlock)
         {
             var formattedText = new Media.FormattedText(

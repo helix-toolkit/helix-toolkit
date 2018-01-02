@@ -84,7 +84,10 @@
                                 </StackPanel>
                             </Grid>
                             <ItemsControl>
-                                <hx:ViewBoxModel3D x:Name="PART_ViewCube" IsRendering="{TemplateBinding ShowViewCube}" SizeScale="{TemplateBinding ViewCubeSize}" RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}" RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"/>
+                                <hx:ViewBoxModel3D x:Name="PART_ViewCube" IsRendering="{TemplateBinding ShowViewCube}" SizeScale="{TemplateBinding ViewCubeSize}" 
+                                                   RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}" 
+                                                   RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
+                                                   ViewBoxTexture="{TemplateBinding ViewCubeTexture}"/>
                                 <hx:CoordinateSystemModel3D x:Name="PART_CoordinateView" 
                                                             IsRendering="{TemplateBinding ShowCoordinateSystem}" 
                                                             SizeScale="{TemplateBinding CoordinateSystemSize}" 

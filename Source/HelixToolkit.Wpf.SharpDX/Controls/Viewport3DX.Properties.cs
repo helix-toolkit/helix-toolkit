@@ -579,22 +579,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 new PropertyMetadata(true, (s, e) => ((Viewport3DX)s).UseDefaultGesturesChanged()));
 
         /// <summary>
-        /// The view cube back text property.
+        /// The view cube texture. It must be a 6x1 (ex: 600x100) ratio image. You can also use BitmapExtension.CreateViewBoxBitmapSource to create
         /// </summary>
-        public static readonly DependencyProperty ViewCubeBackTextProperty = DependencyProperty.Register(
-                "ViewCubeBackText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("R"));
-
-        /// <summary>
-        /// The view cube bottom text property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeBottomTextProperty = DependencyProperty.Register(
-                "ViewCubeBottomText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("D"));
-
-        /// <summary>
-        /// The view cube front text property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeFrontTextProperty = DependencyProperty.Register(
-                "ViewCubeFrontText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("L"));
+        public static readonly DependencyProperty ViewCubeTextureProperty = DependencyProperty.Register(
+                "ViewCubeTexture", typeof(System.IO.Stream), typeof(Viewport3DX), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The view cube horizontal position property. Relative to viewport center.
@@ -605,30 +593,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 typeof(double),
                 typeof(Viewport3DX),
                 new UIPropertyMetadata(0.8));
-
-        /// <summary>
-        /// The view cube left text property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeLeftTextProperty = DependencyProperty.Register(
-                "ViewCubeLeftText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("F"));
-
-        /// <summary>
-        /// The view cube opacity property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeOpacityProperty = DependencyProperty.Register(
-                "ViewCubeOpacity", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(0.5));
-
-        /// <summary>
-        /// The view cube right text property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeRightTextProperty = DependencyProperty.Register(
-                "ViewCubeRightText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("B"));
-
-        /// <summary>
-        /// The view cube top text property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeTopTextProperty = DependencyProperty.Register(
-                "ViewCubeTopText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("U"));
 
         /// <summary>
         /// Identifies the <see cref=" IsViewCubeEdgeClicksEnabled"/> dependency property.
@@ -2162,59 +2126,22 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets the view cube back text.
+        /// Gets or sets the view cube texture;
+        /// The view cube texture. It must be a 6x1 (ex: 600x100) ratio image. You can also use BitmapExtension.CreateViewBoxBitmapSource to create
         /// </summary>
         /// <value>
-        /// The view cube back text.
+        /// The view cube texture.
         /// </value>
-        public string ViewCubeBackText
+        public System.IO.Stream ViewCubeTexture
         {
             get
             {
-                return (string)this.GetValue(ViewCubeBackTextProperty);
+                return (System.IO.Stream)this.GetValue(ViewCubeTextureProperty);
             }
 
             set
             {
-                this.SetValue(ViewCubeBackTextProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the view cube bottom text.
-        /// </summary>
-        /// <value>
-        /// The view cube bottom text.
-        /// </value>
-        public string ViewCubeBottomText
-        {
-            get
-            {
-                return (string)this.GetValue(ViewCubeBottomTextProperty);
-            }
-
-            set
-            {
-                this.SetValue(ViewCubeBottomTextProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the view cube front text.
-        /// </summary>
-        /// <value>
-        /// The view cube front text.
-        /// </value>
-        public string ViewCubeFrontText
-        {
-            get
-            {
-                return (string)this.GetValue(ViewCubeFrontTextProperty);
-            }
-
-            set
-            {
-                this.SetValue(ViewCubeFrontTextProperty, value);
+                this.SetValue(ViewCubeTextureProperty, value);
             }
         }
 
@@ -2239,77 +2166,20 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets the view cube left text.
-        /// </summary>
-        /// <value>
-        /// The view cube left text.
-        /// </value>
-        public string ViewCubeLeftText
-        {
-            get
-            {
-                return (string)this.GetValue(ViewCubeLeftTextProperty);
-            }
-
-            set
-            {
-                this.SetValue(ViewCubeLeftTextProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the opacity of the ViewCube when inactive.
         /// </summary>
-        public double ViewCubeOpacity
-        {
-            get
-            {
-                return (double)this.GetValue(ViewCubeOpacityProperty);
-            }
+        //public double ViewCubeOpacity
+        //{
+        //    get
+        //    {
+        //        return (double)this.GetValue(ViewCubeOpacityProperty);
+        //    }
 
-            set
-            {
-                this.SetValue(ViewCubeOpacityProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the view cube right text.
-        /// </summary>
-        /// <value>
-        /// The view cube right text.
-        /// </value>
-        public string ViewCubeRightText
-        {
-            get
-            {
-                return (string)this.GetValue(ViewCubeRightTextProperty);
-            }
-
-            set
-            {
-                this.SetValue(ViewCubeRightTextProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the view cube top text.
-        /// </summary>
-        /// <value>
-        /// The view cube top text.
-        /// </value>
-        public string ViewCubeTopText
-        {
-            get
-            {
-                return (string)this.GetValue(ViewCubeTopTextProperty);
-            }
-
-            set
-            {
-                this.SetValue(ViewCubeTopTextProperty, value);
-            }
-        }
+        //    set
+        //    {
+        //        this.SetValue(ViewCubeOpacityProperty, value);
+        //    }
+        //}
 
         /// <summary>
         /// Gets or sets if the view cube edge clickable.

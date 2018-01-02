@@ -28,6 +28,24 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class ViewBoxModel3D : ScreenSpacedElement3D
     {
+        public static readonly DependencyProperty ViewBoxTextureProperty = DependencyProperty.Register("ViewBoxTexture", typeof(Stream), typeof(ViewBoxModel3D), 
+            new AffectsRenderPropertyMetadata(null, (d,e)=> 
+            {
+                (d as ViewBoxModel3D).UpdateTexture((Stream)e.NewValue);
+            }));
+
+        public Stream ViewBoxTexture
+        {
+            set
+            {
+                SetValue(ViewBoxTextureProperty, value);
+            }
+            get
+            {
+                return (Stream)GetValue(ViewBoxTextureProperty);
+            }
+        }
+
         private MeshGeometryModel3D ViewBoxMeshModel;
 
         public static readonly RoutedEvent ViewBoxClickedEvent =
@@ -71,15 +89,25 @@ namespace HelixToolkit.Wpf.SharpDX
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.DefaultViewboxTexture.jpg");
             stream.CopyTo(map);
             stream.Dispose();
+            var sampler = (SamplerStateDescription)PhongMaterial.DiffuseAlphaMapSamplerProperty.DefaultMetadata.DefaultValue;
+            sampler.BorderColor = Color.Gray;
+            sampler.AddressU = sampler.AddressV = sampler.AddressW = TextureAddressMode.Border;
             ViewBoxMeshModel.Material = new PhongMaterial()
             {
                 DiffuseColor = Color.White,
-                DiffuseMap = map
+                DiffuseMap = BitmapExtension.CreateViewBoxBitmapSource("F", "B", "L", "R", "U", "D", Media.Colors.Red, Media.Colors.Red,
+                    Media.Colors.Blue, Media.Colors.Blue, Media.Colors.Green, Media.Colors.Green).ToMemoryStream(),
+                DiffuseMapSampler = sampler
             };
             ViewBoxMeshModel.CullMode = CullMode.Back;
             ViewBoxMeshModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.ViewCube]; };
             this.Children.Add(ViewBoxMeshModel);
             UpdateModel(UpDirection.ToVector3());
+        }
+
+        private void UpdateTexture(Stream texture)
+        {
+            (ViewBoxMeshModel.Material as PhongMaterial).DiffuseMap = texture;
         }
 
         protected override void UpdateModel(Vector3 up)
@@ -124,8 +152,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 newMesh.Indices.Add(pie.Indices[i]);
             }
 
-            newMesh.TextureCoordinates = new Core.Vector2Collection(Enumerable.Repeat(new Vector2(), pie.Positions.Count));
-            newMesh.Colors = new Core.Color4Collection(Enumerable.Repeat(new Color4(0.8f, 0.8f, 0.8f, 1f), pie.Positions.Count));
+            newMesh.TextureCoordinates = new Core.Vector2Collection(Enumerable.Repeat(new Vector2(-1,-1), pie.Positions.Count));
+            newMesh.Colors = new Core.Color4Collection(Enumerable.Repeat(new Color4(1f, 1f, 1f, 1f), pie.Positions.Count));
             newMesh.TextureCoordinates.AddRange(mesh.TextureCoordinates);
             newMesh.Colors.AddRange(Enumerable.Repeat(new Color4(1, 1, 1, 1), mesh.Positions.Count));
             newMesh.Normals = newMesh.CalculateNormals();
