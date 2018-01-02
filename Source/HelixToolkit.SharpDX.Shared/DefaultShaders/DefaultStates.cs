@@ -138,6 +138,12 @@ namespace HelixToolkit.UWP.Shaders
             StencilReadMask = 0xFF,
             StencilWriteMask = 0
         };
+
+        public readonly static DepthStencilStateDescription DSSNoDepthNoStencil = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = false,
+            IsStencilEnabled = false,
+        };
     }
 
     public static class DefaultRasterDescriptions

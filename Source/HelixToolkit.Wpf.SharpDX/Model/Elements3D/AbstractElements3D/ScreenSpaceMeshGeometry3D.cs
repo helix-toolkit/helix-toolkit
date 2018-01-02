@@ -107,6 +107,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected bool NeedClearDepthBuffer { set; get; } = true;
+
 
         protected IScreenSpacedRenderParams screenSpaceCore { get { return (IScreenSpacedRenderParams)RenderCore; } }
 
@@ -134,7 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnRender(IRenderContext renderContext)
         {
-            screenSpaceCore.SetScreenSpacedCoordinates(renderContext);
+            screenSpaceCore.SetScreenSpacedCoordinates(renderContext, NeedClearDepthBuffer);
             base.OnRender(renderContext);
         }
     }

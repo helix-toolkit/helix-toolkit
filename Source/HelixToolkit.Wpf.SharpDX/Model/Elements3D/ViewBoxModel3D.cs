@@ -103,6 +103,7 @@ namespace HelixToolkit.Wpf.SharpDX
             ViewBoxMeshModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.ViewCube]; };
             this.Children.Add(ViewBoxMeshModel);
             UpdateModel(UpDirection.ToVector3());
+            NeedClearDepthBuffer = false;
         }
 
         private void UpdateTexture(Stream texture)

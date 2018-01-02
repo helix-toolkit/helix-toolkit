@@ -97,9 +97,8 @@ namespace HelixToolkit.UWP.Core
         public bool IsPerspective { set; get; } = true;
         public bool IsRightHand { set; get; } = true;
 
-        private const int DefaultHeight = 4;
-        public float Width { get { return DefaultHeight * ScreenRatio; } }
-        public float Height { get { return DefaultHeight; } }
+        public float Width { private set; get; }
+        public float Height { get { return Width/ScreenRatio; } }
 
         private RasterizerState rasterState;
 
@@ -186,7 +185,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (IsPerspective)
             {
-                projectionMatrix = IsRightHand ? Matrix.PerspectiveRH(Width, Height, 1f, 200f) : Matrix.PerspectiveLH(Width, Height, 1f, 200f);
+                projectionMatrix = IsRightHand ? Matrix.PerspectiveFovRH(15, ScreenRatio, 0.1f, 100f) : Matrix.PerspectiveFovLH(15, ScreenRatio, 0.1f, 100f);
             }
             else
             {
@@ -229,14 +228,18 @@ namespace HelixToolkit.UWP.Core
         public virtual void SetScreenSpacedCoordinates(IRenderContext context, bool clearDepthBuffer)
         {
             DepthStencilView dsView;
-            context.DeviceContext.OutputMerger.GetRenderTargets(out dsView);
-            if (dsView == null)
+            if (clearDepthBuffer)
             {
-                return;
-            }
+                context.DeviceContext.OutputMerger.GetRenderTargets(out dsView);
+                if (dsView == null)
+                {
+                    return;
+                }
 
-            context.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
-            dsView.Dispose();
+                context.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
+                dsView.Dispose();
+            }
+            Width = (int)context.ActualWidth / 10;
             var globalTrans = context.GlobalTransform;
             UpdateProjectionMatrix(context.ActualWidth, context.ActualHeight);
             globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
