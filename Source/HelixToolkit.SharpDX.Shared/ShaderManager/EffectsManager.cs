@@ -76,7 +76,7 @@ namespace HelixToolkit.UWP
         {
             if (Initialized)
             { return; }
-            int adapterIndex;
+            int adapterIndex = -1;
 #if DX11
             var adapter = GetBestAdapter(out adapterIndex);
 
