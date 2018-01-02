@@ -55,7 +55,6 @@
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
-                DirectionTransform="{Binding Light1DirectionTransform}"
                 Color="{Binding Light1Color}" />
             <hx:PointLight3D
                 Attenuation="{Binding Light2Attenuation}"
@@ -68,7 +67,6 @@
             <hx:SpotLight3D
                 Attenuation="{Binding Light4Attenuation}"
                 Direction="{Binding Light4Direction}"
-                DirectionTransform="{Binding Light4DirectionTransform}"
                 Transform="{Binding Light4Transform}"
                 Color="{Binding Light4Color}" />
 
