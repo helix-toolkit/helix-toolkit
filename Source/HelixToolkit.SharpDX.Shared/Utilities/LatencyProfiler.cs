@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utility
             {
                 if(Set(ref latency, value))
                 {
-                    Console.WriteLine($"Latency: {value}");
+                    //Console.WriteLine($"Latency: {value}");
                 }
             }
             get

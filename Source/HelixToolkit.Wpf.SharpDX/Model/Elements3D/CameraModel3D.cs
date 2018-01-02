@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected bool isCaptured;
         protected Viewport3DX viewport;
-        protected Camera viewportCamera;
+        protected ICamera viewportCamera;
         protected Point3D lastHitPos;
 
         private ProjectionCamera _camera;

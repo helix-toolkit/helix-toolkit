@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(RenderTechniqueProperty, value); }
         }
 
-        private readonly IList<Viewport3DX> viewports = new List<Viewport3DX>();
+        private readonly IList<IRenderer> viewports = new List<IRenderer>();
 
         public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
 
@@ -108,14 +108,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public void AttachViewport3DX(Viewport3DX viewport)
+        public void AttachViewport3DX(IRenderer viewport)
         {
             viewports.Add(viewport);
             viewport.RenderTechnique = this.RenderTechnique;
             viewport.EffectsManager = this.EffectsManager;
         }
 
-        public void DettachViewport3DX(Viewport3DX viewport)
+        public void DettachViewport3DX(IRenderer viewport)
         {
             viewports.Remove(viewport);
         }

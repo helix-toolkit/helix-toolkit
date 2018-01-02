@@ -50,5 +50,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="aspectRatio">The aspect ratio.</param>
         /// <returns>A <see cref="Matrix" />.</returns>
         Matrix CreateProjectionMatrix(double aspectRatio);
+        /// <summary>
+        /// Reset camera.
+        /// </summary>
+        //void Reset();
     }
 }

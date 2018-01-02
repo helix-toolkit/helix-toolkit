@@ -159,9 +159,6 @@ namespace HelixToolkit.UWP.Core
         {
 #if !NETFX_CORE
             eye = -renderContext.Camera.LookDirection.ToVector3().Normalized() * 20;
-#else
-            eye = -renderContext.Camera.LookDirection.Normalized() * 20;
-#endif
             if (IsRightHand)
             {
                 return Matrix.LookAtRH(eye, Vector3.Zero, renderContext.Camera.UpDirection.ToVector3());
@@ -170,6 +167,17 @@ namespace HelixToolkit.UWP.Core
             {
                 return Matrix.LookAtLH(eye, Vector3.Zero, renderContext.Camera.UpDirection.ToVector3());
             }
+#else
+            eye = -renderContext.Camera.LookDirection.Normalized() * 20;
+            if (IsRightHand)
+            {
+                return Matrix.LookAtRH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
+            }
+            else
+            {
+                return Matrix.LookAtLH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
+            }
+#endif
         }
 
         protected virtual void OnCreateProjectionMatrix(float scale)

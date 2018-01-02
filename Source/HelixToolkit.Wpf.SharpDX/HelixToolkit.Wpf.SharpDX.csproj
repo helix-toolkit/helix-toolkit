@@ -142,7 +142,6 @@
     <Compile Include="Controls\DPFCanvasThreading.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChain.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChainThreading.cs" />
-    <Compile Include="Controls\MultiViewports\IModelContainer.cs" />
     <Compile Include="Controls\MultiViewports\ModelContainer3DX.cs" />
     <Compile Include="Controls\RenderControl.cs">
       <SubType>UserControl</SubType>
@@ -219,7 +218,6 @@
     <Compile Include="Utilities\OctreeHelper.cs" />
     <Compile Include="Utilities\OctreeManager.cs" />
     <Compile Include="Utilities\OffReader.cs" />
-    <Compile Include="Utilities\RelayExceptionEventArgs.cs" />
     <Compile Include="Utilities\StudioReader.cs" />
     <Compile Include="Model\Camera\Camera.cs" />
     <Compile Include="Model\Camera\MatrixCamera.cs" />

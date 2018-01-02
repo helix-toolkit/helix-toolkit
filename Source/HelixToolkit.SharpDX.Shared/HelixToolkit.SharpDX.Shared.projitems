@@ -62,6 +62,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IGeometryBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IElementsBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IModelContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IModels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\Interfaces.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRandomVector.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\MappingCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RandomVectorGenerators.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\RelayExceptionEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ResourceSharedObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\StateProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ShaderResourceViewProxy.cs" />

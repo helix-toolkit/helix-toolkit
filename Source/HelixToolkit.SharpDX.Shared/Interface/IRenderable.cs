@@ -10,9 +10,6 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
-    using System;
-    using System.Windows.Controls;
-
     using global::SharpDX;
     using System.Collections.Generic;
 
@@ -36,8 +33,9 @@ namespace HelixToolkit.UWP
         void RenderD2D(IRenderContext context);
        
         bool IsShadowMappingEnabled { get; }
-        IRenderTechnique RenderTechnique { get; }
-        Camera Camera { get; }
+        IEffectsManager EffectsManager { set; get; }
+        IRenderTechnique RenderTechnique { set; get; }
+        ICamera Camera { get; }
         Color4 BackgroundColor { get; }
 
         //DeferredRenderer DeferredRenderer { get; set; }
@@ -45,5 +43,7 @@ namespace HelixToolkit.UWP
         IEnumerable<IRenderable> Renderables { get; }
 
         IEnumerable<IRenderable> D2DRenderables { get; }
+
+        void InvalidateRender();
     }
 }

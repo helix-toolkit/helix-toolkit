@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         protected bool isCaptured;
         protected Viewport3DX viewport;
-        protected Camera camera;
+        protected ICamera camera;
         protected Point3D lastHitPos;
 
         public static readonly DependencyProperty DragXProperty =

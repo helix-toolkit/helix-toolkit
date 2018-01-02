@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty CameraProperty = DependencyProperty.Register(
             "Camera",
-            typeof(Camera),
+            typeof(ICamera),
             typeof(Viewport3DX),
             new UIPropertyMetadata((s, e) => ((Viewport3DX)s).CameraPropertyChanged()));
 
@@ -837,11 +837,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The camera.
         /// </value>
-        public Camera Camera
+        public ICamera Camera
         {
             get
             {
-                return (Camera)this.GetValue(CameraProperty);
+                return (ICamera)this.GetValue(CameraProperty);
             }
 
             set

@@ -2,12 +2,12 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Model
-#else
 using System;
 using SharpDX.Direct3D11;
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Model
+#else
 namespace HelixToolkit.Wpf.SharpDX.Model
 #endif
 {

@@ -32,11 +32,6 @@ namespace HelixToolkit.Wpf.SharpDX
         Visibility Visibility { get; set; }
     }
 
-    public interface IThrowingShadow
-    {
-        bool IsThrowingShadow { get; set; }
-    }
-
     public interface IHitable : IVisible
     {
         /// <summary>

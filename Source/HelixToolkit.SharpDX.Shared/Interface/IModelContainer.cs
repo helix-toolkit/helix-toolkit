@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     /// <summary>
     /// 
@@ -15,12 +19,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         /// <param name="viewport"></param>
-        void AttachViewport3DX(Viewport3DX viewport);
+        void AttachViewport3DX(IRenderer viewport);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="viewport"></param>
-        void DettachViewport3DX(Viewport3DX viewport);
+        void DettachViewport3DX(IRenderer viewport);
     /// <summary>
     /// 
     /// </summary>
