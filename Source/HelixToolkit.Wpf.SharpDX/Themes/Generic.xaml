@@ -83,7 +83,7 @@
                                     <TextBlock Text="{TemplateBinding DebugInfo}" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding DebugInfo, Converter={StaticResource NotNullToVisibilityConverter}}"/>
                                 </StackPanel>
                             </Grid>
-                            <ItemsControl>
+                            <ItemsControl Visibility="Collapsed">
                                 <hx:ViewBoxModel3D x:Name="PART_ViewCube" IsRendering="{TemplateBinding ShowViewCube}" SizeScale="{TemplateBinding ViewCubeSize}" 
                                                    RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}" 
                                                    RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
