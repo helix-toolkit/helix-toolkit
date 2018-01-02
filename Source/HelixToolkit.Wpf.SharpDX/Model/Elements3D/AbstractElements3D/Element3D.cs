@@ -24,6 +24,11 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>    
     public abstract class Element3D : FrameworkContentElement, IDisposable, IRenderable, IGUID, ITransformable
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
         public delegate IRenderTechnique SetRenderTechniqueFunc(IRenderHost host);
         /// <summary>
         /// A delegate function to change render technique. 
@@ -55,13 +60,17 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(IsRenderingProperty); }
             set { SetValue(IsRenderingProperty, value); }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static readonly DependencyProperty IsHitTestVisibleProperty =
             DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D), new PropertyMetadata(true, (d, e) =>
             {
                 (d as Element3D).isHitTestVisibleInternal = (bool)e.NewValue;
             }));
-
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsHitTestVisible
         {
             set
@@ -99,14 +108,18 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static readonly DependencyProperty TransformProperty =
             DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new AffectsRenderPropertyMetadata(Transform3D.Identity, (d,e)=>
             {
                 ((Element3D)d).modelMatrix = e.NewValue != null ? ((Transform3D)e.NewValue).Value.ToMatrix() : Matrix.Identity;
                 ((Element3D)d).OnTransformChanged();
             }));
-
+        /// <summary>
+        /// 
+        /// </summary>
         public Transform3D Transform
         {
             get { return (Transform3D)this.GetValue(TransformProperty); }
