@@ -68,15 +68,18 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static BitmapSource CreateViewBoxBitmapSource(string front, string back, string left, string right, string top, string down, Media.Color frontColor, 
-            Media.Color backColor, Media.Color leftColor, Media.Color rightColor, Media.Color topColor, Media.Color bottomColor)
+            Media.Color backColor, Media.Color leftColor, Media.Color rightColor, Media.Color topColor, Media.Color bottomColor, int fontSize = 64)
         {
             var family = new Media.FontFamily("Arial");
-            var bfront = GetFontBorderContainer(front, Media.Colors.White, frontColor, family, FontWeights.SemiBold);
-            var bback = GetFontBorderContainer(back, Media.Colors.White, backColor, family, FontWeights.SemiBold);
-            var bleft = GetFontBorderContainer(left, Media.Colors.White, leftColor, family, FontWeights.SemiBold);
-            var bright = GetFontBorderContainer(right, Media.Colors.White, rightColor, family, FontWeights.SemiBold);
-            var btop = GetFontBorderContainer(top, Media.Colors.White, topColor, family, FontWeights.SemiBold);
-            var bbottom = GetFontBorderContainer(down, Media.Colors.White, bottomColor, family, FontWeights.SemiBold);
+            int width = 100;
+            int height = 100;
+            int totalWidth = 100 * 6;
+            var bfront = GetFontBorderContainer(front, Media.Colors.White, frontColor, family, FontWeights.SemiBold, fontSize, width, height);
+            var bback = GetFontBorderContainer(back, Media.Colors.White, backColor, family, FontWeights.SemiBold, fontSize, width, height);
+            var bleft = GetFontBorderContainer(left, Media.Colors.White, leftColor, family, FontWeights.SemiBold, fontSize, width, height);
+            var bright = GetFontBorderContainer(right, Media.Colors.White, rightColor, family, FontWeights.SemiBold, fontSize, width, height);
+            var btop = GetFontBorderContainer(top, Media.Colors.White, topColor, family, FontWeights.SemiBold, fontSize, width, height);
+            var bbottom = GetFontBorderContainer(down, Media.Colors.White, bottomColor, family, FontWeights.SemiBold, fontSize, width, height);
             StackPanel panel = new StackPanel();
             panel.Orientation = Orientation.Horizontal;
             panel.Children.Add(bfront);
@@ -85,9 +88,9 @@ namespace HelixToolkit.Wpf.SharpDX
             panel.Children.Add(bright);
             panel.Children.Add(btop);
             panel.Children.Add(bbottom);
-            panel.Measure(new Size(100 * 6, 100));
-            panel.Arrange(new Rect(new Size(100 * 6, 100)));
-            return panel.ToBitmapSource(100 * 6, 100, true);
+            panel.Measure(new Size(totalWidth, height));
+            panel.Arrange(new Rect(new Size(totalWidth, height)));
+            return panel.ToBitmapSource(totalWidth, height, true);
         }
 
         public static BitmapSource ToBitmapSource(this Media.Visual element, int width, int height, bool freeze = true)
