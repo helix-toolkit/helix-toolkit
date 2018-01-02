@@ -50,13 +50,11 @@
                 Transform="{Binding Model1Transform}" />
             <hx:MeshGeometryModel3D
                 x:Name="model2"
-                BufferModel="{Binding ElementName=model1, Path=BufferModel}"
                 Geometry="{Binding Model}"
                 Material="{Binding Material2}"
                 Transform="{Binding Model2Transform}" />
             <hx:MeshGeometryModel3D
                 x:Name="model3"
-                BufferModel="{Binding ElementName=model1, Path=BufferModel}"
                 Geometry="{Binding Model}"
                 Material="{Binding Material3}"
                 Transform="{Binding Model3Transform}" />
@@ -71,7 +69,6 @@
                 Color="Blue" />
             <hx:LineGeometryModel3D
                 x:Name="lines2"
-                BufferModel="{Binding ElementName=line1, Path=BufferModel}"
                 Geometry="{Binding Lines}"
                 IsRendering="{Binding LinesEnabled}"
                 Smoothness="{Binding LineSmoothness}"
@@ -80,7 +77,6 @@
                 Color="Yellow" />
             <hx:LineGeometryModel3D
                 x:Name="lines3"
-                BufferModel="{Binding ElementName=line1, Path=BufferModel}"
                 Geometry="{Binding Lines}"
                 IsRendering="{Binding LinesEnabled}"
                 Smoothness="{Binding LineSmoothness}"
