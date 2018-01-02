@@ -337,12 +337,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Textures\DefaultViewboxTexture.jpg" />
-    <Content Include="x64\d3dcompiler_47.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="x86\d3dcompiler_47.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <EmbeddedResource Include="Textures\arial.png" />
     <Content Include="Textures\random4x4_dot3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
