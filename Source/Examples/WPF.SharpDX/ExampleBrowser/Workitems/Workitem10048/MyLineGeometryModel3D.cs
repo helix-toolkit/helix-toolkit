@@ -12,7 +12,8 @@ namespace Workitem10048
 
     using HelixToolkit.Wpf.SharpDX;
     using SharpDX;
-    using Color = SharpDX.Color;
+    using System.Windows.Media;
+    using Color = System.Windows.Media.Color;
     using HitTestResult = HelixToolkit.Wpf.SharpDX.HitTestResult;
 
     public class MyLineGeometryModel3D : LineGeometryModel3D
@@ -31,7 +32,7 @@ namespace Workitem10048
 
             if (pressedMouseButtons == 0 || pressedMouseButtons.HasFlag(MouseButtons.Left))
             {
-                this.Color = result ? Color.Red : this.initialColor.Value;
+                this.Color = result ? Colors.Red : this.initialColor.Value;
             }
 
             return result;
