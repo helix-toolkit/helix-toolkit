@@ -42,7 +42,7 @@
             </i:Interaction.Triggers>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
 
-            <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="{Binding DirectionalLightColor}" />
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="{Binding DirectionalLightColor}" />
 
             <!--<hx:EnvironmentMap3D x:Name="envMap" Filename="Cubemap_Grandcanyon.dds" />-->
 
