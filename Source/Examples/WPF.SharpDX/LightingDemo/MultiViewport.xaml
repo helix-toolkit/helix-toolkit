@@ -82,13 +82,11 @@
             </hx:Viewport3DX.InputBindings>
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
-                DirectionTransform="{Binding Light1DirectionTransform}"
                 IsRendering="{Binding RenderLight1}"
                 Color="{Binding Light1Color}" />
             <hx:SpotLight3D
                 Attenuation="{Binding Light4Attenuation}"
                 Direction="{Binding Light4Direction}"
-                DirectionTransform="{Binding Light4DirectionTransform}"
                 IsRendering="{Binding RenderLight4}"
                 Transform="{Binding Light4Transform}"
                 Color="{Binding Light4Color}" />
@@ -118,7 +116,6 @@
             </hx:Viewport3DX.InputBindings>
             <hx:DirectionalLight3D
                 Direction="{Binding Light1Direction}"
-                DirectionTransform="{Binding Light1DirectionTransform}"
                 IsRendering="{Binding RenderLight1}"
                 Color="{Binding Light1Color}" />
         </hx:Viewport3DX>
@@ -182,7 +179,6 @@
             <hx:SpotLight3D
                 Attenuation="{Binding Light4Attenuation}"
                 Direction="{Binding Light4Direction}"
-                DirectionTransform="{Binding Light4DirectionTransform}"
                 IsRendering="{Binding RenderLight4}"
                 Transform="{Binding Light4Transform}"
                 Color="{Binding Light4Color}" />

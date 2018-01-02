@@ -87,7 +87,7 @@ namespace CustomShaderDemo
             return new RasterizerState(Device, rasterStateDesc);         
         }
 
-        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        protected override RenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.RenderTechniquesManager.RenderTechniques["RenderCustom"];
         }
@@ -138,7 +138,7 @@ namespace CustomShaderDemo
         {
             /// --- set constant paramerers             
             var worldMatrix = modelMatrix * renderContext.WorldMatrix;
-            EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
+            EffectTransforms.World.SetMatrix(ref worldMatrix);
 
             /// --- check shadowmaps
             hasShadowMap = renderHost.IsShadowMapEnabled;
@@ -227,7 +227,7 @@ namespace CustomShaderDemo
             return result;
         }
 
-        protected override bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             return false;
         }

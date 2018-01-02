@@ -5,34 +5,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Media = System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
     public class OctreeLineGeometryModel3D : CompositeModel3D
     {
         public static readonly DependencyProperty OctreeProperty
-            = DependencyProperty.Register("Octree", typeof(IOctree), typeof(OctreeLineGeometryModel3D),
+            = DependencyProperty.Register("Octree", typeof(IOctree<GeometryModel3D>), typeof(OctreeLineGeometryModel3D),
                 new PropertyMetadata(null, (s, e) =>
                 {
                     var d = (s as OctreeLineGeometryModel3D);
                     if (e.OldValue != null)
                     {
-                        ((IOctree)e.OldValue).OnHit -= d.OctreeLineGeometryModel3D_OnHit;
+                        ((IOctree<GeometryModel3D>)e.OldValue).OnHit -= d.OctreeLineGeometryModel3D_OnHit;
                     }
                     if (e.NewValue != null)
                     {
-                        ((IOctree)e.NewValue).OnHit += d.OctreeLineGeometryModel3D_OnHit;
+                        ((IOctree<GeometryModel3D>)e.NewValue).OnHit += d.OctreeLineGeometryModel3D_OnHit;
                     }
                     d.CreateOctreeLines();
                 }));
 
         public static readonly DependencyProperty LineColorProperty
-            = DependencyProperty.Register("LineColor", typeof(Color), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(Color.Green));
+            = DependencyProperty.Register("LineColor", typeof(Media.Color), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(Media.Colors.Green));
 
         public static readonly DependencyProperty HitLineColorProperty
-            = DependencyProperty.Register("HitLineColor", typeof(Color), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(Color.Red));
+            = DependencyProperty.Register("HitLineColor", typeof(Media.Color), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(Media.Colors.Red));
 
-        public IOctree Octree
+        public IOctree<GeometryModel3D> Octree
         {
             set
             {
@@ -40,11 +41,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (IOctree)GetValue(OctreeProperty);
+                return (IOctree<GeometryModel3D>)GetValue(OctreeProperty);
             }
         }
 
-        public Color LineColor
+        public Media.Color LineColor
         {
             set
             {
@@ -52,10 +53,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Color)GetValue(LineColorProperty);
+                return (Media.Color)GetValue(LineColorProperty);
             }
         }
-        public Color HitLineColor
+        public Media.Color HitLineColor
         {
             set
             {
@@ -63,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Color)GetValue(HitLineColorProperty);
+                return (Media.Color)GetValue(HitLineColorProperty);
             }
         }
 
@@ -97,7 +98,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void OctreeLineGeometryModel3D_OnHit(object sender, OnHitEventArgs args)
         {
-            var node = sender as IOctree;
+            var node = sender as IOctree<GeometryModel3D>;
             if (node.HitPathBoundingBoxes.Count > 0 && Visibility == Visibility.Visible && IsRendering)
             {
                 HitVisual.Geometry = node.HitPathBoundingBoxes.CreatePathLines();

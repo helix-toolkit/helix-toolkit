@@ -20,7 +20,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using Direct3D = global::SharpDX.Direct3D;
     using Matrix = global::SharpDX.Matrix;
     using Texture2D = global::SharpDX.Direct3D11.Texture2D;
-
+ //   using static Core.RenderCoreBase;
+/*
     public sealed class EnvironmentMap3D : Model3D
     {
         // members to dispose          
@@ -36,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private RasterizerState rasterState;
         private DepthStencilState depthStencilState;
 
-        private EffectTransformVariables effectTransforms;
+       // private EffectTransformVariables effectTransforms;
         private MeshGeometry3D geometry;
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 obj.bHasCubeMap.Set((bool)e.NewValue);
         }
 
-        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        protected override IRenderTechnique SetRenderTechnique(IRenderHost host)
         {
             return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.CubeMap];
         }
@@ -90,7 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- get variables               
             this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
             this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
-            this.effectTransforms = new EffectTransformVariables(this.effect);
+      //      this.effectTransforms = new EffectTransformVariables(this.effect);
 
             // -- attach cube map 
             if (this.Filename != null)
@@ -163,7 +164,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref this.bHasCubeMap);
             Disposer.RemoveAndDispose(ref this.rasterState);
             Disposer.RemoveAndDispose(ref this.depthStencilState);
-            Disposer.RemoveAndDispose(ref this.effectTransforms);
+      //      Disposer.RemoveAndDispose(ref this.effectTransforms);
 
             base.OnDetach();
         }
@@ -181,11 +182,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- set constant paramerers 
             var worldMatrix = Matrix.Translation(renderContext.Camera.Position.ToVector3());
-            this.effectTransforms.mWorld.SetMatrix(ref worldMatrix);
+         //   this.effectTransforms.World.SetMatrix(ref worldMatrix);
 
             // --- render the geometry
             this.effectTechnique.GetPassByIndex(0).Apply(renderContext.DeviceContext);
             renderContext.DeviceContext.DrawIndexed(this.geometry.Indices.Count, 0, 0);
         }
     }
+    */
 }

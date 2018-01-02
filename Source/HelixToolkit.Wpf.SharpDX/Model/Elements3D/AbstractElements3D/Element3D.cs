@@ -6,20 +6,39 @@
 //   Base class for renderable elements.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using SharpDX;
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using SharpDX;
+
     using System;
     using System.Diagnostics;
     using System.Windows;
-    using System.Windows.Media;
+    using Media = System.Windows.Media;
+    using Core;
+    using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using System.Collections.Generic;
+
 
     /// <summary>
     /// Base class for renderable elements.
     /// </summary>    
-    public abstract class Element3D : FrameworkContentElement, IDisposable, IRenderable, IGUID
+    public abstract class Element3D : FrameworkContentElement, IDisposable, IRenderable, IGUID, ITransformable
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        public delegate IRenderTechnique SetRenderTechniqueFunc(IRenderHost host);
+        /// <summary>
+        /// A delegate function to change render technique. 
+        /// <para>There are two ways to set render technique, one is use this <see cref="OnSetRenderTechnique"/> delegate.
+        /// The other one is to override the <see cref="OnCreateRenderTechnique"/> function.</para>
+        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
+        /// </summary>
+        public SetRenderTechniqueFunc OnSetRenderTechnique;
+
+        #region Dependency Properties
         /// <summary>
         /// Indicates, if this element should be rendered,
         /// default is true
@@ -41,13 +60,17 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(IsRenderingProperty); }
             set { SetValue(IsRenderingProperty, value); }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public static readonly DependencyProperty IsHitTestVisibleProperty =
             DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D), new PropertyMetadata(true, (d, e) =>
             {
                 (d as Element3D).isHitTestVisibleInternal = (bool)e.NewValue;
             }));
-
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsHitTestVisible
         {
             set
@@ -85,9 +108,61 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected global::SharpDX.Direct3D11.Effect effect;
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty TransformProperty =
+            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new AffectsRenderPropertyMetadata(Transform3D.Identity, (d,e)=>
+            {
+                ((Element3D)d).modelMatrix = e.NewValue != null ? ((Transform3D)e.NewValue).Value.ToMatrix() : Matrix.Identity;
+                ((Element3D)d).OnTransformChanged();
+            }));
+        /// <summary>
+        /// 
+        /// </summary>
+        public Transform3D Transform
+        {
+            get { return (Transform3D)this.GetValue(TransformProperty); }
+            set { this.SetValue(TransformProperty, value); }
+        }
+        #endregion
 
-        protected RenderTechnique renderTechnique;
+        protected Matrix totalModelMatrix = Matrix.Identity;
+
+        protected Matrix modelMatrix = Matrix.Identity;
+
+        private readonly Stack<Matrix> matrixStack = new Stack<Matrix>();
+
+        private IRenderCore renderCore = null;
+        public IRenderCore RenderCore
+        {
+            private set
+            {
+                if (renderCore != value)
+                {
+                    if (renderCore != null)
+                    {
+                        renderCore.OnInvalidateRenderer -= RenderCore_OnInvalidateRenderer;
+                    }
+                    renderCore = value;
+                    if (renderCore != null)
+                    {
+                        renderCore.OnInvalidateRenderer += RenderCore_OnInvalidateRenderer;
+                    }
+                }
+            }
+            get
+            {
+                if(renderCore == null)
+                {
+                    RenderCore = OnCreateRenderCore();
+                    AssignDefaultValuesToCore(RenderCore);
+                }
+                return renderCore;
+            }
+        }
+
+        protected IRenderTechnique renderTechnique;
 
         protected IRenderHost renderHost;
 
@@ -110,14 +185,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsAttached
         {
-            get
-            {
-                return isAttached && renderHost != null;
-            }
-            protected set
-            {
-                isAttached = value;
-            }
+            private set;get;
         }
 
         public IRenderHost RenderHost
@@ -130,21 +198,55 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return renderHost.Device; }
         }
 
+        private void RenderCore_OnInvalidateRenderer(object sender, bool e)
+        {
+            InvalidateRender();
+        }
+
         /// <summary>
         /// Override this function to set render technique during Attach Host.
+        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
         /// </summary>
         /// <param name="host"></param>
         /// <returns>Return RenderTechnique</returns>
-        protected virtual RenderTechnique SetRenderTechnique(IRenderHost host)
+        protected virtual IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;           
         }
 
+        protected virtual IRenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
 
+        protected virtual void AssignDefaultValuesToCore(IRenderCore core) { }
+        #region Handling Transforms
+
+        public void PushMatrix(Matrix matrix)
+        {
+            matrixStack.Push(this.modelMatrix);
+            this.modelMatrix = this.modelMatrix * matrix;
+            this.totalModelMatrix = this.modelMatrix;
+        }
+
+        public void PopMatrix()
+        {
+            this.modelMatrix = matrixStack.Pop();
+        }
+
+        public Matrix ModelMatrix
+        {
+            get { return this.modelMatrix; }
+        }
+
+        public Matrix TotalModelMatrix
+        {
+            get { return this.totalModelMatrix; }
+        }
+
+        protected virtual void OnTransformChanged() { }
+        #endregion
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
-        /// <para>To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/></para>
-        /// <para>Attach Flow: <see cref="SetRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttached"/> -> <see cref="InvalidateRender"/></para>
+        /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
+        /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttached"/> -> <see cref="InvalidateRender"/></para>
         /// </summary>
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
@@ -158,34 +260,35 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new ArgumentException("EffectManger does not exist. Please make sure the proper EffectManager has been bind from view model.");
             }
-            this.renderTechnique = SetRenderTechnique(host);           
-            effect = renderHost.EffectsManager.GetEffect(renderTechnique);
-            IsAttached = OnAttach(host);
-            if (IsAttached)
+            this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : OnCreateRenderTechnique(host);
+            if (renderTechnique != null)
             {
-                OnAttached();
+                renderTechnique = RenderHost.EffectsManager[renderTechnique.Name];
+                //effect = renderHost.EffectsManager.GetEffect(renderTechnique);
+                IsAttached = OnAttach(host);
             }
             InvalidateRender();
-        }
+        }       
 
-        /// <summary>
-        /// Called after <see cref="OnAttach(IRenderHost)"/>
-        /// </summary>
-        protected virtual void OnAttached()
-        {
-
-        }
         /// <summary>
         /// To override Attach routine, please override this.
         /// </summary>
         /// <param name="host"></param>       
         /// <returns>Return true if attached</returns>
-        protected abstract bool OnAttach(IRenderHost host);
+        protected virtual bool OnAttach(IRenderHost host)
+        {
+            if (host == null)
+            { return false; }
+            RenderCore?.Attach(renderTechnique);
+            return RenderCore == null ? false : RenderCore.IsAttached;
+        }
         /// <summary>
         /// Detaches the element from the host. Override <see cref="OnDetach"/>
         /// </summary>
         public void Detach()
         {
+            IsAttached = false;
+            RenderCore?.Detach();
             OnDetach();
         }
         /// <summary>
@@ -193,9 +296,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected virtual void OnDetach()
         {
-            IsAttached = false;
             renderTechnique = null;            
-            effect = null;
+            //effect = null;
             renderHost = null;           
         }
 
@@ -223,28 +325,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        protected virtual bool CanRender(RenderContext context)
+        protected virtual bool CanRender(IRenderContext context)
         {
-            return IsAttached && isRenderingInternal && visibleInternal;
+            return isRenderingInternal && visibleInternal;
         }
         /// <summary>
         /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
         /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
         /// </summary>
         /// <param name="context">The context.</param>
-        public void Render(RenderContext context)
+        public void Render(IRenderContext context)
         {
             if (CanRender(context))
             {
+                RenderCore.ModelMatrix = this.ModelMatrix;
                 OnRender(context);
             }
         }
 
-        /// <summary>
-        /// Used to overriding <see cref="Render"/> routine.
-        /// </summary>
-        /// <param name="context"></param>
-        protected abstract void OnRender(RenderContext context);
+        protected virtual void OnRender(IRenderContext context)
+        {
+            RenderCore?.Render(context);
+        }
 
         /// <summary>
         /// Disposes the Element3D. Frees all DX resources.
@@ -266,7 +368,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (obj != null)
             {
-                var parent = VisualTreeHelper.GetParent(obj);
+                var parent = Media.VisualTreeHelper.GetParent(obj);
                 while (parent != null)
                 {
                     var typed = parent as T;
@@ -275,7 +377,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         return typed;
                     }
 
-                    parent = VisualTreeHelper.GetParent(parent);
+                    parent = Media.VisualTreeHelper.GetParent(parent);
                 }
             }
 

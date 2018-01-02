@@ -1,4 +1,5 @@
-﻿using HelixToolkit.Wpf.SharpDX.Utilities;
+﻿using HelixToolkit.Wpf.SharpDX.Core;
+using HelixToolkit.Wpf.SharpDX.Utilities;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
@@ -30,18 +31,12 @@ namespace HelixToolkit.Wpf.SharpDX
         private static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (InstanceGeometryModel3D)d;
-            model.instanceInternal = e.NewValue == null ? null : e.NewValue as IList<Matrix>;
+            model.InstanceBuffer.Elements = e.NewValue == null ? null : e.NewValue as IList<Matrix>;
             model.InstancesChanged();
-            model.InvalidateRender();
         }
 
-        protected bool isInstanceChanged = true;
-        protected bool hasInstances = false;
-        public bool HasInstancing { get { return hasInstances; } }
-        protected IList<Matrix> instanceInternal;
-        protected EffectScalarVariable bHasInstances;
-        private readonly DynamicBufferProxy<Matrix> instanceBuffer = new DynamicBufferProxy<Matrix>(Matrix.SizeInBytes, BindFlags.VertexBuffer);
-        public DynamicBufferProxy<Matrix> InstanceBuffer { get { return instanceBuffer; } }
+        public bool HasInstances { get { return InstanceBuffer.HasElements; } }
+        protected readonly IElementsBufferModel<Matrix> InstanceBuffer = new MatrixInstanceBufferModel();
 
         protected BoundingBox instancesBound;
         public BoundingBox InstancesBound
@@ -58,21 +53,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual void InstancesChanged()
         {
-            this.hasInstances = (this.instanceInternal != null) && (this.instanceInternal.Any());
-            UpdateInstancesBounds();
-            isInstanceChanged = true;
+            UpdateInstancesBounds();           
         }
 
         protected virtual void UpdateInstancesBounds()
         {
-            if (!hasInstances)
+            if (!HasInstances)
             {
                 InstancesBound = this.BoundsWithTransform;
             }
             else
             {
-                var bound = this.BoundsWithTransform.Transform(instanceInternal[0]);// BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceInternal[0])).ToArray());
-                foreach (var instance in instanceInternal)
+                var bound = this.BoundsWithTransform.Transform(InstanceBuffer.Elements[0]);// BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instanceInternal[0])).ToArray());
+                foreach (var instance in InstanceBuffer.Elements)
                 {
                     var b = this.BoundsWithTransform.Transform(instance);// BoundingBox.FromPoints(this.BoundsWithTransform.GetCorners().Select(x => Vector3.TransformCoordinate(x, instance)).ToArray());
                     BoundingBox.Merge(ref bound, ref b, out bound);
@@ -81,22 +74,22 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool CanHitTest(IRenderMatrices context)
+        protected override bool CanHitTest(IRenderContext context)
         {
             return base.CanHitTest(context) && geometryInternal != null && geometryInternal.Positions != null && geometryInternal.Positions.Count > 0;
         }
         /// <summary>
         /// 
         /// </summary>        
-        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (CanHitTest(context))
             {
-                if ((this.instanceInternal != null) && (this.instanceInternal.Any()))
+                if (this.InstanceBuffer.HasElements)
                 {
                     bool hit = false;
                     int idx = 0;
-                    foreach (var modelMatrix in instanceInternal)
+                    foreach (var modelMatrix in InstanceBuffer.Elements)
                     {
                         var b = this.Bounds;
                         this.PushMatrix(modelMatrix);
@@ -124,23 +117,30 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool CheckBoundingFrustum(ref BoundingFrustum boundingFrustum)
+        protected override bool CheckBoundingFrustum(BoundingFrustum boundingFrustum)
         {
-            return !hasInstances && base.CheckBoundingFrustum(ref boundingFrustum) || boundingFrustum.Intersects(ref instancesBound);
+            return !HasInstances && base.CheckBoundingFrustum(boundingFrustum) || boundingFrustum.Intersects(ref instancesBound);
         }
 
-        protected override void OnAttached()
+        protected override bool OnAttach(IRenderHost host)
         {
-            base.OnAttached();
-            // --- init instances buffer            
-            bHasInstances = this.effect.GetVariableByName("bHasInstances").AsScalar();
-            InstancesChanged();
+            if (base.OnAttach(host))
+            {
+                // --- init instances buffer            
+                InstanceBuffer.Initialize();
+                InstancesChanged();
+                (RenderCore as IGeometryRenderCore).InstanceBuffer = InstanceBuffer;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         protected override void OnDetach()
         {
-            Disposer.RemoveAndDispose(ref this.bHasInstances);
-            instanceBuffer.Dispose();
+            InstanceBuffer.Dispose();
             base.OnDetach();
         }
     }

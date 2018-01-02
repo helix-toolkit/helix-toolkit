@@ -5,7 +5,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using HelixToolkit.Wpf.SharpDX.Model.Lights3D;
+using HelixToolkit.Wpf.SharpDX.Core2D;
+using HelixToolkit.Wpf.SharpDX.Model;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -15,9 +16,8 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
     {
         public CanvasMock()
         {
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Phong];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];           
             Device = EffectsManager.Device;
         }
         private int renderCycles = 1;
@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         public bool IsShadowMapEnabled { get; private set; }
         public MSAALevel MSAA { get; set; }
         public IRenderer Renderable { get; set; }
-        public RenderTechnique RenderTechnique { get; private set; }
+        public IRenderTechnique RenderTechnique { get; private set; }
         public double ActualHeight { get; private set; }
         public double ActualWidth { get; private set; }
 
@@ -46,7 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             get;private set;
         }
 
-        private readonly Light3DSceneShared light3DSceneShared = new Light3DSceneShared();
+        private readonly Light3DSceneShared light3DSceneShared;
         public Light3DSceneShared Light3DSceneShared
         {
             get
@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
                 return light3DSceneShared;
             }
         }
-        public RenderContext RenderContext { get; }
+        public IRenderContext RenderContext { get; }
         public bool EnableRenderFrustum
         {
             set;get;
@@ -108,6 +108,14 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         }
 
         public DepthStencilView DepthStencilBufferView
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public D2DControlWrapper D2DControls
         {
             get
             {

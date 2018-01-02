@@ -1,21 +1,21 @@
 ﻿namespace CrossSectionDemo
 {
     using System;
-    using System.Windows.Media.Animation;
-    using System.Windows.Media.Imaging;
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
-    using SharpDX;
+   // using SharpDX;
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-    using HelixToolkit.Wpf;
-    using System.IO;
+    using Color = System.Windows.Media.Color;
+    using Plane = SharpDX.Plane;
+    using Vector3 = SharpDX.Vector3;
+    using Colors = System.Windows.Media.Colors;
+    using Color4 = SharpDX.Color4;
     using System.Collections.Generic;
     using System.Linq;
-    using SharpDX.Direct3D11;
     using System.Windows.Data;
     using System.Windows;
     using System.Windows.Threading;
@@ -43,10 +43,10 @@
 
         public PhongMaterial LightModelMaterial { get; set; }
 
-        public Vector3 Light1Direction { get; set; }
-        public Color4 Light1Color { get; set; }
-        private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
-        public Media3D.Vector3D CamLookDir
+        public Vector3D Light1Direction { get; set; }
+        public Color Light1Color { get; set; }
+        private Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
+        public Vector3D CamLookDir
         {
             set
             {
@@ -54,7 +54,7 @@
                 {
                     camLookDir = value;
                     OnPropertyChanged();
-                    Light1Direction = camLookDir.ToVector3();
+                    Light1Direction = camLookDir;
                 }
             }
             get
@@ -76,10 +76,8 @@
         private DispatcherTimer timer;
         public MainViewModel()
         {
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
-
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // ----------------------------------------------
             // titles
             this.Title = "SwapChain Top Surface Rendering Demo";
@@ -94,12 +92,12 @@
                 UpDirection = new Vector3D(0, 1, 0)
             };
             // (Camera as ProjectionCamera).FarPlaneDistance = 10000;
-            this.Light1Direction = new Vector3(-100, -100, -100);
+            this.Light1Direction = new Vector3D(-100, -100, -100);
             SetupCameraBindings(this.Camera);
             // ----------------------------------------------
             // setup scene
 
-            this.Light1Color = (Color4)Color.White;
+            this.Light1Color = Colors.White;
 
 
             var builder = new MeshBuilder(true, false, false);

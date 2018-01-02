@@ -7,7 +7,7 @@
   
     <Grid>
     
-        <hx:Viewport3DX x:Name="view">
+        <hx:Viewport3DX x:Name="view" EffectsManager="{Binding EffectsManager}">
             <hx:AmbientLight3D />
             <hx:DirectionalLight3D Direction = "-2,-5,-2"/>
       <hx:GroupModel3D x:Name="group"   ItemsSource="{Binding ModelGeometry}"   Transform = "{Binding ModelTransform}" />

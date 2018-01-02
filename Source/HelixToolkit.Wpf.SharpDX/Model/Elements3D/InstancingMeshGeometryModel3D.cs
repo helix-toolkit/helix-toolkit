@@ -1,16 +1,11 @@
 ﻿using System.Linq;
 using global::SharpDX;
-using SharpDX.Direct3D11;
-using SharpDX.Direct3D;
-using SharpDX.DXGI;
 using System.Collections.Generic;
 using System.Windows;
-using HelixToolkit.Wpf.SharpDX.Extensions;
-using System.Diagnostics;
-using HelixToolkit.Wpf.SharpDX.Utilities;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Core;
     public class InstancingMeshGeometryModel3D : MeshGeometryModel3D
     {
         #region DependencyProperties
@@ -82,89 +77,50 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         #endregion
-        protected readonly DynamicBufferProxy<InstanceParameter> instanceParamBuffer = new DynamicBufferProxy<InstanceParameter>(InstanceParameter.SizeInBytes, BindFlags.VertexBuffer);
-        private EffectScalarVariable hasInstanceParamVar;
-
-        protected bool instanceParamArrayChanged { private set; get; } = true;
-        protected bool hasInstanceParams { private set; get; } = false;
-
-        public bool HasInstanceParams { get { return hasInstanceParams; } }
+        protected IElementsBufferModel<InstanceParameter> instanceParamBuffer = new InstanceParamsBufferModel<InstanceParameter>(InstanceParameter.SizeInBytes);
 
         private static void InstancesParamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (InstancingMeshGeometryModel3D)d;
-            model.InstancesParamChanged();
+            model.instanceParamBuffer.Elements = e.NewValue as IList<InstanceParameter>;
         }
 
-        protected void InstancesParamChanged()
+        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
-            hasInstanceParams = (InstanceParamArray != null && InstanceParamArray.Any());
-            instanceParamArrayChanged = true;
+            return host.EffectsManager[DefaultRenderTechniqueNames.InstancingBlinn];
         }
 
-        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        protected override IRenderCore OnCreateRenderCore()
         {
-            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.InstancingBlinn];
+            return new InstancingMeshRenderCore() { ParameterBuffer = this.instanceParamBuffer };
         }
 
-        protected override void OnRender(RenderContext renderContext)
+        protected override bool OnAttach(IRenderHost host)
         {
-            this.bHasInstances.Set(this.hasInstances);
-            this.hasInstanceParamVar.Set(this.hasInstanceParams);
-            // --- set constant paramerers             
-            var worldMatrix = this.modelMatrix * renderContext.worldMatrix;
-            this.EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
-
-            // --- check shadowmaps
-            this.hasShadowMap = this.renderHost.IsShadowMapEnabled;
-            this.effectMaterial.bHasShadowMapVariable.Set(this.hasShadowMap);
-            this.effectMaterial.AttachMaterial(geometryInternal as MeshGeometry3D);
-            // --- set context
-            renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
-            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(this.IndexBuffer.Buffer, Format.R32_UInt, 0);
-
-            // --- set rasterstate            
-            renderContext.DeviceContext.Rasterizer.State = this.RasterState;
-            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
-            if (this.hasInstances)
+            if (base.OnAttach(host))
             {
-                // --- update instance buffer
-                if (this.isInstanceChanged)
-                {
-                    BuildOctree();
-                    InstanceBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.instanceInternal);
-                    this.isInstanceChanged = false;
-                }
-                renderContext.DeviceContext.InputAssembler.SetVertexBuffers(1, new VertexBufferBinding(this.InstanceBuffer.Buffer, this.InstanceBuffer.StructureSize, 0));
-                if (this.hasInstanceParams)
-                {
-                    if (instanceParamArrayChanged)
-                    {
-                        instanceParamBuffer.UploadDataToBuffer(renderContext.DeviceContext, this.InstanceParamArray);
-                        this.instanceParamArrayChanged = false;
-                    }
-                    renderContext.DeviceContext.InputAssembler.SetVertexBuffers(2, new VertexBufferBinding(this.instanceParamBuffer.Buffer, this.instanceParamBuffer.StructureSize, 0));
-                }
-
-                OnInstancedDrawCall(renderContext);
+                instanceParamBuffer.Initialize();
+                return true;
             }
-            this.bHasInstances.Set(false);
-            this.hasInstanceParamVar.Set(false);
-        }
-
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            InstancesParamChanged();
-            hasInstanceParamVar = effect.GetVariableByName("bHasInstanceParams").AsScalar();
+            else
+            {
+                return false;
+            }
         }
 
         protected override void OnDetach()
         {
-            base.OnDetach();
             instanceParamBuffer.Dispose();
-            Disposer.RemoveAndDispose(ref hasInstanceParamVar);
+            base.OnDetach();
+        }
+
+        protected override void OnRender(IRenderContext context)
+        {
+            if (InstanceBuffer.Changed)
+            {
+                BuildOctree();
+            }
+            base.OnRender(context);
         }
 
         protected override void UpdateInstancesBounds()
@@ -175,7 +131,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void BuildOctree()
         {
-            if (isHitTestVisibleInternal && hasInstances)
+            if (isHitTestVisibleInternal && InstanceBuffer.HasElements)
             {
                 OctreeManager?.RebuildTree(new Element3D[] { this });
             }
@@ -185,18 +141,17 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool CanHitTest(IRenderMatrices context)
+        protected override bool CanHitTest(IRenderContext context)
         {
-            return base.CanHitTest(context) && OctreeManager != null && OctreeManager.Octree != null;
+            return base.CanHitTest(context);
         }
 
-        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             bool isHit = false;
-            if (CanHitTest(context))
+            if (CanHitTest(context) && OctreeManager!=null && OctreeManager.Octree != null)
             {
-                var boundHits = new List<HitTestResult>();
-                
+                var boundHits = new List<HitTestResult>();             
                 isHit = OctreeManager.Octree.HitTest(context, this, ModelMatrix, rayWS, ref boundHits);
                 if (isHit)
                 {
@@ -204,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     foreach (var hit in boundHits)
                     {
                         int instanceIdx = (int)hit.Tag;
-                        instanceMatrix = instanceInternal[instanceIdx];
+                        instanceMatrix = InstanceBuffer.Elements[instanceIdx];
                         this.PushMatrix(instanceMatrix);
                         var h = OnHitTest(context, rayWS, ref hits);
                         isHit |= h;
@@ -213,7 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             var result = hits.Last();
                             object tag = null;
-                            if (InstanceIdentifiers != null && InstanceIdentifiers.Count == instanceInternal.Count)
+                            if (InstanceIdentifiers != null && InstanceIdentifiers.Count == InstanceBuffer.Elements.Count)
                             {
                                 tag = InstanceIdentifiers[instanceIdx];
                             }
@@ -226,6 +181,10 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                     }
                 }
+            }
+            else
+            {
+                base.HitTest(context, rayWS, ref hits);
             }
             return isHit;
         }

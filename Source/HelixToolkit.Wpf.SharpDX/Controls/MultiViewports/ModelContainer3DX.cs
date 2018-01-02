@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using HelixToolkit.Wpf.SharpDX.Model.Lights3D;
-using HelixToolkit.Wpf.SharpDX.Utilities;
 using SharpDX;
 using SharpDX.Direct3D11;
-using System.ComponentModel;
 using System.Threading;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Utilities;
+    using Core2D;
     /// <summary>
     /// Use to contain shared models for multiple viewports. 
     /// <para>Suggest to bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak</para>
@@ -31,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The Render Technique property
         /// </summary>
         public static readonly DependencyProperty RenderTechniqueProperty = DependencyProperty.Register(
-            "RenderTechnique", typeof(RenderTechnique), typeof(ModelContainer3DX), new PropertyMetadata(null,
+            "RenderTechnique", typeof(IRenderTechnique), typeof(ModelContainer3DX), new PropertyMetadata(null,
                 (s, e) => ((ModelContainer3DX)s).RenderTechniquePropertyChanged()));
 
 
@@ -51,13 +48,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// <c>true</c> if deferred shading is enabled; otherwise, <c>false</c>.
         /// </value>
-        public RenderTechnique RenderTechnique
+        public IRenderTechnique RenderTechnique
         {
-            get { return (RenderTechnique)this.GetValue(RenderTechniqueProperty); }
+            get { return (IRenderTechnique)this.GetValue(RenderTechniqueProperty); }
             set { this.SetValue(RenderTechniqueProperty, value); }
         }
 
-        private readonly IList<Viewport3DX> viewports = new List<Viewport3DX>();
+        private readonly IList<IRenderer> viewports = new List<IRenderer>();
 
         public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
 
@@ -85,8 +82,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public IRenderTechniquesManager RenderTechniquesManager { get { return EffectsManager != null ? EffectsManager.RenderTechniquesManager : null; } }
-
         public ModelContainer3DX()
         {
         }
@@ -113,14 +108,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public void AttachViewport3DX(Viewport3DX viewport)
+        public void AttachViewport3DX(IRenderer viewport)
         {
             viewports.Add(viewport);
             viewport.RenderTechnique = this.RenderTechnique;
             viewport.EffectsManager = this.EffectsManager;
         }
 
-        public void DettachViewport3DX(Viewport3DX viewport)
+        public void DettachViewport3DX(IRenderer viewport)
         {
             viewports.Remove(viewport);
         }
@@ -188,7 +183,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set;get;
         }
 
-        public RenderContext RenderContext
+        public IRenderContext RenderContext
         {
             get
             {
@@ -259,6 +254,14 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return CurrentRenderHost != null ? CurrentRenderHost.DepthStencilBufferView : null;
+            }
+        }
+
+        public D2DControlWrapper D2DControls
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.D2DControls : null;
             }
         }
 

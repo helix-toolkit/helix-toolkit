@@ -21,11 +21,12 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Diagnostics;
     using System;
     using System.Runtime.CompilerServices;
+    using Core;
 
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
     /// </summary>
-    public abstract class GeometryModel3D : Model3D, IHitable, IBoundable, IVisible, IThrowingShadow, ISelectable, IMouse3D
+    public abstract class GeometryModel3D : Element3D, IHitable, IBoundable, IVisible, IThrowingShadow, ISelectable, IMouse3D
     {
         #region DependencyProperties
         public static readonly DependencyProperty ReuseVertexArrayBufferProperty =
@@ -36,6 +37,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty DepthBiasProperty =
             DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(0, RasterStateChanged));
+
+        public static readonly DependencyProperty SlopeScaledDepthBiasProperty =
+            DependencyProperty.Register("SlopeScaledDepthBias", typeof(double), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(0.0, RasterStateChanged));
 
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new AffectsRenderPropertyMetadata(false));
@@ -49,6 +53,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsScissorEnabledProperty =
             DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(true, RasterStateChanged));
 
+        public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(GeometryModel3D),
+            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
         public Geometry3D Geometry
         {
             get
@@ -85,6 +91,18 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 this.SetValue(DepthBiasProperty, value);
+            }
+        }
+
+        public double SlopeScaledDepthBias
+        {
+            get
+            {
+                return (double)this.GetValue(SlopeScaledDepthBiasProperty);
+            }
+            set
+            {
+                this.SetValue(SlopeScaledDepthBiasProperty, value);
             }
         }
 
@@ -138,6 +156,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(IsScissorEnabledProperty);
             }
         }
+
+        public bool IsDepthClipEnabled
+        {
+            set
+            {
+                SetValue(IsDepthClipEnabledProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsDepthClipEnabledProperty);
+            }
+        }
+
         #endregion
 
         #region Static Methods
@@ -169,19 +200,68 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
 
-        #region Variables
-        private RasterizerState rasterState = null;
-        protected RasterizerState RasterState { get { return rasterState; } }
-        protected InputLayout vertexLayout { private set; get; }
-        protected EffectTechnique effectTechnique { private set; get; }
+        public delegate RasterizerStateDescription CreateRasterStateFunc();
 
-        private EffectTransformVariables effectTransforms;
-        protected EffectTransformVariables EffectTransforms { get { return effectTransforms; } }
-        
-        #endregion
+        /// <summary>
+        /// Create raster state description delegate.
+        /// <para>If <see cref="OnCreateRasterState"/> is set, then <see cref="CreateRasterState"/> will not be called.</para>
+        /// </summary>
+        public CreateRasterStateFunc OnCreateRasterState;
 
         #region Properties
-        protected Geometry3D geometryInternal { private set; get; }
+        private IGeometryBufferModel bufferModelInternal;
+        /// <summary>
+        /// Internal buffer model. Call OnCreateBufferModel to create default buffer model.
+        /// </summary>
+        protected IGeometryBufferModel BufferModelInternal
+        {
+            private set
+            {
+                if(bufferModelInternal == value)
+                {
+                    return;
+                }
+                if (bufferModelInternal != null)
+                {
+                    bufferModelInternal.InvalidateRenderer -= BufferModel_InvalidateRenderer;
+                }
+                bufferModelInternal = value;
+                if (bufferModelInternal != null)
+                {
+                    bufferModelInternal.InvalidateRenderer += BufferModel_InvalidateRenderer;
+                }
+                if(RenderCore is IGeometryRenderCore)
+                {
+                    ((IGeometryRenderCore)RenderCore).GeometryBuffer = bufferModelInternal;
+                }
+            }
+            get
+            {
+                if(bufferModelInternal == null)
+                {
+                    BufferModelInternal = OnCreateBufferModel();
+                }
+                return bufferModelInternal;
+            }
+        }
+
+        private void BufferModel_InvalidateRenderer(object sender, bool e)
+        {
+            this.InvalidateRender();
+        }
+
+        protected Geometry3D geometryInternal
+        {
+            set
+            {
+                BufferModelInternal.Geometry = value;
+            }
+            get
+            {
+                return BufferModelInternal.Geometry;
+            }
+        }
+
         public bool GeometryValid { private set; get; } = false;
 
         private BoundingBox bounds;
@@ -253,13 +333,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #region Events
         public static readonly RoutedEvent MouseDown3DEvent =
-            EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
+            EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element3D));
 
         public static readonly RoutedEvent MouseUp3DEvent =
-            EventManager.RegisterRoutedEvent("MouseUp3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
+            EventManager.RegisterRoutedEvent("MouseUp3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element3D));
 
         public static readonly RoutedEvent MouseMove3DEvent =
-            EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Model3D));
+            EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element3D));
 
         public delegate void BoundChangedEventHandler(object sender, ref BoundingBox newBound, ref BoundingBox oldBound);
 
@@ -329,40 +409,37 @@ namespace HelixToolkit.Wpf.SharpDX
             this.MouseDown3D += OnMouse3DDown;
             this.MouseUp3D += OnMouse3DUp;
             this.MouseMove3D += OnMouse3DMove;
-            this.IsThrowingShadow = true;
         }
+
+        protected virtual IGeometryBufferModel OnCreateBufferModel() { return new EmptyGeometryBufferModel(); }
 
         /// <summary>
         /// Make sure to check if <see cref="Element3D.IsAttached"/> == true
         /// </summary>
         protected virtual void OnRasterStateChanged()
         {
-            Disposer.RemoveAndDispose(ref rasterState);
-            if (!IsAttached) { return; }
-            rasterState = CreateRasterState();
+            if (RenderCore is IGeometryRenderCore)
+            {
+                (RenderCore as IGeometryRenderCore).RasterDescription = OnCreateRasterState != null ? OnCreateRasterState() : CreateRasterState();
+            }
         }
 
-        protected abstract RasterizerState CreateRasterState();
+        /// <summary>
+        /// Create raster state description.
+        /// <para>If <see cref="OnCreateRasterState"/> is set, then <see cref="OnCreateRasterState"/> instead of <see cref="CreateRasterState"/> will be called.</para>
+        /// </summary>
+        /// <returns></returns>
+        protected abstract RasterizerStateDescription CreateRasterState();
 
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
             GeometryValid = CheckGeometry();
-            if (GeometryValid && renderHost != null)
+            if (GeometryValid && renderHost != null && !IsAttached)
             {
-                if (IsAttached)
-                {
-                    OnCreateGeometryBuffers();
-                }
-                else
-                {
-                    var host = renderHost;
-                    Detach();
-                    Attach(host);
-                }
+                var host = renderHost;
+                Attach(host);
             }
         }
-
-        protected abstract void OnCreateGeometryBuffers();
 
         private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
         {
@@ -389,9 +466,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         }
 
-        protected override void OnTransformChanged(DependencyPropertyChangedEventArgs e)
+        protected override void OnTransformChanged()
         {
-            base.OnTransformChanged(e);
             if (this.geometryInternal != null)
             {
                 BoundsWithTransform = Bounds.Transform(this.modelMatrix);
@@ -422,16 +498,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="host"></param>
         protected override bool OnAttach(IRenderHost host)
         {
-            if (CheckGeometry())
+            if (GeometryValid && base.OnAttach(host))
             {
                 AttachOnGeometryPropertyChanged();
-
-                // --- get variables
-                this.vertexLayout = renderHost.EffectsManager.GetLayout(this.renderTechnique);
-                this.effectTechnique = effect.GetTechniqueByName(this.renderTechnique.Name);
-
-                // --- transformations
-                this.effectTransforms = new EffectTransformVariables(this.effect);
+                if (RenderCore is IGeometryRenderCore)
+                {
+                    ((IGeometryRenderCore)RenderCore).GeometryBuffer = BufferModelInternal;
+                }               
+                if (geometryInternal != null)
+                {
+                    this.Bounds = this.geometryInternal.Bound;
+                    this.BoundsSphere = this.geometryInternal.BoundingSphere;
+                }
+                OnRasterStateChanged();
                 return true;
             }
             else
@@ -440,24 +519,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            if (geometryInternal != null)
-            {
-                this.Bounds = this.geometryInternal.Bound;
-                this.BoundsSphere = this.geometryInternal.BoundingSphere;
-            }
-            OnRasterStateChanged();
-        }
-
         protected override void OnDetach()
         {
             DetachOnGeometryPropertyChanged();
-            Disposer.RemoveAndDispose(ref rasterState);
-            Disposer.RemoveAndDispose(ref this.effectTransforms);
-            this.effectTechnique = null;
-            this.vertexLayout = null;
             base.OnDetach();
         }
 
@@ -484,17 +548,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        protected override bool CanRender(RenderContext context)
+        protected override bool CanRender(IRenderContext context)
         {
-            if (context.EnableBoundingFrustum && !CheckBoundingFrustum(ref context.boundingFrustum))
+            if (context.EnableBoundingFrustum && !CheckBoundingFrustum(context.BoundingFrustum))
             {
                 return false;
             }
             if (base.CanRender(context) && GeometryValid)
             {
-                if (context.IsShadowPass)
-                    if (!IsThrowingShadow)
-                        return false;
                 return true;
             }
             else
@@ -502,7 +563,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
         }
-        protected virtual bool CheckBoundingFrustum(ref BoundingFrustum viewFrustum)
+        protected virtual bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
         {
             return viewFrustum.Intersects(ref boundsWithTransform);
         }
@@ -543,7 +604,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS">Hitring ray from the camera.</param>
         /// <param name="hits">results of the hit.</param>
         /// <returns>True if the ray hits one or more times.</returns>
-        public virtual bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        public virtual bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (CanHitTest(context))
             {
@@ -555,17 +616,28 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected abstract bool OnHitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits);
+        protected abstract bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits);
 
-        protected virtual bool CanHitTest(IRenderMatrices context)
+        protected virtual bool CanHitTest(IRenderContext context)
         {
             return visibleInternal && isRenderingInternal && isHitTestVisibleInternal && GeometryValid;
         }
 
+        private bool isThrowingShadow = false;
         public bool IsThrowingShadow
         {
-            get;
-            set;
+            get
+            {
+                return isThrowingShadow;
+            }
+            set
+            {
+                isThrowingShadow = value;
+                if(RenderCore is IThrowingShadow)
+                {
+                    (RenderCore as IThrowingShadow).IsThrowingShadow = value;
+                }
+            }
         }
     }
 

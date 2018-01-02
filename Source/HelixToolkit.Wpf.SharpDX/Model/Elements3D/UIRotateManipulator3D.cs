@@ -109,7 +109,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public UIRotateManipulator3D()
         {
-            OnModelChanged();            
+            OnModelChanged();
+            this.Transform = new System.Windows.Media.Media3D.RotateTransform3D();
         }
 
         /// <summary>
@@ -130,7 +131,12 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Geometry = mb.ToMeshGeometry3D();
         }
 
-        protected override void OnRender(RenderContext renderContext)
+        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+        {
+            return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse];
+        }
+
+        protected override void OnRender(IRenderContext renderContext)
         {
             base.OnRender(renderContext);
             var position = this.totalModelMatrix.TranslationVector;
@@ -176,7 +182,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else
                 {
-                    this.Transform = rotateTransform.AppendTransform(this.Transform);
+                    if (this.Transform == null)
+                    {
+                        this.Transform = rotateTransform;
+                    }
+                    else
+                    {
+                        this.Transform = rotateTransform.AppendTransform(Transform);
+                    }
                 }
                 this.lastHitPosWS = newHitPos;
             }

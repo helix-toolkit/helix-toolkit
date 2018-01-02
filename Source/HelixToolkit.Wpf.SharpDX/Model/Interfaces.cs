@@ -32,11 +32,6 @@ namespace HelixToolkit.Wpf.SharpDX
         Visibility Visibility { get; set; }
     }
 
-    public interface IThrowingShadow
-    {
-        bool IsThrowingShadow { get; set; }
-    }
-
     public interface IHitable : IVisible
     {
         /// <summary>
@@ -46,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="ray"></param>
         /// <param name="hits"></param>
         /// <returns>Return all hitted details with distance from nearest to farest.</returns>
-        bool HitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits);
+        bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits);
         
         //void OnMouse3DDown(object sender, RoutedEventArgs e);
         //void OnMouse3DUp(object sender, RoutedEventArgs e);
@@ -90,39 +85,5 @@ namespace HelixToolkit.Wpf.SharpDX
         event RoutedEventHandler MouseDown3D;
         event RoutedEventHandler MouseUp3D;
         event RoutedEventHandler MouseMove3D;
-    }
-
-    public interface IBillboardText
-    {
-        BillboardType Type { get; }
-        BitmapSource Texture { get; }
-
-        Stream AlphaTexture { get; }
-        void DrawTexture();
-        Vector3Collection Positions { get; }
-        IList<Vector2> TextureOffsets { get; }
-        Vector2Collection TextureCoordinates { get; }
-        Color4Collection Colors { get; }
-        float Width { get; }
-        float Height { get; }
-    }
-
-    public enum BillboardType
-    {
-        SingleText, MultipleText, SingleImage
-    }
-
-    public interface IParameterVariables
-    {
-        /// <summary>
-        /// Create variables
-        /// </summary>
-        /// <param name="effect"></param>
-        void OnAttach(global::SharpDX.Direct3D11.Effect effect);
-
-        /// <summary>
-        /// Release variables
-        /// </summary>
-        void OnDettach();
     }
 }

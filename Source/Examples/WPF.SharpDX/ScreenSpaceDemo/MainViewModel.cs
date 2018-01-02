@@ -57,9 +57,8 @@ namespace ScreenSpaceDemo
             this.Camera = new PerspectiveCamera { Position = new Point3D(1.5, 2.5, 2.5), LookDirection = new Vector3D(-1.5, -2.5, -2.5), UpDirection = new Vector3D(0, 1, 0) };
 
             // default render technique
-            RenderTechniquesManager = new DeferredTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred);
-            EffectsManager = new DeferredEffectsManager(RenderTechniquesManager);
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
 
             // background
             this.BackgroundColor = (Color4)Color.White;

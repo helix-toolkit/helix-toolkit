@@ -1,13 +1,15 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TextureLoader.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
 using SharpDX.Direct3D11;
 using System.IO;
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     /// <summary>
     /// Utilities to load textures.

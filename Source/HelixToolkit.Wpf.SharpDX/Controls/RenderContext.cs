@@ -15,27 +15,63 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
 
     using global::SharpDX.Direct3D11;
+    using ShaderManager;
+    using Utilities;
+    using Shaders;
+    using Model;
 
     /// <summary>
     /// The render-context is currently generated per frame
     /// Optimizations might be possible
     /// </summary>
-    public class RenderContext : IRenderMatrices, IDisposable
+    public class RenderContext : IRenderContext
     {       
-        internal Matrix worldMatrix = Matrix.Identity;
-        internal Matrix viewMatrix;
-        internal Matrix projectionMatrix;
-        internal BoundingFrustum boundingFrustum;
-        private Camera camera; 
-        private EffectVectorVariable vEyePos, vFrustum, vViewport;        
-        private EffectMatrixVariable mView, mProjection;
+        private Matrix worldMatrix = Matrix.Identity;
+        private Matrix viewMatrix;
+        private Matrix projectionMatrix;
+        public BoundingFrustum BoundingFrustum { set; get; }
+        private ICamera camera; 
 
+        private bool matrixChanged = true;
 
-        public Matrix ViewMatrix { get { return this.viewMatrix; } }
+        public Matrix ViewMatrix
+        {
+            get { return viewMatrix; }
+            private set
+            {
+                if (viewMatrix == value) { return; }
+                viewMatrix = value;
+                matrixChanged = true;
+            }
+        }
 
-        public Matrix ProjectionMatrix { get { return this.projectionMatrix; } }
+        public Matrix ProjectionMatrix
+        {
+            get { return projectionMatrix; }
+            set
+            {
+                if (projectionMatrix == value)
+                {
+                    return;
+                }
+                projectionMatrix = value;
+                matrixChanged = true;
+            }
+        }
 
-        public Matrix WorldMatrix { get { return worldMatrix; } }
+        public Matrix WorldMatrix
+        {
+            get { return worldMatrix; }
+            set
+            {
+                if (worldMatrix == value)
+                {
+                    return;
+                }
+                worldMatrix = value;
+                matrixChanged = true;
+            }
+        }
 
         public Matrix ViewportMatrix
         {
@@ -48,6 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private Matrix screenViewProjectionMatrix = Matrix.Identity;
         public Matrix ScreenViewProjectionMatrix
         {
             get
@@ -56,7 +93,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public bool EnableBoundingFrustum = false;
+        public bool EnableBoundingFrustum { set; get; } = false;
 
         public DeviceContext DeviceContext { set; get; }
 
@@ -64,23 +101,23 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public double ActualHeight { get; private set; }
 
-        public Camera Camera
+        public ICamera Camera
         {
             get { return this.camera; }
             set
             {                
                 this.camera = value;
-                ActualHeight = this.Canvas.ActualHeight;
-                ActualWidth = this.Canvas.ActualWidth;
-                this.viewMatrix = this.camera.CreateViewMatrix();
+                ActualHeight = this.RenderHost.ActualHeight;
+                ActualWidth = this.RenderHost.ActualWidth;
+                ViewMatrix = this.camera.CreateViewMatrix();
                 var aspectRatio = this.ActualWidth / this.ActualHeight;
-                this.projectionMatrix = this.camera.CreateProjectionMatrix(aspectRatio);
+                ProjectionMatrix = this.camera.CreateProjectionMatrix(aspectRatio);
                 if (this.camera is ProjectionCamera)
                 {
                     var c = this.camera as ProjectionCamera;
                     // viewport: W,H,0,0   
-                    var viewport = new Vector4((float)this.ActualWidth, (float)this.ActualHeight, 0, 0);
-                    var ar = viewport.X / viewport.Y;
+                    globalTransform.Viewport = new Vector4((float)ActualWidth, (float)ActualHeight, 0, 0);
+                    var ar = globalTransform.Viewport.X / globalTransform.Viewport.Y;
                     
                     var  pc = c as PerspectiveCamera;
                     var fov = (pc != null) ? pc.FieldOfView : 90f;
@@ -88,46 +125,66 @@ namespace HelixToolkit.Wpf.SharpDX
                     var zn = c.NearPlaneDistance > 0 ? c.NearPlaneDistance : 0.1;
                     var zf = c.FarPlaneDistance + 0.0;
                     // frustum: FOV,AR,N,F
-                    var frustum = new Vector4((float)fov, (float)ar, (float)zn, (float)zf);
+                    globalTransform.Frustum = new Vector4((float)fov, (float)ar, (float)zn, (float)zf);
                     if(EnableBoundingFrustum)
-                        boundingFrustum = new BoundingFrustum(this.viewMatrix * this.projectionMatrix);
-
-                    this.vViewport.Set(ref viewport);
-                    this.vFrustum.Set(ref frustum);
-
-                    this.vEyePos.Set(this.camera.Position.ToVector3());
-                    this.mView.SetMatrix(ref viewMatrix);
-                    this.mProjection.SetMatrix(ref projectionMatrix);
+                        BoundingFrustum = new BoundingFrustum(ViewMatrix * ProjectionMatrix);
+                    globalTransform.EyePos = this.camera.Position.ToVector3();
                 }
             }
         }
             
 
-        public IRenderHost Canvas { get; private set; }
+        public IRenderHost RenderHost { get; private set; }
 
-        public bool IsShadowPass { get; set; }
+        public bool IsShadowPass { get; set; } = false;
 
         public bool IsDeferredPass { get; set; }
 
         public TimeSpan TimeStamp { set; get; }
-        
-        public RenderContext(IRenderHost canvas, Effect effect, DeviceContext renderContext)
+
+        public Light3DSceneShared LightScene { private set; get; }
+
+        private IConstantBufferProxy cbuffer;
+
+        private GlobalTransformStruct globalTransform;
+
+        public GlobalTransformStruct GlobalTransform { get { return globalTransform; } }
+
+        public IContextSharedResource SharedResource
         {
-            this.Canvas = canvas;
+            private set;get;
+        }
+
+        public RenderContext(IRenderHost renderHost, DeviceContext renderContext, IConstantBufferPool pool)
+        {
+            this.RenderHost = renderHost;
             this.IsShadowPass = false;
             this.IsDeferredPass = false;
-
-            this.mView = effect.GetVariableByName("mView").AsMatrix();
-            this.mProjection = effect.GetVariableByName("mProjection").AsMatrix();
-            this.vViewport = effect.GetVariableByName("vViewport").AsVector();
-            this.vFrustum = effect.GetVariableByName("vFrustum").AsVector();
-            this.vEyePos = effect.GetVariableByName("vEyePos").AsVector();
-            DeviceContext = renderContext;     
+            cbuffer = pool.Register(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
+            DeviceContext = renderContext;
+            LightScene = new Light3DSceneShared(pool);
+            SharedResource = new ContextSharedResource();
         }
 
         public Matrix GetScreenViewProjectionMatrix()
         {
-            return viewMatrix * projectionMatrix * ViewportMatrix;
+            return screenViewProjectionMatrix;
+        }
+        /// <summary>
+        /// Call to update constant buffer for per frame
+        /// </summary>
+        public void UpdatePerFrameData()
+        {
+            if (matrixChanged)
+            {
+                globalTransform.View = ViewMatrix;
+                globalTransform.Projection = ProjectionMatrix;
+                globalTransform.ViewProjection = globalTransform.View * globalTransform.Projection;
+                screenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;                        
+                matrixChanged = false;
+            }
+            cbuffer.UploadDataToBuffer(DeviceContext, ref globalTransform);
+            LightScene.UploadToBuffer(DeviceContext);         
         }
 
         ~RenderContext()
@@ -137,11 +194,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public void Dispose()
         {
-            Disposer.RemoveAndDispose(ref this.mView);
-            Disposer.RemoveAndDispose(ref this.mProjection);
-            Disposer.RemoveAndDispose(ref this.vViewport);
-            Disposer.RemoveAndDispose(ref this.vFrustum);
-            Disposer.RemoveAndDispose(ref this.vEyePos);                        
+            LightScene.Dispose();
+            SharedResource.Dispose();
+            //Disposer.RemoveAndDispose(ref this.mView);
+            //Disposer.RemoveAndDispose(ref this.mProjection);
+            //Disposer.RemoveAndDispose(ref this.vViewport);
+            //Disposer.RemoveAndDispose(ref this.vFrustum);
+            //Disposer.RemoveAndDispose(ref this.vEyePos);                        
         }
     }
 }

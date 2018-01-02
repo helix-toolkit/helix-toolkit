@@ -1,0 +1,5 @@
+﻿
+Use this call to compile the shaders in the command(Make sure fxc is under DirectX SDK (June 2010)): 
+fxc /T fx_5_0 /I ./../ /Fo ..\Resources\_default.bfx Effects.fx
+fxc /T fx_5_0 /I ./../ /Fo ..\Resources\_Tessellation.bfx Tessellation.fx
+fxc /D SSAO /D DEFERRED_MSAA /T fx_5_0 /I ./../ /Fo ..\Resources\_deferred.bfx Deferred.fx

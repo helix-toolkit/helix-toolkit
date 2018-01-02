@@ -38,7 +38,7 @@ namespace MouseDragDemo
         private MeshGeometryModel3D[] edgeHandles = new MeshGeometryModel3D[4];
         private bool isCaptured;
         private Viewport3DX viewport;
-        private Camera camera;
+        private ICamera camera;
         private System.Windows.Media.Media3D.Point3D lastHitPos;
         private MatrixTransform3D dragTransform;
         //private Material selectionMaterial;

@@ -17,9 +17,16 @@ namespace SimpleDemo
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
+    using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using Color = System.Windows.Media.Color;
+    using Plane = SharpDX.Plane;
+    using Vector3 = SharpDX.Vector3;
+    using Colors = System.Windows.Media.Colors;
+    using Color4 = SharpDX.Color4;
     using HelixToolkit.Wpf;
     using System.Windows.Media.Imaging;
     using System.IO;
+    using System.Windows.Input;
 
     public class MainViewModel : BaseViewModel
     {
@@ -37,19 +44,27 @@ namespace SimpleDemo
         public PhongMaterial RedMaterial { get; private set; }
         public PhongMaterial GreenMaterial { get; private set; }
         public PhongMaterial BlueMaterial { get; private set; }
-        public SharpDX.Color GridColor { get; private set; }
+        public Color GridColor { get; private set; }
 
-        public Media3D.Transform3D Model1Transform { get; private set; }
-        public Media3D.Transform3D Model2Transform { get; private set; }
-        public Media3D.Transform3D Model3Transform { get; private set; }
-        public Media3D.Transform3D GridTransform { get; private set; }
+        public Transform3D Model1Transform { get; private set; }
+        public Transform3D Model2Transform { get; private set; }
+        public Transform3D Model3Transform { get; private set; }
+        public Transform3D GridTransform { get; private set; }
 
-        public Vector3 DirectionalLightDirection { get; private set; }
-        public Color4 DirectionalLightColor { get; private set; }
-        public Color4 AmbientLightColor { get; private set; }
+        public Vector3D DirectionalLightDirection { get; private set; }
+        public Color DirectionalLightColor { get; private set; }
+        public Color AmbientLightColor { get; private set; }
+
+        public Vector3D UpDirection { set; get; } = new Vector3D(0, 1, 0);
+
+        public ICommand UpXCommand { private set; get; }
+        public ICommand UpYCommand { private set; get; }
+        public ICommand UpZCommand { private set; get; }
 
         public MainViewModel()
         {
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // titles
             Title = "Simple Demo";
             SubTitle = "WPF & SharpDX";
@@ -62,19 +77,14 @@ namespace SimpleDemo
                 FarPlaneDistance = 5000000
             };
 
-            // default render technique
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
-
             // setup lighting            
-            AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
-            DirectionalLightColor = Color.White;
-            DirectionalLightDirection = new Vector3(-2, -5, -2);
+            AmbientLightColor = Colors.DimGray;
+            DirectionalLightColor = Colors.White;
+            DirectionalLightDirection = new Vector3D(-2, -5, -2);
 
             // floor plane grid
             Grid = LineBuilder.GenerateGrid();
-            GridColor = SharpDX.Color.Black;
+            GridColor = Colors.Black;
             GridTransform = new Media3D.TranslateTransform3D(-5, -1, -5);
 
             // scene model3d
@@ -136,32 +146,32 @@ namespace SimpleDemo
             Billboard1Model = new BillboardSingleText3D()
             {
                 TextInfo = new TextInfo("Model 1", new Vector3(0, 1, 0)),
-                FontColor =Color.Blue,
+                FontColor =Colors.Blue.ToColor4(),
                 FontSize=12,
-                BackgroundColor =Color.Plum,
+                BackgroundColor =Colors.Plum.ToColor4(),
                 FontStyle= System.Windows.FontStyles.Italic,
                 Padding = new System.Windows.Thickness(2)
             };
 
-            var background = Color.Blue;
+            var background = Colors.Blue;
             background.A = (byte)120;
             Billboard2Model = new BillboardSingleText3D()
             {
                 TextInfo = new TextInfo("Model 1", new Vector3(2, 1, 0)),
                 FontSize =12,
-                FontColor = Color.Green,
-                BackgroundColor = background,
+                FontColor = Colors.Green.ToColor4(),
+                BackgroundColor = background.ToColor4(),
                 FontWeight = System.Windows.FontWeights.Bold,
                 Padding = new System.Windows.Thickness(2)
             };
-            background = Color.Purple;
+            background = Colors.Purple;
             background.A = (byte)50;
             Billboard3Model = new BillboardSingleText3D(2,0.8f)
             {
                 TextInfo = new TextInfo("Model 1", new Vector3(-2, 1, 0)),
                 FontSize = 12,
-                FontColor = Color.Red,
-                BackgroundColor = background,
+                FontColor = Colors.Red.ToColor4(),
+                BackgroundColor = background.ToColor4(),
                 FontFamily = new System.Windows.Media.FontFamily("Times New Roman"),
                 FontStyle= System.Windows.FontStyles.Italic,
                 Padding = new System.Windows.Thickness(2)
@@ -171,6 +181,10 @@ namespace SimpleDemo
             //BillboardImageModel = new BillboardSingleImage3D(CreateBitmapSample()) { MaskColor = Color.Black };
             BillboardImageModel = new BillboardSingleImage3D(CreatePNGSample(), 1, 1);
             BillboardImageModel.Center = new Vector3(2, 2, 0);
+
+            UpXCommand = new RelayCommand(x => { UpDirection = new Vector3D(1, 0, 0); });
+            UpYCommand = new RelayCommand(x => { UpDirection = new Vector3D(0, 1, 0); });
+            UpZCommand = new RelayCommand(x => { UpDirection = new Vector3D(0, 0, 1); });
         }
 
         private BitmapSource CreateBitmapSample()

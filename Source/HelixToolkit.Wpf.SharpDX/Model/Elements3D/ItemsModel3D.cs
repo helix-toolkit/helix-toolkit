@@ -103,9 +103,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private readonly Dictionary<object, Model3D> mDictionary = new Dictionary<object, Model3D>();
+        private readonly Dictionary<object, Element3D> mDictionary = new Dictionary<object, Element3D>();
         //private bool loaded = false;
-        private IOctree Octree
+        private IOctree<GeometryModel3D> Octree
         {
             get { return OctreeManager == null ? null : OctreeManager.Octree; }
         }
@@ -153,7 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (e.OldValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
             }
 
-            foreach (Model3D item in Children)
+            foreach (Element3D item in Children)
             {
                 item.DataContext = null;
             }
@@ -180,7 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         continue;
                     }
-                    var model = item as Model3D;
+                    var model = item as Element3D;
                     if (model != null)
                     {
                         this.Children.Add(model);
@@ -200,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         continue;
                     }
-                    var model = this.ItemTemplate.LoadContent() as Model3D;
+                    var model = this.ItemTemplate.LoadContent() as Element3D;
                     if (model != null)
                     {
                         model.DataContext = item;
@@ -269,7 +269,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in this.ItemsSource)
                             {
-                                var model = item as Model3D;
+                                var model = item as Element3D;
                                 if (model != null)
                                 {
                                     this.Children.Add(model);
@@ -285,7 +285,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in this.ItemsSource)
                             {
-                                var model = this.ItemTemplate.LoadContent() as Model3D;
+                                var model = this.ItemTemplate.LoadContent() as Element3D;
                                 if (model != null)
                                 {
                                     model.DataContext = item;
@@ -313,7 +313,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 {
                                     continue;
                                 }
-                                var model = this.ItemTemplate.LoadContent() as Model3D;
+                                var model = this.ItemTemplate.LoadContent() as Element3D;
                                 if (model != null)
                                 {
                                     OctreeManager?.AddPendingItem(model);
@@ -335,7 +335,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 {
                                     continue;
                                 }
-                                var model = item as Model3D;
+                                var model = item as Element3D;
                                 if (model != null)
                                 {
                                     OctreeManager?.AddPendingItem(model);
@@ -353,7 +353,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(IRenderContext context)
         {
             base.OnRender(context);
             if (OctreeManager != null)
@@ -365,7 +365,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool OnHitTest(IRenderMatrices context, global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, global::SharpDX.Ray ray, ref List<HitTestResult> hits)
         {
             bool isHit = false;
             if (Octree != null)

@@ -16,6 +16,14 @@
         <Grid.Resources>
             <local:BindingProxy x:Key="MainContext" Data="{Binding}" />
         </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
@@ -23,12 +31,12 @@
             CameraMode="WalkAround"
             CameraRotationMode="Trackball"
             CoordinateSystemLabelForeground="White"
-            EnableRenderFrustum="True"
+            EnableRenderFrustum="True" 
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             ShowFrameRate="True"
-            TextBrush="Black"
-            UseDefaultGestures="False">
+            TextBrush="Black" EnableSwapChainRendering="True"
+            UseDefaultGestures="False" EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -102,12 +110,12 @@
             <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding PointsModel.Octree}" ReuseVertexArrayBuffer="True"/>
             <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" ReuseVertexArrayBuffer="True"/>
             <!--<hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />-->
-            <hx:OctreeLineGeometryModel3D
+            <!--<hx:OctreeLineGeometryModel3D
                 IsRendering="{Binding OctreeFrameVisible}"
                 LineColor="{Binding LineColor}"
-                Octree="{Binding DefaultModel.Octree}" ReuseVertexArrayBuffer="True"/>
+                Octree="{Binding DefaultModel.Octree}" ReuseVertexArrayBuffer="True"/>-->
         </hx:Viewport3DX>
-        <StackPanel
+        <StackPanel Grid.Column="1"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Orientation="Vertical">
@@ -131,7 +139,7 @@
             <Button Command="{Binding AutoTestCommand}">Auto Test(Add/Remove)</Button>
             <Button Command="{Binding MultiViewportCommand}">MultiViewport</Button>
         </StackPanel>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom">
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom">
             <TextBlock>Change selected sphere radius</TextBlock>
             <Slider
                 Width="200"

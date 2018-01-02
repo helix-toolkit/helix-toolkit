@@ -238,7 +238,26 @@ namespace HelixToolkit.Wpf
         {
             return this.GetEnumerator();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key1"></param>
+        /// <param name="key2"></param>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool TryGetValue(K key1, T key2, out V obj)
+        {
+            Dictionary<T, V> inner = null;
+            if(OuterDictionary.TryGetValue(key1, out inner) && inner.TryGetValue(key2, out obj))
+            {
+                return true;
+            }
+            else
+            {
+                obj = default(V);
+                return false;
+            }
+        }
     }
 
     /// <summary>

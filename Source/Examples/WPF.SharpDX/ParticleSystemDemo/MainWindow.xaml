@@ -64,7 +64,7 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             IsShadowMappingEnabled="False"
-            ShowCoordinateSystem="False"
+            ShowCoordinateSystem="False" EffectsManager="{Binding EffectsManager}"
             SubTitle="{Binding SubTitle}" BackgroundColor="{x:Static sdx:Color4.Black}"
             TextBrush="Black" ShowFrameRate="True"
             UseDefaultGestures="False">
@@ -85,7 +85,7 @@
                 Direction="0,0,-1"
                 Color="{Binding Light1Color}" />
 
-            <hx:LineGeometryModel3D Geometry="{Binding BoundingLines}" Thickness="0.2" Transform="{Binding BoundingLineTransform}" Color="{x:Static sdx:Color.Red}"/>
+            <hx:LineGeometryModel3D Geometry="{Binding BoundingLines}" Thickness="0.2" Transform="{Binding BoundingLineTransform}" Color="Red"/>
             <hx:DraggableGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding EmitterTransform, Mode=TwoWay}" Material="{Binding EmitterMaterial}"  />
             <hx:DraggableGeometryModel3D Geometry="{Binding Model}" Transform = "{Binding ConsumerTransform, Mode=TwoWay}" Material="{Binding ConsumerMaterial}"  />
             <hx:ParticleStormModel3D x:Name="particleModel" ParticleCount="1024" ParticleTexture="{Binding ParticleTexture}" 
@@ -101,7 +101,8 @@
                                      DestBlend="{Binding DestBlendOption}"
                                      DestAlphaBlend="{Binding DestAlphaBlendOption}"
                                      ConsumerRadius="{Binding ConsumerRadius}"
-                                     EmitterRadius="{Binding EmitterRadius}"/>
+                                     EmitterRadius="{Binding EmitterRadius}"
+                                     Instances="{Binding Instances}"/>
         </hx:Viewport3DX>
         <ScrollViewer Grid.Column="1">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" MinWidth="320">

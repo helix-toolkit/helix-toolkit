@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
     using System;
     using global::SharpDX.Direct3D11;
+    using Core;
 
     /// <summary>
     ///     Represents a composite Model3D.
@@ -34,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.children.CollectionChanged += this.ChildrenChanged;
         }
 
-        protected override RasterizerState CreateRasterState() { return null; }
+        protected override RasterizerStateDescription CreateRasterState() { return new RasterizerStateDescription(); }
 
         /// <summary>
         ///     Gets the children.
@@ -80,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        protected override bool CanRender(RenderContext context)
+        protected override bool CanRender(IRenderContext context)
         {
             return IsAttached && isRenderingInternal && visibleInternal;
         }
@@ -90,25 +91,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context">
         /// The context.
         /// </param>
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(IRenderContext context)
         {
             // you mean like this?
-            foreach (var c in this.Children)
+            foreach (var model in this.Children)
             {
-                var model = c as ITransformable;
-                if (model != null)
-                {
-                    // push matrix                    
-                    model.PushMatrix(this.modelMatrix);
-                    // render model
-                    c.Render(context);
-                    // pop matrix                   
-                    model.PopMatrix();
-                }
-                else
-                {
-                    c.Render(context);
-                }
+                // push matrix                    
+                model.PushMatrix(this.modelMatrix);
+                // render model
+                model.Render(context);
+                // pop matrix                   
+                model.PopMatrix();
             }
         }
 
@@ -130,7 +123,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     case NotifyCollectionChangedAction.Reset:
                     case NotifyCollectionChangedAction.Remove:
                     case NotifyCollectionChangedAction.Replace:
-                        foreach (Model3D item in e.OldItems)
+                        foreach (Element3D item in e.OldItems)
                         {
                             // todo: detach?
                             // yes, always
@@ -151,7 +144,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     case NotifyCollectionChangedAction.Reset:
                     case NotifyCollectionChangedAction.Add:
                     case NotifyCollectionChangedAction.Replace:
-                        foreach (Model3D item in e.NewItems)
+                        foreach (Element3D item in e.NewItems)
                         {
                             if (this.IsAttached)
                             {
@@ -192,7 +185,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Bounds = bb;
         }
 
-        protected override bool CanHitTest(IRenderMatrices context)
+        protected override bool CanHitTest(IRenderContext context)
         {
             return IsAttached && visibleInternal && isRenderingInternal && isHitTestVisibleInternal;
         }
@@ -204,7 +197,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Compute hit-testing for all children
         /// </summary>
-        protected override bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
             foreach (var c in this.Children)
@@ -236,11 +229,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 hits = hits.OrderBy(x => Vector3.DistanceSquared(ray.Position, x.PointHit.ToVector3())).ToList();
             }
             return hit;
-        }
-
-        protected override void OnCreateGeometryBuffers()
-        {
-            
         }
     }
 }

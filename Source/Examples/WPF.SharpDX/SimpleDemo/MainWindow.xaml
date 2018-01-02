@@ -31,6 +31,9 @@
             </Menu.Background>
             <MenuItem Header="View">
                 <MenuItem Command="hx:ViewportCommands.ZoomExtents" Header="Zoom extents" />
+                <MenuItem Command="{Binding UpXCommand}" Header="Up Dir X"/>
+                <MenuItem Command="{Binding UpYCommand}" Header="Up Dir Y"/>
+                <MenuItem Command="{Binding UpZCommand}" Header="Up Dir Z"/>
             </MenuItem>
         </Menu>
 
@@ -41,10 +44,10 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             RenderTechnique="{Binding RenderTechnique}"
-            ShowCoordinateSystem="False"
+            ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
-            TextBrush="Black"
-            UseDefaultGestures="False">
+            TextBrush="Black" ModelUpDirection="{Binding UpDirection}"
+            UseDefaultGestures="False" EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -58,7 +61,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="Shift+RightClick" />
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
-            <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="{Binding DirectionalLightColor}" />
+            <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="{Binding DirectionalLightColor}"/>
             <hx:MeshGeometryModel3D
                 x:Name="model1"
                 Geometry="{Binding Model}"
@@ -79,14 +82,16 @@
                 Geometry="{Binding Lines}"
                 Thickness="1.5"
                 Transform="{Binding Model1Transform}"
-                Color="{x:Static sdxm:Color.Black}" />
+                Color="Black" />
             <hx:BillboardTextModel3D Geometry="{Binding Billboard1Model}" FixedSize="True"/>
             <hx:BillboardTextModel3D Geometry="{Binding Billboard2Model}" FixedSize="True"/>
             <hx:BillboardTextModel3D Geometry="{Binding Billboard3Model}" FixedSize="False"/>
             <hx:BillboardTextModel3D Geometry="{Binding BillboardImageModel}" FixedSize="False"/>
             <!--<hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
             <!--<hx:PointGeometryModel3D x:Name="points" Geometry="{Binding Points}" Color="{x:Static sdxm:Color.Black}" Size="10 10" Figure="Ellipse" HitTestThickness="5"/>-->
-            <!--<hx:BillboardTextModel3D x:Name="text" Geometry="{Binding Text}" Transform ="{Binding Model1Transform}"/>-->
+            <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding Text}" Transform ="{Binding Model1Transform}"/>
+            <hx:CoordinateSystemModel3D RelativeScreenLocationX="-0.5"></hx:CoordinateSystemModel3D>
+            <hx:ViewBoxModel3D UpDirection="{Binding UpDirection}" RelativeScreenLocationX="0.5"></hx:ViewBoxModel3D>
         </hx:Viewport3DX>
 
         <StackPanel Grid.Row="1">

@@ -12,14 +12,15 @@ namespace Workitem10048
 
     using HelixToolkit.Wpf.SharpDX;
     using SharpDX;
-    using Color = SharpDX.Color;
+    using System.Windows.Media;
+    using Color = System.Windows.Media.Color;
     using HitTestResult = HelixToolkit.Wpf.SharpDX.HitTestResult;
 
     public class MyLineGeometryModel3D : LineGeometryModel3D
     {
         private Color? initialColor = null;
 
-        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (initialColor == null)
             {
@@ -31,14 +32,14 @@ namespace Workitem10048
 
             if (pressedMouseButtons == 0 || pressedMouseButtons.HasFlag(MouseButtons.Left))
             {
-                this.Color = result ? Color.Red : this.initialColor.Value;
+                this.Color = result ? Colors.Red : this.initialColor.Value;
             }
 
             return result;
         }
 
         // alternative way, 3.36 times faster, but wrong PointHit
-        protected bool HitTest2D(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        protected bool HitTest2D(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             LineGeometry3D lineGeometry3D;
 

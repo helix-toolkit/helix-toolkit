@@ -4,17 +4,18 @@
 // </copyright>
 
 using SharpDX;
-using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-using SharpDX.DXGI;
-using System;
 using System.Linq;
 using System.Windows;
 using Media = System.Windows.Media;
+using System;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public class CoordinateSystemModel3D : ScreenSpaceMeshGeometry3D
+    /// <summary>
+    /// 
+    /// </summary>
+    public class CoordinateSystemModel3D : ScreenSpacedElement3D
     {
         /// <summary>
         /// <see cref="AxisXColor"/>
@@ -42,6 +43,44 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d, e) =>
                 {
                     (d as CoordinateSystemModel3D).UpdateAxisColor(2, ((Media.Color)e.NewValue).ToColor4());
+                }));
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty LabelColorProperty = DependencyProperty.Register("LabelColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
+            new AffectsRenderPropertyMetadata(Media.Colors.Gray,
+                (d, e) =>
+                {
+                    (d as CoordinateSystemModel3D).UpdateLabelColor(((Media.Color)e.NewValue).ToColor4());
+                }));
+
+        /// The coordinate system label X property
+        /// </summary>
+        public static readonly DependencyProperty CoordinateSystemLabelXProperty = DependencyProperty.Register(
+                "CoordinateSystemLabelX", typeof(string), typeof(CoordinateSystemModel3D), new AffectsRenderPropertyMetadata("X",
+                (d, e) =>
+                {
+                    (d as CoordinateSystemModel3D).UpdateAxisLabel(0, (string)e.NewValue);
+                }));
+
+        /// <summary>
+        /// The coordinate system label Y property
+        /// </summary>
+        public static readonly DependencyProperty CoordinateSystemLabelYProperty = DependencyProperty.Register(
+                "CoordinateSystemLabelY", typeof(string), typeof(CoordinateSystemModel3D), new AffectsRenderPropertyMetadata("Y",
+                (d, e) =>
+                {
+                    (d as CoordinateSystemModel3D).UpdateAxisLabel(1, (string)e.NewValue);
+                }));
+
+        /// <summary>
+        /// The coordinate system label Z property
+        /// </summary>
+        public static readonly DependencyProperty CoordinateSystemLabelZProperty = DependencyProperty.Register(
+                "CoordinateSystemLabelZ", typeof(string), typeof(CoordinateSystemModel3D), new AffectsRenderPropertyMetadata("Z",
+                (d, e) =>
+                {
+                    (d as CoordinateSystemModel3D).UpdateAxisLabel(2, (string)e.NewValue);
                 }));
 
         /// <summary>
@@ -86,47 +125,169 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (Media.Color)GetValue(AxisZColorProperty);
             }
         }
+        /// <summary>
+        /// Label Color
+        /// </summary>
+        public Media.Color LabelColor
+        {
+            set
+            {
+                SetValue(LabelColorProperty, value);
+            }
+            get
+            {
+                return (Media.Color)GetValue(LabelColorProperty);
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string CoordinateSystemLabelX
+        {
+            set
+            {
+                SetValue(CoordinateSystemLabelXProperty, value);
+            }
+            get
+            {
+                return (string)GetValue(CoordinateSystemLabelXProperty);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string CoordinateSystemLabelY
+        {
+            set
+            {
+                SetValue(CoordinateSystemLabelYProperty, value);
+            }
+            get
+            {
+                return (string)GetValue(CoordinateSystemLabelYProperty);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string CoordinateSystemLabelZ
+        {
+            set
+            {
+                SetValue(CoordinateSystemLabelZProperty, value);
+            }
+            get
+            {
+                return (string)GetValue(CoordinateSystemLabelZProperty);
+            }
+        }
 
         private readonly BillboardTextModel3D[] axisBillboards = new BillboardTextModel3D[3];
-
+        private readonly MeshGeometryModel3D arrowMeshModel = new MeshGeometryModel3D();
+        private static readonly float arrowSize = 5;
+        private static readonly float arrowWidth = 0.6f;
+        private static readonly float arrowHead = 1.7f;
+        /// <summary>
+        /// 
+        /// </summary>
         public CoordinateSystemModel3D()
         {
             var builder = new MeshBuilder(true, false, false);
-            builder.AddArrow(Vector3.Zero, new Vector3(10, 0, 0), 1, 2, 10);
-            builder.AddArrow(Vector3.Zero, new Vector3(0, 10, 0), 1, 2, 10);
-            builder.AddArrow(Vector3.Zero, new Vector3(0, 0, 10), 1, 2, 10);
+            builder.AddArrow(Vector3.Zero, new Vector3(arrowSize, 0, 0), arrowWidth, arrowHead, 8);
+            builder.AddArrow(Vector3.Zero, new Vector3(0, arrowSize, 0), arrowWidth, arrowHead, 8);
+            builder.AddArrow(Vector3.Zero, new Vector3(0, 0, arrowSize), arrowWidth, arrowHead, 8);
             var mesh = builder.ToMesh();
-            this.Material = PhongMaterials.White;
+            arrowMeshModel.Material = PhongMaterials.White;
+            arrowMeshModel.Geometry = mesh;
+            arrowMeshModel.CullMode = CullMode.Back;
+            arrowMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Colors]; };
+            arrowMeshModel.IsHitTestVisible = false;
+
             axisBillboards[0] = new BillboardTextModel3D() { IsHitTestVisible = false };
             axisBillboards[1] = new BillboardTextModel3D() { IsHitTestVisible = false };
             axisBillboards[2] = new BillboardTextModel3D() { IsHitTestVisible = false };
-            UpdateAxisColor(mesh, 0, AxisXColor.ToColor4());
-            UpdateAxisColor(mesh, 1, AxisYColor.ToColor4());
-            UpdateAxisColor(mesh, 2, AxisZColor.ToColor4());
-            Geometry = mesh;
-            CullMode = CullMode.Back;
+            UpdateAxisColor(mesh, 0, AxisXColor.ToColor4(), CoordinateSystemLabelX, LabelColor.ToColor4());
+            UpdateAxisColor(mesh, 1, AxisYColor.ToColor4(), CoordinateSystemLabelY, LabelColor.ToColor4());
+            UpdateAxisColor(mesh, 2, AxisZColor.ToColor4(), CoordinateSystemLabelZ, LabelColor.ToColor4());
+
+            Children.Add(arrowMeshModel);
+            Children.Add(axisBillboards[0]);
+            Children.Add(axisBillboards[1]);
+            Children.Add(axisBillboards[2]);
+        }
+
+        protected override void UpdateModel(Vector3 upDirection)
+        {
+            
         }
 
         private void UpdateAxisColor(int which, Color4 color)
         {
-            UpdateAxisColor(geometryInternal, which, color);
+            string label = "";
+            switch (which)
+            {
+                case 0:
+                    label = CoordinateSystemLabelX;
+                    break;
+                case 1:
+                    label = CoordinateSystemLabelY;
+                    break;
+                case 2:
+                    label = CoordinateSystemLabelZ;
+                    break;
+            }
+            UpdateAxisColor(arrowMeshModel.Geometry, which, color, label, LabelColor.ToColor4());
         }
 
-        private void UpdateAxisColor(Geometry3D mesh, int which, Color4 color)
+        private void UpdateAxisLabel(int which, string label)
+        {
+            Color4 color = Color.Red;
+            switch (which)
+            {
+                case 0:
+                    color = AxisXColor.ToColor4();
+                    break;
+                case 1:
+                    color = AxisYColor.ToColor4();
+                    break;
+                case 2:
+                    color = AxisZColor.ToColor4();
+                    break;
+            }
+            UpdateAxisColor(arrowMeshModel.Geometry, which, color, label, LabelColor.ToColor4());
+        }
+
+        private void UpdateLabelColor(Color4 color)
+        {
+            UpdateAxisColor(arrowMeshModel.Geometry, 0, AxisXColor.ToColor4(), CoordinateSystemLabelX, LabelColor.ToColor4());
+            UpdateAxisColor(arrowMeshModel.Geometry, 1, AxisYColor.ToColor4(), CoordinateSystemLabelY, LabelColor.ToColor4());
+            UpdateAxisColor(arrowMeshModel.Geometry, 2, AxisZColor.ToColor4(), CoordinateSystemLabelZ, LabelColor.ToColor4());
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mesh"></param>
+        /// <param name="which"></param>
+        /// <param name="color"></param>
+        /// <param name="label"></param>
+        /// <param name="labelColor"></param>
+        protected virtual void UpdateAxisColor(Geometry3D mesh, int which, Color4 color, string label, Color4 labelColor)
         {
             switch (which)
             {
                 case 0:
                     axisBillboards[which].Geometry = new BillboardSingleText3D()
-                    { TextInfo = new TextInfo("X", new Vector3(14, 0, 0)), BackgroundColor = Color.Transparent, FontSize = 14, FontColor = color };
+                    { TextInfo = new TextInfo(label, new Vector3(arrowSize + 1, 0, 0)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = labelColor };
                     break;
                 case 1:
                     axisBillboards[which].Geometry = new BillboardSingleText3D()
-                    { TextInfo = new TextInfo("Y", new Vector3(0, 14, 0)), BackgroundColor = Color.Transparent, FontSize = 14, FontColor = color };
+                    { TextInfo = new TextInfo(label, new Vector3(0, arrowSize + 1, 0)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = labelColor };
                     break;
                 case 2:
                     axisBillboards[which].Geometry = new BillboardSingleText3D()
-                    { TextInfo = new TextInfo("Z", new Vector3(0, 0, 14)), BackgroundColor = Color.Transparent, FontSize = 14, FontColor = color };
+                    { TextInfo = new TextInfo(label, new Vector3(0, 0, arrowSize + 1)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = labelColor };
                     break;
             }
             int segment = mesh.Positions.Count / 3;
@@ -138,79 +299,9 @@ namespace HelixToolkit.Wpf.SharpDX
             mesh.Colors = colors;
         }
 
-        protected override bool OnAttach(IRenderHost host)
+        protected override bool CanHitTest()
         {
-            if (base.OnAttach(host))
-            {
-                foreach (var billboard in axisBillboards)
-                {
-                    billboard.Attach(host);
-                }
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        protected override void OnDetach()
-        {
-            foreach (var billboard in axisBillboards)
-            {
-                billboard.Detach();
-            }
-            base.OnDetach();
-        }
-
-        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors];
-        }
-
-        protected override void OnRender(RenderContext renderContext)
-        {
-            UpdateProjectionMatrix(renderContext.ActualWidth, renderContext.ActualHeight);
-            // --- set constant paramerers             
-            var worldMatrix = renderContext.worldMatrix;
-            worldMatrix.Row4 = new Vector4(0, 0, 0, 1);
-            this.EffectTransforms.mWorld.SetMatrix(ref worldMatrix);
-            this.viewMatrixVar.SetMatrix(CreateViewMatrix(renderContext));
-            this.projectionMatrixVar.SetMatrix(projectionMatrix);
-            this.effectMaterial.bHasShadowMapVariable.Set(false);
-
-            // --- set material params      
-            this.effectMaterial.AttachMaterial(geometryInternal as MeshGeometry3D);
-
-            this.bHasInstances.Set(false);
-            int depthStateRef;
-            var depthStateBack = renderContext.DeviceContext.OutputMerger.GetDepthStencilState(out depthStateRef);
-            renderContext.DeviceContext.ClearDepthStencilView(renderContext.Canvas.DepthStencilBufferView, DepthStencilClearFlags.Depth, 1f, 0);
-            // --- set context
-            renderContext.DeviceContext.InputAssembler.InputLayout = this.vertexLayout;
-            renderContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            renderContext.DeviceContext.InputAssembler.SetIndexBuffer(this.IndexBuffer.Buffer, Format.R32_UInt, 0);
-
-            // --- set rasterstate            
-            renderContext.DeviceContext.Rasterizer.State = this.RasterState;
-
-            // --- bind buffer                
-            renderContext.DeviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(this.VertexBuffer.Buffer, this.VertexBuffer.StructureSize, 0));
-
-            var pass = this.effectTechnique.GetPassByIndex(0);
-            pass.Apply(renderContext.DeviceContext);
-            renderContext.DeviceContext.OutputMerger.SetDepthStencilState(depthStencil);
-            // --- draw
-            renderContext.DeviceContext.DrawIndexed(this.geometryInternal.Indices.Count, 0, 0);
-
-            foreach (var billboard in axisBillboards)
-            {
-                billboard.Render(renderContext);
-            }
-
-            this.viewMatrixVar.SetMatrix(renderContext.ViewMatrix);
-            this.projectionMatrixVar.SetMatrix(renderContext.ProjectionMatrix);
-            renderContext.DeviceContext.OutputMerger.SetDepthStencilState(depthStateBack);
+            return false;
         }
     }
 }

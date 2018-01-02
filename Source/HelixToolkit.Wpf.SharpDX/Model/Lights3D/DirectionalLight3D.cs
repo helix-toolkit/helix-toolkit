@@ -3,16 +3,14 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
+using SharpDX;
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using HelixToolkit.Wpf.SharpDX.Extensions;
-
     public sealed class DirectionalLight3D : Light3D
     {
         public DirectionalLight3D()
         {
-            this.Color = global::SharpDX.Color.White;
+            this.Color = System.Windows.Media.Colors.White;
             this.LightType = LightType.Directional;
         }
 
@@ -21,17 +19,8 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- attach
             if (base.OnAttach(host))
             {
-
-                // --- light constant params            
-                this.vLightDir = this.effect.GetVariableByName("vLightDir").AsVector();
-                this.vLightColor = this.effect.GetVariableByName("vLightColor").AsVector();
-                this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
-
                 // --- Set light type
-                Light3DSceneShared.LightTypes[lightIndex] = (int)this.LightType;
-
-                // --- flush
-                //this.Device.ImmediateContext.Flush();
+                Light3DSceneShared.LightModels.Lights[lightIndex].LightType = (int)this.LightType;
                 return true;
             }
             else
@@ -40,41 +29,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override void OnDetach()
+        protected override void OnRender(IRenderContext context)
         {
-            Disposer.RemoveAndDispose(ref this.vLightDir);
-            Disposer.RemoveAndDispose(ref this.vLightColor);
-            Disposer.RemoveAndDispose(ref this.iLightType);
-            base.OnDetach();
-        }
-
-        protected override bool CanRender(RenderContext context)
-        {
-            if (base.CanRender(context))
-            {
-                return !renderHost.IsDeferredLighting;
-            }
-            return false;
-        }
-        protected override void OnRender(RenderContext context)
-        {
-            Light3DSceneShared.LightColors[lightIndex] = this.ColorInternal;
+            Light3DSceneShared.LightModels.Lights[lightIndex].LightColor = this.ColorInternal;           
             // --- set lighting parameters
-            Light3DSceneShared.LightDirections[lightIndex] = -this.DirectionInternal.ToVector4();
-
-            // --- update lighting variables               
-            this.vLightDir.Set(Light3DSceneShared.LightDirections);
-            this.vLightColor.Set(Light3DSceneShared.LightColors);
-            this.iLightType.Set(Light3DSceneShared.LightTypes);
-
-
-            // --- if shadow-map enabled
-            if (this.renderHost.IsShadowMapEnabled)
-            {
-                // update shader
-                this.mLightView.SetMatrix(Light3DSceneShared.LightViewMatrices);
-                this.mLightProj.SetMatrix(Light3DSceneShared.LightProjMatrices);
-            }
+            Light3DSceneShared.LightModels.Lights[lightIndex].LightDir = -Vector4.Transform(this.DirectionInternal.ToVector4(0f), modelMatrix).Normalized();
         }
     }
 }

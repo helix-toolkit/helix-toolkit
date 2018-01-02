@@ -204,7 +204,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.
+        /// Traverses the Visual3D/Element3D tree and invokes the specified action on each Element3D of the specified type.
         /// </summary>
         /// <typeparam name="T">
         /// The type filter.
@@ -215,11 +215,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="action">
         /// The action.
         /// </param>
-        public static void Traverse<T>(this Viewport3DX viewport, Action<T, Transform3D> action) where T : Model3D
+        public static void Traverse<T>(this Viewport3DX viewport, Action<T, Transform3D> action) where T : Element3D
         {
             foreach (var element in viewport.Renderables)
             {
-                var model = element as Model3D; // ITraversable;
+                var model = element as Element3D; // ITraversable;
                 if (model != null)
                 {
                     Traverse(model, action);
@@ -228,7 +228,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.
+        /// Traverses the Visual3D/Element3D tree and invokes the specified action on each Element3D of the specified type.
         /// </summary>
         /// <typeparam name="T">
         /// The type filter.
@@ -239,7 +239,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="action">
         /// The action.
         /// </param>
-        public static void Traverse<T>(this Model3D element, Action<T, Transform3D> action) where T : Model3D
+        public static void Traverse<T>(this Element3D element, Action<T, Transform3D> action) where T : Element3D
         {
             Traverse(element, action);
         }
@@ -301,7 +301,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The find nearest.
         /// </returns>
         public static bool FindNearest(this Viewport3DX viewport, Point position,
-            out Point3D point, out Vector3D normal, out Model3D model)
+            out Point3D point, out Vector3D normal, out Element3D model)
         {
             point = new Point3D();
             normal = new Vector3D();
@@ -339,7 +339,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Point3D p;
             Vector3D n;
-            Model3D obj;
+            Element3D obj;
             if (FindNearest(viewport, position, out p, out n, out obj))
             {
                 return p;
@@ -388,7 +388,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Vector3 r = zf - zn;
                 r.Normalize();               
 
-                return new Ray(zn, r);
+                return new Ray(zn + r * (float)camera.NearPlaneDistance, r);
             }
             throw new HelixToolkitException("Unproject camera error.");
         }

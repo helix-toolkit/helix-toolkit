@@ -41,7 +41,7 @@
                     TextBrush="Black"
                     ShowCoordinateSystem="False"
                     CoordinateSystemLabelForeground="White"
-                    UseDefaultGestures="False"
+                    UseDefaultGestures="False" EffectsManager="{Binding EffectsManager}"
                     RenderTechnique="{Binding RenderTechnique}">
                     <hx:Viewport3DX.InputBindings>
                         <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>
@@ -73,7 +73,7 @@
                     TextBrush="Black"
                     ShowCoordinateSystem="False"
                     CoordinateSystemLabelForeground="White"
-                    UseDefaultGestures="False"
+                    UseDefaultGestures="False" EffectsManager="{Binding EffectsManager}"
                     RenderTechnique="{Binding RenderTechnique}">
                     <hx:Viewport3DX.InputBindings>
                         <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>

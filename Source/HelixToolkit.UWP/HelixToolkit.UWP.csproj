@@ -23,7 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;SHARPDX;DX11</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -120,6 +120,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="project.json" />
+    <None Include="Resources\_default.bfx" />
+    <None Include="Resources\_deferred.bfx" />
+    <None Include="Resources\_Tessellation.bfx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonDX\DeviceManager.cs" />
@@ -129,6 +132,7 @@
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Model\Element3D.cs" />
     <Compile Include="Model\ExampleCube3D.cs" />
+    <Compile Include="Model\GeometryModel3D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.rd.xml" />
   </ItemGroup>
@@ -148,6 +152,7 @@
       <Name>HelixToolkit</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

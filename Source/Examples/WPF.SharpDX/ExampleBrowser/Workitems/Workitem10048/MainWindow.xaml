@@ -47,6 +47,7 @@
             ShowCoordinateSystem="False"
             CoordinateSystemLabelForeground="White"
             UseDefaultGestures="False"
+            EffectsManager="{Binding EffectsManager}"
             RenderTechnique="{Binding RenderTechnique}"
             RotateAroundMouseDownPoint="True"
             ZoomAroundMouseDownPoint="True">

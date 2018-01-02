@@ -46,9 +46,8 @@ namespace EnvironmentMapDemo
             this.ModelTransform = new Media3D.TranslateTransform3D();
             this.ModelMaterial = PhongMaterials.Copper;
 
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
         }
     }
 
