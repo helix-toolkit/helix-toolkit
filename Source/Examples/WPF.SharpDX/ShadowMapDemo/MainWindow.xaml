@@ -20,8 +20,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
-            <!--<RowDefinition Height="Auto"/>-->
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
         <Menu Grid.Row="0" VerticalAlignment="Top">
             <Menu.Background>
                 <SolidColorBrush Opacity="0.5" Color="WhiteSmoke"/>
@@ -32,13 +36,13 @@
         </Menu>
 
         <hx:Viewport3DX 
-            Grid.Row="1" 
+            Grid.Row="1" Grid.Column="0"
             x:Name="view1" 
             Camera="{Binding Camera}"
             Title="{Binding Title}"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"                       
-            CoordinateSystemLabelForeground="White"
+            CoordinateSystemLabelForeground="#616161"
             UseDefaultGestures="False"   ModelUpDirection="0,1,0"
             IsShadowMappingEnabled="True" ShowCoordinateSystem="True"
             RenderTechnique="{Binding RenderTechnique}"
@@ -54,7 +58,7 @@
                 <KeyBinding Gesture="Control+E" Command="hx:ViewportCommands.ZoomExtents"/>
                 <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>
                 <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
-                <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
+                <MouseBinding Gesture="Shift+LeftClick" Command="hx:ViewportCommands.Pan"/>
             </hx:Viewport3DX.InputBindings>
             
             <hx:AmbientLight3D Color="#717171"/>
@@ -76,7 +80,7 @@
             <hx:LineGeometryModel3D x:Name="grid"  IsThrowingShadow="True"   Geometry="{Binding Grid}"  Transform="{Binding GridTransform}"   Color="{Binding GridColor}"/>
         </hx:Viewport3DX>
         
-        <StackPanel Grid.Row="1" >
+        <StackPanel Grid.Row="1" Grid.Column="1">
             <Expander Header="Render Technique" x:Name="shadingPanel" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">
                 <Expander.Background>
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke"/>
@@ -153,7 +157,7 @@
             <Button HorizontalAlignment="Right" Click="Button_Click">MultiViewports</Button>
         </StackPanel>
                 
-        <StatusBar Grid.Row="1" VerticalAlignment="Bottom">
+        <StatusBar Grid.Row="2" VerticalAlignment="Bottom">
             <StatusBar.Background>
                 <SolidColorBrush Opacity="0.5" Color="WhiteSmoke"/>
             </StatusBar.Background>
