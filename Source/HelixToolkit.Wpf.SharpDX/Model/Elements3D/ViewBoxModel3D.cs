@@ -28,8 +28,8 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class ViewBoxModel3D : ScreenSpacedElement3D
     {
-        public static readonly DependencyProperty ViewBoxTextureProperty = DependencyProperty.Register("ViewBoxTexture", typeof(Stream), typeof(ViewBoxModel3D), 
-            new AffectsRenderPropertyMetadata(null, (d,e)=> 
+        public static readonly DependencyProperty ViewBoxTextureProperty = DependencyProperty.Register("ViewBoxTexture", typeof(Stream), typeof(ViewBoxModel3D),
+            new AffectsRenderPropertyMetadata(null, (d, e) =>
             {
                 (d as ViewBoxModel3D).UpdateTexture((Stream)e.NewValue);
             }));
@@ -130,14 +130,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var pts = new List<Vector3>();
 
-            var center = up * -2.5f;
+            var center = up * -size / 2;
             for (int i = 0; i < 20; i++)
             {
                 double angle = 0 + (360 * i / (20 - 1));
                 double angleRad = angle / 180 * Math.PI;
                 var dir = (left * (float)Math.Cos(angleRad)) + (front * (float)Math.Sin(angleRad));
-                pts.Add(center + (dir * 4.5f));
-                pts.Add(center + (dir * 6));
+                pts.Add(center + (dir * (size - 1.5f)));
+                pts.Add(center + (dir * (size + 0.5f)));
             }
             builder = new MeshBuilder(false, false, false);
             builder.AddTriangleStrip(pts);
@@ -149,10 +149,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 pie.Indices.Add(pie.Indices[i + 1]);
                 pie.Indices.Add(pie.Indices[i]);
             }
-            
+
             var newMesh = MeshGeometry3D.Merge(new MeshGeometry3D[] { pie, mesh });
 
-            newMesh.TextureCoordinates = new Core.Vector2Collection(Enumerable.Repeat(new Vector2(-1,-1), pie.Positions.Count));
+            newMesh.TextureCoordinates = new Core.Vector2Collection(Enumerable.Repeat(new Vector2(-1, -1), pie.Positions.Count));
             newMesh.Colors = new Core.Color4Collection(Enumerable.Repeat(new Color4(1f, 1f, 1f, 1f), pie.Positions.Count));
             newMesh.TextureCoordinates.AddRange(mesh.TextureCoordinates);
             newMesh.Colors.AddRange(Enumerable.Repeat(new Color4(1, 1, 1, 1), mesh.Positions.Count));
@@ -183,10 +183,14 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
+
             float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale;
             var px = p.X - (float)(context.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
-            var py = p.Y - (float)(context.ActualHeight/ 2 * (1 - screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
-
+            var py = p.Y - (float)(context.ActualHeight / 2 * (1 - screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
+            if (px < 0 || py < 0 || px > viewportSize || py > viewportSize)
+            {
+                return false;
+            }
             var viewMatrix = screenSpaceCore.GlobalTransform.View;
             Vector3 v = new Vector3();
 
@@ -198,7 +202,6 @@ namespace HelixToolkit.Wpf.SharpDX
             v.Y = -(2 * py / viewportSize - 1) / projMatrix.M22;
             v.Z = 1 / projMatrix.M33;
             Vector3.TransformCoordinate(ref v, ref matrix, out zf);
-
             if (screenSpaceCore.IsPerspective)
             {
                 zn = screenSpaceCore.GlobalTransform.EyePos;
