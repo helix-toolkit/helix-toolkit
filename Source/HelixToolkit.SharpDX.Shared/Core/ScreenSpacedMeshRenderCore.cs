@@ -94,7 +94,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        public bool IsPerspective { set; get; } = false;
+        public bool IsPerspective { set; get; } = true;
         public bool IsRightHand { set; get; } = true;
 
         public float Width { private set; get; }
