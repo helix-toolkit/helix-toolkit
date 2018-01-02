@@ -9,6 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Media3D = System.Windows.Media.Media3D;
 using Media = System.Windows.Media;
+using Color = System.Windows.Media.Color;
+using Colors = System.Windows.Media.Colors;
+using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace D2DScreenMenuExample
 {
@@ -37,17 +40,17 @@ namespace D2DScreenMenuExample
         public MeshGeometry3D Model { set; get; }
         public PhongMaterial ModelMaterial { set; get; } = PhongMaterials.White;
 
-        public Vector3 Light1Direction { get; set; } = new Vector3(1, -1, -1);
+        public Vector3D Light1Direction { get; set; } = new Vector3D(1, -1, -1);
 
-        public Color4 Light1Color { set; get; } = Color.Blue;
+        public Color Light1Color { set; get; } = Colors.Blue;
 
-        public Vector3 Light2Direction { get; set; } = new Vector3(-1, -1, -1);
+        public Vector3D Light2Direction { get; set; } = new Vector3D(-1, -1, -1);
 
-        public Color4 Light2Color { set; get; } = Color.Red;
+        public Color Light2Color { set; get; } = Colors.Red;
 
-        public Vector3 Light3Direction { get; set; } = new Vector3(-1, -1, 1);
+        public Vector3D Light3Direction { get; set; } = new Vector3D(-1, -1, 1);
 
-        public Color4 Light3Color { set; get; } = Color.Green;
+        public Color Light3Color { set; get; } = Colors.Green;
 
         private string NormalTexture = @"TextureCheckerboard2_dot3.jpg";
 
