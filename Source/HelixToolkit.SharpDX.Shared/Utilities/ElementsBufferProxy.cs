@@ -141,11 +141,11 @@ namespace HelixToolkit.UWP.Utilities
                 var buffdesc = new BufferDescription()
                 {
                     BindFlags = this.BindFlags,
-                    CpuAccessFlags = CpuAccessFlags.None,
+                    CpuAccessFlags = CpuAccessFlags.Write,
                     OptionFlags = this.OptionFlags,
                     SizeInBytes = StructureSize * count,
                     StructureByteStride = StructureSize,
-                    Usage = ResourceUsage.Immutable
+                    Usage = ResourceUsage.Dynamic
                 };
                 buffer = SDX11::Buffer.Create(context.Device, data.GetArrayByType(), buffdesc);
             }
