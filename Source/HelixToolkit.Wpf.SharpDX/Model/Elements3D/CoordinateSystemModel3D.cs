@@ -186,7 +186,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private readonly BillboardTextModel3D[] axisBillboards = new BillboardTextModel3D[3];
         private readonly MeshGeometryModel3D arrowMeshModel = new MeshGeometryModel3D();
-        private static readonly float arrowSize = 5;
+        private static readonly float arrowSize = 5.5f;
         private static readonly float arrowWidth = 0.6f;
         private static readonly float arrowHead = 1.7f;
         /// <summary>
