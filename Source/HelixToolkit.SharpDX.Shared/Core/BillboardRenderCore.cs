@@ -46,6 +46,16 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public string ShaderTextureSamplerName { set; get; } = DefaultSamplerStateNames.BillboardTextureSampler;
 
+        private int shaderTextureSlot;
+        private int textureSamplerSlot;
+
+        protected override void OnDefaultPassChanged(IShaderPass pass)
+        {
+            base.OnDefaultPassChanged(pass);
+            shaderTextureSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
+            textureSamplerSlot = pass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
+        }
+
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if (base.OnAttach(technique))
@@ -79,8 +89,8 @@ namespace HelixToolkit.UWP.Core
         protected virtual void BindBillboardTexture(DeviceContext context, IShader shader)
         {
             var buffer = GeometryBuffer as IBillboardBufferModel;
-            shader.BindTexture(context, ShaderTextureName, buffer.TextureView);
-            shader.BindSampler(context, ShaderTextureSamplerName, textureSampler);
+            shader.BindTexture(context, shaderTextureSlot, buffer.TextureView);
+            shader.BindSampler(context, textureSamplerSlot, textureSampler);
         }
 
         protected override void OnDraw(DeviceContext context, IElementsBufferModel instanceModel)

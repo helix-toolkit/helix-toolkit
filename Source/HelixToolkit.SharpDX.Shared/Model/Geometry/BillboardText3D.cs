@@ -134,16 +134,10 @@ namespace HelixToolkit.Wpf.SharpDX
             var ch = character.Bounds.Height;
             var cu = character.Bounds.Left;
             var cv = character.Bounds.Top;
-
-
-            var bl = new Vector2(origin.X + kerning, origin.Y);
             var tl = new Vector2(origin.X + kerning, origin.Y + ch);
             var br = new Vector2(origin.X + cw + kerning, origin.Y);
-            var tr = new Vector2(origin.X + cw + kerning, origin.Y + ch);
 
             var uv_tl = new Vector2(cu / w, cv / h);
-            var uv_tr = new Vector2(cu / w, (cv + ch) / h);
-            var uv_bl = new Vector2((cu + cw) / w, cv / h);
             var uv_br = new Vector2((cu + cw) / w, (cv + ch) / h);
 
             BillboardVertices.Add(new BillboardVertex()
@@ -152,13 +146,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 Foreground = info.Foreground,
                 Background = info.Background,
                 TexTL = uv_tl,
-                TexTR = uv_tr,
-                TexBL = uv_bl,
                 TexBR = uv_br,
-                OffP0 = tl,
-                OffP1 = bl,
-                OffP2 = tr,
-                OffP3 = br
+                OffTL = tl,
+                OffBR = br
             });
         }
     }

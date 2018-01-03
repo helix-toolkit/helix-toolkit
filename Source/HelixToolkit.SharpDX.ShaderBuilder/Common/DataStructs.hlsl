@@ -139,17 +139,13 @@ struct VSInputBT
     float4 foreground : COLOR;
     float4 background : COLOR1;
     float2 t0 : TEXCOORD0;
-    float2 t1 : TEXCOORD1;
-    float2 t2 : TEXCOORD2;
-    float2 t3 : TEXCOORD3;
-    float2 p0 : TEXCOORD4;
-    float2 p1 : TEXCOORD5;
-    float2 p2 : TEXCOORD6;
-    float2 p3 : TEXCOORD7;
-    float4 mr0 : TEXCOORD8;
-    float4 mr1 : TEXCOORD9;
-    float4 mr2 : TEXCOORD10;
-    float4 mr3 : TEXCOORD11;
+    float2 t3 : TEXCOORD1;
+    float2 offTL : TEXCOORD2;
+    float2 offBR : TEXCOORD3;
+    float4 mr0 : TEXCOORD4;
+    float4 mr1 : TEXCOORD5;
+    float4 mr2 : TEXCOORD6;
+    float4 mr3 : TEXCOORD7;
 };
 
 struct VSInputBTInstancing
@@ -158,21 +154,17 @@ struct VSInputBTInstancing
     float4 foreground : COLOR;
     float4 background : COLOR1;
     float2 t0 : TEXCOORD0;
-    float2 t1 : TEXCOORD1;
-    float2 t2 : TEXCOORD2;
-    float2 t3 : TEXCOORD3;
-    float2 p0 : TEXCOORD4;
-    float2 p1 : TEXCOORD5;
-    float2 p2 : TEXCOORD6;
-    float2 p3 : TEXCOORD7;
-    float4 mr0 : TEXCOORD8;
-    float4 mr1 : TEXCOORD9;
-    float4 mr2 : TEXCOORD10;
-    float4 mr3 : TEXCOORD11;
+    float2 t3 : TEXCOORD1;
+    float2 offTL : TEXCOORD2;
+    float2 offBR : TEXCOORD3;
+    float4 mr0 : TEXCOORD4;
+    float4 mr1 : TEXCOORD5;
+    float4 mr2 : TEXCOORD6;
+    float4 mr3 : TEXCOORD7;
 
 	float4 diffuseC : COLOR2;
-	float2 tScale : TEXCOORD12;
-	float2 tOffset : TEXCOORD13;
+	float2 tScale : TEXCOORD8;
+	float2 tOffset : TEXCOORD9;
 };
 
 struct PSInputBT

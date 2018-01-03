@@ -54,14 +54,10 @@ namespace HelixToolkit.Wpf.SharpDX
         public Color4 Foreground;
         public Color4 Background;
         public Vector2 TexTL;
-        public Vector2 TexTR;
-        public Vector2 TexBL;
         public Vector2 TexBR;
-        public Vector2 OffP0;
-        public Vector2 OffP1;
-        public Vector2 OffP2;
-        public Vector2 OffP3;
-        public const int SizeInBytes = 4 * (4  * 3 + 2 * 8);
+        public Vector2 OffTL;
+        public Vector2 OffBR;
+        public const int SizeInBytes = 4 * (4  * 3 + 2 * 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

@@ -106,14 +106,10 @@ namespace HelixToolkit.Wpf.SharpDX
             var w = Width;
             var h = Height;
             // CCW from bottom left 
-            var bl = new Vector2(-w / 2, -h / 2);
             var tl = new Vector2(-w / 2, h / 2);
             var br = new Vector2(w / 2, -h / 2);
-            var tr = new Vector2(w / 2, h / 2);
 
             var uv_tl = new Vector2(0, 0);
-            var uv_tr = new Vector2(0, 1);
-            var uv_bl = new Vector2(1, 0);
             var uv_br = new Vector2(1, 1);
 
             BillboardVertices.Add(new BillboardVertex()
@@ -122,13 +118,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 Foreground = Color.White,
                 Background = Color.White,
                 TexTL = uv_tl,
-                TexTR = uv_tr,
-                TexBL = uv_bl,
                 TexBR = uv_br,
-                OffP0 = tl,
-                OffP1 = bl,
-                OffP2 = tr,
-                OffP3 = br
+                OffTL = tl,
+                OffBR = br
             });
             UpdateBounds();
         }

@@ -19,16 +19,12 @@ VSInputBT main(VSInputBTInstancing input)
 			input.mr3
         };
 		output.p = mul(output.p, mInstance);		
-        output.p0 = input.p0 * mInstance._m00_m11; // 2d scaling x
-        output.p1 = input.p1 * mInstance._m00_m11; // 2d scaling x
-        output.p2 = input.p2 * mInstance._m00_m11; // 2d scaling x
-        output.p3 = input.p3 * mInstance._m00_m11; // 2d scaling x
+        input.offTL *= mInstance._m00_m11; // 2d scaling x
+        input.offBR *= mInstance._m00_m11; // 2d scaling x
 
         if (bHasInstanceParams)
         {
             output.t0 = input.t0 * input.tScale + input.tOffset;
-            output.t1 = input.t1 * input.tScale + input.tOffset;
-            output.t2 = input.t2 * input.tScale + input.tOffset;
             output.t3 = input.t3 * input.tScale + input.tOffset;
             output.background = input.background * input.diffuseC;
         }
