@@ -5,9 +5,9 @@ Copyright (c) 2018 Helix Toolkit contributors
 //#define DEBUG_REF
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Utilities
 #else
-namespace HelixToolkit.UWP
+namespace HelixToolkit.UWP.Utilities
 #endif
 {
     using System;

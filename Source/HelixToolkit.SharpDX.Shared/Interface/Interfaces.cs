@@ -29,9 +29,4 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>Current count</returns>
         int AddReference();
     }
-
-    public interface IThrowingShadow
-    {
-        bool IsThrowingShadow { get; set; }
-    }
 }

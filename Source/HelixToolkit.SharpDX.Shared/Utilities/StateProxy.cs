@@ -8,6 +8,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
+    using ShaderManager;
     public abstract class StateProxy<StateType, StateTypeDescription> : IDisposable where StateType : ComObject where StateTypeDescription : struct
     {
         public string Name { set; get; }

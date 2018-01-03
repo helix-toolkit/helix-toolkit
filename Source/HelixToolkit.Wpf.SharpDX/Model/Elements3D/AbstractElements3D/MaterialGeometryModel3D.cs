@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
 
     using Utilities;
+    using Core;
 
     public abstract class MaterialGeometryModel3D : InstanceGeometryModel3D
     {

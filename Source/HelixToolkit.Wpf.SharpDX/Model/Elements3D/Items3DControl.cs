@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Controls.Primitives;
 
     using global::SharpDX;
-
+    using Core;
     /// <summary>
     /// Represents a items control for Elements3D
     /// </summary>

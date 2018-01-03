@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using System.IO;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Core
 #else
-namespace HelixToolkit.UWP
+namespace HelixToolkit.UWP.Core
 #endif
 {
     /// <summary>
@@ -250,9 +250,18 @@ namespace HelixToolkit.UWP
         /// </summary>
         int UpdateFrequency { set; get; }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public interface ISkyboxRenderParams
     {
         Stream CubeTexture { set; get; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IThrowingShadow
+    {
+        bool IsThrowingShadow { get; set; }
     }
 }

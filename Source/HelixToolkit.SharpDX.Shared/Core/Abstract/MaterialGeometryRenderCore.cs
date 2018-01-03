@@ -12,6 +12,7 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Model;
+    using Shaders;
     /// <summary>
     /// 
     /// </summary>

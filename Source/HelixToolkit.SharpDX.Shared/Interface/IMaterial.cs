@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Shaders;
-    using System.Collections.Generic;
+    using Core;
 
     public interface IMaterial : INotifyPropertyChanged
     {

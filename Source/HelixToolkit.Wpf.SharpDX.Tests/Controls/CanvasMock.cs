@@ -37,8 +37,6 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
 
         public IEffectsManager EffectsManager { get; set; }
 
-        public IRenderTechniquesManager RenderTechniquesManager { get; set; }
-
         public bool IsRendering { set; get; } = true;
 
         public bool IsBusy
