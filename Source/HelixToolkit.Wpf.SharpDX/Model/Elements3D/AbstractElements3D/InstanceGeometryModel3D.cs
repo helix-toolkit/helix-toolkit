@@ -76,7 +76,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CanHitTest(IRenderContext context)
         {
-            return base.CanHitTest(context) && geometryInternal != null && geometryInternal.Positions != null && geometryInternal.Positions.Count > 0;
+            return base.CanHitTest(context) && GeometryInternal != null && GeometryInternal.Positions != null && GeometryInternal.Positions.Count > 0;
         }
         /// <summary>
         /// 

@@ -333,6 +333,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psSkybox {
+            get {
+                object obj = ResourceManager.GetObject("psSkybox", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psViewCube {
             get {
                 object obj = ResourceManager.GetObject("psViewCube", resourceCulture);
@@ -516,6 +526,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] vsPointShadow {
             get {
                 object obj = ResourceManager.GetObject("vsPointShadow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsSkybox {
+            get {
+                object obj = ResourceManager.GetObject("vsSkybox", resourceCulture);
                 return ((byte[])(obj));
             }
         }

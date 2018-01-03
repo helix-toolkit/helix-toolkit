@@ -210,7 +210,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CheckGeometry()
         {
-            return base.CheckGeometry() && geometryInternal is MeshGeometry3D;
+            return base.CheckGeometry() && GeometryInternal is MeshGeometry3D;
         }
 
         protected override bool CanHitTest(IRenderContext context)
@@ -224,7 +224,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            var g = this.geometryInternal as MeshGeometry3D;
+            var g = this.GeometryInternal as MeshGeometry3D;
             bool isHit = false;
             if (g.Octree != null)
             {

@@ -139,13 +139,13 @@
         /// <returns>True if the ray hits one or more times.</returns>
         protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            if (geometryInternal.Octree != null)
+            if (GeometryInternal.Octree != null)
             {
-                return geometryInternal.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
+                return GeometryInternal.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
             }
             else
             {
-                PointGeometry3D pointGeometry3D = this.geometryInternal as PointGeometry3D;
+                PointGeometry3D pointGeometry3D = this.GeometryInternal as PointGeometry3D;
                 var svpm =  context.ScreenViewProjectionMatrix;
                 var smvpm = this.modelMatrix * svpm;
 
@@ -218,7 +218,7 @@
 
         protected override bool CheckGeometry()
         {
-            return geometryInternal is PointGeometry3D && this.geometryInternal != null && this.geometryInternal.Positions != null && this.geometryInternal.Positions.Count > 0;
+            return GeometryInternal is PointGeometry3D && this.GeometryInternal != null && this.GeometryInternal.Positions != null && this.GeometryInternal.Positions.Count > 0;
         }
 
 

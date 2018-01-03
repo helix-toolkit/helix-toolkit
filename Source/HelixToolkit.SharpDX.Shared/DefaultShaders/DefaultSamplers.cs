@@ -75,5 +75,15 @@ namespace HelixToolkit.UWP.Shaders
             ComparisonFunction = Comparison.Less,
             BorderColor = new global::SharpDX.Mathematics.Interop.RawColor4(1, 1, 1, 0),
         };
+
+        public static SamplerStateDescription CubeSampler = new SamplerStateDescription()
+        {
+            AddressU = TextureAddressMode.Mirror,
+            AddressV = TextureAddressMode.Mirror,
+            AddressW = TextureAddressMode.Mirror,
+            Filter = Filter.MinMagMipLinear,
+            MaximumAnisotropy = 2,
+            MaximumLod = float.MaxValue
+        };
     }
 }

@@ -76,7 +76,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            var g = this.geometryInternal as IBillboardText;
+            var g = this.GeometryInternal as IBillboardText;
             var h = false;
             var result = new HitTestResult();
             result.Distance = double.MaxValue;
@@ -241,7 +241,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CheckGeometry()
         {
-            return geometryInternal is IBillboardText;
+            return GeometryInternal is IBillboardText;
         }
 
         protected override RasterizerStateDescription CreateRasterState()

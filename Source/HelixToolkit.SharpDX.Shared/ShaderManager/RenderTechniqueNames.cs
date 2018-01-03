@@ -29,6 +29,7 @@ namespace HelixToolkit.UWP
         public const string ParticleStorm = "ParticleStorm";
         public const string CrossSection = "RenderCrossSectionBlinn";
         public const string ViewCube = "RenderViewCube";
+        public const string Skybox = "Skybox";
     }
 
     public struct DefaultPassNames

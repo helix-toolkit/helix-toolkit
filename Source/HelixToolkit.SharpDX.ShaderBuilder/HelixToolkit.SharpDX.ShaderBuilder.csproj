@@ -52,6 +52,8 @@
     <Content Include="Common\CommonBuffers.hlsl" />
     <Content Include="Common\Common.hlsl" />
     <Content Include="Common\DataStructs.hlsl" />
+    <PixelShader Include="PS\psSkybox.hlsl" />
+    <VertexShader Include="VS\vsSkybox.hlsl" />
     <VertexShader Include="VS\vsPointShadow.hlsl" />
     <PixelShader Include="PS\psShadow.hlsl" />
     <VertexShader Include="VS\vsBoneSkinningShadow.hlsl" />

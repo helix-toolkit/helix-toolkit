@@ -49,6 +49,7 @@
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
             <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction="{Binding Camera.LookDirection}"/>
+            <hx:SkyboxModel3D Texture="{Binding SkyboxTexture}"/>
             <!--<hx:EnvironmentMap3D x:Name="envMap" Filename="Cubemap_Grandcanyon.dds"/>-->
             <hx:MeshGeometryModel3D x:Name="model" IsMultisampleEnabled="False" Geometry="{Binding Model}" Transform="{Binding ModelTransform}" Material="{Binding ModelMaterial}"   />
         </hx:Viewport3DX>

@@ -202,6 +202,7 @@
     <Compile Include="Model\Elements3D\ParticleStormModel3D.cs" />
     <Compile Include="Model\Elements3D\PatchGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
+    <Compile Include="Model\Elements3D\SkyboxModel3D.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Elements3D\XRayMeshGeometryModel3D.cs" />
     <Compile Include="Model\Materials\Material.cs" />
@@ -312,6 +313,7 @@
     <None Include="Resources\psPoint.cso" />
     <None Include="Resources\psPositions.cso" />
     <None Include="Resources\psShadow.cso" />
+    <None Include="Resources\psSkybox.cso" />
     <None Include="Resources\psViewCube.cso" />
     <None Include="Resources\vsBillboard.cso" />
     <None Include="Resources\vsBillboardInstancing.cso" />
@@ -329,6 +331,7 @@
     <None Include="Resources\vsParticle.cso" />
     <None Include="Resources\vsPoint.cso" />
     <None Include="Resources\vsPointShadow.cso" />
+    <None Include="Resources\vsSkybox.cso" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Model\ReadMe.txt" />

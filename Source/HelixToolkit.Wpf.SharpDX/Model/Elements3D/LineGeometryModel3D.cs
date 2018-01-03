@@ -94,7 +94,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CheckGeometry()
         {
-            return base.CheckGeometry() && geometryInternal is LineGeometry3D;
+            return base.CheckGeometry() && GeometryInternal is LineGeometry3D;
         }
 
         protected override bool CanHitTest(IRenderContext context)
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            var lineGeometry3D = this.geometryInternal as LineGeometry3D;
+            var lineGeometry3D = this.GeometryInternal as LineGeometry3D;
             var result = new LineHitTestResult { IsValid = false, Distance = double.MaxValue };
             var lastDist = double.MaxValue;
             var lineIndex = 0;

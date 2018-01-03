@@ -238,6 +238,21 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSSkybox
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsSkybox;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
     }
 
 
@@ -372,6 +387,11 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0, InputClassification.PerInstanceData, 1),
         };
+
+        public static InputElement[] VSInputSkybox { get; } = new InputElement[]
+        {
+            new InputElement("SV_POSITION", 0, Format.R32G32B32_Float,  InputElement.AppendAligned, 0),
+        };
     }
 
     /// <summary>
@@ -475,5 +495,9 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription VSParticle = new ShaderDescription(nameof(VSParticle), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSParticle);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSSkybox = new ShaderDescription(nameof(VSSkybox), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSSkybox);
     }
 }
