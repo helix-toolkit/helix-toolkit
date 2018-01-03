@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var model = d as MaterialGeometryModel3D;
                     if (model.RenderCore != null)
                     {
-                        (model.RenderCore as IMaterialRenderCore).RenderDiffuseMap = (bool)e.NewValue;
+                        (model.RenderCore as IMaterialRenderParams).RenderDiffuseMap = (bool)e.NewValue;
                     }
                 }));
         /// <summary>
@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var model = d as MaterialGeometryModel3D;
                     if (model.RenderCore != null)
                     {
-                        (model.RenderCore as IMaterialRenderCore).RenderDiffuseAlphaMap = (bool)e.NewValue;
+                        (model.RenderCore as IMaterialRenderParams).RenderDiffuseAlphaMap = (bool)e.NewValue;
                     }
                 }));
         /// <summary>
@@ -55,7 +55,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var model = d as MaterialGeometryModel3D;
                     if (model.RenderCore != null)
                     {
-                        (model.RenderCore as IMaterialRenderCore).RenderNormalMap = (bool)e.NewValue;
+                        (model.RenderCore as IMaterialRenderParams).RenderNormalMap = (bool)e.NewValue;
                     }
                 }));
         /// <summary>
@@ -68,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var model = d as MaterialGeometryModel3D;
                     if (model.RenderCore != null)
                     {
-                        (model.RenderCore as IMaterialRenderCore).RenderDisplacementMap = (bool)e.NewValue;
+                        (model.RenderCore as IMaterialRenderParams).RenderDisplacementMap = (bool)e.NewValue;
                     }
                 }));
         /// <summary>
@@ -150,7 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (e.NewValue is IPhongMaterial)
             {
                 var model = ((MaterialGeometryModel3D)d);
-                (model.RenderCore as IMaterialRenderCore).Material = e.NewValue as IPhongMaterial;
+                (model.RenderCore as IMaterialRenderParams).Material = e.NewValue as IPhongMaterial;
                 if (model.renderHost != null)
                 {
                     if (model.IsAttached)
@@ -174,7 +174,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected virtual void AttachMaterial()
         {
-            var core = RenderCore as IMaterialRenderCore;
+            var core = RenderCore as IMaterialRenderParams;
             core.Material = this.Material;
             core.RenderDiffuseMap = this.RenderDiffuseMap;
             core.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;

@@ -11,30 +11,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    public interface IMeshOutlineParams
-    {
-        Color4 Color { set; get; } 
-        /// <summary>
-        /// Enable outline
-        /// </summary>
-        bool OutlineEnabled { set; get; }
-
-        /// <summary>
-        /// Draw original mesh
-        /// </summary>
-        bool DrawMesh { set; get; }
-
-        /// <summary>
-        /// Draw outline order
-        /// </summary>
-        bool DrawOutlineBeforeMesh { set; get; }
-
-        /// <summary>
-        /// Outline fading
-        /// </summary>
-        float OutlineFadingFactor { set; get; } 
-    }
-
     public class MeshOutlineRenderCore : PatchMeshRenderCore, IMeshOutlineParams
     {
         /// <summary>

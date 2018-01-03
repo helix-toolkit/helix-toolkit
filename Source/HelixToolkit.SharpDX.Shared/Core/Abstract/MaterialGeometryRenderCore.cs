@@ -12,14 +12,10 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Model;
-    using ShaderManager;
-    using Shaders;
-    using System.Collections.Generic;
-
     /// <summary>
     /// 
     /// </summary>
-    public abstract class MaterialGeometryRenderCore : GeometryRenderCore, IMaterialRenderCore
+    public abstract class MaterialGeometryRenderCore : GeometryRenderCore, IMaterialRenderParams
     {
         private IEffectMaterialVariables materialVariables;
         /// <summary>

@@ -11,20 +11,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    public enum PointFigure
-    {
-        Rect,
-        Ellipse,
-        Cross,
-    }
-    public interface IPointRenderParams
-    {
-        Color4 PointColor { set; get; }
-        float Width { set; get; }
-        float Height { set; get; }
-        PointFigure Figure { set; get; }
-        float FigureRatio { set; get; }
-    }
     public class PointRenderCore : GeometryRenderCore, IPointRenderParams
     {
         public float Width { set; get; } = 0.5f;

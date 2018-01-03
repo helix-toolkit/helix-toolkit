@@ -16,11 +16,6 @@ namespace HelixToolkit.UWP.Core
     using System.IO;
     using Utilities;
 
-    public interface ISkyboxRenderParams
-    {
-        Stream CubeTexture { set; get; }
-    }
-
     public class SkyBoxRenderCore : GeometryRenderCore, ISkyboxRenderParams
     {
         #region Default Mesh

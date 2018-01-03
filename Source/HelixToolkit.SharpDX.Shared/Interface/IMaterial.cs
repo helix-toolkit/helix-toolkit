@@ -46,7 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// A material proxy variable interface to manage all the material related resources
     /// </summary>
-    public interface IEffectMaterialVariables : IMaterialRenderCore, IDisposable
+    public interface IEffectMaterialVariables : IMaterialRenderParams, IDisposable
     {
         event EventHandler<bool> OnInvalidateRenderer;
         /// <summary>

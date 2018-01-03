@@ -9,30 +9,6 @@ using SharpDX;
 using SharpDX.Direct3D;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
-#else
-namespace HelixToolkit.UWP
-#endif
-{
-    public enum MeshTopologyEnum
-    {
-        PNTriangles,
-        PNQuads        
-    }
-    public static class MeshTopologies
-    {
-        public static IEnumerable<MeshTopologyEnum> Topologies
-        {
-            get
-            {
-                yield return MeshTopologyEnum.PNTriangles;
-                yield return MeshTopologyEnum.PNQuads;
-            }
-        }
-    }
-}
-
-#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
@@ -40,15 +16,6 @@ namespace HelixToolkit.UWP.Core
 {
     using Utilities;
     using Shaders;
-    public interface IPatchRenderParams
-    {
-        float MinTessellationDistance { set; get; }
-        float MaxTessellationDistance { set; get; }
-        float MinTessellationFactor { set; get; }
-        float MaxTessellationFactor { set; get; }
-        MeshTopologyEnum MeshType { set; get; }
-        bool EnableTessellation { set; get; }
-    }
 
     public class PatchMeshRenderCore : MeshRenderCore, IPatchRenderParams
     {

@@ -84,7 +84,7 @@ namespace HelixToolkit.UWP.Model
 
         private bool renderDiffuseMap = true;
         /// <summary>
-        /// <see cref="IMaterialRenderCore.RenderDiffuseMap"/> 
+        /// <see cref="IMaterialRenderParams.RenderDiffuseMap"/> 
         /// </summary>
         public bool RenderDiffuseMap
         {
@@ -104,7 +104,7 @@ namespace HelixToolkit.UWP.Model
         }
         private bool renderDiffuseAlphaMap = true;
         /// <summary>
-        /// <see cref="IMaterialRenderCore.RenderDiffuseAlphaMap"/> 
+        /// <see cref="IMaterialRenderParams.RenderDiffuseAlphaMap"/> 
         /// </summary>
         public bool RenderDiffuseAlphaMap
         {
@@ -124,7 +124,7 @@ namespace HelixToolkit.UWP.Model
         }
         private bool renderNormalMap = true;
         /// <summary>
-        /// <see cref="IMaterialRenderCore.RenderNormalMap"/> 
+        /// <see cref="IMaterialRenderParams.RenderNormalMap"/> 
         /// </summary>
         public bool RenderNormalMap
         {
@@ -141,7 +141,7 @@ namespace HelixToolkit.UWP.Model
         }
         private bool renderDisplacementMap = true;
         /// <summary>
-        /// <see cref="IMaterialRenderCore.RenderDisplacementMap"/> 
+        /// <see cref="IMaterialRenderParams.RenderDisplacementMap"/> 
         /// </summary>
         public bool RenderDisplacementMap
         {
@@ -160,7 +160,7 @@ namespace HelixToolkit.UWP.Model
 
         private bool renderShadowMap = false;
         /// <summary>
-        /// <see cref="IMaterialRenderCore.RenderShadowMap"/> 
+        /// <see cref="IMaterialRenderParams.RenderShadowMap"/> 
         /// </summary>
         public bool RenderShadowMap
         {
@@ -181,7 +181,7 @@ namespace HelixToolkit.UWP.Model
         private MaterialStruct materialStruct;
         private readonly IConstantBufferProxy materialBuffer;
         /// <summary>
-        /// <see cref="IMaterialRenderCore.Material"/> 
+        /// <see cref="IMaterialRenderParams.Material"/> 
         /// </summary>
         public IMaterial Material
         {

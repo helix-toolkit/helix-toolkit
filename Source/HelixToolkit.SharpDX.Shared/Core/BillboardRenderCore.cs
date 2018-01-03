@@ -11,11 +11,7 @@ namespace HelixToolkit.UWP.Core
 {
     using Shaders;
     using Utilities;
-    public interface IBillboardRenderParams
-    {
-        bool FixedSize { set; get; }
-        SamplerStateDescription SamplerDescription { set; get; }
-    }
+
     public class BillboardRenderCore : GeometryRenderCore, IBillboardRenderParams
     {
         public bool FixedSize { set; get; } = true;

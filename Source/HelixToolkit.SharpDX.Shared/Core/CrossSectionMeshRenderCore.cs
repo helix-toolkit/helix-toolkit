@@ -14,24 +14,6 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using Utilities;
 
-    public interface ICrossSectionRenderParams
-    {
-        Color4 SectionColor { set; get; }
-
-        bool Plane1Enabled { set; get; }
-        bool Plane2Enabled { set; get; }
-        bool Plane3Enabled { set; get; }
-        bool Plane4Enabled { set; get; }
-
-        /// <summary>
-        /// Defines the plane (Normal + d)
-        /// </summary>
-        Vector4 Plane1Params { set; get; }
-        Vector4 Plane2Params { set; get; }
-        Vector4 Plane3Params { set; get; }
-        Vector4 Plane4Params { set; get; }
-    }
-
     public class CrossSectionMeshRenderCore : PatchMeshRenderCore, ICrossSectionRenderParams
     {
         #region Shader Variables
