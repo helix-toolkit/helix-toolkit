@@ -42,7 +42,16 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("SlopeScaledDepthBias", typeof(double), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(0.0, RasterStateChanged));
 
         public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register("IsSelected", typeof(bool), typeof(DraggableGeometryModel3D), new AffectsRenderPropertyMetadata(false));
+            DependencyProperty.Register("IsSelected", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(false));
+
+        public static readonly DependencyProperty IsThrowingShadowProperty =
+            DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(false, (d, e) => 
+            {
+                if ((d as Element3D).RenderCore is IThrowingShadow)
+                {
+                    ((d as Element3D).RenderCore as IThrowingShadow).IsThrowingShadow = (bool)e.NewValue;
+                }
+            }));
 
         public static readonly DependencyProperty IsMultisampleEnabledProperty =
             DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(true, RasterStateChanged));
@@ -169,6 +178,17 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public bool IsThrowingShadow
+        {
+            set
+            {
+                SetValue(IsThrowingShadowProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsThrowingShadowProperty);
+            }
+        }
         #endregion
 
         #region Static Methods
@@ -519,7 +539,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// <para>base.CanRender(context) &amp;&amp; <see cref="CheckGeometry"/> </para>
-        /// <para>If RenderContext IsShadowPass=true, return false if <see cref="IsThrowingShadow"/> = false</para>
+        /// <para></para>
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
@@ -596,23 +616,6 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual bool CanHitTest(IRenderContext context)
         {
             return visibleInternal && isRenderingInternal && isHitTestVisibleInternal && GeometryValid;
-        }
-
-        private bool isThrowingShadow = false;
-        public bool IsThrowingShadow
-        {
-            get
-            {
-                return isThrowingShadow;
-            }
-            set
-            {
-                isThrowingShadow = value;
-                if(RenderCore is IThrowingShadow)
-                {
-                    (RenderCore as IThrowingShadow).IsThrowingShadow = value;
-                }
-            }
         }
     }
 

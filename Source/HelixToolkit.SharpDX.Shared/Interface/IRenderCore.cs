@@ -69,6 +69,10 @@ namespace HelixToolkit.UWP.Core
         bool RenderNormalMap { set; get; }
         bool RenderDisplacementMap { set; get; }
         bool RenderShadowMap { set; get; }
+        /// <summary>
+        /// Reflect the environment cube map
+        /// </summary>
+        bool RenderEnvironmentMap { set; get; }
     }
     /// <summary>
     /// 

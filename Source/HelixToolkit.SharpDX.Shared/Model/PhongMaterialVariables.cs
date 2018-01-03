@@ -159,6 +159,7 @@ namespace HelixToolkit.UWP.Model
         }
 
         private bool renderShadowMap = false;
+
         /// <summary>
         /// <see cref="IMaterialRenderParams.RenderShadowMap"/> 
         /// </summary>
@@ -173,7 +174,27 @@ namespace HelixToolkit.UWP.Model
             }
             get
             {
-                return renderDisplacementMap;
+                return renderShadowMap;
+            }
+        }
+
+        private bool renderEnvironmentMap = false;
+
+        /// <summary>
+        /// <see cref="IMaterialRenderParams."/> 
+        /// </summary>
+        public bool RenderEnvironmentMap
+        {
+            set
+            {
+                if (renderEnvironmentMap == value)
+                { return; }
+                renderEnvironmentMap = value;
+                needUpdate = true;
+            }
+            get
+            {
+                return renderEnvironmentMap;
             }
         }
 
@@ -317,7 +338,7 @@ namespace HelixToolkit.UWP.Model
                 HasDisplacementMap = RenderDisplacementMap && TextureResources[DisplaceIdx].TextureView != null ? 1 : 0,
                 DisplacementMapScaleMask = material.DisplacementMapScaleMask,
                 RenderShadowMap = RenderShadowMap ? 1 : 0,
-                HasCubeMap = 0
+                HasCubeMap = RenderEnvironmentMap ? 1 : 0
             };
         }
         /// <summary>

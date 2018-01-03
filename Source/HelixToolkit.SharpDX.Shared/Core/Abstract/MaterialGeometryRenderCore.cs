@@ -48,6 +48,8 @@ namespace HelixToolkit.UWP.Core
         public bool RenderDisplacementMap { set; get; } = true;
         public bool RenderShadowMap { set; get; } = false;
 
+        public bool RenderEnvironmentMap { set; get; } = false;
+
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if(base.OnAttach(technique))
@@ -81,21 +83,22 @@ namespace HelixToolkit.UWP.Core
         /// Set control variables into material variables object
         /// </summary>
         /// <param name="model"></param>
-        protected virtual void SetMaterialVariables()
+        protected virtual void SetMaterialVariables(IEffectMaterialVariables variable)
         {
             if (!IsAttached)
             { return; }
-            materialVariables.RenderShadowMap = this.RenderShadowMap;
-            materialVariables.RenderDiffuseMap = this.RenderDiffuseMap;
-            materialVariables.RenderNormalMap = this.RenderNormalMap;
-            materialVariables.RenderDisplacementMap = this.RenderDisplacementMap;
-            materialVariables.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
+            variable.RenderShadowMap = this.RenderShadowMap;
+            variable.RenderDiffuseMap = this.RenderDiffuseMap;
+            variable.RenderNormalMap = this.RenderNormalMap;
+            variable.RenderDisplacementMap = this.RenderDisplacementMap;
+            variable.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
+            variable.RenderEnvironmentMap = this.RenderEnvironmentMap;
         }
 
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
-            SetMaterialVariables();
+            SetMaterialVariables(materialVariables);
         }
 
         protected override void OnUploadPerModelConstantBuffers(DeviceContext context)

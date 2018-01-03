@@ -188,11 +188,19 @@ namespace HelixToolkit.Wpf.SharpDX
         public Color4 Emissive;
         public Color4 Specular;
         public Color4 Reflect;
-        public float Shininess;       
-        public int HasDiffuseMap, HasDiffuseAlphaMap, HasNormalMap, HasDisplacementMap, HasCubeMap, RenderShadowMap;
+        public float Shininess;
+        public int HasDiffuseMap;
+        public int HasDiffuseAlphaMap;
+        public int HasNormalMap;
+
+        public int HasDisplacementMap;
+        public int HasCubeMap;
+        public int RenderShadowMap;
         float Padding;
+
         public Vector4 DisplacementMapScaleMask; // Use to select which channel will be used after displacement map sampling, also scaling the value
-        public const int SizeInBytes = 4 * (4 * 6 + 1 + 5 + 2);
+
+        public const int SizeInBytes = 4 * (4 * 8);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

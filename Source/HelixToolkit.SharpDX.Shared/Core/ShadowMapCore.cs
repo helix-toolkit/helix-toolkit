@@ -64,7 +64,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Update shadow map every N frames
         /// </summary>
-        public int UpdateFrequency { set; get; } = 2;
+        public int UpdateFrequency { set; get; } = 1;
 
         private int currentFrame = 0;
 

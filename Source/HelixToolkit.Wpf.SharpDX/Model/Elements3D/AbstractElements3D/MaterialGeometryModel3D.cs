@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d, e) =>
                 {
                     var model = d as MaterialGeometryModel3D;
-                    if (model.RenderCore != null)
+                    if (model.RenderCore is IMaterialRenderParams)
                     {
                         (model.RenderCore as IMaterialRenderParams).RenderDiffuseMap = (bool)e.NewValue;
                     }
@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d, e) =>
                 {
                     var model = d as MaterialGeometryModel3D;
-                    if (model.RenderCore != null)
+                    if (model.RenderCore is IMaterialRenderParams)
                     {
                         (model.RenderCore as IMaterialRenderParams).RenderDiffuseAlphaMap = (bool)e.NewValue;
                     }
@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d, e) =>
                 {
                     var model = d as MaterialGeometryModel3D;
-                    if (model.RenderCore != null)
+                    if (model.RenderCore is IMaterialRenderParams)
                     {
                         (model.RenderCore as IMaterialRenderParams).RenderNormalMap = (bool)e.NewValue;
                     }
@@ -67,9 +67,37 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d, e) =>
                 {
                     var model = d as MaterialGeometryModel3D;
-                    if (model.RenderCore != null)
+                    if (model.RenderCore is IMaterialRenderParams)
                     {
                         (model.RenderCore as IMaterialRenderParams).RenderDisplacementMap = (bool)e.NewValue;
+                    }
+                }));
+
+        /// <summary>
+        /// Render shadow on this mesh if has shadow map
+        /// </summary>
+        public static readonly DependencyProperty RenderShadowMapProperty =
+            DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(false,
+                (d, e) =>
+                {
+                    var model = d as MaterialGeometryModel3D;
+                    if (model.RenderCore is IMaterialRenderParams)
+                    {
+                        (model.RenderCore as IMaterialRenderParams).RenderShadowMap = (bool)e.NewValue;
+                    }
+                }));
+
+        /// <summary>
+        /// Render environment reflection map on this mesh if has environment map
+        /// </summary>
+        public static readonly DependencyProperty RenderEnvironmentMapProperty =
+            DependencyProperty.Register("RenderEnvironmentMap", typeof(bool), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(false,
+                (d, e) =>
+                {
+                    var model = d as MaterialGeometryModel3D;
+                    if (model.RenderCore is IMaterialRenderParams)
+                    {
+                        (model.RenderCore as IMaterialRenderParams).RenderEnvironmentMap = (bool)e.NewValue;
                     }
                 }));
         /// <summary>
@@ -121,6 +149,26 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (bool)this.GetValue(RenderDisplacementMapProperty); }
             set { this.SetValue(RenderDisplacementMapProperty, value); }
+        }
+
+        /// <summary>
+        /// Render shadow on this mesh if has shadow map
+        /// <para>Default: false</para>
+        /// </summary>
+        public bool RenderShadowMap
+        {
+            get { return (bool)this.GetValue(RenderShadowMapProperty); }
+            set { this.SetValue(RenderShadowMapProperty, value); }
+        }
+
+        /// <summary>
+        /// Render environment map on this mesh if has environment map
+        /// <para>Default: false</para>
+        /// </summary>
+        public bool RenderEnvironmentMap
+        {
+            get { return (bool)this.GetValue(RenderEnvironmentMapProperty); }
+            set { this.SetValue(RenderEnvironmentMapProperty, value); }
         }
 
         /// <summary>
@@ -181,6 +229,8 @@ namespace HelixToolkit.Wpf.SharpDX
             core.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
             core.RenderNormalMap = this.RenderNormalMap;
             core.RenderDisplacementMap = this.RenderDisplacementMap;
+            core.RenderEnvironmentMap = this.RenderEnvironmentMap;
+            core.RenderShadowMap = this.RenderShadowMap;
         }
 
         protected override bool OnAttach(IRenderHost host)

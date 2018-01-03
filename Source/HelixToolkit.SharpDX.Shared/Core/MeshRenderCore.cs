@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnDefaultPassChanged(IShaderPass pass)
         {
             base.OnDefaultPassChanged(pass);
-            pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowMapTextureName);
+            shadowMapSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowMapTextureName);
         }
 
         protected override void OnRender(IRenderContext context)
@@ -40,7 +40,7 @@ namespace HelixToolkit.UWP.Core
             }
             if (context.RenderHost.IsShadowMapEnabled)
             {
-                DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(context.DeviceContext, ShaderShadowMapTextureName, context.SharedResource.ShadowView);
+                DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(context.DeviceContext, shadowMapSlot, context.SharedResource.ShadowView);
             }
             OnDraw(context.DeviceContext, InstanceBuffer);
         }
