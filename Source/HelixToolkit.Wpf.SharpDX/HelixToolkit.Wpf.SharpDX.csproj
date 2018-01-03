@@ -202,7 +202,7 @@
     <Compile Include="Model\Elements3D\ParticleStormModel3D.cs" />
     <Compile Include="Model\Elements3D\PatchGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
-    <Compile Include="Model\Elements3D\SkyboxModel3D.cs" />
+    <Compile Include="Model\Elements3D\EnvironmentMap3D.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Elements3D\XRayMeshGeometryModel3D.cs" />
     <Compile Include="Model\Materials\Material.cs" />
@@ -229,7 +229,6 @@
     <Compile Include="Model\Elements3D\DraggableGeometryModel3D.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\Elements3D\EnvironmentMapModel3D.cs" />
     <Compile Include="Model\Elements3D\GroupModel3D.cs" />
     <Compile Include="Model\Elements3D\Items3DControl.cs" />
     <Compile Include="Model\Elements3D\ItemsModel3D.cs" />

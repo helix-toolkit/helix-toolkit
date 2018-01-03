@@ -8,9 +8,9 @@ using System.IO;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    public class SkyboxModel3D : Element3D
+    public class EnvironmentMap3D : Element3D
     {
-        public static readonly DependencyProperty TextureProperty = DependencyProperty.Register("Texture", typeof(Stream), typeof(SkyboxModel3D),
+        public static readonly DependencyProperty TextureProperty = DependencyProperty.Register("Texture", typeof(Stream), typeof(EnvironmentMap3D),
             new PropertyMetadata(null,(d,e)=> 
             {
                 ((d as Element3D).RenderCore as ISkyboxRenderParams).CubeTexture = (Stream)e.NewValue;
