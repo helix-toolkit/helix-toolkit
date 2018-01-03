@@ -83,9 +83,35 @@ namespace HelixToolkit.UWP.Core
                 return defaultShadowPassName;
             }
         }
+        private IShaderPass defaultShaderPass = null;
+        protected IShaderPass DefaultShaderPass
+        {
+            private set
+            {
+                if (defaultShaderPass == value) { return; }
+                defaultShaderPass = value;
+                OnDefaultPassChanged(value);
+            }
+            get
+            {
+                return defaultShaderPass;
+            }
+        }
 
-        protected IShaderPass DefaultShaderPass { private set; get; }
-        protected IShaderPass ShadowPass { private set; get; }
+        private IShaderPass shadowPass = null;
+        protected IShaderPass ShadowPass
+        {
+            private set
+            {
+                if (shadowPass == value) { return; }
+                shadowPass = value;
+                OnShadowPassChanged(value);
+            }
+            get
+            {
+                return shadowPass;
+            }
+        }
 
         public bool IsThrowingShadow { set; get; } = false;
 
@@ -111,6 +137,10 @@ namespace HelixToolkit.UWP.Core
             }
             return false;
         }
+
+        protected virtual void OnDefaultPassChanged(IShaderPass pass) { }
+
+        protected virtual void OnShadowPassChanged(IShaderPass pass) { }
         /// <summary>
         /// Set all necessary states and buffers
         /// </summary>

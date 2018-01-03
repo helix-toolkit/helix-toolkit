@@ -12,12 +12,22 @@ namespace HelixToolkit.UWP.Core
 
     public class MeshRenderCore : MaterialGeometryRenderCore, IInvertNormal
     {
-        public bool InvertNormal { set; get; } = false;       
+        public bool InvertNormal { set; get; } = false;
+
+        public string ShaderShadowMapTextureName { set; get; } = DefaultBufferNames.ShadowMapTB;
+
+        private int shadowMapSlot;
 
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
             model.InvertNormal = InvertNormal ? 1 : 0;
+        }
+
+        protected override void OnDefaultPassChanged(IShaderPass pass)
+        {
+            base.OnDefaultPassChanged(pass);
+            pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowMapTextureName);
         }
 
         protected override void OnRender(IRenderContext context)
@@ -30,7 +40,7 @@ namespace HelixToolkit.UWP.Core
             }
             if (context.RenderHost.IsShadowMapEnabled)
             {
-                DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(context.DeviceContext, DefaultBufferNames.ShadowMapTB, context.SharedResource.ShadowView);
+                DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(context.DeviceContext, ShaderShadowMapTextureName, context.SharedResource.ShadowView);
             }
             OnDraw(context.DeviceContext, InstanceBuffer);
         }

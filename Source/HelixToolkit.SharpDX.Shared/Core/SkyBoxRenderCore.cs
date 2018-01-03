@@ -84,10 +84,31 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        public virtual string ShaderCubeTextureName { get { return DefaultBufferNames.CubeMapTB; } }
+        private SamplerStateDescription samplerDescription = DefaultSamplers.CubeSampler;
+        public SamplerStateDescription SamplerDescription
+        {
+            set
+            {
+                samplerDescription = value;
+                if (IsAttached)
+                {
+                    RemoveAndDispose(ref textureSampler);
+                    textureSampler = Collect(EffectTechnique.EffectsManager.StateManager.Register(value));
+                }
+            }
+            get
+            {
+                return samplerDescription;
+            }
+        }
+
+        public string ShaderCubeTextureName { set; get; } = DefaultBufferNames.CubeMapTB; 
+        public string ShaderCubeTextureSamplerName { set; get; } = DefaultSamplerStateNames.CubeMapSampler;
 
         private ShaderResouceViewProxy cubeTextureRes;
-        private SamplerState sampler;
+        private int cubeTextureSlot;
+        private SamplerState textureSampler;
+        private int textureSamplerSlot;
 
         public SkyBoxRenderCore()
         {
@@ -113,7 +134,7 @@ namespace HelixToolkit.UWP.Core
                 {
                     cubeTextureRes.CreateView(cubeTexture);
                 }
-                sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.CubeSampler));
+                textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
                 return true;
             }
             else
@@ -132,12 +153,18 @@ namespace HelixToolkit.UWP.Core
 
         }
 
+        protected override void OnDefaultPassChanged(IShaderPass pass)
+        {
+            cubeTextureSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
+            textureSamplerSlot = pass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
+        }
+
         protected override void OnRender(IRenderContext context)
         {
             DefaultShaderPass.BindShader(context.DeviceContext);
             DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(context.DeviceContext, ShaderCubeTextureName, cubeTextureRes);
-            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(context.DeviceContext, DefaultSamplerStateNames.CubeMapSampler, sampler);
+            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(context.DeviceContext, cubeTextureSlot, cubeTextureRes);
+            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(context.DeviceContext, textureSamplerSlot, textureSampler);
             context.DeviceContext.Draw(GeometryBuffer.VertexBuffer.Count, 0);
         }
 

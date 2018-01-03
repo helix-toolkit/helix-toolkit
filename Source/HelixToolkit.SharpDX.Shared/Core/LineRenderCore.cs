@@ -10,22 +10,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    public interface ILineRenderParams
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        float Thickness { set; get; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        float Smoothness { set; get; }
-        /// <summary>
-        /// Final Line Color = LineColor * PerVertexLineColor
-        /// </summary>
-        Color4 LineColor { set; get; }
-    }
     public class LineRenderCore : GeometryRenderCore, ILineRenderParams
     {
         public float Thickness { set; get; } = 0.5f;
