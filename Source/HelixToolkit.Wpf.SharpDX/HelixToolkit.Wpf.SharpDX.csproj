@@ -171,7 +171,6 @@
     <Compile Include="Controls\MouseHandlers\TouchMode.cs" />
     <Compile Include="Controls\MouseHandlers\ZoomHandler.cs" />
     <Compile Include="Controls\MouseHandlers\ZoomRectangleHandler.cs" />
-    <Compile Include="Controls\RenderContext.cs" />
     <Compile Include="Controls\RenderUtil.cs" />
     <Compile Include="Controls\Viewport3DX.Properties.cs" />
     <Compile Include="Controls\ViewportExtensions.cs" />

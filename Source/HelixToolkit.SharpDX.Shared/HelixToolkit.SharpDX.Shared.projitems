@@ -98,6 +98,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector3Collection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\BufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ConstantBufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\DefaultEffectsManager.cs" />
