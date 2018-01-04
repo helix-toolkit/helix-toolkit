@@ -92,6 +92,6 @@ namespace HelixToolkit.UWP
         RenderTargetView ColorBufferView { get; }
         DepthStencilView DepthStencilBufferView { get; }
 
-        D2DControlWrapper D2DControls { get; }
+        ID2DTarget D2DControls { get; }
     }
 }

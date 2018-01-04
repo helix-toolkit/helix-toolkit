@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
 using SharpDX.Direct3D11;
+using System;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
@@ -11,7 +12,8 @@ namespace HelixToolkit.UWP.Render
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
-    public interface IDX11RenderBufferProxy
+    using Core2D;
+    public interface IDX11RenderBufferProxy : IDisposable
     {
         Color4 ClearColor { get; set; }
         RenderTargetView ColorBufferView { get; }

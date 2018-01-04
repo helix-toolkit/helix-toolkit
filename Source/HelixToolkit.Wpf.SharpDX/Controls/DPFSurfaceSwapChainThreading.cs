@@ -364,7 +364,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Indicates if DPFCanvas busy on rendering.
         /// </summary>
         public bool IsBusy { get { return pendingValidationCycles; } }
-        public D2DControlWrapper D2DControls { get; } = new D2DControlWrapper();
+        public ID2DTarget D2DControls { get; } = new D2DControlWrapper();
         /// <summary>
         /// 
         /// </summary>

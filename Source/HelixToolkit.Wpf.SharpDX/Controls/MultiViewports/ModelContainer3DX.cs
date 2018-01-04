@@ -252,7 +252,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public D2DControlWrapper D2DControls
+        public ID2DTarget D2DControls
         {
             get
             {

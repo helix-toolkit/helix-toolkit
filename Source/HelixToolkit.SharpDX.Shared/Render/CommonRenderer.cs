@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             set
             {
                 clearColor = value;
-                if(renderBuffer != null)
+                if (renderBuffer != null)
                 {
                     renderBuffer.ClearColor = value;
                     InvalidateRender();
@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             set
             {
-                if(Set(ref msaa, value))
+                if (Set(ref msaa, value))
                 {
                     Restart(true);
                 }
@@ -70,13 +70,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             set
             {
-                if(renderable == value)
+                if (renderable == value)
                 {
                     return;
                 }
                 DetachRenderable();
                 renderable = value;
-                AttachRenderable();
+                AttachRenderable(deviceContext);
             }
             get { return renderable; }
         }
@@ -95,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             set
             {
-                if(Set(ref effectsManager, value))
+                if (Set(ref effectsManager, value))
                 {
                     Restart(false);
                 }
@@ -108,7 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         public IRenderTechnique RenderTechnique
         {
-            private set;get;
+            protected set; get;
         }
 
         public bool IsDeferredLighting
@@ -121,17 +121,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         public double ActualHeight
         {
-            private set;get;
+            private set; get;
         }
 
         public double ActualWidth
         {
-            private set;get;
+            private set; get;
         }
 
-        public bool IsBusy
+        public abstract bool IsBusy
         {
-            set;get;
+            get;
         }
 
         public Light3DSceneShared Light3DSceneShared
@@ -141,28 +141,30 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         public bool EnableRenderFrustum
         {
-            set;get;
+            set; get;
         }
 
         public uint MaxFPS
         {
-            set;get;
+            set; get;
         }
 
         public bool EnableSharingModelMode
         {
-            set;get;
+            set; get;
         }
 
         public IModelContainer SharedModelContainer
         {
-            set;get;
+            set; get;
         }
 
         public bool IsRendering
         {
-            set;get;
+            set; get;
         }
+
+        public bool IsInitialized { private set; get; } = false;
 
         public RenderTargetView ColorBufferView
         {
@@ -180,9 +182,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
-        public D2DControlWrapper D2DControls
+        protected DeviceContext deviceContext { private set; get; }
+
+        public ID2DTarget D2DControls
         {
-            private set;get;
+            private set; get;
         }
 
         public DX11RenderHostCommon()
@@ -202,14 +206,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns>Set successful?</returns>
         public bool SetDefaultRenderTargets(DeviceContext context, bool clear = true)
         {
-            if(renderBuffer == null)
-            { return false; }
+            if (!IsInitialized) { return false; }
             renderBuffer.SetDefaultRenderTargets(context, clear);
             return true;
         }
 
         protected void Restart(bool light)
         {
+            if (!IsInitialized)
+            { return; }
             if (light)
             {
                 StopRendering();
@@ -220,16 +225,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             else
             {
                 EndD3D();
-                StartD3D();                
+                StartD3D(deviceContext);
             }
         }
         /// <summary>
         /// 
         /// </summary>
-        public void StartD3D()
+        public void StartD3D(DeviceContext context)
         {
+            deviceContext = context;
             CreateAndBindBuffers();
-            AttachRenderable();
+            IsInitialized = true;
+            AttachRenderable(deviceContext);         
             StartRendering();
         }
 
@@ -242,15 +249,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         protected virtual void OnBindBuffers(IDX11RenderBufferProxy buffer) { }
 
-        protected virtual void AttachRenderable()
+        protected virtual void AttachRenderable(DeviceContext context)
         {
+            if (!IsInitialized) { return; }
             Renderable?.Attach(this);
-            renderContext = Collect(CreateRenderContext());
+            renderContext = Collect(CreateRenderContext(context));
         }
 
-        protected virtual IRenderContext CreateRenderContext()
+        protected virtual IRenderContext CreateRenderContext(DeviceContext context)
         {
-            return new RenderContext(this, Device.ImmediateContext);
+            return new RenderContext(this, context);
         }
         /// <summary>
         /// 
@@ -258,6 +266,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public void EndD3D()
         {
             StopRendering();
+            IsInitialized = false;
             DetachRenderable();
             DisposeBuffers();
         }
@@ -292,5 +301,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected abstract void Render(TimeSpan time);
 
         public event EventHandler<Texture2D> OnNewRenderTargetTexture;
+
+        protected override void Dispose(bool disposeManagedResources)
+        {
+            IsInitialized = false;
+            base.Dispose(disposeManagedResources);
+        }
     }
 }

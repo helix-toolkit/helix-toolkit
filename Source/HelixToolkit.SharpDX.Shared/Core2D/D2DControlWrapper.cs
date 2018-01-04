@@ -13,10 +13,18 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-    public sealed class D2DControlWrapper : IDisposable
+    public interface ID2DTarget : IDisposable
+    {
+        RenderTarget D2DTarget { get; }
+        void Initialize(SwapChain1 swapChain);
+    }
+    public sealed class D2DControlWrapper : ID2DTarget 
     {
         private RenderTarget d2DTarget;
         public RenderTarget D2DTarget { get { return d2DTarget; } }
+
+        ~D2DControlWrapper()
+        { Dispose(); }
 
         public void Dispose()
         {

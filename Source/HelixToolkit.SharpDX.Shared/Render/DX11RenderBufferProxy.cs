@@ -15,7 +15,8 @@ namespace HelixToolkit.UWP.Render
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
-    public class DX11RenderBufferProxy : DisposeObject, IDX11RenderBufferProxy
+    using Core2D;
+    public abstract class DX11RenderBufferProxy : DisposeObject, IDX11RenderBufferProxy
     {
         protected Texture2D colorBuffer;
         protected Texture2D depthStencilBuffer;
@@ -83,7 +84,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #if MSAA
             RemoveAndDispose(ref renderTargetNMS);
 #endif
-            return OnCreateRenderTargetAndDepthBuffers(width, height);
+            var texture = OnCreateRenderTargetAndDepthBuffers(width, height);
+            return texture;
         }
         /// <summary>
         /// 
@@ -202,6 +204,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
+        public void ClearRenderTargetBinding(DeviceContext context)
+        {
+            context.OutputMerger.SetTargets(null, new RenderTargetView[0]);
+        }
+
         /// <summary>
         /// Clears the buffers with the clear-color
         /// </summary>
@@ -246,6 +253,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
     public class DX11SwapChainRenderBufferProxy : DX11RenderBufferProxy
     {
+        private D2DControlWrapper d2dControls;
+        public D2DControlWrapper D2DControls
+        {
+            get { return d2dControls; }
+        }
         private SwapChain1 swapChain;
         public SwapChain1 SwapChain { get { return swapChain; } }
 
@@ -253,7 +265,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public DX11SwapChainRenderBufferProxy(System.IntPtr surfacePointer, Device device) : base(device)
         {
             surfacePtr = surfacePointer;
-            swapChain = CreateSwapChain(surfacePtr);
+            swapChain = Collect(CreateSwapChain(surfacePtr));
+            d2dControls = Collect(new D2DControlWrapper());
+            d2dControls.Initialize(swapChain);
         }
 
         protected override Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height)
@@ -261,6 +275,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (swapChain == null || swapChain.IsDisposed)
             {
                 swapChain = Collect(CreateSwapChain(surfacePtr));
+                RemoveAndDispose(ref d2dControls);
+                d2dControls = Collect(new D2DControlWrapper());
+                d2dControls.Initialize(swapChain);
             }
             else
             {
@@ -299,7 +316,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 // The CreateSwapChain method is used so we can descend
                 // from this class and implement a swapchain for a desktop
                 // or a Windows 8 AppStore app
-                return Collect(new SwapChain1(dxgiFactory2, Device, surfacePointer, ref desc));
+                return new SwapChain1(dxgiFactory2, Device, surfacePointer, ref desc);
             }
         }
 

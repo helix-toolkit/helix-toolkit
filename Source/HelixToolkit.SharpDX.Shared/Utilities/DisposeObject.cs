@@ -139,6 +139,7 @@ namespace HelixToolkit.UWP
         /// <exception cref="ArgumentException">If toDispose argument is not IDisposable or a valid memory pointer allocated by <see cref="Utilities.AllocateMemory"/></exception>
         public T Collect<T>(T toDispose)
         {
+            if(toDispose == null) { return default(T); }
             if (!(toDispose is IDisposable || toDispose is IntPtr))
                 throw new ArgumentException("Argument must be IDisposable or IntPtr");
 
