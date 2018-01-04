@@ -97,7 +97,7 @@
                 Transform="{Binding Light4Transform}" />
             <hx:MeshGeometryModel3D
                 x:Name="model"
-                IsThrowingShadow="True"
+                IsThrowingShadow="True" RenderShadowMap="True"
                 RenderDiffuseMap="{Binding RenderDiffuseMap}"
                 RenderNormalMap="{Binding RenderNormalMap}"
                 Geometry="{Binding Model}"
@@ -106,7 +106,7 @@
             <hx:MeshGeometryModel3D
                 x:Name="floor" EnableTessellation="{Binding ElementName=model, Path=EnableTessellation}" 
                 MinTessellationFactor="{Binding ElementName=model, Path=TessellationFactor}"
-                
+                RenderShadowMap="True"
                 RenderDiffuseMap="{Binding RenderDiffuseMap}"
                 RenderNormalMap="{Binding RenderNormalMap}"
                 Geometry="{Binding Floor}"
