@@ -759,7 +759,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
                         renderContext?.Dispose();
-                        renderContext = new RenderContext(this, deferredContext, EffectsManager.ConstantBufferPool);
+                        renderContext = new RenderContext(this, deferredContext);
                         renderContext.EnableBoundingFrustum = EnableRenderFrustum;
                         if (EnableSharingModelMode && SharedModelContainer != null)
                         {

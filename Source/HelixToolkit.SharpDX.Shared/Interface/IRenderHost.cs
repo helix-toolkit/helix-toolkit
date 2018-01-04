@@ -53,7 +53,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         void InvalidateRender();
         void SetDefaultRenderTargets(bool clear = true);
-        void SetDefaultColorTargets(DepthStencilView dsv);
+        //void SetDefaultColorTargets(DepthStencilView dsv);
 
         IEffectsManager EffectsManager { get; set; }
 

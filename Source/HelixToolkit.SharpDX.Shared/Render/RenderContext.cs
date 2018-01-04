@@ -158,14 +158,14 @@ namespace HelixToolkit.Wpf.SharpDX
             private set;get;
         }
 
-        public RenderContext(IRenderHost renderHost, DeviceContext renderContext, IConstantBufferPool pool)
+        public RenderContext(IRenderHost renderHost, DeviceContext renderContext)
         {
             this.RenderHost = renderHost;
             this.IsShadowPass = false;
             this.IsDeferredPass = false;
-            cbuffer = pool.Register(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
+            cbuffer = renderHost.EffectsManager.ConstantBufferPool.Register(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
             DeviceContext = renderContext;
-            LightScene = Collect(new Light3DSceneShared(pool));
+            LightScene = Collect(new Light3DSceneShared(renderHost.EffectsManager.ConstantBufferPool));
             SharedResource = Collect(new ContextSharedResource());
         }
 

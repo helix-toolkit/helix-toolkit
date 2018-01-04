@@ -133,11 +133,6 @@ namespace HelixToolkit.Wpf.SharpDX
             CurrentRenderHost.SetDefaultRenderTargets(clear);
         }
 
-        public void SetDefaultColorTargets(DepthStencilView dsv)
-        {
-            CurrentRenderHost.SetDefaultColorTargets(dsv);
-        }
-
         public IEnumerable<IRenderable> Renderables
         {
             get

@@ -642,7 +642,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         RenderTechnique = renderRenderable.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : renderRenderable.RenderTechnique;
 
                         renderContext?.Dispose();
-                        renderContext = new RenderContext(this, device.ImmediateContext, EffectsManager.ConstantBufferPool);
+                        renderContext = new RenderContext(this, device.ImmediateContext);
                         renderContext.EnableBoundingFrustum = EnableRenderFrustum;
                         if (EnableSharingModelMode && SharedModelContainer != null)
                         {

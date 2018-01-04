@@ -5,6 +5,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -85,7 +87,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// Modified version of DisposeCollector from SharpDX. Add null check in RemoveAndDispose(ref object)
     /// </summary>
-    public abstract class DisposeObject : DisposeBase
+    public abstract class DisposeObject : DisposeBase, INotifyPropertyChanged
     {
         private readonly HashSet<object> disposables = new HashSet<object>();
 
@@ -193,5 +195,57 @@ namespace HelixToolkit.UWP
                 disposables.Remove(toDisposeArg);
             }
         }
+
+        #region INotifyPropertyChanged
+        private bool disablePropertyChangedEvent = false;
+        public bool DisablePropertyChangedEvent
+        {
+            set
+            {
+                if (disablePropertyChangedEvent == value)
+                {
+                    return;
+                }
+                disablePropertyChangedEvent = value;
+                RaisePropertyChanged();
+            }
+            get
+            {
+                return disablePropertyChangedEvent;
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (!DisablePropertyChangedEvent)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            this.RaisePropertyChanged(propertyName);
+            return true;
+        }
+
+        protected bool Set<T>(ref T backingField, T value, bool raisePropertyChanged, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            if (raisePropertyChanged)
+            { this.RaisePropertyChanged(propertyName); }
+            return true;
+        }
+        #endregion
     }
 }
