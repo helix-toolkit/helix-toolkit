@@ -184,16 +184,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         protected DeviceContext deviceContext { private set; get; }
 
+        private ID2DTarget d2dTarget;
         public ID2DTarget D2DControls
         {
-            private set; get;
-        }
-
-        public DX11RenderHostCommon()
-        {
+            get { return d2dTarget; }
         }
 
         protected abstract IDX11RenderBufferProxy CreateRenderBuffer();
+        protected abstract ID2DTarget CreateD2DTarget();
 
         public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
 
@@ -244,6 +242,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected void CreateAndBindBuffers()
         {
             renderBuffer = Collect(CreateRenderBuffer());
+            d2dTarget = Collect(CreateD2DTarget());
             OnBindBuffers(renderBuffer);
         }
 
@@ -275,7 +274,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         protected virtual void DisposeBuffers()
         {
-            RemoveAndDispose(ref renderBuffer);
+            RemoveAndDispose(ref d2dTarget);
+            RemoveAndDispose(ref renderBuffer);          
         }
 
         protected virtual void DetachRenderable()

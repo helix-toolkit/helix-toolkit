@@ -12,15 +12,15 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 {
     public class RectangleRenderable : ShapeRenderable2DBase
     {
-        protected override void OnRender(IRenderContext matrices)
+        protected override void OnRender(IRenderContext2D context)
         {
             if (FillBrush != null)
             {
-                RenderTarget.FillRectangle(LocalDrawingRect, FillBrush);
+                context.D2DTarget.FillRectangle(LocalDrawingRect, FillBrush);
             }
             if (StrokeBrush != null && StrokeStyle != null)
             {
-                RenderTarget.DrawRectangle(LocalDrawingRect, StrokeBrush, StrokeWidth, StrokeStyle);
+                context.D2DTarget.DrawRectangle(LocalDrawingRect, StrokeBrush, StrokeWidth, StrokeStyle);
             }
         }
     }

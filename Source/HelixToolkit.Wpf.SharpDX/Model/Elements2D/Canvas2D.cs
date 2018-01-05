@@ -167,17 +167,17 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             base.OnDetach();
         }        
 
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(IRenderContext2D context)
         {
             return IsAttached && isRenderingInternal;
         }
 
-        protected override void PreRender(IRenderContext context)
+        protected override void PreRender(IRenderContext2D context)
         {
             
         }
 
-        protected override void OnRender(IRenderContext context)
+        protected override void OnRender(IRenderContext2D context)
         {
             foreach (var c in this.Items)
             {
@@ -202,7 +202,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         }
 
-        protected override IRenderable2D CreateRenderCore(IRenderHost host)
+        protected override IRenderable2D CreateRenderCore(ID2DTarget host)
         {
             return null;
         }

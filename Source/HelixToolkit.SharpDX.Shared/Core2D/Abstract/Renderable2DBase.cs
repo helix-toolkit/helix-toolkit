@@ -2,7 +2,6 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
 using D2D = global::SharpDX.Direct2D1;
 
@@ -12,10 +11,8 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-    public abstract class Renderable2DBase : DisposeObject, IRenderable2D
+    public abstract class Renderable2DBase : DisposeObject, IRenderable2D, ITransform2D
     {
-        public bool IsChanged { private set; get; } = true;
-
         public Matrix3x2 RenderTargetTransform { private set; get; }
 
         public bool IsRendering
@@ -27,13 +24,15 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <summary>
         /// Absolute layout rectangle cooridnate for renderable
         /// </summary>
-        public RectangleF Rect
+        public RectangleF Bound
         {
             set
             {
-                if (rect == value) { return; }
-                rect = value;
-                IsChanged = true;
+                if(Set(ref rect, value))
+                {
+                    LocalDrawingRect = new RectangleF(0, 0, Bound.Width, Bound.Height);
+                    RenderTargetTransform = transform * new Matrix3x2(1, 0, 0, 1, (Bound.Left), (Bound.Top));
+                }
             }
             get
             {
@@ -45,15 +44,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// </summary>
         public RectangleF LocalDrawingRect { private set; get; }
 
-        private D2D.RenderTarget renderTarget;
-        protected D2D.RenderTarget RenderTarget
+        private ID2DTarget renderTarget;
+        protected ID2DTarget RenderTarget
         {
             private set
             {
-                if (renderTarget == value) { return; }
-                renderTarget = value;
-                IsChanged = true;
-                OnTargetChanged(value);
+                Set(ref renderTarget, value);
             }
             get
             {
@@ -66,29 +62,20 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                if (transform == value) { return; }
-                transform = value;
-                IsChanged = true;
+                if(Set(ref transform, value))
+                {
+                    RenderTargetTransform = transform * new Matrix3x2(1, 0, 0, 1, (Bound.Left), (Bound.Top));
+                }
             }
             get
             {
                 return transform;
             }
         }
-
+        /// <summary>
+        /// For debugging only
+        /// </summary>
         private D2D.Brush borderBrush = null;
-        public D2D.Brush BorderBrush
-        {
-            set
-            {
-                borderBrush = value;
-            }
-            get
-            {
-                return borderBrush;
-            }
-        }
-
         private D2D.StrokeStyle borderDotStyle;
         private D2D.StrokeStyle borderLineStyle;
 #if DEBUG
@@ -99,58 +86,53 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         public bool IsMouseOver { set; get; } = false;
 
-        protected virtual void OnTargetChanged(D2D.RenderTarget target)
+        public bool IsAttached { private set; get; } = false;
+
+        public void Attach(IRenderHost host)
         {
-            RemoveAndDispose(ref borderBrush);
-            RemoveAndDispose(ref borderDotStyle);
-            RemoveAndDispose(ref borderLineStyle);
-            if (target == null || target.IsDisposed)
-            {
-                return;
-            }
-            borderBrush = new D2D.SolidColorBrush(target, Color.LightBlue);
-            borderDotStyle =  new D2D.StrokeStyle(RenderTarget.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.DashDot });
-            borderLineStyle = new D2D.StrokeStyle(RenderTarget.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.Solid });
-            Collect(borderBrush);
-            Collect(borderDotStyle);
-            Collect(borderLineStyle);
+            if (IsAttached)
+            { return; }
+            RenderTarget = host.D2DControls;
+            IsAttached = OnAttach(RenderTarget);
         }
 
-        public void Render(IRenderContext matrices, D2D.RenderTarget target)
+        protected virtual bool OnAttach(ID2DTarget target)
         {
-            if (CanRender(target))
-            {
-                RenderTarget = target;
-                UpdateRenderVariables();                
-                if (ShowDrawingBorder && BorderBrush != null)
+            borderBrush = Collect(new D2D.SolidColorBrush(target.D2DTarget, Color.LightBlue));
+            borderDotStyle = Collect(new D2D.StrokeStyle(RenderTarget.D2DTarget.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.DashDot }));
+            borderLineStyle = Collect(new D2D.StrokeStyle(RenderTarget.D2DTarget.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.Solid }));
+            return true;
+        }
+
+        public void Detach()
+        {
+            IsAttached = false;
+            DisposeAndClear();
+        }
+
+        public void Render(IRenderContext2D context)
+        {
+            if (CanRender(context))
+            {         
+                if (ShowDrawingBorder)
                 {
-                    RenderTarget.Transform = Matrix3x2.Identity;
-                    RenderTarget.DrawRectangle(Rect, BorderBrush, 1f, IsMouseOver ? borderLineStyle : borderDotStyle);
+                    context.D2DTarget.Transform = Matrix3x2.Identity;
+                    context.D2DTarget.DrawRectangle(Bound, borderBrush, 1f, IsMouseOver ? borderLineStyle : borderDotStyle);
                 }
-                RenderTarget.Transform = RenderTargetTransform;
-                if (ShowDrawingBorder && BorderBrush != null)
+                context.D2DTarget.Transform = RenderTargetTransform;
+                if (ShowDrawingBorder)
                 {
-                    RenderTarget.DrawRectangle(LocalDrawingRect, BorderBrush, 0.5f, borderDotStyle);
+                    context.D2DTarget.DrawRectangle(LocalDrawingRect, borderBrush, 0.5f, borderDotStyle);
                 }
-                OnRender(matrices);
+                OnRender(context);
             }
         }
 
-        protected virtual void UpdateRenderVariables()
-        {
-            if (IsChanged)
-            {
-                RenderTargetTransform = transform * new Matrix3x2(1, 0, 0, 1, (Rect.Left), (Rect.Top));
-                LocalDrawingRect = new RectangleF(0, 0, Rect.Width, Rect.Height);
-                IsChanged = false;
-            }
-        }
+        protected abstract void OnRender(IRenderContext2D matrices);
 
-        protected abstract void OnRender(IRenderContext matrices);
-
-        protected virtual bool CanRender(D2D.RenderTarget target)
+        protected virtual bool CanRender(IRenderContext2D context)
         {
-            return IsRendering && target != null && !target.IsDisposed;
+            return IsAttached && IsRendering;
         }
     }
 }
