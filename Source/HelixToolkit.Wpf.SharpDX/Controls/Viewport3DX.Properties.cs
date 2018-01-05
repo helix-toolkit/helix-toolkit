@@ -156,7 +156,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "CoordinateSystemLabelForeground",
                 typeof(Color),
                 typeof(Viewport3DX),
-                new PropertyMetadata(Colors.Black));
+                new PropertyMetadata(Colors.DarkGray));
 
         /// <summary>
         /// The coordinate system label X property

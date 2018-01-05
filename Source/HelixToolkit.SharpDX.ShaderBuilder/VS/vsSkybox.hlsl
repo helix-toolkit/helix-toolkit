@@ -1,5 +1,5 @@
-#ifndef VSPOINT_HLSL
-#define VSPOINT_HLSL
+#ifndef VSSKYBOX_HLSL
+#define VSSKYBOX_HLSL
 
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"

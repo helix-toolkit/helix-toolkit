@@ -1,13 +1,13 @@
 #ifndef VSBILLBOARD_HLSL
 #define VSBILLBOARD_HLSL
-
+#define LINE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 #pragma pack_matrix( row_major )
 
 VSInputBT main(VSInputBT input)
 {
-	if (bHasInstances)
+	if (pHasInstances)
 	{
         matrix mInstance =
         {
@@ -21,7 +21,7 @@ VSInputBT main(VSInputBT input)
         input.offBR *= mInstance._m00_m11; // 2d scaling x
     }
 	// Translate position into clip space
-    float4 ndcPosition = mul(input.p, mWorld);
+    float4 ndcPosition = mul(input.p, pWorld);
     input.p = mul(ndcPosition, mView);
 	return input;
 }

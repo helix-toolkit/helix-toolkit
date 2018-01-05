@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public abstract class MaterialGeometryRenderCore : GeometryRenderCore, IMaterialRenderParams
+    public abstract class MaterialGeometryRenderCore : GeometryRenderCore<ModelStruct>, IMaterialRenderParams
     {
         private IEffectMaterialVariables materialVariables;
         /// <summary>
@@ -70,6 +70,11 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        protected override ConstantBufferDescription GetModelConstantBufferDescription()
+        {
+            return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
+        }
+
         /// <summary>
         /// Create effect material varaible model
         /// </summary>
@@ -79,32 +84,18 @@ namespace HelixToolkit.UWP.Core
         {
             return new PhongMaterialVariables(manager);
         }
-        /// <summary>
-        /// Set control variables into material variables object
-        /// </summary>
-        /// <param name="model"></param>
-        protected virtual void SetMaterialVariables(IEffectMaterialVariables variable)
-        {
-            if (!IsAttached)
-            { return; }
-            variable.RenderShadowMap = this.RenderShadowMap;
-            variable.RenderDiffuseMap = this.RenderDiffuseMap;
-            variable.RenderNormalMap = this.RenderNormalMap;
-            variable.RenderDisplacementMap = this.RenderDisplacementMap;
-            variable.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
-            variable.RenderEnvironmentMap = this.RenderEnvironmentMap;
-        }
 
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
-            base.OnUpdatePerModelStruct(ref model, context);
-            SetMaterialVariables(materialVariables);
-        }
-
-        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
-        {
-            base.OnUploadPerModelConstantBuffers(context);
-            MaterialVariables.UpdateMaterialConstantBuffer(context);
+            model.World = ModelMatrix * context.WorldMatrix;
+            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
+            MaterialVariables.RenderShadowMap = this.RenderShadowMap;
+            MaterialVariables.RenderDiffuseMap = this.RenderDiffuseMap;
+            MaterialVariables.RenderNormalMap = this.RenderNormalMap;
+            MaterialVariables.RenderDisplacementMap = this.RenderDisplacementMap;
+            MaterialVariables.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
+            MaterialVariables.RenderEnvironmentMap = this.RenderEnvironmentMap;
+            MaterialVariables.UpdateMaterialVariables(ref model);
         }
         
         protected bool BindMaterialTextures(DeviceContext context, IShaderPass shader)

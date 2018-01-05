@@ -1,6 +1,6 @@
 #ifndef PSLINE_HLSL
 #define PSLINE_HLSL
-
+#define LINE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 
@@ -17,7 +17,7 @@ float4 main(PSInputPS input) : SV_Target
     //dist = clamp((dist - (0.5*vLineParams.x - 1)), 0, 2);
 
     // Alpha is computed from the function exp2(-2(x)^2).
-    float sigma = 2.0f / (vParams.y + 1e-6);
+    float sigma = 2.0f / (pfParams.y + 1e-6);
     dist *= dist;
     float alpha = exp2(-2 * dist / sigma);
 

@@ -182,10 +182,10 @@ struct VSInputPS
 {
 	float4 p : POSITION;
 	float4 c : COLOR;
-	float4 mr0 : TEXCOORD1;
-	float4 mr1 : TEXCOORD2;
-	float4 mr2 : TEXCOORD3;
-	float4 mr3 : TEXCOORD4;
+	float4 mr0 : TEXCOORD0;
+	float4 mr1 : TEXCOORD1;
+	float4 mr2 : TEXCOORD2;
+	float4 mr3 : TEXCOORD3;
 };
 
 struct GSInputPS

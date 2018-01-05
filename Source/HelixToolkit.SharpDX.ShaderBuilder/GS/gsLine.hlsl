@@ -1,6 +1,8 @@
+#ifndef GSLINE_HLSL
+#define GSLINE_HLSL
+#define LINE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
-
 //--------------------------------------------------------------------------------------
 // Make a a ribbon line of the specified pixel width from 2 points in the projection frame.
 //--------------------------------------------------------------------------------------
@@ -34,7 +36,7 @@ void main(line GSInputPS input[2], inout TriangleStream<PSInputPS> outStream)
     PSInputPS output = (PSInputPS) 0;
 		
 	float4 lineCorners[4];
-    makeLine(lineCorners, input[0].p, input[1].p, vParams.x);
+    makeLine(lineCorners, input[0].p, input[1].p, pfParams.x);
 
 	output.p = lineCorners[0];
 	output.c = input[0].c;
@@ -66,3 +68,4 @@ void main(line GSInputPS input[2], inout TriangleStream<PSInputPS> outStream)
 	
 	outStream.RestartStrip();
 }
+#endif

@@ -1,6 +1,7 @@
 #ifndef VSPARTICLE_HLSL
 #define VSPARTICLE_HLSL
 #define PARTICLE
+#define LINE
 #include"..\Common\CommonBuffers.hlsl"
 #include"..\Common\DataStructs.hlsl"
 
@@ -10,7 +11,7 @@ ParticleGS_INPUT main(in ParticleVS_INPUT input, in uint vertexid : SV_VertexID)
 	ParticleGS_INPUT output;
 	Particle p = SimulationState[vertexid];
     float4 pos = float4(p.position, 1);
-    if (bHasInstances)
+    if (pHasInstances)
     {
         matrix mInstance =
         {

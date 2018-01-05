@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Core
             return base.CanRender(context) && InstanceBuffer != null && InstanceBuffer.HasElements;
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
             model.HasInstanceParams = ParameterBuffer != null && ParameterBuffer.HasElements ? 1 : 0;

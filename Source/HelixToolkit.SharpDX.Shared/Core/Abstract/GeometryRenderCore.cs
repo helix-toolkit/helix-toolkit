@@ -12,7 +12,7 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Shaders;
-    public abstract class GeometryRenderCore : RenderCoreBase<ModelStruct>, IGeometryRenderCore
+    public abstract class GeometryRenderCore<MODELSTRUCT> : RenderCoreBase<MODELSTRUCT>, IGeometryRenderCore where MODELSTRUCT : struct
     {
         private RasterizerState rasterState = null;
         public RasterizerState RasterState { get { return rasterState; } }
@@ -163,17 +163,6 @@ namespace HelixToolkit.UWP.Core
         protected override bool CanRender(IRenderContext context)
         {
             return base.CanRender(context) && GeometryBuffer != null;
-        }
-
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
-        {
-            model.World = ModelMatrix * context.WorldMatrix;
-            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
-        }
-
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
         }
 
         /// <summary>

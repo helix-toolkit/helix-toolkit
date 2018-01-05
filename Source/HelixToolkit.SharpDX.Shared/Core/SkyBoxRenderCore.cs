@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Core
     using System.IO;
     using Utilities;
 
-    public class SkyBoxRenderCore : GeometryRenderCore, ISkyboxRenderParams
+    public class SkyBoxRenderCore : GeometryRenderCore<int>, ISkyboxRenderParams
     {
         #region Default Mesh
         private static readonly Vector3Collection BoxPositions = new Vector3Collection()
@@ -168,7 +168,7 @@ namespace HelixToolkit.UWP.Core
             context.DeviceContext.Draw(GeometryBuffer.VertexBuffer.Count, 0);
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref int model, IRenderContext context)
         {
 
         }

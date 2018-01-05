@@ -50,11 +50,11 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         event EventHandler<bool> OnInvalidateRenderer;
         /// <summary>
-        /// Update material constant buffer, including all the colors and rendering setting
+        /// 
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="modelstruct"></param>
         /// <returns></returns>
-        bool UpdateMaterialConstantBuffer(DeviceContext context);
+        bool UpdateMaterialVariables(ref ModelStruct modelstruct);
         /// <summary>
         /// Bind the material texture maps to registers defined inside shader
         /// </summary>

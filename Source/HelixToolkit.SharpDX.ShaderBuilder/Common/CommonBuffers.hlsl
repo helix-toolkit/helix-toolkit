@@ -24,22 +24,40 @@ cbuffer cbTransforms : register(b0)
     float padding0;
 };
 
+#if defined(MESH)
 //Per model
-cbuffer cbModel : register(b1)
+cbuffer cbMeshModel : register(b1)
 {
     float4x4 mWorld;
     bool bInvertNormal = false;
     bool bHasInstances = false;
     bool bHasInstanceParams = false;
     bool bHasBones = false;
-    float4 vParams = float4(0, 0, 0, 0); //Shared with line, points and billboard
-    float4 vColor = float4(1, 1, 1, 1); //Shared with line, points and billboard
+    float4 vParams = float4(0, 0, 0, 0); //Shared with models
+    float4 vColor = float4(1, 1, 1, 1); //Shared with models
     bool4 bParams = bool4(false, false, false, false); // Shared with models for enable/disable features
 	float minTessDistance = 1;
 	float maxTessDistance = 100;
 	float minTessFactor = 4;
 	float maxTessFactor = 1;
+    float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient
+    float4 vMaterialDiffuse = 0.5f; //Kd := surface material's diffuse coefficient
+    float4 vMaterialEmissive = 0.0f; //Ke := surface material's emissive coefficient
+    float4 vMaterialSpecular = 0.0f; //Ks := surface material's specular coefficient
+    float4 vMaterialReflect = 0.0f; //Kr := surface material's reflectivity coefficient
+    float sMaterialShininess = 1.0f; //Ps := surface material's shininess
+	
+    bool bHasDiffuseMap = false;
+    bool bHasAlphaMap = false;
+    bool bHasNormalMap = false;
+    bool bHasDisplacementMap = false;
+    bool bHasCubeMap = false;
+    bool bRenderShadowMap = false;
+    float paddingMaterial0;
+    float4 displacementMapScaleMask = float4(0, 0, 0, 1);
 };
+#endif
+
 
 #define MaxBones 128
 
@@ -58,31 +76,19 @@ cbuffer cbLights : register(b3)
 
 };
 
-// File: Materials header for HelixToolkit.Wpf.SharpDX
-// Author: Przemyslaw Musialski
-// Date: 11/11/12
-// References & Sources: 
-//--------------------------------------------------------------------------------------
-// CONSTANT BUFF FOR MATERIAL
-//--------------------------------------------------------------------------------------
-cbuffer cbMaterial : register(b4)
+#if defined(LINE) // model for line, point and billboard
+//Per model
+cbuffer cbPointLineModel : register(b4)
 {
-    float4 vMaterialAmbient = 0.25f; //Ka := surface material's ambient coefficient
-    float4 vMaterialDiffuse = 0.5f; //Kd := surface material's diffuse coefficient
-    float4 vMaterialEmissive = 0.0f; //Ke := surface material's emissive coefficient
-    float4 vMaterialSpecular = 0.0f; //Ks := surface material's specular coefficient
-    float4 vMaterialReflect = 0.0f; //Kr := surface material's reflectivity coefficient
-    float sMaterialShininess = 1.0f; //Ps := surface material's shininess
-	
-    bool bHasDiffuseMap = false;
-    bool bHasAlphaMap = false;
-    bool bHasNormalMap = false;
-    bool bHasDisplacementMap = false;
-    bool bHasCubeMap = false;
-    bool bRenderShadowMap = false;
-    float paddingMaterial0;
-	float4 displacementMapScaleMask = float4(0,0,0,1);
+    float4x4 pWorld;
+    bool pHasInstances = false;
+    bool pHasInstanceParams = false;
+	float2 padding1;
+    float4 pfParams = float4(0, 0, 0, 0); //Shared with line, points and billboard
+    float4 pColor = float4(1, 1, 1, 1); //Shared with line, points and billboard
+	bool4 pbParams = bool4(false, false, false, false);
 };
+#endif
 
 cbuffer cbShadow : register(b5)
 {
@@ -95,14 +101,14 @@ cbuffer cbShadow : register(b5)
 
 cbuffer cbClipping : register(b6)
 {
-	bool4 EnableCrossPlane;
+    bool4 EnableCrossPlane;
     float4 CrossSectionColors;
 	// Format:
 	// M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin
 	// M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
 	// M20M21M22 PlaneNormal3 M23 Plane3 Distance to origin
 	// M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin
-	float4x4 CrossPlaneParams;
+    float4x4 CrossPlaneParams;
 }
 
 cbuffer cbParticleFrame : register(b7)

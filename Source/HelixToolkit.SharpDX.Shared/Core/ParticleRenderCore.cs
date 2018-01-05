@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     using Shaders;
 
-    public class ParticleRenderCore : RenderCoreBase<ModelStruct>
+    public class ParticleRenderCore : RenderCoreBase<PointLineModelStruct>
     {
         public static readonly int DefaultParticleCount = 512;
         public static readonly float DefaultInitialVelocity = 1f;
@@ -273,12 +273,12 @@ namespace HelixToolkit.UWP.Core
 
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
-            return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
+            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
         }
 
         
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;

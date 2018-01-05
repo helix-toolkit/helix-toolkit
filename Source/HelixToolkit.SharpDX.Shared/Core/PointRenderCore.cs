@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using System;
+using HelixToolkit.Wpf.SharpDX.Shaders;
 using SharpDX;
 using SharpDX.Direct3D11;
 #if !NETFX_CORE
@@ -11,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    public class PointRenderCore : GeometryRenderCore, IPointRenderParams
+    public class PointRenderCore : GeometryRenderCore<PointLineModelStruct>, IPointRenderParams
     {
         public float Width { set; get; } = 0.5f;
         public float Height { set; get; } = 0.5f;
@@ -22,11 +23,17 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public Color4 PointColor { set; get; } = Color.Black;
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
         {
-            base.OnUpdatePerModelStruct(ref model, context);
+            model.World = ModelMatrix * context.WorldMatrix;
+            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             modelStruct.Color = PointColor;
             modelStruct.Params = new Vector4(Width, Height, (int)Figure, FigureRatio);
+        }
+
+        protected override ConstantBufferDescription GetModelConstantBufferDescription()
+        {
+            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
         }
 
         protected override void OnRender(IRenderContext context)

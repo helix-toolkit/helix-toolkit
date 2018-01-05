@@ -1,3 +1,6 @@
+#ifndef GSPOINT_HLSL
+#define GSPOINT_HLSL
+#define LINE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 
@@ -27,7 +30,7 @@ void main(point GSInputPS input[1], inout TriangleStream<PSInputPS> outStream)
     PSInputPS output = (PSInputPS) 0;
         
     float4 spriteCorners[4];
-    makeQuad(spriteCorners, input[0].p, vParams.x, vParams.y);
+    makeQuad(spriteCorners, input[0].p, pfParams.x, pfParams.y);
 
     output.p = spriteCorners[0];
     output.c = input[0].c;
@@ -59,3 +62,4 @@ void main(point GSInputPS input[1], inout TriangleStream<PSInputPS> outStream)
     
     outStream.RestartStrip();
 }
+#endif

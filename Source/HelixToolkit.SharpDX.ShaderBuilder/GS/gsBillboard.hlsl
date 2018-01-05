@@ -1,3 +1,6 @@
+#ifndef GSBILLBOARD_HLSL
+#define GSBILLBOARD_HLSL
+#define LINE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 #pragma pack_matrix( row_major )
@@ -12,7 +15,7 @@ void main(point VSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
     float4 ndcPosition3 = input[0].p;
 
 	// Transform to clip space
-    if (!bParams.x)// if not fixed size billboard
+    if (!pbParams.x)// if not fixed size billboard
     {
         ndcPosition0.xy += float2(input[0].offTL.x, input[0].offBR.y);
         ndcPosition1.xy += input[0].offBR;
@@ -30,7 +33,7 @@ void main(point VSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
     float4 ndcTranslated2 = ndcPosition2 / ndcPosition2.w;
     float4 ndcTranslated3 = ndcPosition3 / ndcPosition3.w;
 
-    if (bParams.x)// if fixed sized billboard
+    if (pbParams.x)// if fixed sized billboard
     {
 		// Translate offset into normalized device coordinates.
         ndcTranslated0.xy += windowToNdc(float2(input[0].offTL.x, input[0].offBR.y));
@@ -43,8 +46,7 @@ void main(point VSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
     output.p = float4(ndcTranslated0.xyz, 1.0);
     output.background = input[0].background;
     output.foreground = input[0].foreground;
-    output.t = 
-    float2(input[0].t0.x, input[0].t3.y);
+    output.t = float2(input[0].t0.x, input[0].t3.y);
     SpriteStream.Append(output);
 
     output.p = float4(ndcTranslated1.xyz, 1.0);
@@ -62,9 +64,10 @@ void main(point VSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
     output.p = float4(ndcTranslated3.xyz, 1.0);
     output.background = input[0].background;
     output.foreground = input[0].foreground;
-    output.t = 
-    float2(input[0].t3.x, input[0].t0.y);
+    output.t = float2(input[0].t3.x, input[0].t0.y);    
     SpriteStream.Append(output);
 
     SpriteStream.RestartStrip();
 }
+
+#endif

@@ -1,6 +1,6 @@
 #ifndef PSMESHXRAY_HLSL
 #define PSMESHXRAY_HLSL
-
+#define MESH
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\CommonBuffers.hlsl"
 

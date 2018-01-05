@@ -199,8 +199,6 @@ namespace HelixToolkit.UWP.Model
         }
 
         private bool needUpdate = true;
-        private MaterialStruct materialStruct;
-        private readonly IConstantBufferProxy materialBuffer;
         /// <summary>
         /// <see cref="IMaterialRenderParams.Material"/> 
         /// </summary>
@@ -234,7 +232,6 @@ namespace HelixToolkit.UWP.Model
         /// <param name="manager"></param>
         public PhongMaterialVariables(IEffectsManager manager)
         {
-            materialBuffer = manager.ConstantBufferPool.Register(new ConstantBufferDescription(DefaultBufferNames.MaterialCB, MaterialStruct.SizeInBytes));
             Device = manager.Device;
             TextureResources[DiffuseIdx] = Collect(new ShaderResouceViewProxy(Device));
             TextureResources[NormalIdx] = Collect(new ShaderResouceViewProxy(Device));
@@ -322,52 +319,41 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        private void AssignVariables()
+        private void AssignVariables(ref ModelStruct modelstruct)
         {
-            materialStruct = new MaterialStruct
-            {
-                Ambient = material.AmbientColor,
-                Diffuse = material.DiffuseColor,
-                Emissive = material.EmissiveColor,
-                Reflect = material.ReflectiveColor,
-                Specular = material.SpecularColor,
-                Shininess = material.SpecularShininess,
-                HasDiffuseMap = RenderDiffuseMap && TextureResources[DiffuseIdx].TextureView != null ? 1 : 0,
-                HasDiffuseAlphaMap = RenderDiffuseAlphaMap && TextureResources[AlphaIdx].TextureView != null ? 1 : 0,
-                HasNormalMap = RenderNormalMap && TextureResources[NormalIdx].TextureView != null ? 1 : 0,
-                HasDisplacementMap = RenderDisplacementMap && TextureResources[DisplaceIdx].TextureView != null ? 1 : 0,
-                DisplacementMapScaleMask = material.DisplacementMapScaleMask,
-                RenderShadowMap = RenderShadowMap ? 1 : 0,
-                HasCubeMap = RenderEnvironmentMap ? 1 : 0
-            };
+            modelstruct.Ambient = material.AmbientColor;
+            modelstruct.Diffuse = material.DiffuseColor;
+            modelstruct.Emissive = material.EmissiveColor;
+            modelstruct.Reflect = material.ReflectiveColor;
+            modelstruct.Specular = material.SpecularColor;
+            modelstruct.Shininess = material.SpecularShininess;
+            modelstruct.HasDiffuseMap = RenderDiffuseMap && TextureResources[DiffuseIdx].TextureView != null ? 1 : 0;
+            modelstruct.HasDiffuseAlphaMap = RenderDiffuseAlphaMap && TextureResources[AlphaIdx].TextureView != null ? 1 : 0;
+            modelstruct.HasNormalMap = RenderNormalMap && TextureResources[NormalIdx].TextureView != null ? 1 : 0;
+            modelstruct.HasDisplacementMap = RenderDisplacementMap && TextureResources[DisplaceIdx].TextureView != null ? 1 : 0;
+            modelstruct.DisplacementMapScaleMask = material.DisplacementMapScaleMask;
+            modelstruct.RenderShadowMap = RenderShadowMap ? 1 : 0;
+            modelstruct.HasCubeMap = RenderEnvironmentMap ? 1 : 0;
         }
         /// <summary>
         /// <see cref="IEffectMaterialVariables.UpdateMaterialConstantBuffer(DeviceContext)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public bool UpdateMaterialConstantBuffer(DeviceContext context)
+        public bool UpdateMaterialVariables(ref ModelStruct modelstruct)
         {
             if (material == null)
             {
                 return false;
             }
-            OnUpdateMaterialConstantBuffer(context);
-            return true;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        private void OnUpdateMaterialConstantBuffer(DeviceContext context)
-        {
             if (needUpdate)
             {
-                AssignVariables();
+                AssignVariables(ref modelstruct);
                 needUpdate = false;
             }
-            materialBuffer.UploadDataToBuffer(context, ref materialStruct);
+            return true;
         }
+
         /// <summary>
         /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContext, IShader)"/>
         /// </summary>
@@ -446,7 +432,7 @@ namespace HelixToolkit.UWP.Model
                 shader.BindTexture(context, TextureBindingMap[idx, i], TextureResources[i]);
                 shader.BindSampler(context, SamplerBindingMap[idx, i], SamplerResources[i]);
             }
-            if (materialStruct.RenderShadowMap == 1)
+            if (RenderShadowMap)
             {
                 shader.BindSampler(context, SamplerBindingMap[idx, NUMSAMPLERS-1], SamplerResources[NUMSAMPLERS-1]);
             }

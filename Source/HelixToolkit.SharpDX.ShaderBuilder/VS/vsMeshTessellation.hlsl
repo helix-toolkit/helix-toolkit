@@ -1,6 +1,7 @@
 #ifndef VSMESHTESSELLATION_HLSL
 #define VSMESHTESSELLATION_HLSL
 #define MATERIAL
+#define MESH
 #define TESSELLATION
 #include"..\Common\CommonBuffers.hlsl"
 #include"..\Common\DataStructs.hlsl"

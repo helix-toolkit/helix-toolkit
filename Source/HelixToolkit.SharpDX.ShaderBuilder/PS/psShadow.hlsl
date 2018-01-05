@@ -1,6 +1,6 @@
 #ifndef PSSHADOW_HLSL
 #define PSSHADOW_HLSL
-#define DEBUG
+//#define DEBUG
 #include"..\Common\DataStructs.hlsl"
 //--------------------------------------------------------------------------------------
 // Given Per-Vertex Color

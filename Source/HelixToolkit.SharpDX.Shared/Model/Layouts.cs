@@ -243,7 +243,40 @@ namespace HelixToolkit.Wpf.SharpDX
         public float MaxTessDistance; // Maximum distance to do tessellation
         public float MinTessFactor; // Tessellation factor when at minimum distance, usually MinTessFactor > MaxTessFactor
         public float MaxTessFactor; // Tessellation factor when at maximum distance
-        public const int SizeInBytes = 4 * (4 * 4 + 4 * 4 + 4);
+        /// <summary>
+        /// Material variables
+        /// </summary>
+        public Color4 Ambient;
+        public Color4 Diffuse;
+        public Color4 Emissive;
+        public Color4 Specular;
+        public Color4 Reflect;
+        public float Shininess;
+        public int HasDiffuseMap;
+        public int HasDiffuseAlphaMap;
+        public int HasNormalMap;
+
+        public int HasDisplacementMap;
+        public int HasCubeMap;
+        public int RenderShadowMap;
+        float Padding;
+        public Vector4 DisplacementMapScaleMask; // Use to select which channel will be used after displacement map sampling, also scaling the value
+
+        public const int SizeInBytes = 4 * (4 * 4 + 4 * 4 + 4) + 4 * (4 * 8);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct PointLineModelStruct
+    {
+        public Matrix World;
+        public int HasInstances;
+        public int HasInstanceParams;
+        Vector2 padding;
+        public Vector4 Params;
+        public Vector4 Color;
+        public Bool4 BoolParams;
+
+        public const int SizeInBytes = 4 * (4 * 4 + 4 * 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]

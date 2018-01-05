@@ -12,7 +12,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using Utilities;
 
-    public class BillboardRenderCore : GeometryRenderCore, IBillboardRenderParams
+    public class BillboardRenderCore : GeometryRenderCore<PointLineModelStruct>, IBillboardRenderParams
     {
         public bool FixedSize { set; get; } = true;
         private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerWrapAni4;
@@ -69,19 +69,24 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
         {
-            base.OnUpdatePerModelStruct(ref model, context);
+            model.World = ModelMatrix * context.WorldMatrix;
+            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             model.BoolParams.X = FixedSize;
             var type = (GeometryBuffer as IBillboardBufferModel).Type;
             model.Params.X = (int)type;
+        }
+
+        protected override ConstantBufferDescription GetModelConstantBufferDescription()
+        {
+            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
         }
 
         protected override void OnRender(IRenderContext context)
         {
             DefaultShaderPass.BindShader(context.DeviceContext);
             DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            context.DeviceContext.Rasterizer.State = RasterState;
             BindBillboardTexture(context.DeviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel));
             OnDraw(context.DeviceContext, InstanceBuffer);
         }

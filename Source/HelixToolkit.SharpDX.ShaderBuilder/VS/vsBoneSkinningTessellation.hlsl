@@ -1,6 +1,6 @@
 #ifndef VSBONESKINNINGTESSELLATION_HLSL
 #define VSBONESKINNINGTESSELLATION_HLSL
-
+#define MESH
 #include"..\Common\Common.hlsl"
 
 
