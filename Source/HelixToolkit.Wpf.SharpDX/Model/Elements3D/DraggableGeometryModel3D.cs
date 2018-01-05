@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     else
                     {
-                        this.Transform = Transform.AppendTransform(new TranslateTransform3D(offset));
+                        this.Transform = new MatrixTransform3D(Transform.AppendTransform(new TranslateTransform3D(offset)).Value);
                     }
                 }
             }

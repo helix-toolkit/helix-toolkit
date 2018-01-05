@@ -17,6 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
+    using MatrixTransform3D = System.Windows.Media.Media3D.MatrixTransform3D;
 
     /// <summary>
     ///   A translate manipulator.
@@ -131,7 +132,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (this.TargetTransform != null)
                 {                    
-                    this.TargetTransform = this.TargetTransform.AppendTransform(deltaTranslateTrafo);
+                    this.TargetTransform = new MatrixTransform3D(this.TargetTransform.AppendTransform(deltaTranslateTrafo).Value);
                 }
                 else
                 {
@@ -141,7 +142,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     else
                     {
-                        this.Transform = this.Transform.AppendTransform(deltaTranslateTrafo);
+                        this.Transform = new MatrixTransform3D(this.Transform.AppendTransform(deltaTranslateTrafo).Value);
                     }
                 }
 
