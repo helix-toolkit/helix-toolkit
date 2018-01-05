@@ -24,6 +24,9 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public IEffectMaterialVariables MaterialVariables { get { return materialVariables; } }
         private IMaterial material = null;
+        /// <summary>
+        /// 
+        /// </summary>
         public IMaterial Material
         {
             set
@@ -42,13 +45,103 @@ namespace HelixToolkit.UWP.Core
                 return material;
             }
         }
-        public bool RenderDiffuseMap { set; get; } = true;
-        public bool RenderDiffuseAlphaMap { set; get; } = true;
-        public bool RenderNormalMap { set; get; } = true;
-        public bool RenderDisplacementMap { set; get; } = true;
-        public bool RenderShadowMap { set; get; } = false;
+        private bool renderDiffuseMap = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderDiffuseMap
+        {
+            set
+            {
+                if(Set(ref renderDiffuseMap, value) && materialVariables != null)
+                {
+                    materialVariables.RenderDiffuseMap = value;
+                }               
+            }
+            get { return renderDiffuseMap; }
+        }
+        private bool renderDiffuseAlphaMap = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderDiffuseAlphaMap
+        {
+            set
+            {
+                if(Set(ref renderDiffuseAlphaMap, value) && materialVariables != null)
+                {
+                    materialVariables.RenderDiffuseAlphaMap = value;
+                }
+            }
+            get
+            {
+                return renderDiffuseAlphaMap;
+            }
+        }
+        private bool renderNormalMap = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderNormalMap
+        {
+            set
+            {
+                if(Set(ref renderNormalMap, value) && materialVariables != null)
+                {
+                    materialVariables.RenderNormalMap = value;
+                }
+            }
+            get
+            {
+                return renderNormalMap;
+            }
+        }
+        private bool renderDisplacementMap = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderDisplacementMap
+        {
+            set
+            {
+                if(Set(ref renderDisplacementMap, value) && materialVariables != null)
+                {
+                    materialVariables.RenderDisplacementMap = value;
+                }
+            }
+            get { return renderDisplacementMap; }
+        }
 
-        public bool RenderEnvironmentMap { set; get; } = false;
+        private bool renderShadowMap = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderShadowMap
+        {
+            set
+            {
+                if(Set(ref renderShadowMap, value) && materialVariables != null)
+                {
+                    materialVariables.RenderShadowMap = value;
+                }
+            }
+            get { return renderShadowMap; }
+        }
+        private bool renderEnvironmentMap = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderEnvironmentMap
+        {
+            set
+            {
+                if(Set(ref renderEnvironmentMap, value) && materialVariables != null)
+                {
+                    materialVariables.RenderEnvironmentMap = value;
+                }
+            }
+            get { return renderEnvironmentMap; }
+        }
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
@@ -61,6 +154,12 @@ namespace HelixToolkit.UWP.Core
                 }
                 materialVariables = Collect(CreateEffectMaterialVariables(technique.EffectsManager));
                 materialVariables.Material = Material;
+                MaterialVariables.RenderShadowMap = this.RenderShadowMap;
+                MaterialVariables.RenderDiffuseMap = this.RenderDiffuseMap;
+                MaterialVariables.RenderNormalMap = this.RenderNormalMap;
+                MaterialVariables.RenderDisplacementMap = this.RenderDisplacementMap;
+                MaterialVariables.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
+                MaterialVariables.RenderEnvironmentMap = this.RenderEnvironmentMap;
                 materialVariables.OnInvalidateRenderer += InvalidateRenderer;
                 return true;
             }
@@ -89,12 +188,6 @@ namespace HelixToolkit.UWP.Core
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
-            MaterialVariables.RenderShadowMap = this.RenderShadowMap;
-            MaterialVariables.RenderDiffuseMap = this.RenderDiffuseMap;
-            MaterialVariables.RenderNormalMap = this.RenderNormalMap;
-            MaterialVariables.RenderDisplacementMap = this.RenderDisplacementMap;
-            MaterialVariables.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
-            MaterialVariables.RenderEnvironmentMap = this.RenderEnvironmentMap;
             MaterialVariables.UpdateMaterialVariables(ref model);
         }
         
