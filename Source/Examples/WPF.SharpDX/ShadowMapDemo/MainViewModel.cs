@@ -80,7 +80,7 @@ namespace ShadowMapDemo
             b1.AddSphere(new Vector3(0, 0, 0), 0.5);
             b1.AddBox(new Vector3(0, 0, 0), 1, 0.25, 2, BoxFaces.All);
             Model = b1.ToMeshGeometry3D();
-            //Instances = new[] { Matrix.Translation(0, 0, -1.5f), Matrix.Translation(0, 0, 1.5f) };
+            Instances = new[] { Matrix.Translation(0, 0, -1.5f), Matrix.Translation(0, 0, 1.5f) };
 
             var b2 = new MeshBuilder();
             b2.AddBox(new Vector3(0, 0, 0), 10, 0, 10, BoxFaces.PositiveY);

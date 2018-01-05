@@ -72,11 +72,11 @@
                                           CanTranslateX="False" CanTranslateY="False" CanTranslateZ="False"
                                           Diameter="2"                                                                                                
                                           TargetTransform="{Binding Transform,ElementName=lightCamera}"/>
-            <hx:MeshGeometryModel3D x:Name="model1" CullMode="Back" IsThrowingShadow="True" RenderShadowMap="True" Geometry="{Binding Model}" Transform="{Binding Model1Transform}" Material="{Binding RedMaterial}"  />
+            <hx:MeshGeometryModel3D x:Name="model1" CullMode="Back" IsThrowingShadow="True" RenderShadowMap="True" Geometry="{Binding Model}" Transform="{Binding Model1Transform}" Material="{Binding RedMaterial}"  Instances="{Binding Instances}" />
             <hx:MeshGeometryModel3D x:Name="model2" CullMode="Back" IsThrowingShadow="True" RenderShadowMap="True"  Geometry="{Binding Model}" Transform="{Binding Model2Transform}" Material="{Binding GreenMaterial}" Instances="{Binding Instances}"/>
             <hx:MeshGeometryModel3D x:Name="model3" CullMode="Back" IsThrowingShadow="True" RenderShadowMap="True"  Geometry="{Binding Model}" Transform="{Binding Model3Transform}" Material="{Binding BlueMaterial}" />
             <hx:MeshGeometryModel3D x:Name="plane" CullMode="Back"  IsThrowingShadow="false" RenderShadowMap="True" Geometry="{Binding Plane}" Transform="{Binding PlaneTransform}"  Material="{Binding GrayMaterial}" />
-            <hx:LineGeometryModel3D x:Name="lines" IsThrowingShadow="True"   Geometry="{Binding Lines}" Transform="{Binding Model1Transform}" Color="Black"/>
+            <hx:LineGeometryModel3D x:Name="lines" IsThrowingShadow="True"   Geometry="{Binding Lines}" Transform="{Binding Model1Transform}" Color="Black" Instances="{Binding Instances}"/>
             <hx:LineGeometryModel3D x:Name="grid"  IsThrowingShadow="True"   Geometry="{Binding Grid}"  Transform="{Binding GridTransform}"   Color="{Binding GridColor}"/>
         </hx:Viewport3DX>
         
@@ -116,7 +116,6 @@
                     <CheckBox IsChecked="{Binding RenderShadowMap, ElementName=model1}" Margin="3">Model 1 RenderShadow</CheckBox>
                     <CheckBox IsChecked="{Binding RenderShadowMap, ElementName=model2}" Margin="3">Model 2 RenderShadow</CheckBox>
                     <CheckBox IsChecked="{Binding RenderShadowMap, ElementName=model3}" Margin="3">Model 3 RenderShadow</CheckBox>
-                    <CheckBox IsChecked="{Binding RenderShadowMap, ElementName=lines}" Margin="3">Bounding Box</CheckBox>
                     <Separator></Separator>
                     <CheckBox IsChecked="{Binding IsShadowMappingEnabled, ElementName=view1}" Margin="3">Shadow Mapping</CheckBox>
                     <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsRendering, ElementName=shadowMap}" Margin="0">

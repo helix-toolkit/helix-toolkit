@@ -42,7 +42,7 @@
             Title="{Binding Title}"
             Grid.Row="1"
             Camera="{Binding Camera}"
-            CoordinateSystemLabelForeground="White"
+            CoordinateSystemLabelForeground="#434343"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
@@ -90,8 +90,6 @@
             <!--<hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}"/>-->
             <!--<hx:PointGeometryModel3D x:Name="points" Geometry="{Binding Points}" Color="{x:Static sdxm:Color.Black}" Size="10 10" Figure="Ellipse" HitTestThickness="5"/>-->
             <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding Text}" Transform ="{Binding Model1Transform}"/>
-            <hx:CoordinateSystemModel3D RelativeScreenLocationX="-0.5"></hx:CoordinateSystemModel3D>
-            <hx:ViewBoxModel3D UpDirection="{Binding UpDirection}" RelativeScreenLocationX="0.5"></hx:ViewBoxModel3D>
         </hx:Viewport3DX>
 
         <StackPanel Grid.Row="1">
