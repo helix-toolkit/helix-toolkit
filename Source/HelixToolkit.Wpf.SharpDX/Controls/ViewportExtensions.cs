@@ -25,6 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Ray = global::SharpDX.Ray;
     using Vector2 = global::SharpDX.Vector2;
     using Vector3 = global::SharpDX.Vector3;
+    using Cameras;
 
     /// <summary>
     /// Provides extension methods for <see cref="Viewport3DX" />.
@@ -102,14 +103,14 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Matrix GetViewProjectionMatrix(this Viewport3DX viewport)
         {
             return viewport.RenderContext != null ? viewport.RenderContext.ViewMatrix * viewport.RenderContext.ProjectionMatrix
-                : viewport.Camera.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
+                : viewport.CameraCore.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix GetProjectionMatrix(this Viewport3DX viewport)
         {
             return viewport.RenderContext != null ? viewport.RenderContext.ProjectionMatrix
-                : viewport.Camera.GetProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
+                : viewport.CameraCore.GetProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
         }
         /// <summary>
         /// Gets the total transform for a Viewport3DX. 
@@ -355,7 +356,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The ray.</returns>
         public static Ray UnProject(this Viewport3DX viewport, Vector2 point2d)//, out Vector3 pointNear, out Vector3 pointFar)
         {
-            var camera = viewport.Camera as ProjectionCamera;
+            var camera = viewport.CameraCore as ProjectionCameraCore;
             if (camera != null)
             {
                 var px = (float)point2d.X;
@@ -376,9 +377,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Z = 1 / projMatrix.M33;
                 Vector3.TransformCoordinate(ref v, ref matrix, out zf);
 
-                if (camera is PerspectiveCamera)
+                if (camera is PerspectiveCameraCore)
                 {
-                    zn = camera.Position.ToVector3();
+                    zn = camera.Position;
                 }
                 else
                 {
@@ -388,7 +389,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Vector3 r = zf - zn;
                 r.Normalize();               
 
-                return new Ray(zn + r * (float)camera.NearPlaneDistance, r);
+                return new Ray(zn + r * camera.NearPlaneDistance, r);
             }
             throw new HelixToolkitException("Unproject camera error.");
         }

@@ -79,6 +79,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IShaderPass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IShaderReflector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IVertexExtraBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\PhongMaterialVariables.cs" />

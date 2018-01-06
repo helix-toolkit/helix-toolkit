@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using HelixToolkit.Wpf.SharpDX.Cameras;
+using SharpDX;
 using SharpDX.Direct3D11;
 using System.Linq;
 using System.Windows;
@@ -25,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected bool isCaptured;
         protected Viewport3DX viewport;
-        protected ICamera viewportCamera;
+        protected CameraCore viewportCamera;
         protected Point3D lastHitPos;
 
         private ProjectionCamera _camera;
@@ -35,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if(_camera == value) { return; }
                 _camera = value;
-                this.Transform = new System.Windows.Media.Media3D.MatrixTransform3D(_camera.GetInversedViewMatrix().ToMatrix3D());
+                this.Transform = new MatrixTransform3D(_camera.GetInversedViewMatrix());
             }
             get
             {
@@ -127,7 +128,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var normal = this.viewportCamera.LookDirection;
 
                 // hit position                        
-                var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos, normal);
+                var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos, normal.ToVector3D());
                 if (newHit.HasValue)
                 {
                     var offset = (newHit.Value - lastHitPos);

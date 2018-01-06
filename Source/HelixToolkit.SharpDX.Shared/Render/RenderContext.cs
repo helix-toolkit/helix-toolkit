@@ -18,10 +18,10 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
 
     using global::SharpDX.Direct3D11;
-    using ShaderManager;
     using Utilities;
     using Shaders;
     using Model;
+    using Cameras;
 
     /// <summary>
     /// The render-context is currently generated per frame
@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private Matrix viewMatrix;
         private Matrix projectionMatrix;
         public BoundingFrustum BoundingFrustum { set; get; }
-        private ICamera camera; 
+        private CameraCore camera; 
 
         private bool matrixChanged = true;
 
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public double ActualHeight { get; private set; }
 
-        public ICamera Camera
+        public CameraCore Camera
         {
             get { return this.camera; }
             set
@@ -114,15 +114,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 ActualWidth = this.RenderHost.ActualWidth;
                 ViewMatrix = this.camera.CreateViewMatrix();
                 var aspectRatio = this.ActualWidth / this.ActualHeight;
-                ProjectionMatrix = this.camera.CreateProjectionMatrix(aspectRatio);
-                if (this.camera is ProjectionCamera)
+                ProjectionMatrix = this.camera.CreateProjectionMatrix((float)aspectRatio);
+                if (this.camera is ProjectionCameraCore)
                 {
-                    var c = this.camera as ProjectionCamera;
+                    var c = this.camera as ProjectionCameraCore;
                     // viewport: W,H,0,0   
                     globalTransform.Viewport = new Vector4((float)ActualWidth, (float)ActualHeight, 0, 0);
                     var ar = globalTransform.Viewport.X / globalTransform.Viewport.Y;
                     
-                    var  pc = c as PerspectiveCamera;
+                    var  pc = c as PerspectiveCameraCore;
                     var fov = (pc != null) ? pc.FieldOfView : 90f;
 
                     var zn = c.NearPlaneDistance > 0 ? c.NearPlaneDistance : 0.1;
@@ -131,7 +131,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     globalTransform.Frustum = new Vector4((float)fov, (float)ar, (float)zn, (float)zf);
                     if(EnableBoundingFrustum)
                         BoundingFrustum = new BoundingFrustum(ViewMatrix * ProjectionMatrix);
-                    globalTransform.EyePos = this.camera.Position.ToVector3();
+                    globalTransform.EyePos = this.camera.Position;
                 }
             }
         }

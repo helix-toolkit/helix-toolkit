@@ -16,10 +16,11 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using HelixToolkit.Wpf.SharpDX.Cameras;
     using Model;
     public interface IRenderContext : IDisposable
     {
-        ICamera Camera { set; get; }
+        CameraCore Camera { set; get; }
         Matrix ViewMatrix { get; }
 
         Matrix ProjectionMatrix { get; }
