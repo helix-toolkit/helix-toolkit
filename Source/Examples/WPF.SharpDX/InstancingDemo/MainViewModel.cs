@@ -215,7 +215,7 @@ namespace InstancingDemo
                 var index = (int)hitTests[0].Tag;
                 if (hitTests[0].ModelHit is InstancingMeshGeometryModel3D)
                 {                    
-                    InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor == new Color4(0,0,0,1)? Colors.Yellow.ToColor4() : Colors.Black.ToColor4();
+                    InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor != Colors.Yellow.ToColor4()? Colors.Yellow.ToColor4() : Colors.Black.ToColor4();
                     InstanceParam = (InstanceParameter[])InstanceParam.Clone();
                 }
                 else if(hitTests[0].ModelHit is LineGeometryModel3D)
