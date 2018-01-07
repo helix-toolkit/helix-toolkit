@@ -11,6 +11,7 @@ namespace HelixToolkit.UWP
 #endif
 {
     using global::SharpDX;
+    using Cameras;
     using System.Collections.Generic;
 
     public interface IRenderable
@@ -35,7 +36,7 @@ namespace HelixToolkit.UWP
         bool IsShadowMappingEnabled { get; }
         IEffectsManager EffectsManager { set; get; }
         IRenderTechnique RenderTechnique { set; get; }
-        ICamera Camera { get; }
+        CameraCore CameraCore { get; }
         Color4 BackgroundColor { get; }
 
         //DeferredRenderer DeferredRenderer { get; set; }

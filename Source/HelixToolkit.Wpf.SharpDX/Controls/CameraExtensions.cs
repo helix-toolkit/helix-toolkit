@@ -9,6 +9,7 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using HelixToolkit.Wpf.SharpDX.Cameras;
     using System;
     using System.Globalization;
     using System.Text;
@@ -162,7 +163,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="dest">
         /// The destination camera.
         /// </param>
-        public static void CopyTo(this ICamera source, ICamera dest)
+        public static void CopyTo(this Camera source, Camera dest)
         {
             var projectionSource = source as ProjectionCamera;
             var projectionDest = dest as ProjectionCamera;
@@ -269,7 +270,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// The get info.
         /// </returns>
-        public static string GetInfo(this ICamera camera)
+        public static string GetInfo(this Camera camera)
         {
             var matrixCamera = camera as MatrixCamera;
             var perspectiveCamera = camera as PerspectiveCamera;
@@ -350,7 +351,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// The inverse transform.
         /// </returns>
-        public static Matrix3D GetInverseViewProjectionMatrix3D(this ICamera camera, double aspectRatio)
+        public static Matrix3D GetInverseViewProjectionMatrix3D(this Camera camera, double aspectRatio)
         {
             return GetInverseViewProjectionMatrix(camera, aspectRatio).ToMatrix3D();
         }
@@ -367,7 +368,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// The inverse transform.
         /// </returns>
-        public static Matrix GetInverseViewProjectionMatrix(this ICamera camera, double aspectRatio)
+        public static Matrix GetInverseViewProjectionMatrix(this CameraCore camera, double aspectRatio)
         {
             var m = GetViewProjectionMatrix(camera, aspectRatio);
             m.Invert();
@@ -380,7 +381,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="camera">The camera.</param>
         /// <param name="aspectRatio">The aspect ratio.</param>
         /// <returns>The projection matrix.</returns>
-        public static Matrix3D GetProjectionMatrix3D(this ICamera camera, double aspectRatio)
+        public static Matrix3D GetProjectionMatrix3D(this Camera camera, double aspectRatio)
         {
             return GetProjectionMatrix(camera, aspectRatio).ToMatrix3D();
         }
@@ -391,25 +392,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="camera">The camera.</param>
         /// <param name="aspectRatio">The aspect ratio.</param>
         /// <returns>The projection matrix.</returns>
-        public static Matrix GetProjectionMatrix(this ICamera camera, double aspectRatio)
+        public static Matrix GetProjectionMatrix(this CameraCore camera, double aspectRatio)
         {
-            if (camera == null)
-            {
-                throw new ArgumentNullException("camera");
-            }
-
-            var perspectiveCamera = camera as PerspectiveCamera;
-            if (perspectiveCamera != null)
-            {
-                return perspectiveCamera.CreateProjectionMatrix(aspectRatio);
-            }
-
-            var orthographicCamera = camera as OrthographicCamera;
-            if (orthographicCamera != null)
-            {
-                return orthographicCamera.CreateProjectionMatrix(aspectRatio);
-            }
-            throw new HelixToolkitException("Unknown camera type.");
+            return camera.CreateProjectionMatrix((float)aspectRatio);
         }
 
         /// <summary>
@@ -418,7 +403,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="camera">The camera.</param>
         /// <param name="aspectRatio">The aspect ratio.</param>
         /// <returns>The total view and projection transform.</returns>
-        public static Matrix3D GetViewProjectionMatrix3D(this ICamera camera, double aspectRatio)
+        public static Matrix3D GetViewProjectionMatrix3D(this Camera camera, double aspectRatio)
         {
             return GetViewProjectionMatrix(camera, aspectRatio).ToMatrix3D();
         }
@@ -429,14 +414,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="camera">The camera.</param>
         /// <param name="aspectRatio">The aspect ratio.</param>
         /// <returns>The total view and projection transform.</returns>
-        public static Matrix GetViewProjectionMatrix(this ICamera camera, double aspectRatio)
+        public static Matrix GetViewProjectionMatrix(this CameraCore camera, double aspectRatio)
         {
-
             if (camera == null)
             {
                 throw new ArgumentNullException("camera");
             }
-
             return GetViewMatrix(camera) * GetProjectionMatrix(camera, aspectRatio);
         }
 
@@ -449,7 +432,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// A Matrix object with the camera view transform matrix, or a Matrix with all zeros if the "camera" is null.
         /// </returns>
-        public static Matrix3D GetViewMatrix3D(this ICamera camera)
+        public static Matrix3D GetViewMatrix3D(this Camera camera)
         {
             return GetViewMatrix(camera).ToMatrix3D();
         }
@@ -463,22 +446,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// A Matrix object with the camera view transform matrix, or a Matrix with all zeros if the "camera" is null.
         /// </returns>
-        public static Matrix GetViewMatrix(this ICamera camera)
+        public static Matrix GetViewMatrix(this CameraCore camera)
         {
-            if (camera == null)
-            {
-                throw new ArgumentNullException("camera");
-            }
-
-            if (camera is ProjectionCamera)
-            {
-                return camera.CreateViewMatrix();
-            }
-
-            throw new HelixToolkitException("Unknown camera type.");
+            return camera.CreateViewMatrix();
         }
 
-        public static Matrix GetInversedViewMatrix(this ICamera camera)
+        public static Matrix3D GetInversedViewMatrix(this Camera camera)
+        {
+            var viewMatrix = GetViewMatrix(camera);
+            return InverseViewMatrix(ref viewMatrix).ToMatrix3D();
+        }
+
+        public static Matrix GetInversedViewMatrix(this CameraCore camera)
         {
             var viewMatrix = GetViewMatrix(camera);
             return InverseViewMatrix(ref viewMatrix);
@@ -516,7 +495,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public static void LookAt(this ICamera camera, Point3D target, double animationTime)
+        public static void LookAt(this Camera camera, Point3D target, double animationTime)
         {
             var projectionCamera = camera as ProjectionCamera;
             if (projectionCamera == null)
@@ -543,7 +522,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The animation time.
         /// </param>
         public static void LookAt(
-            this ICamera camera, Point3D target, Vector3D newLookDirection, double animationTime)
+            this Camera camera, Point3D target, Vector3D newLookDirection, double animationTime)
         {
             var projectionCamera = camera as ProjectionCamera;
             if (projectionCamera == null)
@@ -573,7 +552,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The animation time.
         /// </param>
         public static void LookAt(
-            this ICamera camera,
+            this Camera camera,
             Point3D target,
             Vector3D newLookDirection,
             Vector3D newUpDirection,
@@ -607,7 +586,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public static void LookAt(this ICamera camera, Point3D target, double distance, double animationTime)
+        public static void LookAt(this Camera camera, Point3D target, double distance, double animationTime)
         {
             var projectionCamera = camera as ProjectionCamera;
             if (projectionCamera == null)
@@ -624,7 +603,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="camera">
         /// The camera.
         /// </param>
-        public static void Reset(this ICamera camera)
+        public static void Reset(this Camera camera)
         {
             var projectionCamera = camera as PerspectiveCamera;
             if (projectionCamera != null)
@@ -694,7 +673,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The animation time.
         /// </param>
         public static void ZoomExtents(
-            this ICamera camera, Viewport3DX viewport, double animationTime = 0)
+            this Camera camera, Viewport3DX viewport, double animationTime = 0)
         {
             var bounds = viewport.FindBounds();
             var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
@@ -723,7 +702,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The animation time.
         /// </param>
         public static void ZoomExtents(
-            this ICamera camera, Viewport3DX viewport, Rect3D bounds, double animationTime = 0)
+            this Camera camera, Viewport3DX viewport, Rect3D bounds, double animationTime = 0)
         {
             var projectionCamera = camera as ProjectionCamera;
             if (projectionCamera == null)
@@ -756,7 +735,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The animation time.
         /// </param>
         public static void ZoomExtents(
-            this ICamera camera, Viewport3DX viewport, Point3D center, double radius, double animationTime = 0)
+            this Camera camera, Viewport3DX viewport, Point3D center, double radius, double animationTime = 0)
         {
             var projectionCamera = camera as ProjectionCamera;
             if (projectionCamera == null)
@@ -804,7 +783,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="zoomRectangle">
         /// The zoom rectangle.
         /// </param>
-        public static void ZoomToRectangle(this ICamera camera, Viewport3DX viewport, Rect zoomRectangle)
+        public static void ZoomToRectangle(this Camera camera, Viewport3DX viewport, Rect zoomRectangle)
         {
             var pcam = camera as ProjectionCamera;
             if (pcam == null)
@@ -871,7 +850,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="camera">The camera.</param>
         /// <param name="delta">The delta.</param>
-        public static void MoveCameraPosition(this ICamera camera, Vector3D delta)
+        public static void MoveCameraPosition(this Camera camera, Vector3D delta)
         {
             var pcam = camera as ProjectionCamera;
             if (pcam == null)

@@ -54,18 +54,18 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             this.transformMatrix = matrixStack.Pop();
         }
 
-        protected override void PreRender(IRenderContext context)
+        protected override void PreRender(IRenderContext2D context)
         {
             base.PreRender(context);
-            if (RenderCore != null)
+            if (RenderCore is ITransform2D)
             {
-                RenderCore.Transform = TransformMatrix;
+                ((ITransform2D)RenderCore).Transform = TransformMatrix;
             }
         }
 
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
-            if (RenderCore != null && RenderCore.Rect.Contains(mousePoint))
+            if (RenderCore != null && RenderCore.Bound.Contains(mousePoint))
             {
                 hitResult = new HitTest2DResult(this);
                 return true;

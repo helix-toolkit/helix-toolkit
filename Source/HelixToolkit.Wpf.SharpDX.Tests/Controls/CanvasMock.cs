@@ -113,7 +113,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
             }
         }
 
-        public D2DControlWrapper D2DControls
+        public ID2DTarget D2DControls
         {
             get
             {

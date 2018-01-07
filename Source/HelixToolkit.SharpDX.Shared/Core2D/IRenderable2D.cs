@@ -13,13 +13,18 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
+    public interface ITransform2D
+    {
+        Matrix3x2 Transform { set; get; }
+    }
     public interface IRenderable2D : IDisposable
     {
-        RectangleF Rect { set; get; }
-        Matrix3x2 Transform { set; get; }
+        RectangleF Bound { set; get; }
+        //Matrix3x2 Transform { set; get; }
         bool IsRendering { set; get; }
-        void Render(IRenderContext matrics, RenderTarget target);
-
+        void Attach(IRenderHost target);
+        void Detach();
+        void Render(IRenderContext2D context);
         bool IsMouseOver { set; get; }
     }
 }

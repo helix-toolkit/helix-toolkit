@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 {
                     var model = (d as TextModel2D);
                     if (model.textRenderable == null) { return; }
-                    model.textRenderable.Font = e.NewValue == null ? "Arial" : (string)e.NewValue;
+                    model.textRenderable.FontFamily = e.NewValue == null ? "Arial" : (string)e.NewValue;
                 }));
 
         public string Font
@@ -145,7 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         private TextRenderable textRenderable;
         protected bool foregroundChanged = true;
 
-        protected override IRenderable2D CreateRenderCore(IRenderHost host)
+        protected override IRenderable2D CreateRenderCore(ID2DTarget host)
         {
             textRenderable = new TextRenderable();
             AssignProperties();
@@ -157,14 +157,14 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             foregroundChanged = true;
         }
 
-        protected override void PreRender(IRenderContext context)
+        protected override void PreRender(IRenderContext2D context)
         {
             base.PreRender(context);
             if (foregroundChanged)
             {
                 textRenderable.Foreground = Foreground.ToD2DBrush(RenderTarget);
             }
-            textRenderable.Rect = this.Bound;
+            textRenderable.Bound = this.Bound;
             textRenderable.Transform = TransformMatrix; 
         }
 
@@ -172,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             if (textRenderable == null) { return; }
             textRenderable.Text = Text == null ? "" : Text;
-            textRenderable.Font = Font == null ? DefaultFont : Font;
+            textRenderable.FontFamily = Font == null ? DefaultFont : Font;
             textRenderable.FontWeight = FontWeight.ToDXFontWeight();
             textRenderable.FontStyle = FontStyle.ToDXFontStyle();
             textRenderable.FontSize = FontSize;

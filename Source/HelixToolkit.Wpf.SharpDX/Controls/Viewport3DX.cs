@@ -31,6 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Controls;
     using Elements2D;
     using Model;
+    using HelixToolkit.Wpf.SharpDX.Cameras;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -245,6 +246,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
         }
+
+        public CameraCore CameraCore { get { return this.Camera; } }
 
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
@@ -626,15 +629,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.IsRendering = this.Visibility == Visibility.Visible;
             }
 
-            if (this.adornerLayer == null)
-            {
-                this.adornerLayer = this.Template.FindName(PartAdornerLayer, this) as AdornerDecorator;
-            }
+            //if (this.adornerLayer == null)
+            //{
+            //    this.adornerLayer = this.Template.FindName(PartAdornerLayer, this) as AdornerDecorator;
+            //}
 
-            if (this.adornerLayer == null)
-            {
-                throw new HelixToolkitException("{0} is missing from the template.", PartAdornerLayer);
-            }
+            //if (this.adornerLayer == null)
+            //{
+            //    throw new HelixToolkitException("{0} is missing from the template.", PartAdornerLayer);
+            //}
 
             if (this.cameraController == null)
             {

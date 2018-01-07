@@ -28,7 +28,6 @@ namespace HelixToolkit.UWP.Core
         /// Model matrix
         /// </summary>
         public Matrix ModelMatrix { set; get; } = Matrix.Identity;      
-        //public Effect Effect { private set; get; }
         public IRenderTechnique EffectTechnique { private set; get; }
         public Device Device { get { return EffectTechnique == null ? null : EffectTechnique.Device; } }
         /// <summary>

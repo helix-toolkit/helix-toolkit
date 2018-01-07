@@ -215,14 +215,14 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected ShapeRenderable2DBase shapeRenderable;
 
-        protected sealed override IRenderable2D CreateRenderCore(IRenderHost host)
+        protected sealed override IRenderable2D CreateRenderCore(ID2DTarget host)
         {
             shapeRenderable = CreateShapeRenderCore(host);
             AssignProperties();
             return shapeRenderable;
         }
 
-        protected abstract ShapeRenderable2DBase CreateShapeRenderCore(IRenderHost host);
+        protected abstract ShapeRenderable2DBase CreateShapeRenderCore(ID2DTarget host);
 
         protected virtual void AssignProperties()
         {
@@ -234,7 +234,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             fillChanged = strokeChanged = strokeStyleChanged = true;
         }
 
-        protected override void PreRender(IRenderContext context)
+        protected override void PreRender(IRenderContext2D context)
         {
             base.PreRender(context);
             if (fillChanged)

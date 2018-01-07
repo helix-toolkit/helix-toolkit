@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Elements3D
         /// Test for pull request #54.
         /// Fix IndexOutOfRange exception in CreateDefaultVertexArray.
         /// </summary>
-        [Test, STAThread, Ignore("No Graphic card on server.")]
+        [Test, STAThread]
         public void CreateDefaultVertexArrayForTriangle()
         {
             var reader = new ObjReader();

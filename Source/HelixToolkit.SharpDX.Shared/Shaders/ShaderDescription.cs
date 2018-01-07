@@ -104,12 +104,16 @@ namespace HelixToolkit.UWP.Shaders
         {
             if (ByteCode == null)
             {
-                return new NullShader(ShaderType);
+                return null;
             }
             if(shaderReflector != null)
             {
                 shaderReflector.Parse(ByteCode, ShaderType);
                 Level = shaderReflector.FeatureLevel;
+                if (Level > device.FeatureLevel)
+                {
+                    throw new Exception($"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
+                }
                 this.ConstantBufferMappings = shaderReflector.ConstantBufferMappings.Values.ToArray();
                 this.TextureMappings = shaderReflector.TextureMappings.Values.ToArray();
                 this.UAVMappings = shaderReflector.UAVMappings.Values.ToArray();
