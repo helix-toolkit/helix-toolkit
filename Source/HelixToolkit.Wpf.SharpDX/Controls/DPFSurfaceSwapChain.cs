@@ -765,7 +765,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private readonly EventSkipper skipper = new EventSkipper();
         private readonly PresentParameters presentParams = new PresentParameters();
-        private readonly LatencyProfiler profiler = new LatencyProfiler();
         /// <summary>
         /// Updates and renders the scene.
         /// </summary>
@@ -799,7 +798,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
                 lastRenderingDuration = renderTimer.Elapsed - t0;
-                profiler.Push(lastRenderingDuration.TotalMilliseconds);
+                skipper.Push(lastRenderingDuration.TotalMilliseconds);
             }
         }
 

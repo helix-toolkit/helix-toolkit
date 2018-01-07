@@ -10,13 +10,32 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
     /// <summary>
     /// Use to skip event if event frequency is too high.
     /// </summary>
-    public sealed class EventSkipper
+    public sealed class EventSkipper : Model.ObservableObject
     {
         /// <summary>
         /// Stopwatch
         /// </summary>
         private static readonly Stopwatch watch = new Stopwatch();
-        public long lag { private set; get; } = 0;
+        public double lag { private set; get; } = 0;
+
+        private double latency = 0;
+        /// <summary>
+        /// Average latency
+        /// </summary>
+        public double Latency
+        {
+            private set
+            {
+                if (Set(ref latency, value))
+                {
+                    Console.WriteLine($"Latency: {value}");
+                }
+            }
+            get
+            {
+                return latency;
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -27,7 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
         /// <summary>
         /// The threshold used to skip if previous event happened less than the threshold.
         /// </summary>
-        public long Threshold = 15;
+        public double Threshold = 15;
 
         /// <summary>
         /// Sometimes invalidate renderer ran too fast, causes sence not reflect the latest update. 
@@ -38,27 +57,51 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
         /// <summary>
         /// Previous event happened.
         /// </summary>
-        private long previous = 0;
+        private double previous = 0;
 
         private bool forceRender = false;
+        private uint counter = 0;
+        private double average = 0;
+        private const int RingBufferSize = 20;
+        private readonly SimpleRingBuffer<double> ringBuffer = new SimpleRingBuffer<double>(RingBufferSize);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="latency"></param>
+        public void Push(double latency)
+        {
+            if (ringBuffer.IsFull())
+            {
+                var last = ringBuffer.Last;                
+                average -= (last - average) / ringBuffer.Count;
+                ringBuffer.RemoveLast();
+            }
+            ringBuffer.Add(latency);
+            average += (latency - average) / ringBuffer.Count; // moving average
+            counter = (++counter) % 60;
+            if(counter == 0)
+            {
+                Latency = average;
+            }
+        }
         /// <summary>
         /// Determine if this event should be skipped.
         /// </summary>
         /// <returns>If skip, return true. Otherwise, return false.</returns>
         public bool IsSkip()
         {
-            var curr = watch.ElapsedMilliseconds;
-            var elpased = curr - previous;
+            var curr = watch.Elapsed.TotalMilliseconds;
+            var elapsed = curr - previous;
             previous = curr;
-            lag += elpased;
+            lag += elapsed;
 
-            if (lag < Threshold)
-            {                
+            if (lag < Threshold + average - elapsed)
+            {
                 return true;
             }
             else
             {
-                lag = Math.Min(lag - Threshold, Threshold - 2);
+                lag = 0;
                 forceRender = true;
                 return false;
             }

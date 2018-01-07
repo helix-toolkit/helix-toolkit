@@ -722,7 +722,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private readonly EventSkipper skipper = new EventSkipper();
-        private readonly LatencyProfiler profiler = new LatencyProfiler();
         /// <summary>
         /// Updates and renders the scene.
         /// </summary>
@@ -735,32 +734,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 // Update all renderables before rendering 
                 // giving them the chance to invalidate the current render.                                                            
                 //renderRenderable.Update(t0);
+                surfaceD3D.Lock();
                 try
                 {
-                    try
-                    {
-                        // Unfortunately, if DeviceRemoved/DeviceReset occurs while trying to acquire a lock,
-                        // the render thread will throw "COMException: UCEERR_RENDERTHREADFAILURE".
-                        // You can test this by executing the following command as administrator while running a demo: 
-                        //
-                        // "dxcap -forcetdr"
-                        //
-                        // Demos with permanent rendering like "LightingDemo" will fail to recover from 
-                        // DeviceRemoved/DeviceReset while static ones like "SimpleDemo" succeed.
-                        // See: https://blogs.msdn.microsoft.com/dsui_team/2013/11/18/wpf-render-thread-failures/
-                        // See: https://github.com/Microsoft/WPFDXInterop/issues/22
-                        // See: https://docs.microsoft.com/en-us/windows/uwp/gaming/handling-device-lost-scenarios
-                        if (surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(skipper.lag))))
-                        {
-                            pendingValidationCycles = false;
-                            Render(t0);
-                            surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
-                        }
-                    }
-                    finally
-                    {
-                        surfaceD3D.Unlock();
-                    }
+                    pendingValidationCycles = false;
+                    Render(t0);
+                    surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
                 }
                 catch (Exception ex)
                 {
@@ -769,9 +748,13 @@ namespace HelixToolkit.Wpf.SharpDX
                         MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
                     }
                 }
+                finally
+                {
+                    surfaceD3D.Unlock();
+                }
 
                 lastRenderingDuration = renderTimer.Elapsed - t0;
-                profiler.Push(lastRenderingDuration.TotalMilliseconds);
+                skipper.Push(lastRenderingDuration.TotalMilliseconds);
             }
         }
 
