@@ -408,7 +408,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private double zoomSpeed;
 
-        private readonly EventSkipper skipper = new EventSkipper();
+        private readonly FrameRateRegulator skipper = new FrameRateRegulator();
         /// <summary>
         /// Initializes static members of the <see cref="CameraController" /> class.
         /// </summary>

@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
     /// <summary>
     /// Use to skip event if event frequency is too high.
     /// </summary>
-    public sealed class EventSkipper : Model.ObservableObject
+    public sealed class FrameRateRegulator : Model.ObservableObject
     {
         /// <summary>
         /// Stopwatch
@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
         /// <summary>
         /// 
         /// </summary>
-        static EventSkipper()
+        static FrameRateRegulator()
         {
             watch.Start();
         }

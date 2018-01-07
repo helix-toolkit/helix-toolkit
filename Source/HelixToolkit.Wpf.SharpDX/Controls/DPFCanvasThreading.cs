@@ -813,7 +813,7 @@ namespace HelixToolkit.Wpf.SharpDX
             UpdateAndRender();
         }
 
-        private readonly EventSkipper skipper = new EventSkipper();
+        private readonly FrameRateRegulator skipper = new FrameRateRegulator();
         /// <summary>
         /// Updates and renders the scene.
         /// </summary>
