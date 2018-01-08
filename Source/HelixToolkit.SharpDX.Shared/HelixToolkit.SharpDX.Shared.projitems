@@ -105,6 +105,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Render\DX11RenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\SceneGraphManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\BufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ConstantBufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\DefaultEffectsManager.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ShaderResourceViewProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\TreeTraverser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\UAVBufferViewProxy.cs" />
   </ItemGroup>
   <ItemGroup>

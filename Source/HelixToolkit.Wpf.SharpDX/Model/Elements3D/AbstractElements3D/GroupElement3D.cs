@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
                     }));
 
-        public IEnumerable<Element3D> Items
+        public override IEnumerable<IRenderable> Items
         {
             get
             {

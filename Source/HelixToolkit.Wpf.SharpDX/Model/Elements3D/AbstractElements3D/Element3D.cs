@@ -198,6 +198,14 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return renderHost.Device; }
         }
 
+        public virtual IEnumerable<IRenderable> Items
+        {
+            get
+            {
+                return System.Linq.Enumerable.Empty<IRenderable>();
+            }
+        }
+
         private void RenderCore_OnInvalidateRenderer(object sender, bool e)
         {
             InvalidateRender();

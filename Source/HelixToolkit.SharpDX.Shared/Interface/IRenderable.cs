@@ -14,14 +14,35 @@ namespace HelixToolkit.UWP
     using Cameras;
     using System.Collections.Generic;
 
-    public interface IRenderable
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IRenderable 
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="host"></param>
         void Attach(IRenderHost host);
+        /// <summary>
+        /// 
+        /// </summary>
         void Detach();
         //void Update(TimeSpan timeSpan);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         void Render(IRenderContext context);
+        /// <summary>
+        /// 
+        /// </summary>
         bool IsAttached { get; }
-       // IRenderCore RenderCore { get; }
+
+        /// <summary>
+        /// Optional for sub items
+        /// </summary>
+        IEnumerable<IRenderable> Items { get; }
     }
 
     public interface IRenderer

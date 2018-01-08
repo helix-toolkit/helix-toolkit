@@ -26,6 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         private readonly ObservableElement3DCollection children;
 
+        public override IEnumerable<IRenderable> Items { get { return children; } }
         /// <summary>
         ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
         /// </summary>
