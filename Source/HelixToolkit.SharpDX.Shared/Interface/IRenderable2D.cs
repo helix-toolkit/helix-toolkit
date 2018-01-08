@@ -8,9 +8,9 @@ using SharpDX.Direct2D1;
 using System;
 
 #if NETFX_CORE
-namespace HelixToolkit.UWP.Core2D
+namespace HelixToolkit.UWP
 #else
-namespace HelixToolkit.Wpf.SharpDX.Core2D
+namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     public interface ITransform2D

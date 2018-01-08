@@ -32,7 +32,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\LineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\D2DControlWrapper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core2D\IRenderable2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\TextRenderable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshOutlineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ParticleRenderCore.cs" />
@@ -71,6 +70,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IPoolManagers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRandomVector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderable2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderHost.cs" />
@@ -101,6 +101,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Vector3Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\CommonRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\DX11RenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext2D.cs" />
