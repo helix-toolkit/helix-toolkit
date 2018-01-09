@@ -71,10 +71,9 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
         public void Push(double latency)
         {
             if (ringBuffer.IsFull())
-            {
-                var last = ringBuffer.Last;                
-                average -= (last - average) / ringBuffer.Count;
-                ringBuffer.RemoveLast();
+            {              
+                average -= (ringBuffer.First - average) / ringBuffer.Count;
+                ringBuffer.RemoveFirst();
             }
             ringBuffer.Add(latency);
             average += (latency - average) / ringBuffer.Count; // moving average
