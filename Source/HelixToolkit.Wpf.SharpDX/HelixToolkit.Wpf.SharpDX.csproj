@@ -188,7 +188,6 @@
     <Compile Include="Model\Elements2D\Canvas2D.cs" />
     <Compile Include="Model\Elements3D\CameraModel3D.cs" />
     <Compile Include="Model\Elements3D\CrossSectionMeshGeometryModel3D.cs" />
-    <Compile Include="Model\Elements3D\AbstractElements3D\InstanceGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\ScreenSpaceMeshGeometry3D.cs" />
     <Compile Include="Model\Elements3D\BillboardTextModel3D.cs" />
     <Compile Include="Model\Elements3D\BoneSkinMeshGeometryModel3D.cs" />
@@ -254,7 +253,6 @@
     <Compile Include="Utilities\Exporter.cs" />
     <Compile Include="Utilities\IExporter.cs" />
     <Compile Include="Utilities\IModelReader.cs" />
-    <Compile Include="Utilities\LineBuilder.cs" />
     <Compile Include="Utilities\ObjExporter.cs" />
     <Compile Include="Utilities\ObjReader.cs" />
     <Compile Include="Utilities\TypeConverter.cs" />

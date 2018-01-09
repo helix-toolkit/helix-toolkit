@@ -161,6 +161,10 @@ namespace HelixToolkit.Wpf.SharpDX
         [ThreadStatic]
         private static DefaultVertex[] vertexArrayBuffer = null;
 
+        public MeshGeometryModel3D():base(new MeshGeometryModel3DCore())
+        { }
+        public MeshGeometryModel3D(MeshGeometryModel3DCore core) : base(core)
+        { }
         protected override IRenderCore OnCreateRenderCore()
         {
             return new PatchMeshRenderCore();
@@ -208,82 +212,13 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-        protected override bool CheckGeometry()
-        {
-            return base.CheckGeometry() && GeometryInternal is MeshGeometry3D;
-        }
-
-        protected override bool CanHitTest(IRenderContext context)
+        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits, IRenderable originalSource)
         {
             if (MeshTopology != MeshTopologyEnum.PNTriangles)
             {
                 return false;
             }
-            return base.CanHitTest(context);
-        }
-
-        protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
-        {
-            var g = this.GeometryInternal as MeshGeometry3D;
-            bool isHit = false;
-            if (g.Octree != null)
-            {
-                isHit = g.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
-            }
-            else
-            {
-                var result = new HitTestResult();
-                result.Distance = double.MaxValue;
-                var modelInvert = this.modelMatrix.Inverted();
-                if(modelInvert == Matrix.Zero)//Check if model matrix can be inverted.
-                {
-                    return false;
-                }
-                //transform ray into model coordinates
-                var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInvert), Vector3.TransformNormal(rayWS.Direction, modelInvert));
-
-                var b = Bounds;
-                //Do hit test in local space
-                if (rayModel.Intersects(ref b))
-                {
-                    int index = 0;
-                    foreach (var t in g.Triangles)
-                    {
-                        float d;
-                        var v0 = t.P0;
-                        var v1 = t.P1;
-                        var v2 = t.P2;
-                        if (Collision.RayIntersectsTriangle(ref rayModel, ref v0, ref v1, ref v2, out d))
-                        {
-                            if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
-                            {
-                                result.IsValid = true;
-                                result.ModelHit = this;
-                                // transform hit-info to world space now:
-                                var pointWorld = Vector3.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
-                                result.PointHit = pointWorld.ToPoint3D();
-                                result.Distance = (rayWS.Position - pointWorld).Length();
-                                var p0 = Vector3.TransformCoordinate(v0, modelMatrix);
-                                var p1 = Vector3.TransformCoordinate(v1, modelMatrix);
-                                var p2 = Vector3.TransformCoordinate(v2, modelMatrix);
-                                var n = Vector3.Cross(p1 - p0, p2 - p0);
-                                n.Normalize();
-                                // transform hit-info to world space now:
-                                result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
-                                result.TriangleIndices = new System.Tuple<int, int, int>(g.Indices[index], g.Indices[index + 1], g.Indices[index + 2]);
-                                result.Tag = index / 3;
-                                isHit = true;
-                            }
-                        }
-                        index += 3;
-                    }
-                }
-                if (isHit)
-                {
-                    hits.Add(result);
-                }
-            }
-            return isHit;
+            return base.HitTest(context, rayWS, ref hits, originalSource);
         }
 
         /// <summary>

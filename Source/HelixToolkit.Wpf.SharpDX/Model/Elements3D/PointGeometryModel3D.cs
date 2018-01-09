@@ -11,7 +11,7 @@
     using Core;
     using Media = System.Windows.Media;
 
-    public class PointGeometryModel3D : InstanceGeometryModel3D
+    public class PointGeometryModel3D : GeometryModel3D
     {
         #region Dependency Properties
         public static readonly DependencyProperty ColorProperty =
@@ -45,8 +45,10 @@
                 }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
-            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new UIPropertyMetadata(4.0));
-
+            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new UIPropertyMetadata(4.0, (d,e)=> 
+            {
+                ((d as Element3D).ElementCore as PointGeometryModel3DCore).HitTestThickness = (float)(double)e.NewValue;
+            }));
 
         public Media.Color Color
         {
@@ -72,6 +74,9 @@
             set { this.SetValue(FigureRatioProperty, value); }
         }
 
+        /// <summary>
+        /// Used only for point/line hit test
+        /// </summary>
         public double HitTestThickness
         {
             get { return (double)this.GetValue(HitTestThicknessProperty); }
@@ -89,6 +94,16 @@
             }
         }
 
+        public PointGeometryModel3D()
+            :base(new PointGeometryModel3DCore())
+        {
+
+        }
+        public PointGeometryModel3D(PointGeometryModel3DCore core)
+            : base(core)
+        {
+
+        }
         public static double DistanceRayToPoint(Ray r, Vector3 p)
         {
             Vector3 v = r.Direction;
@@ -125,76 +140,6 @@
             c.PointColor = Color.ToColor4();
         }
 
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return base.CanHitTest(context) && context != null;
-        }
-
-        /// <summary>
-        /// Checks if the ray hits the geometry of the model.
-        /// If there a more than one hit, result returns the hit which is nearest to the ray origin.
-        /// </summary>
-        /// <param name="rayWS">Hitring ray from the camera.</param>
-        /// <param name="hits">results of the hit.</param>
-        /// <returns>True if the ray hits one or more times.</returns>
-        protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
-        {
-            if (GeometryInternal.Octree != null)
-            {
-                return GeometryInternal.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
-            }
-            else
-            {
-                PointGeometry3D pointGeometry3D = this.GeometryInternal as PointGeometry3D;
-                var svpm =  context.ScreenViewProjectionMatrix;
-                var smvpm = this.modelMatrix * svpm;
-
-                var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
-                var pos4 = new Vector4(rayWS.Position, 1);
-               // var dir3 = new Vector3();
-                Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
-                Vector4.Transform(ref pos4, ref svpm, out pos4);
-                //Vector3.TransformNormal(ref rayWS.Direction, ref svpm, out dir3);
-                //dir3.Normalize();
-
-                var clickPoint = clickPoint4.ToVector3();
-
-                var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
-                var maxDist = this.HitTestThickness;
-                var lastDist = double.MaxValue;
-                var index = 0;
-
-                foreach (var point in pointGeometry3D.Positions)
-                {
-                    var p0 = Vector3.TransformCoordinate(point, smvpm);
-                    var pv = p0 - clickPoint;
-                    var dist = pv.Length();
-                    if (dist < lastDist && dist <= maxDist)
-                    {
-                        lastDist = dist;
-                        Vector4 res;
-                        var lp0 = point;
-                        Vector3.Transform(ref lp0, ref this.modelMatrix, out res);
-                        var pvv = res.ToVector3();
-                        result.Distance = (rayWS.Position - res.ToVector3()).Length();
-                        result.PointHit = pvv.ToPoint3D();
-                        result.ModelHit = this;
-                        result.IsValid = true;
-                        result.Tag = index;
-                    }
-
-                    index++;
-                }
-
-                if (result.IsValid)
-                {
-                    hits.Add(result);
-                }
-
-                return result.IsValid;
-            }
-        }
-
         protected override RasterizerStateDescription CreateRasterState()
         {
             return new RasterizerStateDescription()
@@ -214,11 +159,6 @@
         protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.Points];
-        }
-
-        protected override bool CheckGeometry()
-        {
-            return GeometryInternal is PointGeometry3D && this.GeometryInternal != null && this.GeometryInternal.Positions != null && this.GeometryInternal.Positions.Count > 0;
         }
 
 

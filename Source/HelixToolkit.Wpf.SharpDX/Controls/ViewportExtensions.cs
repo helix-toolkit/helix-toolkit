@@ -317,9 +317,9 @@ namespace HelixToolkit.Wpf.SharpDX
             var hits = FindHits(viewport, position);
             if (hits.Count > 0)
             {
-                point = hits[0].PointHit;
-                normal = hits[0].NormalAtHit;
-                model = hits[0].ModelHit;
+                point = hits[0].PointHit.ToPoint3D();
+                normal = hits[0].NormalAtHit.ToVector3D();
+                model = hits[0].ModelHit as Element3D;
                 return true;
             }
             else

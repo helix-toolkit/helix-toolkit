@@ -2,8 +2,6 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
-using HelixToolkit.Wpf.SharpDX.Shaders;
 using SharpDX;
 
 #if !NETFX_CORE
@@ -12,6 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Shaders;
     public class LineRenderCore : GeometryRenderCore<PointLineModelStruct>, ILineRenderParams
     {
         public float Thickness { set; get; } = 0.5f;

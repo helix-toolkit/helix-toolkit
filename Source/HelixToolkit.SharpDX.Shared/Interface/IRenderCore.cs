@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderCore : IGUID
+    public interface IRenderCore : IGUID, IDisposable
     {
         event EventHandler<bool> OnInvalidateRenderer;
 

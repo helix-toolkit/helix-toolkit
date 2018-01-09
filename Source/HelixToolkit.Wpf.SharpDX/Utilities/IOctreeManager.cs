@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public interface IOctreeManager
     {
         bool Enabled { get; set; }
-        IOctree<GeometryModel3D> Octree { get; set; }
+        IOctree Octree { get; set; }
         bool RequestUpdateOctree { get; }
 
         bool AddPendingItem(Element3D item);

@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool isCaptured;
         protected Viewport3DX viewport;
         protected CameraCore viewportCamera;
-        protected Point3D lastHitPos;
+        protected Vector3 lastHitPos;
 
         private ProjectionCamera _camera;
         protected ProjectionCamera camera
@@ -128,11 +128,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 var normal = this.viewportCamera.LookDirection;
 
                 // hit position                        
-                var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos, normal.ToVector3D());
+                var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos.ToPoint3D(), normal.ToVector3D());
                 if (newHit.HasValue)
                 {
-                    var offset = (newHit.Value - lastHitPos);
-                    this.lastHitPos = newHit.Value;
+                    var offset = (newHit.Value - lastHitPos.ToPoint3D());
+                    this.lastHitPos = newHit.Value.ToVector3();
                     if (Transform == null)
                     {
                         Transform = new TranslateTransform3D(offset);

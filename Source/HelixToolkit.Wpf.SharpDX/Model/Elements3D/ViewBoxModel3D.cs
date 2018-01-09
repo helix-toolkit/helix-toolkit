@@ -225,14 +225,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 Debug.WriteLine("View box hit.");
                 var hit = viewBoxHit[0];
                 var normal = -hit.NormalAtHit;
-                if (Media3D.Vector3D.CrossProduct(normal, UpDirection).LengthSquared < 1e-5)
+                if (Vector3.Cross(normal, UpDirection.ToVector3()).LengthSquared() < 1e-5)
                 {
                     var vecLeft = new Media3D.Vector3D(-normal.Y, -normal.Z, -normal.X);
-                    RaiseEvent(new ViewBoxClickedEventArgs(this, normal, vecLeft));
+                    RaiseEvent(new ViewBoxClickedEventArgs(this, normal.ToVector3D(), vecLeft));
                 }
                 else
                 {
-                    RaiseEvent(new ViewBoxClickedEventArgs(this, normal, UpDirection));
+                    RaiseEvent(new ViewBoxClickedEventArgs(this, normal.ToVector3D(), UpDirection));
                 }
                 return true;
             }

@@ -1702,7 +1702,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.currentHit = hits.FirstOrDefault(x => x.IsValid);
                 if (this.currentHit != null)
                 {
-                    this.currentHit.ModelHit.RaiseEvent(
+                    (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
                         new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                 }
             }
@@ -1738,7 +1738,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (this.currentHit != null)
             {
-                this.currentHit.ModelHit.RaiseEvent(
+                (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
                     new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
             }
             else
@@ -1766,7 +1766,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.currentHit != null)
             {
                 Mouse.Capture(this, CaptureMode.None);
-                this.currentHit.ModelHit.RaiseEvent(
+                (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
                     new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                 this.currentHit = null;
             }

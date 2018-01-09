@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (hit)
             {
-                hits = hits.OrderBy(x => Vector3.DistanceSquared(ray.Position, x.PointHit.ToVector3())).ToList();
+                hits = hits.OrderBy(x => Vector3.DistanceSquared(ray.Position, x.PointHit)).ToList();
             }            
             return hit;
         }

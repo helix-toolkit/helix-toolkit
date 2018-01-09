@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Base class for renderable elements.
     /// </summary>    
-    public abstract class Element3D : FrameworkContentElement, IDisposable, IRenderable, IGUID, ITransformable
+    public abstract class Element3D : FrameworkContentElement, IDisposable, IRenderable, IGUID, ITransformable, IVisible
     {
         /// <summary>
         /// 
@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true,
                 (d, e) =>
                 {
-                    (d as Element3D).isRenderingInternal = (bool)e.NewValue;
+                    (d as Element3D).elementCore.Visible = (bool)e.NewValue && (d as Element3D).Visibility == Visibility.Visible;
                 }));
 
         /// <summary>
@@ -60,28 +60,6 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(IsRenderingProperty); }
             set { SetValue(IsRenderingProperty, value); }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty IsHitTestVisibleProperty =
-            DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D), new PropertyMetadata(true, (d, e) =>
-            {
-                (d as Element3D).isHitTestVisibleInternal = (bool)e.NewValue;
-            }));
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool IsHitTestVisible
-        {
-            set
-            {
-                SetValue(IsHitTestVisibleProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(IsHitTestVisibleProperty);
-            }
-        }
 
 
         /// <summary>
@@ -90,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty VisibilityProperty =
             DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element3D), new AffectsRenderPropertyMetadata(Visibility.Visible, (d, e) =>
             {
-                (d as Element3D).visibleInternal = (Visibility)e.NewValue == Visibility.Visible;
+                (d as Element3D).elementCore.Visible = (Visibility)e.NewValue == Visibility.Visible && (d as Element3D).IsRendering;
             }));
 
         /// <summary>
@@ -114,8 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty TransformProperty =
             DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new AffectsRenderPropertyMetadata(Transform3D.Identity, (d,e)=>
             {
-                ((Element3D)d).modelMatrix = e.NewValue != null ? ((Transform3D)e.NewValue).Value.ToMatrix() : Matrix.Identity;
-                ((Element3D)d).OnTransformChanged();
+                ((Element3D)d).elementCore.ModelMatrix = e.NewValue != null ? ((Transform3D)e.NewValue).Value.ToMatrix() : Matrix.Identity;
             }));
         /// <summary>
         /// 
@@ -126,12 +103,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(TransformProperty, value); }
         }
         #endregion
-
-        protected Matrix totalModelMatrix = Matrix.Identity;
-
-        protected Matrix modelMatrix = Matrix.Identity;
-
-        private readonly Stack<Matrix> matrixStack = new Stack<Matrix>();
 
         private IRenderCore renderCore = null;
         public IRenderCore RenderCore
@@ -162,24 +133,17 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private Element3DCore elementCore;
+        public Element3DCore ElementCore { get { return elementCore; } }
+
         protected IRenderTechnique renderTechnique;
 
         protected IRenderHost renderHost;
-
-        private bool isAttached = false;
 
         private readonly Guid guid = Guid.NewGuid();
 
         public Guid GUID { get { return guid; } }
 
-        protected bool isRenderingInternal { private set; get; } = true;
-
-        protected bool visibleInternal { private set; get; } = true;
-
-        protected bool isHitTestVisibleInternal
-        {
-            private set; get;
-        } = true;
         /// <summary>
         /// If this has been attached onto renderhost. 
         /// </summary>
@@ -206,6 +170,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public Element3D(Element3DCore core)
+        {
+            elementCore = core;
+        }
+
         private void RenderCore_OnInvalidateRenderer(object sender, bool e)
         {
             InvalidateRender();
@@ -225,32 +194,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual IRenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
 
         protected virtual void AssignDefaultValuesToCore(IRenderCore core) { }
-        #region Handling Transforms
 
-        public void PushMatrix(Matrix matrix)
-        {
-            matrixStack.Push(this.modelMatrix);
-            this.modelMatrix = this.modelMatrix * matrix;
-            this.totalModelMatrix = this.modelMatrix;
-        }
-
-        public void PopMatrix()
-        {
-            this.modelMatrix = matrixStack.Pop();
-        }
-
-        public Matrix ModelMatrix
-        {
-            get { return this.modelMatrix; }
-        }
-
-        public Matrix TotalModelMatrix
-        {
-            get { return this.totalModelMatrix; }
-        }
-
-        protected virtual void OnTransformChanged() { }
-        #endregion
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
@@ -287,7 +231,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (host == null)
             { return false; }
-            RenderCore?.Attach(renderTechnique);
+            elementCore.Attach(host);
+            RenderCore?.Attach(renderTechnique);           
             return RenderCore == null ? false : RenderCore.IsAttached;
         }
         /// <summary>
@@ -297,6 +242,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             IsAttached = false;
             RenderCore?.Detach();
+            elementCore.Detach();
             OnDetach();
         }
         /// <summary>
@@ -305,7 +251,6 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual void OnDetach()
         {
             renderTechnique = null;            
-            //effect = null;
             renderHost = null;           
         }
 
@@ -325,7 +270,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Updates the element by the specified time span.
         /// </summary>
         /// <param name="timeSpan">The time since last update.</param>
-        //public virtual void Update(TimeSpan timeSpan) { }
+        public virtual void Update(IRenderContext context)
+        {
+            elementCore.Update(context);
+        }
 
         /// <summary>
         /// <para>Determine if this can be rendered.</para>
@@ -335,7 +283,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected virtual bool CanRender(IRenderContext context)
         {
-            return isRenderingInternal && visibleInternal;
+            return elementCore.IsVisible;
         }
         /// <summary>
         /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
@@ -346,7 +294,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (CanRender(context))
             {
-                RenderCore.ModelMatrix = this.ModelMatrix;
+                RenderCore.ModelMatrix = elementCore.TotalModelMatrix;
                 OnRender(context);
             }
         }
@@ -361,7 +309,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public virtual void Dispose()
         {
-            this.Detach();                        
+            this.Detach();
+            Disposer.RemoveAndDispose(ref elementCore);
+            Disposer.RemoveAndDispose(ref renderCore);
         }
 
         /// <summary>
@@ -392,32 +342,37 @@ namespace HelixToolkit.Wpf.SharpDX
             return null;
         }
 
-        /// <summary>
-        /// Invoked whenever the effective value of any dependency property on this <see cref="Element3D"/> has been updated.
-        /// </summary>
-        /// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        ///// <summary>
+        ///// Invoked whenever the effective value of any dependency property on this <see cref="Element3D"/> has been updated.
+        ///// </summary>
+        ///// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
+        //protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (CheckAffectsRender(e))
+        //    {
+        //        this.InvalidateRender();
+        //    }
+        //    base.OnPropertyChanged(e);
+        //}
+        ///// <summary>
+        ///// Check if dependency property changed event affects render
+        ///// </summary>
+        ///// <param name="e"></param>
+        ///// <returns></returns>
+        //protected virtual bool CheckAffectsRender(DependencyPropertyChangedEventArgs e)
+        //{            
+        //    // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
+        //    // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "AffectsRenderPropertyMetadata".
+        //    PropertyMetadata fmetadata = null;
+        //    return ((fmetadata = e.Property.GetMetadata(this)) != null
+        //        && (fmetadata is IAffectsRender
+        //        || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
+        //        ));
+        //}
+
+        public static implicit operator Element3DCore(Element3D element)
         {
-            if (CheckAffectsRender(e))
-            {
-                this.InvalidateRender();
-            }
-            base.OnPropertyChanged(e);
-        }
-        /// <summary>
-        /// Check if dependency property changed event affects render
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        protected virtual bool CheckAffectsRender(DependencyPropertyChangedEventArgs e)
-        {            
-            // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
-            // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "AffectsRenderPropertyMetadata".
-            PropertyMetadata fmetadata = null;
-            return ((fmetadata = e.Property.GetMetadata(this)) != null
-                && (fmetadata is IAffectsRender
-                || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
-                ));
+            return element.elementCore;
         }
     }
 }

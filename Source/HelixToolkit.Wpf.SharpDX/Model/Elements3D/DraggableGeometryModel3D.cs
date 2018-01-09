@@ -68,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.isCaptured = true;
             this.viewport = args.Viewport;
             this.camera = args.Viewport.Camera;
-            this.lastHitPos = args.HitTestResult.PointHit;
+            this.lastHitPos = args.HitTestResult.PointHit.ToPoint3D();
         }
 
         public override void OnMouse3DUp(object sender, RoutedEventArgs e)

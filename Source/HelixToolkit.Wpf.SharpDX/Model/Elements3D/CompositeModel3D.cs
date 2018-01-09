@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
     ///     Represents a composite Model3D.
     /// </summary>
     [ContentProperty("Children")]
-    public class CompositeModel3D : GeometryModel3D
+    public class CompositeModel3D : Element3D
     {
         private readonly ObservableElement3DCollection children;
 
@@ -30,13 +30,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
         /// </summary>
-        public CompositeModel3D()
+        public CompositeModel3D() : base(new Element3DCore())
         {
             this.children = new ObservableElement3DCollection();
             this.children.CollectionChanged += this.ChildrenChanged;
         }
-
-        protected override RasterizerStateDescription CreateRasterState() { return new RasterizerStateDescription(); }
 
         /// <summary>
         ///     Gets the children.
@@ -82,10 +80,6 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        protected override bool CanRender(IRenderContext context)
-        {
-            return IsAttached && isRenderingInternal && visibleInternal;
-        }
         /// <summary>
         /// Renders the specified context.
         /// </summary>
@@ -94,15 +88,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected override void OnRender(IRenderContext context)
         {
-            // you mean like this?
             foreach (var model in this.Children)
             {
+                model.ElementCore.ParentMatrix = this.ElementCore.TotalModelMatrix;
                 // push matrix                    
-                model.PushMatrix(this.modelMatrix);
+                //model.PushMatrix(this.modelMatrix);
                 // render model
                 model.Render(context);
                 // pop matrix                   
-                model.PopMatrix();
+                //model.PopMatrix();
             }
         }
 
@@ -227,7 +221,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (hit)
             {
-                hits = hits.OrderBy(x => Vector3.DistanceSquared(ray.Position, x.PointHit.ToVector3())).ToList();
+                hits = hits.OrderBy(x => Vector3.DistanceSquared(ray.Position, x.PointHit)).ToList();
             }
             return hit;
         }

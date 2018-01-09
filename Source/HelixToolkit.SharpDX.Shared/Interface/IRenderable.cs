@@ -13,7 +13,6 @@ namespace HelixToolkit.UWP
     using global::SharpDX;
     using Cameras;
     using System.Collections.Generic;
-
     /// <summary>
     /// 
     /// </summary>
@@ -38,11 +37,6 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         bool IsAttached { get; }
-
-        /// <summary>
-        /// Optional for sub items
-        /// </summary>
-        IEnumerable<IRenderable> Items { get; }
     }
 
     public interface IRenderer

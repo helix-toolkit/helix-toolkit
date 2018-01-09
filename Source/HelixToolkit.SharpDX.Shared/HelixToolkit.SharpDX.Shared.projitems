@@ -78,10 +78,18 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IShaderPass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IShaderReflector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\ITransform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IVertexExtraBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\BillboardModel3DCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Element3DCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\GeometryModel3DCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\GroupModel3DCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\LineGeometryModel3DCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\MeshGeometryModel3DCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\PointGeometryModel3DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\PhongMaterialVariables.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ExposedArrayList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Flags.cs" />
@@ -182,6 +190,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ElementsBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\EventSkipper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\LineBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\MappingCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RandomVectorGenerators.cs" />

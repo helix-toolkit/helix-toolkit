@@ -3,15 +3,14 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using System;
-using HelixToolkit.Wpf.SharpDX.Shaders;
 using SharpDX;
-using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Shaders;
     public class PointRenderCore : GeometryRenderCore<PointLineModelStruct>, IPointRenderParams
     {
         public float Width { set; get; } = 0.5f;

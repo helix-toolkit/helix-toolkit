@@ -2,18 +2,13 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using SharpDX;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-#if NETFX_CORE
-    using Point3D = System.Numerics.Vector3;
-    using Vector3D = System.Numerics.Vector3;
-#else
-    using System.Windows.Media.Media3D;
-#endif
     /// <summary>
     /// Provides a hit test result.
     /// </summary>
@@ -33,23 +28,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets the Model3D intersected by the ray along which the hit test was performed.
         /// Model3D intersected by the ray.
         /// </summary>        
-#if NETFX_CORE
-
-#else
-        public GeometryModel3D ModelHit { get; set; }
-#endif
+        public IRenderable ModelHit { get; set; }
 
         /// <summary>
-        /// Gets the Point3D at the intersection between the ray along which the hit
+        /// Gets the Point at the intersection between the ray along which the hit
         /// test was performed and the hit object.
-        /// Point3D at which the hit object was intersected by the ray.
+        /// Point at which the hit object was intersected by the ray.
         /// </summary>
-        public Point3D PointHit { get; set; }
+        public Vector3 PointHit { get; set; }
 
         /// <summary>
         /// The normal vector of the triangle hit.
         /// </summary>
-        public Vector3D NormalAtHit { get; set; }
+        public Vector3 NormalAtHit { get; set; }
 
         /// <summary>
         /// Indicates if this Result has data from a valid hit.

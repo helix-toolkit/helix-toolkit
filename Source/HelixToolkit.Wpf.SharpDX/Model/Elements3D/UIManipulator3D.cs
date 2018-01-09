@@ -192,7 +192,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.isMouseCaptured = true;
             this.viewport = args.Viewport;
             this.cameraNormal = args.Viewport.Camera.LookDirection.ToVector3();
-            this.lastHitPosWS = args.HitTestResult.PointHit.ToVector3();
+            this.lastHitPosWS = args.HitTestResult.PointHit;
         }
 
         /// <summary>

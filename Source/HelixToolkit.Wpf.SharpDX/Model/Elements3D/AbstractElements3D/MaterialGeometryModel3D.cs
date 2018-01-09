@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Utilities;
     using Core;
 
-    public abstract class MaterialGeometryModel3D : InstanceGeometryModel3D
+    public abstract class MaterialGeometryModel3D : GeometryModel3D
     {
         #region Dependency Properties
         /// <summary>
@@ -218,6 +218,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
 
+        public MaterialGeometryModel3D(GeometryModel3DCore modelCore) : base(modelCore)
+        {
+
+        }
         /// <summary>
         /// 
         /// </summary>

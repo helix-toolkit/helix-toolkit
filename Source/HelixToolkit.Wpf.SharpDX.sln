@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
 EndProject
@@ -455,5 +455,8 @@ Global
 		{E23D3A8B-376F-4B10-B2BD-ADC3F082805C} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{7B612920-493C-448B-B21B-D5A453045AAD} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67B0DD22-D5CF-4D97-9E28-F8B59C583F78}
 	EndGlobalSection
 EndGlobal
