@@ -610,5 +610,15 @@ namespace HelixToolkit.Wpf.SharpDX
             InstanceBuffer.Dispose();
             base.OnDetach();
         }
+
+        protected override bool CanHitTest(IRenderContext context)
+        {
+            return false;
+        }
+
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

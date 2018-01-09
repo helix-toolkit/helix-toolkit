@@ -145,13 +145,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override void OnTransformChanged()
+        protected override void TransformChanged(ref Matrix totalTransform)
         {
-            base.OnTransformChanged();
+            base.TransformChanged(ref totalTransform);
             if(camera != null)
             {
-                var m = Transform.Value;
-                camera.Position = new Point3D(m.OffsetX, m.OffsetY, m.OffsetZ);
+                var m = totalTransform;
+                camera.Position = new Point3D(m.M41, m.M42, m.M43);
                 camera.LookDirection = new Vector3D(-m.M31, -m.M32, -m.M33);
                 camera.UpDirection = new Vector3D(m.M21, m.M22, m.M23);               
             }

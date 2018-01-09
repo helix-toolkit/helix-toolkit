@@ -193,12 +193,9 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var element in viewport.Renderables)
             {
                 var model = element as IBoundable;
-                if (model != null)
+                if (model != null && element.IsVisible)
                 {
-                    if (model.Visibility != Visibility.Collapsed)
-                    {
-                        bounds = global::SharpDX.BoundingBox.Merge(bounds, model.Bounds);
-                    }
+                    bounds = global::SharpDX.BoundingBox.Merge(bounds, model.BoundsWithTransform);
                 }
             }
             return new Rect3D(bounds.Minimum.ToPoint3D(), (bounds.Maximum - bounds.Minimum).ToSize3D());

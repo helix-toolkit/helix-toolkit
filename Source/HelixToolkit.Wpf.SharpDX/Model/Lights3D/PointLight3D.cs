@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // --- turn-on the light            
             Light3DSceneShared.LightModels.Lights[lightIndex].LightColor = this.ColorInternal;
             // --- Set lighting parameters
-            Light3DSceneShared.LightModels.Lights[lightIndex].LightPos = this.PositionInternal.ToVector4() + modelMatrix.Row4;
+            Light3DSceneShared.LightModels.Lights[lightIndex].LightPos = this.PositionInternal.ToVector4() + ModelMatrix.Row4;
             Light3DSceneShared.LightModels.Lights[lightIndex].LightAtt = new Vector4((float)this.AttenuationInternal.X, (float)this.AttenuationInternal.Y, (float)this.AttenuationInternal.Z, (float)this.RangeInternal);
         }
     }

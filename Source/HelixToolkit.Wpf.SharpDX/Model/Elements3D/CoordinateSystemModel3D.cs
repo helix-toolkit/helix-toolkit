@@ -299,7 +299,7 @@ namespace HelixToolkit.Wpf.SharpDX
             mesh.Colors = colors;
         }
 
-        protected override bool CanHitTest()
+        protected override bool CanHitTest(IRenderContext context)
         {
             return false;
         }

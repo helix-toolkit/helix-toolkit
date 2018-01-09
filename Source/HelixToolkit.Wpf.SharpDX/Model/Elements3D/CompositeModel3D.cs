@@ -17,25 +17,87 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using global::SharpDX.Direct3D11;
     using Core;
+    using System.Windows;
 
     /// <summary>
     ///     Represents a composite Model3D.
     /// </summary>
     [ContentProperty("Children")]
-    public class CompositeModel3D : Element3D
+    public class CompositeModel3D : Element3D, IHitable, ISelectable, IMouse3D
     {
+        public static readonly DependencyProperty IsSelectedProperty =
+            DependencyProperty.Register("IsSelected", typeof(bool), typeof(CompositeModel3D), new AffectsRenderPropertyMetadata(false));
+
+        public bool IsSelected
+        {
+            get
+            {
+                return (bool)this.GetValue(IsSelectedProperty);
+            }
+            set
+            {
+                this.SetValue(IsSelectedProperty, value);
+            }
+        }
+
         private readonly ObservableElement3DCollection children;
 
         public override IEnumerable<IRenderable> Items { get { return children; } }
+
+        #region Events
+        public static readonly RoutedEvent MouseDown3DEvent =
+            EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GeometryModel3D));
+
+        public static readonly RoutedEvent MouseUp3DEvent =
+            EventManager.RegisterRoutedEvent("MouseUp3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GeometryModel3D));
+
+        public static readonly RoutedEvent MouseMove3DEvent =
+            EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GeometryModel3D));
+
+        /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event RoutedEventHandler MouseDown3D
+        {
+            add { AddHandler(MouseDown3DEvent, value); }
+            remove { RemoveHandler(MouseDown3DEvent, value); }
+        }
+
+        /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event RoutedEventHandler MouseUp3D
+        {
+            add { AddHandler(MouseUp3DEvent, value); }
+            remove { RemoveHandler(MouseUp3DEvent, value); }
+        }
+
+        /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event RoutedEventHandler MouseMove3D
+        {
+            add { AddHandler(MouseMove3DEvent, value); }
+            remove { RemoveHandler(MouseMove3DEvent, value); }
+        }
+        #endregion
         /// <summary>
         ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
         /// </summary>
-        public CompositeModel3D() : base(new Element3DCore())
+        public CompositeModel3D()
         {
             this.children = new ObservableElement3DCollection();
             this.children.CollectionChanged += this.ChildrenChanged;
+            this.MouseDown3D += OnMouse3DDown;
+            this.MouseUp3D += OnMouse3DUp;
+            this.MouseMove3D += OnMouse3DMove;
         }
 
+        public virtual void OnMouse3DDown(object sender, RoutedEventArgs e) { }
+
+        public virtual void OnMouse3DUp(object sender, RoutedEventArgs e) { }
+
+        public virtual void OnMouse3DMove(object sender, RoutedEventArgs e) { }
         /// <summary>
         ///     Gets the children.
         /// </summary>
@@ -80,6 +142,10 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
+        //protected override bool CanRender(IRenderContext context)
+        //{
+        //    return IsAttached && isRenderingInternal && visibleInternal;
+        //}
         /// <summary>
         /// Renders the specified context.
         /// </summary>
@@ -88,9 +154,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected override void OnRender(IRenderContext context)
         {
+            // you mean like this?
             foreach (var model in this.Children)
             {
-                model.ElementCore.ParentMatrix = this.ElementCore.TotalModelMatrix;
+                model.ParentMatrix = this.TotalModelMatrix;
                 // push matrix                    
                 //model.PushMatrix(this.modelMatrix);
                 // render model
@@ -152,47 +219,20 @@ namespace HelixToolkit.Wpf.SharpDX
                                     this.AddLogicalChild(item);
                                 }
 
-                                item.Attach(this.renderHost);
+                                item.Attach(RenderHost);
                             }
                         }
                         break;
                 }
             }
-            UpdateBounds();
-        }
-
-        /// <summary>
-        /// a Model3D does not have bounds, 
-        /// if you want to have a model with bounds, use GeometryModel3D instead:
-        /// but this prevents the CompositeModel3D containg lights, etc. (Lights3D are Models3D, which do not have bounds)
-        /// </summary>
-        protected void UpdateBounds()
-        {
-            var bb = this.Bounds;
-            foreach (var item in this.Children)
-            {
-                var model = item as IBoundable;
-                if (model != null)
-                {
-                    bb = BoundingBox.Merge(bb, model.Bounds);
-                }
-            }
-            this.Bounds = bb;
         }
 
         protected override bool CanHitTest(IRenderContext context)
         {
-            return IsAttached && visibleInternal && isRenderingInternal && isHitTestVisibleInternal;
+            return base.CanHitTest(context) && Children.Count > 0;
         }
 
-        protected override bool CheckGeometry()
-        {
-            return true;
-        }
-        /// <summary>
-        /// Compute hit-testing for all children
-        /// </summary>
-        protected override bool OnHitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
             foreach (var c in this.Children)
@@ -200,28 +240,30 @@ namespace HelixToolkit.Wpf.SharpDX
                 var hc = c as IHitable;
                 if (hc != null)
                 {
-                    var tc = c as ITransformable;
-                    if (tc != null)
-                    {
-                        tc.PushMatrix(this.modelMatrix);
-                        if (hc.HitTest(context, ray, ref hits))
-                        {
-                            hit = true;
-                        }
-                        tc.PopMatrix();
-                    }
-                    else
-                    {
-                        if (hc.HitTest(context, ray, ref hits))
-                        {
-                            hit = true;
-                        }
-                    }
+                    hc.HitTest(context, ray, ref hits);
+                    //var tc = c as ITransformable;
+                    //if (tc != null)
+                    //{
+                    //    //tc.PushMatrix(this.modelMatrix);
+                    //    if (hc.HitTest(context, ray, ref hits))
+                    //    {
+                    //        hit = true;
+                    //    }
+                    //   // tc.PopMatrix();
+                    //}
+                    //else
+                    //{
+                    //    if (hc.HitTest(context, ray, ref hits))
+                    //    {
+                    //        hit = true;
+                    //    }
+                    //}
                 }
             }
             if (hit)
             {
-                hits = hits.OrderBy(x => Vector3.DistanceSquared(ray.Position, x.PointHit)).ToList();
+                var pos = ray.Position;
+                hits = hits.OrderBy(x => Vector3.DistanceSquared(pos, x.PointHit)).ToList();
             }
             return hit;
         }

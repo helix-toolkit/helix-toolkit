@@ -83,13 +83,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\BillboardModel3DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Element3DCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\GeometryModel3DCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\GroupModel3DCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\LineGeometryModel3DCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\MeshGeometryModel3DCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\PointGeometryModel3DCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\GeometryBoundManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\PhongMaterialVariables.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ExposedArrayList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Flags.cs" />

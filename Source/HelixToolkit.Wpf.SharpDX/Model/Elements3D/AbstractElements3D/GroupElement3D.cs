@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get;
         } = new ObservableElement3DCollection();
 
-        public GroupElement3D() : base(new Element3DCore())
+        public GroupElement3D()
         {
             Children.CollectionChanged += Items_CollectionChanged;
         }
@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.AddLogicalChild(c);
                 }
 
-                c.Attach(renderHost);
+                c.Attach(RenderHost);
             }
         }
 

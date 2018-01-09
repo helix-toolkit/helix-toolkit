@@ -139,7 +139,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnRender(IRenderContext renderContext)
         {
             base.OnRender(renderContext);
-            var position = this.totalModelMatrix.TranslationVector;
+            var position = this.TotalModelMatrix.TranslationVector;
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public override void OnMouse3DMove(object sender, RoutedEventArgs e)
         {            
-            if (isHitTestVisibleInternal)
+            if (IsHitTestVisible)
                 base.OnMouse3DMove(sender, e);
         }
     }

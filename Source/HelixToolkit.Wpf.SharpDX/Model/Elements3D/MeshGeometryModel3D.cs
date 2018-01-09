@@ -11,17 +11,12 @@ using System.Windows;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System;
-    using System.ComponentModel;
-    using System.Linq;
-
-    using global::SharpDX;
-
-    using global::SharpDX.Direct3D11;
-    using System.Runtime.CompilerServices;
-    using System.Collections.Generic;
-    using Utilities;
     using Core;
+    using global::SharpDX;
+    using global::SharpDX.Direct3D11;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
@@ -161,10 +156,6 @@ namespace HelixToolkit.Wpf.SharpDX
         [ThreadStatic]
         private static DefaultVertex[] vertexArrayBuffer = null;
 
-        public MeshGeometryModel3D():base(new MeshGeometryModel3DCore())
-        { }
-        public MeshGeometryModel3D(MeshGeometryModel3DCore core) : base(core)
-        { }
         protected override IRenderCore OnCreateRenderCore()
         {
             return new PatchMeshRenderCore();
@@ -212,13 +203,14 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits, IRenderable originalSource)
+        protected override bool CanHitTest(IRenderContext context)
         {
-            if (MeshTopology != MeshTopologyEnum.PNTriangles)
-            {
-                return false;
-            }
-            return base.HitTest(context, rayWS, ref hits, originalSource);
+            return base.CanHitTest(context) && MeshTopology == MeshTopologyEnum.PNTriangles;
+        }
+
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
+        {
+            return (Geometry as MeshGeometry3D).HitTest(context, totalModelMatrix, ref rayWS, ref hits, this);
         }
 
         /// <summary>

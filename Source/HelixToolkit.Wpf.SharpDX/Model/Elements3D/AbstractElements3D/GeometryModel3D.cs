@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
     /// </summary>
-    public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, ISelectable, IMouse3D
+    public abstract class GeometryModel3D : Element3D, IHitable, IBoundable, IThrowingShadow, ISelectable, IMouse3D
     {
         #region DependencyProperties
         public static readonly DependencyProperty ReuseVertexArrayBufferProperty =
@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(false));
 
         public static readonly DependencyProperty IsThrowingShadowProperty =
-            DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(false, (d, e) => 
+            DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(false, (d, e) =>
             {
                 if ((d as Element3D).RenderCore is IThrowingShadow)
                 {
@@ -64,36 +64,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(GeometryModel3D),
             new AffectsRenderPropertyMetadata(true, RasterStateChanged));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty IsHitTestVisibleProperty =
-            DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true, (d, e) =>
-            {
-                (d as GeometryModel3D).geometryModelCore.IsHitTestVisible = (bool)e.NewValue;
-            }));
-
-        /// <summary>
-        /// List of instance matrix.
-        /// </summary>
-        public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(null, InstancesChanged));
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool IsHitTestVisible
-        {
-            set
-            {
-                SetValue(IsHitTestVisibleProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(IsHitTestVisibleProperty);
-            }
-        }
-
         public Geometry3D Geometry
         {
             get
@@ -105,6 +75,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.SetValue(GeometryProperty, value);
             }
         }
+
+        /// <summary>
+        /// List of instance matrix.
+        /// </summary>
+        public static readonly DependencyProperty InstancesProperty =
+            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(null, InstancesChanged));
+
+        /// <summary>
+        /// List of instance matrix. 
+        /// </summary>
+        public IList<Matrix> Instances
+        {
+            get { return (IList<Matrix>)this.GetValue(InstancesProperty); }
+            set { this.SetValue(InstancesProperty, value); }
+        }
+
         /// <summary>
         /// Reuse previous vertext array buffer during CreateBuffer. Reduce excessive memory allocation during rapid geometry model changes. 
         /// Example: Repeatly updates textures, or geometries with close number of vertices.
@@ -219,14 +205,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(IsThrowingShadowProperty);
             }
         }
-        /// <summary>
-        /// List of instance matrix. 
-        /// </summary>
-        public IList<Matrix> Instances
-        {
-            get { return (IList<Matrix>)this.GetValue(InstancesProperty); }
-            set { this.SetValue(InstancesProperty, value); }
-        }
         #endregion
 
         #region Static Methods
@@ -238,7 +216,17 @@ namespace HelixToolkit.Wpf.SharpDX
         protected static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = d as GeometryModel3D;
+            if (e.OldValue != null)
+            {
+                (e.OldValue as INotifyPropertyChanged).PropertyChanged -= model.OnGeometryPropertyChangedPrivate;
+            }
+            if (e.NewValue != null)
+            {
+                (e.NewValue as INotifyPropertyChanged).PropertyChanged -= model.OnGeometryPropertyChangedPrivate;
+                (e.NewValue as INotifyPropertyChanged).PropertyChanged += model.OnGeometryPropertyChangedPrivate;
+            }
             model.GeometryInternal = e.NewValue == null ? null : e.NewValue as Geometry3D;
+            model.OnGeometryChanged(e);
             model.InvalidateRender();
         }
 
@@ -248,18 +236,17 @@ namespace HelixToolkit.Wpf.SharpDX
         private static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = (GeometryModel3D)d;
-            var instance = e.NewValue == null ? null : e.NewValue as IList<Matrix>;
-            if(model.InstanceBuffer != null)
-            {
-                model.InstanceBuffer.Elements = instance;
-            }
-            model.geometryModelCore.Instances = instance;
-
+            model.BoundManager.Instances = model.InstanceBuffer.Elements = e.NewValue == null ? null : e.NewValue as IList<Matrix>;            
+            model.InstancesChanged();
         }
         #endregion
-        public delegate RasterizerStateDescription CreateRasterStateFunc();
+
         public bool HasInstances { get { return InstanceBuffer.HasElements; } }
-        protected IElementsBufferModel<Matrix> InstanceBuffer;
+        protected readonly IElementsBufferModel<Matrix> InstanceBuffer = new MatrixInstanceBufferModel();
+        protected virtual void InstancesChanged() { }
+
+        public delegate RasterizerStateDescription CreateRasterStateFunc();
+
         /// <summary>
         /// Create raster state description delegate.
         /// <para>If <see cref="OnCreateRasterState"/> is set, then <see cref="CreateRasterState"/> will not be called.</para>
@@ -267,27 +254,53 @@ namespace HelixToolkit.Wpf.SharpDX
         public CreateRasterStateFunc OnCreateRasterState;
 
         #region Properties
-        private GeometryModel3DCore geometryModelCore;
-
         protected IGeometryBufferModel bufferModelInternal;
 
+        private Geometry3D geometryInternal;
         protected Geometry3D GeometryInternal
         {
             set
             {
-                geometryModelCore.Geometry = value;
+                geometryInternal = value;
                 if (bufferModelInternal != null)
                 {
-                    bufferModelInternal.Geometry = value;                   
+                    BoundManager.Geometry = bufferModelInternal.Geometry = value;                   
                 }
             }
             get
             {
-                return geometryModelCore.Geometry;
+                return geometryInternal;
             }
         }
 
-        public bool GeometryValid { get { return geometryModelCore.GeometryValid; } }
+        public bool GeometryValid { get { return BoundManager.GeometryValid; } }
+        public GeometryBoundManager BoundManager { private set; get; }
+
+        public BoundingBox Bounds
+        {
+            get { return BoundManager.Bounds; }
+        }
+
+        public BoundingBox BoundsWithTransform
+        {
+            get { return BoundManager.BoundsWithTransform; }
+        }
+
+        public BoundingSphere BoundsSphere
+        {
+            get
+            {
+                return BoundManager.BoundsSphere;
+            }
+        }
+
+        public BoundingSphere BoundsSphereWithTransform
+        {
+            get
+            {
+                return BoundManager.BoundsSphereWithTransform;
+            }
+        }
         #endregion
 
         #region Events
@@ -327,13 +340,13 @@ namespace HelixToolkit.Wpf.SharpDX
             remove { RemoveHandler(MouseMove3DEvent, value); }
         }
         #endregion
-        public GeometryModel3D(GeometryModel3DCore core) 
-            : base(core)
+
+        public GeometryModel3D()
         {
-            geometryModelCore = core;
             this.MouseDown3D += OnMouse3DDown;
             this.MouseUp3D += OnMouse3DUp;
             this.MouseMove3D += OnMouse3DMove;
+            BoundManager = new GeometryBoundManager(this);
         }
 
         protected virtual IGeometryBufferModel OnCreateBufferModel() { return new EmptyGeometryBufferModel(); }
@@ -356,6 +369,39 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected abstract RasterizerStateDescription CreateRasterState();
 
+        protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
+        {
+            //if (GeometryValid && IsAttached)
+            //{
+            //    Attach(RenderHost);
+            //}
+        }
+
+        private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
+        {
+            //GeometryValid = CheckGeometry();
+            if (this.IsAttached)
+            {
+                //if (e.PropertyName.Equals(nameof(Geometry3D.Bound)))
+                //{
+                //    this.Bounds = this.GeometryInternal != null ? this.GeometryInternal.Bound : new BoundingBox();
+                //}
+                //else if (e.PropertyName.Equals(nameof(Geometry3D.BoundingSphere)))
+                //{
+                //    this.BoundsSphere = this.GeometryInternal != null ? this.GeometryInternal.BoundingSphere : new BoundingSphere();
+                //}
+                if (GeometryValid)
+                {
+                    OnGeometryPropertyChanged(sender, e);
+                }
+            }
+        }
+
+        protected virtual void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+
+        }
+
         /// <summary>
         /// Overriding OnAttach, use <see cref="CheckGeometry"/> to check if it can be attached.
         /// </summary>
@@ -363,18 +409,20 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override bool OnAttach(IRenderHost host)
         {
             if (base.OnAttach(host))
-            { 
+            {
+                AttachOnGeometryPropertyChanged();
                 bufferModelInternal = OnCreateBufferModel();
-                bufferModelInternal.Geometry = GeometryInternal;
+                BoundManager.Geometry = bufferModelInternal.Geometry = GeometryInternal;
                 bufferModelInternal.InvalidateRenderer += BufferModel_InvalidateRenderer;
-                InstanceBuffer = new MatrixInstanceBufferModel();               
-                InstanceBuffer.Initialize();
-                InstanceBuffer.Elements = Instances;
                 if (RenderCore is IGeometryRenderCore)
                 {
                     ((IGeometryRenderCore)RenderCore).GeometryBuffer = bufferModelInternal;
-                    ((IGeometryRenderCore)RenderCore).InstanceBuffer = InstanceBuffer;
-                }               
+                }
+                //if (GeometryInternal != null)
+                //{
+                //    this.Bounds = this.GeometryInternal.Bound;
+                //    this.BoundsSphere = this.GeometryInternal.BoundingSphere;
+                //}
                 OnRasterStateChanged();
                 return true;
             }
@@ -391,10 +439,26 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnDetach()
         {
-            bufferModelInternal.InvalidateRenderer -= BufferModel_InvalidateRenderer;
+            DetachOnGeometryPropertyChanged();
             Disposer.RemoveAndDispose(ref bufferModelInternal);
-            Disposer.RemoveAndDispose(ref InstanceBuffer);
             base.OnDetach();
+        }
+
+        private void AttachOnGeometryPropertyChanged()
+        {
+            if (GeometryInternal != null)
+            {
+                GeometryInternal.PropertyChanged -= OnGeometryPropertyChangedPrivate;
+                GeometryInternal.PropertyChanged += OnGeometryPropertyChangedPrivate;
+            }
+        }
+
+        private void DetachOnGeometryPropertyChanged()
+        {
+            if (GeometryInternal != null)
+            {
+                GeometryInternal.PropertyChanged -= OnGeometryPropertyChangedPrivate;
+            }
         }
 
         /// <summary>
@@ -405,7 +469,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected override bool CanRender(IRenderContext context)
         {
-            return geometryModelCore.IsVisible;
+            if (context.EnableBoundingFrustum && !CheckBoundingFrustum(context.BoundingFrustum))
+            {
+                return false;
+            }
+            if (base.CanRender(context) && GeometryValid)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        protected virtual bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
+        {
+            var bound = BoundsWithTransform;
+            return viewFrustum.Intersects(ref bound);
         }
 
         public virtual void OnMouse3DDown(object sender, RoutedEventArgs e) { }
@@ -414,22 +495,49 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public virtual void OnMouse3DMove(object sender, RoutedEventArgs e) { }
 
-        /// <summary>
-        /// Checks if the ray hits the geometry of the model.
-        /// If there a more than one hit, result returns the hit which is nearest to the ray origin.
-        /// </summary>
-        /// <param name="context">Render context from viewport</param>
-        /// <param name="rayWS">Hitring ray from the camera.</param>
-        /// <param name="hits">results of the hit.</param>
-        /// <returns>True if the ray hits one or more times.</returns>
-        public virtual bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits, IRenderable originalSource)
+        protected override bool CanHitTest(IRenderContext context)
         {
-            return geometryModelCore.HitTest(context, rayWS, ref hits, this);
+            return base.CanHitTest(context) && GeometryValid;
         }
 
-        public static implicit operator GeometryModel3DCore(GeometryModel3D element)
+        
+        /// <summary>
+        /// 
+        /// </summary>        
+        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
-            return element.geometryModelCore;
+            if (CanHitTest(context))
+            {
+                if (this.InstanceBuffer.HasElements)
+                {
+                    bool hit = false;
+                    int idx = 0;
+                    foreach (var modelMatrix in InstanceBuffer.Elements)
+                    {
+                        var b = this.Bounds;
+                        // this.PushMatrix(modelMatrix);
+                        if (OnHitTest(context, TotalModelMatrix * modelMatrix, ref rayWS, ref hits))
+                        {
+                            hit = true;
+                            var lastHit = hits[hits.Count - 1];
+                            lastHit.Tag = idx;
+                            hits[hits.Count - 1] = lastHit;
+                        }
+                       // this.PopMatrix();
+                        ++idx;
+                    }
+
+                    return hit;
+                }
+                else
+                {
+                    return OnHitTest(context, TotalModelMatrix, ref rayWS, ref hits);
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 

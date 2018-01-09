@@ -18,6 +18,15 @@ namespace HelixToolkit.UWP
     /// </summary>
     public interface IRenderable 
     {
+        bool IsVisible { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        bool IsAttached { get; }
+        /// <summary>
+        /// Optional for scene graph traverse
+        /// </summary>
+        IEnumerable<IRenderable> Items { get; }
         /// <summary>
         /// 
         /// </summary>
@@ -27,16 +36,16 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         void Detach();
-        //void Update(TimeSpan timeSpan);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        void Update(IRenderContext context);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="context"></param>
         void Render(IRenderContext context);
-        /// <summary>
-        /// 
-        /// </summary>
-        bool IsAttached { get; }
     }
 
     public interface IRenderer

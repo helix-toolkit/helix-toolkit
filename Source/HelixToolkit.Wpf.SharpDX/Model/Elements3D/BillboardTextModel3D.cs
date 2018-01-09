@@ -24,7 +24,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d, e) =>
                 {
                     ((d as Element3D).RenderCore as IBillboardRenderParams).FixedSize = (bool)e.NewValue;
-                    ((d as Element3D).ElementCore as BillboardModel3DCore).FixedSize = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -51,14 +50,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #region Overridable Methods
 
-        public BillboardTextModel3D():base(new BillboardModel3DCore())
-        {
-
-        }
-        public BillboardTextModel3D(BillboardModel3DCore core) : base(core)
-        {
-
-        }
         protected override IRenderCore OnCreateRenderCore()
         {
             return new BillboardRenderCore();
@@ -98,6 +89,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 //IsAntialiasedLineEnabled = true,                    
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled,
             };
+        }
+
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        {
+            return (Geometry as BillboardBase).HitTest(context, totalModelMatrix, ref ray, ref hits, this, FixedSize);
         }
 
         #endregion

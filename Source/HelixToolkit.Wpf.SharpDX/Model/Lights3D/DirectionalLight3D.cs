@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Light3DSceneShared.LightModels.Lights[lightIndex].LightColor = this.ColorInternal;           
             // --- set lighting parameters
-            Light3DSceneShared.LightModels.Lights[lightIndex].LightDir = -Vector4.Transform(this.DirectionInternal.ToVector4(0f), modelMatrix).Normalized();
+            Light3DSceneShared.LightModels.Lights[lightIndex].LightDir = -Vector4.Transform(this.DirectionInternal.ToVector4(0f), ModelMatrix).Normalized();
         }
     }
 }

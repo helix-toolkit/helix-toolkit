@@ -52,6 +52,8 @@ namespace HelixToolkit.Wpf.SharpDX
             set;get;
         }
 
+        public Vector2Collection TextureCoordinates { set; get; }
+
         protected BillboardSingleImage3D()
         {
             Positions = new Vector3Collection(6);

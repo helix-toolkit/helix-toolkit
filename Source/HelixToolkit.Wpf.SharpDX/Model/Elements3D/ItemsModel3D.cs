@@ -13,14 +13,10 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Diagnostics;
     using System.Linq;
     using System.Windows;
-    using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
-    using SharpDX;
-    using System.Windows.Media;
-    using System.Diagnostics;
-    using System.Windows.Markup;
 
     /// <summary>
     ///     Represents a model that can be used to present a collection of items. supports generating child items by a
@@ -365,12 +361,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool OnHitTest(IRenderContext context, global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, global::SharpDX.Matrix totalModelMatrix, ref global::SharpDX.Ray ray, ref List<HitTestResult> hits)
         {
             bool isHit = false;
             if (Octree != null)
             {
-                isHit = Octree.HitTest(context, this, modelMatrix, ray, ref hits);
+                isHit = Octree.HitTest(context, this, totalModelMatrix, ray, ref hits);
 #if DEBUG
                 if (isHit)
                 {
@@ -380,7 +376,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                isHit = base.OnHitTest(context, ray, ref hits);
+                isHit = base.OnHitTest(context, totalModelMatrix, ref ray, ref hits);
             }
             return isHit;
         }

@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
         Visibility Visibility { get; set; }
     }
 
-    public interface ITransformable
+    public interface ITransformable : ITransform
     {
         Transform3D Transform { get; set; }               
     }

@@ -57,9 +57,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 isIntersect = true;
                 foreach (var t in this.Objects)
                 {
-                    t.PushMatrix(modelMatrix);
+                    //t.PushMatrix(modelMatrix);
                     isHit |= t.HitTest(context, rayWS, ref tempHits);
-                    t.PopMatrix();
+                    //t.PopMatrix();
                     hits.AddRange(tempHits);
                     tempHits.Clear();
                 }

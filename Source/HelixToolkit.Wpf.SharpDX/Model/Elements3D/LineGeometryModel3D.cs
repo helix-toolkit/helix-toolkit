@@ -41,10 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
-            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0, (d,e)=> 
-            {
-                ((d as LineGeometryModel3D).ElementCore as LineGeometryModel3DCore).HitTestThickness = (float)(double)e.NewValue;
-            }));
+            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new UIPropertyMetadata(1.0));
 
         public Media.Color Color
         {
@@ -77,12 +74,6 @@ namespace HelixToolkit.Wpf.SharpDX
         [ThreadStatic]
         private static LinesVertex[] vertexArrayBuffer = null;
 
-        public LineGeometryModel3D() : base(new LineGeometryModel3DCore())
-        {
-        }
-        public LineGeometryModel3D(LineGeometryModel3DCore core) : base(core)
-        {
-        }
         protected override IGeometryBufferModel OnCreateBufferModel()
         {
             var buffer = new LineGeometryBufferModel<LinesVertex>(LinesVertex.SizeInBytes);
@@ -127,29 +118,21 @@ namespace HelixToolkit.Wpf.SharpDX
             return host.EffectsManager[DefaultRenderTechniqueNames.Lines];
         }
 
-        protected override bool OnAttach(IRenderHost host)
-        {
-            // --- attach                        
-            if (!base.OnAttach(host))
-            {
-                return false;
-            }
-
-            if (renderHost.IsDeferredLighting)
-                return false;
-            return true;
-        }
-
         protected override bool CanRender(IRenderContext context)
         {
             if (base.CanRender(context))
             {
-                return !renderHost.IsDeferredLighting;
+                return !RenderHost.IsDeferredLighting;
             }
             else
             {
                 return false;
             }
+        }
+
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        {
+            return (Geometry as LineGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this, (float)HitTestThickness);
         }
 
         /// <summary>

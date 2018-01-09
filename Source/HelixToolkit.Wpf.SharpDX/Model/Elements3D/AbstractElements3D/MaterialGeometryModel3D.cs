@@ -200,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 var model = ((MaterialGeometryModel3D)d);
                 (model.RenderCore as IMaterialRenderParams).Material = e.NewValue as IPhongMaterial;
-                if (model.renderHost != null)
+                if (model.RenderHost != null)
                 {
                     if (model.IsAttached)
                     {
@@ -209,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     else
                     {
-                        var host = model.renderHost;
+                        var host = model.RenderHost;
                         model.Detach();
                         model.Attach(host);
                     }
@@ -218,10 +218,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
 
-        public MaterialGeometryModel3D(GeometryModel3DCore modelCore) : base(modelCore)
-        {
-
-        }
         /// <summary>
         /// 
         /// </summary>

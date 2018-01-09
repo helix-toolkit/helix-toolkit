@@ -12,9 +12,10 @@ namespace HelixToolkit.UWP.Core
 namespace HelixToolkit.Wpf.SharpDX.Core
 #endif
 {
+    using Model;
     using BoundingSphere = global::SharpDX.BoundingSphere;
 
-    public abstract class GeometryModel3DCore : Element3DCore, IBoundable
+    public class GeometryBoundManager : ObservableObject, IBoundable
     {
         #region Properties
         private Geometry3D geometry = null;
@@ -172,19 +173,20 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         }
         #endregion
 
+        public GeometryBoundManager(Element3DCore core)
+        {
+            core.OnTransformChanged += OnTransformChanged;
+        }
+
         private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
         {
-            GeometryValid = CheckGeometry();
-            if (this.IsAttached)
+            if (e.PropertyName.Equals(nameof(Geometry3D.Positions)))
             {
-                if (e.PropertyName.Equals(nameof(Geometry3D.Positions)))
-                {
-                    UpdateBounds();
-                }
-                if (GeometryValid)
-                {
-                    OnGeometryPropertyChanged(sender, e);
-                }
+                UpdateBounds();
+            }
+            if (GeometryValid)
+            {
+                OnGeometryPropertyChanged(sender, e);
             }
         }
 
@@ -205,15 +207,15 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         }
 
-        protected override void OnTransformChanged(ref Matrix totalTransform)
+        private void OnTransformChanged(object sender, Matrix e)
         {
-            base.OnTransformChanged(ref totalTransform);
-            BoundsWithTransform = Bounds.Transform(totalTransform);
-            BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(totalTransform);
+            BoundsWithTransform = Bounds.Transform(e);
+            BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(e);
         }
 
         protected void UpdateBounds()
         {
+            GeometryValid = CheckGeometry();
             if (!GeometryValid)
             {
                 Bounds = MaxBound;
@@ -262,49 +264,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     Bounds = bound;
                     BoundsSphere = boundSphere;
                 }
-            }
-        }
-
-        protected override bool DetermineVisibility(IRenderContext context)
-        {
-            if (base.DetermineVisibility(context) && GeometryValid)
-            {
-                return !context.EnableBoundingFrustum || (context.BoundingFrustum.Intersects(ref boundsWithTransform) && context.BoundingFrustum.Intersects(ref boundsSphereWithTransform));
-            }
-            else { return false; }
-        }
-
-        public override bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits, IRenderable originalSource)
-        {
-            if (CanHit(context) && GeometryValid)
-            {
-                if (HasInstances)
-                {
-                    bool hit = false;
-                    int idx = 0;
-                    foreach (var m in instances)
-                    {
-                        var b = this.Bounds;
-                        if (OnHitTest(context, this.TotalModelMatrix * m, ref ray, ref hits, originalSource))
-                        {
-                            hit = true;
-                            var lastHit = hits[hits.Count - 1];
-                            lastHit.Tag = idx;
-                            hits[hits.Count - 1] = lastHit;
-                        }
-                        ++idx;
-                    }
-
-                    return hit;
-                }
-                else
-                {
-                    return OnHitTest(context, this.TotalModelMatrix, ref ray, ref hits, originalSource);
-                }
-            }
-            else
-            {
-                return false;
             }
         }
     }

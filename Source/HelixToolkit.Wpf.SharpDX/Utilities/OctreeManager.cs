@@ -195,14 +195,14 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void SubscribeBoundChangeEvent(GeometryModel3D item)
         {
-            item.OnTransformBoundChanged -= Item_OnBoundChanged;
-            item.OnTransformBoundChanged += Item_OnBoundChanged;
+            item.BoundManager.OnTransformBoundChanged -= Item_OnBoundChanged;
+            item.BoundManager.OnTransformBoundChanged += Item_OnBoundChanged;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void UnsubscribeBoundChangeEvent(GeometryModel3D item)
         {
-            item.OnTransformBoundChanged -= Item_OnBoundChanged;
+            item.BoundManager.OnTransformBoundChanged -= Item_OnBoundChanged;
         }
 
         private void Item_OnBoundChanged(object sender, ref BoundingBox newBound, ref BoundingBox oldBound)
@@ -272,8 +272,8 @@ namespace HelixToolkit.Wpf.SharpDX
             if (Enabled && item is GeometryModel3D)
             {
                 var model = item as GeometryModel3D;
-                model.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
-                model.OnTransformBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
+                model.BoundManager.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                model.BoundManager.OnTransformBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
                 if (model.Bounds != ZeroBound)
                 {
                     AddItem(model);
@@ -289,7 +289,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void GeometryModel3DOctreeManager_OnBoundInitialized(object sender, ref BoundingBox newBound, ref BoundingBox oldBound)
         {
             var item = sender as GeometryModel3D;
-            item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+            item.BoundManager.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
             AddItem(item);
         }
 
@@ -344,7 +344,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var tree = mOctree;
                 UpdateOctree(null);
                 var model = item as GeometryModel3D;
-                model.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                model.BoundManager.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
                 UnsubscribeBoundChangeEvent(model);
                 if (!tree.RemoveByBound(model))
                 {

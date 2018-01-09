@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Utilities;
     using Core;
     using HelixToolkit.Wpf.SharpDX.Cameras;
+    using System.Collections.Generic;
 
     public class ShadowMap3D : Element3D
     {
@@ -120,7 +121,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CanRender(IRenderContext context)
         {
-            return base.CanRender(context) && renderHost.IsShadowMapEnabled && !context.IsShadowPass;
+            return base.CanRender(context) && RenderHost.IsShadowMapEnabled && !context.IsShadowPass;
         }
 
         protected override void OnRender(IRenderContext context)
@@ -160,6 +161,16 @@ namespace HelixToolkit.Wpf.SharpDX
             { return; }
             shadowCore.LightViewProjectMatrix = camera.GetViewMatrix() * camera.GetProjectionMatrix(shadowCore.Width / shadowCore.Height);
             shadowCore.Render(context);
+        }
+
+        protected override bool CanHitTest(IRenderContext context)
+        {
+            return false;
+        }
+
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

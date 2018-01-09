@@ -100,6 +100,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (base.OnAttach(host))
             {
                 instanceParamBuffer.Initialize();
+                
                 return true;
             }
             else
@@ -123,15 +124,15 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnRender(context);
         }
 
-        protected override void UpdateInstancesBounds()
+        protected override void InstancesChanged()
         {
+            base.InstancesChanged();
             OctreeManager?.Clear();
-            base.UpdateInstancesBounds();
         }
 
         private void BuildOctree()
         {
-            if (isHitTestVisibleInternal && InstanceBuffer.HasElements)
+            if (IsVisible && InstanceBuffer.HasElements)
             {
                 OctreeManager?.RebuildTree(new Element3D[] { this });
             }
@@ -152,7 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (CanHitTest(context) && OctreeManager!=null && OctreeManager.Octree != null)
             {
                 var boundHits = new List<HitTestResult>();             
-                isHit = OctreeManager.Octree.HitTest(context, this, ModelMatrix, rayWS, ref boundHits);
+                isHit = OctreeManager.Octree.HitTest(context, this, TotalModelMatrix, rayWS, ref boundHits);
                 if (isHit)
                 {
                     Matrix instanceMatrix;
@@ -160,10 +161,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         int instanceIdx = (int)hit.Tag;
                         instanceMatrix = InstanceBuffer.Elements[instanceIdx];
-                        this.PushMatrix(instanceMatrix);
-                        var h = OnHitTest(context, rayWS, ref hits);
+                        //this.PushMatrix(instanceMatrix);
+                        var h = OnHitTest(context, TotalModelMatrix * instanceMatrix, ref rayWS, ref hits);
                         isHit |= h;
-                        this.PopMatrix();
+                        //this.PopMatrix();
                         if (h && hits.Count > 0)
                         {
                             var result = hits.Last();

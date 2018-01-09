@@ -20,6 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Utilities;
     using Model;
+    using System.Collections.Generic;
 
     public enum LightType : ushort
     {
@@ -106,9 +107,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CanRender(IRenderContext context)
         {
-            var render = base.CanRender(context) && !renderHost.IsDeferredLighting;
+            var render = base.CanRender(context) && !RenderHost.IsDeferredLighting;
             Light3DSceneShared.LightModels.Lights[lightIndex].LightEnabled = render ? 1 : 0;
             return render;
+        }
+
+        protected override bool CanHitTest(IRenderContext context)
+        {
+            return false;
+        }
+
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        {
+            return false;
         }
     }
 

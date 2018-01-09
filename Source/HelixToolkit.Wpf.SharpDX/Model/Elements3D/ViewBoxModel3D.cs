@@ -172,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool OnHitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             var p = Vector4.Transform(new Vector4(ray.Position, 1), context.ScreenViewProjectionMatrix);
             if (Math.Abs(p.W) > 1e-7)
@@ -218,7 +218,7 @@ namespace HelixToolkit.Wpf.SharpDX
             ray = new Ray(zn, r);
             List<HitTestResult> viewBoxHit = new List<HitTestResult>();
 
-            if (base.OnHitTest(context, ray, ref viewBoxHit))
+            if (base.OnHitTest(context, totalModelMatrix, ref ray, ref viewBoxHit))
             {
                 hits?.Clear();
                 hits = viewBoxHit;

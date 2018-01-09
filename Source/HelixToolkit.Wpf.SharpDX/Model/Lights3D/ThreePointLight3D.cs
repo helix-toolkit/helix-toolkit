@@ -5,6 +5,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
 {
@@ -45,6 +47,16 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
             {
                 c.Detach();
             }
+        }
+
+        protected override bool CanHitTest(IRenderContext context)
+        {
+            return false;
+        }
+
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        {
+            throw new NotImplementedException();
         }
 
         protected override void OnRender(IRenderContext context)

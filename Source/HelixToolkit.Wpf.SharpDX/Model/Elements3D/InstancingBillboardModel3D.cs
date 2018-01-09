@@ -56,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return false;
         }
 
-        protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }

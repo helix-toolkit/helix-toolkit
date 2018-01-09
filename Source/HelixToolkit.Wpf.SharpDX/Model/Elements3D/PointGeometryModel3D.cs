@@ -45,10 +45,7 @@
                 }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
-            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new UIPropertyMetadata(4.0, (d,e)=> 
-            {
-                ((d as Element3D).ElementCore as PointGeometryModel3DCore).HitTestThickness = (float)(double)e.NewValue;
-            }));
+            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new UIPropertyMetadata(4.0));
 
         public Media.Color Color
         {
@@ -94,16 +91,7 @@
             }
         }
 
-        public PointGeometryModel3D()
-            :base(new PointGeometryModel3DCore())
-        {
 
-        }
-        public PointGeometryModel3D(PointGeometryModel3DCore core)
-            : base(core)
-        {
-
-        }
         public static double DistanceRayToPoint(Ray r, Vector3 p)
         {
             Vector3 v = r.Direction;
@@ -166,12 +154,17 @@
         {
             if(base.CanRender(context))
             {
-                return !renderHost.IsDeferredLighting;
+                return !RenderHost.IsDeferredLighting;
             }
             else
             {
                 return false;
             }
+        }
+
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        {
+            return (Geometry as PointGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this, (float)HitTestThickness);
         }
 
         /// <summary>

@@ -5,21 +5,29 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Core
 #else
+using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX.Core
 #endif
 {
-    public class Element3DCore : DisposeObject, ITreeNode, IDisposable, IHitable
-    {        
+#if NETFX_CORE
+    public abstract class Element3DCore : IDisposable, IRenderable, IGUID, ITransform, INotifyPropertyChanged
+#else
+    public abstract class Element3DCore : FrameworkContentElement, IDisposable, IRenderable, IGUID, ITransform, INotifyPropertyChanged
+#endif
+    {
         /// <summary>
         /// 
         /// </summary>
         public Guid GUID { get { return Guid.NewGuid(); } }
 
-        private Matrix totalMatrixTransform = Matrix.Identity;
+        private Matrix totalModelMatrix = Matrix.Identity;
         /// <summary>
         /// 
         /// </summary>
@@ -27,14 +35,15 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             private set
             {
-                if(Set(ref totalMatrixTransform, value))
+                if(Set(ref totalModelMatrix, value))
                 {
-                    OnTransformChanged(ref value);
+                    TransformChanged(ref value);
+                    OnTransformChanged?.Invoke(this, value);
                 }
             }
             get
             {
-                return totalMatrixTransform;
+                return totalModelMatrix;
             }
         } 
 
@@ -91,7 +100,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// </summary>
         public bool IsAttached
         {
-            get { return renderHost != null; }
+            private set;get;
         }
 
         private IRenderHost renderHost;
@@ -103,32 +112,125 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             get { return renderHost; }
         }
 
-        public virtual IEnumerable<ITreeNode> Items
+        public virtual IEnumerable<IRenderable> Items
         {
             get
             {
-                return System.Linq.Enumerable.Empty<ITreeNode>();
+                return System.Linq.Enumerable.Empty<IRenderable>();
             }
         }
 
         public bool IsHitTestVisible { set; get; } = true;
         #region Handling Transforms
-        protected virtual void OnTransformChanged(ref Matrix totalTransform) { }
+        protected virtual void TransformChanged(ref Matrix totalTransform) { }
+        public event EventHandler<Matrix> OnTransformChanged;
+        #endregion
+        #region RenderCore
+        private IRenderCore renderCore = null;
+        public IRenderCore RenderCore
+        {
+            private set
+            {
+                if (renderCore != value)
+                {
+                    if (renderCore != null)
+                    {
+                        renderCore.OnInvalidateRenderer -= RenderCore_OnInvalidateRenderer;
+                    }
+                    renderCore = value;
+                    if (renderCore != null)
+                    {
+                        renderCore.OnInvalidateRenderer += RenderCore_OnInvalidateRenderer;
+                    }
+                }
+            }
+            get
+            {
+                if (renderCore == null)
+                {
+                    RenderCore = OnCreateRenderCore();
+                    AssignDefaultValuesToCore(RenderCore);
+                }
+                return renderCore;
+            }
+        }
+        protected IRenderTechnique renderTechnique { private set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        public delegate IRenderTechnique SetRenderTechniqueFunc(IRenderHost host);
+        /// <summary>
+        /// A delegate function to change render technique. 
+        /// <para>There are two ways to set render technique, one is use this <see cref="OnSetRenderTechnique"/> delegate.
+        /// The other one is to override the <see cref="OnCreateRenderTechnique"/> function.</para>
+        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
+        /// </summary>
+        public SetRenderTechniqueFunc OnSetRenderTechnique;
+        /// <summary>
+        /// Override this function to set render technique during Attach Host.
+        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns>Return RenderTechnique</returns>
+        protected virtual IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+        {
+            return renderTechnique == null ? host.RenderTechnique : this.renderTechnique;
+        }
+
+        protected virtual IRenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
+
+        protected virtual void AssignDefaultValuesToCore(IRenderCore core) { }
+
+        private void RenderCore_OnInvalidateRenderer(object sender, bool e)
+        {
+            InvalidateRender();
+        }
         #endregion
         /// <summary>
+        /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
+        /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
+        /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttached"/> -> <see cref="InvalidateRender"/></para>
         /// </summary>
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
         {
+            if (IsAttached || host == null)
+            {
+                return;
+            }
             renderHost = host;
+            if (host.EffectsManager == null)
+            {
+                throw new ArgumentException("EffectManger does not exist. Please make sure the proper EffectManager has been bind from view model.");
+            }
+            this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : OnCreateRenderTechnique(host);
+            if (renderTechnique != null)
+            {
+                renderTechnique = RenderHost.EffectsManager[renderTechnique.Name];
+                IsAttached = OnAttach(host);
+            }
             InvalidateRender();
         }
 
+        /// <summary>
+        /// To override Attach routine, please override this.
+        /// </summary>
+        /// <param name="host"></param>       
+        /// <returns>Return true if attached</returns>
+        protected virtual bool OnAttach(IRenderHost host)
+        {
+            RenderCore?.Attach(renderTechnique);
+            return RenderCore == null ? false : RenderCore.IsAttached;
+        }
         /// <summary>
         /// Detaches the element from the host. Override <see cref="OnDetach"/>
         /// </summary>
         public void Detach()
         {
+            IsAttached = false;
+            RenderCore?.Detach();
             OnDetach();
         }
 
@@ -169,12 +271,44 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             return Visible;
         }
+        #region Rendering
 
-        public virtual bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits, IRenderable originalSource)
+        /// <summary>
+        /// <para>Determine if this can be rendered.</para>
+        /// <para>Default returns <see cref="IsAttached"/> &amp;&amp; <see cref="IsRendering"/> &amp;&amp; <see cref="Visibility"/> == <see cref="Visibility.Visible"/></para>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        protected virtual bool CanRender(IRenderContext context)
         {
-            if (CanHit(context))
+            return IsVisible;
+        }
+        /// <summary>
+        /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
+        /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
+        /// </summary>
+        /// <param name="context">The context.</param>
+        public void Render(IRenderContext context)
+        {
+            if (CanRender(context))
             {
-                return OnHitTest(context, TotalModelMatrix, ref ray, ref hits, originalSource);
+                RenderCore.ModelMatrix = TotalModelMatrix;
+                OnRender(context);
+            }
+        }
+
+        protected virtual void OnRender(IRenderContext context)
+        {
+            RenderCore?.Render(context);
+        }
+        #endregion
+
+        #region Hit Test
+        public virtual bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
+        {
+            if (CanHitTest(context))
+            {
+                return OnHitTest(context, totalModelMatrix, ref ray, ref hits);
             }
             else
             {
@@ -182,12 +316,99 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
         }
 
-        protected virtual bool CanHit(IRenderContext context)
+        protected virtual bool CanHitTest(IRenderContext context)
         {
             return IsHitTestVisible && IsVisible;
         }
 
-        protected virtual bool OnHitTest(IRenderContext context, Matrix modelMatrix, ref Ray ray, ref List<HitTestResult> hits, IRenderable originalSource)
-        { return false; }
+        protected abstract bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits);
+        #endregion
+
+        #region INotifyPropertyChanged
+        private bool disablePropertyChangedEvent = false;
+        public bool DisablePropertyChangedEvent
+        {
+            set
+            {
+                if (disablePropertyChangedEvent == value)
+                {
+                    return;
+                }
+                disablePropertyChangedEvent = value;
+                RaisePropertyChanged();
+            }
+            get
+            {
+                return disablePropertyChangedEvent;
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (!DisablePropertyChangedEvent)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            this.RaisePropertyChanged(propertyName);
+            return true;
+        }
+
+        protected bool Set<T>(ref T backingField, T value, bool raisePropertyChanged, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            if (raisePropertyChanged)
+            { this.RaisePropertyChanged(propertyName); }
+            return true;
+        }
+#endregion
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~Element3DCore() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
