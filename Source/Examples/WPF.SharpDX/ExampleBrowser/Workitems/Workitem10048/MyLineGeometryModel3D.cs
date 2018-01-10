@@ -53,7 +53,7 @@ namespace Workitem10048
 
             // revert unprojection; probably better: overloaded HitTest() for LineGeometryModel3D?
             var svpm = context.ScreenViewProjectionMatrix;
-            var smvpm = this.modelMatrix * svpm;
+            var smvpm = this.ModelMatrix * svpm;
             var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
             Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
             var clickPoint = clickPoint4.ToVector3();
@@ -76,17 +76,18 @@ namespace Workitem10048
                     lastDist = dist;
                     Vector4 res;
                     var lp0 = line.P0;
-                    Vector3.Transform(ref lp0, ref this.modelMatrix, out res);
+                    var modelMatrix = ModelMatrix;
+                    Vector3.Transform(ref lp0, ref modelMatrix, out res);
                     lp0 = res.ToVector3();
 
                     var lp1 = line.P1;
-                    Vector3.Transform(ref lp1, ref this.modelMatrix, out res);
+                    Vector3.Transform(ref lp1, ref modelMatrix, out res);
                     lp1 = res.ToVector3();
 
                     var lv = lp1 - lp0;
                     var hitPointWS = lp0 + lv * t; // wrong, because t refers to screen space
                     result.Distance = (rayWS.Position - hitPointWS).Length();
-                    result.PointHit = hitPointWS.ToPoint3D();
+                    result.PointHit = hitPointWS;
                     result.ModelHit = this;
                     result.IsValid = true;
                     result.Tag = index; // ToDo: LineHitTag with additional info

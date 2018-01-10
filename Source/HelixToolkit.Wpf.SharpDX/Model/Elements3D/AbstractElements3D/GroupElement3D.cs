@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using SharpDX;
     using SharpDX;
     using System;
+    using global::SharpDX;
 
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement3DCollection 
@@ -41,11 +42,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     (d, e) => {
                         (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
                     }));
-
-        public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingBox>> OnBoundChanged;
-        public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingBox>> OnTransformBoundChanged;
-        public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingSphere>> OnBoundSphereChanged;
-        public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingSphere>> OnTransformBoundSphereChanged;
 
         public override IEnumerable<IRenderable> Items
         {
@@ -152,6 +148,27 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 c.Render(context);
             }
+        }
+
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        {
+            bool hit = false;
+            foreach (var c in this.Items)
+            {
+                if (c is IHitable)
+                {
+                    if (((IHitable)c).HitTest(context, ray, ref hits))
+                    {
+                        hit = true;
+                    }
+                }
+            }
+            if (hit)
+            {
+                var pos = ray.Position;
+                hits = hits.OrderBy(x => Vector3.DistanceSquared(pos, x.PointHit)).ToList();
+            }
+            return hit;
         }
     }
 }

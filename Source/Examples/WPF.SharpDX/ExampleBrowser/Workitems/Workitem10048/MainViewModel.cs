@@ -48,7 +48,7 @@
 
         public void OnMouseDown3D(object sender, RoutedEventArgs e)
         {
-            this.PointHit = (e as MouseDown3DEventArgs)?.HitTestResult?.PointHit ?? NoHit;
+            this.PointHit = (e as MouseDown3DEventArgs)?.HitTestResult?.PointHit.ToPoint3D() ?? NoHit;
         }
     }
 }
