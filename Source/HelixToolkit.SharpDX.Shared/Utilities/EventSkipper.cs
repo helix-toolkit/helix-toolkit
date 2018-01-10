@@ -78,7 +78,8 @@ namespace HelixToolkit.UWP.Utilities
                 ringBuffer.RemoveFirst();
             }
             ringBuffer.Add(latency);
-            average += (latency - average) / ringBuffer.Count; // moving average
+            average += (latency - average) / ringBuffer.Count; // moving average        
+            average = Math.Min(30, Math.Max(0, average));
             counter = (++counter) % 60;
             if(counter == 0)
             {
@@ -95,7 +96,7 @@ namespace HelixToolkit.UWP.Utilities
             var elapsed = curr - previous;
             previous = curr;
             lag += elapsed;
-            if (lag < Threshold + average - elapsed)
+            if (lag < Math.Max(Threshold/2, Threshold + average - elapsed))
             {               
                 return true;
             }
