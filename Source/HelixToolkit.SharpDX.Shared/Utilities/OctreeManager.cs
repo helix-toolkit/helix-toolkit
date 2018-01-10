@@ -212,7 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     int counter = 0;
                     while (!tree.Add(model))
                     {
-                        var direction = (model.Bounds.Minimum + model.Bounds.Maximum)
+                        var direction = (model.BoundsWithTransform.Minimum + model.BoundsWithTransform.Maximum)
                             - (tree.Bound.Minimum + tree.Bound.Maximum);
                         tree = tree.Expand(ref direction) as RenderableBoundingOctree;
                         ++counter;

@@ -68,10 +68,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         public bool GeometryValid { private set; get; } = false;
         #region Bounds
-        public static readonly BoundingBox MaxBound = new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MaxValue));
-        public static readonly BoundingSphere MaxBoundSphere = new BoundingSphere(Vector3.Zero, float.MaxValue);
+        public static readonly BoundingBox DefaultBound = new BoundingBox();
+        public static readonly BoundingSphere DefaultBoundSphere = new BoundingSphere();
 
-        private BoundingBox bounds = MaxBound;
+        private BoundingBox bounds = DefaultBound;
         public BoundingBox Bounds
         {
             get { return bounds; }
@@ -86,7 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
         }
 
-        private BoundingBox boundsWithTransform = MaxBound;
+        private BoundingBox boundsWithTransform = DefaultBound;
         public BoundingBox BoundsWithTransform
         {
             get { return boundsWithTransform; }
@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
         }
 
-        private BoundingSphere boundsSphere = MaxBoundSphere;
+        private BoundingSphere boundsSphere = DefaultBoundSphere;
         public BoundingSphere BoundsSphere
         {
             protected set
@@ -119,7 +119,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
         }
 
-        private BoundingSphere boundsSphereWithTransform = MaxBoundSphere;
+        private BoundingSphere boundsSphereWithTransform = DefaultBoundSphere;
         public BoundingSphere BoundsSphereWithTransform
         {
             private set
@@ -218,8 +218,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             GeometryValid = CheckGeometry();
             if (!GeometryValid)
             {
-                Bounds = MaxBound;
-                BoundsSphere = MaxBoundSphere;
+                Bounds = DefaultBound;
+                BoundsSphere = DefaultBoundSphere;
             }
             else
             {
@@ -227,6 +227,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 {
                     Bounds = Geometry.Bound;
                     BoundsSphere = Geometry.BoundingSphere;
+                    BoundsWithTransform = Bounds.Transform(elementCore.ModelMatrix);
+                    BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.ModelMatrix);
                 }
                 else
                 {
@@ -263,6 +265,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     }
                     Bounds = bound;
                     BoundsSphere = boundSphere;
+                    BoundsWithTransform = Bounds.Transform(elementCore.ModelMatrix);
+                    BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.ModelMatrix);
                 }
             }
         }

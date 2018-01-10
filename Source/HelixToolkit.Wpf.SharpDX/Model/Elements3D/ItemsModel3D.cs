@@ -293,11 +293,11 @@ namespace HelixToolkit.Wpf.SharpDX
                                 }
                                 var model = this.ItemTemplate.LoadContent() as Element3D;
                                 if (model != null)
-                                {
-                                    octreeManager?.AddPendingItem(model);
+                                {                                    
                                     model.DataContext = item;
                                     this.Children.Add(model);
                                     mDictionary.Add(item, model);
+                                    octreeManager?.AddPendingItem(model);
                                 }
                                 else
                                 {
@@ -315,10 +315,10 @@ namespace HelixToolkit.Wpf.SharpDX
                                 }
                                 var model = item as Element3D;
                                 if (model != null)
-                                {
-                                    octreeManager?.AddPendingItem(model);
+                                {                                    
                                     this.Children.Add(model);
                                     mDictionary.Add(item, model);
+                                    octreeManager?.AddPendingItem(model);
                                 }
                                 else
                                 {
