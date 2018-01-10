@@ -13,14 +13,51 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     public class PointRenderCore : GeometryRenderCore<PointLineModelStruct>, IPointRenderParams
     {
-        public float Width { set; get; } = 0.5f;
-        public float Height { set; get; } = 0.5f;
-        public PointFigure Figure { set; get; } = PointFigure.Ellipse;
-        public float FigureRatio { set; get; } = 0.25f;
+        public virtual float Width
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Params.X, value);
+            }
+            get { return modelStruct.Params.X; }
+        }
+
+        public virtual float Height
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Params.Y, value);
+            }
+            get { return modelStruct.Params.Y; }
+        }
+        public virtual PointFigure Figure
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Params.Z, (int)value);
+            }
+            get { return (PointFigure)modelStruct.Params.Z; }
+        }
+        public virtual float FigureRatio
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Params.W, value);
+            }
+            get { return modelStruct.Params.W; }
+        }
         /// <summary>
         /// Final Point Color = PointColor * PerVertexPointColor
         /// </summary>
-        public Color4 PointColor { set; get; } = Color.Black;
+        public virtual Color4 PointColor { set; get; } = Color.Black;
+
+        public PointRenderCore()
+        {
+            Width = 0.5f;
+            Height = 0.5f;
+            Figure = PointFigure.Ellipse;
+            FigureRatio = 0.25f;
+        }
 
         protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
         {

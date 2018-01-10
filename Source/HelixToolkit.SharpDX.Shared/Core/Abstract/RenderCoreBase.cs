@@ -13,6 +13,8 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Shaders;
+    using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
     using Utilities;
     /// <summary>
     /// Base class for all render core classes
@@ -146,14 +148,36 @@ namespace HelixToolkit.UWP.Core
             return IsAttached;
         }
 
-        protected void InvalidateRenderer(object sender, bool e)
+        protected void InvalidateRenderer()
         {
-            OnInvalidateRenderer?.Invoke(sender, e);
+            OnInvalidateRenderer?.Invoke(this, true);
         }
 
         public void ResetInvalidateHandler()
         {
             OnInvalidateRenderer = null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="backingField"></param>
+        /// <param name="value"></param>
+        /// <param name="affectsRender"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        protected bool SetAffectsRender<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            this.RaisePropertyChanged(propertyName);
+            InvalidateRenderer();
+            return true;
         }
     }
 }

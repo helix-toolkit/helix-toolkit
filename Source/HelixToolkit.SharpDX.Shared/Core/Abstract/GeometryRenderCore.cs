@@ -33,10 +33,11 @@ namespace HelixToolkit.UWP.Core
             {
                 rasterDescription = value;
                 CreateRasterState(value, false);
+                InvalidateRenderer();
             }
             get
             {
-                return RasterDescription;
+                return rasterDescription;
             }
         }
 
@@ -49,10 +50,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (defaultPassName == value)
-                { return; }
-                defaultPassName = value;
-                if (IsAttached)
+                if(Set(ref defaultPassName, value) && IsAttached)
                 {
                     DefaultShaderPass = EffectTechnique[value];
                 }
@@ -68,12 +66,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (defaultShadowPassName == value)
-                {
-                    return;
-                }
-                defaultShadowPassName = value;
-                if (IsAttached)
+                if (Set(ref defaultShadowPassName, value) && IsAttached)
                 {
                     ShadowPass = EffectTechnique[value];
                 }
@@ -88,9 +81,11 @@ namespace HelixToolkit.UWP.Core
         {
             private set
             {
-                if (defaultShaderPass == value) { return; }
-                defaultShaderPass = value;
-                OnDefaultPassChanged(value);
+                if(Set(ref defaultShaderPass, value))
+                {
+                    OnDefaultPassChanged(value);
+                    InvalidateRenderer();
+                }
             }
             get
             {
@@ -103,9 +98,11 @@ namespace HelixToolkit.UWP.Core
         {
             private set
             {
-                if (shadowPass == value) { return; }
-                shadowPass = value;
-                OnShadowPassChanged(value);
+                if(Set(ref shadowPass, value))
+                {
+                    OnShadowPassChanged(value);
+                    InvalidateRenderer();
+                }
             }
             get
             {
@@ -113,7 +110,18 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        public bool IsThrowingShadow { set; get; } = false;
+        private bool isThrowingShadow = false;
+        public bool IsThrowingShadow
+        {
+            set
+            {
+                if(Set(ref isThrowingShadow, value))
+                {
+                    InvalidateRenderer();
+                }
+            }
+            get { return isThrowingShadow; }
+        }
 
         protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
         {

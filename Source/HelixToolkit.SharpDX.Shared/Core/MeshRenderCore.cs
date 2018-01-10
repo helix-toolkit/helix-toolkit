@@ -12,17 +12,24 @@ namespace HelixToolkit.UWP.Core
 
     public class MeshRenderCore : MaterialGeometryRenderCore, IInvertNormal
     {
-        public bool InvertNormal { set; get; } = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual bool InvertNormal
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.InvertNormal, (value ? 1 : 0));
+            }
+            get
+            {
+                return modelStruct.InvertNormal == 1 ? true : false;
+            }
+        }
 
         public string ShaderShadowMapTextureName { set; get; } = DefaultBufferNames.ShadowMapTB;
 
         private int shadowMapSlot;
-
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
-        {
-            base.OnUpdatePerModelStruct(ref model, context);
-            model.InvertNormal = InvertNormal ? 1 : 0;
-        }
 
         protected override void OnDefaultPassChanged(IShaderPass pass)
         {

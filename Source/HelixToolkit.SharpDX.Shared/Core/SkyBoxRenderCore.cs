@@ -71,9 +71,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (cubeTexture == value) { return; }
-                cubeTexture = value;
-                if (IsAttached)
+                if(SetAffectsRender(ref cubeTexture, value) && IsAttached)
                 {
                     cubeTextureRes.CreateView(value);
                 }
@@ -89,8 +87,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                samplerDescription = value;
-                if (IsAttached)
+                if(SetAffectsRender(ref samplerDescription, value) && IsAttached)
                 {
                     RemoveAndDispose(ref textureSampler);
                     textureSampler = Collect(EffectTechnique.EffectsManager.StateManager.Register(value));

@@ -13,39 +13,85 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     public class MeshOutlineRenderCore : PatchMeshRenderCore, IMeshOutlineParams
     {
+        #region Properties
         /// <summary>
         /// Outline color
         /// </summary>
-        public Color4 Color { set; get; } = new Color4(1, 1, 1, 1);
+        public Color4 Color
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Color, value);
+            }
+            get
+            {
+                return modelStruct.Color.ToColor4();
+            }
+        }
+
+        private bool outlineEnabled = false;
         /// <summary>
         /// Enable outline
         /// </summary>
-        public bool OutlineEnabled { set; get; } = false;
+        public bool OutlineEnabled
+        {
+            set
+            {
+                SetAffectsRender(ref outlineEnabled, value);
+            }
+            get
+            {
+                return outlineEnabled;
+            }
+        }
 
+        private bool drawMesh = true;
         /// <summary>
         /// Draw original mesh
         /// </summary>
-        public bool DrawMesh { set; get; } = true;
+        public bool DrawMesh
+        {
+            set
+            {
+                SetAffectsRender(ref drawMesh, value);
+            }
+            get
+            {
+                return drawMesh;
+            }
+        }
 
+        private bool drawOutlineBeforeMesh = false;
         /// <summary>
         /// Draw outline order
         /// </summary>
-        public bool DrawOutlineBeforeMesh { set; get; } = false;
+        public bool DrawOutlineBeforeMesh
+        {
+            set
+            {
+                SetAffectsRender(ref drawOutlineBeforeMesh, value);
+            }
+            get { return drawOutlineBeforeMesh; }
+        }
 
         /// <summary>
         /// Outline fading
         /// </summary>
-        public float OutlineFadingFactor { set; get; } = 1.5f;
+        public float OutlineFadingFactor
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Params.Y, value);
+            }
+            get { return modelStruct.Params.Y; }
+        }
 
         private string outlinePassName = DefaultPassNames.MeshOutline;
         public string OutlinePassName
         {
             set
             {
-                if (outlinePassName == value)
-                { return; }
-                outlinePassName = value;
-                if (IsAttached)
+                if(SetAffectsRender(ref outlinePassName, value) && IsAttached)
                 {
                     outlineShaderPass = EffectTechnique[value];
                 }
@@ -56,7 +102,16 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        #endregion
+        /// <summary>
+        /// 
+        /// </summary>
         protected IShaderPass outlineShaderPass { private set; get; }
+
+        public MeshOutlineRenderCore()
+        {
+            OutlineFadingFactor = 1.5f;
+        }
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
@@ -67,7 +122,6 @@ namespace HelixToolkit.UWP.Core
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {            
             base.OnUpdatePerModelStruct(ref model, context);
-            model.Color = Color;
             model.Params.Y = OutlineFadingFactor;
         }
 

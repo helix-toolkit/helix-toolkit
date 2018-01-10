@@ -352,6 +352,12 @@ namespace HelixToolkit.Wpf.SharpDX
             BoundManager.OnTransformBoundChanged += (s, e) => { RaiseOnTransformBoundChanged(e); };
             BoundManager.OnBoundSphereChanged += (s, e) => { RaiseOnBoundSphereChanged(e); };
             BoundManager.OnTransformBoundSphereChanged += (s, e) => { RaiseOnTransformBoundSphereChanged(e); };
+            BoundManager.OnCheckGeometry = OnCheckGeometry;
+        }
+
+        protected virtual bool OnCheckGeometry(Geometry3D geometry)
+        {
+            return !(this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0);
         }
 
         protected virtual IGeometryBufferModel OnCreateBufferModel() { return new EmptyGeometryBufferModel(); }

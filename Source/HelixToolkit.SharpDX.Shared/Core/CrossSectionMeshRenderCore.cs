@@ -24,29 +24,162 @@ namespace HelixToolkit.UWP.Core
         private RasterizerState backfaceRasterState;
 
         #endregion
-
+        #region Properties
         /// <summary>
         /// Defines the sectionColor
-        /// </summary>
-        public Color4 SectionColor { set; get; } = Color.Firebrick;
+        /// </summary>       
+        public Color4 SectionColor
+        {
+            set
+            {
+                SetAffectsRender(ref clipParameter.CrossSectionColors, value);
+            }
+            get { return clipParameter.CrossSectionColors.ToColor4(); }
+        }
 
         /// <summary>
-        /// Defines the planeEnabled
+        /// Defines the plane1Enabled
         /// </summary>
-        public bool Plane1Enabled { set; get; } = false;
-        public bool Plane2Enabled { set; get; } = false;
-        public bool Plane3Enabled { set; get; } = false;
-        public bool Plane4Enabled { set; get; } = false;
+        public bool Plane1Enabled
+        {
+            set
+            {
+                if(clipParameter.EnableCrossPlane.X != value)
+                {
+                    clipParameter.EnableCrossPlane.X = value;
+                    InvalidateRenderer();
+                }
+            }
+            get { return clipParameter.EnableCrossPlane.X; }
+        }
 
         /// <summary>
-        /// Defines the plane (Normal + d)
+        /// Defines the plane2Enabled
         /// </summary>
-        public Vector4 Plane1Params { set; get; }
-        public Vector4 Plane2Params { set; get; }
-        public Vector4 Plane3Params { set; get; }
-        public Vector4 Plane4Params { set; get; }
+        public bool Plane2Enabled
+        {
+            set
+            {
+                if (clipParameter.EnableCrossPlane.Y != value)
+                {
+                    clipParameter.EnableCrossPlane.Y = value;
+                    InvalidateRenderer();
+                }
+            }
+            get { return clipParameter.EnableCrossPlane.Y; }
+        }
 
-        private ClipPlaneStruct clipParameter;
+        /// <summary>
+        /// Defines the plane3Enabled
+        /// </summary>
+        public bool Plane3Enabled
+        {
+            set
+            {
+                if (clipParameter.EnableCrossPlane.Z != value)
+                {
+                    clipParameter.EnableCrossPlane.Z = value;
+                    InvalidateRenderer();
+                }
+            }
+            get { return clipParameter.EnableCrossPlane.Z; }
+        }
+
+        /// <summary>
+        /// Defines the plane4Enabled
+        /// </summary>
+        public bool Plane4Enabled
+        {
+            set
+            {
+                if (clipParameter.EnableCrossPlane.W != value)
+                {
+                    clipParameter.EnableCrossPlane.W = value;
+                    InvalidateRenderer();
+                }
+            }
+            get { return clipParameter.EnableCrossPlane.W; }
+        }
+
+        /// <summary>
+        /// Defines the plane 1(Normal + d)
+        /// </summary>
+        public Vector4 Plane1Params
+        {
+            set
+            {
+                if(clipParameter.CrossPlaneParams.Row1 != value)
+                {
+                    clipParameter.CrossPlaneParams.Row1 = value;
+                    InvalidateRenderer();
+                }
+            }
+            get
+            {
+                return clipParameter.CrossPlaneParams.Row1;
+            }
+        }
+
+        /// <summary>
+        /// Defines the plane 2(Normal + d)
+        /// </summary>
+        public Vector4 Plane2Params
+        {
+            set
+            {
+                if (clipParameter.CrossPlaneParams.Row2 != value)
+                {
+                    clipParameter.CrossPlaneParams.Row2 = value;
+                    InvalidateRenderer();
+                }
+            }
+            get
+            {
+                return clipParameter.CrossPlaneParams.Row2;
+            }
+        }
+
+        /// <summary>
+        /// Defines the plane 3(Normal + d)
+        /// </summary>
+        public Vector4 Plane3Params
+        {
+            set
+            {
+                if (clipParameter.CrossPlaneParams.Row3 != value)
+                {
+                    clipParameter.CrossPlaneParams.Row3 = value;
+                    InvalidateRenderer();
+                }
+            }
+            get
+            {
+                return clipParameter.CrossPlaneParams.Row3;
+            }
+        }
+
+        /// <summary>
+        /// Defines the plane 4(Normal + d)
+        /// </summary>
+        public Vector4 Plane4Params
+        {
+            set
+            {
+                if (clipParameter.CrossPlaneParams.Row4 != value)
+                {
+                    clipParameter.CrossPlaneParams.Row4 = value;
+                    InvalidateRenderer();
+                }
+            }
+            get
+            {
+                return clipParameter.CrossPlaneParams.Row4;
+            }
+        }
+
+        #endregion
+
+        private ClipPlaneStruct clipParameter = new ClipPlaneStruct() { EnableCrossPlane = new Bool4(false, false, false, false), CrossSectionColors = Color.DarkGray.ToVector4(), CrossPlaneParams = new Matrix() };
 
         private IConstantBufferProxy clipParamCB;
 
@@ -89,17 +222,6 @@ namespace HelixToolkit.UWP.Core
                 }));
             #endregion
             return true;
-        }
-
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
-        {
-            base.OnUpdatePerModelStruct(ref model, context);
-            clipParameter.CrossSectionColors = SectionColor;
-            clipParameter.EnableCrossPlane = new Bool4(Plane1Enabled, Plane2Enabled, Plane3Enabled, Plane4Enabled);
-            clipParameter.CrossPlaneParams.Row1 = Plane1Params;
-            clipParameter.CrossPlaneParams.Row2 = Plane2Params;
-            clipParameter.CrossPlaneParams.Row3 = Plane3Params;
-            clipParameter.CrossPlaneParams.Row4 = Plane4Params;
         }
 
         protected override void OnUploadPerModelConstantBuffers(DeviceContext context)

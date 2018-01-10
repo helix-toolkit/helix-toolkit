@@ -11,22 +11,64 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Shaders;
+    /// <summary>
+    /// 
+    /// </summary>
     public class LineRenderCore : GeometryRenderCore<PointLineModelStruct>, ILineRenderParams
     {
-        public float Thickness { set; get; } = 0.5f;
-        public float Smoothness { set; get; }
+        #region Properties
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual float Thickness
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Params.X, value);
+            }
+            get
+            {
+                return modelStruct.Params.X;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual float Smoothness
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Params.Y, value);
+            }
+            get { return modelStruct.Params.Y; }
+        }
+
         /// <summary>
         /// Final Line Color = LineColor * PerVertexLineColor
         /// </summary>
-        public Color4 LineColor { set; get; } = Color.Black;
+        public virtual Color4 LineColor
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Color, value);
+            }
+            get { return modelStruct.Color.ToColor4(); }
+        }
+
+        #endregion
+
+        public LineRenderCore()
+        {
+            LineColor = Color.Black;
+            Thickness = 0.5f;
+            Smoothness = 0;
+        }
 
         protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
-            model.Color = LineColor;
-            model.Params.X = Thickness;
-            model.Params.Y = Smoothness;
         }
 
         protected override ConstantBufferDescription GetModelConstantBufferDescription()

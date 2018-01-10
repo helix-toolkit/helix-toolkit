@@ -23,12 +23,14 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                samplerDescription = value;
-                if (textureSampler == null)
+                if(SetAffectsRender(ref samplerDescription, value))
                 {
-                    return;
+                    if (textureSampler == null)
+                    {
+                        return;
+                    }
+                    textureSampler.Description = value;
                 }
-                textureSampler.Description = value;
             }
             get
             {

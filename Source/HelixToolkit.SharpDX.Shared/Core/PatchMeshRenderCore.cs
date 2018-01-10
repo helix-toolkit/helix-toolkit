@@ -19,25 +19,48 @@ namespace HelixToolkit.UWP.Core
 
     public class PatchMeshRenderCore : MeshRenderCore, IPatchRenderParams
     {
-        public float MinTessellationDistance
+        public virtual float MinTessellationDistance
         {
-            set;get;
-        } = 10;
+            set
+            {
+                SetAffectsRender(ref modelStruct.MinTessDistance, value);
+            }
+            get { return modelStruct.MinTessDistance; }
+        }
 
-        public float MaxTessellationDistance
+        public virtual float MaxTessellationDistance
         {
-            set;get;
-        } = 100;
+            set
+            {
+                SetAffectsRender(ref modelStruct.MaxTessDistance, value);
+            }
+            get { return modelStruct.MaxTessDistance; }
+        }
 
-        public float MinTessellationFactor
+        public virtual float MinTessellationFactor
         {
-            set; get;
-        } = 2;
+            set
+            {
+                SetAffectsRender(ref modelStruct.MinTessFactor, value);
+            }
+            get
+            {
+                return modelStruct.MinTessFactor;
+            }
+        }
 
-        public float MaxTessellationFactor
+
+        public virtual float MaxTessellationFactor
         {
-            set; get;
-        } = 1;
+            set
+            {
+                SetAffectsRender(ref modelStruct.MaxTessFactor, value);
+            }
+            get
+            {
+                return modelStruct.MaxTessFactor;
+            }
+        }
 
         private MeshTopologyEnum meshType = MeshTopologyEnum.PNTriangles;
         public MeshTopologyEnum MeshType
@@ -57,26 +80,24 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(enableTessellation == value)
+                if(SetAffectsRender(ref enableTessellation, value))
                 {
-                    return;
-                }
-                enableTessellation = value;
-                if (enableTessellation)
-                {
-                    switch (meshType)
+                    if (enableTessellation)
                     {
-                        case MeshTopologyEnum.PNTriangles:
-                            DefaultShaderPassName = DefaultPassNames.MeshTriTessellation;
-                            break;
-                        case MeshTopologyEnum.PNQuads:
-                            DefaultShaderPassName = DefaultPassNames.MeshQuadTessellation;
-                            break;
+                        switch (meshType)
+                        {
+                            case MeshTopologyEnum.PNTriangles:
+                                DefaultShaderPassName = DefaultPassNames.MeshTriTessellation;
+                                break;
+                            case MeshTopologyEnum.PNQuads:
+                                DefaultShaderPassName = DefaultPassNames.MeshQuadTessellation;
+                                break;
+                        }
                     }
-                }
-                else
-                {
-                    DefaultShaderPassName = DefaultPassNames.Default;
+                    else
+                    {
+                        DefaultShaderPassName = DefaultPassNames.Default;
+                    }
                 }
             }
             get
@@ -88,15 +109,10 @@ namespace HelixToolkit.UWP.Core
         public PatchMeshRenderCore()
         {
             DefaultShaderPassName = DefaultPassNames.Default;
-        }
-
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
-        {
-            base.OnUpdatePerModelStruct(ref model, context);
-            model.MaxTessDistance = this.MaxTessellationDistance;
-            model.MinTessDistance = this.MinTessellationDistance;
-            model.MaxTessFactor = this.MaxTessellationFactor;
-            model.MinTessFactor = this.MinTessellationFactor;
+            MinTessellationDistance = 10;
+            MaxTessellationDistance = 100;
+            MinTessellationFactor = 2;
+            MaxTessellationFactor = 1;
         }
 
         protected override void OnRender(IRenderContext context)

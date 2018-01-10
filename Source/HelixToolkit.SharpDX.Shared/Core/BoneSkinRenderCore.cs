@@ -16,9 +16,14 @@ namespace HelixToolkit.UWP.Core
     {
         public IElementsBufferModel VertexBoneIdBuffer { set; get; }
 
+        private BoneMatricesStruct boneMatrices;
         public BoneMatricesStruct BoneMatrices
         {
-            set;get;
+            set
+            {
+                SetAffectsRender(ref boneMatrices, value);
+            }
+            get { return boneMatrices; }
         }
 
         private IConstantBufferProxy boneCB;

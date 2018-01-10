@@ -6,6 +6,10 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
 using System.Linq;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
@@ -16,7 +20,6 @@ namespace HelixToolkit.UWP.Model
 {
     using Shaders;
     using System;
-    using System.Collections.Generic;
     using Utilities;
 
     /// <summary>
@@ -27,7 +30,7 @@ namespace HelixToolkit.UWP.Model
         /// <summary>
         /// <see cref="IEffectMaterialVariables.OnInvalidateRenderer"/> 
         /// </summary>
-        public event System.EventHandler<bool> OnInvalidateRenderer;
+        public event EventHandler<bool> OnInvalidateRenderer;
         private IPhongMaterial material;
         /// <summary>
         ///
@@ -91,12 +94,10 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if (renderDiffuseMap == value)
+                if(Set(ref renderDiffuseMap, value))
                 {
-                    return;
-                }
-                renderDiffuseMap = value;
-                needUpdate = true;
+                    needUpdate = true;
+                }               
             }
             get
             {
@@ -111,12 +112,10 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if (renderDiffuseAlphaMap == value)
+                if(Set(ref renderDiffuseAlphaMap, value))
                 {
-                    return;
+                    needUpdate = true;
                 }
-                renderDiffuseAlphaMap = value;
-                needUpdate = true;
             }
             get
             {
@@ -131,9 +130,10 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if (renderNormalMap == value) { return; }
-                renderNormalMap = value;
-                needUpdate = true;
+                if(Set(ref renderNormalMap, value))
+                {
+                    needUpdate = true;
+                }
             }
             get
             {
@@ -148,10 +148,10 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if (renderDisplacementMap == value)
-                { return; }
-                renderDisplacementMap = value;
-                needUpdate = true;
+                if(Set(ref renderDisplacementMap, value))
+                {
+                    needUpdate = true;
+                }
             }
             get
             {
@@ -168,10 +168,10 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if (renderShadowMap == value)
-                { return; }
-                renderShadowMap = value;
-                needUpdate = true;
+                if(Set(ref renderShadowMap, value))
+                {
+                    needUpdate = true;
+                }
             }
             get
             {
@@ -188,10 +188,10 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if (renderEnvironmentMap == value)
-                { return; }
-                renderEnvironmentMap = value;
-                needUpdate = true;
+                if(Set(ref renderEnvironmentMap, value))
+                {
+                    needUpdate = true;
+                }
             }
             get
             {
@@ -220,6 +220,7 @@ namespace HelixToolkit.UWP.Model
                     }
                     CreateTextureViews();
                     CreateSamplers();
+                    RaisePropertyChanged();
                 }
             }
             get
@@ -245,6 +246,7 @@ namespace HelixToolkit.UWP.Model
             SamplerResources[ShadowIdx] = Collect(new SamplerProxy(manager.StateManager));
             CreateTextureViews();
             CreateSamplers();
+            this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, true); };
         }
 
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)

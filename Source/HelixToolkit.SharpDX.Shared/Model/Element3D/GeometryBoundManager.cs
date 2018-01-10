@@ -169,6 +169,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             OnBoundSphereChanged?.Invoke(elementCore, new BoundChangeArgs<BoundingSphere>(ref newBoundSphere, ref oldBoundSphere));
         }
         #endregion
+        public delegate bool OnCheckGeometryDelegate(Geometry3D geometry);
+        public OnCheckGeometryDelegate OnCheckGeometry; 
 
         private Element3DCore elementCore;
 
@@ -198,8 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// </returns>
         protected virtual bool CheckGeometry()
         {
-            return !(this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0
-                || this.Geometry.Indices == null || this.Geometry.Indices.Count == 0);
+            return !(this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0);
         }
 
         protected virtual void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -215,7 +216,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         protected void UpdateBounds()
         {
-            GeometryValid = CheckGeometry();
+            GeometryValid = OnCheckGeometry != null ? OnCheckGeometry.Invoke(this.geometry) : CheckGeometry();
             if (!GeometryValid)
             {
                 Bounds = DefaultBound;

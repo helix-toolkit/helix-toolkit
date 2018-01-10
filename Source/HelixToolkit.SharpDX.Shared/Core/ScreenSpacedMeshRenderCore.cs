@@ -98,10 +98,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (relativeScreenLocX != value)
-                {
-                    relativeScreenLocX = value;
-                }
+                SetAffectsRender(ref relativeScreenLocX, value);
             }
             get
             {
@@ -117,10 +114,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (relativeScreenLocY != value)
-                {
-                    relativeScreenLocY = value;
-                }
+                SetAffectsRender(ref relativeScreenLocY, value);
             }
             get
             {
@@ -136,22 +130,33 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (sizeScale == value)
-                {
-                    return;
-                }
-                sizeScale = value;
+                SetAffectsRender(ref sizeScale, value);
             }
             get
             {
                 return sizeScale;
             }
         }
+
+        private bool isPerspective = true;
         /// <summary>
         /// 
         /// </summary>
-        public bool IsPerspective { set; get; } = true;
-        public bool IsRightHand { set; get; } = true;
+        public bool IsPerspective
+        {
+            set { SetAffectsRender(ref isPerspective, value); }
+            get { return isPerspective; }
+        }
+
+        private bool isRightHand = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsRightHand
+        {
+            set { SetAffectsRender(ref isRightHand, value); }
+            get { return isRightHand; }
+        }
         /// <summary>
         /// Viewport Width
         /// </summary>
@@ -184,8 +189,10 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                rasterDescription = value;
-                CreateRasterState(value, false);
+                if(SetAffectsRender(ref rasterDescription, value) && IsAttached)
+                {
+                    CreateRasterState(value, false);
+                }
             }
             get
             {

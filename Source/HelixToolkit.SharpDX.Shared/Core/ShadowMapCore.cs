@@ -32,9 +32,11 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (width == value) { return; }
-                width = value;
-                resolutionChanged = true;
+                if(SetAffectsRender(ref width, value))
+                {
+                    modelStruct.ShadowMapSize.X = value;
+                    resolutionChanged = true;
+                }
             }
             get
             {
@@ -47,9 +49,11 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (height == value) { return; }
-                height = value;
-                resolutionChanged = true;
+                if (SetAffectsRender(ref height, value))
+                {
+                    modelStruct.ShadowMapSize.Y = value;
+                    resolutionChanged = true;
+                }
             }
             get
             {
@@ -57,17 +61,50 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-       // public float FactorPCF { set; get; } = 1.5f;
-        public float Bias { set; get; } = 0.0015f;
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual float Intensity
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.ShadowMapInfo.X, value);
+            }
+            get { return modelStruct.ShadowMapInfo.X; }
+        }
 
-        public float Intensity { set; get; } = 0.5f;
-        public Matrix LightViewProjectMatrix { set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual float Bias
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.ShadowMapInfo.Z, value);
+            }
+            get { return modelStruct.ShadowMapInfo.Z; }
+        }
+
+        public Matrix LightViewProjectMatrix
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.LightViewProjection, value);
+            }
+            get { return modelStruct.LightViewProjection; }
+        }
         /// <summary>
         /// Update shadow map every N frames
         /// </summary>
         public int UpdateFrequency { set; get; } = 1;
 
         private int currentFrame = 0;
+
+        public ShadowMapCore()
+        {
+            Bias = 0.0015f;
+            Intensity = 0.5f;
+        }
 
         protected virtual Texture2DDescription ShadowMapTextureDesc
         {
@@ -200,9 +237,6 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnUpdatePerModelStruct(ref ShadowMapParamStruct model, IRenderContext context)
         {
-            model.ShadowMapInfo = new Vector4(Intensity, 0, Bias, 0);
-            model.ShadowMapSize = new Vector2(Width, Height);
-            model.LightViewProjection = LightViewProjectMatrix;
             model.HasShadowMap = context.RenderHost.IsShadowMapEnabled ? 1 : 0;
         }
     }

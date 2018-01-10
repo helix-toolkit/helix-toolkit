@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 item.Render(context);
             }
 #else
-            UpdateGlobalVariables(context, renderables).Wait();
+            var task = UpdateGlobalVariables(context, renderables);
 
             SetRenderTargets(context.DeviceContext, parameter);
           
@@ -50,7 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 return x.IsRenderable && !(x is ILight3D);
             }, stackCache1));
 
-            //task.Wait();
+            task.Wait();
 
             foreach (var renderable in pendingRenders)
             {

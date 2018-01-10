@@ -39,16 +39,43 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Texture tile columns
         /// </summary>
-        public uint NumTextureColumn { set; get; } = 1;
+        public uint NumTextureColumn
+        {
+            set
+            {
+                FrameVariables.NumTexCol = value;
+            }
+            get { return FrameVariables.NumTexCol; }
+        } 
         /// <summary>
         /// Texture tile rows
         /// </summary>
-        public uint NumTextureRow { set; get; } = 1;
+        public uint NumTextureRow
+        {
+            set
+            {
+                FrameVariables.NumTexRow = value;
+            }
+            get
+            {
+                return FrameVariables.NumTexRow;
+            }
+        }
 
         /// <summary>
         /// Change Sprite based on particle energy, sequence from (1,1) to (NumTextureRow, NumTextureColumn) evenly divided by tile counts
         /// </summary>
-        public bool AnimateSpriteByEnergy { set; get; } = false;
+        public bool AnimateSpriteByEnergy
+        {
+            set
+            {
+                FrameVariables.AnimateByEnergyLevel = (value ? 1 : 0);
+            }
+            get
+            {
+                return FrameVariables.AnimateByEnergyLevel == 1 ? true : false;
+            }
+        }
 
         /// <summary>
         /// Minimum time elapse to insert new particles
@@ -98,12 +125,10 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (particleTexture == value)
+                if(Set(ref particleTexture, value))
                 {
-                    return;
+                    isTextureChanged = true;
                 }
-                particleTexture = value;
-                isTextureChanged = true;
             }
             get
             {
@@ -119,12 +144,14 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                samplerDescription = value;
-                if (textureSampler == null)
+                if(Set(ref samplerDescription, value))
                 {
-                    return;
+                    if (textureSampler == null)
+                    {
+                        return;
+                    }
+                    textureSampler.Description = value;
                 }
-                textureSampler.Description = value;
             }
             get
             {
@@ -141,17 +168,175 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Particle Size
         /// </summary>
-        public Vector2 ParticleSize = DefaultParticleSize;
+        public Vector2 ParticleSize
+        {
+            set
+            {
+                FrameVariables.ParticleSize = value;
+            }
+            get
+            {
+                return FrameVariables.ParticleSize;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Vector3 EmitterLocation
+        {
+            set
+            {
+                InsertVariables.EmitterLocation = value;
+            }
+            get
+            {
+                return InsertVariables.EmitterLocation;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool CumulateAtBound
+        {
+            set
+            {
+                FrameVariables.CumulateAtBound = (value ? 1u : 0);
+            }
+            get
+            {
+                return FrameVariables.CumulateAtBound == 1 ? true : false;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Vector3 ExtraAcceleration
+        {
+            set
+            {
+                FrameVariables.ExtraAcceleration = value;
+            }
+            get
+            {
+                return FrameVariables.ExtraAcceleration;
+            }
+        }
 
+        public Vector3 DomainBoundMax
+        {
+            set
+            {
+                FrameVariables.DomainBoundsMax = value;
+            }
+            get
+            {
+                return FrameVariables.DomainBoundsMax;
+            }
+        }
+
+        public Vector3 DomainBoundMin
+        {
+            set
+            {
+                if (FrameVariables.DomainBoundsMin != value)
+                {
+                    FrameVariables.DomainBoundsMin = value;
+                    InvalidateRenderer();
+                }
+            }
+            get
+            {
+                return FrameVariables.DomainBoundsMin;
+            }
+        }
+
+        public float ConsumerGravity
+        {
+            set
+            {
+                FrameVariables.ConsumerGravity = value;
+            }
+            get
+            {
+                return FrameVariables.ConsumerGravity;
+            }
+        }
+
+        public Vector3 ConsumerLocation
+        {
+            set
+            {
+                FrameVariables.ConsumerLocation = value;
+            }
+            get
+            {
+                return FrameVariables.ConsumerLocation;
+            }
+        }
+
+        public float ConsumerRadius
+        {
+            set
+            {
+                FrameVariables.ConsumerRadius = value;
+            }
+            get
+            {
+                return FrameVariables.ConsumerRadius;
+            }
+        }
+
+        public float EnergyDissipationRate
+        {
+            set
+            {
+                InsertVariables.EnergyDissipationRate = value;
+            }
+            get { return InsertVariables.EnergyDissipationRate; }
+        }
+
+        public Vector3 InitialAcceleration
+        {
+            set { InsertVariables.InitialAcceleration = value; }
+            get { return InsertVariables.InitialAcceleration; }
+        }
+
+        public float InitialEnergy
+        {
+            set { InsertVariables.InitialEnergy = value; }
+            get { return InsertVariables.InitialEnergy; }
+        }
+
+        public float InitialVelocity
+        {
+            set { InsertVariables.InitialVelocity = value; }
+            get { return InsertVariables.InitialVelocity; }
+        }
+
+        public Color4 ParticleBlendColor
+        {
+            set { InsertVariables.ParticleBlendColor = value; }
+            get { return InsertVariables.ParticleBlendColor; }
+        }
+
+        public float EmitterRadius
+        {
+            set { InsertVariables.EmitterRadius = value; }
+            get { return InsertVariables.EmitterRadius; }
+        }
         /// <summary>
         /// Particle per frame parameters
         /// </summary>
-        public ParticlePerFrame FrameVariables = new ParticlePerFrame() { ExtraAcceleration = DefaultAcceleration, CumulateAtBound = 0, DomainBoundsMax = DefaultBoundMaximum, DomainBoundsMin = DefaultBoundMinimum, ConsumerGravity = DefaultConsumerGravity, ConsumerLocation = DefaultConsumerLocation, ConsumerRadius = DefaultConsumerRadius };
+        private ParticlePerFrame FrameVariables = new ParticlePerFrame() { ExtraAcceleration = DefaultAcceleration, CumulateAtBound = 0,
+            DomainBoundsMax = DefaultBoundMaximum, DomainBoundsMin = DefaultBoundMinimum,
+            ConsumerGravity = DefaultConsumerGravity, ConsumerLocation = DefaultConsumerLocation, ConsumerRadius = DefaultConsumerRadius };
 
         /// <summary>
         /// Particle insert parameters
         /// </summary>
-        public ParticleInsertParameters InsertVariables = new ParticleInsertParameters() { EmitterLocation = DefaultEmitterLocation, EnergyDissipationRate = DefaultEnergyDissipationRate, InitialAcceleration = DefaultAcceleration, InitialEnergy = DefaultInitialEnergy, InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4() };
+        private ParticleInsertParameters InsertVariables = new ParticleInsertParameters() { EmitterLocation = DefaultEmitterLocation, EmitterRadius = DefaultConsumerRadius,
+            EnergyDissipationRate = DefaultEnergyDissipationRate, InitialAcceleration = DefaultAcceleration, InitialEnergy = DefaultInitialEnergy,
+            InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4() };
 
         #region ShaderVariables
         private IShaderPass updatePass;
@@ -283,12 +468,7 @@ namespace HelixToolkit.UWP.Core
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             model.BoolParams.X = HasTexture;
-            FrameVariables.ParticleSize = ParticleSize;
             FrameVariables.RandomVector = VectorGenerator.RandomVector3;
-            FrameVariables.RandomSeed = VectorGenerator.Seed;
-            FrameVariables.NumTexCol = NumTextureColumn;
-            FrameVariables.NumTexRow = NumTextureRow;
-            FrameVariables.AnimateByEnergyLevel = AnimateSpriteByEnergy ? 1 : 0;
         }
 
         protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
@@ -511,6 +691,7 @@ namespace HelixToolkit.UWP.Core
             InstanceBuffer?.AttachBuffer(context.DeviceContext, 0);
             context.DeviceContext.OutputMerger.SetBlendState(blendState, null, 0xFFFFFFFF);
             context.DeviceContext.DrawInstancedIndirect(particleCountGSIABuffer.Buffer, 0);
+            InvalidateRenderer();//Since particle is running all the time. Invalidate once finished rendering
         }
 
 #if OUTPUTDEBUGGING

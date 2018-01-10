@@ -31,9 +31,8 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (material != value)
+                if(Set(ref material, value))
                 {
-                    material = value;
                     if (materialVariables != null)
                     {
                         materialVariables.Material = value;
@@ -60,6 +59,7 @@ namespace HelixToolkit.UWP.Core
             }
             get { return renderDiffuseMap; }
         }
+
         private bool renderDiffuseAlphaMap = true;
         /// <summary>
         /// 
@@ -149,7 +149,6 @@ namespace HelixToolkit.UWP.Core
             {
                 if (materialVariables != null)
                 {
-                    materialVariables.OnInvalidateRenderer -= InvalidateRenderer;
                     RemoveAndDispose(ref materialVariables);
                 }
                 materialVariables = Collect(CreateEffectMaterialVariables(technique.EffectsManager));
@@ -160,7 +159,7 @@ namespace HelixToolkit.UWP.Core
                 MaterialVariables.RenderDisplacementMap = this.RenderDisplacementMap;
                 MaterialVariables.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
                 MaterialVariables.RenderEnvironmentMap = this.RenderEnvironmentMap;
-                materialVariables.OnInvalidateRenderer += InvalidateRenderer;
+                MaterialVariables.OnInvalidateRenderer += (s,e)=> { InvalidateRenderer(); };
                 return true;
             }
             else
