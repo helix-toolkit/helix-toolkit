@@ -294,10 +294,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <param name="context">The context.</param>
         public void Render(IRenderContext context)
         {
-            IsRenderable = CanRender(context);
+            Update(context);
             if (IsRenderable)
             {
-                RenderCore.ModelMatrix = TotalModelMatrix;
                 OnRender(context);
             }
         }

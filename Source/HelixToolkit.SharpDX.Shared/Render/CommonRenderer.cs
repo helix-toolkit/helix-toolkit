@@ -1,4 +1,6 @@
-﻿using global::SharpDX;
+﻿//#define OLD
+
+using global::SharpDX;
 using global::SharpDX.DXGI;
 using SharpDX.Direct3D11;
 using Device = SharpDX.Direct3D11.Device;
@@ -14,6 +16,85 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using Core2D;
     using Model;
     using Utilities;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Core;
+    public class CommonRenderer : IRenderer
+    {
+        private List<IRenderCore> pendingRenders = new List<IRenderCore>(100);
+        private readonly Stack<IEnumerator<IRenderable>> stackCache1 = new Stack<IEnumerator<IRenderable>>(20);
+        private readonly Stack<IEnumerator<IRenderable>> stackCache2 = new Stack<IEnumerator<IRenderable>>(20);
+        /// <summary>
+        /// Renders the scene.
+        /// </summary>
+        public void Render(IRenderContext context, IEnumerable<IRenderable> renderables, RenderParameter parameter)
+        {
+            if (parameter == null)
+            { return; }
+#if OLD
+            UpdateGlobalVariables(context, renderables).Wait();
+            SetRenderTargets(context.DeviceContext, parameter);
+            foreach(var item in renderables)
+            {
+                item.Render(context);
+            }
+#else
+            UpdateGlobalVariables(context, renderables).Wait();
+
+            SetRenderTargets(context.DeviceContext, parameter);
+          
+            pendingRenders.Clear();
+            pendingRenders.AddRange(renderables.PreorderDFTGetCores((x) =>
+            {
+                x.Update(context);
+                return x.IsRenderable && !(x is ILight3D);
+            }, stackCache1));
+
+            //task.Wait();
+
+            foreach (var renderable in pendingRenders)
+            {
+                renderable.Render(context);
+            }
+#endif
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="renderables"></param>
+        /// <returns></returns>
+        private async Task UpdateGlobalVariables(IRenderContext context, IEnumerable<IRenderable> renderables)
+        {
+            foreach (IRenderable e in renderables.Take(LightsBufferModel.MaxLights)
+                .PreorderDFT((x)=> x is ILight3D && x.IsRenderable, stackCache2).Take(LightsBufferModel.MaxLights))
+            {
+                e.Render(context);
+            }
+            context.UpdatePerFrameData();
+        }
+
+        private void SetRenderTargets(DeviceContext context, RenderParameter parameter)
+        {
+            context.OutputMerger.SetTargets(parameter.depthStencil, parameter.target);
+            context.Rasterizer.SetViewport(parameter.ViewportRegion);
+            context.Rasterizer.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top, 
+                parameter.ScissorRegion.Right, parameter.ScissorRegion.Bottom);
+        }
+
+
+
+        public void Render2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, RenderParameter2D parameter)
+        {
+            foreach (var e in renderables)
+            {
+                e.Render(context);
+            }
+        }
+    }
+
+    /*
     public abstract class DX11RenderHostCommon : DisposeObject, IRenderHost
     {
         protected IDX11RenderBufferProxy renderBuffer;
@@ -62,11 +143,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             get { return msaa; }
         }
 
-        private IRenderer renderable;
+        private IViewport3DX renderable;
         /// <summary>
         /// <see cref="IRenderHost.Renderable"/>
         /// </summary>
-        public IRenderer Renderable
+        public IViewport3DX Renderable
         {
             set
             {
@@ -308,4 +389,5 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             base.Dispose(disposeManagedResources);
         }
     }
+    */
 }

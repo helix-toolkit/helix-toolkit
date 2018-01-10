@@ -108,6 +108,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Render\CommonRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\DX11RenderBufferProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\IRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\BufferPool.cs" />

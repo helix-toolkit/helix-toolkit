@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Utilities
@@ -27,7 +28,9 @@ namespace HelixToolkit.UWP.Utilities
             {
                 if (Set(ref latency, value))
                 {
-                    //Console.WriteLine($"Latency: {value}");
+#if !NETFX_CORE
+                    Console.WriteLine($"Latency: {value}");
+#endif
                 }
             }
             get
@@ -92,9 +95,8 @@ namespace HelixToolkit.UWP.Utilities
             var elapsed = curr - previous;
             previous = curr;
             lag += elapsed;
-
             if (lag < Threshold + average - elapsed)
-            {
+            {               
                 return true;
             }
             else

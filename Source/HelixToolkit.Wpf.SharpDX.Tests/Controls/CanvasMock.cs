@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Controls
         public Color4 ClearColor { get; private set; }
         public bool IsShadowMapEnabled { get; private set; }
         public MSAALevel MSAA { get; set; }
-        public IRenderer Renderable { get; set; }
+        public IViewport3DX Viewport { get; set; }
         public IRenderTechnique RenderTechnique { get; private set; }
         public double ActualHeight { get; private set; }
         public double ActualWidth { get; private set; }

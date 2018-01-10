@@ -33,7 +33,7 @@
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
             EnableRenderFrustum="True"
-            EnableSwapChainRendering="True"
+            EnableSwapChainRendering="False"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             ShowFrameRate="True"

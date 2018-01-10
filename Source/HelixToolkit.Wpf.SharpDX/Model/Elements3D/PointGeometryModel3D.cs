@@ -189,7 +189,7 @@
                     array[i].Color = colors.Current;
                 }
             }
-
+            colors.Dispose();
             return array;
         }
     }

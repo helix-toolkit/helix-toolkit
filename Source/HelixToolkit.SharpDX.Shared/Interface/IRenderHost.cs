@@ -39,7 +39,7 @@ namespace HelixToolkit.UWP
 #if MSAA
         MSAALevel MSAA { get; set; }
 #endif
-        IRenderer Renderable { get; set; }
+        IViewport3DX Viewport { get; set; }
 
         IRenderContext RenderContext { get; }
         /// <summary>

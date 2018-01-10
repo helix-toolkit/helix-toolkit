@@ -168,7 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private RenderTargetView colorBufferView;
         private DepthStencilView depthStencilBufferView;
         private RenderControl surfaceD3D;
-        private IRenderer renderRenderable;
+        private IViewport3DX renderRenderable;
         private RenderContext renderContext;
         private DeviceContext deferredContext;
    //     private DeferredRenderer deferredRenderer;
@@ -287,7 +287,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The instance of currently attached IRenderable - this is in general the Viewport3DX
         /// </summary>
-        IRenderer IRenderHost.Renderable
+        IViewport3DX IRenderHost.Viewport
         {
             get { return renderRenderable; }
             set
@@ -826,7 +826,7 @@ namespace HelixToolkit.Wpf.SharpDX
 //                }
 //                else
                 {
-                    renderRenderable.Render(renderContext);
+                  //  renderRenderable.Render(renderContext);
                 }
 #if DoubleBuffer
                 device.ImmediateContext.ResolveSubresource(colorBuffer, 0, backBuffer, 0, Format.B8G8R8A8_UNorm);

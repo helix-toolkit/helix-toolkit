@@ -62,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private RenderTargetView colorBufferView;
         private DepthStencilView depthStencilBufferView;
         private RenderControl surfaceD3D;
-        private IRenderer renderRenderable;
+        private IViewport3DX renderRenderable;
         private RenderContext renderContext;
     //    private DeferredRenderer deferredRenderer;
         private bool sceneAttached;
@@ -180,7 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The instance of currently attached IRenderable - this is in general the Viewport3DX
         /// </summary>
-        IRenderer IRenderHost.Renderable
+        IViewport3DX IRenderHost.Viewport
         {
             get { return renderRenderable; }
             set
@@ -707,7 +707,7 @@ namespace HelixToolkit.Wpf.SharpDX
 //                }
 //                else
                 {
-                    renderRenderable.Render(renderContext);
+                  //  renderRenderable.Render(renderContext);
                 }
 #if DoubleBuffer
                 device.ImmediateContext.ResolveSubresource(colorBuffer, 0, backBuffer, 0, Format.B8G8R8A8_UNorm);
@@ -715,7 +715,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (D2DControls.D2DTarget != null)
                 {
                     D2DControls.D2DTarget.BeginDraw();
-                    renderRenderable.RenderD2D(renderContext);
+                //    renderRenderable.RenderD2D(renderContext);
                     D2DControls.D2DTarget.Transform = Matrix3x2.Identity;
                     D2DControls.D2DTarget.EndDraw();
                 }

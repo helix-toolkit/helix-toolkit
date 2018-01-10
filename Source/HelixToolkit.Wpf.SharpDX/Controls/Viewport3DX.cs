@@ -46,7 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [TemplatePart(Name = "PART_CoordinateView", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_ViewCube", Type = typeof(Viewport3D))]
     [Localizability(LocalizationCategory.NeverLocalize)]
-    public partial class Viewport3DX : ItemsControl, IRenderer
+    public partial class Viewport3DX : ItemsControl, IViewport3DX
     {
         /// <summary>
         /// The adorner layer part name.
@@ -625,7 +625,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.EnableSharingModelMode = this.EnableSharedModelMode;
                 this.renderHostInternal.SharedModelContainer = this.SharedModelContainer;
                 this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
-                this.renderHostInternal.Renderable = this;
+                this.renderHostInternal.Viewport = this;
                 this.renderHostInternal.EffectsManager = this.EffectsManager;
                 this.renderHostInternal.IsRendering = this.Visibility == Visibility.Visible;
             }
@@ -682,8 +682,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.renderHostInternal != null)
             {
-                this.renderHostInternal.Renderable = null;
-                this.renderHostInternal.Renderable = this;
+                this.renderHostInternal.Viewport = null;
+                this.renderHostInternal.Viewport = this;
             }
         }
 
@@ -696,7 +696,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.renderHostInternal != null)
             {
-                this.renderHostInternal.Renderable = null;
+                this.renderHostInternal.Viewport = null;
             }
         }
 
@@ -850,7 +850,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Attaches the elements to the specified host.
         /// </summary>
         /// <param name="host">The host.</param>
-        void IRenderer.Attach(IRenderHost host)
+        void IViewport3DX.Attach(IRenderHost host)
         {
             foreach (IRenderable e in this.Renderables)
             {
@@ -870,7 +870,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Detaches the elements.
         /// </summary>
-        void IRenderer.Detach()
+        void IViewport3DX.Detach()
         {
             foreach (IRenderable e in this.Renderables)
             {
@@ -885,64 +885,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.Items2D.Detach();
             }
         }
-
-
-        /// <summary>
-        /// Renders the scene.
-        /// </summary>
-        void IRenderer.Render(IRenderContext context)
-        {
-            this.FpsCounter.AddFrame(context.TimeStamp);
-            context.Camera = this.Camera;
-            context.WorldMatrix = this.worldMatrixInternal;
-            var t = Task.Run(() => 
-            {
-                pendingRenderables.Clear();
-                pendingRenderables.AddRange(Renderables.PreorderDFT((x) => 
-                {
-                    x.Update(context);
-                    return x.IsRenderable && !(x is ILight3D);
-                }));
-            });
-
-
-            int counter = 0; 
-            foreach(IRenderable e in this.Renderables.Take(LightsBufferModel.MaxLights).Where(x=>x is ILight3D))
-            {
-                e.Render(context);
-                ++counter;
-            }
-            context.UpdatePerFrameData();
-
-            t.Wait();
-            foreach (var renderable in pendingRenderables)
-            {
-                renderable.RenderCore.Render(RenderContext);
-            }
-        }
-
-        private List<IRenderable> pendingRenderables = new List<IRenderable>(100);
-
-        void IRenderer.RenderD2D(IRenderContext context)
-        {
-            foreach (IRenderable e in this.D2DRenderables)
-            {
-                e.Render(context);
-            }
-        }
-
-        /// <summary>
-        /// Updates the scene.
-        /// </summary>
-        /// <param name="timeSpan">The time span.</param>
-        //void IRenderer.Update(TimeSpan timeSpan)
-        //{
-        //    //this.FpsCounter.AddFrame(timeSpan);           
-        //    //foreach (IRenderable e in this.Renderables)
-        //    //{
-        //    //    e.Update(timeSpan);
-        //    //}
-        //}
 
         /// <summary>
         /// Called when the camera is changed.
@@ -1226,12 +1168,12 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.renderHostInternal != null)
             {
                 // remove the scene
-                this.renderHostInternal.Renderable = null;
+                this.renderHostInternal.Viewport = null;
 
                 // if new rendertechnique set, attach the scene
                 if (this.RenderTechnique != null)
                 {
-                    this.renderHostInternal.Renderable = this;
+                    this.renderHostInternal.Viewport = this;
                 }
             }
         }
@@ -1390,6 +1332,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.TriangleCountInfo = string.Format("Triangles: {0}", count);
                 this.infoFrameCounter = 0;
             }
+        }
+
+        public void UpdateFPS(TimeSpan timeStamp)
+        {
+            FpsCounter.AddFrame(timeStamp);
         }
 
         /// <summary>

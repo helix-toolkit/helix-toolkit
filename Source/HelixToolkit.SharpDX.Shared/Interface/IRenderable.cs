@@ -14,6 +14,7 @@ namespace HelixToolkit.UWP
     using Cameras;
     using System.Collections.Generic;
     using Core;
+    using System;
 
     /// <summary>
     /// 
@@ -40,14 +41,10 @@ namespace HelixToolkit.UWP
         void Render(IRenderContext context);
     }
 
-    public interface IRenderer
+    public interface IViewport3DX
     {
         void Attach(IRenderHost host);
         void Detach();
-        //void Update(TimeSpan timeSpan);
-        void Render(IRenderContext context);
-
-        void RenderD2D(IRenderContext context);
        
         bool IsShadowMappingEnabled { get; }
         IEffectsManager EffectsManager { set; get; }
@@ -56,6 +53,9 @@ namespace HelixToolkit.UWP
         Color4 BackgroundColor { get; }
 
         //DeferredRenderer DeferredRenderer { get; set; }
+        void UpdateFPS(TimeSpan timeStamp);
+
+        Matrix WorldMatrix { get; }
 
         IEnumerable<IRenderable> Renderables { get; }
 

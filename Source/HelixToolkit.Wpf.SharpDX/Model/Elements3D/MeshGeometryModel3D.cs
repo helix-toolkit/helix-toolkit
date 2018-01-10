@@ -248,7 +248,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 array[i].Tangent = tangents.Current;
                 array[i].BiTangent = bitangents.Current;
             }
-
+            colors.Dispose();
+            textureCoordinates.Dispose();
+            normals.Dispose();
+            tangents.Dispose();
+            bitangents.Dispose();
+            positions.Dispose();
             return array;
         }
     }

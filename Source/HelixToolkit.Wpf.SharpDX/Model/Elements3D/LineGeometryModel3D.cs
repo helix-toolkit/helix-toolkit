@@ -154,7 +154,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 colors.MoveNext();
                 array[i].Position = new Vector4(positions[i], 1f);
                 array[i].Color = colors.Current;
-            }           
+            }
+            colors.Dispose();
             return array;
         }
     }

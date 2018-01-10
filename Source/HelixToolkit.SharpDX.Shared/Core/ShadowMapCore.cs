@@ -16,6 +16,7 @@ namespace HelixToolkit.UWP.Core
     using global::SharpDX.Direct3D;
     using global::SharpDX.DXGI;
     using Shaders;
+    using System.Collections.Generic;
     using Utilities;
 
     /// <summary>
@@ -145,6 +146,9 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        private readonly List<IRenderCore> pendingRenders = new List<IRenderCore>(100);
+        private readonly Stack<IEnumerator<IRenderable>> stackCache = new Stack<IEnumerator<IRenderable>>(20);
+
         protected override void OnRender(IRenderContext context)
         {
             context.IsShadowPass = true;
@@ -164,9 +168,12 @@ namespace HelixToolkit.UWP.Core
             var orgRT = context.DeviceContext.OutputMerger.GetRenderTargets(1, out orgDSV);
             context.DeviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
             context.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
+            pendingRenders.Clear();
             try
             {
-                foreach (var item in context.RenderHost.Renderable.Renderables.Where(x => x is IThrowingShadow && ((IThrowingShadow)x).IsThrowingShadow))
+                pendingRenders.AddRange(context.RenderHost.Viewport.Renderables
+                    .PreorderDFTGetCores(x => x.IsRenderable && !(x is ILight3D) && x is IThrowingShadow && ((IThrowingShadow)x).IsThrowingShadow, stackCache));
+                foreach (var item in pendingRenders)
                 {
                     item.Render(context);
                 }

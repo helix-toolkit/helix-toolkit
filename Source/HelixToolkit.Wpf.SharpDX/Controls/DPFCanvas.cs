@@ -29,6 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Device = global::SharpDX.Direct3D11.Device;
     using Core2D;
     using Model;
+    using Render;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
@@ -60,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private RenderTargetView colorBufferView;
         private DepthStencilView depthStencilBufferView;
         private DX11ImageSource surfaceD3D;
-        private IRenderer renderRenderable;
+        private IViewport3DX viewport;
         private RenderContext renderContext;
       //  private DeferredRenderer deferredRenderer;
         private bool sceneAttached;
@@ -79,6 +80,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Get RenderContext
         /// </summary>
         public IRenderContext RenderContext { get { return renderContext; } }
+
+        private readonly IRenderer renderer = new CommonRenderer();
+
+        private RenderParameter renderParameter;
 
         /// <summary>
         /// Light3D shared data per each secne
@@ -183,18 +188,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The instance of currently attached IRenderable - this is in general the Viewport3DX
         /// </summary>
-        IRenderer IRenderHost.Renderable
+        public IViewport3DX Viewport
         {
-            get { return renderRenderable; }
+            get { return viewport; }
             set
             {
-                if (ReferenceEquals(renderRenderable, value))
+                if (ReferenceEquals(viewport, value))
                 {
                     return;
                 }
 
                 DetachRenderables();
-                renderRenderable = value;
+                viewport = value;
                 InvalidateRender();
             }
         }
@@ -412,9 +417,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void DetachRenderables()
         {
-            if (renderRenderable != null && sceneAttached)
+            if (viewport != null && sceneAttached)
             {
-                renderRenderable.Detach();
+                viewport.Detach();
             }
             sceneAttached = false;
         }
@@ -520,6 +525,11 @@ namespace HelixToolkit.Wpf.SharpDX
             this.surfaceD3D.SetRenderTargetDX11(this.colorBuffer);
 #endif
             this.device.ImmediateContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
+            renderParameter = new RenderParameter()
+            {
+                target = ColorBufferView, depthStencil = depthStencilBufferView,
+                ScissorRegion = new Rectangle(0, 0, width, height), ViewportRegion = new ViewportF(0, 0, width, height)
+            };
         }
 
         /// <summary>
@@ -588,7 +598,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var renderTarget = colorBuffer;
             if (renderTarget == null)
                 return;
-            if (renderRenderable != null)
+            if (viewport != null)
             {
                 // ---------------------------------------------------------------------------
                 // this part is done only if the scene is not attached
@@ -598,10 +608,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     try
                     {
                         sceneAttached = true;
-                        ClearColor = renderRenderable.BackgroundColor;
-                        IsShadowMapEnabled = renderRenderable.IsShadowMappingEnabled;
+                        ClearColor = viewport.BackgroundColor;
+                        IsShadowMapEnabled = viewport.IsShadowMappingEnabled;
 
-                        RenderTechnique = renderRenderable.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : renderRenderable.RenderTechnique;
+                        RenderTechnique = viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
 
 
                         renderContext?.Dispose();
@@ -610,11 +620,11 @@ namespace HelixToolkit.Wpf.SharpDX
                         if (EnableSharingModelMode && SharedModelContainer != null)
                         {
                             SharedModelContainer.CurrentRenderHost = this;
-                            renderRenderable.Attach(SharedModelContainer);
+                            viewport.Attach(SharedModelContainer);
                         }
                         else
                         {
-                            renderRenderable.Attach(this);
+                            viewport.Attach(this);
                         }
 
                         //RenderTechniquesManager.RenderTechniques.TryGetValue(DeferredRenderTechniqueNames.GBuffer, out gbuffer);
@@ -679,7 +689,9 @@ namespace HelixToolkit.Wpf.SharpDX
 //                }
 //                else
                 {
-                    renderRenderable.Render(renderContext);
+                    renderContext.Camera = viewport.CameraCore;
+                    renderContext.WorldMatrix = viewport.WorldMatrix;
+                    renderer.Render(renderContext, viewport.Renderables, renderParameter);                   
                 }
             }
 #if MSAA
@@ -725,7 +737,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void UpdateAndRender()
         {
-            if (((pendingValidationCycles && !skipper.IsSkip()) || skipper.DelayTrigger()) && surfaceD3D != null && renderRenderable != null)
+            if (((pendingValidationCycles && !skipper.IsSkip()) || skipper.DelayTrigger()) && surfaceD3D != null && viewport != null)
             {
                 var t0 = renderTimer.Elapsed;
 
@@ -735,6 +747,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 try
                 {
                     pendingValidationCycles = false;
+                    viewport.UpdateFPS(t0);
                     Render(t0);
                     surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
                 }

@@ -121,46 +121,47 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool CanRender(IRenderContext context)
         {
-            return base.CanRender(context) && RenderHost.IsShadowMapEnabled && !context.IsShadowPass;
-        }
-
-        protected override void OnRender(IRenderContext context)
-        {
-            CameraCore camera = lightCamera == null ? null : lightCamera;
-            if (lightCamera == null)
+            if(base.CanRender(context) && RenderHost.IsShadowMapEnabled && !context.IsShadowPass)
             {
-                var root = context.RenderHost.Renderable.Renderables
-                    .Where(x => x is ILight3D && (((ILight3D)x).LightType == LightType.Directional || ((ILight3D)x).LightType == LightType.Spot)).Take(1);
-                foreach (var light in root)
-                {                  
-                    if (light is DirectionalLight3D)
+                CameraCore camera = lightCamera == null ? null : lightCamera;
+                if (lightCamera == null)
+                {
+                    var root = context.RenderHost.Viewport.Renderables
+                        .Where(x => x is ILight3D && (((ILight3D)x).LightType == LightType.Directional || ((ILight3D)x).LightType == LightType.Spot)).Take(1);
+                    foreach (var light in root)
                     {
-                        var dlight = (DirectionalLight3D)light;
-                        var dir = Vector4.Transform(dlight.DirectionInternal.ToVector4(0), dlight.ModelMatrix).Normalized();
-                        var pos = -100 * dir;
-                        orthoCamera.LookDirection = new Vector3(dir.X, dir.Y, dir.Z);
-                        orthoCamera.Position = new Vector3(pos.X, pos.Y, pos.Z);
-                        orthoCamera.UpDirection = Vector3.UnitZ;
-                        orthoCamera.Width = 50;
-                        camera = orthoCamera;
-                    }
-                    else if (light is SpotLight3D)
-                    {
-                        var splight = (SpotLight3D)light;
-                        persCamera.Position = (splight.Position + new Media3D.Vector3D(splight.ModelMatrix.M41, splight.ModelMatrix.M42, splight.ModelMatrix.M43)).ToVector3();
-                        var look = Vector4.Transform(splight.DirectionInternal.ToVector4(0), splight.ModelMatrix);
-                        persCamera.LookDirection = new Vector3(look.X, look.Y, look.Z);
-                        persCamera.FarPlaneDistance = (float)splight.Range;
-                        persCamera.FieldOfView = (float)splight.OuterAngle;
-                        persCamera.UpDirection = Vector3.UnitZ;
-                        camera = persCamera;
+                        if (light is DirectionalLight3D)
+                        {
+                            var dlight = (DirectionalLight3D)light;
+                            var dir = Vector4.Transform(dlight.DirectionInternal.ToVector4(0), dlight.ModelMatrix).Normalized();
+                            var pos = -100 * dir;
+                            orthoCamera.LookDirection = new Vector3(dir.X, dir.Y, dir.Z);
+                            orthoCamera.Position = new Vector3(pos.X, pos.Y, pos.Z);
+                            orthoCamera.UpDirection = Vector3.UnitZ;
+                            orthoCamera.Width = 50;
+                            camera = orthoCamera;
+                        }
+                        else if (light is SpotLight3D)
+                        {
+                            var splight = (SpotLight3D)light;
+                            persCamera.Position = (splight.Position + new Media3D.Vector3D(splight.ModelMatrix.M41, splight.ModelMatrix.M42, splight.ModelMatrix.M43)).ToVector3();
+                            var look = Vector4.Transform(splight.DirectionInternal.ToVector4(0), splight.ModelMatrix);
+                            persCamera.LookDirection = new Vector3(look.X, look.Y, look.Z);
+                            persCamera.FarPlaneDistance = (float)splight.Range;
+                            persCamera.FieldOfView = (float)splight.OuterAngle;
+                            persCamera.UpDirection = Vector3.UnitZ;
+                            camera = persCamera;
+                        }
                     }
                 }
+                if (camera == null)
+                {
+                    return false;
+                }
+                shadowCore.LightViewProjectMatrix = camera.GetViewMatrix() * camera.GetProjectionMatrix(shadowCore.Width / shadowCore.Height);
+                return true;
             }
-            if (camera == null)
-            { return; }
-            shadowCore.LightViewProjectMatrix = camera.GetViewMatrix() * camera.GetProjectionMatrix(shadowCore.Width / shadowCore.Height);
-            shadowCore.Render(context);
+            else { return false; }
         }
 
         protected override bool CanHitTest(IRenderContext context)
