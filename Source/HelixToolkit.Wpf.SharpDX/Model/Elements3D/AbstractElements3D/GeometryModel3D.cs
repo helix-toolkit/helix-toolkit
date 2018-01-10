@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
     /// </summary>
-    public abstract class GeometryModel3D : Element3D, IHitable, IBoundable, IThrowingShadow, ISelectable, IMouse3D
+    public abstract class GeometryModel3D : Element3D, IHitable, IBoundable, IThrowingShadow, ISelectable, IMouse3D, IInstancing
     {
         #region DependencyProperties
         public static readonly DependencyProperty ReuseVertexArrayBufferProperty =
@@ -276,17 +276,17 @@ namespace HelixToolkit.Wpf.SharpDX
         public bool GeometryValid { get { return BoundManager.GeometryValid; } }
         public GeometryBoundManager BoundManager { private set; get; }
 
-        public BoundingBox Bounds
+        public override BoundingBox Bounds
         {
             get { return BoundManager.Bounds; }
         }
 
-        public BoundingBox BoundsWithTransform
+        public override BoundingBox BoundsWithTransform
         {
             get { return BoundManager.BoundsWithTransform; }
         }
 
-        public BoundingSphere BoundsSphere
+        public override BoundingSphere BoundsSphere
         {
             get
             {
@@ -294,13 +294,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public BoundingSphere BoundsSphereWithTransform
+        public override BoundingSphere BoundsSphereWithTransform
         {
             get
             {
                 return BoundManager.BoundsSphereWithTransform;
             }
         }
+
         #endregion
 
         #region Events
@@ -347,6 +348,10 @@ namespace HelixToolkit.Wpf.SharpDX
             this.MouseUp3D += OnMouse3DUp;
             this.MouseMove3D += OnMouse3DMove;
             BoundManager = new GeometryBoundManager(this);
+            BoundManager.OnBoundChanged += (s, e) => { RaiseOnBoundChanged(e); };
+            BoundManager.OnTransformBoundChanged += (s, e) => { RaiseOnTransformBoundChanged(e); };
+            BoundManager.OnBoundSphereChanged += (s, e) => { RaiseOnBoundSphereChanged(e); };
+            BoundManager.OnTransformBoundSphereChanged += (s, e) => { RaiseOnTransformBoundSphereChanged(e); };
         }
 
         protected virtual IGeometryBufferModel OnCreateBufferModel() { return new EmptyGeometryBufferModel(); }
@@ -469,11 +474,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected override bool CanRender(IRenderContext context)
         {
-            if (context.EnableBoundingFrustum && !CheckBoundingFrustum(context.BoundingFrustum))
-            {
-                return false;
-            }
-            if (base.CanRender(context) && GeometryValid)
+            if (base.CanRender(context) && GeometryValid && (!context.EnableBoundingFrustum || CheckBoundingFrustum(context.BoundingFrustum)))
             {
                 return true;
             }
@@ -486,7 +487,8 @@ namespace HelixToolkit.Wpf.SharpDX
         protected virtual bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
         {
             var bound = BoundsWithTransform;
-            return viewFrustum.Intersects(ref bound);
+            var sphere = BoundsSphereWithTransform;
+            return viewFrustum.Intersects(ref bound) && viewFrustum.Intersects(ref sphere);
         }
 
         public virtual void OnMouse3DDown(object sender, RoutedEventArgs e) { }
@@ -494,12 +496,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public virtual void OnMouse3DUp(object sender, RoutedEventArgs e) { }
 
         public virtual void OnMouse3DMove(object sender, RoutedEventArgs e) { }
-
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return base.CanHitTest(context) && GeometryValid;
-        }
-
         
         /// <summary>
         /// 

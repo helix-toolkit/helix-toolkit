@@ -46,13 +46,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #region Events
         public static readonly RoutedEvent MouseDown3DEvent =
-            EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GeometryModel3D));
+            EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CompositeModel3D));
 
         public static readonly RoutedEvent MouseUp3DEvent =
-            EventManager.RegisterRoutedEvent("MouseUp3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GeometryModel3D));
+            EventManager.RegisterRoutedEvent("MouseUp3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CompositeModel3D));
 
         public static readonly RoutedEvent MouseMove3DEvent =
-            EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GeometryModel3D));
+            EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CompositeModel3D));
 
         /// <summary>
         /// Provide CLR accessors for the event 
@@ -142,10 +142,6 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        //protected override bool CanRender(IRenderContext context)
-        //{
-        //    return IsAttached && isRenderingInternal && visibleInternal;
-        //}
         /// <summary>
         /// Renders the specified context.
         /// </summary>
@@ -157,13 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // you mean like this?
             foreach (var model in this.Children)
             {
-                model.ParentMatrix = this.TotalModelMatrix;
-                // push matrix                    
-                //model.PushMatrix(this.modelMatrix);
-                // render model
                 model.Render(context);
-                // pop matrix                   
-                //model.PopMatrix();
             }
         }
 
@@ -237,27 +227,9 @@ namespace HelixToolkit.Wpf.SharpDX
             bool hit = false;
             foreach (var c in this.Children)
             {
-                var hc = c as IHitable;
-                if (hc != null)
+                if (c is IHitable)
                 {
-                    hc.HitTest(context, ray, ref hits);
-                    //var tc = c as ITransformable;
-                    //if (tc != null)
-                    //{
-                    //    //tc.PushMatrix(this.modelMatrix);
-                    //    if (hc.HitTest(context, ray, ref hits))
-                    //    {
-                    //        hit = true;
-                    //    }
-                    //   // tc.PopMatrix();
-                    //}
-                    //else
-                    //{
-                    //    if (hc.HitTest(context, ray, ref hits))
-                    //    {
-                    //        hit = true;
-                    //    }
-                    //}
+                    ((IHitable)c).HitTest(context, ray, ref hits);
                 }
             }
             if (hit)

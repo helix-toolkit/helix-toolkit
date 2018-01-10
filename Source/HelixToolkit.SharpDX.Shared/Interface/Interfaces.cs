@@ -18,6 +18,23 @@ namespace HelixToolkit.Wpf.SharpDX
         Guid GUID { get; }
     }
 
+    public interface IAttachable
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        bool IsAttached { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="host"></param>
+        void Attach(IRenderHost host);
+        /// <summary>
+        /// 
+        /// </summary>
+        void Detach();
+    }
+
     public interface IResourceSharing : IDisposable
     {
         /// <summary>
@@ -50,29 +67,35 @@ namespace HelixToolkit.Wpf.SharpDX
         bool IsHitTestVisible { get; set; }
     }
 
+    public sealed class BoundChangeArgs<T> : EventArgs where T : struct
+    {
+        public T NewBound { private set; get; }
+        public T OldBound { private set; get; }
+        public BoundChangeArgs(ref T newBound, ref T oldBound)
+        {
+            NewBound = newBound;
+            OldBound = oldBound;
+        }
+    }
+
     public interface IBoundable
     {
         BoundingBox Bounds { get; }
         BoundingBox BoundsWithTransform { get; }
         BoundingSphere BoundsSphere { get; }
         BoundingSphere BoundsSphereWithTransform { get; }
+
+        event EventHandler<BoundChangeArgs<BoundingBox>> OnBoundChanged;
+
+        event EventHandler<BoundChangeArgs<BoundingBox>> OnTransformBoundChanged;
+
+        event EventHandler<BoundChangeArgs<BoundingSphere>> OnBoundSphereChanged;
+
+        event EventHandler<BoundChangeArgs<BoundingSphere>> OnTransformBoundSphereChanged;
     }
 
-    public interface ITreeNode : IGUID, ITransform
+    public interface IInstancing
     {
-        bool Visible { set; get; }
-        /// <summary>
-        /// Call update to update <see cref="TotalTransform"/>, <see cref="IsVisible"/>, etc
-        /// </summary>
-        /// <param name="context"></param>
-        void Update(IRenderContext context);
-        /// <summary>
-        /// Actual visibility after checking different conditions after calling <see cref="Update(IRenderContext)"/>
-        /// </summary>
-        bool IsVisible { get; }
-        /// <summary>
-        /// Optional for sub items
-        /// </summary>
-        IEnumerable<ITreeNode> Items { get; }
+        IList<Matrix> Instances { set; get; }
     }
 }

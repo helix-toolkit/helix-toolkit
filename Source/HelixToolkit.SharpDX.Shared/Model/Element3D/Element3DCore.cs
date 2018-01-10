@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 #if NETFX_CORE
     public abstract class Element3DCore : IDisposable, IRenderable, IGUID, ITransform, INotifyPropertyChanged
 #else
-    public abstract class Element3DCore : FrameworkContentElement, IDisposable, IRenderable, IGUID, ITransform, INotifyPropertyChanged
+    public abstract class Element3DCore : FrameworkContentElement, IDisposable, IRenderable, INotifyPropertyChanged
 #endif
     {
         /// <summary>
@@ -39,6 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 {
                     TransformChanged(ref value);
                     OnTransformChanged?.Invoke(this, value);
+                    RenderCore.ModelMatrix = value;
                 }
             }
             get
@@ -94,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             get { return visible; }
         }
 
-        public bool IsVisible { private set; get; } = true;
+        public bool IsRenderable { private set; get; } = true;
         /// <summary>
         /// If this has been attached onto renderhost. 
         /// </summary>
@@ -122,7 +123,17 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         public bool IsHitTestVisible { set; get; } = true;
         #region Handling Transforms
-        protected virtual void TransformChanged(ref Matrix totalTransform) { }
+        protected virtual void TransformChanged(ref Matrix totalTransform)
+        {
+            foreach (var item in Items)
+            {
+                if (item is ITransform)
+                {
+                    ((ITransform)item).ParentMatrix = totalTransform;
+                }
+            }
+        }
+
         public event EventHandler<Matrix> OnTransformChanged;
         #endregion
         #region RenderCore
@@ -261,16 +272,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 TotalModelMatrix = modelMatrix * parentMatrix;
                 needMatrixUpdate = false;
             }
-            IsVisible = DetermineVisibility(context);
+            IsRenderable = CanRender(context);
         }
-        /// <summary>
-        /// Determine actual visibility for this model. Such as determine by view frustum, etc.
-        /// </summary>
-        /// <returns></returns>
-        protected virtual bool DetermineVisibility(IRenderContext context)
-        {
-            return Visible;
-        }
+
         #region Rendering
 
         /// <summary>
@@ -281,7 +285,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <returns></returns>
         protected virtual bool CanRender(IRenderContext context)
         {
-            return IsVisible;
+            return Visible && IsAttached;
         }
         /// <summary>
         /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
@@ -290,7 +294,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <param name="context">The context.</param>
         public void Render(IRenderContext context)
         {
-            if (CanRender(context))
+            IsRenderable = CanRender(context);
+            if (IsRenderable)
             {
                 RenderCore.ModelMatrix = TotalModelMatrix;
                 OnRender(context);
@@ -318,11 +323,64 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         protected virtual bool CanHitTest(IRenderContext context)
         {
-            return IsHitTestVisible && IsVisible;
+            return IsHitTestVisible && IsRenderable;
         }
 
         protected abstract bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits);
         #endregion
+
+        #region IBoundable
+        public static readonly BoundingBox MaxBound = new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MaxValue));
+        public static readonly global::SharpDX.BoundingSphere MaxBoundSphere = new global::SharpDX.BoundingSphere(Vector3.Zero, float.MaxValue);
+
+        public virtual BoundingBox Bounds
+        {
+            get { return MaxBound; }
+        }
+
+        public virtual BoundingBox BoundsWithTransform
+        {
+            get { return MaxBound; }
+        }
+
+        public virtual global::SharpDX.BoundingSphere BoundsSphere
+        {
+            get { return MaxBoundSphere; }
+        }
+
+        public virtual global::SharpDX.BoundingSphere BoundsSphereWithTransform
+        {
+            get { return MaxBoundSphere; }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<BoundChangeArgs<BoundingBox>> OnBoundChanged;
+        public event EventHandler<BoundChangeArgs<BoundingBox>> OnTransformBoundChanged;
+        public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingSphere>> OnBoundSphereChanged;
+        public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingSphere>> OnTransformBoundSphereChanged;
+
+        protected void RaiseOnTransformBoundChanged(BoundChangeArgs<BoundingBox> args)
+        {
+            OnTransformBoundChanged?.Invoke(this, args);
+        }
+
+        protected void RaiseOnBoundChanged(BoundChangeArgs<BoundingBox> args)
+        {
+            OnBoundChanged?.Invoke(this, args);
+        }
+
+
+        protected void RaiseOnTransformBoundSphereChanged(BoundChangeArgs<global::SharpDX.BoundingSphere> args)
+        {
+            OnTransformBoundSphereChanged?.Invoke(this, args);
+        }
+
+        protected void RaiseOnBoundSphereChanged(BoundChangeArgs<global::SharpDX.BoundingSphere> args)
+        {
+            OnBoundSphereChanged?.Invoke(this, args);
+        }
+        #endregion
+
 
         #region INotifyPropertyChanged
         private bool disablePropertyChangedEvent = false;
@@ -343,7 +401,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
         {
             if (!DisablePropertyChangedEvent)

@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 #endif
 {
     using Model;
+    using System;
     using BoundingSphere = global::SharpDX.BoundingSphere;
 
     public class GeometryBoundManager : ObservableObject, IBoundable
@@ -138,43 +139,42 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         #endregion
         #endregion
         #region Events and Delegates
-        public delegate void BoundChangedEventHandler(object sender, ref BoundingBox newBound, ref BoundingBox oldBound);
+        public event EventHandler<BoundChangeArgs<BoundingBox>> OnBoundChanged;
 
-        public event BoundChangedEventHandler OnBoundChanged;
+        public event EventHandler<BoundChangeArgs<BoundingBox>> OnTransformBoundChanged;
 
-        public event BoundChangedEventHandler OnTransformBoundChanged;
+        public event EventHandler<BoundChangeArgs<BoundingSphere>> OnBoundSphereChanged;
 
-        public delegate void BoundSphereChangedEventHandler(object sender, ref BoundingSphere newBound, ref BoundingSphere oldBound);
-
-        public event BoundSphereChangedEventHandler OnBoundSphereChanged;
-
-        public event BoundSphereChangedEventHandler OnTransformBoundSphereChanged;
+        public event EventHandler<BoundChangeArgs<BoundingSphere>> OnTransformBoundSphereChanged;
 
         private void RaiseOnTransformBoundChanged(BoundingBox newBound, BoundingBox oldBound)
         {
-            OnTransformBoundChanged?.Invoke(this, ref newBound, ref oldBound);
+            OnTransformBoundChanged?.Invoke(elementCore, new BoundChangeArgs<BoundingBox>(ref newBound, ref oldBound));
         }
 
         private void RaiseOnBoundChanged(BoundingBox newBound, BoundingBox oldBound)
         {
-            OnBoundChanged?.Invoke(this, ref newBound, ref oldBound);
+            OnBoundChanged?.Invoke(elementCore, new BoundChangeArgs<BoundingBox>(ref newBound, ref oldBound));
         }
 
 
         private void RaiseOnTransformBoundSphereChanged(BoundingSphere newBoundSphere, BoundingSphere oldBoundSphere)
         {
-            OnTransformBoundSphereChanged?.Invoke(this, ref newBoundSphere, ref oldBoundSphere);
+            OnTransformBoundSphereChanged?.Invoke(elementCore, new BoundChangeArgs<BoundingSphere>(ref newBoundSphere, ref oldBoundSphere));
         }
 
 
         private void RaiseOnBoundSphereChanged(BoundingSphere newBoundSphere, BoundingSphere oldBoundSphere)
         {
-            OnBoundSphereChanged?.Invoke(this, ref newBoundSphere, ref oldBoundSphere);
+            OnBoundSphereChanged?.Invoke(elementCore, new BoundChangeArgs<BoundingSphere>(ref newBoundSphere, ref oldBoundSphere));
         }
         #endregion
 
+        private Element3DCore elementCore;
+
         public GeometryBoundManager(Element3DCore core)
         {
+            this.elementCore = core;
             core.OnTransformChanged += OnTransformChanged;
         }
 

@@ -2,26 +2,28 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HelixToolkit.Wpf.SharpDX
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Utilities
+#else
+namespace HelixToolkit.Wpf.SharpDX.Utilities
+#endif
 {
     using System.Runtime.CompilerServices;
 
-    public class GeometryModel3DOctree : OctreeBase<GeometryModel3D>
+    public class RenderableBoundingOctree : OctreeBase<IRenderable>
     {
         /// <summary>
         /// Only root contains dictionary
         /// </summary>
         private Dictionary<Guid, IOctree> OctantDictionary = null;
-        public GeometryModel3DOctree(List<GeometryModel3D> objList, Queue<IOctree> queueCache = null)
+        public RenderableBoundingOctree(List<IRenderable> objList, Queue<IOctree> queueCache = null)
             : this(objList, null, queueCache)
         {
 
         }
 
-        public GeometryModel3DOctree(List<GeometryModel3D> objList, OctreeBuildParameter paramter, Queue<IOctree> queueCache = null)
+        public RenderableBoundingOctree(List<IRenderable> objList, OctreeBuildParameter paramter, Queue<IOctree> queueCache = null)
             : base(null, paramter, queueCache)
         {
             Objects = objList;
@@ -37,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected GeometryModel3DOctree(BoundingBox bound, List<GeometryModel3D> objList, IOctree parent, OctreeBuildParameter paramter, Queue<IOctree> queueCache)
+        protected RenderableBoundingOctree(BoundingBox bound, List<IRenderable> objList, IOctree parent, OctreeBuildParameter paramter, Queue<IOctree> queueCache)
             : base(ref bound, objList, parent, paramter, queueCache)
         { }
 
@@ -55,11 +57,9 @@ namespace HelixToolkit.Wpf.SharpDX
             if (rayWS.Intersects(ref bound))
             {
                 isIntersect = true;
-                foreach (var t in this.Objects)
+                foreach (var t in this.Objects.Where(x=>x is IHitable))
                 {
-                    //t.PushMatrix(modelMatrix);
-                    isHit |= t.HitTest(context, rayWS, ref tempHits);
-                    //t.PopMatrix();
+                    isHit |=((IHitable)t).HitTest(context, rayWS, ref tempHits);
                     hits.AddRange(tempHits);
                     tempHits.Clear();
                 }
@@ -67,14 +67,14 @@ namespace HelixToolkit.Wpf.SharpDX
             return isHit;
         }
 
-        protected override BoundingBox GetBoundingBoxFromItem(GeometryModel3D item)
+        protected override BoundingBox GetBoundingBoxFromItem(IRenderable item)
         {
             return item.BoundsWithTransform;
         }
 
-        protected override IOctree CreateNodeWithParent(ref BoundingBox bound, List<GeometryModel3D> objList, IOctree parent)
+        protected override IOctree CreateNodeWithParent(ref BoundingBox bound, List<IRenderable> objList, IOctree parent)
         {
-            return new GeometryModel3DOctree(bound, objList, parent, parent.Parameter, this.queue);
+            return new RenderableBoundingOctree(bound, objList, parent, parent.Parameter, this.queue);
         }
 
         public override void BuildTree()
@@ -88,7 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 TreeTraversal(this, queue, null, (node) =>
                 {
-                    foreach (var item in (node as IOctreeBase<GeometryModel3D>).Objects)
+                    foreach (var item in (node as IOctreeBase<IRenderable>).Objects)
                     {
                         OctantDictionary.Add(item.GUID, node);
                     }
@@ -96,14 +96,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public IOctree FindItemByGuid(Guid guid, GeometryModel3D item, out int index)
+        public IOctree FindItemByGuid(Guid guid, IRenderable item, out int index)
         {
-            var root = FindRoot(this) as GeometryModel3DOctree;
+            var root = FindRoot(this) as RenderableBoundingOctree;
             index = -1;
             if (root.OctantDictionary.ContainsKey(guid))
             {
                 var node = root.OctantDictionary[guid];
-                index = (node as IOctreeBase<GeometryModel3D>).Objects.IndexOf(item);
+                index = (node as IOctreeBase<IRenderable>).Objects.IndexOf(item);
                 return root.OctantDictionary[guid];
             }
             else
@@ -112,17 +112,17 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public bool RemoveByGuid(Guid guid, GeometryModel3D item)
+        public bool RemoveByGuid(Guid guid, IRenderable item)
         {
             var root = FindRoot(this);
-            return RemoveByGuid(guid, item, root as GeometryModel3DOctree);
+            return RemoveByGuid(guid, item, root as RenderableBoundingOctree);
         }
 
-        public bool RemoveByGuid(Guid guid, GeometryModel3D item, GeometryModel3DOctree root)
+        public bool RemoveByGuid(Guid guid, IRenderable item, RenderableBoundingOctree root)
         {
             if (root.OctantDictionary.ContainsKey(guid))
             {
-                (OctantDictionary[guid] as GeometryModel3DOctree).RemoveSafe(item, root);
+                (OctantDictionary[guid] as RenderableBoundingOctree).RemoveSafe(item, root);
                 return true;
             }
             else
@@ -131,13 +131,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override bool Add(GeometryModel3D item, out IOctree octant)
+        public override bool Add(IRenderable item, out IOctree octant)
         {
             if (base.Add(item, out octant))
             {
                 if (octant == null)
                 { throw new Exception("Output octant is null"); };
-                var root = FindRoot(this) as GeometryModel3DOctree;
+                var root = FindRoot(this) as RenderableBoundingOctree;
                 root.OctantDictionary.Add(item.GUID, octant);
                 return true;
             }
@@ -152,7 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var item = Objects[index];
             if (base.PushExistingToChild(index, out octant))
             {
-                var root = FindRoot(this) as GeometryModel3DOctree;
+                var root = FindRoot(this) as RenderableBoundingOctree;
                 root.OctantDictionary[item.GUID] = octant;
                 return true;
             }
@@ -162,13 +162,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override bool RemoveSafe(GeometryModel3D item)
+        public override bool RemoveSafe(IRenderable item)
         {
             var root = FindRoot(this);
             return RemoveSafe(item, root);
         }
 
-        public bool RemoveSafe(GeometryModel3D item, IOctree root)
+        public bool RemoveSafe(IRenderable item, IOctree root)
         {
             if (base.RemoveSafe(item))
             {
@@ -201,13 +201,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override bool RemoveByBound(GeometryModel3D item, ref BoundingBox bound)
+        public override bool RemoveByBound(IRenderable item, ref BoundingBox bound)
         {
             var root = FindRoot(this);
             return RemoveByBound(item, ref bound, root);
         }
 
-        public bool RemoveByBound(GeometryModel3D item, ref BoundingBox bound, IOctree root)
+        public bool RemoveByBound(IRenderable item, ref BoundingBox bound, IOctree root)
         {
             if (base.RemoveByBound(item, ref bound))
             {
@@ -226,10 +226,10 @@ namespace HelixToolkit.Wpf.SharpDX
             var root = this;
             if (!IsRoot)
             {
-                root = FindRoot(this) as GeometryModel3DOctree;
+                root = FindRoot(this) as RenderableBoundingOctree;
             }
             var newRoot = Expand(root, ref direction, CreateNodeWithParent);
-            (newRoot as GeometryModel3DOctree).TransferOctantDictionary(root, ref root.OctantDictionary);//Transfer the dictionary to new root
+            (newRoot as RenderableBoundingOctree).TransferOctantDictionary(root, ref root.OctantDictionary);//Transfer the dictionary to new root
             return newRoot;
         }
 
@@ -238,10 +238,10 @@ namespace HelixToolkit.Wpf.SharpDX
             var root = this;
             if (!IsRoot)
             {
-                root = FindRoot(this) as GeometryModel3DOctree;
+                root = FindRoot(this) as RenderableBoundingOctree;
             }
             var newRoot = Shrink(root);
-            (newRoot as GeometryModel3DOctree).TransferOctantDictionary(root, ref root.OctantDictionary);//Transfer the dictionary to new root
+            (newRoot as RenderableBoundingOctree).TransferOctantDictionary(root, ref root.OctantDictionary);//Transfer the dictionary to new root
             return newRoot;
         }
 
@@ -259,7 +259,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void RemoveFromRootDictionary(IOctree node, Guid guid)
         {
             node = FindRoot(node);
-            var root = node as GeometryModel3DOctree;
+            var root = node as RenderableBoundingOctree;
             if (root.OctantDictionary.ContainsKey(guid))
             {
                 root.OctantDictionary.Remove(guid);

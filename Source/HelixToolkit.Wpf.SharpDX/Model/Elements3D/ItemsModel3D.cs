@@ -61,6 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     d.AddLogicalChild(e.NewValue);
                 }
+                d.octreeManager = e.NewValue == null ? null : (IOctreeManager)e.NewValue;
             }));
 
         /// <summary>
@@ -100,37 +101,18 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private readonly Dictionary<object, Element3D> mDictionary = new Dictionary<object, Element3D>();
-        //private bool loaded = false;
+
         private IOctree Octree
         {
-            get { return OctreeManager == null ? null : OctreeManager.Octree; }
+            get { return octreeManager == null ? null : octreeManager.Octree; }
         }
 
-        public ItemsModel3D()
-        {
-            //this.Loaded += ItemsModel3D_Loaded;
-            //this.Unloaded += ItemsModel3D_Unloaded;
-        }
+        protected IOctreeManager octreeManager { private set; get; }
 
-        //private void ItemsModel3D_Unloaded(object sender, RoutedEventArgs e)
-        //{
-        //    loaded = false;
-        //    OctreeManager?.Clear();
-        //}
-
-        //private void ItemsModel3D_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    loaded = true;
-        //    UpdateBounds();
-        //    //if (Children.Count > 0)
-        //    //{
-        //    //    OctreeManager?.RequestRebuild();
-        //    //}
-        //}
 
         private void UpdateOctree()
         {
-            OctreeManager?.RebuildTree(this.Children);
+            octreeManager?.RebuildTree(this.Children);
         }
 
         /// <summary>
@@ -154,7 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 item.DataContext = null;
             }
 
-            OctreeManager?.Clear();
+            octreeManager?.Clear();
             mDictionary.Clear();
             Children.Clear();
 
@@ -211,7 +193,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (Children.Count > 0)
             {
-                OctreeManager?.RequestRebuild();
+                octreeManager?.RequestRebuild();
             }
         }
 
@@ -220,8 +202,8 @@ namespace HelixToolkit.Wpf.SharpDX
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Reset:
-                    OctreeManager?.Clear();
-                    OctreeManager?.RequestRebuild();
+                    octreeManager?.Clear();
+                    octreeManager?.RequestRebuild();
                     break;
             }
             switch (e.Action)
@@ -236,7 +218,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             {
                                 var model = mDictionary[item];
                                 if (model is GeometryModel3D)
-                                    OctreeManager?.RemoveItem(model as GeometryModel3D);
+                                    octreeManager?.RemoveItem(model as GeometryModel3D);
                                 model.DataContext = null;
                                 this.Children.Remove(model);
                                 mDictionary.Remove(item);
@@ -312,7 +294,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 var model = this.ItemTemplate.LoadContent() as Element3D;
                                 if (model != null)
                                 {
-                                    OctreeManager?.AddPendingItem(model);
+                                    octreeManager?.AddPendingItem(model);
                                     model.DataContext = item;
                                     this.Children.Add(model);
                                     mDictionary.Add(item, model);
@@ -334,7 +316,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 var model = item as Element3D;
                                 if (model != null)
                                 {
-                                    OctreeManager?.AddPendingItem(model);
+                                    octreeManager?.AddPendingItem(model);
                                     this.Children.Add(model);
                                     mDictionary.Add(item, model);
                                 }
@@ -349,15 +331,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override void OnRender(IRenderContext context)
+        public override void Update(IRenderContext context)
         {
-            base.OnRender(context);
-            if (OctreeManager != null)
+            base.Update(context);
+            if (octreeManager != null && octreeManager.RequestUpdateOctree)
             {
-                if (OctreeManager.RequestUpdateOctree)
-                {
-                    UpdateOctree();
-                }
+                UpdateOctree();
             }
         }
 

@@ -67,6 +67,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IModelContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IModels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\Interfaces.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IOctreeManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IPoolManagers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRandomVector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderable.cs" />
@@ -108,7 +109,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Render\DX11RenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext2D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\SceneGraphManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\BufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ConstantBufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\DefaultEffectsManager.cs" />
@@ -188,6 +188,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\LineBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\MappingCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RandomVectorGenerators.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RelayExceptionEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ResourceSharedObject.cs" />

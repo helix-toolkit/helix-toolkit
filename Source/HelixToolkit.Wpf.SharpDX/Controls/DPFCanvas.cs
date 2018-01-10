@@ -31,6 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Core2D;
     using Model;
     using Utility;
+    using System.Collections.Generic;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
@@ -733,7 +734,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 // Update all renderables before rendering 
                 // giving them the chance to invalidate the current render.                                                            
-                //renderRenderable.Update(t0);
                 surfaceD3D.Lock();
                 try
                 {

@@ -19,65 +19,21 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             foreach (var c in this.Items)
             {
-                //var model = c as ITransformable;
-                //if (model != null)
-                //{
-                //    // push matrix                    
-                //    model.PushMatrix(this.modelMatrix);
-                //    // render model
-                //    c.Render(renderContext);
-                //    // pop matrix                   
-                //    model.PopMatrix();
-                //}
-                //else
-                //{
-                    c.Render(renderContext);
-                //}
+                c.Render(renderContext);
             }
-        }
-
-        //protected virtual bool CanHitTest()
-        //{
-        //    return IsAttached && visibleInternal && isRenderingInternal && isHitTestVisibleInternal;
-        //}
-
-        //public bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
-        //{
-        //    if (CanHitTest())
-        //    {
-        //        return OnHitTest(context, ray, ref hits);
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}        
+        }      
 
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
             foreach (var c in this.Items)
             {
-                var hc = c as IHitable;
-                if (hc != null)
+                if (c is IHitable)
                 {
-                    //var tc = c as ITransformable;
-                    //if (tc != null)
-                    //{
-                    //    tc.PushMatrix(this.modelMatrix);
-                    //    if (hc.HitTest(context, ray, ref hits))
-                    //    {
-                    //        hit = true;
-                    //    }
-                    //    tc.PopMatrix();
-                    //}
-                    //else
-                    //{
-                        if (hc.HitTest(context, ray, ref hits))
-                        {
-                            hit = true;
-                        }
-                    //}
+                    if (((IHitable)c).HitTest(context, ray, ref hits))
+                    {
+                        hit = true;
+                    }
                 }
             }
             if (hit)

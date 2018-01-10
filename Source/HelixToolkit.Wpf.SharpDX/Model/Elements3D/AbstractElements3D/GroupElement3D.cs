@@ -13,12 +13,15 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Linq;
     using System.Collections;
     using HelixToolkit.Wpf.SharpDX.Core;
+    using SharpDX;
+    using SharpDX;
+    using System;
 
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement3DCollection 
     /// </summary>
     [ContentProperty("Children")]
-    public abstract class GroupElement3D : Element3D //, IElement3DCollection
+    public abstract class GroupElement3D : Element3D
     {
         private IList<Element3D> itemsSourceInternal;
         /// <summary>
@@ -39,6 +42,11 @@ namespace HelixToolkit.Wpf.SharpDX
                         (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
                     }));
 
+        public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingBox>> OnBoundChanged;
+        public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingBox>> OnTransformBoundChanged;
+        public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingSphere>> OnBoundSphereChanged;
+        public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingSphere>> OnTransformBoundSphereChanged;
+
         public override IEnumerable<IRenderable> Items
         {
             get
@@ -51,6 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get;
         } = new ObservableElement3DCollection();
+
 
         public GroupElement3D()
         {

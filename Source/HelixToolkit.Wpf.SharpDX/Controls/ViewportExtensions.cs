@@ -193,7 +193,7 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var element in viewport.Renderables)
             {
                 var model = element as IBoundable;
-                if (model != null && element.IsVisible)
+                if (model != null && element.IsRenderable)
                 {
                     bounds = global::SharpDX.BoundingBox.Merge(bounds, model.BoundsWithTransform);
                 }

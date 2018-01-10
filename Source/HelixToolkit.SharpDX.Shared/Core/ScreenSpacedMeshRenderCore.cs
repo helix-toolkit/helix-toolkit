@@ -269,11 +269,12 @@ namespace HelixToolkit.UWP.Core
 
         protected override bool CanRender(IRenderContext context)
         {
-            return false;
+            return true;
         }
 
         protected override void OnRender(IRenderContext renderContext)
-        {           
+        {
+            SetScreenSpacedCoordinates(renderContext);
         }
 
         protected override void PostRender(IRenderContext context)

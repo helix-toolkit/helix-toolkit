@@ -32,6 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Elements2D;
     using Model;
     using HelixToolkit.Wpf.SharpDX.Cameras;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -885,6 +886,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+
         /// <summary>
         /// Renders the scene.
         /// </summary>
@@ -893,6 +895,17 @@ namespace HelixToolkit.Wpf.SharpDX
             this.FpsCounter.AddFrame(context.TimeStamp);
             context.Camera = this.Camera;
             context.WorldMatrix = this.worldMatrixInternal;
+            var t = Task.Run(() => 
+            {
+                pendingRenderables.Clear();
+                pendingRenderables.AddRange(Renderables.PreorderDFT((x) => 
+                {
+                    x.Update(context);
+                    return x.IsRenderable && !(x is ILight3D);
+                }));
+            });
+
+
             int counter = 0; 
             foreach(IRenderable e in this.Renderables.Take(LightsBufferModel.MaxLights).Where(x=>x is ILight3D))
             {
@@ -900,11 +913,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 ++counter;
             }
             context.UpdatePerFrameData();
-            foreach (IRenderable e in this.Renderables)
+
+            t.Wait();
+            foreach (var renderable in pendingRenderables)
             {
-                e.Render(context);
+                renderable.RenderCore.Render(RenderContext);
             }
         }
+
+        private List<IRenderable> pendingRenderables = new List<IRenderable>(100);
 
         void IRenderer.RenderD2D(IRenderContext context)
         {

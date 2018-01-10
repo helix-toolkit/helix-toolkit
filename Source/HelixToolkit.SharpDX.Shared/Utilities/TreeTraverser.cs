@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Model.Utilities
         /// </summary>
         /// <param name="nodes"></param>
         /// <returns></returns>
-        public static IEnumerable<IRenderable> PreorderDFT(this IEnumerable<IRenderable> nodes)
+        public static IEnumerable<IRenderable> PreorderDFT(this IEnumerable<IRenderable> nodes, Func<IRenderable, bool> condition)
         {
             var stack = new Stack<IEnumerator<IRenderable>>(20);
             var e = nodes.GetEnumerator();
@@ -27,6 +27,7 @@ namespace HelixToolkit.UWP.Model.Utilities
                     while (e.MoveNext())
                     {
                         var item = e.Current;
+                        if (!condition(item)) { continue; }
                         yield return item;
                         var elements = item.Items;
                         if (elements == null) continue;

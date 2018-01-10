@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Utility;
     using static Core.ParticleRenderCore;
 
-    public class ParticleStormModel3D : Element3D
+    public class ParticleStormModel3D : Element3D, IInstancing
     {
         #region Dependency Properties
         public static DependencyProperty ParticleCountProperty = DependencyProperty.Register("ParticleCount", typeof(int), typeof(ParticleStormModel3D),

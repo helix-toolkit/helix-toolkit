@@ -13,29 +13,21 @@ namespace HelixToolkit.UWP
     using global::SharpDX;
     using Cameras;
     using System.Collections.Generic;
+    using HelixToolkit.Wpf.SharpDX.Core;
+
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderable 
+    public interface IRenderable : IAttachable, IBoundable, IGUID, ITransform
     {
-        bool IsVisible { get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        bool IsAttached { get; }
+        bool IsRenderable { get; }
+
         /// <summary>
         /// Optional for scene graph traverse
         /// </summary>
         IEnumerable<IRenderable> Items { get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="host"></param>
-        void Attach(IRenderHost host);
-        /// <summary>
-        /// 
-        /// </summary>
-        void Detach();
+
+        IRenderCore RenderCore { get; }
         /// <summary>
         /// 
         /// </summary>
