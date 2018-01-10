@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using HelixToolkit.Wpf.SharpDX.Cameras;
+    using Cameras;
     using Model;
     public interface IRenderContext : IDisposable
     {

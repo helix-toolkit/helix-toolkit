@@ -194,7 +194,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var viewMatrix = screenSpaceCore.GlobalTransform.View;
             Vector3 v = new Vector3();
 
-            var matrix = CameraExtensions.InverseViewMatrix(ref viewMatrix);
+            var matrix = MatrixExtensions.InverseViewMatrix(ref viewMatrix);
             var aspectRatio = screenSpaceCore.ScreenRatio;
             var projMatrix = screenSpaceCore.GlobalTransform.Projection;
             Vector3 zn, zf;

@@ -3,11 +3,10 @@
 //   Copyright (c) 2018 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+using System.Collections.Generic;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
-using System.Collections.Generic;
-
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {

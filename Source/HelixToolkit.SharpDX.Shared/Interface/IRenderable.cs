@@ -13,7 +13,7 @@ namespace HelixToolkit.UWP
     using global::SharpDX;
     using Cameras;
     using System.Collections.Generic;
-    using HelixToolkit.Wpf.SharpDX.Core;
+    using Core;
 
     /// <summary>
     /// 

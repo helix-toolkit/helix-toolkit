@@ -24,11 +24,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.DXGI;
 
     using Utilities;
-
-    using Extensions;
     using Device = global::SharpDX.Direct3D11.Device;
     using Model;
-    using Helpers;
     using System.Threading;
     using System.Runtime.CompilerServices;
     using Core2D;

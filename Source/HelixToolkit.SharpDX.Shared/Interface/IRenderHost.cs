@@ -25,12 +25,6 @@ namespace HelixToolkit.UWP
     using Model;
     using Core2D;
 
-#if MSAA
-    public enum MSAALevel
-    {
-        Disable = 0, Maximum = 1, Two = 2, Four = 4, Eight = 8
-    }
-#endif
     public interface IRenderHost
     {
         /// <summary>

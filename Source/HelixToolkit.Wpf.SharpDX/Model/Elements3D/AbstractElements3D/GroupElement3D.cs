@@ -6,17 +6,13 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using global::SharpDX;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Markup;
-    using System.Linq;
-    using System.Collections;
-    using HelixToolkit.Wpf.SharpDX.Core;
-    using SharpDX;
-    using SharpDX;
-    using System;
-    using global::SharpDX;
 
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement3DCollection 

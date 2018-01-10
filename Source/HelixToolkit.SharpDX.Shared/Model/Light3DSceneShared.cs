@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
 #if NETFX_CORE
+using HelixToolkit.UWP.Utilities;
 namespace HelixToolkit.UWP.Model
 #else
 namespace HelixToolkit.Wpf.SharpDX.Model

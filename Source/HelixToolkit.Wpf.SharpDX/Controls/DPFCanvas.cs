@@ -27,11 +27,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using Extensions;
 
     using Device = global::SharpDX.Direct3D11.Device;
-    using Helpers;
     using Core2D;
     using Model;
-    using Utility;
-    using System.Collections.Generic;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel

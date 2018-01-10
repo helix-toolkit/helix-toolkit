@@ -454,34 +454,13 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Matrix3D GetInversedViewMatrix(this Camera camera)
         {
             var viewMatrix = GetViewMatrix(camera);
-            return InverseViewMatrix(ref viewMatrix).ToMatrix3D();
+            return MatrixExtensions.InverseViewMatrix(ref viewMatrix).ToMatrix3D();
         }
 
         public static Matrix GetInversedViewMatrix(this CameraCore camera)
         {
             var viewMatrix = GetViewMatrix(camera);
-            return InverseViewMatrix(ref viewMatrix);
-        }
-
-        public static Matrix InverseViewMatrix(ref Matrix viewMatrix)
-        {
-            //var v33Transpose = new Matrix3x3(
-            //    viewMatrix.M11, viewMatrix.M21, viewMatrix.M31,
-            //    viewMatrix.M12, viewMatrix.M22, viewMatrix.M32,
-            //    viewMatrix.M13, viewMatrix.M23, viewMatrix.M33);
-            
-            //var vpos = viewMatrix.Row4.ToVector3();
-
-            //     vpos = Vector3.Transform(vpos, v33Transpose) * -1;
-
-            var x = viewMatrix.M41 * viewMatrix.M11 + viewMatrix.M42 * viewMatrix.M12 + viewMatrix.M43 * viewMatrix.M13;
-            var y = viewMatrix.M41 * viewMatrix.M21 + viewMatrix.M42 * viewMatrix.M22 + viewMatrix.M43 * viewMatrix.M23;
-            var z = viewMatrix.M41 * viewMatrix.M31 + viewMatrix.M42 * viewMatrix.M32 + viewMatrix.M43 * viewMatrix.M33;
-      
-            return new Matrix(
-                viewMatrix.M11, viewMatrix.M21, viewMatrix.M31, 0,
-                viewMatrix.M12, viewMatrix.M22, viewMatrix.M32, 0,
-                viewMatrix.M13, viewMatrix.M23, viewMatrix.M33, 0, -x, -y, -z, 1);
+            return MatrixExtensions.InverseViewMatrix(ref viewMatrix);
         }
         /// <summary>
         /// Set the camera target point without changing the look direction.

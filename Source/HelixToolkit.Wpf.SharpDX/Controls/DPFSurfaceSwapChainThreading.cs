@@ -9,30 +9,23 @@
 //#define DoubleBuffer
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Controls;
+    using Core2D;
+    using global::SharpDX;
+    using global::SharpDX.Direct3D11;
+    using global::SharpDX.DXGI;
+    using Model;
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Linq;
+    using System.Threading;
     using System.Windows;
+    using System.Windows.Interop;
     using System.Windows.Media;
     using System.Windows.Threading;
-
-    using global::SharpDX;
-
-    using global::SharpDX.Direct3D11;
-
-    using global::SharpDX.DXGI;
-
     using Utilities;
-    using Extensions;
-
     using Device = global::SharpDX.Direct3D11.Device;
-    using Model;
-    using Helpers;
-    using System.Linq;
-    using Controls;
-    using System.Threading;
-    using System.Windows.Interop;
-    using Core2D;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel

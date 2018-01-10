@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
 
-#if SHARPDX
-namespace HelixToolkit.Wpf.SharpDX
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX.Utilities
 #else
-namespace HelixToolkit.Wpf
+namespace HelixToolkit.UWP.Utilities
 #endif
 {
     /// <summary>

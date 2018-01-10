@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
-namespace HelixToolkit.Wpf.SharpDX.Helpers
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX.Utilities
+#else
+namespace HelixToolkit.UWP.Utilities
+#endif
 {
     /// <summary>
     /// Use to skip event if event frequency is too high.
@@ -28,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX.Helpers
             {
                 if (Set(ref latency, value))
                 {
-                    Console.WriteLine($"Latency: {value}");
+                    //Console.WriteLine($"Latency: {value}");
                 }
             }
             get

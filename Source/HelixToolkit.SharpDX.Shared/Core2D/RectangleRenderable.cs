@@ -2,7 +2,6 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using HelixToolkit.Wpf.SharpDX;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Core2D

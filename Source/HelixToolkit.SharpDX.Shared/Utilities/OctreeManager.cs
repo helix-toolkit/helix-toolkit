@@ -250,7 +250,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 UnsubscribeBoundChangeEvent(model);
                 if (!tree.RemoveByBound(model))
                 {
-                    Console.WriteLine("Remove failed.");
+                    //Console.WriteLine("Remove failed.");
                 }
                 else
                 {
