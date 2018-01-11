@@ -44,15 +44,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(false));
 
-        public static readonly DependencyProperty IsThrowingShadowProperty =
-            DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(false, (d, e) =>
-            {
-                if ((d as Element3D).RenderCore is IThrowingShadow)
-                {
-                    ((d as Element3D).RenderCore as IThrowingShadow).IsThrowingShadow = (bool)e.NewValue;
-                }
-            }));
-
         public static readonly DependencyProperty IsMultisampleEnabledProperty =
             DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new AffectsRenderPropertyMetadata(true, RasterStateChanged));
 
@@ -191,18 +182,6 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (bool)GetValue(IsDepthClipEnabledProperty);
-            }
-        }
-
-        public bool IsThrowingShadow
-        {
-            set
-            {
-                SetValue(IsThrowingShadowProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(IsThrowingShadowProperty);
             }
         }
         #endregion

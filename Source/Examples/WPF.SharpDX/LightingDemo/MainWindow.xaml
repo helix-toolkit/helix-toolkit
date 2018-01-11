@@ -75,49 +75,54 @@
                 Range="100"
                 Transform="{Binding Light4Transform}"
                 Color="{Binding Light1Color}" />
-            <hx:MeshGeometryModel3D
-                Geometry="{Binding Sphere}"
-                IsRendering="{Binding RenderLight1}"
-                IsThrowingShadow="True"
-                Material="{Binding LightModelMaterial}"
-                Transform="{Binding Light1Transform}" />
-            <hx:MeshGeometryModel3D
-                Geometry="{Binding Sphere}"
-                IsRendering="{Binding RenderLight2}"
-                IsThrowingShadow="True"
-                Material="{Binding LightModelMaterial}"
-                Transform="{Binding Light2Transform}" />
-            <hx:MeshGeometryModel3D
-                Geometry="{Binding Sphere}"
-                IsRendering="{Binding RenderLight3}"
-                IsThrowingShadow="True"
-                Material="{Binding LightModelMaterial}"
-                Transform="{Binding Light3Transform}" />
-            <hx:MeshGeometryModel3D
-                Geometry="{Binding Sphere}"
-                IsRendering="{Binding RenderLight4}"
-                IsThrowingShadow="True"
-                Material="{Binding LightModelMaterial}"
-                Transform="{Binding Light4Transform}" />
-            <hx:MeshGeometryModel3D
-                x:Name="model"
-                Geometry="{Binding Model}"
-                IsThrowingShadow="True"
-                Material="{Binding ModelMaterial}"
-                RenderDiffuseMap="{Binding RenderDiffuseMap}"
-                RenderNormalMap="{Binding RenderNormalMap}"
-                RenderShadowMap="True"
-                Transform="{Binding ModelTransform}" />
-            <hx:MeshGeometryModel3D
-                x:Name="floor"
-                EnableTessellation="{Binding ElementName=model, Path=EnableTessellation}"
-                Geometry="{Binding Floor}"
-                Material="{Binding FloorMaterial}"
-                MinTessellationFactor="{Binding ElementName=model, Path=TessellationFactor}"
-                RenderDiffuseMap="{Binding RenderDiffuseMap}"
-                RenderNormalMap="{Binding RenderNormalMap}"
-                RenderShadowMap="True"
-                Transform="{Binding FloorTransform}" />
+            <hx:GroupModel3D IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}">
+                <hx:MeshGeometryModel3D
+                    Geometry="{Binding Sphere}"
+                    IsRendering="{Binding RenderLight1}"
+                    IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
+                    Material="{Binding LightModelMaterial}"
+                    Transform="{Binding Light1Transform}" />
+                <hx:MeshGeometryModel3D
+                    Geometry="{Binding Sphere}"
+                    IsRendering="{Binding RenderLight2}"
+                    IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
+                    Material="{Binding LightModelMaterial}"
+                    Transform="{Binding Light2Transform}" />
+                <hx:MeshGeometryModel3D
+                    Geometry="{Binding Sphere}"
+                    IsRendering="{Binding RenderLight3}"
+                    IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
+                    Material="{Binding LightModelMaterial}"
+                    Transform="{Binding Light3Transform}" />
+                <hx:MeshGeometryModel3D
+                    Geometry="{Binding Sphere}"
+                    IsRendering="{Binding RenderLight4}"
+                    IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
+                    Material="{Binding LightModelMaterial}"
+                    Transform="{Binding Light4Transform}" />
+            </hx:GroupModel3D>
+            <hx:GroupModel3D IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}">
+                <hx:MeshGeometryModel3D
+                    x:Name="model"
+                    Geometry="{Binding Model}"
+                    IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
+                    Material="{Binding ModelMaterial}"
+                    RenderDiffuseMap="{Binding RenderDiffuseMap}"
+                    RenderNormalMap="{Binding RenderNormalMap}"
+                    RenderShadowMap="True"
+                    Transform="{Binding ModelTransform}" />
+                <hx:MeshGeometryModel3D
+                    x:Name="floor"
+                    EnableTessellation="{Binding ElementName=model, Path=EnableTessellation}"
+                    Geometry="{Binding Floor}"
+                    Material="{Binding FloorMaterial}"
+                    MinTessellationFactor="{Binding ElementName=model, Path=MinTessellationFactor}"
+                    RenderDiffuseMap="{Binding RenderDiffuseMap}"
+                    RenderNormalMap="{Binding RenderNormalMap}"
+                    RenderShadowMap="True"
+                    Transform="{Binding FloorTransform}" />
+            </hx:GroupModel3D>
+
             <!--<hx:LineGeometryModel3D Geometry="{Binding CubeEdges}" Color="{x:Static SharpDX:Color.Red}" Thickness="4"/>-->
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1">

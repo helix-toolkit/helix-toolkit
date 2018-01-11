@@ -21,21 +21,53 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public abstract class RenderCoreBase<TModelStruct> : DisposeObject, IRenderCore where TModelStruct : struct
     {
+        /// <summary>
+        /// <see cref="IRenderCore.OnInvalidateRenderer"/>
+        /// </summary>
+        public event EventHandler<bool> OnInvalidateRenderer;
+        /// <summary>
+        /// <see cref="IGUID.GUID"/>
+        /// </summary>
         public Guid GUID { get; } = Guid.NewGuid();
 
-        protected TModelStruct modelStruct;
-        protected IConstantBufferProxy modelCB { private set; get; }
-        public event EventHandler<bool> OnInvalidateRenderer;
+        private bool isThrowingShadow = false;
+        /// <summary>
+        /// <see cref="IThrowingShadow.IsThrowingShadow"/>
+        /// </summary>
+        public bool IsThrowingShadow
+        {
+            set
+            {
+                if (Set(ref isThrowingShadow, value))
+                {
+                    InvalidateRenderer();
+                }
+            }
+            get { return isThrowingShadow; }
+        }
+
+
         /// <summary>
         /// Model matrix
         /// </summary>
-        public Matrix ModelMatrix { set; get; } = Matrix.Identity;      
+        public Matrix ModelMatrix { set; get; } = Matrix.Identity; 
+        /// <summary>
+        /// 
+        /// </summary>
         public IRenderTechnique EffectTechnique { private set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
         public Device Device { get { return EffectTechnique == null ? null : EffectTechnique.Device; } }
         /// <summary>
         /// Is render core has been attached
         /// </summary>
         public bool IsAttached { private set; get; } = false;
+
+
+        protected TModelStruct modelStruct;
+        protected IConstantBufferProxy modelCB { private set; get; }
+
         /// <summary>
         /// Call to attach the render core.
         /// </summary>

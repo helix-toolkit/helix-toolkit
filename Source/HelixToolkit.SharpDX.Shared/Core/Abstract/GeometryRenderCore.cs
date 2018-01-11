@@ -137,19 +137,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private bool isThrowingShadow = false;
-        public bool IsThrowingShadow
-        {
-            set
-            {
-                if(Set(ref isThrowingShadow, value))
-                {
-                    InvalidateRenderer();
-                }
-            }
-            get { return isThrowingShadow; }
-        }
-
         protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
         {
             rasterDescription = description;

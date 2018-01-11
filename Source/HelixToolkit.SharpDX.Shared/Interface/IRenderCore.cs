@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderCore : IGUID, IDisposable
+    public interface IRenderCore : IGUID, IThrowingShadow, IDisposable
     {
         event EventHandler<bool> OnInvalidateRenderer;
 
@@ -51,7 +51,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public interface IGeometryRenderCore : IThrowingShadow
+    public interface IGeometryRenderCore
     {
         InputLayout VertexLayout { get; }
         IElementsBufferModel InstanceBuffer { set; get; }

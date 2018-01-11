@@ -13,7 +13,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using Media = System.Windows.Media;
     using Core;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Base class for renderable elements.
@@ -83,6 +82,29 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (Transform3D)this.GetValue(TransformProperty); }
             set { this.SetValue(TransformProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsThrowingShadowProperty =
+            DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(false, (d, e) =>
+            {
+                if ((d as Element3D).RenderCore is IThrowingShadow)
+                {
+                    ((d as Element3D).RenderCore as IThrowingShadow).IsThrowingShadow = (bool)e.NewValue;
+                }
+            }));
+        /// <summary>
+        /// <see cref="IThrowingShadow.IsThrowingShadow"/>
+        /// </summary>
+        public bool IsThrowingShadow
+        {
+            set
+            {
+                SetValue(IsThrowingShadowProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsThrowingShadowProperty);
+            }
         }
         #endregion
         /// <summary>

@@ -24,10 +24,15 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class ShadowMapCore : RenderCoreBase<ShadowMapParamStruct>, IShadowMapRenderParams
     {
+        /// <summary>
+        /// 
+        /// </summary>
         protected ShaderResouceViewProxy viewResource;
 
         private bool resolutionChanged = true;
-
+        /// <summary>
+        /// 
+        /// </summary>
         public int Width
         {
             set
@@ -42,7 +47,9 @@ namespace HelixToolkit.UWP.Core
                 return (int)modelStruct.ShadowMapSize.X;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public int Height
         {
             set
@@ -81,7 +88,9 @@ namespace HelixToolkit.UWP.Core
             }
             get { return modelStruct.ShadowMapInfo.Z; }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public Matrix LightViewProjectMatrix
         {
             set
@@ -96,14 +105,18 @@ namespace HelixToolkit.UWP.Core
         public int UpdateFrequency { set; get; } = 1;
 
         private int currentFrame = 0;
-
+        /// <summary>
+        /// 
+        /// </summary>
         public ShadowMapCore()
         {
             Bias = 0.0015f;
             Intensity = 0.5f;
             Width = Height = 1024;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         protected virtual Texture2DDescription ShadowMapTextureDesc
         {
             get
@@ -124,7 +137,9 @@ namespace HelixToolkit.UWP.Core
                 };
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         protected virtual DepthStencilViewDescription DepthStencilViewDesc
         {
             get
@@ -140,7 +155,9 @@ namespace HelixToolkit.UWP.Core
                 };
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         protected virtual ShaderResourceViewDescription ShaderResourceViewDesc
         {
             get
@@ -207,7 +224,7 @@ namespace HelixToolkit.UWP.Core
             try
             {
                 pendingRenders.AddRange(context.RenderHost.Viewport.Renderables
-                    .PreorderDFTGetCores(x => x.IsRenderable && !(x is ILight3D) && x is IThrowingShadow && ((IThrowingShadow)x).IsThrowingShadow, stackCache));
+                    .PreorderDFTGetCores(x => x.IsRenderable && !(x is ILight3D) && x.RenderCore.IsThrowingShadow, stackCache));
                 foreach (var item in pendingRenders)
                 {
                     item.Render(context);
