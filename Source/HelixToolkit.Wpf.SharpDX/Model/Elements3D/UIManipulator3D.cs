@@ -181,7 +181,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public override void OnMouse3DDown(object sender, RoutedEventArgs e)
+        protected override void OnMouse3DDown(object sender, RoutedEventArgs e)
         {
             base.OnMouse3DDown(sender, e);
 
@@ -200,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public override void OnMouse3DUp(object sender, RoutedEventArgs e)
+        protected override void OnMouse3DUp(object sender, RoutedEventArgs e)
         {
             base.OnMouse3DUp(sender, e);
             if (this.isMouseCaptured)
@@ -215,7 +215,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public override void OnMouse3DMove(object sender, RoutedEventArgs e)
+        protected override void OnMouse3DMove(object sender, RoutedEventArgs e)
         {
             base.OnMouse3DMove(sender, e);
             if (this.isMouseCaptured)

@@ -283,49 +283,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #endregion
 
-        #region Events
-        public static readonly RoutedEvent MouseDown3DEvent =
-            EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GeometryModel3D));
-
-        public static readonly RoutedEvent MouseUp3DEvent =
-            EventManager.RegisterRoutedEvent("MouseUp3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GeometryModel3D));
-
-        public static readonly RoutedEvent MouseMove3DEvent =
-            EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GeometryModel3D));
-
-        /// <summary>
-        /// Provide CLR accessors for the event 
-        /// </summary>
-        public event RoutedEventHandler MouseDown3D
-        {
-            add { AddHandler(MouseDown3DEvent, value); }
-            remove { RemoveHandler(MouseDown3DEvent, value); }
-        }
-
-        /// <summary>
-        /// Provide CLR accessors for the event 
-        /// </summary>
-        public event RoutedEventHandler MouseUp3D
-        {
-            add { AddHandler(MouseUp3DEvent, value); }
-            remove { RemoveHandler(MouseUp3DEvent, value); }
-        }
-
-        /// <summary>
-        /// Provide CLR accessors for the event 
-        /// </summary>
-        public event RoutedEventHandler MouseMove3D
-        {
-            add { AddHandler(MouseMove3DEvent, value); }
-            remove { RemoveHandler(MouseMove3DEvent, value); }
-        }
-        #endregion
-
         public GeometryModel3D()
         {
-            this.MouseDown3D += OnMouse3DDown;
-            this.MouseUp3D += OnMouse3DUp;
-            this.MouseMove3D += OnMouse3DMove;
             BoundManager = new GeometryBoundManager(this);
             BoundManager.OnBoundChanged += (s, e) => { RaiseOnBoundChanged(e); };
             BoundManager.OnTransformBoundChanged += (s, e) => { RaiseOnTransformBoundChanged(e); };
@@ -461,12 +420,6 @@ namespace HelixToolkit.Wpf.SharpDX
             var sphere = BoundsSphereWithTransform;
             return viewFrustum.Intersects(ref bound) && viewFrustum.Intersects(ref sphere);
         }
-
-        public virtual void OnMouse3DDown(object sender, RoutedEventArgs e) { }
-
-        public virtual void OnMouse3DUp(object sender, RoutedEventArgs e) { }
-
-        public virtual void OnMouse3DMove(object sender, RoutedEventArgs e) { }
         
         /// <summary>
         /// 
@@ -513,41 +466,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
     }
 
-    public abstract class Mouse3DEventArgs : RoutedEventArgs
-    {
-        public HitTestResult HitTestResult { get; private set; }
-        public Viewport3DX Viewport { get; private set; }
-        public Point Position { get; private set; }
 
-        public Mouse3DEventArgs(RoutedEvent routedEvent, object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
-            : base(routedEvent, source)
-        {
-            this.HitTestResult = hitTestResult;
-            this.Position = position;
-            this.Viewport = viewport;
-        }
-    }
-
-    public class MouseDown3DEventArgs : Mouse3DEventArgs
-    {
-        public MouseDown3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
-            : base(GeometryModel3D.MouseDown3DEvent, source, hitTestResult, position, viewport)
-        { }
-    }
-
-    public class MouseUp3DEventArgs : Mouse3DEventArgs
-    {
-        public MouseUp3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
-            : base(GeometryModel3D.MouseUp3DEvent, source, hitTestResult, position, viewport)
-        { }
-    }
-
-    public class MouseMove3DEventArgs : Mouse3DEventArgs
-    {
-        public MouseMove3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
-            : base(GeometryModel3D.MouseMove3DEvent, source, hitTestResult, position, viewport)
-        { }
-    }
 
     public sealed class BoundChangedEventArgs : EventArgs
     {

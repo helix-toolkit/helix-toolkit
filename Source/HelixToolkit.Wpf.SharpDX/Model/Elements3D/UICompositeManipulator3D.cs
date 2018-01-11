@@ -207,29 +207,10 @@ namespace HelixToolkit.Wpf.SharpDX
             BindingOperations.ClearBinding(this, TransformProperty);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        protected override void OnRender(IRenderContext context)
+        public override void Update(IRenderContext context)
         {
-            foreach (var c in this.Children)
-            {
-                var model = c as ITransformable;
-                if (model != null)
-                {
-                    // apply transform
-                    model.Transform = this.Transform;
-                    //model.PushMatrix(this.modelMatrix);
-                    // render model
-                    c.Render(context);
-                    //model.PopMatrix();
-                }
-                else
-                {
-                    c.Render(context);
-                }
-            }
+            
+            base.Update(context);
         }
 
         /// <summary>

@@ -44,43 +44,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override IEnumerable<IRenderable> Items { get { return children; } }
 
-        #region Events
-        public static readonly RoutedEvent MouseDown3DEvent =
-            EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CompositeModel3D));
-
-        public static readonly RoutedEvent MouseUp3DEvent =
-            EventManager.RegisterRoutedEvent("MouseUp3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CompositeModel3D));
-
-        public static readonly RoutedEvent MouseMove3DEvent =
-            EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CompositeModel3D));
-
-        /// <summary>
-        /// Provide CLR accessors for the event 
-        /// </summary>
-        public event RoutedEventHandler MouseDown3D
-        {
-            add { AddHandler(MouseDown3DEvent, value); }
-            remove { RemoveHandler(MouseDown3DEvent, value); }
-        }
-
-        /// <summary>
-        /// Provide CLR accessors for the event 
-        /// </summary>
-        public event RoutedEventHandler MouseUp3D
-        {
-            add { AddHandler(MouseUp3DEvent, value); }
-            remove { RemoveHandler(MouseUp3DEvent, value); }
-        }
-
-        /// <summary>
-        /// Provide CLR accessors for the event 
-        /// </summary>
-        public event RoutedEventHandler MouseMove3D
-        {
-            add { AddHandler(MouseMove3DEvent, value); }
-            remove { RemoveHandler(MouseMove3DEvent, value); }
-        }
-        #endregion
         /// <summary>
         ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
         /// </summary>
@@ -88,16 +51,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.children = new ObservableElement3DCollection();
             this.children.CollectionChanged += this.ChildrenChanged;
-            this.MouseDown3D += OnMouse3DDown;
-            this.MouseUp3D += OnMouse3DUp;
-            this.MouseMove3D += OnMouse3DMove;
         }
 
-        public virtual void OnMouse3DDown(object sender, RoutedEventArgs e) { }
-
-        public virtual void OnMouse3DUp(object sender, RoutedEventArgs e) { }
-
-        public virtual void OnMouse3DMove(object sender, RoutedEventArgs e) { }
         /// <summary>
         ///     Gets the children.
         /// </summary>
