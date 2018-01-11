@@ -22,7 +22,7 @@
             Background="Black" BackgroundColor="0.8,0.8,0.8,1"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black" CameraRotationMode="Trackball"
-            UseDefaultGestures="False" EnableSwapChainRendering="True"
+            UseDefaultGestures="False" 
                         EffectsManager="{Binding EffectsManager}"
             RenderTechnique="{Binding RenderTechnique}" RotateAroundMouseDownPoint="False" FixedRotationPoint="0,0,0" FixedRotationPointEnabled="True">
             <hx:Viewport3DX.InputBindings>
