@@ -16,28 +16,69 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class OnHitEventArgs : EventArgs
     {
 
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
     public delegate void OnHitEventHandler(object sender, OnHitEventArgs args);
+
+    /// <summary>
+    /// General interface for octree
+    /// </summary>
     public interface IOctree
     {
+        /// <summary>
+        /// 
+        /// </summary>
         event OnHitEventHandler OnHit;
         /// <summary>
         /// This is a bitmask indicating which child nodes are actively being used.
         /// It adds slightly more complexity, but is faster for performance since there is only one comparison instead of 8.
         /// </summary>
         byte ActiveNodes { set; get; }
+        /// <summary>
+        /// Has child octants
+        /// </summary>
         bool HasChildren { get; }
+        /// <summary>
+        /// If this node is root node
+        /// </summary>
         bool IsRoot { get; }
+        /// <summary>
+        /// Parent node
+        /// </summary>
         IOctree Parent { get; set; }
+        /// <summary>
+        /// Node bound
+        /// </summary>
         BoundingBox Bound { get; }
+        /// <summary>
+        /// Child octants
+        /// </summary>
         IOctree[] ChildNodes { get; }
+        /// <summary>
+        /// Octant bounds
+        /// </summary>
         BoundingBox[] Octants { get; }
+        /// <summary>
+        /// Output the hit path of the tree traverse. Only for debugging
+        /// </summary>
         IList<BoundingBox> HitPathBoundingBoxes { get; }
+        /// <summary>
+        /// Octree parameter
+        /// </summary>
         OctreeBuildParameter Parameter { get; }
-
+        /// <summary>
+        /// Whether the tree has been built.
+        /// </summary>
         bool TreeBuilt { get; }
         /// <summary>
         /// Delete self if is empty;
@@ -80,6 +121,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
+        /// <param name="hitThickness">Only used for point/line hit test</param>
+        /// <param name="rayModel"></param>
         /// <returns></returns>
         bool HitTestCurrentNodeExcludeChild(IRenderContext context, IRenderable model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, 
             ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness);
@@ -106,14 +149,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Search nearest point from point on mesh
         /// </summary>
+        /// <param name="context"></param>
         /// <param name="point"></param>
         /// <param name="result"></param>
-        /// <param name="heuristic">Use huristic search, return proximated nearest point. Set to 1.0f to disable heuristic. Value must be 0.1f ~ 1.0f</param>
+        /// <param name="heuristicSearchFactor">Use huristic search, return proximated nearest point. Set to 1.0f to disable heuristic. Value must be 0.1f ~ 1.0f</param>
         /// <returns></returns>
         bool FindNearestPointFromPoint(IRenderContext context, ref Vector3 point, ref List<HitTestResult> result, float heuristicSearchFactor = 1f);
         /// <summary>
         /// Search nearest point by a point and search radius
         /// </summary>
+        /// <param name="context"></param>
         /// <param name="point"></param>
         /// <param name="radius"></param>
         /// <param name="points"></param>
@@ -129,6 +174,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// To build from top to bottom, call BuildTree
         /// </summary>
         void BuildCurretNodeOnly();
+        /// <summary>
+        /// Clear the tree
+        /// </summary>
         void Clear();
         /// <summary>
         /// Remove self from parent node
@@ -141,8 +189,15 @@ namespace HelixToolkit.Wpf.SharpDX
         void RemoveChild(IOctree child);
     }
 
+    /// <summary>
+    /// Base class template interface for octree
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IOctreeBase<T> : IOctree
     {
+        /// <summary>
+        /// Objects for current node.
+        /// </summary>
         List<T> Objects { get; }
 
         /// <summary>
@@ -224,24 +279,50 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         IOctree FindChildByItem(T item, out int index);
     }
-
+    /// <summary>
+    /// Base class template implementation for <see cref="IOctreeBase{T}"/>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class OctreeBase<T> : IOctreeBase<T>
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <param name="objects"></param>
+        /// <param name="parent"></param>
+        /// <returns></returns>
         public delegate IOctree CreateNodeDelegate(ref BoundingBox bound, List<T> objects, IOctree parent);
-
+        /// <summary>
+        /// internal stack for tree traversal
+        /// </summary>
         protected readonly Stack<IEnumerator<IOctree>> stack;
-
+        /// <summary>
+        /// 
+        /// </summary>
         public event OnHitEventHandler OnHit;
         /// <summary>
         /// The minumum size for enclosing region is a 1x1x1 cube.
         /// </summary>
         public float MIN_SIZE { get { return Parameter.MinimumOctantSize; } }
-
+        /// <summary>
+        /// <see cref="IOctree.TreeBuilt"/>
+        /// </summary>
         public bool TreeBuilt { get { return treeBuilt; } }
+        /// <summary>
+        /// 
+        /// </summary>
         protected bool treeBuilt = false;       //there is no pre-existing tree yet.
+        /// <summary>
+        /// <see cref="IOctree.Parameter"/>
+        /// </summary>
         public OctreeBuildParameter Parameter { private set; get; }
 
         private BoundingBox bound;
+
+        /// <summary>
+        /// <see cref="IOctree.Bound"/>
+        /// </summary>
         public BoundingBox Bound
         {
             protected set
@@ -258,26 +339,45 @@ namespace HelixToolkit.Wpf.SharpDX
                 return bound;
             }
         }
-
+        /// <summary>
+        /// <see cref="IOctreeBase{T}.Objects"/>
+        /// </summary>
         public List<T> Objects { protected set; get; }
 
         private readonly List<BoundingBox> hitPathBoundingBoxes = new List<BoundingBox>();
+        /// <summary>
+        /// <see cref="IOctree.HitPathBoundingBoxes"/>
+        /// </summary>
         public IList<BoundingBox> HitPathBoundingBoxes { get { return hitPathBoundingBoxes.AsReadOnly(); } }
         /// <summary>
         /// These are all of the possible child octants for this node in the tree.
         /// </summary>
         private readonly IOctree[] childNodes = new IOctree[8];
+        /// <summary>
+        /// <see cref="IOctree.ChildNodes"/>
+        /// </summary>
         public IOctree[] ChildNodes { get { return childNodes; } }
-
+        /// <summary>
+        /// <see cref="IOctree.ActiveNodes"/>
+        /// </summary>
         public byte ActiveNodes { set; get; }
-
+        /// <summary>
+        /// <see cref="IOctree.Parent"/>
+        /// </summary>
         public IOctree Parent { set; get; }
 
         private BoundingBox[] octants = null;
+        /// <summary>
+        /// <see cref="IOctree.Octants"/>
+        /// </summary>
         public BoundingBox[] Octants { get { return octants; } }
-
+        /// <summary>
+        /// 
+        /// </summary>
         protected List<HitTestResult> modelHits = new List<HitTestResult>();
-
+        /// <summary>
+        /// Delete the octant if there is no object or child octant inside it.
+        /// </summary>
         public bool AutoDeleteIfEmpty
         {
             get
@@ -354,14 +454,27 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return CreateNodeWithParent(ref bound, objList, this);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <param name="objList"></param>
+        /// <param name="parent"></param>
+        /// <returns></returns>
         protected abstract IOctree CreateNodeWithParent(ref BoundingBox bound, List<T> objList, IOctree parent);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <param name="Item"></param>
+        /// <returns></returns>
         protected IOctree CreateNode(ref BoundingBox bound, T Item)
         {
             return CreateNode(ref bound, new List<T> { Item });
         }
-
+        /// <summary>
+        /// Build the octree
+        /// </summary>
         public virtual void BuildTree()
         {
             if (Bound.Maximum == Bound.Minimum || !CheckDimension())
@@ -375,7 +488,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             BuildTree(this, this.stack);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="stack"></param>
         public void BuildTree(IOctree root, Stack<IEnumerator<IOctree>> stack)
         {
 #if DEBUG
@@ -388,7 +505,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 Debug.WriteLine("Buildtree time =" + sw.ElapsedMilliseconds);
 #endif
         }
-
+        /// <summary>
+        /// Common function to traverse the tree
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="stack"></param>
+        /// <param name="criteria"></param>
+        /// <param name="process"></param>
+        /// <param name="breakCriteria"></param>
+        /// <param name="useParallel"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void TreeTraversal(IOctree root, Stack<IEnumerator<IOctree>> stack, Func<IOctree, bool> criteria, Action<IOctree> process,
             Func<bool> breakCriteria = null, bool useParallel = false)
@@ -445,7 +570,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void BuildCurretNodeOnly()
         {
             /*I think I can just directly insert items into the tree instead of using a stack.*/
@@ -460,7 +587,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 treeBuilt = true;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="box"></param>
+        /// <param name="minSize"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BoundingBox[] CreateOctants(ref BoundingBox box, float minSize)
         {
@@ -485,7 +617,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 new BoundingBox(new Vector3(minimum.X, center.Y, center.Z), new Vector3(center.X, maximum.Y, maximum.Z))
                 };
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool CheckDimension()
         {
@@ -550,7 +685,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected abstract BoundingBox GetBoundingBoxFromItem(T item);
 
@@ -583,7 +722,11 @@ namespace HelixToolkit.Wpf.SharpDX
             var max = Math.Max(bound.Maximum.X, Math.Max(bound.Maximum.Y, bound.Maximum.Z));
             return new BoundingBox(new Vector3(-max, -max, -max) + v, new Vector3(max, max, max) + v);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static int SigBit(int x)
         {
@@ -597,7 +740,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 return -(int)Math.Pow(2, Math.Ceiling(Math.Log(x) / Math.Log(2)));
             }
         }
-
+        /// <summary>
+        /// <see cref="IOctree.Clear"/>
+        /// </summary>
         public virtual void Clear()
         {
             Objects.Clear();
@@ -610,12 +755,29 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             Array.Clear(ChildNodes, 0, ChildNodes.Length);
         }
-
+        /// <summary>
+        /// <see cref="IOctree.HitTest(IRenderContext, IRenderable, Matrix, Ray, ref List{HitTestResult})"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="model"></param>
+        /// <param name="modelMatrix"></param>
+        /// <param name="rayWS"></param>
+        /// <param name="hits"></param>
+        /// <returns></returns>
         public bool HitTest(IRenderContext context, IRenderable model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
         {
             return HitTest(context, model, modelMatrix, rayWS, ref hits, 0);
         }
-
+        /// <summary>
+        /// <see cref="IOctree.HitTest(IRenderContext, IRenderable, Matrix, Ray, ref List{HitTestResult}, float)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="model"></param>
+        /// <param name="modelMatrix"></param>
+        /// <param name="rayWS"></param>
+        /// <param name="hits"></param>
+        /// <param name="hitThickness"></param>
+        /// <returns></returns>
         public virtual bool HitTest(IRenderContext context, IRenderable model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness)
         {
             if (hits == null)
@@ -679,10 +841,28 @@ namespace HelixToolkit.Wpf.SharpDX
             return isHit;
         }
 
-
+        /// <summary>
+        /// Hit test for current node.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="model"></param>
+        /// <param name="modelMatrix"></param>
+        /// <param name="rayWS"></param>
+        /// <param name="rayModel"></param>
+        /// <param name="hits"></param>
+        /// <param name="isIntersect"></param>
+        /// <param name="hitThickness"></param>
+        /// <returns></returns>
         public abstract bool HitTestCurrentNodeExcludeChild(IRenderContext context, IRenderable model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
             ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="sphere"></param>
+        /// <param name="points"></param>
+        /// <returns></returns>
         public virtual bool FindNearestPointBySphere(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points)
         {
             if (points == null)
@@ -719,6 +899,14 @@ namespace HelixToolkit.Wpf.SharpDX
             return isHit;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="point"></param>
+        /// <param name="results"></param>
+        /// <param name="heuristicSearchFactor"></param>
+        /// <returns></returns>
         public virtual bool FindNearestPointFromPoint(IRenderContext context, ref Vector3 point, ref List<HitTestResult> results, float heuristicSearchFactor = 1f)
         {
             if (results == null)
@@ -765,15 +953,31 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return isHit;
         }
-
+        /// <summary>
+        /// Find nearest point by sphere on current node only.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="sphere"></param>
+        /// <param name="points"></param>
+        /// <param name="isIntersect"></param>
+        /// <returns></returns>
         public abstract bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
-
+        /// <summary>
+        /// <see cref="IOctreeBase{T}.Add(T)"/>
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public bool Add(T item)
         {
             IOctree octant;
             return Add(item, out octant);
         }
-
+        /// <summary>
+        /// <see cref="IOctreeBase{T}.Add(T, out IOctree)"/>
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="octant"></param>
+        /// <returns></returns>
         public virtual bool Add(T item, out IOctree octant)
         {
             var bound = GetBoundingBoxFromItem(item);
@@ -795,13 +999,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 return true;
             }
         }
-
+        /// <summary>
+        /// Push one of object belongs to current node into its child octant
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public bool PushExistingToChild(int index)
         {
             IOctree octant;
             return PushExistingToChild(index, out octant);
         }
-
+        /// <summary>
+        /// Push one of object belongs to current node into its child octant
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="octant"></param>
+        /// <returns></returns>
         public virtual bool PushExistingToChild(int index, out IOctree octant)
         {
             octant = this;
@@ -820,7 +1033,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="node"></param>
         /// <param name="index"></param>
-        /// <param name="getBound"></param>
+        /// <param name="isContains"></param>
         /// <param name="createNodeFunc"></param>
         /// <param name="octant"></param>
         /// <returns>True: Pushed into child. Otherwise false.</returns>
@@ -854,13 +1067,24 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return pushToChild;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="targetObj"></param>
+        /// <returns></returns>
         protected bool IsContains(BoundingBox source, T targetObj)
         {
             var bound = GetBoundingBoxFromItem(targetObj);
             return IsContains(source, bound, targetObj);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        /// <param name="targetObj"></param>
+        /// <returns></returns>
         protected virtual bool IsContains(BoundingBox source, BoundingBox target, T targetObj)
         {
             return source.Contains(ref target) == ContainmentType.Contains;
@@ -962,14 +1186,18 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Return new root
+        /// Shrink the root bound to contains all items inside, return new root
         /// </summary>
         /// <returns></returns>
         public virtual IOctree Shrink()
         {
             return Shrink(this);
         }
-
+        /// <summary>
+        /// Shrink the root bound to contains all items inside
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
         public static IOctree Shrink(IOctree root)
         {
             if (root.Parent != null)
@@ -997,12 +1225,26 @@ namespace HelixToolkit.Wpf.SharpDX
                 return root;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public IOctree FindSmallestNodeContainsBoundingBox(ref BoundingBox bound, T item)
         {
             return FindSmallestNodeContainsBoundingBox<T>(bound, item, IsContains, this, this.stack);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="E"></typeparam>
+        /// <param name="bound"></param>
+        /// <param name="item"></param>
+        /// <param name="isContains"></param>
+        /// <param name="root"></param>
+        /// <param name="stackCache"></param>
+        /// <returns></returns>
         private static IOctree FindSmallestNodeContainsBoundingBox<E>(BoundingBox bound, E item, Func<BoundingBox, E, bool> isContains, IOctreeBase<E> root, Stack<IEnumerator<IOctree>> stackCache)
         {
             IOctree result = null;
@@ -1011,12 +1253,25 @@ namespace HelixToolkit.Wpf.SharpDX
                 (node) => { result = node; });
             return result;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public IOctree FindChildByItem(T item, out int index)
         {
             return FindChildByItem<T>(item, this, this.stack, out index);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="E"></typeparam>
+        /// <param name="item"></param>
+        /// <param name="root"></param>
+        /// <param name="stackCache"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public static IOctree FindChildByItem<E>(E item, IOctreeBase<E> root, Stack<IEnumerator<IOctree>> stackCache, out int index)
         {
             IOctree result = null;
@@ -1031,7 +1286,12 @@ namespace HelixToolkit.Wpf.SharpDX
             index = idx;
             return result;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="bound"></param>
+        /// <returns></returns>
         public virtual bool RemoveByBound(T item, ref BoundingBox bound)
         {
             int index;
@@ -1059,13 +1319,21 @@ namespace HelixToolkit.Wpf.SharpDX
                 return true;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public virtual bool RemoveByBound(T item)
         {
             var bound = GetBoundingBoxFromItem(item);
             return RemoveByBound(item, ref bound);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public virtual bool RemoveSafe(T item)
         {
             Debug.WriteLine("RemoveSafe");
@@ -1082,7 +1350,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return false;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public virtual bool RemoveAt(int index)
         {
             if (index < 0 || index >= this.Objects.Count)
@@ -1096,7 +1368,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return true;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual void RemoveSelf()
         {
             if (Parent == null)
@@ -1106,7 +1380,10 @@ namespace HelixToolkit.Wpf.SharpDX
             Parent.RemoveChild(this);
             Parent = null;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="child"></param>
         public void RemoveChild(IOctree child)
         {
             for (int i = 0; i < ChildNodes.Length; ++i)
@@ -1123,17 +1400,38 @@ namespace HelixToolkit.Wpf.SharpDX
                 RemoveSelf();
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public virtual IOctree FindChildByItemBound(T item, out int index)
         {
             return FindChildByItemBound(item, ref bound, out index);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="bound"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public virtual IOctree FindChildByItemBound(T item, ref BoundingBox bound, out int index)
         {
             return FindChildByItemBound<T>(item, bound, IsContains, this, this.stack, out index);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="E"></typeparam>
+        /// <param name="item"></param>
+        /// <param name="bound"></param>
+        /// <param name="isContains"></param>
+        /// <param name="root"></param>
+        /// <param name="stackCache"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public static IOctree FindChildByItemBound<E>(E item, BoundingBox bound, Func<BoundingBox, BoundingBox, E, bool> isContains, IOctreeBase<E> root, Stack<IEnumerator<IOctree>> stackCache, out int index)
         {
             int idx = -1;
@@ -1168,7 +1466,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return result;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         public static IOctree FindRoot(IOctree node)
         {
             while (node.Parent != null)
@@ -1177,7 +1479,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return node;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="point"></param>
+        /// <param name="radius"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public bool FindNearestPointByPointAndSearchRadius(IRenderContext context, ref Vector3 point, float radius, ref List<HitTestResult> result)
         {
             var sphere = new global::SharpDX.BoundingSphere(point, radius);
@@ -1185,12 +1494,17 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 #region Accessors
+        /// <summary>
+        /// <see cref="IOctree.IsRoot"/>
+        /// </summary>
         public bool IsRoot
         {
             //The root node is the only node without a parent.
             get { return Parent == null; }
         }
-
+        /// <summary>
+        /// <see cref="IOctree.HasChildren"/>
+        /// </summary>
         public bool HasChildren
         {
             get
@@ -1198,7 +1512,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 return ActiveNodes != 0;
             }
         }
-
+        /// <summary>
+        /// <see cref="IOctree.IsEmpty"/>
+        /// </summary>
         public bool IsEmpty
         {
             get
@@ -1209,6 +1525,9 @@ namespace HelixToolkit.Wpf.SharpDX
 #endregion
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class OctreeBuildParameter
     {
         /// <summary>
@@ -1235,20 +1554,33 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Use parallel tree traversal to build the octree
         /// </summary>
         public bool EnableParallelBuild = false;
+        /// <summary>
+        /// 
+        /// </summary>
         public OctreeBuildParameter()
         {
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="minSize"></param>
         public OctreeBuildParameter(float minSize)
         {
             MinimumOctantSize = Math.Max(0, minSize);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="autoDeleteIfEmpty"></param>
         public OctreeBuildParameter(bool autoDeleteIfEmpty)
         {
             AutoDeleteIfEmpty = autoDeleteIfEmpty;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="minSize"></param>
+        /// <param name="autoDeleteIfEmpty"></param>
         public OctreeBuildParameter(int minSize, bool autoDeleteIfEmpty)
             : this(minSize)
         {
@@ -1263,12 +1595,31 @@ namespace HelixToolkit.Wpf.SharpDX
     public class MeshGeometryOctree
         : OctreeBase<Tuple<int, BoundingBox>>
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public IList<Vector3> Positions { private set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
         public IList<int> Indices { private set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="positions"></param>
+        /// <param name="indices"></param>
+        /// <param name="stackCache"></param>
         public MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, Stack<IEnumerator<IOctree>> stackCache = null)
             : this(positions, indices, null, stackCache)
         {
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="positions"></param>
+        /// <param name="indices"></param>
+        /// <param name="parameter"></param>
+        /// <param name="stackCache"></param>
         public MeshGeometryOctree(IList<Vector3> positions, IList<int> indices,
             OctreeBuildParameter parameter, Stack<IEnumerator<IOctree>> stackCache = null)
             : base(null, parameter, stackCache)
@@ -1283,7 +1634,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 Objects.Add(new Tuple<int, BoundingBox>(i, GetBoundingBox(i)));
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="positions"></param>
+        /// <param name="indices"></param>
+        /// <param name="bound"></param>
+        /// <param name="triIndex"></param>
+        /// <param name="parent"></param>
+        /// <param name="paramter"></param>
+        /// <param name="stackCache"></param>
         protected MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, ref BoundingBox bound, List<Tuple<int, BoundingBox>> triIndex,
             IOctree parent, OctreeBuildParameter paramter, Stack<IEnumerator<IOctree>> stackCache)
             : base(ref bound, triIndex, parent, paramter, stackCache)
@@ -1291,7 +1651,14 @@ namespace HelixToolkit.Wpf.SharpDX
             Positions = positions;
             Indices = indices;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <param name="list"></param>
+        /// <param name="parent"></param>
+        /// <param name="paramter"></param>
+        /// <param name="stackCache"></param>
         protected MeshGeometryOctree(BoundingBox bound, List<Tuple<int, BoundingBox>> list, IOctree parent, OctreeBuildParameter paramter, Stack<IEnumerator<IOctree>> stackCache)
             : base(ref bound, list, parent, paramter, stackCache)
         { }
@@ -1312,17 +1679,38 @@ namespace HelixToolkit.Wpf.SharpDX
 
             return new BoundingBox(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         protected override BoundingBox GetBoundingBoxFromItem(Tuple<int, BoundingBox> item)
         {
             return item.Item2;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="region"></param>
+        /// <param name="objList"></param>
+        /// <param name="parent"></param>
+        /// <returns></returns>
         protected override IOctree CreateNodeWithParent(ref BoundingBox region, List<Tuple<int, BoundingBox>> objList, IOctree parent)
         {
             return new MeshGeometryOctree(Positions, Indices, ref region, objList, parent, parent.Parameter, this.stack);
         }
-
+        /// <summary>
+        /// <see cref="OctreeBase{T}.HitTestCurrentNodeExcludeChild(IRenderContext, IRenderable, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="model"></param>
+        /// <param name="modelMatrix"></param>
+        /// <param name="rayWS"></param>
+        /// <param name="rayModel"></param>
+        /// <param name="hits"></param>
+        /// <param name="isIntersect"></param>
+        /// <param name="hitThickness"></param>
+        /// <returns></returns>
         public override bool HitTestCurrentNodeExcludeChild(IRenderContext context, IRenderable model, Matrix modelMatrix, ref Ray rayWS, 
             ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
         {
@@ -1396,7 +1784,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
             return isHit;
         }
-
+        /// <summary>
+        /// <see cref="OctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="sphere"></param>
+        /// <param name="result"></param>
+        /// <param name="isIntersect"></param>
+        /// <returns></returns>
         public override bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
@@ -1458,15 +1853,28 @@ namespace HelixToolkit.Wpf.SharpDX
             return isHit;
         }
     }
-
+    /// <summary>
+    /// Octree for points
+    /// </summary>
     public class PointGeometryOctree : OctreeBase<int>
     {
         private IList<Vector3> Positions;
         private static readonly Vector3 BoundOffset = new Vector3(0.0001f);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="positions"></param>
+        /// <param name="stackCache"></param>
         public PointGeometryOctree(IList<Vector3> positions, Stack<IEnumerator<IOctree>> stackCache = null)
             : this(positions, null, stackCache)
         {
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="positions"></param>
+        /// <param name="parameter"></param>
+        /// <param name="stackCache"></param>
         public PointGeometryOctree(IList<Vector3> positions,
             OctreeBuildParameter parameter, Stack<IEnumerator<IOctree>> stackCache = null)
                : base(null, parameter, stackCache)
@@ -1475,19 +1883,38 @@ namespace HelixToolkit.Wpf.SharpDX
             Bound = BoundingBoxExtensions.FromPoints(positions);
             Objects = Enumerable.Range(0, Positions.Count).ToList();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <param name="positions"></param>
+        /// <param name="list"></param>
+        /// <param name="parent"></param>
+        /// <param name="paramter"></param>
+        /// <param name="stackCache"></param>
         protected PointGeometryOctree(BoundingBox bound, IList<Vector3> positions, List<int> list, IOctree parent, OctreeBuildParameter paramter,
             Stack<IEnumerator<IOctree>> stackCache)
             : base(ref bound, list, parent, paramter, stackCache)
         {
             Positions = positions;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         protected override bool IsContains(BoundingBox source, BoundingBox target, int obj)
         {
             return source.Contains(Positions[obj]) != ContainmentType.Disjoint;
         }
-
+        /// <summary>
+        /// Get the distance from ray to a point
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public static double DistanceRayToPoint(ref Ray r, ref Vector3 p)
         {
             Vector3 v = r.Direction;
@@ -1508,6 +1935,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <param name="isIntersect"></param>
+        /// <param name="context"></param>
+        /// <param name="rayModel"></param>
+        /// <param name="hitThickness"></param>
         /// <returns></returns>
         public override bool HitTestCurrentNodeExcludeChild(IRenderContext context, IRenderable model, Matrix modelMatrix, 
             ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
@@ -1574,17 +2004,34 @@ namespace HelixToolkit.Wpf.SharpDX
 
             return isHit;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <param name="objList"></param>
+        /// <param name="parent"></param>
+        /// <returns></returns>
         protected override IOctree CreateNodeWithParent(ref BoundingBox bound, List<int> objList, IOctree parent)
         {
             return new PointGeometryOctree(bound, Positions, objList, parent, Parameter, stack);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         protected override BoundingBox GetBoundingBoxFromItem(int item)
         {
             return new BoundingBox(Positions[item] - BoundOffset, Positions[item] + BoundOffset);
         }
-
+        /// <summary>
+        /// <see cref="OctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="sphere"></param>
+        /// <param name="result"></param>
+        /// <param name="isIntersect"></param>
+        /// <returns></returns>
         public override bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
@@ -1637,10 +2084,20 @@ namespace HelixToolkit.Wpf.SharpDX
         }
     }
 
-
+    /// <summary>
+    /// Octree for instancing
+    /// </summary>
     public class InstancingModel3DOctree : OctreeBase<Tuple<int, BoundingBox>>
     {
         private IList<Matrix> InstanceMatrix;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="instanceMatrix"></param>
+        /// <param name="geometryBound"></param>
+        /// <param name="parameter"></param>
+        /// <param name="stackCache"></param>
         public InstancingModel3DOctree(IList<Matrix> instanceMatrix, BoundingBox geometryBound, OctreeBuildParameter parameter, Stack<IEnumerator<IOctree>> stackCache = null)
             : base(ref geometryBound, null, parameter, stackCache)
         {
@@ -1656,18 +2113,44 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             this.Bound = totalBound;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <param name="instanceMatrix"></param>
+        /// <param name="objects"></param>
+        /// <param name="parent"></param>
+        /// <param name="parameter"></param>
+        /// <param name="stackCache"></param>
         protected InstancingModel3DOctree(ref BoundingBox bound, IList<Matrix> instanceMatrix, List<Tuple<int, BoundingBox>> objects, IOctree parent, OctreeBuildParameter parameter, Stack<IEnumerator<IOctree>> stackCache = null)
             : base(ref bound, objects, parent, parameter, stackCache)
         {
             InstanceMatrix = instanceMatrix;
         }
-
+        /// <summary>
+        /// <see cref="OctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="sphere"></param>
+        /// <param name="points"></param>
+        /// <param name="isIntersect"></param>
+        /// <returns></returns>
         public override bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// <see cref="OctreeBase{T}.HitTestCurrentNodeExcludeChild(IRenderContext, IRenderable, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="model"></param>
+        /// <param name="modelMatrix"></param>
+        /// <param name="rayWS"></param>
+        /// <param name="rayModel"></param>
+        /// <param name="hits"></param>
+        /// <param name="isIntersect"></param>
+        /// <param name="hitThickness"></param>
+        /// <returns></returns>
         public override bool HitTestCurrentNodeExcludeChild(IRenderContext context, IRenderable model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
             ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
         {
@@ -1697,12 +2180,22 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return isHit;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <param name="objList"></param>
+        /// <param name="parent"></param>
+        /// <returns></returns>
         protected override IOctree CreateNodeWithParent(ref BoundingBox bound, List<Tuple<int, BoundingBox>> objList, IOctree parent)
         {
             return new InstancingModel3DOctree(ref bound, this.InstanceMatrix, objList, parent, this.Parameter, this.stack);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         protected override BoundingBox GetBoundingBoxFromItem(Tuple<int, BoundingBox> item)
         {
             return item.Item2;

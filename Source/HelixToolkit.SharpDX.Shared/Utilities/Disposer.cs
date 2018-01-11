@@ -9,7 +9,9 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using System;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public static class Disposer
     {
         /// <summary>

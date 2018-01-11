@@ -142,7 +142,11 @@ namespace HelixToolkit.UWP.Core
             }
             get { return renderEnvironmentMap; }
         }
-
+        /// <summary>
+        /// <see cref="RenderCoreBase{TModelStruct}.OnAttach(IRenderTechnique)"/>
+        /// </summary>
+        /// <param name="technique"></param>
+        /// <returns></returns>
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if(base.OnAttach(technique))
@@ -167,7 +171,10 @@ namespace HelixToolkit.UWP.Core
                 return false;
             }
         }
-
+        /// <summary>
+        /// <see cref="RenderCoreBase{TModelStruct}.GetModelConstantBufferDescription"/>
+        /// </summary>
+        /// <returns></returns>
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
             return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
@@ -182,14 +189,23 @@ namespace HelixToolkit.UWP.Core
         {
             return new PhongMaterialVariables(manager);
         }
-
+        /// <summary>
+        /// <see cref="RenderCoreBase{TModelStruct}.OnUpdatePerModelStruct(ref TModelStruct, IRenderContext)"/>
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="context"></param>
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             MaterialVariables.UpdateMaterialVariables(ref model);
         }
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="shader"></param>
+        /// <returns></returns>
         protected bool BindMaterialTextures(DeviceContext context, IShaderPass shader)
         {
             return MaterialVariables.BindMaterialTextures(context, shader);

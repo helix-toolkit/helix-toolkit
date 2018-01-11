@@ -65,7 +65,16 @@ namespace HelixToolkit.UWP.Core
         public bool IsAttached { private set; get; } = false;
 
 
+        /// <summary>
+        /// The model structure
+        /// </summary>
         protected TModelStruct modelStruct;
+        /// <summary>
+        /// Gets or sets the model cb.
+        /// </summary>
+        /// <value>
+        /// The model cb.
+        /// </value>
         protected IConstantBufferProxy modelCB { private set; get; }
 
         /// <summary>
@@ -95,6 +104,10 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
+        /// <summary>
+        /// Gets the model constant buffer description.
+        /// </summary>
+        /// <returns></returns>
         protected abstract ConstantBufferDescription GetModelConstantBufferDescription();
         /// <summary>
         /// Detach render core. Release all resources
@@ -136,6 +149,10 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        /// <summary>
+        /// Called when [render shadow].
+        /// </summary>
+        /// <param name="context">The context.</param>
         protected virtual void OnRenderShadow(IRenderContext context) { }
 
         /// <summary>
@@ -158,8 +175,17 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         protected abstract void OnRender(IRenderContext context);
 
+        /// <summary>
+        /// Called when [update per model structure].
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="context">The context.</param>
         protected abstract void OnUpdatePerModelStruct(ref TModelStruct model, IRenderContext context);
 
+        /// <summary>
+        /// Called when [upload per model constant buffers].
+        /// </summary>
+        /// <param name="context">The context.</param>
         protected virtual void OnUploadPerModelConstantBuffers(DeviceContext context)
         {
             modelCB.UploadDataToBuffer(context, ref modelStruct);
@@ -180,11 +206,17 @@ namespace HelixToolkit.UWP.Core
             return IsAttached;
         }
 
+        /// <summary>
+        /// Invalidates the renderer.
+        /// </summary>
         protected void InvalidateRenderer()
         {
             OnInvalidateRenderer?.Invoke(this, true);
         }
 
+        /// <summary>
+        /// Resets the invalidate handler.
+        /// </summary>
         public void ResetInvalidateHandler()
         {
             OnInvalidateRenderer = null;
@@ -196,7 +228,6 @@ namespace HelixToolkit.UWP.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="backingField"></param>
         /// <param name="value"></param>
-        /// <param name="affectsRender"></param>
         /// <param name="propertyName"></param>
         /// <returns></returns>
         protected bool SetAffectsRender<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
