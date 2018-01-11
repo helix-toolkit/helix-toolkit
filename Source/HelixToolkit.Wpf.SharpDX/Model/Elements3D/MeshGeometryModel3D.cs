@@ -203,6 +203,11 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
+        protected override bool OnCheckGeometry(Geometry3D geometry)
+        {
+            return base.OnCheckGeometry(geometry) && geometry is MeshGeometry3D;
+        }
+
         protected override bool CanHitTest(IRenderContext context)
         {
             return base.CanHitTest(context) && MeshTopology == MeshTopologyEnum.PNTriangles;
