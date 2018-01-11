@@ -357,7 +357,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual bool OnCheckGeometry(Geometry3D geometry)
         {
-            return !(this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0);
+            return !(geometry == null || geometry.Positions == null || geometry.Positions.Count == 0);
         }
 
         protected virtual IGeometryBufferModel OnCreateBufferModel() { return new EmptyGeometryBufferModel(); }
@@ -382,25 +382,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
         {
-            //if (GeometryValid && IsAttached)
-            //{
-            //    Attach(RenderHost);
-            //}
         }
 
         private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
         {
-            //GeometryValid = CheckGeometry();
             if (this.IsAttached)
             {
-                //if (e.PropertyName.Equals(nameof(Geometry3D.Bound)))
-                //{
-                //    this.Bounds = this.GeometryInternal != null ? this.GeometryInternal.Bound : new BoundingBox();
-                //}
-                //else if (e.PropertyName.Equals(nameof(Geometry3D.BoundingSphere)))
-                //{
-                //    this.BoundsSphere = this.GeometryInternal != null ? this.GeometryInternal.BoundingSphere : new BoundingSphere();
-                //}
                 if (GeometryValid)
                 {
                     OnGeometryPropertyChanged(sender, e);
@@ -425,15 +412,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 bufferModelInternal = OnCreateBufferModel();
                 BoundManager.Geometry = bufferModelInternal.Geometry = GeometryInternal;
                 bufferModelInternal.InvalidateRenderer += BufferModel_InvalidateRenderer;
+                InstanceBuffer.Initialize();
+                InstanceBuffer.Elements = this.Instances;
                 if (RenderCore is IGeometryRenderCore)
                 {
                     ((IGeometryRenderCore)RenderCore).GeometryBuffer = bufferModelInternal;
+                    ((IGeometryRenderCore)RenderCore).InstanceBuffer = InstanceBuffer;
                 }
-                //if (GeometryInternal != null)
-                //{
-                //    this.Bounds = this.GeometryInternal.Bound;
-                //    this.BoundsSphere = this.GeometryInternal.BoundingSphere;
-                //}
                 OnRasterStateChanged();
                 return true;
             }
@@ -451,6 +436,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnDetach()
         {
             DetachOnGeometryPropertyChanged();
+            InstanceBuffer.Dispose();
             Disposer.RemoveAndDispose(ref bufferModelInternal);
             base.OnDetach();
         }

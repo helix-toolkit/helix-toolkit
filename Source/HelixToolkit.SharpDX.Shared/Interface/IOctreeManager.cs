@@ -3,6 +3,7 @@
 //   Copyright (c) 2018 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
@@ -12,6 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public interface IOctreeManager
     {
+        event EventHandler<IOctree> OnOctreeCreated;
         IOctree Octree { get; }
         bool Enabled { get; set; }
         bool RequestUpdateOctree { get; }

@@ -146,43 +146,48 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             bool isHit = false;
-            if (octreeManager != null && octreeManager.Octree != null)
-            {
-                var boundHits = new List<HitTestResult>();             
-                isHit = octreeManager.Octree.HitTest(context, this, TotalModelMatrix, rayWS, ref boundHits);
-                if (isHit)
+            if (CanHitTest(context))
+            {               
+                if (octreeManager != null && octreeManager.Octree != null)
                 {
-                    Matrix instanceMatrix;
-                    foreach (var hit in boundHits)
+                    var boundHits = new List<HitTestResult>();             
+                    isHit = octreeManager.Octree.HitTest(context, this, TotalModelMatrix, rayWS, ref boundHits);
+                    if (isHit)
                     {
-                        int instanceIdx = (int)hit.Tag;
-                        instanceMatrix = InstanceBuffer.Elements[instanceIdx];
-                        var h = OnHitTest(context, TotalModelMatrix * instanceMatrix, ref rayWS, ref hits);
-                        isHit |= h;
-                        if (h && hits.Count > 0)
+                        isHit = false;
+                        Matrix instanceMatrix;
+                        foreach (var hit in boundHits)
                         {
-                            var result = hits.Last();
-                            object tag = null;
-                            if (InstanceIdentifiers != null && InstanceIdentifiers.Count == InstanceBuffer.Elements.Count)
+                            int instanceIdx = (int)hit.Tag;
+                            instanceMatrix = InstanceBuffer.Elements[instanceIdx];
+                            var h = base.OnHitTest(context, TotalModelMatrix * instanceMatrix, ref rayWS, ref hits);
+                            isHit |= h;
+                            if (h && hits.Count > 0)
                             {
-                                tag = InstanceIdentifiers[instanceIdx];
+                                var result = hits.Last();
+                                object tag = null;
+                                if (InstanceIdentifiers != null && InstanceIdentifiers.Count == InstanceBuffer.Elements.Count)
+                                {
+                                    tag = InstanceIdentifiers[instanceIdx];
+                                }
+                                else
+                                {
+                                    tag = instanceIdx;
+                                }
+                                result.Tag = tag;
+                                hits[hits.Count - 1] = result;
                             }
-                            else
-                            {
-                                tag = instanceIdx;
-                            }
-                            result.Tag = tag;
-                            hits[hits.Count - 1] = result;
                         }
                     }
                 }
-            }
-            else
-            {
-                base.HitTest(context, rayWS, ref hits);
+                else
+                {
+                    isHit = base.HitTest(context, rayWS, ref hits);
+                }
+                
             }
             return isHit;
         }

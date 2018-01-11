@@ -20,12 +20,17 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
     using Model;
     public abstract class OctreeManagerBase : ObservableObject, IOctreeManager
     {
+        public event EventHandler<IOctree> OnOctreeCreated;
+
         private IOctree octree;
         public IOctree Octree
         {
             protected set
             {
-                Set(ref octree, value);
+                if(Set(ref octree, value))
+                {
+                    OnOctreeCreated?.Invoke(this, value);
+                }
             }
             get
             { return octree; }
@@ -212,7 +217,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     int counter = 0;
                     while (!tree.Add(model))
                     {
-                        var direction = (model.BoundsWithTransform.Minimum + model.BoundsWithTransform.Maximum)
+                        var direction = (model.Bounds.Minimum + model.Bounds.Maximum)
                             - (tree.Bound.Minimum + tree.Bound.Maximum);
                         tree = tree.Expand(ref direction) as RenderableBoundingOctree;
                         ++counter;
@@ -294,7 +299,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             if (model3D == null)
             { return; }
             IList<Matrix> instMatrix = model3D.Instances;
-            var octree = new InstancingModel3DOctree(instMatrix, (model3D as IRenderable).BoundsWithTransform, this.Parameter, new Queue<IOctree>(256));
+            var octree = new InstancingModel3DOctree(instMatrix, (model3D as IRenderable).Bounds, this.Parameter, new Queue<IOctree>(256));
             octree.BuildTree();
             Octree = octree;
         }

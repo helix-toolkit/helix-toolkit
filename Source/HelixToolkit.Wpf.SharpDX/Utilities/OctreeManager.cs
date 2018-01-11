@@ -9,6 +9,7 @@ using System.Windows;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System;
     using Utilities;
 
     public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctreeManager
@@ -37,6 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
             = DependencyProperty.Register("MinObjectSizeToSplit", typeof(int), typeof(OctreeManagerBaseWrapper),
                 new PropertyMetadata(0, (s, e) => { (s as OctreeManagerBaseWrapper).Manager.Parameter.MinObjectSizeToSplit = (int)e.NewValue; }));
 
+        public event EventHandler<IOctree> OnOctreeCreated;
 
         public IOctree Octree
         {
@@ -127,7 +129,10 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 if(manager == null)
-                { manager = OnCreateManager(); }
+                {
+                    manager = OnCreateManager();
+                    manager.OnOctreeCreated += (s, e) => { this.Octree = e; OnOctreeCreated?.Invoke(this, e); };
+                }
                 return manager;
             }
         }

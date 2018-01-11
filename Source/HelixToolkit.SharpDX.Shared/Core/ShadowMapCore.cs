@@ -27,37 +27,34 @@ namespace HelixToolkit.UWP.Core
         protected ShaderResouceViewProxy viewResource;
 
         private bool resolutionChanged = true;
-        private int width = 1024;
+
         public int Width
         {
             set
             {
-                if(SetAffectsRender(ref width, value))
+                if(SetAffectsRender(ref modelStruct.ShadowMapSize.X, value))
                 {
-                    modelStruct.ShadowMapSize.X = value;
                     resolutionChanged = true;
                 }
             }
             get
             {
-                return width;
+                return (int)modelStruct.ShadowMapSize.X;
             }
         }
 
-        private int height = 1024;
         public int Height
         {
             set
             {
-                if (SetAffectsRender(ref height, value))
+                if (SetAffectsRender(ref modelStruct.ShadowMapSize.Y, value))
                 {
-                    modelStruct.ShadowMapSize.Y = value;
                     resolutionChanged = true;
                 }
             }
             get
             {
-                return height;
+                return (int)modelStruct.ShadowMapSize.Y;
             }
         }
 
@@ -104,6 +101,7 @@ namespace HelixToolkit.UWP.Core
         {
             Bias = 0.0015f;
             Intensity = 0.5f;
+            Width = Height = 1024;
         }
 
         protected virtual Texture2DDescription ShadowMapTextureDesc

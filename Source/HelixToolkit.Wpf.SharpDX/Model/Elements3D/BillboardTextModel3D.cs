@@ -73,6 +73,16 @@ namespace HelixToolkit.Wpf.SharpDX
             return host.EffectsManager[DefaultRenderTechniqueNames.BillboardText];
         }
 
+        protected override bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
+        {
+            return true;
+        }
+
+        protected override bool OnCheckGeometry(Geometry3D geometry)
+        {
+            return geometry != null;
+        }
+
         protected override RasterizerStateDescription CreateRasterState()
         {
             return new RasterizerStateDescription()

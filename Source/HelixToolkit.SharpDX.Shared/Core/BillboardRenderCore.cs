@@ -14,7 +14,15 @@ namespace HelixToolkit.UWP.Core
 
     public class BillboardRenderCore : GeometryRenderCore<PointLineModelStruct>, IBillboardRenderParams
     {
-        public bool FixedSize { set; get; } = true;
+        private bool fixedSize = true;
+        public bool FixedSize
+        {
+            set
+            {
+                SetAffectsRender(ref fixedSize, value);
+            }
+            get { return fixedSize; }
+        }
         private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerWrapAni4;
         /// <summary>
         /// Billboard texture sampler description
@@ -91,7 +99,7 @@ namespace HelixToolkit.UWP.Core
             DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
             BindBillboardTexture(context.DeviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel));
             OnDraw(context.DeviceContext, InstanceBuffer);
-        }
+        }        
 
         protected virtual void BindBillboardTexture(DeviceContext context, IShader shader)
         {

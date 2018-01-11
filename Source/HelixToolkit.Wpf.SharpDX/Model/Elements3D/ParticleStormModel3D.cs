@@ -572,6 +572,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.OnAttach(host);
             InstanceBuffer.Initialize();
+            InstanceBuffer.Elements = Instances;
             particleCore.InstanceBuffer = InstanceBuffer;
             return true;
         }

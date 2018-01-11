@@ -17,8 +17,34 @@ namespace HelixToolkit.UWP.Core
         private RasterizerState rasterState = null;
         public RasterizerState RasterState { get { return rasterState; } }
         public InputLayout VertexLayout { private set; get; }
+        private IElementsBufferModel instanceBuffer;
+        public IElementsBufferModel InstanceBuffer
+        {
+            set
+            {
+                if (instanceBuffer != value)
+                {
+                    if (instanceBuffer != null)
+                    {
+                        instanceBuffer.OnElementChanged -= InstanceBuffer_OnElementChanged;
+                    }
+                    instanceBuffer = value;
+                    if (instanceBuffer != null)
+                    {
+                        instanceBuffer.OnElementChanged += InstanceBuffer_OnElementChanged;
+                    }
+                }
+            }
+            get
+            {
+                return instanceBuffer;   
+            }
+        }
 
-        public IElementsBufferModel InstanceBuffer { set; get; }
+        private void InstanceBuffer_OnElementChanged(object sender, bool e)
+        {
+            InvalidateRenderer();
+        }
 
         public IGeometryBufferModel GeometryBuffer{ set; get; }
 
@@ -31,9 +57,10 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                rasterDescription = value;
-                CreateRasterState(value, false);
-                InvalidateRenderer();
+                if(SetAffectsRender(ref rasterDescription, value))
+                {
+                    CreateRasterState(value, false);
+                }
             }
             get
             {
