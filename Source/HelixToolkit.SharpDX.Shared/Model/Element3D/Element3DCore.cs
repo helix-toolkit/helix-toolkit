@@ -262,7 +262,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         }
 
         /// <summary>
-        /// Updates the element by the specified time span.
+        /// Updates the element total transforms, determine renderability, etc. by the specified time span.
         /// </summary>
         /// <param name="timeSpan">The time since last update.</param>
         public virtual void Update(IRenderContext context)
