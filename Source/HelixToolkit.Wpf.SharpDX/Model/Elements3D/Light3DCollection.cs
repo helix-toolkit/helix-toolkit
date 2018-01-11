@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model;
     using SharpDX;
 
-    public class Light3DCollection : GroupElement3D, ILight3D
+    public class Light3DCollection : GroupElement3D
     {
         public Light3DSceneShared Light3DSceneShared
         {

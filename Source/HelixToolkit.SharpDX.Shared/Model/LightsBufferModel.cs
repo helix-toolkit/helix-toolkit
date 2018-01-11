@@ -18,9 +18,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model
     /// </summary>
     public class LightsBufferModel : ILightsBufferProxy<LightStruct>
     {
-        public const int MaxLights = 8;
-        public const int SizeInBytes = LightStruct.SizeInBytes * MaxLights + 4 * 4;
-        private readonly LightStruct[] lights = new LightStruct[MaxLights];
+        public const int SizeInBytes = LightStruct.SizeInBytes * Constants.MaxLights + 4 * 4;
+        private readonly LightStruct[] lights = new LightStruct[Constants.MaxLights];
         public Color4 AmbientLight { set; get; } = new Color4(0, 0, 0, 1);
 
         public int BufferSize

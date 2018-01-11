@@ -127,13 +127,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (lightCamera == null)
                 {
                     var root = context.RenderHost.Viewport.Renderables
-                        .Where(x => x is ILight3D && (((ILight3D)x).LightType == LightType.Directional || ((ILight3D)x).LightType == LightType.Spot)).Take(1);
+                        .Where(x => x is ILight3D && x.IsRenderable && (((ILight3D)x).LightType == LightType.Directional || ((ILight3D)x).LightType == LightType.Spot))
+                        .Take(1).Select(x=>x as ILight3D);
                     foreach (var light in root)
                     {
-                        if (light is DirectionalLight3D)
+                        if (light.LightType == LightType.Directional)
                         {
-                            var dlight = (DirectionalLight3D)light;
-                            var dir = Vector4.Transform(dlight.DirectionInternal.ToVector4(0), dlight.ModelMatrix).Normalized();
+                            var dlight = ((IRenderable)light).RenderCore as DirectionalLightCore;
+                            var dir = Vector4.Transform(dlight.Direction.ToVector4(0), dlight.ModelMatrix).Normalized();
                             var pos = -100 * dir;
                             orthoCamera.LookDirection = new Vector3(dir.X, dir.Y, dir.Z);
                             orthoCamera.Position = new Vector3(pos.X, pos.Y, pos.Z);
@@ -141,11 +142,11 @@ namespace HelixToolkit.Wpf.SharpDX
                             orthoCamera.Width = 50;
                             camera = orthoCamera;
                         }
-                        else if (light is SpotLight3D)
+                        else if (light.LightType == LightType.Spot)
                         {
-                            var splight = (SpotLight3D)light;
-                            persCamera.Position = (splight.Position + new Media3D.Vector3D(splight.ModelMatrix.M41, splight.ModelMatrix.M42, splight.ModelMatrix.M43)).ToVector3();
-                            var look = Vector4.Transform(splight.DirectionInternal.ToVector4(0), splight.ModelMatrix);
+                            var splight = ((IRenderable)light).RenderCore as SpotLightCore;
+                            persCamera.Position = (splight.Position + splight.ModelMatrix.Row4.ToVector3());
+                            var look = Vector4.Transform(splight.Direction.ToVector4(0), splight.ModelMatrix);
                             persCamera.LookDirection = new Vector3(look.X, look.Y, look.Z);
                             persCamera.FarPlaneDistance = (float)splight.Range;
                             persCamera.FieldOfView = (float)splight.OuterAngle;

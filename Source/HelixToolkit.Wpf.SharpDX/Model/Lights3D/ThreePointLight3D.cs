@@ -10,7 +10,7 @@ using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
 {
-    public class ThreePointLight3D : GroupElement3D, ILight3D
+    public class ThreePointLight3D : GroupElement3D
     {
         public ThreePointLight3D()
         {

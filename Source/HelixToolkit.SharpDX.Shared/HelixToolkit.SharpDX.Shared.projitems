@@ -29,6 +29,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\EmptyRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\InstancingBillboardRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\InstancingMeshRenderCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Lights\DirectionalLightCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Lights\LightCoreBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Lights\PointLightCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Lights\SpotLightCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\LineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\D2DControlWrapper.cs" />
@@ -64,6 +68,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IEffectsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IGeometryBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IElementsBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\ILight.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IModelContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IModels.cs" />

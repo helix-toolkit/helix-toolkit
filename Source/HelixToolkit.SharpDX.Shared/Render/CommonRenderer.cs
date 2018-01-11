@@ -67,8 +67,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         private async Task UpdateGlobalVariables(IRenderContext context, IEnumerable<IRenderable> renderables)
         {
-            foreach (IRenderable e in renderables.Take(LightsBufferModel.MaxLights)
-                .PreorderDFT((x)=> x is ILight3D && x.IsRenderable, stackCache2).Take(LightsBufferModel.MaxLights))
+            context.LightScene.ResetLightCount();
+            foreach (IRenderable e in renderables.Take(Constants.MaxLights)
+                .PreorderDFT((x)=> x is ILight3D && x.IsRenderable, stackCache2).Take(Constants.MaxLights))
             {
                 e.Render(context);
             }

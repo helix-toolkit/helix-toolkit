@@ -4,19 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using HelixToolkit.Wpf.SharpDX.Core;
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     public sealed class AmbientLight3D : Light3D
     {
-        public AmbientLight3D()
+        protected override IRenderCore OnCreateRenderCore()
         {
-            this.LightType = LightType.Ambient;
-            Color = System.Windows.Media.Colors.DimGray;
-        }
-
-        protected override void OnRender(IRenderContext context)
-        {
-            Light3DSceneShared.LightModels.AmbientLight = this.ColorInternal;
+            return new AmbientLightCore();
         }
     }
 }

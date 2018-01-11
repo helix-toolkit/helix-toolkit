@@ -39,12 +39,21 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         /// </summary>
         public Light3DSceneShared(IConstantBufferPool pool)
         {
-            buffer = pool.Register(DefaultBufferNames.LightCB, LightsBufferModel.SizeInBytes);    
+            buffer = pool.Register(DefaultBufferNames.LightCB, LightsBufferModel.SizeInBytes);
         }
 
         public void UploadToBuffer(DeviceContext context)
         {
             LightModels.UploadToBuffer(buffer, context);
+        }
+
+        public void ResetLightCount()
+        {
+            LightCount = 0;
+            for (int i = 0; i < Constants.MaxLights; ++i)
+            {
+                LightModels.Lights[i].LightEnabled = 0;
+            }
         }
 
         #region IDisposable Support
