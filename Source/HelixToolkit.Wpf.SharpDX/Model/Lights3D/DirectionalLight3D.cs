@@ -4,7 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 using HelixToolkit.Wpf.SharpDX.Core;
-using SharpDX;
 using System.Windows;
 using System.Windows.Media.Media3D;
 

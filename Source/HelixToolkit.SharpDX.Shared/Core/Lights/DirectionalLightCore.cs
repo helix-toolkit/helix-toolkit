@@ -2,12 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using HelixToolkit.Wpf.SharpDX.Model;
 using SharpDX;
-using SharpDX.Direct3D11;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -15,6 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Model;
     public class DirectionalLightCore : LightCoreBase
     {
         private Vector3 direction;

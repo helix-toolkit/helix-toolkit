@@ -9,7 +9,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.ComponentModel;
     using System.Windows;
     using System.Linq;
-    using Media3D = System.Windows.Media.Media3D;
     using global::SharpDX;
 
     using Utilities;

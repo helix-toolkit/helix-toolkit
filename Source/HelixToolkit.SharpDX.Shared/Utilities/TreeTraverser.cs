@@ -4,9 +4,9 @@ using System.Text;
 using System.Linq;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Utilities
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Model.Utilities
+namespace HelixToolkit.UWP
 #endif
 {
     using Core;
