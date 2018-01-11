@@ -299,7 +299,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             if (model3D == null)
             { return; }
             IList<Matrix> instMatrix = model3D.Instances;
-            var octree = new InstancingModel3DOctree(instMatrix, (model3D as IRenderable).Bounds, this.Parameter, new Queue<IOctree>(256));
+            var octree = new InstancingModel3DOctree(instMatrix, (model3D as IRenderable).Bounds, this.Parameter, new Stack<IEnumerator<IOctree>>(10));
             octree.BuildTree();
             Octree = octree;
         }

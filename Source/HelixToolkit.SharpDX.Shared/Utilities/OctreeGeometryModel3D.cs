@@ -17,13 +17,13 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// Only root contains dictionary
         /// </summary>
         private Dictionary<Guid, IOctree> OctantDictionary = null;
-        public RenderableBoundingOctree(List<IRenderable> objList, Queue<IOctree> queueCache = null)
+        public RenderableBoundingOctree(List<IRenderable> objList, Stack<IEnumerator<IOctree>> queueCache = null)
             : this(objList, null, queueCache)
         {
 
         }
 
-        public RenderableBoundingOctree(List<IRenderable> objList, OctreeBuildParameter paramter, Queue<IOctree> queueCache = null)
+        public RenderableBoundingOctree(List<IRenderable> objList, OctreeBuildParameter paramter, Stack<IEnumerator<IOctree>> queueCache = null)
             : base(null, paramter, queueCache)
         {
             Objects = objList;
@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
         }
 
-        protected RenderableBoundingOctree(BoundingBox bound, List<IRenderable> objList, IOctree parent, OctreeBuildParameter paramter, Queue<IOctree> queueCache)
+        protected RenderableBoundingOctree(BoundingBox bound, List<IRenderable> objList, IOctree parent, OctreeBuildParameter paramter, Stack<IEnumerator<IOctree>> queueCache)
             : base(ref bound, objList, parent, paramter, queueCache)
         { }
 
@@ -74,7 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 
         protected override IOctree CreateNodeWithParent(ref BoundingBox bound, List<IRenderable> objList, IOctree parent)
         {
-            return new RenderableBoundingOctree(bound, objList, parent, parent.Parameter, this.queue);
+            return new RenderableBoundingOctree(bound, objList, parent, parent.Parameter, this.stack);
         }
 
         public override void BuildTree()
@@ -86,7 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             base.BuildTree();
             if (IsRoot)
             {
-                TreeTraversal(this, queue, null, (node) =>
+                TreeTraversal(this, stack, null, (node) =>
                 {
                     foreach (var item in (node as IOctreeBase<IRenderable>).Objects)
                     {
