@@ -527,6 +527,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
         }
+
+        protected override bool CanHitTest(IRenderContext context)
+        {
+            return base.CanHitTest(context) && GeometryValid;
+        }
     }
 
     public abstract class Mouse3DEventArgs : RoutedEventArgs

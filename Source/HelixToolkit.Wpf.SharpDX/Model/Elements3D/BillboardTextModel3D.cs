@@ -80,7 +80,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnCheckGeometry(Geometry3D geometry)
         {
-            return geometry != null;
+            return geometry is IBillboardText;
         }
 
         protected override RasterizerStateDescription CreateRasterState()

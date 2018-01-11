@@ -162,6 +162,11 @@
             }
         }
 
+        protected override bool OnCheckGeometry(Geometry3D geometry)
+        {
+            return base.OnCheckGeometry(geometry) && geometry is PointGeometry3D;
+        }
+
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return (Geometry as PointGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this, (float)HitTestThickness);
