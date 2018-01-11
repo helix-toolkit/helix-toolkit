@@ -362,7 +362,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var viewMatrix = camera.GetViewMatrix();
                 Vector3 v = new Vector3();
                 
-                var matrix = MatrixExtensions.InverseViewMatrix(ref viewMatrix);
+                var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
                 float w = (float)viewport.ActualWidth;
                 float h = (float)viewport.ActualHeight;
                 var aspectRatio = w / h;

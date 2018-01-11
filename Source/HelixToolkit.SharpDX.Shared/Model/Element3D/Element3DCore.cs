@@ -129,7 +129,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             {
                 if (item is ITransform)
                 {
-                    ((ITransform)item).ParentMatrix = totalTransform;
+                    item.ParentMatrix = totalTransform;
                 }
             }
         }

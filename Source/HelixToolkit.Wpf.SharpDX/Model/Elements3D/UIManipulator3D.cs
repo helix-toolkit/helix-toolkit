@@ -257,7 +257,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Vector3 ToWorldPos(Vector3 vec)
         {
             //var m = this.Transform.Value.ToMatrix();
-            return Vector3.TransformCoordinate(vec, this.ModelMatrix);
+            return Vector3.TransformCoordinate(vec, this.TotalModelMatrix);
         }
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Vector3 ToWorldVec(Vector3 vec)
         {
             //var m = this.Transform.Value.ToMatrix();
-            return Vector3.TransformNormal(vec, this.ModelMatrix);
+            return Vector3.TransformNormal(vec, this.TotalModelMatrix);
         }
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Vector3 ToModelPos(Vector3 vec)
         {
             //var m = this.Transform.Value.ToMatrix();
-            return Vector3.TransformCoordinate(vec, Matrix.Invert(this.ModelMatrix));
+            return Vector3.TransformCoordinate(vec, this.TotalModelMatrix.PsudoInvert());
         }
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Vector3 ToModelVec(Vector3 vec)
         {
             //var m = this.Transform.Value.ToMatrix();
-            return Vector3.TransformNormal(vec, Matrix.Invert(this.ModelMatrix));
+            return Vector3.TransformNormal(vec, Matrix.Invert(this.TotalModelMatrix.PsudoInvert()));
         }
     }
 }

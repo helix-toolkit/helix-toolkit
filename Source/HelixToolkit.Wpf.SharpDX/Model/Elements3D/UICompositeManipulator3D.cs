@@ -207,12 +207,6 @@ namespace HelixToolkit.Wpf.SharpDX
             BindingOperations.ClearBinding(this, TransformProperty);
         }
 
-        public override void Update(IRenderContext context)
-        {
-            
-            base.Update(context);
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -235,7 +229,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return hit;
         }
-
+        //protected override void TransformChanged(ref Matrix totalTransform)
+        //{
+        //    var model = this.TargetTransform.Value.ToMatrix().Inverted();
+        //    base.TransformChanged(ref model);
+        //}
         /// <summary>
         /// The on children changed.
         /// </summary>

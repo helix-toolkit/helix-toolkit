@@ -87,7 +87,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var spy = screenPoint.Y;
                     var spz = screenPoint.Z / spw / projectionMatrix.M33;
 
-                    var matrix = MatrixExtensions.InverseViewMatrix(ref viewMatrix);
+                    var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
                     var width = (float)context.ActualWidth;
                     var height = (float)context.ActualHeight;
                     Vector3 v = new Vector3();
@@ -141,7 +141,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var br = new Vector4(vcX + right, vcY + bottom, vcenter.Z, vcenter.W);
                     var tr = new Vector4(vcX + right, vcY + top, vcenter.Z, vcenter.W);
                     var tl = new Vector4(vcX + left, vcY + top, vcenter.Z, vcenter.W);
-                    var invViewMatrix = MatrixExtensions.InverseViewMatrix(ref viewMatrix);
+                    var invViewMatrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
 
                     bl = Vector4.Transform(bl, invViewMatrix);
                     bl /= bl.W;

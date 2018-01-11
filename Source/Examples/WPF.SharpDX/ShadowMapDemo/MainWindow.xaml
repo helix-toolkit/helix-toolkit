@@ -87,7 +87,7 @@
                 CanTranslateY="False"
                 CanTranslateZ="False"
                 Diameter="2"
-                Transform="{Binding Transform, ElementName=lightCamera}" />
+                TargetTransform="{Binding Transform, ElementName=lightCamera}" />
             <hx:MeshGeometryModel3D
                 x:Name="model1"
                 CullMode="Back"

@@ -136,12 +136,6 @@ namespace HelixToolkit.Wpf.SharpDX
             return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse];
         }
 
-        protected override void OnRender(IRenderContext renderContext)
-        {
-            base.OnRender(renderContext);
-            var position = this.TotalModelMatrix.TranslationVector;
-        }
-
         /// <summary>
         /// 
         /// </summary>        
@@ -153,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- get the plane for translation (camera normal is a good choice)                     
             var normal = this.cameraNormal;
-            var position = this.ModelMatrix.TranslationVector;
+            var position = this.TotalModelMatrix.TranslationVector;
             //var position = this.totalModelMatrix.TranslationVector;
 
             // --- hit position 

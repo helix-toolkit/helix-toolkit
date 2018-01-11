@@ -454,13 +454,13 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Matrix3D GetInversedViewMatrix(this Camera camera)
         {
             var viewMatrix = GetViewMatrix(camera);
-            return MatrixExtensions.InverseViewMatrix(ref viewMatrix).ToMatrix3D();
+            return MatrixExtensions.PsudoInvert(ref viewMatrix).ToMatrix3D();
         }
 
         public static Matrix GetInversedViewMatrix(this CameraCore camera)
         {
             var viewMatrix = GetViewMatrix(camera);
-            return MatrixExtensions.InverseViewMatrix(ref viewMatrix);
+            return MatrixExtensions.PsudoInvert(ref viewMatrix);
         }
         /// <summary>
         /// Set the camera target point without changing the look direction.
