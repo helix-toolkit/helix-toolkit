@@ -180,7 +180,7 @@ namespace MouseDragDemo
             this.isCaptured = true;
             this.viewport = args.Viewport;
             this.camera = args.Viewport.Camera;
-            this.lastHitPos = args.HitTestResult.PointHit;
+            this.lastHitPos = args.HitTestResult.PointHit.ToPoint3D();
         }
 
         private void OnEdgeMouse3DUp(object sender, RoutedEventArgs e)

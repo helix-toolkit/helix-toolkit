@@ -577,8 +577,9 @@ namespace HelixToolkit.Wpf.SharpDX
             return true;
         }
 
-        protected override void OnRender(IRenderContext context)
+        public override void Update(IRenderContext context)
         {
+            base.Update(context);
             if (blendChanged)
             {
                 var desc = new BlendStateDescription();
@@ -596,7 +597,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 particleCore.BlendDescription = desc;
                 blendChanged = false;
             }
-            base.OnRender(context);
         }
 
         protected override void OnDetach()
