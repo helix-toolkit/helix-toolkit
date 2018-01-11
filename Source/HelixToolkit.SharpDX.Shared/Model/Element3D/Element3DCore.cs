@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <summary>
         /// 
         /// </summary>
-        public Guid GUID { get { return Guid.NewGuid(); } }
+        public Guid GUID { get; } = Guid.NewGuid();
 
         private Matrix totalModelMatrix = Matrix.Identity;
         /// <summary>
@@ -232,7 +232,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <returns>Return true if attached</returns>
         protected virtual bool OnAttach(IRenderHost host)
         {
-            RenderCore?.Attach(renderTechnique);
+            RenderCore.Attach(renderTechnique);
             return RenderCore == null ? false : RenderCore.IsAttached;
         }
         /// <summary>
@@ -241,7 +241,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         public void Detach()
         {
             IsAttached = false;
-            RenderCore?.Detach();
+            RenderCore.Detach();
             OnDetach();
         }
 
@@ -303,7 +303,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         protected virtual void OnRender(IRenderContext context)
         {
-            RenderCore?.Render(context);
+            RenderCore.Render(context);
         }
         #endregion
 
