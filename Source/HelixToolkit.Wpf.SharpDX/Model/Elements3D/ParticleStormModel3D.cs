@@ -210,7 +210,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty ParticleTextureProperty = DependencyProperty.Register("ParticleTexture", typeof(Stream), typeof(ParticleStormModel3D),
-            new AffectsRenderPropertyMetadata(null,
+            new PropertyMetadata(null,
             (d, e) =>
             {
                 (d as ParticleStormModel3D).particleCore.ParticleTexture = (Stream)e.NewValue;
@@ -270,7 +270,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty ParticleSizeProperty = DependencyProperty.Register("ParticleSize", typeof(Size), typeof(ParticleStormModel3D),
-            new AffectsRenderPropertyMetadata(new Size(ParticleRenderCore.DefaultParticleSize.X, ParticleRenderCore.DefaultParticleSize.Y),
+            new PropertyMetadata(new Size(ParticleRenderCore.DefaultParticleSize.X, ParticleRenderCore.DefaultParticleSize.Y),
                 (d, e) =>
                 {
                     var size = (Size)e.NewValue;
@@ -529,7 +529,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// List of instance matrix.
         /// </summary>
         public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(ParticleStormModel3D), new AffectsRenderPropertyMetadata(null, InstancesChanged));
+            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(ParticleStormModel3D), new PropertyMetadata(null, InstancesChanged));
 
         /// <summary>
         /// 

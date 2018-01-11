@@ -16,13 +16,13 @@
         #region Dependency Properties
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(PointGeometryModel3D),
-                new AffectsRenderPropertyMetadata(Media.Colors.Black, (d, e) =>
+                new PropertyMetadata(Media.Colors.Black, (d, e) =>
                 {
                     (d as PointGeometryModel3D).pointRenderCore.PointColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
         public static readonly DependencyProperty SizeProperty =
-            DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(new Size(1.0, 1.0),
+            DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new PropertyMetadata(new Size(1.0, 1.0),
                 (d,e)=> 
                 {
                     var size = (Size)e.NewValue;
@@ -31,14 +31,14 @@
                 }));
 
         public static readonly DependencyProperty FigureProperty =
-            DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(PointFigure.Rect,
+            DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new PropertyMetadata(PointFigure.Rect,
                 (d, e)=> 
                 {
                     (d as PointGeometryModel3D).pointRenderCore.Figure = (PointFigure)e.NewValue;
                 }));
 
         public static readonly DependencyProperty FigureRatioProperty =
-            DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(0.25,
+            DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(0.25,
                 (d, e)=> 
                 {
                     (d as PointGeometryModel3D).pointRenderCore.FigureRatio = (float)(double)e.NewValue;

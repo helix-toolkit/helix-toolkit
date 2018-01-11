@@ -24,7 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty RenderDiffuseMapProperty =
-            DependencyProperty.Register("RenderDiffuseMap", typeof(bool), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(true,
+            DependencyProperty.Register("RenderDiffuseMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
                     var model = d as MaterialGeometryModel3D;
@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty RenderDiffuseAlphaMapProperty =
-            DependencyProperty.Register("RenderDiffuseAlphaMap", typeof(bool), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(true,
+            DependencyProperty.Register("RenderDiffuseAlphaMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
                     var model = d as MaterialGeometryModel3D;
@@ -50,7 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty RenderNormalMapProperty =
-            DependencyProperty.Register("RenderNormalMap", typeof(bool), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(true,
+            DependencyProperty.Register("RenderNormalMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
                     var model = d as MaterialGeometryModel3D;
@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty RenderDisplacementMapProperty =
-            DependencyProperty.Register("RenderDisplacementMap", typeof(bool), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(true,
+            DependencyProperty.Register("RenderDisplacementMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
                     var model = d as MaterialGeometryModel3D;
@@ -77,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Render shadow on this mesh if has shadow map
         /// </summary>
         public static readonly DependencyProperty RenderShadowMapProperty =
-            DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(false,
+            DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false,
                 (d, e) =>
                 {
                     var model = d as MaterialGeometryModel3D;
@@ -91,7 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Render environment reflection map on this mesh if has environment map
         /// </summary>
         public static readonly DependencyProperty RenderEnvironmentMapProperty =
-            DependencyProperty.Register("RenderEnvironmentMap", typeof(bool), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(false,
+            DependencyProperty.Register("RenderEnvironmentMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false,
                 (d, e) =>
                 {
                     var model = d as MaterialGeometryModel3D;
@@ -104,14 +104,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty MaterialProperty =
-            DependencyProperty.Register("Material", typeof(IMaterial), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(null, MaterialChanged));
+            DependencyProperty.Register("Material", typeof(IMaterial), typeof(MaterialGeometryModel3D), new PropertyMetadata(null, MaterialChanged));
 
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty TextureCoodScaleProperty =
-            DependencyProperty.Register("TextureCoodScale", typeof(Vector2), typeof(MaterialGeometryModel3D), new AffectsRenderPropertyMetadata(new Vector2(1, 1)));
+            DependencyProperty.Register("TextureCoodScale", typeof(Vector2), typeof(MaterialGeometryModel3D), new PropertyMetadata(new Vector2(1, 1)));
 
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public class CameraModel3D : CompositeModel3D
     {
         public static readonly DependencyProperty CameraProperty =
-           DependencyProperty.Register("Camera", typeof(ProjectionCamera), typeof(CameraModel3D), new AffectsRenderPropertyMetadata(null, (d, e) =>
+           DependencyProperty.Register("Camera", typeof(ProjectionCamera), typeof(CameraModel3D), new PropertyMetadata(null, (d, e) =>
            {
                (d as CameraModel3D).camera = (ProjectionCamera)e.NewValue;
            }));

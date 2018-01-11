@@ -184,7 +184,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\IComponent.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\AffectsRenderPropertyMetadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\BufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ConstantBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DisposeObject.cs" />

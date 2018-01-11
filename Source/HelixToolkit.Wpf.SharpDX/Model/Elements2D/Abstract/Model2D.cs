@@ -13,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     public abstract class Model2D : Element2D, ITransformable2D
     {
         public static readonly DependencyProperty TransformProperty = 
-            DependencyProperty.Register("Transform", typeof(Media.Transform), typeof(Model2D), new AffectsRenderPropertyMetadata(Media.Transform.Identity, (d, e) =>
+            DependencyProperty.Register("Transform", typeof(Media.Transform), typeof(Model2D), new PropertyMetadata(Media.Transform.Identity, (d, e) =>
             {
                 (d as Model2D).transformMatrix = e.NewValue == null ? Matrix3x2.Identity : ((Media.Transform)e.NewValue).Value.ToMatrix3x2();
             }));

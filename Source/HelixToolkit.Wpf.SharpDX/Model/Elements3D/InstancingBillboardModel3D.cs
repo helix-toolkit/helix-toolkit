@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
             DependencyProperty.Register("InstanceParamArray", typeof(IList<BillboardInstanceParameter>), typeof(InstancingBillboardModel3D), 
-                new AffectsRenderPropertyMetadata(null, InstancesParamChanged));
+                new PropertyMetadata(null, InstancesParamChanged));
 
         /// <summary>
         /// List of instance parameters. 

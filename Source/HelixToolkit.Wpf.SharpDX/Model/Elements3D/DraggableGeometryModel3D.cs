@@ -25,13 +25,13 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Point3D lastHitPos;
 
         public static readonly DependencyProperty DragXProperty =
-            DependencyProperty.Register("DragX", typeof(bool), typeof(DraggableGeometryModel3D), new AffectsRenderPropertyMetadata(true));
+            DependencyProperty.Register("DragX", typeof(bool), typeof(DraggableGeometryModel3D), new PropertyMetadata(true));
 
         public static readonly DependencyProperty DragYProperty =
-            DependencyProperty.Register("DragY", typeof(bool), typeof(DraggableGeometryModel3D), new AffectsRenderPropertyMetadata(true));
+            DependencyProperty.Register("DragY", typeof(bool), typeof(DraggableGeometryModel3D), new PropertyMetadata(true));
 
         public static readonly DependencyProperty DragZProperty =
-            DependencyProperty.Register("DragZ", typeof(bool), typeof(DraggableGeometryModel3D), new AffectsRenderPropertyMetadata(true));
+            DependencyProperty.Register("DragZ", typeof(bool), typeof(DraggableGeometryModel3D), new PropertyMetadata(true));
 
 
         public bool DragX

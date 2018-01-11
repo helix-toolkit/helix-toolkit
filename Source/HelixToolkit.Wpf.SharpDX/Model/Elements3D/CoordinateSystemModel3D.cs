@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="AxisXColor"/>
         /// </summary>
         public static readonly DependencyProperty AxisXColorProperty = DependencyProperty.Register("AxisXColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-            new AffectsRenderPropertyMetadata(Media.Colors.Red,
+            new PropertyMetadata(Media.Colors.Red,
                 (d, e) =>
                 {
                     (d as CoordinateSystemModel3D).UpdateAxisColor(0, ((Media.Color)e.NewValue).ToColor4());
@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="AxisYColor"/>
         /// </summary>
         public static readonly DependencyProperty AxisYColorProperty = DependencyProperty.Register("AxisYColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-            new AffectsRenderPropertyMetadata(Media.Colors.Green,
+            new PropertyMetadata(Media.Colors.Green,
                 (d, e) =>
                 {
                     (d as CoordinateSystemModel3D).UpdateAxisColor(1, ((Media.Color)e.NewValue).ToColor4());
@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="AxisZColor"/>
         /// </summary>
         public static readonly DependencyProperty AxisZColorProperty = DependencyProperty.Register("AxisZColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-            new AffectsRenderPropertyMetadata(Media.Colors.Blue,
+            new PropertyMetadata(Media.Colors.Blue,
                 (d, e) =>
                 {
                     (d as CoordinateSystemModel3D).UpdateAxisColor(2, ((Media.Color)e.NewValue).ToColor4());
@@ -48,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty LabelColorProperty = DependencyProperty.Register("LabelColor", typeof(Media.Color), typeof(CoordinateSystemModel3D),
-            new AffectsRenderPropertyMetadata(Media.Colors.Gray,
+            new PropertyMetadata(Media.Colors.Gray,
                 (d, e) =>
                 {
                     (d as CoordinateSystemModel3D).UpdateLabelColor(((Media.Color)e.NewValue).ToColor4());
@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The coordinate system label X property
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemLabelXProperty = DependencyProperty.Register(
-                "CoordinateSystemLabelX", typeof(string), typeof(CoordinateSystemModel3D), new AffectsRenderPropertyMetadata("X",
+                "CoordinateSystemLabelX", typeof(string), typeof(CoordinateSystemModel3D), new PropertyMetadata("X",
                 (d, e) =>
                 {
                     (d as CoordinateSystemModel3D).UpdateAxisLabel(0, (string)e.NewValue);
@@ -67,7 +67,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The coordinate system label Y property
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemLabelYProperty = DependencyProperty.Register(
-                "CoordinateSystemLabelY", typeof(string), typeof(CoordinateSystemModel3D), new AffectsRenderPropertyMetadata("Y",
+                "CoordinateSystemLabelY", typeof(string), typeof(CoordinateSystemModel3D), new PropertyMetadata("Y",
                 (d, e) =>
                 {
                     (d as CoordinateSystemModel3D).UpdateAxisLabel(1, (string)e.NewValue);
@@ -77,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The coordinate system label Z property
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemLabelZProperty = DependencyProperty.Register(
-                "CoordinateSystemLabelZ", typeof(string), typeof(CoordinateSystemModel3D), new AffectsRenderPropertyMetadata("Z",
+                "CoordinateSystemLabelZ", typeof(string), typeof(CoordinateSystemModel3D), new PropertyMetadata("Z",
                 (d, e) =>
                 {
                     (d as CoordinateSystemModel3D).UpdateAxisLabel(2, (string)e.NewValue);

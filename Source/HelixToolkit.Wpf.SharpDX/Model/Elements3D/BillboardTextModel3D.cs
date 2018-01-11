@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>When FixedSize = false, the billboard render size will be actual size in 3D world space</para>
         /// </summary>
         public static readonly DependencyProperty FixedSizeProperty = DependencyProperty.Register("FixedSize", typeof(bool), typeof(BillboardTextModel3D),
-            new AffectsRenderPropertyMetadata(true,
+            new PropertyMetadata(true,
                 (d, e) =>
                 {
                     ((d as Element3D).RenderCore as IBillboardRenderParams).FixedSize = (bool)e.NewValue;

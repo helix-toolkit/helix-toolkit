@@ -28,19 +28,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The diameter property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty =
-            DependencyProperty.Register("Diameter", typeof(double), typeof(UITranslateManipulator3D), new AffectsRenderPropertyMetadata(0.2, ModelChanged));
+            DependencyProperty.Register("Diameter", typeof(double), typeof(UITranslateManipulator3D), new PropertyMetadata(0.2, ModelChanged));
 
         /// <summary>
         /// The direction property.
         /// </summary>
         public static readonly DependencyProperty DirectionProperty =
-            DependencyProperty.Register("Direction", typeof(Vector3), typeof(UITranslateManipulator3D), new AffectsRenderPropertyMetadata(new Vector3(0, 0, 1), ModelChanged));
+            DependencyProperty.Register("Direction", typeof(Vector3), typeof(UITranslateManipulator3D), new PropertyMetadata(new Vector3(0, 0, 1), ModelChanged));
 
         /// <summary>
         /// The length property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty =
-            DependencyProperty.Register("Length", typeof(double), typeof(UITranslateManipulator3D), new AffectsRenderPropertyMetadata(1.0, ModelChanged));
+            DependencyProperty.Register("Length", typeof(double), typeof(UITranslateManipulator3D), new PropertyMetadata(1.0, ModelChanged));
 
         /// <summary>
         /// Gets or sets the diameter of the manipulator arrow.

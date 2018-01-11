@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// default is true
         /// </summary>
         public static readonly DependencyProperty IsRenderingProperty =
-            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element2D), new AffectsRenderPropertyMetadata(true,
+            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element2D), new PropertyMetadata(true,
                 (d, e) =>
                 {
                     (d as Element2D).isRenderingInternal = (bool)e.NewValue;
@@ -55,7 +55,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public new static readonly DependencyProperty IsMouseOverProperty =
-            DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D), new AffectsRenderPropertyMetadata(false, (d, e) =>
+            DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D), new PropertyMetadata(false, (d, e) =>
             {
                 var model = d as Element2D;
                 if(model.renderCore == null) { return; }
@@ -69,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(Element2D),
-            new AffectsRenderPropertyMetadata(100.0));
+            new PropertyMetadata(100.0));
 
         public double Width
         {
@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(double), typeof(Element2D),
-            new AffectsRenderPropertyMetadata(100.0));
+            new PropertyMetadata(100.0));
 
         public double Height
         {
@@ -372,34 +372,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public void InvalidateRender()
         {
             renderHost?.InvalidateRender();
-        }
-
-        /// <summary>
-        /// Invoked whenever the effective value of any dependency property on this <see cref="Element2D"/> has been updated.
-        /// </summary>
-        /// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (CheckAffectsRender(e))
-            {
-                this.InvalidateRender();
-            }
-            base.OnPropertyChanged(e);
-        }
-        /// <summary>
-        /// Check if dependency property changed event affects render
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        protected virtual bool CheckAffectsRender(DependencyPropertyChangedEventArgs e)
-        {
-            // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
-            // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "AffectsRenderPropertyMetadata".
-            PropertyMetadata fmetadata = null;
-            return ((fmetadata = e.Property.GetMetadata(this)) != null
-                && (fmetadata is IAffectsRender
-                || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
-                ));
         }
     }
 

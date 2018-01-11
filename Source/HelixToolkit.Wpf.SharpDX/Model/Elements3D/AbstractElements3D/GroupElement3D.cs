@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IList<Element3D>), typeof(GroupElement3D),
-                new AffectsRenderPropertyMetadata(null, 
+                new PropertyMetadata(null, 
                     (d, e) => {
                         (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
                     }));

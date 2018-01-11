@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
             DependencyProperty.Register("InstanceParamArray", typeof(IList<InstanceParameter>), typeof(InstancingMeshGeometryModel3D), 
-                new AffectsRenderPropertyMetadata(null, InstancesParamChanged));
+                new PropertyMetadata(null, InstancesParamChanged));
 
         /// <summary>
         /// If bind to identifiers, hit test returns identifier as Tag in HitTestResult.

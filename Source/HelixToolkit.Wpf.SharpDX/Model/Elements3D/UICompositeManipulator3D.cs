@@ -63,14 +63,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The diameter property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
-            "Diameter", typeof(double), typeof(UICompositeManipulator3D), new AffectsRenderPropertyMetadata(2.0, ChildrenChanged));
+            "Diameter", typeof(double), typeof(UICompositeManipulator3D), new PropertyMetadata(2.0, ChildrenChanged));
 
         /// <summary>
         ///   The target transform property.
         /// </summary>
         public static readonly DependencyProperty TargetTransformProperty = DependencyProperty.Register(
             "TargetTransform", typeof(Transform3D), typeof(UICompositeManipulator3D), 
-            new AffectsRenderFrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender));
+            new FrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender));
 
         /// <summary>
         ///   Gets or sets TargetTransform.

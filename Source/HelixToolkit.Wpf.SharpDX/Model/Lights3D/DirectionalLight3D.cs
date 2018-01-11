@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public sealed class DirectionalLight3D : Light3D
     {
         public static readonly DependencyProperty DirectionProperty =
-            DependencyProperty.Register("Direction", typeof(Vector3D), typeof(Light3D), new AffectsRenderPropertyMetadata(new Vector3D(),
+            DependencyProperty.Register("Direction", typeof(Vector3D), typeof(Light3D), new PropertyMetadata(new Vector3D(),
                 (d, e) => {
                     ((d as IRenderable).RenderCore as DirectionalLightCore).Direction = ((Vector3D)e.NewValue).ToVector3();
                 }));

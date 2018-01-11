@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="RelativeScreenLocationX"/>
         /// </summary>
         public static readonly DependencyProperty RelativeScreenLocationXProperty = DependencyProperty.Register("RelativeScreenLocationX", typeof(double), typeof(ScreenSpacedElement3D),
-            new AffectsRenderPropertyMetadata(-0.8,
+            new PropertyMetadata(-0.8,
                 (d, e) =>
                 {
                    ((d as ScreenSpacedElement3D).RenderCore as IScreenSpacedRenderParams).RelativeScreenLocationX = (float)(double)e.NewValue;
@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="RelativeScreenLocationY"/>
         /// </summary>
         public static readonly DependencyProperty RelativeScreenLocationYProperty = DependencyProperty.Register("RelativeScreenLocationY", typeof(double), typeof(ScreenSpacedElement3D),
-            new AffectsRenderPropertyMetadata(-0.8,
+            new PropertyMetadata(-0.8,
                 (d, e) =>
                 {
                     ((d as ScreenSpacedElement3D).RenderCore as IScreenSpacedRenderParams).RelativeScreenLocationY = (float)(double)e.NewValue;
@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <see cref="SizeScale"/>
         /// </summary>
         public static readonly DependencyProperty SizeScaleProperty = DependencyProperty.Register("SizeScale", typeof(double), typeof(ScreenSpacedElement3D),
-            new AffectsRenderPropertyMetadata(1.0,
+            new PropertyMetadata(1.0,
                 (d, e) =>
                 {
                     ((d as ScreenSpacedElement3D).RenderCore as IScreenSpacedRenderParams).SizeScale = (float)(double)e.NewValue;
@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register("UpDirection", typeof(Media3D.Vector3D), typeof(ScreenSpacedElement3D),
-            new AffectsRenderPropertyMetadata(new Media3D.Vector3D(0, 1, 0),
+            new PropertyMetadata(new Media3D.Vector3D(0, 1, 0),
             (d, e) =>
             {
                 (d as ScreenSpacedElement3D).UpdateModel(((Media3D.Vector3D)e.NewValue).ToVector3());
@@ -64,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty LeftHandedProperty = DependencyProperty.Register("LeftHanded", typeof(bool), typeof(ScreenSpacedElement3D),
-            new AffectsRenderPropertyMetadata(false,
+            new PropertyMetadata(false,
             (d, e) =>
             {
                 (d as ScreenSpacedElement3D).screenSpaceCore.IsRightHand = !(bool)e.NewValue;

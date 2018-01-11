@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public class ViewBoxModel3D : ScreenSpacedElement3D
     {
         public static readonly DependencyProperty ViewBoxTextureProperty = DependencyProperty.Register("ViewBoxTexture", typeof(Stream), typeof(ViewBoxModel3D),
-            new AffectsRenderPropertyMetadata(null, (d, e) =>
+            new PropertyMetadata(null, (d, e) =>
             {
                 (d as ViewBoxModel3D).UpdateTexture((Stream)e.NewValue);
             }));

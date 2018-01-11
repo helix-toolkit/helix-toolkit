@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// property.
         /// </summary>
         public static readonly DependencyProperty AmbientColorProperty =
-            DependencyProperty.Register("AmbientColor", typeof(Color4), typeof(PhongMaterial), new AffectsRenderPropertyMetadata((Color4)Color.Gray, 
+            DependencyProperty.Register("AmbientColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Gray, 
                 (d, e)=> 
                 {
                     (d as PhongMaterial).AmbientColorInternal = (Color4)e.NewValue;
@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// property.
         /// </summary>
         public static readonly DependencyProperty DiffuseColorProperty =
-            DependencyProperty.Register("DiffuseColor", typeof(Color4), typeof(PhongMaterial), new AffectsRenderPropertyMetadata((Color4)Color.Gray,
+            DependencyProperty.Register("DiffuseColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Gray,
                 (d, e) =>
                 {
                     (d as PhongMaterial).DiffuseColorInternal = (Color4)e.NewValue;
@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
         ///         
         /// </summary>
         public static readonly DependencyProperty EmissiveColorProperty =
-            DependencyProperty.Register("EmissiveColor", typeof(Color4), typeof(PhongMaterial), new AffectsRenderPropertyMetadata((Color4)Color.Black,
+            DependencyProperty.Register("EmissiveColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Black,
                 (d, e) =>
                 {
                     (d as PhongMaterial).EmissiveColorInternal = (Color4)e.NewValue;
@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
         ///         
         /// </summary>
         public static readonly DependencyProperty SpecularColorProperty =
-            DependencyProperty.Register("SpecularColor", typeof(Color4), typeof(PhongMaterial), new AffectsRenderPropertyMetadata((Color4)Color.Black,
+            DependencyProperty.Register("SpecularColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Black,
                 (d, e) =>
                 {
                     (d as PhongMaterial).SpecularColorInternal = (Color4)e.NewValue;
@@ -73,7 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX
         ///         
         /// </summary>
         public static readonly DependencyProperty SpecularShininessProperty =
-            DependencyProperty.Register("SpecularShininess", typeof(float), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(30f,
+            DependencyProperty.Register("SpecularShininess", typeof(float), typeof(PhongMaterial), new PropertyMetadata(30f,
                 (d, e) =>
                 {
                     (d as PhongMaterial).SpecularShininessInternal = (float)e.NewValue;
@@ -83,7 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
         ///         
         /// </summary>
         public static readonly DependencyProperty ReflectiveColorProperty =
-            DependencyProperty.Register("ReflectiveColor", typeof(Color4), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(new Color4(0.1f, 0.1f, 0.1f, 1.0f),
+            DependencyProperty.Register("ReflectiveColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata(new Color4(0.1f, 0.1f, 0.1f, 1.0f),
                 (d, e) =>
                 {
                     (d as PhongMaterial).ReflectiveColorInternal = (Color4)e.NewValue;
@@ -93,7 +93,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty DiffuseMapProperty =
-            DependencyProperty.Register("DiffuseMap", typeof(Stream), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(null));
+            DependencyProperty.Register("DiffuseMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null));
 
         /// <summary>
         /// Supports alpha channel image, such as PNG.
@@ -102,49 +102,49 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The color will be cDiffuse*cAlpha.
         /// </summary>
         public static readonly DependencyProperty DiffuseAlphaMapProperty =
-            DependencyProperty.Register("DiffuseAlphaMap", typeof(Stream), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(null));
+            DependencyProperty.Register("DiffuseAlphaMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty NormalMapProperty =
-            DependencyProperty.Register("NormalMap", typeof(Stream), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(null));
+            DependencyProperty.Register("NormalMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty DisplacementMapProperty =
-            DependencyProperty.Register("DisplacementMap", typeof(Stream), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(null));
+            DependencyProperty.Register("DisplacementMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty DisplacementMapScaleMaskProperty =
-            DependencyProperty.Register("DisplacementMapScaleMask", typeof(Vector4), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(null));
+            DependencyProperty.Register("DisplacementMapScaleMask", typeof(Vector4), typeof(PhongMaterial), new PropertyMetadata(null));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty DiffuseMapSamplerProperty =
-            DependencyProperty.Register("DiffuseMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4));
+            DependencyProperty.Register("DiffuseMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4));
 
         /// <summary>
         ///
         /// </summary>
         public static readonly DependencyProperty DiffuseAlphaMapSamplerProperty =
-            DependencyProperty.Register("DiffuseAlphaMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4));
+            DependencyProperty.Register("DiffuseAlphaMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty NormalMapSamplerProperty =
-            DependencyProperty.Register("NormalMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4));
+            DependencyProperty.Register("NormalMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerWrapAni4));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty DisplacementMapSamplerProperty =
-            DependencyProperty.Register("DisplacementMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new AffectsRenderPropertyMetadata(DefaultSamplers.LinearSamplerWrapAni1));
+            DependencyProperty.Register("DisplacementMapSampler", typeof(SamplerStateDescription), typeof(PhongMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerWrapAni1));
 
         /// <summary>
         /// Constructs a Shading Material which correspnds with 

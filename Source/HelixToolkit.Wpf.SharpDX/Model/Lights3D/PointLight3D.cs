@@ -13,19 +13,19 @@ namespace HelixToolkit.Wpf.SharpDX
     public class PointLight3D : Light3D
     {
         public static readonly DependencyProperty AttenuationProperty =
-            DependencyProperty.Register("Attenuation", typeof(Vector3D), typeof(PointLight3D), new AffectsRenderPropertyMetadata(new Vector3D(1.0f, 0.0f, 0.0f),
+            DependencyProperty.Register("Attenuation", typeof(Vector3D), typeof(PointLight3D), new PropertyMetadata(new Vector3D(1.0f, 0.0f, 0.0f),
                 (d, e) => {
                     ((d as IRenderable).RenderCore as PointLightCore).Attenuation = ((Vector3D)e.NewValue).ToVector3();
                 }));
 
         public static readonly DependencyProperty RangeProperty =
-            DependencyProperty.Register("Range", typeof(double), typeof(PointLight3D), new AffectsRenderPropertyMetadata(100.0,
+            DependencyProperty.Register("Range", typeof(double), typeof(PointLight3D), new PropertyMetadata(100.0,
                 (d, e) => {
                     ((d as IRenderable).RenderCore as PointLightCore).Range = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty PositionProperty =
-            DependencyProperty.Register("Position", typeof(Point3D), typeof(PointLight3D), new AffectsRenderPropertyMetadata(new Point3D(),
+            DependencyProperty.Register("Position", typeof(Point3D), typeof(PointLight3D), new PropertyMetadata(new Point3D(),
                 (d, e) => {
                     ((d as IRenderable).RenderCore as PointLightCore).Position = ((Point3D)e.NewValue).ToVector3();
                 }));

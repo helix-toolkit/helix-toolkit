@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// default is true
         /// </summary>
         public static readonly DependencyProperty IsRenderingProperty =
-            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true,
+            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
                     (d as Element3D).Visible = (bool)e.NewValue && (d as Element3D).Visibility == Visibility.Visible;
@@ -48,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty VisibilityProperty =
-            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element3D), new AffectsRenderPropertyMetadata(Visibility.Visible, (d, e) =>
+            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element3D), new PropertyMetadata(Visibility.Visible, (d, e) =>
             {
                 (d as Element3D).Visible = (Visibility)e.NewValue == Visibility.Visible && (d as Element3D).IsRendering;
             }));
@@ -72,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty TransformProperty =
-            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new AffectsRenderPropertyMetadata(Transform3D.Identity, (d,e)=>
+            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new PropertyMetadata(Transform3D.Identity, (d,e)=>
             {
                 ((IRenderable)d).ModelMatrix = e.NewValue != null ? ((Transform3D)e.NewValue).Value.ToMatrix() : Matrix.Identity;
             }));
@@ -86,7 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty IsThrowingShadowProperty =
-            DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(false, (d, e) =>
+            DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(Element3D), new PropertyMetadata(false, (d, e) =>
             {
                 if ((d as IRenderable).RenderCore is IThrowingShadow)
                 {
@@ -220,7 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
         //protected virtual bool CheckAffectsRender(DependencyPropertyChangedEventArgs e)
         //{            
         //    // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
-        //    // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "AffectsRenderPropertyMetadata".
+        //    // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "PropertyMetadata".
         //    PropertyMetadata fmetadata = null;
         //    return ((fmetadata = e.Property.GetMetadata(this)) != null
         //        && (fmetadata is IAffectsRender

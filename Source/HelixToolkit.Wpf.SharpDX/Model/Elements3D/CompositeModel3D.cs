@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public class CompositeModel3D : Element3D, IHitable, ISelectable, IMouse3D
     {
         public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register("IsSelected", typeof(bool), typeof(CompositeModel3D), new AffectsRenderPropertyMetadata(false));
+            DependencyProperty.Register("IsSelected", typeof(bool), typeof(CompositeModel3D), new PropertyMetadata(false));
 
         public bool IsSelected
         {

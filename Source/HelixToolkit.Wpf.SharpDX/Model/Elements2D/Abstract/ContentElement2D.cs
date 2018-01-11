@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     public abstract class ContentElement2D : Clickable2D
     {
         public static readonly DependencyProperty Content2DProperty = DependencyProperty.Register("Content2D", typeof(Element2D), typeof(ContentElement), 
-            new AffectsRenderPropertyMetadata(null, (d,e)=>
+            new PropertyMetadata(null, (d,e)=>
             {
                 var model = d as ContentElement2D;
 

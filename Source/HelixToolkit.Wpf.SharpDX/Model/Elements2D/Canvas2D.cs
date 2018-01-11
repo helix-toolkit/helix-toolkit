@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     {
         #region Attached Properties
         public static readonly DependencyProperty LeftProperty = DependencyProperty.RegisterAttached("Left", typeof(double), typeof(Canvas2D),
-            new AffectsRenderPropertyMetadata(0.0, (d,e)=> { (d as Element2D).LayoutTranslate = new Vector2((float)(double)e.NewValue, (d as Element2D).LayoutTranslate.Y); }));
+            new PropertyMetadata(0.0, (d,e)=> { (d as Element2D).LayoutTranslate = new Vector2((float)(double)e.NewValue, (d as Element2D).LayoutTranslate.Y); }));
 
         public static void SetLeft(Element2D element, double value)
         {
@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty TopProperty = DependencyProperty.RegisterAttached("Top", typeof(double), typeof(Canvas2D),
-            new AffectsRenderPropertyMetadata(0.0, (d, e) => { (d as Element2D).LayoutTranslate = new Vector2((d as Element2D).LayoutTranslate.X, (float)(double)e.NewValue); }));
+            new PropertyMetadata(0.0, (d, e) => { (d as Element2D).LayoutTranslate = new Vector2((d as Element2D).LayoutTranslate.X, (float)(double)e.NewValue); }));
         public static void SetTop(Element2D element, double value)
         {
             element.SetValue(TopProperty, value);
@@ -64,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IList<Element2D>), typeof(Canvas2D),
-                new AffectsRenderPropertyMetadata(null, 
+                new PropertyMetadata(null, 
                     (d, e) => {
                         (d as Canvas2D).OnItemsSourceChanged(e.NewValue as IList<Element2D>);
                     }));

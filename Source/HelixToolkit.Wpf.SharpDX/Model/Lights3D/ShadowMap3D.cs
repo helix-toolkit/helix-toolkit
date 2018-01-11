@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public class ShadowMap3D : Element3D
     {
         public static readonly DependencyProperty ResolutionProperty =
-            DependencyProperty.Register("Resolution", typeof(Vector2), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(new Vector2(1024, 1024), (d, e) =>
+            DependencyProperty.Register("Resolution", typeof(Vector2), typeof(ShadowMap3D), new PropertyMetadata(new Vector2(1024, 1024), (d, e) =>
             {
                 var resolution = (Vector2)e.NewValue;
                 ((d as ShadowMap3D).RenderCore as ShadowMapCore).Width = (int)resolution.X;
@@ -27,25 +27,25 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         //public static readonly DependencyProperty FactorPCFProperty =
-        //        DependencyProperty.Register("FactorPCF", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(1.5, (d,e)=>
+        //        DependencyProperty.Register("FactorPCF", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(1.5, (d,e)=>
         //        {
         //            ((d as ShadowMap3D).RenderCore as ShadowMapCore).FactorPCF = (float)(double)e.NewValue;
         //        }));
 
         public static readonly DependencyProperty BiasProperty =
-                DependencyProperty.Register("Bias", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(0.0015, (d, e)=>
+                DependencyProperty.Register("Bias", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(0.0015, (d, e)=>
                 {
                     ((d as ShadowMap3D).RenderCore as ShadowMapCore).Bias = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty IntensityProperty =
-                DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(0.5, (d, e)=>
+                DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(0.5, (d, e)=>
                 {
                     ((d as ShadowMap3D).RenderCore as ShadowMapCore).Intensity = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty LightCameraProperty =
-                DependencyProperty.Register("LightCamera", typeof(ProjectionCamera), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(null, (d, e) =>
+                DependencyProperty.Register("LightCamera", typeof(ProjectionCamera), typeof(ShadowMap3D), new PropertyMetadata(null, (d, e) =>
                 {
                     (d as ShadowMap3D).lightCamera = (ProjectionCamera)e.NewValue;
                 }));
