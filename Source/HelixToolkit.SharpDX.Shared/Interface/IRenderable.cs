@@ -30,10 +30,14 @@ namespace HelixToolkit.UWP
 
         IRenderCore RenderCore { get; }
         /// <summary>
-        /// 
+        /// Update render related parameters such as model matrix by scene graph and bounding boxes
         /// </summary>
         /// <param name="context"></param>
         void Update(IRenderContext context);
+        /// <summary>
+        /// Update things not related to rendering, such as OctreeManager etc. Called parallel with rendering process.
+        /// </summary>
+        void UpdateNotRender();
         /// <summary>
         /// 
         /// </summary>

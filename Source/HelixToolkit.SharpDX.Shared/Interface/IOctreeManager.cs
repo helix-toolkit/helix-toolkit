@@ -11,14 +11,21 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IOctreeManager
     {
+        /// <summary>
+        /// 
+        /// </summary>
         event EventHandler<IOctree> OnOctreeCreated;
         IOctree Octree { get; }
         bool Enabled { get; set; }
         bool RequestUpdateOctree { get; }
         OctreeBuildParameter Parameter { set; get; }
         bool AddPendingItem(IRenderable item);
+        void ProcessPendingItems();
         void Clear();
         void RebuildTree(IEnumerable<IRenderable> items);
         void RemoveItem(IRenderable item);

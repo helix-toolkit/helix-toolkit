@@ -10,13 +10,25 @@ using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
+    using System.Windows.Threading;
     using Utilities;
 
-    public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctreeManager
+    public interface IOctreeManagerWrapper
+    {
+        IOctree Octree { get; }
+        IOctreeManager Manager { get; }
+    }
+
+    public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctreeManagerWrapper
     {
         public static readonly DependencyProperty OctreeProperty
             = DependencyProperty.Register("Octree", typeof(IOctree), typeof(OctreeManagerBaseWrapper),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+        public static readonly DependencyProperty EnableOctreeOutputProperty
+            = DependencyProperty.Register("EnableOctreeOutput", typeof(bool), typeof(OctreeManagerBaseWrapper),
+                new PropertyMetadata(false, 
+                    (d,e)=> { (d as OctreeManagerBaseWrapper).enableOctreeOutput = (bool)e.NewValue; }));
 
         public static readonly DependencyProperty MinSizeProperty
             = DependencyProperty.Register("MinSize", typeof(float), typeof(OctreeManagerBaseWrapper),
@@ -38,8 +50,6 @@ namespace HelixToolkit.Wpf.SharpDX
             = DependencyProperty.Register("MinObjectSizeToSplit", typeof(int), typeof(OctreeManagerBaseWrapper),
                 new PropertyMetadata(0, (s, e) => { (s as OctreeManagerBaseWrapper).Manager.Parameter.MinObjectSizeToSplit = (int)e.NewValue; }));
 
-        public event EventHandler<IOctree> OnOctreeCreated;
-
         public IOctree Octree
         {
             set
@@ -49,6 +59,18 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (IOctree)GetValue(OctreeProperty);
+            }
+        }
+
+        public bool EnableOctreeOutput
+        {
+            set
+            {
+                SetValue(EnableOctreeOutputProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableOctreeOutputProperty);
             }
         }
 
@@ -123,6 +145,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private DispatcherOperation octreeOpt;
+        private bool enableOctreeOutput = false;
         private IOctreeManager manager;
         public IOctreeManager Manager
         {
@@ -131,7 +155,21 @@ namespace HelixToolkit.Wpf.SharpDX
                 if(manager == null)
                 {
                     manager = OnCreateManager();
-                    manager.OnOctreeCreated += (s, e) => { this.Octree = e; OnOctreeCreated?.Invoke(this, e); };
+                    manager.OnOctreeCreated += (s, e) =>
+                    {
+                        if (octreeOpt != null && octreeOpt.Status == DispatcherOperationStatus.Pending)
+                        {
+                            octreeOpt.Abort();
+                        }
+                        if (enableOctreeOutput)
+                        {
+                            octreeOpt = Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                                new Action(() =>
+                                {
+                                    this.Octree = e;
+                                }));
+                        }
+                    };
                 }
                 return manager;
             }
@@ -162,34 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public bool RequestUpdateOctree { get { return Manager.RequestUpdateOctree; } }
-
         protected abstract IOctreeManager OnCreateManager();
-
-        public bool AddPendingItem(IRenderable item)
-        {
-            return Manager.AddPendingItem(item);
-        }
-
-        public void Clear()
-        {
-            Manager.Clear();
-        }
-
-        public void RebuildTree(IEnumerable<IRenderable> items)
-        {
-            Manager.RebuildTree(items);
-        }
-
-        public void RemoveItem(IRenderable item)
-        {
-            Manager.RemoveItem(item);
-        }
-
-        public void RequestRebuild()
-        {
-            Manager.RequestRebuild();
-        }
     }
 
 

@@ -17,6 +17,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 #endif
 {
     using Render;
+    /// <summary>
+    /// 
+    /// </summary>
 #if NETFX_CORE
     public abstract class Element3DCore : IDisposable, IRenderable, IGUID, ITransform, INotifyPropertyChanged
 #else
@@ -275,6 +278,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
             IsRenderable = CanRender(context);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void UpdateNotRender() { }
 
         #region Rendering
 

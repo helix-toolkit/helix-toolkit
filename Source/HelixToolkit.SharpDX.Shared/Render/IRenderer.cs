@@ -2,6 +2,7 @@
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
@@ -25,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
     public interface IRenderer : IDisposable
     {
-        void Render(IRenderContext context, IEnumerable<IRenderable> renderables, RenderParameter parameter);
+        Task Render(IRenderContext context, IEnumerable<IRenderable> renderables, RenderParameter parameter);
         void Render2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, RenderParameter2D parameter);
     }
 }

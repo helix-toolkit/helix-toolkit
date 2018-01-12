@@ -48,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Add octree manager to use octree hit test.
         /// </summary>
         public static readonly DependencyProperty OctreeManagerProperty = DependencyProperty.Register("OctreeManager",
-            typeof(IOctreeManager),
+            typeof(IOctreeManagerWrapper),
             typeof(ItemsModel3D), new PropertyMetadata(null, (s, e) =>
             {
                 var d = s as ItemsModel3D;
@@ -61,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     d.AddLogicalChild(e.NewValue);
                 }
-                d.octreeManager = e.NewValue == null ? null : (IOctreeManager)e.NewValue;
+                d.octreeManager = e.NewValue == null ? null : ((IOctreeManagerWrapper)e.NewValue).Manager;
             }));
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(ItemsSourceProperty, value); }
         }
 
-        public IOctreeManager OctreeManager
+        public IOctreeManagerWrapper OctreeManager
         {
             set
             {
@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (IOctreeManager)GetValue(OctreeManagerProperty);
+                return (IOctreeManagerWrapper)GetValue(OctreeManagerProperty);
             }
         }
 
@@ -108,12 +108,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected IOctreeManager octreeManager { private set; get; }
-
-
-        private void UpdateOctree()
-        {
-            octreeManager?.RebuildTree(this.Children);
-        }
 
         /// <summary>
         /// Handles changes in the ItemsSource property.
@@ -331,12 +325,16 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override void Update(IRenderContext context)
+        public override void UpdateNotRender()
         {
-            base.Update(context);
-            if (octreeManager != null && octreeManager.RequestUpdateOctree)
+            base.UpdateNotRender();
+            if (octreeManager != null)
             {
-                UpdateOctree();
+                octreeManager.ProcessPendingItems();
+                if (octreeManager.RequestUpdateOctree)
+                {
+                    octreeManager?.RebuildTree(this.Children);
+                }
             }
         }
 

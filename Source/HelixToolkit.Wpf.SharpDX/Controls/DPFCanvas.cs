@@ -30,6 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Core2D;
     using Model;
     using Render;
+    using System.Threading.Tasks;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
@@ -457,66 +458,64 @@ namespace HelixToolkit.Wpf.SharpDX
             buffers.ClearRenderTarget(device.ImmediateContext, ClearColor, clearBackBuffer, clearDepthStencilBuffer);
         }
 
-        private void Render(TimeSpan timeStamp)
+        private Task Render(TimeSpan timeStamp)
         {
-            if (viewport != null)
+            // ---------------------------------------------------------------------------
+            // this part is done only if the scene is not attached
+            // it is an attach and init pass for all elements in the scene-graph                
+            if (!sceneAttached)
             {
-                // ---------------------------------------------------------------------------
-                // this part is done only if the scene is not attached
-                // it is an attach and init pass for all elements in the scene-graph                
-                if (!sceneAttached)
+                try
                 {
-                    try
+                    sceneAttached = true;
+                    ClearColor = viewport.BackgroundColor;
+                    IsShadowMapEnabled = viewport.IsShadowMappingEnabled;
+
+                    RenderTechnique = viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
+
+
+                    renderContext?.Dispose();
+                    renderContext = new RenderContext(this, device.ImmediateContext);
+                    renderContext.EnableBoundingFrustum = EnableRenderFrustum;
+                    if (EnableSharingModelMode && SharedModelContainer != null)
                     {
-                        sceneAttached = true;
-                        ClearColor = viewport.BackgroundColor;
-                        IsShadowMapEnabled = viewport.IsShadowMappingEnabled;
-
-                        RenderTechnique = viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
-
-
-                        renderContext?.Dispose();
-                        renderContext = new RenderContext(this, device.ImmediateContext);
-                        renderContext.EnableBoundingFrustum = EnableRenderFrustum;
-                        if (EnableSharingModelMode && SharedModelContainer != null)
-                        {
-                            SharedModelContainer.CurrentRenderHost = this;
-                            viewport.Attach(SharedModelContainer);
-                        }
-                        else
-                        {
-                            viewport.Attach(this);
-                        }
+                        SharedModelContainer.CurrentRenderHost = this;
+                        viewport.Attach(SharedModelContainer);
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        //MessageBox.Show("DPFCanvas: Error attaching element: " + string.Format(ex.Message), "Error");
-                        Debug.WriteLine("DPFCanvas: Error attaching element: " + string.Format(ex.Message), "Error");
-                        throw;
+                        viewport.Attach(this);
                     }
                 }
-                renderContext.TimeStamp = timeStamp;
-                // ---------------------------------------------------------------------------
-                // this part is per frame
-                // ---------------------------------------------------------------------------
-                if (EnableSharingModelMode && SharedModelContainer != null)
+                catch (Exception ex)
                 {
-                    SharedModelContainer.CurrentRenderHost = this;
-                    ClearRenderTarget();
+                    //MessageBox.Show("DPFCanvas: Error attaching element: " + string.Format(ex.Message), "Error");
+                    Debug.WriteLine("DPFCanvas: Error attaching element: " + string.Format(ex.Message), "Error");
+                    throw;
                 }
-                else
-                {
-                    SetDefaultRenderTargets(true);
-                }
-
-                renderContext.Camera = viewport.CameraCore;
-                renderContext.WorldMatrix = viewport.WorldMatrix;
-                renderer.Render(renderContext, viewport.Renderables, renderParameter);                   
             }
+            renderContext.TimeStamp = timeStamp;
+            // ---------------------------------------------------------------------------
+            // this part is per frame
+            // ---------------------------------------------------------------------------
+            if (EnableSharingModelMode && SharedModelContainer != null)
+            {
+                SharedModelContainer.CurrentRenderHost = this;
+                ClearRenderTarget();
+            }
+            else
+            {
+                SetDefaultRenderTargets(true);
+            }
+
+            renderContext.Camera = viewport.CameraCore;
+            renderContext.WorldMatrix = viewport.WorldMatrix;
+            var task = renderer.Render(renderContext, viewport.Renderables, renderParameter);                   
 #if MSAA
             device.ImmediateContext.ResolveSubresource(buffers.ColorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
 #endif
             this.device.ImmediateContext.Flush();
+            return task;
         }
 
         private void StartRendering()
@@ -561,13 +560,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 var t0 = renderTimer.Elapsed;
 
                 // Update all renderables before rendering 
-                // giving them the chance to invalidate the current render.                                                            
-                surfaceD3D.Lock();
+                // giving them the chance to invalidate the current render.
+                pendingValidationCycles = false;
+                viewport.UpdateFPS(t0);
+                var t = Render(t0);
                 try
                 {
-                    pendingValidationCycles = false;
-                    viewport.UpdateFPS(t0);
-                    Render(t0);
+                    surfaceD3D.Lock();
                     surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
                 }
                 catch (Exception ex)
@@ -581,7 +580,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     surfaceD3D.Unlock();
                 }
-
+                t?.Wait();
                 lastRenderingDuration = renderTimer.Elapsed - t0;
                 skipper.Push(lastRenderingDuration.TotalMilliseconds);
             }

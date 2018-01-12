@@ -18,6 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     public class CommonRenderer : DisposeObject, IRenderer
     {
         private List<IRenderCore> pendingRenders = new List<IRenderCore>(100);
+        private List<IRenderable> pendingUpdates = new List<IRenderable>(100);
         private readonly Stack<IEnumerator<IRenderable>> stackCache1 = new Stack<IEnumerator<IRenderable>>(20);
         private readonly Stack<IEnumerator<IRenderable>> stackCache2 = new Stack<IEnumerator<IRenderable>>(20);
 
@@ -37,10 +38,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Renders the scene.
         /// </summary>
-        public void Render(IRenderContext context, IEnumerable<IRenderable> renderables, RenderParameter parameter)
+        public Task Render(IRenderContext context, IEnumerable<IRenderable> renderables, RenderParameter parameter)
         {
             if (parameter == null)
-            { return; }
+            { return null; }
 #if OLD
             UpdateGlobalVariables(context, renderables).Wait();
             SetRenderTargets(context.DeviceContext, parameter);
@@ -49,23 +50,27 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 item.Render(context);
             }
 #else
-            var task = UpdateGlobalVariables(context, renderables);
+            UpdateGlobalVariables(context, renderables);
 
             SetRenderTargets(ImmediateContext, parameter);
-          
-            pendingRenders.Clear();
-            pendingRenders.AddRange(renderables.PreorderDFTGetCores((x) =>
+
+            pendingUpdates.Clear();
+            pendingUpdates.AddRange(renderables.PreorderDFT((x) =>
             {
                 x.Update(context);
                 return x.IsRenderable && !(x is ILight3D);
             }, stackCache1));
 
-            task.Wait();
+            pendingRenders.Clear();
+            pendingRenders.AddRange(pendingUpdates.Select(x => x.RenderCore));
 
+            var task = Task.Factory.StartNew(() => { UpdateNotRender(renderables); });
+            
             foreach (var renderable in pendingRenders)
             {
                 renderable.Render(context, ImmediateContext);
             }
+            return task;
 #endif
         }
 
@@ -75,7 +80,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <returns></returns>
-        private async Task UpdateGlobalVariables(IRenderContext context, IEnumerable<IRenderable> renderables)
+        private void UpdateGlobalVariables(IRenderContext context, IEnumerable<IRenderable> renderables)
         {
             context.LightScene.LightModels.ResetLightCount();
             foreach (IRenderable e in renderables.Take(Constants.MaxLights)
@@ -84,6 +89,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 e.Render(context, ImmediateContext);
             }
             context.UpdatePerFrameData();
+        }
+
+        private void UpdateNotRender(IEnumerable<IRenderable> renderables)
+        {
+            foreach(var model in pendingUpdates)
+            {
+                model.UpdateNotRender();
+            }
         }
 
         private void SetRenderTargets(DeviceContext context, RenderParameter parameter)
