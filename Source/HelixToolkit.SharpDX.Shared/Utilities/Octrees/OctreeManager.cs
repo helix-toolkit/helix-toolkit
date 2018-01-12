@@ -18,6 +18,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 #endif
 {
     using Model;
+    using System.Collections.Concurrent;
+
     public abstract class OctreeManagerBase : ObservableObject, IOctreeManager
     {
         public event EventHandler<IOctree> OnOctreeCreated;
@@ -68,6 +70,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         public abstract void RemoveItem(IRenderable item);
 
         public abstract void RequestRebuild();
+
+        public abstract void ProcessPendingItems();
     }
 
     /// <summary>
@@ -75,6 +79,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
     /// </summary>
     public sealed class GroupRenderableBoundOctreeManager : OctreeManagerBase
     {
+        private object lockObj = new object();
+
         private void UpdateOctree(RenderableBoundingOctree tree)
         {
             Octree = tree;
@@ -82,18 +88,21 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         }
         public override void RebuildTree(IEnumerable<IRenderable> items)
         {
-            RequestUpdateOctree = false;
-            if (Enabled)
+            lock (lockObj)
             {
-                UpdateOctree(RebuildOctree(items));
-                if (Octree == null)
+                RequestUpdateOctree = false;
+                if (Enabled)
                 {
-                    RequestRebuild();
+                    UpdateOctree(RebuildOctree(items));
+                    if (Octree == null)
+                    {
+                        RequestRebuild();
+                    }
                 }
-            }
-            else
-            {
-                Clear();
+                else
+                {
+                    Clear();
+                }
             }
         }
 
@@ -110,45 +119,66 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             item.OnTransformBoundChanged -= Item_OnBoundChanged;
         }
 
+        private readonly ConcurrentBag<IRenderable> pendingItems
+            = new ConcurrentBag<IRenderable>();
+
         private void Item_OnBoundChanged(object sender,  BoundChangeArgs<BoundingBox> args)
         {
             var item = sender as IRenderable;
             if (item == null)
             { return; }
-            if (mOctree == null || !item.IsAttached)
-            {
-                UnsubscribeBoundChangeEvent(item);
-                return;
-            }
-            int index;
-            var node = mOctree.FindItemByGuid(item.GUID, item, out index);
-            bool rootAdd = true;
-            if (node != null)
-            {
-                var tree = mOctree;
-                UpdateOctree(null);
-                var geoNode = node as RenderableBoundingOctree;
-                if (geoNode.Bound.Contains(args.NewBound) == ContainmentType.Contains)
-                {
-                    if (geoNode.PushExistingToChild(index))
-                    {
-                        tree = tree.Shrink() as RenderableBoundingOctree;
-                    }
-                    rootAdd = false;
-                }
-                else
-                {
-                    geoNode.RemoveAt(index, tree);
-                }
-                UpdateOctree(tree);
-            }
             else
             {
-                mOctree.RemoveByGuid(item.GUID, item, mOctree);
+                pendingItems.Add(item);
+                return;
             }
-            if (rootAdd)
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void ProcessPendingItems()
+        {
+            lock (lockObj)
             {
-                AddItem(item);
+                IRenderable item;
+                while(pendingItems.TryTake(out item))
+                {
+                    if (mOctree == null || !item.IsAttached)
+                    {
+                        UnsubscribeBoundChangeEvent(item);
+                        return;
+                    }
+                    int index;
+                    var node = mOctree.FindItemByGuid(item.GUID, item, out index);
+                    bool rootAdd = true;
+                    if (node != null)
+                    {
+                        var tree = mOctree;
+                        UpdateOctree(null);
+                        var geoNode = node as RenderableBoundingOctree;
+                        if (geoNode.Bound.Contains(item.BoundsWithTransform) == ContainmentType.Contains)
+                        {
+                            if (geoNode.PushExistingToChild(index))
+                            {
+                                tree = tree.Shrink() as RenderableBoundingOctree;
+                            }
+                            rootAdd = false;
+                        }
+                        else
+                        {
+                            geoNode.RemoveAt(index, tree);
+                        }
+                        UpdateOctree(tree);
+                    }
+                    else
+                    {
+                        mOctree.RemoveByGuid(item.GUID, item, mOctree);
+                    }
+                    if (rootAdd)
+                    {
+                        AddItem(item);
+                    }
+                }
             }
         }
 
@@ -176,20 +206,23 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         private static readonly BoundingBox ZeroBound = new BoundingBox();
         public override bool AddPendingItem(IRenderable item)
         {
-            if (Enabled && item is IRenderable)
+            lock (lockObj)
             {
-                var model = item as IRenderable;
-                model.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
-                model.OnTransformBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
-                if (model.Bounds != ZeroBound)
+                if (Enabled && item is IRenderable)
                 {
-                    AddItem(model);
+                    var model = item as IRenderable;
+                    model.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                    model.OnTransformBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
+                    if (model.Bounds != ZeroBound)
+                    {
+                        AddItem(model);
+                    }
+                    return true;
                 }
-                return true;
-            }
-            else
-            {
-                return false;
+                else
+                {
+                    return false;
+                }
             }
         }
 
@@ -245,36 +278,45 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         }
 
         public override void RemoveItem(IRenderable item)
-        {
+        {           
             if (Enabled && Octree != null && item is IRenderable)
             {
-                var tree = mOctree;
-                UpdateOctree(null);
-                var model = item as IRenderable;
-                model.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
-                UnsubscribeBoundChangeEvent(model);
-                if (!tree.RemoveByBound(model))
+                lock (lockObj)
                 {
-                    //Console.WriteLine("Remove failed.");
+                    var tree = mOctree;
+                    UpdateOctree(null);
+                    var model = item as IRenderable;
+                    model.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                    UnsubscribeBoundChangeEvent(model);
+                    if (!tree.RemoveByBound(model))
+                    {
+                        //Console.WriteLine("Remove failed.");
+                    }
+                    else
+                    {
+                        tree = tree.Shrink() as RenderableBoundingOctree;
+                    }
+                    UpdateOctree(tree);
                 }
-                else
-                {
-                    tree = tree.Shrink() as RenderableBoundingOctree;
-                }
-                UpdateOctree(tree);
             }
         }
 
         public override void Clear()
         {
-            RequestUpdateOctree = false;
-            UpdateOctree(null);
+            lock (lockObj)
+            {
+                RequestUpdateOctree = false;
+                UpdateOctree(null);
+            }
         }
 
         public override void RequestRebuild()
         {
-            Clear();
-            RequestUpdateOctree = true;
+            lock (lockObj)
+            {
+                Clear();
+                RequestUpdateOctree = true;
+            }
         }
     }
 
@@ -288,6 +330,11 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         public override void Clear()
         {
             Octree = null;
+        }
+
+        public override void ProcessPendingItems()
+        {
+            throw new NotImplementedException();
         }
 
         public override void RebuildTree(IEnumerable<IRenderable> items)

@@ -185,30 +185,34 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\IComponent.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\BufferProxy.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ConstantBufferProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\BufferProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ConstantBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DisposeObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Disposer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ElementsBufferProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ElementsBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\EventSkipper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\LineBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\MappingCollection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octree.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeGeometryModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\Octree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\OctreeGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\OctreeManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RandomVectorGenerators.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RelayExceptionEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ResourceSharedObject.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\SimpleRingBuffer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\StateProxy.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ShaderResourceViewProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\SimpleRingBuffer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\StateProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ShaderResourceViewProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TreeTraverser.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\UAVBufferViewProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\UAVBufferViewProxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)HelixToolkit.SharpDX.Shared.licenseheader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Utilities\Buffers\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Utilities\Octrees\" />
   </ItemGroup>
 </Project>
