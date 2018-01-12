@@ -99,6 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private readonly OrthographicCameraCore orthoCamera = new OrthographicCameraCore() { NearPlaneDistance = 1, FarPlaneDistance = 500 };
         private readonly PerspectiveCameraCore persCamera = new PerspectiveCameraCore() { NearPlaneDistance = 1, FarPlaneDistance = 500 };
         private ProjectionCamera lightCamera;
+        private readonly Stack<IEnumerator<IRenderable>> stackCache = new Stack<IEnumerator<IRenderable>>();
 
         protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
@@ -125,8 +126,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 CameraCore camera = lightCamera == null ? null : lightCamera;
                 if (lightCamera == null)
                 {
-                    var root = context.RenderHost.Viewport.Renderables
-                        .Where(x => x is ILight3D && x.IsRenderable && (((ILight3D)x).LightType == LightType.Directional || ((ILight3D)x).LightType == LightType.Spot))
+                    var root = context.RenderHost.Viewport.Renderables.Take(Constants.MaxLights)
+                        .PreorderDFT(x => x is ILight3D && x.IsRenderable 
+                        && (((ILight3D)x).LightType == LightType.Directional || ((ILight3D)x).LightType == LightType.Spot), stackCache)
                         .Take(1).Select(x=>x as ILight3D);
                     foreach (var light in root)
                     {
@@ -156,9 +158,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 if (camera == null)
                 {
-                    return false;
+                    shadowCore.FoundLightSource = false;
                 }
-                shadowCore.LightViewProjectMatrix = camera.GetViewMatrix() * camera.GetProjectionMatrix(shadowCore.Width / shadowCore.Height);
+                else
+                {
+                    shadowCore.FoundLightSource = true;
+                    shadowCore.LightViewProjectMatrix = camera.GetViewMatrix() * camera.GetProjectionMatrix(shadowCore.Width / shadowCore.Height);                    
+                }
                 return true;
             }
             else { return false; }

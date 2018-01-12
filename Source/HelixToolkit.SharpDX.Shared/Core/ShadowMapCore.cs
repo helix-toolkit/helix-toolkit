@@ -101,6 +101,10 @@ namespace HelixToolkit.UWP.Core
             get { return modelStruct.LightViewProjection; }
         }
         /// <summary>
+        /// Set to true if found the light source, otherwise false.
+        /// </summary>
+        public bool FoundLightSource { set; get; } = false;
+        /// <summary>
         /// Update shadow map every N frames
         /// </summary>
         public int UpdateFrequency { set; get; } = 1;
@@ -204,10 +208,6 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            context.IsShadowPass = true;
-            var orgFrustum = context.BoundingFrustum;
-            context.BoundingFrustum = new BoundingFrustum(LightViewProjectMatrix);
-#if !TEST            
             if (resolutionChanged)
             {
                 RemoveAndDispose(ref viewResource);
@@ -216,14 +216,23 @@ namespace HelixToolkit.UWP.Core
                 viewResource.CreateView(ShaderResourceViewDesc);
                 resolutionChanged = false;
             }
+
+            deviceContext.DeviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
+            if (!FoundLightSource)
+            {
+                return;
+            }
+            context.IsShadowPass = true;
+            var orgFrustum = context.BoundingFrustum;
+            context.BoundingFrustum = new BoundingFrustum(LightViewProjectMatrix);
+#if !TEST            
             deviceContext.DeviceContext.Rasterizer.SetViewport(0, 0, Width, Height);
             DepthStencilView orgDSV;
             var orgRT = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1, out orgDSV);
-            deviceContext.DeviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
-            deviceContext.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
-            pendingRenders.Clear();
             try
             {
+                deviceContext.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
+                pendingRenders.Clear();
                 pendingRenders.AddRange(context.RenderHost.Viewport.Renderables
                     .PreorderDFTGetCores(x => x.IsRenderable && !(x is ILight3D) && x.RenderCore.IsThrowingShadow, stackCache));
                 foreach (var item in pendingRenders)
