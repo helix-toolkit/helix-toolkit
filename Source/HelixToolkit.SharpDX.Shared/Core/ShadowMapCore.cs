@@ -69,7 +69,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        public virtual float Intensity
+        public float Intensity
         {
             set
             {
@@ -81,7 +81,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        public virtual float Bias
+        public float Bias
         {
             set
             {

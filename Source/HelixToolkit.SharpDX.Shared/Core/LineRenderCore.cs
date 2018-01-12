@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        public virtual float Thickness
+        public float Thickness
         {
             set
             {
@@ -36,7 +36,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        public virtual float Smoothness
+        public float Smoothness
         {
             set
             {
@@ -48,7 +48,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Final Line Color = LineColor * PerVertexLineColor
         /// </summary>
-        public virtual Color4 LineColor
+        public Color4 LineColor
         {
             set
             {

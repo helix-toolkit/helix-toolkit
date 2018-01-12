@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        public virtual bool InvertNormal
+        public bool InvertNormal
         {
             set
             {

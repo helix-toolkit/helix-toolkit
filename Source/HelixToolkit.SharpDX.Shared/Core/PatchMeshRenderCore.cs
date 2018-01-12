@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP.Core
     using Render;
     public class PatchMeshRenderCore : MeshRenderCore, IPatchRenderParams
     {
-        public virtual float MinTessellationDistance
+        public float MinTessellationDistance
         {
             set
             {
@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP.Core
             get { return modelStruct.MinTessDistance; }
         }
 
-        public virtual float MaxTessellationDistance
+        public float MaxTessellationDistance
         {
             set
             {
@@ -37,7 +37,7 @@ namespace HelixToolkit.UWP.Core
             get { return modelStruct.MaxTessDistance; }
         }
 
-        public virtual float MinTessellationFactor
+        public float MinTessellationFactor
         {
             set
             {
@@ -50,7 +50,7 @@ namespace HelixToolkit.UWP.Core
         }
 
 
-        public virtual float MaxTessellationFactor
+        public float MaxTessellationFactor
         {
             set
             {

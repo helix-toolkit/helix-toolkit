@@ -14,7 +14,7 @@ namespace HelixToolkit.UWP.Core
     using Render;
     public class PointRenderCore : GeometryRenderCore<PointLineModelStruct>, IPointRenderParams
     {
-        public virtual float Width
+        public float Width
         {
             set
             {
@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP.Core
             get { return modelStruct.Params.X; }
         }
 
-        public virtual float Height
+        public float Height
         {
             set
             {
@@ -31,7 +31,7 @@ namespace HelixToolkit.UWP.Core
             }
             get { return modelStruct.Params.Y; }
         }
-        public virtual PointFigure Figure
+        public PointFigure Figure
         {
             set
             {
@@ -39,7 +39,7 @@ namespace HelixToolkit.UWP.Core
             }
             get { return (PointFigure)modelStruct.Params.Z; }
         }
-        public virtual float FigureRatio
+        public float FigureRatio
         {
             set
             {
@@ -50,7 +50,17 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Final Point Color = PointColor * PerVertexPointColor
         /// </summary>
-        public virtual Color4 PointColor { set; get; } = Color.Black;
+        public Color4 PointColor
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Color, value);
+            }
+            get
+            {
+                return modelStruct.Color.ToColor4();
+            }
+        }
 
         public PointRenderCore()
         {
@@ -58,6 +68,7 @@ namespace HelixToolkit.UWP.Core
             Height = 0.5f;
             Figure = PointFigure.Ellipse;
             FigureRatio = 0.25f;
+            PointColor = Color.Black;
         }
 
         protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
@@ -65,7 +76,6 @@ namespace HelixToolkit.UWP.Core
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             modelStruct.Color = PointColor;
-            modelStruct.Params = new Vector4(Width, Height, (int)Figure, FigureRatio);
         }
 
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
