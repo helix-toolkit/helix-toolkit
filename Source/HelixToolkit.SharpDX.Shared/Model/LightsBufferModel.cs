@@ -16,11 +16,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model
     /// <summary>
     /// Default Light Model
     /// </summary>
-    public class LightsBufferModel : ILightsBufferProxy<LightStruct>
+    public sealed class LightsBufferModel : ILightsBufferProxy<LightStruct>
     {
-        public const int SizeInBytes = LightStruct.SizeInBytes * Constants.MaxLights + 4 * 4;
+        public const int SizeInBytes = LightStruct.SizeInBytes * Constants.MaxLights + 4 * (4 * 2);
+
         private readonly LightStruct[] lights = new LightStruct[Constants.MaxLights];
         public Color4 AmbientLight { set; get; } = new Color4(0, 0, 0, 1);
+        public int LightCount { private set; get; } = 0;
 
         public int BufferSize
         {
@@ -35,6 +37,16 @@ namespace HelixToolkit.Wpf.SharpDX.Model
             }
         }
 
+        public void IncrementLightCount()
+        {
+            ++LightCount;
+        }
+
+        public void ResetLightCount()
+        {
+            LightCount = 0;
+        }
+
         public void UploadToBuffer(IBufferProxy buffer, DeviceContext context)
         {
             if (buffer.StructureSize == SizeInBytes)
@@ -47,6 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
                     {
                         stream.WriteRange(Lights, 0, Lights.Length);
                         stream.Write(AmbientLight);
+                        stream.Write(LightCount);
                         context.UnmapSubresource(buffer.Buffer, 0);
                     }
                 }

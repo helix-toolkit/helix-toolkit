@@ -46,13 +46,13 @@ namespace HelixToolkit.UWP.Core
         {
             if (CanRender(context.LightScene))
             {
-                OnRender(context.LightScene, context.LightScene.LightCount);
+                OnRender(context.LightScene, context.LightScene.LightModels.LightCount);
                 switch (LightType)
                 {
                     case LightType.Ambient:
                         break;
                     default:
-                        ++context.LightScene.LightCount;
+                        context.LightScene.LightModels.IncrementLightCount();
                         break;
                 }
             }
@@ -60,12 +60,11 @@ namespace HelixToolkit.UWP.Core
 
         protected virtual bool CanRender(Light3DSceneShared lightScene)
         {
-            return IsAttached && lightScene.LightCount < Constants.MaxLights;
+            return IsAttached && lightScene.LightModels.LightCount < Constants.MaxLights;
         }
 
         protected virtual void OnRender(Light3DSceneShared lightScene, int idx)
         {
-            lightScene.LightModels.Lights[idx].LightEnabled = 1;
             lightScene.LightModels.Lights[idx].LightColor = Color;
             lightScene.LightModels.Lights[idx].LightType = (int)LightType;
         }

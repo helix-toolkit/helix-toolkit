@@ -283,8 +283,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public struct LightStruct
     {
         public int LightType;
-        public int LightEnabled;
-        Vector2 padding;
+        Vector3 padding;
         public Vector4 LightDir;
         public Vector4 LightPos;
         public Vector4 LightAtt;

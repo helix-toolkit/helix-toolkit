@@ -23,16 +23,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model
     {
         public readonly ILightsBufferProxy<LightStruct> LightModels = new LightsBufferModel();
 
-        private int lightCount = 0;
-        public int LightCount
-        {
-            get { return lightCount; }
-            set
-            {
-                lightCount = value;
-            }
-        }
-
         private IBufferProxy buffer;
         /// <summary>
         /// 
@@ -45,15 +35,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         public void UploadToBuffer(DeviceContext context)
         {
             LightModels.UploadToBuffer(buffer, context);
-        }
-
-        public void ResetLightCount()
-        {
-            LightCount = 0;
-            for (int i = 0; i < Constants.MaxLights; ++i)
-            {
-                LightModels.Lights[i].LightEnabled = 0;
-            }
         }
 
         #region IDisposable Support

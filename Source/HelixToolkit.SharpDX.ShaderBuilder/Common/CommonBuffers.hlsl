@@ -73,7 +73,8 @@ cbuffer cbLights : register(b3)
 {
     LightStruct Lights[LIGHTS];
     float4 vLightAmbient = float4(0.2f, 0.2f, 0.2f, 1.0f);
-
+    int NumLights;
+    float3 padding;
 };
 
 #if defined(LINE) // model for line, point and billboard

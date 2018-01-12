@@ -96,20 +96,9 @@ float4 main(PSInput input) : SV_Target
     }
     float4 DI = float4(0, 0, 0, 0);
     // compute lighting
-    for (int i = 0; i < LIGHTS; ++i)
+    for (int i = 0; i < NumLights; ++i)
     {
-        if (Lights[i].iLightType == 0)
-        {
-            break;
-        }
-	    ///If light color is not enable, skip	
-		// Same as for the Phong PixelShader, but use
-	    // calcBlinnPhongLighting instead.	
-        if (!Lights[i].bLightEnable)
-        {
-            continue;
-        }
-        else if (Lights[i].iLightType == 1) // directional
+        if (Lights[i].iLightType == 1) // directional
         {
             float3 d = normalize((float3) Lights[i].vLightDir); // light dir	
             float3 h = normalize(eye + d);

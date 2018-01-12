@@ -11,8 +11,7 @@
 struct LightStruct
 {
     int iLightType; //4
-    bool bLightEnable;
-    float2 paddingL;
+    float3 paddingL;
 	// the light direction is here the vector which looks towards the light
     float4 vLightDir; //8
     float4 vLightPos; //12
