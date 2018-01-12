@@ -529,7 +529,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     if (root.HasChildren)
                     {
-                        Parallel.ForEach(root.ChildNodes, (subTree) =>
+                        Parallel.ForEach(root.ChildNodes.Where(x => x != null), (subTree) =>
                         {
                             TreeTraversal(subTree, new Stack<IEnumerator<IOctree>>(), criteria, process, breakCriteria, false);
                         });
@@ -690,7 +690,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected abstract BoundingBox GetBoundingBoxFromItem(T item);
 
         /// <summary>
@@ -748,10 +747,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Objects.Clear();
             foreach (var item in ChildNodes)
             {
-                if (item != null)
-                {
-                    item.Clear();
-                }
+                item?.Clear();
             }
             Array.Clear(ChildNodes, 0, ChildNodes.Length);
         }
@@ -1099,7 +1095,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return Expand(this, ref direction, CreateNodeWithParent);
         }
 
-        private static Vector3 epsilon = new Vector3(float.Epsilon, float.Epsilon, float.Epsilon);
+        private readonly static Vector3 epsilon = new Vector3(float.Epsilon, float.Epsilon, float.Epsilon);
 
         //[MethodImpl(MethodImplOptions.AggressiveInlining)]
         //private static float CorrectFloatError(float value)
@@ -1590,10 +1586,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
     /// <summary>
-    /// MeshGeometryOctree slices mesh geometry by triangles into octree. Objects are tuple of each triangle index and its bounding box.
+    /// MeshGeometryOctree slices mesh geometry by triangles into octree. Objects are KeyValuePair of each triangle index and its bounding box.
     /// </summary>
     public class MeshGeometryOctree
-        : OctreeBase<Tuple<int, BoundingBox>>
+        : OctreeBase<KeyValuePair<int, BoundingBox>>
     {
         /// <summary>
         /// 
@@ -1627,11 +1623,11 @@ namespace HelixToolkit.Wpf.SharpDX
             Positions = positions;
             Indices = indices;
             Bound = BoundingBoxExtensions.FromPoints(positions);
-            Objects = new List<Tuple<int, BoundingBox>>(indices.Count / 3);
-            // Construct triangle index and its bounding box tuple
+            Objects = new List<KeyValuePair<int, BoundingBox>>(indices.Count / 3);
+            // Construct triangle index and its bounding box KeyValuePair
             foreach (var i in Enumerable.Range(0, indices.Count / 3))
             {
-                Objects.Add(new Tuple<int, BoundingBox>(i, GetBoundingBox(i)));
+                Objects.Add(new KeyValuePair<int, BoundingBox>(i, GetBoundingBox(i)));
             }
         }
         /// <summary>
@@ -1644,7 +1640,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parent"></param>
         /// <param name="paramter"></param>
         /// <param name="stackCache"></param>
-        protected MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, ref BoundingBox bound, List<Tuple<int, BoundingBox>> triIndex,
+        protected MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, ref BoundingBox bound, List<KeyValuePair<int, BoundingBox>> triIndex,
             IOctree parent, OctreeBuildParameter paramter, Stack<IEnumerator<IOctree>> stackCache)
             : base(ref bound, triIndex, parent, paramter, stackCache)
         {
@@ -1659,7 +1655,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parent"></param>
         /// <param name="paramter"></param>
         /// <param name="stackCache"></param>
-        protected MeshGeometryOctree(BoundingBox bound, List<Tuple<int, BoundingBox>> list, IOctree parent, OctreeBuildParameter paramter, Stack<IEnumerator<IOctree>> stackCache)
+        protected MeshGeometryOctree(BoundingBox bound, List<KeyValuePair<int, BoundingBox>> list, IOctree parent, OctreeBuildParameter paramter, Stack<IEnumerator<IOctree>> stackCache)
             : base(ref bound, list, parent, paramter, stackCache)
         { }
 
@@ -1684,9 +1680,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        protected override BoundingBox GetBoundingBoxFromItem(Tuple<int, BoundingBox> item)
+        protected override BoundingBox GetBoundingBoxFromItem(KeyValuePair<int, BoundingBox> item)
         {
-            return item.Item2;
+            return item.Value;
         }
         /// <summary>
         /// 
@@ -1695,7 +1691,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="objList"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected override IOctree CreateNodeWithParent(ref BoundingBox region, List<Tuple<int, BoundingBox>> objList, IOctree parent)
+        protected override IOctree CreateNodeWithParent(ref BoundingBox region, List<KeyValuePair<int, BoundingBox>> objList, IOctree parent)
         {
             return new MeshGeometryOctree(Positions, Indices, ref region, objList, parent, parent.Parameter, this.stack);
         }
@@ -1729,7 +1725,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 isIntersect = true;
                 foreach (var t in this.Objects)
                 {
-                    var idx = t.Item1 * 3;
+                    var idx = t.Key * 3;
                     var t1 = Indices[idx];
                     var t2 = Indices[idx + 1];
                     var t3 = Indices[idx + 2];
@@ -1756,8 +1752,8 @@ namespace HelixToolkit.Wpf.SharpDX
                             n.Normalize();
                             // transform hit-info to world space now:
                             result.NormalAtHit = n;// Vector3.TransformNormal(n, m).ToVector3D();
-                            result.TriangleIndices = new System.Tuple<int, int, int>(t1, t2, t3);
-                            result.Tag = t.Item1;
+                            result.TriangleIndices = new Tuple<int, int, int>(t1, t2, t3);
+                            result.Tag = t.Key;
                             isHit = true;
                         }
                     }
@@ -1803,12 +1799,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 isIntersect = true;
                 foreach (var t in Objects)
                 {
-                    containment = t.Item2.Contains(sphere);
+                    containment = t.Value.Contains(sphere);
                     if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
                     {
                         Vector3 cloestPoint;
 
-                        var idx = t.Item1 * 3;
+                        var idx = t.Key * 3;
                         var t1 = Indices[idx];
                         var t2 = Indices[idx + 1];
                         var t3 = Indices[idx + 2];
@@ -1823,7 +1819,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             tempResult.IsValid = true;
                             tempResult.PointHit = cloestPoint;
                             tempResult.TriangleIndices = new Tuple<int, int, int>(t1, t2, t3);
-                            tempResult.Tag = t.Item1;
+                            tempResult.Tag = t.Key;
                             isHit = true;
                         }
                     }
@@ -2087,7 +2083,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Octree for instancing
     /// </summary>
-    public class InstancingModel3DOctree : OctreeBase<Tuple<int, BoundingBox>>
+    public class InstancingModel3DOctree : OctreeBase<KeyValuePair<int, BoundingBox>>
     {
         private IList<Matrix> InstanceMatrix;
 
@@ -2107,7 +2103,7 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var m in instanceMatrix)
             {
                 var b = geometryBound.Transform(m);// BoundingBox.FromPoints(geometryBound.GetCorners().Select(x => Vector3.TransformCoordinate(x, m)).ToArray());
-                Objects.Add(new Tuple<int, BoundingBox>(counter, b));
+                Objects.Add(new KeyValuePair<int, BoundingBox>(counter, b));
                 BoundingBox.Merge(ref totalBound, ref b, out totalBound);
                 ++counter;
             }
@@ -2122,7 +2118,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parent"></param>
         /// <param name="parameter"></param>
         /// <param name="stackCache"></param>
-        protected InstancingModel3DOctree(ref BoundingBox bound, IList<Matrix> instanceMatrix, List<Tuple<int, BoundingBox>> objects, IOctree parent, OctreeBuildParameter parameter, Stack<IEnumerator<IOctree>> stackCache = null)
+        protected InstancingModel3DOctree(ref BoundingBox bound, IList<Matrix> instanceMatrix, List<KeyValuePair<int, BoundingBox>> objects, IOctree parent, OctreeBuildParameter parameter, Stack<IEnumerator<IOctree>> stackCache = null)
             : base(ref bound, objects, parent, parameter, stackCache)
         {
             InstanceMatrix = instanceMatrix;
@@ -2166,12 +2162,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 isIntersect = true;
                 foreach (var t in this.Objects)
                 {
-                    var b = t.Item2.Transform(modelMatrix);// BoundingBox.FromPoints(t.Item2.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+                    var b = t.Value.Transform(modelMatrix);// BoundingBox.FromPoints(t.Item2.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
                     if (b.Intersects(ref rayWS))
                     {
                         var result = new HitTestResult()
                         {
-                            Tag = t.Item1
+                            Tag = t.Key
                         };
                         hits.Add(result);
                         isHit = true;
@@ -2187,7 +2183,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="objList"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected override IOctree CreateNodeWithParent(ref BoundingBox bound, List<Tuple<int, BoundingBox>> objList, IOctree parent)
+        protected override IOctree CreateNodeWithParent(ref BoundingBox bound, List<KeyValuePair<int, BoundingBox>> objList, IOctree parent)
         {
             return new InstancingModel3DOctree(ref bound, this.InstanceMatrix, objList, parent, this.Parameter, this.stack);
         }
@@ -2196,9 +2192,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        protected override BoundingBox GetBoundingBoxFromItem(Tuple<int, BoundingBox> item)
+        protected override BoundingBox GetBoundingBoxFromItem(KeyValuePair<int, BoundingBox> item)
         {
-            return item.Item2;
+            return item.Value;
         }
     }
 }

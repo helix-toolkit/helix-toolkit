@@ -68,11 +68,11 @@ namespace HelixToolkit.UWP.Shaders
             throw new NotImplementedException();
         }
         /// <summary>
-        /// <see cref="IShader.BindTextures(DeviceContext, IEnumerable{Tuple{int, ShaderResourceView}})"/>
+        /// <see cref="IShader.BindTextures(DeviceContext, IEnumerable{KeyValuePair{int, ShaderResourceView}})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="textures"></param>
-        public override void BindTextures(DeviceContext context, IEnumerable<Tuple<int, ShaderResourceView>> textures)
+        public override void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures)
         {
             throw new NotImplementedException();
         }

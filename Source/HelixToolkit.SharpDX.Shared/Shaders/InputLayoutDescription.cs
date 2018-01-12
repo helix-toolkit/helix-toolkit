@@ -15,10 +15,10 @@ namespace HelixToolkit.UWP.Shaders
 {
     public sealed class InputLayoutDescription
     {
-        public readonly Tuple<byte[], InputElement[]> Description;
+        public readonly KeyValuePair<byte[], InputElement[]> Description;
         public InputLayoutDescription(byte[] byteCode, InputElement[] elements)
         {
-            Description = new Tuple<byte[], InputElement[]>(byteCode, elements);
+            Description = new KeyValuePair<byte[], InputElement[]>(byteCode, elements);
         }
     }
 }

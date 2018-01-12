@@ -67,7 +67,7 @@ namespace HelixToolkit.UWP.Shaders
 
         }
 
-        public override void BindTextures(DeviceContext context, IEnumerable<Tuple<int, ShaderResourceView>> textures)
+        public override void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures)
         {
 
         }

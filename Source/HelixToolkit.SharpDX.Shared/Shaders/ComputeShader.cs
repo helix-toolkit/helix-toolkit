@@ -73,15 +73,15 @@ namespace HelixToolkit.UWP.Shaders
             context.ComputeShader.SetShaderResource(slot, texture);
         }
         /// <summary>
-        /// <see cref="IShader.BindTextures(DeviceContext, IEnumerable{Tuple{int, ShaderResourceView}})"/>
+        /// <see cref="IShader.BindTextures(DeviceContext, IEnumerable{KeyValuePair{int, ShaderResourceView}})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="textures"></param>
-        public override void BindTextures(DeviceContext context, IEnumerable<Tuple<int, ShaderResourceView>> textures)
+        public override void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures)
         {
             foreach (var texture in textures)
             {
-                context.ComputeShader.SetShaderResource(texture.Item1, texture.Item2);
+                context.ComputeShader.SetShaderResource(texture.Key, texture.Value);
             }
         }
         /// <summary>
@@ -108,15 +108,15 @@ namespace HelixToolkit.UWP.Shaders
             context.ComputeShader.SetUnorderedAccessView(slot, uav);
         }
         /// <summary>
-        /// <see cref="IShader.BindUAVs(DeviceContext, IEnumerable{Tuple{int, UnorderedAccessView}})"/>
+        /// <see cref="IShader.BindUAVs(DeviceContext, IEnumerable{KeyValuePair{int, UnorderedAccessView}})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="uavs"></param>
-        public override void BindUAVs(DeviceContext context, IEnumerable<Tuple<int, UnorderedAccessView>> uavs)
+        public override void BindUAVs(DeviceContext context, IEnumerable<KeyValuePair<int, UnorderedAccessView>> uavs)
         {
             foreach(var uav in uavs)
             {
-                context.ComputeShader.SetUnorderedAccessView(uav.Item1, uav.Item2);
+                context.ComputeShader.SetUnorderedAccessView(uav.Key, uav.Value);
             }
         }
 
@@ -147,15 +147,15 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
-        /// <see cref="IShader.BindSamplers(DeviceContext, IEnumerable{Tuple{int, SamplerState}})"/> 
+        /// <see cref="IShader.BindSamplers(DeviceContext, IEnumerable{KeyValuePair{int, SamplerState}})"/> 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="samplers"></param>
-        public override void BindSamplers(DeviceContext context, IEnumerable<Tuple<int, SamplerState>> samplers)
+        public override void BindSamplers(DeviceContext context, IEnumerable<KeyValuePair<int, SamplerState>> samplers)
         {
             foreach (var sampler in samplers)
             {
-                context.ComputeShader.SetSampler(sampler.Item1, sampler.Item2);
+                context.ComputeShader.SetSampler(sampler.Key, sampler.Value);
             }
         }
     }

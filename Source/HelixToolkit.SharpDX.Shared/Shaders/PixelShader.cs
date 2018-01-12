@@ -76,15 +76,15 @@ namespace HelixToolkit.UWP.Shaders
             context.PixelShader.SetShaderResource(slot, texture);
         }
         /// <summary>
-        /// <see cref="IShader.BindTextures(DeviceContext, IEnumerable{Tuple{int, ShaderResourceView}})"/>
+        /// <see cref="IShader.BindTextures(DeviceContext, IEnumerable{KeyValuePair{int, ShaderResourceView}})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="textures"></param>
-        public override void BindTextures(DeviceContext context, IEnumerable<Tuple<int, ShaderResourceView>> textures)
+        public override void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures)
         {
             foreach (var texture in textures)
             {
-                context.PixelShader.SetShaderResource(texture.Item1, texture.Item2);
+                context.PixelShader.SetShaderResource(texture.Key, texture.Value);
             }
         }
 
@@ -114,15 +114,15 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
-        /// <see cref="IShader.BindSamplers(DeviceContext, IEnumerable{Tuple{int, SamplerState}})"/> 
+        /// <see cref="IShader.BindSamplers(DeviceContext, IEnumerable{KeyValuePair{int, SamplerState}})"/> 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="samplers"></param>
-        public override void BindSamplers(DeviceContext context, IEnumerable<Tuple<int, SamplerState>> samplers)
+        public override void BindSamplers(DeviceContext context, IEnumerable<KeyValuePair<int, SamplerState>> samplers)
         {
             foreach (var sampler in samplers)
             {
-                context.PixelShader.SetSampler(sampler.Item1, sampler.Item2);
+                context.PixelShader.SetSampler(sampler.Key, sampler.Value);
             }
         }
     }
