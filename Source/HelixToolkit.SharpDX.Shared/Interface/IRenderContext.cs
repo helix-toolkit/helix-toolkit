@@ -34,8 +34,6 @@ namespace HelixToolkit.Wpf.SharpDX
         double ActualWidth { get; }
         double ActualHeight { get; }
 
-        DeviceContext DeviceContext { get; }
-
         TimeSpan TimeStamp { get; }
         Light3DSceneShared LightScene { get; }
         GlobalTransformStruct GlobalTransform { get; }

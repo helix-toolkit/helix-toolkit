@@ -6,6 +6,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System;
 using SharpDX;
 using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 using System.Linq;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -13,11 +15,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using global::SharpDX.Direct3D;
-    using global::SharpDX.DXGI;
     using Shaders;
     using System.Collections.Generic;
     using Utilities;
+    using Render;
 
     /// <summary>
     /// 
@@ -201,7 +202,7 @@ namespace HelixToolkit.UWP.Core
         private readonly List<IRenderCore> pendingRenders = new List<IRenderCore>(100);
         private readonly Stack<IEnumerator<IRenderable>> stackCache = new Stack<IEnumerator<IRenderable>>(20);
 
-        protected override void OnRender(IRenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             context.IsShadowPass = true;
             var orgFrustum = context.BoundingFrustum;
@@ -215,11 +216,11 @@ namespace HelixToolkit.UWP.Core
                 viewResource.CreateView(ShaderResourceViewDesc);
                 resolutionChanged = false;
             }
-            context.DeviceContext.Rasterizer.SetViewport(0, 0, Width, Height);
+            deviceContext.DeviceContext.Rasterizer.SetViewport(0, 0, Width, Height);
             DepthStencilView orgDSV;
-            var orgRT = context.DeviceContext.OutputMerger.GetRenderTargets(1, out orgDSV);
-            context.DeviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
-            context.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
+            var orgRT = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1, out orgDSV);
+            deviceContext.DeviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
+            deviceContext.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
             pendingRenders.Clear();
             try
             {
@@ -227,7 +228,7 @@ namespace HelixToolkit.UWP.Core
                     .PreorderDFTGetCores(x => x.IsRenderable && !(x is ILight3D) && x.RenderCore.IsThrowingShadow, stackCache));
                 foreach (var item in pendingRenders)
                 {
-                    item.Render(context);
+                    item.Render(context, deviceContext);
                 }
             }
             catch (Exception ex)
@@ -238,13 +239,13 @@ namespace HelixToolkit.UWP.Core
             {
                 context.IsShadowPass = false;
                 context.BoundingFrustum = orgFrustum;
-                context.DeviceContext.OutputMerger.SetRenderTargets(orgDSV, orgRT);
+                deviceContext.DeviceContext.OutputMerger.SetRenderTargets(orgDSV, orgRT);
                 orgDSV?.Dispose();
                 foreach (var rt in orgRT)
                 {
                     rt?.Dispose();
                 }
-                context.DeviceContext.Rasterizer.SetViewport(0, 0, (float)context.ActualWidth, (float)context.ActualHeight);
+                deviceContext.DeviceContext.Rasterizer.SetViewport(0, 0, (float)context.ActualWidth, (float)context.ActualHeight);
                 context.SharedResource.ShadowView = viewResource.TextureView;
             }
 #endif

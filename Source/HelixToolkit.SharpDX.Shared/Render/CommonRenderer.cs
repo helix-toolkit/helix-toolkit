@@ -15,11 +15,25 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     /// <summary>
     /// 
     /// </summary>
-    public class CommonRenderer : IRenderer
+    public class CommonRenderer : DisposeObject, IRenderer
     {
         private List<IRenderCore> pendingRenders = new List<IRenderCore>(100);
         private readonly Stack<IEnumerator<IRenderable>> stackCache1 = new Stack<IEnumerator<IRenderable>>(20);
         private readonly Stack<IEnumerator<IRenderable>> stackCache2 = new Stack<IEnumerator<IRenderable>>(20);
+
+        private Device device;
+        protected DeviceContextProxy ImmediateContext;
+
+        public CommonRenderer(Device device)
+        {
+            this.device = device;
+            ImmediateContext = new DeviceContextProxy(device.ImmediateContext);
+        }
+
+        public virtual void Initialize()
+        {
+
+        }
         /// <summary>
         /// Renders the scene.
         /// </summary>
@@ -35,9 +49,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 item.Render(context);
             }
 #else
-            UpdateGlobalVariables(context, renderables).Wait();
+            var task = UpdateGlobalVariables(context, renderables);
 
-            SetRenderTargets(context.DeviceContext, parameter);
+            SetRenderTargets(ImmediateContext, parameter);
           
             pendingRenders.Clear();
             pendingRenders.AddRange(renderables.PreorderDFTGetCores((x) =>
@@ -46,11 +60,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 return x.IsRenderable && !(x is ILight3D);
             }, stackCache1));
 
-            //task.Wait();
+            task.Wait();
 
             foreach (var renderable in pendingRenders)
             {
-                renderable.Render(context);
+                renderable.Render(context, ImmediateContext);
             }
 #endif
         }
@@ -67,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             foreach (IRenderable e in renderables.Take(Constants.MaxLights)
                 .PreorderDFT((x)=> x is ILight3D && x.IsRenderable, stackCache2).Take(Constants.MaxLights))
             {
-                e.Render(context);
+                e.Render(context, ImmediateContext);
             }
             context.UpdatePerFrameData();
         }

@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Core
 {
     using Utilities;
     using Shaders;
-
+    using Render;
     public class PatchMeshRenderCore : MeshRenderCore, IPatchRenderParams
     {
         public virtual float MinTessellationDistance
@@ -115,31 +115,31 @@ namespace HelixToolkit.UWP.Core
             MaxTessellationFactor = 1;
         }
 
-        protected override void OnRender(IRenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             if (EnableTessellation)
             {
-                OnRenderTessellation(context);
+                OnRenderTessellation(context, deviceContext);
             }
             else
             {
-                base.OnRender(context);
+                base.OnRender(context, deviceContext);
             }
         }
 
-        protected virtual void OnRenderTessellation(IRenderContext context)
+        protected virtual void OnRenderTessellation(IRenderContext context, DeviceContextProxy deviceContext)
         {
             switch (meshType)
             {
                 case MeshTopologyEnum.PNTriangles:
-                    context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
+                    deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
                     break;
                 case MeshTopologyEnum.PNQuads:
-                    context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith4ControlPoints;
+                    deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith4ControlPoints;
                     break;
             }
-            base.OnRender(context);
-            context.DeviceContext.InputAssembler.PrimitiveTopology = GeometryBuffer.Topology;
+            base.OnRender(context, deviceContext);
+            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = GeometryBuffer.Topology;
         }
     }
 }

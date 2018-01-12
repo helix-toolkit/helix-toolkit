@@ -9,7 +9,7 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Shaders;
-
+    using Render;
     public class MeshRenderCore : MaterialGeometryRenderCore, IInvertNormal
     {
         /// <summary>
@@ -37,30 +37,30 @@ namespace HelixToolkit.UWP.Core
             shadowMapSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowMapTextureName);
         }
 
-        protected override void OnRender(IRenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {                  
-            DefaultShaderPass.BindShader(context.DeviceContext);
-            DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            if(!BindMaterialTextures(context.DeviceContext, DefaultShaderPass))
+            DefaultShaderPass.BindShader(deviceContext);
+            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            if(!BindMaterialTextures(deviceContext, DefaultShaderPass))
             {
                 return;
             }
             if (context.RenderHost.IsShadowMapEnabled)
             {
-                DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(context.DeviceContext, shadowMapSlot, context.SharedResource.ShadowView);
+                DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, shadowMapSlot, context.SharedResource.ShadowView);
             }
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            OnDraw(deviceContext, InstanceBuffer);
         }
 
-        protected override void OnRenderShadow(IRenderContext context)
+        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
         {
             if (!IsThrowingShadow)
             {
                 return;
             }
-            ShadowPass.BindShader(context.DeviceContext);
-            ShadowPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            ShadowPass.BindShader(deviceContext);
+            ShadowPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            OnDraw(deviceContext, InstanceBuffer);
         }
     }
 }

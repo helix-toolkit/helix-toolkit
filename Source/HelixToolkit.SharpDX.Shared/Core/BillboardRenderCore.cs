@@ -11,6 +11,7 @@ namespace HelixToolkit.UWP.Core
 {
     using Shaders;
     using Utilities;
+    using Render;
 
     public class BillboardRenderCore : GeometryRenderCore<PointLineModelStruct>, IBillboardRenderParams
     {
@@ -93,12 +94,12 @@ namespace HelixToolkit.UWP.Core
             return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
         }
 
-        protected override void OnRender(IRenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            DefaultShaderPass.BindShader(context.DeviceContext);
-            DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            BindBillboardTexture(context.DeviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel));
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            DefaultShaderPass.BindShader(deviceContext);
+            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            BindBillboardTexture(deviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel));
+            OnDraw(deviceContext, InstanceBuffer);
         }        
 
         protected virtual void BindBillboardTexture(DeviceContext context, IShader shader)

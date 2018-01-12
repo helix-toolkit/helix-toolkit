@@ -8,18 +8,17 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Windows;
-    using System.Windows.Media.Media3D;
 
     using global::SharpDX;
+    using Render;
 
     public class GroupModel3D : GroupElement3D, IHitable, IVisible
     {
-        protected override void OnRender(IRenderContext renderContext)
+        protected override void OnRender(IRenderContext renderContext, DeviceContextProxy deviceContext)
         {
             foreach (var c in this.Items)
             {
-                c.Render(renderContext);
+                c.Render(renderContext, deviceContext);
             }
         }      
 

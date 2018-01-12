@@ -26,6 +26,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             deviceContext = Collect(new DeviceContext(device));
         }
 
+        public DeviceContextProxy(DeviceContext context)
+        {
+            this.deviceContext = context;
+        }
+
         /// <summary>
         /// 
         /// </summary>

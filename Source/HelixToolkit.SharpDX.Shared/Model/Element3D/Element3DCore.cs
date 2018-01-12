@@ -16,6 +16,7 @@ using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX.Core
 #endif
 {
+    using Render;
 #if NETFX_CORE
     public abstract class Element3DCore : IDisposable, IRenderable, IGUID, ITransform, INotifyPropertyChanged
 #else
@@ -292,18 +293,18 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
         /// </summary>
         /// <param name="context">The context.</param>
-        public void Render(IRenderContext context)
+        public void Render(IRenderContext context, DeviceContextProxy deviceContext)
         {
             Update(context);
             if (IsRenderable)
             {
-                OnRender(context);
+                OnRender(context, deviceContext);
             }
         }
 
-        protected virtual void OnRender(IRenderContext context)
+        protected virtual void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            RenderCore.Render(context);
+            RenderCore.Render(context, deviceContext);
         }
         #endregion
 

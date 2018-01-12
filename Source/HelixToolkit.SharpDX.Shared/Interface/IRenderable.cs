@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP
     using System.Collections.Generic;
     using Core;
     using System;
-
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -38,7 +38,7 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         /// <param name="context"></param>
-        void Render(IRenderContext context);
+        void Render(IRenderContext context, DeviceContextProxy deviceContext);
     }
 
     public interface IViewport3DX

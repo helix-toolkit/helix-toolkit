@@ -74,7 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public IRenderContext RenderContext { get { return renderContext; } }
 
-        private readonly IRenderer renderer = new CommonRenderer();
+        private IRenderer renderer;
 
         private RenderParameter renderParameter;
 
@@ -350,12 +350,14 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false; // StardD3D() is called from DP changed handler
             }
-
+            
             surfaceD3D = new DX11ImageSource(EffectsManager.AdapterIndex);
             surfaceD3D.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
             device = EffectsManager.Device;
             Disposer.RemoveAndDispose(ref buffers);
             buffers = new DX11RenderBufferProxy(device);
+            Disposer.RemoveAndDispose(ref renderer);
+            renderer = new CommonRenderer(device);
             CreateAndBindTargets();
             SetDefaultRenderTargets();
             Source = surfaceD3D;
@@ -378,7 +380,7 @@ namespace HelixToolkit.Wpf.SharpDX
             surfaceD3D.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
             Source = null;
             renderContext?.Dispose();
-
+            Disposer.RemoveAndDispose(ref renderer);
             Disposer.RemoveAndDispose(ref surfaceD3D);
 #if MSAA
             Disposer.RemoveAndDispose(ref renderTargetNMS);

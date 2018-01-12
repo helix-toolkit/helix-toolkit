@@ -15,6 +15,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using System.IO;
     using Utilities;
+    using Render;
 
     public class SkyBoxRenderCore : GeometryRenderCore<int>, ISkyboxRenderParams
     {
@@ -156,13 +157,13 @@ namespace HelixToolkit.UWP.Core
             textureSamplerSlot = pass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
         }
 
-        protected override void OnRender(IRenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            DefaultShaderPass.BindShader(context.DeviceContext);
-            DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(context.DeviceContext, cubeTextureSlot, cubeTextureRes);
-            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(context.DeviceContext, textureSamplerSlot, textureSampler);
-            context.DeviceContext.Draw(GeometryBuffer.VertexBuffer.Count, 0);
+            DefaultShaderPass.BindShader(deviceContext);
+            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);
+            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, textureSamplerSlot, textureSampler);
+            deviceContext.DeviceContext.Draw(GeometryBuffer.VertexBuffer.Count, 0);
         }
 
         protected override void OnUpdatePerModelStruct(ref int model, IRenderContext context)

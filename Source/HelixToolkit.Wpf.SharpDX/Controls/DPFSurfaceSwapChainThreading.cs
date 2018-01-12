@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
     using global::SharpDX.Direct3D11;
     using global::SharpDX.DXGI;
+    using HelixToolkit.Wpf.SharpDX.Render;
     using Model;
     using System;
     using System.ComponentModel;
@@ -170,7 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private RenderControl surfaceD3D;
         private IViewport3DX renderRenderable;
         private RenderContext renderContext;
-        private DeviceContext deferredContext;
+        private DeviceContextProxy deferredContext;
    //     private DeferredRenderer deferredRenderer;
         private bool sceneAttached;
         private int targetWidth, targetHeight;
@@ -521,7 +522,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref deferredContext);
             device.ImmediateContext.Flush();
             CreateSwapChain();
-            deferredContext = new DeviceContext(device);
+            deferredContext = new DeviceContextProxy(device);
             backBuffer = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
 
 
@@ -684,9 +685,9 @@ namespace HelixToolkit.Wpf.SharpDX
             device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
             device.ImmediateContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
 
-            deferredContext.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
-            deferredContext.Rasterizer.SetViewport(0, 0, width, height, 0f, 1f);
-            deferredContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
+            deferredContext.DeviceContext.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
+            deferredContext.DeviceContext.Rasterizer.SetViewport(0, 0, width, height, 0f, 1f);
+            deferredContext.DeviceContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
             if (clear)
             {
                 ClearRenderTarget();
@@ -718,13 +719,13 @@ namespace HelixToolkit.Wpf.SharpDX
             if (clearBackBuffer)
             {
                 // device.ImmediateContext.ClearRenderTargetView(colorBufferView, ClearColor);
-                deferredContext.ClearRenderTargetView(colorBufferView, ClearColor);
+                deferredContext.DeviceContext.ClearRenderTargetView(colorBufferView, ClearColor);
             }
 
             if (clearDepthStencilBuffer)
             {
                 //  device.ImmediateContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
-                deferredContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+                deferredContext.DeviceContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
             }
         }
 
@@ -784,7 +785,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
                 renderContext.TimeStamp = timeStamp;
-                renderContext.DeviceContext = deferredContext;
                 // ---------------------------------------------------------------------------
                 // this part is per frame
                 // ---------------------------------------------------------------------------
@@ -885,7 +885,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 try
                 {
                     Render(t0);
-                    var commandList = deferredContext.FinishCommandList(true);
+                    var commandList = deferredContext.DeviceContext.FinishCommandList(true);
                     if (renderThread.InvalidateD3D(commandList))
                     {
                         pendingValidationCycles = false;

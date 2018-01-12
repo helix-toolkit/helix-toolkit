@@ -11,6 +11,7 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Shaders;
+    using Render;
     public class MeshOutlineRenderCore : PatchMeshRenderCore, IMeshOutlineParams
     {
         #region Properties
@@ -125,23 +126,23 @@ namespace HelixToolkit.UWP.Core
             model.Params.Y = OutlineFadingFactor;
         }
 
-        protected override void OnRender(IRenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             if (DrawOutlineBeforeMesh)
             {
-                outlineShaderPass.BindShader(context.DeviceContext);
-                outlineShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-                OnDraw(context.DeviceContext, InstanceBuffer);
+                outlineShaderPass.BindShader(deviceContext);
+                outlineShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                OnDraw(deviceContext, InstanceBuffer);
             }
             if (DrawMesh)
             {
-                base.OnRender(context);
+                base.OnRender(context, deviceContext);
             }
             if (!DrawOutlineBeforeMesh)
             {
-                outlineShaderPass.BindShader(context.DeviceContext);
-                outlineShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-                OnDraw(context.DeviceContext, InstanceBuffer);
+                outlineShaderPass.BindShader(deviceContext);
+                outlineShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                OnDraw(deviceContext, InstanceBuffer);
             }
         }
     }

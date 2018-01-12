@@ -11,6 +11,7 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Shaders;
+    using Render;
     public class PointRenderCore : GeometryRenderCore<PointLineModelStruct>, IPointRenderParams
     {
         public virtual float Width
@@ -72,11 +73,11 @@ namespace HelixToolkit.UWP.Core
             return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
         }
 
-        protected override void OnRender(IRenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            DefaultShaderPass.BindShader(context.DeviceContext);
-            DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            DefaultShaderPass.BindShader(deviceContext);
+            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            OnDraw(deviceContext, InstanceBuffer);
         }
     }
 }

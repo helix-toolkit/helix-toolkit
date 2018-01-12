@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -42,7 +43,7 @@ namespace HelixToolkit.UWP.Core
         /// 
         /// </summary>
         /// <param name="context"></param>
-        void Render(IRenderContext context);
+        void Render(IRenderContext context, DeviceContextProxy deviceContext);
         /// <summary>
         /// Unsubscribe all OnInvalidateRenderer event handler;
         /// </summary>

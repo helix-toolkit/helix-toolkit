@@ -98,7 +98,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public bool EnableBoundingFrustum { set; get; } = false;
 
-        public DeviceContext DeviceContext { set; get; }
+        public DeviceContext DeviceContext { private set; get; }
 
         public double ActualWidth { get; private set; }
 

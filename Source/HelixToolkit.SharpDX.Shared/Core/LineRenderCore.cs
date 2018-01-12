@@ -11,6 +11,7 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Shaders;
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -76,18 +77,18 @@ namespace HelixToolkit.UWP.Core
             return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
         }
 
-        protected override void OnRender(IRenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            DefaultShaderPass.BindShader(context.DeviceContext);
-            DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            DefaultShaderPass.BindShader(deviceContext);
+            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            OnDraw(deviceContext, InstanceBuffer);
         }
 
-        protected override void OnRenderShadow(IRenderContext context)
+        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            ShadowPass.BindShader(context.DeviceContext);
-            ShadowPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            ShadowPass.BindShader(deviceContext);
+            ShadowPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            OnDraw(deviceContext, InstanceBuffer);
         }
     }
 }

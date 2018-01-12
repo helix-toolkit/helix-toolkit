@@ -8,6 +8,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Core;
     using global::SharpDX;
+    using Render;
 
     /// <summary>
     /// Base class for screen space rendering, such as Coordinate System or ViewBox
@@ -151,12 +152,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             RenderCore.Detach();
             base.OnDetach();
-        }
-
-        protected override void OnRender(IRenderContext renderContext)
-        {
-            screenSpaceCore.SetScreenSpacedCoordinates(renderContext, NeedClearDepthBuffer);
-            base.OnRender(renderContext);
         }
     }
 }

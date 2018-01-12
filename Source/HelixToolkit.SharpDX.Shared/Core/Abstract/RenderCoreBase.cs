@@ -16,6 +16,7 @@ namespace HelixToolkit.UWP.Core
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
     using Utilities;
+    using Render;
     /// <summary>
     /// Base class for all render core classes
     /// </summary>
@@ -128,21 +129,22 @@ namespace HelixToolkit.UWP.Core
         /// Trigger OnRender function delegate if CanRender()==true
         /// </summary>
         /// <param name="context"></param>
-        public void Render(IRenderContext context)
+        /// <param name="deviceContext"></param>
+        public void Render(IRenderContext context, DeviceContextProxy deviceContext)
         {
             if (CanRender(context))
             {
                 OnUpdatePerModelStruct(ref modelStruct, context);
-                OnAttachBuffers(context.DeviceContext);
-                OnUploadPerModelConstantBuffers(context.DeviceContext);
-                OnBindRasterState(context.DeviceContext);
+                OnAttachBuffers(deviceContext);
+                OnUploadPerModelConstantBuffers(deviceContext);
+                OnBindRasterState(deviceContext);
                 switch (context.IsShadowPass)
                 {
                     case false:
-                        OnRender(context);
+                        OnRender(context, deviceContext);
                         break;
                     case true:                        
-                        OnRenderShadow(context);
+                        OnRenderShadow(context, deviceContext);
                         break;
                 }
                 PostRender(context);
@@ -153,7 +155,8 @@ namespace HelixToolkit.UWP.Core
         /// Called when [render shadow].
         /// </summary>
         /// <param name="context">The context.</param>
-        protected virtual void OnRenderShadow(IRenderContext context) { }
+        /// <param name="deviceContext"></param>
+        protected virtual void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext) { }
 
         /// <summary>
         /// Attach vertex buffer routine
@@ -173,7 +176,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Actual render function. Used to attach different render states and call the draw call.
         /// </summary>
-        protected abstract void OnRender(IRenderContext context);
+        protected abstract void OnRender(IRenderContext context, DeviceContextProxy deviceContext);
 
         /// <summary>
         /// Called when [update per model structure].

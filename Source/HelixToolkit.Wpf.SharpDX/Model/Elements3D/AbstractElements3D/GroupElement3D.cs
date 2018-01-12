@@ -13,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Linq;
     using System.Windows;
     using System.Windows.Markup;
-
+    using Render;
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement3DCollection 
     /// </summary>
@@ -138,11 +138,11 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }        
 
-        protected override void OnRender(IRenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             foreach (var c in this.Items)
             {
-                c.Render(context);
+                c.Render(context, deviceContext);
             }
         }
 

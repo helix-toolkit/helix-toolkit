@@ -15,6 +15,8 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Model;
+    using Render;
+
     public abstract class LightCoreBase : DisposeObject, ILight3D, IRenderCore
     {
         public Guid GUID { get; } = Guid.NewGuid();
@@ -40,7 +42,7 @@ namespace HelixToolkit.UWP.Core
 
         public event EventHandler<bool> OnInvalidateRenderer;
 
-        public void Render(IRenderContext context)
+        public void Render(IRenderContext context, DeviceContextProxy deviceContext)
         {
             if (CanRender(context.LightScene))
             {

@@ -15,10 +15,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Linq;
     using global::SharpDX;
     using System;
-    using global::SharpDX.Direct3D11;
-    using Core;
     using System.Windows;
-
+    using Render;
     /// <summary>
     ///     Represents a composite Model3D.
     /// </summary>
@@ -103,12 +101,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context">
         /// The context.
         /// </param>
-        protected override void OnRender(IRenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             // you mean like this?
             foreach (var model in this.Children)
             {
-                model.Render(context);
+                model.Render(context, deviceContext);
             }
         }
 

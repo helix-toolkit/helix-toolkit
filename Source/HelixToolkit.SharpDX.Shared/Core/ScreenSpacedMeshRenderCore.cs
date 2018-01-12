@@ -15,6 +15,7 @@ namespace HelixToolkit.UWP.Core
 {
     using Shaders;
     using Utilities;
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -68,17 +69,17 @@ namespace HelixToolkit.UWP.Core
         /// 
         /// </summary>
         GlobalTransformStruct GlobalTransform { get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="clearDepthBuffer"></param>
-        void SetScreenSpacedCoordinates(IRenderContext context, bool clearDepthBuffer);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        void SetScreenSpacedCoordinates(IRenderContext context);
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="context"></param>
+        ///// <param name="clearDepthBuffer"></param>
+        //void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer);
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="context"></param>
+        //void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext);
     }
     /// <summary>
     /// Used to change view matrix and projection matrix to screen spaced coordinate system.
@@ -279,30 +280,31 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
-        protected override void OnRender(IRenderContext renderContext)
+        protected override void OnRender(IRenderContext renderContext, DeviceContextProxy deviceContext)
         {
-            SetScreenSpacedCoordinates(renderContext);
+            SetScreenSpacedCoordinates(renderContext, deviceContext);
         }
 
         protected override void PostRender(IRenderContext context)
         {
         }
-        public void SetScreenSpacedCoordinates(IRenderContext context)
+        public void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            SetScreenSpacedCoordinates(context, true);
+            SetScreenSpacedCoordinates(context, deviceContext, true);
         }
-        public virtual void SetScreenSpacedCoordinates(IRenderContext context, bool clearDepthBuffer)
+
+        protected virtual void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer)
         {
             DepthStencilView dsView;
             if (clearDepthBuffer)
             {
-                context.DeviceContext.OutputMerger.GetRenderTargets(out dsView);
+                deviceContext.DeviceContext.OutputMerger.GetRenderTargets(out dsView);
                 if (dsView == null)
                 {
                     return;
                 }
 
-                context.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
+                deviceContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
                 dsView.Dispose();
             }
             Width = (float)context.ActualWidth;
@@ -314,12 +316,12 @@ namespace HelixToolkit.UWP.Core
             globalTrans.Projection = projectionMatrix;
             globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
             globalTrans.Viewport = new Vector4(viewportSize, viewportSize, 0, 0);
-            globalTransformCB.UploadDataToBuffer(context.DeviceContext, ref globalTrans);
+            globalTransformCB.UploadDataToBuffer(deviceContext, ref globalTrans);
             GlobalTransform = globalTrans;
             int offX = (int)(Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2);
             int offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
-            context.DeviceContext.Rasterizer.SetViewport(offX, offY, viewportSize, viewportSize);
-            context.DeviceContext.Rasterizer.SetScissorRectangle(offX, offY, (int)viewportSize, (int)viewportSize);
+            deviceContext.DeviceContext.Rasterizer.SetViewport(offX, offY, viewportSize, viewportSize);
+            deviceContext.DeviceContext.Rasterizer.SetScissorRectangle(offX, offY, (int)viewportSize, (int)viewportSize);
         }
     }
 }
