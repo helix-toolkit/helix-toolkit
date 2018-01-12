@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IRenderHost.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
+//   Copyright (c) 2018 Helix Toolkit contributors
 // </copyright>
 // <summary>
 //   This technique is used for the entire render pass 
@@ -35,7 +35,6 @@ namespace HelixToolkit.UWP
         Device Device { get; }
         Color4 ClearColor { get; }
         bool IsShadowMapEnabled { get; }
-        //bool IsDeferredEnabled { get;  }
 #if MSAA
         MSAALevel MSAA { get; set; }
 #endif
@@ -47,7 +46,6 @@ namespace HelixToolkit.UWP
         /// </summary>
         void InvalidateRender();
         void SetDefaultRenderTargets(bool clear = true);
-        //void SetDefaultColorTargets(DepthStencilView dsv);
 
         IEffectsManager EffectsManager { get; set; }
 
@@ -67,11 +65,6 @@ namespace HelixToolkit.UWP
         /// Indicates if DPFCanvas busy on rendering.
         /// </summary>
         bool IsBusy { get; }
-
-        /// <summary>
-        /// Shared light data per scene
-        /// </summary>
-        Light3DSceneShared Light3DSceneShared { get; }
 
         bool EnableRenderFrustum { set; get; }
 

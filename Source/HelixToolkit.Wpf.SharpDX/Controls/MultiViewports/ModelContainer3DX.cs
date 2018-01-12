@@ -199,14 +199,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set;get;
         }
 
-        public Light3DSceneShared Light3DSceneShared
-        {
-            get
-            {
-                return CurrentRenderHost != null ? CurrentRenderHost.Light3DSceneShared : null;
-            }
-        }
-
         public bool EnableRenderFrustum
         {
             set;get;

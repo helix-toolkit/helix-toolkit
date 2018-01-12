@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
     using Core2D;
-    public abstract class DX11RenderBufferProxy : DisposeObject, IDX11RenderBufferProxy
+    public class DX11RenderBufferProxy : DisposeObject, IDX11RenderBufferProxy
     {
         protected Texture2D colorBuffer;
         protected Texture2D depthStencilBuffer;
@@ -28,26 +28,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         public RenderTargetView ColorBufferView { get { return colorBufferView; } }
         public DepthStencilView DepthStencilBufferView { get { return depthStencilBufferView; } }
+        public Texture2D ColorBuffer { get { return colorBuffer; } }
+        public Texture2D DepthStencilBuffer { get { return depthStencilBuffer; } }
+
+        public bool Initialized { private set; get; } = false;
 
 #if MSAA
         private Texture2D renderTargetNMS;
 #endif
 
-        private Color4 clearColor = Color.White;
-        /// <summary>
-        /// 
-        /// </summary>
-        public Color4 ClearColor
-        {
-            get { return clearColor; }
-            set
-            {
-                if(Set(ref clearColor, value) && colorBufferView != null)
-                {
-                    ClearRenderTarget(Device.ImmediateContext, true, false);
-                }
-            }
-        }
 
 #if MSAA
         /// <summary>
@@ -85,6 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             RemoveAndDispose(ref renderTargetNMS);
 #endif
             var texture = OnCreateRenderTargetAndDepthBuffers(width, height);
+            Initialized = true;
             return texture;
         }
         /// <summary>
@@ -184,24 +174,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Sets the default render-targets
         /// </summary>
-        /// <param name="context"></param>
         public void SetDefaultRenderTargets(DeviceContext context)
-        {
-            SetDefaultRenderTargets(context, true);
-        }
-
-        /// <summary>
-        /// Sets the default render-targets
-        /// </summary>
-        public void SetDefaultRenderTargets(DeviceContext context, bool clear)
         {
             context.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
             context.Rasterizer.SetViewport(0, 0, TargetWidth, TargetWidth, 0.0f, 1.0f);
             context.Rasterizer.SetScissorRectangle(0, 0, TargetWidth, TargetHeight);
-            if (clear)
-            {
-                ClearRenderTarget(context);
-            }
         }
 
         public void ClearRenderTargetBinding(DeviceContext context)
@@ -209,16 +186,20 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             context.OutputMerger.SetTargets(null, new RenderTargetView[0]);
         }
 
+        public void ClearRenderTarget(DeviceContext context, Color4 color)
+        {
+            ClearRenderTarget(context, color, true, true);
+        }
         /// <summary>
         /// Clears the buffers with the clear-color
         /// </summary>
         /// <param name="clearBackBuffer"></param>
         /// <param name="clearDepthStencilBuffer"></param>
-        public void ClearRenderTarget(DeviceContext context, bool clearBackBuffer = true, bool clearDepthStencilBuffer = true)
+        public void ClearRenderTarget(DeviceContext context, Color4 color, bool clearBackBuffer, bool clearDepthStencilBuffer)
         {
             if (clearBackBuffer)
             {
-                context.ClearRenderTargetView(colorBufferView, ClearColor);
+                context.ClearRenderTargetView(colorBufferView, color);
             }
 
             if (clearDepthStencilBuffer)
@@ -247,7 +228,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public void EndD3D()
         {
+            Initialized = false;
             DisposeAndClear();
+        }
+
+        protected override void Dispose(bool disposeManagedResources)
+        {
+            Initialized = false;
+            base.Dispose(disposeManagedResources);
         }
     }
 
@@ -332,6 +320,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             int sampleCount = 1;
             int sampleQuality = 0;
             // SwapChain description
+#if MSAA
             if (MSAA != MSAALevel.Disable)
             {
                 do
@@ -350,6 +339,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     }
                 } while (sampleCount < 32);
             }
+#endif
             var desc = new SwapChainDescription1()
             {
                 Width = Math.Max(1, TargetWidth),

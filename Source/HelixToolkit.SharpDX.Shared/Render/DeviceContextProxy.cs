@@ -1,4 +1,5 @@
-﻿using SharpDX.Direct3D11;
+﻿using SharpDX;
+using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,20 +21,30 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public DeviceContext DeviceContext { get { return deviceContext; } }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="clear"></param>
-        public void SetRenderTargets(IDX11RenderBufferProxy buffer, bool clear)
+        public DeviceContextProxy(Device device)
         {
-            buffer.SetDefaultRenderTargets(deviceContext, clear);
+            deviceContext = Collect(new DeviceContext(device));
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public void ClearRenderTagets()
+        /// <param name="buffer"></param>
+        /// <param name="clear"></param>
+        public void SetRenderTargets(IDX11RenderBufferProxy buffer)
+        {
+            buffer.SetDefaultRenderTargets(deviceContext);
+        }
+
+        public void ClearRenderTargets(IDX11RenderBufferProxy buffer, Color4 color)
+        {
+            buffer.ClearRenderTarget(deviceContext, color);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ClearRenderTagetBindings()
         {
             deviceContext.OutputMerger.ResetTargets();
         }
@@ -43,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="disposeManagedResources"></param>
         protected override void Dispose(bool disposeManagedResources)
         {
-            ClearRenderTagets();
+            ClearRenderTagetBindings();
             base.Dispose(disposeManagedResources);
         }
 
