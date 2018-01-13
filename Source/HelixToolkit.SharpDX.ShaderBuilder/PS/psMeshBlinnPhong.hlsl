@@ -152,7 +152,7 @@ float4 main(PSInput input) : SV_Target
         I.a *= alpha;
     }
 	// multiply by vertex colors
-    I = I * input.c;
+    //I = I * input.c;
     // get reflection-color
     if (bHasCubeMap)
     {
