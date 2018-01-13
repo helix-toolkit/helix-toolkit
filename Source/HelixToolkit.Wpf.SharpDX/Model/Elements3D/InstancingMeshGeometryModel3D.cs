@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Add octree manager to use octree hit test.
         /// </summary>
         public static readonly DependencyProperty OctreeManagerProperty = DependencyProperty.Register("OctreeManager",
-            typeof(IOctreeManager), typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null, (s, e) =>
+            typeof(IOctreeManagerWrapper), typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null, (s, e) =>
             {
                 var d = s as InstancingMeshGeometryModel3D;
                 if (e.OldValue != null)
@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     d.AddLogicalChild(e.NewValue);
                 }
-                d.octreeManager = e.NewValue == null ? null : (IOctreeManager)e.NewValue;
+                d.octreeManager = e.NewValue == null ? null : ((IOctreeManagerWrapper)e.NewValue).Manager;
             }));
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public IOctreeManager OctreeManager
+        public IOctreeManagerWrapper OctreeManager
         {
             set
             {
@@ -64,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (IOctreeManager)GetValue(OctreeManagerProperty);
+                return (IOctreeManagerWrapper)GetValue(OctreeManagerProperty);
             }
         }
 
@@ -79,6 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #endregion
 
+        private bool isInstanceChanged = false;
         protected IOctreeManager octreeManager { private set; get; }
 
         protected IElementsBufferModel<InstanceParameter> instanceParamBuffer = new InstanceParamsBufferModel<InstanceParameter>(InstanceParameter.SizeInBytes);
@@ -119,12 +120,13 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        public override void Update(IRenderContext context)
+        public override void UpdateNotRender()
         {
-            base.Update(context);
-            if (InstanceBuffer.Changed)
+            base.UpdateNotRender();
+            if (isInstanceChanged)
             {
                 BuildOctree();
+                isInstanceChanged = false;
             }
         }
 
@@ -132,6 +134,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.InstancesChanged();
             octreeManager?.Clear();
+            isInstanceChanged = true;
         }
 
         private void BuildOctree()

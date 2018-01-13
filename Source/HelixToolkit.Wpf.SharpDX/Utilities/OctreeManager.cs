@@ -225,8 +225,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private bool mEnabled = true;
-
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="OctreeManagerBaseWrapper"/> is enabled.
         /// </summary>

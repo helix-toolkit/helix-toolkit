@@ -147,9 +147,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var positions = geometry.Positions;
             var vertexCount = geometry.Positions.Count;
-            var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new LinesVertex[vertexCount];
+            var array = reuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new LinesVertex[vertexCount];
             var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
-            if (ReuseVertexArrayBuffer)
+            if (reuseVertexArrayBuffer)
             {
                 vertexArrayBuffer = array;
             }

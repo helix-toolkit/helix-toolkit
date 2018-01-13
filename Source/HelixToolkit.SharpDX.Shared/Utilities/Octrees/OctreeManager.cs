@@ -19,12 +19,23 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 {
     using Model;
     using System.Collections.Concurrent;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class OctreeManagerBase : ObservableObject, IOctreeManager
     {
+        /// <summary>
+        /// Occurs when [on octree created].
+        /// </summary>
         public event EventHandler<IOctree> OnOctreeCreated;
 
         private IOctree octree;
+        /// <summary>
+        /// Gets or sets the octree.
+        /// </summary>
+        /// <value>
+        /// The octree.
+        /// </value>
         public IOctree Octree
         {
             protected set
@@ -37,11 +48,25 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             get
             { return octree; }
         }
+        /// <summary>
+        /// The m octree
+        /// </summary>
         protected RenderableBoundingOctree mOctree = null;
-
+        /// <summary>
+        /// Gets or sets the parameter.
+        /// </summary>
+        /// <value>
+        /// The parameter.
+        /// </value>
         public OctreeBuildParameter Parameter { set; get; } = new OctreeBuildParameter();
 
         private bool mEnabled = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="OctreeManagerBase"/> is enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if enabled; otherwise, <c>false</c>.
+        /// </value>
         public bool Enabled
         {
             set
@@ -57,20 +82,41 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 return mEnabled;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [request update octree].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [request update octree]; otherwise, <c>false</c>.
+        /// </value>
         public bool RequestUpdateOctree { get { return mRequestUpdateOctree; } protected set { mRequestUpdateOctree = value; } }
         private volatile bool mRequestUpdateOctree = false;
-
+        /// <summary>
+        /// Adds the pending item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
         public abstract bool AddPendingItem(IRenderable item);
-
+        /// <summary>
+        /// Clears this instance.
+        /// </summary>
         public abstract void Clear();
-
+        /// <summary>
+        /// Rebuilds the tree.
+        /// </summary>
+        /// <param name="items">The items.</param>
         public abstract void RebuildTree(IEnumerable<IRenderable> items);
-
+        /// <summary>
+        /// Removes the item.
+        /// </summary>
+        /// <param name="item">The item.</param>
         public abstract void RemoveItem(IRenderable item);
-
+        /// <summary>
+        /// Requests the rebuild.
+        /// </summary>
         public abstract void RequestRebuild();
-
+        /// <summary>
+        /// Processes the pending items.
+        /// </summary>
         public abstract void ProcessPendingItems();
     }
 
@@ -86,6 +132,10 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             Octree = tree;
             mOctree = tree;
         }
+        /// <summary>
+        /// Rebuilds the tree.
+        /// </summary>
+        /// <param name="items">The items.</param>
         public override void RebuildTree(IEnumerable<IRenderable> items)
         {
             lock (lockObj)
@@ -119,8 +169,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             item.OnTransformBoundChanged -= Item_OnBoundChanged;
         }
 
-        private readonly ConcurrentBag<IRenderable> pendingItems
-            = new ConcurrentBag<IRenderable>();
+        private readonly HashSet<IRenderable> pendingItems
+            = new HashSet<IRenderable>();
 
         private void Item_OnBoundChanged(object sender,  BoundChangeArgs<BoundingBox> args)
         {
@@ -140,16 +190,14 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         {
             lock (lockObj)
             {
-                IRenderable item;
-                while(pendingItems.TryTake(out item))
+                foreach(var item in pendingItems)
                 {
                     if (mOctree == null || !item.IsAttached)
                     {
                         UnsubscribeBoundChangeEvent(item);
-                        return;
+                        continue;
                     }
-                    int index;
-                    var node = mOctree.FindItemByGuid(item.GUID, item, out index);
+                    var node = mOctree.FindItemByGuid(item.GUID, item, out int index);
                     bool rootAdd = true;
                     if (node != null)
                     {
@@ -179,6 +227,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                         AddItem(item);
                     }
                 }
+                pendingItems.Clear();
             }
         }
 
@@ -204,6 +253,12 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         }
 
         private static readonly BoundingBox ZeroBound = new BoundingBox();
+
+        /// <summary>
+        /// Adds the pending item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
         public override bool AddPendingItem(IRenderable item)
         {
             lock (lockObj)
@@ -276,7 +331,10 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 }
             }
         }
-
+        /// <summary>
+        /// Removes the item.
+        /// </summary>
+        /// <param name="item">The item.</param>
         public override void RemoveItem(IRenderable item)
         {           
             if (Enabled && Octree != null && item is IRenderable)
@@ -300,7 +358,9 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 }
             }
         }
-
+        /// <summary>
+        /// Clears this instance.
+        /// </summary>
         public override void Clear()
         {
             lock (lockObj)
@@ -309,7 +369,9 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 UpdateOctree(null);
             }
         }
-
+        /// <summary>
+        /// Requests the rebuild.
+        /// </summary>
         public override void RequestRebuild()
         {
             lock (lockObj)
@@ -319,24 +381,40 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class InstancingRenderableOctreeManager : OctreeManagerBase
     {
+        /// <summary>
+        /// Adds the pending item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public override bool AddPendingItem(IRenderable item)
         {
-            throw new NotImplementedException();
+            return false;
         }
-
+        /// <summary>
+        /// Clears this instance.
+        /// </summary>
         public override void Clear()
         {
             Octree = null;
         }
-
+        /// <summary>
+        /// Processes the pending items.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public override void ProcessPendingItems()
         {
-            throw new NotImplementedException();
+            
         }
-
+        /// <summary>
+        /// Rebuilds the tree.
+        /// </summary>
+        /// <param name="items">The items.</param>
         public override void RebuildTree(IEnumerable<IRenderable> items)
         {
             Clear();
@@ -345,20 +423,25 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             var model3D = items.Where(x => x is IInstancing && x is IRenderable).FirstOrDefault() as IInstancing;
             if (model3D == null)
             { return; }
-            IList<Matrix> instMatrix = model3D.Instances;
+            var instMatrix = model3D.InstanceBuffer.Elements;
             var octree = new InstancingModel3DOctree(instMatrix, (model3D as IRenderable).Bounds, this.Parameter, new Stack<IEnumerator<IOctree>>(10));
             octree.BuildTree();
             Octree = octree;
         }
-
+        /// <summary>
+        /// Removes the item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <exception cref="NotImplementedException"></exception>
         public override void RemoveItem(IRenderable item)
         {
-            throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// Requests the rebuild.
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public override void RequestRebuild()
         {
-            throw new NotImplementedException();
         }
     }
 }

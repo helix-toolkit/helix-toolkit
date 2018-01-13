@@ -12,12 +12,22 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using BoundingSphere = global::SharpDX.BoundingSphere;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IGUID
     {
+        /// <summary>
+        /// Gets the unique identifier.
+        /// </summary>
+        /// <value>
+        /// The unique identifier.
+        /// </value>
         Guid GUID { get; }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IAttachable
     {
         /// <summary>
@@ -34,7 +44,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         void Detach();
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IResourceSharing : IDisposable
     {
         /// <summary>
@@ -48,7 +60,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>Current count</returns>
         int AddReference();
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IHitable
     {
         /// <summary>
@@ -66,36 +80,99 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         bool IsHitTestVisible { get; set; }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public sealed class BoundChangeArgs<T> : EventArgs where T : struct
     {
+        /// <summary>
+        /// Gets or sets the new bound.
+        /// </summary>
+        /// <value>
+        /// The new bound.
+        /// </value>
         public T NewBound { private set; get; }
+        /// <summary>
+        /// Gets or sets the old bound.
+        /// </summary>
+        /// <value>
+        /// The old bound.
+        /// </value>
         public T OldBound { private set; get; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoundChangeArgs{T}"/> class.
+        /// </summary>
+        /// <param name="newBound">The new bound.</param>
+        /// <param name="oldBound">The old bound.</param>
         public BoundChangeArgs(ref T newBound, ref T oldBound)
         {
             NewBound = newBound;
             OldBound = oldBound;
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IBoundable
     {
+        /// <summary>
+        /// Gets the bounds.
+        /// </summary>
+        /// <value>
+        /// The bounds.
+        /// </value>
         BoundingBox Bounds { get; }
+        /// <summary>
+        /// Gets the bounds with transform.
+        /// </summary>
+        /// <value>
+        /// The bounds with transform.
+        /// </value>
         BoundingBox BoundsWithTransform { get; }
+        /// <summary>
+        /// Gets the bounds sphere.
+        /// </summary>
+        /// <value>
+        /// The bounds sphere.
+        /// </value>
         BoundingSphere BoundsSphere { get; }
+        /// <summary>
+        /// Gets the bounds sphere with transform.
+        /// </summary>
+        /// <value>
+        /// The bounds sphere with transform.
+        /// </value>
         BoundingSphere BoundsSphereWithTransform { get; }
-
+        /// <summary>
+        /// Occurs when [on bound changed].
+        /// </summary>
         event EventHandler<BoundChangeArgs<BoundingBox>> OnBoundChanged;
-
+        /// <summary>
+        /// Occurs when [on transform bound changed].
+        /// </summary>
         event EventHandler<BoundChangeArgs<BoundingBox>> OnTransformBoundChanged;
-
+        /// <summary>
+        /// Occurs when [on bound sphere changed].
+        /// </summary>
         event EventHandler<BoundChangeArgs<BoundingSphere>> OnBoundSphereChanged;
-
+        /// <summary>
+        /// Occurs when [on transform bound sphere changed].
+        /// </summary>
         event EventHandler<BoundChangeArgs<BoundingSphere>> OnTransformBoundSphereChanged;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IInstancing
     {
-        IList<Matrix> Instances { set; get; }
+        /// <summary>
+        /// Gets the instance buffer.
+        /// </summary>
+        /// <value>
+        /// The instance buffer.
+        /// </value>
+        IElementsBufferModel<Matrix> InstanceBuffer { get; }
     }
 }

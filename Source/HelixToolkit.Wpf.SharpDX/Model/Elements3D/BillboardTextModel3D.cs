@@ -118,8 +118,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
             //var position = billboardGeometry.Positions;
             var vertexCount = billboardGeometry.BillboardVertices.Count;
-            var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new BillboardVertex[vertexCount];
-            if (ReuseVertexArrayBuffer)
+            var array = reuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new BillboardVertex[vertexCount];
+            if (reuseVertexArrayBuffer)
             {
                 vertexArrayBuffer = array;
             }

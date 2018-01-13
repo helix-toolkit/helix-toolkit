@@ -30,7 +30,10 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         #region DependencyProperties
         public static readonly DependencyProperty ReuseVertexArrayBufferProperty =
-            DependencyProperty.Register("ReuseVertexArrayBuffer", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(false));
+            DependencyProperty.Register("ReuseVertexArrayBuffer", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(false,
+                (d,e)=> {
+                    (d as GeometryModel3D).reuseVertexArrayBuffer = (bool)e.NewValue;
+                }));
 
         public static readonly DependencyProperty GeometryProperty =
             DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new PropertyMetadata(null, GeometryChanged));
@@ -221,9 +224,9 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         public bool HasInstances { get { return InstanceBuffer.HasElements; } }
-        protected readonly IElementsBufferModel<Matrix> InstanceBuffer = new MatrixInstanceBufferModel();
+        public IElementsBufferModel<Matrix> InstanceBuffer { get; } = new MatrixInstanceBufferModel();
         protected virtual void InstancesChanged() { }
-
+        protected bool reuseVertexArrayBuffer = false;
         public delegate RasterizerStateDescription CreateRasterStateFunc();
 
         /// <summary>

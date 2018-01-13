@@ -542,7 +542,7 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         public bool HasInstances { get { return InstanceBuffer.HasElements; } }
-        protected readonly IElementsBufferModel<Matrix> InstanceBuffer = new MatrixInstanceBufferModel();
+        public IElementsBufferModel<Matrix> InstanceBuffer { get; } = new MatrixInstanceBufferModel();
 
         private ParticleRenderCore particleCore
         {
