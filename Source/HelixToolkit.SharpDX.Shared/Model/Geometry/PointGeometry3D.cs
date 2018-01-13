@@ -31,11 +31,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override IOctree CreateOctree(OctreeBuildParameter parameter)
         {
-#if !NETFX_CORE
+
             return new PointGeometryOctree(Positions, parameter);
-#else
-            throw new NotImplementedException();
-#endif
         }
 
         protected override bool CanCreateOctree()

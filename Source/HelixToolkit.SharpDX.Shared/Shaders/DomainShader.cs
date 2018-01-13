@@ -12,7 +12,10 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
-    public class DomainShader : ShaderBase
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class DomainShader : ShaderBase
     {
         private readonly global::SharpDX.Direct3D11.DomainShader shader;
 

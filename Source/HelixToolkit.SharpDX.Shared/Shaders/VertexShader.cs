@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.Shaders
     /// <summary>
     /// Vertex Shader
     /// </summary>
-    public class VertexShader : ShaderBase
+    public sealed class VertexShader : ShaderBase
     {
         private readonly global::SharpDX.Direct3D11.VertexShader shader;
         

@@ -12,7 +12,10 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
-    public class HullShader : ShaderBase
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class HullShader : ShaderBase
     {
         private readonly global::SharpDX.Direct3D11.HullShader shader;
 
@@ -55,7 +58,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="texture"></param>
         public override void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
         {
-            throw new NotImplementedException();
         }
         /// <summary>
         /// <see cref="IShader.BindTexture(DeviceContext, int, ShaderResourceView)"/>
@@ -65,7 +67,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="texture"></param>
         public override void BindTexture(DeviceContext context, int index, ShaderResourceView texture)
         {
-            throw new NotImplementedException();
         }
         /// <summary>
         /// <see cref="IShader.BindTextures(DeviceContext, IEnumerable{KeyValuePair{int, ShaderResourceView}})"/>
@@ -74,7 +75,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="textures"></param>
         public override void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures)
         {
-            throw new NotImplementedException();
         }
     }
 }

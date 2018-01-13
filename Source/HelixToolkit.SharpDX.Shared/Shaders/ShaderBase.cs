@@ -97,20 +97,20 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="context"></param>
         /// <param name="name"></param>
         /// <param name="uav"></param>
-        public virtual void BindUAV(DeviceContext context, string name, UnorderedAccessView uav) { throw new NotImplementedException(); }
+        public virtual void BindUAV(DeviceContext context, string name, UnorderedAccessView uav) {  }
         /// <summary>
         /// <see cref="IShader.BindUAV(DeviceContext, int, UnorderedAccessView)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="slot"></param>
         /// <param name="uav"></param>
-        public virtual void BindUAV(DeviceContext context, int slot, UnorderedAccessView uav) { throw new NotImplementedException(); }
+        public virtual void BindUAV(DeviceContext context, int slot, UnorderedAccessView uav) { }
         /// <summary>
         /// <see cref="IShader.BindUAVs(DeviceContext, IEnumerable{KeyValuePair{int, UnorderedAccessView}})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="uavs"></param>
-        public virtual void BindUAVs(DeviceContext context, IEnumerable<KeyValuePair<int, UnorderedAccessView>> uavs) { throw new NotImplementedException(); }
+        public virtual void BindUAVs(DeviceContext context, IEnumerable<KeyValuePair<int, UnorderedAccessView>> uavs) { }
 
         /// <summary>
         /// <see cref="IShader.BindSampler(DeviceContext, string, SamplerState)"/>

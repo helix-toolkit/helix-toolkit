@@ -141,7 +141,8 @@ namespace HelixToolkit.UWP.Shaders
                     shader = new GeometryShader(device, Name, ByteCode);
                     break;
                 default:
-                    throw new ArgumentException("Shader Type does not supported.");
+                    shader = new NullShader(ShaderType);
+                    break;
             }
             if (ConstantBufferMappings != null)
             {

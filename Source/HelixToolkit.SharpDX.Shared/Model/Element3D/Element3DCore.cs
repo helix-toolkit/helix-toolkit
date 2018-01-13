@@ -50,14 +50,22 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             {
                 return totalModelMatrix;
             }
-        } 
-
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [need matrix update].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [need matrix update]; otherwise, <c>false</c>.
+        /// </value>
         protected bool needMatrixUpdate { private set; get; } = true;
 
         private Matrix modelMatrix = Matrix.Identity;
         /// <summary>
-        /// 
+        /// Gets or sets the model matrix.
         /// </summary>
+        /// <value>
+        /// The model matrix.
+        /// </value>
         public Matrix ModelMatrix
         {
             set
@@ -73,6 +81,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
 
         private Matrix parentMatrix = Matrix.Identity;
+        /// <summary>
+        /// Gets or sets the parent matrix.
+        /// </summary>
+        /// <value>
+        /// The parent matrix.
+        /// </value>
         public Matrix ParentMatrix
         {
             set
@@ -89,6 +103,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         }
 
         private bool visible = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="Element3DCore"/> is visible.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if visible; otherwise, <c>false</c>.
+        /// </value>
         public bool Visible
         {
             set
@@ -98,7 +118,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
             get { return visible; }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is renderable.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is renderable; otherwise, <c>false</c>.
+        /// </value>
         public bool IsRenderable { private set; get; } = true;
         /// <summary>
         /// If this has been attached onto renderhost. 
@@ -116,7 +141,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             get { return renderHost; }
         }
-
+        /// <summary>
+        /// Gets the items.
+        /// </summary>
+        /// <value>
+        /// The items.
+        /// </value>
         public virtual IEnumerable<IRenderable> Items
         {
             get
@@ -124,9 +154,18 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 return System.Linq.Enumerable.Empty<IRenderable>();
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is hit test visible.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is hit test visible; otherwise, <c>false</c>.
+        /// </value>
         public bool IsHitTestVisible { set; get; } = true;
-        #region Handling Transforms
+        #region Handling Transforms        
+        /// <summary>
+        /// Transforms the changed.
+        /// </summary>
+        /// <param name="totalTransform">The total transform.</param>
         protected virtual void TransformChanged(ref Matrix totalTransform)
         {
             foreach (var item in Items)
@@ -137,11 +176,19 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 }
             }
         }
-
+        /// <summary>
+        /// Occurs when [on transform changed].
+        /// </summary>
         public event EventHandler<Matrix> OnTransformChanged;
         #endregion
         #region RenderCore
         private IRenderCore renderCore = null;
+        /// <summary>
+        /// Gets or sets the render core.
+        /// </summary>
+        /// <value>
+        /// The render core.
+        /// </value>
         public IRenderCore RenderCore
         {
             private set
@@ -169,6 +216,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 return renderCore;
             }
         }
+        /// <summary>
+        /// Gets or sets the render technique.
+        /// </summary>
+        /// <value>
+        /// The render technique.
+        /// </value>
         protected IRenderTechnique renderTechnique { private set; get; }
         /// <summary>
         /// 
@@ -193,9 +246,15 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             return renderTechnique == null ? host.RenderTechnique : this.renderTechnique;
         }
-
-        protected virtual IRenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
-
+        /// <summary>
+        /// Called when [create render core].
+        /// </summary>
+        /// <returns></returns>
+        protected virtual IRenderCore OnCreateRenderCore() { return EmptyRenderCore.EmptyCore; }
+        /// <summary>
+        /// Assigns the default values to core.
+        /// </summary>
+        /// <param name="core">The core.</param>
         protected virtual void AssignDefaultValuesToCore(IRenderCore core) { }
 
         private void RenderCore_OnInvalidateRenderer(object sender, bool e)
@@ -211,15 +270,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
         {
-            if (IsAttached || host == null)
+            if (IsAttached || host == null || host.EffectsManager == null)
             {
                 return;
             }
             renderHost = host;
-            if (host.EffectsManager == null)
-            {
-                throw new ArgumentException("EffectManger does not exist. Please make sure the proper EffectManager has been bind from view model.");
-            }
             this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : OnCreateRenderTechnique(host);
             if (renderTechnique != null)
             {
@@ -268,7 +323,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <summary>
         /// Updates the element total transforms, determine renderability, etc. by the specified time span.
         /// </summary>
-        /// <param name="timeSpan">The time since last update.</param>
+        /// <param name="context">The time since last update.</param>
         public virtual void Update(IRenderContext context)
         {
             if (needMatrixUpdate)
@@ -336,52 +391,104 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         protected abstract bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits);
         #endregion
 
-        #region IBoundable
+        #region IBoundable        
+        /// <summary>
+        /// The maximum bound
+        /// </summary>
         public static readonly BoundingBox MaxBound = new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MaxValue));
+        /// <summary>
+        /// The maximum bound sphere
+        /// </summary>
         public static readonly global::SharpDX.BoundingSphere MaxBoundSphere = new global::SharpDX.BoundingSphere(Vector3.Zero, float.MaxValue);
-
+        /// <summary>
+        /// Gets the bounds.
+        /// </summary>
+        /// <value>
+        /// The bounds.
+        /// </value>
         public virtual BoundingBox Bounds
         {
             get { return MaxBound; }
         }
-
+        /// <summary>
+        /// Gets the bounds with transform.
+        /// </summary>
+        /// <value>
+        /// The bounds with transform.
+        /// </value>
         public virtual BoundingBox BoundsWithTransform
         {
             get { return MaxBound; }
         }
-
+        /// <summary>
+        /// Gets the bounds sphere.
+        /// </summary>
+        /// <value>
+        /// The bounds sphere.
+        /// </value>
         public virtual global::SharpDX.BoundingSphere BoundsSphere
         {
             get { return MaxBoundSphere; }
         }
-
+        /// <summary>
+        /// Gets the bounds sphere with transform.
+        /// </summary>
+        /// <value>
+        /// The bounds sphere with transform.
+        /// </value>
         public virtual global::SharpDX.BoundingSphere BoundsSphereWithTransform
         {
             get { return MaxBoundSphere; }
         }
-
+        /// <summary>
+        /// Occurs when [property changed].
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        /// Occurs when [on bound changed].
+        /// </summary>
         public event EventHandler<BoundChangeArgs<BoundingBox>> OnBoundChanged;
+        /// <summary>
+        /// Occurs when [on transform bound changed].
+        /// </summary>
         public event EventHandler<BoundChangeArgs<BoundingBox>> OnTransformBoundChanged;
+        /// <summary>
+        /// Occurs when [on bound sphere changed].
+        /// </summary>
         public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingSphere>> OnBoundSphereChanged;
+        /// <summary>
+        /// Occurs when [on transform bound sphere changed].
+        /// </summary>
         public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingSphere>> OnTransformBoundSphereChanged;
-
+        /// <summary>
+        /// Raises the on transform bound changed.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
         protected void RaiseOnTransformBoundChanged(BoundChangeArgs<BoundingBox> args)
         {
             OnTransformBoundChanged?.Invoke(this, args);
         }
-
+        /// <summary>
+        /// Raises the on bound changed.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
         protected void RaiseOnBoundChanged(BoundChangeArgs<BoundingBox> args)
         {
             OnBoundChanged?.Invoke(this, args);
         }
 
-
+        /// <summary>
+        /// Raises the on transform bound sphere changed.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
         protected void RaiseOnTransformBoundSphereChanged(BoundChangeArgs<global::SharpDX.BoundingSphere> args)
         {
             OnTransformBoundSphereChanged?.Invoke(this, args);
         }
-
+        /// <summary>
+        /// Raises the on bound sphere changed.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
         protected void RaiseOnBoundSphereChanged(BoundChangeArgs<global::SharpDX.BoundingSphere> args)
         {
             OnBoundSphereChanged?.Invoke(this, args);
@@ -391,6 +498,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         #region INotifyPropertyChanged
         private bool disablePropertyChangedEvent = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether [disable property changed event].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [disable property changed event]; otherwise, <c>false</c>.
+        /// </value>
         public bool DisablePropertyChangedEvent
         {
             set
@@ -407,13 +520,23 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 return disablePropertyChangedEvent;
             }
         }
-
+        /// <summary>
+        /// Raises the property changed.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
         {
             if (!DisablePropertyChangedEvent)
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
+        /// <summary>
+        /// Sets the specified backing field.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="backingField">The backing field.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
         protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(backingField, value))
@@ -425,7 +548,15 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             this.RaisePropertyChanged(propertyName);
             return true;
         }
-
+        /// <summary>
+        /// Sets the specified backing field.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="backingField">The backing field.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="raisePropertyChanged">if set to <c>true</c> [raise property changed].</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
         protected bool Set<T>(ref T backingField, T value, bool raisePropertyChanged, [CallerMemberName] string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(backingField, value))
@@ -441,8 +572,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 #endregion
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
+        private bool disposedValue = false; // To detect redundant calls        
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -465,7 +599,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         //   Dispose(false);
         // }
 
-        // This code added to correctly implement the disposable pattern.
+        // This code added to correctly implement the disposable pattern.        
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

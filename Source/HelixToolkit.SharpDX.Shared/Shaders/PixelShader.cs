@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.Shaders
     /// <summary>
     /// Pixel Shader
     /// </summary>
-    public class PixelShader : ShaderBase
+    public sealed class PixelShader : ShaderBase
     {
         private readonly global::SharpDX.Direct3D11.PixelShader shader;
 

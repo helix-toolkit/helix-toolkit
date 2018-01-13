@@ -12,7 +12,10 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
-    public class ComputeShader : ShaderBase
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class ComputeShader : ShaderBase
     {
         private readonly global::SharpDX.Direct3D11.ComputeShader shader;
 
