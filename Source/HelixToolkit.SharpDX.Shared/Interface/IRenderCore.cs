@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using HelixToolkit.Wpf.SharpDX.Model;
     using Render;
     /// <summary>
     /// 
@@ -64,7 +65,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public interface IMaterialRenderParams
     {
-        IMaterial Material { set; get; }
+        MaterialCore Material { set; get; }
         bool RenderDiffuseMap { set; get; }
         bool RenderDiffuseAlphaMap { set; get; }
         bool RenderNormalMap { set; get; }

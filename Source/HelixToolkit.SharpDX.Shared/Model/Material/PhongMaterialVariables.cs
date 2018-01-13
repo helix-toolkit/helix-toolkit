@@ -2,14 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
 using SharpDX.Direct3D11;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
-/*
-The MIT License (MIT)
-Copyright (c) 2018 Helix Toolkit contributors
-*/
 using System.Linq;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
@@ -31,7 +25,7 @@ namespace HelixToolkit.UWP.Model
         /// <see cref="IEffectMaterialVariables.OnInvalidateRenderer"/> 
         /// </summary>
         public event EventHandler<bool> OnInvalidateRenderer;
-        private IPhongMaterial material;
+
         /// <summary>
         ///
         /// </summary>
@@ -200,10 +194,12 @@ namespace HelixToolkit.UWP.Model
         }
 
         private bool needUpdate = true;
+
+        private PhongMaterialCore material;
         /// <summary>
         /// <see cref="IMaterialRenderParams.Material"/> 
         /// </summary>
-        public IMaterial Material
+        public MaterialCore Material
         {
             set
             {
@@ -213,7 +209,7 @@ namespace HelixToolkit.UWP.Model
                     {
                         material.PropertyChanged -= Material_OnMaterialPropertyChanged;
                     }
-                    material = value as IPhongMaterial;
+                    material = value as PhongMaterialCore;
                     if (material != null)
                     {
                         material.PropertyChanged += Material_OnMaterialPropertyChanged;

@@ -88,12 +88,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ITransform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IVertexExtraBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Color4Collection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Element3DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\GeometryBoundManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\PhongMaterialVariables.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\ExposedArrayList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\MaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialVariables.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\ExposedArrayList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Flags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardSingleImage3D.cs" />
@@ -103,13 +105,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\LineGeometry3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\MeshGeometry3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\PointGeometry3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\IntCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\IntCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Layouts.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Light3DSceneShared.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\LightsBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\Light3DSceneShared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\LightsBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Vector2Collection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Vector3Collection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Vector2Collection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Vector3Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\CommonRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHostBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\DefaultRenderHost.cs" />
@@ -213,6 +215,8 @@
     <None Include="$(MSBuildThisFileDirectory)HelixToolkit.SharpDX.Shared.licenseheader" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Model\Collection\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Model\Lights\" />
     <Folder Include="$(MSBuildThisFileDirectory)Utilities\Buffers\" />
     <Folder Include="$(MSBuildThisFileDirectory)Utilities\Octrees\" />
   </ItemGroup>

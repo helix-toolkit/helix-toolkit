@@ -23,11 +23,11 @@ namespace HelixToolkit.UWP.Core
         /// Used to wrap all material resources
         /// </summary>
         public IEffectMaterialVariables MaterialVariables { get { return materialVariables; } }
-        private IMaterial material = null;
+        private MaterialCore material = null;
         /// <summary>
         /// 
         /// </summary>
-        public IMaterial Material
+        public MaterialCore Material
         {
             set
             {
