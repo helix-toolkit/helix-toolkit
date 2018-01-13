@@ -3,8 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         xmlns:local="clr-namespace:Workitem10044"
         mc:Ignorable="d"
@@ -66,8 +64,8 @@
                 <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
                 <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
             </hx:Viewport3DX.InputBindings>
-            <hx:AmbientLight3D Color="0.1,0.1,0.1,1.0"/>
-            <hx:DirectionalLight3D Color="{x:Static sdxm:Color4.White}" Direction="-2,-5,-2"/>
+            <hx:AmbientLight3D Color="Black"/>
+            <hx:DirectionalLight3D Color="White" Direction="{Binding Camera.LookDirection}"/>
             <hx:GroupModel3D Transform="{StaticResource Model2Transform}">
                 <hx:MeshGeometryModel3D Geometry="{StaticResource Model}" Material="{x:Static hx:PhongMaterials.Green}"/>
             </hx:GroupModel3D>
@@ -76,7 +74,7 @@
             </hx:GroupModel3D>
             <hx:GroupModel3D Transform="{StaticResource Model2Transform}">
                 <hx:CompositeModel3D Transform="{StaticResource Model3Transform}">
-                    <hx:LineGeometryModel3D Geometry="{StaticResource Lines}" Transform="{StaticResource Model1Transform}" Color="{x:Static sdxm:Color.Black}" Thickness="1.5"/>
+                    <hx:LineGeometryModel3D Geometry="{StaticResource Lines}" Transform="{StaticResource Model1Transform}" Color="Black" Thickness="1.5"/>
                 </hx:CompositeModel3D>
             </hx:GroupModel3D>
             <hx:MeshGeometryModel3D Geometry="{StaticResource Model}" Transform="{StaticResource Model1Transform}" Material="{x:Static hx:PhongMaterials.Red}"/>

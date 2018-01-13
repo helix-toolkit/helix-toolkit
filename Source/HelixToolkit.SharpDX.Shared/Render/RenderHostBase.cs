@@ -553,7 +553,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected virtual void DisposeBuffers()
         {
-            renderBuffer.OnNewBufferCreated -= RenderBuffer_OnNewBufferCreated;
+            if (renderBuffer != null)
+            {
+                renderBuffer.OnNewBufferCreated -= RenderBuffer_OnNewBufferCreated;
+            }
             RemoveAndDispose(ref renderer);
             RemoveAndDispose(ref d2dTarget);
             RemoveAndDispose(ref renderBuffer);
