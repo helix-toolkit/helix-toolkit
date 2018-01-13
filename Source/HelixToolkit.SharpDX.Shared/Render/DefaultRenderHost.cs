@@ -66,8 +66,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             return new RenderParameter()
             {
-                target = buffer.ColorBufferView,
-                depthStencil = buffer.DepthStencilBufferView,
+                RenderTargetView = buffer.ColorBufferView,
+                DepthStencilView = buffer.DepthStencilBufferView,
                 ScissorRegion = new Rectangle(0, 0, buffer.TargetWidth, buffer.TargetHeight),
                 ViewportRegion = new ViewportF(0, 0, buffer.TargetWidth, buffer.TargetHeight)
             };

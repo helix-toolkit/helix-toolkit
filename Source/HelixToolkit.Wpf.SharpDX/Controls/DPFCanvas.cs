@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DPFCanvas.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
+//   Copyright (c) 2018 Helix Toolkit contributors
 // </copyright>
 // <summary>
 //
@@ -41,6 +41,10 @@ namespace HelixToolkit.Wpf.SharpDX
     // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     // THE SOFTWARE.
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Windows.Controls.Image" />
     public class DPFCanvas : Image
     {
         /// <summary>
@@ -64,6 +68,12 @@ namespace HelixToolkit.Wpf.SharpDX
             StretchProperty.OverrideMetadata(typeof(DPFCanvas), new FrameworkPropertyMetadata(Stretch.Fill));
         }
 
+        /// <summary>
+        /// Gets or sets the render host.
+        /// </summary>
+        /// <value>
+        /// The render host.
+        /// </value>
         public IRenderHost RenderHost { private set; get; }
         private DX11ImageSource surfaceD3D;
 

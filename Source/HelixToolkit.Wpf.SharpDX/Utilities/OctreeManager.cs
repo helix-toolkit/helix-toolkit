@@ -12,44 +12,82 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Windows.Threading;
     using Utilities;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IOctreeManagerWrapper
     {
+        /// <summary>
+        /// Gets the octree.
+        /// </summary>
+        /// <value>
+        /// The octree.
+        /// </value>
         IOctree Octree { get; }
+        /// <summary>
+        /// Gets the manager.
+        /// </summary>
+        /// <value>
+        /// The manager.
+        /// </value>
         IOctreeManager Manager { get; }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Windows.FrameworkContentElement" />
+    /// <seealso cref="HelixToolkit.Wpf.SharpDX.IOctreeManagerWrapper" />
     public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctreeManagerWrapper
     {
+        /// <summary>
+        /// The octree property
+        /// </summary>
         public static readonly DependencyProperty OctreeProperty
             = DependencyProperty.Register("Octree", typeof(IOctree), typeof(OctreeManagerBaseWrapper),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
+        /// <summary>
+        /// The enable octree output property
+        /// </summary>
         public static readonly DependencyProperty EnableOctreeOutputProperty
             = DependencyProperty.Register("EnableOctreeOutput", typeof(bool), typeof(OctreeManagerBaseWrapper),
                 new PropertyMetadata(false, 
                     (d,e)=> { (d as OctreeManagerBaseWrapper).enableOctreeOutput = (bool)e.NewValue; }));
-
+        /// <summary>
+        /// The minimum size property
+        /// </summary>
         public static readonly DependencyProperty MinSizeProperty
             = DependencyProperty.Register("MinSize", typeof(float), typeof(OctreeManagerBaseWrapper),
                 new PropertyMetadata(1f, (s, e) => { (s as OctreeManagerBaseWrapper).Manager.Parameter.MinimumOctantSize = (float)e.NewValue; }));
-
+        /// <summary>
+        /// The automatic delete if empty property
+        /// </summary>
         public static readonly DependencyProperty AutoDeleteIfEmptyProperty
             = DependencyProperty.Register("AutoDeleteIfEmpty", typeof(bool), typeof(OctreeManagerBaseWrapper),
                 new PropertyMetadata(true, (s, e) => { (s as OctreeManagerBaseWrapper).Manager.Parameter.AutoDeleteIfEmpty = (bool)e.NewValue; }));
-
+        /// <summary>
+        /// The cubify property property
+        /// </summary>
         public static readonly DependencyProperty CubifyPropertyProperty
             = DependencyProperty.Register("Cubify", typeof(bool), typeof(OctreeManagerBaseWrapper),
                 new PropertyMetadata(false, (s, e) => { (s as OctreeManagerBaseWrapper).Manager.Parameter.Cubify = (bool)e.NewValue; }));
-
+        /// <summary>
+        /// The record hit path bounding boxes property
+        /// </summary>
         public static readonly DependencyProperty RecordHitPathBoundingBoxesProperty
             = DependencyProperty.Register("RecordHitPathBoundingBoxes", typeof(bool), typeof(OctreeManagerBaseWrapper),
                 new PropertyMetadata(false, (s, e) => { (s as OctreeManagerBaseWrapper).Manager.Parameter.RecordHitPathBoundingBoxes = (bool)e.NewValue; }));
-
+        /// <summary>
+        /// The minimum object size to split property
+        /// </summary>
         public static readonly DependencyProperty MinObjectSizeToSplitProperty
             = DependencyProperty.Register("MinObjectSizeToSplit", typeof(int), typeof(OctreeManagerBaseWrapper),
                 new PropertyMetadata(0, (s, e) => { (s as OctreeManagerBaseWrapper).Manager.Parameter.MinObjectSizeToSplit = (int)e.NewValue; }));
-
+        /// <summary>
+        /// Gets or sets the octree.
+        /// </summary>
+        /// <value>
+        /// The octree.
+        /// </value>
         public IOctree Octree
         {
             set
@@ -61,7 +99,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (IOctree)GetValue(OctreeProperty);
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable octree output].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable octree output]; otherwise, <c>false</c>.
+        /// </value>
         public bool EnableOctreeOutput
         {
             set
@@ -148,6 +191,13 @@ namespace HelixToolkit.Wpf.SharpDX
         private DispatcherOperation octreeOpt;
         private bool enableOctreeOutput = false;
         private IOctreeManager manager;
+
+        /// <summary>
+        /// Gets the manager.
+        /// </summary>
+        /// <value>
+        /// The manager.
+        /// </value>
         public IOctreeManager Manager
         {
             get
@@ -176,6 +226,13 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private bool mEnabled = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="OctreeManagerBaseWrapper"/> is enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if enabled; otherwise, <c>false</c>.
+        /// </value>
         public bool Enabled
         {
             set
@@ -187,7 +244,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return manager.Enabled;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the parameter.
+        /// </summary>
+        /// <value>
+        /// The parameter.
+        /// </value>
         public OctreeBuildParameter Parameter
         {
             set
@@ -199,7 +261,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 return Manager.Parameter;
             }
         }
-
+        /// <summary>
+        /// Called when [create manager].
+        /// </summary>
+        /// <returns></returns>
         protected abstract IOctreeManager OnCreateManager();
     }
 

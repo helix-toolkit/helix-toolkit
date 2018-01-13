@@ -25,8 +25,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private readonly Stack<IEnumerator<IRenderable>> stackCache1 = new Stack<IEnumerator<IRenderable>>(20);
         private readonly Stack<IEnumerator<IRenderable>> stackCache2 = new Stack<IEnumerator<IRenderable>>(20);
 
-        public DeviceContextProxy ImmediateContext { private set; get; }     
+        /// <summary>
+        /// Gets or sets the immediate context.
+        /// </summary>
+        /// <value>
+        /// The immediate context.
+        /// </value>
+        public DeviceContextProxy ImmediateContext { private set; get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommonRenderer"/> class.
+        /// </summary>
+        /// <param name="device">The device.</param>
         public CommonRenderer(Device device)
         {
             ImmediateContext = Collect(new DeviceContextProxy(device.ImmediateContext));
@@ -36,7 +46,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
-        /// <param name="parameter">The parameter.</param>
         /// <returns></returns>
         public IEnumerable<IRenderable> UpdateSceneGraph(IRenderContext context, IEnumerable<IRenderable> renderables)
         {
@@ -69,6 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
+        /// <param name="deviceContext"></param>
         public void RenderScene(IRenderContext context, DeviceContextProxy deviceContext, IEnumerable<IRenderCore> renderables, ref RenderParameter parameter)
         {
             SetRenderTargets(deviceContext, ref parameter);
@@ -96,7 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         private void SetRenderTargets(DeviceContext context, ref RenderParameter parameter)
         {
-            context.OutputMerger.SetTargets(parameter.depthStencil, parameter.target);
+            context.OutputMerger.SetTargets(parameter.DepthStencilView, parameter.RenderTargetView);
             context.Rasterizer.SetViewport(parameter.ViewportRegion);
             context.Rasterizer.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top, 
                 parameter.ScissorRegion.Right, parameter.ScissorRegion.Bottom);

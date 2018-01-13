@@ -12,19 +12,40 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
 
+    /// <summary>
+    /// 
+    /// </summary>
     public struct RenderParameter
     {
-        public RenderTargetView target;
-        public DepthStencilView depthStencil;
+        /// <summary>
+        /// The render target view
+        /// </summary>
+        public RenderTargetView RenderTargetView;
+        /// <summary>
+        /// The depth stencil view
+        /// </summary>
+        public DepthStencilView DepthStencilView;
+        /// <summary>
+        /// The viewport region
+        /// </summary>
         public ViewportF ViewportRegion;
+        /// <summary>
+        /// The scissor region
+        /// </summary>
         public Rectangle ScissorRegion;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public struct RenderParameter2D
     {
 
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IRenderer : IDisposable
     {
         /// <summary>
@@ -56,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="deviceContext"></param>
         void RenderScene(IRenderContext context, DeviceContextProxy deviceContext, IEnumerable<IRenderCore> renderables, ref RenderParameter parameter);
         /// <summary>
-        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderScene(IRenderContext, IEnumerable{IRenderCore}, RenderParameter)"/>
+        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderScene(IRenderContext, DeviceContextProxy, IEnumerable{IRenderCore}, ref RenderParameter)"/>
         /// </summary>
         /// <param name="renderables"></param>
         /// <returns></returns>
