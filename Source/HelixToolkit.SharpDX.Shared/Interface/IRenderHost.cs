@@ -31,20 +31,20 @@ namespace HelixToolkit.UWP
         /// Fired whenever an exception occurred on this object.
         /// </summary>
         event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
+        event EventHandler<Texture2D> OnNewRenderTargetTexture;
+        event EventHandler<bool> StartRenderLoop;
+        event EventHandler<bool> StopRenderLoop;
 
         Device Device { get; }
-        Color4 ClearColor { get; }
-        bool IsShadowMapEnabled { get; }
+        Color4 ClearColor { set; get; }
+        bool IsShadowMapEnabled { set; get; }
 #if MSAA
         MSAALevel MSAA { get; set; }
 #endif
         IViewport3DX Viewport { get; set; }
 
         IRenderContext RenderContext { get; }
-        /// <summary>
-        /// Invalidates the current render and requests an update.
-        /// </summary>
-        void InvalidateRender();
+
         void SetDefaultRenderTargets(bool clear = true);
 
         IEffectsManager EffectsManager { get; set; }
@@ -80,5 +80,11 @@ namespace HelixToolkit.UWP
         DepthStencilView DepthStencilBufferView { get; }
 
         ID2DTarget D2DControls { get; }
+
+        void StartD3D(double width, double height);
+        void EndD3D();
+        void UpdateAndRender();
+        void InvalidateRender();
+        void Resize(double width, double height);
     }
 }

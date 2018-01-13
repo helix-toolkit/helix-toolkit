@@ -1,25 +1,22 @@
 ﻿//#define OLD
 
 using SharpDX.Direct3D11;
-using System.Collections.Generic;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
 #else
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
-    using Core;
     using global::SharpDX;
     using HelixToolkit.Wpf.SharpDX.Core2D;
     using HelixToolkit.Wpf.SharpDX.Utilities;
     using System;
     using System.Diagnostics;
-    using System.Threading;
 
     /// <summary>
     /// 
     /// </summary>
-    public abstract class DX11RenderHostCommon : DisposeObject, IRenderHost
+    public abstract class DX11RenderHostBase : DisposeObject, IRenderHost
     {
         protected IDX11RenderBufferProxy renderBuffer;
 
@@ -41,10 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             set
             {
                 clearColor = value;
-                if (renderBuffer.Initialized)
-                {
-                    InvalidateRender();
-                }
+                InvalidateRender();
             }
         }
 
@@ -80,7 +74,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
                 DetachRenderable();
                 viewport = value;
-                AttachRenderable(deviceContext);
+                if (IsInitialized)
+                {
+                    AttachRenderable(Device.ImmediateContext);
+                }
             }
             get { return viewport; }
         }
@@ -99,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             set
             {
-                if (Set(ref effectsManager, value))
+                if (Set(ref effectsManager, value) && IsInitialized)
                 {
                     Restart(false);
                 }
@@ -181,15 +178,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
-        protected DeviceContext deviceContext { private set; get; }
-
         private ID2DTarget d2dTarget;
         public ID2DTarget D2DControls
         {
             get { return d2dTarget; }
         }
 
-        protected IRenderer RenderEngine;
+        protected IRenderer renderer;
 
         protected volatile bool UpdateRequested = true;
 
@@ -213,29 +208,44 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         public void UpdateAndRender()
         {
-            if (((UpdateRequested && !skipper.IsSkip()) || skipper.DelayTrigger()) && viewport != null)
+            if (((IsInitialized && UpdateRequested && !skipper.IsSkip()) || skipper.DelayTrigger()) && viewport != null)
             {
                 var t0 = renderTimer.Elapsed;
                 UpdateRequested = false;
+                RenderContext.EnableBoundingFrustum = EnableRenderFrustum;
+                RenderContext.TimeStamp = t0;
+                RenderContext.Camera = viewport.CameraCore;
+                RenderContext.WorldMatrix = viewport.WorldMatrix;
                 PreRender();              
                 try
                 {                   
                     viewport.UpdateFPS(t0);
-                    Render(t0);
-                    Render2D(t0);
+                    renderBuffer.BeginDraw();
+                    OnRender(t0);
+                    OnRender2D(t0);
+                    renderBuffer.EndDraw();
                 }
                 catch (Exception ex)
                 {
                     EndD3D();
                     ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
                 }
+                finally
+                {
+                    PostRender();
+                }
                 lastRenderingDuration = renderTimer.Elapsed - t0;
                 skipper.Push(lastRenderingDuration.TotalMilliseconds);
             }
         }
 
-        protected abstract void PreRender();
+        protected virtual void PreRender()
+        {
+            SetDefaultRenderTargets(Device.ImmediateContext, true);
+        }
         protected abstract void PostRender();
+        protected abstract void OnRender(TimeSpan time);
+        protected abstract void OnRender2D(TimeSpan time);
 
         /// <summary>
         /// Set default render target to specify context.
@@ -268,19 +278,23 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             else
             {
                 EndD3D();
-                StartD3D(deviceContext);
+                StartD3D(this.ActualWidth, this.ActualHeight);
             }
         }
         /// <summary>
         /// 
         /// </summary>
-        public void StartD3D(DeviceContext context)
+        public void StartD3D(double width, double height)
         {
-            deviceContext = context;
-            CreateAndBindBuffers();
-            IsInitialized = true;
-            RenderEngine = CreateRenderer();
-            AttachRenderable(deviceContext);
+            if(EffectsManager == null)
+            {
+                return;
+            }
+            ActualWidth = Math.Max(1,width);
+            ActualHeight = Math.Max(1,height);
+            CreateAndBindBuffers();      
+            IsInitialized = true;            
+            AttachRenderable(Device.ImmediateContext);
             StartRendering();
         }
 
@@ -293,16 +307,32 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected void CreateAndBindBuffers()
         {
             renderBuffer = Collect(CreateRenderBuffer());
+            renderBuffer.OnNewBufferCreated += RenderBuffer_OnNewBufferCreated;
             d2dTarget = Collect(CreateD2DTarget());
-            OnBindBuffers(renderBuffer);
+            renderer = Collect(CreateRenderer());
+            OnInitializeBuffers(renderBuffer, d2dTarget, renderer);
         }
 
-        protected virtual void OnBindBuffers(IDX11RenderBufferProxy buffer) { }
+        private void RenderBuffer_OnNewBufferCreated(object sender, Texture2D e)
+        {
+            OnNewRenderTargetTexture?.Invoke(this, e);
+        }
+
+        protected abstract void OnInitializeBuffers(IDX11RenderBufferProxy buffer, ID2DTarget d2dTarget, IRenderer renderer);
 
         protected virtual void AttachRenderable(DeviceContext context)
         {
-            if (!IsInitialized) { return; }
-            Viewport?.Attach(this);
+            if (!IsInitialized || Viewport == null) { return; }
+            RenderTechnique = viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
+            if (EnableSharingModelMode && SharedModelContainer != null)
+            {
+                SharedModelContainer.CurrentRenderHost = this;
+                viewport.Attach(SharedModelContainer);
+            }
+            else
+            {
+                viewport.Attach(this);
+            }         
             renderContext = Collect(CreateRenderContext(context));
         }
 
@@ -329,22 +359,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         protected virtual void DisposeBuffers()
         {
+            renderBuffer.OnNewBufferCreated -= RenderBuffer_OnNewBufferCreated;
+            RemoveAndDispose(ref renderer);
             RemoveAndDispose(ref d2dTarget);
             RemoveAndDispose(ref renderBuffer);
         }
 
         protected virtual void DetachRenderable()
         {
-            RemoveAndDispose(ref renderContext);
+            RemoveAndDispose(ref renderContext);            
             Viewport?.Detach();
         }
 
         public void Resize(double width, double height)
         {
             StopRendering();
-            ActualWidth = width;
-            ActualHeight = height;
-            OnNewRenderTargetTexture?.Invoke(this, renderBuffer.Resize((int)width, (int)height));
+            ActualWidth = Math.Max(1, width);
+            ActualHeight = Math.Max(1, height);
+            OnNewRenderTargetTexture?.Invoke(this, renderBuffer.Resize((int)ActualWidth, (int)ActualHeight));
             StartRendering();
         }
 
@@ -352,9 +384,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             SetDefaultRenderTargets(Device.ImmediateContext, clear);
         }
-
-        protected abstract void Render(TimeSpan time);
-        protected abstract void Render2D(TimeSpan time);
 
         public event EventHandler<Texture2D> OnNewRenderTargetTexture;
 

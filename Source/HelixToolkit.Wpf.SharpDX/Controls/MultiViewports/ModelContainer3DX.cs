@@ -57,6 +57,9 @@ namespace HelixToolkit.Wpf.SharpDX
         private readonly IList<IViewport3DX> viewports = new List<IViewport3DX>();
 
         public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
+        public event EventHandler<Texture2D> OnNewRenderTargetTexture;
+        public event EventHandler<bool> StartRenderLoop;
+        public event EventHandler<bool> StopRenderLoop;
 
         public bool IsRendering { set; get; } = true;
 
@@ -156,15 +159,23 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return CurrentRenderHost.ClearColor;
+                return currentRenderHost != null ? currentRenderHost.ClearColor : Color.White;
+            }
+            set
+            {
+                throw new NotImplementedException();
             }
         }
 
         public bool IsShadowMapEnabled
         {
             get
-            {                
-                return CurrentRenderHost != null ? CurrentRenderHost.IsShadowMapEnabled : false;
+            {
+                return currentRenderHost != null ? currentRenderHost.IsShadowMapEnabled : false;
+            }
+            set
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -276,6 +287,26 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new IndexOutOfRangeException("D3DCounter is negative.");
             }
+        }
+
+        public void StartD3D(double width, double height)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EndD3D()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateAndRender()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Resize(double width, double height)
+        {
+            throw new NotImplementedException();
         }
     }
 }

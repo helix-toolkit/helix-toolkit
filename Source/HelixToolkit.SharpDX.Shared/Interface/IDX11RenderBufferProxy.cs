@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using Core2D;
     public interface IDX11RenderBufferProxy : IDisposable
     {
+        event EventHandler<Texture2D> OnNewBufferCreated;
         bool Initialized { get; }
         RenderTargetView ColorBufferView { get; }
         DepthStencilView DepthStencilBufferView { get; }
@@ -26,9 +27,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         int TargetWidth { get; }
         void ClearRenderTarget(DeviceContext context, Color4 color);
         void ClearRenderTarget(DeviceContext context, Color4 color, bool clearBackBuffer, bool clearDepthStencilBuffer);
-        void EndD3D();
         Texture2D Resize(int width, int height);
         void SetDefaultRenderTargets(DeviceContext context);
-        Texture2D StartD3D(int width, int height, MSAALevel msaa);
+        Texture2D Initialize(int width, int height, MSAALevel msaa);
+
+        bool BeginDraw();
+
+        bool EndDraw();
     }
 }

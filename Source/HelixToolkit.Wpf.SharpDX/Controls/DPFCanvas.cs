@@ -9,28 +9,16 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using global::SharpDX;
+    using global::SharpDX.Direct3D11;
+    using Render;
     using System;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
     using System.Windows.Threading;
-
-    using global::SharpDX;
-
-    using global::SharpDX.Direct3D11;
-
-    using global::SharpDX.DXGI;
-
     using Utilities;
-    using Extensions;
-
-    using Device = global::SharpDX.Direct3D11.Device;
-    using Core2D;
-    using Model;
-    using Render;
-    using System.Threading.Tasks;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
@@ -53,182 +41,8 @@ namespace HelixToolkit.Wpf.SharpDX
     // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     // THE SOFTWARE.
 
-    public class DPFCanvas : Image, IRenderHost
+    public class DPFCanvas : Image
     {
-        private IDX11RenderBufferProxy buffers;
-        private readonly Stopwatch renderTimer;
-        private Device device;
-
-        private DX11ImageSource surfaceD3D;
-        private IViewport3DX viewport;
-        private RenderContext renderContext;
-        private bool sceneAttached;
-        private bool pendingValidationCycles = true;
-        private TimeSpan lastRenderingDuration;
-        private bool loaded = false;
-        public bool IsRendering { set; get; } = true;
-
-        public RenderTargetView ColorBufferView { get { return buffers.ColorBufferView; } }
-        public DepthStencilView DepthStencilBufferView { get { return buffers.DepthStencilBufferView; } }
-        /// <summary>
-        /// Get RenderContext
-        /// </summary>
-        public IRenderContext RenderContext { get { return renderContext; } }
-
-        private IRenderer renderer;
-
-        private RenderParameter renderParameter;
-
-#if MSAA
-        private Texture2D renderTargetNMS;
-#endif
-
-        /// <summary>
-        /// Fired whenever an exception occurred on this object.
-        /// </summary>
-        public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred = delegate { };
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Color4 ClearColor
-        {
-            set;get;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool IsShadowMapEnabled { get; private set; }
-
-#if MSAA
-        private MSAALevel msaa = MSAALevel.Disable;
-        /// <summary>
-        /// Set MSAA level. If set to Two/Four/Eight, the actual level is set to minimum between Maximum and Two/Four/Eight
-        /// </summary>
-        public MSAALevel MSAA
-        {
-            get { return msaa; }
-            set
-            {
-                if (msaa != value)
-                {
-                    msaa = value;
-                    if (renderTimer.IsRunning)
-                    {
-                        StopRendering();
-                        CreateAndBindTargets();
-                        SetDefaultRenderTargets();
-                        StartRendering();
-                        InvalidateRender();
-                    }
-                }
-            }
-        }
-#endif
-        /// <summary>
-        /// Gets or sets the maximum time that rendering is allowed to take. When exceeded,
-        /// the next cycle will be enqueued at <see cref="DispatcherPriority.Input"/> to reduce input lag.
-        /// </summary>
-        public TimeSpan MaxRenderingDuration { get; set; }
-
-        private uint mMaxFPS = 60;
-        public uint MaxFPS
-        {
-            set
-            {
-                mMaxFPS = value;
-                skipper.Threshold = (long)Math.Floor(1000.0 / mMaxFPS);
-            }
-            get
-            {
-                return mMaxFPS;
-            }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public IRenderTechnique RenderTechnique
-        {
-            get { return renderTechnique; }
-            private set
-            {
-                renderTechnique = value;
-            }
-        }
-        private IRenderTechnique renderTechnique;
-
-        public bool IsDeferredLighting { private set; get; } = false;
-
-        private bool enableRenderFrustum = false;
-        public bool EnableRenderFrustum
-        {
-            set
-            {
-                enableRenderFrustum = value;
-                if (renderContext != null)
-                {
-                    renderContext.EnableBoundingFrustum = value;
-                }
-            }
-            get
-            {
-                return enableRenderFrustum;
-            }
-        }
-        /// <summary>
-        /// The instance of currently attached IRenderable - this is in general the Viewport3DX
-        /// </summary>
-        public IViewport3DX Viewport
-        {
-            get { return viewport; }
-            set
-            {
-                if (ReferenceEquals(viewport, value))
-                {
-                    return;
-                }
-
-                DetachRenderables();
-                viewport = value;
-                InvalidateRender();
-            }
-        }
-
-        /// <summary>
-        /// The currently used Direct3D Device
-        /// </summary>
-        Device IRenderHost.Device
-        {
-            get { return device; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool EnableSharingModelMode { set; get; } = false;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public IModelContainer SharedModelContainer { set; get; } = null;
-
-        private IEffectsManager effectsManager;
-        public IEffectsManager EffectsManager
-        {
-            set
-            {
-                if (effectsManager != value)
-                {
-                    effectsManager = value;
-                    RestartRendering();
-                }
-            }
-            get
-            {
-                return effectsManager;
-            }
-        }
-
         /// <summary>
         /// Gets a value indicating whether the control is in design mode
         /// (running in Blend or Visual Studio).
@@ -243,21 +57,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Indicates if DPFCanvas busy on rendering.
-        /// </summary>
-        public bool IsBusy { get { return pendingValidationCycles; } }
-
-        public ID2DTarget D2DControls { get; } = new D2DControlWrapper();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        //private DispatcherOperation pendingInvalidateOperation = null;
-        /// <summary>
-        /// 
-        /// </summary>
-        //private readonly Action invalidAction;
-        /// <summary>
         /// 
         /// </summary>
         static DPFCanvas()
@@ -265,34 +64,22 @@ namespace HelixToolkit.Wpf.SharpDX
             StretchProperty.OverrideMetadata(typeof(DPFCanvas), new FrameworkPropertyMetadata(Stretch.Fill));
         }
 
+        public IRenderHost RenderHost { private set; get; }
+        private DX11ImageSource surfaceD3D;
+
+        /// <summary>
+        /// Fired whenever an exception occurred on this object.
+        /// </summary>
+        public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred = delegate { };
+
         /// <summary>
         /// 
         /// </summary>
         public DPFCanvas()
         {
-            renderTimer = new Stopwatch();
-            MaxRenderingDuration = TimeSpan.FromMilliseconds(20.0);
+            RenderHost = new DefaultRenderHost();
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
-            ClearColor = global::SharpDX.Color.Gray;
-            IsShadowMapEnabled = false;
-        }
-
-        /// <summary>
-        /// Invalidates the current render and requests an update.
-        /// </summary>
-        private void InvalidateRender()
-        {
-            pendingValidationCycles = true;
-        }
-
-
-        /// <summary>
-        /// Invalidates the current render and requests an update.
-        /// </summary>
-        void IRenderHost.InvalidateRender()
-        {
-            InvalidateRender();
         }
 
         /// <summary>
@@ -306,11 +93,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            loaded = true;
             try
             {
-                if (StartD3D())
-                { StartRendering(); }
+                StartD3D();
             }
             catch (Exception ex)
             {
@@ -337,9 +122,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            loaded = false;
-            StopRendering();
-            EndD3D(true);
+
+            EndD3D();
         }
 
         /// <summary>
@@ -347,326 +131,59 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private bool StartD3D()
         {
-            if (!loaded || EffectsManager == null)
-            {
-                return false; // StardD3D() is called from DP changed handler
-            }
-            
-            surfaceD3D = new DX11ImageSource(EffectsManager.AdapterIndex);
-            surfaceD3D.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
-            device = EffectsManager.Device;
-            Disposer.RemoveAndDispose(ref buffers);
-            buffers = new DX11RenderBufferProxy(device);
-            Disposer.RemoveAndDispose(ref renderer);
-            renderer = new CommonRenderer(device);
-            CreateAndBindTargets();
-            SetDefaultRenderTargets();
-            Source = surfaceD3D;
-            InvalidateRender();
+            CreateSurfaceD3D();            
+            RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
+            RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
+            RenderHost.OnNewRenderTargetTexture += RenderHost_OnNewRenderTargetTexture;           
+            RenderHost.StartD3D(ActualWidth, ActualHeight);
             return true;
         }
 
+        private void RenderHost_OnNewRenderTargetTexture(object sender, Texture2D e)
+        {
+            surfaceD3D.SetRenderTargetDX11(e);
+        }
+
+        private void RenderHost_StopRenderLoop(object sender, bool e)
+        {
+            CompositionTarget.Rendering -= CompositionTarget_Rendering;
+        }
+
+        private void RenderHost_StartRenderLoop(object sender, bool e)
+        {
+            CompositionTarget.Rendering += CompositionTarget_Rendering;
+        }
+
+        private void CompositionTarget_Rendering(object sender, EventArgs e)
+        {
+            RenderHost.UpdateAndRender();
+            surfaceD3D.InvalidateD3DImage();
+        }
+
         /// <summary>
         /// 
         /// </summary>
-        private void EndD3D(bool dispose)
+        private void EndD3D()
         {
-            DetachRenderables();
-            
-            if (surfaceD3D == null)
-            {
-                return;
-            }
-
-            surfaceD3D.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
-            Source = null;
-            renderContext?.Dispose();
-            Disposer.RemoveAndDispose(ref renderer);
-            Disposer.RemoveAndDispose(ref surfaceD3D);
-#if MSAA
-            Disposer.RemoveAndDispose(ref renderTargetNMS);
-#endif
-            Disposer.RemoveAndDispose(ref buffers);
+            DisposeSurfaceD3D();
+            RenderHost.EndD3D();
         }
 
-        private void DetachRenderables()
+        private void DisposeSurfaceD3D()
         {
-            if (viewport != null && sceneAttached)
+            if (surfaceD3D != null)
             {
-                viewport.Detach();
-            }
-            sceneAttached = false;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        private void CreateAndBindTargets()
-        {
-            surfaceD3D.SetRenderTargetDX11(null);
-            int width = Math.Max((int)ActualWidth, 100);
-            int height = Math.Max((int)ActualHeight, 100);
-
-            var colorBuffer = buffers.StartD3D(width, height, MSAA);
-#if MSAA
-            var colordescNMS = new Texture2DDescription
-            {
-                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-                Format = Format.B8G8R8A8_UNorm,
-                Width = width,
-                Height = height,
-                MipLevels = 1,
-                SampleDescription = new SampleDescription(1, 0),
-                Usage = ResourceUsage.Default,
-                OptionFlags = ResourceOptionFlags.Shared,
-                CpuAccessFlags = CpuAccessFlags.None,
-                ArraySize = 1
-            };
-
-            renderTargetNMS = new Texture2D(device, colordescNMS);
-            device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-            surfaceD3D.SetRenderTargetDX11(renderTargetNMS);
-#else
-            surfaceD3D.SetRenderTargetDX11(colorBuffer);
-#endif
-            this.device.ImmediateContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
-            renderParameter = new RenderParameter()
-            {
-                target = ColorBufferView, depthStencil = buffers.DepthStencilBufferView,
-                ScissorRegion = new Rectangle(0, 0, width, height), ViewportRegion = new ViewportF(0, 0, width, height)
-            };
-        }
-
-        /// <summary>
-        /// Sets the default render-targets
-        /// </summary>
-        public void SetDefaultRenderTargets(bool clear = true)
-        {
-            buffers.SetDefaultRenderTargets(device.ImmediateContext);
-            if (clear)
-            {
-                buffers.ClearRenderTarget(device.ImmediateContext, ClearColor);
+                surfaceD3D.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
+                Source = null;
+                Disposer.RemoveAndDispose(ref surfaceD3D);
             }
         }
 
-        /// <summary>
-        /// Clears the buffers with the clear-color
-        /// </summary>
-        /// <param name="clearBackBuffer"></param>
-        /// <param name="clearDepthStencilBuffer"></param>
-        internal void ClearRenderTarget(bool clearBackBuffer = true, bool clearDepthStencilBuffer = true)
+        private void CreateSurfaceD3D()
         {
-            buffers.ClearRenderTarget(device.ImmediateContext, ClearColor, clearBackBuffer, clearDepthStencilBuffer);
-        }
-
-        private Task Render(TimeSpan timeStamp)
-        {
-            // ---------------------------------------------------------------------------
-            // this part is done only if the scene is not attached
-            // it is an attach and init pass for all elements in the scene-graph                
-            if (!sceneAttached)
-            {
-                try
-                {
-                    sceneAttached = true;
-                    ClearColor = viewport.BackgroundColor;
-                    IsShadowMapEnabled = viewport.IsShadowMappingEnabled;
-
-                    RenderTechnique = viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
-
-
-                    renderContext?.Dispose();
-                    renderContext = new RenderContext(this, device.ImmediateContext);
-                    renderContext.EnableBoundingFrustum = EnableRenderFrustum;
-                    if (EnableSharingModelMode && SharedModelContainer != null)
-                    {
-                        SharedModelContainer.CurrentRenderHost = this;
-                        viewport.Attach(SharedModelContainer);
-                    }
-                    else
-                    {
-                        viewport.Attach(this);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    //MessageBox.Show("DPFCanvas: Error attaching element: " + string.Format(ex.Message), "Error");
-                    Debug.WriteLine("DPFCanvas: Error attaching element: " + string.Format(ex.Message), "Error");
-                    throw;
-                }
-            }
-            renderContext.TimeStamp = timeStamp;
-            // ---------------------------------------------------------------------------
-            // this part is per frame
-            // ---------------------------------------------------------------------------
-            if (EnableSharingModelMode && SharedModelContainer != null)
-            {
-                SharedModelContainer.CurrentRenderHost = this;
-                ClearRenderTarget();
-            }
-            else
-            {
-                SetDefaultRenderTargets(true);
-            }
-
-            renderContext.Camera = viewport.CameraCore;
-            renderContext.WorldMatrix = viewport.WorldMatrix;
-            var task = renderer.Render(renderContext, viewport.Renderables, renderParameter);                   
-#if MSAA
-            device.ImmediateContext.ResolveSubresource(buffers.ColorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-#endif
-            this.device.ImmediateContext.Flush();
-            return task;
-        }
-
-        private void StartRendering()
-        {
-            if (renderTimer.IsRunning)
-                return;
-
-            lastRenderingDuration = TimeSpan.Zero;
-            CompositionTarget.Rendering += OnRendering;
-            renderTimer.Start();
-        }
-
-        private void StopRendering()
-        {
-            if (!renderTimer.IsRunning)
-                return;
-
-            CompositionTarget.Rendering -= OnRendering;
-            renderTimer.Stop();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="CompositionTarget.Rendering"/> event.
-        /// </summary>
-        /// <param name="sender">The sender is in fact a the UI <see cref="Dispatcher"/>.</param>
-        /// <param name="e">Is in fact <see cref="RenderingEventArgs"/>.</param>
-        private void OnRendering(object sender, EventArgs e)
-        {
-            if (!renderTimer.IsRunning || !IsRendering)
-                return;
-            UpdateAndRender();
-        }
-
-        private readonly FrameRateRegulator skipper = new FrameRateRegulator();
-        /// <summary>
-        /// Updates and renders the scene.
-        /// </summary>
-        private void UpdateAndRender()
-        {
-            if (((pendingValidationCycles && !skipper.IsSkip()) || skipper.DelayTrigger()) && surfaceD3D != null && viewport != null)
-            {
-                var t0 = renderTimer.Elapsed;
-
-                // Update all renderables before rendering 
-                // giving them the chance to invalidate the current render.
-                pendingValidationCycles = false;
-                viewport.UpdateFPS(t0);
-                var t = Render(t0);
-                try
-                {
-                    surfaceD3D.Lock();
-                    surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
-                }
-                catch (Exception ex)
-                {
-                    if (!HandleExceptionOccured(ex))
-                    {
-                        MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
-                    }
-                }
-                finally
-                {
-                    surfaceD3D.Unlock();
-                }
-                t?.Wait();
-                lastRenderingDuration = renderTimer.Elapsed - t0;
-                skipper.Push(lastRenderingDuration.TotalMilliseconds);
-            }
-        }
-
-        private DispatcherOperation resizeOperation = null;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sizeInfo"></param>
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-        {
-            if (!loaded)
-            {
-                return;
-            }
-            if (resizeOperation != null && resizeOperation.Status == DispatcherOperationStatus.Pending)
-            {
-                resizeOperation.Abort();
-            }
-            resizeOperation = Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() =>
-            {
-                if (surfaceD3D != null)
-                {
-                    try
-                    {
-                        StopRendering();
-                        CreateAndBindTargets();
-                        SetDefaultRenderTargets();
-                        StartRendering();
-                        InvalidateRender();
-                    }
-                    catch (Exception ex)
-                    {
-                        if (!HandleExceptionOccured(ex))
-                        {
-                            MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
-                        }
-                    }
-                }
-            }));
-        }
-
-        /// <summary>
-        /// Handles the change of the effects manager.
-        /// </summary>
-        private void RestartRendering()
-        {
-            StopRendering();
-            EndD3D(false);
-            if (loaded)
-            {
-                if (EffectsManager != null)
-                {
-                    IsDeferredLighting = (renderTechnique == EffectsManager[DeferredRenderTechniqueNames.Deferred]
-                        || renderTechnique == EffectsManager[DeferredRenderTechniqueNames.GBuffer]);
-                }
-                if (StartD3D())
-                { StartRendering(); }
-            }
-        }
-
-        /// <summary>
-        /// Invoked whenever an exception occurs. Stops rendering, frees resources and throws 
-        /// </summary>
-        /// <param name="exception">The exception that occured.</param>
-        /// <returns><c>true</c> if the exception has been handled, <c>false</c> otherwise.</returns>
-        private bool HandleExceptionOccured(Exception exception)
-        {
-            pendingValidationCycles = false;
-            StopRendering();
-            EndD3D(true);
-
-            var sdxException = exception as SharpDXException;
-            if (sdxException != null &&
-                (sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceRemoved || 
-                 sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceReset))
-            {
-                return true;
-            }
-            else
-            {
-                var args = new RelayExceptionEventArgs(exception);
-                ExceptionOccurred(this, args);
-                return args.Handled;
-            }
+            surfaceD3D = new DX11ImageSource(RenderHost.EffectsManager.AdapterIndex);
+            surfaceD3D.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
+            Source = surfaceD3D;
         }
 
         /// <summary>
@@ -683,8 +200,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 try
                 {
                     // Try to recover from DeviceRemoved/DeviceReset
-                    EndD3D(true);
-                    RestartRendering();
+                    EndD3D();
+                    StartD3D();
                 }
                 catch (Exception ex)
                 {
@@ -696,8 +213,63 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                pendingValidationCycles = false;
-                StopRendering();
+                EndD3D();
+            }
+        }
+
+        private DispatcherOperation resizeOperation = null;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sizeInfo"></param>
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            if (resizeOperation != null && resizeOperation.Status == DispatcherOperationStatus.Pending)
+            {
+                resizeOperation.Abort();
+            }
+            resizeOperation = Dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() =>
+            {
+                if (IsLoaded)
+                {
+                    try
+                    {
+                        RenderHost.Resize(ActualWidth, ActualHeight);                       
+                    }
+                    catch (Exception ex)
+                    {
+                        if (!HandleExceptionOccured(ex))
+                        {
+                            MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
+                        }
+                    }
+                }
+            }));
+        }
+
+        /// <summary>
+        /// Invoked whenever an exception occurs. Stops rendering, frees resources and throws 
+        /// </summary>
+        /// <param name="exception">The exception that occured.</param>
+        /// <returns><c>true</c> if the exception has been handled, <c>false</c> otherwise.</returns>
+        private bool HandleExceptionOccured(Exception exception)
+        {
+            EndD3D();
+
+            var sdxException = exception as SharpDXException;
+            if (sdxException != null &&
+                (sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceRemoved ||
+                 sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceReset))
+            {
+                // Try to recover from DeviceRemoved/DeviceReset
+                StartD3D();
+                return true;
+            }
+            else
+            {
+                var args = new RelayExceptionEventArgs(exception);
+                ExceptionOccurred(this, args);
+                return args.Handled;
             }
         }
     }

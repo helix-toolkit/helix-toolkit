@@ -54,7 +54,6 @@ namespace HelixToolkit.UWP
         IEffectsManager EffectsManager { set; get; }
         IRenderTechnique RenderTechnique { set; get; }
         CameraCore CameraCore { get; }
-        Color4 BackgroundColor { get; }
 
         //DeferredRenderer DeferredRenderer { get; set; }
         void UpdateFPS(TimeSpan timeStamp);

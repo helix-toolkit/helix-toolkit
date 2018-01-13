@@ -589,36 +589,37 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
             }
             var hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
-#if DX11
-            if (EnableSwapChainRendering)
-            {
-                if (EnableDeferredRendering && !EnableSharedModelMode)
-                {
-                    hostPresenter.Content = new DPFSurfaceSwapChainThreading();
-                }
-                else
-                {
-                    hostPresenter.Content = new DPFSurfaceSwapChain();
-                }
-            }
-            else
-            {
-                if (EnableDeferredRendering && !EnableSharedModelMode)
-                {
-                    hostPresenter.Content = new DPFCanvasThreading();
-                }
-                else
-                {
-                    hostPresenter.Content = new DPFCanvas();
-                }
-            }
 
-#else
-            hostPresenter.Content = new DPFCanvas();
-#endif
-            this.RenderHost = this.renderHostInternal = hostPresenter.Content as IRenderHost;
+            //if (EnableSwapChainRendering)
+            //{
+            //    if (EnableDeferredRendering && !EnableSharedModelMode)
+            //    {
+            //        hostPresenter.Content = new DPFSurfaceSwapChainThreading();
+            //    }
+            //    else
+            //    {
+            //        hostPresenter.Content = new DPFSurfaceSwapChain();
+            //    }
+            //}
+            //else
+            //{
+            //    if (EnableDeferredRendering && !EnableSharedModelMode)
+            //    {
+            //        hostPresenter.Content = new DPFCanvasThreading();
+            //    }
+            //    else
+            //    {
+              //      hostPresenter.Content = new DPFCanvas();
+            //    }
+            //}
+            var canvas = new DPFCanvas();
+
+            hostPresenter.Content = canvas;
+            renderHostInternal = canvas.RenderHost;
             if (this.renderHostInternal != null)
             {
+                this.renderHostInternal.ClearColor = BackgroundColor.ToColor4();
+                this.renderHostInternal.IsShadowMapEnabled = IsShadowMappingEnabled;
                 this.renderHostInternal.MSAA = this.MSAA;
                 this.renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
                 this.renderHostInternal.MaxFPS = (uint)this.MaxFPS;
@@ -670,34 +671,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // update the coordinateview camera
             this.OnCameraChanged();           
-        }
-
-
-
-        /// <summary>
-        /// Detaches the current scene and attaches it again. 
-        /// Call it if you want to repeat the entire Attach-Pass
-        /// </summary>
-        public void ReAttach()
-        {
-            if (this.renderHostInternal != null)
-            {
-                this.renderHostInternal.Viewport = null;
-                this.renderHostInternal.Viewport = this;
-            }
-        }
-
-        /// <summary>
-        /// Detaches the current scene.         
-        /// Call it if you want to detouch the scene from the renderer.
-        /// Call <see cref="ReAttach"/> in order to attach the current scene again.
-        /// </summary>
-        public void Detach()
-        {
-            if (this.renderHostInternal != null)
-            {
-                this.renderHostInternal.Viewport = null;
-            }
         }
 
         /// <summary>
@@ -850,16 +823,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Attaches the elements to the specified host.
         /// </summary>
         /// <param name="host">The host.</param>
-        void IViewport3DX.Attach(IRenderHost host)
+        public void Attach(IRenderHost host)
         {
             foreach (IRenderable e in this.Renderables)
             {
                 e.Attach(host);
             }
-            //if (EnableSharedModelMode && SharedModelContainer != null)
-            //{
-            //    SharedModelContainer.Attach(host);
-            //}
             if (this.Items2D != null)
             {
                 this.Items2D.Attach(host);
@@ -870,16 +839,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Detaches the elements.
         /// </summary>
-        void IViewport3DX.Detach()
+        public void Detach()
         {
             foreach (IRenderable e in this.Renderables)
             {
                 e.Detach();
             }
-            //if (EnableSharedModelMode && SharedModelContainer != null)
-            //{
-            //    SharedModelContainer.Detach();
-            //}
             if (this.Items2D != null)
             {
                 this.Items2D.Detach();
@@ -1743,9 +1708,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-            if(e.Property == VisibilityProperty && RenderHost != null)
+            if(e.Property == VisibilityProperty && renderHostInternal != null)
             {
-                RenderHost.IsRendering = (Visibility)e.NewValue == Visibility.Visible;
+                renderHostInternal.IsRendering = (Visibility)e.NewValue == Visibility.Visible;
             }
             base.OnPropertyChanged(e);
         }

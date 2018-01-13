@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using HelixToolkit.Wpf.SharpDX.Core;
+using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
 
-    public class RenderParameter
+    public struct RenderParameter
     {
         public RenderTargetView target;
         public DepthStencilView depthStencil;
@@ -19,14 +20,53 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public Rectangle ScissorRegion;
     }
 
-    public class RenderParameter2D
+    public struct RenderParameter2D
     {
 
     }
 
     public interface IRenderer : IDisposable
     {
-        Task Render(IRenderContext context, IEnumerable<IRenderable> renderables, RenderParameter parameter);
-        void Render2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, RenderParameter2D parameter);
+        /// <summary>
+        /// Default ImmediateContext. Same as Device.ImmediateContext.
+        /// <para>Used for update global variables</para>
+        /// </summary>
+        DeviceContextProxy ImmediateContext { get; }
+        /// <summary>
+        /// Update scene graph, return the renderables which will be rendered in this frame
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="renderables"></param>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        IEnumerable<IRenderable> UpdateSceneGraph(IRenderContext context, IEnumerable<IRenderable> renderables);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="renderables"></param>
+        /// <param name="parameter"></param>
+        void UpdateGlobalVariables(IRenderContext context, IEnumerable<IRenderable> renderables, ref RenderParameter parameter);
+        /// <summary>
+        /// Run actual rendering for render cores.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="renderables"></param>
+        /// <param name="parameter"></param>
+        /// <param name="deviceContext"></param>
+        void RenderScene(IRenderContext context, DeviceContextProxy deviceContext, IEnumerable<IRenderCore> renderables, ref RenderParameter parameter);
+        /// <summary>
+        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderScene(IRenderContext, IEnumerable{IRenderCore}, RenderParameter)"/>
+        /// </summary>
+        /// <param name="renderables"></param>
+        /// <returns></returns>
+        void UpdateNotRenderParallel(IEnumerable<IRenderable> renderables);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="renderables"></param>
+        /// <param name="parameter"></param>
+        void Render2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, ref RenderParameter2D parameter);
     }
 }

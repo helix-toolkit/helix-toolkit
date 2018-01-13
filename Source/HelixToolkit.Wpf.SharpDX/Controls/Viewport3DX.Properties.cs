@@ -17,10 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf.SharpDX.Utilities;
-
-    using Color4 = global::SharpDX.Color4;
     using Controls;
-    using System.Collections.ObjectModel;
     using Elements2D;
 
     /// <summary>
@@ -32,8 +29,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Background Color property.this.RenderHost
         /// </summary>
         public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register(
-            "BackgroundColor", typeof(Color4), typeof(Viewport3DX),
-            new UIPropertyMetadata(new Color4(1, 1, 1, 1), (s, e) => ((Viewport3DX)s).ReAttach()));
+            "BackgroundColor", typeof(Color), typeof(Viewport3DX),
+            new UIPropertyMetadata(Colors.White, (s, e) =>
+            {
+                if (((Viewport3DX)s).renderHostInternal != null)
+                {
+                    ((Viewport3DX)s).renderHostInternal.ClearColor = ((Color)e.NewValue).ToColor4();
+                }
+            }));
 
         /// <summary>
         /// The camera changed event.
@@ -301,15 +304,6 @@ namespace HelixToolkit.Wpf.SharpDX
             "RenderException", typeof(Exception), typeof(Viewport3DX), new PropertyMetadata(null));
 
         /// <summary>
-        /// The render host property.
-        /// </summary>
-        public static DependencyProperty RenderHostProperty = DependencyProperty.Register(
-            "RenderHost", typeof(IRenderHost), typeof(Viewport3DX), new PropertyMetadata(null, (d, e) =>
-            {
-                (d as Viewport3DX).renderHostInternal = e.NewValue as IRenderHost;
-            }));
-
-        /// <summary>
         /// The Render Technique property
         /// </summary>
         public static readonly DependencyProperty RenderTechniqueProperty = DependencyProperty.Register(
@@ -326,7 +320,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The is deferred shading enabled propery
         /// </summary>
         public static readonly DependencyProperty IsShadowMappingEnabledProperty = DependencyProperty.Register(
-            "IsShadowMappingEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (s, e) => ((Viewport3DX)s).ReAttach()));
+            "IsShadowMappingEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, 
+                (s, e) =>
+                {
+                    if(((Viewport3DX)s).renderHostInternal!=null)
+                        ((Viewport3DX)s).renderHostInternal.IsShadowMapEnabled = (bool)e.NewValue;
+                }));
 
         /// <summary>
         /// The is change field of view enabled property
@@ -677,9 +676,9 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(MSAALevel.Disable, (s, e) =>
             {
                 var viewport = s as Viewport3DX;
-                if (viewport.RenderHost != null)
+                if (viewport.renderHostInternal != null)
                 {
-                    viewport.RenderHost.MSAA = (MSAALevel)e.NewValue;
+                    viewport.renderHostInternal.MSAA = (MSAALevel)e.NewValue;
                 }
             }));
 #endif
@@ -721,7 +720,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (s, e) =>
             {
                 var viewport = s as Viewport3DX;
-                if (viewport.RenderHost != null)
+                if (viewport.renderHostInternal != null)
                 {
                     viewport.EnableRenderFrustum = (bool)e.NewValue;
                 }
@@ -733,9 +732,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty MaxFPSProperty
             = DependencyProperty.Register("MaxFPS", typeof(int), typeof(Viewport3DX), new PropertyMetadata(60, (s, e) => {
                 var viewport = s as Viewport3DX;
-                if (viewport.RenderHost != null)
+                if (viewport.renderHostInternal != null)
                 {
-                    viewport.RenderHost.MaxFPS = (uint)e.NewValue;
+                    viewport.renderHostInternal.MaxFPS = (uint)e.NewValue;
                 }
             }, (s, e) => { return Math.Max(1, (int)e); }));
 
@@ -755,9 +754,9 @@ namespace HelixToolkit.Wpf.SharpDX
             = DependencyProperty.Register("EnableSharedModelMode", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (s, e) =>
             {
                 var viewport = s as Viewport3DX;
-                if (viewport.RenderHost != null)
+                if (viewport.renderHostInternal != null)
                 {
-                    viewport.RenderHost.EnableSharingModelMode = (bool)e.NewValue;
+                    viewport.renderHostInternal.EnableSharingModelMode = (bool)e.NewValue;
                 }
             }));
 
@@ -777,9 +776,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         (e.NewValue as IModelContainer).AttachViewport3DX(viewport);
                     }
-                    if (viewport.RenderHost != null)
+                    if (viewport.renderHostInternal != null)
                     {
-                        viewport.RenderHost.SharedModelContainer = (IModelContainer)e.NewValue;
+                        viewport.renderHostInternal.SharedModelContainer = (IModelContainer)e.NewValue;
                     }
                 }));
 
@@ -808,10 +807,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Background Color
         /// </summary>
-        [TypeConverter(typeof(Color4Converter))]
-        public Color4 BackgroundColor
+        public Color BackgroundColor
         {
-            get { return (Color4)this.GetValue(BackgroundColorProperty); }
+            get { return (Color)this.GetValue(BackgroundColorProperty); }
             set { this.SetValue(BackgroundColorProperty, value); }
         }
 
@@ -1348,15 +1346,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (Exception)this.GetValue(RenderExceptionProperty); }
             set { this.SetValue(RenderExceptionProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="IRenderHost"/>.
-        /// </summary>
-        public IRenderHost RenderHost
-        {
-            get { return (IRenderHost)this.GetValue(RenderHostProperty); }
-            set { this.SetValue(RenderHostProperty, value); }
         }
 
         protected IRenderHost renderHostInternal { private set; get; }

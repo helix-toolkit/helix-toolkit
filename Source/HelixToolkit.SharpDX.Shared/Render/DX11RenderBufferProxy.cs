@@ -18,6 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using Core2D;
     public class DX11RenderBufferProxy : DisposeObject, IDX11RenderBufferProxy
     {
+        public event EventHandler<Texture2D> OnNewBufferCreated;
         protected Texture2D colorBuffer;
         protected Texture2D depthStencilBuffer;
         protected RenderTargetView colorBufferView;
@@ -73,8 +74,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #if MSAA
             RemoveAndDispose(ref renderTargetNMS);
 #endif
-            var texture = OnCreateRenderTargetAndDepthBuffers(width, height);
+            var texture = OnCreateRenderTargetAndDepthBuffers(width, height);            
             Initialized = true;
+            OnNewBufferCreated?.Invoke(this, texture);
             return texture;
         }
         /// <summary>
@@ -168,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             return renderTargetNMS;
 #else
             return colorBufferView;
-#endif
+#endif            
         }
 
         /// <summary>
@@ -208,7 +210,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
-        public Texture2D StartD3D(int width, int height, MSAALevel msaa)
+        public Texture2D Initialize(int width, int height, MSAALevel msaa)
         {
             return CreateRenderTarget(width, height, msaa);
         }
@@ -223,17 +225,23 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             return CreateRenderTarget(width, height, MSAA);
         }
 
-        /// <summary>
-        /// Dispose all resources, same as calling <see cref="DisposeObject.DisposeAndClear"/>
-        /// </summary>
-        public void EndD3D()
+        public virtual bool BeginDraw()
         {
-            Initialized = false;
-            DisposeAndClear();
+            return Initialized;
+        }
+
+        public virtual bool EndDraw()
+        {
+#if MSAA
+            Device.ImmediateContext.ResolveSubresource(ColorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
+#endif
+            Device.ImmediateContext.Flush();
+            return true;
         }
 
         protected override void Dispose(bool disposeManagedResources)
         {
+            OnNewBufferCreated = null;
             Initialized = false;
             base.Dispose(disposeManagedResources);
         }
@@ -355,6 +363,21 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 Flags = SwapChainFlags.AllowModeSwitch
             };
             return desc;
+        }
+
+        private readonly PresentParameters presentParams = new PresentParameters();
+        public override bool EndDraw()
+        {
+            var res = swapChain.Present(0, PresentFlags.None, presentParams);
+            if (res.Success)
+            {
+                return true;
+            }
+            else
+            {
+                swapChain.Present(0, PresentFlags.Restart, presentParams);
+                return false;
+            }
         }
     }
 }
