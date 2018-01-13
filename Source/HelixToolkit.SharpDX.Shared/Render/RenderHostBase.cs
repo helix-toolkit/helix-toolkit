@@ -576,11 +576,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="height">The height.</param>
         public void Resize(double width, double height)
         {
-            StopRendering();
             ActualWidth = Math.Max(1, width);
             ActualHeight = Math.Max(1, height);
-            OnNewRenderTargetTexture?.Invoke(this, renderBuffer.Resize((int)ActualWidth, (int)ActualHeight));
-            StartRendering();
+            if (IsInitialized)
+            {
+                StopRendering();
+                OnNewRenderTargetTexture?.Invoke(this, renderBuffer.Resize((int)ActualWidth, (int)ActualHeight));
+                StartRendering();
+            }
         }
         /// <summary>
         /// Sets the default render targets.

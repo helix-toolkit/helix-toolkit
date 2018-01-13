@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Render;
     using System;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -203,6 +204,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         private void OnIsFrontBufferAvailableChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            Debug.WriteLine($"OnIsFrontBufferAvailableChanged: {(bool)e.NewValue}");
             // this fires when the screensaver kicks in, the machine goes into sleep or hibernate
             // and any other catastrophic losses of the d3d device from WPF's point of view
             if (true.Equals(e.NewValue))
@@ -220,10 +222,6 @@ namespace HelixToolkit.Wpf.SharpDX
                         MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
                     }
                 }
-            }
-            else
-            {
-                EndD3D();
             }
         }
 
