@@ -116,11 +116,10 @@ namespace HelixToolkit.Wpf.SharpDX
             var front = Vector3.Cross(left, up);
             var builder = new MeshBuilder(true, true, false);
             float size = 5;
-            builder.AddCubeFace(new Vector3(0, 0, 0), left, up, size, size, size);
-            builder.AddCubeFace(new Vector3(0, 0, 0), -left, up, size, size, size);
             builder.AddCubeFace(new Vector3(0, 0, 0), front, up, size, size, size);
             builder.AddCubeFace(new Vector3(0, 0, 0), -front, up, size, size, size);
-
+            builder.AddCubeFace(new Vector3(0, 0, 0), left, up, size, size, size);
+            builder.AddCubeFace(new Vector3(0, 0, 0), -left, up, size, size, size);
             builder.AddCubeFace(new Vector3(0, 0, 0), up, left, size, size, size);
             builder.AddCubeFace(new Vector3(0, 0, 0), -up, -left, size, size, size);
 
