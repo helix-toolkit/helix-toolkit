@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var item in viewport.Renderables)
             {
                 var model = item as MeshGeometryModel3D;
-                if (model != null)
+                if (model != null && model.GeometryValid)
                 {
                     if (model.Visibility == Visibility.Visible)
                         count += model.Geometry.Indices.Count / 3;
