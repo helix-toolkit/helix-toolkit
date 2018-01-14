@@ -30,9 +30,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         Texture2D Resize(int width, int height);
         void SetDefaultRenderTargets(DeviceContext context);
         Texture2D Initialize(int width, int height, MSAALevel msaa);
-
+        ID2DTarget D2DControls { get; }
         bool BeginDraw();
 
         bool EndDraw();
+
+        bool BeginDraw2D();
+
+        bool EndDraw2D();
+
+        bool Present();
     }
 }

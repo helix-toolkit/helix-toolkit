@@ -287,7 +287,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
-        private ID2DTarget d2dTarget;
         /// <summary>
         /// Gets the d2d controls.
         /// </summary>
@@ -296,7 +295,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public ID2DTarget D2DControls
         {
-            get { return d2dTarget; }
+            get { return RenderBuffer.D2DControls; }
         }
         /// <summary>
         /// The renderer
@@ -328,11 +327,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <returns></returns>
         protected abstract IDX11RenderBufferProxy CreateRenderBuffer();
-        /// <summary>
-        /// Creates the d2d target.
-        /// </summary>
-        /// <returns></returns>
-        protected abstract ID2DTarget CreateD2DTarget();
         /// <summary>
         /// Creates the renderer.
         /// </summary>
@@ -370,14 +364,21 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 RenderContext.TimeStamp = t0;
                 RenderContext.Camera = viewport.CameraCore;
                 RenderContext.WorldMatrix = viewport.WorldMatrix;
-                PreRender();              
+                PreRender();
                 try
-                {                   
+                {
                     viewport.UpdateFPS(t0);
-                    renderBuffer.BeginDraw();
-                    OnRender(t0);
-                    OnRender2D(t0);
-                    renderBuffer.EndDraw();
+                    if (renderBuffer.BeginDraw())
+                    {
+                        OnRender(t0);
+                        renderBuffer.EndDraw();
+                    }
+                    if (renderBuffer.BeginDraw2D())
+                    {
+                        OnRender2D(t0);
+                        renderBuffer.EndDraw2D();
+                    }
+                    renderBuffer.Present();
                 }
                 catch (Exception ex)
                 {
@@ -459,14 +460,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public void StartD3D(double width, double height)
         {
-            if(EffectsManager == null)
+            if (EffectsManager == null)
             {
                 return;
             }
-            ActualWidth = Math.Max(1,width);
-            ActualHeight = Math.Max(1,height);
-            CreateAndBindBuffers();      
-            IsInitialized = true;            
+            ActualWidth = Math.Max(1, width);
+            ActualHeight = Math.Max(1, height);
+            CreateAndBindBuffers();
+            IsInitialized = true;
             AttachRenderable(Device.ImmediateContext);
             StartRendering();
         }
@@ -486,9 +487,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             renderBuffer = Collect(CreateRenderBuffer());
             renderBuffer.OnNewBufferCreated += RenderBuffer_OnNewBufferCreated;
-            d2dTarget = Collect(CreateD2DTarget());
             renderer = Collect(CreateRenderer());
-            OnInitializeBuffers(renderBuffer, d2dTarget, renderer);
+            OnInitializeBuffers(renderBuffer, renderer);
         }
 
         private void RenderBuffer_OnNewBufferCreated(object sender, Texture2D e)
@@ -501,7 +501,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="buffer">The buffer.</param>
         /// <param name="d2dTarget">The D2D target.</param>
         /// <param name="renderer">The renderer.</param>
-        protected abstract void OnInitializeBuffers(IDX11RenderBufferProxy buffer, ID2DTarget d2dTarget, IRenderer renderer);
+        protected virtual void OnInitializeBuffers(IDX11RenderBufferProxy buffer, IRenderer renderer)
+        {
+            buffer.Initialize((int)ActualWidth, (int)ActualHeight, MSAA);
+        }
         /// <summary>
         /// Attaches the renderable.
         /// </summary>
@@ -558,7 +561,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 renderBuffer.OnNewBufferCreated -= RenderBuffer_OnNewBufferCreated;
             }
             RemoveAndDispose(ref renderer);
-            RemoveAndDispose(ref d2dTarget);
             RemoveAndDispose(ref renderBuffer);
         }
         /// <summary>

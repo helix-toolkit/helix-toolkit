@@ -24,6 +24,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected RenderTargetView colorBufferView;
         protected DepthStencilView depthStencilBufferView;
 
+        protected D2DControlWrapper d2dControls;
+        public ID2DTarget D2DControls
+        {
+            get { return d2dControls; }
+        }
+
         public int TargetWidth { private set; get; }
         public int TargetHeight { private set; get; }
 
@@ -67,6 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             MSAA = msaa;
             TargetWidth = width;
             TargetHeight = height;
+            RemoveAndDispose(ref d2dControls);
             RemoveAndDispose(ref colorBufferView);
             RemoveAndDispose(ref depthStencilBufferView);
             RemoveAndDispose(ref colorBuffer);
@@ -149,7 +156,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
             colorBufferView = Collect(new RenderTargetView(Device, colorBuffer));
             depthStencilBufferView = Collect(new DepthStencilView(Device, depthStencilBuffer));
-
 #if MSAA
             var colordescNMS = new Texture2DDescription
             {
@@ -167,6 +173,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
             renderTargetNMS = Collect(new Texture2D(Device, colordescNMS));
             Device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
+            d2dControls = Collect(new D2DControlWrapper());
+            d2dControls.Initialize(renderTargetNMS);
             return renderTargetNMS;
 #else
             return colorBufferView;
@@ -235,7 +243,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #if MSAA
             Device.ImmediateContext.ResolveSubresource(ColorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
 #endif
+            return true;
+        }
+
+        public virtual bool Present()
+        {
             Device.ImmediateContext.Flush();
+            return true;
+        }
+
+        public virtual bool BeginDraw2D()
+        {
+            d2dControls.D2DTarget.BeginDraw();
+            return true;
+        }
+
+        public virtual bool EndDraw2D()
+        {
+            d2dControls.D2DTarget.EndDraw();
             return true;
         }
 
@@ -249,11 +274,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
     public class DX11SwapChainRenderBufferProxy : DX11RenderBufferProxy
     {
-        private D2DControlWrapper d2dControls;
-        public D2DControlWrapper D2DControls
-        {
-            get { return d2dControls; }
-        }
         private SwapChain1 swapChain;
         public SwapChain1 SwapChain { get { return swapChain; } }
 
@@ -261,9 +281,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public DX11SwapChainRenderBufferProxy(System.IntPtr surfacePointer, Device device) : base(device)
         {
             surfacePtr = surfacePointer;
-            swapChain = Collect(CreateSwapChain(surfacePtr));
-            d2dControls = Collect(new D2DControlWrapper());
-            d2dControls.Initialize(swapChain);
         }
 
         protected override Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height)
@@ -271,9 +288,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (swapChain == null || swapChain.IsDisposed)
             {
                 swapChain = Collect(CreateSwapChain(surfacePtr));
-                RemoveAndDispose(ref d2dControls);
-                d2dControls = Collect(new D2DControlWrapper());
-                d2dControls.Initialize(swapChain);
             }
             else
             {
@@ -298,6 +312,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             };
             depthStencilBuffer = new Texture2D(Device, depthdesc);
             depthStencilBufferView = new DepthStencilView(Device, depthStencilBuffer);
+
+            d2dControls = Collect(new D2DControlWrapper());
+            d2dControls.Initialize(swapChain);
             return colorBuffer;
         }
 
@@ -307,7 +324,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             using (var dxgiDevice2 = Device.QueryInterface<global::SharpDX.DXGI.Device2>())
             using (var dxgiAdapter = dxgiDevice2.Adapter)
             using (var dxgiFactory2 = dxgiAdapter.GetParent<Factory2>())
-            using (var output = dxgiAdapter.Outputs.First())
             {
                 // The CreateSwapChain method is used so we can descend
                 // from this class and implement a swapchain for a desktop
@@ -366,7 +382,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         private readonly PresentParameters presentParams = new PresentParameters();
+
         public override bool EndDraw()
+        {
+            return true;
+        }
+
+        public override bool Present()
         {
             var res = swapChain.Present(0, PresentFlags.None, presentParams);
             if (res.Success)

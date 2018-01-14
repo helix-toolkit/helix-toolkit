@@ -597,32 +597,29 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             var hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
 
-            //if (EnableSwapChainRendering)
-            //{
-            //    if (EnableDeferredRendering && !EnableSharedModelMode)
-            //    {
-            //        hostPresenter.Content = new DPFSurfaceSwapChainThreading();
-            //    }
-            //    else
-            //    {
-            //        hostPresenter.Content = new DPFSurfaceSwapChain();
-            //    }
-            //}
-            //else
-            //{
-            //    if (EnableDeferredRendering && !EnableSharedModelMode)
-            //    {
-            //        hostPresenter.Content = new DPFCanvasThreading();
-            //    }
-            //    else
-            //    {
-              //      hostPresenter.Content = new DPFCanvas();
-            //    }
-            //}
-            var canvas = new DPFCanvas();
-
-            hostPresenter.Content = canvas;
-            renderHostInternal = canvas.RenderHost;
+            if (EnableSwapChainRendering)
+            {
+                if (EnableDeferredRendering && !EnableSharedModelMode)
+                {
+                    //hostPresenter.Content = new DPFSurfaceSwapChainThreading();
+                }
+                else
+                {
+                    hostPresenter.Content = new DPFSurfaceSwapChain();
+                }
+            }
+            else
+            {
+                if (EnableDeferredRendering && !EnableSharedModelMode)
+                {
+                   // hostPresenter.Content = new DPFCanvasThreading();
+                }
+                else
+                {
+                    hostPresenter.Content = new DPFCanvas();
+                }
+            }
+            renderHostInternal = (hostPresenter.Content as IRenderCanvas).RenderHost;
             if (this.renderHostInternal != null)
             {
                 this.renderHostInternal.ClearColor = BackgroundColor.ToColor4();

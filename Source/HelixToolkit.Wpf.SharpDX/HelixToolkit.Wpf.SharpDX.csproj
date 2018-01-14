@@ -139,6 +139,8 @@
     </Compile>
     <Compile Include="Controls\CameraController.cs" />
     <Compile Include="Controls\DPFCanvas.cs" />
+    <Compile Include="Controls\DPFSurfaceSwapChain.cs" />
+    <Compile Include="Controls\IRenderCanvas.cs" />
     <Compile Include="Controls\MultiViewports\ModelContainer3DX.cs" />
     <Compile Include="Controls\RenderControl.cs">
       <SubType>UserControl</SubType>

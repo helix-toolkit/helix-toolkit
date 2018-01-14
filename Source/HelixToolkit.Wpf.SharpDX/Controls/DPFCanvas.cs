@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using global::SharpDX;
     using global::SharpDX.Direct3D11;
+    using HelixToolkit.Wpf.SharpDX.Controls;
     using Render;
     using System;
     using System.ComponentModel;
@@ -46,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// 
     /// </summary>
     /// <seealso cref="System.Windows.Controls.Image" />
-    public class DPFCanvas : Image
+    public class DPFCanvas : Image, IRenderCanvas
     {
         /// <summary>
         /// Gets a value indicating whether the control is in design mode

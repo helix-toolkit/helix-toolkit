@@ -39,15 +39,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private Task asyncTask;
 
         /// <summary>
-        /// Creates the d2d target.
-        /// </summary>
-        /// <returns></returns>
-        protected override ID2DTarget CreateD2DTarget()
-        {
-            return new D2DControlWrapper();
-        }
-
-        /// <summary>
         /// Creates the render buffer.
         /// </summary>
         /// <returns></returns>
@@ -63,18 +54,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected override IRenderer CreateRenderer()
         {
             return new CommonRenderer(Device);
-        }
-
-        /// <summary>
-        /// Called when [initialize buffers].
-        /// </summary>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="d2dTarget">The D2D target.</param>
-        /// <param name="renderer">The renderer.</param>
-        protected override void OnInitializeBuffers(IDX11RenderBufferProxy buffer, ID2DTarget d2dTarget, IRenderer renderer)
-        {           
-            var texture = buffer.Initialize((int)ActualWidth, (int)ActualHeight, MSAA);
-            d2dTarget.Initialize(texture);
         }
 
         /// <summary>
