@@ -578,12 +578,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="height">The height.</param>
         public void Resize(double width, double height)
         {
+            if(ActualWidth == width && ActualHeight == height)
+            {
+                return;
+            }
             ActualWidth = Math.Max(1, width);
             ActualHeight = Math.Max(1, height);
             if (IsInitialized)
             {
                 StopRendering();
-                OnNewRenderTargetTexture?.Invoke(this, renderBuffer.Resize((int)ActualWidth, (int)ActualHeight));
+                var texture = renderBuffer.Resize((int)ActualWidth, (int)ActualHeight);
+                OnNewRenderTargetTexture?.Invoke(this, texture);
                 StartRendering();
             }
         }
