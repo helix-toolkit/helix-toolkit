@@ -244,7 +244,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <returns>Return RenderTechnique</returns>
         protected virtual IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
-            return renderTechnique == null ? host.RenderTechnique : this.renderTechnique;
+            return host.RenderTechnique;
         }
         /// <summary>
         /// Called when [create render core].
