@@ -4,11 +4,12 @@ using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using SharpDX;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
+using Media = System.Windows.Media;
 using Media3D = System.Windows.Media.Media3D;
 
 namespace ParticleSystemDemo
@@ -31,8 +32,8 @@ namespace ParticleSystemDemo
             }
         }
 
-        private float emitterRadius = 0.5f;
-        public float EmitterRadius
+        private double emitterRadius = 0.5;
+        public double EmitterRadius
         {
             set
             {
@@ -49,7 +50,7 @@ namespace ParticleSystemDemo
             }
         }
 
-        private Media3D.Point3D emitterLocation = new Media3D.Point3D(0, -4 ,0);
+        private Media3D.Point3D emitterLocation = new Media3D.Point3D(0, -4, 0);
         public Media3D.Point3D EmitterLocation
         {
             set
@@ -77,7 +78,7 @@ namespace ParticleSystemDemo
             }
         }
 
-        private Media3D.Point3D consumerLocation = new Media3D.Point3D(0,4,0);
+        private Media3D.Point3D consumerLocation = new Media3D.Point3D(0, 4, 0);
         public Media3D.Point3D ConsumerLocation
         {
             set
@@ -90,12 +91,12 @@ namespace ParticleSystemDemo
             }
         }
 
-        private float consumerRadius = 0.5f;
-        public float ConsumerRadius
+        private double consumerRadius = 0.5;
+        public double ConsumerRadius
         {
             set
             {
-                if(SetValue(ref consumerRadius, value))
+                if (SetValue(ref consumerRadius, value))
                 {
                     var matrix = ConsumerTransform.Value;
                     matrix.M11 = matrix.M22 = matrix.M33 = value;
@@ -143,7 +144,7 @@ namespace ParticleSystemDemo
         {
             set
             {
-                if(SetValue(ref accelerationX, value))
+                if (SetValue(ref accelerationX, value))
                 {
                     UpdateAcceleration();
                 }
@@ -172,9 +173,9 @@ namespace ParticleSystemDemo
         {
             set
             {
-                if(SetValue(ref sizeSlider, value))
+                if (SetValue(ref sizeSlider, value))
                 {
-                    ParticleSize = new Size(((double)value)/100, ((double)value)/100);
+                    ParticleSize = new Size(((double)value) / 100, ((double)value) / 100);
                 }
             }
             get
@@ -238,7 +239,7 @@ namespace ParticleSystemDemo
         {
             set
             {
-                if(SetValue(ref boundScale, value))
+                if (SetValue(ref boundScale, value))
                 {
                     ParticleBounds = new Media3D.Rect3D(0, 0, 0, value, value, value);
                     BoundingLineTransform.ScaleX = BoundingLineTransform.ScaleY = BoundingLineTransform.ScaleZ = value;
@@ -250,14 +251,14 @@ namespace ParticleSystemDemo
             }
         }
 
-        private Color blendColor = Colors.White;
-        public Color BlendColor
+        private Media.Color blendColor = Media.Colors.White;
+        public Media.Color BlendColor
         {
             set
             {
-                if(SetValue(ref blendColor, value))
+                if (SetValue(ref blendColor, value))
                 {
-                    BlendColorBrush = new SolidColorBrush(value);
+                    BlendColorBrush = new Media.SolidColorBrush(value);
                 }
             }
             get
@@ -271,9 +272,9 @@ namespace ParticleSystemDemo
         {
             set
             {
-                if(SetValue(ref redValue, value))
+                if (SetValue(ref redValue, value))
                 {
-                    BlendColor = Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
+                    BlendColor = Media.Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
                 }
             }
             get
@@ -289,7 +290,7 @@ namespace ParticleSystemDemo
             {
                 if (SetValue(ref greenValue, value))
                 {
-                    BlendColor = Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
+                    BlendColor = Media.Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
                 }
             }
             get
@@ -305,7 +306,7 @@ namespace ParticleSystemDemo
             {
                 if (SetValue(ref blueValue, value))
                 {
-                    BlendColor = Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
+                    BlendColor = Media.Color.FromRgb((byte)RedValue, (byte)GreenValue, (byte)BlueValue);
                 }
             }
             get
@@ -314,8 +315,8 @@ namespace ParticleSystemDemo
             }
         }
 
-        private SolidColorBrush blendColorBrush = new SolidColorBrush(Colors.White);
-        public SolidColorBrush BlendColorBrush
+        private Media.SolidColorBrush blendColorBrush = new Media.SolidColorBrush(Media.Colors.White);
+        public Media.SolidColorBrush BlendColorBrush
         {
             set
             {
@@ -357,7 +358,7 @@ namespace ParticleSystemDemo
         {
             set
             {
-                if(SetValue(ref selectedTextureIndex, value))
+                if (SetValue(ref selectedTextureIndex, value))
                 {
                     LoadTexture(value);
                 }
@@ -424,21 +425,27 @@ namespace ParticleSystemDemo
             }
         }
 
-        public readonly Tuple<int, int>[] TextureColumnsRows = new Tuple<int, int>[] { new Tuple<int, int>(1, 1), new Tuple<int, int>(4, 4), new Tuple<int, int>(4, 4), new Tuple<int, int>(6,5) };
-        public readonly string[] Textures = new string[] {@"Snowflake.png", @"FXT_Explosion_Fireball_Atlas_d.png", @"FXT_Sparks_01_Atlas_d.png", @"Smoke30Frames_0.png" };
-        public readonly int[] DefaultParticleSizes = new int[] { 20, 90, 40, 90};
+        public IList<Matrix> Instances { private set; get; }
 
-        public SharpDX.Color4 Light1Color { get; set; } = SharpDX.Color.White;
+        public readonly Tuple<int, int>[] TextureColumnsRows = new Tuple<int, int>[] { new Tuple<int, int>(1, 1), new Tuple<int, int>(4, 4), new Tuple<int, int>(4, 4), new Tuple<int, int>(6, 5) };
+        public readonly string[] Textures = new string[] { @"Snowflake.png", @"FXT_Explosion_Fireball_Atlas_d.png", @"FXT_Sparks_01_Atlas_d.png", @"Smoke30Frames_0.png" };
+        public readonly int[] DefaultParticleSizes = new int[] { 20, 90, 40, 90 };
+
+        public Media.Color Light1Color { get; set; } = Media.Colors.White;
         public MainViewModel()
         {
+            EffectsManager = new DefaultEffectsManager();
             var lineBuilder = new LineBuilder();
             lineBuilder.AddBox(new SharpDX.Vector3(), 1, 1, 1);
             BoundingLines = lineBuilder.ToLineGeometry3D();
             LoadTexture(SelectedTextureIndex);
             var meshBuilder = new MeshBuilder();
-            meshBuilder.AddSphere(new SharpDX.Vector3(0,0,0), 0.5, 16, 16);
+            meshBuilder.AddSphere(new SharpDX.Vector3(0, 0, 0), 0.5, 16, 16);
             Model = meshBuilder.ToMesh();
             Camera = new PerspectiveCamera() { Position = new Media3D.Point3D(0, 0, 20), UpDirection = new Media3D.Vector3D(0, 1, 0), LookDirection = new Media3D.Vector3D(0, 0, -20) };
+            Instances = new Matrix[] {
+                Matrix.Identity, Matrix.Scaling(1,-1, 1) * Matrix.Translation(10, 0, 10), Matrix.Translation(-10, 0, 10), Matrix.Translation(10, 0, -10),
+                Matrix.RotationAxis(new Vector3(1,0,0), 90) *  Matrix.Translation(-10, 0, -10), };
         }
 
         private void LoadTexture(int index)
@@ -449,7 +456,7 @@ namespace ParticleSystemDemo
                 file.CopyTo(mem);
                 ParticleTexture = mem;
             }
- 
+
             NumTextureColumns = TextureColumnsRows[index].Item1;
             NumTextureRows = TextureColumnsRows[index].Item2;
             SizeSlider = DefaultParticleSizes[index];
@@ -472,7 +479,7 @@ namespace ParticleSystemDemo
 
         private void UpdateAcceleration()
         {
-            Acceleration = new Media3D.Vector3D((double)AccelerationX/100, (double)AccelerationY /100, (double)AccelerationZ /100);
+            Acceleration = new Media3D.Vector3D((double)AccelerationX / 100, (double)AccelerationY / 100, (double)AccelerationZ / 100);
         }
     }
 }

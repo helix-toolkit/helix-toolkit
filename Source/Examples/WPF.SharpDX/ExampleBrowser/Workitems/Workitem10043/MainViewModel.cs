@@ -51,11 +51,8 @@
             // camera setup
             this.Camera = new PerspectiveCamera { Position = new Point3D(3, 3, 5), LookDirection = new Vector3D(-3, -3, -5), UpDirection = new Vector3D(0, 1, 0) };
 
-            if (this.RenderTechniquesManager != null)
-            {
-                // default render technique
-                this.RenderTechnique = RenderTechniquesManager.RenderTechniques.Get(DefaultRenderTechniqueNames.Blinn);
-            }
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
 
             // setup lighting            
             this.AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);

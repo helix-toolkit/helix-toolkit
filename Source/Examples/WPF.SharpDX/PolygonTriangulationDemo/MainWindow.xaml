@@ -8,7 +8,7 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <hx:Viewport3DX x:Name="viewport3D" Grid.Column="0" Grid.Row="0" Camera="{Binding Camera}">
+        <hx:Viewport3DX x:Name="viewport3D" Grid.Column="0" Grid.Row="0" Camera="{Binding Camera}" EffectsManager="{Binding EffectsManager}">
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
             <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction="{Binding DirectionalLightDirection}"/>
             <hx:MeshGeometryModel3D x:Name="triangulatedPolygon" Transform="{Binding ModelTransform}" Material="{Binding Material}"></hx:MeshGeometryModel3D>

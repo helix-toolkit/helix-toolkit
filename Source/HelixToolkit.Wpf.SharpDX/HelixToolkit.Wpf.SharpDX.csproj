@@ -88,7 +88,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cyotek.Drawing.BitmapFont, Version=1.0.0.0, Culture=neutral, PublicKeyToken=58daa28b0b2de221, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cyotek.Drawing.BitmapFont.1.3.2\lib\net20\Cyotek.Drawing.BitmapFont.dll</HintPath>
+      <HintPath>..\packages\Cyotek.Drawing.BitmapFont.1.3.4\lib\net45\Cyotek.Drawing.BitmapFont.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
@@ -107,10 +107,6 @@
       <HintPath>..\packages\SharpDX.Direct3D11.4.0.1\lib\net45\SharpDX.Direct3D11.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpDX.Direct3D11.Effects, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDX.Direct3D11.Effects.4.0.1\lib\net45\SharpDX.Direct3D11.Effects.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="SharpDX.Direct3D9, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpDX.Direct3D9.4.0.1\lib\net45\SharpDX.Direct3D9.dll</HintPath>
       <Private>True</Private>
@@ -125,6 +121,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -141,14 +138,7 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Controls\CameraController.cs" />
-    <Compile Include="Controls\DeferredRenderer.cs" />
-    <Compile Include="Controls\Disposer.cs" />
     <Compile Include="Controls\DPFCanvas.cs" />
-    <Compile Include="Controls\DPFCanvasThreading.cs" />
-    <Compile Include="Controls\DPFSurfaceSwapChain.cs" />
-    <Compile Include="Controls\DPFSurfaceSwapChainThreading.cs" />
-    <Compile Include="Controls\IRenderMatrices.cs" />
-    <Compile Include="Controls\MultiViewports\IModelContainer.cs" />
     <Compile Include="Controls\MultiViewports\ModelContainer3DX.cs" />
     <Compile Include="Controls\RenderControl.cs">
       <SubType>UserControl</SubType>
@@ -156,15 +146,9 @@
     <Compile Include="Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="Controls\VisualWrapper.cs" />
     <Compile Include="Controls\WinformHostExtend.cs" />
-    <Compile Include="Extensions\DataStreamExtension.cs" />
+    <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\Geometry3DExtensions.cs" />
-    <Compile Include="Helpers\EventSkipper.cs" />
-    <Compile Include="Controls\IRenderable.cs" />
-    <Compile Include="Controls\IRenderHost.cs" />
-    <Compile Include="Controls\Layouts.cs" />
-    <Compile Include="Controls\RenderTechnique.cs" />
     <Compile Include="Controls\RenderTechniqueConverter.cs" />
-    <Compile Include="Controls\RenderTechniquesManager.cs" />
     <Compile Include="Controls\Trackball.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Core\Box3D.cs" />
@@ -172,8 +156,6 @@
     <Compile Include="Core\Ray3D.cs" />
     <Compile Include="Controls\CameraExtensions.cs" />
     <Compile Include="Controls\DX11ImageSource.cs" />
-    <Compile Include="Controls\Effects.cs" />
-    <Compile Include="Controls\HitTestResult.cs" />
     <Compile Include="Controls\FpsCounter.cs" />
     <Compile Include="Controls\MouseHandlers\CameraMode.cs" />
     <Compile Include="Controls\MouseHandlers\CameraRotationMode.cs" />
@@ -185,15 +167,24 @@
     <Compile Include="Controls\MouseHandlers\TouchMode.cs" />
     <Compile Include="Controls\MouseHandlers\ZoomHandler.cs" />
     <Compile Include="Controls\MouseHandlers\ZoomRectangleHandler.cs" />
-    <Compile Include="Controls\RenderContext.cs" />
     <Compile Include="Controls\RenderUtil.cs" />
     <Compile Include="Controls\Viewport3DX.Properties.cs" />
     <Compile Include="Controls\ViewportExtensions.cs" />
     <Compile Include="Controls\ViewportCommands.cs" />
-    <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
+    <Compile Include="Model\Elements2D\Abstract\Clickable2D.cs" />
+    <Compile Include="Model\Elements2D\Abstract\ContentElement2D.cs" />
+    <Compile Include="Model\Elements2D\Abstract\ShapeModel2D.cs" />
+    <Compile Include="Model\Elements2D\Button2D.cs" />
+    <Compile Include="Model\Elements2D\EllipseModel2D.cs" />
+    <Compile Include="Model\Elements2D\Interfaces.cs" />
+    <Compile Include="Model\Elements2D\Abstract\Model2D.cs" />
+    <Compile Include="Model\Elements2D\RectangleModel2D.cs" />
+    <Compile Include="Model\Elements2D\TextModel2D.cs" />
+    <Compile Include="Model\Elements2D\Abstract\Element2D.cs" />
+    <Compile Include="Model\Elements2D\Canvas2D.cs" />
+    <Compile Include="Model\Elements3D\CameraModel3D.cs" />
     <Compile Include="Model\Elements3D\CrossSectionMeshGeometryModel3D.cs" />
-    <Compile Include="Model\Elements3D\AbstractElements3D\InstanceGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\ScreenSpaceMeshGeometry3D.cs" />
     <Compile Include="Model\Elements3D\BillboardTextModel3D.cs" />
     <Compile Include="Model\Elements3D\BoneSkinMeshGeometryModel3D.cs" />
@@ -205,29 +196,21 @@
     <Compile Include="Model\Elements3D\ParticleStormModel3D.cs" />
     <Compile Include="Model\Elements3D\PatchGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
+    <Compile Include="Model\Elements3D\EnvironmentMap3D.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Elements3D\XRayMeshGeometryModel3D.cs" />
-    <Compile Include="Model\Geometry\BillboardBase.cs" />
-    <Compile Include="Model\Geometry\BillboardSingleImage3D.cs" />
-    <Compile Include="Model\Geometry\BillboardSingleText3D.cs" />
-    <Compile Include="Model\Geometry\BillboardText3D.cs" />
-    <Compile Include="Model\Geometry\PointGeometry3D.cs" />
-    <Compile Include="Model\Lights3D\Light3DSceneShared.cs" />
+    <Compile Include="Model\Materials\Material.cs" />
+    <Compile Include="Model\Materials\PhongMaterial.cs" />
+    <Compile Include="Model\Materials\PhongMaterialFactory.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\AffectsRenderPropertyMetadata.cs" />
-    <Compile Include="Utilities\BufferProxy.cs" />
-    <Compile Include="Utilities\IOctreeManager.cs" />
-    <Compile Include="Utilities\IRandomVector.cs" />
-    <Compile Include="Utilities\Octree.cs" />
     <Compile Include="Utilities\OctreeHelper.cs" />
     <Compile Include="Utilities\OctreeManager.cs" />
     <Compile Include="Utilities\OffReader.cs" />
-    <Compile Include="Utilities\RelayExceptionEventArgs.cs" />
     <Compile Include="Utilities\StudioReader.cs" />
     <Compile Include="Model\Camera\Camera.cs" />
     <Compile Include="Model\Camera\MatrixCamera.cs" />
@@ -238,15 +221,12 @@
     <Compile Include="Model\Elements3D\DraggableGeometryModel3D.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\Elements3D\EnvironmentMapModel3D.cs" />
     <Compile Include="Model\Elements3D\GroupModel3D.cs" />
-    <Compile Include="Model\Elements3D\Items3DControl.cs" />
     <Compile Include="Model\Elements3D\ItemsModel3D.cs" />
     <Compile Include="Model\Elements3D\Light3DCollection.cs" />
     <Compile Include="Model\Elements3D\MeshGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\Element3DCollection.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\MaterialGeometryModel3D.cs" />
-    <Compile Include="Model\Elements3D\TransformableItems3DControl.cs" />
     <Compile Include="Model\Elements3D\UICompositeManipulator3D.cs" />
     <Compile Include="Model\Elements3D\UIManipulator3D.cs" />
     <Compile Include="Model\Elements3D\UIResizeManipulator3D.cs" />
@@ -259,24 +239,18 @@
     <Compile Include="Model\Elements3D\AbstractElements3D\GroupElement3D.cs" />
     <Compile Include="Model\Lights3D\Light3D.cs" />
     <Compile Include="Model\Elements3D\LineGeometryModel3D.cs" />
-    <Compile Include="Model\Elements3D\AbstractElements3D\Model3D.cs" />
     <Compile Include="Model\Lights3D\PointLight3D.cs" />
     <Compile Include="Model\Lights3D\ShadowMap3D.cs" />
     <Compile Include="Model\Lights3D\SpotLight3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\UIElement3D.cs" />
-    <Compile Include="Model\Geometry\LineGeometry3D.cs" />
     <Compile Include="Model\Interfaces.cs" />
     <Compile Include="Model\Lights3D\ThreePointLight3D.cs" />
-    <Compile Include="Model\Materials\Material.cs" />
-    <Compile Include="Model\Materials\PhongMaterial.cs" />
-    <Compile Include="Model\Materials\PhongMaterialFactory.cs" />
     <Compile Include="Utilities\Exporter.cs" />
     <Compile Include="Utilities\IExporter.cs" />
     <Compile Include="Utilities\IModelReader.cs" />
-    <Compile Include="Utilities\LineBuilder.cs" />
     <Compile Include="Utilities\ObjExporter.cs" />
     <Compile Include="Utilities\ObjReader.cs" />
-    <Compile Include="Utilities\RandomVectorGenerators.cs" />
+    <Compile Include="Utilities\TypeConverter.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -304,43 +278,54 @@
     </None>
     <AppDesigner Include="Properties\" />
     <EmbeddedResource Include="Textures\arial.fnt" />
+    <None Include="Resources\csParticleInsert.cso" />
+    <None Include="Resources\csParticleUpdate.cso" />
+    <None Include="Resources\dsMeshTriTessellation.cso" />
+    <None Include="Resources\gsBillboard.cso" />
+    <None Include="Resources\gsLine.cso" />
+    <None Include="Resources\gsParticle.cso" />
+    <None Include="Resources\gsPoint.cso" />
+    <None Include="Resources\hsMeshTriTessellation.cso" />
+    <None Include="Resources\psBillboardText.cso" />
+    <None Include="Resources\psColor.cso" />
+    <None Include="Resources\psDiffuseMap.cso" />
+    <None Include="Resources\psLine.cso" />
+    <None Include="Resources\psLineColor.cso" />
+    <None Include="Resources\psMeshBlinnPhong.cso" />
+    <None Include="Resources\psMeshClipPlane.cso" />
+    <None Include="Resources\psMeshClipPlaneBackface.cso" />
+    <None Include="Resources\psMeshClipPlaneQuad.cso" />
+    <None Include="Resources\psMeshXRay.cso" />
+    <None Include="Resources\psNormals.cso" />
+    <None Include="Resources\psParticle.cso" />
+    <None Include="Resources\psPoint.cso" />
+    <None Include="Resources\psPositions.cso" />
+    <None Include="Resources\psShadow.cso" />
+    <None Include="Resources\psSkybox.cso" />
+    <None Include="Resources\psViewCube.cso" />
+    <None Include="Resources\vsBillboard.cso" />
+    <None Include="Resources\vsBillboardInstancing.cso" />
+    <None Include="Resources\vsBoneSkinning.cso" />
+    <None Include="Resources\vsBoneSkinningShadow.cso" />
+    <None Include="Resources\vsBoneSkinningTessellation.cso" />
+    <None Include="Resources\vsCubeMap.cso" />
+    <None Include="Resources\vsMeshClipPlaneQuad.cso" />
+    <None Include="Resources\vsMeshDefault.cso" />
+    <None Include="Resources\vsMeshInstancing.cso" />
+    <None Include="Resources\vsMeshInstancingTessellation.cso" />
+    <None Include="Resources\vsMeshShadow.cso" />
+    <None Include="Resources\vsMeshTessellation.cso" />
+    <None Include="Resources\vsMeshXRay.cso" />
+    <None Include="Resources\vsParticle.cso" />
+    <None Include="Resources\vsPoint.cso" />
+    <None Include="Resources\vsPointShadow.cso" />
+    <None Include="Resources\vsSkybox.cso" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Model\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Shaders\CrossSection.fx" />
-    <Content Include="Shaders\DataStructs.fx" />
-    <Content Include="Shaders\Effects.fx" />
-    <Content Include="Shaders\Lighting.fx" />
-    <Content Include="Shaders\Particles.fx" />
-    <Content Include="Shaders\PixelShaders.fx" />
-    <Content Include="Shaders\VertexShaders.fx" />
-    <Content Include="sharpdx_direct3d11_1_effects_arm.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="sharpdx_direct3d11_1_effects_x64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="sharpdx_direct3d11_1_effects_x86.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <EmbeddedResource Include="Textures\DefaultViewboxTexture.jpg" />
-    <Content Include="x64\d3dcompiler_47.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="x86\d3dcompiler_47.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EmbeddedResource Include="Shaders\Common.fx" />
-    <EmbeddedResource Include="Shaders\Deferred.fx" />
-    <EmbeddedResource Include="Shaders\DeferredLighting.fx" />
-    <EmbeddedResource Include="Shaders\Material.fx" />
-    <EmbeddedResource Include="Shaders\Tessellation.fx" />
-    <EmbeddedResource Include="Shaders\Lines.fx" />
-    <EmbeddedResource Include="Shaders\BillboardText.fx" />
-    <EmbeddedResource Include="Shaders\_compile_instructions.txt" />
-    <Content Include="Shaders\Points.fx" />
     <EmbeddedResource Include="Textures\arial.png" />
     <Content Include="Textures\random4x4_dot3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -348,9 +333,6 @@
     <Content Include="Textures\random_dot3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\_default.bfx" />
-    <None Include="Resources\_deferred.bfx" />
-    <EmbeddedResource Include="Shaders\Default.fx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelixToolkit.Wpf\HelixToolkit.Wpf.csproj">
@@ -361,6 +343,9 @@
       <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
       <Name>HelixToolkit</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />

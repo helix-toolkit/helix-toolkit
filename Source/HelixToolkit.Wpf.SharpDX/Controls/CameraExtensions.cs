@@ -9,6 +9,7 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using HelixToolkit.Wpf.SharpDX.Cameras;
     using System;
     using System.Globalization;
     using System.Text;
@@ -367,7 +368,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// The inverse transform.
         /// </returns>
-        public static Matrix GetInverseViewProjectionMatrix(this Camera camera, double aspectRatio)
+        public static Matrix GetInverseViewProjectionMatrix(this CameraCore camera, double aspectRatio)
         {
             var m = GetViewProjectionMatrix(camera, aspectRatio);
             m.Invert();
@@ -391,25 +392,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="camera">The camera.</param>
         /// <param name="aspectRatio">The aspect ratio.</param>
         /// <returns>The projection matrix.</returns>
-        public static Matrix GetProjectionMatrix(this Camera camera, double aspectRatio)
+        public static Matrix GetProjectionMatrix(this CameraCore camera, double aspectRatio)
         {
-            if (camera == null)
-            {
-                throw new ArgumentNullException("camera");
-            }
-
-            var perspectiveCamera = camera as PerspectiveCamera;
-            if (perspectiveCamera != null)
-            {
-                return perspectiveCamera.CreateProjectionMatrix(aspectRatio);
-            }
-
-            var orthographicCamera = camera as OrthographicCamera;
-            if (orthographicCamera != null)
-            {
-                return orthographicCamera.CreateProjectionMatrix(aspectRatio);
-            }
-            throw new HelixToolkitException("Unknown camera type.");
+            return camera.CreateProjectionMatrix((float)aspectRatio);
         }
 
         /// <summary>
@@ -429,14 +414,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="camera">The camera.</param>
         /// <param name="aspectRatio">The aspect ratio.</param>
         /// <returns>The total view and projection transform.</returns>
-        public static Matrix GetViewProjectionMatrix(this Camera camera, double aspectRatio)
+        public static Matrix GetViewProjectionMatrix(this CameraCore camera, double aspectRatio)
         {
-
             if (camera == null)
             {
                 throw new ArgumentNullException("camera");
             }
-
             return GetViewMatrix(camera) * GetProjectionMatrix(camera, aspectRatio);
         }
 
@@ -463,46 +446,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// A Matrix object with the camera view transform matrix, or a Matrix with all zeros if the "camera" is null.
         /// </returns>
-        public static Matrix GetViewMatrix(this Camera camera)
+        public static Matrix GetViewMatrix(this CameraCore camera)
         {
-            if (camera == null)
-            {
-                throw new ArgumentNullException("camera");
-            }
-
-            if (camera is ProjectionCamera)
-            {
-                return camera.CreateViewMatrix();
-            }
-
-            throw new HelixToolkitException("Unknown camera type.");
+            return camera.CreateViewMatrix();
         }
 
-        public static Matrix GetInversedViewMatrix(this Camera camera)
+        public static Matrix3D GetInversedViewMatrix(this Camera camera)
         {
             var viewMatrix = GetViewMatrix(camera);
-            return InverseViewMatrix(ref viewMatrix);
+            return MatrixExtensions.PsudoInvert(ref viewMatrix).ToMatrix3D();
         }
 
-        public static Matrix InverseViewMatrix(ref Matrix viewMatrix)
+        public static Matrix GetInversedViewMatrix(this CameraCore camera)
         {
-            //var v33Transpose = new Matrix3x3(
-            //    viewMatrix.M11, viewMatrix.M21, viewMatrix.M31,
-            //    viewMatrix.M12, viewMatrix.M22, viewMatrix.M32,
-            //    viewMatrix.M13, viewMatrix.M23, viewMatrix.M33);
-            
-            //var vpos = viewMatrix.Row4.ToVector3();
-
-            //     vpos = Vector3.Transform(vpos, v33Transpose) * -1;
-
-            var x = viewMatrix.M41 * viewMatrix.M11 + viewMatrix.M42 * viewMatrix.M12 + viewMatrix.M43 * viewMatrix.M13;
-            var y = viewMatrix.M41 * viewMatrix.M21 + viewMatrix.M42 * viewMatrix.M22 + viewMatrix.M43 * viewMatrix.M23;
-            var z = viewMatrix.M41 * viewMatrix.M31 + viewMatrix.M42 * viewMatrix.M32 + viewMatrix.M43 * viewMatrix.M33;
-      
-            return new Matrix(
-                viewMatrix.M11, viewMatrix.M21, viewMatrix.M31, 0,
-                viewMatrix.M12, viewMatrix.M22, viewMatrix.M32, 0,
-                viewMatrix.M13, viewMatrix.M23, viewMatrix.M33, 0, -x, -y, -z, 1);
+            var viewMatrix = GetViewMatrix(camera);
+            return MatrixExtensions.PsudoInvert(ref viewMatrix);
         }
         /// <summary>
         /// Set the camera target point without changing the look direction.

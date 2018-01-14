@@ -9,7 +9,6 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using Helpers;
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Input;
@@ -378,7 +377,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             Point3D nearestPoint;
             Vector3D normal;
-            Model3D visual;
+            Element3D visual;
             if (!this.Viewport.FixedRotationPointEnabled && this.Viewport.FindNearest(this.MouseDownPoint, out nearestPoint, out normal, out visual))
             {
                 this.MouseDownNearestPoint3D = nearestPoint;

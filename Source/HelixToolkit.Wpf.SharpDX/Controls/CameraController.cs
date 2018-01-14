@@ -9,10 +9,8 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using Helpers;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -20,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
-
+    using Utilities;
     /// <summary>
     /// Provides a control that manipulates the camera by mouse and keyboard gestures.
     /// </summary>
@@ -408,7 +406,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private double zoomSpeed;
 
-        private readonly EventSkipper skipper = new EventSkipper();
+        private readonly FrameRateRegulator skipper = new FrameRateRegulator();
         /// <summary>
         /// Initializes static members of the <see cref="CameraController" /> class.
         /// </summary>
@@ -2243,7 +2241,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var point = e.GetPosition(this);
                 Point3D nearestPoint;
                 Vector3D normal;
-                Model3D visual;
+                Element3D visual;
                 if (this.Viewport.FindNearest(point, out nearestPoint, out normal, out visual))
                 {
                     this.AddZoomForce(-e.Delta * 0.001, nearestPoint);

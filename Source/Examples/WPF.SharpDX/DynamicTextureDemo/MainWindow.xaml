@@ -19,7 +19,7 @@
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             ShowFrameRate="True"
-            TextBrush="Black"
+            TextBrush="Black" EffectsManager="{Binding EffectsManager}"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />

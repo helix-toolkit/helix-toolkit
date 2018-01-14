@@ -1,10 +1,16 @@
-﻿using System;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 
-namespace HelixToolkit.SharpDX.Shared.Model
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Model
+#else
+namespace HelixToolkit.Wpf.SharpDX.Model
+#endif
 {
     public abstract class ObservableObject : INotifyPropertyChanged
     {

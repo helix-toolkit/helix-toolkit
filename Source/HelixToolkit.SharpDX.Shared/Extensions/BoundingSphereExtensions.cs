@@ -1,41 +1,34 @@
-﻿using global::SharpDX;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using global::SharpDX;
 using System;
 using System.Collections.Generic;
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class BoundingSphereExtensions
     {
         /// <summary>
-        /// Constructs a <see cref="BoundingSphere" /> that fully contains the given points.
+        /// Froms the points.
         /// </summary>
-        /// <param name="points">The points that will be contained by the sphere.</param>
-        /// <param name="start">The start index from points array to start compute the bounding sphere.</param>
-        /// <param name="count">The count of points to process to compute the bounding sphere.</param>
-        /// <param name="result">When the method completes, contains the newly constructed bounding sphere.</param>
-        /// <exception cref="System.ArgumentNullException">points</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// start
-        /// or
-        /// count
-        /// </exception>
-        public static void FromPoints(IList<Vector3> points, int start, int count, out global::SharpDX.BoundingSphere result)
+        /// <param name="points">The points.</param>
+        /// <param name="start">The start.</param>
+        /// <param name="count">The count.</param>
+        /// <returns></returns>
+        public static global::SharpDX.BoundingSphere FromPoints(IList<Vector3> points, int start, int count)
         {
-            if (points == null)
+            if (points == null || start < 0 || start >= points.Count || count < 0 || (start + count) > points.Count)
             {
-                throw new ArgumentNullException("points");
-            }
-
-            // Check that start is in the correct range
-            if (start < 0 || start >= points.Count)
-            {
-                throw new ArgumentOutOfRangeException("start", start, string.Format("Must be in the range [0, {0}]", points.Count - 1));
-            }
-
-            // Check that count is in the correct range
-            if (count < 0 || (start + count) > points.Count)
-            {
-                throw new ArgumentOutOfRangeException("count", count, string.Format("Must be in the range <= {0}", points.Count));
+                return new global::SharpDX.BoundingSphere();
             }
 
             var upperEnd = start + count;
@@ -69,37 +62,30 @@ namespace HelixToolkit.Wpf.SharpDX
             radius = (float)Math.Sqrt(radius);
 
             //Construct the sphere.
-            result.Center = center;
-            result.Radius = radius;
+            return new global::SharpDX.BoundingSphere(center, radius);
         }
 
         /// <summary>
-        /// Constructs a <see cref="BoundingSphere"/> that fully contains the given points.
+        /// Froms the points.
         /// </summary>
-        /// <param name="points">The points that will be contained by the sphere.</param>
-        /// <param name="result">When the method completes, contains the newly constructed bounding sphere.</param>
-        public static void FromPoints(IList<Vector3> points, out global::SharpDX.BoundingSphere result)
+        /// <param name="points">The points.</param>
+        /// <returns></returns>
+        public static global::SharpDX.BoundingSphere FromPoints(IList<Vector3> points)
         {
             if (points == null)
             {
-                throw new ArgumentNullException("points");
+                return new global::SharpDX.BoundingSphere();
             }
 
-            FromPoints(points, 0, points.Count, out result);
+            return FromPoints(points, 0, points.Count);
         }
 
         /// <summary>
-        /// Constructs a <see cref="BoundingSphere"/> that fully contains the given points.
+        /// Transforms the bounding sphere.
         /// </summary>
-        /// <param name="points">The points that will be contained by the sphere.</param>
-        /// <returns>The newly constructed bounding sphere.</returns>
-        public static global::SharpDX.BoundingSphere FromPoints(IList<Vector3> points)
-        {
-            global::SharpDX.BoundingSphere result;
-            FromPoints(points, out result);
-            return result;
-        }
-
+        /// <param name="b">The b.</param>
+        /// <param name="m">The m.</param>
+        /// <returns></returns>
         public static global::SharpDX.BoundingSphere TransformBoundingSphere(this global::SharpDX.BoundingSphere b, Matrix m)
         {
             var center = b.Center;
@@ -109,17 +95,6 @@ namespace HelixToolkit.Wpf.SharpDX
             var worldEdge = Vector3.Transform(edge, m);
 
             return new global::SharpDX.BoundingSphere(worldCenter.ToXYZ(), (worldEdge - worldCenter).Length());
-        }
-
-        public static void TransformBoundingSphere(this global::SharpDX.BoundingSphere b, ref Matrix m, out global::SharpDX.BoundingSphere boundSphere)
-        {
-            var center = b.Center;
-            var edge = b.Center + Vector3.Right * b.Radius;
-
-            var worldCenter = Vector3.Transform(center, m);
-            var worldEdge = Vector3.Transform(edge, m);
-
-            boundSphere = new global::SharpDX.BoundingSphere(worldCenter.ToXYZ(), (worldEdge - worldCenter).Length());
         }
     }
 }

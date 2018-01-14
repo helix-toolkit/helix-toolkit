@@ -17,8 +17,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf.SharpDX.Utilities;
-
-    using Color4 = global::SharpDX.Color4;
+    using Controls;
+    using Elements2D;
 
     /// <summary>
     /// Provides the dependency properties for Viewport3DX.
@@ -29,8 +29,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Background Color property.this.RenderHost
         /// </summary>
         public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register(
-            "BackgroundColor", typeof(Color4), typeof(Viewport3DX),
-            new UIPropertyMetadata(new Color4(1, 1, 1, 1), (s, e) => ((Viewport3DX)s).ReAttach()));
+            "BackgroundColor", typeof(Color), typeof(Viewport3DX),
+            new UIPropertyMetadata(Colors.White, (s, e) =>
+            {
+                if (((Viewport3DX)s).renderHostInternal != null)
+                {
+                    ((Viewport3DX)s).renderHostInternal.ClearColor = ((Color)e.NewValue).ToColor4();
+                }
+            }));
 
         /// <summary>
         /// The camera changed event.
@@ -65,6 +71,11 @@ namespace HelixToolkit.Wpf.SharpDX
             remove { this.RemoveHandler(GeometryModel3D.MouseMove3DEvent, value); }
         }
 
+        public event WinformHostExtend.FormMouseMoveEventHandler FormMouseMove
+        {
+            add { this.AddHandler(WinformHostExtend.FormMouseMoveEvent, value); }
+            remove { this.RemoveHandler(WinformHostExtend.FormMouseMoveEvent, value); }
+        }
         /// <summary>
         /// The camera inertia factor property.
         /// </summary>
@@ -132,28 +143,23 @@ namespace HelixToolkit.Wpf.SharpDX
             "Children", typeof(Element3DCollection), typeof(Viewport3DX));
 
         /// <summary>
-        /// The coordinate system height property.
-        /// </summary>
-        public static readonly DependencyProperty CoordinateSystemHeightProperty = DependencyProperty.Register(
-                "CoordinateSystemHeight", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(80.0));
-
-        /// <summary>
-        /// The coordinate system horizontal position property.
+        /// The coordinate system horizontal position property. Relative to viewport center
+        /// <para>Default: -0.8</para>
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemHorizontalPositionProperty = DependencyProperty.Register(
                 "CoordinateSystemHorizontalPosition",
-                typeof(HorizontalAlignment),
+                typeof(double),
                 typeof(Viewport3DX),
-                new UIPropertyMetadata(HorizontalAlignment.Left));
+                new UIPropertyMetadata(-0.8));
 
         /// <summary>
         /// The coordinate system label foreground property
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemLabelForegroundProperty = DependencyProperty.Register(
                 "CoordinateSystemLabelForeground",
-                typeof(Brush),
+                typeof(Color),
                 typeof(Viewport3DX),
-                new PropertyMetadata(Brushes.Black));
+                new PropertyMetadata(Colors.DarkGray));
 
         /// <summary>
         /// The coordinate system label X property
@@ -174,19 +180,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 "CoordinateSystemLabelZ", typeof(string), typeof(Viewport3DX), new PropertyMetadata("Z"));
 
         /// <summary>
-        /// The coordinate system vertical position property.
+        /// The coordinate system vertical position property. Relative to viewport center.
+        /// <para>Default: -0.8</para>
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemVerticalPositionProperty = DependencyProperty.Register(
                 "CoordinateSystemVerticalPosition",
-                typeof(VerticalAlignment),
+                typeof(double),
                 typeof(Viewport3DX),
-                new UIPropertyMetadata(VerticalAlignment.Bottom));
+                new UIPropertyMetadata(-0.8));
 
         /// <summary>
-        /// The coordinate system width property.
+        /// The coordinate system size property.
         /// </summary>
-        public static readonly DependencyProperty CoordinateSystemWidthProperty = DependencyProperty.Register(
-                "CoordinateSystemWidth", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(80.0));
+        public static readonly DependencyProperty CoordinateSystemSizeProperty = DependencyProperty.Register(
+                "CoordinateSystemSize", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(1.0));
 
         /// <summary>
         /// The current position property.
@@ -207,8 +214,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Deferred Render accessor
         /// </summary>
-        public static readonly DependencyProperty DeferredRendererProperty = DependencyProperty.Register(
-            "DeferredRenderer", typeof(DeferredRenderer), typeof(Viewport3DX), new PropertyMetadata(null));
+        //public static readonly DependencyProperty DeferredRendererProperty = DependencyProperty.Register(
+        //    "DeferredRenderer", typeof(DeferredRenderer), typeof(Viewport3DX), new PropertyMetadata(null));
 
         /// <summary>
         /// The default camera property.
@@ -297,19 +304,10 @@ namespace HelixToolkit.Wpf.SharpDX
             "RenderException", typeof(Exception), typeof(Viewport3DX), new PropertyMetadata(null));
 
         /// <summary>
-        /// The render host property.
-        /// </summary>
-        public static DependencyProperty RenderHostProperty = DependencyProperty.Register(
-            "RenderHost", typeof(IRenderHost), typeof(Viewport3DX), new PropertyMetadata(null, (d, e) =>
-            {
-                (d as Viewport3DX).renderHostInternal = e.NewValue as IRenderHost;
-            }));
-
-        /// <summary>
         /// The Render Technique property
         /// </summary>
         public static readonly DependencyProperty RenderTechniqueProperty = DependencyProperty.Register(
-            "RenderTechnique", typeof(RenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null,
+            "RenderTechnique", typeof(IRenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null,
                 (s, e) => ((Viewport3DX)s).RenderTechniquePropertyChanged()));
 
         ///// <summary>
@@ -322,7 +320,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The is deferred shading enabled propery
         /// </summary>
         public static readonly DependencyProperty IsShadowMappingEnabledProperty = DependencyProperty.Register(
-            "IsShadowMappingEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (s, e) => ((Viewport3DX)s).ReAttach()));
+            "IsShadowMappingEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, 
+                (s, e) =>
+                {
+                    if(((Viewport3DX)s).renderHostInternal!=null)
+                        ((Viewport3DX)s).renderHostInternal.IsShadowMapEnabled = (bool)e.NewValue;
+                }));
 
         /// <summary>
         /// The is change field of view enabled property
@@ -575,61 +578,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 new PropertyMetadata(true, (s, e) => ((Viewport3DX)s).UseDefaultGesturesChanged()));
 
         /// <summary>
-        /// The view cube back text property.
+        /// The view cube texture. It must be a 6x1 (ex: 600x100) ratio image. You can also use BitmapExtension.CreateViewBoxBitmapSource to create
         /// </summary>
-        public static readonly DependencyProperty ViewCubeBackTextProperty = DependencyProperty.Register(
-                "ViewCubeBackText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("B"));
+        public static readonly DependencyProperty ViewCubeTextureProperty = DependencyProperty.Register(
+                "ViewCubeTexture", typeof(System.IO.Stream), typeof(Viewport3DX), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The view cube bottom text property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeBottomTextProperty = DependencyProperty.Register(
-                "ViewCubeBottomText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("D"));
-
-        /// <summary>
-        /// The view cube front text property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeFrontTextProperty = DependencyProperty.Register(
-                "ViewCubeFrontText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("F"));
-
-        /// <summary>
-        /// The view cube height property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeHeightProperty = DependencyProperty.Register(
-            "ViewCubeHeight", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(80.0));
-
-        /// <summary>
-        /// The view cube horizontal position property.
+        /// The view cube horizontal position property. Relative to viewport center.
+        /// <para>Default: 0.8</para>
         /// </summary>
         public static readonly DependencyProperty ViewCubeHorizontalPositionProperty = DependencyProperty.Register(
                 "ViewCubeHorizontalPosition",
-                typeof(HorizontalAlignment),
+                typeof(double),
                 typeof(Viewport3DX),
-                new UIPropertyMetadata(HorizontalAlignment.Right));
-
-        /// <summary>
-        /// The view cube left text property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeLeftTextProperty = DependencyProperty.Register(
-                "ViewCubeLeftText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("L"));
-
-        /// <summary>
-        /// The view cube opacity property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeOpacityProperty = DependencyProperty.Register(
-                "ViewCubeOpacity", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(0.5));
-
-        /// <summary>
-        /// The view cube right text property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeRightTextProperty = DependencyProperty.Register(
-                "ViewCubeRightText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("R"));
-
-        /// <summary>
-        /// The view cube top text property.
-        /// </summary>
-        public static readonly DependencyProperty ViewCubeTopTextProperty = DependencyProperty.Register(
-                "ViewCubeTopText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("U"));
+                new UIPropertyMetadata(0.8));
 
         /// <summary>
         /// Identifies the <see cref=" IsViewCubeEdgeClicksEnabled"/> dependency property.
@@ -639,19 +601,20 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         /// <summary>
-        /// The view cube vertical position property.
+        /// The view cube vertical position property. Relative to viewport center.
+        /// <para>Default: -0.8</para>
         /// </summary>
         public static readonly DependencyProperty ViewCubeVerticalPositionProperty = DependencyProperty.Register(
                 "ViewCubeVerticalPosition",
-                typeof(VerticalAlignment),
+                typeof(double),
                 typeof(Viewport3DX),
-                new UIPropertyMetadata(VerticalAlignment.Bottom));
+                new UIPropertyMetadata(-0.8));
 
         /// <summary>
-        /// The view cube width property.
+        /// The view cube size property.
         /// </summary>
-        public static readonly DependencyProperty ViewCubeWidthProperty = DependencyProperty.Register(
-            "ViewCubeWidth", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(80.0));
+        public static readonly DependencyProperty ViewCubeSizeProperty = DependencyProperty.Register(
+            "ViewCubeSize", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(1.0));
 
         /// <summary>
         /// The zoom around mouse down point property
@@ -709,13 +672,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Set MSAA Level
         /// </summary>
-        public static readonly DependencyProperty MSAAProperty = DependencyProperty.Register("MSAA", typeof(MSAALevel), typeof(Viewport3DX), 
-            new PropertyMetadata(MSAALevel.Disable, (s,e)=> 
+        public static readonly DependencyProperty MSAAProperty = DependencyProperty.Register("MSAA", typeof(MSAALevel), typeof(Viewport3DX),
+            new PropertyMetadata(MSAALevel.Disable, (s, e) =>
             {
                 var viewport = s as Viewport3DX;
-                if (viewport.RenderHost != null)
+                if (viewport.renderHostInternal != null)
                 {
-                    viewport.RenderHost.MSAA = (MSAALevel)e.NewValue;
+                    viewport.renderHostInternal.MSAA = (MSAALevel)e.NewValue;
                 }
             }));
 #endif
@@ -753,11 +716,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Enable render frustum to avoid rendering model if it is out of view frustum
         /// </summary>
         public static readonly DependencyProperty EnableRenderFrustumProperty
-            = DependencyProperty.Register("EnableRenderFrustumProperty", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, 
+            = DependencyProperty.Register("EnableRenderFrustumProperty", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false,
                 (s, e) =>
             {
                 var viewport = s as Viewport3DX;
-                if (viewport.RenderHost != null)
+                if (viewport.renderHostInternal != null)
                 {
                     viewport.EnableRenderFrustum = (bool)e.NewValue;
                 }
@@ -769,11 +732,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty MaxFPSProperty
             = DependencyProperty.Register("MaxFPS", typeof(int), typeof(Viewport3DX), new PropertyMetadata(60, (s, e) => {
                 var viewport = s as Viewport3DX;
-                if (viewport.RenderHost != null)
+                if (viewport.renderHostInternal != null)
                 {
-                    viewport.RenderHost.MaxFPS = (uint)e.NewValue;
+                    viewport.renderHostInternal.MaxFPS = (uint)e.NewValue;
                 }
-            }, (s,e)=> { return Math.Max(1, (int)e); }));
+            }, (s, e) => { return Math.Max(1, (int)e); }));
 
         /// <summary>
         /// <para>Enable deferred rendering. Not supported with EnableSharedModelMode = true</para> 
@@ -791,9 +754,9 @@ namespace HelixToolkit.Wpf.SharpDX
             = DependencyProperty.Register("EnableSharedModelMode", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (s, e) =>
             {
                 var viewport = s as Viewport3DX;
-                if (viewport.RenderHost != null)
+                if (viewport.renderHostInternal != null)
                 {
-                    viewport.RenderHost.EnableSharingModelMode = (bool)e.NewValue;
+                    viewport.renderHostInternal.EnableSharingModelMode = (bool)e.NewValue;
                 }
             }));
 
@@ -802,20 +765,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty SharedModelContainerProperty
             = DependencyProperty.Register("SharedModelContainer", typeof(IModelContainer), typeof(Viewport3DX), new PropertyMetadata(null,
-                (d,e)=>
+                (d, e) =>
                 {
                     var viewport = d as Viewport3DX;
                     if (e.OldValue is IModelContainer)
                     {
                         (e.OldValue as IModelContainer).DettachViewport3DX(viewport);
                     }
-                    if(e.NewValue is IModelContainer)
+                    if (e.NewValue is IModelContainer)
                     {
                         (e.NewValue as IModelContainer).AttachViewport3DX(viewport);
                     }
-                    if (viewport.RenderHost != null)
+                    if (viewport.renderHostInternal != null)
                     {
-                        viewport.RenderHost.SharedModelContainer = (IModelContainer)e.NewValue;
+                        viewport.renderHostInternal.SharedModelContainer = (IModelContainer)e.NewValue;
                     }
                 }));
 
@@ -823,18 +786,30 @@ namespace HelixToolkit.Wpf.SharpDX
             = DependencyProperty.Register("EnableSwapChainRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
 
         public static readonly DependencyProperty WorldMatrixProperty
-            = DependencyProperty.Register("WorldMatrix", typeof(global::SharpDX.Matrix), typeof(Viewport3DX), new PropertyMetadata(global::SharpDX.Matrix.Identity, 
-                (d,e)=> {
+            = DependencyProperty.Register("WorldMatrix", typeof(global::SharpDX.Matrix), typeof(Viewport3DX), new PropertyMetadata(global::SharpDX.Matrix.Identity,
+                (d, e) => {
                     (d as Viewport3DX).worldMatrixInternal = (global::SharpDX.Matrix)e.NewValue;
                     (d as Viewport3DX).InvalidateRender();
                 }));
+
+        public static readonly DependencyProperty Items2DProperty
+            = DependencyProperty.Register("Items2D", typeof(Canvas2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
+            {
+                if (e.OldValue != null)
+                {
+                    (d as Viewport3DX).RemoveLogicalChild(e.OldValue);
+                }
+                if (e.NewValue != null)
+                {
+                    (d as Viewport3DX).AddLogicalChild(e.NewValue);
+                }
+            }));
         /// <summary>
         /// Background Color
         /// </summary>
-        [TypeConverter(typeof(Color4Converter))]
-        public Color4 BackgroundColor
+        public Color BackgroundColor
         {
-            get { return (Color4)this.GetValue(BackgroundColorProperty); }
+            get { return (Color)this.GetValue(BackgroundColorProperty); }
             set { this.SetValue(BackgroundColorProperty, value); }
         }
 
@@ -979,57 +954,18 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        ///// <summary>
-        ///// Gets the children.
-        ///// </summary>
-        ///// <value>
-        ///// The children.
-        ///// </value>
-        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        //[Bindable(true)]
-        //public Element3DCollection Children
-        //{
-        //    get
-        //    {
-        //        return (Element3DCollection)this.GetValue(ChildrenProperty);
-        //    }
-
-        //    private set
-        //    {
-        //        this.SetValue(ChildrenProperty, value);
-        //    }
-        //}
-
         /// <summary>
-        /// Gets or sets the height of the coordinate system viewport.
-        /// </summary>
-        /// <value>
-        /// The height of the coordinate system viewport.
-        /// </value>
-        public double CoordinateSystemHeight
-        {
-            get
-            {
-                return (double)this.GetValue(CoordinateSystemHeightProperty);
-            }
-
-            set
-            {
-                this.SetValue(CoordinateSystemHeightProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the horizontal position of the coordinate system viewport.
+        /// Gets or sets the horizontal position of the coordinate system viewport. Relative to the viewport center.
+        /// <para>Default: -0.8</para>
         /// </summary>
         /// <value>
         /// The horizontal position.
         /// </value>
-        public HorizontalAlignment CoordinateSystemHorizontalPosition
+        public double CoordinateSystemHorizontalPosition
         {
             get
             {
-                return (HorizontalAlignment)this.GetValue(CoordinateSystemHorizontalPositionProperty);
+                return (double)this.GetValue(CoordinateSystemHorizontalPositionProperty);
             }
 
             set
@@ -1044,11 +980,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The color of the coordinate system label.
         /// </value>
-        public Brush CoordinateSystemLabelForeground
+        public Color CoordinateSystemLabelForeground
         {
             get
             {
-                return (Brush)this.GetValue(CoordinateSystemLabelForegroundProperty);
+                return (Color)this.GetValue(CoordinateSystemLabelForegroundProperty);
             }
 
             set
@@ -1115,16 +1051,17 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets the vertical position of the coordinate system viewport.
+        /// Gets or sets the vertical position of the coordinate system viewport. Relative to the viewport center
+        /// <para>Default: -0.8</para>
         /// </summary>
         /// <value>
         /// The vertical position.
         /// </value>
-        public VerticalAlignment CoordinateSystemVerticalPosition
+        public double CoordinateSystemVerticalPosition
         {
             get
             {
-                return (VerticalAlignment)this.GetValue(CoordinateSystemVerticalPositionProperty);
+                return (double)this.GetValue(CoordinateSystemVerticalPositionProperty);
             }
 
             set
@@ -1139,16 +1076,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The width of the coordinate system viewport.
         /// </value>
-        public double CoordinateSystemWidth
+        public double CoordinateSystemSize
         {
             get
             {
-                return (double)this.GetValue(CoordinateSystemWidthProperty);
+                return (double)this.GetValue(CoordinateSystemSizeProperty);
             }
 
             set
             {
-                this.SetValue(CoordinateSystemWidthProperty, value);
+                this.SetValue(CoordinateSystemSizeProperty, value);
             }
         }
 
@@ -1196,11 +1133,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Read-Only DP for the deferred renderes (little bit hacky...)
         /// </summary>
-        public DeferredRenderer DeferredRenderer
-        {
-            get { return (DeferredRenderer)this.GetValue(DeferredRendererProperty); }
-            set { this.SetValue(DeferredRendererProperty, value); }
-        }
+        //public DeferredRenderer DeferredRenderer
+        //{
+        //    get { return (DeferredRenderer)this.GetValue(DeferredRendererProperty); }
+        //    set { this.SetValue(DeferredRendererProperty, value); }
+        //}
 
 
         /// <summary>
@@ -1411,15 +1348,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(RenderExceptionProperty, value); }
         }
 
-        /// <summary>
-        /// Gets or sets the <see cref="IRenderHost"/>.
-        /// </summary>
-        public IRenderHost RenderHost
-        {
-            get { return (IRenderHost)this.GetValue(RenderHostProperty); }
-            set { this.SetValue(RenderHostProperty, value); }
-        }
-
         protected IRenderHost renderHostInternal { private set; get; }
         /// <summary>
         /// Gets or sets value for the shading model shading is used
@@ -1427,9 +1355,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// <c>true</c> if deferred shading is enabled; otherwise, <c>false</c>.
         /// </value>
-        public RenderTechnique RenderTechnique
+        public IRenderTechnique RenderTechnique
         {
-            get { return (RenderTechnique)this.GetValue(RenderTechniqueProperty); }
+            get { return (IRenderTechnique)this.GetValue(RenderTechniqueProperty); }
             set { this.SetValue(RenderTechniqueProperty, value); }
         }
 
@@ -2187,92 +2115,37 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets the view cube back text.
+        /// Gets or sets the view cube texture;
+        /// The view cube texture. It must be a 6x1 (ex: 600x100) ratio image. You can also use BitmapExtension.CreateViewBoxBitmapSource to create
         /// </summary>
         /// <value>
-        /// The view cube back text.
+        /// The view cube texture.
         /// </value>
-        public string ViewCubeBackText
+        public System.IO.Stream ViewCubeTexture
         {
             get
             {
-                return (string)this.GetValue(ViewCubeBackTextProperty);
+                return (System.IO.Stream)this.GetValue(ViewCubeTextureProperty);
             }
 
             set
             {
-                this.SetValue(ViewCubeBackTextProperty, value);
+                this.SetValue(ViewCubeTextureProperty, value);
             }
         }
 
         /// <summary>
-        /// Gets or sets the view cube bottom text.
-        /// </summary>
-        /// <value>
-        /// The view cube bottom text.
-        /// </value>
-        public string ViewCubeBottomText
-        {
-            get
-            {
-                return (string)this.GetValue(ViewCubeBottomTextProperty);
-            }
-
-            set
-            {
-                this.SetValue(ViewCubeBottomTextProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the view cube front text.
-        /// </summary>
-        /// <value>
-        /// The view cube front text.
-        /// </value>
-        public string ViewCubeFrontText
-        {
-            get
-            {
-                return (string)this.GetValue(ViewCubeFrontTextProperty);
-            }
-
-            set
-            {
-                this.SetValue(ViewCubeFrontTextProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the height of the view cube viewport.
-        /// </summary>
-        /// <value>
-        /// The height of the view cube viewport.
-        /// </value>
-        public double ViewCubeHeight
-        {
-            get
-            {
-                return (double)this.GetValue(ViewCubeHeightProperty);
-            }
-
-            set
-            {
-                this.SetValue(ViewCubeHeightProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the horizontal position of the view cube viewport.
+        /// Gets or sets the horizontal position of the view cube viewport. Relative to viewport center
+        /// <para>Default: 0.8</para>
         /// </summary>
         /// <value>
         /// The horizontal position.
         /// </value>
-        public HorizontalAlignment ViewCubeHorizontalPosition
+        public double ViewCubeHorizontalPosition
         {
             get
             {
-                return (HorizontalAlignment)this.GetValue(ViewCubeHorizontalPositionProperty);
+                return (double)this.GetValue(ViewCubeHorizontalPositionProperty);
             }
 
             set
@@ -2282,77 +2155,20 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets the view cube left text.
-        /// </summary>
-        /// <value>
-        /// The view cube left text.
-        /// </value>
-        public string ViewCubeLeftText
-        {
-            get
-            {
-                return (string)this.GetValue(ViewCubeLeftTextProperty);
-            }
-
-            set
-            {
-                this.SetValue(ViewCubeLeftTextProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the opacity of the ViewCube when inactive.
         /// </summary>
-        public double ViewCubeOpacity
-        {
-            get
-            {
-                return (double)this.GetValue(ViewCubeOpacityProperty);
-            }
+        //public double ViewCubeOpacity
+        //{
+        //    get
+        //    {
+        //        return (double)this.GetValue(ViewCubeOpacityProperty);
+        //    }
 
-            set
-            {
-                this.SetValue(ViewCubeOpacityProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the view cube right text.
-        /// </summary>
-        /// <value>
-        /// The view cube right text.
-        /// </value>
-        public string ViewCubeRightText
-        {
-            get
-            {
-                return (string)this.GetValue(ViewCubeRightTextProperty);
-            }
-
-            set
-            {
-                this.SetValue(ViewCubeRightTextProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the view cube top text.
-        /// </summary>
-        /// <value>
-        /// The view cube top text.
-        /// </value>
-        public string ViewCubeTopText
-        {
-            get
-            {
-                return (string)this.GetValue(ViewCubeTopTextProperty);
-            }
-
-            set
-            {
-                this.SetValue(ViewCubeTopTextProperty, value);
-            }
-        }
+        //    set
+        //    {
+        //        this.SetValue(ViewCubeOpacityProperty, value);
+        //    }
+        //}
 
         /// <summary>
         /// Gets or sets if the view cube edge clickable.
@@ -2368,16 +2184,17 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         /// <summary>
-        /// Gets or sets the vertical position of view cube viewport.
+        /// Gets or sets the vertical position of view cube viewport. Relative to viewport center
+        /// <para>Default: -0.8</para>
         /// </summary>
         /// <value>
         /// The vertical position.
         /// </value>
-        public VerticalAlignment ViewCubeVerticalPosition
+        public double ViewCubeVerticalPosition
         {
             get
             {
-                return (VerticalAlignment)this.GetValue(ViewCubeVerticalPositionProperty);
+                return (double)this.GetValue(ViewCubeVerticalPositionProperty);
             }
 
             set
@@ -2392,16 +2209,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The width of the view cube viewport.
         /// </value>
-        public double ViewCubeWidth
+        public double ViewCubeSize
         {
             get
             {
-                return (double)this.GetValue(ViewCubeWidthProperty);
+                return (double)this.GetValue(ViewCubeSizeProperty);
             }
 
             set
             {
-                this.SetValue(ViewCubeWidthProperty, value);
+                this.SetValue(ViewCubeSizeProperty, value);
             }
         }
 
@@ -2715,6 +2532,18 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (global::SharpDX.Matrix)GetValue(WorldMatrixProperty);
+            }
+        }
+
+        public Canvas2D Items2D
+        {
+            get
+            {
+                return (Canvas2D)GetValue(Items2DProperty);
+            }
+            set
+            {
+                SetValue(Items2DProperty, value);
             }
         }
     }

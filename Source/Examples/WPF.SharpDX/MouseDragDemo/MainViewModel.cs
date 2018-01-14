@@ -20,7 +20,12 @@ namespace MouseDragDemo
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
-    using HelixToolkit.Wpf;
+    using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using Color = System.Windows.Media.Color;
+    using Plane = SharpDX.Plane;
+    using Vector3 = SharpDX.Vector3;
+    using Colors = System.Windows.Media.Colors;
+    using Color4 = SharpDX.Color4;
 
     public class MainViewModel : BaseViewModel
     {
@@ -35,15 +40,15 @@ namespace MouseDragDemo
 
         public List<Matrix> Model1Instances { get; private set; }
 
-        public Media3D.Transform3D Model1Transform { get; private set; }
-        public Media3D.Transform3D Model2Transform { get; private set; }
-        public Media3D.Transform3D Model3Transform { get; private set; }
-        public Media3D.Transform3D GridTransform { get; private set; }
+        public Transform3D Model1Transform { get; private set; }
+        public Transform3D Model2Transform { get; private set; }
+        public Transform3D Model3Transform { get; private set; }
+        public Transform3D GridTransform { get; private set; }
 
 
-        public Vector3 DirectionalLightDirection { get; private set; }
-        public Color4 DirectionalLightColor { get; private set; }
-        public Color4 AmbientLightColor { get; private set; }
+        public Vector3D DirectionalLightDirection { get; private set; }
+        public Color DirectionalLightColor { get; private set; }
+        public Color AmbientLightColor { get; private set; }
 
         public RelayCommand AddCmd { get; set; }
         public RelayCommand DelCmd { get; set; }
@@ -52,9 +57,8 @@ namespace MouseDragDemo
 
         public MainViewModel()
         {
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
 
             // titles
             this.Title = "Mouse Drag Demo";
@@ -63,17 +67,14 @@ namespace MouseDragDemo
             // camera setup
             this.Camera = new PerspectiveCamera { Position = new Point3D(0, 0, 9), LookDirection = new Vector3D(-0, -0, -9), UpDirection = new Vector3D(0, 1, 0) };
 
-            // default render technique
-            this.RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-
             // setup lighting            
-            this.AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
-            this.DirectionalLightColor = Color.White;
-            this.DirectionalLightDirection = new Vector3(-2, -5, -2);
+            this.AmbientLightColor = Colors.DimGray;
+            this.DirectionalLightColor = Colors.White;
+            this.DirectionalLightDirection = new Vector3D(-2, -5, -2);
 
             // floor plane grid
             this.Grid = LineBuilder.GenerateGrid(Vector3.UnitZ, -5, 5);
-            this.GridColor = SharpDX.Color.Black;
+            this.GridColor = Colors.Black;
             this.GridTransform = new Media3D.TranslateTransform3D(-0, -0, -0);
 
             // scene model3d

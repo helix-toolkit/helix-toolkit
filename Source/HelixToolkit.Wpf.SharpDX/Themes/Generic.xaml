@@ -4,128 +4,175 @@
     xmlns:h="http://helix-toolkit.org/wpf"
     xmlns:hx="clr-namespace:HelixToolkit.Wpf.SharpDX">
 
-    <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    <h:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
+    <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <h:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter" />
 
-    <Style TargetType="{x:Type hx:Viewport3DX}"> 
+    <Style TargetType="{x:Type hx:Viewport3DX}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type hx:Viewport3DX}">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid FocusVisualStyle="{x:Null}">
 
-                            <hx:CameraController x:Name="PART_CameraController"
-                                                 ShowCameraTarget="{TemplateBinding ShowCameraTarget}"
-                                                 CameraRotationMode="{TemplateBinding CameraRotationMode}"
-                                                 CameraMode="{TemplateBinding CameraMode}"
-                                                 RotateAroundMouseDownPoint="{TemplateBinding RotateAroundMouseDownPoint}"
-                                                 MinimumFieldOfView="{TemplateBinding MinimumFieldOfView}"
-                                                 MaximumFieldOfView="{TemplateBinding MaximumFieldOfView}"
-                                                 ZoomAroundMouseDownPoint="{TemplateBinding ZoomAroundMouseDownPoint}"
-                                                 DefaultCamera="{TemplateBinding DefaultCamera}"
-                                                 InfiniteSpin="{TemplateBinding InfiniteSpin}"
-                                                 InertiaFactor="{TemplateBinding CameraInertiaFactor}"
-                                                 RotationSensitivity="{TemplateBinding RotationSensitivity}"
-                                                 ZoomSensitivity="{TemplateBinding ZoomSensitivity}"
-                                                 ModelUpDirection="{TemplateBinding ModelUpDirection}"
-                                                 RotateCursor="{TemplateBinding RotateCursor}"
-                                                 ZoomCursor="{TemplateBinding ZoomCursor}"
-                                                 ZoomRectangleCursor="{TemplateBinding ZoomRectangleCursor}"
-                                                 PanCursor="{TemplateBinding PanCursor}"
-                                                 ChangeFieldOfViewCursor="{TemplateBinding ChangeFieldOfViewCursor}"
-                                                 IsPanEnabled="{TemplateBinding IsPanEnabled}"
-                                                 IsMoveEnabled="{TemplateBinding IsMoveEnabled}"
-                                                 IsZoomEnabled="{TemplateBinding IsZoomEnabled}"
-                                                 IsRotationEnabled="{TemplateBinding IsRotationEnabled}"
-                                                 IsInertiaEnabled="{TemplateBinding IsInertiaEnabled}"
-                                                 IsChangeFieldOfViewEnabled="{TemplateBinding IsChangeFieldOfViewEnabled}"
-                                                 IsTouchZoomEnabled="{TemplateBinding IsTouchZoomEnabled}"
-                                                 LeftRightRotationSensitivity="{TemplateBinding LeftRightRotationSensitivity}"
-                                                 UpDownRotationSensitivity="{TemplateBinding UpDownRotationSensitivity}"
-                                                 LeftRightPanSensitivity="{TemplateBinding LeftRightPanSensitivity}"
-                                                 UpDownPanSensitivity="{TemplateBinding UpDownPanSensitivity}"
-                                                 PageUpDownZoomSensitivity="{TemplateBinding PageUpDownZoomSensitivity}"
-                                                 >
+                            <hx:CameraController
+                                x:Name="PART_CameraController"
+                                CameraMode="{TemplateBinding CameraMode}"
+                                CameraRotationMode="{TemplateBinding CameraRotationMode}"
+                                ChangeFieldOfViewCursor="{TemplateBinding ChangeFieldOfViewCursor}"
+                                DefaultCamera="{TemplateBinding DefaultCamera}"
+                                InertiaFactor="{TemplateBinding CameraInertiaFactor}"
+                                InfiniteSpin="{TemplateBinding InfiniteSpin}"
+                                IsChangeFieldOfViewEnabled="{TemplateBinding IsChangeFieldOfViewEnabled}"
+                                IsInertiaEnabled="{TemplateBinding IsInertiaEnabled}"
+                                IsMoveEnabled="{TemplateBinding IsMoveEnabled}"
+                                IsPanEnabled="{TemplateBinding IsPanEnabled}"
+                                IsRotationEnabled="{TemplateBinding IsRotationEnabled}"
+                                IsTouchZoomEnabled="{TemplateBinding IsTouchZoomEnabled}"
+                                IsZoomEnabled="{TemplateBinding IsZoomEnabled}"
+                                LeftRightPanSensitivity="{TemplateBinding LeftRightPanSensitivity}"
+                                LeftRightRotationSensitivity="{TemplateBinding LeftRightRotationSensitivity}"
+                                MaximumFieldOfView="{TemplateBinding MaximumFieldOfView}"
+                                MinimumFieldOfView="{TemplateBinding MinimumFieldOfView}"
+                                ModelUpDirection="{TemplateBinding ModelUpDirection}"
+                                PageUpDownZoomSensitivity="{TemplateBinding PageUpDownZoomSensitivity}"
+                                PanCursor="{TemplateBinding PanCursor}"
+                                RotateAroundMouseDownPoint="{TemplateBinding RotateAroundMouseDownPoint}"
+                                RotateCursor="{TemplateBinding RotateCursor}"
+                                RotationSensitivity="{TemplateBinding RotationSensitivity}"
+                                ShowCameraTarget="{TemplateBinding ShowCameraTarget}"
+                                UpDownPanSensitivity="{TemplateBinding UpDownPanSensitivity}"
+                                UpDownRotationSensitivity="{TemplateBinding UpDownRotationSensitivity}"
+                                ZoomAroundMouseDownPoint="{TemplateBinding ZoomAroundMouseDownPoint}"
+                                ZoomCursor="{TemplateBinding ZoomCursor}"
+                                ZoomRectangleCursor="{TemplateBinding ZoomRectangleCursor}"
+                                ZoomSensitivity="{TemplateBinding ZoomSensitivity}">
                                 <!-- ToDo: hx:CameraController.InputBindings?
                                 <hx:CameraController.InputBindings>
                                     <h:InputBinding />
                                 </hx:CameraController.InputBindings>
                                 -->
-                                <AdornerDecorator x:Name="PART_AdornerLayer" DataContext="{TemplateBinding DataContext}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                    <ContentPresenter x:Name="PART_Canvas"/>
-                                </AdornerDecorator>
+                                <ContentPresenter
+                                    x:Name="PART_Canvas"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    DataContext="{TemplateBinding DataContext}" />
                             </hx:CameraController>
 
                             <Grid IsHitTestVisible="False">
-                                <!-- Titles -->
-                                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" Background="{TemplateBinding TitleBackground}">
-                                    <TextBlock Text="{TemplateBinding Title}" 
-                                               FontWeight="Bold" FontFamily="{TemplateBinding TitleFontFamily}" FontSize="{TemplateBinding TitleSize}" 
-                                               Foreground="{TemplateBinding TextBrush}" 
-                                               Visibility="{TemplateBinding Title, Converter={StaticResource NotNullToVisibilityConverter}}"/>
-                                    <TextBlock Text="{TemplateBinding SubTitle}" 
-                                               FontSize="{TemplateBinding SubTitleSize}" FontFamily="{TemplateBinding TitleFontFamily}" 
-                                               Foreground="{TemplateBinding TextBrush}" 
-                                               Visibility="{TemplateBinding SubTitle, Converter={StaticResource NotNullToVisibilityConverter}}"/>
+
+                                <!--  Titles  -->
+
+                                <StackPanel
+                                    Margin="5"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Background="{TemplateBinding TitleBackground}">
+                                    <TextBlock
+                                        FontFamily="{TemplateBinding TitleFontFamily}"
+                                        FontSize="{TemplateBinding TitleSize}"
+                                        FontWeight="Bold"
+                                        Foreground="{TemplateBinding TextBrush}"
+                                        Text="{TemplateBinding Title}"
+                                        Visibility="{TemplateBinding Title,
+                                                                     Converter={StaticResource NotNullToVisibilityConverter}}" />
+                                    <TextBlock
+                                        FontFamily="{TemplateBinding TitleFontFamily}"
+                                        FontSize="{TemplateBinding SubTitleSize}"
+                                        Foreground="{TemplateBinding TextBrush}"
+                                        Text="{TemplateBinding SubTitle}"
+                                        Visibility="{TemplateBinding SubTitle,
+                                                                     Converter={StaticResource NotNullToVisibilityConverter}}" />
                                 </StackPanel>
 
-                                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="6" Background="{TemplateBinding InfoBackground}">
-                                    <TextBlock HorizontalAlignment="Right" Padding="4" Text="{TemplateBinding FrameRateText}" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding ShowFrameRate, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    <TextBlock HorizontalAlignment="Right" Padding="4" Text="{TemplateBinding FieldOfViewText}" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding ShowFieldOfView, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    <TextBlock HorizontalAlignment="Right" Text="{TemplateBinding Status}" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding Status, Converter={StaticResource NotNullToVisibilityConverter}}"/>
+                                <StackPanel
+                                    Margin="6"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Background="{TemplateBinding InfoBackground}">
+                                    <TextBlock
+                                        Padding="4"
+                                        HorizontalAlignment="Right"
+                                        Foreground="{TemplateBinding InfoForeground}"
+                                        Text="{TemplateBinding FrameRateText}"
+                                        Visibility="{TemplateBinding ShowFrameRate,
+                                                                     Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <TextBlock
+                                        Padding="4"
+                                        HorizontalAlignment="Right"
+                                        Foreground="{TemplateBinding InfoForeground}"
+                                        Text="{TemplateBinding FieldOfViewText}"
+                                        Visibility="{TemplateBinding ShowFieldOfView,
+                                                                     Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <TextBlock
+                                        HorizontalAlignment="Right"
+                                        Foreground="{TemplateBinding InfoForeground}"
+                                        Text="{TemplateBinding Status}"
+                                        Visibility="{TemplateBinding Status,
+                                                                     Converter={StaticResource NotNullToVisibilityConverter}}" />
                                 </StackPanel>
 
-                                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="6" Background="{TemplateBinding InfoBackground}">
-                                    <TextBlock Text="{TemplateBinding CameraInfo}" Padding="4" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding ShowCameraInfo, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    <TextBlock Text="{TemplateBinding TriangleCountInfo}" Padding="4" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding ShowTriangleCountInfo, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    <TextBlock Text="{TemplateBinding DebugInfo}" Foreground="{TemplateBinding InfoForeground}" Visibility="{TemplateBinding DebugInfo, Converter={StaticResource NotNullToVisibilityConverter}}"/>
+                                <StackPanel
+                                    Margin="6"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    Background="{TemplateBinding InfoBackground}">
+                                    <TextBlock
+                                        Padding="4"
+                                        Foreground="{TemplateBinding InfoForeground}"
+                                        Text="{TemplateBinding CameraInfo}"
+                                        Visibility="{TemplateBinding ShowCameraInfo,
+                                                                     Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <TextBlock
+                                        Padding="4"
+                                        Foreground="{TemplateBinding InfoForeground}"
+                                        Text="{TemplateBinding TriangleCountInfo}"
+                                        Visibility="{TemplateBinding ShowTriangleCountInfo,
+                                                                     Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <TextBlock
+                                        Foreground="{TemplateBinding InfoForeground}"
+                                        Text="{TemplateBinding DebugInfo}"
+                                        Visibility="{TemplateBinding DebugInfo,
+                                                                     Converter={StaticResource NotNullToVisibilityConverter}}" />
                                 </StackPanel>
                             </Grid>
+                            <ItemsControl Visibility="Collapsed">
+                                <hx:ViewBoxModel3D
+                                    x:Name="PART_ViewCube"
+                                    IsRendering="{TemplateBinding ShowViewCube}"
+                                    RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}"
+                                    RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
+                                    SizeScale="{TemplateBinding ViewCubeSize}"
+                                    ViewBoxTexture="{TemplateBinding ViewCubeTexture}" />
+                                <hx:CoordinateSystemModel3D
+                                    x:Name="PART_CoordinateView"
+                                    CoordinateSystemLabelX="{TemplateBinding CoordinateSystemLabelX}"
+                                    CoordinateSystemLabelY="{TemplateBinding CoordinateSystemLabelY}"
+                                    CoordinateSystemLabelZ="{TemplateBinding CoordinateSystemLabelZ}"
+                                    IsRendering="{TemplateBinding ShowCoordinateSystem}"
+                                    LabelColor="{TemplateBinding CoordinateSystemLabelForeground}"
+                                    RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}"
+                                    RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"
+                                    SizeScale="{TemplateBinding CoordinateSystemSize}" />
+                            </ItemsControl>
 
-                            <!-- Coordinate system -->
-                            <Viewport3D x:Name="PART_CoordinateView" 
-                                        Width="{TemplateBinding CoordinateSystemWidth}" Height="{TemplateBinding CoordinateSystemHeight}" Margin="0" 
-                                        HorizontalAlignment="{TemplateBinding CoordinateSystemHorizontalPosition}" VerticalAlignment="{TemplateBinding CoordinateSystemVerticalPosition}" 
-                                        ClipToBounds="False" Visibility="{TemplateBinding ShowCoordinateSystem, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <h:ArrowVisual3D Point2="8 0 0" Fill="#964B4B" />
-                                <h:ArrowVisual3D Point2="0 8 0" Fill="#4B964B" />
-                                <h:ArrowVisual3D Point2="0 0 8" Fill="#4B4B96" />
-
-                                
-                                <h:BillboardTextVisual3D Position="10 0 0" Foreground="{Binding CoordinateSystemLabelForeground, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding CoordinateSystemLabelX, RelativeSource={RelativeSource TemplatedParent}}" HeightFactor="0.6" />
-                                <h:BillboardTextVisual3D Position="0 10 0" Foreground="{Binding CoordinateSystemLabelForeground, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding CoordinateSystemLabelY, RelativeSource={RelativeSource TemplatedParent}}" HeightFactor="0.6"  />
-                                <h:BillboardTextVisual3D Position="0 0 10" Foreground="{Binding CoordinateSystemLabelForeground, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding CoordinateSystemLabelZ, RelativeSource={RelativeSource TemplatedParent}}" HeightFactor="0.6"  />
-                                
-                                <!--<local:PieSliceVisual3D Normal="1,0,0" UpVector="0,0,1" InnerRadius="3" OuterRadius="6"  Fill="#80ff0000"/>
-                                <local:PieSliceVisual3D Normal="0,1,0" UpVector="1,0,0" InnerRadius="3" OuterRadius="6"  Fill="#8000ff00"/>
-                                <local:PieSliceVisual3D Normal="0,0,1" UpVector="0,1,0" InnerRadius="3" OuterRadius="6"  Fill="#800000ff"/>-->
-                            </Viewport3D>
-
-                            <!-- View cube -->
-                            <Viewport3D x:Name="PART_ViewCubeViewport" 
-                                        Width="{TemplateBinding ViewCubeWidth}" Height="{TemplateBinding ViewCubeHeight}" Margin="0" 
-                                        HorizontalAlignment="{TemplateBinding ViewCubeHorizontalPosition}" VerticalAlignment="{TemplateBinding ViewCubeVerticalPosition}" 
-                                        Opacity="0.5" Visibility="{TemplateBinding ShowViewCube, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <h:ViewCubeVisual3D x:Name="PART_ViewCube" 
-                                                    ModelUpDirection="{Binding ModelUpDirection, RelativeSource={RelativeSource TemplatedParent}}" 
-                                                    TopText="{Binding ViewCubeTopText, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    BottomText="{Binding ViewCubeBottomText, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    FrontText="{Binding ViewCubeFrontText, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    BackText="{Binding ViewCubeBackText, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    LeftText="{Binding ViewCubeLeftText, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    RightText="{Binding ViewCubeRightText, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    EnableEdgeClicks="{Binding IsViewCubeEdgeClicksEnabled, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    />
-                            </Viewport3D>
-
-                            <!-- Message TextBox -->
-                            <TextBox HorizontalAlignment="Center" VerticalAlignment="Center" Margin="6" 
-                                     Background="{TemplateBinding InfoBackground}" BorderThickness="2" BorderBrush="Tomato"
-                                     Text="{TemplateBinding MessageText}" IsReadOnly="True" TextWrapping="Wrap" 
-                                     Visibility="{TemplateBinding MessageText, Converter={StaticResource NotNullToVisibilityConverter}}"
-                                     HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden"/>
+                            <!--  Message TextBox  -->
+                            <TextBox
+                                Margin="6"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="{TemplateBinding InfoBackground}"
+                                BorderBrush="Tomato"
+                                BorderThickness="2"
+                                HorizontalScrollBarVisibility="Disabled"
+                                IsReadOnly="True"
+                                Text="{TemplateBinding MessageText}"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Hidden"
+                                Visibility="{TemplateBinding MessageText,
+                                                             Converter={StaticResource NotNullToVisibilityConverter}}" />
                         </Grid>
                     </Border>
                 </ControlTemplate>

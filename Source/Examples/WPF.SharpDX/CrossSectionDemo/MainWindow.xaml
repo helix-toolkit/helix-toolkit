@@ -22,7 +22,8 @@
             Background="Black" BackgroundColor="0.8,0.8,0.8,1"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black" CameraRotationMode="Trackball"
-            UseDefaultGestures="False" EnableSwapChainRendering="True"
+            UseDefaultGestures="False" 
+                        EffectsManager="{Binding EffectsManager}"
             RenderTechnique="{Binding RenderTechnique}" RotateAroundMouseDownPoint="False" FixedRotationPoint="0,0,0" FixedRotationPointEnabled="True">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -51,10 +52,10 @@
                 Plane2="{Binding Plane2}"
                 EnablePlane1="{Binding EnablePlane1}"
                 EnablePlane2="{Binding EnablePlane2}"/>
-            <hx:CoordinateSystemModel3D/>
+            <!--<hx:CoordinateSystemModel3D/>-->
             <hx:MeshGeometryModel3D CullMode="Back" ReuseVertexArrayBuffer="True" Geometry="{Binding Plane1Model}" Material="{Binding PlaneMaterial}" Transform="{Binding Plane1Transform}" IsRendering="{Binding EnablePlane1}"/>
             <hx:MeshGeometryModel3D CullMode="Back" ReuseVertexArrayBuffer="True" Geometry="{Binding Plane2Model}" Material="{Binding PlaneMaterial}" Transform="{Binding Plane2Transform}" IsRendering="{Binding EnablePlane2}"/>
-            <hx:ViewBoxModel3D RelativeScreenLocationX="0.8"/>
+            <!--<hx:ViewBoxModel3D RelativeScreenLocationX="0.8"/>-->
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" TextBlock.Foreground="White">
             <CheckBox Margin="4" IsChecked="{Binding EnablePlane1}" Foreground="White">Cut Plane 1</CheckBox>

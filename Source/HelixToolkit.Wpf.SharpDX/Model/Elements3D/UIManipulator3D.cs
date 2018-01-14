@@ -33,19 +33,19 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   Bind the Tranform of the Target to this Property
         /// </summary>
         public static readonly DependencyProperty TargetTransformProperty = DependencyProperty.Register(
-            "TargetTransform", typeof(Transform3D), typeof(UIManipulator3D), new AffectsRenderFrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender));
+            "TargetTransform", typeof(Transform3D), typeof(UIManipulator3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender));
 
         /// <summary>
         ///   The offset property.
         /// </summary>
         public static readonly DependencyProperty OffsetProperty = DependencyProperty.Register(
-            "Offset", typeof(Vector3), typeof(UIManipulator3D), new AffectsRenderPropertyMetadata(new Vector3(0, 0, 0), ModelChanged));
+            "Offset", typeof(Vector3), typeof(UIManipulator3D), new PropertyMetadata(new Vector3(0, 0, 0), ModelChanged));
 
         /// <summary>
         ///   The value property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(double), typeof(UIManipulator3D), new AffectsRenderFrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, ValueChanged));
+            "Value", typeof(double), typeof(UIManipulator3D), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, ValueChanged));
 
 
         //public static readonly DependencyProperty PositionProperty =
@@ -181,7 +181,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public override void OnMouse3DDown(object sender, RoutedEventArgs e)
+        protected override void OnMouse3DDown(object sender, RoutedEventArgs e)
         {
             base.OnMouse3DDown(sender, e);
 
@@ -192,7 +192,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.isMouseCaptured = true;
             this.viewport = args.Viewport;
             this.cameraNormal = args.Viewport.Camera.LookDirection.ToVector3();
-            this.lastHitPosWS = args.HitTestResult.PointHit.ToVector3();
+            this.lastHitPosWS = args.HitTestResult.PointHit;
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public override void OnMouse3DUp(object sender, RoutedEventArgs e)
+        protected override void OnMouse3DUp(object sender, RoutedEventArgs e)
         {
             base.OnMouse3DUp(sender, e);
             if (this.isMouseCaptured)
@@ -215,7 +215,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public override void OnMouse3DMove(object sender, RoutedEventArgs e)
+        protected override void OnMouse3DMove(object sender, RoutedEventArgs e)
         {
             base.OnMouse3DMove(sender, e);
             if (this.isMouseCaptured)
@@ -257,7 +257,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Vector3 ToWorldPos(Vector3 vec)
         {
             //var m = this.Transform.Value.ToMatrix();
-            return Vector3.TransformCoordinate(vec, this.modelMatrix);
+            return Vector3.TransformCoordinate(vec, this.TotalModelMatrix);
         }
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Vector3 ToWorldVec(Vector3 vec)
         {
             //var m = this.Transform.Value.ToMatrix();
-            return Vector3.TransformNormal(vec, this.modelMatrix);
+            return Vector3.TransformNormal(vec, this.TotalModelMatrix);
         }
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Vector3 ToModelPos(Vector3 vec)
         {
             //var m = this.Transform.Value.ToMatrix();
-            return Vector3.TransformCoordinate(vec, Matrix.Invert(this.modelMatrix));
+            return Vector3.TransformCoordinate(vec, this.TotalModelMatrix.PsudoInvert());
         }
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Vector3 ToModelVec(Vector3 vec)
         {
             //var m = this.Transform.Value.ToMatrix();
-            return Vector3.TransformNormal(vec, Matrix.Invert(this.modelMatrix));
+            return Vector3.TransformNormal(vec, Matrix.Invert(this.TotalModelMatrix.PsudoInvert()));
         }
     }
 }
