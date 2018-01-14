@@ -124,6 +124,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\BufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ConstantBufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\DefaultEffectsManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\DeviceContextPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\Pools.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\RenderTechniqueNames.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ShaderPool.cs" />
