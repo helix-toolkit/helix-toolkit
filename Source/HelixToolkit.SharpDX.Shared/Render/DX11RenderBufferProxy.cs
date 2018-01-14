@@ -243,12 +243,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #if MSAA
             Device.ImmediateContext.ResolveSubresource(ColorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
 #endif
+            Device.ImmediateContext.Flush();
             return true;
         }
 
         public virtual bool Present()
         {
-            Device.ImmediateContext.Flush();
             return true;
         }
 
