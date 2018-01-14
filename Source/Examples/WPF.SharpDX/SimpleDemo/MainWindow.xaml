@@ -48,7 +48,7 @@
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
-            TextBrush="Black"
+            TextBrush="Black" MSAA="Eight"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -60,7 +60,7 @@
                 <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
                 <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
-                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="Shift+RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="{Binding DirectionalLightColor}" />
@@ -85,6 +85,10 @@
                 Thickness="1.5"
                 Transform="{Binding Model1Transform}"
                 Color="Black" />
+            <hx:MeshGeometryModel3D DepthBias="-5"
+                Geometry="{Binding TextModel}"
+                Material="{Binding BlueMaterial}"
+                Transform="{Binding Model4Transform}" />
             <hx:BillboardTextModel3D FixedSize="True" Geometry="{Binding Billboard1Model}" />
             <hx:BillboardTextModel3D FixedSize="True" Geometry="{Binding Billboard2Model}" />
             <hx:BillboardTextModel3D FixedSize="False" Geometry="{Binding Billboard3Model}" />
@@ -122,12 +126,9 @@
                         Grid.Row="0"
                         Grid.ColumnSpan="2"
                         Margin="3"
-                        DisplayMemberPath="Key"
                         IsReadOnly="True"
-                        ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}"
-                        SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}"
-                        SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}"
-                        SelectedValuePath="Value" />
+                        ItemsSource="{Binding EffectsManager.RenderTechniques}"
+                        SelectedItem="{Binding RenderTechniqueName}"/>
                 </Grid>
             </Expander>
         </StackPanel>
