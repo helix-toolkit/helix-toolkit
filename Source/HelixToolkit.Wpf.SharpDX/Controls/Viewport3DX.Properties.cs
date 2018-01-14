@@ -239,8 +239,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The FPS counter property
         /// </summary>
-        public static readonly DependencyProperty FpsCounterProperty = DependencyProperty.Register(
-            "FpsCounter", typeof(FpsCounter), typeof(Viewport3DX), new PropertyMetadata(new FpsCounter()));
+        public static readonly DependencyPropertyKey FpsCounterProperty = DependencyProperty.RegisterReadOnly(
+            "FpsCounter", typeof(FpsCounter), typeof(Viewport3DX), new PropertyMetadata());
 
         /// <summary>
         /// The frame rate property.
@@ -1279,7 +1279,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return (FpsCounter)this.GetValue(FpsCounterProperty);
+                return (FpsCounter)this.GetValue(FpsCounterProperty.DependencyProperty);
             }
 
             private set
