@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var item in viewport.Renderables)
             {
                 var model = item as MeshGeometryModel3D;
-                if (model != null)
+                if (model != null && model.GeometryValid)
                 {
                     if (model.Visibility == Visibility.Visible)
                         count += model.Geometry.Indices.Count / 3;
@@ -191,11 +191,12 @@ namespace HelixToolkit.Wpf.SharpDX
             var bounds = new global::SharpDX.BoundingBox();
             foreach (var element in viewport.Renderables)
             {
-                var model = element as IBoundable;
+                var model = element as GeometryModel3D;
                 if (model != null)
                 {
-                    if (model.Visibility != Visibility.Collapsed)
+                    if (model.Visibility != Visibility.Collapsed && model.GeometryValid)
                     {
+                        model.Geometry.UpdateBounds();
                         bounds = global::SharpDX.BoundingBox.Merge(bounds, model.Bounds);
                     }
                 }

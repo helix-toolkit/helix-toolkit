@@ -248,6 +248,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Viewport3DX()
         {
+            FpsCounter = new FpsCounter();
             this.perspectiveCamera = new PerspectiveCamera();
             this.orthographicCamera = new OrthographicCamera();
             this.perspectiveCamera.Reset();
