@@ -1,4 +1,7 @@
-﻿#if SHARPDX
+﻿using System.Linq;
+using System;
+using System.Runtime.CompilerServices;
+#if SHARPDX
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -8,8 +11,6 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.Wpf
 #endif
 {
-    using System;
-    using System.Runtime.CompilerServices;
 #if SHARPDX
     using global::SharpDX;
     using Vector3D = global::SharpDX.Vector3;

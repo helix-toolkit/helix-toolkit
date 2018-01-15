@@ -10,7 +10,7 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     Title="{Binding Title}"
     Width="900"
-    Height="500"
+    Height="800"
     mc:Ignorable="d">
     <Window.Resources>
         <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter" />
@@ -263,7 +263,7 @@
                         <TextBox
                             Width="35"
                             Margin="3"
-                            Text="{Binding Falloff, ElementName=spotLight}" />
+                            Text="{Binding OuterAngle, ElementName=spotLight}" />
                     </StackPanel>
                     <StackPanel Margin="0" Orientation="Horizontal">
                         <TextBlock Margin="3">Inner Angle:</TextBlock>
@@ -276,7 +276,7 @@
                         <TextBox
                             Width="35"
                             Margin="3"
-                            Text="{Binding Falloff, ElementName=spotLight}" />
+                            Text="{Binding InnerAngle, ElementName=spotLight}" />
                     </StackPanel>
                     <StackPanel Margin="0" Orientation="Horizontal">
                         <TextBlock Margin="3">Range:</TextBlock>

@@ -53,9 +53,7 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
-            <hx:DirectionalLight3D
-                Direction="{Binding Light1Direction}"
-                Color="{Binding Light1Color}" />
+            <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
             <hx:PointLight3D
                 Attenuation="{Binding Light2Attenuation}"
                 Transform="{Binding Light2Transform}"
@@ -100,9 +98,9 @@
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />
-            <hx:LineGeometryModel3D Geometry="{Binding LineGeo}" Color="Blue"/>
-            <hx:CoordinateSystemModel3D/>
-            <hx:ViewBoxModel3D/>
+            <hx:LineGeometryModel3D Geometry="{Binding LineGeo}" Color="Blue" />
+            <hx:CoordinateSystemModel3D />
+            <hx:ViewBoxModel3D />
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"

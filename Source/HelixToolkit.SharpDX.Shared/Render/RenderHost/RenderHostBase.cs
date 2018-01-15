@@ -131,9 +131,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             set
             {
-                if (Set(ref effectsManager, value) && IsInitialized)
+                if (Set(ref effectsManager, value))
                 {
-                    Restart(false);
+                    RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
+                    if (IsInitialized)
+                    { Restart(false); }
                 }
             }
             get
@@ -538,8 +540,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         protected virtual void AttachRenderable(DeviceContext context)
         {
-            if (!IsInitialized || Viewport == null) { return; }
-            RenderTechnique = viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
+            if (!IsInitialized || Viewport == null) { return; }           
             if (EnableSharingModelMode && SharedModelContainer != null)
             {
                 SharedModelContainer.CurrentRenderHost = this;

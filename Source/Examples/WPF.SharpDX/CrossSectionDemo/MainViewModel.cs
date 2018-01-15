@@ -43,25 +43,7 @@
 
         public PhongMaterial LightModelMaterial { get; set; }
 
-        public Vector3D Light1Direction { get; set; }
         public Color Light1Color { get; set; }
-        private Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
-        public Vector3D CamLookDir
-        {
-            set
-            {
-                if (camLookDir != value)
-                {
-                    camLookDir = value;
-                    OnPropertyChanged();
-                    Light1Direction = camLookDir;
-                }
-            }
-            get
-            {
-                return camLookDir;
-            }
-        }
 
         public bool EnablePlane1 { set; get; } = true;
         public Plane Plane1 { set; get; } = new Plane(new Vector3(0, -1, 0), -15);
@@ -88,12 +70,9 @@
             this.Camera = new PerspectiveCamera
             {
                 Position = new Point3D(20, 20, 20),
-                LookDirection = new Vector3D(-1, -1, -1),
+                LookDirection = new Vector3D(-20, -20, -20),
                 UpDirection = new Vector3D(0, 1, 0)
             };
-            // (Camera as ProjectionCamera).FarPlaneDistance = 10000;
-            this.Light1Direction = new Vector3D(-100, -100, -100);
-            SetupCameraBindings(this.Camera);
             // ----------------------------------------------
             // setup scene
 
@@ -118,7 +97,7 @@
 
             var landerItems = Load3ds("Car.3ds").Select(x => x.Geometry as MeshGeometry3D).ToArray();
             Model = MeshGeometry3D.Merge(landerItems);
-            ModelMaterial = PhongMaterials.Obsidian;
+            ModelMaterial = PhongMaterials.Bronze;
             var transGroup = new Media3D.Transform3DGroup();
             transGroup.Children.Add(new Media3D.ScaleTransform3D(0.01, 0.01, 0.01));
             transGroup.Children.Add(new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Media3D.Vector3D(1, 0, 0), -90)));
@@ -177,13 +156,7 @@
                 return new List<Object3D>();
             }
         }
-        public void SetupCameraBindings(Camera camera)
-        {
-            if (camera is ProjectionCamera)
-            {
-                SetBinding("CamLookDir", camera, ProjectionCamera.LookDirectionProperty, this);
-            }
-        }
+
 
         private static void SetBinding(string path, DependencyObject dobj, DependencyProperty property, object viewModel, BindingMode mode = BindingMode.TwoWay)
         {

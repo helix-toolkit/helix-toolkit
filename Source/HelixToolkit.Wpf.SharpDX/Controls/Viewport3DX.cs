@@ -255,6 +255,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public CameraCore CameraCore { get { return this.Camera; } }
 
+        public IRenderHost RenderHost { get { return this.renderHostInternal; } }
+
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>

@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// property.
         /// </summary>
         public static readonly DependencyProperty AmbientColorProperty =
-            DependencyProperty.Register("AmbientColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Gray, 
+            DependencyProperty.Register("AmbientColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Black, 
                 (d, e)=> 
                 {
                     ((d as Material).Core as IPhongMaterial).AmbientColor = (Color4)e.NewValue;
@@ -44,7 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// property.
         /// </summary>
         public static readonly DependencyProperty DiffuseColorProperty =
-            DependencyProperty.Register("DiffuseColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Gray,
+            DependencyProperty.Register("DiffuseColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.White,
                 (d, e) =>
                 {
                     ((d as Material).Core as IPhongMaterial).DiffuseColor = (Color4)e.NewValue;
@@ -64,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
         ///         
         /// </summary>
         public static readonly DependencyProperty SpecularColorProperty =
-            DependencyProperty.Register("SpecularColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Black,
+            DependencyProperty.Register("SpecularColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Gray,
                 (d, e) =>
                 {
                     ((d as Material).Core as IPhongMaterial).SpecularColor = (Color4)e.NewValue;

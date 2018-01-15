@@ -44,11 +44,12 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="#434343"
             EffectsManager="{Binding EffectsManager}"
+            MSAA="Eight"
             ModelUpDirection="{Binding UpDirection}"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
-            TextBrush="Black" MSAA="Eight"
+            TextBrush="Black"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -85,7 +86,8 @@
                 Thickness="1.5"
                 Transform="{Binding Model1Transform}"
                 Color="Black" />
-            <hx:MeshGeometryModel3D DepthBias="-5"
+            <hx:MeshGeometryModel3D
+                DepthBias="-5"
                 Geometry="{Binding TextModel}"
                 Material="{Binding BlueMaterial}"
                 Transform="{Binding Model4Transform}" />
@@ -128,7 +130,7 @@
                         Margin="3"
                         IsReadOnly="True"
                         ItemsSource="{Binding EffectsManager.RenderTechniques}"
-                        SelectedItem="{Binding RenderTechniqueName}"/>
+                        SelectedItem="{Binding RenderTechniqueName}" />
                 </Grid>
             </Expander>
         </StackPanel>

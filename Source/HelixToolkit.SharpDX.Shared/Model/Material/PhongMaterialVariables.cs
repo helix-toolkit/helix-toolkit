@@ -210,6 +210,7 @@ namespace HelixToolkit.UWP.Model
                         material.PropertyChanged -= Material_OnMaterialPropertyChanged;
                     }
                     material = value as PhongMaterialCore;
+                    needUpdate = true;
                     if (material != null)
                     {
                         material.PropertyChanged += Material_OnMaterialPropertyChanged;

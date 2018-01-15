@@ -65,7 +65,7 @@
             Title="{Binding Title}"
             Grid.Row="0"
             Grid.Column="0"
-            BackgroundColor="{x:Static sdx:Color4.Black}"
+            BackgroundColor="Black"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"

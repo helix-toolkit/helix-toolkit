@@ -49,7 +49,7 @@ namespace HelixToolkit.UWP
     {
         void Attach(IRenderHost host);
         void Detach();
-       
+        IRenderHost RenderHost { get; }
         bool IsShadowMappingEnabled { get; }
         IEffectsManager EffectsManager { set; get; }
         IRenderTechnique RenderTechnique { set; get; }
