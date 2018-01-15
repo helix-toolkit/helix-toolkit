@@ -31,6 +31,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             this.surface = surface;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SwapChainRenderHost"/> class.
+        /// </summary>
+        /// <param name="surface">The surface.</param>
+        /// <param name="createRenderer">The create renderer.</param>
+        public SwapChainRenderHost(IntPtr surface, Func<Device, IRenderer> createRenderer) : base(createRenderer)
+        {
+            this.surface = surface;
+        }
         /// <summary>
         /// Creates the render buffer.
         /// </summary>

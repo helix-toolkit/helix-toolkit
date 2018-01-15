@@ -79,11 +79,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public DPFSurfaceSwapChain()
+        public DPFSurfaceSwapChain(bool deferredRendering = false)
         {
             surfaceD3D = new RenderControl();
             Child = surfaceD3D;
-            RenderHost = new SwapChainRenderHost(surfaceD3D.Handle);
+            if (deferredRendering)
+            {
+                RenderHost = new SwapChainRenderHost(surfaceD3D.Handle,
+                    (device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); });
+            }
+            else
+            {
+                RenderHost = new SwapChainRenderHost(surfaceD3D.Handle);
+            }
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
         }

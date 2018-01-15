@@ -599,25 +599,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (EnableSwapChainRendering)
             {
-                if (EnableDeferredRendering && !EnableSharedModelMode)
-                {
-                    //hostPresenter.Content = new DPFSurfaceSwapChainThreading();
-                }
-                else
-                {
-                    hostPresenter.Content = new DPFSurfaceSwapChain();
-                }
+                hostPresenter.Content = new DPFSurfaceSwapChain(EnableDeferredRendering);
             }
             else
             {
-                if (EnableDeferredRendering && !EnableSharedModelMode)
-                {
-                   // hostPresenter.Content = new DPFCanvasThreading();
-                }
-                else
-                {
-                    hostPresenter.Content = new DPFCanvas();
-                }
+                hostPresenter.Content = new DPFCanvas(EnableDeferredRendering);
             }
             renderHostInternal = (hostPresenter.Content as IRenderCanvas).RenderHost;
             if (this.renderHostInternal != null)

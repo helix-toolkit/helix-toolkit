@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     /// </summary>
     public abstract class DX11RenderHostBase : DisposeObject, IRenderHost
     {
+        #region Properties
         private IDX11RenderBufferProxy renderBuffer;
         /// <summary>
         /// Gets the render buffer.
@@ -293,7 +294,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The d2 d controls.
         /// </value>
-        public ID2DTarget D2DControls
+        public ID2DTarget D2DTarget
         {
             get { return RenderBuffer.D2DControls; }
         }
@@ -322,16 +323,27 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Occurs when [stop render loop].
         /// </summary>
         public event EventHandler<bool> StopRenderLoop;
+
+        private readonly Func<Device, IRenderer> createRendererFunction;
+        #endregion
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DX11RenderHostBase"/> class.
+        /// </summary>
+        /// <param name="createRenderer">The create renderer.</param>
+        public DX11RenderHostBase(Func<Device, IRenderer> createRenderer)
+        {
+            createRendererFunction = createRenderer;
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DX11RenderHostBase"/> class.
+        /// </summary>
+        public DX11RenderHostBase() { }
         /// <summary>
         /// Creates the render buffer.
         /// </summary>
         /// <returns></returns>
         protected abstract IDX11RenderBufferProxy CreateRenderBuffer();
-        /// <summary>
-        /// Creates the renderer.
-        /// </summary>
-        /// <returns></returns>
-        protected abstract IRenderer CreateRenderer();
+
         /// <summary>
         /// Invalidates the render.
         /// </summary>
@@ -491,6 +503,22 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             OnInitializeBuffers(renderBuffer, renderer);
         }
 
+        /// <summary>
+        /// Creates the renderer.
+        /// </summary>
+        /// <returns></returns>
+        private IRenderer CreateRenderer()
+        {
+            if (createRendererFunction != null)
+            {
+                return createRendererFunction.Invoke(Device);
+            }
+            else
+            {
+                return new ImmediateContextRenderer(Device);
+            }
+        }
+
         private void RenderBuffer_OnNewBufferCreated(object sender, Texture2D e)
         {
             OnNewRenderTargetTexture?.Invoke(this, e);
@@ -499,7 +527,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Called when [initialize buffers].
         /// </summary>
         /// <param name="buffer">The buffer.</param>
-        /// <param name="d2dTarget">The D2D target.</param>
         /// <param name="renderer">The renderer.</param>
         protected virtual void OnInitializeBuffers(IDX11RenderBufferProxy buffer, IRenderer renderer)
         {

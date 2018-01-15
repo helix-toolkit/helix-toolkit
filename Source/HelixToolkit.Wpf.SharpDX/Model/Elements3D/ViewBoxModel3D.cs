@@ -84,11 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public ViewBoxModel3D()
         {
             RelativeScreenLocationX = 0.8;
-            ViewBoxMeshModel = new MeshGeometryModel3D();
-            var map = new MemoryStream();
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.DefaultViewboxTexture.jpg");
-            stream.CopyTo(map);
-            stream.Dispose();
+            ViewBoxMeshModel = new MeshGeometryModel3D() { EnableViewFrustumCheck = false };
             var sampler = (SamplerStateDescription)PhongMaterial.DiffuseAlphaMapSamplerProperty.DefaultMetadata.DefaultValue;
             sampler.BorderColor = Color.Gray;
             sampler.AddressU = sampler.AddressV = sampler.AddressW = TextureAddressMode.Border;

@@ -2,10 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using HelixToolkit.Wpf.SharpDX.Core;
-using HelixToolkit.Wpf.SharpDX.Core2D;
 using SharpDX;
-using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +14,9 @@ namespace HelixToolkit.UWP.Render
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
+    using Core;
+    using global::SharpDX.Direct3D11;
+
     /// <summary>
     /// 
     /// </summary>
@@ -35,8 +35,21 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected RenderParameter renderParameter;
 
-
         private Task asyncTask;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
+        /// </summary>
+        public DefaultRenderHost() { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
+        /// </summary>
+        /// <param name="createRenderer">The create renderer.</param>
+        public DefaultRenderHost(Func<Device, IRenderer> createRenderer) : base(createRenderer)
+        {
+
+        }
 
         /// <summary>
         /// Creates the render buffer.
@@ -45,15 +58,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected override IDX11RenderBufferProxy CreateRenderBuffer()
         {
             return new DX11RenderBufferProxy(Device);
-        }
-
-        /// <summary>
-        /// Creates the renderer.
-        /// </summary>
-        /// <returns></returns>
-        protected override IRenderer CreateRenderer()
-        {
-            return new CommonRenderer(Device);
         }
 
         /// <summary>
@@ -79,7 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             var renderParameter = CreateParameter(RenderBuffer);
             renderer.UpdateGlobalVariables(RenderContext, Viewport.Renderables, ref renderParameter);
-            renderer.RenderScene(RenderContext, renderer.ImmediateContext, pendingRenderCores, ref renderParameter);
+            renderer.RenderScene(RenderContext, pendingRenderCores, ref renderParameter);
         }
 
         /// <summary>

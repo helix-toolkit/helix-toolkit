@@ -28,36 +28,68 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public abstract class GeometryModel3D : Element3D, IHitable, IBoundable, IThrowingShadow, ISelectable, IMouse3D, IInstancing
     {
-        #region DependencyProperties
+        #region DependencyProperties        
+        /// <summary>
+        /// The reuse vertex array buffer property
+        /// </summary>
         public static readonly DependencyProperty ReuseVertexArrayBufferProperty =
             DependencyProperty.Register("ReuseVertexArrayBuffer", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(false,
                 (d,e)=> {
                     (d as GeometryModel3D).reuseVertexArrayBuffer = (bool)e.NewValue;
                 }));
-
+        /// <summary>
+        /// The geometry property
+        /// </summary>
         public static readonly DependencyProperty GeometryProperty =
             DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new PropertyMetadata(null, GeometryChanged));
-
+        /// <summary>
+        /// The depth bias property
+        /// </summary>
         public static readonly DependencyProperty DepthBiasProperty =
             DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new PropertyMetadata(0, RasterStateChanged));
-
+        /// <summary>
+        /// The slope scaled depth bias property
+        /// </summary>
         public static readonly DependencyProperty SlopeScaledDepthBiasProperty =
             DependencyProperty.Register("SlopeScaledDepthBias", typeof(double), typeof(GeometryModel3D), new PropertyMetadata(0.0, RasterStateChanged));
-
+        /// <summary>
+        /// The is selected property
+        /// </summary>
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(false));
-
+        /// <summary>
+        /// The is multisample enabled property
+        /// </summary>
         public static readonly DependencyProperty IsMultisampleEnabledProperty =
             DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true, RasterStateChanged));
-
+        /// <summary>
+        /// The fill mode property
+        /// </summary>
         public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(GeometryModel3D),
             new PropertyMetadata(FillMode.Solid, RasterStateChanged));
-
+        /// <summary>
+        /// The is scissor enabled property
+        /// </summary>
         public static readonly DependencyProperty IsScissorEnabledProperty =
             DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true, RasterStateChanged));
-
+        /// <summary>
+        /// The enable view frustum check property
+        /// </summary>
+        public static readonly DependencyProperty EnableViewFrustumCheckProperty =
+            DependencyProperty.Register("EnableViewFrustumCheck", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true,
+                (d,e)=> { (d as GeometryModel3D).enableViewFrustumCheck = (bool)e.NewValue; }));
+        /// <summary>
+        /// The is depth clip enabled property
+        /// </summary>
         public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(GeometryModel3D),
             new PropertyMetadata(true, RasterStateChanged));
+
+        /// <summary>
+        /// Gets or sets the geometry.
+        /// </summary>
+        /// <value>
+        /// The geometry.
+        /// </value>
         public Geometry3D Geometry
         {
             get
@@ -100,7 +132,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(ReuseVertexArrayBufferProperty);
             }
         }
-
+        /// <summary>
+        /// Gets or sets the depth bias.
+        /// </summary>
+        /// <value>
+        /// The depth bias.
+        /// </value>
         public int DepthBias
         {
             get
@@ -112,7 +149,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.SetValue(DepthBiasProperty, value);
             }
         }
-
+        /// <summary>
+        /// Gets or sets the slope scaled depth bias.
+        /// </summary>
+        /// <value>
+        /// The slope scaled depth bias.
+        /// </value>
         public double SlopeScaledDepthBias
         {
             get
@@ -124,7 +166,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.SetValue(SlopeScaledDepthBiasProperty, value);
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is selected.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is selected; otherwise, <c>false</c>.
+        /// </value>
         public bool IsSelected
         {
             get
@@ -151,7 +198,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(IsMultisampleEnabledProperty);
             }
         }
-
+        /// <summary>
+        /// Gets or sets the fill mode.
+        /// </summary>
+        /// <value>
+        /// The fill mode.
+        /// </value>
         public FillMode FillMode
         {
             set
@@ -163,7 +215,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (FillMode)GetValue(FillModeProperty);
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is scissor enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is scissor enabled; otherwise, <c>false</c>.
+        /// </value>
         public bool IsScissorEnabled
         {
             set
@@ -175,7 +232,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(IsScissorEnabledProperty);
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is depth clip enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is depth clip enabled; otherwise, <c>false</c>.
+        /// </value>
         public bool IsDepthClipEnabled
         {
             set
@@ -187,6 +249,30 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(IsDepthClipEnabledProperty);
             }
         }
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable view frustum check].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable view frustum check]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableViewFrustumCheck
+        {
+            set
+            {
+                SetValue(EnableViewFrustumCheckProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableViewFrustumCheckProperty);
+            }
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable view frustum check].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable view frustum check]; otherwise, <c>false</c>.
+        /// </value>
+        protected bool enableViewFrustumCheck { private set; get; } = true;
         #endregion
 
         #region Static Methods
@@ -407,7 +493,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected override bool CanRender(IRenderContext context)
         {
-            if (base.CanRender(context) && GeometryValid && (!context.EnableBoundingFrustum || CheckBoundingFrustum(context.BoundingFrustum)))
+            if (base.CanRender(context) && GeometryValid && (!(context.EnableBoundingFrustum && enableViewFrustumCheck)
+                || CheckBoundingFrustum(context.BoundingFrustum)))
             {
                 return true;
             }

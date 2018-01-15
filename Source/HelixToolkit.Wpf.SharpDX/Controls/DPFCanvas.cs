@@ -87,9 +87,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public DPFCanvas()
+        public DPFCanvas(bool deferredRendering = false)
         {
-            RenderHost = new DefaultRenderHost();
+            if (deferredRendering)
+            {
+                RenderHost = new DefaultRenderHost((device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); });
+            }
+            else
+            {
+                RenderHost = new DefaultRenderHost();
+            }
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
         }

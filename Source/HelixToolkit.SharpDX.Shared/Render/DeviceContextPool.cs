@@ -3,20 +3,18 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
-using SharpDX;
 using SharpDX.Direct3D11;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.ShaderManager
+namespace HelixToolkit.Wpf.SharpDX.Render
 #else
-namespace HelixToolkit.UWP.ShaderManager
+namespace HelixToolkit.UWP.Render
 #endif
 {
-    using Render;
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IDeviceContextPool
     {
         /// <summary>
@@ -33,12 +31,15 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <summary>
     /// 
     /// </summary>
-    public sealed class DeviceContextPool : DisposeObject
+    public sealed class DeviceContextPool : DisposeObject, IDeviceContextPool
     {
         private readonly ConcurrentBag<DeviceContextProxy> contextPool = new ConcurrentBag<DeviceContextProxy>();
 
         private Device device;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeviceContextPool"/> class.
+        /// </summary>
+        /// <param name="device">The device.</param>
         public DeviceContextPool(Device device)
         {
             this.device = device;
@@ -67,7 +68,10 @@ namespace HelixToolkit.UWP.ShaderManager
         {
             contextPool.Add(context);
         }
-
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposeManagedResources)
         {
             DeviceContextProxy context;

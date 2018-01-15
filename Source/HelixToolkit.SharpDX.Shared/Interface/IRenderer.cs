@@ -74,10 +74,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        /// <param name="deviceContext"></param>
-        void RenderScene(IRenderContext context, DeviceContextProxy deviceContext, IEnumerable<IRenderCore> renderables, ref RenderParameter parameter);
+        void RenderScene(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter);
         /// <summary>
-        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderScene(IRenderContext, DeviceContextProxy, IEnumerable{IRenderCore}, ref RenderParameter)"/>
+        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderScene(IRenderContext, IList{IRenderCore}, ref RenderParameter)"/>
         /// <para>Warning: Dependency properties are thread affinity. Do not get/set any dependency property in this function.</para>
         /// </summary>
         /// <param name="renderables"></param>

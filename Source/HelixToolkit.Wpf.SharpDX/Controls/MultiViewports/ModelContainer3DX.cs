@@ -255,11 +255,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public ID2DTarget D2DControls
+        public ID2DTarget D2DTarget
         {
             get
             {
-                return CurrentRenderHost != null ? CurrentRenderHost.D2DControls : null;
+                return CurrentRenderHost != null ? CurrentRenderHost.D2DTarget : null;
             }
         }
 
@@ -291,22 +291,27 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public void StartD3D(double width, double height)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void EndD3D()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void UpdateAndRender()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void Resize(double width, double height)
         {
-            throw new NotImplementedException();
+            
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }

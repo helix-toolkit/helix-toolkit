@@ -15,12 +15,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 {
     using Core;
     using System.Linq;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// 
     /// </summary>
-    public class CommonRenderer : DisposeObject, IRenderer
+    public class ImmediateContextRenderer : DisposeObject, IRenderer
     {
         private readonly Stack<IEnumerator<IRenderable>> stackCache1 = new Stack<IEnumerator<IRenderable>>(20);
         private readonly Stack<IEnumerator<IRenderable>> stackCache2 = new Stack<IEnumerator<IRenderable>>(20);
@@ -34,10 +33,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public DeviceContextProxy ImmediateContext { private set; get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommonRenderer"/> class.
+        /// Initializes a new instance of the <see cref="ImmediateContextRenderer"/> class.
         /// </summary>
         /// <param name="device">The device.</param>
-        public CommonRenderer(Device device)
+        public ImmediateContextRenderer(Device device)
         {
             ImmediateContext = Collect(new DeviceContextProxy(device.ImmediateContext));
         }
@@ -47,7 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <returns></returns>
-        public IEnumerable<IRenderable> UpdateSceneGraph(IRenderContext context, IEnumerable<IRenderable> renderables)
+        public virtual IEnumerable<IRenderable> UpdateSceneGraph(IRenderContext context, IEnumerable<IRenderable> renderables)
         {
             return renderables.PreorderDFT((x) =>
                     {
@@ -61,7 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public void UpdateGlobalVariables(IRenderContext context, IEnumerable<IRenderable> renderables, ref RenderParameter parameter)
+        public virtual void UpdateGlobalVariables(IRenderContext context, IEnumerable<IRenderable> renderables, ref RenderParameter parameter)
         {
             context.LightScene.LightModels.ResetLightCount();
             foreach (IRenderable e in renderables.Take(Constants.MaxLights)
@@ -78,13 +77,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        /// <param name="deviceContext"></param>
-        public void RenderScene(IRenderContext context, DeviceContextProxy deviceContext, IEnumerable<IRenderCore> renderables, ref RenderParameter parameter)
+        public virtual void RenderScene(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter)
         {
-            SetRenderTargets(deviceContext, ref parameter);
+            SetRenderTargets(ImmediateContext, ref parameter);
             foreach (var renderable in renderables)
             {
-                renderable.Render(context, deviceContext);
+                renderable.Render(context, ImmediateContext);
             }
         }
         /// <summary>
@@ -92,7 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="renderables">The renderables.</param>
         /// <returns></returns>
-        public void UpdateNotRenderParallel(IEnumerable<IRenderable> renderables)
+        public virtual void UpdateNotRenderParallel(IEnumerable<IRenderable> renderables)
         {
             foreach(var model in renderables)
             {
@@ -104,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="parameter">The parameter.</param>
-        private void SetRenderTargets(DeviceContext context, ref RenderParameter parameter)
+        protected void SetRenderTargets(DeviceContext context, ref RenderParameter parameter)
         {
             context.OutputMerger.SetTargets(parameter.DepthStencilView, parameter.RenderTargetView);
             context.Rasterizer.SetViewport(parameter.ViewportRegion);
@@ -118,7 +116,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public void Render2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, ref RenderParameter2D parameter)
+        public virtual void Render2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, ref RenderParameter2D parameter)
         {
             foreach (var e in renderables)
             {

@@ -185,7 +185,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private readonly BillboardTextModel3D[] axisBillboards = new BillboardTextModel3D[3];
-        private readonly MeshGeometryModel3D arrowMeshModel = new MeshGeometryModel3D();
+        private readonly MeshGeometryModel3D arrowMeshModel = new MeshGeometryModel3D(){ EnableViewFrustumCheck = false };
         private static readonly float arrowSize = 5.5f;
         private static readonly float arrowWidth = 0.6f;
         private static readonly float arrowHead = 1.7f;
@@ -199,15 +199,16 @@ namespace HelixToolkit.Wpf.SharpDX
             builder.AddArrow(Vector3.Zero, new Vector3(0, arrowSize, 0), arrowWidth, arrowHead, 8);
             builder.AddArrow(Vector3.Zero, new Vector3(0, 0, arrowSize), arrowWidth, arrowHead, 8);
             var mesh = builder.ToMesh();
+          
             arrowMeshModel.Material = PhongMaterials.White;
             arrowMeshModel.Geometry = mesh;
             arrowMeshModel.CullMode = CullMode.Back;
             arrowMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Colors]; };
             arrowMeshModel.IsHitTestVisible = false;
 
-            axisBillboards[0] = new BillboardTextModel3D() { IsHitTestVisible = false };
-            axisBillboards[1] = new BillboardTextModel3D() { IsHitTestVisible = false };
-            axisBillboards[2] = new BillboardTextModel3D() { IsHitTestVisible = false };
+            axisBillboards[0] = new BillboardTextModel3D() { IsHitTestVisible = false, EnableViewFrustumCheck = false };
+            axisBillboards[1] = new BillboardTextModel3D() { IsHitTestVisible = false, EnableViewFrustumCheck = false };
+            axisBillboards[2] = new BillboardTextModel3D() { IsHitTestVisible = false, EnableViewFrustumCheck = false };
             UpdateAxisColor(mesh, 0, AxisXColor.ToColor4(), CoordinateSystemLabelX, LabelColor.ToColor4());
             UpdateAxisColor(mesh, 1, AxisYColor.ToColor4(), CoordinateSystemLabelY, LabelColor.ToColor4());
             UpdateAxisColor(mesh, 2, AxisZColor.ToColor4(), CoordinateSystemLabelZ, LabelColor.ToColor4());

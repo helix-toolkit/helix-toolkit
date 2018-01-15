@@ -92,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             if (IsAttached)
             { return; }
-            RenderTarget = host.D2DControls;
+            RenderTarget = host.D2DTarget;
             IsAttached = OnAttach(RenderTarget);
         }
 

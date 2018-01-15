@@ -265,7 +265,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// <returns>Return true if attached</returns>
         protected virtual bool OnAttach(IRenderHost host)
         {
-            renderCore = CreateRenderCore(host.D2DControls);
+            renderCore = CreateRenderCore(host.D2DTarget);
             return true;
         }
 

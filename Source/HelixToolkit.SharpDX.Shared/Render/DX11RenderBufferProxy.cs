@@ -16,28 +16,103 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
     using Core2D;
+    /// <summary>
+    /// 
+    /// </summary>
     public class DX11RenderBufferProxy : DisposeObject, IDX11RenderBufferProxy
     {
+        /// <summary>
+        /// Occurs when [on new buffer created].
+        /// </summary>
         public event EventHandler<Texture2D> OnNewBufferCreated;
+        /// <summary>
+        /// The color buffer
+        /// </summary>
         protected Texture2D colorBuffer;
+        /// <summary>
+        /// The depth stencil buffer
+        /// </summary>
         protected Texture2D depthStencilBuffer;
+        /// <summary>
+        /// The color buffer view
+        /// </summary>
         protected RenderTargetView colorBufferView;
+        /// <summary>
+        /// The depth stencil buffer view
+        /// </summary>
         protected DepthStencilView depthStencilBufferView;
-
+        /// <summary>
+        /// The D2D controls
+        /// </summary>
         protected D2DControlWrapper d2dControls;
+        /// <summary>
+        /// Gets the d2 d controls.
+        /// </summary>
+        /// <value>
+        /// The d2 d controls.
+        /// </value>
         public ID2DTarget D2DControls
         {
             get { return d2dControls; }
         }
-
+        /// <summary>
+        /// Gets or sets the width of the target.
+        /// </summary>
+        /// <value>
+        /// The width of the target.
+        /// </value>
         public int TargetWidth { private set; get; }
+        /// <summary>
+        /// Gets or sets the height of the target.
+        /// </summary>
+        /// <value>
+        /// The height of the target.
+        /// </value>
         public int TargetHeight { private set; get; }
-
+        /// <summary>
+        /// Gets the color buffer view.
+        /// </summary>
+        /// <value>
+        /// The color buffer view.
+        /// </value>
         public RenderTargetView ColorBufferView { get { return colorBufferView; } }
+        /// <summary>
+        /// Gets the depth stencil buffer view.
+        /// </summary>
+        /// <value>
+        /// The depth stencil buffer view.
+        /// </value>
         public DepthStencilView DepthStencilBufferView { get { return depthStencilBufferView; } }
+        /// <summary>
+        /// Gets the color buffer.
+        /// </summary>
+        /// <value>
+        /// The color buffer.
+        /// </value>
         public Texture2D ColorBuffer { get { return colorBuffer; } }
+        /// <summary>
+        /// Gets the depth stencil buffer.
+        /// </summary>
+        /// <value>
+        /// The depth stencil buffer.
+        /// </value>
         public Texture2D DepthStencilBuffer { get { return depthStencilBuffer; } }
 
+        private IDeviceContextPool deviceContextPool;
+        /// <summary>
+        /// Gets the device context pool.
+        /// </summary>
+        /// <value>
+        /// The device context pool.
+        /// </value>
+        public IDeviceContextPool DeviceContextPool { get { return deviceContextPool; } }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="DX11RenderBufferProxy"/> is initialized.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if initialized; otherwise, <c>false</c>.
+        /// </value>
         public bool Initialized { private set; get; } = false;
 
 #if MSAA
@@ -62,10 +137,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             private set;get;
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DX11RenderBufferProxy"/> class.
+        /// </summary>
+        /// <param name="device">The device.</param>
         public DX11RenderBufferProxy(Device device)
         {
             Device = device;
+            deviceContextPool = Collect(new DeviceContextPool(device));
         }
 
         private Texture2D CreateRenderTarget(int width, int height, MSAALevel msaa)
@@ -190,12 +269,19 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             context.Rasterizer.SetViewport(0, 0, TargetWidth, TargetWidth, 0.0f, 1.0f);
             context.Rasterizer.SetScissorRectangle(0, 0, TargetWidth, TargetHeight);
         }
-
+        /// <summary>
+        /// Clears the render target binding.
+        /// </summary>
+        /// <param name="context">The context.</param>
         public void ClearRenderTargetBinding(DeviceContext context)
         {
             context.OutputMerger.SetTargets(null, new RenderTargetView[0]);
         }
-
+        /// <summary>
+        /// Clears the render target.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="color">The color.</param>
         public void ClearRenderTarget(DeviceContext context, Color4 color)
         {
             ClearRenderTarget(context, color, true, true);
@@ -203,6 +289,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Clears the buffers with the clear-color
         /// </summary>
+        /// <param name="context"></param>
+        /// <param name="color"></param>
         /// <param name="clearBackBuffer"></param>
         /// <param name="clearDepthStencilBuffer"></param>
         public void ClearRenderTarget(DeviceContext context, Color4 color, bool clearBackBuffer, bool clearDepthStencilBuffer)
@@ -217,7 +305,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 context.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
             }
         }
-
+        /// <summary>
+        /// Initializes.
+        /// </summary>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="msaa">The msaa.</param>
+        /// <returns></returns>
         public Texture2D Initialize(int width, int height, MSAALevel msaa)
         {
             return CreateRenderTarget(width, height, msaa);
@@ -232,12 +326,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             return CreateRenderTarget(width, height, MSAA);
         }
-
+        /// <summary>
+        /// Begins the draw.
+        /// </summary>
+        /// <returns></returns>
         public virtual bool BeginDraw()
         {
             return Initialized;
         }
-
+        /// <summary>
+        /// Ends the draw.
+        /// </summary>
+        /// <returns></returns>
         public virtual bool EndDraw()
         {
 #if MSAA
@@ -246,24 +346,36 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             Device.ImmediateContext.Flush();
             return true;
         }
-
+        /// <summary>
+        /// Presents this drawing..
+        /// </summary>
+        /// <returns></returns>
         public virtual bool Present()
         {
             return true;
         }
-
+        /// <summary>
+        /// Begins the 2d drawing.
+        /// </summary>
+        /// <returns></returns>
         public virtual bool BeginDraw2D()
         {
             d2dControls.D2DTarget.BeginDraw();
             return true;
         }
-
+        /// <summary>
+        /// Ends the 2D drawing.
+        /// </summary>
+        /// <returns></returns>
         public virtual bool EndDraw2D()
         {
             d2dControls.D2DTarget.EndDraw();
             return true;
         }
-
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposeManagedResources)
         {
             OnNewBufferCreated = null;
@@ -271,7 +383,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             base.Dispose(disposeManagedResources);
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class DX11SwapChainRenderBufferProxy : DX11RenderBufferProxy
     {
         private SwapChain1 swapChain;
@@ -383,11 +497,19 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         private readonly PresentParameters presentParams = new PresentParameters();
 
+        /// <summary>
+        /// Ends the draw.
+        /// </summary>
+        /// <returns></returns>
         public override bool EndDraw()
         {
             return true;
         }
 
+        /// <summary>
+        /// Presents this instance.
+        /// </summary>
+        /// <returns></returns>
         public override bool Present()
         {
             var res = swapChain.Present(0, PresentFlags.None, presentParams);
