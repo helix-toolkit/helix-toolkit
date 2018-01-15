@@ -149,7 +149,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         private Texture2D CreateRenderTarget(int width, int height, MSAALevel msaa)
         {
+#if MSAA
             MSAA = msaa;
+#endif
             TargetWidth = width;
             TargetHeight = height;
             RemoveAndDispose(ref d2dControls);
@@ -256,7 +258,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             d2dControls.Initialize(renderTargetNMS);
             return renderTargetNMS;
 #else
-            return colorBufferView;
+            return colorBuffer;
 #endif            
         }
 
@@ -314,7 +316,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public Texture2D Initialize(int width, int height, MSAALevel msaa)
         {
+#if MSAA
             return CreateRenderTarget(width, height, msaa);
+#else
+            return CreateRenderTarget(width, height, MSAALevel.Disable);
+#endif
         }
         /// <summary>
         /// Resize render target and depthbuffer resolution
@@ -324,7 +330,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public virtual Texture2D Resize(int width, int height)
         {
+#if MSAA
             return CreateRenderTarget(width, height, MSAA);
+#else
+            return CreateRenderTarget(width, height, MSAALevel.Disable);
+#endif
         }
         /// <summary>
         /// Begins the draw.

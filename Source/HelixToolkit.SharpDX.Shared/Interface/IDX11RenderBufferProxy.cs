@@ -22,7 +22,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         DepthStencilView DepthStencilBufferView { get; }
         Texture2D ColorBuffer { get; }
         Texture2D DepthStencilBuffer { get; }
+#if MSAA
         MSAALevel MSAA { get; }
+#endif
         int TargetHeight { get; }
         int TargetWidth { get; }
         void ClearRenderTarget(DeviceContext context, Color4 color);
