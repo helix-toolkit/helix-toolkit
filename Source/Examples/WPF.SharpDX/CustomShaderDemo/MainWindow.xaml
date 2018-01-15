@@ -86,6 +86,8 @@
                 Value="{Binding ElementName=dataVisual, Path=HeightScale}" />
             <Label>Color Min:</Label>
             <pt:ColorPicker SelectedColor="{Binding StartColor}" />
+            <Label>Color Middle:</Label>
+            <pt:ColorPicker SelectedColor="{Binding MidColor}" />
             <Label>Color Max:</Label>
             <pt:ColorPicker SelectedColor="{Binding EndColor}" />
         </StackPanel>

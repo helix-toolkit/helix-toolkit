@@ -45,10 +45,29 @@ namespace CustomShaderDemo
             {
                 if (SetValue(ref startColor, value))
                 {
-                    ColorGradient = new Color4Collection(GetGradients(startColor.ToColor4(), endColor.ToColor4(), 100));
+                    ColorGradient = new Color4Collection(GetGradients(startColor.ToColor4(), midColor.ToColor4(), endColor.ToColor4(), 100));
                 }
             }
             get { return startColor; }
+        }
+
+        private Color midColor;
+        /// <summary>
+        /// Gets or sets the StartColor.
+        /// </summary>
+        /// <value>
+        /// StartColor
+        /// </value>
+        public Color MidColor
+        {
+            set
+            {
+                if (SetValue(ref midColor, value))
+                {
+                    ColorGradient = new Color4Collection(GetGradients(startColor.ToColor4(), midColor.ToColor4(), endColor.ToColor4(), 100));
+                }
+            }
+            get { return midColor; }
         }
 
         private Color endColor;
@@ -64,7 +83,7 @@ namespace CustomShaderDemo
             {
                 if (SetValue(ref endColor, value))
                 {
-                    ColorGradient = new Color4Collection(GetGradients(startColor.ToColor4(), endColor.ToColor4(), 100));
+                    ColorGradient = new Color4Collection(GetGradients(startColor.ToColor4(), midColor.ToColor4(), endColor.ToColor4(), 100));
                 }
             }
             get { return endColor; }
@@ -124,6 +143,7 @@ namespace CustomShaderDemo
 
             EffectsManager = new CustomEffectsManager();
             RenderTechnique = EffectsManager[CustomShaderNames.DataSampling];
+           
 
             var builder = new MeshBuilder(true);
             Vector3[] points = new Vector3[Width*Height];
@@ -141,6 +161,7 @@ namespace CustomShaderDemo
                 Model.Normals[i] = new Vector3(0, Math.Abs(Model.Normals[i].Y), 0);
             }
             StartColor = Colors.Blue;
+            MidColor = Colors.Green;
             EndColor = Colors.Red;
 
             var lineBuilder = new LineBuilder();
@@ -163,6 +184,11 @@ namespace CustomShaderDemo
             AxisLabel.TextInfo.Add(new TextInfo() { Origin = new Vector3(0, 0, 11), Text = "Z", Foreground = Colors.Blue.ToColor4() });
             GenerateNoiseCommand = new RelayCommand((o) => { CreatePerlinNoise(); });
             CreatePerlinNoise();
+        }
+
+        public static IEnumerable<Color4> GetGradients(Color4 start, Color4 mid, Color4 end, int steps)
+        {
+            return GetGradients(start, mid, steps / 2).Concat(GetGradients(mid, end, steps / 2));
         }
 
         public static IEnumerable<Color4> GetGradients(Color4 start, Color4 end, int steps)
