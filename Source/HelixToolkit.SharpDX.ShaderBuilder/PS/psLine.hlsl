@@ -1,6 +1,6 @@
 #ifndef PSLINE_HLSL
 #define PSLINE_HLSL
-#define LINE
+#define POINTLINE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 

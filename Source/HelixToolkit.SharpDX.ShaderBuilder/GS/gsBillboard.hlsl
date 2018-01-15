@@ -1,6 +1,6 @@
 #ifndef GSBILLBOARD_HLSL
 #define GSBILLBOARD_HLSL
-#define LINE
+#define POINTLINE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 #pragma pack_matrix( row_major )

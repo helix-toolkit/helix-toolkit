@@ -77,7 +77,7 @@ cbuffer cbLights : register(b3)
     float3 padding;
 };
 
-#if defined(LINE) // model for line, point and billboard
+#if defined(POINTLINE) // model for line, point and billboard
 //Per model
 cbuffer cbPointLineModel : register(b4)
 {
@@ -111,7 +111,7 @@ cbuffer cbClipping : register(b6)
 	// M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin
     float4x4 CrossPlaneParams;
 }
-
+#if defined(PARTICLE)
 cbuffer cbParticleFrame : register(b7)
 {
     uint NumParticles;
@@ -151,7 +151,7 @@ cbuffer cbParticleCreateParameters : register(b8)
     float EnergyDissipationRate; //Energy dissipation rate per second
     float3 InitialAcceleration;
 };
-
+#endif
 ///------------------Textures---------------------
 Texture2D texDiffuseMap : register(t0);
 Texture2D texAlphaMap : register(t1);

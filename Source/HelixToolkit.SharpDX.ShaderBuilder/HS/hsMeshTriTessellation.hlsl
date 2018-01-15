@@ -1,6 +1,6 @@
 #ifndef hsMESHTriTESSELLATION_HLSL
 #define hsMESHTriTESSELLATION_HLSL
-#define MATERIAL
+
 #define MESH
 //#include"..\Common\CommonBuffers.hlsl"
 #include"..\Common\DataStructs.hlsl"

@@ -1,6 +1,6 @@
 #ifndef PSBILLBOARDTEXT_HLSL
 #define PSBILLBOARDTEXT_HLSL
-#define LINE
+#define POINTLINE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 

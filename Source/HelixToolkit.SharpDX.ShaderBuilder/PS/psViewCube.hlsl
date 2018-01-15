@@ -1,6 +1,6 @@
 #ifndef PSVIEWBOX_HLSL
 #define PSVIEWBOX_HLSL
-#define MATERIAL
+
 #define MESH
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\CommonBuffers.hlsl"

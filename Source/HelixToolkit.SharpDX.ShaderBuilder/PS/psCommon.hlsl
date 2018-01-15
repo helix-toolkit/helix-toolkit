@@ -1,6 +1,6 @@
 #ifndef PSCOMMON_HLSL
 #define PSCOMMON_HLSL
-#define MATERIAL
+
 #define MESH
 #include"..\Common\Common.hlsl"
 

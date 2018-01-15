@@ -1,5 +1,5 @@
 
-#define MATERIAL
+
 #define MESH
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\CommonBuffers.hlsl"

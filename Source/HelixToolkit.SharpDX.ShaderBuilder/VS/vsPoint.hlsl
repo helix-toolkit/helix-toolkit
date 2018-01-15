@@ -1,6 +1,6 @@
 #ifndef VSPOINT_HLSL
 #define VSPOINT_HLSL
-#define LINE
+#define POINTLINE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\CommonBuffers.hlsl"
 

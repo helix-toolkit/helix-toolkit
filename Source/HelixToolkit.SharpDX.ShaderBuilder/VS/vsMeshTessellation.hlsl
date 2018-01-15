@@ -1,8 +1,7 @@
 #ifndef VSMESHTESSELLATION_HLSL
 #define VSMESHTESSELLATION_HLSL
-#define MATERIAL
+
 #define MESH
-#define TESSELLATION
 #include"..\Common\CommonBuffers.hlsl"
 #include"..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )

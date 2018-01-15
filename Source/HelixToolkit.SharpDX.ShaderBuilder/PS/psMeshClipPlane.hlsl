@@ -1,6 +1,6 @@
 #ifndef PSMESHCLIPPLANE_HLSL
 #define PSMESHCLIPPLANE_HLSL
-#define MATERIAL
+
 #define CLIPPLANE
 #define MESH
 #include"psMeshBlinnPhong.hlsl"
