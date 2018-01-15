@@ -45,7 +45,7 @@ namespace CustomShaderDemo
             {
                 if (SetValue(ref startColor, value))
                 {
-                    ColorGradient = new Color4Collection(GetGradients(startColor, endColor, 100).Select(x=>x.ToColor4()));
+                    ColorGradient = new Color4Collection(GetGradients(startColor.ToColor4(), endColor.ToColor4(), 100));
                 }
             }
             get { return startColor; }
@@ -64,7 +64,7 @@ namespace CustomShaderDemo
             {
                 if (SetValue(ref endColor, value))
                 {
-                    ColorGradient = new Color4Collection(GetGradients(startColor, endColor, 100).Select(x => x.ToColor4()));
+                    ColorGradient = new Color4Collection(GetGradients(startColor.ToColor4(), endColor.ToColor4(), 100));
                 }
             }
             get { return endColor; }
@@ -95,7 +95,7 @@ namespace CustomShaderDemo
             {
                 for(int j=0; j<50; ++j)
                 {
-                    points[i * 50 + j] = new Vector3(i / 10, 0, j / 10);
+                    points[i * 50 + j] = new Vector3(i / 10f, 0, j / 10f);
                 }
             }
             builder.AddRectangularMesh(points, 50);
@@ -104,19 +104,19 @@ namespace CustomShaderDemo
             EndColor = Colors.Red;
         }
 
-        public static IEnumerable<Color> GetGradients(Color start, Color end, int steps)
+        public static IEnumerable<Color4> GetGradients(Color4 start, Color4 end, int steps)
         {
-            int stepA = ((end.A - start.A) / (steps - 1));
-            int stepR = ((end.R - start.R) / (steps - 1));
-            int stepG = ((end.G - start.G) / (steps - 1));
-            int stepB = ((end.B - start.B) / (steps - 1));
+            float stepA = ((end.Alpha - start.Alpha) / (steps - 1));
+            float stepR = ((end.Red - start.Red) / (steps - 1));
+            float stepG = ((end.Green - start.Green) / (steps - 1));
+            float stepB = ((end.Blue - start.Blue) / (steps - 1));
 
             for (int i = 0; i < steps; i++)
             {
-                yield return Color.FromArgb((byte)(start.A + (stepA * i)),
-                                            (byte)(start.R + (stepR * i)),
-                                            (byte)(start.G + (stepG * i)),
-                                            (byte)(start.B + (stepB * i)));
+                yield return new Color4((start.Red + (stepR * i)),
+                                            (start.Green + (stepG * i)),
+                                            (start.Blue + (stepB * i)),
+                                            (start.Alpha + (stepA * i)));
             }
         }
     }
