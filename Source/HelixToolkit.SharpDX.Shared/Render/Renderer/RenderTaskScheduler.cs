@@ -47,8 +47,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The number processor.
         /// </value>
         public int NumProcessor { private set; get; }
+
         /// <summary>
         /// Gets or sets the minimum item to start multi-threading
+        /// <para>https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/d3d11deferredcontextssample.htm</para>
+        /// <para>Note: Only if draw calls > 3000 to be benefit according to the online performance test.</para>
         /// </summary>
         /// <value>
         /// The minimum item per task.

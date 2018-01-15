@@ -281,7 +281,7 @@ namespace OctreeDemo
             PointsModel.UpdateOctree();
             for (int i = 0; i < 10; ++i)
             {
-                for (int j = 0; j < 50; ++j)
+                for (int j = 0; j < 10; ++j)
                 {
                     Items.Add(new SphereModel(new Vector3(-10f + i + (float)Math.Pow((float)j / 2, 2), -10f + (float)Math.Pow((float)i / 2, 2), -10f + (float)Math.Pow(j, ((float)i / 5))), rnd.NextDouble(1,3)));
                 }
@@ -475,9 +475,9 @@ namespace OctreeDemo
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (counter > 99)
+            if (counter > 499)
             {
-                counter = -100;
+                counter = -500;
             }
             if (counter < 0)
             {

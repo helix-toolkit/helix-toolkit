@@ -739,10 +739,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }, (s, e) => { return Math.Max(1, (int)e); }));
 
         /// <summary>
-        /// <para>Enable deferred rendering. Not supported with EnableSharedModelMode = true</para> 
-        /// <para>If this is enabled, seperate UI thread is created and used for rendering. Main UI thread is used to create command list for deferred context.</para>
-        /// <para>This does not guarantee better performance. Please fully test before deciding which rendering method being used.</para>
+        /// <para>Enable deferred rendering. Use multithreading to call rendering procedure using different Deferred Context.</para> 
         /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx"/></para>
+        /// <para>https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/d3d11deferredcontextssample.htm</para>
+        /// <para>Note: Only if draw calls > 3000 to be benefit according to the online performance test.</para>
         /// </summary>
         public static readonly DependencyProperty EnableDeferredRenderingProperty
             = DependencyProperty.Register("EnableDeferredRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
@@ -2455,10 +2455,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// <para>Enable deferred rendering. Not supported with EnableSharedModelMode = true</para> 
-        /// <para>If this is enabled, seperate UI thread is created and used for rendering. Main UI thread is used to create command list for deferred context.</para>
-        /// <para>This does not guarantee better performance. Please fully test before deciding which rendering method being used.</para>
+        /// <para>Enable deferred rendering. Use multithreading to call rendering procedure using different Deferred Context.</para> 
         /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx"/></para>
+        /// <para>https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/d3d11deferredcontextssample.htm</para>
+        /// <para>Note: Only if draw calls > 3000 to be benefit according to the online performance test.</para>
         /// </summary>
         public bool EnableDeferredRendering
         {
