@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf
     using Vector3D = global::SharpDX.Vector3;
     using Point3D = global::SharpDX.Vector3;
     using DoubleOrSingle = System.Single;
+    using Vector = global::SharpDX.Vector2;
     using System.Linq;
 #else
     using System.Windows;
@@ -49,6 +50,7 @@ namespace HelixToolkit.Wpf
             return Vector3D.CrossProduct(first, second);
 #endif
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -60,6 +62,18 @@ namespace HelixToolkit.Wpf
         {
             return first.X * second.X + first.Y * second.Y + first.Z * second.Z;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static DoubleOrSingle DotProduct(ref Vector first, ref Vector second)
+        {
+            return first.X * second.X + first.Y * second.Y;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -69,6 +83,16 @@ namespace HelixToolkit.Wpf
         public static DoubleOrSingle LengthSquared(ref Vector3D vector)
         {
             return vector.X * vector.X + vector.Y * vector.Y + vector.Z * vector.Z;
+        }
+        /// <summary>
+        /// Lengthes the squared.
+        /// </summary>
+        /// <param name="vector">The vector.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static DoubleOrSingle LengthSquared(ref Vector vector)
+        {
+            return vector.X * vector.X + vector.Y * vector.Y;
         }
         /// <summary>
         /// 

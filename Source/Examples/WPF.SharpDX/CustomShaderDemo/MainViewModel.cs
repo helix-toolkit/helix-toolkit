@@ -20,15 +20,15 @@ namespace CustomShaderDemo
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using System.Collections.Generic;
+    using System.Windows.Input;
+    using System;
+    using SharpDX.Direct3D11;
 
     public class MainViewModel : BaseViewModel
     {
         public MeshGeometry3D Model { get; private set; }
-        public LineGeometry3D Lines { get; private set; }
-        public LineGeometry3D Grid { get; private set; }
-        public PointGeometry3D Points { get; private set; }
-        public BillboardText3D Text { get; private set; }
-
+        public LineGeometry3D AxisModel { get; private set; }
+        public BillboardText3D AxisLabel { private set; get; }
         public PhongMaterial ModelMaterial { get; private set; } = PhongMaterials.White;
 
 
@@ -70,7 +70,43 @@ namespace CustomShaderDemo
             get { return endColor; }
         }
 
-        public Color4Collection ColorGradient { private set; get; }
+        private Color4Collection colorGradient;
+        public Color4Collection ColorGradient
+        {
+            private set
+            {
+                SetValue(ref colorGradient, value);
+            }
+            get { return colorGradient; }
+        }
+
+        private FillMode fillMode = FillMode.Solid;
+        public FillMode FillMode
+        {
+            set
+            {
+                SetValue(ref fillMode, value);
+            }
+            get { return fillMode; }
+        }
+
+        private bool showWireframe = false;
+        public bool ShowWireframe
+        {
+            set
+            {
+                if(SetValue(ref showWireframe, value))
+                {
+                    FillMode = value ? FillMode.Wireframe : FillMode.Solid;
+                }
+            }
+            get { return showWireframe; }
+        }
+
+        private int Width = 100;
+        private int Height = 100;
+
+        public ICommand GenerateNoiseCommand { private set; get; }
 
         public MainViewModel()
         {
@@ -80,8 +116,8 @@ namespace CustomShaderDemo
 
             // camera setup
             Camera = new PerspectiveCamera { 
-                Position = new Point3D(3, 3, 5), 
-                LookDirection = new Vector3D(-3, -3, -5), 
+                Position = new Point3D(-6, 8, 23), 
+                LookDirection = new Vector3D(11, -4, -23), 
                 UpDirection = new Vector3D(0, 1, 0),
                 FarPlaneDistance = 5000
             };
@@ -90,18 +126,43 @@ namespace CustomShaderDemo
             RenderTechnique = EffectsManager[CustomShaderNames.DataSampling];
 
             var builder = new MeshBuilder(true);
-            Vector3[] points = new Vector3[2500];
-            for(int i=0; i<50; ++i)
+            Vector3[] points = new Vector3[Width*Height];
+            for(int i=0; i<Width; ++i)
             {
-                for(int j=0; j<50; ++j)
+                for(int j=0; j<Height; ++j)
                 {
-                    points[i * 50 + j] = new Vector3(i / 10f, 0, j / 10f);
+                    points[i * Width + j] = new Vector3(i / 10f, 0, j / 10f);
                 }
             }
-            builder.AddRectangularMesh(points, 50);
+            builder.AddRectangularMesh(points, Width);
             Model = builder.ToMesh();
+            for(int i=0; i<Model.Normals.Count; ++i)
+            {
+                Model.Normals[i] = new Vector3(0, Math.Abs(Model.Normals[i].Y), 0);
+            }
             StartColor = Colors.Blue;
             EndColor = Colors.Red;
+
+            var lineBuilder = new LineBuilder();
+            lineBuilder.AddLine(new Vector3(0, 0, 0), new Vector3(10, 0, 0));
+            lineBuilder.AddLine(new Vector3(0, 0, 0), new Vector3(0, 10, 0));
+            lineBuilder.AddLine(new Vector3(0, 0, 0), new Vector3(0, 0, 10));
+
+            AxisModel = lineBuilder.ToLineGeometry3D();
+            AxisModel.Colors = new Color4Collection(AxisModel.Positions.Count);
+            AxisModel.Colors.Add(Colors.Red.ToColor4());
+            AxisModel.Colors.Add(Colors.Red.ToColor4());
+            AxisModel.Colors.Add(Colors.Green.ToColor4());
+            AxisModel.Colors.Add(Colors.Green.ToColor4());
+            AxisModel.Colors.Add(Colors.Blue.ToColor4());
+            AxisModel.Colors.Add(Colors.Blue.ToColor4());
+
+            AxisLabel = new BillboardText3D();
+            AxisLabel.TextInfo.Add(new TextInfo() { Origin = new Vector3(11, 0, 0), Text = "X", Foreground = Colors.Red.ToColor4() });
+            AxisLabel.TextInfo.Add(new TextInfo() { Origin = new Vector3(0, 11, 0), Text = "Y", Foreground = Colors.Green.ToColor4() });
+            AxisLabel.TextInfo.Add(new TextInfo() { Origin = new Vector3(0, 0, 11), Text = "Z", Foreground = Colors.Blue.ToColor4() });
+            GenerateNoiseCommand = new RelayCommand((o) => { CreatePerlinNoise(); });
+            CreatePerlinNoise();
         }
 
         public static IEnumerable<Color4> GetGradients(Color4 start, Color4 end, int steps)
@@ -118,6 +179,21 @@ namespace CustomShaderDemo
                                             (start.Blue + (stepB * i)),
                                             (start.Alpha + (stepA * i)));
             }
+        }
+
+        private void CreatePerlinNoise()
+        {
+            float[] noise;
+            MathHelper.GenerateNoiseMap(Width, Height, 8, out noise);
+            Vector2Collection collection = new Vector2Collection(Width * Height);
+            for(int i=0; i<Width; ++i)
+            {
+                for(int j=0; j<Height; ++j)
+                {
+                    collection.Add(new Vector2(Math.Abs(noise[Width * i + j]), 0));
+                }
+            }
+            Model.TextureCoordinates = collection;
         }
     }
 }

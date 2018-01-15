@@ -29,6 +29,21 @@ namespace CustomShaderDemo
             }
         }
     }
+
+
+    public static class CustomVSShaderDescription
+    {
+        public static byte[] VSMeshDataSamplerByteCode
+        {
+            get
+            {
+                return ShaderHelper.LoadShaderCode(@"Shaders\vsMeshDataSampling.cso");
+            }
+        }
+        public static ShaderDescription VSDataSampling = new ShaderDescription(nameof(VSDataSampling), ShaderStage.Vertex,
+            new ShaderReflector(), VSMeshDataSamplerByteCode);
+    }
+
     public static class CustomPSShaderDescription
     {
         public static ShaderDescription PSDataSampling = new ShaderDescription(nameof(PSDataSampling), ShaderStage.Pixel,
@@ -42,14 +57,14 @@ namespace CustomShaderDemo
             var techniqueList = base.LoadTechniqueDescriptions();
             var dataSampling = new TechniqueDescription(CustomShaderNames.DataSampling)
             {
-                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                InputLayoutDescription = new InputLayoutDescription(CustomVSShaderDescription.VSMeshDataSamplerByteCode, DefaultInputLayout.VSInput),
                 PassDescriptions = new[]
                 {
                     new ShaderPassDescription(DefaultPassNames.Default)
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            CustomVSShaderDescription.VSDataSampling,
                             CustomPSShaderDescription.PSDataSampling
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,

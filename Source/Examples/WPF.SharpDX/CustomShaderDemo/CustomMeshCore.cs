@@ -43,6 +43,16 @@ namespace CustomShaderDemo
             get { return colorGradients; }
         }
 
+        private float dataHeightScale = 5;
+        public float DataHeightScale
+        {
+            set
+            {
+                SetAffectsRender(ref dataHeightScale, value);
+            }
+            get { return dataHeightScale; }
+        }
+
         protected override void OnDefaultPassChanged(IShaderPass pass)
         {
             base.OnDefaultPassChanged(pass);
@@ -67,6 +77,12 @@ namespace CustomShaderDemo
             {
                 return false;
             }
+        }
+
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        {
+            base.OnUpdatePerModelStruct(ref model, context);
+            model.Params.Y = dataHeightScale;
         }
 
         protected override void OnAttachBuffers(DeviceContext context)

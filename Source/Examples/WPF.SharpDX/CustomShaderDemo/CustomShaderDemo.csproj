@@ -44,6 +44,12 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PropertyTools, Version=2.0.1.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2.0.1\lib\net45\PropertyTools.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyTools.Wpf, Version=2.0.1.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2.0.1\lib\net45\PropertyTools.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
       <Private>True</Private>
@@ -151,6 +157,9 @@
     <Content Include="Shaders\Common.hlsl" />
     <Content Include="Shaders\CommonBuffers.hlsl" />
     <Content Include="Shaders\DataStructs.hlsl" />
+    <VertexShader Include="Shaders\vsMeshDataSampling.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
     <PixelShader Include="Shaders\psMeshDataSampling.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
