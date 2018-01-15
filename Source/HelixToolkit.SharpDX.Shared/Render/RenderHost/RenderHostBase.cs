@@ -6,8 +6,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
     using global::SharpDX;
-    using HelixToolkit.Wpf.SharpDX.Core2D;
-    using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Core2D;
+    using Utilities;
     using System;
     using System.Diagnostics;
 

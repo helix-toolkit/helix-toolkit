@@ -2,12 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 #if SHARPDX
-#if NETFX_CORE
-using Vector2 = SharpDX.Vector2;
-namespace HelixToolkit.UWP
-#else
 using Vector2 = SharpDX.Vector2;
 using DoubleOrSingle = System.Single;
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 #else

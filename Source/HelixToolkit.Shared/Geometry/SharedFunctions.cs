@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿#if SHARPDX
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
+namespace HelixToolkit.Wpf.SharpDX
+#endif
+#else
 namespace HelixToolkit.Wpf
+#endif
 {
     using System;
-    using System.Collections.Generic;
     using System.Runtime.CompilerServices;
 #if SHARPDX
     using global::SharpDX;
@@ -13,7 +16,6 @@ namespace HelixToolkit.Wpf
     using Point3D = global::SharpDX.Vector3;
     using DoubleOrSingle = System.Single;
     using Vector = global::SharpDX.Vector2;
-    using System.Linq;
 #else
     using System.Windows;
     using System.Windows.Media;
