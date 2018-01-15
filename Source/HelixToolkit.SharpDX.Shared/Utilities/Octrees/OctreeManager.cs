@@ -197,7 +197,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                         UnsubscribeBoundChangeEvent(item);
                         continue;
                     }
-                    var node = mOctree.FindItemByGuid(item.GUID, item, out int index);
+                    int index;
+                    var node = mOctree.FindItemByGuid(item.GUID, item, out index);
                     bool rootAdd = true;
                     if (node != null)
                     {
