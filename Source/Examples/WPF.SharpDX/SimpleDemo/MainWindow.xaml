@@ -41,6 +41,7 @@
             x:Name="view1"
             Title="{Binding Title}"
             Grid.Row="1"
+            BackgroundColor="White"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="#434343"
             EffectsManager="{Binding EffectsManager}"
@@ -87,6 +88,7 @@
                 Transform="{Binding Model1Transform}"
                 Color="Black" />
             <hx:MeshGeometryModel3D
+                CullMode="Back"
                 DepthBias="-5"
                 Geometry="{Binding TextModel}"
                 Material="{Binding BlueMaterial}"
