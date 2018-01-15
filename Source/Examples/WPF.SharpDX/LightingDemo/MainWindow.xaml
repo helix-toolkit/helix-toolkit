@@ -31,7 +31,7 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            EnableSwapChainRendering="False"
+            EnableSwapChainRendering="True"
             IsShadowMappingEnabled="True"
             MSAA="{Binding MSAA}"
             RenderTechnique="{Binding RenderTechnique}"

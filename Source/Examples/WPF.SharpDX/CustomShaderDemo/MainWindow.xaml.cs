@@ -29,18 +29,6 @@ namespace CustomShaderDemo
                 }
             };
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            foreach(var item in view1.Items)
-            {
-                if(item is GeometryModel3D)
-                {
-                    var geom = item as GeometryModel3D;
-                    geom.SetValue(AttachedProperties.ShowSelectedProperty, !(bool)geom.GetValue(AttachedProperties.ShowSelectedProperty));
-                }
-            }
-        }
     }
 
 }
