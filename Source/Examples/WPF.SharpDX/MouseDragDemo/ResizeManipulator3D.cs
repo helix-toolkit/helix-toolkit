@@ -9,6 +9,7 @@
 
 namespace MouseDragDemo
 {
+    using System.Collections.Generic;
     using System.Windows;
     using HelixToolkit.Wpf.SharpDX;
 

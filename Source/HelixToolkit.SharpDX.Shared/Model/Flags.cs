@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public static class Constants
     {
+        public const int MaxLights = 8;
         /// <summary>
         /// Number of shader stages
         /// </summary>

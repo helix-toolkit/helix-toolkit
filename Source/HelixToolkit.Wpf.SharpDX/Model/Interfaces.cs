@@ -32,45 +32,8 @@ namespace HelixToolkit.Wpf.SharpDX
         Visibility Visibility { get; set; }
     }
 
-    public interface IHitable : IVisible
+    public interface ITransformable : ITransform
     {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="context">Used to get view/projection matrices during hit test. <para>Only needs for screen space model hit test(line/point/billboard). Can be set to null for mesh geometry hit test.</para></param>
-        /// <param name="ray"></param>
-        /// <param name="hits"></param>
-        /// <returns>Return all hitted details with distance from nearest to farest.</returns>
-        bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits);
-        
-        //void OnMouse3DDown(object sender, RoutedEventArgs e);
-        //void OnMouse3DUp(object sender, RoutedEventArgs e);
-        //void OnMouse3DMove(object sender, RoutedEventArgs e);
-
-        //event RoutedEventHandler MouseDown3D;
-        //event RoutedEventHandler MouseUp3D;
-        //event RoutedEventHandler MouseMove3D;
-
-        /// <summary>
-        /// Indicates, if this element should be hit-tested.        
-        /// default is true
-        /// </summary>
-        bool IsHitTestVisible { get; set; }
-    }
-
-    public interface IBoundable : IVisible
-    {
-        BoundingBox Bounds { get; }
-        BoundingBox BoundsWithTransform { get; }
-        BoundingSphere BoundsSphere { get; }
-        BoundingSphere BoundsSphereWithTransform { get; }
-    }
-
-    public interface ITransformable
-    {
-        void PushMatrix(Matrix matrix);
-        void PopMatrix();
-        Matrix ModelMatrix { get; }
         Transform3D Transform { get; set; }               
     }
 

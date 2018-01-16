@@ -9,7 +9,6 @@ using System.Collections.Generic;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using IOctree = IOctree<GeometryModel3D>;
     public static class OctreeHelper
     {
         public static LineGeometry3D CreateOctreeLineModel(this IOctree tree)

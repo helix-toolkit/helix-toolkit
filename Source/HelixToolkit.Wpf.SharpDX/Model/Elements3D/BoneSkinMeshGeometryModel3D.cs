@@ -1,13 +1,6 @@
 ﻿using HelixToolkit.Wpf.SharpDX.Core;
-using HelixToolkit.Wpf.SharpDX.Utilities;
 using SharpDX;
-using SharpDX.Direct3D;
-using SharpDX.Direct3D11;
-using SharpDX.DXGI;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace HelixToolkit.Wpf.SharpDX
@@ -15,7 +8,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public class BoneSkinMeshGeometryModel3D : MeshGeometryModel3D
     {
         public static DependencyProperty VertexBoneIdsProperty = DependencyProperty.Register("VertexBoneIds", typeof(IList<BoneIds>), typeof(BoneSkinMeshGeometryModel3D), 
-            new AffectsRenderPropertyMetadata(null, (d,e)=>
+            new PropertyMetadata(null, (d,e)=>
             {
                 (d as BoneSkinMeshGeometryModel3D).bonesBufferModel.Elements = e.NewValue == null ? null : (IList<BoneIds>)e.NewValue;
             }));
@@ -33,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty BoneMatricesProperty = DependencyProperty.Register("BoneMatrices", typeof(BoneMatricesStruct), typeof(BoneSkinMeshGeometryModel3D),
-            new AffectsRenderPropertyMetadata(new BoneMatricesStruct() { Bones = new Matrix[BoneMatricesStruct.NumberOfBones] }, 
+            new PropertyMetadata(new BoneMatricesStruct() { Bones = new Matrix[BoneMatricesStruct.NumberOfBones] }, 
                 (d, e) =>
                 {
                     (d as BoneSkinMeshGeometryModel3D).boneSkinRenderCore.BoneMatrices = (BoneMatricesStruct)e.NewValue;

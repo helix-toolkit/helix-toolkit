@@ -1,13 +1,13 @@
 #ifndef VSPOINT_HLSL
 #define VSPOINT_HLSL
-
+#define POINTLINE
 #include"..\Common\DataStructs.hlsl"
-#include"..\Common\Common.hlsl"
+#include"..\Common\CommonBuffers.hlsl"
 
 GSInputPS main(VSInputPS input)
 {
 	GSInputPS output = (GSInputPS) 0;
-	if (bHasInstances)
+	if (pHasInstances)
 	{
 		matrix mInstance =
 		{
@@ -22,9 +22,9 @@ GSInputPS main(VSInputPS input)
 	output.p = input.p;
 
 	//set position into clip space	
-	output.p = mul(output.p, mWorld);
+	output.p = mul(output.p, pWorld);
 	output.p = mul(output.p, mViewProjection);
-	output.c = input.c * vColor;
+	output.c = input.c * pColor;
 	return output;
 }
 

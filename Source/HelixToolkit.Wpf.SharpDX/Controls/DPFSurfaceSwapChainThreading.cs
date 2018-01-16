@@ -9,30 +9,24 @@
 //#define DoubleBuffer
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Controls;
+    using Core2D;
+    using global::SharpDX;
+    using global::SharpDX.Direct3D11;
+    using global::SharpDX.DXGI;
+    using HelixToolkit.Wpf.SharpDX.Render;
+    using Model;
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Linq;
+    using System.Threading;
     using System.Windows;
+    using System.Windows.Interop;
     using System.Windows.Media;
     using System.Windows.Threading;
-
-    using global::SharpDX;
-
-    using global::SharpDX.Direct3D11;
-
-    using global::SharpDX.DXGI;
-
     using Utilities;
-    using Extensions;
-
     using Device = global::SharpDX.Direct3D11.Device;
-    using Model;
-    using Helpers;
-    using System.Linq;
-    using Controls;
-    using System.Threading;
-    using System.Windows.Interop;
-    using Core2D;
 
     // ---- BASED ON ORIGNAL CODE FROM -----
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
@@ -175,9 +169,9 @@ namespace HelixToolkit.Wpf.SharpDX
         private RenderTargetView colorBufferView;
         private DepthStencilView depthStencilBufferView;
         private RenderControl surfaceD3D;
-        private IRenderer renderRenderable;
+        private IViewport3DX renderRenderable;
         private RenderContext renderContext;
-        private DeviceContext deferredContext;
+        private DeviceContextProxy deferredContext;
    //     private DeferredRenderer deferredRenderer;
         private bool sceneAttached;
         private int targetWidth, targetHeight;
@@ -294,7 +288,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The instance of currently attached IRenderable - this is in general the Viewport3DX
         /// </summary>
-        IRenderer IRenderHost.Renderable
+        IViewport3DX IRenderHost.Viewport
         {
             get { return renderRenderable; }
             set
@@ -364,7 +358,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Indicates if DPFCanvas busy on rendering.
         /// </summary>
         public bool IsBusy { get { return pendingValidationCycles; } }
-        public D2DControlWrapper D2DControls { get; } = new D2DControlWrapper();
+        public ID2DTarget D2DControls { get; } = new D2DControlWrapper();
         /// <summary>
         /// 
         /// </summary>
@@ -528,7 +522,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Disposer.RemoveAndDispose(ref deferredContext);
             device.ImmediateContext.Flush();
             CreateSwapChain();
-            deferredContext = new DeviceContext(device);
+            deferredContext = new DeviceContextProxy(device);
             backBuffer = Texture2D.FromSwapChain<Texture2D>(swapChain, 0);
 
 
@@ -691,9 +685,9 @@ namespace HelixToolkit.Wpf.SharpDX
             device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
             device.ImmediateContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
 
-            deferredContext.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
-            deferredContext.Rasterizer.SetViewport(0, 0, width, height, 0f, 1f);
-            deferredContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
+            deferredContext.DeviceContext.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
+            deferredContext.DeviceContext.Rasterizer.SetViewport(0, 0, width, height, 0f, 1f);
+            deferredContext.DeviceContext.Rasterizer.SetScissorRectangle(0, 0, width, height);
             if (clear)
             {
                 ClearRenderTarget();
@@ -725,13 +719,13 @@ namespace HelixToolkit.Wpf.SharpDX
             if (clearBackBuffer)
             {
                 // device.ImmediateContext.ClearRenderTargetView(colorBufferView, ClearColor);
-                deferredContext.ClearRenderTargetView(colorBufferView, ClearColor);
+                deferredContext.DeviceContext.ClearRenderTargetView(colorBufferView, ClearColor);
             }
 
             if (clearDepthStencilBuffer)
             {
                 //  device.ImmediateContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
-                deferredContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+                deferredContext.DeviceContext.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
             }
         }
 
@@ -759,7 +753,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
                         renderContext?.Dispose();
-                        renderContext = new RenderContext(this, deferredContext, EffectsManager.ConstantBufferPool);
+                        renderContext = new RenderContext(this, deferredContext);
                         renderContext.EnableBoundingFrustum = EnableRenderFrustum;
                         if (EnableSharingModelMode && SharedModelContainer != null)
                         {
@@ -791,7 +785,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
                 renderContext.TimeStamp = timeStamp;
-                renderContext.DeviceContext = deferredContext;
                 // ---------------------------------------------------------------------------
                 // this part is per frame
                 // ---------------------------------------------------------------------------
@@ -833,7 +826,7 @@ namespace HelixToolkit.Wpf.SharpDX
 //                }
 //                else
                 {
-                    renderRenderable.Render(renderContext);
+                  //  renderRenderable.Render(renderContext);
                 }
 #if DoubleBuffer
                 device.ImmediateContext.ResolveSubresource(colorBuffer, 0, backBuffer, 0, Format.B8G8R8A8_UNorm);
@@ -875,7 +868,7 @@ namespace HelixToolkit.Wpf.SharpDX
             UpdateAndRender();
         }
 
-        private readonly EventSkipper skipper = new EventSkipper();
+        private readonly FrameRateRegulator skipper = new FrameRateRegulator();
         //private readonly PresentParameters presentParams = new PresentParameters();
         /// <summary>
         /// Updates and renders the scene.
@@ -892,7 +885,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 try
                 {
                     Render(t0);
-                    var commandList = deferredContext.FinishCommandList(true);
+                    var commandList = deferredContext.DeviceContext.FinishCommandList(true);
                     if (renderThread.InvalidateD3D(commandList))
                     {
                         pendingValidationCycles = false;

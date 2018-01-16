@@ -139,9 +139,8 @@
     </Compile>
     <Compile Include="Controls\CameraController.cs" />
     <Compile Include="Controls\DPFCanvas.cs" />
-    <Compile Include="Controls\DPFCanvasThreading.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChain.cs" />
-    <Compile Include="Controls\DPFSurfaceSwapChainThreading.cs" />
+    <Compile Include="Controls\IRenderCanvas.cs" />
     <Compile Include="Controls\MultiViewports\ModelContainer3DX.cs" />
     <Compile Include="Controls\RenderControl.cs">
       <SubType>UserControl</SubType>
@@ -151,7 +150,6 @@
     <Compile Include="Controls\WinformHostExtend.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\Geometry3DExtensions.cs" />
-    <Compile Include="Helpers\EventSkipper.cs" />
     <Compile Include="Controls\RenderTechniqueConverter.cs" />
     <Compile Include="Controls\Trackball.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
@@ -171,7 +169,6 @@
     <Compile Include="Controls\MouseHandlers\TouchMode.cs" />
     <Compile Include="Controls\MouseHandlers\ZoomHandler.cs" />
     <Compile Include="Controls\MouseHandlers\ZoomRectangleHandler.cs" />
-    <Compile Include="Controls\RenderContext.cs" />
     <Compile Include="Controls\RenderUtil.cs" />
     <Compile Include="Controls\Viewport3DX.Properties.cs" />
     <Compile Include="Controls\ViewportExtensions.cs" />
@@ -190,7 +187,6 @@
     <Compile Include="Model\Elements2D\Canvas2D.cs" />
     <Compile Include="Model\Elements3D\CameraModel3D.cs" />
     <Compile Include="Model\Elements3D\CrossSectionMeshGeometryModel3D.cs" />
-    <Compile Include="Model\Elements3D\AbstractElements3D\InstanceGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\ScreenSpaceMeshGeometry3D.cs" />
     <Compile Include="Model\Elements3D\BillboardTextModel3D.cs" />
     <Compile Include="Model\Elements3D\BoneSkinMeshGeometryModel3D.cs" />
@@ -202,6 +198,7 @@
     <Compile Include="Model\Elements3D\ParticleStormModel3D.cs" />
     <Compile Include="Model\Elements3D\PatchGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
+    <Compile Include="Model\Elements3D\EnvironmentMap3D.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Elements3D\XRayMeshGeometryModel3D.cs" />
     <Compile Include="Model\Materials\Material.cs" />
@@ -213,8 +210,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\IOctreeManager.cs" />
-    <Compile Include="Utilities\OctreeGeometryModel3D.cs" />
     <Compile Include="Utilities\OctreeHelper.cs" />
     <Compile Include="Utilities\OctreeManager.cs" />
     <Compile Include="Utilities\OffReader.cs" />
@@ -228,15 +223,12 @@
     <Compile Include="Model\Elements3D\DraggableGeometryModel3D.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\Elements3D\EnvironmentMapModel3D.cs" />
     <Compile Include="Model\Elements3D\GroupModel3D.cs" />
-    <Compile Include="Model\Elements3D\Items3DControl.cs" />
     <Compile Include="Model\Elements3D\ItemsModel3D.cs" />
     <Compile Include="Model\Elements3D\Light3DCollection.cs" />
     <Compile Include="Model\Elements3D\MeshGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\Element3DCollection.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\MaterialGeometryModel3D.cs" />
-    <Compile Include="Model\Elements3D\TransformableItems3DControl.cs" />
     <Compile Include="Model\Elements3D\UICompositeManipulator3D.cs" />
     <Compile Include="Model\Elements3D\UIManipulator3D.cs" />
     <Compile Include="Model\Elements3D\UIResizeManipulator3D.cs" />
@@ -258,7 +250,6 @@
     <Compile Include="Utilities\Exporter.cs" />
     <Compile Include="Utilities\IExporter.cs" />
     <Compile Include="Utilities\IModelReader.cs" />
-    <Compile Include="Utilities\LineBuilder.cs" />
     <Compile Include="Utilities\ObjExporter.cs" />
     <Compile Include="Utilities\ObjReader.cs" />
     <Compile Include="Utilities\TypeConverter.cs" />
@@ -312,6 +303,7 @@
     <None Include="Resources\psPoint.cso" />
     <None Include="Resources\psPositions.cso" />
     <None Include="Resources\psShadow.cso" />
+    <None Include="Resources\psSkybox.cso" />
     <None Include="Resources\psViewCube.cso" />
     <None Include="Resources\vsBillboard.cso" />
     <None Include="Resources\vsBillboardInstancing.cso" />
@@ -329,6 +321,7 @@
     <None Include="Resources\vsParticle.cso" />
     <None Include="Resources\vsPoint.cso" />
     <None Include="Resources\vsPointShadow.cso" />
+    <None Include="Resources\vsSkybox.cso" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Model\ReadMe.txt" />
@@ -353,7 +346,9 @@
       <Name>HelixToolkit</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

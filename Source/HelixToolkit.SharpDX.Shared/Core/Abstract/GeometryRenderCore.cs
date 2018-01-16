@@ -12,14 +12,55 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Shaders;
-    public abstract class GeometryRenderCore : RenderCoreBase<ModelStruct>, IGeometryRenderCore
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="MODELSTRUCT"></typeparam>
+    public abstract class GeometryRenderCore<MODELSTRUCT> : RenderCoreBase<MODELSTRUCT>, IGeometryRenderCore where MODELSTRUCT : struct
     {
         private RasterizerState rasterState = null;
+        /// <summary>
+        /// 
+        /// </summary>
         public RasterizerState RasterState { get { return rasterState; } }
+        /// <summary>
+        /// 
+        /// </summary>
         public InputLayout VertexLayout { private set; get; }
+        private IElementsBufferModel instanceBuffer;
+        /// <summary>
+        /// 
+        /// </summary>
+        public IElementsBufferModel InstanceBuffer
+        {
+            set
+            {
+                if (instanceBuffer != value)
+                {
+                    if (instanceBuffer != null)
+                    {
+                        instanceBuffer.OnElementChanged -= InstanceBuffer_OnElementChanged;
+                    }
+                    instanceBuffer = value;
+                    if (instanceBuffer != null)
+                    {
+                        instanceBuffer.OnElementChanged += InstanceBuffer_OnElementChanged;
+                    }
+                }
+            }
+            get
+            {
+                return instanceBuffer;   
+            }
+        }
 
-        public IElementsBufferModel InstanceBuffer { set; get; }
-
+        private void InstanceBuffer_OnElementChanged(object sender, bool e)
+        {
+            InvalidateRenderer();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         public IGeometryBufferModel GeometryBuffer{ set; get; }
 
         private RasterizerStateDescription rasterDescription = new RasterizerStateDescription()
@@ -27,16 +68,21 @@ namespace HelixToolkit.UWP.Core
             FillMode = FillMode.Solid,
             CullMode = CullMode.None,
         };
+        /// <summary>
+        /// 
+        /// </summary>
         public RasterizerStateDescription RasterDescription
         {
             set
             {
-                rasterDescription = value;
-                CreateRasterState(value, false);
+                if(SetAffectsRender(ref rasterDescription, value))
+                {
+                    CreateRasterState(value, false);
+                }
             }
             get
             {
-                return RasterDescription;
+                return rasterDescription;
             }
         }
 
@@ -49,10 +95,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (defaultPassName == value)
-                { return; }
-                defaultPassName = value;
-                if (IsAttached)
+                if(Set(ref defaultPassName, value) && IsAttached)
                 {
                     DefaultShaderPass = EffectTechnique[value];
                 }
@@ -64,16 +107,14 @@ namespace HelixToolkit.UWP.Core
         }
 
         private string defaultShadowPassName = DefaultPassNames.ShadowPass;
+        /// <summary>
+        /// 
+        /// </summary>
         public string DefaultShadowPassName
         {
             set
             {
-                if (defaultShadowPassName == value)
-                {
-                    return;
-                }
-                defaultShadowPassName = value;
-                if (IsAttached)
+                if (Set(ref defaultShadowPassName, value) && IsAttached)
                 {
                     ShadowPass = EffectTechnique[value];
                 }
@@ -83,12 +124,51 @@ namespace HelixToolkit.UWP.Core
                 return defaultShadowPassName;
             }
         }
+        private IShaderPass defaultShaderPass = null;
+        /// <summary>
+        /// 
+        /// </summary>
+        protected IShaderPass DefaultShaderPass
+        {
+            private set
+            {
+                if(Set(ref defaultShaderPass, value))
+                {
+                    OnDefaultPassChanged(value);
+                    InvalidateRenderer();
+                }
+            }
+            get
+            {
+                return defaultShaderPass;
+            }
+        }
 
-        protected IShaderPass DefaultShaderPass { private set; get; }
-        protected IShaderPass ShadowPass { private set; get; }
-
-        public bool IsThrowingShadow { set; get; } = false;
-
+        private IShaderPass shadowPass = null;
+        /// <summary>
+        /// 
+        /// </summary>
+        protected IShaderPass ShadowPass
+        {
+            private set
+            {
+                if(Set(ref shadowPass, value))
+                {
+                    OnShadowPassChanged(value);
+                    InvalidateRenderer();
+                }
+            }
+            get
+            {
+                return shadowPass;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="description"></param>
+        /// <param name="force"></param>
+        /// <returns></returns>
         protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
         {
             rasterDescription = description;
@@ -98,7 +178,11 @@ namespace HelixToolkit.UWP.Core
             rasterState = Collect(EffectTechnique.EffectsManager.StateManager.Register(description));
             return true;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="technique"></param>
+        /// <returns></returns>
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if(base.OnAttach(technique))
@@ -111,6 +195,16 @@ namespace HelixToolkit.UWP.Core
             }
             return false;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pass"></param>
+        protected virtual void OnDefaultPassChanged(IShaderPass pass) { }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pass"></param>
+        protected virtual void OnShadowPassChanged(IShaderPass pass) { }
         /// <summary>
         /// Set all necessary states and buffers
         /// </summary>
@@ -129,21 +223,14 @@ namespace HelixToolkit.UWP.Core
             GeometryBuffer.AttachBuffers(context, this.VertexLayout, 0);
             InstanceBuffer?.AttachBuffer(context, 1);           
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         protected override bool CanRender(IRenderContext context)
         {
             return base.CanRender(context) && GeometryBuffer != null;
-        }
-
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
-        {
-            model.World = ModelMatrix * context.WorldMatrix;
-            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
-        }
-
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
-        {
-            return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
         }
 
         /// <summary>

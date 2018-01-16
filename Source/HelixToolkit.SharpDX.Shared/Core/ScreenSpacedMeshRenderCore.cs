@@ -15,25 +15,71 @@ namespace HelixToolkit.UWP.Core
 {
     using Shaders;
     using Utilities;
+    using Render;
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IScreenSpacedRenderParams
     {
+        /// <summary>
+        /// Relative position X of the center of viewport
+        /// </summary>
         float RelativeScreenLocationX { set; get; }
-
+        /// <summary>
+        /// Relative position Y of the center of viewport
+        /// </summary>
         float RelativeScreenLocationY { set; get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         float SizeScale { set; get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         bool IsPerspective { set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
         bool IsRightHand { set; get; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         float Width { get; }
+        /// <summary>
+        /// 
+        /// </summary>
         float Height { get; }
+        /// <summary>
+        /// 
+        /// </summary>
         float Size { get; }
+        /// <summary>
+        /// 
+        /// </summary>
         float ScreenRatio { get; }
-        void SetScreenSpacedCoordinates(IRenderContext context, bool clearDepthBuffer);
-        void SetScreenSpacedCoordinates(IRenderContext context);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        float Fov { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        float CameraDistance { get; }
+        /// <summary>
+        /// 
+        /// </summary>
         GlobalTransformStruct GlobalTransform { get; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="context"></param>
+        ///// <param name="clearDepthBuffer"></param>
+        //void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer);
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="context"></param>
+        //void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext);
     }
     /// <summary>
     /// Used to change view matrix and projection matrix to screen spaced coordinate system.
@@ -46,14 +92,14 @@ namespace HelixToolkit.UWP.Core
         public GlobalTransformStruct GlobalTransform { private set; get; }
         public float ScreenRatio { private set; get; } = 1f;
         private float relativeScreenLocX = -0.8f;
+        /// <summary>
+        /// Relative position X of the center of viewport
+        /// </summary>
         public float RelativeScreenLocationX
         {
             set
             {
-                if (relativeScreenLocX != value)
-                {
-                    relativeScreenLocX = value;
-                }
+                SetAffectsRender(ref relativeScreenLocX, value);
             }
             get
             {
@@ -62,31 +108,30 @@ namespace HelixToolkit.UWP.Core
         }
 
         private float relativeScreenLocY = -0.8f;
+        /// <summary>
+        ///  Relative position Y of the center of viewport
+        /// </summary>
         public float RelativeScreenLocationY
         {
             set
             {
-                if (relativeScreenLocY != value)
-                {
-                    relativeScreenLocY = value;
-                }
+                SetAffectsRender(ref relativeScreenLocY, value);
             }
             get
             {
                 return relativeScreenLocY;
             }
         }
-
+        
         private float sizeScale = 1;
+        /// <summary>
+        /// Size scaling
+        /// </summary>
         public float SizeScale
         {
             set
             {
-                if (sizeScale == value)
-                {
-                    return;
-                }
-                sizeScale = value;
+                SetAffectsRender(ref sizeScale, value);
             }
             get
             {
@@ -94,13 +139,45 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        public bool IsPerspective { set; get; } = true;
-        public bool IsRightHand { set; get; } = true;
+        private bool isPerspective = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsPerspective
+        {
+            set { SetAffectsRender(ref isPerspective, value); }
+            get { return isPerspective; }
+        }
 
+        private bool isRightHand = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsRightHand
+        {
+            set { SetAffectsRender(ref isRightHand, value); }
+            get { return isRightHand; }
+        }
+        /// <summary>
+        /// Viewport Width
+        /// </summary>
         public float Width { private set; get; }
+        /// <summary>
+        /// Viewport Height
+        /// </summary>
         public float Height { private set; get; }
-
-        public float Size { get; } = 150;
+        /// <summary>
+        /// Default size. To scale, use <see cref="SizeScale"/>
+        /// </summary>
+        public float Size { get; } = 100;
+        /// <summary>
+        /// 
+        /// </summary>
+        public float CameraDistance { get; } = 20;
+        /// <summary>
+        /// Fov in radian
+        /// </summary>
+        public float Fov { get; } = (float)(45 * Math.PI / 180);
 
         private RasterizerState rasterState;
 
@@ -113,8 +190,10 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                rasterDescription = value;
-                CreateRasterState(value, false);
+                if(SetAffectsRender(ref rasterDescription, value) && IsAttached)
+                {
+                    CreateRasterState(value, false);
+                }
             }
             get
             {
@@ -157,18 +236,7 @@ namespace HelixToolkit.UWP.Core
 
         protected Matrix CreateViewMatrix(IRenderContext renderContext, out Vector3 eye)
         {
-#if !NETFX_CORE
-            eye = -renderContext.Camera.LookDirection.ToVector3().Normalized() * 20;
-            if (IsRightHand)
-            {
-                return Matrix.LookAtRH(eye, Vector3.Zero, renderContext.Camera.UpDirection.ToVector3());
-            }
-            else
-            {
-                return Matrix.LookAtLH(eye, Vector3.Zero, renderContext.Camera.UpDirection.ToVector3());
-            }
-#else
-            eye = -renderContext.Camera.LookDirection.Normalized() * 20;
+            eye = -renderContext.Camera.LookDirection.Normalized() * CameraDistance;
             if (IsRightHand)
             {
                 return Matrix.LookAtRH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
@@ -177,24 +245,23 @@ namespace HelixToolkit.UWP.Core
             {
                 return Matrix.LookAtLH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
             }
-#endif
         }
 
         protected virtual void OnCreateProjectionMatrix(float scale)
         {
             if (IsPerspective)
             {
-                projectionMatrix = IsRightHand ? Matrix.PerspectiveFovRH(45, 1, 0.1f, 100f) : Matrix.PerspectiveFovLH(45, 1, 0.1f, 100f);
+                projectionMatrix = IsRightHand ? Matrix.PerspectiveFovRH(Fov, 1, 0.001f, 100f) : Matrix.PerspectiveFovLH(Fov, 1, 0.1f, 100f);
             }
             else
             {
-                projectionMatrix = IsRightHand ? Matrix.OrthoRH(20, 20, 0.1f, 100f) : Matrix.OrthoLH(20, 20, 0.1f, 100f);
+                projectionMatrix = IsRightHand ? Matrix.OrthoRH(CameraDistance, CameraDistance, 0.1f, 100f) : Matrix.OrthoLH(CameraDistance, CameraDistance, 0.1f, 100f);
             }
         }
 
-        protected void UpdateProjectionMatrix(double width, double height)
+        protected void UpdateProjectionMatrix(float width, float height)
         {
-            var ratio = (float)(width / height);
+            var ratio = width / height;
             if (ScreenRatio != ratio)
             {
                 ScreenRatio = ratio;
@@ -210,50 +277,51 @@ namespace HelixToolkit.UWP.Core
 
         protected override bool CanRender(IRenderContext context)
         {
-            return false;
+            return true;
         }
 
-        protected override void OnRender(IRenderContext renderContext)
-        {           
+        protected override void OnRender(IRenderContext renderContext, DeviceContextProxy deviceContext)
+        {
+            SetScreenSpacedCoordinates(renderContext, deviceContext);
         }
 
         protected override void PostRender(IRenderContext context)
         {
         }
-        public void SetScreenSpacedCoordinates(IRenderContext context)
+        public void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            SetScreenSpacedCoordinates(context, true);
+            SetScreenSpacedCoordinates(context, deviceContext, true);
         }
-        public virtual void SetScreenSpacedCoordinates(IRenderContext context, bool clearDepthBuffer)
+
+        protected virtual void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer)
         {
             DepthStencilView dsView;
             if (clearDepthBuffer)
             {
-                context.DeviceContext.OutputMerger.GetRenderTargets(out dsView);
+                deviceContext.DeviceContext.OutputMerger.GetRenderTargets(out dsView);
                 if (dsView == null)
                 {
                     return;
                 }
 
-                context.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
+                deviceContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
                 dsView.Dispose();
             }
             Width = (float)context.ActualWidth;
             Height = (float)context.ActualHeight;
             float viewportSize = Size * SizeScale;
             var globalTrans = context.GlobalTransform;
-            UpdateProjectionMatrix(context.ActualWidth, context.ActualHeight);
+            UpdateProjectionMatrix(Width, Height);
             globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
             globalTrans.Projection = projectionMatrix;
             globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
             globalTrans.Viewport = new Vector4(viewportSize, viewportSize, 0, 0);
-            globalTransformCB.UploadDataToBuffer(context.DeviceContext, ref globalTrans);
+            globalTransformCB.UploadDataToBuffer(deviceContext, ref globalTrans);
             GlobalTransform = globalTrans;
-
-            context.DeviceContext.Rasterizer.SetViewport(
-                Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2,
-                Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2,
-                viewportSize, viewportSize);
+            int offX = (int)(Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2);
+            int offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
+            deviceContext.DeviceContext.Rasterizer.SetViewport(offX, offY, viewportSize, viewportSize);
+            deviceContext.DeviceContext.Rasterizer.SetScissorRectangle(offX, offY, (int)viewportSize, (int)viewportSize);
         }
     }
 }

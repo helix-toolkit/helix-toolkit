@@ -1,6 +1,7 @@
 #ifndef VSMESHXRAY_HLSL
 #define VSMESHXRAY_HLSL
-#define MATERIAL
+
+#define MESH
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
 

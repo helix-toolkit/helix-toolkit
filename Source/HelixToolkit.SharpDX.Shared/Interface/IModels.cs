@@ -36,6 +36,9 @@ namespace HelixToolkit.Wpf.SharpDX
         int BufferSize { get; }
         T[] Lights { get; }
         Color4 AmbientLight { set; get; }
+        int LightCount { get; }
+        void ResetLightCount();
+        void IncrementLightCount();
         void UploadToBuffer(IBufferProxy buffer, DeviceContext context);
     }
 }

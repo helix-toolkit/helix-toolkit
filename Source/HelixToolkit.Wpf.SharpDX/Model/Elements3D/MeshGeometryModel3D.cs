@@ -11,34 +11,29 @@ using System.Windows;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System;
-    using System.ComponentModel;
-    using System.Linq;
-
-    using global::SharpDX;
-
-    using global::SharpDX.Direct3D11;
-    using System.Runtime.CompilerServices;
-    using System.Collections.Generic;
-    using Utilities;
     using Core;
+    using global::SharpDX;
+    using global::SharpDX.Direct3D11;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
         #region Dependency Properties
         public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(MeshGeometryModel3D),
-            new AffectsRenderPropertyMetadata(true, RasterStateChanged));
+            new PropertyMetadata(true, RasterStateChanged));
         public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(MeshGeometryModel3D), 
-            new AffectsRenderPropertyMetadata(CullMode.None, RasterStateChanged));
+            new PropertyMetadata(CullMode.None, RasterStateChanged));
 
         public static readonly DependencyProperty InvertNormalProperty = DependencyProperty.Register("InvertNormal", typeof(bool), typeof(MeshGeometryModel3D),
-            new AffectsRenderPropertyMetadata(false, (d,e)=> { ((d as GeometryModel3D).RenderCore as MeshRenderCore).InvertNormal = (bool)e.NewValue; }));
+            new PropertyMetadata(false, (d,e)=> { ((d as GeometryModel3D).RenderCore as MeshRenderCore).InvertNormal = (bool)e.NewValue; }));
 
         public static readonly DependencyProperty EnableTessellationProperty = DependencyProperty.Register("EnableTessellation", typeof(bool), typeof(MeshGeometryModel3D),
-            new AffectsRenderPropertyMetadata(false, (d, e) => { ((d as GeometryModel3D).RenderCore as PatchMeshRenderCore).EnableTessellation = (bool)e.NewValue; }));
+            new PropertyMetadata(false, (d, e) => { ((d as GeometryModel3D).RenderCore as PatchMeshRenderCore).EnableTessellation = (bool)e.NewValue; }));
 
         public static readonly DependencyProperty MaxTessellationFactorProperty =
-            DependencyProperty.Register("MaxTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new AffectsRenderPropertyMetadata(1.0, (d, e) =>
+            DependencyProperty.Register("MaxTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
             {
                 if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
                 {
@@ -47,21 +42,21 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         public static readonly DependencyProperty MinTessellationFactorProperty =
-            DependencyProperty.Register("MinTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new AffectsRenderPropertyMetadata(2.0, (d, e) =>
+            DependencyProperty.Register("MinTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(2.0, (d, e) =>
             {
                 if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
                     (((GeometryModel3D)d).RenderCore as IPatchRenderParams).MinTessellationFactor = (float)(double)e.NewValue;
             }));
 
         public static readonly DependencyProperty MaxTessellationDistanceProperty =
-            DependencyProperty.Register("MaxTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new AffectsRenderPropertyMetadata(50.0, (d, e) =>
+            DependencyProperty.Register("MaxTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(50.0, (d, e) =>
             {
                 if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
                     (((GeometryModel3D)d).RenderCore as IPatchRenderParams).MaxTessellationDistance = (float)(double)e.NewValue;
             }));
 
         public static readonly DependencyProperty MinTessellationDistanceProperty =
-            DependencyProperty.Register("MinTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new AffectsRenderPropertyMetadata(1.0, (d, e) =>
+            DependencyProperty.Register("MinTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
             {
                 if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
                     (((GeometryModel3D)d).RenderCore as IPatchRenderParams).MinTessellationDistance = (float)(double)e.NewValue;
@@ -69,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         public static readonly DependencyProperty MeshTopologyProperty =
-            DependencyProperty.Register("MeshTopology", typeof(MeshTopologyEnum), typeof(MeshGeometryModel3D), new AffectsRenderPropertyMetadata(
+            DependencyProperty.Register("MeshTopology", typeof(MeshTopologyEnum), typeof(MeshGeometryModel3D), new PropertyMetadata(
                 MeshTopologyEnum.PNTriangles, (d, e) =>
                 {
                     if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
@@ -208,82 +203,19 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-        protected override bool CheckGeometry()
+        protected override bool OnCheckGeometry(Geometry3D geometry)
         {
-            return base.CheckGeometry() && geometryInternal is MeshGeometry3D;
+            return base.OnCheckGeometry(geometry) && geometry is MeshGeometry3D;
         }
 
         protected override bool CanHitTest(IRenderContext context)
         {
-            if (MeshTopology != MeshTopologyEnum.PNTriangles)
-            {
-                return false;
-            }
-            return base.CanHitTest(context);
+            return base.CanHitTest(context) && MeshTopology == MeshTopologyEnum.PNTriangles;
         }
 
-        protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
         {
-            var g = this.geometryInternal as MeshGeometry3D;
-            bool isHit = false;
-            if (g.Octree != null)
-            {
-                isHit = g.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
-            }
-            else
-            {
-                var result = new HitTestResult();
-                result.Distance = double.MaxValue;
-                var modelInvert = this.modelMatrix.Inverted();
-                if(modelInvert == Matrix.Zero)//Check if model matrix can be inverted.
-                {
-                    return false;
-                }
-                //transform ray into model coordinates
-                var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInvert), Vector3.TransformNormal(rayWS.Direction, modelInvert));
-
-                var b = Bounds;
-                //Do hit test in local space
-                if (rayModel.Intersects(ref b))
-                {
-                    int index = 0;
-                    foreach (var t in g.Triangles)
-                    {
-                        float d;
-                        var v0 = t.P0;
-                        var v1 = t.P1;
-                        var v2 = t.P2;
-                        if (Collision.RayIntersectsTriangle(ref rayModel, ref v0, ref v1, ref v2, out d))
-                        {
-                            if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
-                            {
-                                result.IsValid = true;
-                                result.ModelHit = this;
-                                // transform hit-info to world space now:
-                                var pointWorld = Vector3.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
-                                result.PointHit = pointWorld.ToPoint3D();
-                                result.Distance = (rayWS.Position - pointWorld).Length();
-                                var p0 = Vector3.TransformCoordinate(v0, modelMatrix);
-                                var p1 = Vector3.TransformCoordinate(v1, modelMatrix);
-                                var p2 = Vector3.TransformCoordinate(v2, modelMatrix);
-                                var n = Vector3.Cross(p1 - p0, p2 - p0);
-                                n.Normalize();
-                                // transform hit-info to world space now:
-                                result.NormalAtHit = n.ToVector3D();// Vector3.TransformNormal(n, m).ToVector3D();
-                                result.TriangleIndices = new System.Tuple<int, int, int>(g.Indices[index], g.Indices[index + 1], g.Indices[index + 2]);
-                                result.Tag = index / 3;
-                                isHit = true;
-                            }
-                        }
-                        index += 3;
-                    }
-                }
-                if (isHit)
-                {
-                    hits.Add(result);
-                }
-            }
-            return isHit;
+            return (Geometry as MeshGeometry3D).HitTest(context, totalModelMatrix, ref rayWS, ref hits, this);
         }
 
         /// <summary>
@@ -297,12 +229,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
             var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates.GetEnumerator() : Enumerable.Repeat(Vector2.Zero, vertexCount).GetEnumerator();
-            var texScale = this.TextureCoodScale;
+            var texScale = textureCoodScale;
             var normals = geometry.Normals != null ? geometry.Normals.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
             var tangents = geometry.Tangents != null ? geometry.Tangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
             var bitangents = geometry.BiTangents != null ? geometry.BiTangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
-            var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new DefaultVertex[vertexCount];
-            if (ReuseVertexArrayBuffer)
+            var array = reuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new DefaultVertex[vertexCount];
+            if (reuseVertexArrayBuffer)
             {
                 vertexArrayBuffer = array;
             }
@@ -321,7 +253,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 array[i].Tangent = tangents.Current;
                 array[i].BiTangent = bitangents.Current;
             }
-
+            colors.Dispose();
+            textureCoordinates.Dispose();
+            normals.Dispose();
+            tangents.Dispose();
+            bitangents.Dispose();
+            positions.Dispose();
             return array;
         }
     }

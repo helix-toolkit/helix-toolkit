@@ -493,6 +493,25 @@ namespace HelixToolkit.UWP
                 }
             };
 
+            var renderSkybox = new TechniqueDescription(DefaultRenderTechniqueNames.Skybox)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSSkybox, DefaultInputLayout.VSInputSkybox),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSSkybox,
+                            DefaultPSShaderDescriptions.PSSkybox
+                        },
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,    
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        RasterStateDescription = DefaultRasterDescriptions.RSSkybox                   
+                    },                   
+                }
+            };
+
             return new List<TechniqueDescription>
             {
                 renderBlinn,
@@ -509,6 +528,7 @@ namespace HelixToolkit.UWP
                 renderViewCube,
                 renderMeshBlinnClipPlane,
                 renderParticle,
+                renderSkybox
             };
         }
     }

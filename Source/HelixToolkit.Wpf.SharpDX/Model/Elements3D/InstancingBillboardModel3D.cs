@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
             DependencyProperty.Register("InstanceParamArray", typeof(IList<BillboardInstanceParameter>), typeof(InstancingBillboardModel3D), 
-                new AffectsRenderPropertyMetadata(null, InstancesParamChanged));
+                new PropertyMetadata(null, InstancesParamChanged));
 
         /// <summary>
         /// List of instance parameters. 
@@ -56,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return false;
         }
 
-        protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }

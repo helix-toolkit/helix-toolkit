@@ -17,10 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf.SharpDX.Utilities;
-
-    using Color4 = global::SharpDX.Color4;
     using Controls;
-    using System.Collections.ObjectModel;
     using Elements2D;
 
     /// <summary>
@@ -32,8 +29,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Background Color property.this.RenderHost
         /// </summary>
         public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register(
-            "BackgroundColor", typeof(Color4), typeof(Viewport3DX),
-            new UIPropertyMetadata(new Color4(1, 1, 1, 1), (s, e) => ((Viewport3DX)s).ReAttach()));
+            "BackgroundColor", typeof(Color), typeof(Viewport3DX),
+            new UIPropertyMetadata(Colors.White, (s, e) =>
+            {
+                if (((Viewport3DX)s).renderHostInternal != null)
+                {
+                    ((Viewport3DX)s).renderHostInternal.ClearColor = ((Color)e.NewValue).ToColor4();
+                }
+            }));
 
         /// <summary>
         /// The camera changed event.
@@ -96,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty CameraProperty = DependencyProperty.Register(
             "Camera",
-            typeof(ICamera),
+            typeof(Camera),
             typeof(Viewport3DX),
             new UIPropertyMetadata((s, e) => ((Viewport3DX)s).CameraPropertyChanged()));
 
@@ -156,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "CoordinateSystemLabelForeground",
                 typeof(Color),
                 typeof(Viewport3DX),
-                new PropertyMetadata(Colors.Black));
+                new PropertyMetadata(Colors.DarkGray));
 
         /// <summary>
         /// The coordinate system label X property
@@ -243,8 +246,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The FPS counter property
         /// </summary>
-        public static readonly DependencyProperty FpsCounterProperty = DependencyProperty.Register(
-            "FpsCounter", typeof(FpsCounter), typeof(Viewport3DX), new PropertyMetadata(new FpsCounter()));
+        public static readonly DependencyPropertyKey FpsCounterProperty = DependencyProperty.RegisterReadOnly(
+            "FpsCounter", typeof(FpsCounter), typeof(Viewport3DX), new PropertyMetadata());
 
         /// <summary>
         /// The frame rate property.
@@ -301,15 +304,6 @@ namespace HelixToolkit.Wpf.SharpDX
             "RenderException", typeof(Exception), typeof(Viewport3DX), new PropertyMetadata(null));
 
         /// <summary>
-        /// The render host property.
-        /// </summary>
-        public static DependencyProperty RenderHostProperty = DependencyProperty.Register(
-            "RenderHost", typeof(IRenderHost), typeof(Viewport3DX), new PropertyMetadata(null, (d, e) =>
-            {
-                (d as Viewport3DX).renderHostInternal = e.NewValue as IRenderHost;
-            }));
-
-        /// <summary>
         /// The Render Technique property
         /// </summary>
         public static readonly DependencyProperty RenderTechniqueProperty = DependencyProperty.Register(
@@ -326,7 +320,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The is deferred shading enabled propery
         /// </summary>
         public static readonly DependencyProperty IsShadowMappingEnabledProperty = DependencyProperty.Register(
-            "IsShadowMappingEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (s, e) => ((Viewport3DX)s).ReAttach()));
+            "IsShadowMappingEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, 
+                (s, e) =>
+                {
+                    if(((Viewport3DX)s).renderHostInternal!=null)
+                        ((Viewport3DX)s).renderHostInternal.IsShadowMapEnabled = (bool)e.NewValue;
+                }));
 
         /// <summary>
         /// The is change field of view enabled property
@@ -677,9 +676,9 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(MSAALevel.Disable, (s, e) =>
             {
                 var viewport = s as Viewport3DX;
-                if (viewport.RenderHost != null)
+                if (viewport.renderHostInternal != null)
                 {
-                    viewport.RenderHost.MSAA = (MSAALevel)e.NewValue;
+                    viewport.renderHostInternal.MSAA = (MSAALevel)e.NewValue;
                 }
             }));
 #endif
@@ -721,7 +720,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (s, e) =>
             {
                 var viewport = s as Viewport3DX;
-                if (viewport.RenderHost != null)
+                if (viewport.renderHostInternal != null)
                 {
                     viewport.EnableRenderFrustum = (bool)e.NewValue;
                 }
@@ -733,17 +732,17 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty MaxFPSProperty
             = DependencyProperty.Register("MaxFPS", typeof(int), typeof(Viewport3DX), new PropertyMetadata(60, (s, e) => {
                 var viewport = s as Viewport3DX;
-                if (viewport.RenderHost != null)
+                if (viewport.renderHostInternal != null)
                 {
-                    viewport.RenderHost.MaxFPS = (uint)e.NewValue;
+                    viewport.renderHostInternal.MaxFPS = (uint)e.NewValue;
                 }
             }, (s, e) => { return Math.Max(1, (int)e); }));
 
         /// <summary>
-        /// <para>Enable deferred rendering. Not supported with EnableSharedModelMode = true</para> 
-        /// <para>If this is enabled, seperate UI thread is created and used for rendering. Main UI thread is used to create command list for deferred context.</para>
-        /// <para>This does not guarantee better performance. Please fully test before deciding which rendering method being used.</para>
+        /// <para>Enable deferred rendering. Use multithreading to call rendering procedure using different Deferred Context.</para> 
         /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx"/></para>
+        /// <para>https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/d3d11deferredcontextssample.htm</para>
+        /// <para>Note: Only if draw calls > 3000 to be benefit according to the online performance test.</para>
         /// </summary>
         public static readonly DependencyProperty EnableDeferredRenderingProperty
             = DependencyProperty.Register("EnableDeferredRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
@@ -755,9 +754,9 @@ namespace HelixToolkit.Wpf.SharpDX
             = DependencyProperty.Register("EnableSharedModelMode", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (s, e) =>
             {
                 var viewport = s as Viewport3DX;
-                if (viewport.RenderHost != null)
+                if (viewport.renderHostInternal != null)
                 {
-                    viewport.RenderHost.EnableSharingModelMode = (bool)e.NewValue;
+                    viewport.renderHostInternal.EnableSharingModelMode = (bool)e.NewValue;
                 }
             }));
 
@@ -777,9 +776,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         (e.NewValue as IModelContainer).AttachViewport3DX(viewport);
                     }
-                    if (viewport.RenderHost != null)
+                    if (viewport.renderHostInternal != null)
                     {
-                        viewport.RenderHost.SharedModelContainer = (IModelContainer)e.NewValue;
+                        viewport.renderHostInternal.SharedModelContainer = (IModelContainer)e.NewValue;
                     }
                 }));
 
@@ -808,10 +807,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Background Color
         /// </summary>
-        [TypeConverter(typeof(Color4Converter))]
-        public Color4 BackgroundColor
+        public Color BackgroundColor
         {
-            get { return (Color4)this.GetValue(BackgroundColorProperty); }
+            get { return (Color)this.GetValue(BackgroundColorProperty); }
             set { this.SetValue(BackgroundColorProperty, value); }
         }
 
@@ -837,11 +835,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The camera.
         /// </value>
-        public ICamera Camera
+        public Camera Camera
         {
             get
             {
-                return (ICamera)this.GetValue(CameraProperty);
+                return (Camera)this.GetValue(CameraProperty);
             }
 
             set
@@ -1218,7 +1216,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return (FpsCounter)this.GetValue(FpsCounterProperty);
+                return (FpsCounter)this.GetValue(FpsCounterProperty.DependencyProperty);
             }
 
             private set
@@ -1348,15 +1346,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (Exception)this.GetValue(RenderExceptionProperty); }
             set { this.SetValue(RenderExceptionProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="IRenderHost"/>.
-        /// </summary>
-        public IRenderHost RenderHost
-        {
-            get { return (IRenderHost)this.GetValue(RenderHostProperty); }
-            set { this.SetValue(RenderHostProperty, value); }
         }
 
         protected IRenderHost renderHostInternal { private set; get; }
@@ -2466,10 +2455,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// <para>Enable deferred rendering. Not supported with EnableSharedModelMode = true</para> 
-        /// <para>If this is enabled, seperate UI thread is created and used for rendering. Main UI thread is used to create command list for deferred context.</para>
-        /// <para>This does not guarantee better performance. Please fully test before deciding which rendering method being used.</para>
+        /// <para>Enable deferred rendering. Use multithreading to call rendering procedure using different Deferred Context.</para> 
         /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx"/></para>
+        /// <para>https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/d3d11deferredcontextssample.htm</para>
+        /// <para>Note: Only if draw calls > 3000 to be benefit according to the online performance test.</para>
         /// </summary>
         public bool EnableDeferredRendering
         {

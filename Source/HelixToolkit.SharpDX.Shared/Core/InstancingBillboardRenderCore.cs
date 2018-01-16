@@ -11,13 +11,38 @@ namespace HelixToolkit.UWP.Core
 {
     public class InstancingBillboardRenderCore : BillboardRenderCore
     {
-        public IElementsBufferModel ParameterBuffer { set; get; }
+        private IElementsBufferModel parameterBufferModel;
+        public IElementsBufferModel ParameterBuffer
+        {
+            set
+            {
+                if (parameterBufferModel == value)
+                {
+                    return;
+                }
+                if (parameterBufferModel != null)
+                {
+                    parameterBufferModel.OnElementChanged -= ParameterBufferModel_OnElementChanged;
+                }
+                parameterBufferModel = value;
+                if (parameterBufferModel != null)
+                {
+                    parameterBufferModel.OnElementChanged += ParameterBufferModel_OnElementChanged;
+                }
+            }
+            get { return parameterBufferModel; }
+        }
+
+        private void ParameterBufferModel_OnElementChanged(object sender, bool e)
+        {
+            InvalidateRenderer();
+        }
         protected override bool CanRender(IRenderContext context)
         {
             return base.CanRender(context) && InstanceBuffer != null && InstanceBuffer.HasElements;
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
             model.HasInstanceParams = ParameterBuffer != null && ParameterBuffer.HasElements ? 1 : 0;

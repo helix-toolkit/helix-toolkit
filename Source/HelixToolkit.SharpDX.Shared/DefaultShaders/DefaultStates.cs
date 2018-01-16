@@ -158,6 +158,14 @@ namespace HelixToolkit.UWP.Shaders
             DepthComparison = Comparison.Always,
             IsStencilEnabled = false,
         };
+
+        public readonly static DepthStencilStateDescription DSSNoDepthNoStencil = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = false,
+            IsStencilEnabled = false,
+            DepthWriteMask = DepthWriteMask.Zero,
+            DepthComparison = Comparison.Always
+        };
     }
 
     public static class DefaultRasterDescriptions
@@ -167,6 +175,18 @@ namespace HelixToolkit.UWP.Shaders
             FillMode = FillMode.Solid,
             CullMode = CullMode.Back,
             DepthBias = -5,
+            DepthBiasClamp = -10,
+            SlopeScaledDepthBias = +0,
+            IsFrontCounterClockwise = true,
+            IsMultisampleEnabled = false,
+            IsAntialiasedLineEnabled = false,
+        };
+
+        public readonly static RasterizerStateDescription RSSkybox = new RasterizerStateDescription()
+        {
+            FillMode = FillMode.Solid,
+            CullMode = CullMode.None,
+            DepthBias = 0,
             DepthBiasClamp = -10,
             SlopeScaledDepthBias = +0,
             IsFrontCounterClockwise = true,

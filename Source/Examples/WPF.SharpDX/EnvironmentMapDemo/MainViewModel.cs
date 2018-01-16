@@ -10,6 +10,7 @@ namespace EnvironmentMapDemo
     using HelixToolkit.Wpf;
     using HelixToolkit.Wpf.SharpDX;
     using SharpDX;
+    using System.IO;
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
@@ -22,6 +23,8 @@ namespace EnvironmentMapDemo
         public Vector3 DirectionalLightDirection { get; private set; }
         public Color4 DirectionalLightColor { get; private set; }
         public Color4 AmbientLightColor { get; private set; }
+
+        public Stream SkyboxTexture { private set; get; }
 
         public MainViewModel()
         {
@@ -48,6 +51,8 @@ namespace EnvironmentMapDemo
 
             EffectsManager = new DefaultEffectsManager();
             RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
+
+            SkyboxTexture = LoadFileToMemory("Cubemap_Grandcanyon.dds");
         }
     }
 

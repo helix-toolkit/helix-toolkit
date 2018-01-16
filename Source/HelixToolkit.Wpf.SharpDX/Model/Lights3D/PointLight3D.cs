@@ -6,37 +6,74 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using global::SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Core;
+    using System.Windows;
+    using System.Windows.Media.Media3D;
 
-    public sealed class PointLight3D : PointLightBase3D
+    public class PointLight3D : Light3D
     {
-        public PointLight3D()
+        public static readonly DependencyProperty AttenuationProperty =
+            DependencyProperty.Register("Attenuation", typeof(Vector3D), typeof(PointLight3D), new PropertyMetadata(new Vector3D(1.0f, 0.0f, 0.0f),
+                (d, e) => {
+                    ((d as IRenderable).RenderCore as PointLightCore).Attenuation = ((Vector3D)e.NewValue).ToVector3();
+                }));
+
+        public static readonly DependencyProperty RangeProperty =
+            DependencyProperty.Register("Range", typeof(double), typeof(PointLight3D), new PropertyMetadata(100.0,
+                (d, e) => {
+                    ((d as IRenderable).RenderCore as PointLightCore).Range = (float)(double)e.NewValue;
+                }));
+
+        public static readonly DependencyProperty PositionProperty =
+            DependencyProperty.Register("Position", typeof(Point3D), typeof(PointLight3D), new PropertyMetadata(new Point3D(),
+                (d, e) => {
+                    ((d as IRenderable).RenderCore as PointLightCore).Position = ((Point3D)e.NewValue).ToVector3();
+                }));
+
+        /// <summary>
+        /// The position of the model in world space.
+        /// </summary>
+        public Point3D Position
         {
-            this.LightType = LightType.Point;
+            get { return (Point3D)this.GetValue(PositionProperty); }
+            set { this.SetValue(PositionProperty, value); }
         }
 
-        protected override bool OnAttach(IRenderHost host)
+        /// <summary>
+        /// Attenuation coefficients:
+        /// X = constant attenuation,
+        /// Y = linar attenuation,
+        /// Z = quadratic attenuation.
+        /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb172279(v=vs.85).aspx
+        /// </summary>
+        public Vector3D Attenuation
         {
-            // --- attach
-            if (base.OnAttach(host))
-            {
-                // --- Set light type
-                Light3DSceneShared.LightModels.Lights[lightIndex].LightType = (int)this.LightType;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            get { return (Vector3D)this.GetValue(AttenuationProperty); }
+            set { this.SetValue(AttenuationProperty, value); }
         }
 
-        protected override void OnRender(IRenderContext context)
+        /// <summary>
+        /// Range of this light. This is the maximum distance 
+        /// of a pixel being lit by this light.
+        /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb172279(v=vs.85).aspx
+        /// </summary>
+        public double Range
         {
-            // --- turn-on the light            
-            Light3DSceneShared.LightModels.Lights[lightIndex].LightColor = this.ColorInternal;
-            // --- Set lighting parameters
-            Light3DSceneShared.LightModels.Lights[lightIndex].LightPos = this.PositionInternal.ToVector4() + modelMatrix.Row4;
-            Light3DSceneShared.LightModels.Lights[lightIndex].LightAtt = new Vector4((float)this.AttenuationInternal.X, (float)this.AttenuationInternal.Y, (float)this.AttenuationInternal.Z, (float)this.RangeInternal);
+            get { return (double)this.GetValue(RangeProperty); }
+            set { this.SetValue(RangeProperty, value); }
+        }
+
+        protected override IRenderCore OnCreateRenderCore()
+        {
+            return new PointLightCore();
+        }
+
+        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        {
+            base.AssignDefaultValuesToCore(core);
+            (core as PointLightCore).Attenuation = Attenuation.ToVector3();
+            (core as PointLightCore).Range = (float)Range;
+            (core as PointLightCore).Position = Position.ToVector3();
         }
     }
 }

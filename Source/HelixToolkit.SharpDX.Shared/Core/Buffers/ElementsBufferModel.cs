@@ -20,6 +20,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class ElementsBufferModel<T> : DisposeObject, IElementsBufferModel<T> where T : struct
     {
+        public event EventHandler<bool> OnElementChanged;
         public Guid GUID { get; } = Guid.NewGuid();
         public bool Initialized { private set; get; }
         public bool HasElements { private set; get; } = false;
@@ -39,6 +40,7 @@ namespace HelixToolkit.UWP.Core
                     elements = value;
                     instanceChanged = true;
                     HasElements = elements != null && elements.Any();
+                    OnElementChanged?.Invoke(this, true);
                 }
             }
             get { return elements; }

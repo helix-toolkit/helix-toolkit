@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Defines the CrossSectionColorProperty
         /// </summary>
         public static DependencyProperty CrossSectionColorProperty = DependencyProperty.Register("CrossSectionColor", typeof(Media.Color), typeof(CrossSectionMeshGeometryModel3D),
-           new AffectsRenderPropertyMetadata(Media.Colors.Firebrick,
+           new PropertyMetadata(Media.Colors.Firebrick,
            (d, e) =>
            {
                (d as CrossSectionMeshGeometryModel3D).crossSectionCore.SectionColor = ((Media.Color)e.NewValue).ToColor4();
@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Enable CrossSection Plane
         /// </summary>
         public static DependencyProperty EnablePlane1Property = DependencyProperty.Register("EnablePlane1", typeof(bool), typeof(CrossSectionMeshGeometryModel3D),
-           new AffectsRenderPropertyMetadata(false,
+           new PropertyMetadata(false,
            (d, e) =>
            {
                (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane1Enabled = (bool)e.NewValue;
@@ -79,7 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Enable CrossSection Plane
         /// </summary>
         public static DependencyProperty EnablePlane2Property = DependencyProperty.Register("EnablePlane2", typeof(bool), typeof(CrossSectionMeshGeometryModel3D),
-           new AffectsRenderPropertyMetadata(false,
+           new PropertyMetadata(false,
            (d, e) =>
            {
                (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane2Enabled = (bool)e.NewValue;
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Enable CrossSection Plane
         /// </summary>
         public static DependencyProperty EnablePlane3Property = DependencyProperty.Register("EnablePlane3", typeof(bool), typeof(CrossSectionMeshGeometryModel3D),
-           new AffectsRenderPropertyMetadata(false,
+           new PropertyMetadata(false,
            (d, e) =>
            {
                (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane3Enabled = (bool)e.NewValue;
@@ -129,7 +129,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Enable CrossSection Plane
         /// </summary>
         public static DependencyProperty EnablePlane4Property = DependencyProperty.Register("EnablePlane4", typeof(bool), typeof(CrossSectionMeshGeometryModel3D),
-           new AffectsRenderPropertyMetadata(false,
+           new PropertyMetadata(false,
            (d, e) =>
            {
                (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane4Enabled = (bool)e.NewValue;
@@ -154,7 +154,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Defines the Plane1Property
         /// </summary>
         public static DependencyProperty Plane1Property = DependencyProperty.Register("Plane1", typeof(Plane), typeof(CrossSectionMeshGeometryModel3D),
-           new AffectsRenderPropertyMetadata(new Plane(),
+           new PropertyMetadata(new Plane(),
            (d, e) =>
            {
                (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane1Params = PlaneToVector((Plane)e.NewValue);
@@ -179,7 +179,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Defines the Plane2Property
         /// </summary>
         public static DependencyProperty Plane2Property = DependencyProperty.Register("Plane2", typeof(Plane), typeof(CrossSectionMeshGeometryModel3D),
-           new AffectsRenderPropertyMetadata(new Plane(),
+           new PropertyMetadata(new Plane(),
            (d, e) =>
            {
                (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane2Params = PlaneToVector((Plane)e.NewValue);
@@ -204,7 +204,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Defines the Plane3Property
         /// </summary>
         public static DependencyProperty Plane3Property = DependencyProperty.Register("Plane3", typeof(Plane), typeof(CrossSectionMeshGeometryModel3D),
-           new AffectsRenderPropertyMetadata(new Plane(),
+           new PropertyMetadata(new Plane(),
            (d, e) =>
            {
                (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane3Params = PlaneToVector((Plane)e.NewValue);
@@ -229,7 +229,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Defines the Plane4Property
         /// </summary>
         public static DependencyProperty Plane4Property = DependencyProperty.Register("Plane4", typeof(Plane), typeof(CrossSectionMeshGeometryModel3D),
-           new AffectsRenderPropertyMetadata(new Plane(),
+           new PropertyMetadata(new Plane(),
            (d, e) =>
            {
                (d as CrossSectionMeshGeometryModel3D).crossSectionCore.Plane4Params = PlaneToVector((Plane)e.NewValue);

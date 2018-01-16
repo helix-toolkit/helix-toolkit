@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty TextProperty 
             = DependencyProperty.Register("Text", typeof(string), typeof(TextModel2D), 
-                new AffectsRenderPropertyMetadata("Text", (d,e)=>
+                new PropertyMetadata("Text", (d,e)=>
                 {
                     var model = (d as TextModel2D);
                     if (model.textRenderable == null) { return; }
@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty ForegroundProperty
             = DependencyProperty.Register("Foreground", typeof(Brush), typeof(TextModel2D),
-                new AffectsRenderPropertyMetadata(new SolidColorBrush(Colors.Black), (d, e) =>
+                new PropertyMetadata(new SolidColorBrush(Colors.Black), (d, e) =>
                 {
                     var model = (d as TextModel2D);
                     if (model.textRenderable == null) { return; }
@@ -60,7 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty FontSizeProperty
             = DependencyProperty.Register("FontSize", typeof(int), typeof(TextModel2D),
-                new AffectsRenderPropertyMetadata(12, (d, e) =>
+                new PropertyMetadata(12, (d, e) =>
                 {
                     var model = (d as TextModel2D);
                     if (model.textRenderable == null) { return; }
@@ -81,11 +81,11 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty FontProperty
             = DependencyProperty.Register("Font", typeof(string), typeof(TextModel2D),
-                new AffectsRenderPropertyMetadata(DefaultFont, (d, e) =>
+                new PropertyMetadata(DefaultFont, (d, e) =>
                 {
                     var model = (d as TextModel2D);
                     if (model.textRenderable == null) { return; }
-                    model.textRenderable.Font = e.NewValue == null ? "Arial" : (string)e.NewValue;
+                    model.textRenderable.FontFamily = e.NewValue == null ? "Arial" : (string)e.NewValue;
                 }));
 
         public string Font
@@ -102,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty FontWeightProperty
             = DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(TextModel2D),
-                new AffectsRenderPropertyMetadata(FontWeights.Normal, (d, e) =>
+                new PropertyMetadata(FontWeights.Normal, (d, e) =>
                 {
                     var model = (d as TextModel2D);
                     if (model.textRenderable == null) { return; }
@@ -123,7 +123,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty FontStyleProperty
             = DependencyProperty.Register("FontStyle", typeof(FontStyle), typeof(TextModel2D),
-                new AffectsRenderPropertyMetadata(FontStyles.Normal, (d, e) =>
+                new PropertyMetadata(FontStyles.Normal, (d, e) =>
                 {
                     var model = (d as TextModel2D);
                     if (model.textRenderable == null) { return; }
@@ -145,7 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         private TextRenderable textRenderable;
         protected bool foregroundChanged = true;
 
-        protected override IRenderable2D CreateRenderCore(IRenderHost host)
+        protected override IRenderable2D CreateRenderCore(ID2DTarget host)
         {
             textRenderable = new TextRenderable();
             AssignProperties();
@@ -157,14 +157,14 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             foregroundChanged = true;
         }
 
-        protected override void PreRender(IRenderContext context)
+        protected override void PreRender(IRenderContext2D context)
         {
             base.PreRender(context);
             if (foregroundChanged)
             {
                 textRenderable.Foreground = Foreground.ToD2DBrush(RenderTarget);
             }
-            textRenderable.Rect = this.Bound;
+            textRenderable.Bound = this.Bound;
             textRenderable.Transform = TransformMatrix; 
         }
 
@@ -172,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             if (textRenderable == null) { return; }
             textRenderable.Text = Text == null ? "" : Text;
-            textRenderable.Font = Font == null ? DefaultFont : Font;
+            textRenderable.FontFamily = Font == null ? DefaultFont : Font;
             textRenderable.FontWeight = FontWeight.ToDXFontWeight();
             textRenderable.FontStyle = FontStyle.ToDXFontStyle();
             textRenderable.FontSize = FontSize;

@@ -306,7 +306,7 @@
                 var lineBuilder = new LineBuilder();
                 foreach(var hit in hitTests)
                 {
-                    lineBuilder.AddLine(hit.PointHit.ToVector3(), (hit.PointHit + hit.NormalAtHit * 10).ToVector3());
+                    lineBuilder.AddLine(hit.PointHit, (hit.PointHit + hit.NormalAtHit * 10));
                 }
                 LineGeo = lineBuilder.ToLineGeometry3D();
             }

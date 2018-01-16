@@ -11,162 +11,87 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System;
-    using System.ComponentModel;
+    using global::SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Core;
     using System.Windows;
     using System.Windows.Media.Media3D;
     using Media = System.Windows.Media;
-    using global::SharpDX;
 
-    using Utilities;
-    using Model;
-
-    public enum LightType : ushort
+    public abstract class Light3D : Element3DCore, ILight3D, ITransformable
     {
-        Ambient = 0, Directional = 1, Point = 2, Spot = 3, ThreePoint = 4, None = 5
-    }
-
-    public interface ILight3D
-    {
-        LightType LightType
-        {
-            get;
-        }
-        Light3DSceneShared Light3DSceneShared { get; }
-    }
-
-    public abstract class Light3D : Element3D, ILight3D, IDisposable
-    {
-        public Light3DSceneShared Light3DSceneShared { private set; get; }
-        public static readonly DependencyProperty DirectionProperty =
-            DependencyProperty.Register("Direction", typeof(Vector3D), typeof(Light3D), new AffectsRenderPropertyMetadata(new Vector3D(), 
-                (d,e)=> {
-                    (d as Light3D).DirectionInternal = ((Vector3D)e.NewValue).ToVector3();
+        /// <summary>
+        /// Indicates, if this element should be rendered,
+        /// default is true
+        /// </summary>
+        public static readonly DependencyProperty IsRenderingProperty =
+            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Light3D), new PropertyMetadata(true,
+                (d, e) =>
+                {
+                    (d as Element3DCore).Visible = (bool)e.NewValue;
                 }));
 
+        /// <summary>
+        /// Indicates, if this element should be rendered.
+        /// Use this also to make the model visible/unvisible
+        /// default is true
+        /// </summary>
+        public bool IsRendering
+        {
+            get { return (bool)GetValue(IsRenderingProperty); }
+            set { SetValue(IsRenderingProperty, value); }
+        }
+
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Media.Color), typeof(Light3D), new AffectsRenderPropertyMetadata(Media.Colors.Gray, (d,e)=>
+            DependencyProperty.Register("Color", typeof(Media.Color), typeof(Light3D), new PropertyMetadata(Media.Colors.Gray, (d,e)=>
             {
-                ((Light3D)d).ColorInternal = ((Media.Color)e.NewValue).ToColor4();
-                ((Light3D)d).OnColorChanged(e);
+                (((IRenderable)d).RenderCore as LightCoreBase).Color = ((Media.Color)e.NewValue).ToColor4();
             }));
 
         /// <summary>
-        /// Direction of the light.
-        /// It applies to Directional Light and to Spot Light,
-        /// for all other lights it is ignored.
+        /// 
         /// </summary>
-        public Vector3D Direction
+        public static readonly DependencyProperty TransformProperty =
+            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Light3D), new PropertyMetadata(Transform3D.Identity, (d, e) =>
+            {
+                ((IRenderable)d).ModelMatrix = e.NewValue != null ? ((Transform3D)e.NewValue).Value.ToMatrix() : Matrix.Identity;
+            }));
+        /// <summary>
+        /// 
+        /// </summary>
+        public Transform3D Transform
         {
-            get { return (Vector3D)this.GetValue(DirectionProperty); }
-            set { this.SetValue(DirectionProperty, value); }
+            get { return (Transform3D)this.GetValue(TransformProperty); }
+            set { this.SetValue(TransformProperty, value); }
         }
-
         /// <summary>
         /// Color of the light.
         /// For simplicity, this color applies to the diffuse and specular properties of the light.
         /// </summary>
         public Media.Color Color
         {
-            get { return (Media.Color)this.GetValue(ColorProperty); }
-            set { this.SetValue(ColorProperty, value); }
+            get { return (Media.Color)GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
         }
 
-
-        public LightType LightType { get; protected set; }
-
-        internal Vector3 DirectionInternal { private set; get; }
-
-        internal Color4 ColorInternal { private set; get; } = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
-
-        protected int lightIndex { private set; get; }
-
-        protected virtual void OnColorChanged(DependencyPropertyChangedEventArgs e) { }
-
-        protected override bool OnAttach(IRenderHost host)
+        public LightType LightType
         {
-            Light3DSceneShared = host.Light3DSceneShared;
-            if (this.LightType != LightType.Ambient)
-            {
-                this.lightIndex = host.Light3DSceneShared.LightCount++;
-                host.Light3DSceneShared.LightCount = host.Light3DSceneShared.LightCount % LightsBufferModel.MaxLights;
-            }
-            return true;
+            get { return (RenderCore as ILight3D).LightType; }
         }
 
-        protected override void OnDetach()
+        protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
-            if (this.LightType != LightType.Ambient && Light3DSceneShared != null)
-            {
-                // "turn-off" the light
-                Light3DSceneShared.LightModels.Lights[lightIndex].LightEnabled = 0;
-            }
-            base.OnDetach();
+            base.AssignDefaultValuesToCore(core);
+            (core as LightCoreBase).Color = Color.ToColor4();
         }
 
-        protected override bool CanRender(IRenderContext context)
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref System.Collections.Generic.List<HitTestResult> hits)
         {
-            var render = base.CanRender(context) && !renderHost.IsDeferredLighting;
-            Light3DSceneShared.LightModels.Lights[lightIndex].LightEnabled = render ? 1 : 0;
-            return render;
+            return false;
         }
-    }
 
-    public abstract class PointLightBase3D : Light3D
-    {
-        public static readonly DependencyProperty AttenuationProperty =
-            DependencyProperty.Register("Attenuation", typeof(Vector3D), typeof(PointLightBase3D), new AffectsRenderPropertyMetadata(new Vector3D(1.0f, 0.0f, 0.0f),
-                (d, e) => {
-                    (d as PointLightBase3D).AttenuationInternal = ((Vector3D)e.NewValue).ToVector3();
-                }));
-
-        public static readonly DependencyProperty RangeProperty =
-            DependencyProperty.Register("Range", typeof(double), typeof(PointLightBase3D), new AffectsRenderPropertyMetadata(100.0,
-                (d, e) => {
-                    (d as PointLightBase3D).RangeInternal = (double)e.NewValue;
-                }));
-
-        public static readonly DependencyProperty PositionProperty =
-            DependencyProperty.Register("Position", typeof(Point3D), typeof(PointLightBase3D), new AffectsRenderPropertyMetadata(new Point3D(),
-                (d,e)=> {
-                    (d as PointLightBase3D).PositionInternal = ((Point3D)e.NewValue).ToVector3();
-                }));
-
-        /// <summary>
-        /// The position of the model in world space.
-        /// </summary>
-        public Point3D Position
+        protected override bool CanHitTest(IRenderContext context)
         {
-            get { return (Point3D)this.GetValue(PositionProperty); }
-            set { this.SetValue(PositionProperty, value); }
+            return false;
         }
-
-        /// <summary>
-        /// Attenuation coefficients:
-        /// X = constant attenuation,
-        /// Y = linar attenuation,
-        /// Z = quadratic attenuation.
-        /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb172279(v=vs.85).aspx
-        /// </summary>
-        public Vector3D Attenuation
-        {
-            get { return (Vector3D)this.GetValue(AttenuationProperty); }
-            set { this.SetValue(AttenuationProperty, value); }
-        }
-
-        /// <summary>
-        /// Range of this light. This is the maximum distance 
-        /// of a pixel being lit by this light.
-        /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb172279(v=vs.85).aspx
-        /// </summary>
-        public double Range
-        {
-            get { return (double)this.GetValue(RangeProperty); }
-            set { this.SetValue(RangeProperty, value); }
-        }
-
-        internal Vector3 PositionInternal { private set; get; }
-        internal Vector3 AttenuationInternal { private set; get; } = new Vector3(1.0f, 0.0f, 0.0f);
-        internal double RangeInternal { private set; get; } = 1000;
     }
 }

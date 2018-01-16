@@ -6,6 +6,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System;
 using SharpDX;
 using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 using System.Linq;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -13,76 +15,113 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using global::SharpDX.Direct3D;
-    using global::SharpDX.DXGI;
     using Shaders;
+    using System.Collections.Generic;
     using Utilities;
+    using Render;
 
-    public interface IShadowMapRenderParams
-    {
-        int Width { set; get; }
-
-        int Height { set; get; }
-
-        float Bias { set; get; }
-
-        float Intensity { set; get; }
-        Matrix LightViewProjectMatrix { set; get; }
-        /// <summary>
-        /// Update shadow map every N frames
-        /// </summary>
-        int UpdateFrequency { set; get; }
-    }
     /// <summary>
     /// 
     /// </summary>
     public class ShadowMapCore : RenderCoreBase<ShadowMapParamStruct>, IShadowMapRenderParams
     {
+        /// <summary>
+        /// 
+        /// </summary>
         protected ShaderResouceViewProxy viewResource;
 
         private bool resolutionChanged = true;
-        private int width = 1024;
+        /// <summary>
+        /// 
+        /// </summary>
         public int Width
         {
             set
             {
-                if (width == value) { return; }
-                width = value;
-                resolutionChanged = true;
+                if(SetAffectsRender(ref modelStruct.ShadowMapSize.X, value))
+                {
+                    resolutionChanged = true;
+                }
             }
             get
             {
-                return width;
+                return (int)modelStruct.ShadowMapSize.X;
             }
         }
-
-        private int height = 1024;
+        /// <summary>
+        /// 
+        /// </summary>
         public int Height
         {
             set
             {
-                if (height == value) { return; }
-                height = value;
-                resolutionChanged = true;
+                if (SetAffectsRender(ref modelStruct.ShadowMapSize.Y, value))
+                {
+                    resolutionChanged = true;
+                }
             }
             get
             {
-                return height;
+                return (int)modelStruct.ShadowMapSize.Y;
             }
         }
 
-       // public float FactorPCF { set; get; } = 1.5f;
-        public float Bias { set; get; } = 0.0015f;
+        /// <summary>
+        /// 
+        /// </summary>
+        public float Intensity
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.ShadowMapInfo.X, value);
+            }
+            get { return modelStruct.ShadowMapInfo.X; }
+        }
 
-        public float Intensity { set; get; } = 0.5f;
-        public Matrix LightViewProjectMatrix { set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public float Bias
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.ShadowMapInfo.Z, value);
+            }
+            get { return modelStruct.ShadowMapInfo.Z; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Matrix LightViewProjectMatrix
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.LightViewProjection, value);
+            }
+            get { return modelStruct.LightViewProjection; }
+        }
+        /// <summary>
+        /// Set to true if found the light source, otherwise false.
+        /// </summary>
+        public bool FoundLightSource { set; get; } = false;
         /// <summary>
         /// Update shadow map every N frames
         /// </summary>
-        public int UpdateFrequency { set; get; } = 2;
+        public int UpdateFrequency { set; get; } = 1;
 
         private int currentFrame = 0;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public ShadowMapCore()
+        {
+            Bias = 0.0015f;
+            Intensity = 0.5f;
+            Width = Height = 1024;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         protected virtual Texture2DDescription ShadowMapTextureDesc
         {
             get
@@ -103,7 +142,9 @@ namespace HelixToolkit.UWP.Core
                 };
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         protected virtual DepthStencilViewDescription DepthStencilViewDesc
         {
             get
@@ -119,7 +160,9 @@ namespace HelixToolkit.UWP.Core
                 };
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         protected virtual ShaderResourceViewDescription ShaderResourceViewDesc
         {
             get
@@ -160,12 +203,11 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnRender(IRenderContext context)
+        private readonly List<IRenderCore> pendingRenders = new List<IRenderCore>(100);
+        private readonly Stack<IEnumerator<IRenderable>> stackCache = new Stack<IEnumerator<IRenderable>>(20);
+
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            context.IsShadowPass = true;
-            var orgFrustum = context.BoundingFrustum;
-            context.BoundingFrustum = new BoundingFrustum(LightViewProjectMatrix);
-#if !TEST            
             if (resolutionChanged)
             {
                 RemoveAndDispose(ref viewResource);
@@ -174,16 +216,28 @@ namespace HelixToolkit.UWP.Core
                 viewResource.CreateView(ShaderResourceViewDesc);
                 resolutionChanged = false;
             }
-            context.DeviceContext.Rasterizer.SetViewport(0, 0, Width, Height);
+
+            deviceContext.DeviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
+            if (!FoundLightSource)
+            {
+                return;
+            }
+            context.IsShadowPass = true;
+            var orgFrustum = context.BoundingFrustum;
+            context.BoundingFrustum = new BoundingFrustum(LightViewProjectMatrix);
+#if !TEST            
+            deviceContext.DeviceContext.Rasterizer.SetViewport(0, 0, Width, Height);
             DepthStencilView orgDSV;
-            var orgRT = context.DeviceContext.OutputMerger.GetRenderTargets(1, out orgDSV);
-            context.DeviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
-            context.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
+            var orgRT = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1, out orgDSV);
             try
             {
-                foreach (var item in context.RenderHost.Renderable.Renderables.Where(x => x is IThrowingShadow && ((IThrowingShadow)x).IsThrowingShadow))
+                deviceContext.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
+                pendingRenders.Clear();
+                pendingRenders.AddRange(context.RenderHost.Viewport.Renderables
+                    .PreorderDFTGetCores(x => x.IsRenderable && !(x is ILight3D) && x.RenderCore.IsThrowingShadow, stackCache));
+                foreach (var item in pendingRenders)
                 {
-                    item.Render(context);
+                    item.Render(context, deviceContext);
                 }
             }
             catch (Exception ex)
@@ -194,13 +248,13 @@ namespace HelixToolkit.UWP.Core
             {
                 context.IsShadowPass = false;
                 context.BoundingFrustum = orgFrustum;
-                context.DeviceContext.OutputMerger.SetRenderTargets(orgDSV, orgRT);
+                deviceContext.DeviceContext.OutputMerger.SetRenderTargets(orgDSV, orgRT);
                 orgDSV?.Dispose();
                 foreach (var rt in orgRT)
                 {
                     rt?.Dispose();
                 }
-                context.DeviceContext.Rasterizer.SetViewport(0, 0, (float)context.ActualWidth, (float)context.ActualHeight);
+                deviceContext.DeviceContext.Rasterizer.SetViewport(0, 0, (float)context.ActualWidth, (float)context.ActualHeight);
                 context.SharedResource.ShadowView = viewResource.TextureView;
             }
 #endif
@@ -208,9 +262,6 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnUpdatePerModelStruct(ref ShadowMapParamStruct model, IRenderContext context)
         {
-            model.ShadowMapInfo = new Vector4(Intensity, 0, Bias, 0);
-            model.ShadowMapSize = new Vector2(Width, Height);
-            model.LightViewProjection = LightViewProjectMatrix;
             model.HasShadowMap = context.RenderHost.IsShadowMapEnabled ? 1 : 0;
         }
     }

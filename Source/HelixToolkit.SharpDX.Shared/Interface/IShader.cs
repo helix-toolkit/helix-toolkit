@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP.Shaders
         void BindConstantBuffers(DeviceContext context);
         void BindTexture(DeviceContext context, string name, ShaderResourceView texture);
         void BindTexture(DeviceContext context, int slot, ShaderResourceView texture);
-        void BindTextures(DeviceContext context, IEnumerable<Tuple<int, ShaderResourceView>> textures);
+        void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures);
         /// <summary>
         /// Bind specified uav resources.
         /// </summary>
@@ -47,7 +47,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context"></param>
         /// <param name="uavs"></param>
-        void BindUAVs(DeviceContext context, IEnumerable<Tuple<int, UnorderedAccessView>> uavs);
+        void BindUAVs(DeviceContext context, IEnumerable<KeyValuePair<int, UnorderedAccessView>> uavs);
         /// <summary>
         /// Bind specified sampler resources.
         /// </summary>
@@ -67,6 +67,6 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context"></param>
         /// <param name="samplers"></param>
-        void BindSamplers(DeviceContext context, IEnumerable<Tuple<int, SamplerState>> samplers);
+        void BindSamplers(DeviceContext context, IEnumerable<KeyValuePair<int, SamplerState>> samplers);
     }
 }

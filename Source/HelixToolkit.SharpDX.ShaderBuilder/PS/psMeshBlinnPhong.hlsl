@@ -1,11 +1,61 @@
 #ifndef PSMESHBLINNPHONG_HLSL
 #define PSMESHBLINNPHONG_HLSL
-#define MATERIAL
+
 #define CLIPPLANE
+#define MESH
 
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
 #include"psCommon.hlsl"
+//--------------------------------------------------------------------------------------
+// normal mapping
+//--------------------------------------------------------------------------------------
+// This function returns the normal in world coordinates.
+// The input struct contains tangent (t1), bitangent (t2) and normal (n) of the
+// unperturbed surface in world coordinates. The perturbed normal in tangent space
+// can be read from texNormalMap.
+// The RGB values in this texture need to be normalized from (0, +1) to (-1, +1).
+float3 calcNormal(PSInput input)
+{
+    if (bHasNormalMap)
+    {
+		// Normalize the per-pixel interpolated tangent-space
+        input.n = normalize(input.n);
+        input.t1 = normalize(input.t1);
+        input.t2 = normalize(input.t2);
+
+		// Sample the texel in the bump map.
+        float4 bumpMap = texNormalMap.Sample(samplerNormal, input.t);
+		// Expand the range of the normal value from (0, +1) to (-1, +1).
+        bumpMap = (bumpMap * 2.0f) - 1.0f;
+		// Calculate the normal from the data in the bump map.
+        input.n = input.n + bumpMap.x * input.t1 + bumpMap.y * input.t2;
+    }
+    return normalize(input.n);
+}
+
+
+//--------------------------------------------------------------------------------------
+// Blinn-Phong Lighting Reflection Model
+//--------------------------------------------------------------------------------------
+// Returns the sum of the diffuse and specular terms in the Blinn-Phong reflection model.
+float4 calcBlinnPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, float4 diffuse, float3 L, float3 H)
+{
+    float4 Id = vMaterialTexture * diffuse * saturate(dot(N, L));
+    float4 Is = vMaterialSpecular * pow(saturate(dot(N, H)), sMaterialShininess);
+    return (Id + Is) * LColor;
+}
+
+
+//--------------------------------------------------------------------------------------
+// reflectance mapping
+//--------------------------------------------------------------------------------------
+float4 cubeMapReflection(PSInput input, float4 I)
+{
+    float3 v = normalize((float3) input.wp - vEyePos);
+    float3 r = reflect(v, input.n);
+    return (1.0f - vMaterialReflect) * I + vMaterialReflect * texCubeMap.Sample(samplerCube, r);
+}
 
 //--------------------------------------------------------------------------------------
 // PER PIXEL LIGHTING - BLINN-PHONG
@@ -46,20 +96,9 @@ float4 main(PSInput input) : SV_Target
     }
     float4 DI = float4(0, 0, 0, 0);
     // compute lighting
-    for (int i = 0; i < LIGHTS; ++i)
+    for (int i = 0; i < NumLights; ++i)
     {
-        if (Lights[i].iLightType == 0)
-        {
-            break;
-        }
-	    ///If light color is not enable, skip	
-		// Same as for the Phong PixelShader, but use
-	    // calcBlinnPhongLighting instead.	
-        if (!Lights[i].bLightEnable)
-        {
-            continue;
-        }
-        else if (Lights[i].iLightType == 1) // directional
+        if (Lights[i].iLightType == 1) // directional
         {
             float3 d = normalize((float3) Lights[i].vLightDir); // light dir	
             float3 h = normalize(eye + d);
@@ -113,7 +152,7 @@ float4 main(PSInput input) : SV_Target
         I.a *= alpha;
     }
 	// multiply by vertex colors
-    I = I * input.c;
+    //I = I * input.c;
     // get reflection-color
     if (bHasCubeMap)
     {

@@ -4,7 +4,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using D2D = SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
-using HelixToolkit.Wpf.SharpDX;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Core2D
@@ -16,42 +15,107 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     {
         public string Text { set; get; } = "Text";
 
-        private D2D.Brush foreGround = null;
+        private D2D.Brush foreground = null;
         public D2D.Brush Foreground
         {
             set
             {
-                if(foreGround == value) { return; }
-                RemoveAndDispose(ref foreGround);
-                foreGround = value;
-                Collect(foreGround);
+                Set(ref foreground, value);
             }
             get
             {
-                return foreGround;
+                return foreground;
             }
         }
 
-        public string Font { set; get; } = "Arial";
+        private string fontFamily = "Arial";
+        public string FontFamily
+        {
+            set
+            {
+                if(Set(ref fontFamily, value) && IsAttached)
+                {
+                    UpdateFontFormat();
+                }
+            }
+            get
+            {
+                return fontFamily;
+            }
+        }
 
-        public int FontSize { set; get; } = 12;
+        private int fontSize = 12;
+        public int FontSize
+        {
+            set
+            {
+                if(Set(ref fontSize, value) && IsAttached)
+                {
+                    UpdateFontFormat();
+                }
+            }
+            get { return fontSize; }
+        }
 
-        public FontWeight FontWeight { set; get; } = FontWeight.Normal;
+        private FontWeight fontWeight = FontWeight.Normal;
+        public FontWeight FontWeight
+        {
+            set
+            {
+                if(Set(ref fontWeight, value) && IsAttached)
+                {
+                    UpdateFontFormat();
+                }
+            }
+            get { return fontWeight; }
+        }
 
-        public FontStyle FontStyle { set; get; } = FontStyle.Normal;
+        private FontStyle fontStyle = FontStyle.Normal;
+        public FontStyle FontStyle
+        {
+            set
+            {
+                if(Set(ref fontStyle, value) && IsAttached)
+                {
+                    UpdateFontFormat();
+                }
+            }
+            get { return fontStyle; }
+        } 
 
         public D2D.DrawTextOptions DrawingOptions { set; get; } = D2D.DrawTextOptions.None;
 
-        private Factory TextFactory = new Factory(FactoryType.Isolated);
+        private Factory textFactory;
+        private TextFormat textFormat;
 
-        protected override bool CanRender(D2D.RenderTarget target)
+        protected override bool OnAttach(ID2DTarget target)
         {
-            return base.CanRender(target) && Foreground != null;
+            if (base.OnAttach(target))
+            {
+                textFactory = Collect(new Factory(FactoryType.Isolated));
+                textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize));
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        protected override void OnRender(IRenderContext matrices)
+        private void UpdateFontFormat()
         {
-            RenderTarget.DrawText(Text, new TextFormat(TextFactory, Font, FontWeight, FontStyle, FontSize), 
+            RemoveAndDispose(ref textFormat);
+            textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize));
+        }
+
+        protected override bool CanRender(IRenderContext2D context)
+        {
+            return base.CanRender(context) && Foreground != null;
+        }
+
+        protected override void OnRender(IRenderContext2D context)
+        {
+            context.D2DTarget.DrawText(Text, textFormat, 
                LocalDrawingRect, Foreground, DrawingOptions);
         }
     }

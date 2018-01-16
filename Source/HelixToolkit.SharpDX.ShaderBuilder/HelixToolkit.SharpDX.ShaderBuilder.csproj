@@ -52,56 +52,134 @@
     <Content Include="Common\CommonBuffers.hlsl" />
     <Content Include="Common\Common.hlsl" />
     <Content Include="Common\DataStructs.hlsl" />
-    <VertexShader Include="VS\vsPointShadow.hlsl" />
-    <PixelShader Include="PS\psShadow.hlsl" />
-    <VertexShader Include="VS\vsBoneSkinningShadow.hlsl" />
-    <VertexShader Include="VS\vsMeshShadow.hlsl" />
-    <PixelShader Include="PS\psLineColor.hlsl" />
-    <PixelShader Include="PS\psViewCube.hlsl" />
-    <PixelShader Include="PS\psDiffuseMap.hlsl" />
-    <GeometryShader Include="GS\gsParticle.hlsl" />
-    <PixelShader Include="PS\psParticle.hlsl" />
-    <VertexShader Include="VS\vsParticle.hlsl" />
-    <VertexShader Include="VS\vsBoneSkinningTessellation.hlsl" />
-    <VertexShader Include="VS\vsBillboardInstancing.hlsl" />
-    <VertexShader Include="VS\vsMeshInstancingTessellation.hlsl" />
-    <VertexShader Include="VS\vsMeshTessellation.hlsl" />
+    <PixelShader Include="PS\psSkybox.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsSkybox.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsPointShadow.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psShadow.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsBoneSkinningShadow.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsMeshShadow.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psLineColor.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psViewCube.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psDiffuseMap.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <GeometryShader Include="GS\gsParticle.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </GeometryShader>
+    <PixelShader Include="PS\psParticle.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsParticle.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsBoneSkinningTessellation.hlsl">
+      <ShaderModel>5_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsBillboardInstancing.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsMeshInstancingTessellation.hlsl">
+      <ShaderModel>5_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsMeshTessellation.hlsl">
+      <ShaderModel>5_0</ShaderModel>
+    </VertexShader>
     <PixelShader Include="PS\psMeshClipPlaneQuad.hlsl">
       <EntryPointName>main</EntryPointName>
+      <ShaderModel>4_0</ShaderModel>
     </PixelShader>
     <VertexShader Include="VS\vsMeshClipPlaneQuad.hlsl">
       <EntryPointName>main</EntryPointName>
+      <ShaderModel>4_0</ShaderModel>
     </VertexShader>
     <PixelShader Include="PS\psMeshClipPlaneBackface.hlsl">
       <EntryPointName>psClipPlaneBackFace</EntryPointName>
+      <ShaderModel>4_0</ShaderModel>
     </PixelShader>
     <PixelShader Include="PS\psMeshClipPlane.hlsl">
       <EntryPointName>psClipPlaneMesh</EntryPointName>
+      <ShaderModel>4_0</ShaderModel>
     </PixelShader>
-    <VertexShader Include="VS\vsBillboard.hlsl" />
-    <GeometryShader Include="GS\gsLine.hlsl" />
-    <PixelShader Include="PS\psLine.hlsl" />
-    <PixelShader Include="PS\psPoint.hlsl" />
-    <VertexShader Include="VS\vsPoint.hlsl" />
-    <GeometryShader Include="GS\gsPoint.hlsl" />
-    <PixelShader Include="PS\psBillboardText.hlsl" />
-    <GeometryShader Include="GS\gsBillboard.hlsl" />
+    <VertexShader Include="VS\vsBillboard.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <GeometryShader Include="GS\gsLine.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </GeometryShader>
+    <PixelShader Include="PS\psLine.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psPoint.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsPoint.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <GeometryShader Include="GS\gsPoint.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </GeometryShader>
+    <PixelShader Include="PS\psBillboardText.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <GeometryShader Include="GS\gsBillboard.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </GeometryShader>
     <HullShader Include="HS\hsMeshTriTessellation.hlsl" />
     <DomainShader Include="DS\dsMeshTriTessellation.hlsl" />
-    <ComputeShader Include="CS\csParticleInsert.hlsl" />
-    <ComputeShader Include="CS\csParticleUpdate.hlsl" />
+    <ComputeShader Include="CS\csParticleInsert.hlsl">
+      <ShaderModel>5_0</ShaderModel>
+    </ComputeShader>
+    <ComputeShader Include="CS\csParticleUpdate.hlsl">
+      <ShaderModel>5_0</ShaderModel>
+    </ComputeShader>
     <Content Include="License.txt" />
     <Content Include="PS\psCommon.hlsl" />
-    <PixelShader Include="PS\psMeshXRay.hlsl" />
-    <VertexShader Include="VS\vsMeshXRay.hlsl" />
-    <VertexShader Include="VS\vsBoneSkinning.hlsl" />
-    <VertexShader Include="VS\vsCubeMap.hlsl" />
-    <PixelShader Include="PS\psColor.hlsl" />
-    <PixelShader Include="PS\psNormals.hlsl" />
-    <PixelShader Include="PS\psPositions.hlsl" />
-    <VertexShader Include="VS\vsMeshInstancing.hlsl" />
-    <PixelShader Include="PS\psMeshBlinnPhong.hlsl" />
-    <VertexShader Include="VS\vsMeshDefault.hlsl" />
+    <PixelShader Include="PS\psMeshXRay.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsMeshXRay.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsBoneSkinning.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsCubeMap.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psColor.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psNormals.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psPositions.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsMeshInstancing.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psMeshBlinnPhong.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsMeshDefault.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.HLSL.CSharpVB.1.0.1\build\Microsoft.HLSL.CSharpVB.targets" Condition="Exists('..\packages\Microsoft.HLSL.CSharpVB.1.0.1\build\Microsoft.HLSL.CSharpVB.targets')" />

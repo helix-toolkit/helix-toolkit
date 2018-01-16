@@ -1,6 +1,7 @@
 #ifndef hsMESHTriTESSELLATION_HLSL
 #define hsMESHTriTESSELLATION_HLSL
-#define MATERIAL
+
+#define MESH
 //#include"..\Common\CommonBuffers.hlsl"
 #include"..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )

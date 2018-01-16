@@ -9,45 +9,27 @@
 using SharpDX;
 namespace HelixToolkit.Wpf.SharpDX
 {
-
-    using System;
-    using System.Diagnostics;
     using System.Windows;
     using Media = System.Windows.Media;
     using Core;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using System.Collections.Generic;
-
+    using System;
 
     /// <summary>
     /// Base class for renderable elements.
     /// </summary>    
-    public abstract class Element3D : FrameworkContentElement, IDisposable, IRenderable, IGUID, ITransformable
+    public abstract class Element3D : Element3DCore, IVisible
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns></returns>
-        public delegate IRenderTechnique SetRenderTechniqueFunc(IRenderHost host);
-        /// <summary>
-        /// A delegate function to change render technique. 
-        /// <para>There are two ways to set render technique, one is use this <see cref="OnSetRenderTechnique"/> delegate.
-        /// The other one is to override the <see cref="OnCreateRenderTechnique"/> function.</para>
-        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
-        /// </summary>
-        public SetRenderTechniqueFunc OnSetRenderTechnique;
-
         #region Dependency Properties
         /// <summary>
         /// Indicates, if this element should be rendered,
         /// default is true
         /// </summary>
         public static readonly DependencyProperty IsRenderingProperty =
-            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true,
+            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    (d as Element3D).isRenderingInternal = (bool)e.NewValue;
+                    (d as Element3D).Visible = (bool)e.NewValue && (d as Element3D).Visibility == Visibility.Visible;
                 }));
 
         /// <summary>
@@ -60,37 +42,15 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(IsRenderingProperty); }
             set { SetValue(IsRenderingProperty, value); }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty IsHitTestVisibleProperty =
-            DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D), new PropertyMetadata(true, (d, e) =>
-            {
-                (d as Element3D).isHitTestVisibleInternal = (bool)e.NewValue;
-            }));
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool IsHitTestVisible
-        {
-            set
-            {
-                SetValue(IsHitTestVisibleProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(IsHitTestVisibleProperty);
-            }
-        }
 
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty VisibilityProperty =
-            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element3D), new AffectsRenderPropertyMetadata(Visibility.Visible, (d, e) =>
+            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element3D), new PropertyMetadata(Visibility.Visible, (d, e) =>
             {
-                (d as Element3D).visibleInternal = (Visibility)e.NewValue == Visibility.Visible;
+                (d as Element3D).Visible = (Visibility)e.NewValue == Visibility.Visible && (d as Element3D).IsRendering;
             }));
 
         /// <summary>
@@ -112,10 +72,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty TransformProperty =
-            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new AffectsRenderPropertyMetadata(Transform3D.Identity, (d,e)=>
+            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new PropertyMetadata(Transform3D.Identity, (d,e)=>
             {
-                ((Element3D)d).modelMatrix = e.NewValue != null ? ((Transform3D)e.NewValue).Value.ToMatrix() : Matrix.Identity;
-                ((Element3D)d).OnTransformChanged();
+                ((IRenderable)d).ModelMatrix = e.NewValue != null ? ((Transform3D)e.NewValue).Value.ToMatrix() : Matrix.Identity;
             }));
         /// <summary>
         /// 
@@ -125,237 +84,94 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Transform3D)this.GetValue(TransformProperty); }
             set { this.SetValue(TransformProperty, value); }
         }
-        #endregion
 
-        protected Matrix totalModelMatrix = Matrix.Identity;
-
-        protected Matrix modelMatrix = Matrix.Identity;
-
-        private readonly Stack<Matrix> matrixStack = new Stack<Matrix>();
-
-        private IRenderCore renderCore = null;
-        public IRenderCore RenderCore
-        {
-            private set
+        public static readonly DependencyProperty IsThrowingShadowProperty =
+            DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(Element3D), new PropertyMetadata(false, (d, e) =>
             {
-                if (renderCore != value)
+                if ((d as IRenderable).RenderCore is IThrowingShadow)
                 {
-                    if (renderCore != null)
-                    {
-                        renderCore.OnInvalidateRenderer -= RenderCore_OnInvalidateRenderer;
-                    }
-                    renderCore = value;
-                    if (renderCore != null)
-                    {
-                        renderCore.OnInvalidateRenderer += RenderCore_OnInvalidateRenderer;
-                    }
+                    ((d as IRenderable).RenderCore as IThrowingShadow).IsThrowingShadow = (bool)e.NewValue;
                 }
+            }));
+        /// <summary>
+        /// <see cref="IThrowingShadow.IsThrowingShadow"/>
+        /// </summary>
+        public bool IsThrowingShadow
+        {
+            set
+            {
+                SetValue(IsThrowingShadowProperty, value);
             }
             get
             {
-                if(renderCore == null)
-                {
-                    RenderCore = OnCreateRenderCore();
-                    AssignDefaultValuesToCore(RenderCore);
-                }
-                return renderCore;
+                return (bool)GetValue(IsThrowingShadowProperty);
             }
         }
-
-        protected IRenderTechnique renderTechnique;
-
-        protected IRenderHost renderHost;
-
-        private bool isAttached = false;
-
-        private readonly Guid guid = Guid.NewGuid();
-
-        public Guid GUID { get { return guid; } }
-
-        protected bool isRenderingInternal { private set; get; } = true;
-
-        protected bool visibleInternal { private set; get; } = true;
-
-        protected bool isHitTestVisibleInternal
-        {
-            private set; get;
-        } = true;
-        /// <summary>
-        /// If this has been attached onto renderhost. 
-        /// </summary>
-        public bool IsAttached
-        {
-            private set;get;
-        }
-
-        public IRenderHost RenderHost
-        {
-            get { return renderHost; }
-        }
-
-        protected global::SharpDX.Direct3D11.Device Device
-        {
-            get { return renderHost.Device; }
-        }
-
-        private void RenderCore_OnInvalidateRenderer(object sender, bool e)
-        {
-            InvalidateRender();
-        }
-
-        /// <summary>
-        /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>Return RenderTechnique</returns>
-        protected virtual IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;           
-        }
-
-        protected virtual IRenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
-
-        protected virtual void AssignDefaultValuesToCore(IRenderCore core) { }
-        #region Handling Transforms
-
-        public void PushMatrix(Matrix matrix)
-        {
-            matrixStack.Push(this.modelMatrix);
-            this.modelMatrix = this.modelMatrix * matrix;
-            this.totalModelMatrix = this.modelMatrix;
-        }
-
-        public void PopMatrix()
-        {
-            this.modelMatrix = matrixStack.Pop();
-        }
-
-        public Matrix ModelMatrix
-        {
-            get { return this.modelMatrix; }
-        }
-
-        public Matrix TotalModelMatrix
-        {
-            get { return this.totalModelMatrix; }
-        }
-
-        protected virtual void OnTransformChanged() { }
         #endregion
-        /// <summary>
-        /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
-        /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
-        /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttached"/> -> <see cref="InvalidateRender"/></para>
-        /// </summary>
-        /// <param name="host">The host.</param>
-        public void Attach(IRenderHost host)
-        {
-            if (IsAttached || host == null)
-            {
-                return;
-            }
-            renderHost = host;
-            if (host.EffectsManager == null)
-            {
-                throw new ArgumentException("EffectManger does not exist. Please make sure the proper EffectManager has been bind from view model.");
-            }
-            this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : OnCreateRenderTechnique(host);
-            if (renderTechnique != null)
-            {
-                renderTechnique = RenderHost.EffectsManager[renderTechnique.Name];
-                //effect = renderHost.EffectsManager.GetEffect(renderTechnique);
-                IsAttached = OnAttach(host);
-            }
-            InvalidateRender();
-        }       
+
+        #region Events
+        public static readonly RoutedEvent MouseDown3DEvent =
+            EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element3D));
+
+        public static readonly RoutedEvent MouseUp3DEvent =
+            EventManager.RegisterRoutedEvent("MouseUp3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element3D));
+
+        public static readonly RoutedEvent MouseMove3DEvent =
+            EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element3D));
 
         /// <summary>
-        /// To override Attach routine, please override this.
+        /// Provide CLR accessors for the event 
         /// </summary>
-        /// <param name="host"></param>       
-        /// <returns>Return true if attached</returns>
-        protected virtual bool OnAttach(IRenderHost host)
+        public event RoutedEventHandler MouseDown3D
         {
-            if (host == null)
-            { return false; }
-            RenderCore?.Attach(renderTechnique);
-            return RenderCore == null ? false : RenderCore.IsAttached;
-        }
-        /// <summary>
-        /// Detaches the element from the host. Override <see cref="OnDetach"/>
-        /// </summary>
-        public void Detach()
-        {
-            IsAttached = false;
-            RenderCore?.Detach();
-            OnDetach();
-        }
-        /// <summary>
-        /// Used to override Detach
-        /// </summary>
-        protected virtual void OnDetach()
-        {
-            renderTechnique = null;            
-            //effect = null;
-            renderHost = null;           
+            add { AddHandler(MouseDown3DEvent, value); }
+            remove { RemoveHandler(MouseDown3DEvent, value); }
         }
 
         /// <summary>
-        /// Tries to invalidate the current render.
+        /// Provide CLR accessors for the event 
         /// </summary>
-        public void InvalidateRender()
+        public event RoutedEventHandler MouseUp3D
         {
-            var rh = renderHost;
-            if (renderHost != null)
-            {
-                rh.InvalidateRender();
-            }
+            add { AddHandler(MouseUp3DEvent, value); }
+            remove { RemoveHandler(MouseUp3DEvent, value); }
         }
 
         /// <summary>
-        /// Updates the element by the specified time span.
+        /// Provide CLR accessors for the event 
         /// </summary>
-        /// <param name="timeSpan">The time since last update.</param>
-        //public virtual void Update(TimeSpan timeSpan) { }
-
-        /// <summary>
-        /// <para>Determine if this can be rendered.</para>
-        /// <para>Default returns <see cref="IsAttached"/> &amp;&amp; <see cref="IsRendering"/> &amp;&amp; <see cref="Visibility"/> == <see cref="Visibility.Visible"/></para>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected virtual bool CanRender(IRenderContext context)
+        public event RoutedEventHandler MouseMove3D
         {
-            return isRenderingInternal && visibleInternal;
-        }
-        /// <summary>
-        /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
-        /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public void Render(IRenderContext context)
-        {
-            if (CanRender(context))
-            {
-                RenderCore.ModelMatrix = this.ModelMatrix;
-                OnRender(context);
-            }
+            add { AddHandler(MouseMove3DEvent, value); }
+            remove { RemoveHandler(MouseMove3DEvent, value); }
         }
 
-        protected virtual void OnRender(IRenderContext context)
+        protected virtual void OnMouse3DDown(object sender, RoutedEventArgs e)
         {
-            RenderCore?.Render(context);
+            Mouse3DDown?.Invoke(this, e as MouseDown3DEventArgs);
         }
 
-        /// <summary>
-        /// Disposes the Element3D. Frees all DX resources.
-        /// </summary>
-        public virtual void Dispose()
+        protected virtual void OnMouse3DUp(object sender, RoutedEventArgs e)
         {
-            this.Detach();                        
+            Mouse3DUp?.Invoke(this, e as MouseUp3DEventArgs);
         }
 
+        protected virtual void OnMouse3DMove(object sender, RoutedEventArgs e)
+        {
+            Mouse3DMove?.Invoke(this, e as MouseMove3DEventArgs);
+        }
+
+        public event EventHandler<MouseDown3DEventArgs> Mouse3DDown;
+        public event EventHandler<MouseUp3DEventArgs> Mouse3DUp;
+        public event EventHandler<MouseMove3DEventArgs> Mouse3DMove;
+        #endregion
+
+        public Element3D()
+        {
+            this.MouseDown3D += OnMouse3DDown;
+            this.MouseUp3D += OnMouse3DUp;
+            this.MouseMove3D += OnMouse3DMove;
+        }
         /// <summary>
         /// Looks for the first visual ancestor of type <typeparamref name="T"/>.
         /// </summary>
@@ -383,33 +199,41 @@ namespace HelixToolkit.Wpf.SharpDX
 
             return null;
         }
+    }
 
-        /// <summary>
-        /// Invoked whenever the effective value of any dependency property on this <see cref="Element3D"/> has been updated.
-        /// </summary>
-        /// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+    public abstract class Mouse3DEventArgs : RoutedEventArgs
+    {
+        public HitTestResult HitTestResult { get; private set; }
+        public Viewport3DX Viewport { get; private set; }
+        public Point Position { get; private set; }
+
+        public Mouse3DEventArgs(RoutedEvent routedEvent, object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+            : base(routedEvent, source)
         {
-            if (CheckAffectsRender(e))
-            {
-                this.InvalidateRender();
-            }
-            base.OnPropertyChanged(e);
+            this.HitTestResult = hitTestResult;
+            this.Position = position;
+            this.Viewport = viewport;
         }
-        /// <summary>
-        /// Check if dependency property changed event affects render
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        protected virtual bool CheckAffectsRender(DependencyPropertyChangedEventArgs e)
-        {            
-            // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
-            // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "AffectsRenderPropertyMetadata".
-            PropertyMetadata fmetadata = null;
-            return ((fmetadata = e.Property.GetMetadata(this)) != null
-                && (fmetadata is IAffectsRender
-                || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
-                ));
-        }
+    }
+
+    public class MouseDown3DEventArgs : Mouse3DEventArgs
+    {
+        public MouseDown3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+            : base(Element3D.MouseDown3DEvent, source, hitTestResult, position, viewport)
+        { }
+    }
+
+    public class MouseUp3DEventArgs : Mouse3DEventArgs
+    {
+        public MouseUp3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+            : base(Element3D.MouseUp3DEvent, source, hitTestResult, position, viewport)
+        { }
+    }
+
+    public class MouseMove3DEventArgs : Mouse3DEventArgs
+    {
+        public MouseMove3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+            : base(Element3D.MouseMove3DEvent, source, hitTestResult, position, viewport)
+        { }
     }
 }

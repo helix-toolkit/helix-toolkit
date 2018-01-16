@@ -9,30 +9,6 @@ using SharpDX;
 using SharpDX.Direct3D;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
-#else
-namespace HelixToolkit.UWP
-#endif
-{
-    public enum MeshTopologyEnum
-    {
-        PNTriangles,
-        PNQuads        
-    }
-    public static class MeshTopologies
-    {
-        public static IEnumerable<MeshTopologyEnum> Topologies
-        {
-            get
-            {
-                yield return MeshTopologyEnum.PNTriangles;
-                yield return MeshTopologyEnum.PNQuads;
-            }
-        }
-    }
-}
-
-#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
@@ -40,37 +16,51 @@ namespace HelixToolkit.UWP.Core
 {
     using Utilities;
     using Shaders;
-    public interface IPatchRenderParams
-    {
-        float MinTessellationDistance { set; get; }
-        float MaxTessellationDistance { set; get; }
-        float MinTessellationFactor { set; get; }
-        float MaxTessellationFactor { set; get; }
-        MeshTopologyEnum MeshType { set; get; }
-        bool EnableTessellation { set; get; }
-    }
-
+    using Render;
     public class PatchMeshRenderCore : MeshRenderCore, IPatchRenderParams
     {
         public float MinTessellationDistance
         {
-            set;get;
-        } = 10;
+            set
+            {
+                SetAffectsRender(ref modelStruct.MinTessDistance, value);
+            }
+            get { return modelStruct.MinTessDistance; }
+        }
 
         public float MaxTessellationDistance
         {
-            set;get;
-        } = 100;
+            set
+            {
+                SetAffectsRender(ref modelStruct.MaxTessDistance, value);
+            }
+            get { return modelStruct.MaxTessDistance; }
+        }
 
         public float MinTessellationFactor
         {
-            set; get;
-        } = 2;
+            set
+            {
+                SetAffectsRender(ref modelStruct.MinTessFactor, value);
+            }
+            get
+            {
+                return modelStruct.MinTessFactor;
+            }
+        }
+
 
         public float MaxTessellationFactor
         {
-            set; get;
-        } = 1;
+            set
+            {
+                SetAffectsRender(ref modelStruct.MaxTessFactor, value);
+            }
+            get
+            {
+                return modelStruct.MaxTessFactor;
+            }
+        }
 
         private MeshTopologyEnum meshType = MeshTopologyEnum.PNTriangles;
         public MeshTopologyEnum MeshType
@@ -90,26 +80,24 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(enableTessellation == value)
+                if(SetAffectsRender(ref enableTessellation, value))
                 {
-                    return;
-                }
-                enableTessellation = value;
-                if (enableTessellation)
-                {
-                    switch (meshType)
+                    if (enableTessellation)
                     {
-                        case MeshTopologyEnum.PNTriangles:
-                            DefaultShaderPassName = DefaultPassNames.MeshTriTessellation;
-                            break;
-                        case MeshTopologyEnum.PNQuads:
-                            DefaultShaderPassName = DefaultPassNames.MeshQuadTessellation;
-                            break;
+                        switch (meshType)
+                        {
+                            case MeshTopologyEnum.PNTriangles:
+                                DefaultShaderPassName = DefaultPassNames.MeshTriTessellation;
+                                break;
+                            case MeshTopologyEnum.PNQuads:
+                                DefaultShaderPassName = DefaultPassNames.MeshQuadTessellation;
+                                break;
+                        }
                     }
-                }
-                else
-                {
-                    DefaultShaderPassName = DefaultPassNames.Default;
+                    else
+                    {
+                        DefaultShaderPassName = DefaultPassNames.Default;
+                    }
                 }
             }
             get
@@ -121,42 +109,37 @@ namespace HelixToolkit.UWP.Core
         public PatchMeshRenderCore()
         {
             DefaultShaderPassName = DefaultPassNames.Default;
+            MinTessellationDistance = 10;
+            MaxTessellationDistance = 100;
+            MinTessellationFactor = 2;
+            MaxTessellationFactor = 1;
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
-        {
-            base.OnUpdatePerModelStruct(ref model, context);
-            model.MaxTessDistance = this.MaxTessellationDistance;
-            model.MinTessDistance = this.MinTessellationDistance;
-            model.MaxTessFactor = this.MaxTessellationFactor;
-            model.MinTessFactor = this.MinTessellationFactor;
-        }
-
-        protected override void OnRender(IRenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             if (EnableTessellation)
             {
-                OnRenderTessellation(context);
+                OnRenderTessellation(context, deviceContext);
             }
             else
             {
-                base.OnRender(context);
+                base.OnRender(context, deviceContext);
             }
         }
 
-        protected virtual void OnRenderTessellation(IRenderContext context)
+        protected virtual void OnRenderTessellation(IRenderContext context, DeviceContextProxy deviceContext)
         {
             switch (meshType)
             {
                 case MeshTopologyEnum.PNTriangles:
-                    context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
+                    deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
                     break;
                 case MeshTopologyEnum.PNQuads:
-                    context.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith4ControlPoints;
+                    deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith4ControlPoints;
                     break;
             }
-            base.OnRender(context);
-            context.DeviceContext.InputAssembler.PrimitiveTopology = GeometryBuffer.Topology;
+            base.OnRender(context, deviceContext);
+            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = GeometryBuffer.Topology;
         }
     }
 }

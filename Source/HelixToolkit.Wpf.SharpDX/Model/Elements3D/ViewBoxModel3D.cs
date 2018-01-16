@@ -28,8 +28,8 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class ViewBoxModel3D : ScreenSpacedElement3D
     {
-        public static readonly DependencyProperty ViewBoxTextureProperty = DependencyProperty.Register("ViewBoxTexture", typeof(Stream), typeof(ViewBoxModel3D), 
-            new AffectsRenderPropertyMetadata(null, (d,e)=> 
+        public static readonly DependencyProperty ViewBoxTextureProperty = DependencyProperty.Register("ViewBoxTexture", typeof(Stream), typeof(ViewBoxModel3D),
+            new PropertyMetadata(null, (d, e) =>
             {
                 (d as ViewBoxModel3D).UpdateTexture((Stream)e.NewValue);
             }));
@@ -84,11 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public ViewBoxModel3D()
         {
             RelativeScreenLocationX = 0.8;
-            ViewBoxMeshModel = new MeshGeometryModel3D();
-            var map = new MemoryStream();
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.DefaultViewboxTexture.jpg");
-            stream.CopyTo(map);
-            stream.Dispose();
+            ViewBoxMeshModel = new MeshGeometryModel3D() { EnableViewFrustumCheck = false };
             var sampler = (SamplerStateDescription)PhongMaterial.DiffuseAlphaMapSamplerProperty.DefaultMetadata.DefaultValue;
             sampler.BorderColor = Color.Gray;
             sampler.AddressU = sampler.AddressV = sampler.AddressW = TextureAddressMode.Border;
@@ -116,11 +112,10 @@ namespace HelixToolkit.Wpf.SharpDX
             var front = Vector3.Cross(left, up);
             var builder = new MeshBuilder(true, true, false);
             float size = 5;
-            builder.AddCubeFace(new Vector3(0, 0, 0), left, up, size, size, size);
-            builder.AddCubeFace(new Vector3(0, 0, 0), -left, up, size, size, size);
             builder.AddCubeFace(new Vector3(0, 0, 0), front, up, size, size, size);
             builder.AddCubeFace(new Vector3(0, 0, 0), -front, up, size, size, size);
-
+            builder.AddCubeFace(new Vector3(0, 0, 0), left, up, size, size, size);
+            builder.AddCubeFace(new Vector3(0, 0, 0), -left, up, size, size, size);
             builder.AddCubeFace(new Vector3(0, 0, 0), up, left, size, size, size);
             builder.AddCubeFace(new Vector3(0, 0, 0), -up, -left, size, size, size);
 
@@ -130,14 +125,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var pts = new List<Vector3>();
 
-            var center = up * -2.5f;
+            var center = up * -size / 2;
             for (int i = 0; i < 20; i++)
             {
                 double angle = 0 + (360 * i / (20 - 1));
                 double angleRad = angle / 180 * Math.PI;
                 var dir = (left * (float)Math.Cos(angleRad)) + (front * (float)Math.Sin(angleRad));
-                pts.Add(center + (dir * 4.5f));
-                pts.Add(center + (dir * 6));
+                pts.Add(center + (dir * (size - 1.5f)));
+                pts.Add(center + (dir * (size + 0.5f)));
             }
             builder = new MeshBuilder(false, false, false);
             builder.AddTriangleStrip(pts);
@@ -149,10 +144,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 pie.Indices.Add(pie.Indices[i + 1]);
                 pie.Indices.Add(pie.Indices[i]);
             }
-            
+
             var newMesh = MeshGeometry3D.Merge(new MeshGeometry3D[] { pie, mesh });
 
-            newMesh.TextureCoordinates = new Core.Vector2Collection(Enumerable.Repeat(new Vector2(-1,-1), pie.Positions.Count));
+            newMesh.TextureCoordinates = new Core.Vector2Collection(Enumerable.Repeat(new Vector2(-1, -1), pie.Positions.Count));
             newMesh.Colors = new Core.Color4Collection(Enumerable.Repeat(new Color4(1f, 1f, 1f, 1f), pie.Positions.Count));
             newMesh.TextureCoordinates.AddRange(mesh.TextureCoordinates);
             newMesh.Colors.AddRange(Enumerable.Repeat(new Color4(1, 1, 1, 1), mesh.Positions.Count));
@@ -172,7 +167,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool OnHitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             var p = Vector4.Transform(new Vector4(ray.Position, 1), context.ScreenViewProjectionMatrix);
             if (Math.Abs(p.W) > 1e-7)
@@ -183,14 +178,18 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
+
             float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale;
             var px = p.X - (float)(context.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
-            var py = p.Y - (float)(context.ActualHeight/ 2 * (1 - screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
-
+            var py = p.Y - (float)(context.ActualHeight / 2 * (1 - screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);
+            if (px < 0 || py < 0 || px > viewportSize || py > viewportSize)
+            {
+                return false;
+            }
             var viewMatrix = screenSpaceCore.GlobalTransform.View;
             Vector3 v = new Vector3();
 
-            var matrix = CameraExtensions.InverseViewMatrix(ref viewMatrix);
+            var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
             var aspectRatio = screenSpaceCore.ScreenRatio;
             var projMatrix = screenSpaceCore.GlobalTransform.Projection;
             Vector3 zn, zf;
@@ -198,7 +197,6 @@ namespace HelixToolkit.Wpf.SharpDX
             v.Y = -(2 * py / viewportSize - 1) / projMatrix.M22;
             v.Z = 1 / projMatrix.M33;
             Vector3.TransformCoordinate(ref v, ref matrix, out zf);
-
             if (screenSpaceCore.IsPerspective)
             {
                 zn = screenSpaceCore.GlobalTransform.EyePos;
@@ -215,21 +213,21 @@ namespace HelixToolkit.Wpf.SharpDX
             ray = new Ray(zn, r);
             List<HitTestResult> viewBoxHit = new List<HitTestResult>();
 
-            if (base.OnHitTest(context, ray, ref viewBoxHit))
+            if (base.OnHitTest(context, totalModelMatrix, ref ray, ref viewBoxHit))
             {
                 hits?.Clear();
                 hits = viewBoxHit;
                 Debug.WriteLine("View box hit.");
                 var hit = viewBoxHit[0];
                 var normal = -hit.NormalAtHit;
-                if (Media3D.Vector3D.CrossProduct(normal, UpDirection).LengthSquared < 1e-5)
+                if (Vector3.Cross(normal, UpDirection.ToVector3()).LengthSquared() < 1e-5)
                 {
                     var vecLeft = new Media3D.Vector3D(-normal.Y, -normal.Z, -normal.X);
-                    RaiseEvent(new ViewBoxClickedEventArgs(this, normal, vecLeft));
+                    RaiseEvent(new ViewBoxClickedEventArgs(this, normal.ToVector3D(), vecLeft));
                 }
                 else
                 {
-                    RaiseEvent(new ViewBoxClickedEventArgs(this, normal, UpDirection));
+                    RaiseEvent(new ViewBoxClickedEventArgs(this, normal.ToVector3D(), UpDirection));
                 }
                 return true;
             }

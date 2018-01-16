@@ -35,20 +35,20 @@ namespace HelixToolkit.UWP.ShaderManager
         }
     }
 
-    public class LayoutPool : ResourcePoolBase<byte[], InputLayout, Tuple<byte[], InputElement[]>>
+    public class LayoutPool : ResourcePoolBase<byte[], InputLayout, KeyValuePair<byte[], InputElement[]>>
     {
         public LayoutPool(Device device)
             :base(device)
         { }
 
-        protected override InputLayout Create(Device device, ref Tuple<byte[], InputElement[]> description)
+        protected override InputLayout Create(Device device, ref KeyValuePair<byte[], InputElement[]> description)
         {
-            return description.Item1 == null || description.Item2 == null ? null : new InputLayout(Device, description.Item1, description.Item2);
+            return description.Key == null || description.Value == null ? null : new InputLayout(Device, description.Key, description.Value);
         }
 
-        protected override byte[] GetKey(ref Tuple<byte[], InputElement[]> description)
+        protected override byte[] GetKey(ref KeyValuePair<byte[], InputElement[]> description)
         {
-            return description.Item1;
+            return description.Key;
         }
     }
 

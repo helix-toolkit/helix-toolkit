@@ -69,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             }
             else
             {
-                throw new ArgumentException("FontWeight not found.");
+                return global::SharpDX.DirectWrite.FontWeight.Normal;
             }
 #else
             if (fontWeight == FontWeights.Black)
@@ -138,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             }
             else
             {
-                throw new ArgumentException("FontWeight not found.");
+                return global::SharpDX.DirectWrite.FontWeight.Normal;
             }
 #endif
         }
@@ -160,7 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             }
             else
             {
-                throw new ArgumentException("FontStyle not found.");
+                return global::SharpDX.DirectWrite.FontStyle.Normal;
             }
 #else
             if (style == FontStyles.Italic)
@@ -177,7 +177,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             }
             else
             {
-                throw new ArgumentException("FontStyle not found.");
+                return global::SharpDX.DirectWrite.FontStyle.Normal;
             }
 #endif
         }
@@ -193,7 +193,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                 case Media.GradientSpreadMethod.Repeat:
                     return D2D.ExtendMode.Wrap;
                 default:
-                    throw new ArgumentException("GradientSpreadMethod cannot convert to Direct2D ExtendMode");
+                    return D2D.ExtendMode.Wrap;
             }
         }
 
@@ -206,7 +206,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                 case Media.ColorInterpolationMode.SRgbLinearInterpolation:
                     return D2D.Gamma.StandardRgb;
                 default:
-                    throw new ArgumentException("ColorInterpolationMode cannot convert to Direct2D Gama");
+                    return D2D.Gamma.Linear;
             }
         }
 
@@ -265,7 +265,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                 case Media.PenLineCap.Triangle:
                     return D2D.CapStyle.Triangle;
                 default:
-                    throw new ArgumentException("Cap type not support.");
+                    return D2D.CapStyle.Flat;
             }
         }
 
@@ -280,7 +280,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                 case Media.PenLineJoin.Round:
                     return D2D.LineJoin.Round;
                 default:
-                    throw new ArgumentException("LineJoin type not support");
+                    return D2D.LineJoin.Bevel;
             }
         }
     }

@@ -24,11 +24,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.DXGI;
 
     using Utilities;
-
-    using Extensions;
     using Device = global::SharpDX.Direct3D11.Device;
     using Model;
-    using Helpers;
     using System.Threading;
     using System.Runtime.CompilerServices;
     using Core2D;
@@ -163,7 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private RenderTargetView colorBufferView;
         private DepthStencilView depthStencilBufferView;
 
-        private IRenderer renderRenderable;
+        private IViewport3DX renderRenderable;
         private RenderContext renderContext;
         private DeviceContext deferredContext;
      //   private DeferredRenderer deferredRenderer;
@@ -282,7 +279,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The instance of currently attached IRenderable - this is in general the Viewport3DX
         /// </summary>
-        IRenderer IRenderHost.Renderable
+        IViewport3DX IRenderHost.Viewport
         {
             get { return renderRenderable; }
             set
@@ -343,7 +340,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public bool IsBusy { get { return pendingValidationCycles; } }
 
-        public D2DControlWrapper D2DControls { get; } = new D2DControlWrapper();
+        public ID2DTarget D2DControls { get; } = new D2DControlWrapper();
 
         public bool EnableSharingModelMode
         {
@@ -696,7 +693,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         RenderTechnique = renderRenderable.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : renderRenderable.RenderTechnique;
 
                         renderContext?.Dispose();
-                        renderContext = new RenderContext(this, deferredContext, EffectsManager.ConstantBufferPool);
+                        renderContext = new RenderContext(this, deferredContext);
                         renderContext.EnableBoundingFrustum = EnableRenderFrustum;
                         if (EnableSharingModelMode && SharedModelContainer != null)
                         {
@@ -769,7 +766,7 @@ namespace HelixToolkit.Wpf.SharpDX
 //                }
 //                else
                 {
-                    renderRenderable.Render(renderContext);
+               //     renderRenderable.Render(renderContext);
                 }
 #if MSAA
                 renderContext.DeviceContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
@@ -813,7 +810,7 @@ namespace HelixToolkit.Wpf.SharpDX
             UpdateAndRender();
         }
 
-        private readonly EventSkipper skipper = new EventSkipper();
+        private readonly FrameRateRegulator skipper = new FrameRateRegulator();
         /// <summary>
         /// Updates and renders the scene.
         /// </summary>

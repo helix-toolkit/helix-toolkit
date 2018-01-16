@@ -54,14 +54,10 @@ namespace HelixToolkit.Wpf.SharpDX
         public Color4 Foreground;
         public Color4 Background;
         public Vector2 TexTL;
-        public Vector2 TexTR;
-        public Vector2 TexBL;
         public Vector2 TexBR;
-        public Vector2 OffP0;
-        public Vector2 OffP1;
-        public Vector2 OffP2;
-        public Vector2 OffP3;
-        public const int SizeInBytes = 4 * (4  * 3 + 2 * 8);
+        public Vector2 OffTL;
+        public Vector2 OffBR;
+        public const int SizeInBytes = 4 * (4  * 3 + 2 * 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
@@ -188,11 +184,19 @@ namespace HelixToolkit.Wpf.SharpDX
         public Color4 Emissive;
         public Color4 Specular;
         public Color4 Reflect;
-        public float Shininess;       
-        public int HasDiffuseMap, HasDiffuseAlphaMap, HasNormalMap, HasDisplacementMap, HasCubeMap, RenderShadowMap;
+        public float Shininess;
+        public int HasDiffuseMap;
+        public int HasDiffuseAlphaMap;
+        public int HasNormalMap;
+
+        public int HasDisplacementMap;
+        public int HasCubeMap;
+        public int RenderShadowMap;
         float Padding;
+
         public Vector4 DisplacementMapScaleMask; // Use to select which channel will be used after displacement map sampling, also scaling the value
-        public const int SizeInBytes = 4 * (4 * 6 + 1 + 5 + 2);
+
+        public const int SizeInBytes = 4 * (4 * 8);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
@@ -239,15 +243,47 @@ namespace HelixToolkit.Wpf.SharpDX
         public float MaxTessDistance; // Maximum distance to do tessellation
         public float MinTessFactor; // Tessellation factor when at minimum distance, usually MinTessFactor > MaxTessFactor
         public float MaxTessFactor; // Tessellation factor when at maximum distance
-        public const int SizeInBytes = 4 * (4 * 4 + 4 * 4 + 4);
+        /// <summary>
+        /// Material variables
+        /// </summary>
+        public Color4 Ambient;
+        public Color4 Diffuse;
+        public Color4 Emissive;
+        public Color4 Specular;
+        public Color4 Reflect;
+        public float Shininess;
+        public int HasDiffuseMap;
+        public int HasDiffuseAlphaMap;
+        public int HasNormalMap;
+
+        public int HasDisplacementMap;
+        public int HasCubeMap;
+        public int RenderShadowMap;
+        float Padding;
+        public Vector4 DisplacementMapScaleMask; // Use to select which channel will be used after displacement map sampling, also scaling the value
+
+        public const int SizeInBytes = 4 * (4 * 4 + 4 * 4 + 4) + 4 * (4 * 8);
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct PointLineModelStruct
+    {
+        public Matrix World;
+        public int HasInstances;
+        public int HasInstanceParams;
+        Vector2 padding;
+        public Vector4 Params;
+        public Vector4 Color;
+        public Bool4 BoolParams;
+
+        public const int SizeInBytes = 4 * (4 * 4 + 4 * 4);
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct LightStruct
     {
         public int LightType;
-        public int LightEnabled;
-        Vector2 padding;
+        Vector3 padding;
         public Vector4 LightDir;
         public Vector4 LightPos;
         public Vector4 LightAtt;

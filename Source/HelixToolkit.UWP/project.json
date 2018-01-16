@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.6",
     "SharpDX": "4.0.1",
     "SharpDX.D3DCompiler": "4.0.1",
     "SharpDX.Direct2D1": "4.0.1",
@@ -11,7 +11,7 @@
     "System.ComponentModel.TypeConverter": "4.3.0"
   },
   "frameworks": {
-    "uap10.0": {}
+    "uap10.0.10240": {}
   },
   "runtimes": {
     "win10-arm": {},

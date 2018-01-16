@@ -31,6 +31,7 @@ namespace TessellationDemo
         public Geometry3D Grid { get; private set; }
         public Geometry3D FloorModel { private set; get; }
         public PhongMaterial DefaultMaterial { get; private set; }
+        public PhongMaterial FloorMaterial { get; } = PhongMaterials.Silver;
         public Color GridColor { get; private set; }
 
         public Transform3D DefaultTransform { get; private set; }
@@ -138,12 +139,11 @@ namespace TessellationDemo
             this.DefaultMaterial = new PhongMaterial
             {
                 AmbientColor = Colors.Gray.ToColor4(),
-                DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f), // Colors.LightGray,
+                DiffuseColor = Colors.Red.ToColor4(), // Colors.LightGray,
                 SpecularColor = Colors.White.ToColor4(),
                 SpecularShininess = 100f,
                 DiffuseMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString()),
-                NormalMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString()),
-                DisplacementMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString()),
+                NormalMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString())
             };
 
             // ---------------------------------------------

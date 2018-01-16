@@ -25,6 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Ray = global::SharpDX.Ray;
     using Vector2 = global::SharpDX.Vector2;
     using Vector3 = global::SharpDX.Vector3;
+    using Cameras;
 
     /// <summary>
     /// Provides extension methods for <see cref="Viewport3DX" />.
@@ -42,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var item in viewport.Renderables)
             {
                 var model = item as MeshGeometryModel3D;
-                if (model != null)
+                if (model != null && model.GeometryValid)
                 {
                     if (model.Visibility == Visibility.Visible)
                         count += model.Geometry.Indices.Count / 3;
@@ -102,14 +103,14 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Matrix GetViewProjectionMatrix(this Viewport3DX viewport)
         {
             return viewport.RenderContext != null ? viewport.RenderContext.ViewMatrix * viewport.RenderContext.ProjectionMatrix
-                : viewport.Camera.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
+                : viewport.CameraCore.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix GetProjectionMatrix(this Viewport3DX viewport)
         {
             return viewport.RenderContext != null ? viewport.RenderContext.ProjectionMatrix
-                : viewport.Camera.GetProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
+                : viewport.CameraCore.GetProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
         }
         /// <summary>
         /// Gets the total transform for a Viewport3DX. 
@@ -192,12 +193,9 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var element in viewport.Renderables)
             {
                 var model = element as IBoundable;
-                if (model != null)
+                if (model != null && element.IsRenderable)
                 {
-                    if (model.Visibility != Visibility.Collapsed)
-                    {
-                        bounds = global::SharpDX.BoundingBox.Merge(bounds, model.Bounds);
-                    }
+                    bounds = global::SharpDX.BoundingBox.Merge(bounds, model.BoundsWithTransform);
                 }
             }
             return new Rect3D(bounds.Minimum.ToPoint3D(), (bounds.Maximum - bounds.Minimum).ToSize3D());
@@ -316,9 +314,9 @@ namespace HelixToolkit.Wpf.SharpDX
             var hits = FindHits(viewport, position);
             if (hits.Count > 0)
             {
-                point = hits[0].PointHit;
-                normal = hits[0].NormalAtHit;
-                model = hits[0].ModelHit;
+                point = hits[0].PointHit.ToPoint3D();
+                normal = hits[0].NormalAtHit.ToVector3D();
+                model = hits[0].ModelHit as Element3D;
                 return true;
             }
             else
@@ -355,7 +353,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The ray.</returns>
         public static Ray UnProject(this Viewport3DX viewport, Vector2 point2d)//, out Vector3 pointNear, out Vector3 pointFar)
         {
-            var camera = viewport.Camera as ProjectionCamera;
+            var camera = viewport.CameraCore as ProjectionCameraCore;
             if (camera != null)
             {
                 var px = (float)point2d.X;
@@ -364,7 +362,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var viewMatrix = camera.GetViewMatrix();
                 Vector3 v = new Vector3();
                 
-                var matrix = CameraExtensions.InverseViewMatrix(ref viewMatrix);
+                var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
                 float w = (float)viewport.ActualWidth;
                 float h = (float)viewport.ActualHeight;
                 var aspectRatio = w / h;
@@ -376,9 +374,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Z = 1 / projMatrix.M33;
                 Vector3.TransformCoordinate(ref v, ref matrix, out zf);
 
-                if (camera is PerspectiveCamera)
+                if (camera is PerspectiveCameraCore)
                 {
-                    zn = camera.Position.ToVector3();
+                    zn = camera.Position;
                 }
                 else
                 {
@@ -388,7 +386,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Vector3 r = zf - zn;
                 r.Normalize();               
 
-                return new Ray(zn + r * (float)camera.NearPlaneDistance, r);
+                return new Ray(zn + r * camera.NearPlaneDistance, r);
             }
             throw new HelixToolkitException("Unproject camera error.");
         }

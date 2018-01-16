@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Elements3D
         /// Test for pull request #54.
         /// Fix IndexOutOfRange exception in CreateDefaultVertexArray.
         /// </summary>
-        [Test, STAThread, Ignore("No Graphic card on server.")]
+        [Test, STAThread]
         public void CreateDefaultVertexArrayForTriangle()
         {
             var reader = new ObjReader();
@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX.Tests.Elements3D
             var model = new MeshGeometryModel3D { Geometry = geometry };
 
             var canvas = new CanvasMock();
-            model.Attach(canvas);
+            model.Attach(canvas.RenderHost);
 
             Assert.AreEqual(true, model.IsAttached);
         }

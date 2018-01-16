@@ -54,9 +54,12 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(RenderTechniqueProperty, value); }
         }
 
-        private readonly IList<IRenderer> viewports = new List<IRenderer>();
+        private readonly IList<IViewport3DX> viewports = new List<IViewport3DX>();
 
         public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
+        public event EventHandler<Texture2D> OnNewRenderTargetTexture;
+        public event EventHandler<bool> StartRenderLoop;
+        public event EventHandler<bool> StopRenderLoop;
 
         public bool IsRendering { set; get; } = true;
 
@@ -108,14 +111,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public void AttachViewport3DX(IRenderer viewport)
+        public void AttachViewport3DX(IViewport3DX viewport)
         {
             viewports.Add(viewport);
             viewport.RenderTechnique = this.RenderTechnique;
             viewport.EffectsManager = this.EffectsManager;
         }
 
-        public void DettachViewport3DX(IRenderer viewport)
+        public void DettachViewport3DX(IViewport3DX viewport)
         {
             viewports.Remove(viewport);
         }
@@ -131,11 +134,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public void SetDefaultRenderTargets(bool clear = true)
         {
             CurrentRenderHost.SetDefaultRenderTargets(clear);
-        }
-
-        public void SetDefaultColorTargets(DepthStencilView dsv)
-        {
-            CurrentRenderHost.SetDefaultColorTargets(dsv);
         }
 
         public IEnumerable<IRenderable> Renderables
@@ -161,15 +159,23 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return CurrentRenderHost.ClearColor;
+                return currentRenderHost != null ? currentRenderHost.ClearColor : Color.White;
+            }
+            set
+            {
+                throw new NotImplementedException();
             }
         }
 
         public bool IsShadowMapEnabled
         {
             get
-            {                
-                return CurrentRenderHost != null ? CurrentRenderHost.IsShadowMapEnabled : false;
+            {
+                return currentRenderHost != null ? currentRenderHost.IsShadowMapEnabled : false;
+            }
+            set
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -178,7 +184,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set;get;
         }
 
-        public IRenderer Renderable
+        public IViewport3DX Viewport
         {
             set;get;
         }
@@ -202,14 +208,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public int RenderCycles
         {
             set;get;
-        }
-
-        public Light3DSceneShared Light3DSceneShared
-        {
-            get
-            {
-                return CurrentRenderHost != null ? CurrentRenderHost.Light3DSceneShared : null;
-            }
         }
 
         public bool EnableRenderFrustum
@@ -257,11 +255,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public D2DControlWrapper D2DControls
+        public ID2DTarget D2DTarget
         {
             get
             {
-                return CurrentRenderHost != null ? CurrentRenderHost.D2DControls : null;
+                return CurrentRenderHost != null ? CurrentRenderHost.D2DTarget : null;
             }
         }
 
@@ -289,6 +287,31 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new IndexOutOfRangeException("D3DCounter is negative.");
             }
+        }
+
+        public void StartD3D(double width, double height)
+        {
+            
+        }
+
+        public void EndD3D()
+        {
+            
+        }
+
+        public void UpdateAndRender()
+        {
+            
+        }
+
+        public void Resize(double width, double height)
+        {
+            
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }

@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Shaders;
-    using System.Collections.Generic;
+    using Core;
 
     public interface IMaterial : INotifyPropertyChanged
     {
@@ -46,15 +46,15 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// A material proxy variable interface to manage all the material related resources
     /// </summary>
-    public interface IEffectMaterialVariables : IMaterialRenderCore, IDisposable
+    public interface IEffectMaterialVariables : IMaterialRenderParams, IDisposable
     {
         event EventHandler<bool> OnInvalidateRenderer;
         /// <summary>
-        /// Update material constant buffer, including all the colors and rendering setting
+        /// 
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="modelstruct"></param>
         /// <returns></returns>
-        bool UpdateMaterialConstantBuffer(DeviceContext context);
+        bool UpdateMaterialVariables(ref ModelStruct modelstruct);
         /// <summary>
         /// Bind the material texture maps to registers defined inside shader
         /// </summary>

@@ -1,6 +1,7 @@
 #ifndef VSMESHINSTANCING_HLSL
 #define VSMESHINSTANCING_HLSL
-#define MATERIAL
+
+#define MESH
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )

@@ -50,7 +50,7 @@ namespace InstancingDemo
         public Vector3D DirectionalLightDirection { get; private set; }
         public Color DirectionalLightColor { get; private set; }
         public Color AmbientLightColor { get; private set; }
-
+        public Stream Texture { private set; get; }
         public bool EnableAnimation { set; get; }
 
         private DispatcherTimer timer = new DispatcherTimer();
@@ -94,7 +94,7 @@ namespace InstancingDemo
             ModelMaterial.NormalMap = new FileStream(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
 
             BillboardModel = new BillboardSingleImage3D(ModelMaterial.DiffuseMap, 20, 20);
-
+            Texture = LoadFileToMemory("Cubemap_Grandcanyon.dds");
             CreateModels();
             timer.Interval = TimeSpan.FromMilliseconds(30);
             timer.Tick += Timer_Tick;
@@ -214,9 +214,8 @@ namespace InstancingDemo
             {
                 var index = (int)hitTests[0].Tag;
                 if (hitTests[0].ModelHit is InstancingMeshGeometryModel3D)
-                {
-                    
-                    InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor.Alpha == 0? Colors.Yellow.ToColor4() : Colors.Transparent.ToColor4();
+                {                    
+                    InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor != Colors.Yellow.ToColor4()? Colors.Yellow.ToColor4() : Colors.Black.ToColor4();
                     InstanceParam = (InstanceParameter[])InstanceParam.Clone();
                 }
                 else if(hitTests[0].ModelHit is LineGeometryModel3D)

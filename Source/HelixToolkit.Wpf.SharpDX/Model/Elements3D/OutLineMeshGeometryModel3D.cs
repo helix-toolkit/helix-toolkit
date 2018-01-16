@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public class OutLineMeshGeometryModel3D : MeshGeometryModel3D
     {
         public static readonly DependencyProperty EnableOutlineProperty = DependencyProperty.Register("EnableOutline", typeof(bool), typeof(OutLineMeshGeometryModel3D),
-            new AffectsRenderPropertyMetadata(true, (d, e) =>
+            new PropertyMetadata(true, (d, e) =>
             {
                 ((d as OutLineMeshGeometryModel3D).RenderCore as MeshOutlineRenderCore).OutlineEnabled = (bool)e.NewValue;
             }));
@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty OutlineColorProperty = DependencyProperty.Register("OutlineColor", typeof(Media.Color), typeof(OutLineMeshGeometryModel3D),
-            new AffectsRenderPropertyMetadata(Media.Colors.White,
+            new PropertyMetadata(Media.Colors.White,
             (d, e) =>
             {
                 ((d as OutLineMeshGeometryModel3D).RenderCore as MeshOutlineRenderCore).Color = ((Media.Color)e.NewValue).ToColor4();
@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty IsDrawGeometryProperty = DependencyProperty.Register("IsDrawGeometry", typeof(bool), typeof(OutLineMeshGeometryModel3D),
-            new AffectsRenderPropertyMetadata(true, (d, e) => {
+            new PropertyMetadata(true, (d, e) => {
                 ((d as OutLineMeshGeometryModel3D).RenderCore as MeshOutlineRenderCore).DrawMesh = (bool)e.NewValue;
             }));
 
@@ -65,7 +65,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         public static DependencyProperty OutlineFadingFactorProperty = DependencyProperty.Register("OutlineFadingFactor", typeof(double), typeof(OutLineMeshGeometryModel3D),
-            new AffectsRenderPropertyMetadata(1.5, (d, e) => {
+            new PropertyMetadata(1.5, (d, e) => {
                 ((d as OutLineMeshGeometryModel3D).RenderCore as MeshOutlineRenderCore).OutlineFadingFactor = (float)(double)e.NewValue;
             }));
 

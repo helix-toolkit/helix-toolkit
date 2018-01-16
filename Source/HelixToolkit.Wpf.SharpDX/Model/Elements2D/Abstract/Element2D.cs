@@ -11,7 +11,7 @@ using System.Windows.Input;
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
-    public abstract class Element2D : FrameworkContentElement, IDisposable, IRenderable, IGUID, IHitable2D
+    public abstract class Element2D : FrameworkContentElement, IDisposable, IRenderable2D, IGUID, IHitable2D
     {
         #region Dependency Properties
         /// <summary>
@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// default is true
         /// </summary>
         public static readonly DependencyProperty IsRenderingProperty =
-            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element2D), new AffectsRenderPropertyMetadata(true,
+            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element2D), new PropertyMetadata(true,
                 (d, e) =>
                 {
                     (d as Element2D).isRenderingInternal = (bool)e.NewValue;
@@ -55,7 +55,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public new static readonly DependencyProperty IsMouseOverProperty =
-            DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D), new AffectsRenderPropertyMetadata(false, (d, e) =>
+            DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D), new PropertyMetadata(false, (d, e) =>
             {
                 var model = d as Element2D;
                 if(model.renderCore == null) { return; }
@@ -65,11 +65,11 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public new bool IsMouseOver
         {
             get { return (bool)GetValue(IsMouseOverProperty); }
-            private set { SetValue(IsMouseOverProperty, value); }
+            set { SetValue(IsMouseOverProperty, value); }
         }
 
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(Element2D),
-            new AffectsRenderPropertyMetadata(100.0));
+            new PropertyMetadata(100.0));
 
         public double Width
         {
@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(double), typeof(Element2D),
-            new AffectsRenderPropertyMetadata(100.0));
+            new PropertyMetadata(100.0));
 
         public double Height
         {
@@ -110,6 +110,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public RectangleF Bound
         {
+            set { }
             get { return new RectangleF(layoutTranslate.X, layoutTranslate.Y, (float)Width, (float)Height); }
         }
 
@@ -136,12 +137,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         private bool layoutTranslationChanged { set; get; } = true;
 
-        protected IRenderHost renderHost;
-        public IRenderHost RenderHost
-        {
-            get { return renderHost; }
-        }
-
         private global::SharpDX.Direct2D1.RenderTarget renderTarget = null;
         protected global::SharpDX.Direct2D1.RenderTarget RenderTarget
         {
@@ -162,7 +157,9 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         private IRenderable2D renderCore;
         protected IRenderable2D RenderCore { get { return renderCore; } }
 
-        protected abstract IRenderable2D CreateRenderCore(IRenderHost host);
+        protected IRenderHost renderHost;
+
+        protected abstract IRenderable2D CreateRenderCore(ID2DTarget host);
 
         #region Events
         public delegate void Mouse2DRoutedEventHandler(object sender, Mouse2DEventArgs e);
@@ -225,10 +222,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 return;
             }
             renderHost = host;
-            if (host.EffectsManager == null)
-            {
-                throw new ArgumentException("EffectManger does not exist. Please make sure the proper EffectManager has been bind from view model.");
-            }
             IsAttached = OnAttach(host);
             if (IsAttached)
             {
@@ -272,7 +265,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// <returns>Return true if attached</returns>
         protected virtual bool OnAttach(IRenderHost host)
         {
-            renderCore = CreateRenderCore(host);
+            renderCore = CreateRenderCore(host.D2DTarget);
             return true;
         }
 
@@ -296,7 +289,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected virtual void OnDetach()
         {
             Disposer.RemoveAndDispose(ref renderCore);
-            renderHost = null;
         }
 
         public void PushLayoutTranslate(Vector2 v)
@@ -316,16 +308,16 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        protected virtual bool CanRender(IRenderContext context)
+        protected virtual bool CanRender(IRenderContext2D context)
         {
-            return IsAttached && isRenderingInternal && RenderHost.D2DControls.D2DTarget != null && renderCore != null;
+            return IsAttached && isRenderingInternal && renderCore != null;
         }
         /// <summary>
         /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
         /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
         /// </summary>
         /// <param name="context">The context.</param>
-        public void Render(IRenderContext context)
+        public void Render(IRenderContext2D context)
         {
             if (CanRender(context))
             {
@@ -343,17 +335,16 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// Used to overriding <see cref="Render"/> routine.
         /// </summary>
         /// <param name="context"></param>
-        protected virtual void OnRender(IRenderContext context)
+        protected virtual void OnRender(IRenderContext2D context)
         {
-            renderCore.Render(context, RenderTarget);
+            renderCore.Render(context);
         }
 
-        protected virtual void PreRender(IRenderContext context)
+        protected virtual void PreRender(IRenderContext2D context)
         {
-            RenderTarget = RenderHost.D2DControls.D2DTarget;
             if (renderCore != null)
             {
-                renderCore.Rect = this.Bound;
+                renderCore.Bound = this.Bound;
             }
         }
 
@@ -381,34 +372,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public void InvalidateRender()
         {
             renderHost?.InvalidateRender();
-        }
-
-        /// <summary>
-        /// Invoked whenever the effective value of any dependency property on this <see cref="Element2D"/> has been updated.
-        /// </summary>
-        /// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (CheckAffectsRender(e))
-            {
-                this.InvalidateRender();
-            }
-            base.OnPropertyChanged(e);
-        }
-        /// <summary>
-        /// Check if dependency property changed event affects render
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        protected virtual bool CheckAffectsRender(DependencyPropertyChangedEventArgs e)
-        {
-            // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
-            // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "AffectsRenderPropertyMetadata".
-            PropertyMetadata fmetadata = null;
-            return ((fmetadata = e.Property.GetMetadata(this)) != null
-                && (fmetadata is IAffectsRender
-                || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
-                ));
         }
     }
 

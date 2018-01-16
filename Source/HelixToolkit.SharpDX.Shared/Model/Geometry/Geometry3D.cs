@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Core;
     using Model;
     using System.Runtime.Serialization;
+    using System.Collections.Generic;
 
 #if !NETFX_CORE
     [Serializable]
@@ -60,11 +61,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                if (Set(ref position, value))
-                {                 
-                    Octree = null;
-                    UpdateBounds();
-                }
+                if(position == value) { return; }
+                position = value;
+                Octree = null;
+                UpdateBounds();
+                RaisePropertyChanged();
             }
         }
 
@@ -122,7 +123,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// TO use Octree during hit test to improve hit performance, please call UpdateOctree after model created.
         /// </summary>
-        public IOctree<GeometryModel3D> Octree { private set; get; }
+        public IOctree Octree { private set; get; }
 
         public OctreeBuildParameter OctreeParameter { private set; get; } = new OctreeBuildParameter();
         /// <summary>
@@ -169,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Override to create different octree in subclasses.
         /// </summary>
         /// <returns></returns>
-        protected virtual IOctree<GeometryModel3D> CreateOctree(OctreeBuildParameter parameter)
+        protected virtual IOctree CreateOctree(OctreeBuildParameter parameter)
         {
             return null;
         }
@@ -202,7 +203,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 throw new Exception("Position vertex contains invalid value(Example: Float.NaN).");
             }
         }
-
 
         public struct Triangle
         {

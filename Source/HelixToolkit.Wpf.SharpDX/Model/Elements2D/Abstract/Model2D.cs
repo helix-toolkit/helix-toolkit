@@ -13,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     public abstract class Model2D : Element2D, ITransformable2D
     {
         public static readonly DependencyProperty TransformProperty = 
-            DependencyProperty.Register("Transform", typeof(Media.Transform), typeof(Model2D), new AffectsRenderPropertyMetadata(Media.Transform.Identity, (d, e) =>
+            DependencyProperty.Register("Transform", typeof(Media.Transform), typeof(Model2D), new PropertyMetadata(Media.Transform.Identity, (d, e) =>
             {
                 (d as Model2D).transformMatrix = e.NewValue == null ? Matrix3x2.Identity : ((Media.Transform)e.NewValue).Value.ToMatrix3x2();
             }));
@@ -54,18 +54,18 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             this.transformMatrix = matrixStack.Pop();
         }
 
-        protected override void PreRender(IRenderContext context)
+        protected override void PreRender(IRenderContext2D context)
         {
             base.PreRender(context);
-            if (RenderCore != null)
+            if (RenderCore is ITransform2D)
             {
-                RenderCore.Transform = TransformMatrix;
+                ((ITransform2D)RenderCore).Transform = TransformMatrix;
             }
         }
 
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
-            if (RenderCore != null && RenderCore.Rect.Contains(mousePoint))
+            if (RenderCore != null && RenderCore.Bound.Contains(mousePoint))
             {
                 hitResult = new HitTest2DResult(this);
                 return true;

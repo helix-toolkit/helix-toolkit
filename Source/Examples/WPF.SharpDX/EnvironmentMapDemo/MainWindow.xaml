@@ -49,8 +49,8 @@
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
             <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction="{Binding Camera.LookDirection}"/>
-            <!--<hx:EnvironmentMap3D x:Name="envMap" Filename="Cubemap_Grandcanyon.dds"/>-->
-            <hx:MeshGeometryModel3D x:Name="model" IsMultisampleEnabled="False" Geometry="{Binding Model}" Transform="{Binding ModelTransform}" Material="{Binding ModelMaterial}"   />
+            <hx:EnvironmentMap3D x:Name="envMap" Texture="{Binding SkyboxTexture}"/>
+            <hx:MeshGeometryModel3D x:Name="model" RenderEnvironmentMap="True" Geometry="{Binding Model}" Transform="{Binding ModelTransform}" Material="{Binding ModelMaterial}"   />
         </hx:Viewport3DX>
         
         <StackPanel>
@@ -82,7 +82,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <CheckBox  Grid.Row="0" Margin="{StaticResource MarginSmall}" IsChecked="{Binding IsActive, ElementName=envMap}">Reflect Environment Map</CheckBox>
+                    <CheckBox  Grid.Row="0" Margin="{StaticResource MarginSmall}" IsChecked="{Binding RenderEnvironmentMap, ElementName=model}">Reflect Environment Map</CheckBox>
                     <CheckBox  Grid.Row="1" Margin="{StaticResource MarginSmall}" IsChecked="{Binding IsRendering, ElementName=envMap}">Render Environment Map</CheckBox>
                     <TextBlock Grid.Row="2" Margin="{StaticResource MarginSmall}">Material:</TextBlock>
                     <ComboBox  Grid.Row="3" Margin="{StaticResource MarginSmall}" ItemsSource="{Binding  Source={StaticResource PhongMaterials}}" SelectedItem="{Binding ModelMaterial}" DisplayMemberPath="Name" />                    

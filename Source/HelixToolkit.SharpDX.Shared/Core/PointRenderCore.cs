@@ -4,50 +4,90 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System;
 using SharpDX;
-using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    public enum PointFigure
+    using Shaders;
+    using Render;
+    public class PointRenderCore : GeometryRenderCore<PointLineModelStruct>, IPointRenderParams
     {
-        Rect,
-        Ellipse,
-        Cross,
-    }
-    public interface IPointRenderParams
-    {
-        Color4 PointColor { set; get; }
-        float Width { set; get; }
-        float Height { set; get; }
-        PointFigure Figure { set; get; }
-        float FigureRatio { set; get; }
-    }
-    public class PointRenderCore : GeometryRenderCore, IPointRenderParams
-    {
-        public float Width { set; get; } = 0.5f;
-        public float Height { set; get; } = 0.5f;
-        public PointFigure Figure { set; get; } = PointFigure.Ellipse;
-        public float FigureRatio { set; get; } = 0.25f;
+        public float Width
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Params.X, value);
+            }
+            get { return modelStruct.Params.X; }
+        }
+
+        public float Height
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Params.Y, value);
+            }
+            get { return modelStruct.Params.Y; }
+        }
+        public PointFigure Figure
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Params.Z, (int)value);
+            }
+            get { return (PointFigure)modelStruct.Params.Z; }
+        }
+        public float FigureRatio
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Params.W, value);
+            }
+            get { return modelStruct.Params.W; }
+        }
         /// <summary>
         /// Final Point Color = PointColor * PerVertexPointColor
         /// </summary>
-        public Color4 PointColor { set; get; } = Color.Black;
-
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        public Color4 PointColor
         {
-            base.OnUpdatePerModelStruct(ref model, context);
-            modelStruct.Color = PointColor;
-            modelStruct.Params = new Vector4(Width, Height, (int)Figure, FigureRatio);
+            set
+            {
+                SetAffectsRender(ref modelStruct.Color, value);
+            }
+            get
+            {
+                return modelStruct.Color.ToColor4();
+            }
         }
 
-        protected override void OnRender(IRenderContext context)
+        public PointRenderCore()
         {
-            DefaultShaderPass.BindShader(context.DeviceContext);
-            DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            Width = 0.5f;
+            Height = 0.5f;
+            Figure = PointFigure.Ellipse;
+            FigureRatio = 0.25f;
+            PointColor = Color.Black;
+        }
+
+        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
+        {
+            model.World = ModelMatrix * context.WorldMatrix;
+            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
+            modelStruct.Color = PointColor;
+        }
+
+        protected override ConstantBufferDescription GetModelConstantBufferDescription()
+        {
+            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
+        }
+
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        {
+            DefaultShaderPass.BindShader(deviceContext);
+            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            OnDraw(deviceContext, InstanceBuffer);
         }
     }
 }

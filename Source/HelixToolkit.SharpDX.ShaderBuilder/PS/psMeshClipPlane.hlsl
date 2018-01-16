@@ -1,6 +1,8 @@
 #ifndef PSMESHCLIPPLANE_HLSL
 #define PSMESHCLIPPLANE_HLSL
 
+#define CLIPPLANE
+#define MESH
 #include"psMeshBlinnPhong.hlsl"
 #pragma pack_matrix( row_major )
 

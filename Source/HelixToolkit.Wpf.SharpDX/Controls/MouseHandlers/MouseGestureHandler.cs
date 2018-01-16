@@ -9,7 +9,6 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using Helpers;
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Input;

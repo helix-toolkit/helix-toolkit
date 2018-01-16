@@ -29,7 +29,7 @@
             Grid.Row="0"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
-            EnableRenderFrustum="True"
+            EnableRenderFrustum="false"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}" EffectsManager="{Binding EffectsManager}"
@@ -44,7 +44,7 @@
 
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="{Binding DirectionalLightColor}" />
 
-            <!--<hx:EnvironmentMap3D x:Name="envMap" Filename="Cubemap_Grandcanyon.dds" />-->
+            <hx:EnvironmentMap3D x:Name="envMap" Texture="{Binding Texture}"/>
 
             <hx:InstancingMeshGeometryModel3D
                 x:Name="mesh" CullMode="Back"
@@ -57,7 +57,7 @@
                     <hx:InstancingModel3DOctreeManager x:Name="manager" RecordHitPathBoundingBoxes="True" />
                 </hx:InstancingMeshGeometryModel3D.OctreeManager>
             </hx:InstancingMeshGeometryModel3D>
-            <hx:OctreeLineGeometryModel3D x:Name="octreelines" Octree="{Binding Octree, ElementName=manager}" />
+            <hx:OctreeLineGeometryModel3D x:Name="octreelines" Octree="{Binding Octree, ElementName=manager}" IsRendering="False"/>
             <hx:LineGeometryModel3D
                 x:Name="lines"
                 Geometry="{Binding Lines}" Thickness="0.4"
@@ -68,6 +68,7 @@
                 Instances="{Binding SelectedLineInstances}"
                 Color="Orange"/>
             <hx:InstancingBillboardModel3D x:Name="billboardModel3D" Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}" InstanceParamArray="{Binding BillboardInstanceParams}"/>
+            <!--<hx:BillboardTextModel3D x:Name="billboardModel3D" Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}"/>-->
         </hx:Viewport3DX>
 
         <StackPanel Grid.Column="1" Grid.Row="0">

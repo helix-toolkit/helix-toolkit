@@ -281,7 +281,7 @@ namespace OctreeDemo
             PointsModel.UpdateOctree();
             for (int i = 0; i < 10; ++i)
             {
-                for (int j = 0; j < 50; ++j)
+                for (int j = 0; j < 10; ++j)
                 {
                     Items.Add(new SphereModel(new Vector3(-10f + i + (float)Math.Pow((float)j / 2, 2), -10f + (float)Math.Pow((float)i / 2, 2), -10f + (float)Math.Pow(j, ((float)i / 5))), rnd.NextDouble(1,3)));
                 }
@@ -343,13 +343,13 @@ namespace OctreeDemo
                 {
                     foreach (var hit in hitTests)
                     {
-                        if (hit.ModelHit.DataContext is DataModel)
+                        if ((hit.ModelHit as Element3D).DataContext is DataModel)
                         {
-                            var model = hit.ModelHit.DataContext as DataModel;
+                            var model = (hit.ModelHit as Element3D).DataContext as DataModel;
                             model.Highlight = true;
                             HighlightItems.Add(model);
                         }
-                        else if (hit.ModelHit.DataContext == this)
+                        else if ((hit.ModelHit as Element3D).DataContext == this)
                         {
                             if (hit.TriangleIndices != null)
                             {
@@ -358,7 +358,7 @@ namespace OctreeDemo
                             else
                             {
                                 var v = new Vector3Collection();
-                                v.Add(hit.PointHit.ToVector3());
+                                v.Add(hit.PointHit);
                                 PointsHitModel.Positions = v;
                                 var idx = new IntCollection();
                                 idx.Add(0);
@@ -370,13 +370,13 @@ namespace OctreeDemo
                 else
                 {
                     var hit = hitTests[0];
-                    if (hit.ModelHit.DataContext is DataModel)
+                    if ((hit.ModelHit as Element3D).DataContext is DataModel)
                     {
-                        var model = hit.ModelHit.DataContext as DataModel;
+                        var model = (hit.ModelHit as Element3D).DataContext as DataModel;
                         model.Highlight = true;
                         HighlightItems.Add(model);
                     }
-                    else if (hit.ModelHit.DataContext == this)
+                    else if ((hit.ModelHit as Element3D).DataContext == this)
                     {
                         if (hit.TriangleIndices != null)
                         {
@@ -385,7 +385,7 @@ namespace OctreeDemo
                         else
                         {
                             var v = new Vector3Collection();
-                            v.Add(hit.PointHit.ToVector3());
+                            v.Add(hit.PointHit);
                             PointsHitModel.Positions = v;
                             var idx = new IntCollection();
                             idx.Add(0);
@@ -475,9 +475,9 @@ namespace OctreeDemo
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (counter > 99)
+            if (counter > 499)
             {
-                counter = -100;
+                counter = -500;
             }
             if (counter < 0)
             {

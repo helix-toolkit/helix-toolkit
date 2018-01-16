@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
         xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
         xmlns:local="clr-namespace:Workitem10048"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
@@ -68,10 +67,10 @@
                 <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
                 <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
             </hx:Viewport3DX.InputBindings>
-            <hx:AmbientLight3D Color="0.1,0.1,0.1,1.0"/>
-            <hx:DirectionalLight3D Color="{x:Static sdxm:Color4.White}" Direction="-2,-5,-2"/>
+            <hx:AmbientLight3D Color="Black"/>
+            <hx:DirectionalLight3D Color="White" Direction="-2,-5,-2"/>
             <local:MyLineGeometryModel3D Geometry="{StaticResource Lines}"
-                                         Color="{x:Static sdxm:Color.Black}"
+                                         Color="Black"
                                          HitTestThickness="2">
                 <local:MyLineGeometryModel3D.Transform>
                     <RotateTransform3D CenterX="1">
@@ -82,12 +81,12 @@
                 </local:MyLineGeometryModel3D.Transform>
             </local:MyLineGeometryModel3D>
             <local:MyLineGeometryModel3D Geometry="{StaticResource Lines}"
-                                         Color="{x:Static sdxm:Color.Blue}"
+                                         Color="Blue"
                                          Transform="{StaticResource Transform1}"
                                          Thickness="8"
                                          HitTestThickness="8">
             </local:MyLineGeometryModel3D>
-            <hx:PointGeometryModel3D Color="{x:Static sdxm:Color.Green}" 
+            <hx:PointGeometryModel3D Color="Green" 
                                      Size="16 16" 
                                      Figure="Cross"
                                      FigureRatio="0.12"

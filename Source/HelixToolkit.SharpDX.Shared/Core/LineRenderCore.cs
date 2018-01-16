@@ -10,51 +10,85 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    public interface ILineRenderParams
+    using Shaders;
+    using Render;
+    /// <summary>
+    /// 
+    /// </summary>
+    public class LineRenderCore : GeometryRenderCore<PointLineModelStruct>, ILineRenderParams
     {
+        #region Properties
         /// <summary>
         /// 
         /// </summary>
-        float Thickness { set; get; }
+        public float Thickness
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Params.X, value);
+            }
+            get
+            {
+                return modelStruct.Params.X;
+            }
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        float Smoothness { set; get; }
+        public float Smoothness
+        {
+            set
+            {
+                SetAffectsRender(ref modelStruct.Params.Y, value);
+            }
+            get { return modelStruct.Params.Y; }
+        }
+
         /// <summary>
         /// Final Line Color = LineColor * PerVertexLineColor
         /// </summary>
-        Color4 LineColor { set; get; }
-    }
-    public class LineRenderCore : GeometryRenderCore, ILineRenderParams
-    {
-        public float Thickness { set; get; } = 0.5f;
-        public float Smoothness { set; get; }
-        /// <summary>
-        /// Final Line Color = LineColor * PerVertexLineColor
-        /// </summary>
-        public Color4 LineColor { set; get; } = Color.Black;
-
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        public Color4 LineColor
         {
-            base.OnUpdatePerModelStruct(ref model, context);
-            model.Color = LineColor;
-            model.Params.X = Thickness;
-            model.Params.Y = Smoothness;
+            set
+            {
+                SetAffectsRender(ref modelStruct.Color, value);
+            }
+            get { return modelStruct.Color.ToColor4(); }
         }
 
-        protected override void OnRender(IRenderContext context)
+        #endregion
+
+        public LineRenderCore()
         {
-            DefaultShaderPass.BindShader(context.DeviceContext);
-            DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            LineColor = Color.Black;
+            Thickness = 0.5f;
+            Smoothness = 0;
         }
 
-        protected override void OnRenderShadow(IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
         {
-            ShadowPass.BindShader(context.DeviceContext);
-            ShadowPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            model.World = ModelMatrix * context.WorldMatrix;
+            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
+        }
+
+        protected override ConstantBufferDescription GetModelConstantBufferDescription()
+        {
+            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
+        }
+
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        {
+            DefaultShaderPass.BindShader(deviceContext);
+            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            OnDraw(deviceContext, InstanceBuffer);
+        }
+
+        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
+        {
+            ShadowPass.BindShader(deviceContext);
+            ShadowPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            OnDraw(deviceContext, InstanceBuffer);
         }
     }
 }

@@ -249,6 +249,21 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] PSSkybox
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psSkybox;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
     }
 
 
@@ -339,5 +354,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSParticle = new ShaderDescription(nameof(PSParticle), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSParticle);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription PSSkybox = new ShaderDescription(nameof(PSSkybox), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSSkybox);
     }
 }

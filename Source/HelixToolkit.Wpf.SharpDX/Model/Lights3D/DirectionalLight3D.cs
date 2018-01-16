@@ -3,37 +3,40 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using SharpDX;
+using HelixToolkit.Wpf.SharpDX.Core;
+using System.Windows;
+using System.Windows.Media.Media3D;
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     public sealed class DirectionalLight3D : Light3D
     {
-        public DirectionalLight3D()
+        public static readonly DependencyProperty DirectionProperty =
+            DependencyProperty.Register("Direction", typeof(Vector3D), typeof(Light3D), new PropertyMetadata(new Vector3D(),
+                (d, e) => {
+                    ((d as IRenderable).RenderCore as DirectionalLightCore).Direction = ((Vector3D)e.NewValue).ToVector3();
+                }));
+
+        /// <summary>
+        /// Direction of the light.
+        /// It applies to Directional Light and to Spot Light,
+        /// for all other lights it is ignored.
+        /// </summary>
+        public Vector3D Direction
         {
-            this.Color = System.Windows.Media.Colors.White;
-            this.LightType = LightType.Directional;
+            get { return (Vector3D)this.GetValue(DirectionProperty); }
+            set { this.SetValue(DirectionProperty, value); }
         }
 
-        protected override bool OnAttach(IRenderHost host)
+        protected override IRenderCore OnCreateRenderCore()
         {
-            // --- attach
-            if (base.OnAttach(host))
-            {
-                // --- Set light type
-                Light3DSceneShared.LightModels.Lights[lightIndex].LightType = (int)this.LightType;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return new DirectionalLightCore();
         }
 
-        protected override void OnRender(IRenderContext context)
+        protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
-            Light3DSceneShared.LightModels.Lights[lightIndex].LightColor = this.ColorInternal;           
-            // --- set lighting parameters
-            Light3DSceneShared.LightModels.Lights[lightIndex].LightDir = -Vector4.Transform(this.DirectionInternal.ToVector4(0f), modelMatrix).Normalized();
+            base.AssignDefaultValuesToCore(core);
+            (core as DirectionalLightCore).Direction = Direction.ToVector3();
         }
     }
 }

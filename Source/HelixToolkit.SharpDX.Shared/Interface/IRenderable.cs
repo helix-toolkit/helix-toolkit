@@ -11,34 +11,54 @@ namespace HelixToolkit.UWP
 #endif
 {
     using global::SharpDX;
+    using Cameras;
     using System.Collections.Generic;
-
-    public interface IRenderable
+    using Core;
+    using System;
+    using Render;
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IRenderable : IAttachable, IBoundable, IGUID, ITransform
     {
-        void Attach(IRenderHost host);
-        void Detach();
-        //void Update(TimeSpan timeSpan);
-        void Render(IRenderContext context);
-        bool IsAttached { get; }
-       // IRenderCore RenderCore { get; }
+        bool IsRenderable { get; }
+
+        /// <summary>
+        /// Optional for scene graph traverse
+        /// </summary>
+        IEnumerable<IRenderable> Items { get; }
+
+        IRenderCore RenderCore { get; }
+        /// <summary>
+        /// Update render related parameters such as model matrix by scene graph and bounding boxes
+        /// </summary>
+        /// <param name="context"></param>
+        void Update(IRenderContext context);
+        /// <summary>
+        /// Update things not related to rendering, such as OctreeManager etc. Called parallel with rendering process.
+        /// </summary>
+        void UpdateNotRender();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        void Render(IRenderContext context, DeviceContextProxy deviceContext);
     }
 
-    public interface IRenderer
+    public interface IViewport3DX
     {
         void Attach(IRenderHost host);
         void Detach();
-        //void Update(TimeSpan timeSpan);
-        void Render(IRenderContext context);
-
-        void RenderD2D(IRenderContext context);
-       
+        IRenderHost RenderHost { get; }
         bool IsShadowMappingEnabled { get; }
         IEffectsManager EffectsManager { set; get; }
         IRenderTechnique RenderTechnique { set; get; }
-        ICamera Camera { get; }
-        Color4 BackgroundColor { get; }
+        CameraCore CameraCore { get; }
 
         //DeferredRenderer DeferredRenderer { get; set; }
+        void UpdateFPS(TimeSpan timeStamp);
+
+        Matrix WorldMatrix { get; }
 
         IEnumerable<IRenderable> Renderables { get; }
 

@@ -16,10 +16,11 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using Cameras;
     using Model;
     public interface IRenderContext : IDisposable
     {
-        ICamera Camera { set; get; }
+        CameraCore Camera { set; get; }
         Matrix ViewMatrix { get; }
 
         Matrix ProjectionMatrix { get; }
@@ -33,9 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
         double ActualWidth { get; }
         double ActualHeight { get; }
 
-        DeviceContext DeviceContext { get; }
-
-        TimeSpan TimeStamp { get; }
+        TimeSpan TimeStamp { set; get; }
         Light3DSceneShared LightScene { get; }
         GlobalTransformStruct GlobalTransform { get; }
         void UpdatePerFrameData();

@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     public abstract class ShapeModel2D : Model2D
     {
         public static DependencyProperty FillProperty 
-            = DependencyProperty.Register("Fill", typeof(Brush), typeof(Model2D), new AffectsRenderPropertyMetadata(new SolidColorBrush(Colors.Black), 
+            = DependencyProperty.Register("Fill", typeof(Brush), typeof(Model2D), new PropertyMetadata(new SolidColorBrush(Colors.Black), 
                 (d,e)=> 
                 {
                     (d as ShapeModel2D).fillChanged = true;
@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeProperty
-        = DependencyProperty.Register("Stroke", typeof(Brush), typeof(Model2D), new AffectsRenderPropertyMetadata(new SolidColorBrush(Colors.Black),
+        = DependencyProperty.Register("Stroke", typeof(Brush), typeof(Model2D), new PropertyMetadata(new SolidColorBrush(Colors.Black),
             (d, e) =>
             {
                 (d as ShapeModel2D).strokeChanged = true;
@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeDashCapProperty
-        = DependencyProperty.Register("StrokeDashCap", typeof(PenLineCap), typeof(Model2D), new AffectsRenderPropertyMetadata(PenLineCap.Flat,
+        = DependencyProperty.Register("StrokeDashCap", typeof(PenLineCap), typeof(Model2D), new PropertyMetadata(PenLineCap.Flat,
             (d, e) =>
             {
                 (d as ShapeModel2D).strokeStyleChanged = true;
@@ -73,7 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeStartLineCapProperty
-            = DependencyProperty.Register("StrokeStartLineCap", typeof(PenLineCap), typeof(Model2D), new AffectsRenderPropertyMetadata(PenLineCap.Flat,
+            = DependencyProperty.Register("StrokeStartLineCap", typeof(PenLineCap), typeof(Model2D), new PropertyMetadata(PenLineCap.Flat,
                 (d, e) =>
                 {
                     (d as ShapeModel2D).strokeStyleChanged = true;
@@ -92,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeEndLineCapProperty
-        = DependencyProperty.Register("StrokeEndLineCap", typeof(PenLineCap), typeof(Model2D), new AffectsRenderPropertyMetadata(PenLineCap.Flat,
+        = DependencyProperty.Register("StrokeEndLineCap", typeof(PenLineCap), typeof(Model2D), new PropertyMetadata(PenLineCap.Flat,
             (d, e) =>
             {
                 (d as ShapeModel2D).strokeStyleChanged = true;
@@ -111,7 +111,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeDashArrayProperty
-            = DependencyProperty.Register("StrokeDashArray", typeof(DoubleCollection), typeof(Model2D), new AffectsRenderPropertyMetadata(new DoubleCollection(),
+            = DependencyProperty.Register("StrokeDashArray", typeof(DoubleCollection), typeof(Model2D), new PropertyMetadata(new DoubleCollection(),
                 (d, e) =>
                 {
                     (d as ShapeModel2D).strokeStyleChanged = true;
@@ -130,7 +130,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeDashOffsetProperty
-            = DependencyProperty.Register("StrokeDashOffset", typeof(double), typeof(Model2D), new AffectsRenderPropertyMetadata(0.0,
+            = DependencyProperty.Register("StrokeDashOffset", typeof(double), typeof(Model2D), new PropertyMetadata(0.0,
                 (d, e) =>
                 {
                     (d as ShapeModel2D).strokeStyleChanged = true;
@@ -149,7 +149,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeLineJoinProperty
-        = DependencyProperty.Register("StrokeLineJoin", typeof(PenLineJoin), typeof(Model2D), new AffectsRenderPropertyMetadata(PenLineJoin.Bevel,
+        = DependencyProperty.Register("StrokeLineJoin", typeof(PenLineJoin), typeof(Model2D), new PropertyMetadata(PenLineJoin.Bevel,
             (d, e) =>
             {
                 (d as ShapeModel2D).strokeStyleChanged = true;
@@ -169,7 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeMiterLimitProperty
-            = DependencyProperty.Register("StrokeMiterLimit", typeof(double), typeof(Model2D), new AffectsRenderPropertyMetadata(1.0,
+            = DependencyProperty.Register("StrokeMiterLimit", typeof(double), typeof(Model2D), new PropertyMetadata(1.0,
                 (d, e) =>
                 {
                     (d as ShapeModel2D).strokeStyleChanged = true;
@@ -188,7 +188,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeThicknessProperty
-            = DependencyProperty.Register("StrokeThickness", typeof(int), typeof(Model2D), new AffectsRenderPropertyMetadata(1,
+            = DependencyProperty.Register("StrokeThickness", typeof(int), typeof(Model2D), new PropertyMetadata(1,
                 (d, e) =>
                 {
                     if((d as ShapeModel2D).shapeRenderable == null)
@@ -215,14 +215,14 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected ShapeRenderable2DBase shapeRenderable;
 
-        protected sealed override IRenderable2D CreateRenderCore(IRenderHost host)
+        protected sealed override IRenderable2D CreateRenderCore(ID2DTarget host)
         {
             shapeRenderable = CreateShapeRenderCore(host);
             AssignProperties();
             return shapeRenderable;
         }
 
-        protected abstract ShapeRenderable2DBase CreateShapeRenderCore(IRenderHost host);
+        protected abstract ShapeRenderable2DBase CreateShapeRenderCore(ID2DTarget host);
 
         protected virtual void AssignProperties()
         {
@@ -234,7 +234,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             fillChanged = strokeChanged = strokeStyleChanged = true;
         }
 
-        protected override void PreRender(IRenderContext context)
+        protected override void PreRender(IRenderContext2D context)
         {
             base.PreRender(context);
             if (fillChanged)

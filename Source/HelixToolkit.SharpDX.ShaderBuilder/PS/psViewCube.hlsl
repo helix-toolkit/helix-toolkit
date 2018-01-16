@@ -1,5 +1,7 @@
+#ifndef PSVIEWBOX_HLSL
+#define PSVIEWBOX_HLSL
 
-#define MATERIAL
+#define MESH
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\CommonBuffers.hlsl"
 #include"psCommon.hlsl"
@@ -24,3 +26,4 @@ float4 main(PSInput input) : SV_Target
     I = I * input.c;
     return I;
 }
+#endif

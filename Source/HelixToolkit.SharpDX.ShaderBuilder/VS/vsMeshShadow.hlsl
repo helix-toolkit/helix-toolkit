@@ -1,4 +1,7 @@
-#define MATERIAL
+#ifndef VSMESHSHADOW_HLSL
+#define VSMESHSHADOW_HLSL
+
+#define MESH
 #include"..\Common\Common.hlsl"
 #include"..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )
@@ -24,3 +27,4 @@ PSShadow main(VSInput input)
     output.p = mul(output.p, mul(mWorld, vLightViewProjection));
     return output;
 }
+#endif

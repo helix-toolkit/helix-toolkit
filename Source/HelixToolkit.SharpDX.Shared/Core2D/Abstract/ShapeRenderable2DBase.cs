@@ -2,7 +2,6 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using HelixToolkit.Wpf.SharpDX;
 using D2D = global::SharpDX.Direct2D1;
 
 #if NETFX_CORE
@@ -18,10 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                if (fillBrush == value) { return; }
-                RemoveAndDispose(ref fillBrush);
-                fillBrush = value;
-                Collect(fillBrush);
+                Set(ref fillBrush, value);
             }
             get
             {
@@ -34,10 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                if (strokeBrush == value) { return; }
-                RemoveAndDispose(ref strokeBrush);
-                strokeBrush = value;
-                Collect(strokeBrush);
+                Set(ref strokeBrush, value);
             }
             get
             {
@@ -54,10 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                if(strokeStyle == value) { return; }
-                RemoveAndDispose(ref strokeStyle);
-                strokeStyle = value;
-                Collect(strokeStyle);
+                Set(ref strokeStyle, value);
             }
             get
             {

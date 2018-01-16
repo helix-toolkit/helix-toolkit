@@ -11,18 +11,18 @@
     using Core;
     using Media = System.Windows.Media;
 
-    public class PointGeometryModel3D : InstanceGeometryModel3D
+    public class PointGeometryModel3D : GeometryModel3D
     {
         #region Dependency Properties
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(PointGeometryModel3D),
-                new AffectsRenderPropertyMetadata(Media.Colors.Black, (d, e) =>
+                new PropertyMetadata(Media.Colors.Black, (d, e) =>
                 {
                     (d as PointGeometryModel3D).pointRenderCore.PointColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
         public static readonly DependencyProperty SizeProperty =
-            DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(new Size(1.0, 1.0),
+            DependencyProperty.Register("Size", typeof(Size), typeof(PointGeometryModel3D), new PropertyMetadata(new Size(1.0, 1.0),
                 (d,e)=> 
                 {
                     var size = (Size)e.NewValue;
@@ -31,14 +31,14 @@
                 }));
 
         public static readonly DependencyProperty FigureProperty =
-            DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(PointFigure.Rect,
+            DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new PropertyMetadata(PointFigure.Rect,
                 (d, e)=> 
                 {
                     (d as PointGeometryModel3D).pointRenderCore.Figure = (PointFigure)e.NewValue;
                 }));
 
         public static readonly DependencyProperty FigureRatioProperty =
-            DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new AffectsRenderPropertyMetadata(0.25,
+            DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(0.25,
                 (d, e)=> 
                 {
                     (d as PointGeometryModel3D).pointRenderCore.FigureRatio = (float)(double)e.NewValue;
@@ -46,7 +46,6 @@
 
         public static readonly DependencyProperty HitTestThicknessProperty =
             DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new UIPropertyMetadata(4.0));
-
 
         public Media.Color Color
         {
@@ -72,6 +71,9 @@
             set { this.SetValue(FigureRatioProperty, value); }
         }
 
+        /// <summary>
+        /// Used only for point/line hit test
+        /// </summary>
         public double HitTestThickness
         {
             get { return (double)this.GetValue(HitTestThicknessProperty); }
@@ -88,6 +90,7 @@
                 return (IPointRenderParams)RenderCore;
             }
         }
+
 
         public static double DistanceRayToPoint(Ray r, Vector3 p)
         {
@@ -125,76 +128,6 @@
             c.PointColor = Color.ToColor4();
         }
 
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return base.CanHitTest(context) && context != null;
-        }
-
-        /// <summary>
-        /// Checks if the ray hits the geometry of the model.
-        /// If there a more than one hit, result returns the hit which is nearest to the ray origin.
-        /// </summary>
-        /// <param name="rayWS">Hitring ray from the camera.</param>
-        /// <param name="hits">results of the hit.</param>
-        /// <returns>True if the ray hits one or more times.</returns>
-        protected override bool OnHitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
-        {
-            if (geometryInternal.Octree != null)
-            {
-                return geometryInternal.Octree.HitTest(context, this, ModelMatrix, rayWS, ref hits);
-            }
-            else
-            {
-                PointGeometry3D pointGeometry3D = this.geometryInternal as PointGeometry3D;
-                var svpm =  context.ScreenViewProjectionMatrix;
-                var smvpm = this.modelMatrix * svpm;
-
-                var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
-                var pos4 = new Vector4(rayWS.Position, 1);
-               // var dir3 = new Vector3();
-                Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
-                Vector4.Transform(ref pos4, ref svpm, out pos4);
-                //Vector3.TransformNormal(ref rayWS.Direction, ref svpm, out dir3);
-                //dir3.Normalize();
-
-                var clickPoint = clickPoint4.ToVector3();
-
-                var result = new HitTestResult { IsValid = false, Distance = double.MaxValue };
-                var maxDist = this.HitTestThickness;
-                var lastDist = double.MaxValue;
-                var index = 0;
-
-                foreach (var point in pointGeometry3D.Positions)
-                {
-                    var p0 = Vector3.TransformCoordinate(point, smvpm);
-                    var pv = p0 - clickPoint;
-                    var dist = pv.Length();
-                    if (dist < lastDist && dist <= maxDist)
-                    {
-                        lastDist = dist;
-                        Vector4 res;
-                        var lp0 = point;
-                        Vector3.Transform(ref lp0, ref this.modelMatrix, out res);
-                        var pvv = res.ToVector3();
-                        result.Distance = (rayWS.Position - res.ToVector3()).Length();
-                        result.PointHit = pvv.ToPoint3D();
-                        result.ModelHit = this;
-                        result.IsValid = true;
-                        result.Tag = index;
-                    }
-
-                    index++;
-                }
-
-                if (result.IsValid)
-                {
-                    hits.Add(result);
-                }
-
-                return result.IsValid;
-            }
-        }
-
         protected override RasterizerStateDescription CreateRasterState()
         {
             return new RasterizerStateDescription()
@@ -216,22 +149,27 @@
             return host.EffectsManager[DefaultRenderTechniqueNames.Points];
         }
 
-        protected override bool CheckGeometry()
-        {
-            return geometryInternal is PointGeometry3D && this.geometryInternal != null && this.geometryInternal.Positions != null && this.geometryInternal.Positions.Count > 0;
-        }
-
 
         protected override bool CanRender(IRenderContext context)
         {
             if(base.CanRender(context))
             {
-                return !renderHost.IsDeferredLighting;
+                return !RenderHost.IsDeferredLighting;
             }
             else
             {
                 return false;
             }
+        }
+
+        protected override bool OnCheckGeometry(Geometry3D geometry)
+        {
+            return base.OnCheckGeometry(geometry) && geometry is PointGeometry3D;
+        }
+
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        {
+            return (Geometry as PointGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this, (float)HitTestThickness);
         }
 
         /// <summary>
@@ -241,9 +179,9 @@
         {
             var positions = geometry.Positions;
             var vertexCount = geometry.Positions.Count;
-            var array = ReuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new PointsVertex[vertexCount];
+            var array = reuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new PointsVertex[vertexCount];
             var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
-            if (ReuseVertexArrayBuffer)
+            if (reuseVertexArrayBuffer)
             {
                 vertexArrayBuffer = array;
             }
@@ -256,7 +194,7 @@
                     array[i].Color = colors.Current;
                 }
             }
-
+            colors.Dispose();
             return array;
         }
     }

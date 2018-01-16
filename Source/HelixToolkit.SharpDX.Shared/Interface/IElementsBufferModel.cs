@@ -16,6 +16,7 @@ namespace HelixToolkit.UWP
     using Utilities;
     public interface IElementsBufferModel : IVertexExtraBufferModel
     {
+        event EventHandler<bool> OnElementChanged;
         bool HasElements { get; }
     }
 

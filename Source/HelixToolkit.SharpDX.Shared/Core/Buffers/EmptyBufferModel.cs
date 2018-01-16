@@ -12,19 +12,37 @@ namespace HelixToolkit.UWP.Core
     using global::SharpDX.Direct3D11;
     using System;
     using Utilities;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class EmptyGeometryBufferModel : IGeometryBufferModel
     {
+        /// <summary>
+        /// Gets or sets the geometry.
+        /// </summary>
+        /// <value>
+        /// The geometry.
+        /// </value>
         public Geometry3D Geometry
         {
             set;get;
         }
-
+        /// <summary>
+        /// Gets the unique identifier.
+        /// </summary>
+        /// <value>
+        /// The unique identifier.
+        /// </value>
         public Guid GUID
         {
             get;
         } = Guid.NewGuid();
-
+        /// <summary>
+        /// Gets the index buffer.
+        /// </summary>
+        /// <value>
+        /// The index buffer.
+        /// </value>
         public IElementsBufferProxy IndexBuffer
         {
             get
@@ -32,7 +50,12 @@ namespace HelixToolkit.UWP.Core
                 return null;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the topology.
+        /// </summary>
+        /// <value>
+        /// The topology.
+        /// </value>
         public PrimitiveTopology Topology
         {
             get
@@ -41,7 +64,12 @@ namespace HelixToolkit.UWP.Core
             }
             set { }
         }
-
+        /// <summary>
+        /// Gets the vertex buffer.
+        /// </summary>
+        /// <value>
+        /// The vertex buffer.
+        /// </value>
         public IElementsBufferProxy VertexBuffer
         {
             get
@@ -49,24 +77,38 @@ namespace HelixToolkit.UWP.Core
                 return null;
             }
         }
-
+        /// <summary>
+        /// Occurs when [invalidate renderer].
+        /// </summary>
         public event EventHandler<bool> InvalidateRenderer;
-
+        /// <summary>
+        /// Attaches this instance.
+        /// </summary>
         public void Attach()
         {
 
         }
-
+        /// <summary>
+        /// Attaches the buffers.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="vertexLayout">The vertex layout.</param>
+        /// <param name="vertexBufferSlot">The vertex buffer slot.</param>
+        /// <returns></returns>
         public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot)
         {
             return true;
         }
-
+        /// <summary>
+        /// Detaches this instance.
+        /// </summary>
         public void Detach()
         {
 
         }
-
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
         public void Dispose()
         {
 

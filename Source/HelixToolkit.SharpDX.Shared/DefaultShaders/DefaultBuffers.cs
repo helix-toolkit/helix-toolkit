@@ -15,9 +15,9 @@ namespace HelixToolkit.UWP.Shaders
     public static class DefaultBufferNames
     {
         public static string GlobalTransformCB = "cbTransforms";
-        public static string ModelCB = "cbModel";
+        public static string ModelCB = "cbMeshModel";
+        public static string PointLineModelCB = "cbPointLineModel";
         public static string LightCB = "cbLights";
-        public static string MaterialCB = "cbMaterial";
         public static string BoneCB = "cbBoneSkinning";
         public static string ClipParamsCB = "cbClipping";
 

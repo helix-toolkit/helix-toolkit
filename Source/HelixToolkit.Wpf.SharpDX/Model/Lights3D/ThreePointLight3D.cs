@@ -5,6 +5,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using HelixToolkit.Wpf.SharpDX.Core;
+using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
 {
@@ -12,12 +15,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
     {
         public ThreePointLight3D()
         {
-            //TODO: http://www.3drender.com/light/3point.html
-        }
-
-        public Light3DSceneShared Light3DSceneShared
-        {
-            private set; get;
         }
 
         public LightType LightType
@@ -28,31 +25,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
             }
         }
 
-        protected override bool OnAttach(IRenderHost host)
+        protected override bool CanHitTest(IRenderContext context)
         {
-            Light3DSceneShared = host.Light3DSceneShared;
-            foreach (var c in this.Items)
-            {
-                c.Attach(host);
-            }
-            return true;
+            return false;
         }
 
-        protected override void OnDetach()
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
-            base.OnDetach();
-            foreach (var c in this.Items)
-            {
-                c.Detach();
-            }
-        }
-
-        protected override void OnRender(IRenderContext context)
-        {
-            foreach (var c in this.Items)
-            {
-                c.Render(context);
-            }
+            throw new NotImplementedException();
         }
     }
 }

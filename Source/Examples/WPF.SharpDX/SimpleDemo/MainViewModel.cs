@@ -31,6 +31,7 @@ namespace SimpleDemo
     public class MainViewModel : BaseViewModel
     {
         public MeshGeometry3D Model { get; private set; }
+        public MeshGeometry3D TextModel { get; private set; }
         public LineGeometry3D Lines { get; private set; }
         public LineGeometry3D Grid { get; private set; }
         public PointGeometry3D Points { get; private set; }
@@ -49,6 +50,7 @@ namespace SimpleDemo
         public Transform3D Model1Transform { get; private set; }
         public Transform3D Model2Transform { get; private set; }
         public Transform3D Model3Transform { get; private set; }
+        public Transform3D Model4Transform { get; private set; }
         public Transform3D GridTransform { get; private set; }
 
         public Vector3D DirectionalLightDirection { get; private set; }
@@ -101,10 +103,16 @@ namespace SimpleDemo
             e1.AddBox(new Vector3(0, 0, 0), 1, 0.5, 2);
             Lines = e1.ToLineGeometry3D();
 
+            var textBuilder = new MeshBuilder();
+            textBuilder.ExtrudeText("HelixToolkit.SharpDX", "Arial", System.Windows.FontStyles.Normal, System.Windows.FontWeights.Bold,
+                14, new Vector3(1, 0, 0), new Vector3(0, 0, 0), new Vector3(0, 0, 1));
+            TextModel = textBuilder.ToMesh();
+
             // model trafos
             Model1Transform = new Media3D.TranslateTransform3D(0, 0, 0);
             Model2Transform = new Media3D.TranslateTransform3D(-2, 0, 0);
             Model3Transform = new Media3D.TranslateTransform3D(+2, 0, 0);
+            Model4Transform = new Media3D.TranslateTransform3D(-8, 0, -5);
 
             // model materials
             RedMaterial = PhongMaterials.Red;

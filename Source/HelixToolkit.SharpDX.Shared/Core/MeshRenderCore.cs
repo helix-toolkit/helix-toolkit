@@ -9,44 +9,58 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Shaders;
-    public interface IInvertNormal
-    {
-        bool InvertNormal { set; get; }
-    }
+    using Render;
     public class MeshRenderCore : MaterialGeometryRenderCore, IInvertNormal
     {
-        public bool InvertNormal { set; get; } = false;       
-
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool InvertNormal
         {
-            base.OnUpdatePerModelStruct(ref model, context);
-            model.InvertNormal = InvertNormal ? 1 : 0;
+            set
+            {
+                SetAffectsRender(ref modelStruct.InvertNormal, (value ? 1 : 0));
+            }
+            get
+            {
+                return modelStruct.InvertNormal == 1 ? true : false;
+            }
         }
 
-        protected override void OnRender(IRenderContext context)
+        public string ShaderShadowMapTextureName { set; get; } = DefaultBufferNames.ShadowMapTB;
+
+        private int shadowMapSlot;
+
+        protected override void OnDefaultPassChanged(IShaderPass pass)
+        {
+            base.OnDefaultPassChanged(pass);
+            shadowMapSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowMapTextureName);
+        }
+
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {                  
-            DefaultShaderPass.BindShader(context.DeviceContext);
-            DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            if(!BindMaterialTextures(context.DeviceContext, DefaultShaderPass))
+            DefaultShaderPass.BindShader(deviceContext);
+            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            if(!BindMaterialTextures(deviceContext, DefaultShaderPass))
             {
                 return;
             }
             if (context.RenderHost.IsShadowMapEnabled)
             {
-                DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(context.DeviceContext, DefaultBufferNames.ShadowMapTB, context.SharedResource.ShadowView);
+                DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, shadowMapSlot, context.SharedResource.ShadowView);
             }
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            OnDraw(deviceContext, InstanceBuffer);
         }
 
-        protected override void OnRenderShadow(IRenderContext context)
+        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
         {
             if (!IsThrowingShadow)
             {
                 return;
             }
-            ShadowPass.BindShader(context.DeviceContext);
-            ShadowPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            ShadowPass.BindShader(deviceContext);
+            ShadowPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            OnDraw(deviceContext, InstanceBuffer);
         }
     }
 }

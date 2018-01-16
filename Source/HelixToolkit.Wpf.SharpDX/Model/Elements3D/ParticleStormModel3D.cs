@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Utility;
     using static Core.ParticleRenderCore;
 
-    public class ParticleStormModel3D : Element3D
+    public class ParticleStormModel3D : Element3D, IInstancing
     {
         #region Dependency Properties
         public static DependencyProperty ParticleCountProperty = DependencyProperty.Register("ParticleCount", typeof(int), typeof(ParticleStormModel3D),
@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(DefaultEmitterLocation.ToPoint3D(),
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.InsertVariables.EmitterLocation = (((Media3D.Point3D)e.NewValue).ToVector3());
+                (d as ParticleStormModel3D).particleCore.EmitterLocation = (((Media3D.Point3D)e.NewValue).ToVector3());
             }
             ));
 
@@ -72,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(0.0,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.InsertVariables.EmitterRadius = (float)(double)e.NewValue;
+                (d as ParticleStormModel3D).particleCore.EmitterRadius = (float)(double)e.NewValue;
             }
             ));
 
@@ -92,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(DefaultConsumerLocation.ToPoint3D(),
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.FrameVariables.ConsumerLocation = (((Media3D.Point3D)e.NewValue).ToVector3());
+                (d as ParticleStormModel3D).particleCore.ConsumerLocation = (((Media3D.Point3D)e.NewValue).ToVector3());
             }
             ));
 
@@ -112,7 +112,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(0.0,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.FrameVariables.ConsumerGravity = ((float)(double)e.NewValue);
+                (d as ParticleStormModel3D).particleCore.ConsumerGravity = ((float)(double)e.NewValue);
             }
             ));
 
@@ -132,7 +132,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(0.0,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.FrameVariables.ConsumerRadius = (float)(double)e.NewValue;
+                (d as ParticleStormModel3D).particleCore.ConsumerRadius = (float)(double)e.NewValue;
             }
             ));
 
@@ -152,7 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(5.0,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.InsertVariables.InitialEnergy = System.Math.Max(1f, (float)(double)e.NewValue);
+                (d as ParticleStormModel3D).particleCore.InitialEnergy = System.Math.Max(1f, (float)(double)e.NewValue);
                 (d as ParticleStormModel3D).particleCore.UpdateInsertThrottle();
             }
             ));
@@ -173,7 +173,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(1.0,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.InsertVariables.EnergyDissipationRate = System.Math.Max(1f, (float)(double)e.NewValue);
+                (d as ParticleStormModel3D).particleCore.EnergyDissipationRate = System.Math.Max(1f, (float)(double)e.NewValue);
             }
             ));
 
@@ -210,7 +210,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty ParticleTextureProperty = DependencyProperty.Register("ParticleTexture", typeof(Stream), typeof(ParticleStormModel3D),
-            new AffectsRenderPropertyMetadata(null,
+            new PropertyMetadata(null,
             (d, e) =>
             {
                 (d as ParticleStormModel3D).particleCore.ParticleTexture = (Stream)e.NewValue;
@@ -270,7 +270,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static DependencyProperty ParticleSizeProperty = DependencyProperty.Register("ParticleSize", typeof(Size), typeof(ParticleStormModel3D),
-            new AffectsRenderPropertyMetadata(new Size(ParticleRenderCore.DefaultParticleSize.X, ParticleRenderCore.DefaultParticleSize.Y),
+            new PropertyMetadata(new Size(ParticleRenderCore.DefaultParticleSize.X, ParticleRenderCore.DefaultParticleSize.Y),
                 (d, e) =>
                 {
                     var size = (Size)e.NewValue;
@@ -294,7 +294,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(1.0,
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.InsertVariables.InitialVelocity = (float)(double)e.NewValue;
+                (d as ParticleStormModel3D).particleCore.InitialVelocity = (float)(double)e.NewValue;
             }
             ));
 
@@ -314,7 +314,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(DefaultAcceleration.ToVector3D(),
             (d, e) =>
             {
-                (d as ParticleStormModel3D).particleCore.InsertVariables.InitialAcceleration = ((Media3D.Vector3D)e.NewValue).ToVector3();
+                (d as ParticleStormModel3D).particleCore.InitialAcceleration = ((Media3D.Vector3D)e.NewValue).ToVector3();
             }
             ));
 
@@ -335,8 +335,8 @@ namespace HelixToolkit.Wpf.SharpDX
             (d, e) =>
             {
                 var bound = (Media3D.Rect3D)e.NewValue;
-                (d as ParticleStormModel3D).particleCore.FrameVariables.DomainBoundsMax = new Vector3((float)(bound.SizeX / 2 + bound.Location.X), (float)(bound.SizeY / 2 + bound.Location.Y), (float)(bound.SizeZ / 2 + bound.Location.Z));
-                (d as ParticleStormModel3D).particleCore.FrameVariables.DomainBoundsMin = new Vector3((float)(bound.Location.X - bound.SizeX / 2), (float)(bound.Location.Y - bound.SizeY / 2), (float)(bound.Location.Z - bound.SizeZ / 2));
+                (d as ParticleStormModel3D).particleCore.DomainBoundMax = new Vector3((float)(bound.SizeX / 2 + bound.Location.X), (float)(bound.SizeY / 2 + bound.Location.Y), (float)(bound.SizeZ / 2 + bound.Location.Z));
+                (d as ParticleStormModel3D).particleCore.DomainBoundMin = new Vector3((float)(bound.Location.X - bound.SizeX / 2), (float)(bound.Location.Y - bound.SizeY / 2), (float)(bound.Location.Z - bound.SizeZ / 2));
             }));
 
         public Media3D.Rect3D ParticleBounds
@@ -355,7 +355,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    (d as ParticleStormModel3D).particleCore.FrameVariables.CumulateAtBound = (bool)e.NewValue ? 1u : 0;
+                    (d as ParticleStormModel3D).particleCore.CumulateAtBound = (bool)e.NewValue;
                 }));
 
         public bool CumulateAtBound
@@ -374,7 +374,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Media.Colors.White,
                 (d, e) =>
                 {
-                    (d as ParticleStormModel3D).particleCore.InsertVariables.ParticleBlendColor = ((Media.Color)e.NewValue).ToColor4();
+                    (d as ParticleStormModel3D).particleCore.ParticleBlendColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
         public Media.Color BlendColor
@@ -529,7 +529,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// List of instance matrix.
         /// </summary>
         public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(ParticleStormModel3D), new AffectsRenderPropertyMetadata(null, InstancesChanged));
+            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(ParticleStormModel3D), new PropertyMetadata(null, InstancesChanged));
 
         /// <summary>
         /// 
@@ -542,7 +542,7 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         public bool HasInstances { get { return InstanceBuffer.HasElements; } }
-        protected readonly IElementsBufferModel<Matrix> InstanceBuffer = new MatrixInstanceBufferModel();
+        public IElementsBufferModel<Matrix> InstanceBuffer { get; } = new MatrixInstanceBufferModel();
 
         private ParticleRenderCore particleCore
         {
@@ -572,13 +572,14 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.OnAttach(host);
             InstanceBuffer.Initialize();
+            InstanceBuffer.Elements = Instances;
             particleCore.InstanceBuffer = InstanceBuffer;
-            Media.CompositionTarget.Rendering += CompositionTarget_Rendering;
             return true;
         }
 
-        protected override void OnRender(IRenderContext context)
+        public override void Update(IRenderContext context)
         {
+            base.Update(context);
             if (blendChanged)
             {
                 var desc = new BlendStateDescription();
@@ -596,19 +597,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 particleCore.BlendDescription = desc;
                 blendChanged = false;
             }
-            base.OnRender(context);
-        }
-
-        private void CompositionTarget_Rendering(object sender, System.EventArgs e)
-        {
-            InvalidateRender();
         }
 
         protected override void OnDetach()
         {
-            Media.CompositionTarget.Rendering -= CompositionTarget_Rendering;
             InstanceBuffer.Dispose();
             base.OnDetach();
+        }
+
+        protected override bool CanHitTest(IRenderContext context)
+        {
+            return false;
+        }
+
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -19,12 +19,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         /// <param name="viewport"></param>
-        void AttachViewport3DX(IRenderer viewport);
+        void AttachViewport3DX(IViewport3DX viewport);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="viewport"></param>
-        void DettachViewport3DX(IRenderer viewport);
+        void DettachViewport3DX(IViewport3DX viewport);
     /// <summary>
     /// 
     /// </summary>

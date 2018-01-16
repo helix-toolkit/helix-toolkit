@@ -31,6 +31,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using Controls;
     using Elements2D;
     using Model;
+    using HelixToolkit.Wpf.SharpDX.Cameras;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -44,7 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [TemplatePart(Name = "PART_CoordinateView", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_ViewCube", Type = typeof(Viewport3D))]
     [Localizability(LocalizationCategory.NeverLocalize)]
-    public partial class Viewport3DX : ItemsControl, IRenderer
+    public partial class Viewport3DX : ItemsControl, IViewport3DX
     {
         /// <summary>
         /// The adorner layer part name.
@@ -251,6 +253,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public CameraCore CameraCore { get { return this.Camera; } }
+
+        public IRenderHost RenderHost { get { return this.renderHostInternal; } }
+
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
@@ -265,6 +271,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Viewport3DX()
         {
+            FpsCounter = new FpsCounter();
             Items2D = new Canvas2D();
             this.perspectiveCamera = new PerspectiveCamera();
             this.orthographicCamera = new OrthographicCamera();
@@ -591,56 +598,40 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
             }
             var hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
-#if DX11
+
             if (EnableSwapChainRendering)
             {
-                if (EnableDeferredRendering && !EnableSharedModelMode)
-                {
-                    hostPresenter.Content = new DPFSurfaceSwapChainThreading();
-                }
-                else
-                {
-                    hostPresenter.Content = new DPFSurfaceSwapChain();
-                }
+                hostPresenter.Content = new DPFSurfaceSwapChain(EnableDeferredRendering);
             }
             else
             {
-                if (EnableDeferredRendering && !EnableSharedModelMode)
-                {
-                    hostPresenter.Content = new DPFCanvasThreading();
-                }
-                else
-                {
-                    hostPresenter.Content = new DPFCanvas();
-                }
+                hostPresenter.Content = new DPFCanvas(EnableDeferredRendering);
             }
-
-#else
-            hostPresenter.Content = new DPFCanvas();
-#endif
-            this.RenderHost = this.renderHostInternal = hostPresenter.Content as IRenderHost;
+            renderHostInternal = (hostPresenter.Content as IRenderCanvas).RenderHost;
             if (this.renderHostInternal != null)
             {
+                this.renderHostInternal.ClearColor = BackgroundColor.ToColor4();
+                this.renderHostInternal.IsShadowMapEnabled = IsShadowMappingEnabled;
                 this.renderHostInternal.MSAA = this.MSAA;
                 this.renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
                 this.renderHostInternal.MaxFPS = (uint)this.MaxFPS;
                 this.renderHostInternal.EnableSharingModelMode = this.EnableSharedModelMode;
                 this.renderHostInternal.SharedModelContainer = this.SharedModelContainer;
                 this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
-                this.renderHostInternal.Renderable = this;
+                this.renderHostInternal.Viewport = this;
                 this.renderHostInternal.EffectsManager = this.EffectsManager;
                 this.renderHostInternal.IsRendering = this.Visibility == Visibility.Visible;
             }
 
-            if (this.adornerLayer == null)
-            {
-                this.adornerLayer = this.Template.FindName(PartAdornerLayer, this) as AdornerDecorator;
-            }
+            //if (this.adornerLayer == null)
+            //{
+            //    this.adornerLayer = this.Template.FindName(PartAdornerLayer, this) as AdornerDecorator;
+            //}
 
-            if (this.adornerLayer == null)
-            {
-                throw new HelixToolkitException("{0} is missing from the template.", PartAdornerLayer);
-            }
+            //if (this.adornerLayer == null)
+            //{
+            //    throw new HelixToolkitException("{0} is missing from the template.", PartAdornerLayer);
+            //}
 
             if (this.cameraController == null)
             {
@@ -672,34 +663,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // update the coordinateview camera
             this.OnCameraChanged();           
-        }
-
-
-
-        /// <summary>
-        /// Detaches the current scene and attaches it again. 
-        /// Call it if you want to repeat the entire Attach-Pass
-        /// </summary>
-        public void ReAttach()
-        {
-            if (this.renderHostInternal != null)
-            {
-                this.renderHostInternal.Renderable = null;
-                this.renderHostInternal.Renderable = this;
-            }
-        }
-
-        /// <summary>
-        /// Detaches the current scene.         
-        /// Call it if you want to detouch the scene from the renderer.
-        /// Call <see cref="ReAttach"/> in order to attach the current scene again.
-        /// </summary>
-        public void Detach()
-        {
-            if (this.renderHostInternal != null)
-            {
-                this.renderHostInternal.Renderable = null;
-            }
         }
 
         /// <summary>
@@ -852,16 +815,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Attaches the elements to the specified host.
         /// </summary>
         /// <param name="host">The host.</param>
-        void IRenderer.Attach(IRenderHost host)
+        public void Attach(IRenderHost host)
         {
             foreach (IRenderable e in this.Renderables)
             {
                 e.Attach(host);
             }
-            //if (EnableSharedModelMode && SharedModelContainer != null)
-            //{
-            //    SharedModelContainer.Attach(host);
-            //}
             if (this.Items2D != null)
             {
                 this.Items2D.Attach(host);
@@ -872,63 +831,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Detaches the elements.
         /// </summary>
-        void IRenderer.Detach()
+        public void Detach()
         {
             foreach (IRenderable e in this.Renderables)
             {
                 e.Detach();
             }
-            //if (EnableSharedModelMode && SharedModelContainer != null)
-            //{
-            //    SharedModelContainer.Detach();
-            //}
             if (this.Items2D != null)
             {
                 this.Items2D.Detach();
             }
         }
-
-        /// <summary>
-        /// Renders the scene.
-        /// </summary>
-        void IRenderer.Render(IRenderContext context)
-        {
-            this.FpsCounter.AddFrame(context.TimeStamp);
-            context.Camera = this.Camera;
-            context.WorldMatrix = this.worldMatrixInternal;
-            int counter = 0; 
-            foreach(IRenderable e in this.Renderables.Take(LightsBufferModel.MaxLights).Where(x=>x is ILight3D))
-            {
-                e.Render(context);
-                ++counter;
-            }
-            context.UpdatePerFrameData();
-            foreach (IRenderable e in this.Renderables)
-            {
-                e.Render(context);
-            }
-        }
-
-        void IRenderer.RenderD2D(IRenderContext context)
-        {
-            foreach (IRenderable e in this.D2DRenderables)
-            {
-                e.Render(context);
-            }
-        }
-
-        /// <summary>
-        /// Updates the scene.
-        /// </summary>
-        /// <param name="timeSpan">The time span.</param>
-        //void IRenderer.Update(TimeSpan timeSpan)
-        //{
-        //    //this.FpsCounter.AddFrame(timeSpan);           
-        //    //foreach (IRenderable e in this.Renderables)
-        //    //{
-        //    //    e.Update(timeSpan);
-        //    //}
-        //}
 
         /// <summary>
         /// Called when the camera is changed.
@@ -1212,12 +1125,12 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.renderHostInternal != null)
             {
                 // remove the scene
-                this.renderHostInternal.Renderable = null;
+                this.renderHostInternal.Viewport = null;
 
                 // if new rendertechnique set, attach the scene
                 if (this.RenderTechnique != null)
                 {
-                    this.renderHostInternal.Renderable = this;
+                    this.renderHostInternal.Viewport = this;
                 }
             }
         }
@@ -1376,6 +1289,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.TriangleCountInfo = string.Format("Triangles: {0}", count);
                 this.infoFrameCounter = 0;
             }
+        }
+
+        public void UpdateFPS(TimeSpan timeStamp)
+        {
+            FpsCounter.AddFrame(timeStamp);
         }
 
         /// <summary>
@@ -1696,7 +1614,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.currentHit = hits.FirstOrDefault(x => x.IsValid);
                 if (this.currentHit != null)
                 {
-                    this.currentHit.ModelHit.RaiseEvent(
+                    (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
                         new MouseDown3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                 }
             }
@@ -1732,7 +1650,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (this.currentHit != null)
             {
-                this.currentHit.ModelHit.RaiseEvent(
+                (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
                     new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
             }
             else
@@ -1760,7 +1678,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.currentHit != null)
             {
                 Mouse.Capture(this, CaptureMode.None);
-                this.currentHit.ModelHit.RaiseEvent(
+                (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
                     new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                 this.currentHit = null;
             }
@@ -1773,9 +1691,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-            if(e.Property == VisibilityProperty && RenderHost != null)
+            if(e.Property == VisibilityProperty && renderHostInternal != null)
             {
-                RenderHost.IsRendering = (Visibility)e.NewValue == Visibility.Visible;
+                renderHostInternal.IsRendering = (Visibility)e.NewValue == Visibility.Visible;
             }
             base.OnPropertyChanged(e);
         }

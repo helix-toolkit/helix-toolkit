@@ -1,6 +1,6 @@
 #ifndef VSCUBMAP_HLSL
 #define VSCUBMAP_HLSL
-
+#define MESH
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 

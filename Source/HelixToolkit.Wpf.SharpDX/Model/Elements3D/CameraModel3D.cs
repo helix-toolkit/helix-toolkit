@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using HelixToolkit.Wpf.SharpDX.Cameras;
+using SharpDX;
 using SharpDX.Direct3D11;
 using System.Linq;
 using System.Windows;
@@ -9,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX
     public class CameraModel3D : CompositeModel3D
     {
         public static readonly DependencyProperty CameraProperty =
-           DependencyProperty.Register("Camera", typeof(ProjectionCamera), typeof(CameraModel3D), new AffectsRenderPropertyMetadata(null, (d, e) =>
+           DependencyProperty.Register("Camera", typeof(ProjectionCamera), typeof(CameraModel3D), new PropertyMetadata(null, (d, e) =>
            {
                (d as CameraModel3D).camera = (ProjectionCamera)e.NewValue;
            }));
@@ -25,8 +26,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected bool isCaptured;
         protected Viewport3DX viewport;
-        protected ICamera viewportCamera;
-        protected Point3D lastHitPos;
+        protected CameraCore viewportCamera;
+        protected Vector3 lastHitPos;
 
         private ProjectionCamera _camera;
         protected ProjectionCamera camera
@@ -35,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if(_camera == value) { return; }
                 _camera = value;
-                this.Transform = new System.Windows.Media.Media3D.MatrixTransform3D(_camera.GetInversedViewMatrix().ToMatrix3D());
+                this.Transform = new MatrixTransform3D(_camera.GetInversedViewMatrix());
             }
             get
             {
@@ -91,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
 
-        public override void OnMouse3DDown(object sender, RoutedEventArgs e)
+        protected override void OnMouse3DDown(object sender, RoutedEventArgs e)
         {
             base.OnMouse3DDown(sender, e);
 
@@ -105,7 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.lastHitPos = args.HitTestResult.PointHit;
         }
 
-        public override void OnMouse3DUp(object sender, RoutedEventArgs e)
+        protected override void OnMouse3DUp(object sender, RoutedEventArgs e)
         {
             base.OnMouse3DUp(sender, e);
             if (this.isCaptured)
@@ -116,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override void OnMouse3DMove(object sender, RoutedEventArgs e)
+        protected override void OnMouse3DMove(object sender, RoutedEventArgs e)
         {
             base.OnMouse3DMove(sender, e);
             if (this.isCaptured)
@@ -127,30 +128,30 @@ namespace HelixToolkit.Wpf.SharpDX
                 var normal = this.viewportCamera.LookDirection;
 
                 // hit position                        
-                var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos, normal);
+                var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos.ToPoint3D(), normal.ToVector3D());
                 if (newHit.HasValue)
                 {
-                    var offset = (newHit.Value - lastHitPos);
-                    this.lastHitPos = newHit.Value;
+                    var offset = (newHit.Value - lastHitPos.ToPoint3D());
+                    this.lastHitPos = newHit.Value.ToVector3();
                     if (Transform == null)
                     {
                         Transform = new TranslateTransform3D(offset);
                     }
                     else
                     {
-                        this.Transform = Transform.AppendTransform(new TranslateTransform3D(offset));
+                        this.Transform = new MatrixTransform3D(Transform.AppendTransform(new TranslateTransform3D(offset)).Value);
                     }
                 }
             }
         }
 
-        protected override void OnTransformChanged()
+        protected override void TransformChanged(ref Matrix totalTransform)
         {
-            base.OnTransformChanged();
+            base.TransformChanged(ref totalTransform);
             if(camera != null)
             {
-                var m = Transform.Value;
-                camera.Position = new Point3D(m.OffsetX, m.OffsetY, m.OffsetZ);
+                var m = totalTransform;
+                camera.Position = new Point3D(m.M41, m.M42, m.M43);
                 camera.LookDirection = new Vector3D(-m.M31, -m.M32, -m.M33);
                 camera.UpDirection = new Vector3D(m.M21, m.M22, m.M23);               
             }

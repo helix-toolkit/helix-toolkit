@@ -1,3 +1,6 @@
+#ifndef GSBILLBOARD_HLSL
+#define GSBILLBOARD_HLSL
+#define POINTLINE
 #include"..\Common\DataStructs.hlsl"
 #include"..\Common\Common.hlsl"
 #pragma pack_matrix( row_major )
@@ -12,12 +15,12 @@ void main(point VSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
     float4 ndcPosition3 = input[0].p;
 
 	// Transform to clip space
-    if (!bParams.x)// if not fixed size billboard
+    if (!pbParams.x)// if not fixed size billboard
     {
-        ndcPosition0.xy += input[0].p0;
-        ndcPosition1.xy += input[0].p1;
-        ndcPosition2.xy += input[0].p2;
-        ndcPosition3.xy += input[0].p3;
+        ndcPosition0.xy += float2(input[0].offTL.x, input[0].offBR.y);
+        ndcPosition1.xy += input[0].offBR;
+        ndcPosition2.xy += input[0].offTL;
+        ndcPosition3.xy += float2(input[0].offBR.x, input[0].offTL.y);
     }
 
     ndcPosition0 = mul(ndcPosition0, mProjection);
@@ -30,39 +33,41 @@ void main(point VSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
     float4 ndcTranslated2 = ndcPosition2 / ndcPosition2.w;
     float4 ndcTranslated3 = ndcPosition3 / ndcPosition3.w;
 
-    if (bParams.x)// if fixed sized billboard
+    if (pbParams.x)// if fixed sized billboard
     {
 		// Translate offset into normalized device coordinates.
-        ndcTranslated0.xy += windowToNdc(input[0].p0);
-        ndcTranslated1.xy += windowToNdc(input[0].p1);
-        ndcTranslated2.xy += windowToNdc(input[0].p2);
-        ndcTranslated3.xy += windowToNdc(input[0].p3);
+        ndcTranslated0.xy += windowToNdc(float2(input[0].offTL.x, input[0].offBR.y));
+        ndcTranslated1.xy += windowToNdc(input[0].offBR);
+        ndcTranslated2.xy += windowToNdc(input[0].offTL);
+        ndcTranslated3.xy += windowToNdc(float2(input[0].offBR.x, input[0].offTL.y));
     }
 
     PSInputBT output = (PSInputBT) 0;
     output.p = float4(ndcTranslated0.xyz, 1.0);
     output.background = input[0].background;
     output.foreground = input[0].foreground;
-    output.t = input[0].t0;	
+    output.t = float2(input[0].t0.x, input[0].t3.y);
     SpriteStream.Append(output);
 
     output.p = float4(ndcTranslated1.xyz, 1.0);
     output.background = input[0].background;
     output.foreground = input[0].foreground;
-    output.t = input[0].t1;
+    output.t = input[0].t3;
     SpriteStream.Append(output);
 
     output.p = float4(ndcTranslated2.xyz, 1.0);
     output.background = input[0].background;
     output.foreground = input[0].foreground;
-    output.t = input[0].t2;
+    output.t = input[0].t0;
     SpriteStream.Append(output);
 
     output.p = float4(ndcTranslated3.xyz, 1.0);
     output.background = input[0].background;
     output.foreground = input[0].foreground;
-    output.t = input[0].t3;
+    output.t = float2(input[0].t3.x, input[0].t0.y);    
     SpriteStream.Append(output);
 
     SpriteStream.RestartStrip();
 }
+
+#endif

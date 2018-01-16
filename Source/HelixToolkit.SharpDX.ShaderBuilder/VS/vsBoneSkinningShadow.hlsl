@@ -1,5 +1,6 @@
 #ifndef VSBONESKINNINGSHADOW_HLSL
 #define VSBONESKINNINGSHADOW_HLSL
+#define MESH
 #include"..\Common\Common.hlsl"
 
 float4 main(VSBoneSkinInput input) : SV_Position

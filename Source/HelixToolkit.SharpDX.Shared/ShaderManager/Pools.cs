@@ -2,7 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#define DEBUGRESOURCE
+//#define DEBUGRESOURCE
 using SharpDX;
 using SharpDX.Direct3D11;
 using System;
@@ -79,7 +79,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <typeparam name="TKEY"></typeparam>
     /// <typeparam name="TVALUE"></typeparam>
     /// <typeparam name="TDescription"></typeparam>
-    public abstract class ResourcePoolBase<TKEY, TVALUE, TDescription> : DisposeObject
+    public abstract class ResourcePoolBase<TKEY, TVALUE, TDescription> : DisposeObject where TVALUE : class
     {
         private readonly Dictionary<TKEY, TVALUE> pool = new Dictionary<TKEY, TVALUE>();
         /// <summary>
@@ -103,6 +103,7 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <returns></returns>
         public TVALUE Register(TDescription description)
         {
+            if (description == null) { return null; }
             TVALUE value;
             TKEY key = GetKey(ref description);
             if (pool.TryGetValue(key, out value))

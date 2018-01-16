@@ -6,18 +6,19 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using global::SharpDX;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Markup;
-    using System.Linq;
-    using System.Collections;
-
+    using Render;
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement3DCollection 
     /// </summary>
     [ContentProperty("Children")]
-    public abstract class GroupElement3D : Element3D //, IElement3DCollection
+    public abstract class GroupElement3D : Element3D
     {
         private IList<Element3D> itemsSourceInternal;
         /// <summary>
@@ -33,12 +34,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IList<Element3D>), typeof(GroupElement3D),
-                new AffectsRenderPropertyMetadata(null, 
+                new PropertyMetadata(null, 
                     (d, e) => {
                         (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
                     }));
 
-        public IEnumerable<Element3D> Items
+        public override IEnumerable<IRenderable> Items
         {
             get
             {
@@ -50,6 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get;
         } = new ObservableElement3DCollection();
+
 
         public GroupElement3D()
         {
@@ -84,7 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.AddLogicalChild(c);
                 }
 
-                c.Attach(renderHost);
+                c.Attach(RenderHost);
             }
         }
 
@@ -136,17 +138,33 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }        
 
-        protected override bool CanRender(IRenderContext context)
-        {
-            return IsAttached && isRenderingInternal && visibleInternal;
-        }
-
-        protected override void OnRender(IRenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             foreach (var c in this.Items)
             {
-                c.Render(context);
+                c.Render(context, deviceContext);
             }
+        }
+
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        {
+            bool hit = false;
+            foreach (var c in this.Items)
+            {
+                if (c is IHitable)
+                {
+                    if (((IHitable)c).HitTest(context, ray, ref hits))
+                    {
+                        hit = true;
+                    }
+                }
+            }
+            if (hit)
+            {
+                var pos = ray.Position;
+                hits = hits.OrderBy(x => Vector3.DistanceSquared(pos, x.PointHit)).ToList();
+            }
+            return hit;
         }
     }
 }

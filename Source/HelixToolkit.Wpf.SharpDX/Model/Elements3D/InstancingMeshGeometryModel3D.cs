@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Add octree manager to use octree hit test.
         /// </summary>
         public static readonly DependencyProperty OctreeManagerProperty = DependencyProperty.Register("OctreeManager",
-            typeof(IOctreeManager), typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null, (s, e) =>
+            typeof(IOctreeManagerWrapper), typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null, (s, e) =>
             {
                 var d = s as InstancingMeshGeometryModel3D;
                 if (e.OldValue != null)
@@ -31,6 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     d.AddLogicalChild(e.NewValue);
                 }
+                d.octreeManager = e.NewValue == null ? null : ((IOctreeManagerWrapper)e.NewValue).Manager;
             }));
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
             DependencyProperty.Register("InstanceParamArray", typeof(IList<InstanceParameter>), typeof(InstancingMeshGeometryModel3D), 
-                new AffectsRenderPropertyMetadata(null, InstancesParamChanged));
+                new PropertyMetadata(null, InstancesParamChanged));
 
         /// <summary>
         /// If bind to identifiers, hit test returns identifier as Tag in HitTestResult.
@@ -55,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public IOctreeManager OctreeManager
+        public IOctreeManagerWrapper OctreeManager
         {
             set
             {
@@ -63,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (IOctreeManager)GetValue(OctreeManagerProperty);
+                return (IOctreeManagerWrapper)GetValue(OctreeManagerProperty);
             }
         }
 
@@ -77,6 +78,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         #endregion
+
+        private bool isInstanceChanged = false;
+        protected IOctreeManager octreeManager { private set; get; }
+
         protected IElementsBufferModel<InstanceParameter> instanceParamBuffer = new InstanceParamsBufferModel<InstanceParameter>(InstanceParameter.SizeInBytes);
 
         private static void InstancesParamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -100,6 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (base.OnAttach(host))
             {
                 instanceParamBuffer.Initialize();
+                
                 return true;
             }
             else
@@ -114,77 +120,77 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        protected override void OnRender(IRenderContext context)
+        public override void UpdateNotRender()
         {
-            if (InstanceBuffer.Changed)
+            base.UpdateNotRender();
+            if (isInstanceChanged)
             {
                 BuildOctree();
+                isInstanceChanged = false;
             }
-            base.OnRender(context);
         }
 
-        protected override void UpdateInstancesBounds()
+        protected override void InstancesChanged()
         {
-            OctreeManager?.Clear();
-            base.UpdateInstancesBounds();
+            base.InstancesChanged();
+            octreeManager?.Clear();
+            isInstanceChanged = true;
         }
 
         private void BuildOctree()
         {
-            if (isHitTestVisibleInternal && InstanceBuffer.HasElements)
+            if (IsRenderable && InstanceBuffer.HasElements)
             {
-                OctreeManager?.RebuildTree(new Element3D[] { this });
+                octreeManager?.RebuildTree(Enumerable.Repeat<IRenderable>(this, 1));
             }
             else
             {
-                OctreeManager?.Clear();
+                octreeManager?.Clear();
             }
-        }
-
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return base.CanHitTest(context);
         }
 
         public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             bool isHit = false;
-            if (CanHitTest(context) && OctreeManager!=null && OctreeManager.Octree != null)
-            {
-                var boundHits = new List<HitTestResult>();             
-                isHit = OctreeManager.Octree.HitTest(context, this, ModelMatrix, rayWS, ref boundHits);
-                if (isHit)
+            if (CanHitTest(context))
+            {               
+                if (octreeManager != null && octreeManager.Octree != null)
                 {
-                    Matrix instanceMatrix;
-                    foreach (var hit in boundHits)
+                    var boundHits = new List<HitTestResult>();             
+                    isHit = octreeManager.Octree.HitTest(context, this, TotalModelMatrix, rayWS, ref boundHits);
+                    if (isHit)
                     {
-                        int instanceIdx = (int)hit.Tag;
-                        instanceMatrix = InstanceBuffer.Elements[instanceIdx];
-                        this.PushMatrix(instanceMatrix);
-                        var h = OnHitTest(context, rayWS, ref hits);
-                        isHit |= h;
-                        this.PopMatrix();
-                        if (h && hits.Count > 0)
+                        isHit = false;
+                        Matrix instanceMatrix;
+                        foreach (var hit in boundHits)
                         {
-                            var result = hits.Last();
-                            object tag = null;
-                            if (InstanceIdentifiers != null && InstanceIdentifiers.Count == InstanceBuffer.Elements.Count)
+                            int instanceIdx = (int)hit.Tag;
+                            instanceMatrix = InstanceBuffer.Elements[instanceIdx];
+                            var h = base.OnHitTest(context, TotalModelMatrix * instanceMatrix, ref rayWS, ref hits);
+                            isHit |= h;
+                            if (h && hits.Count > 0)
                             {
-                                tag = InstanceIdentifiers[instanceIdx];
+                                var result = hits.Last();
+                                object tag = null;
+                                if (InstanceIdentifiers != null && InstanceIdentifiers.Count == InstanceBuffer.Elements.Count)
+                                {
+                                    tag = InstanceIdentifiers[instanceIdx];
+                                }
+                                else
+                                {
+                                    tag = instanceIdx;
+                                }
+                                result.Tag = tag;
+                                hits[hits.Count - 1] = result;
                             }
-                            else
-                            {
-                                tag = instanceIdx;
-                            }
-                            result.Tag = tag;
-                            hits[hits.Count - 1] = result;
                         }
                     }
                 }
-            }
-            else
-            {
-                base.HitTest(context, rayWS, ref hits);
+                else
+                {
+                    isHit = base.HitTest(context, rayWS, ref hits);
+                }
+                
             }
             return isHit;
         }

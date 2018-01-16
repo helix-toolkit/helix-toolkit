@@ -11,14 +11,19 @@ namespace HelixToolkit.UWP.Core
 {
     using Shaders;
     using Utilities;
-    public interface IBillboardRenderParams
+    using Render;
+
+    public class BillboardRenderCore : GeometryRenderCore<PointLineModelStruct>, IBillboardRenderParams
     {
-        bool FixedSize { set; get; }
-        SamplerStateDescription SamplerDescription { set; get; }
-    }
-    public class BillboardRenderCore : GeometryRenderCore, IBillboardRenderParams
-    {
-        public bool FixedSize { set; get; } = true;
+        private bool fixedSize = true;
+        public bool FixedSize
+        {
+            set
+            {
+                SetAffectsRender(ref fixedSize, value);
+            }
+            get { return fixedSize; }
+        }
         private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerWrapAni4;
         /// <summary>
         /// Billboard texture sampler description
@@ -27,12 +32,14 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                samplerDescription = value;
-                if (textureSampler == null)
+                if(SetAffectsRender(ref samplerDescription, value))
                 {
-                    return;
+                    if (textureSampler == null)
+                    {
+                        return;
+                    }
+                    textureSampler.Description = value;
                 }
-                textureSampler.Description = value;
             }
             get
             {
@@ -50,6 +57,16 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public string ShaderTextureSamplerName { set; get; } = DefaultSamplerStateNames.BillboardTextureSampler;
 
+        private int shaderTextureSlot;
+        private int textureSamplerSlot;
+
+        protected override void OnDefaultPassChanged(IShaderPass pass)
+        {
+            base.OnDefaultPassChanged(pass);
+            shaderTextureSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
+            textureSamplerSlot = pass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
+        }
+
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if (base.OnAttach(technique))
@@ -63,28 +80,33 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
         {
-            base.OnUpdatePerModelStruct(ref model, context);
+            model.World = ModelMatrix * context.WorldMatrix;
+            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             model.BoolParams.X = FixedSize;
             var type = (GeometryBuffer as IBillboardBufferModel).Type;
             model.Params.X = (int)type;
         }
 
-        protected override void OnRender(IRenderContext context)
+        protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
-            DefaultShaderPass.BindShader(context.DeviceContext);
-            DefaultShaderPass.BindStates(context.DeviceContext, StateType.BlendState | StateType.DepthStencilState);
-            context.DeviceContext.Rasterizer.State = RasterState;
-            BindBillboardTexture(context.DeviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel));
-            OnDraw(context.DeviceContext, InstanceBuffer);
+            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
         }
+
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        {
+            DefaultShaderPass.BindShader(deviceContext);
+            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            BindBillboardTexture(deviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel));
+            OnDraw(deviceContext, InstanceBuffer);
+        }        
 
         protected virtual void BindBillboardTexture(DeviceContext context, IShader shader)
         {
             var buffer = GeometryBuffer as IBillboardBufferModel;
-            shader.BindTexture(context, ShaderTextureName, buffer.TextureView);
-            shader.BindSampler(context, ShaderTextureSamplerName, textureSampler);
+            shader.BindTexture(context, shaderTextureSlot, buffer.TextureView);
+            shader.BindSampler(context, textureSamplerSlot, textureSampler);
         }
 
         protected override void OnDraw(DeviceContext context, IElementsBufferModel instanceModel)
