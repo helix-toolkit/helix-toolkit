@@ -442,7 +442,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             if (swapChain == null || swapChain.IsDisposed)
             {
-                swapChain = Collect(CreateSwapChain(surfacePtr));
+                swapChain = CreateSwapChain(surfacePtr);
             }
             else
             {
@@ -450,7 +450,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
             colorBuffer = Collect(Texture2D.FromSwapChain<Texture2D>(swapChain, 0));
             var sampleDesc = swapChain.Description1.SampleDescription;
-            colorBufferView = new RenderTargetView(Device, colorBuffer);
+            colorBufferView = Collect(new RenderTargetView(Device, colorBuffer));
             var depthdesc = new Texture2DDescription
             {
                 BindFlags = BindFlags.DepthStencil,
@@ -465,8 +465,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 CpuAccessFlags = CpuAccessFlags.None,
                 ArraySize = 1,
             };
-            depthStencilBuffer = new Texture2D(Device, depthdesc);
-            depthStencilBufferView = new DepthStencilView(Device, depthStencilBuffer);
+            depthStencilBuffer = Collect(new Texture2D(Device, depthdesc));
+            depthStencilBufferView = Collect(new DepthStencilView(Device, depthStencilBuffer));
 
             d2dControls = Collect(new D2DControlWrapper());
             d2dControls.Initialize(swapChain);
@@ -571,6 +571,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
                 return false;
             }
+        }
+
+        public override void DisposeAndClear()
+        {
+            base.DisposeAndClear();
+            Disposer.RemoveAndDispose(ref swapChain);
         }
     }
 }

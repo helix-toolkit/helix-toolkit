@@ -114,6 +114,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 parentWindow = FindVisualAncestor<Window>(this);
                 if (parentWindow != null)
                 {
+                    parentWindow.Closed -= ParentWindow_Closed;
                     parentWindow.Closed += ParentWindow_Closed;
                 }
                 StartD3D();
