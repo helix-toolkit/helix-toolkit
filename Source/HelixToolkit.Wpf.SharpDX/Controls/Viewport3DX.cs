@@ -233,8 +233,8 @@ namespace HelixToolkit.Wpf.SharpDX
                             yield return item;
                         }
                     }                  
-                    //yield return viewCube;
-                    //yield return coordinateView;
+                    yield return viewCube;
+                    yield return coordinateView;
                 }
             }
         }
