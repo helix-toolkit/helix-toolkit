@@ -78,6 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public IRenderHost RenderHost { private set; get; }
         private DX11ImageSource surfaceD3D;
+        private Window parentWindow;
 
         /// <summary>
         /// Fired whenever an exception occurred on this object.
@@ -99,6 +100,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
+            RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
+            RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
+            RenderHost.OnNewRenderTargetTexture += RenderHost_OnNewRenderTargetTexture;
         }
 
         /// <summary>
@@ -114,6 +118,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             try
             {
+                parentWindow = FindVisualAncestor<Window>(this);
+                if (parentWindow != null)
+                {
+                    parentWindow.Closed += ParentWindow_Closed;
+                }
                 StartD3D();
             }
             catch (Exception ex)
@@ -130,6 +139,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private void ParentWindow_Closed(object sender, EventArgs e)
+        {
+            EndD3D();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -141,7 +155,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
+            if(parentWindow != null)
+            {
+                parentWindow.Closed -= ParentWindow_Closed;
+            }
             EndD3D();
         }
 
@@ -149,27 +166,34 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         private bool StartD3D()
-        {
-            CreateSurfaceD3D();            
-            RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
-            RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
-            RenderHost.OnNewRenderTargetTexture += RenderHost_OnNewRenderTargetTexture;           
+        {                   
             RenderHost.StartD3D(ActualWidth, ActualHeight);
             return true;
         }
 
+        private Texture2D currentTexture;
+
         private void RenderHost_OnNewRenderTargetTexture(object sender, Texture2D e)
         {
-            surfaceD3D.SetRenderTargetDX11(e);
+            currentTexture = e;
+            if (surfaceD3D != null)
+            {
+                surfaceD3D.SetRenderTargetDX11(e);
+            }
         }
 
         private void RenderHost_StopRenderLoop(object sender, bool e)
         {
             CompositionTarget.Rendering -= CompositionTarget_Rendering;
+            DisposeSurfaceD3D();
         }
 
         private void RenderHost_StartRenderLoop(object sender, bool e)
         {
+            DisposeSurfaceD3D();
+            CreateSurfaceD3D();
+            surfaceD3D.SetRenderTargetDX11(currentTexture);
+            CompositionTarget.Rendering -= CompositionTarget_Rendering;
             CompositionTarget.Rendering += CompositionTarget_Rendering;
         }
 
@@ -184,8 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void EndD3D()
         {
-            DisposeSurfaceD3D();
-            RenderHost.EndD3D();
+            RenderHost.EndD3D();           
         }
 
         private void DisposeSurfaceD3D()
@@ -287,6 +310,26 @@ namespace HelixToolkit.Wpf.SharpDX
                 ExceptionOccurred(this, args);
                 return args.Handled;
             }
+        }
+
+        public static T FindVisualAncestor<T>(DependencyObject obj) where T : DependencyObject
+        {
+            if (obj != null)
+            {
+                var parent = System.Windows.Media.VisualTreeHelper.GetParent(obj);
+                while (parent != null)
+                {
+                    var typed = parent as T;
+                    if (typed != null)
+                    {
+                        return typed;
+                    }
+
+                    parent = System.Windows.Media.VisualTreeHelper.GetParent(parent);
+                }
+            }
+
+            return null;
         }
     }
 }

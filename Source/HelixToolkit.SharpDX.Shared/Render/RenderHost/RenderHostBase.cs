@@ -131,11 +131,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             set
             {
+                var currentManager = effectsManager;
                 if (Set(ref effectsManager, value))
                 {
-                    RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
-                    if (IsInitialized)
-                    { Restart(false); }
+                    if (currentManager != null)
+                    {
+                        currentManager.OnDisposeResources -= OnManagerDisposed;
+                    }
+                    if (effectsManager != null)
+                    {
+                        effectsManager.OnDisposeResources += OnManagerDisposed;
+                        RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
+                        if (IsInitialized)
+                        { Restart(false); }
+                    }
+                    else
+                    {
+                        RenderTechnique = null;
+                    }
                 }
             }
             get
@@ -143,6 +156,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 return effectsManager;
             }
         }
+
         /// <summary>
         /// Gets or sets the render technique.
         /// </summary>
@@ -325,6 +339,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Occurs when [stop render loop].
         /// </summary>
         public event EventHandler<bool> StopRenderLoop;
+        /// <summary>
+        /// Occurs when [on new render target texture].
+        /// </summary>
+        public event EventHandler<Texture2D> OnNewRenderTargetTexture;
 
         private readonly Func<Device, IRenderer> createRendererFunction;
         #endregion
@@ -508,9 +526,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected void CreateAndBindBuffers()
         {
+            RemoveAndDispose(ref renderBuffer);
             renderBuffer = Collect(CreateRenderBuffer());
             renderBuffer.OnNewBufferCreated += RenderBuffer_OnNewBufferCreated;
             renderBuffer.OnDeviceLost += RenderBuffer_OnDeviceLost;
+
+            RemoveAndDispose(ref renderer);
             renderer = Collect(CreateRenderer());
             OnInitializeBuffers(renderBuffer, renderer);
         }
@@ -588,6 +609,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             DetachRenderable();
             DisposeBuffers();
         }
+
+        private void OnManagerDisposed(object sender, bool args)
+        {
+            EndD3D();
+        }
         /// <summary>
         /// Stops the rendering.
         /// </summary>
@@ -604,6 +630,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (renderBuffer != null)
             {
                 renderBuffer.OnNewBufferCreated -= RenderBuffer_OnNewBufferCreated;
+                renderBuffer.OnDeviceLost -= RenderBuffer_OnDeviceLost;
             }
             RemoveAndDispose(ref renderer);
             RemoveAndDispose(ref renderBuffer);
@@ -645,10 +672,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             SetDefaultRenderTargets(Device.ImmediateContext, clear);
         }
-        /// <summary>
-        /// Occurs when [on new render target texture].
-        /// </summary>
-        public event EventHandler<Texture2D> OnNewRenderTargetTexture;
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
@@ -656,6 +680,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected override void Dispose(bool disposeManagedResources)
         {
             IsInitialized = false;
+            OnNewRenderTargetTexture = null;
+            ExceptionOccurred = null;
+            StartRenderLoop = null;
+            StopRenderLoop = null;
             base.Dispose(disposeManagedResources);
         }
     }

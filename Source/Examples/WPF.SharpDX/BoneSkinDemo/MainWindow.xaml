@@ -16,7 +16,7 @@
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             ShowFrameRate="True" IsShadowMappingEnabled="True"
-            TextBrush="Black"
+            TextBrush="Black" EnableSwapChainRendering="True"
             UseDefaultGestures="False" EffectsManager="{Binding EffectsManager}">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -30,13 +30,13 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:ShadowMap3D></hx:ShadowMap3D>
+            <!--<hx:ShadowMap3D></hx:ShadowMap3D>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
             <hx:BoneSkinMeshGeometryModel3D FillMode="{Binding FillMode}" CullMode="Back"
                 Geometry="{Binding Model}" Instances="{Binding Instances}" IsThrowingShadow="True" RenderShadowMap="True"
                 Material="{Binding Material}" VertexBoneIds="{Binding VertexBoneParams}" BoneMatrices="{Binding Bones}" />
-            <hx:MeshGeometryModel3D Geometry="{Binding FloorModel}" RenderShadowMap="True" Material="{Binding FloorMaterial}"/>
+            <hx:MeshGeometryModel3D Geometry="{Binding FloorModel}" RenderShadowMap="True" Material="{Binding FloorMaterial}"/>-->
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"

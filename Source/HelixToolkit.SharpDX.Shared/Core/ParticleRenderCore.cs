@@ -545,7 +545,7 @@ namespace HelixToolkit.UWP.Core
 
         private void DisposeBuffers()
         {
-            particleCountGSIABuffer.Dispose();
+            particleCountGSIABuffer.DisposeAndClear();
 #if OUTPUTDEBUGGING
             RemoveAndDispose(ref particleCountStaging);
 #endif
@@ -629,7 +629,7 @@ namespace HelixToolkit.UWP.Core
 
             UpdateTime(context, ref totalElapsed);
             //Set correct instance count from instance buffer
-            drawArgument.InstanceCount = InstanceBuffer == null || !InstanceBuffer.HasElements ? 1 : (uint)InstanceBuffer.Buffer.Count;
+            drawArgument.InstanceCount = InstanceBuffer == null || !InstanceBuffer.HasElements ? 1 : (uint)InstanceBuffer.Buffer.ElementCount;
             //Upload the draw argument
             particleCountGSIABuffer.UploadDataToBuffer(deviceContext, ref drawArgument);
 

@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnDetach()
         {
-            bonesBufferModel.Dispose();
+            bonesBufferModel.DisposeAndClear();
             base.OnDetach();
         }
 

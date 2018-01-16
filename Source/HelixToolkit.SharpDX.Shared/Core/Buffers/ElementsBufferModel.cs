@@ -78,6 +78,14 @@ namespace HelixToolkit.UWP.Core
             Initialized = false;
             base.Dispose(disposeManagedResources);
         }
+        /// <summary>
+        /// Disposes the internal resources. Object is reusable.
+        /// </summary>
+        public override void DisposeAndClear()
+        {
+            Initialized = false;
+            base.DisposeAndClear();
+        }
     }
 
     public class MatrixInstanceBufferModel : ElementsBufferModel<Matrix>

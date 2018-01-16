@@ -106,7 +106,7 @@ namespace HelixToolkit.UWP
         /// <remarks>
         /// To completely dispose this instance and avoid further dispose, use <see cref="Dispose"/> method instead.
         /// </remarks>
-        public void DisposeAndClear()
+        public virtual void DisposeAndClear()
         {
             foreach(var valueToDispose in disposables)
             {

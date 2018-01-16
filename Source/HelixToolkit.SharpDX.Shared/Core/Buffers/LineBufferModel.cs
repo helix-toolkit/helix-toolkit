@@ -41,7 +41,7 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                buffer.Dispose();
+                buffer.DisposeAndClear();
             }
         }
 
@@ -53,7 +53,7 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                buffer.Dispose();
+                buffer.DisposeAndClear();
             }
         }
     }

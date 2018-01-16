@@ -21,7 +21,8 @@ namespace HelixToolkit.UWP
     /// Shader and Technique manager
     /// </summary>
     public abstract class EffectsManager : DisposeObject, IEffectsManager
-    {       
+    {
+        public event EventHandler<bool> OnDisposeResources;
         /// <summary>
         /// The minimum supported feature level.
         /// </summary>
@@ -260,6 +261,7 @@ namespace HelixToolkit.UWP
         /// <param name="disposeManagedResources"></param>
         protected override void Dispose(bool disposeManagedResources)
         {
+            OnDisposeResources?.Invoke(this, true);
             techniqueDict.Clear();
             base.Dispose(disposeManagedResources);
             Initialized = false;
@@ -276,6 +278,7 @@ namespace HelixToolkit.UWP
         public void OnDeviceError()
         {
             techniqueDict.Clear();
+            OnDisposeResources?.Invoke(this, true);
             this.DisposeAndClear();
             Disposer.RemoveAndDispose(ref device);
             Initialized = false;
@@ -292,13 +295,13 @@ namespace HelixToolkit.UWP
             Console.WriteLine(global::SharpDX.Diagnostics.ObjectTracker.ReportActiveObjects());
             var liveObjects = global::SharpDX.Diagnostics.ObjectTracker.FindActiveObjects();
             Console.WriteLine($"Live object count = {liveObjects.Count}");
-            if (liveObjects.Count != 0)
-            {
-                foreach(var obj in liveObjects)
-                {
-                    Console.WriteLine(obj.ToString());
-                }
-            }
+            //if (liveObjects.Count != 0)
+            //{
+            //    foreach(var obj in liveObjects)
+            //    {
+            //        Console.WriteLine(obj.ToString());
+            //    }
+            //}
         }
 #endif
     }

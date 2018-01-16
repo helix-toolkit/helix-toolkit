@@ -132,7 +132,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The adorner layer.
         /// </summary>
-        private AdornerDecorator adornerLayer;
+        //private AdornerDecorator adornerLayer;
 
         /// <summary>
         /// The camera controller.
@@ -233,8 +233,8 @@ namespace HelixToolkit.Wpf.SharpDX
                             yield return item;
                         }
                     }                  
-                    yield return viewCube;
-                    yield return coordinateView;
+                    //yield return viewCube;
+                    //yield return coordinateView;
                 }
             }
         }
@@ -257,6 +257,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public IRenderHost RenderHost { get { return this.renderHostInternal; } }
 
+        private Window parentWindow;
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
@@ -1198,12 +1199,21 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 this.hasBeenLoadedBefore = true;
             }
-
+            parentWindow = FindVisualAncestor<Window>(this);
+            if (parentWindow != null)
+            {
+                parentWindow.Closed += ParentWindow_Closed;
+            }
             this.SubscribeToRenderingEvent();
             if (this.ZoomExtentsWhenLoaded)
             {
                 this.ZoomExtents();
             }
+        }
+
+        private void ParentWindow_Closed(object sender, EventArgs e)
+        {
+            this.UnsubscribeRenderingEvent();
         }
 
         /// <summary>
@@ -1218,6 +1228,10 @@ namespace HelixToolkit.Wpf.SharpDX
         private void ControlUnloaded(object sender, RoutedEventArgs e)
         {
             this.UnsubscribeRenderingEvent();
+            if (parentWindow != null)
+            {
+                parentWindow.Closed -= ParentWindow_Closed;
+            }
         }
 
         /// <summary>
@@ -1696,6 +1710,26 @@ namespace HelixToolkit.Wpf.SharpDX
                 renderHostInternal.IsRendering = (Visibility)e.NewValue == Visibility.Visible;
             }
             base.OnPropertyChanged(e);
+        }
+
+        public static T FindVisualAncestor<T>(DependencyObject obj) where T : DependencyObject
+        {
+            if (obj != null)
+            {
+                var parent = System.Windows.Media.VisualTreeHelper.GetParent(obj);
+                while (parent != null)
+                {
+                    var typed = parent as T;
+                    if (typed != null)
+                    {
+                        return typed;
+                    }
+
+                    parent = System.Windows.Media.VisualTreeHelper.GetParent(parent);
+                }
+            }
+
+            return null;
         }
     }
 }

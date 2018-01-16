@@ -35,6 +35,10 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="count"></param>
         /// <param name="offset"></param>
         void UploadDataToBuffer<T>(DeviceContext context, IList<T> data, int count, int offset) where T : struct;
+        /// <summary>
+        /// <see cref="DisposeObject.DisposeAndClear"/>
+        /// </summary>
+        void DisposeAndClear();
     }
     /// <summary>
     /// 
@@ -77,7 +81,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="offset"></param>
         public void UploadDataToBuffer<T>(DeviceContext context, IList<T> data, int count, int offset) where T : struct
         {
-            Disposer.RemoveAndDispose(ref buffer);
+            RemoveAndDispose(ref buffer);
             var buffdesc = new BufferDescription()
             {
                 BindFlags = this.BindFlags,
@@ -87,8 +91,8 @@ namespace HelixToolkit.UWP.Utilities
                 StructureByteStride = StructureSize,
                 Usage = ResourceUsage.Immutable
             };
-            buffer = Buffer.Create(context.Device, data.GetArrayByType(), buffdesc);
-            Count = count;
+            buffer = Collect(Buffer.Create(context.Device, data.GetArrayByType(), buffdesc));
+            ElementCount = count;
         }
     }
 
@@ -134,10 +138,10 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="offset"></param>
         public void UploadDataToBuffer<T>(DeviceContext context, IList<T> data, int count, int offset) where T : struct
         {
-            Count = count;
+            ElementCount = count;
             if (buffer == null || buffer.Description.SizeInBytes < StructureSize * count)
             {
-                Disposer.RemoveAndDispose(ref buffer);
+                RemoveAndDispose(ref buffer);
                 var buffdesc = new BufferDescription()
                 {
                     BindFlags = this.BindFlags,
@@ -147,7 +151,7 @@ namespace HelixToolkit.UWP.Utilities
                     StructureByteStride = StructureSize,
                     Usage = ResourceUsage.Dynamic
                 };
-                buffer = SDX11::Buffer.Create(context.Device, data.GetArrayByType(), buffdesc);
+                buffer = Collect(SDX11::Buffer.Create(context.Device, data.GetArrayByType(), buffdesc));
             }
             else
             {

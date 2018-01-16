@@ -254,6 +254,10 @@ namespace HelixToolkit.UWP.Model
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             needUpdate = true;
+            if(IsDisposed)
+            {
+                return;
+            }
             if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseMap)))
             {
                 CreateTextureView((sender as IPhongMaterial).DiffuseMap, TextureResources[DiffuseIdx]);
@@ -448,7 +452,7 @@ namespace HelixToolkit.UWP.Model
         /// <param name="disposeManagedResources"></param>
         protected override void Dispose(bool disposeManagedResources)
         {
-            this.material = null;
+            this.Material = null;
             TextureResources = null;
             SamplerResources = null;
             TextureBindingMap = null;

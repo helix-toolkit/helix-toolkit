@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP
     {
         event EventHandler<bool> OnElementChanged;
         bool HasElements { get; }
+        void DisposeAndClear();
     }
 
     public interface IElementsBufferModel<T> : IElementsBufferModel

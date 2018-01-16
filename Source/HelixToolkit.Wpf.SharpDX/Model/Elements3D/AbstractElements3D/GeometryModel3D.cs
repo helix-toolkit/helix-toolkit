@@ -9,19 +9,13 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System.Linq;
-    using System.Windows;
-    using System.Collections.Generic;
-
+    using Core;
     using global::SharpDX;
     using global::SharpDX.Direct3D11;
-
-    using Point = System.Windows.Point;
-    using System.ComponentModel;
-    using System.Diagnostics;
     using System;
-    using System.Runtime.CompilerServices;
-    using Core;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Windows;
 
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
@@ -463,7 +457,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnDetach()
         {
             DetachOnGeometryPropertyChanged();
-            InstanceBuffer.Dispose();
+            InstanceBuffer.DisposeAndClear();
             Disposer.RemoveAndDispose(ref bufferModelInternal);
             base.OnDetach();
         }

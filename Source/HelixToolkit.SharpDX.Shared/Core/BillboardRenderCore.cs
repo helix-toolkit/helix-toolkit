@@ -119,7 +119,7 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                context.DrawInstanced(vertexCount, instanceModel.Buffer.Count, 0, 0);
+                context.DrawInstanced(vertexCount, instanceModel.Buffer.ElementCount, 0, 0);
             }
         }
     }

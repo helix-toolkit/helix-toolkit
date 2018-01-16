@@ -77,5 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Called when [device error].
         /// </summary>
         void OnDeviceError();
+
+        event EventHandler<bool> OnDisposeResources;
     }
 }

@@ -65,6 +65,10 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="context"></param>
         /// <param name="writeFunc"></param>
         void UploadDataToBuffer(DeviceContext context, Action<DataStream> writeFunc);
+        /// <summary>
+        /// Disposes the buffer. Reuse the object
+        /// </summary>
+        void DisposeAndClear();
     }
 
     /// <summary>
@@ -132,7 +136,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="device"></param>
         public void CreateBuffer(Device device)
         {
-            buffer = new SDX11.Buffer(device, bufferDesc);
+            buffer = Collect(new SDX11.Buffer(device, bufferDesc));
         }
 
         /// <summary>
@@ -240,9 +244,9 @@ namespace HelixToolkit.UWP.Utilities
             {
                 throw new ArgumentException("Constant buffer struct size must be multiple of 16 bytes");
             }
-            Disposer.RemoveAndDispose(ref buffer);
+            RemoveAndDispose(ref buffer);
             bufferDesc.SizeInBytes = structSize;            
-            buffer = new SDX11.Buffer(device, bufferDesc);
+            buffer = Collect(new SDX11.Buffer(device, bufferDesc));
         }
     }
 }

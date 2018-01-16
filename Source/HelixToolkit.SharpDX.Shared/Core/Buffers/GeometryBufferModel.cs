@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// General Geometry Buffer Model.
     /// </summary>
-    public abstract class GeometryBufferModel : ResourceSharedObject, IGUID, IGeometryBufferModel
+    public abstract class GeometryBufferModel : DisposeObject, IGUID, IGeometryBufferModel
     {
         public Guid GUID { get; } = Guid.NewGuid();
 
@@ -135,6 +135,12 @@ namespace HelixToolkit.UWP.Core
                 context.InputAssembler.SetVertexBuffers(vertexBufferSlot, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, VertexBuffer.Offset));
             }
             return true;
+        }
+
+        protected override void Dispose(bool disposeManagedResources)
+        {
+            InvalidateRenderer = null;
+            base.Dispose(disposeManagedResources);
         }
 
         /// <summary>

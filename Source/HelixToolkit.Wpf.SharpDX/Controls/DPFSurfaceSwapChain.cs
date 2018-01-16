@@ -70,7 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public IRenderHost RenderHost { private set; get; }
         private RenderControl surfaceD3D;
-
+        private Window parentWindow;
         /// <summary>
         /// Fired whenever an exception occurred on this object.
         /// </summary>
@@ -94,6 +94,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
+            RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
+            RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
         }
 
         /// <summary>
@@ -109,6 +111,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             try
             {
+                parentWindow = FindVisualAncestor<Window>(this);
+                if (parentWindow != null)
+                {
+                    parentWindow.Closed += ParentWindow_Closed;
+                }
                 StartD3D();
             }
             catch (Exception ex)
@@ -136,7 +143,15 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
+            if (parentWindow != null)
+            {
+                parentWindow.Closed -= ParentWindow_Closed;
+            }
+            EndD3D();
+        }
 
+        private void ParentWindow_Closed(object sender, EventArgs e)
+        {
             EndD3D();
         }
 
@@ -145,8 +160,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private bool StartD3D()
         {
-            RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
-            RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
             RenderHost.StartD3D(ActualWidth, ActualHeight);
             return true;
         }
@@ -158,6 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void RenderHost_StartRenderLoop(object sender, bool e)
         {
+            CompositionTarget.Rendering -= CompositionTarget_Rendering;
             CompositionTarget.Rendering += CompositionTarget_Rendering;
         }
 
@@ -256,6 +270,26 @@ namespace HelixToolkit.Wpf.SharpDX
                 ExceptionOccurred(this, args);
                 return args.Handled;
             }
+        }
+
+        public static T FindVisualAncestor<T>(DependencyObject obj) where T : DependencyObject
+        {
+            if (obj != null)
+            {
+                var parent = System.Windows.Media.VisualTreeHelper.GetParent(obj);
+                while (parent != null)
+                {
+                    var typed = parent as T;
+                    if (typed != null)
+                    {
+                        return typed;
+                    }
+
+                    parent = System.Windows.Media.VisualTreeHelper.GetParent(parent);
+                }
+            }
+
+            return null;
         }
     }
 }

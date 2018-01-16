@@ -163,7 +163,7 @@ namespace HelixToolkit.UWP.Core
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
             DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);
             DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, textureSamplerSlot, textureSampler);
-            deviceContext.DeviceContext.Draw(GeometryBuffer.VertexBuffer.Count, 0);
+            deviceContext.DeviceContext.Draw(GeometryBuffer.VertexBuffer.ElementCount, 0);
         }
 
         protected override void OnUpdatePerModelStruct(ref int model, IRenderContext context)

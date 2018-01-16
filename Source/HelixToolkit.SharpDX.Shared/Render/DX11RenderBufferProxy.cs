@@ -393,6 +393,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected override void Dispose(bool disposeManagedResources)
         {
             OnNewBufferCreated = null;
+            OnDeviceLost = null;
             Initialized = false;
             base.Dispose(disposeManagedResources);
         }
