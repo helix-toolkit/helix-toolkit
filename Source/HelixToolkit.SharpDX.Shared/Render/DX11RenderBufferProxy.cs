@@ -26,6 +26,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public event EventHandler<Texture2D> OnNewBufferCreated;
         /// <summary>
+        /// Occurs when [on device lost].
+        /// </summary>
+        public event EventHandler<bool> OnDeviceLost;
+        /// <summary>
         /// The color buffer
         /// </summary>
         protected Texture2D colorBuffer;
@@ -392,6 +396,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             Initialized = false;
             base.Dispose(disposeManagedResources);
         }
+
+        #region ERROR HANDLING        
+        /// <summary>
+        /// Raises the on device lost.
+        /// </summary>
+        protected void RaiseOnDeviceLost()
+        {
+            OnDeviceLost?.Invoke(this, true);
+        }
+        #endregion
     }
     /// <summary>
     /// 
@@ -399,14 +413,30 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     public class DX11SwapChainRenderBufferProxy : DX11RenderBufferProxy
     {
         private SwapChain1 swapChain;
+        /// <summary>
+        /// Gets the swap chain.
+        /// </summary>
+        /// <value>
+        /// The swap chain.
+        /// </value>
         public SwapChain1 SwapChain { get { return swapChain; } }
 
         private System.IntPtr surfacePtr;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DX11SwapChainRenderBufferProxy"/> class.
+        /// </summary>
+        /// <param name="surfacePointer">The surface pointer.</param>
+        /// <param name="device">The device.</param>
         public DX11SwapChainRenderBufferProxy(System.IntPtr surfacePointer, Device device) : base(device)
         {
             surfacePtr = surfacePointer;
         }
-
+        /// <summary>
+        /// Called when [create render target and depth buffers].
+        /// </summary>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <returns></returns>
         protected override Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height)
         {
             if (swapChain == null || swapChain.IsDisposed)
@@ -529,7 +559,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
             else
             {
-                swapChain.Present(0, PresentFlags.Restart, presentParams);
+                var desc = ResultDescriptor.Find(res);
+                if(desc == global::SharpDX.DXGI.ResultCode.DeviceRemoved || desc == global::SharpDX.DXGI.ResultCode.DeviceReset || desc == global::SharpDX.DXGI.ResultCode.DeviceHung)
+                {
+                    RaiseOnDeviceLost();
+                }
+                else 
+                {
+                    swapChain.Present(0, PresentFlags.Restart, presentParams);
+                }
                 return false;
             }
         }

@@ -394,10 +394,19 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     }
                     renderBuffer.Present();
                 }
-                catch (Exception ex)
+                catch (SharpDXException ex)
+                {
+                    var desc = ResultDescriptor.Find(ex.ResultCode);
+                    if (desc == global::SharpDX.DXGI.ResultCode.DeviceRemoved || desc == global::SharpDX.DXGI.ResultCode.DeviceReset 
+                        || desc == global::SharpDX.DXGI.ResultCode.DeviceHung || desc == global::SharpDX.Direct2D1.ResultCode.RecreateTarget)
+                    {
+                        RenderBuffer_OnDeviceLost(RenderBuffer, true);
+                    }
+                }
+                catch(Exception ex)
                 {
                     EndD3D();
-                    ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
+                    ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));  
                 }
                 finally
                 {
@@ -474,7 +483,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public void StartD3D(double width, double height)
         {
-            if (EffectsManager == null)
+            if (EffectsManager == null || EffectsManager.Device == null || EffectsManager.Device.IsDisposed)
             {
                 return;
             }
@@ -501,8 +510,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             renderBuffer = Collect(CreateRenderBuffer());
             renderBuffer.OnNewBufferCreated += RenderBuffer_OnNewBufferCreated;
+            renderBuffer.OnDeviceLost += RenderBuffer_OnDeviceLost;
             renderer = Collect(CreateRenderer());
             OnInitializeBuffers(renderBuffer, renderer);
+        }
+
+        private void RenderBuffer_OnDeviceLost(object sender, bool e)
+        {
+            EndD3D();
+            EffectsManager?.OnDeviceError();
+            StartD3D(ActualWidth, ActualHeight);
         }
 
         /// <summary>
