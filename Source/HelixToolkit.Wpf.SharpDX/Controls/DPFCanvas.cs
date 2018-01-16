@@ -121,6 +121,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 parentWindow = FindVisualAncestor<Window>(this);
                 if (parentWindow != null)
                 {
+                    parentWindow.Closed -= ParentWindow_Closed;
                     parentWindow.Closed += ParentWindow_Closed;
                 }
                 StartD3D();
@@ -190,7 +191,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void RenderHost_StartRenderLoop(object sender, bool e)
         {
-            DisposeSurfaceD3D();
             CreateSurfaceD3D();
             surfaceD3D.SetRenderTargetDX11(currentTexture);
             CompositionTarget.Rendering -= CompositionTarget_Rendering;
@@ -216,6 +216,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (surfaceD3D != null)
             {
                 surfaceD3D.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
+                surfaceD3D.SetRenderTargetDX11(null);
                 Source = null;
                 Disposer.RemoveAndDispose(ref surfaceD3D);
             }
@@ -223,6 +224,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void CreateSurfaceD3D()
         {
+            DisposeSurfaceD3D();
             surfaceD3D = new DX11ImageSource(RenderHost.EffectsManager.AdapterIndex);
             surfaceD3D.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
             Source = surfaceD3D;

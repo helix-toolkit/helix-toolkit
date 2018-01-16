@@ -323,5 +323,12 @@ namespace BoneSkinDemo
             binding.Mode = mode;
             BindingOperations.SetBinding(dobj, property, binding);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            timer.Stop();
+            timer.Tick -= this.Timer_Tick;
+            base.Dispose(disposing);
+        }
     }
 }

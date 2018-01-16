@@ -124,20 +124,19 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 Windowed = true,
                 SwapEffect = SwapEffect.Discard,
-                DeviceWindowHandle = GetDesktopWindow(),
+                //DeviceWindowHandle = GetDesktopWindow(),
                 PresentationInterval = PresentInterval.Default,
                 BackBufferHeight = 1, BackBufferWidth = 1, BackBufferFormat = Format.Unknown
             };
                         
             device = new DeviceEx(context, this.adapterIndex, DeviceType.Hardware, IntPtr.Zero, CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded | CreateFlags.FpuPreserve, presentparams);
-            presentparams.DeviceWindowHandle = IntPtr.Zero;
         }
 
         private void EndD3D()
         {
-            Disposer.RemoveAndDispose(ref this.renderTarget);
+            Disposer.RemoveAndDispose(ref this.renderTarget);                
             Disposer.RemoveAndDispose(ref device);
-            Disposer.RemoveAndDispose(ref context);            
+            Disposer.RemoveAndDispose(ref context);               
         }
 
         private static IntPtr GetSharedHandle(Texture2D sharedTexture)
