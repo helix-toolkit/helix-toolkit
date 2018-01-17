@@ -10,38 +10,14 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using global::SharpDX;
-    using global::SharpDX.Direct3D11;
     using HelixToolkit.Wpf.SharpDX.Controls;
     using Render;
     using System;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Windows;
-    using System.Windows.Controls;
     using System.Windows.Media;
     using System.Windows.Threading;
     using Utilities;
-
-    // ---- BASED ON ORIGNAL CODE FROM -----
-    // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
-    // 
-    // Permission is hereby granted, free of charge, to any person obtaining a copy
-    // of this software and associated documentation files (the "Software"), to deal
-    // in the Software without restriction, including without limitation the rights
-    // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    // copies of the Software, and to permit persons to whom the Software is
-    // furnished to do so, subject to the following conditions:
-    // 
-    // The above copyright notice and this permission notice shall be included in
-    // all copies or substantial portions of the Software.
-    // 
-    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    // THE SOFTWARE.
 
     /// <summary>
     /// 
@@ -62,15 +38,17 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private IRenderHost renderHost;
         /// <summary>
         /// Gets or sets the render host.
         /// </summary>
         /// <value>
         /// The render host.
         /// </value>
-        public IRenderHost RenderHost { private set; get; }
+        public IRenderHost RenderHost { get { return renderHost; } }
         private RenderControl surfaceD3D;
         private Window parentWindow;
+        private readonly bool deferredRendering;
         /// <summary>
         /// Fired whenever an exception occurred on this object.
         /// </summary>
@@ -81,19 +59,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public DPFSurfaceSwapChain(bool deferredRendering = false)
         {
+            Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
             surfaceD3D = new RenderControl();
             Child = surfaceD3D;
             if (deferredRendering)
             {
-                RenderHost = new SwapChainRenderHost(surfaceD3D.Handle,
+                renderHost = new SwapChainRenderHost(surfaceD3D.Handle,
                     (device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); });
             }
             else
             {
-                RenderHost = new SwapChainRenderHost(surfaceD3D.Handle);
+                renderHost = new SwapChainRenderHost(surfaceD3D.Handle);
             }
-            Loaded += OnLoaded;
-            Unloaded += OnUnloaded;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
         }
@@ -185,36 +163,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         private void EndD3D()
-        {            
-            RenderHost.EndD3D();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnIsFrontBufferAvailableChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Debug.WriteLine($"OnIsFrontBufferAvailableChanged: {(bool)e.NewValue}");
-            // this fires when the screensaver kicks in, the machine goes into sleep or hibernate
-            // and any other catastrophic losses of the d3d device from WPF's point of view
-            if (true.Equals(e.NewValue))
-            {
-                try
-                {
-                    // Try to recover from DeviceRemoved/DeviceReset
-                    EndD3D();
-                    StartD3D();
-                }
-                catch (Exception ex)
-                {
-                    if (!HandleExceptionOccured(ex))
-                    {
-                        MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
-                    }
-                }
-            }
+            renderHost?.EndD3D();
         }
 
         private DispatcherOperation resizeOperation = null;
@@ -234,7 +184,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     try
                     {
-                        RenderHost.Resize(ActualWidth, ActualHeight);
+                        RenderHost?.Resize(ActualWidth, ActualHeight);
                     }
                     catch (Exception ex)
                     {

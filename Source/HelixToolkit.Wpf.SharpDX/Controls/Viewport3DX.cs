@@ -232,7 +232,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             yield return item;
                         }
-                    }                  
+                    }
                     yield return viewCube;
                     yield return coordinateView;
                 }
@@ -315,8 +315,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
 
             this.Loaded += this.ControlLoaded;
-            this.Unloaded += this.ControlUnloaded;
-            FormMouseMove += Viewport3DX_FormMouseMove;
+            this.Unloaded += this.ControlUnloaded;            
 
             AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
         }
@@ -585,6 +584,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.cameraController?.ActualCamera?.LookAt(p, direction, animationTime);
         }
 
+        private ContentPresenter hostPresenter;
         /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
         /// </summary>
@@ -598,7 +598,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
             }
-            var hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
+            hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
 
             if (EnableSwapChainRendering)
             {
@@ -623,16 +623,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.EffectsManager = this.EffectsManager;
                 this.renderHostInternal.IsRendering = this.Visibility == Visibility.Visible;
             }
-
-            //if (this.adornerLayer == null)
-            //{
-            //    this.adornerLayer = this.Template.FindName(PartAdornerLayer, this) as AdornerDecorator;
-            //}
-
-            //if (this.adornerLayer == null)
-            //{
-            //    throw new HelixToolkitException("{0} is missing from the template.", PartAdornerLayer);
-            //}
 
             if (this.cameraController == null)
             {
@@ -1209,10 +1199,18 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.ZoomExtents();
             }
+            FormMouseMove += Viewport3DX_FormMouseMove;
         }
 
         private void ParentWindow_Closed(object sender, EventArgs e)
         {
+            FormMouseMove -= Viewport3DX_FormMouseMove;
+            if (hostPresenter != null && hostPresenter.Content is IDisposable)
+            {
+                var content = hostPresenter.Content as IDisposable;
+                hostPresenter.Content = null;
+                content.Dispose();
+            }
             this.UnsubscribeRenderingEvent();
         }
 
@@ -1227,6 +1225,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void ControlUnloaded(object sender, RoutedEventArgs e)
         {
+            FormMouseMove -= Viewport3DX_FormMouseMove;
             this.UnsubscribeRenderingEvent();
             if (parentWindow != null)
             {
