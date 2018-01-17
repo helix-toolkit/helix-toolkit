@@ -26,6 +26,13 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         event EventHandler<bool> OnInvalidateRenderer;
         /// <summary>
+        /// Gets a value indicating whether this instance is empty.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
+        /// </value>
+        bool IsEmpty { get; }
+        /// <summary>
         /// Gets or sets the model matrix.
         /// </summary>
         /// <value>

@@ -21,6 +21,13 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public static readonly EmptyRenderCore EmptyCore = new EmptyRenderCore();
         /// <summary>
+        /// Initializes a new instance of the <see cref="EmptyRenderCore"/> class.
+        /// </summary>
+        public EmptyRenderCore()
+        {
+            IsEmpty = true;
+        }
+        /// <summary>
         /// Gets the model constant buffer description.
         /// </summary>
         /// <returns></returns>

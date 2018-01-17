@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         protected override IDX11RenderBufferProxy CreateRenderBuffer()
         {
-            return new DX11RenderBufferProxy(Device);
+            return new DX11Texture2DRenderBufferProxy(Device);
         }
 
         /// <summary>
@@ -69,8 +69,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             pendingRenderables.Clear();
             pendingRenderCores.Clear();
             pendingRenderables.AddRange(renderer.UpdateSceneGraph(RenderContext, Viewport.Renderables));
-            pendingRenderCores.AddRange(pendingRenderables.Select(x => x.RenderCore));
-            asyncTask = Task.Factory.StartNew(() => {
+            pendingRenderCores.AddRange(pendingRenderables.Select(x => x.RenderCore).Where(x => !x.IsEmpty));
+            asyncTask = Task.Factory.StartNew(() =>
+            {
                 renderer.UpdateNotRenderParallel(pendingRenderables);
             });
         }
@@ -116,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="time">The time.</param>
         protected override void OnRender2D(TimeSpan time)
         {
-            
+
         }
     }
 }
