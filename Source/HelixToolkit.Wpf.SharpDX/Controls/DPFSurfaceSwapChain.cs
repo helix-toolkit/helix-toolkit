@@ -73,6 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
+            RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
         }
 
         /// <summary>

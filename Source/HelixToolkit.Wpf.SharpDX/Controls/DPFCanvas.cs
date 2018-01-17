@@ -101,6 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Unloaded += OnUnloaded;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
+            RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
             (RenderHost as DX11ImageSourceRenderHost).OnImageSourceChanged += DPFCanvas_OnImageSourceChanged;
         }
 
