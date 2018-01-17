@@ -77,7 +77,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The render host.
         /// </value>
         public IRenderHost RenderHost { private set; get; }
-        private DX11ImageSource surfaceD3D;
         private Window parentWindow;
 
         /// <summary>
@@ -92,17 +91,22 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (deferredRendering)
             {
-                RenderHost = new DefaultRenderHost((device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); });
+                RenderHost = new DX11ImageSourceRenderHost((device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); });
             }
             else
             {
-                RenderHost = new DefaultRenderHost();
+                RenderHost = new DX11ImageSourceRenderHost();
             }
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
-            RenderHost.OnNewRenderTargetTexture += RenderHost_OnNewRenderTargetTexture;
+            (RenderHost as DX11ImageSourceRenderHost).OnImageSourceChanged += DPFCanvas_OnImageSourceChanged;
+        }
+
+        private void DPFCanvas_OnImageSourceChanged(object sender, DX11ImageSource e)
+        {
+            this.Source = e;
         }
 
         /// <summary>
@@ -172,27 +176,13 @@ namespace HelixToolkit.Wpf.SharpDX
             return true;
         }
 
-        private Texture2D currentTexture;
-
-        private void RenderHost_OnNewRenderTargetTexture(object sender, Texture2D e)
-        {
-            currentTexture = e;
-            if (surfaceD3D != null)
-            {
-                surfaceD3D.SetRenderTargetDX11(e);
-            }
-        }
-
         private void RenderHost_StopRenderLoop(object sender, bool e)
         {
             CompositionTarget.Rendering -= CompositionTarget_Rendering;
-            DisposeSurfaceD3D();
         }
 
         private void RenderHost_StartRenderLoop(object sender, bool e)
         {
-            CreateSurfaceD3D();
-            surfaceD3D.SetRenderTargetDX11(currentTexture);
             CompositionTarget.Rendering -= CompositionTarget_Rendering;
             CompositionTarget.Rendering += CompositionTarget_Rendering;
         }
@@ -200,7 +190,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
             RenderHost.UpdateAndRender();
-            surfaceD3D.InvalidateD3DImage();
         }
 
         /// <summary>
@@ -209,25 +198,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private void EndD3D()
         {
             RenderHost.EndD3D();           
-        }
-
-        private void DisposeSurfaceD3D()
-        {
-            if (surfaceD3D != null)
-            {
-                surfaceD3D.IsFrontBufferAvailableChanged -= OnIsFrontBufferAvailableChanged;
-                surfaceD3D.SetRenderTargetDX11(null);
-                Source = null;
-                Disposer.RemoveAndDispose(ref surfaceD3D);
-            }
-        }
-
-        private void CreateSurfaceD3D()
-        {
-            DisposeSurfaceD3D();
-            surfaceD3D = new DX11ImageSource(RenderHost.EffectsManager.AdapterIndex);
-            surfaceD3D.IsFrontBufferAvailableChanged += OnIsFrontBufferAvailableChanged;
-            Source = surfaceD3D;
         }
 
         /// <summary>

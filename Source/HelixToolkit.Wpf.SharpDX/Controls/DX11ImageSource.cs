@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-    internal class DX11ImageSource : D3DImage, IDisposable
+    public sealed class DX11ImageSource : D3DImage, IDisposable
     {
         [DllImport("user32.dll", SetLastError = false)]
         private static extern IntPtr GetDesktopWindow();
