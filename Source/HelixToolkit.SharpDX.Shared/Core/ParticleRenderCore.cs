@@ -2,9 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#if DEBUG
-#define OUTPUTDEBUGGING
-#endif
+//#if DEBUG
+//#define OUTPUTDEBUGGING
+//#endif
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.Direct3D;
