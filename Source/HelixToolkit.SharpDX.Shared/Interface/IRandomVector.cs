@@ -10,12 +10,30 @@ namespace HelixToolkit.UWP.Utility
 namespace HelixToolkit.Wpf.SharpDX.Utility
 #endif
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IRandomSeed
     {
+        /// <summary>
+        /// Gets the seed.
+        /// </summary>
+        /// <value>
+        /// The seed.
+        /// </value>
         uint Seed { get; }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IRandomVector : IRandomSeed
     {
+        /// <summary>
+        /// Gets the random vector3.
+        /// </summary>
+        /// <value>
+        /// The random vector3.
+        /// </value>
         Vector3 RandomVector3 { get; }
     }
 }

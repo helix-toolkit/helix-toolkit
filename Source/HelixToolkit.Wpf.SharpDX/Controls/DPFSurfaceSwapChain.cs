@@ -48,7 +48,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public IRenderHost RenderHost { get { return renderHost; } }
         private RenderControl surfaceD3D;
         private Window parentWindow;
-        private readonly bool deferredRendering;
         /// <summary>
         /// Fired whenever an exception occurred on this object.
         /// </summary>

@@ -572,7 +572,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 return false;
             }
         }
-
+        /// <summary>
+        /// Must release swapchain at last after all its created resources have been released.
+        /// </summary>
         public override void DisposeAndClear()
         {
             base.DisposeAndClear();

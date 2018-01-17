@@ -13,6 +13,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using ShaderManager;
     using System;
     using Shaders;
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IRenderTechnique : IDisposable
     {
         /// <summary>

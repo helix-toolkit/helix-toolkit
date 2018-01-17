@@ -17,4 +17,23 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         Ambient = 0, Directional = 1, Point = 2, Spot = 3, ThreePoint = 4, None = 5
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum PointFigure
+    {
+        Rect,
+        Ellipse,
+        Cross,
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum MeshTopologyEnum
+    {
+        PNTriangles,
+        PNQuads
+    }
 }

@@ -2,11 +2,6 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
-using SharpDX.Direct3D11;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -14,8 +9,17 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface ILight3D
     {
+        /// <summary>
+        /// Gets the type of the light.
+        /// </summary>
+        /// <value>
+        /// The type of the light.
+        /// </value>
         LightType LightType
         {
             get;
