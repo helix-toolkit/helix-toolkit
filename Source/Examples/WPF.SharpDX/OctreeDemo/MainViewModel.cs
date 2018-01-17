@@ -467,7 +467,6 @@ namespace OctreeDemo
             else
             {
                 timer.Stop();
-                timer = null;
                 AutoTesting = false;
                 counter = 0;
             }
@@ -494,6 +493,13 @@ namespace OctreeDemo
                 (Items[k] as SphereModel).Radius = radius;
             }
             ++counter;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            timer.Stop();
+            timer.Tick -= Timer_Tick;
+            base.Dispose(disposing);
         }
     }
 }
