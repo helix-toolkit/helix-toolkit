@@ -146,6 +146,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void ParentWindow_Closed(object sender, EventArgs e)
         {
+            Source = null;
             EndD3D();
         }
 

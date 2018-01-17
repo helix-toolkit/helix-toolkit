@@ -56,7 +56,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public void Dispose()
         {
-            this.SetRenderTargetDX11(null);
             this.EndD3D();
         }
 
