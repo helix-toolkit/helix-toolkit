@@ -11,7 +11,7 @@ namespace CustomShaderDemo
     public static class CustomShaderNames
     {
         public static readonly string DataSampling = "DataSampling";
-
+        public static readonly string NoiseMesh = "NoiseMesh";
         public static readonly string TexData = "texData";
         public static readonly string TexDataSampler = "texDataSampler";
     }
@@ -30,7 +30,9 @@ namespace CustomShaderDemo
         }
     }
 
-
+    /// <summary>
+    /// Build using Nuget Micorsoft.HLSL.Microsoft.HLSL.CSharpVB automatically during project build
+    /// </summary>
     public static class CustomVSShaderDescription
     {
         public static byte[] VSMeshDataSamplerByteCode
@@ -43,11 +45,16 @@ namespace CustomShaderDemo
         public static ShaderDescription VSDataSampling = new ShaderDescription(nameof(VSDataSampling), ShaderStage.Vertex,
             new ShaderReflector(), VSMeshDataSamplerByteCode);
     }
-
+    /// <summary>
+    /// Build using Nuget Micorsoft.HLSL.Microsoft.HLSL.CSharpVB automatically during project build
+    /// </summary>
     public static class CustomPSShaderDescription
     {
         public static ShaderDescription PSDataSampling = new ShaderDescription(nameof(PSDataSampling), ShaderStage.Pixel,
             new ShaderReflector(), ShaderHelper.LoadShaderCode(@"Shaders\psMeshDataSampling.cso"));
+
+        public static ShaderDescription PSNoiseMesh = new ShaderDescription(nameof(PSNoiseMesh), ShaderStage.Pixel,
+            new ShaderReflector(), ShaderHelper.LoadShaderCode(@"Shaders\psMeshNoiseBlinnPhong.cso"));
     }
 
     public class CustomEffectsManager : DefaultEffectsManager
@@ -72,8 +79,25 @@ namespace CustomShaderDemo
                     }
                 }
             };
-
+            var noiseMesh = new TechniqueDescription(CustomShaderNames.NoiseMesh)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            CustomPSShaderDescription.PSNoiseMesh
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    }
+                }
+            };
             techniqueList.Add(dataSampling);
+            techniqueList.Add(noiseMesh);
             return techniqueList;
         }
     }
