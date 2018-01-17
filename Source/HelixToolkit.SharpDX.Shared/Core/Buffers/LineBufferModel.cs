@@ -56,5 +56,11 @@ namespace HelixToolkit.UWP.Core
                 buffer.DisposeAndClear();
             }
         }
+
+        protected override void Dispose(bool disposeManagedResources)
+        {
+            OnBuildVertexArray = null;
+            base.Dispose(disposeManagedResources);
+        }
     }
 }
