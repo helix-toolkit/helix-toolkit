@@ -105,7 +105,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="timeStamp"></param>
         //DeferredRenderer DeferredRenderer { get; set; }
-        void UpdateFPS(TimeSpan timeStamp);
+        void Update(TimeSpan timeStamp);
         /// <summary>
         /// Gets the world matrix.
         /// </summary>

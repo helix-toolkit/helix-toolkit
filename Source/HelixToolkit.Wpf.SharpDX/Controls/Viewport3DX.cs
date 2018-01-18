@@ -1304,7 +1304,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public void UpdateFPS(TimeSpan timeStamp)
+        public void Update(TimeSpan timeStamp)
         {
             FpsCounter.AddFrame(timeStamp);
             OnCompositionTargetRendering();

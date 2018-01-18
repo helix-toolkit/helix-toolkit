@@ -409,14 +409,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 IsBusy = true;
                 var t0 = renderTimer.Elapsed;
                 UpdateRequested = false;
+                viewport.Update(t0); 
+                
                 RenderContext.EnableBoundingFrustum = EnableRenderFrustum;
                 RenderContext.TimeStamp = t0;
                 RenderContext.Camera = viewport.CameraCore;
-                RenderContext.WorldMatrix = viewport.WorldMatrix;
+                RenderContext.WorldMatrix = viewport.WorldMatrix;              
                 PreRender();
                 try
                 {
-                    viewport.UpdateFPS(t0);
+                    
                     if (renderBuffer.BeginDraw())
                     {
                         OnRender(t0);
@@ -446,10 +448,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 finally
                 {
                     PostRender();
+                    IsBusy = false;
                 }
                 lastRenderingDuration = renderTimer.Elapsed - t0;
-                frameRegulator.Push(lastRenderingDuration.TotalMilliseconds);
-                IsBusy = false;
+                frameRegulator.Push(lastRenderingDuration.TotalMilliseconds);                
             }
         }
         /// <summary>
