@@ -2,11 +2,10 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
-using System;
-
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {

@@ -111,9 +111,9 @@ namespace HelixToolkit.UWP
                 }
             }
 #else
-            Device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
+            device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
-                    AdapterIndex = adapterIndex;
+            AdapterIndex = adapterIndex;
 #region Initial Internal Pools
             RemoveAndDispose(ref constantBufferPool);
             constantBufferPool = Collect(new ConstantBufferPool(Device));
