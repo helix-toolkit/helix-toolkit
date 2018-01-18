@@ -944,7 +944,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.UpdateCurrentPosition(pt);
             }
         }
-
+        /// <summary>
+        /// Emulates the mouse move by touch.
+        /// </summary>
+        /// <param name="pt">The pt.</param>
         public void EmulateMouseMoveByTouch(Point pt)
         {
             this.MouseMoveHitTest(pt);
@@ -1303,7 +1306,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.infoFrameCounter = 0;
             }
         }
-
+        /// <summary>
+        /// </summary>
+        /// <param name="timeStamp"></param>
         public void Update(TimeSpan timeStamp)
         {
             FpsCounter.AddFrame(timeStamp);

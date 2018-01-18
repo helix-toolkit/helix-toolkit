@@ -2094,14 +2094,9 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// The rendering event handler.
+        /// Called when [composition target rendering].
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
+        /// <param name="ticks">The ticks.</param>
         public void OnCompositionTargetRendering(long ticks)
         {
             this.OnTimeStep(ticks);
@@ -2246,7 +2241,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The on time step.
         /// </summary>
-        /// <param name="time">
+        /// <param name="ticks">
         /// The time.
         /// </param>
         private void OnTimeStep(long ticks)
@@ -2260,31 +2255,33 @@ namespace HelixToolkit.Wpf.SharpDX
             var factor = this.IsInertiaEnabled ? Math.Pow(this.InertiaFactor, time / 0.012) : 0;
             factor = this.Clamp(factor, 0.2, 1);
             bool needUpdate = false;
+
             if (this.rotationSpeed.LengthSquared > 0.1)
             {
                 this.rotateHandler.Rotate(
                     this.rotationPosition, this.rotationPosition + (this.rotationSpeed * time), this.rotationPoint3D);
                 this.rotationSpeed *= factor;
                 needUpdate = true;
+                this.spinningSpeed = new Vector();
             }
             else
             {
                 this.rotationSpeed = new Vector();
-            }
-            if (this.isSpinning && this.spinningSpeed.LengthSquared > 0.1)
-            {
-                this.rotateHandler.Rotate(
-                    this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D);
-
-                if (!this.InfiniteSpin)
+                if (this.isSpinning && this.spinningSpeed.LengthSquared > 0.1)
                 {
-                    this.spinningSpeed *= factor;
+                    this.rotateHandler.Rotate(
+                        this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D);
+
+                    if (!this.InfiniteSpin)
+                    {
+                        this.spinningSpeed *= factor;
+                    }
+                    needUpdate = true;
                 }
-                needUpdate = true;
-            }
-            else
-            {
-                this.spinningSpeed = new Vector();
+                else
+                {
+                    this.spinningSpeed = new Vector();
+                }
             }
 
             if (this.panSpeed.LengthSquared > 0.0001)
