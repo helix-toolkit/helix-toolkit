@@ -215,7 +215,7 @@
                         Maximum="5"
                         Minimum="1"
                         TickFrequency="1"
-                        Value="{Binding TessellationFactor, ElementName=model}" />
+                        Value="{Binding MinTessellationFactor, ElementName=model}" />
                 </StackPanel>
             </Expander>
             <Expander
