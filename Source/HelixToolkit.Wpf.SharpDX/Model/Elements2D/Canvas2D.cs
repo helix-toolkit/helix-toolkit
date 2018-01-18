@@ -202,7 +202,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         }
 
-        protected override IRenderable2D CreateRenderCore(ID2DTarget host)
+        protected override IRenderable2D CreateRenderCore(IDevice2DProxy host)
         {
             return null;
         }

@@ -31,6 +31,8 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public Guid GUID { get; } = Guid.NewGuid();
 
+        public bool IsEmpty { protected set; get; } = false;
+
         private bool isThrowingShadow = false;
         /// <summary>
         /// <see cref="IThrowingShadow.IsThrowingShadow"/>
@@ -51,7 +53,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Model matrix
         /// </summary>
-        public Matrix ModelMatrix { set; get; } = Matrix.Identity; 
+        public Matrix ModelMatrix { set; get; } = Matrix.Identity;
         /// <summary>
         /// 
         /// </summary>
@@ -223,6 +225,12 @@ namespace HelixToolkit.UWP.Core
         public void ResetInvalidateHandler()
         {
             OnInvalidateRenderer = null;
+        }
+
+        protected override void Dispose(bool disposeManagedResources)
+        {
+            OnInvalidateRenderer = null;
+            base.Dispose(disposeManagedResources);
         }
 
         /// <summary>

@@ -10,6 +10,9 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    /// <summary>
+    /// Camera interface
+    /// </summary>
     public interface ICamera
     {
         /// <summary>
@@ -47,9 +50,5 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="aspectRatio">The aspect ratio.</param>
         /// <returns>A <see cref="Matrix" />.</returns>
         Matrix CreateProjectionMatrix(float aspectRatio);
-        /// <summary>
-        /// Reset camera.
-        /// </summary>
-        //void Reset();
     }
 }

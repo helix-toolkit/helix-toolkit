@@ -16,6 +16,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     /// </summary>
     public abstract class DX11RenderHostBase : DisposeObject, IRenderHost
     {
+        private const int MinWidth = 10;
+        private const int MinHeight = 10;
         #region Properties
         private IDX11RenderBufferProxy renderBuffer;
         /// <summary>
@@ -131,11 +133,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             set
             {
+                var currentManager = effectsManager;
                 if (Set(ref effectsManager, value))
                 {
-                    RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
-                    if (IsInitialized)
-                    { Restart(false); }
+                    if (currentManager != null)
+                    {
+                        currentManager.OnDisposeResources -= OnManagerDisposed;
+                    }
+                    if (effectsManager != null)
+                    {
+                        effectsManager.OnDisposeResources += OnManagerDisposed;
+                        RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
+                        if (IsInitialized)
+                        { Restart(false); }
+                    }
+                    else
+                    {
+                        RenderTechnique = null;
+                    }
                 }
             }
             get
@@ -143,6 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 return effectsManager;
             }
         }
+
         /// <summary>
         /// Gets or sets the render technique.
         /// </summary>
@@ -166,6 +182,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 return false;
             }
         }
+
+        private double height = MinHeight;
         /// <summary>
         /// Gets or sets the actual height.
         /// </summary>
@@ -174,8 +192,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public double ActualHeight
         {
-            private set; get;
+            private set
+            {
+                height = Math.Max(MinHeight, value);
+            }
+            get
+            {
+                return height;
+            }
         }
+
+        private double width = MinWidth;
         /// <summary>
         /// Gets or sets the actual width.
         /// </summary>
@@ -184,7 +211,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public double ActualWidth
         {
-            private set; get;
+            private set
+            {
+                width = Math.Max(MinWidth, value);
+            }
+            get { return width; }
         }
         /// <summary>
         /// Gets or sets a value indicating whether this instance is busy.
@@ -296,7 +327,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The d2 d controls.
         /// </value>
-        public ID2DTarget D2DTarget
+        public IDevice2DProxy D2DTarget
         {
             get { return RenderBuffer.D2DControls; }
         }
@@ -325,6 +356,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Occurs when [stop render loop].
         /// </summary>
         public event EventHandler<bool> StopRenderLoop;
+        /// <summary>
+        /// Occurs when [on new render target texture].
+        /// </summary>
+        public event EventHandler<Texture2D> OnNewRenderTargetTexture;
 
         private readonly Func<Device, IRenderer> createRendererFunction;
         #endregion
@@ -374,14 +409,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 IsBusy = true;
                 var t0 = renderTimer.Elapsed;
                 UpdateRequested = false;
+                viewport.Update(t0); 
+                
                 RenderContext.EnableBoundingFrustum = EnableRenderFrustum;
                 RenderContext.TimeStamp = t0;
                 RenderContext.Camera = viewport.CameraCore;
-                RenderContext.WorldMatrix = viewport.WorldMatrix;
+                RenderContext.WorldMatrix = viewport.WorldMatrix;              
                 PreRender();
                 try
                 {
-                    viewport.UpdateFPS(t0);
+                    
                     if (renderBuffer.BeginDraw())
                     {
                         OnRender(t0);
@@ -394,18 +431,27 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     }
                     renderBuffer.Present();
                 }
-                catch (Exception ex)
+                catch (SharpDXException ex)
+                {
+                    var desc = ResultDescriptor.Find(ex.ResultCode);
+                    if (desc == global::SharpDX.DXGI.ResultCode.DeviceRemoved || desc == global::SharpDX.DXGI.ResultCode.DeviceReset 
+                        || desc == global::SharpDX.DXGI.ResultCode.DeviceHung || desc == global::SharpDX.Direct2D1.ResultCode.RecreateTarget)
+                    {
+                        RenderBuffer_OnDeviceLost(RenderBuffer, true);
+                    }
+                }
+                catch(Exception ex)
                 {
                     EndD3D();
-                    ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
+                    ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));  
                 }
                 finally
                 {
                     PostRender();
+                    IsBusy = false;
                 }
                 lastRenderingDuration = renderTimer.Elapsed - t0;
-                frameRegulator.Push(lastRenderingDuration.TotalMilliseconds);
-                IsBusy = false;
+                frameRegulator.Push(lastRenderingDuration.TotalMilliseconds);                
             }
         }
         /// <summary>
@@ -474,12 +520,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public void StartD3D(double width, double height)
         {
-            if (EffectsManager == null)
+            if (EffectsManager == null || EffectsManager.Device == null || EffectsManager.Device.IsDisposed)
             {
                 return;
             }
-            ActualWidth = Math.Max(1, width);
-            ActualHeight = Math.Max(1, height);
+            ActualWidth = width;
+            ActualHeight = height;
             CreateAndBindBuffers();
             IsInitialized = true;
             AttachRenderable(Device.ImmediateContext);
@@ -499,10 +545,21 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected void CreateAndBindBuffers()
         {
+            RemoveAndDispose(ref renderBuffer);
             renderBuffer = Collect(CreateRenderBuffer());
             renderBuffer.OnNewBufferCreated += RenderBuffer_OnNewBufferCreated;
+            renderBuffer.OnDeviceLost += RenderBuffer_OnDeviceLost;
+
+            RemoveAndDispose(ref renderer);
             renderer = Collect(CreateRenderer());
             OnInitializeBuffers(renderBuffer, renderer);
+        }
+
+        private void RenderBuffer_OnDeviceLost(object sender, bool e)
+        {
+            EndD3D();
+            EffectsManager?.OnDeviceError();
+            StartD3D(ActualWidth, ActualHeight);
         }
 
         /// <summary>
@@ -571,6 +628,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             DetachRenderable();
             DisposeBuffers();
         }
+
+        private void OnManagerDisposed(object sender, bool args)
+        {
+            EndD3D();
+        }
         /// <summary>
         /// Stops the rendering.
         /// </summary>
@@ -587,6 +649,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (renderBuffer != null)
             {
                 renderBuffer.OnNewBufferCreated -= RenderBuffer_OnNewBufferCreated;
+                renderBuffer.OnDeviceLost -= RenderBuffer_OnDeviceLost;
             }
             RemoveAndDispose(ref renderer);
             RemoveAndDispose(ref renderBuffer);
@@ -610,8 +673,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 return;
             }
-            ActualWidth = Math.Max(1, width);
-            ActualHeight = Math.Max(1, height);
+            ActualWidth = width;
+            ActualHeight = height;
             if (IsInitialized)
             {
                 StopRendering();
@@ -628,10 +691,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             SetDefaultRenderTargets(Device.ImmediateContext, clear);
         }
-        /// <summary>
-        /// Occurs when [on new render target texture].
-        /// </summary>
-        public event EventHandler<Texture2D> OnNewRenderTargetTexture;
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
@@ -639,6 +699,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected override void Dispose(bool disposeManagedResources)
         {
             IsInitialized = false;
+            OnNewRenderTargetTexture = null;
+            ExceptionOccurred = null;
+            StartRenderLoop = null;
+            StopRenderLoop = null;
             base.Dispose(disposeManagedResources);
         }
     }

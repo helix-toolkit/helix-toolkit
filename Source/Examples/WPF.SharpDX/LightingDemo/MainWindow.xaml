@@ -31,7 +31,7 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            EnableSwapChainRendering="True"
+            EnableSwapChainRendering="False"
             IsShadowMappingEnabled="True"
             MSAA="{Binding MSAA}"
             RenderTechnique="{Binding RenderTechnique}"
@@ -215,7 +215,7 @@
                         Maximum="5"
                         Minimum="1"
                         TickFrequency="1"
-                        Value="{Binding TessellationFactor, ElementName=model}" />
+                        Value="{Binding MinTessellationFactor, ElementName=model}" />
                 </StackPanel>
             </Expander>
             <Expander

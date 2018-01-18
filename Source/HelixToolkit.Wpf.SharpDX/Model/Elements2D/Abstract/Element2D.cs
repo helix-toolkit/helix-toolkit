@@ -159,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected IRenderHost renderHost;
 
-        protected abstract IRenderable2D CreateRenderCore(ID2DTarget host);
+        protected abstract IRenderable2D CreateRenderCore(IDevice2DProxy host);
 
         #region Events
         public delegate void Mouse2DRoutedEventHandler(object sender, Mouse2DEventArgs e);

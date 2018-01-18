@@ -19,7 +19,13 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public interface IEffectsManager : IDisposable
     {
+        /// <summary>
+        /// 
+        /// </summary>
         int AdapterIndex { get; }
+        /// <summary>
+        /// 
+        /// </summary>
         IConstantBufferPool ConstantBufferPool { get; }
         /// <summary>
         /// 
@@ -67,5 +73,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="name"></param>
         /// <returns></returns>
         bool RemoveTechnique(string name);
+        /// <summary>
+        /// Called when [device error].
+        /// </summary>
+        void OnDeviceError();
+
+        event EventHandler<bool> OnDisposeResources;
     }
 }

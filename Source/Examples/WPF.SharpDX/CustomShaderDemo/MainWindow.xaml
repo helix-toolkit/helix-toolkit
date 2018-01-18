@@ -40,6 +40,7 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="Black"
             EffectsManager="{Binding EffectsManager}"
+            MSAA="Two"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
@@ -66,6 +67,11 @@
                 Material="{Binding ModelMaterial}" />
             <hx:LineGeometryModel3D Geometry="{Binding AxisModel}" Color="White" />
             <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding AxisLabel}" />
+            <hx:MeshGeometryModel3D
+                CullMode="Back"
+                FillMode="{Binding FillMode}"
+                Geometry="{Binding SphereModel}"
+                Material="{Binding SphereMaterial}" />
         </hx:Viewport3DX>
 
         <StackPanel

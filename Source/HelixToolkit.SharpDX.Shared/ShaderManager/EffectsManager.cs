@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+//#define DEBUGMEMORY
 using System;
 using System.Collections.Generic;
 
@@ -20,7 +21,8 @@ namespace HelixToolkit.UWP
     /// Shader and Technique manager
     /// </summary>
     public abstract class EffectsManager : DisposeObject, IEffectsManager
-    {       
+    {
+        public event EventHandler<bool> OnDisposeResources;
         /// <summary>
         /// The minimum supported feature level.
         /// </summary>
@@ -50,10 +52,11 @@ namespace HelixToolkit.UWP
         /// </summary>
         public IStatePoolManager StateManager { get { return statePoolManager; } }
 
+        private global::SharpDX.Direct3D11.Device device;
         /// <summary>
         /// 
         /// </summary>
-        public global::SharpDX.Direct3D11.Device Device { private set; get; }
+        public global::SharpDX.Direct3D11.Device Device { get { return device; } }
         /// <summary>
         /// 
         /// </summary>
@@ -66,14 +69,21 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public bool Initialized { private set; get; } = false;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EffectsManager"/> class.
+        /// </summary>
         public EffectsManager()
         {
             Initialize();
         }
-
-        protected virtual void Initialize()
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
+        protected void Initialize()
         {
+#if DEBUGMEMORY
+            global::SharpDX.Configuration.EnableObjectTracking = true;
+#endif
             if (Initialized)
             { return; }
             int adapterIndex = -1;
@@ -85,22 +95,26 @@ namespace HelixToolkit.UWP
                 if (adapter.Description.VendorId == 0x1414 && adapter.Description.DeviceId == 0x8c)
                 {
                     DriverType = DriverType.Warp;
-                    Device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_0);
+                    device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_0);
                 }
                 else
                 {
                     DriverType = DriverType.Hardware;
-                    Device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
+#if DEBUGMEMORY
+                    device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport | DeviceCreationFlags.Debug);
+#else
+                    device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
+#endif
                     // DeviceCreationFlags.Debug should not be used in productive mode!
                     // See: http://sharpdx.org/forum/4-general/1774-how-to-debug-a-sharpdxexception
                     // See: http://stackoverflow.com/questions/19810462/launching-sharpdx-directx-app-with-devicecreationflags-debug
                 }
             }
 #else
-            Device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
+            device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
             AdapterIndex = adapterIndex;
-            #region Initial Internal Pools
+#region Initial Internal Pools
             RemoveAndDispose(ref constantBufferPool);
             constantBufferPool = Collect(new ConstantBufferPool(Device));
 
@@ -110,14 +124,14 @@ namespace HelixToolkit.UWP
             RemoveAndDispose(ref statePoolManager);
             statePoolManager = Collect(new StatePoolManager(Device));
 
-            #endregion
-            #region Initial Techniques
+#endregion
+#region Initial Techniques
             var techniqueDescs = LoadTechniqueDescriptions();
             foreach(var tech in techniqueDescs)
             {
                 AddTechnique(tech);
             }
-            #endregion
+#endregion
             Initialized = true;
         }
         /// <summary>
@@ -148,7 +162,10 @@ namespace HelixToolkit.UWP
             }
             return techniqueDict.Remove(name);
         }
-
+        /// <summary>
+        /// Loads the technique descriptions.
+        /// </summary>
+        /// <returns></returns>
         protected abstract IList<TechniqueDescription> LoadTechniqueDescriptions();
 
         /// <summary>
@@ -201,7 +218,13 @@ namespace HelixToolkit.UWP
                 return bestAdapter;
             }
         }
-
+        /// <summary>
+        /// Gets the technique.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">Manager has not been initialized.</exception>
+        /// <exception cref="ArgumentException"></exception>
         public IRenderTechnique GetTechnique(string name)
         {
             if (!Initialized)
@@ -216,7 +239,14 @@ namespace HelixToolkit.UWP
             }
             return t.Value;
         }
-
+        /// <summary>
+        /// Gets the <see cref="IRenderTechnique"/> with the specified name.
+        /// </summary>
+        /// <value>
+        /// The <see cref="IRenderTechnique"/>.
+        /// </value>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public IRenderTechnique this[string name]
         {
             get
@@ -231,10 +261,50 @@ namespace HelixToolkit.UWP
         /// <param name="disposeManagedResources"></param>
         protected override void Dispose(bool disposeManagedResources)
         {
+            OnDisposeResources?.Invoke(this, true);
             techniqueDict.Clear();
             base.Dispose(disposeManagedResources);
             Initialized = false;
-            Device?.Dispose();
+            Disposer.RemoveAndDispose(ref device);
+#if DEBUGMEMORY
+            ReportResources();
+#endif
         }
+
+#region Handle Device Error        
+        /// <summary>
+        /// Called when [device error].
+        /// </summary>
+        public void OnDeviceError()
+        {
+            techniqueDict.Clear();
+            OnDisposeResources?.Invoke(this, true);
+            this.DisposeAndClear();
+            Disposer.RemoveAndDispose(ref device);
+            Initialized = false;
+#if DEBUGMEMORY
+            ReportResources();
+#endif
+            Initialize();
+        }
+#endregion
+
+#if DEBUGMEMORY
+        protected void ReportResources()
+        {
+            Console.WriteLine(global::SharpDX.Diagnostics.ObjectTracker.ReportActiveObjects());
+            var liveObjects = global::SharpDX.Diagnostics.ObjectTracker.FindActiveObjects();
+            Console.WriteLine($"Live object count = {liveObjects.Count}");
+            //if (liveObjects.Count != 0)
+            //{
+            //    foreach(var obj in liveObjects)
+            //    {
+            //        Console.WriteLine(obj.ToString());
+            //    }
+            //}
+        }
+#endif
     }
+
+
 }

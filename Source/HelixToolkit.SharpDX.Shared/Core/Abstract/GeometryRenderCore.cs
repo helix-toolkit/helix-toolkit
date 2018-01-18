@@ -244,22 +244,22 @@ namespace HelixToolkit.UWP.Core
             {
                 if (instanceModel == null || !instanceModel.HasElements)
                 {
-                    context.DrawIndexed(GeometryBuffer.IndexBuffer.Count, GeometryBuffer.IndexBuffer.Offset, 0);
+                    context.DrawIndexed(GeometryBuffer.IndexBuffer.ElementCount, GeometryBuffer.IndexBuffer.Offset, 0);
                 }
                 else
                 {
-                    context.DrawIndexedInstanced(GeometryBuffer.IndexBuffer.Count, instanceModel.Buffer.Count, GeometryBuffer.IndexBuffer.Offset, 0, instanceModel.Buffer.Offset);
+                    context.DrawIndexedInstanced(GeometryBuffer.IndexBuffer.ElementCount, instanceModel.Buffer.ElementCount, GeometryBuffer.IndexBuffer.Offset, 0, instanceModel.Buffer.Offset);
                 }
             }
             else if (GeometryBuffer.VertexBuffer != null)
             {
                 if (instanceModel == null || !instanceModel.HasElements)
                 {
-                    context.Draw(GeometryBuffer.VertexBuffer.Count, GeometryBuffer.VertexBuffer.Offset);
+                    context.Draw(GeometryBuffer.VertexBuffer.ElementCount, GeometryBuffer.VertexBuffer.Offset);
                 }
                 else
                 {
-                    context.DrawInstanced(GeometryBuffer.VertexBuffer.Count, instanceModel.Buffer.Count,
+                    context.DrawInstanced(GeometryBuffer.VertexBuffer.ElementCount, instanceModel.Buffer.ElementCount,
                         GeometryBuffer.VertexBuffer.Offset, instanceModel.Buffer.Offset);
                 }
             }

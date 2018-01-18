@@ -2,9 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#if DEBUG
-#define OUTPUTDEBUGGING
-#endif
+//#if DEBUG
+//#define OUTPUTDEBUGGING
+//#endif
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.Direct3D;
@@ -545,7 +545,7 @@ namespace HelixToolkit.UWP.Core
 
         private void DisposeBuffers()
         {
-            particleCountGSIABuffer.Dispose();
+            particleCountGSIABuffer.DisposeAndClear();
 #if OUTPUTDEBUGGING
             RemoveAndDispose(ref particleCountStaging);
 #endif
@@ -629,7 +629,7 @@ namespace HelixToolkit.UWP.Core
 
             UpdateTime(context, ref totalElapsed);
             //Set correct instance count from instance buffer
-            drawArgument.InstanceCount = InstanceBuffer == null || !InstanceBuffer.HasElements ? 1 : (uint)InstanceBuffer.Buffer.Count;
+            drawArgument.InstanceCount = InstanceBuffer == null || !InstanceBuffer.HasElements ? 1 : (uint)InstanceBuffer.Buffer.ElementCount;
             //Upload the draw argument
             particleCountGSIABuffer.UploadDataToBuffer(deviceContext, ref drawArgument);
 

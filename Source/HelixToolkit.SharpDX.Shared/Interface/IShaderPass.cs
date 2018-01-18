@@ -12,6 +12,9 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 {
     using System;
     using Utilities;
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IShaderPass : IDisposable
     {
         /// <summary>
@@ -22,7 +25,19 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
         /// 
         /// </summary>
         bool IsNULL { get; }
+        /// <summary>
+        /// Gets the shaders.
+        /// </summary>
+        /// <value>
+        /// The shaders.
+        /// </value>
         IEnumerable<IShader> Shaders { get; }
+        /// <summary>
+        /// Gets the state of the blend.
+        /// </summary>
+        /// <value>
+        /// The state of the blend.
+        /// </value>
         BlendStateProxy BlendState { get; }
         /// <summary>
         /// 
@@ -32,11 +47,22 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
         /// 
         /// </summary>
         RasterizerStateProxy RasterState { get; }
-
+        /// <summary>
+        /// Binds the shader.
+        /// </summary>
+        /// <param name="context">The context.</param>
         void BindShader(DeviceContext context);
-
+        /// <summary>
+        /// Gets the shader.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
         IShader GetShader(ShaderStage type);
-
+        /// <summary>
+        /// Binds the states.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="type">The type.</param>
         void BindStates(DeviceContext context, StateType type);
     }
 }

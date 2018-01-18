@@ -55,11 +55,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private readonly IList<IViewport3DX> viewports = new List<IViewport3DX>();
-
+#pragma warning disable 0067
         public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred;
         public event EventHandler<Texture2D> OnNewRenderTargetTexture;
         public event EventHandler<bool> StartRenderLoop;
         public event EventHandler<bool> StopRenderLoop;
+#pragma warning restore 0067
 
         public bool IsRendering { set; get; } = true;
 
@@ -255,7 +256,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public ID2DTarget D2DTarget
+        public IDevice2DProxy D2DTarget
         {
             get
             {

@@ -271,5 +271,12 @@ namespace DynamicTextureDemo
                 InnerModel.Indices = indices;
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            timer.Stop();
+            timer.Tick -= Timer_Tick;
+            base.Dispose(disposing);
+        }
     }
 }

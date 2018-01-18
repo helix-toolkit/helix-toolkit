@@ -250,7 +250,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// Called when [create render core].
         /// </summary>
         /// <returns></returns>
-        protected virtual IRenderCore OnCreateRenderCore() { return EmptyRenderCore.EmptyCore; }
+        protected virtual IRenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
         /// <summary>
         /// Assigns the default values to core.
         /// </summary>

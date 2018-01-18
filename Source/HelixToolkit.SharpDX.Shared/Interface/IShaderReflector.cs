@@ -8,7 +8,10 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 #else
 namespace HelixToolkit.UWP.Shaders
 #endif
-{ 
+{
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IShaderReflector
     {
         /// <summary>

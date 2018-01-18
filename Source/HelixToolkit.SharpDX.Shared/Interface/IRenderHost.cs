@@ -183,7 +183,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The d2d target.
         /// </value>
-        ID2DTarget D2DTarget { get; }
+        IDevice2DProxy D2DTarget { get; }
         /// <summary>
         /// Starts the d3 d.
         /// </summary>

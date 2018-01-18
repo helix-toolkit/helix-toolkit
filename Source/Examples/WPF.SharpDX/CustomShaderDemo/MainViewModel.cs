@@ -27,10 +27,11 @@ namespace CustomShaderDemo
     public class MainViewModel : BaseViewModel
     {
         public MeshGeometry3D Model { get; private set; }
+        public MeshGeometry3D SphereModel { get; private set; }
         public LineGeometry3D AxisModel { get; private set; }
         public BillboardText3D AxisLabel { private set; get; }
         public PhongMaterial ModelMaterial { get; private set; } = PhongMaterials.White;
-
+        public PhongMaterial SphereMaterial { private set; get; } = PhongMaterials.Copper;
 
         private Color startColor;
         /// <summary>
@@ -142,7 +143,7 @@ namespace CustomShaderDemo
             };
 
             EffectsManager = new CustomEffectsManager();
-            RenderTechnique = EffectsManager[CustomShaderNames.DataSampling];
+            RenderTechnique = EffectsManager[CustomShaderNames.NoiseMesh];
            
 
             var builder = new MeshBuilder(true);
@@ -182,6 +183,11 @@ namespace CustomShaderDemo
             AxisLabel.TextInfo.Add(new TextInfo() { Origin = new Vector3(11, 0, 0), Text = "X", Foreground = Colors.Red.ToColor4() });
             AxisLabel.TextInfo.Add(new TextInfo() { Origin = new Vector3(0, 11, 0), Text = "Y", Foreground = Colors.Green.ToColor4() });
             AxisLabel.TextInfo.Add(new TextInfo() { Origin = new Vector3(0, 0, 11), Text = "Z", Foreground = Colors.Blue.ToColor4() });
+
+            builder = new MeshBuilder(true);
+            builder.AddSphere(new Vector3(-15, 0, 0), 5);
+            SphereModel = builder.ToMesh();
+
             GenerateNoiseCommand = new RelayCommand((o) => { CreatePerlinNoise(); });
             CreatePerlinNoise();
         }

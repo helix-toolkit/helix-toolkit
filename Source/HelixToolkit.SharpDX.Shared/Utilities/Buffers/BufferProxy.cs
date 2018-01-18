@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <summary>
         /// Element count
         /// </summary>
-        int Count { get; }
+        int ElementCount { get; }
         /// <summary>
         /// Buffer offset
         /// </summary>
@@ -42,7 +42,7 @@ namespace HelixToolkit.UWP.Utilities
     /// <summary>
     /// 
     /// </summary>
-    public abstract class BufferProxyBase : IBufferProxy
+    public abstract class BufferProxyBase : DisposeObject, IBufferProxy
     {
         /// <summary>
         /// 
@@ -53,9 +53,9 @@ namespace HelixToolkit.UWP.Utilities
         /// </summary>
         public int StructureSize { get; private set; }
         /// <summary>
-        ///  <see cref="IBufferProxy.Count"/> 
+        ///  <see cref="IBufferProxy.ElementCount"/> 
         /// </summary>
-        public int Count { get; protected set; } = 0;
+        public int ElementCount { get; protected set; } = 0;
         /// <summary>
         /// <see cref="IBufferProxy.Offset"/> 
         /// </summary>
@@ -77,13 +77,6 @@ namespace HelixToolkit.UWP.Utilities
         {
             StructureSize = structureSize;
             BindFlags = bindFlags;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Dispose()
-        {
-            Disposer.RemoveAndDispose(ref buffer);
         }
     }
 }

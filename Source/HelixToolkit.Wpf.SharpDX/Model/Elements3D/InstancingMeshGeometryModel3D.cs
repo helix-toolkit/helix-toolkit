@@ -116,7 +116,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnDetach()
         {
-            instanceParamBuffer.Dispose();
+            instanceParamBuffer.DisposeAndClear();
             base.OnDetach();
         }
 

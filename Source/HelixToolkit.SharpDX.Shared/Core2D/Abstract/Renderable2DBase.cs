@@ -44,8 +44,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// </summary>
         public RectangleF LocalDrawingRect { private set; get; }
 
-        private ID2DTarget renderTarget;
-        protected ID2DTarget RenderTarget
+        private IDevice2DProxy renderTarget;
+        protected IDevice2DProxy RenderTarget
         {
             private set
             {
@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             IsAttached = OnAttach(RenderTarget);
         }
 
-        protected virtual bool OnAttach(ID2DTarget target)
+        protected virtual bool OnAttach(IDevice2DProxy target)
         {
             borderBrush = Collect(new D2D.SolidColorBrush(target.D2DTarget, Color.LightBlue));
             borderDotStyle = Collect(new D2D.StrokeStyle(RenderTarget.D2DTarget.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.DashDot }));

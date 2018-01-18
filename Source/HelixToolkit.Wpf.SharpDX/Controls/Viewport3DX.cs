@@ -107,7 +107,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The rendering event listener.
         /// </summary>
-        private readonly RenderingEventListener renderingEventListener;
+        //private readonly RenderingEventListener renderingEventListener;
 
         /// <summary>
         /// The rotate handler
@@ -132,7 +132,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The adorner layer.
         /// </summary>
-        private AdornerDecorator adornerLayer;
+        //private AdornerDecorator adornerLayer;
 
         /// <summary>
         /// The camera controller.
@@ -232,7 +232,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             yield return item;
                         }
-                    }                  
+                    }
                     yield return viewCube;
                     yield return coordinateView;
                 }
@@ -257,6 +257,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public IRenderHost RenderHost { get { return this.renderHostInternal; } }
 
+        private Window parentWindow;
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
@@ -311,11 +312,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.fpsWatch.Start();
 
-            this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
+            //this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
 
             this.Loaded += this.ControlLoaded;
-            this.Unloaded += this.ControlUnloaded;
-            FormMouseMove += Viewport3DX_FormMouseMove;
+            this.Unloaded += this.ControlUnloaded;            
 
             AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
         }
@@ -584,6 +584,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.cameraController?.ActualCamera?.LookAt(p, direction, animationTime);
         }
 
+        private ContentPresenter hostPresenter;
         /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
         /// </summary>
@@ -597,7 +598,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
             }
-            var hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
+            hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
 
             if (EnableSwapChainRendering)
             {
@@ -622,16 +623,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.EffectsManager = this.EffectsManager;
                 this.renderHostInternal.IsRendering = this.Visibility == Visibility.Visible;
             }
-
-            //if (this.adornerLayer == null)
-            //{
-            //    this.adornerLayer = this.Template.FindName(PartAdornerLayer, this) as AdornerDecorator;
-            //}
-
-            //if (this.adornerLayer == null)
-            //{
-            //    throw new HelixToolkitException("{0} is missing from the template.", PartAdornerLayer);
-            //}
 
             if (this.cameraController == null)
             {
@@ -953,7 +944,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.UpdateCurrentPosition(pt);
             }
         }
-
+        /// <summary>
+        /// Emulates the mouse move by touch.
+        /// </summary>
+        /// <param name="pt">The pt.</param>
         public void EmulateMouseMoveByTouch(Point pt)
         {
             this.MouseMoveHitTest(pt);
@@ -1198,12 +1192,29 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 this.hasBeenLoadedBefore = true;
             }
-
+            parentWindow = FindVisualAncestor<Window>(this);
+            if (parentWindow != null)
+            {
+                parentWindow.Closed += ParentWindow_Closed;
+            }
             this.SubscribeToRenderingEvent();
             if (this.ZoomExtentsWhenLoaded)
             {
                 this.ZoomExtents();
             }
+            FormMouseMove += Viewport3DX_FormMouseMove;
+        }
+
+        private void ParentWindow_Closed(object sender, EventArgs e)
+        {
+            FormMouseMove -= Viewport3DX_FormMouseMove;
+            if (hostPresenter != null && hostPresenter.Content is IDisposable)
+            {
+                var content = hostPresenter.Content as IDisposable;
+                hostPresenter.Content = null;
+                content.Dispose();
+            }
+            this.UnsubscribeRenderingEvent();
         }
 
         /// <summary>
@@ -1217,7 +1228,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void ControlUnloaded(object sender, RoutedEventArgs e)
         {
+            FormMouseMove -= Viewport3DX_FormMouseMove;
             this.UnsubscribeRenderingEvent();
+            if (parentWindow != null)
+            {
+                parentWindow.Closed -= ParentWindow_Closed;
+            }
         }
 
         /// <summary>
@@ -1271,7 +1287,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">
         /// The event arguments. 
         /// </param>
-        private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
+        private void OnCompositionTargetRendering()
         {
             if (this.ShowFrameRate && this.fpsWatch.ElapsedMilliseconds > 500)
             {
@@ -1290,10 +1306,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.infoFrameCounter = 0;
             }
         }
-
-        public void UpdateFPS(TimeSpan timeStamp)
+        /// <summary>
+        /// </summary>
+        /// <param name="timeStamp"></param>
+        public void Update(TimeSpan timeStamp)
         {
             FpsCounter.AddFrame(timeStamp);
+            OnCompositionTargetRendering();
+            cameraController.OnCompositionTargetRendering(timeStamp.Ticks);
         }
 
         /// <summary>
@@ -1445,7 +1465,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (!this.isSubscribedToRenderingEvent)
             {
-                RenderingEventManager.AddListener(this.renderingEventListener);
+               // RenderingEventManager.AddListener(this.renderingEventListener);
                 this.isSubscribedToRenderingEvent = true;
             }
             this.KeyDown += Viewport3DX_KeyDown;
@@ -1479,7 +1499,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.isSubscribedToRenderingEvent)
             {
-                RenderingEventManager.RemoveListener(this.renderingEventListener);
+                //RenderingEventManager.RemoveListener(this.renderingEventListener);
                 this.isSubscribedToRenderingEvent = false;
             }
             this.KeyDown -= Viewport3DX_KeyDown;
@@ -1696,6 +1716,26 @@ namespace HelixToolkit.Wpf.SharpDX
                 renderHostInternal.IsRendering = (Visibility)e.NewValue == Visibility.Visible;
             }
             base.OnPropertyChanged(e);
+        }
+
+        public static T FindVisualAncestor<T>(DependencyObject obj) where T : DependencyObject
+        {
+            if (obj != null)
+            {
+                var parent = System.Windows.Media.VisualTreeHelper.GetParent(obj);
+                while (parent != null)
+                {
+                    var typed = parent as T;
+                    if (typed != null)
+                    {
+                        return typed;
+                    }
+
+                    parent = System.Windows.Media.VisualTreeHelper.GetParent(parent);
+                }
+            }
+
+            return null;
         }
     }
 }

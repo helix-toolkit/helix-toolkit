@@ -41,7 +41,7 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                buffer.Dispose();
+                buffer.DisposeAndClear();
             }
         }
 

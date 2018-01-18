@@ -28,6 +28,14 @@ namespace HelixToolkit.UWP.Core
         /// The unique identifier.
         /// </value>
         public Guid GUID { get; } = Guid.NewGuid();
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is empty.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsEmpty { get; } = false;
         /// <summary>
         /// Gets or sets the type of the light.
         /// </summary>

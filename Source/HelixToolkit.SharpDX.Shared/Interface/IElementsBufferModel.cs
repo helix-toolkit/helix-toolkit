@@ -2,10 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System.Collections.Generic;
-using SharpDX;
-using SharpDX.Direct3D11;
 using System;
+using System.Collections.Generic;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -13,15 +11,39 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
-    using Utilities;
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IElementsBufferModel : IVertexExtraBufferModel
     {
+        /// <summary>
+        /// Occurs when [on element changed].
+        /// </summary>
         event EventHandler<bool> OnElementChanged;
+        /// <summary>
+        /// Gets a value indicating whether this instance has elements.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has elements; otherwise, <c>false</c>.
+        /// </value>
         bool HasElements { get; }
+        /// <summary>
+        /// Disposes internal buffer and reuse the object
+        /// </summary>
+        void DisposeAndClear();
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IElementsBufferModel<T> : IElementsBufferModel
     {
+        /// <summary>
+        /// Gets or sets the elements.
+        /// </summary>
+        /// <value>
+        /// The elements.
+        /// </value>
         IList<T> Elements { get; set; }
     }
 }

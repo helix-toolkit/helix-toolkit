@@ -77,10 +77,12 @@ namespace HelixToolkit.UWP.Core
                 return null;
             }
         }
+#pragma warning disable 0067
         /// <summary>
         /// Occurs when [invalidate renderer].
         /// </summary>
         public event EventHandler<bool> InvalidateRenderer;
+#pragma warning restore 0067
         /// <summary>
         /// Attaches this instance.
         /// </summary>

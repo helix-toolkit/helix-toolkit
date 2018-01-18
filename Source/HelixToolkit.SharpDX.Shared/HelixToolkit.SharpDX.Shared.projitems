@@ -35,7 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Lights\SpotLightCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\LineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshRenderCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core2D\D2DControlWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core2D\Device2DProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\TextRenderable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshOutlineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ParticleRenderCore.cs" />
@@ -96,7 +96,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialVariables.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\ExposedArrayList.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Flags.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardSingleImage3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardSingleText3D.cs" />
@@ -112,12 +112,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Vector3Collection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11RenderBufferBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11SwapChainRenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\Renderer\ImmediateContextRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\Renderer\DeferredContextRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\RenderHostBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DefaultRenderHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Render\DX11RenderBufferProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11Texture2DRenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext2D.cs" />

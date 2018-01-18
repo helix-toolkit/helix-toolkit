@@ -36,14 +36,13 @@ namespace HelixToolkit.Wpf.SharpDX
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-    internal class DX11ImageSource : D3DImage, IDisposable
+    public sealed class DX11ImageSource : D3DImage, IDisposable
     {
         [DllImport("user32.dll", SetLastError = false)]
         private static extern IntPtr GetDesktopWindow();
 
-        private static long activeClients;
-        private static Direct3DEx context;
-        private static DeviceEx device;
+        private Direct3DEx context;
+        private DeviceEx device;
 
         private readonly int adapterIndex;
         private Texture renderTarget;
@@ -52,14 +51,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.adapterIndex = adapterIndex;        
             this.StartD3D();
-            Interlocked.Increment(ref activeClients);
             
         }
 
         public void Dispose()
         {
-            this.SetRenderTargetDX11(null);
-            Interlocked.Decrement(ref activeClients);
             this.EndD3D();
         }
 
@@ -99,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX
                        
             try
             {
-                this.renderTarget = new Texture(DX11ImageSource.device, target.Description.Width, target.Description.Height, 1, Usage.RenderTarget, format, Pool.Default, ref handle);            
+                this.renderTarget = new Texture(device, target.Description.Width, target.Description.Height, 1, Usage.RenderTarget, format, Pool.Default, ref handle);            
                 using (Surface surface = this.renderTarget.GetSurfaceLevel(0))                
                 {
                     base.Lock();
@@ -121,16 +117,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void StartD3D()
         {
-            if (activeClients != 0)
-                return;
-
             context = new Direct3DEx();
             // Ref: https://docs.microsoft.com/en-us/dotnet/framework/wpf/advanced/wpf-and-direct3d9-interoperation
             var presentparams = new PresentParameters
             {
                 Windowed = true,
                 SwapEffect = SwapEffect.Discard,
-                DeviceWindowHandle = GetDesktopWindow(),
+                //DeviceWindowHandle = GetDesktopWindow(),
                 PresentationInterval = PresentInterval.Default,
                 BackBufferHeight = 1, BackBufferWidth = 1, BackBufferFormat = Format.Unknown
             };
@@ -140,12 +133,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void EndD3D()
         {
-            Disposer.RemoveAndDispose(ref this.renderTarget);
-            if (Interlocked.Read(ref activeClients) != 0)
-                return;
-
+            Disposer.RemoveAndDispose(ref this.renderTarget);                
             Disposer.RemoveAndDispose(ref device);
-            Disposer.RemoveAndDispose(ref context);
+            Disposer.RemoveAndDispose(ref context);               
         }
 
         private static IntPtr GetSharedHandle(Texture2D sharedTexture)

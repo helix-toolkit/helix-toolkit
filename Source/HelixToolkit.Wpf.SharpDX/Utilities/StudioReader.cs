@@ -714,7 +714,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     return BitMapSoureFromFallBack(fallBackColor);
                 }
             }
-            catch (Exception ex) //Not really nice
+            catch (Exception) //Not really nice
             {
                 return BitMapSoureFromFallBack(fallBackColor);
                 //return new BitmapSource( );

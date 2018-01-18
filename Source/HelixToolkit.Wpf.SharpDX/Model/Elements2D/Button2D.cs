@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             Content2D = new DefaultButtonRenderer();
         }
 
-        protected override IRenderable2D CreateRenderCore(ID2DTarget host)
+        protected override IRenderable2D CreateRenderCore(IDevice2DProxy host)
         {
             return null;
         }
