@@ -2104,14 +2104,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void OnCompositionTargetRendering(long ticks)
         {
-            var time = 100e-9 * (ticks - this.lastTick);
-
-            if (this.lastTick != 0)
-            {
-                this.OnTimeStep(time);
-            }
-
-            this.lastTick = ticks;
+            this.OnTimeStep(ticks);
         }
 
         /// <summary>
@@ -2256,12 +2249,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="time">
         /// The time.
         /// </param>
-        private void OnTimeStep(double time)
+        private void OnTimeStep(long ticks)
         {
+            if (lastTick == 0)
+            {
+                lastTick = ticks;
+            }
+            var time = 100e-9 * (ticks - this.lastTick);
             // should be independent of time
             var factor = this.IsInertiaEnabled ? Math.Pow(this.InertiaFactor, time / 0.012) : 0;
             factor = this.Clamp(factor, 0.2, 1);
             bool needUpdate = false;
+            if (this.rotationSpeed.LengthSquared > 0.1)
+            {
+                this.rotateHandler.Rotate(
+                    this.rotationPosition, this.rotationPosition + (this.rotationSpeed * time), this.rotationPoint3D);
+                this.rotationSpeed *= factor;
+                needUpdate = true;
+            }
+            else
+            {
+                this.rotationSpeed = new Vector();
+            }
             if (this.isSpinning && this.spinningSpeed.LengthSquared > 0.1)
             {
                 this.rotateHandler.Rotate(
@@ -2277,17 +2286,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.spinningSpeed = new Vector();
             }
-            if (this.rotationSpeed.LengthSquared > 0.1)
-            {
-                this.rotateHandler.Rotate(
-                    this.rotationPosition, this.rotationPosition + (this.rotationSpeed * time), this.rotationPoint3D);
-                this.rotationSpeed *= factor;
-                needUpdate = true;
-            }
-            else
-            {
-                this.rotationSpeed = new Vector();
-            }
+
             if (this.panSpeed.LengthSquared > 0.0001)
             {
                 this.panHandler.Pan(this.panSpeed * time);
@@ -2320,7 +2319,12 @@ namespace HelixToolkit.Wpf.SharpDX
             { zoomSpeed = 0; }
             if (needUpdate)
             {
+                lastTick = ticks;
                 Viewport.InvalidateRender();
+            }
+            else
+            {
+                lastTick = 0;
             }
         }
 
