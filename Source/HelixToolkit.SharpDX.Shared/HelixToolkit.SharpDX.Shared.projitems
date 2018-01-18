@@ -96,7 +96,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialVariables.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\ExposedArrayList.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Flags.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardSingleImage3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardSingleText3D.cs" />

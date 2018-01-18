@@ -16,6 +16,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     /// </summary>
     public abstract class DX11RenderHostBase : DisposeObject, IRenderHost
     {
+        private const int MinWidth = 10;
+        private const int MinHeight = 10;
         #region Properties
         private IDX11RenderBufferProxy renderBuffer;
         /// <summary>
@@ -180,6 +182,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 return false;
             }
         }
+
+        private double height = MinHeight;
         /// <summary>
         /// Gets or sets the actual height.
         /// </summary>
@@ -188,8 +192,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public double ActualHeight
         {
-            private set; get;
+            private set
+            {
+                height = Math.Max(MinHeight, value);
+            }
+            get
+            {
+                return height;
+            }
         }
+
+        private double width = MinWidth;
         /// <summary>
         /// Gets or sets the actual width.
         /// </summary>
@@ -198,7 +211,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public double ActualWidth
         {
-            private set; get;
+            private set
+            {
+                width = Math.Max(MinWidth, value);
+            }
+            get { return width; }
         }
         /// <summary>
         /// Gets or sets a value indicating whether this instance is busy.
@@ -505,8 +522,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 return;
             }
-            ActualWidth = Math.Max(1, width);
-            ActualHeight = Math.Max(1, height);
+            ActualWidth = width;
+            ActualHeight = height;
             CreateAndBindBuffers();
             IsInitialized = true;
             AttachRenderable(Device.ImmediateContext);
@@ -654,8 +671,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 return;
             }
-            ActualWidth = Math.Max(1, width);
-            ActualHeight = Math.Max(1, height);
+            ActualWidth = width;
+            ActualHeight = height;
             if (IsInitialized)
             {
                 StopRendering();

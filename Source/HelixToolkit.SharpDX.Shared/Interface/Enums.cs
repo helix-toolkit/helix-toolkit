@@ -5,6 +5,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
+using System;
+
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
@@ -35,5 +37,32 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         PNTriangles,
         PNQuads
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Flags]
+    public enum ShaderStage
+    {
+        None = 0,
+        Vertex = 1,
+        Hull = 1 << 2,
+        Domain = 1 << 3,
+        Geometry = 1 << 4,
+        Pixel = 1 << 5,
+        Compute = 1 << 6
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Flags]
+    public enum StateType
+    {
+        None = 0,
+        RasterState = 1,
+        DepthStencilState = 1 << 2,
+        BlendState = 1 << 3
     }
 }
