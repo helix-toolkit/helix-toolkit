@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -294,7 +295,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The rendering event listener.
         /// </summary>
-        private readonly RenderingEventListener renderingEventListener;
+        //private readonly RenderingEventListener renderingEventListener;
 
         /// <summary>
         /// The change field of view event handler.
@@ -406,7 +407,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private double zoomSpeed;
 
-        private readonly FrameRateRegulator skipper = new FrameRateRegulator();
         /// <summary>
         /// Initializes static members of the <see cref="CameraController" /> class.
         /// </summary>
@@ -445,7 +445,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.IsManipulationEnabled = true;
 
             this.InitializeBindings();
-            this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
+           // this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
         }
 
         /// <summary>
@@ -1418,7 +1418,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
             this.PushCameraSetting();
 
             if (this.IsInertiaEnabled)
@@ -1430,6 +1429,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.zoomHandler.Zoom(delta, zoomOrigin);
             }
+            Viewport.InvalidateRender();
         }
 
         /// <summary>
@@ -2102,11 +2102,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">
         /// The event arguments.
         /// </param>
-        private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
+        public void OnCompositionTargetRendering(long ticks)
         {
-            if (skipper.IsSkip())
-                return;
-            var ticks = e.RenderingTime.Ticks;
             var time = 100e-9 * (ticks - this.lastTick);
 
             if (this.lastTick != 0)
@@ -2235,7 +2232,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
             if (this.ZoomAroundMouseDownPoint)
             {
                 var point = e.GetPosition(this);
@@ -2265,7 +2261,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // should be independent of time
             var factor = this.IsInertiaEnabled ? Math.Pow(this.InertiaFactor, time / 0.012) : 0;
             factor = this.Clamp(factor, 0.2, 1);
-
+            bool needUpdate = false;
             if (this.isSpinning && this.spinningSpeed.LengthSquared > 0.1)
             {
                 this.rotateHandler.Rotate(
@@ -2275,31 +2271,56 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     this.spinningSpeed *= factor;
                 }
+                needUpdate = true;
             }
-
+            else
+            {
+                this.spinningSpeed = new Vector();
+            }
             if (this.rotationSpeed.LengthSquared > 0.1)
             {
                 this.rotateHandler.Rotate(
                     this.rotationPosition, this.rotationPosition + (this.rotationSpeed * time), this.rotationPoint3D);
                 this.rotationSpeed *= factor;
+                needUpdate = true;
             }
-
+            else
+            {
+                this.rotationSpeed = new Vector();
+            }
             if (this.panSpeed.LengthSquared > 0.0001)
             {
                 this.panHandler.Pan(this.panSpeed * time);
                 this.panSpeed *= factor;
+                needUpdate = true;
+            }
+            else
+            {
+                this.panSpeed = new Vector3D();
             }
 
             if (this.moveSpeed.LengthSquared > 0.0001)
             {
                 this.zoomHandler.MoveCameraPosition(this.moveSpeed * time);
                 this.moveSpeed *= factor;
+                needUpdate = true;
+            }
+            else
+            {
+                this.moveSpeed = new Vector3D();
             }
 
-            if (Math.Abs(this.zoomSpeed) > 0.1)
+            if (Math.Abs(this.zoomSpeed) > 0.001)
             {
                 this.zoomHandler.Zoom(this.zoomSpeed * time, this.zoomPoint3D);
                 this.zoomSpeed *= factor;
+                needUpdate = true;
+            }
+            else
+            { zoomSpeed = 0; }
+            if (needUpdate)
+            {
+                Viewport.InvalidateRender();
             }
         }
 
@@ -2380,7 +2401,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void SubscribeEvents()
         {
             this.MouseWheel += this.OnMouseWheel;
-            RenderingEventManager.AddListener(this.renderingEventListener);
+            //RenderingEventManager.AddListener(this.renderingEventListener);
         }
 
         /// <summary>
@@ -2403,7 +2424,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void UnSubscribeEvents()
         {
             this.MouseWheel -= this.OnMouseWheel;
-            RenderingEventManager.RemoveListener(this.renderingEventListener);
+            //RenderingEventManager.RemoveListener(this.renderingEventListener);
         }
 
         /// <summary>

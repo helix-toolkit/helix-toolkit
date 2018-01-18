@@ -107,7 +107,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The rendering event listener.
         /// </summary>
-        private readonly RenderingEventListener renderingEventListener;
+        //private readonly RenderingEventListener renderingEventListener;
 
         /// <summary>
         /// The rotate handler
@@ -312,7 +312,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.fpsWatch.Start();
 
-            this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
+            //this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
 
             this.Loaded += this.ControlLoaded;
             this.Unloaded += this.ControlUnloaded;            
@@ -1284,7 +1284,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">
         /// The event arguments. 
         /// </param>
-        private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
+        private void OnCompositionTargetRendering()
         {
             if (this.ShowFrameRate && this.fpsWatch.ElapsedMilliseconds > 500)
             {
@@ -1307,6 +1307,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public void UpdateFPS(TimeSpan timeStamp)
         {
             FpsCounter.AddFrame(timeStamp);
+            OnCompositionTargetRendering();
+            cameraController.OnCompositionTargetRendering(timeStamp.Ticks);
         }
 
         /// <summary>
@@ -1458,7 +1460,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (!this.isSubscribedToRenderingEvent)
             {
-                RenderingEventManager.AddListener(this.renderingEventListener);
+               // RenderingEventManager.AddListener(this.renderingEventListener);
                 this.isSubscribedToRenderingEvent = true;
             }
             this.KeyDown += Viewport3DX_KeyDown;
@@ -1492,7 +1494,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.isSubscribedToRenderingEvent)
             {
-                RenderingEventManager.RemoveListener(this.renderingEventListener);
+                //RenderingEventManager.RemoveListener(this.renderingEventListener);
                 this.isSubscribedToRenderingEvent = false;
             }
             this.KeyDown -= Viewport3DX_KeyDown;
