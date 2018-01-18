@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface IRenderContext2D : IDisposable
     {
-        ID2DTarget RenderTarget { get; }
+        IDevice2DProxy RenderTarget { get; }
         RenderTarget D2DTarget
         {
             get;
@@ -19,11 +19,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class RenderContext2D : DisposeObject, IRenderContext2D
     {
-        public ID2DTarget RenderTarget { private set; get; }
+        public IDevice2DProxy RenderTarget { private set; get; }
 
         public RenderTarget D2DTarget { get { return RenderTarget.D2DTarget; } }
 
-        public RenderContext2D(ID2DTarget target)
+        public RenderContext2D(IDevice2DProxy target)
         {
             RenderTarget = target;
         }

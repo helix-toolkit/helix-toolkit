@@ -215,14 +215,14 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected ShapeRenderable2DBase shapeRenderable;
 
-        protected sealed override IRenderable2D CreateRenderCore(ID2DTarget host)
+        protected sealed override IRenderable2D CreateRenderCore(IDevice2DProxy host)
         {
             shapeRenderable = CreateShapeRenderCore(host);
             AssignProperties();
             return shapeRenderable;
         }
 
-        protected abstract ShapeRenderable2DBase CreateShapeRenderCore(ID2DTarget host);
+        protected abstract ShapeRenderable2DBase CreateShapeRenderCore(IDevice2DProxy host);
 
         protected virtual void AssignProperties()
         {

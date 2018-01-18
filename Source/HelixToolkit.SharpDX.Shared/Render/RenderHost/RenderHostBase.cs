@@ -327,7 +327,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The d2 d controls.
         /// </value>
-        public ID2DTarget D2DTarget
+        public IDevice2DProxy D2DTarget
         {
             get { return RenderBuffer.D2DControls; }
         }

@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     using Core2D;
     public class RectangleModel2D : ShapeModel2D
     {
-        protected override ShapeRenderable2DBase CreateShapeRenderCore(ID2DTarget host)
+        protected override ShapeRenderable2DBase CreateShapeRenderCore(IDevice2DProxy host)
         {
             return new RectangleRenderable();
         }

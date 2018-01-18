@@ -256,7 +256,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public ID2DTarget D2DTarget
+        public IDevice2DProxy D2DTarget
         {
             get
             {

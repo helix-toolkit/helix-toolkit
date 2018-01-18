@@ -48,14 +48,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// The D2D controls
         /// </summary>
-        protected D2DControlWrapper d2dControls;
+        protected Device2DProxy d2dControls;
         /// <summary>
         /// Gets the d2 d controls.
         /// </summary>
         /// <value>
         /// The d2 d controls.
         /// </value>
-        public ID2DTarget D2DControls
+        public IDevice2DProxy D2DControls
         {
             get { return d2dControls; }
         }

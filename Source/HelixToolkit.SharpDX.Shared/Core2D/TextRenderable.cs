@@ -88,7 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         private Factory textFactory;
         private TextFormat textFormat;
 
-        protected override bool OnAttach(ID2DTarget target)
+        protected override bool OnAttach(IDevice2DProxy target)
         {
             if (base.OnAttach(target))
             {

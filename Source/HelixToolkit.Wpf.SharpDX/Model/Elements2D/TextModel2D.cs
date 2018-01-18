@@ -145,7 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         private TextRenderable textRenderable;
         protected bool foregroundChanged = true;
 
-        protected override IRenderable2D CreateRenderCore(ID2DTarget host)
+        protected override IRenderable2D CreateRenderCore(IDevice2DProxy host)
         {
             textRenderable = new TextRenderable();
             AssignProperties();
