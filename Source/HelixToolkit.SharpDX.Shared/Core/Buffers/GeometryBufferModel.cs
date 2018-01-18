@@ -140,6 +140,7 @@ namespace HelixToolkit.UWP.Core
         protected override void Dispose(bool disposeManagedResources)
         {
             InvalidateRenderer = null;
+            Geometry = null;// Release all events
             base.Dispose(disposeManagedResources);
         }
 

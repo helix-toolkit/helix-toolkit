@@ -497,8 +497,12 @@ namespace OctreeDemo
 
         protected override void Dispose(bool disposing)
         {
-            timer.Stop();
-            timer.Tick -= Timer_Tick;
+            if (timer != null)
+            {
+                timer.Stop();
+                timer.Tick -= Timer_Tick;
+            }
+
             base.Dispose(disposing);
         }
     }

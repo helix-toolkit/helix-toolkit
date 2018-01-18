@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
     using System;
     using BoundingSphere = global::SharpDX.BoundingSphere;
 
-    public class GeometryBoundManager : ObservableObject, IBoundable
+    public class GeometryBoundManager : DisposeObject, IBoundable
     {
         #region Properties
         private Geometry3D geometry = null;
@@ -268,6 +268,22 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.ModelMatrix);
                 }
             }
+        }
+
+        public override void DisposeAndClear()
+        {
+            Geometry = null;
+            base.DisposeAndClear();
+        }
+
+        protected override void Dispose(bool disposeManagedResources)
+        {
+            elementCore.OnTransformChanged -= OnTransformChanged;
+            OnBoundChanged = null;
+            OnTransformBoundChanged = null;
+            OnBoundSphereChanged = null;
+            OnTransformBoundSphereChanged = null;
+            base.Dispose(disposeManagedResources);
         }
     }
 }

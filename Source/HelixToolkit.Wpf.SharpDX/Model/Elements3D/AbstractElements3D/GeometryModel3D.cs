@@ -278,18 +278,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var model = d as GeometryModel3D;
-            if (e.OldValue != null)
-            {
-                (e.OldValue as INotifyPropertyChanged).PropertyChanged -= model.OnGeometryPropertyChangedPrivate;
-            }
-            if (e.NewValue != null)
-            {
-                (e.NewValue as INotifyPropertyChanged).PropertyChanged -= model.OnGeometryPropertyChangedPrivate;
-                (e.NewValue as INotifyPropertyChanged).PropertyChanged += model.OnGeometryPropertyChangedPrivate;
-            }
             model.GeometryInternal = e.NewValue == null ? null : e.NewValue as Geometry3D;
-            model.OnGeometryChanged(e);
-            model.InvalidateRender();
         }
 
         /// <summary>
@@ -324,7 +313,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 geometryInternal = value;
-                if (bufferModelInternal != null)
+                if (IsAttached)
                 {
                     BoundManager.Geometry = bufferModelInternal.Geometry = value;                   
                 }
@@ -401,26 +390,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected abstract RasterizerStateDescription CreateRasterState();
 
-        protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
-        {
-        }
-
-        private void OnGeometryPropertyChangedPrivate(object sender, PropertyChangedEventArgs e)
-        {
-            if (this.IsAttached)
-            {
-                if (GeometryValid)
-                {
-                    OnGeometryPropertyChanged(sender, e);
-                }
-            }
-        }
-
-        protected virtual void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-
-        }
-
         /// <summary>
         /// Overriding OnAttach, use <see cref="CheckGeometry"/> to check if it can be attached.
         /// </summary>
@@ -429,7 +398,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (base.OnAttach(host))
             {
-                AttachOnGeometryPropertyChanged();
                 bufferModelInternal = OnCreateBufferModel();
                 BoundManager.Geometry = bufferModelInternal.Geometry = GeometryInternal;
                 bufferModelInternal.InvalidateRenderer += BufferModel_InvalidateRenderer;
@@ -456,27 +424,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnDetach()
         {
-            DetachOnGeometryPropertyChanged();
             InstanceBuffer.DisposeAndClear();
             Disposer.RemoveAndDispose(ref bufferModelInternal);
+            BoundManager.DisposeAndClear();
             base.OnDetach();
-        }
-
-        private void AttachOnGeometryPropertyChanged()
-        {
-            if (GeometryInternal != null)
-            {
-                GeometryInternal.PropertyChanged -= OnGeometryPropertyChangedPrivate;
-                GeometryInternal.PropertyChanged += OnGeometryPropertyChangedPrivate;
-            }
-        }
-
-        private void DetachOnGeometryPropertyChanged()
-        {
-            if (GeometryInternal != null)
-            {
-                GeometryInternal.PropertyChanged -= OnGeometryPropertyChangedPrivate;
-            }
         }
 
         /// <summary>
