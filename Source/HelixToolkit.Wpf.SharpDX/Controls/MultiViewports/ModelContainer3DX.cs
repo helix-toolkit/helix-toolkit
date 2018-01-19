@@ -62,6 +62,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public event EventHandler<bool> StopRenderLoop;
 #pragma warning restore 0067
 
+        public Guid GUID { get; } = Guid.NewGuid();
+
         public bool IsRendering { set; get; } = true;
 
         private int d3dCounter = 0;

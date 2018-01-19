@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderHost : IDisposable
+    public interface IRenderHost : IDisposable, IGUID
     {
         /// <summary>
         /// Fired whenever an exception occurred on this object.

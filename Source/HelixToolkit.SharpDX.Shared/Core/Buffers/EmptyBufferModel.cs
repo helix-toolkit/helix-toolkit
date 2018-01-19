@@ -17,6 +17,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public sealed class EmptyGeometryBufferModel : IGeometryBufferModel
     {
+
         /// <summary>
         /// Gets or sets the geometry.
         /// </summary>
@@ -108,6 +109,12 @@ namespace HelixToolkit.UWP.Core
         {
             return true;
         }
+
+        public void AttachRenderHost(IRenderHost host)
+        {
+
+        }
+
         /// <summary>
         /// Detaches this instance.
         /// </summary>
@@ -115,6 +122,12 @@ namespace HelixToolkit.UWP.Core
         {
 
         }
+
+        public void DetachRenderHost(IRenderHost host)
+        {
+
+        }
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>

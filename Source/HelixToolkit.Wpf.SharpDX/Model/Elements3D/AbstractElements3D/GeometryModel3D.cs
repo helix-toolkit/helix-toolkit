@@ -326,12 +326,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 { return; }
                 if (bufferModelInternal != null)
                 {
-                    bufferModelInternal.InvalidateRenderer -= BufferModel_InvalidateRenderer;
+                    bufferModelInternal.DetachRenderHost(RenderHost);
                 }
                 bufferModelInternal = value;
                 if (bufferModelInternal != null)
                 {
-                    bufferModelInternal.InvalidateRenderer += BufferModel_InvalidateRenderer;
+                    bufferModelInternal.AttachRenderHost(RenderHost);
                     ((IGeometryRenderCore)RenderCore).GeometryBuffer = bufferModelInternal;
                 }
             }
@@ -489,6 +489,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnDetach()
         {
             OnUnregisterBufferModel(this.GUID, geometryInternal);
+            BufferModelInternal = null;
             InstanceBuffer.DisposeAndClear();
             BoundManager.DisposeAndClear();
             base.OnDetach();

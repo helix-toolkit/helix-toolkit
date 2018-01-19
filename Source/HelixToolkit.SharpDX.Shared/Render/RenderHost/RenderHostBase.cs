@@ -18,7 +18,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     {
         private const int MinWidth = 10;
         private const int MinHeight = 10;
+
         #region Properties
+        public Guid GUID { get; } = Guid.NewGuid();
+
         private IDX11RenderBufferProxy renderBuffer;
         /// <summary>
         /// Gets the render buffer.

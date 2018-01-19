@@ -14,6 +14,8 @@ namespace HelixToolkit.UWP.Core
     using global::SharpDX.DXGI;
     using System;
     using System.Linq;
+    using System.Collections.Generic;
+
     /// <summary>
     /// General Geometry Buffer Model.
     /// </summary>
@@ -26,10 +28,7 @@ namespace HelixToolkit.UWP.Core
         /// The unique identifier.
         /// </value>
         public Guid GUID { get; } = Guid.NewGuid();
-        /// <summary>
-        /// Occurs when [invalidate renderer].
-        /// </summary>
-        public event EventHandler<bool> InvalidateRenderer;
+
         /// <summary>
         /// change flags
         /// </summary>
@@ -95,7 +94,7 @@ namespace HelixToolkit.UWP.Core
                 }
                 VertexChanged = true;
                 IndexChanged = true;
-                InvalidateRenderer?.Invoke(this, true);
+                InvalidateRenderer();
             }
             get
             {
@@ -103,6 +102,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        private readonly Dictionary<Guid, HostCounter> attachedHost = new Dictionary<Guid, HostCounter>();
         #region Constructors        
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryBufferModel"/> class.
@@ -126,15 +126,30 @@ namespace HelixToolkit.UWP.Core
             if (IsVertexBufferChanged(e.PropertyName))
             {
                 VertexChanged = true;
-                InvalidateRenderer?.Invoke(this, true);
+                InvalidateRenderer();
             }
             else if (IsIndexBufferChanged(e.PropertyName))
             {
                 IndexChanged = true;
-                InvalidateRenderer?.Invoke(this, true);
+                InvalidateRenderer();
             }
         }
 
+        private void InvalidateRenderer()
+        {
+            foreach(var hostContainer in attachedHost.Values)
+            {
+                IRenderHost h;
+                if(hostContainer.Host.TryGetTarget(out h))
+                {
+                    h.InvalidateRender();
+                }
+                else
+                {
+                    attachedHost.Remove(hostContainer.GUID);
+                }
+            }
+        }
         /// <summary>
         /// Determines whether [is vertex buffer changed] [the specified property name].
         /// </summary>
@@ -216,15 +231,82 @@ namespace HelixToolkit.UWP.Core
             }
             return true;
         }
+
+        /// <summary>
+        /// Attaches the render host.
+        /// </summary>
+        /// <param name="host">The host.</param>
+        public void AttachRenderHost(IRenderHost host)
+        {
+            if (host == null)
+            { return; }
+            HostCounter counter;
+            if (attachedHost.TryGetValue(host.GUID, out counter))
+            {
+                counter.Inc();
+            }
+            else
+            {
+                attachedHost.Add(host.GUID, new HostCounter(host, 1));
+            }
+        }
+
+        public void DetachRenderHost(IRenderHost host)
+        {
+            if (host == null)
+            { return; }
+            HostCounter counter;
+            if (attachedHost.TryGetValue(host.GUID, out counter))
+            {
+                if (counter.Dec() <= 0)
+                {
+                    attachedHost.Remove(host.GUID);
+                }
+            }
+        }
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposeManagedResources)
         {
-            InvalidateRenderer = null;
             Geometry = null;// Release all events
+            attachedHost.Clear();
             base.Dispose(disposeManagedResources);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private sealed class HostCounter : IGUID
+        {
+            public int RefCount { private set; get; } = 0;
+            public WeakReference<IRenderHost> Host { private set; get; }
+
+            public Guid GUID { private set; get; }
+
+            public HostCounter(IRenderHost host, int initialValue = 0)
+            {
+                Host = new WeakReference<IRenderHost>(host);
+                RefCount = initialValue;
+                GUID = host.GUID;
+            }
+            /// <summary>
+            /// Increment reference.
+            /// </summary>
+            /// <returns></returns>
+            public int Inc()
+            {
+                return ++RefCount;
+            }
+            /// <summary>
+            /// Decrement reference
+            /// </summary>
+            /// <returns></returns>
+            public int Dec()
+            {
+                return --RefCount;
+            }
         }
     }
 }
