@@ -249,7 +249,9 @@ namespace OctreeDemo
             CreateDefaultModels();
             sw.Stop();
             Console.WriteLine("Create Models total time =" + sw.ElapsedMilliseconds + " ms");
-
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(50);
+            timer.Tick += Timer_Tick;
             AddModelCommand = new RelayCommand(AddModel);
             RemoveModelCommand = new RelayCommand(RemoveModel);
             ClearModelCommand = new RelayCommand(ClearModel);
@@ -456,12 +458,9 @@ namespace OctreeDemo
         private Random rnd = new Random();
         private void AutoTestAddRemove(object o)
         {
-            if (timer == null)
+            if (!timer.IsEnabled)
             {
-                AutoTesting = true;
-                timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(50);
-                timer.Tick += Timer_Tick;
+                AutoTesting = true;              
                 timer.Start();
             }
             else
