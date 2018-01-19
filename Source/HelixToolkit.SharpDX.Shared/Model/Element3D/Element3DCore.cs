@@ -142,6 +142,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             get { return renderHost; }
         }
         /// <summary>
+        /// Gets the effects manager.
+        /// </summary>
+        /// <value>
+        /// The effects manager.
+        /// </value>
+        protected IEffectsManager EffectsManager { get { return renderHost.EffectsManager; } }
+        /// <summary>
         /// Gets the items.
         /// </summary>
         /// <value>
@@ -299,9 +306,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// </summary>
         public void Detach()
         {
-            IsAttached = false;
-            RenderCore.Detach();
-            OnDetach();
+            if (IsAttached)
+            {
+                IsAttached = false;
+                RenderCore.Detach();
+                OnDetach();
+            }
         }
 
         /// <summary>

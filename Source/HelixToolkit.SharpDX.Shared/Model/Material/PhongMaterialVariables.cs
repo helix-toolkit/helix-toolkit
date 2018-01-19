@@ -176,8 +176,11 @@ namespace HelixToolkit.UWP.Model
         private bool renderEnvironmentMap = false;
 
         /// <summary>
-        /// <see cref="IMaterialRenderParams."/> 
+        /// Gets or sets a value indicating whether [render environment map].
         /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render environment map]; otherwise, <c>false</c>.
+        /// </value>
         public bool RenderEnvironmentMap
         {
             set

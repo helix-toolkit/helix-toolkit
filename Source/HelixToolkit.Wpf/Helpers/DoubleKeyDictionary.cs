@@ -258,6 +258,13 @@ namespace HelixToolkit.Wpf
                 return false;
             }
         }
+        /// <summary>
+        /// Gets the values.
+        /// </summary>
+        /// <value>
+        /// The values.
+        /// </value>
+        public IEnumerable<V> Values { get { return m_innerDictionary.Values; } }
     }
 
     /// <summary>
@@ -272,7 +279,7 @@ namespace HelixToolkit.Wpf
     /// <typeparam name="V">
     /// Value type.
     /// </typeparam>
-    public class DoubleKeyPairValue<K, T, V>
+    public sealed class DoubleKeyPairValue<K, T, V>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DoubleKeyPairValue{K,T,V}"/> class.

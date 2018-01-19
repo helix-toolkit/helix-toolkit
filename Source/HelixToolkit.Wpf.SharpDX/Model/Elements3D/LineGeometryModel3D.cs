@@ -9,15 +9,17 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Windows;
     using Core;
     using global::SharpDX;
     using global::SharpDX.Direct3D11;
+    using System;
+    using System.Collections.Generic;
+    using System.Windows;
     using Media = System.Windows.Media;
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="HelixToolkit.Wpf.SharpDX.GeometryModel3D" />
     public class LineGeometryModel3D : GeometryModel3D
     {
         #region Dependency Properties
@@ -71,21 +73,40 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(HitTestThicknessProperty, value); }
         }
         #endregion
-        [ThreadStatic]
-        private static LinesVertex[] vertexArrayBuffer = null;
 
-        protected override IGeometryBufferModel OnCreateBufferModel()
+
+        /// <summary>
+        /// Called when [create buffer model].
+        /// </summary>
+        /// <param name="modelGuid"></param>
+        /// <param name="geometry"></param>
+        /// <returns></returns>
+        protected override IGeometryBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
-            var buffer = new LineGeometryBufferModel<LinesVertex>(LinesVertex.SizeInBytes);
-            buffer.OnBuildVertexArray = CreateLinesVertexArray;
+            var buffer = EffectsManager.GeometryBufferManager.Register<DefaultLineGeometryBufferModel>(modelGuid, geometry);
             return buffer;
         }
-
+        /// <summary>
+        /// Called when [unregister buffer model].
+        /// </summary>
+        /// <param name="modelGuid">The model unique identifier.</param>
+        /// <param name="geometry">The geometry.</param>
+        protected override void OnUnregisterBufferModel(Guid modelGuid, Geometry3D geometry)
+        {
+            EffectsManager.GeometryBufferManager.Unregister<DefaultLineGeometryBufferModel>(modelGuid, geometry);
+        }
+        /// <summary>
+        /// Called when [create render core].
+        /// </summary>
+        /// <returns></returns>
         protected override IRenderCore OnCreateRenderCore()
         {
             return new LineRenderCore();
         }
-
+        /// <summary>
+        /// Assigns the default values to core.
+        /// </summary>
+        /// <param name="core">The core.</param>
         protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
             var c = core as ILineRenderParams;
@@ -94,7 +115,11 @@ namespace HelixToolkit.Wpf.SharpDX
             c.Smoothness = (float)Smoothness;
             base.AssignDefaultValuesToCore(core);
         }
-
+        /// <summary>
+        /// Create raster state description.
+        /// <para>If <see cref="OnCreateRasterState" /> is set, then <see cref="OnCreateRasterState" /> instead of <see cref="CreateRasterState" /> will be called.</para>
+        /// </summary>
+        /// <returns></returns>
         protected override RasterizerStateDescription CreateRasterState()
         {
             return new RasterizerStateDescription()
@@ -112,12 +137,24 @@ namespace HelixToolkit.Wpf.SharpDX
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };
         }
-
+        /// <summary>
+        /// Override this function to set render technique during Attach Host.
+        /// <para>If <see cref="OnSetRenderTechnique" /> is set, then <see cref="OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns>
+        /// Return RenderTechnique
+        /// </returns>
         protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.Lines];
         }
-
+        /// <summary>
+        /// <para>Determine if this can be rendered.</para>
+        /// <para>Default returns <see cref="IsAttached" /> &amp;&amp; <see cref="IsRendering" /> &amp;&amp; <see cref="Visibility" /> == <see cref="Visibility.Visible" /></para>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         protected override bool CanRender(IRenderContext context)
         {
             if (base.CanRender(context))
@@ -129,39 +166,26 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
         }
-
+        /// <summary>
+        /// Called when [check geometry].
+        /// </summary>
+        /// <param name="geometry">The geometry.</param>
+        /// <returns></returns>
         protected override bool OnCheckGeometry(Geometry3D geometry)
         {
             return base.OnCheckGeometry(geometry) && geometry is LineGeometry3D;
         }
-
+        /// <summary>
+        /// Called when [hit test].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="totalModelMatrix">The total model matrix.</param>
+        /// <param name="ray">The ray.</param>
+        /// <param name="hits">The hits.</param>
+        /// <returns></returns>
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return (Geometry as LineGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this, (float)HitTestThickness);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="T:LinesVertex[]"/>.
-        /// </summary>
-        private LinesVertex[] CreateLinesVertexArray(LineGeometry3D geometry)
-        {
-            var positions = geometry.Positions;
-            var vertexCount = geometry.Positions.Count;
-            var array = reuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new LinesVertex[vertexCount];
-            var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
-            if (reuseVertexArrayBuffer)
-            {
-                vertexArrayBuffer = array;
-            }
-
-            for (var i = 0; i < vertexCount; i++)
-            {
-                colors.MoveNext();
-                array[i].Position = new Vector4(positions[i], 1f);
-                array[i].Color = colors.Current;
-            }
-            colors.Dispose();
-            return array;
         }
     }
 }

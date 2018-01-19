@@ -1,16 +1,16 @@
-﻿using System.Windows;
-using System.Collections.Generic;
-using System.Linq;
+﻿using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
-using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-using System.Diagnostics;
-using HelixToolkit.Wpf.SharpDX.Utilities;
 using System;
-using HelixToolkit.Wpf.SharpDX.Core;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="HelixToolkit.Wpf.SharpDX.GeometryModel3D" />
     public class BillboardTextModel3D : GeometryModel3D
     {
         #region Dependency Properties
@@ -43,46 +43,81 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         #endregion
-        #region Private Class Data Members
-        [ThreadStatic]
-        private static BillboardVertex[] vertexArrayBuffer;
-        #endregion
 
-        #region Overridable Methods
-
+        #region Overridable Methods        
+        /// <summary>
+        /// Called when [create render core].
+        /// </summary>
+        /// <returns></returns>
         protected override IRenderCore OnCreateRenderCore()
         {
             return new BillboardRenderCore();
         }
-
+        /// <summary>
+        /// Assigns the default values to core.
+        /// </summary>
+        /// <param name="core">The core.</param>
         protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
             base.AssignDefaultValuesToCore(core);
             (core as IBillboardRenderParams).FixedSize = FixedSize;
         }
 
-        protected override IGeometryBufferModel OnCreateBufferModel()
+        /// <summary>
+        /// Called when [create buffer model].
+        /// </summary>
+        /// <param name="modelGuid"></param>
+        /// <param name="geometry"></param>
+        /// <returns></returns>
+        protected override IGeometryBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
-            var buffer = new BillboardBufferModel<BillboardVertex>(BillboardVertex.SizeInBytes);
-            buffer.OnBuildVertexArray = CreateBillboardVertexArray;
+            var buffer = EffectsManager.GeometryBufferManager.Register<DefaultBillboardBufferModel>(modelGuid, geometry);
             return buffer;
         }
-
+        /// <summary>
+        /// Called when [unregister buffer model].
+        /// </summary>
+        /// <param name="modelGuid">The model unique identifier.</param>
+        /// <param name="geometry">The geometry.</param>
+        protected override void OnUnregisterBufferModel(Guid modelGuid, Geometry3D geometry)
+        {
+            EffectsManager.GeometryBufferManager.Unregister<DefaultBillboardBufferModel>(modelGuid, geometry);
+        }
+        /// <summary>
+        /// Override this function to set render technique during Attach Host.
+        /// <para>If <see cref="OnSetRenderTechnique" /> is set, then <see cref="OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns>
+        /// Return RenderTechnique
+        /// </returns>
         protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.BillboardText];
         }
-
+        /// <summary>
+        /// Checks the bounding frustum.
+        /// </summary>
+        /// <param name="viewFrustum">The view frustum.</param>
+        /// <returns></returns>
         protected override bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
         {
             return true;
         }
-
+        /// <summary>
+        /// Called when [check geometry].
+        /// </summary>
+        /// <param name="geometry">The geometry.</param>
+        /// <returns></returns>
         protected override bool OnCheckGeometry(Geometry3D geometry)
         {
             return geometry is IBillboardText;
         }
-
+        /// <summary>
+        /// Create raster state description.
+        /// <para>If <see cref="OnCreateRasterState" /> is set, then <see cref="OnCreateRasterState" /> instead of <see cref="CreateRasterState" /> will be called.</para>
+        /// </summary>
+        /// <returns></returns>
         protected override RasterizerStateDescription CreateRasterState()
         {
             return new RasterizerStateDescription()
@@ -100,41 +135,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled,
             };
         }
-
+        /// <summary>
+        /// Called when [hit test].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="totalModelMatrix">The total model matrix.</param>
+        /// <param name="ray">The ray.</param>
+        /// <param name="hits">The hits.</param>
+        /// <returns></returns>
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return (Geometry as BillboardBase).HitTest(context, totalModelMatrix, ref ray, ref hits, this, FixedSize);
-        }
-
-        #endregion
-
-        #region Private Helper Methdos
-
-        private BillboardVertex[] CreateBillboardVertexArray(IBillboardText billboardGeometry)
-        {
-            // Gather all of the textInfo offsets.
-            // These should be equal in number to the positions.
-            billboardGeometry.DrawTexture();
-
-            //var position = billboardGeometry.Positions;
-            var vertexCount = billboardGeometry.BillboardVertices.Count;
-            var array = reuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new BillboardVertex[vertexCount];
-            if (reuseVertexArrayBuffer)
-            {
-                vertexArrayBuffer = array;
-            }
-
-            for (var i = 0; i < vertexCount; i++)
-            {
-                array[i] = billboardGeometry.BillboardVertices[i];
-                //var tc = billboardGeometry.TextureCoordinates[i];
-                //array[i].Position = new Vector4(position[i], 1.0f);
-                //array[i].Foreground = billboardGeometry.Colors[i];
-                //array[i].Background = billboardGeometry.BackgroundColors[i];
-                //array[i].TexCoord = new Vector4(tc.X, tc.Y, allOffsets[i].X, allOffsets[i].Y);
-            }
-
-            return array;
         }
 
         #endregion

@@ -2,37 +2,49 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System;
+using System.Linq;
+using SharpDX;
+using global::SharpDX.Direct3D;
+using global::SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using System;
-    using global::SharpDX.Direct3D;
-    using global::SharpDX.Direct3D11;
     using Utilities;
     /// <summary>
     /// Line Geometry Buffer Model. Used for line rendering
     /// </summary>
     /// <typeparam name="VertexStruct"></typeparam>
-    public class LineGeometryBufferModel<VertexStruct> : GeometryBufferModel where VertexStruct : struct
+    public abstract class LineGeometryBufferModel<VertexStruct> : GeometryBufferModel where VertexStruct : struct
     {
-        public delegate VertexStruct[] BuildVertexArrayHandler(LineGeometry3D geometry);
         /// <summary>
-        /// Create VertexStruct[] from geometry position, colors etc.
+        /// 
         /// </summary>
-        public BuildVertexArrayHandler OnBuildVertexArray;
+        /// <param name="geometry">The geometry.</param>
+        /// <returns></returns>
+        protected abstract VertexStruct[] OnBuildVertexArray(LineGeometry3D geometry);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineGeometryBufferModel{VertexStruct}"/> class.
+        /// </summary>
+        /// <param name="structSize">Size of the structure.</param>
         public LineGeometryBufferModel(int structSize) : base(PrimitiveTopology.LineList,
             new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy(sizeof(int), BindFlags.VertexBuffer))
         {
         }
-
+        /// <summary>
+        /// Called when [create vertex buffer].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="geometry">The geometry.</param>
         protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
         {
             // -- set geometry if given
-            if (geometry != null && geometry.Positions != null && OnBuildVertexArray != null)
+            if (geometry != null && geometry.Positions != null)
             {
                 // --- get geometry
                 var mesh = geometry as LineGeometry3D;
@@ -44,7 +56,12 @@ namespace HelixToolkit.UWP.Core
                 buffer.DisposeAndClear();
             }
         }
-
+        /// <summary>
+        /// Called when [create index buffer].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="geometry">The geometry.</param>
         protected override void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
         {
             if (geometry.Indices != null)
@@ -56,11 +73,50 @@ namespace HelixToolkit.UWP.Core
                 buffer.DisposeAndClear();
             }
         }
-
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposeManagedResources)
         {
-            OnBuildVertexArray = null;
             base.Dispose(disposeManagedResources);
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class DefaultLineGeometryBufferModel : LineGeometryBufferModel<LinesVertex>
+    {
+        [ThreadStatic]
+        private static LinesVertex[] vertexArrayBuffer = null;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultLineGeometryBufferModel"/> class.
+        /// </summary>
+        public DefaultLineGeometryBufferModel() : base(LinesVertex.SizeInBytes) { }
+
+        /// <summary>
+        /// Called when [build vertex array].
+        /// </summary>
+        /// <param name="geometry">The geometry.</param>
+        /// <returns></returns>
+        protected override LinesVertex[] OnBuildVertexArray(LineGeometry3D geometry)
+        {
+            var positions = geometry.Positions;
+            var vertexCount = geometry.Positions.Count;
+            var array =  vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new LinesVertex[vertexCount];
+            var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
+
+            vertexArrayBuffer = array;
+
+            for (var i = 0; i < vertexCount; i++)
+            {
+                colors.MoveNext();
+                array[i].Position = new Vector4(positions[i], 1f);
+                array[i].Color = colors.Current;
+            }
+            colors.Dispose();
+            return array;
         }
     }
 }

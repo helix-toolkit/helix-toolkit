@@ -17,11 +17,15 @@ namespace HelixToolkit.UWP
     using global::SharpDX.DXGI;
     using Shaders;
     using ShaderManager;
+    using Core;
     /// <summary>
     /// Shader and Technique manager
     /// </summary>
     public abstract class EffectsManager : DisposeObject, IEffectsManager
     {
+        /// <summary>
+        /// Occurs when [on dispose resources].
+        /// </summary>
         public event EventHandler<bool> OnDisposeResources;
         /// <summary>
         /// The minimum supported feature level.
@@ -51,6 +55,16 @@ namespace HelixToolkit.UWP
         /// <see cref="IEffectsManager.StateManager"/> 
         /// </summary>
         public IStatePoolManager StateManager { get { return statePoolManager; } }
+
+        /// <summary>
+        /// Gets the geometry buffer manager.
+        /// </summary>
+        /// <value>
+        /// The geometry buffer manager.
+        /// </value>
+        public IGeometryBufferManager GeometryBufferManager { get { return geometryBufferManager; } }
+
+        private IGeometryBufferManager geometryBufferManager;
 
         private global::SharpDX.Direct3D11.Device device;
         /// <summary>
@@ -124,6 +138,8 @@ namespace HelixToolkit.UWP
             RemoveAndDispose(ref statePoolManager);
             statePoolManager = Collect(new StatePoolManager(Device));
 
+            RemoveAndDispose(ref geometryBufferManager);
+            geometryBufferManager = Collect(new GeometryBufferManager());
 #endregion
 #region Initial Techniques
             var techniqueDescs = LoadTechniqueDescriptions();

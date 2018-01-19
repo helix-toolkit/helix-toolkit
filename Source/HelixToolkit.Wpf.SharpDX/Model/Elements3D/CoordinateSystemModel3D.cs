@@ -54,7 +54,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     (d as CoordinateSystemModel3D).UpdateLabelColor(((Media.Color)e.NewValue).ToColor4());
                 }));
 
-        /// The coordinate system label X property
+        /// <summary>
+        /// The coordinate system label x property
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemLabelXProperty = DependencyProperty.Register(
                 "CoordinateSystemLabelX", typeof(string), typeof(CoordinateSystemModel3D), new PropertyMetadata("X",

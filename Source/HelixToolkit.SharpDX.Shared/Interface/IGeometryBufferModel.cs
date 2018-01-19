@@ -45,6 +45,13 @@ namespace HelixToolkit.UWP
         /// </value>
         IElementsBufferProxy VertexBuffer { get; }
         /// <summary>
+        /// Gets the size of the vertex structure.
+        /// </summary>
+        /// <value>
+        /// The size of the vertex structure.
+        /// </value>
+        int VertexStructSize { get; }
+        /// <summary>
         /// Gets the index buffer.
         /// </summary>
         /// <value>

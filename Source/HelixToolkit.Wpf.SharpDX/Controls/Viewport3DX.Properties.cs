@@ -740,7 +740,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// <para>Enable deferred rendering. Use multithreading to call rendering procedure using different Deferred Context.</para> 
-        /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx"/></para>
+        /// <para>Deferred Rendering: https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx</para>
         /// <para>https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/d3d11deferredcontextssample.htm</para>
         /// <para>Note: Only if draw calls > 3000 to be benefit according to the online performance test.</para>
         /// </summary>
@@ -2456,7 +2456,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// <para>Enable deferred rendering. Use multithreading to call rendering procedure using different Deferred Context.</para> 
-        /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx"/></para>
+        /// <para>Deferred Rendering: https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx</para>
         /// <para>https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/d3d11deferredcontextssample.htm</para>
         /// <para>Note: Only if draw calls > 3000 to be benefit according to the online performance test.</para>
         /// </summary>

@@ -1,14 +1,11 @@
 ﻿namespace HelixToolkit.Wpf.SharpDX
 {
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Windows;
+    using Core;
     using global::SharpDX;
     using global::SharpDX.Direct3D11;
-    using Utilities;
     using System;
-    using Core;
+    using System.Collections.Generic;
+    using System.Windows;
     using Media = System.Windows.Media;
 
     public class PointGeometryModel3D : GeometryModel3D
@@ -80,9 +77,6 @@
             set { this.SetValue(HitTestThicknessProperty, value); }
         }
         #endregion
-        [ThreadStatic]
-        private static PointsVertex[] vertexArrayBuffer;
-
         private IPointRenderParams pointRenderCore
         {
             get
@@ -91,7 +85,12 @@
             }
         }
 
-
+        /// <summary>
+        /// Distances the ray to point.
+        /// </summary>
+        /// <param name="r">The r.</param>
+        /// <param name="p">The p.</param>
+        /// <returns></returns>
         public static double DistanceRayToPoint(Ray r, Vector3 p)
         {
             Vector3 v = r.Direction;
@@ -105,18 +104,38 @@
             return (p - pb).Length();
         }
 
-        protected override IGeometryBufferModel OnCreateBufferModel()
+        /// <summary>
+        /// Called when [create buffer model].
+        /// </summary>
+        /// <param name="modelGuid"></param>
+        /// <param name="geometry"></param>
+        /// <returns></returns>
+        protected override IGeometryBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
-            var buffer = new PointGeometryBufferModel<PointsVertex>(PointsVertex.SizeInBytes);
-            buffer.OnBuildVertexArray = CreateVertexArray;
+            var buffer = EffectsManager.GeometryBufferManager.Register<DefaultPointGeometryBufferModel>(modelGuid, geometry);
             return buffer;
         }
-
+        /// <summary>
+        /// Called when [unregister buffer model].
+        /// </summary>
+        /// <param name="modelGuid">The model unique identifier.</param>
+        /// <param name="geometry">The geometry.</param>
+        protected override void OnUnregisterBufferModel(Guid modelGuid, Geometry3D geometry)
+        {
+            EffectsManager.GeometryBufferManager.Unregister<DefaultPointGeometryBufferModel>(modelGuid, geometry);
+        }
+        /// <summary>
+        /// Called when [create render core].
+        /// </summary>
+        /// <returns></returns>
         protected override IRenderCore OnCreateRenderCore()
         {
             return new PointRenderCore();
         }
-
+        /// <summary>
+        /// Assigns the default values to core.
+        /// </summary>
+        /// <param name="core">The core.</param>
         protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
             base.AssignDefaultValuesToCore(core);
@@ -127,7 +146,11 @@
             c.FigureRatio = (float)FigureRatio;
             c.PointColor = Color.ToColor4();
         }
-
+        /// <summary>
+        /// Create raster state description.
+        /// <para>If <see cref="OnCreateRasterState" /> is set, then <see cref="OnCreateRasterState" /> instead of <see cref="CreateRasterState" /> will be called.</para>
+        /// </summary>
+        /// <returns></returns>
         protected override RasterizerStateDescription CreateRasterState()
         {
             return new RasterizerStateDescription()
@@ -143,13 +166,25 @@
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };
         }
-
+        /// <summary>
+        /// Override this function to set render technique during Attach Host.
+        /// <para>If <see cref="OnSetRenderTechnique" /> is set, then <see cref="OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns>
+        /// Return RenderTechnique
+        /// </returns>
         protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.Points];
         }
 
-
+        /// <summary>
+        /// <para>Determine if this can be rendered.</para>
+        /// <para>Default returns <see cref="IsAttached" /> &amp;&amp; <see cref="IsRendering" /> &amp;&amp; <see cref="Visibility" /> == <see cref="Visibility.Visible" /></para>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         protected override bool CanRender(IRenderContext context)
         {
             if(base.CanRender(context))
@@ -161,41 +196,26 @@
                 return false;
             }
         }
-
+        /// <summary>
+        /// Called when [check geometry].
+        /// </summary>
+        /// <param name="geometry">The geometry.</param>
+        /// <returns></returns>
         protected override bool OnCheckGeometry(Geometry3D geometry)
         {
             return base.OnCheckGeometry(geometry) && geometry is PointGeometry3D;
         }
-
+        /// <summary>
+        /// Called when [hit test].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="totalModelMatrix">The total model matrix.</param>
+        /// <param name="ray">The ray.</param>
+        /// <param name="hits">The hits.</param>
+        /// <returns></returns>
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return (Geometry as PointGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this, (float)HitTestThickness);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="T:PointsVertex[]"/>.
-        /// </summary>
-        private PointsVertex[] CreateVertexArray(PointGeometry3D geometry)
-        {
-            var positions = geometry.Positions;
-            var vertexCount = geometry.Positions.Count;
-            var array = reuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new PointsVertex[vertexCount];
-            var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
-            if (reuseVertexArrayBuffer)
-            {
-                vertexArrayBuffer = array;
-            }
-            if (geometry.Colors != null && geometry.Colors.Any())
-            {
-                for (var i = 0; i < vertexCount; i++)
-                {
-                    colors.MoveNext();
-                    array[i].Position = new Vector4(positions[i], 1f);
-                    array[i].Color = colors.Current;
-                }
-            }
-            colors.Dispose();
-            return array;
         }
     }
 

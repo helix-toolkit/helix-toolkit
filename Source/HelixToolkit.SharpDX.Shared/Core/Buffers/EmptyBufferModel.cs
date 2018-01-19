@@ -77,6 +77,13 @@ namespace HelixToolkit.UWP.Core
                 return null;
             }
         }
+        /// <summary>
+        /// Gets the size of the vertex structure.
+        /// </summary>
+        /// <value>
+        /// The size of the vertex structure.
+        /// </value>
+        public int VertexStructSize { get { return 0; } }
 #pragma warning disable 0067
         /// <summary>
         /// Occurs when [invalidate renderer].

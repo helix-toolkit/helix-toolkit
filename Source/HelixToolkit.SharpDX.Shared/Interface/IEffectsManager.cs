@@ -49,6 +49,13 @@ namespace HelixToolkit.Wpf.SharpDX
         IStatePoolManager StateManager { get; }
 
         /// <summary>
+        /// Gets the geometry buffer manager.
+        /// </summary>
+        /// <value>
+        /// The geometry buffer manager.
+        /// </value>
+        IGeometryBufferManager GeometryBufferManager { get; }
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="name"></param>

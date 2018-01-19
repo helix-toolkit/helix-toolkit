@@ -60,21 +60,18 @@
                 Material="{Binding ModelMaterial}"
                 Plane1="{Binding Plane1}"
                 Plane2="{Binding Plane2}"
-                ReuseVertexArrayBuffer="True"
                 Transform="{Binding ModelTransform}" />
             <hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding Plane1Model}"
                 IsRendering="{Binding EnablePlane1}"
                 Material="{Binding PlaneMaterial}"
-                ReuseVertexArrayBuffer="True"
                 Transform="{Binding Plane1Transform}" />
             <hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding Plane2Model}"
                 IsRendering="{Binding EnablePlane2}"
                 Material="{Binding PlaneMaterial}"
-                ReuseVertexArrayBuffer="True"
                 Transform="{Binding Plane2Transform}" />
         </hx:Viewport3DX>
         <StackPanel

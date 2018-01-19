@@ -67,13 +67,11 @@
             <hx:PointGeometryModel3D
                 Figure="Ellipse"
                 Geometry="{Binding PointsModel}"
-                ReuseVertexArrayBuffer="True"
                 Size="2 2"
                 Color="{Binding PointColor}" />
             <hx:PointGeometryModel3D
                 Figure="Ellipse"
                 Geometry="{Binding PointsHitModel}"
-                ReuseVertexArrayBuffer="True"
                 Size="5 5"
                 Color="{Binding PointHitColor}" />
             <hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding Items}">
@@ -92,7 +90,6 @@
                             FillMode="{Binding DataContext.FillMode, RelativeSource={RelativeSource AncestorType=hx:Viewport3DX}}"
                             Geometry="{Binding Model}"
                             Material="{Binding Material}"
-                            ReuseVertexArrayBuffer="True"
                             Transform="{Binding DynamicTransform}" />
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>

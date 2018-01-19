@@ -66,6 +66,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ICamera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IDX11RenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IEffectsManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IGeometryBufferManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IGeometryBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IElementsBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ILight.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ConstantBufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\DefaultEffectsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextPool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\GeometryBufferManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\Pools.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\RenderTechniqueNames.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ShaderPool.cs" />
