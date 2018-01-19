@@ -22,8 +22,8 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// The buffer dictionary. Key1=<see cref="Geometry3D.GUID"/>, Key2=Typeof(Buffer)
         /// </summary>
-        private readonly DoubleKeyDictionary<Guid, Type, GeometryBufferContainer> bufferDictionary
-            = new DoubleKeyDictionary<Guid, Type, GeometryBufferContainer>();
+        private readonly DoubleKeyDictionary<Type, Guid, GeometryBufferContainer> bufferDictionary
+            = new DoubleKeyDictionary<Type, Guid, GeometryBufferContainer>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryBufferManager"/> class.
@@ -48,7 +48,7 @@ namespace HelixToolkit.UWP.Core
             lock (bufferDictionary)
             {
                 GeometryBufferContainer container = null;
-                if(bufferDictionary.TryGetValue(geometry.GUID, typeof(T), out container))
+                if(bufferDictionary.TryGetValue(typeof(T), geometry.GUID, out container))
                 {
 #if DEBUGDETAIL
                     Debug.WriteLine("Existing buffer found, GeomoetryGUID = " + geometry.GUID);
@@ -64,11 +64,11 @@ namespace HelixToolkit.UWP.Core
                     var id = geometry.GUID;
                     container.Disposed += (s, e) => 
                     {
-                        bufferDictionary.Remove(id, typeof(T));
+                        bufferDictionary.Remove(typeof(T), id);
                     };
                     container.Buffer.Geometry = geometry;
                     container.AttachModel(modelGuid);
-                    bufferDictionary.Add(geometry.GUID, typeof(T), container);
+                    bufferDictionary.Add(typeof(T), geometry.GUID, container);
                 
                 }
                 return container.Buffer;
@@ -90,7 +90,7 @@ namespace HelixToolkit.UWP.Core
             lock (bufferDictionary)
             {
                 GeometryBufferContainer container = null;
-                if(bufferDictionary.TryGetValue(geometry.GUID, typeof(T), out container))
+                if(bufferDictionary.TryGetValue(typeof(T), geometry.GUID, out container))
                 {
 #if DEBUGDETAIL
                     Debug.WriteLine("Existing buffer found, Detach model from buffer. ModelGUID = " + modelGuid);
