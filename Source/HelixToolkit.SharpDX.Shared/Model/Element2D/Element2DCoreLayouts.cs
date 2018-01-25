@@ -356,7 +356,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             PositionOffsets = CalculatePosition(rect, elementSize);
             if (PositionOffsets != Vector2.Zero)
             {
-                AbsolutePosition += PositionOffsets;
+                AbsolutePosition = PositionOffsets;
                 foreach (var element in Items)
                 {
                     if (element is Element2DCore e)
@@ -369,7 +369,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         private void UpdateLayoutInternal()
         {
             Bound = new RectangleF(AbsolutePosition.X, AbsolutePosition.Y, RenderSize.X, RenderSize.Y);
-            ModelMatrix = Matrix3x2.Translation(AbsolutePosition.X, AbsolutePosition.Y);
+            LayoutTranslate = Matrix3x2.Translation(AbsolutePosition.X, AbsolutePosition.Y);
         }
 
         protected virtual Vector2 ArrangeOverride(Vector2 availableSizeWithoutMargins)
