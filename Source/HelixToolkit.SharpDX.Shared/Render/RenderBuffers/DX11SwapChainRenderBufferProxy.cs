@@ -77,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             depthStencilBufferView = Collect(new DepthStencilView(Device, depthStencilBuffer));
 
             d2dTarget = Collect(new D2DTargetProxy());
-            d2dTarget.Initialize(swapChain, Device2D);
+            d2dTarget.Initialize(swapChain, DeviceContext2D);
             return colorBuffer;
         }
 

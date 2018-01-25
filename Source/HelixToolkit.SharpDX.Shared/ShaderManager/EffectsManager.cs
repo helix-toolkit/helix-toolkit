@@ -73,8 +73,22 @@ namespace HelixToolkit.UWP
         public global::SharpDX.Direct3D11.Device Device { get { return device; } }
 
         private global::SharpDX.Direct2D1.Device device2D;
-
+        /// <summary>
+        /// Gets the device2 d.
+        /// </summary>
+        /// <value>
+        /// The device2 d.
+        /// </value>
         public global::SharpDX.Direct2D1.Device Device2D { get { return device2D; } }
+
+        private global::SharpDX.Direct2D1.DeviceContext deviceContext2D;
+        /// <summary>
+        /// Gets or sets the device2 d context.
+        /// </summary>
+        /// <value>
+        /// The device2 d context.
+        /// </value>
+        public global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get { return deviceContext2D; } }
         /// <summary>
         /// 
         /// </summary>
@@ -158,6 +172,7 @@ namespace HelixToolkit.UWP
                 using (var dxgiDevice2 = device.QueryInterface<global::SharpDX.DXGI.Device>())
                 {
                     device2D = Collect(new global::SharpDX.Direct2D1.Device(factory, dxgiDevice2));
+                    deviceContext2D = Collect(new global::SharpDX.Direct2D1.DeviceContext(device2D, global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations));
                 }
             }
 

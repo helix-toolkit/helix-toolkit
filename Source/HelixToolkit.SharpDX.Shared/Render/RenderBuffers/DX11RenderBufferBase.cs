@@ -135,19 +135,32 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public Device Device
         {
-            private set; get;
+            get { return deviceResources.Device; }
         }
+        /// <summary>
+        /// Gets the device2 d.
+        /// </summary>
+        /// <value>
+        /// The device2 d.
+        /// </value>
+        public global::SharpDX.Direct2D1.Device Device2D { get { return deviceResources.Device2D; } }
 
-        public global::SharpDX.Direct2D1.Device Device2D { private set; get; }
+        public global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get { return deviceResources.DeviceContext2D; } }
+        /// <summary>
+        /// Gets or sets the device resources.
+        /// </summary>
+        /// <value>
+        /// The device resources.
+        /// </value>
+        protected IDeviceResources deviceResources { private set; get; }
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11RenderBufferProxyBase"/> class.
         /// </summary>
-        /// <param name="device">The device.</param>
+        /// <param name="deviceResource">The device resources.</param>
         public DX11RenderBufferProxyBase(IDeviceResources deviceResource)
         {
-            Device = deviceResource.Device;
+            this.deviceResources = deviceResource;
             deviceContextPool = Collect(new DeviceContextPool(Device));
-            Device2D = deviceResource.Device2D;
         }
 
         private Texture2D CreateRenderTarget(int width, int height, MSAALevel msaa)
@@ -166,6 +179,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         protected virtual void DisposeBuffers()
         {
+            DeviceContext2D.Target = null;
             RemoveAndDispose(ref d2dTarget);
             RemoveAndDispose(ref colorBufferView);
             RemoveAndDispose(ref depthStencilBufferView);
@@ -284,8 +298,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <returns></returns>
         public virtual bool BeginDraw2D()
-        {
-            d2dTarget.D2DTarget.BeginDraw();
+        {           
             return true;
         }
         /// <summary>
@@ -294,7 +307,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public virtual bool EndDraw2D()
         {          
-            d2dTarget.D2DTarget.EndDraw();
             return true;
         }
         /// <summary>

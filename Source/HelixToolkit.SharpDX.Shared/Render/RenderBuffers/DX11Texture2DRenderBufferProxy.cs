@@ -129,7 +129,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             renderTargetNMS = Collect(new Texture2D(Device, colordescNMS));
             Device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
             d2dTarget = Collect(new D2DTargetProxy());
-            d2dTarget.Initialize(renderTargetNMS, Device2D);
+            d2dTarget.Initialize(renderTargetNMS, DeviceContext2D);
             return renderTargetNMS;
 #else
             return colorBuffer;

@@ -34,11 +34,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The device2d.
         /// </value>
         global::SharpDX.Direct2D1.Device Device2D { get; }
-
+        /// <summary>
+        /// Gets the device context2d.
+        /// </summary>
+        /// <value>
+        /// The device context2d.
+        /// </value>
+        global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get; }
         /// <summary>
         /// 
         /// </summary>
-        DriverType DriverType { get; }
+            DriverType DriverType { get; }
 
         /// <summary>
         /// Called when [device error].

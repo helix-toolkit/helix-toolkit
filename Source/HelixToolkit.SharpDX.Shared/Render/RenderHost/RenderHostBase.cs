@@ -117,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 viewport = value;
                 if (IsInitialized)
                 {
-                    AttachRenderable(Device.ImmediateContext);
+                    AttachRenderable(EffectsManager);
                 }
             }
             get { return viewport; }
@@ -545,7 +545,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             ActualHeight = height;
             CreateAndBindBuffers();
             IsInitialized = true;
-            AttachRenderable(Device.ImmediateContext);
+            AttachRenderable(EffectsManager);
             StartRendering();
         }
         /// <summary>
@@ -612,7 +612,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Attaches the renderable.
         /// </summary>
         /// <param name="context">The context.</param>
-        protected virtual void AttachRenderable(DeviceContext context)
+        protected virtual void AttachRenderable(IDeviceResources deviceResources)
         {
             if (!IsInitialized || Viewport == null) { return; }           
             if (EnableSharingModelMode && SharedModelContainer != null)
@@ -624,8 +624,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 viewport.Attach(this);
             }         
-            renderContext = Collect(CreateRenderContext(context));
-            renderContext2D = Collect(CreateRenderContext2D());
+            renderContext = Collect(CreateRenderContext(deviceResources.Device.ImmediateContext));
+            renderContext2D = Collect(CreateRenderContext2D(deviceResources.DeviceContext2D));
         }
         /// <summary>
         /// Creates the render context.
@@ -637,9 +637,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             return new RenderContext(this, context);
         }
 
-        protected virtual IRenderContext2D CreateRenderContext2D()
+        protected virtual IRenderContext2D CreateRenderContext2D(global::SharpDX.Direct2D1.DeviceContext context)
         {
-            return new RenderContext2D(this);
+            return new RenderContext2D(context);
         }
         /// <summary>
         /// 

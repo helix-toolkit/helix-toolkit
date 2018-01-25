@@ -118,11 +118,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         public virtual void Render2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, ref RenderParameter2D parameter)
         {
-            context.RenderTarget = parameter.RenderTarget;
+            context.DeviceContext.Target = parameter.RenderTarget;
+            context.DeviceContext.BeginDraw();
             foreach (var e in renderables)
             {
                 e.Render(context);
             }
+            context.DeviceContext.EndDraw();
         }
     }
 
