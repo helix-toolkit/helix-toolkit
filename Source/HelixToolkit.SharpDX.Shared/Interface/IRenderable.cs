@@ -126,7 +126,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The d2 d renderables.
         /// </value>
-        IEnumerable<IRenderable> D2DRenderables { get; }
+        IEnumerable<IRenderable2D> D2DRenderables { get; }
         /// <summary>
         /// Invalidates the render.
         /// </summary>

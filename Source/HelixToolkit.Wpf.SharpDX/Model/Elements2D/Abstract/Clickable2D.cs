@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
-    public abstract class Clickable2D : Model2D
+    public abstract class Clickable2D : Element2D
     {
         public static long DoubleClickThreshold = 300;
 

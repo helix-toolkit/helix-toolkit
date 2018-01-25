@@ -5,6 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using SharpDX.Direct2D1;
 using System;
+using System.Collections.Generic;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP
@@ -15,21 +16,12 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public interface ITransform2D
-    {
+    public interface IRenderCore2D : IDisposable
+    {        
         /// <summary>
-        /// Gets or sets the transform.
+        /// Occurs when [on invalidate renderer].
         /// </summary>
-        /// <value>
-        /// The transform.
-        /// </value>
-        Matrix3x2 Transform { set; get; }
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IRenderable2D : IDisposable
-    {
+        event EventHandler<bool> OnInvalidateRenderer;
         /// <summary>
         /// Gets or sets the bound.
         /// </summary>
@@ -37,8 +29,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The bound.
         /// </value>
         RectangleF Bound { set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        bool IsEmpty { get; }
 
-        //Matrix3x2 Transform { set; get; }        
+        /// <summary>
+        /// 
+        /// </summary>
+        Matrix3x2 Transform { set; get; }        
         /// <summary>
         /// Gets or sets a value indicating whether this instance is rendering.
         /// </summary>
@@ -67,5 +66,53 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   <c>true</c> if this instance is mouse over; otherwise, <c>false</c>.
         /// </value>
         bool IsMouseOver { set; get; }
+    }
+
+    public interface IRenderable2D : ITransform2D, IGUID
+    {
+        /// <summary>
+        /// Gets a value indicating whether this instance is renderable.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is renderable; otherwise, <c>false</c>.
+        /// </value>
+        bool IsRenderable { get; }
+        /// <summary>
+        /// Attaches the specified target.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        void Attach(IRenderHost target);
+        /// <summary>
+        /// Detaches this instance.
+        /// </summary>
+        void Detach();
+        /// <summary>
+        /// Optional for scene graph traverse
+        /// </summary>
+        IEnumerable<IRenderable2D> Items { get; }
+
+        IRenderCore2D RenderCore { get; }
+        /// <summary>
+        /// Update render related parameters such as model matrix by scene graph and bounding boxes
+        /// </summary>
+        /// <param name="context"></param>
+        void Update(IRenderContext2D context);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        void Render(IRenderContext2D context);
+
+        void Measure(Vector2 size);
+        void Arrange(Vector2 rect);
+
+        void Layout(Vector2 availableSize);
+    }
+
+    public interface IHitable2D
+    {
+        bool HitTest(Vector2 mousePoint, out HitTest2DResult hitResult);
+        bool IsHitTestVisible { set; get; }
     }
 }

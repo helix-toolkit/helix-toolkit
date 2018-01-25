@@ -239,16 +239,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public IEnumerable<IRenderable> D2DRenderables
+        public IEnumerable<IRenderable2D> D2DRenderables
         {
             get
             {
-                if (renderHostInternal != null && Items2D != null)
+                if (renderHostInternal != null && Overlay2D != null)
                 {
-                    foreach(IRenderable item in Items2D.Items)
-                    {
-                        yield return item;
-                    }
+                    yield return Overlay2D;
                 }
             }
         }
@@ -273,7 +270,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public Viewport3DX()
         {
             FpsCounter = new FpsCounter();
-            Items2D = new Canvas2D();
+            Overlay2D = new Overlay();
             this.perspectiveCamera = new PerspectiveCamera();
             this.orthographicCamera = new OrthographicCamera();
             this.perspectiveCamera.Reset();
@@ -318,6 +315,12 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Unloaded += this.ControlUnloaded;            
 
             AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
+            this.SizeChanged += (s, e) => 
+            {
+                if (Overlay2D == null) { return; }
+                Overlay2D.Width = this.ActualWidth;
+                Overlay2D.Height = this.ActualHeight;
+            };
         }
 
         /// <summary>
@@ -812,9 +815,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 e.Attach(host);
             }
-            if (this.Items2D != null)
+            if (this.Overlay2D != null)
             {
-                this.Items2D.Attach(host);
+                this.Overlay2D.Attach(host);
             }
             StopWatch.Start();
         }
@@ -828,9 +831,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 e.Detach();
             }
-            if (this.Items2D != null)
+            if (this.Overlay2D != null)
             {
-                this.Items2D.Detach();
+                this.Overlay2D.Detach();
             }
         }
 
@@ -1607,11 +1610,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseDownHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
-            if (Items2D != null)
+            if (Overlay2D != null)
             {
-                if (Items2D.HitTest(pt.ToVector2(), out currentHit2D))
+                if (Overlay2D.HitTest(pt.ToVector2(), out currentHit2D))
                 {
-                    currentHit2D.ModelHit.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseDown2DEvent, currentHit2D.ModelHit, currentHit2D, pt, this, originalInputEventArgs));
+                    if(currentHit2D.ModelHit is Element2D e)
+                    {
+                        e.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseDown2DEvent, currentHit2D.ModelHit, currentHit2D, pt, this, originalInputEventArgs));
+                    }
                     return;
                 }
             }
@@ -1654,13 +1660,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseMoveHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
-            if (Items2D != null)
+            if (Overlay2D != null)
             {
                 HitTest2DResult hit2D;
-                if (Items2D.HitTest(pt.ToVector2(), out hit2D))
+                if (Overlay2D.HitTest(pt.ToVector2(), out hit2D))
                 {
-                    MouseOverModel2D = hit2D.ModelHit;
-                    hit2D.ModelHit.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseMove2DEvent, hit2D.ModelHit, hit2D, pt, this, originalInputEventArgs));
+                    if(hit2D.ModelHit is Element2D e)
+                    {
+                        MouseOverModel2D = e;
+                        e.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseMove2DEvent, hit2D.ModelHit, hit2D, pt, this, originalInputEventArgs));
+                    }
                     return;
                 }
                 else
@@ -1691,7 +1700,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (currentHit2D != null)
             {
-                currentHit2D.ModelHit.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseUp2DEvent, currentHit2D.ModelHit, currentHit2D, pt, this, originalInputEventArgs));
+                if (currentHit2D.ModelHit is Element2D element)
+                {
+                    element.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseUp2DEvent, currentHit2D.ModelHit, currentHit2D, pt, this, originalInputEventArgs));
+                }
                 currentHit2D = null;
             }
 

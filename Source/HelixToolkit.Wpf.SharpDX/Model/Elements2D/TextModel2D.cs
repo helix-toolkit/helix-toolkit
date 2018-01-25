@@ -11,7 +11,9 @@ using D2D = SharpDX.Direct2D1;
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
-    public class TextModel2D : Model2D
+    using SharpDX;
+
+    public class TextModel2D : Element2D
     {
         public static readonly string DefaultFont = "Arial";
 
@@ -145,27 +147,21 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         private TextRenderable textRenderable;
         protected bool foregroundChanged = true;
 
-        protected override IRenderable2D CreateRenderCore(IDevice2DProxy host)
+        protected override IRenderCore2D CreateRenderCore()
         {
             textRenderable = new TextRenderable();
             AssignProperties();
             return textRenderable;
         }
 
-        protected override void OnRenderTargetChanged(D2D.RenderTarget newTarget)
+        protected override void OnUpdate(IRenderContext2D context)
         {
-            foregroundChanged = true;
-        }
-
-        protected override void PreRender(IRenderContext2D context)
-        {
-            base.PreRender(context);
+            base.OnUpdate(context);
             if (foregroundChanged)
             {
-                textRenderable.Foreground = Foreground.ToD2DBrush(RenderTarget);
+                textRenderable.Foreground = Foreground.ToD2DBrush(context.DeviceContext);
+                foregroundChanged = false;
             }
-            textRenderable.Bound = this.Bound;
-            textRenderable.Transform = TransformMatrix; 
         }
 
         protected virtual void AssignProperties()
@@ -182,6 +178,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             foregroundChanged = true;
             base.OnDetach();
+        }
+
+        protected override bool OnHitTest(ref global::SharpDX.Vector2 mousePoint, out HitTest2DResult hitResult)
+        {
+            hitResult = null;
+            return false;
         }
     }
 }

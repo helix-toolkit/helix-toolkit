@@ -15,11 +15,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             if (FillBrush != null)
             {
-                context.D2DTarget.FillRectangle(LocalDrawingRect, FillBrush);
+                context.DeviceContext.FillRectangle(LocalDrawingRect, FillBrush);
             }
             if (StrokeBrush != null && StrokeStyle != null)
             {
-                context.D2DTarget.DrawRectangle(LocalDrawingRect, StrokeBrush, StrokeWidth, StrokeStyle);
+                context.DeviceContext.DrawRectangle(LocalDrawingRect, StrokeBrush, StrokeWidth, StrokeStyle);
             }
         }
     }

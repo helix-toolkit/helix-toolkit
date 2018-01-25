@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     /// </summary>
     public struct RenderParameter2D
     {
-
+        public global::SharpDX.Direct2D1.RenderTarget RenderTarget;
     }
 
     /// <summary>

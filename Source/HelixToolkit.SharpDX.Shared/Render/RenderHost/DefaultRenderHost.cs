@@ -30,10 +30,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The pending render cores
         /// </summary>
         protected readonly List<IRenderCore> pendingRenderCores = new List<IRenderCore>();
+
         /// <summary>
-        /// The render parameter
+        /// The pending renderables
         /// </summary>
-        protected RenderParameter renderParameter;
+        protected readonly List<IRenderable2D> pendingRenderables2D = new List<IRenderable2D>();
+        /// <summary>
+        /// The pending render cores
+        /// </summary>
+        protected readonly List<IRenderCore2D> pendingRenderCores2D = new List<IRenderCore2D>();
+
 
         private Task asyncTask;
 
@@ -57,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         protected override IDX11RenderBufferProxy CreateRenderBuffer()
         {
-            return new DX11Texture2DRenderBufferProxy(Device);
+            return new DX11Texture2DRenderBufferProxy(EffectsManager);
         }
 
         /// <summary>
@@ -82,25 +88,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="time">The time.</param>
         protected override void OnRender(TimeSpan time)
         {
-            var renderParameter = CreateParameter(RenderBuffer);
+            var renderParameter = new RenderParameter()
+            {
+                RenderTargetView = ColorBufferView,
+                DepthStencilView = DepthStencilBufferView,
+                ScissorRegion = new Rectangle(0, 0, RenderBuffer.TargetWidth , RenderBuffer.TargetHeight),
+                ViewportRegion = new ViewportF(0, 0, RenderBuffer.TargetWidth, RenderBuffer.TargetHeight)
+            };
             renderer.UpdateGlobalVariables(RenderContext, Viewport.Renderables, ref renderParameter);
             renderer.RenderScene(RenderContext, pendingRenderCores, ref renderParameter);
-        }
-
-        /// <summary>
-        /// Creates the render parameter.
-        /// </summary>
-        /// <param name="buffer">The buffer.</param>
-        /// <returns></returns>
-        protected static RenderParameter CreateParameter(IDX11RenderBufferProxy buffer)
-        {
-            return new RenderParameter()
-            {
-                RenderTargetView = buffer.ColorBufferView,
-                DepthStencilView = buffer.DepthStencilBufferView,
-                ScissorRegion = new Rectangle(0, 0, buffer.TargetWidth, buffer.TargetHeight),
-                ViewportRegion = new ViewportF(0, 0, buffer.TargetWidth, buffer.TargetHeight)
-            };
         }
 
         /// <summary>
@@ -117,7 +113,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="time">The time.</param>
         protected override void OnRender2D(TimeSpan time)
         {
-
+            var renderParameter2D = new RenderParameter2D() { RenderTarget = RenderBuffer.D2DTarget.D2DTarget };
+            renderer.Render2D(RenderContext2D, Viewport.D2DRenderables, ref renderParameter2D);
         }
     }
 }

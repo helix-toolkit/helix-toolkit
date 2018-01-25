@@ -71,6 +71,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public global::SharpDX.Direct3D11.Device Device { get { return device; } }
+
+        private global::SharpDX.Direct2D1.Device device2D;
+
+        public global::SharpDX.Direct2D1.Device Device2D { get { return device2D; } }
         /// <summary>
         /// 
         /// </summary>
@@ -147,7 +151,16 @@ namespace HelixToolkit.UWP
             {
                 AddTechnique(tech);
             }
-#endregion
+            #endregion
+
+            using (var factory = new global::SharpDX.Direct2D1.Factory1())
+            {
+                using (var dxgiDevice2 = device.QueryInterface<global::SharpDX.DXGI.Device>())
+                {
+                    device2D = Collect(new global::SharpDX.Direct2D1.Device(factory, dxgiDevice2));
+                }
+            }
+
             Initialized = true;
         }
         /// <summary>

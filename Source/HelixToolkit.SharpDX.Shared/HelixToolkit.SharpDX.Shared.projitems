@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\Abstract\Renderable2DBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\Abstract\ShapeRenderable2DBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\EllipseRenderable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core2D\EmptyRenderCore2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\RectangleRenderable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\GeometryRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\MaterialGeometryRenderCore.cs" />
@@ -91,6 +92,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element2D\Element2DCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element2D\Element2DCoreLayouts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Element3DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\GeometryBoundManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\MaterialCore.cs" />

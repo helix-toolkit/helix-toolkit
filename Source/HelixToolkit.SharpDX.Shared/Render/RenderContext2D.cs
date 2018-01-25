@@ -5,27 +5,24 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using Core2D;
-    using global::SharpDX.Direct2D1;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IRenderContext2D : IDisposable
     {
-        IDevice2DProxy RenderTarget { get; }
-        RenderTarget D2DTarget
-        {
-            get;
-        }
+        global::SharpDX.Direct2D1.RenderTarget RenderTarget { set; get; }
+        global::SharpDX.Direct2D1.DeviceContext DeviceContext { get; }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class RenderContext2D : DisposeObject, IRenderContext2D
     {
-        public IDevice2DProxy RenderTarget { private set; get; }
-
-        public RenderTarget D2DTarget { get { return RenderTarget.D2DTarget; } }
-
-        public RenderContext2D(IDevice2DProxy target)
+        public global::SharpDX.Direct2D1.RenderTarget RenderTarget { set; get; }
+        public global::SharpDX.Direct2D1.DeviceContext DeviceContext { private set; get; }
+        public RenderContext2D(IRenderHost host)
         {
-            RenderTarget = target;
+            DeviceContext = Collect(new global::SharpDX.Direct2D1.DeviceContext(host.Device2D, global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations));
         }
     }
 }

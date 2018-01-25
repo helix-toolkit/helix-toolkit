@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="surfacePointer">The surface pointer.</param>
         /// <param name="device">The device.</param>
-        public DX11SwapChainRenderBufferProxy(System.IntPtr surfacePointer, Device device) : base(device)
+        public DX11SwapChainRenderBufferProxy(System.IntPtr surfacePointer, IDeviceResources deviceResource) : base(deviceResource)
         {
             surfacePtr = surfacePointer;
         }
@@ -76,8 +76,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             depthStencilBuffer = Collect(new Texture2D(Device, depthdesc));
             depthStencilBufferView = Collect(new DepthStencilView(Device, depthStencilBuffer));
 
-            d2dControls = Collect(new Device2DProxy());
-            d2dControls.Initialize(swapChain);
+            d2dTarget = Collect(new D2DTargetProxy());
+            d2dTarget.Initialize(swapChain, Device2D);
             return colorBuffer;
         }
 

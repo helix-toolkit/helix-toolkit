@@ -149,7 +149,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
         }
-
+        /// <summary>
+        /// Gets the device.
+        /// </summary>
+        /// <value>
+        /// The device.
+        /// </value>
         public Device Device
         {
             get
@@ -157,7 +162,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 return this.EffectsManager != null ? this.EffectsManager.Device : null;
             }
         }
-
+        /// <summary>
+        /// Gets the device2d.
+        /// </summary>
+        /// <value>
+        /// The device2d.
+        /// </value>
+        public global::SharpDX.Direct2D1.Device Device2D
+        {
+            get
+            {
+                return this.EffectsManager != null ? this.EffectsManager.Device2D : null;
+            }
+        }
         public Color4 ClearColor
         {
             get
@@ -258,7 +275,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public IDevice2DProxy D2DTarget
+        public ID2DTargetProxy D2DTarget
         {
             get
             {

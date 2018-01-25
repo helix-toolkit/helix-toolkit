@@ -10,14 +10,14 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-    public abstract class ShapeRenderable2DBase : Renderable2DBase
+    public abstract class ShapeRenderable2DBase : RenderCore2DBase
     {
         private D2D.Brush fillBrush = null;
         public D2D.Brush FillBrush
         {
             set
             {
-                Set(ref fillBrush, value);
+                SetAffectsRender(ref fillBrush, value);
             }
             get
             {
@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                Set(ref strokeBrush, value);
+                SetAffectsRender(ref strokeBrush, value);
             }
             get
             {
@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                Set(ref strokeStyle, value);
+                SetAffectsRender(ref strokeStyle, value);
             }
             get
             {

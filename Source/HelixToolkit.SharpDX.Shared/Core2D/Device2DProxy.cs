@@ -18,49 +18,30 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     /// <summary>
     /// 
     /// </summary>
-    public interface IDevice2DProxy : IDisposable
+    public interface ID2DTargetProxy : IDisposable
     {
         /// <summary>
         /// 
         /// </summary>
         RenderTarget D2DTarget { get; }
-        /// <summary>
-        /// Gets the d2d device.
-        /// </summary>
-        /// <value>
-        /// The d2 d device.
-        /// </value>
-        Device2D D2DDevice
-        {
-            get;
-        }
-        /// <summary>
-        /// Gets the d2d device context.
-        /// </summary>
-        /// <value>
-        /// The d2d device context.
-        /// </value>
-        DeviceContext2D D2DDeviceContext
-        {
-            get;
-        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="swapChain"></param>
-        void Initialize(SwapChain1 swapChain);
+        void Initialize(SwapChain1 swapChain, Device2D device);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="texture"></param>
-        void Initialize(Texture2D texture);
+        void Initialize(Texture2D texture, Device2D device);
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public sealed class Device2DProxy : DisposeObject, IDevice2DProxy 
+    public sealed class D2DTargetProxy : DisposeObject, ID2DTargetProxy 
     {
         private RenderTarget d2DTarget;
         /// <summary>
@@ -71,68 +52,37 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// </value>
         public RenderTarget D2DTarget { get { return d2DTarget; } }
 
-        private Device2D d2DDevice;
-        /// <summary>
-        /// Gets the d2d device.
-        /// </summary>
-        /// <value>
-        /// The d2d device.
-        /// </value>
-        public Device2D D2DDevice { get { return d2DDevice; } }
 
-        private DeviceContext2D d2DDeviceContext;
-        /// <summary>
-        /// Gets the d2d device context.
-        /// </summary>
-        /// <value>
-        /// The d2d device context.
-        /// </value>
-        public DeviceContext2D D2DDeviceContext { get { return d2DDeviceContext; } }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="swapChain"></param>
-        public void Initialize(SwapChain1 swapChain)
+        public void Initialize(SwapChain1 swapChain, Device2D device)
         {
             RemoveAndDispose(ref d2DTarget);
-            RemoveAndDispose(ref d2DDeviceContext);
-            RemoveAndDispose(ref d2DDevice);
             using (var surf = swapChain.GetBackBuffer<Surface>(0))
             {
-                using (var factory = new global::SharpDX.Direct2D1.Factory())
-                {
-                    using (var dxgiDevice2 = swapChain.GetDevice<global::SharpDX.DXGI.Device>())
-                    {
-                        var properties = new RenderTargetProperties(new PixelFormat(Format.Unknown, global::SharpDX.Direct2D1.AlphaMode.Premultiplied));
-                        d2DTarget = Collect(new RenderTarget(factory, surf, properties));
-                        d2DDevice = Collect(new Device2D(dxgiDevice2));
-                        d2DDeviceContext = Collect(new DeviceContext2D(d2DDevice, DeviceContextOptions.EnableMultithreadedOptimizations));
-                    }
-                }
+                var properties = new RenderTargetProperties(new PixelFormat(Format.Unknown, global::SharpDX.Direct2D1.AlphaMode.Premultiplied));
+                d2DTarget = Collect(new RenderTarget(device.Factory, surf, properties));
             }
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="texture"></param>
-        public void Initialize(Texture2D texture)
+        public void Initialize(Texture2D texture, Device2D device)
         {
-            RemoveAndDispose(ref d2DTarget);
-            RemoveAndDispose(ref d2DDeviceContext);
-            RemoveAndDispose(ref d2DDevice);          
+            RemoveAndDispose(ref d2DTarget);        
             using (var surface = texture.QueryInterface<global::SharpDX.DXGI.Surface>())
             {
-                using (var factory = new global::SharpDX.Direct2D1.Factory())
-                {
-                    using (var dxgiDevice2 = texture.Device.QueryInterface<global::SharpDX.DXGI.Device>())
-                    {
-                        var properties = new RenderTargetProperties(new PixelFormat(Format.Unknown, global::SharpDX.Direct2D1.AlphaMode.Premultiplied));
-                        d2DTarget = Collect(new RenderTarget(factory, surface, properties));
-                        d2DDevice = Collect(new Device2D(dxgiDevice2));
-                        d2DDeviceContext = Collect(new DeviceContext2D(d2DDevice, DeviceContextOptions.EnableMultithreadedOptimizations));
-                    }
-                }
+                var properties = new RenderTargetProperties(new PixelFormat(Format.Unknown, global::SharpDX.Direct2D1.AlphaMode.Premultiplied));
+                d2DTarget = Collect(new RenderTarget(device.Factory, surface, properties));
             }
+        }
+
+        public static implicit operator RenderTarget(D2DTargetProxy proxy)
+        {
+            return proxy.d2DTarget;
         }
     }
 }

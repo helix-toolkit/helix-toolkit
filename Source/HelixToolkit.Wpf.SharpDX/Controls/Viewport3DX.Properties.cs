@@ -792,16 +792,16 @@ namespace HelixToolkit.Wpf.SharpDX
                     (d as Viewport3DX).InvalidateRender();
                 }));
 
-        public static readonly DependencyProperty Items2DProperty
-            = DependencyProperty.Register("Items2D", typeof(Canvas2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
+        public static readonly DependencyProperty Overlay2DProperty
+            = DependencyProperty.Register("Overlay2D", typeof(Overlay), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
             {
                 if (e.OldValue != null)
                 {
                     (d as Viewport3DX).RemoveLogicalChild(e.OldValue);
                 }
-                if (e.NewValue != null)
+                if (e.NewValue is Overlay overlay)
                 {
-                    (d as Viewport3DX).AddLogicalChild(e.NewValue);
+                    (d as Viewport3DX).AddLogicalChild(overlay);
                 }
             }));
         /// <summary>
@@ -2535,15 +2535,15 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public Canvas2D Items2D
+        public Overlay Overlay2D
         {
             get
             {
-                return (Canvas2D)GetValue(Items2DProperty);
+                return (Overlay)GetValue(Overlay2DProperty);
             }
             set
             {
-                SetValue(Items2DProperty, value);
+                SetValue(Overlay2DProperty, value);
             }
         }
     }

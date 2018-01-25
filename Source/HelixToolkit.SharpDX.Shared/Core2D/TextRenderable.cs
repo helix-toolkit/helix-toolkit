@@ -11,7 +11,7 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-    public class TextRenderable : Renderable2DBase
+    public class TextRenderable : RenderCore2DBase
     {
         public string Text { set; get; } = "Text";
 
@@ -88,9 +88,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         private Factory textFactory;
         private TextFormat textFormat;
 
-        protected override bool OnAttach(IDevice2DProxy target)
+        protected override bool OnAttach(IRenderHost host)
         {
-            if (base.OnAttach(target))
+            if (base.OnAttach(host))
             {
                 textFactory = Collect(new Factory(FactoryType.Isolated));
                 textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize));
@@ -115,7 +115,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         protected override void OnRender(IRenderContext2D context)
         {
-            context.D2DTarget.DrawText(Text, textFormat, 
+            context.DeviceContext.DrawText(Text, textFormat, 
                LocalDrawingRect, Foreground, DrawingOptions);
         }
     }

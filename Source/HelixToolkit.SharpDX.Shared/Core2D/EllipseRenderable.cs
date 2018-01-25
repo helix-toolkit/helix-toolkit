@@ -21,11 +21,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             ellipse.RadiusY = LocalDrawingRect.Height / 2;
             if (FillBrush != null)
             {
-                context.D2DTarget.FillEllipse(ellipse, FillBrush);
+                context.DeviceContext.FillEllipse(ellipse, FillBrush);
             }
             if (StrokeBrush != null && StrokeStyle != null)
             {
-                context.D2DTarget.DrawEllipse(ellipse, StrokeBrush, StrokeWidth, StrokeStyle);
+                context.DeviceContext.DrawEllipse(ellipse, StrokeBrush, StrokeWidth, StrokeStyle);
             }
         }
     }
