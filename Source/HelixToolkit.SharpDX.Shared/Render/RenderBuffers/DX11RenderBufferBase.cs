@@ -298,7 +298,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <returns></returns>
         public virtual bool BeginDraw2D()
-        {           
+        {
+            DeviceContext2D.Target = D2DTarget.D2DTarget;
+            DeviceContext2D.BeginDraw();
             return true;
         }
         /// <summary>
@@ -306,7 +308,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <returns></returns>
         public virtual bool EndDraw2D()
-        {          
+        {
+            DeviceContext2D.EndDraw();
             return true;
         }
         /// <summary>
