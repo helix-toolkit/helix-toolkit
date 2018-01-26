@@ -15,6 +15,7 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
+    using Utilities;
     /// <summary>
     /// 
     /// </summary>
@@ -23,7 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <summary>
         /// 
         /// </summary>
-        Bitmap1 D2DTarget { get; }
+        BitmapProxy D2DTarget { get; }
 
         /// <summary>
         /// 
@@ -43,14 +44,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     /// </summary>
     public sealed class D2DTargetProxy : DisposeObject, ID2DTargetProxy 
     {
-        private Bitmap1 d2DTarget;
+        private BitmapProxy d2DTarget;
         /// <summary>
         /// Gets the d2d target. Which is bind to the 3D back buffer/texture
         /// </summary>
         /// <value>
         /// The d2d target.
         /// </value>
-        public Bitmap1 D2DTarget { get { return d2DTarget; } }
+        public BitmapProxy D2DTarget { get { return d2DTarget; } }
 
 
         /// <summary>
@@ -62,17 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             RemoveAndDispose(ref d2DTarget);
             using (var surf = swapChain.GetBackBuffer<Surface>(0))
             {
-                d2DTarget = Collect(new Bitmap1(deviceContext, surf,
-                    new BitmapProperties1()
-                    {
-                        ColorContext = null,
-                        BitmapOptions = BitmapOptions.Target | BitmapOptions.CannotDraw,
-                        DpiX = deviceContext.DotsPerInch.Width,
-                        DpiY = deviceContext.DotsPerInch.Height,
-                        PixelFormat = new PixelFormat(surf.Description.Format, global::SharpDX.Direct2D1.AlphaMode.Premultiplied)
-                    }));
-                //var properties = new RenderTargetProperties(new PixelFormat(Format.Unknown, global::SharpDX.Direct2D1.AlphaMode.Premultiplied));
-                //d2DTarget = Collect(new RenderTarget(device.Factory, surf, properties));
+                d2DTarget = Collect(BitmapProxy.Create("SwapChainTarget", deviceContext, surf));
             }
         }
         /// <summary>
@@ -84,17 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             RemoveAndDispose(ref d2DTarget);        
             using (var surface = texture.QueryInterface<global::SharpDX.DXGI.Surface>())
             {
-                d2DTarget = Collect(new Bitmap1(deviceContext, surface,
-                    new BitmapProperties1()
-                    {
-                        ColorContext = null,
-                        BitmapOptions = BitmapOptions.Target | BitmapOptions.CannotDraw,
-                        DpiX = deviceContext.DotsPerInch.Width,
-                        DpiY = deviceContext.DotsPerInch.Height,
-                        PixelFormat = new PixelFormat(surface.Description.Format, global::SharpDX.Direct2D1.AlphaMode.Premultiplied)
-                    }));
-                //var properties = new RenderTargetProperties(new PixelFormat(Format.Unknown, global::SharpDX.Direct2D1.AlphaMode.Premultiplied));
-                //d2DTarget = Collect(new RenderTarget(device.Factory, surface, properties));
+                d2DTarget = Collect(BitmapProxy.Create("TextureTarget", deviceContext, surface));
             }
         }
 

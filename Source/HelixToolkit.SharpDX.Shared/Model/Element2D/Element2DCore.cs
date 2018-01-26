@@ -92,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             {
                 if(Set(ref modelMatrix, value))
                 {
-                    InvalidateRender();
+                    RenderCore.LocalTransform = value;
                 }
             }
             get { return modelMatrix; }
@@ -135,7 +135,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                     RenderCore.Transform = value;
                     TransformChanged(ref value);
                     OnTransformChanged?.Invoke(this, value);
-                    InvalidateRender();
                 }
             }
             get

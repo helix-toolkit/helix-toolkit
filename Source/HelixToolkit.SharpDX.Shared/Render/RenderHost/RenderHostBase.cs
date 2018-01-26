@@ -441,10 +441,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         OnRender(t0);
                         renderBuffer.EndDraw();
                     }
-                    if (renderBuffer.BeginDraw2D())
+                    if (renderBuffer.BeginDraw2D(RenderContext2D))
                     {
                         OnRender2D(t0);                        
-                        renderBuffer.EndDraw2D();
+                        renderBuffer.EndDraw2D(RenderContext2D);
                     }
                     renderBuffer.Present();
                 }

@@ -43,9 +43,13 @@ namespace HelixToolkit.Wpf.SharpDX
         bool IsEmpty { get; }
 
         /// <summary>
-        /// 
+        /// Transform to absolute position
         /// </summary>
         Matrix3x2 Transform { set; get; }        
+        /// <summary>
+        /// Local render transform
+        /// </summary>
+        Matrix3x2 LocalTransform { set; get; }
         /// <summary>
         /// Gets or sets a value indicating whether this instance is rendering.
         /// </summary>

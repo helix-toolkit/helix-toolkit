@@ -137,12 +137,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Begins the draw2 d.
         /// </summary>
         /// <returns></returns>
-        bool BeginDraw2D();
+        bool BeginDraw2D(IRenderContext2D context);
         /// <summary>
         /// Ends the draw2 d.
         /// </summary>
         /// <returns></returns>
-        bool EndDraw2D();
+        bool EndDraw2D(IRenderContext2D context);
         /// <summary>
         /// Presents this instance.
         /// </summary>

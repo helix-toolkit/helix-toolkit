@@ -14,6 +14,8 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
+    using global::SharpDX.DXGI;
+    using Utilities;
     public abstract class RenderCore2DBase : DisposeObject, IRenderCore2D
     {
         /// <summary>
@@ -54,6 +56,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private Matrix3x2 transform = Matrix3x2.Identity;
+        /// <summary>
+        /// Gets or sets the transform. This transform to absolute position on screen
+        /// </summary>
+        /// <value>
+        /// The transform.
+        /// </value>
         public Matrix3x2 Transform
         {
             set
@@ -65,6 +73,33 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 return transform;
             }
         }
+
+        private Matrix3x2 localTransform = Matrix3x2.Identity;
+        /// <summary>
+        /// Gets or sets the local transform. This only transform local position. Same as RenderTransform
+        /// </summary>
+        /// <value>
+        /// The local transform.
+        /// </value>
+        public Matrix3x2 LocalTransform
+        {
+            set
+            {
+                SetAffectsRender(ref localTransform, value);
+            }
+            get
+            {
+                return localTransform;
+            }
+        }
+
+        public bool EnableBitmapCache { set; get; } = true;
+
+        public bool IsBitmapCacheValid { set; get; } = false;
+
+        public bool IsVisualValid { private set; get; } = false;
+
+        private BitmapProxy bitmapCache;
 
 #if DEBUG
         public bool ShowDrawingBorder { set; get; } = true;
@@ -109,22 +144,53 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             if (CanRender(context))
             {
-                context.DeviceContext.Transform = Transform;
-                if (ShowDrawingBorder)
+                EnsureBitmapCache(context, new Size2((int)LayoutClippingBound.Width, (int)LayoutClippingBound.Height), (int)Math.Max(context.ActualWidth, context.ActualHeight));
+                if (EnableBitmapCache && IsBitmapCacheValid)
                 {
-                    using (var borderBrush = new D2D.SolidColorBrush(context.DeviceContext, Color.Blue))
+                    if (!IsVisualValid)
                     {
-                        using (var borderDotStyle = new D2D.StrokeStyle(context.DeviceContext.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.DashDot }))
+                        context.PushRenderTarget(bitmapCache, true);
+                        context.DeviceContext.Transform = LocalTransform;
+                        if (ShowDrawingBorder)
                         {
-                            using (var borderLineStyle = new D2D.StrokeStyle(context.DeviceContext.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.Solid }))
+                            using (var borderBrush = new D2D.SolidColorBrush(context.DeviceContext, Color.Blue))
                             {
-                                context.DeviceContext.DrawRectangle(LayoutBound, borderBrush, 1f, IsMouseOver ? borderLineStyle : borderDotStyle);
-                                context.DeviceContext.DrawRectangle(LayoutClippingBound, borderBrush, 0.5f, borderDotStyle);
+                                using (var borderDotStyle = new D2D.StrokeStyle(context.DeviceContext.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.DashDot }))
+                                {
+                                    using (var borderLineStyle = new D2D.StrokeStyle(context.DeviceContext.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.Solid }))
+                                    {
+                                        context.DeviceContext.DrawRectangle(LayoutBound, borderBrush, 1f, IsMouseOver ? borderLineStyle : borderDotStyle);
+                                        context.DeviceContext.DrawRectangle(LayoutClippingBound, borderBrush, 0.5f, borderDotStyle);
+                                    }
+                                }
+                            }
+                        }
+                        OnRender(context);
+                        context.PopRenderTarget();
+                        IsVisualValid = true;
+                    }
+                    context.DeviceContext.Transform = new Matrix3x2(1, 0, 0, 1, Transform.M31, Transform.M32);
+                    context.DeviceContext.DrawBitmap(bitmapCache, 1, D2D.InterpolationMode.Linear);
+                }
+                else
+                {
+                    context.DeviceContext.Transform = Transform;
+                    if (ShowDrawingBorder)
+                    {
+                        using (var borderBrush = new D2D.SolidColorBrush(context.DeviceContext, Color.Blue))
+                        {
+                            using (var borderDotStyle = new D2D.StrokeStyle(context.DeviceContext.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.DashDot }))
+                            {
+                                using (var borderLineStyle = new D2D.StrokeStyle(context.DeviceContext.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.Solid }))
+                                {
+                                    context.DeviceContext.DrawRectangle(LayoutBound, borderBrush, 1f, IsMouseOver ? borderLineStyle : borderDotStyle);
+                                    context.DeviceContext.DrawRectangle(LayoutClippingBound, borderBrush, 0.5f, borderDotStyle);
+                                }
                             }
                         }
                     }
+                    OnRender(context);
                 }
-                OnRender(context);
             }
         }
 
@@ -133,6 +199,31 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         protected virtual bool CanRender(IRenderContext2D context)
         {
             return IsAttached && IsRendering;
+        }
+
+        /// <summary>
+        /// Ensures the bitmap cache.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="maxSize">The maximum size.</param>
+        private void EnsureBitmapCache(IRenderContext2D context, Size2 size, int maxSize)
+        {
+            IsBitmapCacheValid = false;
+            if (size.Width == 0 || size.Height == 0 || !EnableBitmapCache)
+            {
+                RemoveAndDispose(ref bitmapCache);                
+            }
+            else if (size.Width > maxSize || size.Height > maxSize)
+            {
+                return;
+            }
+            else if(bitmapCache == null || size.Width > bitmapCache.Size.Width || size.Height > bitmapCache.Size.Height)
+            {
+                RemoveAndDispose(ref bitmapCache);
+                bitmapCache = Collect(BitmapProxy.Create("Cache", context.DeviceContext, size, Format.B8G8R8A8_UNorm));
+                IsBitmapCacheValid = true;
+            }
         }
 
         protected void InvalidateRenderer()
@@ -156,6 +247,27 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
 
             backingField = value;
+            this.RaisePropertyChanged(propertyName);
+            InvalidateRenderer();
+            return true;
+        }
+        /// <summary>
+        /// Sets the affects render.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="backingField">The backing field.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
+        protected bool SetAffectsVisual<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            IsVisualValid = false;
             this.RaisePropertyChanged(propertyName);
             InvalidateRenderer();
             return true;

@@ -199,6 +199,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\Graphics\WICHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SharpDX.Toolkit\IComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\BitmapProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\BufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ConstantBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DisposeObject.cs" />
@@ -230,7 +231,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)Model\Lights\" />
     <Folder Include="$(MSBuildThisFileDirectory)Render\Renderer\" />
     <Folder Include="$(MSBuildThisFileDirectory)Render\RenderHost\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Utilities\Buffers\" />
     <Folder Include="$(MSBuildThisFileDirectory)Utilities\Octrees\" />
   </ItemGroup>
 </Project>

@@ -297,19 +297,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Begins the 2d drawing.
         /// </summary>
         /// <returns></returns>
-        public virtual bool BeginDraw2D()
+        public virtual bool BeginDraw2D(IRenderContext2D context)
         {
-            DeviceContext2D.Target = D2DTarget.D2DTarget;
-            DeviceContext2D.BeginDraw();
+            context.PushRenderTarget(D2DTarget.D2DTarget, false);
             return true;
         }
         /// <summary>
         /// Ends the 2D drawing.
         /// </summary>
         /// <returns></returns>
-        public virtual bool EndDraw2D()
+        public virtual bool EndDraw2D(IRenderContext2D context)
         {
-            DeviceContext2D.EndDraw();
+            context.PopRenderTarget();
             return true;
         }
         /// <summary>
