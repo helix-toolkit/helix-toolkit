@@ -9,12 +9,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     public sealed class Overlay : ContentElement2D
     {
-        //protected override Vector2 MeasureOverride(Vector2 availableSizeWithoutMargins)
-        //{
-        //    Content2D.Measure(Size);
-        //    return Size;
-        //}
-
         protected override void OnRender(IRenderContext2D context)
         {
             base.OnRender(context);
@@ -22,6 +16,22 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             {
                 item.Render(context);
             }
+        }
+
+        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
+        {
+            hitResult = null;
+            if (LayoutBoundWithTransform.Contains(mousePoint))
+            {
+                foreach (var item in Items.Reverse())
+                {
+                    if (item is IHitable2D && (item as IHitable2D).HitTest(mousePoint, out hitResult))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

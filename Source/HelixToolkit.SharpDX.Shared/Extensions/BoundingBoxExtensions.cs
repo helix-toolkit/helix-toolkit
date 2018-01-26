@@ -155,5 +155,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
             return new BoundingBox(min, max);
         }
+
+        public static RectangleF Translate(this RectangleF rect, Matrix3x2 transform)
+        {
+            return new RectangleF(rect.Left + transform.M31, rect.Top + transform.M32, rect.Width, rect.Height);
+        }
     }
 }

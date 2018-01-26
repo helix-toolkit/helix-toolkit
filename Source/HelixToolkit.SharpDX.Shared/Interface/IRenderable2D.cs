@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The bound.
         /// </value>
-        RectangleF Bound { set; get; }
+        RectangleF LayoutBound { set; get; }
 
         /// <summary>
         /// Gets or sets the clipping bound.
@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The clipping bound.
         /// </value>
-        RectangleF ClippingBound { set; get; }
+        RectangleF LayoutClippingBound { set; get; }
         /// <summary>
         /// 
         /// </summary>

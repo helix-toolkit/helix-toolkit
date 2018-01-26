@@ -167,7 +167,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <value>
         ///   <c>true</c> if this instance is hit test visible; otherwise, <c>false</c>.
         /// </value>
-        public bool IsHitTestVisible { set; get; } = true;
+        internal bool IsHitTestVisibleInternal { set; get; } = true;
         #region Handling Transforms        
         /// <summary>
         /// Transforms the changed.
@@ -395,7 +395,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         protected virtual bool CanHitTest(IRenderContext context)
         {
-            return IsHitTestVisible && IsRenderable;
+            return IsHitTestVisibleInternal && IsRenderable;
         }
 
         protected abstract bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits);

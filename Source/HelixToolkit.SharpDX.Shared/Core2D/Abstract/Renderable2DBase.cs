@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <summary>
         /// Absolute layout rectangle cooridnate for renderable
         /// </summary>
-        public RectangleF Bound
+        public RectangleF LayoutBound
         {
             set
             {
@@ -44,7 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private RectangleF clippingBound = new RectangleF();
-        public RectangleF ClippingBound
+        public RectangleF LayoutClippingBound
         {
             set
             {
@@ -72,7 +72,18 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         public bool ShowDrawingBorder { set; get; } = false;
 #endif
 
-        public bool IsMouseOver { set; get; } = false;
+        private bool isMouseOver = false;
+        public bool IsMouseOver
+        {
+            set
+            {
+                SetAffectsRender(ref isMouseOver, value);
+            }
+            get
+            {
+                return isMouseOver;
+            }
+        }
 
         public bool IsAttached { private set; get; } = false;
 
@@ -107,8 +118,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                         {
                             using (var borderLineStyle = new D2D.StrokeStyle(context.DeviceContext.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.Solid }))
                             {
-                                context.DeviceContext.DrawRectangle(Bound, borderBrush, 1f, IsMouseOver ? borderLineStyle : borderDotStyle);
-                                context.DeviceContext.DrawRectangle(ClippingBound, borderBrush, 0.5f, borderDotStyle);
+                                context.DeviceContext.DrawRectangle(LayoutBound, borderBrush, 1f, IsMouseOver ? borderLineStyle : borderDotStyle);
+                                context.DeviceContext.DrawRectangle(LayoutClippingBound, borderBrush, 0.5f, borderDotStyle);
                             }
                         }
                     }

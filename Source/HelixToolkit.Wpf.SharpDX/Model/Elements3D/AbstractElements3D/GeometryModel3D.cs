@@ -70,6 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(GeometryModel3D),
             new PropertyMetadata(true, RasterStateChanged));
 
+
         /// <summary>
         /// Gets or sets the geometry.
         /// </summary>
@@ -237,6 +238,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(EnableViewFrustumCheckProperty);
             }
         }
+
         /// <summary>
         /// Gets or sets a value indicating whether [enable view frustum check].
         /// </summary>

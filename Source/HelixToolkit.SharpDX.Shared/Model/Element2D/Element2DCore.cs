@@ -17,9 +17,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
 #if NETFX_CORE
-    public abstract partial class Element2DCore : IDisposable, IRenderable2D, IHitable2D, INotifyPropertyChanged
+    public abstract partial class Element2DCore : IDisposable, IRenderable2D, INotifyPropertyChanged
 #else
-    public abstract partial class Element2DCore : FrameworkContentElement, IDisposable, IRenderable2D, IHitable2D, INotifyPropertyChanged
+    public abstract partial class Element2DCore : FrameworkContentElement, IDisposable, IRenderable2D, INotifyPropertyChanged
 #endif
     {
         /// <summary>
@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             get { return visibilityInternal; }
         }
 
-        public virtual bool IsHitTestVisible { set; get; }
+        internal bool IsHitTestVisibleInternal { set; get; } = true;
 
         public bool IsAttached { private set; get; }
 
@@ -105,6 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             {
                 if(Set(ref layoutTranslate, value))
                 {
+                    LayoutBoundWithTransform = LayoutBound.Translate(value);
                     InvalidateRender();
                 }
             }
@@ -141,6 +142,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             {
                 return totalTransform;
             }
+        }
+
+        public RectangleF LayoutBoundWithTransform
+        {
+            private set;get;
         }
 
         protected virtual IRenderCore2D CreateRenderCore() { return new EmptyRenderCore2D(); }
@@ -243,7 +249,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         protected virtual bool CanHitTest()
         {
-            return IsAttached;
+            return IsAttached && IsHitTestVisibleInternal;
         }
 
         protected abstract bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult);

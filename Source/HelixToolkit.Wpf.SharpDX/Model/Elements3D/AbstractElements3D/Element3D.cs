@@ -107,6 +107,28 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(IsThrowingShadowProperty);
             }
         }
+
+        /// <summary>
+        /// The is hit test visible property
+        /// </summary>
+        public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D),
+            new PropertyMetadata(true, (d, e) => { (d as Element3DCore).IsHitTestVisibleInternal = (bool)e.NewValue; }));
+
+        /// <summary>
+        /// Indicates, if this element should be hit-tested.
+        /// default is true
+        /// </summary>
+        public bool IsHitTestVisible
+        {
+            set
+            {
+                SetValue(IsHitTestVisibleProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsHitTestVisibleProperty);
+            }
+        }
         #endregion
 
         #region Events

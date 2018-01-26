@@ -7,7 +7,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
 
-    public abstract class Element2D : Element2DCore, ITransformable2D
+    public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     {
         #region Dependency Properties
         /// <summary>
@@ -35,9 +35,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty IsHitTestVisibleProperty =
-            DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element2D), new PropertyMetadata(true));
+            DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element2D), new PropertyMetadata(true, (d,e)=> 
+            {
+                (d as Element2DCore).IsHitTestVisibleInternal = (bool)e.NewValue;
+            }));
 
-        public override bool IsHitTestVisible
+        public bool IsHitTestVisible
         {
             set
             {

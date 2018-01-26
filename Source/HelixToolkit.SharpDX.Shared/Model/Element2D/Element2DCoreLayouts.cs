@@ -215,18 +215,19 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             private set
             {
-                RenderCore.ClippingBound = value;
+                RenderCore.LayoutClippingBound = value;
             }
-            get { return RenderCore.ClippingBound; }
+            get { return RenderCore.LayoutClippingBound; }
         }
 
-        public RectangleF Bound
+        public RectangleF LayoutBound
         {
             private set
             {
-                RenderCore.Bound = value;
+                RenderCore.LayoutBound = value;
+                LayoutBoundWithTransform = value;
             }
-            get { return RenderCore.Bound; }
+            get { return RenderCore.LayoutBound; }
         }
 
         protected void InvalidateMeasure()
@@ -515,7 +516,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             if (IsTransformDirty)
             {
-                Bound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.X - MarginWidthHeight.X, RenderSize.Y - MarginWidthHeight.Y);
+                LayoutBound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.X - MarginWidthHeight.X, RenderSize.Y - MarginWidthHeight.Y);
                 ClipBound = new RectangleF(0, 0, RenderSize.X, RenderSize.Y);
                 LayoutTranslate = Matrix3x2.Translation(LayoutOffsets.X, LayoutOffsets.Y);
                 IsTransformDirty = false;
