@@ -25,19 +25,23 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
     {
         /// <summary>
+        /// The minimum bitmap size by Bytes. Default 2048 * B8G8R8A8 format = 64kb. https://msdn.microsoft.com/en-us/library/windows/desktop/dd372260%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
+        /// </summary>
+        private const int MinimumBitmapSize = 2048;
+        /// <summary>
         /// Gets or sets a value indicating whether [enable bitmap cache].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [enable bitmap cache]; otherwise, <c>false</c>.
         /// </value>
-        public bool EnableBitmapCache { set; get; } = true;
+        internal bool EnableBitmapCacheInternal { set; get; } = true;
         /// <summary>
         /// Gets or sets a value indicating whether this instance is bitmap cache valid.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is bitmap cache valid; otherwise, <c>false</c>.
         /// </value>
-        public bool IsBitmapCacheValid { set; get; } = false;
+        internal bool IsBitmapCacheValid { set; get; } = false;
 
         private BitmapProxy bitmapCache;
 
@@ -50,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         private void EnsureBitmapCache(IRenderContext2D context, Size2 size, int maxSize)
         {
             IsBitmapCacheValid = false;
-            if (size.Width == 0 || size.Height == 0 || !EnableBitmapCache)
+            if (size.Width == 0 || size.Height == 0 || !EnableBitmapCacheInternal || size.Width * size.Height < MinimumBitmapSize)
             {
                 Disposer.RemoveAndDispose(ref bitmapCache);
             }

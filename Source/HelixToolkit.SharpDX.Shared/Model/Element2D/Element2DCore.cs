@@ -242,7 +242,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             if (IsRenderable)
             {
                 EnsureBitmapCache(context, new Size2((int)RenderSize.X, (int)RenderSize.Y), Math.Max((int)context.ActualWidth, (int)context.ActualHeight));
-                if (EnableBitmapCache && IsBitmapCacheValid)
+                if (EnableBitmapCacheInternal && IsBitmapCacheValid)
                 {
                     RenderCore.UseBitmapCache = true;
                     if (IsVisualDirty)
