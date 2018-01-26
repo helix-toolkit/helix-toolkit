@@ -50,7 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             get
             {
-                return Enumerable.Repeat<IRenderable2D>(Content2D, 1);
+                return Content2D == null ? Enumerable.Empty<IRenderable2D>() : Enumerable.Repeat<IRenderable2D>(Content2D, 1);
             }
         }
 

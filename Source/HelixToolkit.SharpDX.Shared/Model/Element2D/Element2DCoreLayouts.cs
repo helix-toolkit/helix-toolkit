@@ -19,16 +19,19 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
     {
         #region layout management
-        internal bool IsMeasureValid { set; get; } = false;
-        internal bool IsArrangeValid { set; get; } = false;
+        internal bool IsMeasureDirty { set; get; } = true;
+        internal bool IsArrangeDirty { set; get; } = true;
 
-        private Vector2 marginInternal = Vector2.Zero;
-        internal Vector2 MarginInternal
+        internal bool IsTransformDirty { set; get; } = true;
+
+        private Thickness marginInternal = new Thickness();
+        internal Thickness MarginInternal
         {
             set
             {
                 if (Set(ref marginInternal, value))
                 {
+                    MarginWidthHeight = new Vector2((float)(value.Left + value.Right), (float)(value.Top + value.Bottom));
                     InvalidateMeasure();
                 }
             }
@@ -38,25 +41,27 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
-
-        private Vector2 positionInternal = Vector2.Zero;
-        internal Vector2 PositionInternal
-        {
-            set
-            {
-                if (Set(ref positionInternal, value))
-                {
-                    InvalidateMeasure();
-                }
-            }
-            get
-            {
-                return positionInternal;
-            }
-        }
+        private Vector2 MarginWidthHeight { set; get; }
 
 
-        private float widthInternal;
+        //private Vector2 positionInternal = Vector2.Zero;
+        //internal Vector2 PositionInternal
+        //{
+        //    set
+        //    {
+        //        if (Set(ref positionInternal, value))
+        //        {
+        //            InvalidateMeasure();
+        //        }
+        //    }
+        //    get
+        //    {
+        //        return positionInternal;
+        //    }
+        //}
+
+
+        private float widthInternal = float.PositiveInfinity;
         internal float WidthInternal
         {
             set
@@ -73,7 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
 
-        private float heightInternal;
+        private float heightInternal = float.PositiveInfinity;
         internal float HeightInternal
         {
             set
@@ -122,7 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
-        private float maximumWidthInternal = float.MaxValue;
+        private float maximumWidthInternal = float.PositiveInfinity;
         internal float MaximumWidthInternal
         {
             set
@@ -139,7 +144,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
 
-        private float maximumHeightInternal = float.MaxValue;
+        private float maximumHeightInternal = float.PositiveInfinity;
         internal float MaximumHeightInternal
         {
             set
@@ -156,7 +161,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
 
-        private HorizontalAlignment horizontalAlignmentInternal = HorizontalAlignment.Center;
+        private HorizontalAlignment horizontalAlignmentInternal = HorizontalAlignment.Stretch;
         internal HorizontalAlignment HorizontalAlignmentInternal
         {
             set
@@ -173,7 +178,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
 
-        private VerticalAlignment verticalAlignmentInternal = VerticalAlignment.Center;
+        private VerticalAlignment verticalAlignmentInternal = VerticalAlignment.Stretch;
         internal VerticalAlignment VerticalAlignmentInternal
         {
             set
@@ -205,215 +210,360 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         public Vector2 DesiredSize { get; private set; }
-        public Vector2 DesiredSizeWithMargins { get; private set; }
+        public Vector2 UnclippedDesiredSize { get; private set; } = new Vector2(-1, -1);
 
         public Vector2 Size { get { return new Vector2(widthInternal, heightInternal); } }
 
-        private Vector2 absolutePosition;
-        public Vector2 AbsolutePosition
+        //private Vector2 absolutePosition;
+        //public Vector2 AbsolutePosition
+        //{
+        //    get { return absolutePosition; }
+        //    protected set
+        //    {
+        //        if (Set(ref absolutePosition, value))
+        //        {
+        //            UpdateLayoutInternal();
+        //        }
+        //    }
+        //}
+
+        public bool ClipEnabled { private set; get; } = false;
+
+        public bool ClipToBound { set; get; } = false;
+
+        public RectangleF ClipBound
         {
-            get { return absolutePosition; }
-            protected set
+            private set
             {
-                if (Set(ref absolutePosition, value))
-                {
-                    UpdateLayoutInternal();
-                }
+                RenderCore.ClippingBound = value;
             }
+            get { return RenderCore.ClippingBound; }
+        }
+
+        public RectangleF Bound
+        {
+            private set
+            {
+                RenderCore.Bound = value;
+            }
+            get { return RenderCore.Bound; }
         }
 
         protected void InvalidateMeasure()
         {
-            ForceMeasure();
-            PropagateMeasureInvalidationToChildren();
+            IsArrangeDirty = true;
+            IsMeasureDirty = true;
+            TraverseUp(this, (p) => { p.IsArrangeDirty = true; p.IsMeasureDirty = true; return true; });
         }
-
 
         protected void InvalidateArrange()
         {
-            ForceArrange();
-            PropagateArrangeInvalidationToChildren();
+            IsArrangeDirty = true;
+            TraverseUp(this, (p) => { p.IsArrangeDirty = true; return true; });
         }
 
-        internal void ForceMeasure()
+        protected static void TraverseUp(Element2DCore core, Func<Element2DCore, bool> action)
         {
-            IsMeasureValid = false;
-            if (Parent is Element2DCore p)
+            var ancestor = core.Parent as Element2DCore;
+            while (ancestor != null)
             {
-                p.ForceMeasure();
-                Measure(p.RenderSize + p.MarginInternal);
-            }
-            else if(Parent is FrameworkElement pf)
-            {
-                Measure(new Vector2((float)pf.ActualWidth, (float)pf.ActualHeight));
-            }
-            InvalidateArrange();
-        }
-
-        internal void ForceArrange()
-        {
-            IsArrangeValid = false;
-            if (Parent is Element2DCore p)
-            {
-                p.ForceArrange();
-                Arrange(p.DesiredSizeWithMargins);
-            }
-            else if(Parent is FrameworkElement pf)
-            {
-                Arrange(new Vector2((float)pf.ActualWidth, (float)pf.ActualHeight));
+                action(ancestor);
+                ancestor = ancestor.Parent as Element2DCore;
             }
         }
 
-        private void PropagateMeasureInvalidationToChildren()
-        {
-            foreach (var child in Items)
-            {
-                if (child is Element2DCore c)
-                {
-                    c.IsMeasureValid = false;
-                    c.PropagateMeasureInvalidationToChildren();
-                }
-            }
-        }
-
-        private void PropagateArrangeInvalidationToChildren()
-        {
-            foreach (var child in Items)
-            {
-                if (child is Element2DCore c)
-                {
-                    c.IsArrangeValid = false;
-                    c.PropagateArrangeInvalidationToChildren();
-                }
-            }
-        }
 
         public void Measure(Vector2 availableSize)
         {
-            if (IsMeasureValid || !IsAttached)
-                return;
-
-            IsMeasureValid = true;
-            var desiredSize = new Vector2(widthInternal, heightInternal);
-
-            if (float.IsNaN(desiredSize.X) || float.IsNaN(desiredSize.Y))
+            if (!IsAttached || !IsMeasureDirty)
             {
-                var availableSizeWithoutMargins = availableSize - MarginInternal;
-                availableSizeWithoutMargins = new Vector2(
-                    Math.Max(MinimumWidthInternal, Math.Min(MaximumWidthInternal, !float.IsNaN(desiredSize.X) ? desiredSize.X : availableSizeWithoutMargins.X)),
-                    Math.Max(MinimumHeightInternal, Math.Min(MaximumHeightInternal, !float.IsNaN(desiredSize.Y) ? desiredSize.Y : availableSizeWithoutMargins.Y)));
+                return;
+            }
+            var availableSizeWithoutMargin = availableSize - MarginWidthHeight;
+            Vector2 maxSize = Vector2.Zero, minSize = Vector2.Zero;
+            CalculateMinMax(ref minSize, ref maxSize);
 
-                var childrenDesiredSize = MeasureOverride(availableSizeWithoutMargins);
-                if (float.IsNaN(desiredSize.X))
-                    desiredSize.X = childrenDesiredSize.X;
-                if (float.IsNaN(desiredSize.Y))
-                    desiredSize.Y = childrenDesiredSize.Y;
+            availableSizeWithoutMargin.X = Math.Max(minSize.X, Math.Min(availableSizeWithoutMargin.X, maxSize.X));
+            availableSizeWithoutMargin.Y = Math.Max(minSize.Y, Math.Min(availableSizeWithoutMargin.Y, maxSize.Y));
+
+            var desiredSize = MeasureOverride(availableSizeWithoutMargin);
+
+            var unclippedDesiredSize = desiredSize;
+
+            bool clipped = false;
+            if (desiredSize.X > maxSize.X)
+            {
+                desiredSize.X = maxSize.X;
+                clipped = true;
             }
 
-            desiredSize = new Vector2(
-                    Math.Max(MinimumWidthInternal, Math.Min(MaximumWidthInternal, desiredSize.X)),
-                    Math.Max(MinimumHeightInternal, Math.Min(MaximumHeightInternal, desiredSize.Y)));
+            if (desiredSize.Y > maxSize.Y)
+            {
+                desiredSize.Y = maxSize.Y;
+                clipped = true;
+            }
 
-            DesiredSize = desiredSize;
-            DesiredSizeWithMargins = desiredSize + MarginInternal;
+            var clippedDesiredSize = desiredSize + MarginWidthHeight;
+
+            if (clippedDesiredSize.X > availableSize.X)
+            {
+                clippedDesiredSize.X = availableSize.X;
+                clipped = true;
+            }
+
+            if (clippedDesiredSize.Y > availableSize.Y)
+            {
+                clippedDesiredSize.Y = availableSize.Y;
+                clipped = true;
+            }
+
+            if (clipped || clippedDesiredSize.X < 0 || clippedDesiredSize.Y < 0)
+            {
+                UnclippedDesiredSize = unclippedDesiredSize;
+            }
+            else
+            {
+                UnclippedDesiredSize = new Vector2(-1, -1);
+            }
+            DesiredSize = clippedDesiredSize;
+            IsMeasureDirty = false;
         }
 
-        public void Arrange(Vector2 rect)
+        public void Arrange(RectangleF rect)
         {
-            if (IsArrangeValid || !IsAttached)
-                return;
-            IsArrangeValid = true;
-
-            var oldAbsolutePosition = absolutePosition;
-            PositionOffsets += MarginInternal;
-            var newAbsolutePosition = PositionInternal + PositionOffsets;
-            if (Parent is Element2DCore p)
-                newAbsolutePosition += p.AbsolutePosition;
-
-            if (!newAbsolutePosition.Equals(oldAbsolutePosition))
-                AbsolutePosition = newAbsolutePosition;
-
-            var elementSize = Size;
-            var finalSizeWithoutMargins = rect - MarginInternal;
-            if (float.IsNaN(elementSize.X) && HorizontalAlignmentInternal == HorizontalAlignment.Stretch)
-                elementSize.X = finalSizeWithoutMargins.X;
-            if (float.IsNaN(elementSize.Y) && VerticalAlignmentInternal == VerticalAlignment.Stretch)
-                elementSize.Y = finalSizeWithoutMargins.Y;
-
-            if (float.IsNaN(elementSize.X))
-                elementSize.X = Math.Min(DesiredSize.X, finalSizeWithoutMargins.X);
-            if (float.IsNaN(elementSize.Y))
-                elementSize.Y = Math.Min(DesiredSize.Y, finalSizeWithoutMargins.Y);
-
-            // trunk the element size between the maximum and minimum width/height of the UIElement
-            elementSize = new Vector2(
-                Math.Max(MinimumWidthInternal, Math.Min(MaximumWidthInternal, elementSize.X)),
-                Math.Max(MinimumHeightInternal, Math.Min(MaximumHeightInternal, elementSize.Y)));
-
-            elementSize = ArrangeOverride(elementSize);
-            RenderSize = elementSize;
-
-            PositionOffsets = CalculatePosition(rect, elementSize);
-            if (PositionOffsets != Vector2.Zero)
+            if (!IsAttached)
+            { return; }
+            bool ancestorDirty = false;
+            TraverseUp(this, (parent) =>
             {
-                AbsolutePosition = PositionOffsets;
-                foreach (var element in Items)
+                if (parent.IsArrangeDirty)
                 {
-                    if (element is Element2DCore e)
-                    {
-                        e.PositionOffsets += PositionOffsets;
-                    }
+                    ancestorDirty = true;
+                    return false;
+                }
+                else { return true; }
+            });
+
+            var rectWidthHeight = new Vector2(rect.Width, rect.Height);
+
+            if ((!IsArrangeDirty && !ancestorDirty) || rectWidthHeight.IsZero)
+                return;
+
+            var arrangeSize = rectWidthHeight;
+            
+
+            ClipEnabled = false;
+            var desiredSize = DesiredSize;
+
+            if (float.IsNaN(DesiredSize.X) || float.IsNaN(DesiredSize.Y))
+            {
+                if (UnclippedDesiredSize.X == -1 || UnclippedDesiredSize.Y == -1)
+                {
+                    desiredSize = arrangeSize - MarginWidthHeight;
+                }
+                else
+                {
+                    desiredSize = UnclippedDesiredSize - MarginWidthHeight;
                 }
             }
+
+            if (arrangeSize.X < desiredSize.X)
+            {
+                ClipEnabled = true;
+                arrangeSize.X = desiredSize.X;
+            }
+
+            if (arrangeSize.Y < desiredSize.Y)
+            {
+                ClipEnabled = true;
+                arrangeSize.Y = desiredSize.Y;
+            }
+
+            if (HorizontalAlignmentInternal != HorizontalAlignment.Stretch)
+            {
+                arrangeSize.X = desiredSize.X;
+            }
+
+            if (VerticalAlignmentInternal != VerticalAlignment.Stretch)
+            {
+                arrangeSize.Y = desiredSize.Y;
+            }
+
+            Vector2 minSize = Vector2.Zero, maxSize = Vector2.Zero;
+
+            CalculateMinMax(ref minSize, ref maxSize);
+
+            float calcedMaxWidth = Math.Max(desiredSize.X, maxSize.X);
+            if (calcedMaxWidth < arrangeSize.X)
+            {
+                ClipEnabled = true;
+                arrangeSize.X = calcedMaxWidth;
+            }
+
+            float calcedMaxHeight = Math.Max(desiredSize.Y, maxSize.Y);
+            if (calcedMaxHeight < arrangeSize.Y)
+            {
+                ClipEnabled = true;
+                arrangeSize.Y = calcedMaxHeight;
+            }
+
+            var oldRenderSize = RenderSize;
+            var arrangeResultSize = ArrangeOverride(arrangeSize);
+
+            bool arrangeSizeChanged = arrangeResultSize != RenderSize;
+            if (arrangeSizeChanged)
+            {
+                InvalidateVisual();
+            }
+
+            RenderSize = arrangeResultSize;
+
+            var clippedArrangeResultSize = new Vector2(Math.Min(arrangeResultSize.X, maxSize.X), Math.Min(arrangeResultSize.Y, maxSize.Y));
+            if (!ClipEnabled)
+            {
+                ClipEnabled = clippedArrangeResultSize.X < arrangeResultSize.X || clippedArrangeResultSize.Y < arrangeResultSize.Y;
+            }
+
+            var clientSize = new Vector2(Math.Max(0, rectWidthHeight.X - MarginWidthHeight.X), Math.Max(0, rectWidthHeight.Y - MarginWidthHeight.Y));
+
+            if (!ClipEnabled)
+            {
+                ClipEnabled = clientSize.X < clippedArrangeResultSize.X || clientSize.Y < clippedArrangeResultSize.Y;
+            }
+
+            var layoutOffset = Vector2.Zero;
+
+            var tempHorizontalAlign = HorizontalAlignmentInternal;
+            var tempVerticalAlign = VerticalAlignmentInternal;
+
+            if (tempHorizontalAlign == HorizontalAlignment.Stretch && clippedArrangeResultSize.X > clientSize.X)
+            {
+                tempHorizontalAlign = HorizontalAlignment.Left;
+            }
+
+            if (tempVerticalAlign == VerticalAlignment.Stretch && clippedArrangeResultSize.Y > clientSize.Y)
+            {
+                tempVerticalAlign = VerticalAlignment.Top;
+            }
+
+            if (tempHorizontalAlign == HorizontalAlignment.Center || tempHorizontalAlign == HorizontalAlignment.Stretch)
+            {
+                layoutOffset.X = (clientSize.X - clippedArrangeResultSize.X) / 2.0f;
+            }
+            else if (tempHorizontalAlign == HorizontalAlignment.Right)
+            {
+                layoutOffset.X = clientSize.X - clippedArrangeResultSize.X;// - (float)MarginInternal.Right;
+            }
+            else
+            {
+                layoutOffset.X = 0;// (float)MarginInternal.Left;
+            }
+
+            if (tempVerticalAlign == VerticalAlignment.Center || tempVerticalAlign == VerticalAlignment.Stretch)
+            {
+                layoutOffset.Y = (clientSize.Y - clippedArrangeResultSize.Y) / 2.0f;
+            }
+            else if (tempVerticalAlign == VerticalAlignment.Bottom)
+            {
+                layoutOffset.Y = clientSize.Y - clippedArrangeResultSize.Y;// - (float)MarginInternal.Bottom;
+            }
+            else
+            {
+                layoutOffset.Y = 0;// (float)MarginInternal.Top;
+            }
+
+            layoutOffset += new Vector2(rect.Left, rect.Top);
+
+            if (ClipEnabled || ClipToBound)
+            {
+                ClipBound = new RectangleF(0, 0, clientSize.X, clientSize.Y);
+            }
+
+            PositionOffsets = layoutOffset;
+            UpdateLayoutInternal();
+            IsArrangeDirty = false;
         }
+
+        public void InvalidateVisual()
+        {
+            IsTransformDirty = true;
+            IsMeasureDirty = true;
+            IsArrangeDirty = true;
+            TraverseUp(this, (p) => 
+            {
+                p.IsTransformDirty = true;
+                p.IsMeasureDirty = true;
+                p.IsArrangeDirty = true;
+                return true;
+            });
+            if (IsAttached)
+            {
+                InvalidateRender();
+            }
+        }
+
+        private void CalculateMinMax(ref Vector2 minSize, ref Vector2 maxSize)
+        {
+            maxSize.Y = MaximumHeightInternal;
+            minSize.Y = MinimumHeightInternal;
+
+            var dimensionLength = HeightInternal;
+
+            float height = dimensionLength;
+
+            maxSize.Y = Math.Max(Math.Min(height, maxSize.Y), minSize.Y);
+
+            height = (float.IsInfinity(dimensionLength) ? 0 : dimensionLength);
+
+            minSize.Y = Math.Max(Math.Min(maxSize.Y, height), minSize.Y);
+
+            maxSize.X = MaximumWidthInternal;
+            minSize.X = MinimumWidthInternal;
+
+            dimensionLength = WidthInternal;
+
+            float width = dimensionLength;
+
+            maxSize.X = Math.Max(Math.Min(width, maxSize.X), minSize.X);
+
+            width = (float.IsInfinity(dimensionLength) ? 0 : dimensionLength);
+
+            minSize.X = Math.Max(Math.Min(maxSize.X, width), minSize.X);
+        }
+
         private void UpdateLayoutInternal()
         {
-            Bound = new RectangleF(AbsolutePosition.X, AbsolutePosition.Y, RenderSize.X, RenderSize.Y);
-            LayoutTranslate = Matrix3x2.Translation(AbsolutePosition.X, AbsolutePosition.Y);
+            Bound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.X - MarginWidthHeight.X, RenderSize.Y - MarginWidthHeight.Y);
+            ClipBound = new RectangleF(0, 0, RenderSize.X, RenderSize.Y);
+            LayoutTranslate = Matrix3x2.Translation(PositionOffsets.X, PositionOffsets.Y);
+            IsTransformDirty = false;
         }
 
-        protected virtual Vector2 ArrangeOverride(Vector2 availableSizeWithoutMargins)
+        protected virtual Vector2 ArrangeOverride(Vector2 finalSize)
         {
-            return availableSizeWithoutMargins;
-        }
-
-        protected virtual Vector2 MeasureOverride(Vector2 availableSizeWithoutMargins)
-        {
-            return Vector2.Zero;
-        }
-
-        private Vector2 CalculatePosition(Vector2 availableSpace, Vector2 usedSpace)
-        {
-            Vector2 offsets = Vector2.Zero;
-            switch (VerticalAlignmentInternal)
+            foreach(var item in Items)
             {
-                case VerticalAlignment.Bottom:
-                    offsets.Y += availableSpace.Y - usedSpace.Y;
-
-                    break;
-
-                case VerticalAlignment.Center:
-                    offsets.Y += (availableSpace.Y - usedSpace.Y) / 2;
-                    break;
+                item.Arrange(new RectangleF(0, 0,finalSize.X, finalSize.Y));
             }
-
-            switch (HorizontalAlignmentInternal)
-            {
-                case HorizontalAlignment.Center:
-                    offsets.X += (availableSpace.X - usedSpace.X) / 2;
-                    break;
-
-                case HorizontalAlignment.Right:
-                    offsets.X += availableSpace.X - usedSpace.X;
-                    break;
-            }
-            return offsets;
+            return finalSize;
         }
 
-        public void Layout(Vector2 availableSize)
+        protected virtual Vector2 MeasureOverride(Vector2 availableSize)
         {
-            Measure(availableSize);
-            Arrange(DesiredSizeWithMargins);
+            var size = Size;
+            if (float.IsInfinity(size.X))
+            {
+                size.X = availableSize.X;
+            }
+            if (float.IsInfinity(size.Y))
+            {
+                size.Y = availableSize.Y;
+            }
+            foreach(var item in Items)
+            {
+                item.Measure(availableSize);
+            }
+            return availableSize;
         }
         #endregion
     }

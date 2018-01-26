@@ -16,9 +16,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         protected override void OnRender(IRenderContext2D context)
         {
-            ellipse.Point = LocalDrawingRect.Center;
-            ellipse.RadiusX = LocalDrawingRect.Width / 2;
-            ellipse.RadiusY = LocalDrawingRect.Height / 2;
+            ellipse.Point = Bound.Center;
+            ellipse.RadiusX = Bound.Width / 2;
+            ellipse.RadiusY = Bound.Height / 2;
             if (FillBrush != null)
             {
                 context.DeviceContext.FillEllipse(ellipse, FillBrush);

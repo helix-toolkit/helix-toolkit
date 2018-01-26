@@ -639,7 +639,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         protected virtual IRenderContext2D CreateRenderContext2D(global::SharpDX.Direct2D1.DeviceContext context)
         {
-            return new RenderContext2D(context);
+            return new RenderContext2D(context, this);
         }
         /// <summary>
         /// 

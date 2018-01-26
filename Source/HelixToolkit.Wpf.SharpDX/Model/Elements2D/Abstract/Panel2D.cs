@@ -80,7 +80,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 }
 
                 c.Attach(RenderHost);
-                c.Layout(RenderSize);
+                //c.Layout(RenderSize);
             }
         }
 
@@ -165,24 +165,24 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             return false;
         }
 
-        protected override Vector2 MeasureOverride(Vector2 availableSizeWithoutMargins)
-        {
-            var requiredSize = DesiredSize;
-            foreach (var ctl in Items)
-            {
-                ctl.Measure(availableSizeWithoutMargins);
-            }
-            return requiredSize;
-        }
+        //protected override Vector2 MeasureOverride(Vector2 availableSizeWithoutMargins)
+        //{
+        //    var requiredSize = DesiredSize;
+        //    foreach (var ctl in Items)
+        //    {
+        //        ctl.Measure(availableSizeWithoutMargins);
+        //    }
+        //    return requiredSize;
+        //}
 
-        protected override Vector2 ArrangeOverride(Vector2 availableSizeWithoutMargins)
-        {
-            foreach (var ctl in Items)
-            {
-                ctl.Arrange(availableSizeWithoutMargins);
-            }
+        //protected override Vector2 ArrangeOverride(Vector2 finalSize)
+        //{
+        //    foreach (var ctl in Items)
+        //    {
+        //        ctl.Arrange(new RectangleF(0,0,finalSize.X, finalSize.Y));
+        //    }
 
-            return availableSizeWithoutMargins;
-        }
+        //    return finalSize;
+        //}
     }
 }

@@ -115,8 +115,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         protected override void OnRender(IRenderContext2D context)
         {
-            context.DeviceContext.DrawText(Text, textFormat, 
-               LocalDrawingRect, Foreground, DrawingOptions);
+            context.DeviceContext.DrawText(Text, textFormat,
+               Bound, Foreground, DrawingOptions);
         }
     }
 }

@@ -9,11 +9,11 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     public sealed class Overlay : ContentElement2D
     {
-        protected override Vector2 MeasureOverride(Vector2 availableSizeWithoutMargins)
-        {
-            Content2D.Measure(Size);
-            return Size;
-        }
+        //protected override Vector2 MeasureOverride(Vector2 availableSizeWithoutMargins)
+        //{
+        //    Content2D.Measure(Size);
+        //    return Size;
+        //}
 
         protected override void OnRender(IRenderContext2D context)
         {

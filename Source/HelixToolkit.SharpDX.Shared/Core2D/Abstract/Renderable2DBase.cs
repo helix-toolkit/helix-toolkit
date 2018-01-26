@@ -21,14 +21,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// </summary>
         public event EventHandler<bool> OnInvalidateRenderer;
         public bool IsEmpty { get; } = false;
-        //public Matrix3x2 RenderTargetTransform { private set; get; }
 
         public bool IsRendering
         {
             set; get;
         } = true;
 
-        private RectangleF rect = new RectangleF(0, 0, 100, 100);
+        private RectangleF rect = new RectangleF();
         /// <summary>
         /// Absolute layout rectangle cooridnate for renderable
         /// </summary>
@@ -36,33 +35,22 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                if(Set(ref rect, value))
-                {
-                    LocalDrawingRect = new RectangleF(0, 0, Bound.Width, Bound.Height);
-                    //RenderTargetTransform = transform * new Matrix3x2(1, 0, 0, 1, (Bound.Left), (Bound.Top));
-                }
+                SetAffectsRender(ref rect, value);
             }
             get
             {
                 return rect;
             }
         }
-        /// <summary>
-        /// Absolute visual rendering rectangle coordinate for renderable
-        /// </summary>
-        public RectangleF LocalDrawingRect { private set; get; }
 
-        private ID2DTargetProxy renderTarget;
-        protected ID2DTargetProxy RenderTarget
+        private RectangleF clippingBound = new RectangleF();
+        public RectangleF ClippingBound
         {
-            private set
+            set
             {
-                Set(ref renderTarget, value);
+                SetAffectsRender(ref clippingBound, value);
             }
-            get
-            {
-                return renderTarget;
-            }
+            get { return clippingBound; }
         }
 
         private Matrix3x2 transform = Matrix3x2.Identity;
@@ -70,10 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                if(Set(ref transform, value))
-                {
-                    //RenderTargetTransform = transform * new Matrix3x2(1, 0, 0, 1, (Bound.Left), (Bound.Top));
-                }
+                SetAffectsRender(ref transform, value);
             }
             get
             {
@@ -95,7 +80,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             if (IsAttached)
             { return; }
-            RenderTarget = host.D2DTarget;
             IsAttached = OnAttach(host);
         }
 
@@ -117,14 +101,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 context.DeviceContext.Transform = Transform;
                 if (ShowDrawingBorder)
                 {
-                    using (var borderBrush = new D2D.SolidColorBrush(context.DeviceContext, Color.LightBlue))
+                    using (var borderBrush = new D2D.SolidColorBrush(context.DeviceContext, Color.Blue))
                     {
                         using (var borderDotStyle = new D2D.StrokeStyle(context.DeviceContext.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.DashDot }))
                         {
                             using (var borderLineStyle = new D2D.StrokeStyle(context.DeviceContext.Factory, new D2D.StrokeStyleProperties() { DashStyle = D2D.DashStyle.Solid }))
                             {
-                                context.DeviceContext.DrawRectangle(Bound, borderBrush, 1f, IsMouseOver ? borderLineStyle : borderDotStyle);                             
-                                context.DeviceContext.DrawRectangle(LocalDrawingRect, borderBrush, 0.5f, borderDotStyle);
+                                context.DeviceContext.DrawRectangle(Bound, borderBrush, 1f, IsMouseOver ? borderLineStyle : borderDotStyle);
+                                context.DeviceContext.DrawRectangle(ClippingBound, borderBrush, 0.5f, borderDotStyle);
                             }
                         }
                     }

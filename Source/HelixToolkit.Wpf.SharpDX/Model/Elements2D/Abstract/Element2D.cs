@@ -188,25 +188,25 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             DependencyProperty.Register("Margin", typeof(Thickness), typeof(Element2D), new PropertyMetadata(new Thickness(), 
                 (d, e) => {
                     var t = (Thickness)e.NewValue;
-                    (d as Element2D).MarginInternal = new Vector2((float)t.Left, (float)t.Top);
+                    (d as Element2D).MarginInternal = t;
                 }));
 
 
 
 
-        public System.Windows.Point Position
-        {
-            get { return (System.Windows.Point)GetValue(PositionProperty); }
-            set { SetValue(PositionProperty, value); }
-        }
+        //public System.Windows.Point Position
+        //{
+        //    get { return (System.Windows.Point)GetValue(PositionProperty); }
+        //    set { SetValue(PositionProperty, value); }
+        //}
 
         // Using a DependencyProperty as the backing store for Position.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PositionProperty =
-            DependencyProperty.Register("Position", typeof(System.Windows.Point), typeof(Element2D), new PropertyMetadata(new System.Windows.Point(0, 0),
-                (d, e) => {
-                    var p = (System.Windows.Point)e.NewValue;
-                    (d as Element2D).PositionInternal = new Vector2((float)p.X, (float)p.Y);
-                }));
+        //public static readonly DependencyProperty PositionProperty =
+        //    DependencyProperty.Register("Position", typeof(System.Windows.Point), typeof(Element2D), new PropertyMetadata(new System.Windows.Point(0, 0),
+        //        (d, e) => {
+        //            var p = (System.Windows.Point)e.NewValue;
+        //            (d as Element2D).PositionInternal = new Vector2((float)p.X, (float)p.Y);
+        //        }));
 
 
 

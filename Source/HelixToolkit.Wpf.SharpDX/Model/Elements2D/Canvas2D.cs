@@ -23,30 +23,30 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     public class Canvas2D : Panel2D
     {
         #region Attached Properties
-        public static readonly DependencyProperty LeftProperty = DependencyProperty.RegisterAttached("Left", typeof(double), typeof(Canvas2D),
-            new PropertyMetadata(0.0, (d,e)=> { (d as Element2D).Position = new System.Windows.Point((double)e.NewValue, (d as Element2D).Position.Y); }));
+        //public static readonly DependencyProperty LeftProperty = DependencyProperty.RegisterAttached("Left", typeof(double), typeof(Canvas2D),
+        //    new PropertyMetadata(0.0, (d,e)=> { (d as Element2D).Position = new System.Windows.Point((double)e.NewValue, (d as Element2D).Position.Y); }));
 
-        public static void SetLeft(Element2D element, double value)
-        {
-            element.SetValue(LeftProperty, value);
-        }
+        //public static void SetLeft(Element2D element, double value)
+        //{
+        //    element.SetValue(LeftProperty, value);
+        //}
 
-        public static double GetLeft(Element2D element)
-        {
-            return (double)element.GetValue(LeftProperty);
-        }
+        //public static double GetLeft(Element2D element)
+        //{
+        //    return (double)element.GetValue(LeftProperty);
+        //}
 
-        public static readonly DependencyProperty TopProperty = DependencyProperty.RegisterAttached("Top", typeof(double), typeof(Canvas2D),
-            new PropertyMetadata(0.0, (d, e) => { (d as Element2D).Position = new System.Windows.Point((d as Element2D).Position.X, (double)e.NewValue); }));
-        public static void SetTop(Element2D element, double value)
-        {
-            element.SetValue(TopProperty, value);
-        }
+        //public static readonly DependencyProperty TopProperty = DependencyProperty.RegisterAttached("Top", typeof(double), typeof(Canvas2D),
+        //    new PropertyMetadata(0.0, (d, e) => { (d as Element2D).Position = new System.Windows.Point((d as Element2D).Position.X, (double)e.NewValue); }));
+        //public static void SetTop(Element2D element, double value)
+        //{
+        //    element.SetValue(TopProperty, value);
+        //}
 
-        public static double GetTop(Element2D element)
-        {
-            return (double)element.GetValue(TopProperty);
-        }
+        //public static double GetTop(Element2D element)
+        //{
+        //    return (double)element.GetValue(TopProperty);
+        //}
         #endregion
     }
 }

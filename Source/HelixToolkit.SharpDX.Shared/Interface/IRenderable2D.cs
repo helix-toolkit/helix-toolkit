@@ -29,6 +29,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The bound.
         /// </value>
         RectangleF Bound { set; get; }
+
+        /// <summary>
+        /// Gets or sets the clipping bound.
+        /// </summary>
+        /// <value>
+        /// The clipping bound.
+        /// </value>
+        RectangleF ClippingBound { set; get; }
         /// <summary>
         /// 
         /// </summary>
@@ -105,9 +113,9 @@ namespace HelixToolkit.Wpf.SharpDX
         void Render(IRenderContext2D context);
 
         void Measure(Vector2 size);
-        void Arrange(Vector2 rect);
+        void Arrange(RectangleF rect);
 
-        void Layout(Vector2 availableSize);
+        //void Layout(Vector2 availableSize);
     }
 
     public interface IHitable2D

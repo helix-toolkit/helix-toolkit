@@ -132,6 +132,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 if(Set(ref totalTransform, value))
                 {
                     RenderCore.Transform = value;
+                    TransformChanged(ref value);
+                    OnTransformChanged?.Invoke(this, value);
                     InvalidateRender();
                 }
             }
@@ -139,15 +141,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             {
                 return totalTransform;
             }
-        }
-
-        public RectangleF Bound
-        {
-            private set
-            {
-                RenderCore.Bound = value;
-            }
-            get { return RenderCore.Bound; }
         }
 
         protected virtual IRenderCore2D CreateRenderCore() { return new EmptyRenderCore2D(); }
@@ -165,8 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
             RenderHost = host;
             IsAttached = OnAttach(host);
-            InvalidateMeasure();
-            InvalidateRender();
+            InvalidateVisual();
         }
 
         /// <summary>
@@ -204,11 +196,15 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             TotalModelMatrix = ModelMatrix * LayoutTranslate * ParentMatrix;
             IsRenderable = CanRender(context);
-            foreach(var item in Items)
+            if (Parent is IViewport3DX)
             {
-                item.Measure(RenderSize);
-                item.Arrange(RenderSize);
+                Measure(new Vector2((float)context.ActualWidth, (float)context.ActualHeight));
+                Arrange(new RectangleF(0, 0, (float)context.ActualWidth, (float)context.ActualHeight));
             }
+            //foreach(var item in Items)
+            //{
+            //    item.Update(context);
+            //}
         }
 
         #region Handling Transforms        
@@ -216,7 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// Transforms the changed.
         /// </summary>
         /// <param name="totalTransform">The total transform.</param>
-        protected virtual void TransformChanged(ref Matrix totalTransform)
+        protected virtual void TransformChanged(ref Matrix3x2 totalTransform)
         {
             foreach (var item in Items)
             {
@@ -226,7 +222,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <summary>
         /// Occurs when [on transform changed].
         /// </summary>
-        public event EventHandler<Matrix> OnTransformChanged;
+        public event EventHandler<Matrix3x2> OnTransformChanged;
         #endregion
         #region Rendering
 
