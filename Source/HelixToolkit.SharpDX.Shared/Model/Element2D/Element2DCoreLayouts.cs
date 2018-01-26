@@ -1,6 +1,7 @@
 ﻿/*
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
+Reference from https://jeremiahmorrill.wordpress.com/2013/02/06/direct2d-gui-librarygraphucks/
 */
 using SharpDX;
 using System;

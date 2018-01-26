@@ -134,10 +134,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         public virtual void RenderScene2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, ref RenderParameter2D parameter)
         {
-            //foreach (var e in renderables)
-            //{
-            //    e.Render(context);
-            //}
+            foreach (var e in renderables)
+            {
+                e.Render(context);
+            }
         }
     }
 

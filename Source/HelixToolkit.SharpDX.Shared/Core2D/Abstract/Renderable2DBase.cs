@@ -113,32 +113,53 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 return isMouseOver;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is attached.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is attached; otherwise, <c>false</c>.
+        /// </value>
         public bool IsAttached { private set; get; } = false;
-
+        /// <summary>
+        /// Attaches the specified host.
+        /// </summary>
+        /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
         {
             if (IsAttached)
             { return; }
             IsAttached = OnAttach(host);
         }
-
+        /// <summary>
+        /// Called when [attach].
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <returns></returns>
         protected virtual bool OnAttach(IRenderHost target)
         {
             return true;
         }
-
+        /// <summary>
+        /// Detaches this instance.
+        /// </summary>
         public void Detach()
         {
             IsAttached = false;
             DisposeAndClear();
         }
-
+        /// <summary>
+        /// Renders the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
         public void Render(IRenderContext2D context)
         {
             if (CanRender(context))
             {
-                context.DeviceContext.Transform = UseBitmapCache ? LocalTransform : Transform;
+                // If use bitmap cache, do not set transform. Proper transform should be set from outside
+                if (!UseBitmapCache)
+                {
+                    context.DeviceContext.Transform = Transform;
+                }
                 if (ShowDrawingBorder)
                 {
                     using (var borderBrush = new D2D.SolidColorBrush(context.DeviceContext, Color.Blue))
@@ -156,14 +177,25 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 OnRender(context);
             }
         }
-
-        protected abstract void OnRender(IRenderContext2D matrices);
-
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="matrices">The matrices.</param>
+        protected abstract void OnRender(IRenderContext2D context);
+        /// <summary>
+        /// Determines whether this instance can render the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can render the specified context; otherwise, <c>false</c>.
+        /// </returns>
         protected virtual bool CanRender(IRenderContext2D context)
         {
             return IsAttached && IsRendering;
         }
-
+        /// <summary>
+        /// Invalidates the renderer.
+        /// </summary>
         protected void InvalidateRenderer()
         {
             OnInvalidateRenderer?.Invoke(this, true);
