@@ -122,10 +122,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected override void OnRender2D(TimeSpan time)
         {
             layoutUpdate2DTask?.Wait();
-            pendingRenderCores2D.Clear();
-            pendingRenderCores2D.AddRange(renderer.UpdateSceneGraph2D(RenderContext2D, Viewport.D2DRenderables).Select(x=>x.RenderCore));
-            var renderParameter2D = new RenderParameter2D() { RenderTarget = RenderBuffer.D2DTarget.D2DTarget };
-            renderer.RenderScene2D(RenderContext2D, pendingRenderCores2D, ref renderParameter2D);
+            foreach(var item in Viewport.D2DRenderables)
+            {
+                item.Render(RenderContext2D);
+            }
+            //pendingRenderCores2D.Clear();
+            //pendingRenderCores2D.AddRange(renderer.UpdateSceneGraph2D(RenderContext2D, Viewport.D2DRenderables).Select(x=>x.RenderCore));
+            //var renderParameter2D = new RenderParameter2D() { RenderTarget = RenderBuffer.D2DTarget.D2DTarget };
+            //renderer.RenderScene2D(RenderContext2D, pendingRenderCores2D, ref renderParameter2D);
         }
     }
 }

@@ -93,6 +93,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element2D\Element2DCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Element2D\Element2DCoreCache.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element2D\Element2DCoreLayouts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Element3DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\GeometryBoundManager.cs" />

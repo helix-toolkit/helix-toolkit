@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
 using System;
+using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Core2D
@@ -24,6 +25,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         internal bool IsArrangeDirty { set; get; } = true;
 
         internal bool IsTransformDirty { set; get; } = true;
+
+        internal bool IsVisualDirty { set; get; } = true;
 
         private Thickness marginInternal = new Thickness();
         internal Thickness MarginInternal
@@ -234,21 +237,64 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             IsArrangeDirty = true;
             IsMeasureDirty = true;
-            TraverseUp(this, (p) => { p.IsArrangeDirty = true; p.IsMeasureDirty = true; return true; });
+            TraverseUp(this, (p) =>
+            {
+                if(p.IsArrangeDirty && p.IsMeasureDirty)
+                {
+                    return false;
+                }
+                p.IsArrangeDirty = true;
+                p.IsMeasureDirty = true;
+                return true;
+            });
         }
 
         protected void InvalidateArrange()
         {
             IsArrangeDirty = true;
-            TraverseUp(this, (p) => { p.IsArrangeDirty = true; return true; });
+            TraverseUp(this, (p) =>
+            {
+                if (p.IsArrangeDirty)
+                {
+                    return false;
+                }
+                p.IsArrangeDirty = true;
+                return true;
+            });
         }
 
+        public void InvalidateVisual()
+        {
+            IsTransformDirty = true;
+            IsMeasureDirty = true;
+            IsArrangeDirty = true;
+            IsVisualDirty = true;
+            TraverseUp(this, (p) =>
+            {
+                if (p.IsTransformDirty && p.IsMeasureDirty && p.IsArrangeDirty && p.IsVisualDirty)
+                {
+                    return false;
+                }
+                p.IsTransformDirty = true;
+                p.IsMeasureDirty = true;
+                p.IsArrangeDirty = true;
+                p.IsVisualDirty = true;
+                return true;
+            });
+            if (IsAttached)
+            {
+                InvalidateRender();
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static void TraverseUp(Element2DCore core, Func<Element2DCore, bool> action)
         {
             var ancestor = core.Parent as Element2DCore;
             while (ancestor != null)
             {
-                action(ancestor);
+                if (!action(ancestor))
+                { break; }
                 ancestor = ancestor.Parent as Element2DCore;
             }
         }
@@ -463,24 +509,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             LayoutOffsets = layoutOffset;
             UpdateLayoutInternal();
             IsArrangeDirty = false;
-        }
-
-        public void InvalidateVisual()
-        {
-            IsTransformDirty = true;
-            IsMeasureDirty = true;
-            IsArrangeDirty = true;
-            TraverseUp(this, (p) => 
-            {
-                p.IsTransformDirty = true;
-                p.IsMeasureDirty = true;
-                p.IsArrangeDirty = true;
-                return true;
-            });
-            if (IsAttached)
-            {
-                InvalidateRender();
-            }
         }
 
         private void CalculateMinMax(ref Vector2 minSize, ref Vector2 maxSize)

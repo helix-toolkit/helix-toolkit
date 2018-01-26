@@ -96,6 +96,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderScene2D(IRenderContext2D context, IEnumerable<IRenderCore2D> renderables, ref RenderParameter2D parameter);
+        void RenderScene2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, ref RenderParameter2D parameter);
     }
 }

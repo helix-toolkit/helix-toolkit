@@ -2,12 +2,16 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+#if DEBUG
+#define DEBUGDRAWING
+#endif
 using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Linq;
+using SharpDX.Direct2D1;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Core2D
@@ -183,6 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             {
                 IsAttached = false;
                 RenderCore.Detach();
+                Disposer.RemoveAndDispose(ref bitmapCache);
                 OnDetach();                
             }
         }
@@ -195,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         public virtual void Update(IRenderContext2D context)
         {
             TotalModelMatrix = ModelMatrix * LayoutTranslate * ParentMatrix;
-            IsRenderable = CanRender(context);            
+            IsRenderable = CanRender(context);                        
         }
 
         #region Handling Transforms        
@@ -236,7 +241,28 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             Update(context);
             if (IsRenderable)
             {
-                OnRender(context);
+                EnsureBitmapCache(context, new Size2((int)RenderSize.X, (int)RenderSize.Y), Math.Max((int)context.ActualWidth, (int)context.ActualHeight));
+                if (EnableBitmapCache && IsBitmapCacheValid)
+                {
+                    RenderCore.UseBitmapCache = true;
+                    if (IsVisualDirty)
+                    {
+#if DEBUGDRAWING
+                        Console.WriteLine("Redraw bitmap cache");
+#endif
+                        context.PushRenderTarget(bitmapCache, true);
+                        OnRender(context);
+                        context.PopRenderTarget();
+                        IsVisualDirty = false;
+                    }
+                    context.DeviceContext.Transform = new Matrix3x2(1, 0, 0, 1, LayoutTranslate.M31, LayoutTranslate.M32);
+                    context.DeviceContext.DrawBitmap(bitmapCache, 1, InterpolationMode.Linear);
+                }
+                else
+                {
+                    RenderCore.UseBitmapCache = false;
+                    OnRender(context);
+                }
             }
         }
 
@@ -244,7 +270,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             RenderCore.Render(context);
         }
-        #endregion
+#endregion
 
         protected virtual bool CanHitTest()
         {
@@ -276,7 +302,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             RenderHost?.InvalidateRender();
         }
 
-        #region INotifyPropertyChanged
+#region INotifyPropertyChanged
         /// <summary>
         /// Occurs when [property changed].
         /// </summary>
@@ -354,9 +380,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             { this.RaisePropertyChanged(propertyName); }
             return true;
         }
-        #endregion
+#endregion
 
-        #region IDisposable Support
+#region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls        
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
@@ -395,6 +421,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
-        #endregion
+#endregion
     }
 }

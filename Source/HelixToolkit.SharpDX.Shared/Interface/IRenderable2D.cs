@@ -50,6 +50,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Local render transform
         /// </summary>
         Matrix3x2 LocalTransform { set; get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [use bitmap cache].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [use bitmap cache]; otherwise, <c>false</c>.
+        /// </value>
+        bool UseBitmapCache { set; get; }
         /// <summary>
         /// Gets or sets a value indicating whether this instance is rendering.
         /// </summary>
