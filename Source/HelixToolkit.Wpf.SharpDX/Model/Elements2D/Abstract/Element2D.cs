@@ -11,25 +11,27 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     {
         #region Dependency Properties
         /// <summary>
-        /// Indicates, if this element should be rendered,
-        /// default is true
+        /// 
         /// </summary>
-        public static readonly DependencyProperty IsRenderingProperty =
-            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element2D), new PropertyMetadata(true,
-                (d, e) =>
-                {
-                    (d as Element2D).isRenderingInternal = (bool)e.NewValue;
-                }));
+        public static readonly DependencyProperty VisibilityProperty =
+            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element2D), new PropertyMetadata(Visibility.Visible, (d, e) =>
+            {
+                (d as Element2D).VisibilityInternal = (Visibility)e.NewValue;
+            }));
 
         /// <summary>
-        /// Indicates, if this element should be rendered.
-        /// Use this also to make the model visible/unvisible
-        /// default is true
+        /// 
         /// </summary>
-        public bool IsRendering
+        public Visibility Visibility
         {
-            get { return (bool)GetValue(IsRenderingProperty); }
-            set { SetValue(IsRenderingProperty, value); }
+            set
+            {
+                SetValue(VisibilityProperty, value);
+            }
+            get
+            {
+                return (Visibility)GetValue(VisibilityProperty);
+            }
         }
 
         public static readonly DependencyProperty IsHitTestVisibleProperty =
@@ -234,9 +236,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         #endregion
 
 
-        protected bool isRenderingInternal { private set; get; } = true;
-
-
         #region Events
         public delegate void Mouse2DRoutedEventHandler(object sender, Mouse2DEventArgs e);
         public static readonly RoutedEvent MouseDown2DEvent =
@@ -322,17 +321,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             this.MouseEnter2D -= Element2D_MouseEnter2D;
             this.MouseLeave2D -= Element2D_MouseLeave2D;
             OnDetach();
-        }
-
-        /// <summary>
-        /// <para>Determine if this can be rendered.</para>
-        /// <para>Default returns <see cref="IsAttached"/> &amp;&amp; <see cref="IsRendering"/> &amp;&amp; <see cref="Visibility"/> == <see cref="Visibility.Visible"/></para>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected override bool CanRender(IRenderContext2D context)
-        {
-            return isRenderingInternal && base.CanRender(context);
         }
     }
 

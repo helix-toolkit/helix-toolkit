@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                Set(ref foreground, value);
+                SetAffectsRender(ref foreground, value);
             }
             get
             {
@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                if(Set(ref fontFamily, value) && IsAttached)
+                if(SetAffectsRender(ref fontFamily, value) && IsAttached)
                 {
                     UpdateFontFormat();
                 }
@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                if(Set(ref fontSize, value) && IsAttached)
+                if(SetAffectsRender(ref fontSize, value) && IsAttached)
                 {
                     UpdateFontFormat();
                 }
@@ -62,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                if(Set(ref fontWeight, value) && IsAttached)
+                if(SetAffectsRender(ref fontWeight, value) && IsAttached)
                 {
                     UpdateFontFormat();
                 }
@@ -75,7 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                if(Set(ref fontStyle, value) && IsAttached)
+                if(SetAffectsRender(ref fontStyle, value) && IsAttached)
                 {
                     UpdateFontFormat();
                 }

@@ -154,9 +154,9 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             return textRenderable;
         }
 
-        protected override void OnUpdate(IRenderContext2D context)
+        public override void Update(IRenderContext2D context)
         {
-            base.OnUpdate(context);
+            base.Update(context);
             if (foregroundChanged)
             {
                 textRenderable.Foreground = Foreground.ToD2DBrush(context.DeviceContext);

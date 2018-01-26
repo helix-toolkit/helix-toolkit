@@ -139,11 +139,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             base.OnDetach();
         }
 
-        protected override bool CanRender(IRenderContext2D context)
-        {
-            return IsAttached && isRenderingInternal;
-        }
-
         protected override void OnRender(IRenderContext2D context)
         {
             foreach (var c in this.Items)

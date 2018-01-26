@@ -109,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <value>
         ///   <c>true</c> if visible; otherwise, <c>false</c>.
         /// </value>
-        public bool Visible
+        internal bool Visible
         {
             set
             {

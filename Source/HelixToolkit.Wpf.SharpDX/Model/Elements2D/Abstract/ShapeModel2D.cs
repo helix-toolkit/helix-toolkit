@@ -230,9 +230,9 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             shapeRenderable.StrokeWidth = StrokeThickness;
         }
 
-        protected override void OnUpdate(IRenderContext2D context)
+        public override void Update(IRenderContext2D context)
         {
-            base.OnUpdate(context);
+            base.Update(context);
             if (fillChanged)
             {
                 shapeRenderable.FillBrush = Fill.ToD2DBrush(context.DeviceContext);

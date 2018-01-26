@@ -30,21 +30,21 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// </value>
         public Guid GUID { get; } = Guid.NewGuid();
 
-        private bool visible = true;
+        private Visibility visibilityInternal = Visibility.Visible;
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Element2DCore"/> is visible.
         /// </summary>
         /// <value>
         ///   <c>true</c> if visible; otherwise, <c>false</c>.
         /// </value>
-        public bool Visible
+        internal Visibility VisibilityInternal
         {
             set
             {
-                if (Set(ref visible, value))
+                if (Set(ref visibilityInternal, value))
                 { InvalidateRender(); }
             }
-            get { return visible; }
+            get { return visibilityInternal; }
         }
 
         public virtual bool IsHitTestVisible { set; get; }
@@ -187,15 +187,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             RenderHost = null;
         }
 
-        public void Update(IRenderContext2D context)
-        {
-            OnUpdate(context);
-        }
-
-        protected virtual void OnUpdate(IRenderContext2D context)
+        public virtual void Update(IRenderContext2D context)
         {
             TotalModelMatrix = ModelMatrix * LayoutTranslate * ParentMatrix;
-            IsRenderable = CanRender(context);
+            IsRenderable = CanRender(context);            
         }
 
         #region Handling Transforms        
@@ -219,13 +214,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         /// <summary>
         /// <para>Determine if this can be rendered.</para>
-        /// <para>Default returns <see cref="IsAttached"/> &amp;&amp; <see cref="IsRendering"/> &amp;&amp; <see cref="Visibility"/> == <see cref="Visibility.Visible"/></para>
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
         protected virtual bool CanRender(IRenderContext2D context)
         {
-            return Visible && IsAttached;
+            return VisibilityInternal == Visibility.Visible && IsAttached;
         }
         /// <summary>
         /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
