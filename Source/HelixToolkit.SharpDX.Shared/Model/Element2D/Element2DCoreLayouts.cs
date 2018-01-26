@@ -20,6 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     {
         #region layout management
         internal bool IsMeasureDirty { set; get; } = true;
+
         internal bool IsArrangeDirty { set; get; } = true;
 
         internal bool IsTransformDirty { set; get; } = true;
@@ -42,24 +43,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private Vector2 MarginWidthHeight { set; get; }
-
-
-        //private Vector2 positionInternal = Vector2.Zero;
-        //internal Vector2 PositionInternal
-        //{
-        //    set
-        //    {
-        //        if (Set(ref positionInternal, value))
-        //        {
-        //            InvalidateMeasure();
-        //        }
-        //    }
-        //    get
-        //    {
-        //        return positionInternal;
-        //    }
-        //}
-
 
         private float widthInternal = float.PositiveInfinity;
         internal float WidthInternal
@@ -193,8 +176,18 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 return verticalAlignmentInternal;
             }
         }
-
-        internal Vector2 PositionOffsets { set; get; } = Vector2.Zero;
+        private Vector2 layoutOffset = Vector2.Zero;
+        public Vector2 LayoutOffsets
+        {
+            private set
+            {
+                if(Set(ref layoutOffset, value))
+                {
+                    IsTransformDirty = true;
+                }
+            }
+            get { return layoutOffset; }
+        }
 
         private Vector2 renderSize = Vector2.Zero;
         public Vector2 RenderSize
@@ -204,7 +197,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             {
                 if (Set(ref renderSize, value))
                 {
-                    UpdateLayoutInternal();
+                    IsTransformDirty = true;
                 }
             }
         }
@@ -213,19 +206,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         public Vector2 UnclippedDesiredSize { get; private set; } = new Vector2(-1, -1);
 
         public Vector2 Size { get { return new Vector2(widthInternal, heightInternal); } }
-
-        //private Vector2 absolutePosition;
-        //public Vector2 AbsolutePosition
-        //{
-        //    get { return absolutePosition; }
-        //    protected set
-        //    {
-        //        if (Set(ref absolutePosition, value))
-        //        {
-        //            UpdateLayoutInternal();
-        //        }
-        //    }
-        //}
 
         public bool ClipEnabled { private set; get; } = false;
 
@@ -479,7 +459,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 ClipBound = new RectangleF(0, 0, clientSize.X, clientSize.Y);
             }
 
-            PositionOffsets = layoutOffset;
+            LayoutOffsets = layoutOffset;
             UpdateLayoutInternal();
             IsArrangeDirty = false;
         }
@@ -533,10 +513,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         private void UpdateLayoutInternal()
         {
-            Bound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.X - MarginWidthHeight.X, RenderSize.Y - MarginWidthHeight.Y);
-            ClipBound = new RectangleF(0, 0, RenderSize.X, RenderSize.Y);
-            LayoutTranslate = Matrix3x2.Translation(PositionOffsets.X, PositionOffsets.Y);
-            IsTransformDirty = false;
+            if (IsTransformDirty)
+            {
+                Bound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.X - MarginWidthHeight.X, RenderSize.Y - MarginWidthHeight.Y);
+                ClipBound = new RectangleF(0, 0, RenderSize.X, RenderSize.Y);
+                LayoutTranslate = Matrix3x2.Translation(LayoutOffsets.X, LayoutOffsets.Y);
+                IsTransformDirty = false;
+            }
         }
 
         protected virtual Vector2 ArrangeOverride(Vector2 finalSize)

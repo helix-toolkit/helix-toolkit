@@ -32,16 +32,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected readonly List<IRenderCore> pendingRenderCores = new List<IRenderCore>();
 
         /// <summary>
-        /// The pending renderables
-        /// </summary>
-        protected readonly List<IRenderable2D> pendingRenderables2D = new List<IRenderable2D>();
-        /// <summary>
         /// The pending render cores
         /// </summary>
         protected readonly List<IRenderCore2D> pendingRenderCores2D = new List<IRenderCore2D>();
 
 
         private Task asyncTask;
+
+        private Task layoutUpdate2DTask;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
@@ -80,6 +78,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 renderer.UpdateNotRenderParallel(pendingRenderables);
             });
+
+            var d2dRoot = Viewport.D2DRenderables.FirstOrDefault();
+            if (d2dRoot != null)
+            {
+                layoutUpdate2DTask = Task.Factory.StartNew(() => 
+                {
+                    d2dRoot.Measure(new Vector2((float)ActualWidth, (float)ActualHeight));
+                    d2dRoot.Arrange(new RectangleF(0, 0, (float)ActualWidth, (float)ActualHeight));
+                });
+            }
         }
 
         /// <summary>
@@ -113,8 +121,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="time">The time.</param>
         protected override void OnRender2D(TimeSpan time)
         {
+            layoutUpdate2DTask?.Wait();
+            pendingRenderCores2D.Clear();
+            pendingRenderCores2D.AddRange(renderer.UpdateSceneGraph2D(RenderContext2D, Viewport.D2DRenderables).Select(x=>x.RenderCore));
             var renderParameter2D = new RenderParameter2D() { RenderTarget = RenderBuffer.D2DTarget.D2DTarget };
-            renderer.Render2D(RenderContext2D, Viewport.D2DRenderables, ref renderParameter2D);
+            renderer.RenderScene2D(RenderContext2D, pendingRenderCores2D, ref renderParameter2D);
         }
     }
 }

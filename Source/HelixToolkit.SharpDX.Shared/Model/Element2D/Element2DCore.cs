@@ -196,15 +196,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             TotalModelMatrix = ModelMatrix * LayoutTranslate * ParentMatrix;
             IsRenderable = CanRender(context);
-            if (Parent is IViewport3DX)
-            {
-                Measure(new Vector2((float)context.ActualWidth, (float)context.ActualHeight));
-                Arrange(new RectangleF(0, 0, (float)context.ActualWidth, (float)context.ActualHeight));
-            }
-            //foreach(var item in Items)
-            //{
-            //    item.Update(context);
-            //}
         }
 
         #region Handling Transforms        

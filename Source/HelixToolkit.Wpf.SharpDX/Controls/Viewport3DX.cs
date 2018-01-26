@@ -243,10 +243,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                if (renderHostInternal != null && Overlay2D != null)
-                {
-                    yield return Overlay2D;
-                }
+                return Overlay2D == null ? Enumerable.Empty<IRenderable2D>() : Enumerable.Repeat<IRenderable2D>(Overlay2D, 1);
             }
         }
 

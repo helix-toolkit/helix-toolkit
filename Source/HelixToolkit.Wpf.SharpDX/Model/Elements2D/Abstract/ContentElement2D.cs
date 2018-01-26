@@ -50,7 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             get
             {
-                return Content2D == null ? Enumerable.Empty<IRenderable2D>() : Enumerable.Repeat<IRenderable2D>(Content2D, 1);
+                return contentInternal == null ? Enumerable.Empty<IRenderable2D>() : Enumerable.Repeat<IRenderable2D>(contentInternal, 1);
             }
         }
 
@@ -58,8 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             if (base.OnAttach(host))
             {
-                Content2D?.Attach(host);
-                //Layout(new Vector2((float)host.ActualWidth, (float)host.ActualHeight));
+                contentInternal?.Attach(host);
                 return true;
             }
             else
@@ -70,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected override void OnDetach()
         {
-            Content2D?.Detach();
+            contentInternal?.Detach();
             base.OnDetach();
         }
 
