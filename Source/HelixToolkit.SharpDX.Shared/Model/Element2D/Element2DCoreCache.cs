@@ -2,21 +2,18 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+#if DEBUG
+#define DEBUGCACHECREATE
+#endif
 using SharpDX;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Linq;
-
+using SharpDX.DXGI;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Core2D
 #else
-using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-    using global::SharpDX.DXGI;
+    using System.Diagnostics;
     using Utilities;
 #if NETFX_CORE
     public abstract partial class Element2DCore
@@ -34,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <value>
         ///   <c>true</c> if [enable bitmap cache]; otherwise, <c>false</c>.
         /// </value>
-        internal bool EnableBitmapCacheInternal { set; get; } = false;
+        internal bool EnableBitmapCacheInternal { set; get; } = true;
         /// <summary>
         /// Gets or sets a value indicating whether this instance is bitmap cache valid.
         /// </summary>
@@ -62,8 +59,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             {
                 return;
             }
-            else if (bitmapCache == null || size.Width != bitmapCache.Size.Width || size.Height != bitmapCache.Size.Height)
+            else if (bitmapCache == null || size.Width > bitmapCache.Size.Width || size.Height > bitmapCache.Size.Height)
             {
+#if DEBUGCACHECREATE
+                Debug.WriteLine("Create new bitmap cache.");
+#endif
                 Disposer.RemoveAndDispose(ref bitmapCache);
                 bitmapCache = BitmapProxy.Create("Cache", context.DeviceContext, size, Format.B8G8R8A8_UNorm);
                 IsBitmapCacheValid = true;

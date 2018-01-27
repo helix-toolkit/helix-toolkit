@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Linq;
 using SharpDX.Direct2D1;
+using System.Diagnostics;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Core2D
@@ -259,13 +260,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 {
                     RenderCore.UseBitmapCache = true;
                     if (IsVisualDirty)
-                    {
-                        
+                    {                        
 #if DEBUGDRAWING
-                        Console.WriteLine("Redraw bitmap cache");
+                        Debug.WriteLine("Redraw bitmap cache");
 #endif
                         context.PushRenderTarget(bitmapCache, true);
-                        context.DeviceContext.Transform = Matrix3x2.Identity; //Matrix3x2.Scaling((float)bitmapCache.Size.Width / RenderSize.Width, (float)bitmapCache.Size.Height / RenderSize.Height);
+                        context.DeviceContext.Transform = Matrix3x2.Scaling(bitmapCache.Size.Width / RenderSize.Width, bitmapCache.Size.Height / RenderSize.Height);
                         OnRender(context);
                         context.PopRenderTarget();
                         IsVisualDirty = false;
@@ -273,7 +273,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                     context.DeviceContext.Transform = RelativeMatrix;
                     var bound = new RectangleF(0, 0, RenderSize.Width, RenderSize.Height);
                     context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), bound, InterpolationMode.Linear, CompositeMode.SourceOver);
-                    //context.DeviceContext.DrawBitmap(bitmapCache, 1, InterpolationMode.Linear);
                 }
                 else
                 {
