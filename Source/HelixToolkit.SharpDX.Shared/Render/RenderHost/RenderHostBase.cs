@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using Utilities;
     using System;
     using System.Diagnostics;
-
+    using System.Linq;
     /// <summary>
     /// 
     /// </summary>
@@ -421,6 +421,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public void UpdateAndRender()
         {
+            var d2dRoot = Viewport.D2DRenderables.FirstOrDefault();
+            d2dRoot.Measure(new Size2((int)ActualWidth, (int)ActualHeight));
+            d2dRoot.Arrange(new RectangleF(0, 0, (float)ActualWidth, (float)ActualHeight));
             if (CanRender())
             {
                 IsBusy = true;

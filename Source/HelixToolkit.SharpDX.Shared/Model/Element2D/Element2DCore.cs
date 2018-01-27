@@ -213,7 +213,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 * LayoutTranslate; 
             TotalModelMatrix = RelativeMatrix * ParentMatrix;
             IsTransformDirty = false;
-            IsRenderable = CanRender(context);                        
+            IsRenderable = CanRender(context);
         }
 
         #region Handling Transforms        
@@ -254,7 +254,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             Update(context);
             if (IsRenderable)
             {
-                EnsureBitmapCache(context, RenderSize, Math.Max((int)context.ActualWidth, (int)context.ActualHeight));
+                EnsureBitmapCache(context, RenderSize, context.DeviceContext.MaximumBitmapSize);
                 if (EnableBitmapCacheInternal && IsBitmapCacheValid)
                 {
                     RenderCore.UseBitmapCache = true;
@@ -265,13 +265,15 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                         Console.WriteLine("Redraw bitmap cache");
 #endif
                         context.PushRenderTarget(bitmapCache, true);
-                        context.DeviceContext.Transform = Matrix3x2.Scaling(bitmapCache.Size.Width / RenderSize.Width, bitmapCache.Size.Height / RenderSize.Height);
+                        context.DeviceContext.Transform = Matrix3x2.Identity; //Matrix3x2.Scaling((float)bitmapCache.Size.Width / RenderSize.Width, (float)bitmapCache.Size.Height / RenderSize.Height);
                         OnRender(context);
                         context.PopRenderTarget();
                         IsVisualDirty = false;
                     }
                     context.DeviceContext.Transform = RelativeMatrix;
-                    context.DeviceContext.DrawBitmap(bitmapCache, 1, InterpolationMode.Linear);
+                    var bound = new RectangleF(0, 0, RenderSize.Width, RenderSize.Height);
+                    context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), bound, InterpolationMode.Linear, CompositeMode.SourceOver);
+                    //context.DeviceContext.DrawBitmap(bitmapCache, 1, InterpolationMode.Linear);
                 }
                 else
                 {
@@ -284,6 +286,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         protected virtual void OnRender(IRenderContext2D context)
         {
             RenderCore.Render(context);
+            foreach (var c in this.Items)
+            {
+                c.Render(context);
+            }
         }
 #endregion
 

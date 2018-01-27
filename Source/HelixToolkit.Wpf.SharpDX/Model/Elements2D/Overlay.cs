@@ -9,15 +9,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     public sealed class Overlay : ContentElement2D
     {
-        protected override void OnRender(IRenderContext2D context)
-        {
-            base.OnRender(context);
-            foreach(var item in Items)
-            {
-                item.Render(context);
-            }
-        }
-
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
             hitResult = null;

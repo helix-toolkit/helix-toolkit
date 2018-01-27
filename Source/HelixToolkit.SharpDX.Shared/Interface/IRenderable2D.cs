@@ -98,6 +98,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         bool IsRenderable { get; }
         /// <summary>
+        /// Gets a value indicating whether this instance is measure dirty.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is measure dirty; otherwise, <c>false</c>.
+        /// </value>
+        bool IsMeasureDirty { get; }
+        /// <summary>
+        /// Gets a value indicating whether this instance is arrange dirty.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is arrange dirty; otherwise, <c>false</c>.
+        /// </value>
+        bool IsArrangeDirty { get; }
+        /// <summary>
         /// Attaches the specified target.
         /// </summary>
         /// <param name="target">The target.</param>

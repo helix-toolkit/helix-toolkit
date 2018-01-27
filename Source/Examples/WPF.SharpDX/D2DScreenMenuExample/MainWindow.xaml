@@ -26,12 +26,7 @@
                 Material="{Binding VM3D.ModelMaterial}" />
             <hx:Viewport3DX.Overlay2D>
                 <hx2D:Overlay HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <hx2D:Overlay
-                        Width="200"
-                        Height="100"
-                        Margin="10,20"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top">
+                    <hx2D:Grid2D Margin="10,20">
                         <hx2D:TextModel2D
                             Width="100"
                             Height="20"
@@ -39,7 +34,28 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Text="{Binding VM2D.Text}" />
-                    </hx2D:Overlay>
+                        <hx2D:TextModel2D
+                            Width="100"
+                            Height="20"
+                            Margin="10,20"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Text="{Binding VM2D.Text}" />
+                        <hx2D:TextModel2D
+                            Width="100"
+                            Height="20"
+                            Margin="10,20"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="{Binding VM2D.Text}" />
+                        <hx2D:TextModel2D
+                            Width="100"
+                            Height="20"
+                            Margin="10,20"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Text="{Binding VM2D.Text}" />
+                    </hx2D:Grid2D>
 
                     <!--<hx2D:Canvas2D hx2D:Canvas2D.Left="100" hx2D:Canvas2D.Top="100">
                             <hx2D:RectangleModel2D hx2D:Canvas2D.Left="100" hx2D:Canvas2D.Top="200" Width="50" Height="100" Fill="#A6F0F8FF" Stroke="Yellow" />

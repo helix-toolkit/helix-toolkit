@@ -155,6 +155,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             if (CanRender(context))
             {
+                var oldTransform = context.DeviceContext.Transform;
                 // If use bitmap cache, do not set transform. Proper transform should be set from outside
                 if (!UseBitmapCache)
                 {
@@ -175,6 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                     }
                 }
                 OnRender(context);
+                context.DeviceContext.Transform = oldTransform;
             }
         }
         /// <summary>

@@ -1,12 +1,8 @@
 ﻿using SharpDX;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Markup;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
@@ -14,30 +10,11 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     [ContentProperty("Children")]
     public abstract class Panel2D : Element2D
     {
-        private IList<Element2D> itemsSourceInternal;
-        /// <summary>
-        /// ItemsSource for binding to collection. Please use ObservableElement2DCollection for observable, otherwise may cause memory leak.
-        /// </summary>
-        public IList<Element2D> ItemsSource
-        {
-            get { return (IList<Element2D>)this.GetValue(ItemsSourceProperty); }
-            set { this.SetValue(ItemsSourceProperty, value); }
-        }
-        /// <summary>
-        /// ItemsSource for binding to collection. Please use ObservableElement2DCollection for observable, otherwise may cause memory leak.
-        /// </summary>
-        public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(IList<Element2D>), typeof(Panel2D),
-                new PropertyMetadata(null,
-                    (d, e) => {
-                        (d as Panel2D).OnItemsSourceChanged(e.NewValue as IList<Element2D>);
-                    }));
-
         public override IEnumerable<IRenderable2D> Items
         {
             get
             {
-                return itemsSourceInternal == null ? Children : Children.Concat(itemsSourceInternal);
+                return Children;
             }
         }
 
@@ -96,30 +73,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
 
-        private void OnItemsSourceChanged(IList<Element2D> itemsSource)
-        {
-            if (itemsSourceInternal != null)
-            {
-                if (itemsSourceInternal is INotifyCollectionChanged)
-                {
-                    (itemsSourceInternal as INotifyCollectionChanged).CollectionChanged -= Items_CollectionChanged;
-                }
-                DetachChildren(this.itemsSourceInternal);
-            }
-            itemsSourceInternal = itemsSource;
-            if (itemsSourceInternal != null)
-            {
-                if (itemsSourceInternal is ObservableElement2DCollection)
-                {
-                    (itemsSourceInternal as INotifyCollectionChanged).CollectionChanged += Items_CollectionChanged;
-                }
-                if (IsAttached)
-                {
-                    AttachChildren(this.itemsSourceInternal);
-                }
-            }
-        }
-
         protected override bool OnAttach(IRenderHost host)
         {
             if (base.OnAttach(host))
@@ -137,14 +90,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             DetachChildren(Items);
             base.OnDetach();
-        }
-
-        protected override void OnRender(IRenderContext2D context)
-        {
-            foreach (var c in this.Items)
-            {
-                c.Render(context);
-            }
         }
 
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)

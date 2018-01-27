@@ -21,9 +21,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
     {
         #region layout management
-        internal bool IsMeasureDirty { set; get; } = true;
+        public bool IsMeasureDirty { protected set; get; } = true;
 
-        internal bool IsArrangeDirty { set; get; } = true;
+        public bool IsArrangeDirty { protected set; get; } = true;
 
         internal bool IsTransformDirty { set; get; } = true;
 
@@ -342,7 +342,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         public void Measure(Size2 size)
         {
-            if (!IsAttached || !IsMeasureDirty)
+            if (!IsAttached)
             {
                 return;
             }
@@ -583,13 +583,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         private void UpdateLayoutInternal()
         {
-            if (IsTransformDirty)
-            {
-                LayoutBound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.Width - MarginWidthHeight.X, RenderSize.Height - MarginWidthHeight.Y);
-                ClipBound = new RectangleF(0, 0, RenderSize.Width, RenderSize.Height);
-                LayoutTranslate = Matrix3x2.Translation(LayoutOffsets.X, LayoutOffsets.Y);
-                IsTransformDirty = false;
-            }
+            LayoutBound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.Width - MarginWidthHeight.X, RenderSize.Height - MarginWidthHeight.Y);
+            ClipBound = new RectangleF(0, 0, RenderSize.Width, RenderSize.Height);
+            LayoutTranslate = Matrix3x2.Translation(LayoutOffsets.X, LayoutOffsets.Y);
         }
 
         protected virtual RectangleF ArrangeOverride(RectangleF finalSize)
@@ -603,15 +599,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         protected virtual Size2 MeasureOverride(Size2 availableSize)
         {
-            var size = Size;
-            if (float.IsInfinity(size.X))
-            {
-                size.X = availableSize.Width;
-            }
-            if (float.IsInfinity(size.Y))
-            {
-                size.Y = availableSize.Height;
-            }
             foreach(var item in Items)
             {
                 item.Measure(availableSize);

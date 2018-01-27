@@ -62,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             {
                 return;
             }
-            else if (bitmapCache == null || size.Width > bitmapCache.Size.Width || size.Height > bitmapCache.Size.Height)
+            else if (bitmapCache == null || size.Width != bitmapCache.Size.Width || size.Height != bitmapCache.Size.Height)
             {
                 Disposer.RemoveAndDispose(ref bitmapCache);
                 bitmapCache = BitmapProxy.Create("Cache", context.DeviceContext, size, Format.B8G8R8A8_UNorm);

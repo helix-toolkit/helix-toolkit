@@ -314,9 +314,11 @@ namespace HelixToolkit.Wpf.SharpDX
             AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
             this.SizeChanged += (s, e) => 
             {
-                if (Overlay2D == null) { return; }
-                Overlay2D.Width = this.ActualWidth;
-                Overlay2D.Height = this.ActualHeight;
+                Overlay2D.InvalidateAll();
+                Console.WriteLine($"Width={ActualWidth}; Height={ActualHeight}");
+                //if (Overlay2D == null) { return; }
+                //Overlay2D.Width = this.ActualWidth;
+                //Overlay2D.Height = this.ActualHeight;
             };
         }
 
