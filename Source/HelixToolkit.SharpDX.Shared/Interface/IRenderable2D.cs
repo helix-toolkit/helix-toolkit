@@ -124,7 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context"></param>
         void Render(IRenderContext2D context);
 
-        void Measure(Vector2 size);
+        void Measure(Size2 size);
         void Arrange(RectangleF rect);
 
         //void Layout(Vector2 availableSize);

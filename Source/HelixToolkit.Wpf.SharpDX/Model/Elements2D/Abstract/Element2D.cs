@@ -163,7 +163,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             set { SetValue(HorizontalAlignmentProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for HorizontalAlignment.  This enables animation, styling, binding, etc...
+
         public static readonly DependencyProperty HorizontalAlignmentProperty =
             DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(Element2D), new PropertyMetadata(HorizontalAlignment.Center, (d, e) => { (d as Element2D).HorizontalAlignmentInternal = (HorizontalAlignment)e.NewValue; }));
 
@@ -175,7 +175,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             set { SetValue(VerticalAlignmentProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for VerticalAlignment.  This enables animation, styling, binding, etc...
+
         public static readonly DependencyProperty VerticalAlignmentProperty =
             DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(Element2D), new PropertyMetadata(VerticalAlignment.Center, (d, e) => { (d as Element2D).VerticalAlignmentInternal = (VerticalAlignment)e.NewValue; }));
 
@@ -188,7 +188,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             set { SetValue(MarginProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Margin.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MarginProperty =
             DependencyProperty.Register("Margin", typeof(Thickness), typeof(Element2D), new PropertyMetadata(new Thickness(), 
                 (d, e) => {
@@ -214,7 +213,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         //        }));
 
 
-
         public static readonly DependencyProperty TransformProperty =
             DependencyProperty.Register("Transform", typeof(Media.Transform), typeof(Element2D), new PropertyMetadata(Media.Transform.Identity, (d, e) =>
             {
@@ -236,6 +234,32 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 SetValue(TransformProperty, value);
             }
         }
+
+
+
+        public System.Windows.Point RenderTransformOrigin
+        {
+            get { return (System.Windows.Point)GetValue(RenderTransformOriginProperty); }
+            set { SetValue(RenderTransformOriginProperty, value); }
+        }
+
+        public static readonly DependencyProperty RenderTransformOriginProperty =
+            DependencyProperty.Register("RenderTransformOrigin", typeof(System.Windows.Point), typeof(Element2D), new PropertyMetadata(new System.Windows.Point(0.5,0.5),
+                (d,e)=> {
+                    (d as Element2D).RenderTransformOriginInternal = ((System.Windows.Point)e.NewValue).ToVector2();
+                }));
+
+        public bool EnableBitmapCache
+        {
+            get { return (bool)GetValue(EnableBitmapCacheProperty); }
+            set { SetValue(EnableBitmapCacheProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableBitmapCacheProperty =
+            DependencyProperty.Register("EnableBitmapCache", typeof(bool), typeof(Element2D),
+                new PropertyMetadata(true, (d,e)=> { (d as Element2D).EnableBitmapCacheInternal = (bool)e.NewValue; }));
+
+
         #endregion
 
 

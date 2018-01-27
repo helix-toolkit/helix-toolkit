@@ -187,23 +187,36 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             {
                 if(Set(ref layoutOffset, value))
                 {
-                    IsTransformDirty = true;
+                    InvalidateRender();
                 }
             }
             get { return layoutOffset; }
         }
 
-        private Vector2 renderSize = Vector2.Zero;
-        public Vector2 RenderSize
+        private Size2 renderSize = Size2.Zero;
+        public Size2 RenderSize
         {
             get { return renderSize; }
             private set
             {
                 if (Set(ref renderSize, value))
                 {
-                    IsTransformDirty = true;
+                    InvalidateRender();
                 }
             }
+        }
+
+        private Vector2 renderTransformOriginInternal = new Vector2(0.5f, 0.5f);
+        internal Vector2 RenderTransformOriginInternal
+        {
+            set
+            {
+                if(Set(ref renderTransformOriginInternal, value))
+                {
+                    InvalidateRender();
+                }
+            }
+            get { return renderTransformOriginInternal; }
         }
 
         public Vector2 DesiredSize { get; private set; }
@@ -248,6 +261,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 p.IsMeasureDirty = true;
                 return true;
             });
+            if (IsAttached)
+            {
+                InvalidateRender();
+            }
         }
 
         protected void InvalidateArrange()
@@ -262,9 +279,31 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 p.IsArrangeDirty = true;
                 return true;
             });
+            if (IsAttached)
+            {
+                InvalidateRender();
+            }
         }
 
         public void InvalidateVisual()
+        {
+            IsVisualDirty = true;
+            TraverseUp(this, (p) =>
+            {
+                if (p.IsVisualDirty)
+                {
+                    return false;
+                }
+                p.IsVisualDirty = true;
+                return true;
+            });
+            if (IsAttached)
+            {
+                InvalidateRender();
+            }
+        }
+
+        public void InvalidateAll()
         {
             IsTransformDirty = true;
             IsMeasureDirty = true;
@@ -301,12 +340,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
 
-        public void Measure(Vector2 availableSize)
+        public void Measure(Size2 size)
         {
             if (!IsAttached || !IsMeasureDirty)
             {
                 return;
             }
+            var availableSize = size.ToVector2();
             var availableSizeWithoutMargin = availableSize - MarginWidthHeight;
             Vector2 maxSize = Vector2.Zero, minSize = Vector2.Zero;
             CalculateMinMax(ref minSize, ref maxSize);
@@ -314,7 +354,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             availableSizeWithoutMargin.X = Math.Max(minSize.X, Math.Min(availableSizeWithoutMargin.X, maxSize.X));
             availableSizeWithoutMargin.Y = Math.Max(minSize.Y, Math.Min(availableSizeWithoutMargin.Y, maxSize.Y));
 
-            var desiredSize = MeasureOverride(availableSizeWithoutMargin);
+            var desiredSize = MeasureOverride(availableSizeWithoutMargin.ToSize2()).ToVector2();
 
             var unclippedDesiredSize = desiredSize;
 
@@ -435,16 +475,16 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 arrangeSize.Y = calcedMaxHeight;
             }
 
-            var oldRenderSize = RenderSize;
-            var arrangeResultSize = ArrangeOverride(arrangeSize);
+            var oldRenderSize = RenderSize.ToVector2();
+            var arrangeResultSize = ArrangeOverride(arrangeSize.ToRectangleF()).ToVector2();
 
-            bool arrangeSizeChanged = arrangeResultSize != RenderSize;
+            bool arrangeSizeChanged = arrangeResultSize != oldRenderSize;
             if (arrangeSizeChanged)
             {
-                InvalidateVisual();
+                InvalidateAll();
             }
 
-            RenderSize = arrangeResultSize;
+            RenderSize = arrangeResultSize.ToSize2();
 
             var clippedArrangeResultSize = new Vector2(Math.Min(arrangeResultSize.X, maxSize.X), Math.Min(arrangeResultSize.Y, maxSize.Y));
             if (!ClipEnabled)
@@ -545,32 +585,32 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             if (IsTransformDirty)
             {
-                LayoutBound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.X - MarginWidthHeight.X, RenderSize.Y - MarginWidthHeight.Y);
-                ClipBound = new RectangleF(0, 0, RenderSize.X, RenderSize.Y);
+                LayoutBound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.Width - MarginWidthHeight.X, RenderSize.Height - MarginWidthHeight.Y);
+                ClipBound = new RectangleF(0, 0, RenderSize.Width, RenderSize.Height);
                 LayoutTranslate = Matrix3x2.Translation(LayoutOffsets.X, LayoutOffsets.Y);
                 IsTransformDirty = false;
             }
         }
 
-        protected virtual Vector2 ArrangeOverride(Vector2 finalSize)
+        protected virtual RectangleF ArrangeOverride(RectangleF finalSize)
         {
             foreach(var item in Items)
             {
-                item.Arrange(new RectangleF(0, 0,finalSize.X, finalSize.Y));
+                item.Arrange(finalSize);
             }
             return finalSize;
         }
 
-        protected virtual Vector2 MeasureOverride(Vector2 availableSize)
+        protected virtual Size2 MeasureOverride(Size2 availableSize)
         {
             var size = Size;
             if (float.IsInfinity(size.X))
             {
-                size.X = availableSize.X;
+                size.X = availableSize.Width;
             }
             if (float.IsInfinity(size.Y))
             {
-                size.Y = availableSize.Y;
+                size.Y = availableSize.Height;
             }
             foreach(var item in Items)
             {

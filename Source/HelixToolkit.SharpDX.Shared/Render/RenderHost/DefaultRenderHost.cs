@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 layoutUpdate2DTask = Task.Factory.StartNew(() => 
                 {
-                    d2dRoot.Measure(new Vector2((float)ActualWidth, (float)ActualHeight));
+                    d2dRoot.Measure(new Size2((int)ActualWidth, (int)ActualHeight));
                     d2dRoot.Arrange(new RectangleF(0, 0, (float)ActualWidth, (float)ActualHeight));
                 });
             }

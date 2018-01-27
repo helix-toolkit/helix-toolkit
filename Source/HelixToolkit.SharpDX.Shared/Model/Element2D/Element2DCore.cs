@@ -97,6 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 if(Set(ref modelMatrix, value))
                 {
                     RenderCore.LocalTransform = value;
+                    InvalidateVisual();
                 }
             }
             get { return modelMatrix; }
@@ -137,6 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 if(Set(ref totalTransform, value))
                 {
                     RenderCore.Transform = value;
+                    IsTransformDirty = true;
                     TransformChanged(ref value);
                     OnTransformChanged?.Invoke(this, value);
                 }
@@ -146,6 +148,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 return totalTransform;
             }
         }
+        /// <summary>
+        /// Gets or sets the transform matrix relative to its parent
+        /// </summary>
+        /// <value>
+        /// The relative matrix.
+        /// </value>
+        private Matrix3x2 RelativeMatrix { set; get; }
 
         public RectangleF LayoutBoundWithTransform
         {
@@ -167,7 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
             RenderHost = host;
             IsAttached = OnAttach(host);
-            InvalidateVisual();
+            InvalidateAll();
         }
 
         /// <summary>
@@ -199,7 +208,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         public virtual void Update(IRenderContext2D context)
         {
-            TotalModelMatrix = ModelMatrix * LayoutTranslate * ParentMatrix;
+            RelativeMatrix = Matrix3x2.Translation(-(RenderSize.Width * RenderTransformOriginInternal.X), -(RenderSize.Height * RenderTransformOriginInternal.Y))
+                * ModelMatrix * Matrix3x2.Translation((RenderSize.Width * RenderTransformOriginInternal.X), (RenderSize.Height * RenderTransformOriginInternal.Y))
+                * LayoutTranslate; 
+            TotalModelMatrix = RelativeMatrix * ParentMatrix;
+            IsTransformDirty = false;
             IsRenderable = CanRender(context);                        
         }
 
@@ -241,7 +254,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             Update(context);
             if (IsRenderable)
             {
-                EnsureBitmapCache(context, new Size2((int)RenderSize.X, (int)RenderSize.Y), Math.Max((int)context.ActualWidth, (int)context.ActualHeight));
+                EnsureBitmapCache(context, RenderSize, Math.Max((int)context.ActualWidth, (int)context.ActualHeight));
                 if (EnableBitmapCacheInternal && IsBitmapCacheValid)
                 {
                     RenderCore.UseBitmapCache = true;
@@ -252,12 +265,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                         Console.WriteLine("Redraw bitmap cache");
 #endif
                         context.PushRenderTarget(bitmapCache, true);
-                        context.DeviceContext.Transform = Matrix3x2.Scaling(bitmapCache.Size.Width / RenderSize.X, bitmapCache.Size.Height / RenderSize.Y);
+                        context.DeviceContext.Transform = Matrix3x2.Scaling(bitmapCache.Size.Width / RenderSize.Width, bitmapCache.Size.Height / RenderSize.Height);
                         OnRender(context);
                         context.PopRenderTarget();
                         IsVisualDirty = false;
                     }
-                    context.DeviceContext.Transform = ModelMatrix * LayoutTranslate;
+                    context.DeviceContext.Transform = RelativeMatrix;
                     context.DeviceContext.DrawBitmap(bitmapCache, 1, InterpolationMode.Linear);
                 }
                 else
