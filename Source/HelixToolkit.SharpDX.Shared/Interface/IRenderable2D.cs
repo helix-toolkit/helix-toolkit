@@ -138,10 +138,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context"></param>
         void Render(IRenderContext2D context);
 
-        void Measure(Size2 size);
+        void Measure(Size2F size);
         void Arrange(RectangleF rect);
-
-        //void Layout(Vector2 availableSize);
+        void InvalidateArrange();
+        void InvalidateMeasure();
+        void InvalidateVisual();
+        void InvalidateAll();
     }
 
     public interface IHitable2D

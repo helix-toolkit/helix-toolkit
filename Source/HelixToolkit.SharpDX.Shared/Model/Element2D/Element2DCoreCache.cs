@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <value>
         ///   <c>true</c> if [enable bitmap cache]; otherwise, <c>false</c>.
         /// </value>
-        internal bool EnableBitmapCacheInternal { set; get; } = true;
+        internal bool EnableBitmapCacheInternal { set; get; } = false;
         /// <summary>
         /// Gets or sets a value indicating whether this instance is bitmap cache valid.
         /// </summary>

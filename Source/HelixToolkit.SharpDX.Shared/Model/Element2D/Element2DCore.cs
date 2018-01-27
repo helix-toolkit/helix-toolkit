@@ -254,7 +254,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             Update(context);
             if (IsRenderable)
             {
-                EnsureBitmapCache(context, RenderSize, context.DeviceContext.MaximumBitmapSize);
+                EnsureBitmapCache(context, RenderSize.ToSize2(), context.DeviceContext.MaximumBitmapSize);
                 if (EnableBitmapCacheInternal && IsBitmapCacheValid)
                 {
                     RenderCore.UseBitmapCache = true;

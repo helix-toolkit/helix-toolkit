@@ -193,8 +193,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             get { return layoutOffset; }
         }
 
-        private Size2 renderSize = Size2.Zero;
-        public Size2 RenderSize
+        private Size2F renderSize = Size2F.Zero;
+        public Size2F RenderSize
         {
             get { return renderSize; }
             private set
@@ -247,7 +247,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             get { return RenderCore.LayoutBound; }
         }
 
-        protected void InvalidateMeasure()
+        public void InvalidateMeasure()
         {
             IsArrangeDirty = true;
             IsMeasureDirty = true;
@@ -267,7 +267,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
-        protected void InvalidateArrange()
+        public void InvalidateArrange()
         {
             IsArrangeDirty = true;
             TraverseUp(this, (p) =>
@@ -339,13 +339,16 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
+        private Size2F? previousMeasureSize;
+        private RectangleF? previousArrange;
 
-        public void Measure(Size2 size)
+        public void Measure(Size2F size)
         {
-            if (!IsAttached)
+            if (!IsAttached || VisibilityInternal == Visibility.Collapsed || (!IsMeasureDirty && previousMeasureSize != size))
             {
                 return;
             }
+            previousMeasureSize = size;
             var availableSize = size.ToVector2();
             var availableSizeWithoutMargin = availableSize - MarginWidthHeight;
             Vector2 maxSize = Vector2.Zero, minSize = Vector2.Zero;
@@ -354,7 +357,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             availableSizeWithoutMargin.X = Math.Max(minSize.X, Math.Min(availableSizeWithoutMargin.X, maxSize.X));
             availableSizeWithoutMargin.Y = Math.Max(minSize.Y, Math.Min(availableSizeWithoutMargin.Y, maxSize.Y));
 
-            var desiredSize = MeasureOverride(availableSizeWithoutMargin.ToSize2()).ToVector2();
+            var desiredSize = MeasureOverride(availableSizeWithoutMargin.ToSize2F()).ToVector2();
 
             var unclippedDesiredSize = desiredSize;
 
@@ -393,14 +396,30 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             {
                 UnclippedDesiredSize = new Vector2(-1, -1);
             }
-            DesiredSize = clippedDesiredSize;
-            IsMeasureDirty = false;
+            if (DesiredSize != clippedDesiredSize)
+            {
+                DesiredSize = clippedDesiredSize;
+                foreach (var item in Items)
+                {
+                    item.InvalidateMeasure();
+                }
+            }
+            else
+            {
+                IsMeasureDirty = false;
+            }
         }
 
         public void Arrange(RectangleF rect)
         {
-            if (!IsAttached)
-            { return; }
+            if (!IsAttached || VisibilityInternal == Visibility.Collapsed)
+            {
+                return;
+            }
+            if (IsMeasureDirty)
+            {
+                Measure(previousMeasureSize ?? rect.Size);
+            }
             bool ancestorDirty = false;
             TraverseUp(this, (parent) =>
             {
@@ -414,9 +433,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
             var rectWidthHeight = new Vector2(rect.Width, rect.Height);
 
-            if ((!IsArrangeDirty && !ancestorDirty) || rectWidthHeight.IsZero)
+            if ((!IsArrangeDirty && !ancestorDirty && previousArrange == rect) || rectWidthHeight.IsZero)
                 return;
-
+            previousArrange = rect;
             var arrangeSize = rectWidthHeight;
             
 
@@ -484,7 +503,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 InvalidateAll();
             }
 
-            RenderSize = arrangeResultSize.ToSize2();
+            RenderSize = arrangeResultSize.ToSize2F();
 
             var clippedArrangeResultSize = new Vector2(Math.Min(arrangeResultSize.X, maxSize.X), Math.Min(arrangeResultSize.Y, maxSize.Y));
             if (!ClipEnabled)
@@ -597,10 +616,19 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             return finalSize;
         }
 
-        protected virtual Size2 MeasureOverride(Size2 availableSize)
+        protected virtual Size2F MeasureOverride(Size2F availableSize)
         {
+            //if (float.IsInfinity(WidthInternal))
+            //{
+            //    WidthInternal = availableSize.Width;
+            //}
+            //if(float.IsInfinity(HeightInternal))
+            //{
+            //    HeightInternal = availableSize.Height;
+            //}
             foreach(var item in Items)
             {
+                //item.InvalidateMeasure();
                 item.Measure(availableSize);
             }
             return availableSize;

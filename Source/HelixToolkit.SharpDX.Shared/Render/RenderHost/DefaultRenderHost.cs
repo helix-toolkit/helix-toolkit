@@ -78,6 +78,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 renderer.UpdateNotRenderParallel(pendingRenderables);
             });
+            var d2dRoot = Viewport.D2DRenderables.FirstOrDefault();
+            if (d2dRoot != null)
+            {
+                layoutUpdate2DTask = Task.Factory.StartNew(() => 
+                {               
+                    d2dRoot.Measure(new Size2F((float)ActualWidth, (float)ActualHeight));
+                    d2dRoot.Arrange(new RectangleF(0, 0, (float)ActualWidth, (float)ActualHeight));
+                });
+            }
         }
 
         /// <summary>
@@ -111,7 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="time">The time.</param>
         protected override void OnRender2D(TimeSpan time)
         {
-            //layoutUpdate2DTask?.Wait();
+            layoutUpdate2DTask?.Wait();
             //pendingRenderCores2D.Clear();
             //pendingRenderCores2D.AddRange(renderer.UpdateSceneGraph2D(RenderContext2D, Viewport.D2DRenderables).Select(x=>x.RenderCore));
             var renderParameter2D = new RenderParameter2D() { RenderTarget = RenderBuffer.D2DTarget.D2DTarget };

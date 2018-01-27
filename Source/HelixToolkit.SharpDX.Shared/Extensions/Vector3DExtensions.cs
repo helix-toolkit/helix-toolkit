@@ -548,5 +548,25 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return new Vector2(v.Width, v.Height);
         }
+        /// <summary>
+        /// To the size f.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Size2F ToSizeF(this Size2 s)
+        {
+            return new Size2F(s.Width, s.Height);
+        }
+        /// <summary>
+        /// To the size2.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Size2 ToSize2(this Size2F s)
+        {
+            return new Size2((int)s.Width, (int)s.Height);
+        }
     }
 }

@@ -421,9 +421,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public void UpdateAndRender()
         {
-            var d2dRoot = Viewport.D2DRenderables.FirstOrDefault();
-            d2dRoot.Measure(new Size2((int)ActualWidth, (int)ActualHeight));
-            d2dRoot.Arrange(new RectangleF(0, 0, (float)ActualWidth, (float)ActualHeight));
             if (CanRender())
             {
                 IsBusy = true;
@@ -702,11 +699,21 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
             ActualWidth = width;
             ActualHeight = height;
+
             if (IsInitialized)
             {
                 StopRendering();
                 var texture = renderBuffer.Resize((int)ActualWidth, (int)ActualHeight);
                 OnNewRenderTargetTexture?.Invoke(this, texture);
+                if (Viewport != null)
+                {
+                    Console.WriteLine($"Width={ActualWidth}; Height={ActualHeight}");
+                    var overlay = Viewport.D2DRenderables.FirstOrDefault();
+                    if (overlay != null)
+                    {
+                        overlay.InvalidateAll();
+                    }
+                }
                 StartRendering();
             }
         }
