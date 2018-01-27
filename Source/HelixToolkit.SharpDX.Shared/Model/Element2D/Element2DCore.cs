@@ -265,14 +265,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                         Debug.WriteLine("Redraw bitmap cache");
 #endif
                         context.PushRenderTarget(bitmapCache, true);
-                        context.DeviceContext.Transform = Matrix3x2.Scaling(bitmapCache.Size.Width / RenderSize.Width, bitmapCache.Size.Height / RenderSize.Height);
+                        context.DeviceContext.Transform = Matrix3x2.Identity;
                         OnRender(context);
                         context.PopRenderTarget();
                         IsVisualDirty = false;
                     }
-                    context.DeviceContext.Transform = RelativeMatrix;
-                    var bound = new RectangleF(0, 0, RenderSize.Width, RenderSize.Height);
-                    context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), bound, InterpolationMode.Linear, CompositeMode.SourceOver);
+                    context.DeviceContext.Transform = RelativeMatrix;                                     
+                    context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), new RectangleF(0, 0, RenderSize.Width, RenderSize.Height), 
+                        InterpolationMode.Linear, CompositeMode.SourceOver);
                 }
                 else
                 {

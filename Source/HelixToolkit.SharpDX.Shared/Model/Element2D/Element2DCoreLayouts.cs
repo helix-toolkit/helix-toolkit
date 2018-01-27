@@ -604,7 +604,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             LayoutBound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.Width - MarginWidthHeight.X, RenderSize.Height - MarginWidthHeight.Y);
             ClipBound = new RectangleF(0, 0, RenderSize.Width, RenderSize.Height);
-            LayoutTranslate = Matrix3x2.Translation(LayoutOffsets.X, LayoutOffsets.Y);
+            LayoutTranslate = Matrix3x2.Translation((float)Math.Round(LayoutOffsets.X), (float)Math.Round(LayoutOffsets.Y));
         }
 
         protected virtual RectangleF ArrangeOverride(RectangleF finalSize)

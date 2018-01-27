@@ -6,6 +6,7 @@ using Media = System.Windows.Media;
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
+    using System.Diagnostics;
 
     public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     {
@@ -318,7 +319,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             if (!IsAttached) { return; }
             IsMouseOver = false;
 #if DEBUG
-            //Debug.WriteLine("Element2D_MouseLeave2D");
+            Debug.WriteLine("Element2D_MouseLeave2D");
 #endif
         }
 
@@ -327,7 +328,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             if (!IsAttached) { return; }
             IsMouseOver = true;
 #if DEBUG
-            //Debug.WriteLine("Element2D_MouseEnter2D");
+            Debug.WriteLine("Element2D_MouseEnter2D");
 #endif
         }
 
