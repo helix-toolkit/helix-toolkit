@@ -707,7 +707,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 OnNewRenderTargetTexture?.Invoke(this, texture);
                 if (Viewport != null)
                 {
-                    Console.WriteLine($"Width={ActualWidth}; Height={ActualHeight}");
                     var overlay = Viewport.D2DRenderables.FirstOrDefault();
                     if (overlay != null)
                     {
