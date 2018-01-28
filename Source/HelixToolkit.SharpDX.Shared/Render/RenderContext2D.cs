@@ -46,12 +46,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Pops the render target.
         /// </summary>
         void PopRenderTarget();
-
+        /// <summary>
+        /// Gets the last bitmap transform. 
+        /// If some of controls did not enable the bitmap cache, 
+        /// it needs to propagate the relative transform into its children if some children use the bitmap cache to draw onto the parent bitmap cache.
+        /// </summary>
+        /// <value>
+        /// The last bitmap transform.
+        /// </value>
         Matrix3x2 LastBitmapTransform { get; }
-
-        Matrix3x2 PushLastBitmapTransform(Matrix3x2 transform);
-
-        Matrix3x2 PopLastBitmapTransform();
+        /// <summary>
+        /// Pushes the last bitmap transform.
+        /// </summary>
+        /// <param name="transform">The transform.</param>
+        void PushLastBitmapTransform(Matrix3x2 transform);
+        /// <summary>
+        /// Pops the last bitmap transform.
+        /// </summary>
+        void PopLastBitmapTransform();
     }
     /// <summary>
     /// 
@@ -83,23 +95,26 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the last bitmap transform.
         /// </summary>
         /// <value>
-        /// The last bitmap transform.
+        /// The last bitmap transform.<see cref="IRenderContext2D.LastBitmapTransform"/>
         /// </value>
         public Matrix3x2 LastBitmapTransform { private set; get; } = Matrix3x2.Identity;
 
         private Stack<Matrix3x2> lastBitmapTransformStack = new Stack<Matrix3x2>();
-
-        public Matrix3x2 PushLastBitmapTransform(Matrix3x2 transform)
+        /// <summary>
+        /// Pushes the last bitmap transform.
+        /// </summary>
+        /// <param name="transform">The transform.</param>
+        public void PushLastBitmapTransform(Matrix3x2 transform)
         {
             lastBitmapTransformStack.Push(LastBitmapTransform);
-            LastBitmapTransform *= transform;
-            return LastBitmapTransform;
+            LastBitmapTransform = transform;
         }
-
-        public Matrix3x2 PopLastBitmapTransform()
+        /// <summary>
+        /// Pops the last bitmap transform.
+        /// </summary>
+        public void PopLastBitmapTransform()
         {
             LastBitmapTransform = lastBitmapTransformStack.Pop();
-            return LastBitmapTransform;
         }
         /// <summary>
         /// The render host

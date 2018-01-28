@@ -267,7 +267,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
                         context.PushRenderTarget(bitmapCache, true);
                         context.DeviceContext.Transform = Matrix3x2.Identity;
+                        context.PushLastBitmapTransform(Matrix3x2.Identity);
                         OnRender(context);
+                        context.PopLastBitmapTransform();
                         context.PopRenderTarget();
                         IsVisualDirty = false;
                     }
@@ -282,7 +284,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 else if(context.DeviceContext.Target != null)
                 {
                     RenderCore.UseBitmapCache = false;
-                    context.PushLastBitmapTransform(RelativeMatrix);
+                    context.PushLastBitmapTransform(context.LastBitmapTransform * RelativeMatrix);
                     OnRender(context);
                     context.PopLastBitmapTransform();
                 }
