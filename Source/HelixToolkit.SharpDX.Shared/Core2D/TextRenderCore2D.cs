@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using D2D = SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
+using SharpDX;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Core2D
@@ -11,16 +12,35 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-    public class TextRenderable : RenderCore2DBase
+    public class TextRenderCore2D : RenderCore2DBase
     {
-        public string Text { set; get; } = "Text";
+        private string text = "";
+        public string Text
+        {
+            set
+            {
+                if(Set(ref text, value))
+                {
+                    textLayoutDirty = true;
+                }
+            }
+            get
+            {
+                return text;
+            }
+        }
 
         private D2D.Brush foreground = null;
         public D2D.Brush Foreground
         {
             set
             {
-                SetAffectsRender(ref foreground, value);
+                var old = foreground;
+                if(SetAffectsRender(ref foreground, value))
+                {
+                    RemoveAndDispose(ref old);
+                    Collect(value);
+                }
             }
             get
             {
@@ -88,6 +108,48 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         private Factory textFactory;
         private TextFormat textFormat;
 
+        public TextMetrics Metrices
+        {
+            get
+            {
+                UpdateTextLayout();
+                return textLayout.Metrics;
+            }
+        }
+
+        private TextLayout textLayout;
+
+        protected bool textLayoutDirty = true;
+
+        private float maxWidth = 0;
+        public float MaxWidth
+        {
+            set
+            {
+                if(Set(ref maxWidth, value))
+                {
+                    textLayoutDirty = true;
+                }
+            }
+            get
+            {
+                return maxWidth;
+            }
+        }
+
+        private float maxHeight = 0;
+        public float MaxHeight
+        {
+            set
+            {
+                if(Set(ref maxHeight, value))
+                {
+                    textLayoutDirty = true;
+                }
+            }
+            get { return maxHeight; }
+        }
+
         protected override bool OnAttach(IRenderHost host)
         {
             if (base.OnAttach(host))
@@ -106,6 +168,17 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             RemoveAndDispose(ref textFormat);
             textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize));
+            textLayoutDirty = true;
+        }
+
+        private void UpdateTextLayout()
+        {
+            if (textLayoutDirty)
+            {
+                RemoveAndDispose(ref textLayout);
+                textLayout = Collect(new TextLayout(textFactory, Text, textFormat, MaxWidth, MaxHeight));
+                textLayoutDirty = false;
+            }
         }
 
         protected override bool CanRender(IRenderContext2D context)
@@ -115,8 +188,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         protected override void OnRender(IRenderContext2D context)
         {
-            context.DeviceContext.DrawText(Text, textFormat,
-               LayoutBound, Foreground, DrawingOptions);
+            //context.DeviceContext.DrawText(Text, textFormat,
+            //   LayoutBound, Foreground, DrawingOptions);
+            UpdateTextLayout();
+            context.DeviceContext.DrawTextLayout(new Vector2(LayoutBound.Left, LayoutBound.Top), textLayout, Foreground, DrawingOptions);
         }
     }
 }

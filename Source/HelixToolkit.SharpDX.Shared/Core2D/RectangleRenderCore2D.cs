@@ -9,7 +9,7 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-    public class RectangleRenderable : ShapeRenderable2DBase
+    public class RectangleRenderCore2D : ShapeRenderCore2DBase
     {
         protected override void OnRender(IRenderContext2D context)
         {

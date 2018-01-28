@@ -113,6 +113,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 return isMouseOver;
             }
         }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is attached.
         /// </summary>

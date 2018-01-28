@@ -10,9 +10,9 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     using Core2D;
     public class RectangleModel2D : ShapeModel2D
     {
-        protected override ShapeRenderable2DBase CreateShapeRenderCore()
+        protected override ShapeRenderCore2DBase CreateShapeRenderCore()
         {
-            return new RectangleRenderable();
+            return new RectangleRenderCore2D();
         }
 
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)

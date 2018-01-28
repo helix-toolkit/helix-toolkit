@@ -213,7 +213,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         private bool strokeChanged = true;
         private bool strokeStyleChanged = true;
 
-        protected ShapeRenderable2DBase shapeRenderable;
+        protected ShapeRenderCore2DBase shapeRenderable;
 
 
         protected override IRenderCore2D CreateRenderCore()
@@ -223,7 +223,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             return shapeRenderable;
         }
 
-        protected abstract ShapeRenderable2DBase CreateShapeRenderCore();
+        protected abstract ShapeRenderCore2DBase CreateShapeRenderCore();
 
         protected virtual void AssignProperties()
         {

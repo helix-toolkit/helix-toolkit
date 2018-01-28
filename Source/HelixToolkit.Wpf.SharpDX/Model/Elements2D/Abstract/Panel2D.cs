@@ -3,13 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Windows;
 using System.Windows.Markup;
+using System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     [ContentProperty("Children")]
     public abstract class Panel2D : Element2D
     {
+        public Brush Background
+        {
+            get { return (Brush)GetValue(BackgroundProperty); }
+            set { SetValue(BackgroundProperty, value); }
+        }
+
+        public static readonly DependencyProperty BackgroundProperty =
+            DependencyProperty.Register("Background", typeof(Brush), typeof(Panel2D), new PropertyMetadata(new SolidColorBrush(Colors.Transparent)));
+
+
         public override IEnumerable<IRenderable2D> Items
         {
             get

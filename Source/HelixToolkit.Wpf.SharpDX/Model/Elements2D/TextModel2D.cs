@@ -13,7 +13,10 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     using Core2D;
     using global::SharpDX;
     using SharpDX;
+    using System.ComponentModel;
+    using System.Windows.Markup;
 
+    [ContentProperty("Text")]
     public class TextModel2D : Element2D
     {
         public static readonly string DefaultFont = "Arial";
@@ -145,12 +148,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
 
-        private TextRenderable textRenderable;
+        private TextRenderCore2D textRenderable;
         protected bool foregroundChanged = true;
 
         protected override IRenderCore2D CreateRenderCore()
         {
-            textRenderable = new TextRenderable();
+            textRenderable = new TextRenderCore2D();
             AssignProperties();
             return textRenderable;
         }
@@ -193,6 +196,22 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             {
                 return false;
             }
+        }
+
+        protected override Size2F MeasureOverride(Size2F availableSize)
+        {
+            textRenderable.MaxWidth = availableSize.Width;
+            textRenderable.MaxHeight = availableSize.Height;
+            var metrices = textRenderable.Metrices;
+            return new Size2F(metrices.WidthIncludingTrailingWhitespace, metrices.Height);
+        }
+
+        protected override RectangleF ArrangeOverride(RectangleF finalSize)
+        {
+            textRenderable.MaxWidth = finalSize.Width;
+            textRenderable.MaxHeight = finalSize.Height;
+            var metrices = textRenderable.Metrices;
+            return finalSize;
         }
     }
 }

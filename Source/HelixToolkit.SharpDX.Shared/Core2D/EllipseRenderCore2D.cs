@@ -10,7 +10,7 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-    public class EllipseRenderable : ShapeRenderable2DBase
+    public class EllipseRenderCore2D : ShapeRenderCore2DBase
     {
         private D2D.Ellipse ellipse = new D2D.Ellipse();
 
