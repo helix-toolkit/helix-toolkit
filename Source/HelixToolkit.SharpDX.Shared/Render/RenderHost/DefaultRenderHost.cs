@@ -31,15 +31,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected readonly List<IRenderCore> pendingRenderCores = new List<IRenderCore>();
 
-        /// <summary>
-        /// The pending render cores
-        /// </summary>
-        protected readonly List<IRenderCore2D> pendingRenderCores2D = new List<IRenderCore2D>();
-
 
         private Task asyncTask;
-
-        private Task layoutUpdate2DTask;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
@@ -80,12 +73,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             });
             var d2dRoot = Viewport.D2DRenderables.FirstOrDefault();
             if (d2dRoot != null)
-            {
-                //layoutUpdate2DTask = Task.Factory.StartNew(() => 
-                //{               
-                    d2dRoot.Measure(new Size2F((float)ActualWidth, (float)ActualHeight));
-                    d2dRoot.Arrange(new RectangleF(0, 0, (float)ActualWidth, (float)ActualHeight));
-                //});
+            {           
+                d2dRoot.Measure(new Size2F((float)ActualWidth, (float)ActualHeight));
+                d2dRoot.Arrange(new RectangleF(0, 0, (float)ActualWidth, (float)ActualHeight));
             }
         }
 
@@ -120,11 +110,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="time">The time.</param>
         protected override void OnRender2D(TimeSpan time)
         {
-            layoutUpdate2DTask?.Wait();
-            //pendingRenderCores2D.Clear();
-            //pendingRenderCores2D.AddRange(renderer.UpdateSceneGraph2D(RenderContext2D, Viewport.D2DRenderables).Select(x=>x.RenderCore));
-            var renderParameter2D = new RenderParameter2D() { RenderTarget = RenderBuffer.D2DTarget.D2DTarget };
-            renderer.RenderScene2D(RenderContext2D, Viewport.D2DRenderables, ref renderParameter2D);
+            //Render to bitmap cache
+            foreach (var item in Viewport.D2DRenderables)
+            {
+                item.Render(RenderContext2D);
+            }
+            //Draw bitmap cache to render target
+            RenderContext2D.PushRenderTarget(D2DTarget.D2DTarget, false);
+            foreach(var item in Viewport.D2DRenderables)
+            {
+                item.RenderBitmapCache(RenderContext2D);
+            }
+            RenderContext2D.PopRenderTarget();
         }
     }
 }

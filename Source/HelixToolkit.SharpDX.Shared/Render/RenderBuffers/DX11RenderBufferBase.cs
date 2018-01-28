@@ -293,24 +293,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             return true;
         }
-        /// <summary>
-        /// Begins the 2d drawing.
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool BeginDraw2D(IRenderContext2D context)
-        {
-            context.PushRenderTarget(D2DTarget.D2DTarget, false);
-            return true;
-        }
-        /// <summary>
-        /// Ends the 2D drawing.
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool EndDraw2D(IRenderContext2D context)
-        {
-            context.PopRenderTarget();
-            return true;
-        }
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>

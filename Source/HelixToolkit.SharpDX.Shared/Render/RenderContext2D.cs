@@ -35,6 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The actual height.
         /// </value>
         double ActualHeight { get; }
+
         /// <summary>
         /// Pushes the render target.
         /// </summary>
@@ -45,6 +46,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Pops the render target.
         /// </summary>
         void PopRenderTarget();
+
+        Matrix3x2 LastBitmapTransform { get; }
+
+        Matrix3x2 PushLastBitmapTransform(Matrix3x2 transform);
+
+        Matrix3x2 PopLastBitmapTransform();
     }
     /// <summary>
     /// 
@@ -72,8 +79,35 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The device context.
         /// </value>
         public DeviceContext DeviceContext { private set; get; }
+        /// <summary>
+        /// Gets or sets the last bitmap transform.
+        /// </summary>
+        /// <value>
+        /// The last bitmap transform.
+        /// </value>
+        public Matrix3x2 LastBitmapTransform { private set; get; } = Matrix3x2.Identity;
 
+        private Stack<Matrix3x2> lastBitmapTransformStack = new Stack<Matrix3x2>();
+
+        public Matrix3x2 PushLastBitmapTransform(Matrix3x2 transform)
+        {
+            lastBitmapTransformStack.Push(LastBitmapTransform);
+            LastBitmapTransform *= transform;
+            return LastBitmapTransform;
+        }
+
+        public Matrix3x2 PopLastBitmapTransform()
+        {
+            LastBitmapTransform = lastBitmapTransformStack.Pop();
+            return LastBitmapTransform;
+        }
+        /// <summary>
+        /// The render host
+        /// </summary>
         private IRenderHost renderHost;
+        /// <summary>
+        /// The target stack
+        /// </summary>
         private readonly Stack<BitmapProxy> targetStack = new Stack<BitmapProxy>();
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderContext2D"/> class.

@@ -434,18 +434,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 RenderContext.WorldMatrix = viewport.WorldMatrix;              
                 PreRender();
                 try
-                {
-                    
+                {                    
                     if (renderBuffer.BeginDraw())
                     {
                         OnRender(t0);
                         renderBuffer.EndDraw();
                     }
-                    if (renderBuffer.BeginDraw2D(RenderContext2D))
-                    {
-                        OnRender2D(t0);                        
-                        renderBuffer.EndDraw2D(RenderContext2D);
-                    }
+                    OnRender2D(t0);                        
                     renderBuffer.Present();
                 }
                 catch (SharpDXException ex)

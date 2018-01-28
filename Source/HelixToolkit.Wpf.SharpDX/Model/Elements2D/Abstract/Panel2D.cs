@@ -26,6 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public Panel2D()
         {
             Children.CollectionChanged += Items_CollectionChanged;
+            EnableBitmapCache = false;
         }
 
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -95,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
             hitResult = null;
-            if (LayoutBoundWithTransform.Contains(mousePoint))
+            //if (LayoutBoundWithTransform.Contains(mousePoint))
             {
                 foreach (var item in Items.Reverse())
                 {
@@ -107,25 +108,5 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
             return false;
         }
-
-        //protected override Vector2 MeasureOverride(Vector2 availableSizeWithoutMargins)
-        //{
-        //    var requiredSize = DesiredSize;
-        //    foreach (var ctl in Items)
-        //    {
-        //        ctl.Measure(availableSizeWithoutMargins);
-        //    }
-        //    return requiredSize;
-        //}
-
-        //protected override Vector2 ArrangeOverride(Vector2 finalSize)
-        //{
-        //    foreach (var ctl in Items)
-        //    {
-        //        ctl.Arrange(new RectangleF(0,0,finalSize.X, finalSize.Y));
-        //    }
-
-        //    return finalSize;
-        //}
     }
 }

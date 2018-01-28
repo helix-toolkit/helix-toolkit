@@ -792,17 +792,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     (d as Viewport3DX).InvalidateRender();
                 }));
 
-        public static readonly DependencyProperty Overlay2DProperty
-            = DependencyProperty.Register("Overlay2D", typeof(Overlay), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
+        public static readonly DependencyProperty Content2DProperty
+            = DependencyProperty.Register("Content2D", typeof(Element2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
             {
-                if (e.OldValue != null)
-                {
-                    (d as Viewport3DX).RemoveLogicalChild(e.OldValue);
-                }
-                if (e.NewValue is Overlay overlay)
-                {
-                    (d as Viewport3DX).AddLogicalChild(overlay);
-                }
+                 (d as Viewport3DX).overlay2D.Content2D = (Element2D)e.NewValue;
             }));
         /// <summary>
         /// Background Color
@@ -2522,7 +2515,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private global::SharpDX.Matrix worldMatrixInternal = global::SharpDX.Matrix.Identity;
-
+        /// <summary>
+        /// Gets or sets the world matrix.
+        /// </summary>
+        /// <value>
+        /// The world matrix.
+        /// </value>
         public global::SharpDX.Matrix WorldMatrix
         {
             set
@@ -2534,16 +2532,21 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (global::SharpDX.Matrix)GetValue(WorldMatrixProperty);
             }
         }
-
-        public Overlay Overlay2D
+        /// <summary>
+        /// Gets or sets the content2d.
+        /// </summary>
+        /// <value>
+        /// The content2 d.
+        /// </value>
+        public Element2D Content2D
         {
             get
             {
-                return (Overlay)GetValue(Overlay2DProperty);
+                return (Element2D)GetValue(Content2DProperty);
             }
             set
             {
-                SetValue(Overlay2DProperty, value);
+                SetValue(Content2DProperty, value);
             }
         }
     }

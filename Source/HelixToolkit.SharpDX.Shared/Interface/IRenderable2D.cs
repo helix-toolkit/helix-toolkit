@@ -137,6 +137,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="context"></param>
         void Render(IRenderContext2D context);
+        /// <summary>
+        /// Renders the bitmap cache to render target. If bitmap cache is disabled, nothing will be rendered
+        /// </summary>
+        /// <param name="context">The context.</param>
+        void RenderBitmapCache(IRenderContext2D context);
 
         void Measure(Size2F size);
         void Arrange(RectangleF rect);

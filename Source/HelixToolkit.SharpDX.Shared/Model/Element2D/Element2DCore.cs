@@ -270,15 +270,35 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                         context.PopRenderTarget();
                         IsVisualDirty = false;
                     }
-                    context.DeviceContext.Transform = RelativeMatrix;                                     
-                    context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), new RectangleF(0, 0, RenderSize.Width, RenderSize.Height), 
-                        InterpolationMode.Linear, CompositeMode.SourceOver);
+                    if (context.DeviceContext.Target != null)
+                    {
+                        context.DeviceContext.Transform = context.LastBitmapTransform * RelativeMatrix;                                     
+                        context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), new RectangleF(0, 0, RenderSize.Width, RenderSize.Height), 
+                            InterpolationMode.Linear, CompositeMode.SourceOver);
+                    }
+                    
                 }
-                else
+                else if(context.DeviceContext.Target != null)
                 {
                     RenderCore.UseBitmapCache = false;
+                    context.PushLastBitmapTransform(RelativeMatrix);
                     OnRender(context);
+                    context.PopLastBitmapTransform();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Renders the bitmap cache to a render target only.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        public void RenderBitmapCache(IRenderContext2D context)
+        {
+            if(IsRenderable && EnableBitmapCacheInternal && IsBitmapCacheValid && !IsVisualDirty && context.DeviceContext.Target != null)
+            {
+                context.DeviceContext.Transform = RelativeMatrix;
+                context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), new RectangleF(0, 0, RenderSize.Width, RenderSize.Height),
+                    InterpolationMode.Linear, CompositeMode.SourceOver);
             }
         }
 
