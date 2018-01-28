@@ -20,9 +20,20 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     public abstract partial class Element2DCore
 #endif
     {
-        #region layout management
+        #region layout management        
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is measure dirty.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is measure dirty; otherwise, <c>false</c>.
+        /// </value>
         public bool IsMeasureDirty { protected set; get; } = true;
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is arrange dirty.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is arrange dirty; otherwise, <c>false</c>.
+        /// </value>
         public bool IsArrangeDirty { protected set; get; } = true;
 
         internal bool IsTransformDirty { set; get; } = true;

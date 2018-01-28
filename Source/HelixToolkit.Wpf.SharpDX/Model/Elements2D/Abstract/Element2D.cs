@@ -350,6 +350,27 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             this.MouseLeave2D -= Element2D_MouseLeave2D;
             OnDetach();
         }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            var pm = e.Property.DefaultMetadata;
+            if(pm is FrameworkPropertyMetadata fm)
+            {
+                if (fm.AffectsMeasure)
+                {
+                    InvalidateMeasure();
+                }
+                else if (fm.AffectsArrange)
+                {
+                    InvalidateArrange();
+                }
+                if (fm.AffectsRender)
+                {
+                    InvalidateVisual();
+                }
+            }
+        }
     }
 
     public class Mouse2DEventArgs : RoutedEventArgs

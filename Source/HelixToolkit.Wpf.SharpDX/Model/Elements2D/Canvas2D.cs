@@ -6,47 +6,169 @@
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Windows;
-    using System.Windows.Markup;
-    using System.Linq;
-    using System.Collections;
     using Core2D;
-    using System;
-    using SharpDX;
     using global::SharpDX;
+    using System.Windows;
 
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement2DCollection 
     /// </summary>
     public class Canvas2D : Panel2D
     {
-        #region Attached Properties
-        //public static readonly DependencyProperty LeftProperty = DependencyProperty.RegisterAttached("Left", typeof(double), typeof(Canvas2D),
-        //    new PropertyMetadata(0.0, (d,e)=> { (d as Element2D).Position = new System.Windows.Point((double)e.NewValue, (d as Element2D).Position.Y); }));
+        #region Attached Properties        
+        /// <summary>
+        /// The left property
+        /// </summary>
+        public static readonly DependencyProperty LeftProperty = DependencyProperty.RegisterAttached("Left", typeof(double), typeof(Canvas2D),
+            new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        /// <summary>
+        /// Sets the left.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="value">The value.</param>
+        public static void SetLeft(Element2DCore element, double value)
+        {
+            element.SetValue(LeftProperty, value);
+        }
+        /// <summary>
+        /// Gets the left.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        public static double GetLeft(Element2DCore element)
+        {
+            return (double)element.GetValue(LeftProperty);
+        }
+        /// <summary>
+        /// The top property
+        /// </summary>
+        public static readonly DependencyProperty TopProperty = DependencyProperty.RegisterAttached("Top", typeof(double), typeof(Canvas2D),
+            new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        /// <summary>
+        /// Sets the top.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="value">The value.</param>
+        public static void SetTop(Element2DCore element, double value)
+        {
+            element.SetValue(TopProperty, value);
+        }
+        /// <summary>
+        /// Gets the top.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        public static double GetTop(Element2DCore element)
+        {
+            return (double)element.GetValue(TopProperty);
+        }
+        /// <summary>
+        /// The right property
+        /// </summary>
+        public static readonly DependencyProperty RightProperty = DependencyProperty.RegisterAttached("Right", typeof(double), typeof(Canvas2D),
+            new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        /// <summary>
+        /// Sets the right.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="value">The value.</param>
+        public static void SetRight(Element2DCore element, double value)
+        {
+            element.SetValue(RightProperty, value);
+        }
+        /// <summary>
+        /// Gets the right.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        public static double GetRight(Element2DCore element)
+        {
+            return (double)element.GetValue(RightProperty);
+        }
+        /// <summary>
+        /// The bottom property
+        /// </summary>
+        public static readonly DependencyProperty BottomProperty = DependencyProperty.RegisterAttached("Bottom", typeof(double), typeof(Canvas2D),
+            new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        /// <summary>
+        /// Sets the bottom.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="value">The value.</param>
+        public static void SetBottom(Element2DCore element, double value)
+        {
+            element.SetValue(BottomProperty, value);
+        }
+        /// <summary>
+        /// Gets the bottom.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        public static double GetBottom(Element2DCore element)
+        {
+            return (double)element.GetValue(BottomProperty);
+        }
+        #endregion        
+        /// <summary>
+        /// Measures the override.
+        /// </summary>
+        /// <param name="availableSize">Size of the available.</param>
+        /// <returns></returns>
+        protected override Size2F MeasureOverride(Size2F availableSize)
+        {
+            var childConstraint = new Size2F(float.PositiveInfinity, float.PositiveInfinity);
+            foreach(var child in Items)
+            {
+                child.Measure(childConstraint);
+            }
+            return new Size2F();
+        }
+        /// <summary>
+        /// Arranges the override.
+        /// </summary>
+        /// <param name="finalSize">The final size.</param>
+        /// <returns></returns>
+        protected override RectangleF ArrangeOverride(RectangleF finalSize)
+        {
+            foreach(var child in Items)
+            {
+                if(child is Element2DCore c)
+                {
+                    float xPos = 0;
+                    float yPos = 0;
+                    var left = GetLeft(c);
+                    var desired = c.DesiredSize;
+                    if(left != double.PositiveInfinity)
+                    {
+                        xPos = (float)left;
+                    }
+                    else
+                    {
+                        var right = GetRight(c);
+                        if (right != double.PositiveInfinity)
+                        {
+                            xPos = finalSize.Width - desired.X - (float)right;
+                        }
+                    }
 
-        //public static void SetLeft(Element2D element, double value)
-        //{
-        //    element.SetValue(LeftProperty, value);
-        //}
+                    var top = GetTop(c);
+                    if (top != double.PositiveInfinity)
+                    {
+                        yPos = (float)top;
+                    }
+                    else
+                    {
+                        var bottom = GetBottom(c);
+                        if (bottom != double.PositiveInfinity)
+                        {
+                            yPos = finalSize.Height - desired.Y - (float)bottom;
+                        }
+                    }
 
-        //public static double GetLeft(Element2D element)
-        //{
-        //    return (double)element.GetValue(LeftProperty);
-        //}
-
-        //public static readonly DependencyProperty TopProperty = DependencyProperty.RegisterAttached("Top", typeof(double), typeof(Canvas2D),
-        //    new PropertyMetadata(0.0, (d, e) => { (d as Element2D).Position = new System.Windows.Point((d as Element2D).Position.X, (double)e.NewValue); }));
-        //public static void SetTop(Element2D element, double value)
-        //{
-        //    element.SetValue(TopProperty, value);
-        //}
-
-        //public static double GetTop(Element2D element)
-        //{
-        //    return (double)element.GetValue(TopProperty);
-        //}
-        #endregion
+                    c.Arrange(new RectangleF(xPos, yPos, desired.X + xPos, desired.Y + yPos));
+                }
+            }
+            return finalSize;
+        }
     }
 }

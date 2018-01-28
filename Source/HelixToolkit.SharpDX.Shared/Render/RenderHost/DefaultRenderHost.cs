@@ -81,11 +81,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             var d2dRoot = Viewport.D2DRenderables.FirstOrDefault();
             if (d2dRoot != null)
             {
-                layoutUpdate2DTask = Task.Factory.StartNew(() => 
-                {               
+                //layoutUpdate2DTask = Task.Factory.StartNew(() => 
+                //{               
                     d2dRoot.Measure(new Size2F((float)ActualWidth, (float)ActualHeight));
                     d2dRoot.Arrange(new RectangleF(0, 0, (float)ActualWidth, (float)ActualHeight));
-                });
+                //});
             }
         }
 
