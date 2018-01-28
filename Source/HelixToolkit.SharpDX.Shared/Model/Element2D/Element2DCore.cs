@@ -139,7 +139,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 {
                     RenderCore.Transform = value;
                     IsTransformDirty = true;
-                    LayoutBoundWithTransform = LayoutBound.Translate(value);
+                    LayoutBoundWithTransform = LayoutBound.Translate(value.TranslationVector);
                     foreach (var item in Items)
                     {
                         item.ParentMatrix = totalTransform;
