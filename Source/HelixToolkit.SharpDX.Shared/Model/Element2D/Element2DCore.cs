@@ -110,8 +110,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             set
             {
                 if(Set(ref layoutTranslate, value))
-                {
-                    LayoutBoundWithTransform = LayoutBound.Translate(value);
+                {                    
                     InvalidateRender();
                 }
             }
@@ -140,6 +139,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 {
                     RenderCore.Transform = value;
                     IsTransformDirty = true;
+                    LayoutBoundWithTransform = LayoutBound.Translate(value);
+                    foreach (var item in Items)
+                    {
+                        item.ParentMatrix = totalTransform;
+                    }
                     TransformChanged(ref value);
                     OnTransformChanged?.Invoke(this, value);
                 }
@@ -224,10 +228,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <param name="totalTransform">The total transform.</param>
         protected virtual void TransformChanged(ref Matrix3x2 totalTransform)
         {
-            foreach (var item in Items)
-            {
-                item.ParentMatrix = totalTransform;
-            }
+
         }
         /// <summary>
         /// Occurs when [on transform changed].

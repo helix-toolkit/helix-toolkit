@@ -11,6 +11,7 @@ using D2D = SharpDX.Direct2D1;
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
+    using global::SharpDX;
     using SharpDX;
 
     public class TextModel2D : Element2D
@@ -180,10 +181,18 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             base.OnDetach();
         }
 
-        protected override bool OnHitTest(ref global::SharpDX.Vector2 mousePoint, out HitTest2DResult hitResult)
+        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
             hitResult = null;
-            return false;
+            if (LayoutBoundWithTransform.Contains(mousePoint))
+            {
+                hitResult = new HitTest2DResult(this);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

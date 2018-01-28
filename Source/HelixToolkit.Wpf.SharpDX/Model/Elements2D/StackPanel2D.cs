@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using HelixToolkit.Wpf.SharpDX.Core2D;
 using SharpDX;
+using System.Linq;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
@@ -100,6 +97,23 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
             
             return totalSize;
+        }
+
+        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
+        {
+            hitResult = null;
+            if (!LayoutBoundWithTransform.Contains(mousePoint))
+            {
+                return false;
+            }
+            foreach (var item in Items.Reverse())
+            {
+                if (item is IHitable2D && (item as IHitable2D).HitTest(mousePoint, out hitResult))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
