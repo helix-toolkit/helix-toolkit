@@ -185,6 +185,7 @@
     <Compile Include="Model\Elements2D\Interfaces.cs" />
     <Compile Include="Model\Elements2D\Overlay.cs" />
     <Compile Include="Model\Elements2D\RectangleModel2D.cs" />
+    <Compile Include="Model\Elements2D\StackPanel2D.cs" />
     <Compile Include="Model\Elements2D\TextModel2D.cs" />
     <Compile Include="Model\Elements2D\Abstract\Element2D.cs" />
     <Compile Include="Model\Elements2D\Canvas2D.cs" />
