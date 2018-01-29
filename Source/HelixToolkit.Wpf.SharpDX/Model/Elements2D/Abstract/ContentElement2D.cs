@@ -172,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             {
                 backgroundChanged = true;
                 contentInternal?.Attach(host);
-                if (contentInternal.Parent == null)
+                if (contentInternal != null && contentInternal.Parent == null)
                 {
                     this.AddLogicalChild(contentInternal);
                 }
@@ -187,7 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected override void OnDetach()
         {
             contentInternal?.Detach();
-            if (contentInternal.Parent == this)
+            if (contentInternal != null && contentInternal.Parent == this)
             {
                 this.RemoveLogicalChild(contentInternal);
             }
@@ -204,17 +204,14 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
 
+        protected override bool CanHitTest()
+        {
+            return base.CanHitTest() && contentInternal != null;
+        }
+
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
-            if (contentInternal != null)
-            {
-                return contentInternal.HitTest(mousePoint, out hitResult);
-            }
-            else
-            {
-                hitResult = null;
-                return false;
-            }
+            return contentInternal.HitTest(mousePoint, out hitResult);
         }
 
         protected override Size2F MeasureOverride(Size2F availableSize)
