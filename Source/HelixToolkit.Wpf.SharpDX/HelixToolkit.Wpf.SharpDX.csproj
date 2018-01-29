@@ -179,7 +179,9 @@
     <Compile Include="Model\Elements2D\Abstract\ContentElement2D.cs" />
     <Compile Include="Model\Elements2D\Abstract\Panel2D.cs" />
     <Compile Include="Model\Elements2D\Abstract\ShapeModel2D.cs" />
+    <Compile Include="Model\Elements2D\Border2D.cs" />
     <Compile Include="Model\Elements2D\Button2D.cs" />
+    <Compile Include="Model\Elements2D\ContentPresenter2D.cs" />
     <Compile Include="Model\Elements2D\EllipseModel2D.cs" />
     <Compile Include="Model\Elements2D\Grid2D.cs" />
     <Compile Include="Model\Elements2D\Interfaces.cs" />

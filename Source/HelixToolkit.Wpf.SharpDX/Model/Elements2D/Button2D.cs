@@ -14,16 +14,16 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             Stroke = SystemColors.ActiveBorderBrush;
         }
 
-        //protected override void OnMouseOverChanged(bool newValue, bool oldValue)
-        //{
-        //    if (newValue)
-        //    {
-        //        Background = SystemColors.HighlightBrush;
-        //    }
-        //    else
-        //    {
-        //        Background = SystemColors.ControlBrush;
-        //    }
-        //}
+        protected override void OnMouseOverChanged(bool newValue, bool oldValue)
+        {
+            if (newValue)
+            {
+                Background = SystemColors.HighlightBrush;
+            }
+            else
+            {
+                Background = SystemColors.ControlBrush;
+            }
+        }
     }
 }
