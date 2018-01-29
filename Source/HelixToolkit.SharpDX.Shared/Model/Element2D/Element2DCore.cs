@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 #if DEBUG
 //#define DEBUGDRAWING
+//#define DISABLEBITMAPCACHE
 #endif
 using SharpDX;
 using System;
@@ -255,7 +256,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             Update(context);
             if (IsRenderable)
             {
+#if DISABLEBITMAPCACHE
+                IsBitmapCacheValid = false;
+#else
                 EnsureBitmapCache(context, RenderSize.ToSize2(), context.DeviceContext.MaximumBitmapSize);
+#endif
                 if (EnableBitmapCacheInternal && IsBitmapCacheValid)
                 {
                     if (IsVisualDirty)
@@ -272,7 +277,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                         context.PopRenderTarget();
                         IsVisualDirty = false;
                     }
-                    if (context.DeviceContext.Target != null)
+                    if (context.HasTarget)
                     {
                         context.DeviceContext.Transform = context.RelativeTransform * RelativeMatrix;                                     
                         context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), new RectangleF(0, 0, RenderSize.Width, RenderSize.Height), 
@@ -280,7 +285,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                     }
                     
                 }
-                else if(context.DeviceContext.Target != null)
+                else if(context.HasTarget)
                 {
                     context.PushRelativeTransform(context.RelativeTransform * RelativeMatrix);
                     RenderCore.Transform = context.RelativeTransform;
@@ -296,7 +301,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <param name="context">The context.</param>
         public void RenderBitmapCache(IRenderContext2D context)
         {
-            if(IsRenderable && EnableBitmapCacheInternal && IsBitmapCacheValid && !IsVisualDirty && context.DeviceContext.Target != null)
+            if(IsRenderable && EnableBitmapCacheInternal && IsBitmapCacheValid && !IsVisualDirty && context.HasTarget)
             {
                 context.DeviceContext.Transform = RelativeMatrix;
                 context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), new RectangleF(0, 0, RenderSize.Width, RenderSize.Height),
