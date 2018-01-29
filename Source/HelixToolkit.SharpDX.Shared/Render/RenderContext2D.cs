@@ -64,6 +64,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Pops the last bitmap transform.
         /// </summary>
         void PopRelativeTransform();
+        /// <summary>
+        /// Gets a value indicating whether this context has render target.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this context has target; otherwise, <c>false</c>.
+        /// </value>
+        bool HasTarget { get; }
     }
     /// <summary>
     /// 
@@ -100,6 +107,13 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix3x2 RelativeTransform { private set; get; } = Matrix3x2.Identity;
 
         private Stack<Matrix3x2> relativeTransformStack = new Stack<Matrix3x2>();
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance has target.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has target; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasTarget { private set; get; } = false;
         /// <summary>
         /// Pushes the last bitmap transform.
         /// </summary>
@@ -147,6 +161,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             targetStack.Push(target);
             DeviceContext.Target = targetStack.Peek();
+            HasTarget = true;
             DeviceContext.BeginDraw();
             if (clear)
             {
@@ -160,10 +175,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             DeviceContext.EndDraw();
             DeviceContext.Target = null;
+            HasTarget = false;
             targetStack.Pop();
             if (targetStack.Count > 0)
             {
                 DeviceContext.Target = targetStack.Peek();
+                HasTarget = true;
                 DeviceContext.BeginDraw();
             }
         }
