@@ -137,7 +137,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             {
                 if(Set(ref totalTransform, value))
                 {
-                    RenderCore.Transform = value;
                     IsTransformDirty = true;
                     LayoutBoundWithTransform = LayoutBound.Translate(value.TranslationVector);
                     foreach (var item in Items)
@@ -259,7 +258,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 EnsureBitmapCache(context, RenderSize.ToSize2(), context.DeviceContext.MaximumBitmapSize);
                 if (EnableBitmapCacheInternal && IsBitmapCacheValid)
                 {
-                    RenderCore.UseBitmapCache = true;
                     if (IsVisualDirty)
                     {                        
 #if DEBUGDRAWING
@@ -267,15 +265,16 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
                         context.PushRenderTarget(bitmapCache, true);
                         context.DeviceContext.Transform = Matrix3x2.Identity;
-                        context.PushLastBitmapTransform(Matrix3x2.Identity);
+                        context.PushRelativeTransform(Matrix3x2.Identity);
+                        RenderCore.Transform = context.RelativeTransform;
                         OnRender(context);
-                        context.PopLastBitmapTransform();
+                        context.PopRelativeTransform();
                         context.PopRenderTarget();
                         IsVisualDirty = false;
                     }
                     if (context.DeviceContext.Target != null)
                     {
-                        context.DeviceContext.Transform = context.LastBitmapTransform * RelativeMatrix;                                     
+                        context.DeviceContext.Transform = context.RelativeTransform * RelativeMatrix;                                     
                         context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), new RectangleF(0, 0, RenderSize.Width, RenderSize.Height), 
                             InterpolationMode.Linear, CompositeMode.SourceOver);
                     }
@@ -283,10 +282,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 }
                 else if(context.DeviceContext.Target != null)
                 {
-                    RenderCore.UseBitmapCache = false;
-                    context.PushLastBitmapTransform(context.LastBitmapTransform * RelativeMatrix);
+                    context.PushRelativeTransform(context.RelativeTransform * RelativeMatrix);
+                    RenderCore.Transform = context.RelativeTransform;
                     OnRender(context);
-                    context.PopLastBitmapTransform();
+                    context.PopRelativeTransform();
                 }
             }
         }

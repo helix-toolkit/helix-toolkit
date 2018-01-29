@@ -10,4 +10,14 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     {
         Media.Transform Transform { set; get; }
     }
+
+    public interface IBackground
+    {
+        Media.Brush Background { set; get; }
+    }
+
+    public interface ITextBlock : IBackground
+    {
+        Media.Brush Foreground { set; get; }
+    }
 }

@@ -48,6 +48,24 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
+        private D2D.Brush background = null;
+        public D2D.Brush Background
+        {
+            set
+            {
+                var old = background;
+                if (SetAffectsRender(ref background, value))
+                {
+                    RemoveAndDispose(ref old);
+                    Collect(value);
+                }
+            }
+            get
+            {
+                return background;
+            }
+        }
+
         private string fontFamily = "Arial";
         public string FontFamily
         {
@@ -188,8 +206,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         protected override void OnRender(IRenderContext2D context)
         {
-            //context.DeviceContext.DrawText(Text, textFormat,
-            //   LayoutBound, Foreground, DrawingOptions);
+            if (Background != null)
+            {
+                context.DeviceContext.FillRectangle(LayoutBound, Background);
+            }
             UpdateTextLayout();
             context.DeviceContext.DrawTextLayout(new Vector2(LayoutBound.Left, LayoutBound.Top), textLayout, Foreground, DrawingOptions);
         }

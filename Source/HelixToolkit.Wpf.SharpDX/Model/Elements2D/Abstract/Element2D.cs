@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty VisibilityProperty =
             DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element2D), new PropertyMetadata(Visibility.Visible, (d, e) =>
             {
-                (d as Element2D).VisibilityInternal = (Visibility)e.NewValue;
+                (d as Element2DCore).VisibilityInternal = (Visibility)e.NewValue;
             }));
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(Element2D),
-            new PropertyMetadata(0.0, (d, e) => { (d as Element2D).WidthInternal = (float)(double)e.NewValue; }));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).WidthInternal = (float)(double)e.NewValue; }));
 
         public double Width
         {
@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(double), typeof(Element2D),
-            new PropertyMetadata(0.0, (d, e) => { (d as Element2D).HeightInternal = (float)(double)e.NewValue; }));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).HeightInternal = (float)(double)e.NewValue; }));
 
         public double Height
         {
@@ -97,7 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty MinimumWidthProperty = DependencyProperty.Register("MinimumWidth", typeof(double), typeof(Element2D),
-            new PropertyMetadata(0.0, (d, e) => { (d as Element2D).MinimumWidthInternal = (float)(double)e.NewValue; }));
+            new PropertyMetadata(0.0, (d, e) => { (d as Element2DCore).MinimumWidthInternal = (float)(double)e.NewValue; }));
 
         public double MinimumWidth
         {
@@ -112,7 +112,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty MinimumHeightProperty = DependencyProperty.Register("MinimumHeight", typeof(double), typeof(Element2D),
-            new PropertyMetadata(0.0, (d, e) => { (d as Element2D).MinimumHeightInternal = (float)(double)e.NewValue; }));
+            new PropertyMetadata(0.0, (d, e) => { (d as Element2DCore).MinimumHeightInternal = (float)(double)e.NewValue; }));
 
         public double MinimumHeight
         {
@@ -127,7 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty MaximumWidthProperty = DependencyProperty.Register("MaximumWidth", typeof(double), typeof(Element2D),
-            new PropertyMetadata(double.MaxValue, (d, e) => { (d as Element2D).MaximumWidthInternal = (float)(double)e.NewValue; }));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).MaximumWidthInternal = (float)(double)e.NewValue; }));
 
         public double MaximumWidth
         {
@@ -142,7 +142,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty MaximumHeightProperty = DependencyProperty.Register("MaximumHeight", typeof(double), typeof(Element2D),
-            new PropertyMetadata(double.MaxValue, (d, e) => { (d as Element2D).MaximumHeightInternal = (float)(double)e.NewValue; }));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).MaximumHeightInternal = (float)(double)e.NewValue; }));
 
         public double MaximumHeight
         {
@@ -166,7 +166,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
 
         public static readonly DependencyProperty HorizontalAlignmentProperty =
-            DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(Element2D), new PropertyMetadata(HorizontalAlignment.Center, (d, e) => { (d as Element2D).HorizontalAlignmentInternal = (HorizontalAlignment)e.NewValue; }));
+            DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(Element2D), 
+                new PropertyMetadata(HorizontalAlignment.Stretch, (d, e) => { (d as Element2DCore).HorizontalAlignmentInternal = (HorizontalAlignment)e.NewValue; }));
 
 
 
@@ -178,7 +179,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
 
         public static readonly DependencyProperty VerticalAlignmentProperty =
-            DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(Element2D), new PropertyMetadata(VerticalAlignment.Center, (d, e) => { (d as Element2D).VerticalAlignmentInternal = (VerticalAlignment)e.NewValue; }));
+            DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(Element2D), 
+                new PropertyMetadata(VerticalAlignment.Stretch, (d, e) => { (d as Element2DCore).VerticalAlignmentInternal = (VerticalAlignment)e.NewValue; }));
 
 
 
@@ -192,32 +194,13 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty MarginProperty =
             DependencyProperty.Register("Margin", typeof(Thickness), typeof(Element2D), new PropertyMetadata(new Thickness(), 
                 (d, e) => {
-                    var t = (Thickness)e.NewValue;
-                    (d as Element2D).MarginInternal = t;
+                    (d as Element2DCore).MarginInternal = (Thickness)e.NewValue;
                 }));
-
-
-
-
-        //public System.Windows.Point Position
-        //{
-        //    get { return (System.Windows.Point)GetValue(PositionProperty); }
-        //    set { SetValue(PositionProperty, value); }
-        //}
-
-        // Using a DependencyProperty as the backing store for Position.  This enables animation, styling, binding, etc...
-        //public static readonly DependencyProperty PositionProperty =
-        //    DependencyProperty.Register("Position", typeof(System.Windows.Point), typeof(Element2D), new PropertyMetadata(new System.Windows.Point(0, 0),
-        //        (d, e) => {
-        //            var p = (System.Windows.Point)e.NewValue;
-        //            (d as Element2D).PositionInternal = new Vector2((float)p.X, (float)p.Y);
-        //        }));
-
 
         public static readonly DependencyProperty TransformProperty =
             DependencyProperty.Register("Transform", typeof(Media.Transform), typeof(Element2D), new PropertyMetadata(Media.Transform.Identity, (d, e) =>
             {
-                (d as Element2D).ModelMatrix = e.NewValue == null ? Matrix3x2.Identity : ((Media.Transform)e.NewValue).Value.ToMatrix3x2();
+                (d as Element2DCore).ModelMatrix = e.NewValue == null ? Matrix3x2.Identity : ((Media.Transform)e.NewValue).Value.ToMatrix3x2();
             }));
 
         /// <summary>
@@ -247,7 +230,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty RenderTransformOriginProperty =
             DependencyProperty.Register("RenderTransformOrigin", typeof(System.Windows.Point), typeof(Element2D), new PropertyMetadata(new System.Windows.Point(0.5,0.5),
                 (d,e)=> {
-                    (d as Element2D).RenderTransformOriginInternal = ((System.Windows.Point)e.NewValue).ToVector2();
+                    (d as Element2DCore).RenderTransformOriginInternal = ((System.Windows.Point)e.NewValue).ToVector2();
                 }));
 
         public bool EnableBitmapCache
@@ -258,7 +241,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty EnableBitmapCacheProperty =
             DependencyProperty.Register("EnableBitmapCache", typeof(bool), typeof(Element2D),
-                new PropertyMetadata(true, (d,e)=> { (d as Element2D).EnableBitmapCacheInternal = (bool)e.NewValue; }));
+                new PropertyMetadata(false, (d,e)=> { (d as Element2DCore).EnableBitmapCacheInternal = (bool)e.NewValue; }));
 
 
         #endregion
@@ -312,6 +295,22 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
         #endregion
 
+
+        public Element2D()
+        {
+            VisibilityInternal = Visibility;
+            IsHitTestVisibleInternal = IsHitTestVisible;
+            WidthInternal = (float)Width;
+            HeightInternal = (float)Height;
+            MinimumWidthInternal = (float)MinimumWidth;
+            MaximumWidthInternal = MaximumWidth == double.PositiveInfinity ? float.PositiveInfinity : (float)MaximumWidth;
+            MaximumHeightInternal = MaximumHeight == double.PositiveInfinity ? float.PositiveInfinity : (float)MaximumHeight;
+            MinimumHeightInternal = (float)MinimumHeight;
+            HorizontalAlignmentInternal = HorizontalAlignment;
+            VerticalAlignmentInternal = VerticalAlignment;
+            MarginInternal = Margin;
+            EnableBitmapCacheInternal = EnableBitmapCache;
+        }
 
 
         protected virtual void Element2D_MouseLeave2D(object sender, RoutedEventArgs e)

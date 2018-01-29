@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HelixToolkit.Wpf.SharpDX.Core2D;
-using SharpDX.Direct2D1;
-using Media = System.Windows.Media;
+﻿using Media = System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
@@ -13,15 +6,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     {
         public Button2D()
         {
-            Content2D = new DefaultButtonRenderer();
-        }
-
-        public class DefaultButtonRenderer : Canvas2D
-        {
-            public DefaultButtonRenderer()
-            {
-                Children.Add(new RectangleModel2D() { Fill = new Media.SolidColorBrush(Media.Colors.Gray), Width = 100, Height = 30 });
-            }
+            //Content2D = new TextModel2D();
         }
     }
 }

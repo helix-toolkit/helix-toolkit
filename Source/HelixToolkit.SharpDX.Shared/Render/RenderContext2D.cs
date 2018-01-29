@@ -54,16 +54,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The last bitmap transform.
         /// </value>
-        Matrix3x2 LastBitmapTransform { get; }
+        Matrix3x2 RelativeTransform { get; }
         /// <summary>
         /// Pushes the last bitmap transform.
         /// </summary>
         /// <param name="transform">The transform.</param>
-        void PushLastBitmapTransform(Matrix3x2 transform);
+        void PushRelativeTransform(Matrix3x2 transform);
         /// <summary>
         /// Pops the last bitmap transform.
         /// </summary>
-        void PopLastBitmapTransform();
+        void PopRelativeTransform();
     }
     /// <summary>
     /// 
@@ -95,26 +95,26 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the last bitmap transform.
         /// </summary>
         /// <value>
-        /// The last bitmap transform.<see cref="IRenderContext2D.LastBitmapTransform"/>
+        /// The last bitmap transform.<see cref="IRenderContext2D.RelativeTransform"/>
         /// </value>
-        public Matrix3x2 LastBitmapTransform { private set; get; } = Matrix3x2.Identity;
+        public Matrix3x2 RelativeTransform { private set; get; } = Matrix3x2.Identity;
 
-        private Stack<Matrix3x2> lastBitmapTransformStack = new Stack<Matrix3x2>();
+        private Stack<Matrix3x2> relativeTransformStack = new Stack<Matrix3x2>();
         /// <summary>
         /// Pushes the last bitmap transform.
         /// </summary>
         /// <param name="transform">The transform.</param>
-        public void PushLastBitmapTransform(Matrix3x2 transform)
+        public void PushRelativeTransform(Matrix3x2 transform)
         {
-            lastBitmapTransformStack.Push(LastBitmapTransform);
-            LastBitmapTransform = transform;
+            relativeTransformStack.Push(RelativeTransform);
+            RelativeTransform = transform;
         }
         /// <summary>
         /// Pops the last bitmap transform.
         /// </summary>
-        public void PopLastBitmapTransform()
+        public void PopRelativeTransform()
         {
-            LastBitmapTransform = lastBitmapTransformStack.Pop();
+            RelativeTransform = relativeTransformStack.Pop();
         }
         /// <summary>
         /// The render host

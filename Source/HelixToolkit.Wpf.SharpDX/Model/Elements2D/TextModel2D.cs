@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows;
 using System.Windows.Media;
-using D2D = SharpDX.Direct2D1;
+using System.ComponentModel;
+using System.Windows.Markup;
+using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
-    using global::SharpDX;
-    using SharpDX;
-    using System.ComponentModel;
-    using System.Windows.Markup;
+    using Utilities;    
+    using Extensions;
 
     [ContentProperty("Text")]
-    public class TextModel2D : Element2D
+    [TypeConverter(typeof(StringToModel2DConverter))]
+    public class TextModel2D : Element2D, ITextBlock
     {
         public static readonly string DefaultFont = "Arial";
 
@@ -48,7 +44,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 new PropertyMetadata(new SolidColorBrush(Colors.Black), (d, e) =>
                 {
                     var model = (d as TextModel2D);
-                    if (model.textRenderable == null) { return; }
                     model.foregroundChanged = true;
                 }));
 
@@ -61,6 +56,26 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             get
             {
                 return (Brush)GetValue(ForegroundProperty);
+            }
+        }
+
+        public static readonly DependencyProperty BackgroundProperty
+            = DependencyProperty.Register("Background", typeof(Brush), typeof(TextModel2D),
+                new PropertyMetadata(null, (d, e) =>
+            {
+                var model = (d as TextModel2D);
+                model.backgroundChanged = true;
+            }));
+
+        public Brush Background
+        {
+            set
+            {
+                SetValue(BackgroundProperty, value);
+            }
+            get
+            {
+                return (Brush)GetValue(BackgroundProperty);
             }
         }
 
@@ -149,7 +164,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         private TextRenderCore2D textRenderable;
-        protected bool foregroundChanged = true;
+        private bool foregroundChanged = true;
+        private bool backgroundChanged = true;
 
         protected override IRenderCore2D CreateRenderCore()
         {
@@ -158,13 +174,32 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             return textRenderable;
         }
 
+        protected override bool OnAttach(IRenderHost host)
+        {
+            if (base.OnAttach(host))
+            {
+                foregroundChanged = true;
+                backgroundChanged = true;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public override void Update(IRenderContext2D context)
         {
             base.Update(context);
             if (foregroundChanged)
             {
-                textRenderable.Foreground = Foreground.ToD2DBrush(context.DeviceContext);
+                textRenderable.Foreground = Foreground != null ? Foreground.ToD2DBrush(context.DeviceContext) : null;
                 foregroundChanged = false;
+            }
+            if (backgroundChanged)
+            {
+                textRenderable.Background = Background != null ? Background.ToD2DBrush(context.DeviceContext) : null;
+                backgroundChanged = false;
             }
         }
 
@@ -176,12 +211,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             textRenderable.FontWeight = FontWeight.ToDXFontWeight();
             textRenderable.FontStyle = FontStyle.ToDXFontStyle();
             textRenderable.FontSize = FontSize;
-        }
-
-        protected override void OnDetach()
-        {
-            foregroundChanged = true;
-            base.OnDetach();
         }
 
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)

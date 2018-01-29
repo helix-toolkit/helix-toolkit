@@ -68,9 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 {
                     this.AddLogicalChild(c);
                 }
-
                 c.Attach(RenderHost);
-                //c.Layout(RenderSize);
             }
         }
 

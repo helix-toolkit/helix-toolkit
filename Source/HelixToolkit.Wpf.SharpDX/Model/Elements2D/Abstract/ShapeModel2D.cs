@@ -225,6 +225,21 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected abstract ShapeRenderCore2DBase CreateShapeRenderCore();
 
+        protected override bool OnAttach(IRenderHost host)
+        {
+            if (base.OnAttach(host))
+            {
+                fillChanged = true;
+                strokeChanged = true;
+                strokeStyleChanged = true;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         protected virtual void AssignProperties()
         {
             shapeRenderable.StrokeWidth = StrokeThickness;

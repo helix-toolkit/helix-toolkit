@@ -22,8 +22,21 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// Occurs when [on invalidate renderer].
         /// </summary>
         public event EventHandler<bool> OnInvalidateRenderer;
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is empty.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
+        /// </value>
         public bool IsEmpty { get; } = false;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is rendering.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is rendering; otherwise, <c>false</c>.
+        /// </value>
         public bool IsRendering
         {
             set; get;
@@ -57,7 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         private Matrix3x2 transform = Matrix3x2.Identity;
         /// <summary>
-        /// Gets or sets the transform. This transform to absolute position on screen
+        /// Gets or sets the transform. <see cref="IRenderCore2D.Transform"/>
         /// </summary>
         /// <value>
         /// The transform.
@@ -93,15 +106,25 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
-        public bool UseBitmapCache { set; get; } = false;
-
 #if DEBUG
+        /// <summary>
+        /// 
+        /// </summary>
         public bool ShowDrawingBorder { set; get; } = true;
 #else
+        /// <summary>
+        /// 
+        /// </summary>
         public bool ShowDrawingBorder { set; get; } = false;
 #endif
 
         private bool isMouseOver = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is mouse over.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is mouse over; otherwise, <c>false</c>.
+        /// </value>
         public bool IsMouseOver
         {
             set
@@ -156,12 +179,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             if (CanRender(context))
             {
-                var oldTransform = context.DeviceContext.Transform;
-                // If use bitmap cache, do not set transform. Proper transform should be set from outside
-                if (!UseBitmapCache)
-                {
-                    context.DeviceContext.Transform = Transform;
-                }
+                context.DeviceContext.Transform = Transform;
                 if (ShowDrawingBorder)
                 {
                     using (var borderBrush = new D2D.SolidColorBrush(context.DeviceContext, Color.Blue))
@@ -177,7 +195,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                     }
                 }
                 OnRender(context);
-                context.DeviceContext.Transform = oldTransform;
             }
         }
         /// <summary>
