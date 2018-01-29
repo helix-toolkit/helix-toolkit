@@ -10,7 +10,7 @@ using System.Windows.Media;
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     [ContentProperty("Children")]
-    public abstract class Panel2D : Element2D
+    public class Panel2D : Element2D
     {
         public Brush Background
         {
@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 {
                     AttachChildren(sender as IEnumerable);
                 }
-                else if (e.NewItems != null)
+                else if (e.NewItems != null && IsAttached)
                 {
                     AttachChildren(e.NewItems);
                 }

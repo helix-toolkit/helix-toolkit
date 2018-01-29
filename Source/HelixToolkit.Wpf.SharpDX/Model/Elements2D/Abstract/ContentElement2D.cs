@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Extensions;
     using Core2D;
+    using System;
 
     [ContentProperty("Content2D")]
     public abstract class ContentElement2D : Element2D
@@ -218,15 +219,42 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected override Size2F MeasureOverride(Size2F availableSize)
         {
+            Size2F maxContentSize = new Size2F();
             foreach(var item in Items)
             {
                 if(item is Element2D e)
                 {
                     e.HorizontalAlignment = HorizontalContentAlignment;
                     e.VerticalAlignment = VerticalContentAlighment;
+                    e.Measure(availableSize);
+                    maxContentSize.Width = Math.Max(maxContentSize.Width, e.DesiredSize.X);
+                    maxContentSize.Height = Math.Max(maxContentSize.Height, e.DesiredSize.Y);
                 }
             }
-            return base.MeasureOverride(availableSize);
+            if (float.IsInfinity(availableSize.Width))
+            {
+                if (float.IsInfinity(WidthInternal))
+                {
+                    availableSize.Width = maxContentSize.Width;
+                }
+                else
+                {
+                    availableSize.Width = WidthInternal;
+                }
+            }
+
+            if (float.IsInfinity(availableSize.Height))
+            {
+                if (float.IsInfinity(HeightInternal))
+                {
+                    availableSize.Height = maxContentSize.Height;
+                }
+                else
+                {
+                    availableSize.Height = HeightInternal;
+                }
+            }
+            return availableSize;
         }
     }
 }

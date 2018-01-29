@@ -183,7 +183,6 @@
     <Compile Include="Model\Elements2D\Button2D.cs" />
     <Compile Include="Model\Elements2D\ContentPresenter2D.cs" />
     <Compile Include="Model\Elements2D\EllipseModel2D.cs" />
-    <Compile Include="Model\Elements2D\Grid2D.cs" />
     <Compile Include="Model\Elements2D\Interfaces.cs" />
     <Compile Include="Model\Elements2D\Overlay.cs" />
     <Compile Include="Model\Elements2D\RectangleModel2D.cs" />

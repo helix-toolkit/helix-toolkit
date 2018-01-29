@@ -27,6 +27,10 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty OrientationProperty =
             DependencyProperty.Register("Orientation", typeof(Orientation), typeof(StackPanel2D), new FrameworkPropertyMetadata(Orientation.Horizontal, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+        public StackPanel2D()
+        {
+            EnableBitmapCache = true;
+        }
 
         protected override Size2F MeasureOverride(Size2F availableSize)
         {

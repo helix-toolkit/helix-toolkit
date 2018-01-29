@@ -629,17 +629,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         protected virtual Size2F MeasureOverride(Size2F availableSize)
         {
-            //if (float.IsInfinity(WidthInternal))
-            //{
-            //    WidthInternal = availableSize.Width;
-            //}
-            //if(float.IsInfinity(HeightInternal))
-            //{
-            //    HeightInternal = availableSize.Height;
-            //}
             foreach(var item in Items)
             {
-                //item.InvalidateMeasure();
                 item.Measure(availableSize);
             }
             return availableSize;
