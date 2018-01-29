@@ -54,10 +54,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public new static readonly DependencyProperty IsMouseOverProperty =
-            DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D), new PropertyMetadata(false, (d, e) =>
+            DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D),
+                new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender, (d, e) =>
             {
                 var model = d as Element2D;
                 model.RenderCore.IsMouseOver = (bool)e.NewValue;
+                model.OnMouseOverChanged((bool)e.NewValue, (bool)e.OldValue);
             }));
 
         public new bool IsMouseOver
@@ -316,6 +318,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected virtual void Element2D_MouseLeave2D(object sender, RoutedEventArgs e)
         {
             if (!IsAttached) { return; }
+            
             IsMouseOver = false;
 #if DEBUG
             Debug.WriteLine("Element2D_MouseLeave2D");
@@ -350,10 +353,14 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             OnDetach();
         }
 
+        protected virtual void OnMouseOverChanged(bool newValue, bool oldValue)
+        {
+            Debug.WriteLine("OnMouseOverChanged:"+newValue);
+        }
+
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-            base.OnPropertyChanged(e);
-            var pm = e.Property.DefaultMetadata;
+            var pm = e.Property.GetMetadata(this);
             if(pm is FrameworkPropertyMetadata fm)
             {
                 if (fm.AffectsMeasure)
@@ -369,6 +376,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                     InvalidateVisual();
                 }
             }
+            base.OnPropertyChanged(e);
         }
     }
 

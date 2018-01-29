@@ -9,7 +9,13 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Controls;
+    using Elements2D;
+    using HelixToolkit.Wpf;
+    using HelixToolkit.Wpf.SharpDX.Cameras;
+    using HelixToolkit.Wpf.SharpDX.Utilities;
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
@@ -21,18 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media;
     using System.Windows.Media.Animation;
     using System.Windows.Media.Media3D;
-
-    using HelixToolkit.Wpf;
-    using HelixToolkit.Wpf.SharpDX.Utilities;
-
     using MouseButtons = System.Windows.Forms.MouseButtons;
-    using System.Collections;
-    using System.Collections.Generic;
-    using Controls;
-    using Elements2D;
-    using Model;
-    using HelixToolkit.Wpf.SharpDX.Cameras;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -253,7 +248,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private Window parentWindow;
 
-        private Overlay overlay2D { get; } = new Overlay();
+        private Overlay overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
@@ -1658,6 +1653,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     MouseOverModel2D = e;
                     e.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseMove2DEvent, hit2D.ModelHit, hit2D, pt, this, originalInputEventArgs));
+                    //Debug.WriteLine("hit 2D, name="+e.Name);
                 }
                 return;
             }

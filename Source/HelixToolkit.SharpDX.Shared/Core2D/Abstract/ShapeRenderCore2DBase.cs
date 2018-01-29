@@ -47,10 +47,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 return strokeBrush;
             }
         }
-        public int StrokeWidth
+        public float StrokeWidth
         {
             set; get;
-        } = 1;
+        } = 1.0f;
 
         private D2D.StrokeStyle strokeStyle = null;
         public D2D.StrokeStyle StrokeStyle

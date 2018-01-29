@@ -79,14 +79,14 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                             finalSize.Left += lastSize;
                             lastSize = c.DesiredSize.X;
                             finalSize.Right = finalSize.Left + lastSize;
-                            finalSize.Bottom = finalSize.Top + Math.Min(finalSize.Height, c.DesiredSize.Y);
+                            finalSize.Bottom = finalSize.Top + Math.Max(finalSize.Height, c.DesiredSize.Y);
                             totalSize.Width += lastSize;
                             totalSize.Bottom = finalSize.Bottom;
                             break;
                         case Orientation.Vertical:
                             finalSize.Top += lastSize;
                             lastSize = c.DesiredSize.Y;
-                            finalSize.Right = finalSize.Left + Math.Min(finalSize.Width, c.DesiredSize.X);
+                            finalSize.Right = finalSize.Left + Math.Max(finalSize.Width, c.DesiredSize.X);
                             finalSize.Bottom = finalSize.Top + lastSize;
                             totalSize.Bottom += lastSize;
                             totalSize.Right = finalSize.Right;

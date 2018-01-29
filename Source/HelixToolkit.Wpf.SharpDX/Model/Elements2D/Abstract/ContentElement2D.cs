@@ -1,5 +1,4 @@
-﻿using HelixToolkit.Wpf.SharpDX.Core2D;
-using SharpDX;
+﻿using SharpDX;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,11 +9,15 @@ using System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
+    using Extensions;
+    using Core2D;
+
     [ContentProperty("Content2D")]
-    public abstract class ContentElement2D : Clickable2D
+    public abstract class ContentElement2D : Element2D
     {
         public static readonly DependencyProperty Content2DProperty = DependencyProperty.Register("Content2D", typeof(object), typeof(ContentElement2D), 
-            new PropertyMetadata(null, (d,e)=>
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure,
+                (d,e)=>
             {
                 var model = d as ContentElement2D;
                 if(e.NewValue is Element2D element)
@@ -55,12 +58,11 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                     if (model.IsAttached)
                     {
                         model.contentInternal.Attach(model.RenderHost);
-                        model.contentInternal.Measure(model.RenderSize);
                     }
                 }
             }));
 
-        [BindableAttribute(true)]
+        [Bindable(true)]
         public object Content2D
         {
             set
@@ -75,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty ForegroundProperty
             = DependencyProperty.Register("Foreground", typeof(Brush), typeof(ContentElement2D),
-                new PropertyMetadata(new SolidColorBrush(Colors.Black)));
+                new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black), FrameworkPropertyMetadataOptions.AffectsRender));
 
         public Brush Foreground
         {
@@ -91,7 +93,11 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty BackgroundProperty
             = DependencyProperty.Register("Background", typeof(Brush), typeof(ContentElement2D),
-                new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
+                new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Transparent), FrameworkPropertyMetadataOptions.AffectsRender,
+                (d,e)=>
+                {
+                    (d as ContentElement2D).backgroundChanged = true;
+                }));
 
         public Brush Background
         {
@@ -127,7 +133,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             DependencyProperty.Register("VerticalContentAlighment", typeof(VerticalAlignment), typeof(ContentElement2D), 
                 new FrameworkPropertyMetadata(VerticalAlignment.Center, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        private Element2D contentInternal;
+        protected Element2D contentInternal { private set; get; }
 
         public override IEnumerable<IRenderable2D> Items
         {
@@ -135,6 +141,16 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             {
                 return contentInternal == null ? Enumerable.Empty<IRenderable2D>() : Enumerable.Repeat<IRenderable2D>(contentInternal, 1);
             }
+        }
+
+        private bool backgroundChanged = true;
+
+        protected BorderRenderCore2D borderCore { private set; get; }
+
+        protected override IRenderCore2D CreateRenderCore()
+        {
+            borderCore = new BorderRenderCore2D();
+            return borderCore;
         }
 
         protected void SetupBindings(Element2D content)
@@ -153,6 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             if (base.OnAttach(host))
             {
+                backgroundChanged = true;
                 contentInternal?.Attach(host);
                 if (contentInternal.Parent == null)
                 {
@@ -174,6 +191,16 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 this.RemoveLogicalChild(contentInternal);
             }
             base.OnDetach();
+        }
+
+        public override void Update(IRenderContext2D context)
+        {
+            base.Update(context);
+            if (backgroundChanged)
+            {
+                borderCore.Background = Background.ToD2DBrush(context.DeviceContext);
+                backgroundChanged = false;
+            }
         }
 
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)

@@ -12,7 +12,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     using Extensions;
 
     [ContentProperty("Text")]
-    [TypeConverter(typeof(StringToModel2DConverter))]
     public class TextModel2D : Element2D, ITextBlock
     {
         public static readonly string DefaultFont = "Arial";
