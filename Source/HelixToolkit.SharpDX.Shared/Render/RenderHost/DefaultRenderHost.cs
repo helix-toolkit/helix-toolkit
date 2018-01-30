@@ -105,10 +105,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected override void OnRender2D(TimeSpan time)
         {
             var d2dRoot = Viewport.D2DRenderables.FirstOrDefault();
-            if (d2dRoot != null)
+            if (d2dRoot != null && d2dRoot.Items.Count() > 0)
             {
                 d2dRoot.Measure(new Size2F((float)ActualWidth, (float)ActualHeight));
                 d2dRoot.Arrange(new RectangleF(0, 0, (float)ActualWidth, (float)ActualHeight));
+            }
+            else
+            {
+                return;
             }
             renderer.UpdateSceneGraph2D(RenderContext2D, Viewport.D2DRenderables);
             //Render to bitmap cache
@@ -118,7 +122,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
             //Draw bitmap cache to render target
             RenderContext2D.PushRenderTarget(D2DTarget.D2DTarget, false);
-            foreach(var item in Viewport.D2DRenderables)
+            foreach (var item in Viewport.D2DRenderables)
             {
                 item.RenderBitmapCache(RenderContext2D);
             }

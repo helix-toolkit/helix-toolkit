@@ -1,4 +1,7 @@
-﻿using SharpDX;
+﻿#if DEBUG
+//#define DEBUGMOUSEEVENT
+#endif
+using SharpDX;
 using System.Windows;
 using System.Windows.Input;
 using Media = System.Windows.Media;
@@ -6,6 +9,7 @@ using Media = System.Windows.Media;
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
+    using System;
     using System.Diagnostics;
 
     public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
@@ -317,11 +321,10 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected virtual void Element2D_MouseLeave2D(object sender, RoutedEventArgs e)
         {
-            if (!IsAttached) { return; }
-            
+            if (!IsAttached) { return; }            
             IsMouseOver = false;
-#if DEBUG
-            Debug.WriteLine("Element2D_MouseLeave2D");
+#if DEBUGMOUSEEVENT
+            Console.WriteLine("Element2D_MouseLeave2D");
 #endif
         }
 
@@ -329,8 +332,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             if (!IsAttached) { return; }
             IsMouseOver = true;
-#if DEBUG
-            Debug.WriteLine("Element2D_MouseEnter2D");
+#if DEBUGMOUSEEVENT
+            Console.WriteLine("Element2D_MouseEnter2D");
 #endif
         }
 
@@ -355,7 +358,9 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected virtual void OnMouseOverChanged(bool newValue, bool oldValue)
         {
+#if DEBUGMOUSEEVENT
             Debug.WriteLine("OnMouseOverChanged:"+newValue);
+#endif
         }
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)

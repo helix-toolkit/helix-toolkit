@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+//#define DEBUGBOUNDS
 using SharpDX;
 using System;
 using System.Collections.Generic;
@@ -106,7 +107,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
-#if DEBUG
+#if DEBUGBOUNDS
         /// <summary>
         /// 
         /// </summary>
