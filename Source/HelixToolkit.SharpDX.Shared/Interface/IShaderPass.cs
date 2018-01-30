@@ -2,7 +2,6 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX.Direct3D11;
 using System.Collections.Generic;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Shaders
@@ -51,7 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
         /// Binds the shader.
         /// </summary>
         /// <param name="context">The context.</param>
-        void BindShader(DeviceContext context);
+        void BindShader(IDeviceContext context);
         /// <summary>
         /// Gets the shader.
         /// </summary>
@@ -63,6 +62,6 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="type">The type.</param>
-        void BindStates(DeviceContext context, StateType type);
+        void BindStates(IDeviceContext context, StateType type);
     }
 }

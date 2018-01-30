@@ -3,9 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX.Direct3D11;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
@@ -60,12 +58,12 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
 
-        public void BindShader(DeviceContext context)
+        public void BindShader(IDeviceContext context)
         {
             
         }
 
-        public void BindStates(DeviceContext context, StateType type)
+        public void BindStates(IDeviceContext context, StateType type)
         {
 
         }
@@ -238,13 +236,18 @@ namespace HelixToolkit.UWP.Shaders
         /// Bind shaders and its constant buffer for this technique
         /// </summary>
         /// <param name="context"></param>
-        public void BindShader(DeviceContext context)
+        public void BindShader(IDeviceContext context)
         {
+            if (context.LastShaderPass == this)
+            {
+                return;
+            }
             foreach (var shader in Shaders)
             {
-                shader.Bind(context);
-                shader.BindConstantBuffers(context);
+                shader.Bind(context.DeviceContext);
+                shader.BindConstantBuffers(context.DeviceContext);
             }
+            context.LastShaderPass = this;
         }
         /// <summary>
         /// <see cref="IShaderPass.GetShader(ShaderStage)"/>
@@ -261,7 +264,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context"></param>
         /// <param name="type"></param>
-        public void BindStates(DeviceContext context, StateType type)
+        public void BindStates(IDeviceContext context, StateType type)
         {
             if (type == StateType.None)
             {
@@ -269,15 +272,15 @@ namespace HelixToolkit.UWP.Shaders
             }
             if (type.HasFlag(StateType.BlendState))
             {
-                context.OutputMerger.BlendState = BlendState;
+                context.DeviceContext.OutputMerger.BlendState = BlendState;
             }
             if (type.HasFlag(StateType.DepthStencilState))
             {
-                context.OutputMerger.DepthStencilState = DepthStencilState;
+                context.DeviceContext.OutputMerger.DepthStencilState = DepthStencilState;
             }
             if (type.HasFlag(StateType.RasterState))
             {
-                context.Rasterizer.State = RasterState;
+                context.DeviceContext.Rasterizer.State = RasterState;
             }
         }
     }
