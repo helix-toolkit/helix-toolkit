@@ -1,5 +1,4 @@
-﻿using HelixToolkit.Wpf.SharpDX.Shaders;
-using SharpDX;
+﻿using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ namespace HelixToolkit.UWP.Render
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
+    using Shaders;
     /// <summary>
     /// 
     /// </summary>
