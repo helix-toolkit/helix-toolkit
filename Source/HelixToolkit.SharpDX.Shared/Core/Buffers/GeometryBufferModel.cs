@@ -173,21 +173,23 @@ namespace HelixToolkit.UWP.Core
             return propertyName.Equals(Geometry3D.TriangleBuffer) || propertyName.Equals(nameof(Geometry3D.Indices));
         }
         /// <summary>
-        /// Attach buffers only
+        /// Attaches the buffers.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="instanceModel"></param>
+        /// <param name="context">The context.</param>
+        /// <param name="vertexLayout">The vertex layout.</param>
+        /// <param name="vertexBufferSlot">The vertex buffer slot.</param>
+        /// <param name="deviceResources">The device resources.</param>
         /// <returns></returns>
-        public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot)
+        public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot, IDeviceResources deviceResources)
         {
             if (VertexChanged)
             {
-                OnCreateVertexBuffer(context, VertexBuffer, Geometry);
+                OnCreateVertexBuffer(context, VertexBuffer, Geometry, deviceResources);
                 VertexChanged = false;
             }
             if (IndexChanged)
             {
-                OnCreateIndexBuffer(context, IndexBuffer, Geometry);
+                OnCreateIndexBuffer(context, IndexBuffer, Geometry, deviceResources);
                 IndexChanged = false;
             }
             return OnAttachBuffer(context, vertexLayout, vertexBufferSlot);
@@ -198,14 +200,16 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
         /// <param name="geometry">The geometry.</param>
-        protected abstract void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry);
+        /// <param name="deviceResources">The device resources.</param>
+        protected abstract void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources);
         /// <summary>
         /// Called when [create index buffer].
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
         /// <param name="geometry">The geometry.</param>
-        protected abstract void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry);
+        /// <param name="deviceResources">The device resources.</param>
+        protected abstract void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources);
         /// <summary>
         /// Called when [attach buffer].
         /// </summary>

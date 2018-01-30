@@ -34,10 +34,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The texture.
         /// </value>
         Stream Texture { get; }
+
         /// <summary>
         /// Draws the texture.
         /// </summary>
-        void DrawTexture();
+        /// <param name="devices">The devices.</param>
+        void DrawTexture(IDeviceResources devices);
         /// <summary>
         /// Gets the billboard vertices.
         /// </summary>

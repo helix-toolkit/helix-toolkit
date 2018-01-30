@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
         }
 
-        public virtual void DrawTexture()
+        public virtual void DrawTexture(IDeviceResources deviceResources)
         {
             UpdateBounds();
         }

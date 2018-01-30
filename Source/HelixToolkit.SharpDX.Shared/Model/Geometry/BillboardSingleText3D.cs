@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
 using Core;
-
+    using Extensions;
     public class BillboardSingleText3D : BillboardBase
     {
         private volatile bool isInitialized = false;
@@ -133,7 +133,7 @@ using Core;
             Height = height;
             predefinedSize = true;
         }
-        public override void DrawTexture()
+        public override void DrawTexture(IDeviceResources deviceResources)
         {
             if (!isInitialized)
             {
@@ -143,15 +143,20 @@ using Core;
 #if NETFX_CORE
 
 #else
-                    var bitmap = TextInfo.Text.StringToBitmapSource(FontSize, Media.Colors.White, Media.Colors.Black,
-                        this.FontFamily, this.FontWeight, this.FontStyle, Padding);
-                    Texture = bitmap.ToMemoryStream();
+                    //var bitmap = TextInfo.Text.StringToBitmapSource(FontSize, Media.Colors.White, Media.Colors.Black,
+                    //    this.FontFamily, this.FontWeight, this.FontStyle, Padding);
+                    //Texture = bitmap.ToMemoryStream();
+
+                    var w = Width;
+                    var h = Height;
+                    Texture = TextInfo.Text.ToBitmapStream(FontSize, Color.White, Color.Black, "Arial", FontWeight.ToDXFontWeight(), FontStyle.ToDXFontStyle(),
+                        new Vector4((float)Padding.Left, (float)Padding.Top, (float)Padding.Right, (float)Padding.Bottom), ref w, ref h, predefinedSize, deviceResources);
+#endif
                     if (!predefinedSize)
                     {
-                        Width = (float)bitmap.Width;
-                        Height = (float)bitmap.Height;
+                        Width = w;
+                        Height = h;
                     }
-#endif
                     DrawCharacter(TextInfo.Text, TextInfo.Origin, Width, Height, TextInfo);
                 }
                 else

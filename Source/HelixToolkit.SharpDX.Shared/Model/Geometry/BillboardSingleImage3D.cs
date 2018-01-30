@@ -103,7 +103,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Texture.Position = 0;
         }
 
-        public override void DrawTexture()
+        public override void DrawTexture(IDeviceResources deviceResources)
         {
             var w = Width;
             var h = Height;

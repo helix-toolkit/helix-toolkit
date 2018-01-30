@@ -105,7 +105,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="vertexLayout">The vertex layout.</param>
         /// <param name="vertexBufferSlot">The vertex buffer slot.</param>
         /// <returns></returns>
-        public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot)
+        public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot, IDeviceResources deviceResources)
         {
             return true;
         }
