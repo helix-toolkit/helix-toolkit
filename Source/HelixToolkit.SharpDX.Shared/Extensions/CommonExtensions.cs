@@ -283,5 +283,29 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
                     return D2D.LineJoin.Bevel;
             }
         }
+
+        public static D2D.DashStyle ToD2DDashStyle(this Media.DashStyle style)
+        {
+            if(style == Media.DashStyles.Dash)
+            {
+                return D2D.DashStyle.Dash;
+            }
+            else if(style == Media.DashStyles.DashDot)
+            {
+                return D2D.DashStyle.DashDot;
+            }
+            else if (style == Media.DashStyles.DashDotDot)
+            {
+                return D2D.DashStyle.DashDotDot;
+            }
+            else if (style == Media.DashStyles.Dot)
+            {
+                return D2D.DashStyle.Dot;
+            }
+            else
+            {
+                return D2D.DashStyle.Solid;
+            }
+        }
     }
 }

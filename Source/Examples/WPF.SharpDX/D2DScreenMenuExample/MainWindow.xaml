@@ -60,7 +60,14 @@
                         Orientation="Vertical">
                         <hx2D:Button2D Margin="10" HorizontalAlignment="Center">Button4</hx2D:Button2D>
                         <hx2D:Button2D Margin="10" HorizontalAlignment="Center">Button5</hx2D:Button2D>
+                        <hx2D:EllipseModel2D
+                            Width="20"
+                            Height="20"
+                            Fill="AliceBlue"
+                            Stroke="Red"
+                            StrokeThickness="1" />
                     </hx2D:StackPanel2D>
+                    <hx2D:EllipseModel2D Width="50" Height="20" Fill="Green" Stroke="Red" StrokeThickness="2"/>
                 </hx2D:Panel2D>
             </hx:Viewport3DX.Content2D>
         </hx:Viewport3DX>

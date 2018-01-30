@@ -111,7 +111,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeDashArrayProperty
-            = DependencyProperty.Register("StrokeDashArray", typeof(DoubleCollection), typeof(ShapeModel2D), new PropertyMetadata(new DoubleCollection(),
+            = DependencyProperty.Register("StrokeDashArray", typeof(DoubleCollection), typeof(ShapeModel2D), new PropertyMetadata(null,
                 (d, e) =>
                 {
                     (d as ShapeModel2D).strokeStyleChanged = true;
@@ -207,6 +207,21 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 return (double)GetValue(StrokeThicknessProperty);
             }
         }
+
+
+        public DashStyle DashStyle
+        {
+            get { return (DashStyle)GetValue(DashStyleProperty); }
+            set { SetValue(DashStyleProperty, value); }
+        }
+
+        public static readonly DependencyProperty DashStyleProperty =
+            DependencyProperty.Register("DashStyle", typeof(DashStyle), typeof(ShapeModel2D), new PropertyMetadata(DashStyles.Solid,
+                (d,e)=> {
+                    (d as ShapeModel2D).strokeStyleChanged = true;
+                }));
+
+
         #endregion
 
         private bool fillChanged = true;
@@ -269,9 +284,9 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                         DashOffset = (float)StrokeDashOffset,
                         LineJoin = StrokeLineJoin.ToD2DLineJoin(),
                         MiterLimit = Math.Max(1, (float)StrokeMiterLimit),
-                        DashStyle = D2D.DashStyle.Dash
-                    }, 
-                    StrokeDashArray.Select(x=>(float)x).ToArray());
+                        DashStyle = DashStyle.ToD2DDashStyle()
+                    },
+                    StrokeDashArray == null ? new float[0] : StrokeDashArray.Select(x=>(float)x).ToArray());
                 strokeStyleChanged = false;
             }
         }
