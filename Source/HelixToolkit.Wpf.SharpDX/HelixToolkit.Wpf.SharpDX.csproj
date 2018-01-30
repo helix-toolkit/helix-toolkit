@@ -138,6 +138,7 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Controls\CameraController.cs" />
+    <Compile Include="Controls\CompositionTargetEX.cs" />
     <Compile Include="Controls\DPFCanvas.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChain.cs" />
     <Compile Include="Controls\DX11ImageSourceRenderHost.cs" />
