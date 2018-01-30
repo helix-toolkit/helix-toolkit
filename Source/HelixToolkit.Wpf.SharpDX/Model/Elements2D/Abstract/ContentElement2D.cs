@@ -228,29 +228,44 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                     maxContentSize.Height = Math.Max(maxContentSize.Height, e.DesiredSize.Y);
                 }
             }
-            if (float.IsInfinity(availableSize.Width))
+            if(HorizontalAlignmentInternal == HorizontalAlignment.Center)
             {
-                if (float.IsInfinity(WidthInternal))
+                availableSize.Width = Math.Min(availableSize.Width, maxContentSize.Width);
+            }
+            else
+            {
+                if (float.IsInfinity(availableSize.Width))
                 {
-                    availableSize.Width = maxContentSize.Width;
-                }
-                else
-                {
-                    availableSize.Width = WidthInternal;
+                    if (float.IsInfinity(WidthInternal))
+                    {
+                        availableSize.Width = maxContentSize.Width;
+                    }
+                    else
+                    {
+                        availableSize.Width = WidthInternal;
+                    }
                 }
             }
 
-            if (float.IsInfinity(availableSize.Height))
+            if(VerticalAlignmentInternal == VerticalAlignment.Center)
             {
-                if (float.IsInfinity(HeightInternal))
+                availableSize.Height = Math.Min(availableSize.Height, maxContentSize.Height);
+            }
+            else
+            {
+                if (float.IsInfinity(availableSize.Height))
                 {
-                    availableSize.Height = maxContentSize.Height;
-                }
-                else
-                {
-                    availableSize.Height = HeightInternal;
+                    if (float.IsInfinity(HeightInternal))
+                    {
+                        availableSize.Height = maxContentSize.Height;
+                    }
+                    else
+                    {
+                        availableSize.Height = HeightInternal;
+                    }
                 }
             }
+
             return availableSize;
         }
     }

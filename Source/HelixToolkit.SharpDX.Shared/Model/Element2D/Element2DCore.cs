@@ -259,7 +259,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #if DISABLEBITMAPCACHE
                 IsBitmapCacheValid = false;
 #else
-                EnsureBitmapCache(context, RenderSize.ToSize2(), context.DeviceContext.MaximumBitmapSize);
+                EnsureBitmapCache(context, new Size2((int)Math.Ceiling(ClipBound.Width), (int)Math.Ceiling(ClipBound.Height)), context.DeviceContext.MaximumBitmapSize);
 #endif
                 if (EnableBitmapCacheInternal && IsBitmapCacheValid)
                 {
@@ -280,7 +280,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                     if (context.HasTarget)
                     {
                         context.DeviceContext.Transform = context.RelativeTransform * RelativeMatrix;                                     
-                        context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), new RectangleF(0, 0, RenderSize.Width, RenderSize.Height), 
+                        context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), ClipBound, 
                             InterpolationMode.Linear, CompositeMode.SourceOver);
                     }
                     

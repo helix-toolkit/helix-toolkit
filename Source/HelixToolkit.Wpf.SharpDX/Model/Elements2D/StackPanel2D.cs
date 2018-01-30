@@ -72,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected override RectangleF ArrangeOverride(RectangleF finalSize)
         {
             float lastSize = 0;
-            var totalSize = new RectangleF() { Left = finalSize.Left, Top = finalSize.Top };
+            var totalSize = finalSize;
             foreach(var child in Items)
             {
                 if(child is Element2DCore c)
@@ -80,27 +80,23 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                     switch (Orientation)
                     {
                         case Orientation.Horizontal:
-                            finalSize.Left += lastSize;
+                            totalSize.Left += lastSize;
                             lastSize = c.DesiredSize.X;
-                            finalSize.Right = finalSize.Left + lastSize;
-                            finalSize.Bottom = finalSize.Top + Math.Max(finalSize.Height, c.DesiredSize.Y);
-                            totalSize.Width += lastSize;
-                            totalSize.Bottom = finalSize.Bottom;
+                            totalSize.Right = totalSize.Left + lastSize;
+                            //totalSize.Bottom = totalSize.Top + Math.Min(finalSize.Height, c.DesiredSize.Y);
                             break;
                         case Orientation.Vertical:
-                            finalSize.Top += lastSize;
+                            totalSize.Top += lastSize;
                             lastSize = c.DesiredSize.Y;
-                            finalSize.Right = finalSize.Left + Math.Max(finalSize.Width, c.DesiredSize.X);
-                            finalSize.Bottom = finalSize.Top + lastSize;
-                            totalSize.Bottom += lastSize;
-                            totalSize.Right = finalSize.Right;
+                            //totalSize.Right = totalSize.Left + Math.Min(finalSize.Width, c.DesiredSize.X);
+                            totalSize.Bottom = totalSize.Top + lastSize;
                             break;
                     }
-                    c.Arrange(finalSize);
+                    c.Arrange(totalSize);
                 }
             }
             
-            return totalSize;
+            return finalSize;
         }
 
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)

@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
-        private Vector2 MarginWidthHeight { set; get; }
+        protected Vector2 MarginWidthHeight { private set; get; }
 
         private float widthInternal = float.PositiveInfinity;
         internal float WidthInternal
@@ -506,7 +506,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
 
             var oldRenderSize = RenderSize.ToVector2();
-            var arrangeResultSize = ArrangeOverride(arrangeSize.ToRectangleF()).ToVector2();
+            var arrangeResultSize = ArrangeOverride(new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, arrangeSize.X - MarginWidthHeight.X, arrangeSize.Y - MarginWidthHeight.Y)).ToVector2();
 
             bool arrangeSizeChanged = arrangeResultSize != oldRenderSize;
             if (arrangeSizeChanged)
@@ -534,7 +534,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             var tempHorizontalAlign = HorizontalAlignmentInternal;
             var tempVerticalAlign = VerticalAlignmentInternal;
 
-            if (tempHorizontalAlign == HorizontalAlignment.Stretch && clippedArrangeResultSize.X > clientSize.X)
+            if (tempHorizontalAlign == HorizontalAlignment.Stretch && clippedArrangeResultSize.X >= clientSize.X)
             {
                 tempHorizontalAlign = HorizontalAlignment.Left;
             }
@@ -544,30 +544,30 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 tempVerticalAlign = VerticalAlignment.Top;
             }
 
-            if (tempHorizontalAlign == HorizontalAlignment.Center || tempHorizontalAlign == HorizontalAlignment.Stretch)
+            if ((tempHorizontalAlign == HorizontalAlignment.Center || tempHorizontalAlign == HorizontalAlignment.Stretch) && clientSize.X >= clippedArrangeResultSize.X)
             {
                 layoutOffset.X = (clientSize.X - clippedArrangeResultSize.X) / 2.0f;
             }
-            else if (tempHorizontalAlign == HorizontalAlignment.Right)
+            else if (tempHorizontalAlign == HorizontalAlignment.Right && clientSize.X >= clippedArrangeResultSize.X)
             {
-                layoutOffset.X = clientSize.X - clippedArrangeResultSize.X;// - (float)MarginInternal.Right;
+                layoutOffset.X = clientSize.X - clippedArrangeResultSize.X;
             }
             else
             {
-                layoutOffset.X = 0;// (float)MarginInternal.Left;
+                layoutOffset.X = 0;
             }
 
-            if (tempVerticalAlign == VerticalAlignment.Center || tempVerticalAlign == VerticalAlignment.Stretch)
+            if ((tempVerticalAlign == VerticalAlignment.Center || tempVerticalAlign == VerticalAlignment.Stretch) && clientSize.Y >= clippedArrangeResultSize.Y)
             {
                 layoutOffset.Y = (clientSize.Y - clippedArrangeResultSize.Y) / 2.0f;
             }
-            else if (tempVerticalAlign == VerticalAlignment.Bottom)
+            else if (tempVerticalAlign == VerticalAlignment.Bottom && clientSize.Y >= clippedArrangeResultSize.Y)
             {
-                layoutOffset.Y = clientSize.Y - clippedArrangeResultSize.Y;// - (float)MarginInternal.Bottom;
+                layoutOffset.Y = clientSize.Y - clippedArrangeResultSize.Y;
             }
             else
             {
-                layoutOffset.Y = 0;// (float)MarginInternal.Top;
+                layoutOffset.Y = 0;
             }
 
             layoutOffset += new Vector2(rect.Left, rect.Top);
@@ -613,8 +613,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         private void UpdateLayoutInternal()
         {
-            LayoutBound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.Width - MarginWidthHeight.X, RenderSize.Height - MarginWidthHeight.Y);
-            ClipBound = new RectangleF(0, 0, RenderSize.Width, RenderSize.Height);
+            LayoutBound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.Width, RenderSize.Height);
+            ClipBound = new RectangleF(0, 0, RenderSize.Width + MarginWidthHeight.X, RenderSize.Height + MarginWidthHeight.Y);
             LayoutTranslate = Matrix3x2.Translation((float)Math.Round(LayoutOffsets.X), (float)Math.Round(LayoutOffsets.Y));
         }
 

@@ -267,29 +267,33 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             if(contentInternal != null)
             {
-                var margin = new Size2F((float)(StrokeThickness + Padding.Left + Padding.Right), (float)(StrokeThickness + Padding.Top + Padding.Bottom));
+                var margin = new Size2F((float)(StrokeThickness + Padding.Left + Padding.Right + MarginWidthHeight.X), (float)(StrokeThickness + Padding.Top + Padding.Bottom + MarginWidthHeight.Y));
                 var childAvail = new Size2F(Math.Max(0, availableSize.Width - margin.Width), Math.Max(0, availableSize.Height - margin.Height));
                 
                 return base.MeasureOverride(childAvail);
             }
             else
             {
-                return new Size2F((float)(StrokeThickness + Padding.Left + Padding.Right), (float)(StrokeThickness + Padding.Top + Padding.Bottom));
+                return new Size2F((float)(StrokeThickness + Padding.Left + Padding.Right + MarginWidthHeight.X), (float)(StrokeThickness + Padding.Top + Padding.Bottom + MarginWidthHeight.Y));
             }
         }
 
         protected override RectangleF ArrangeOverride(RectangleF finalSize)
         {
-            if(contentInternal != null)
+            if (contentInternal != null)
             {
-                var contentRect = new RectangleF(0, 0, finalSize.Width, finalSize.Height);
+                var contentRect = new RectangleF(finalSize.Left, finalSize.Top, finalSize.Width, finalSize.Height);
                 contentRect.Left += (float)(StrokeThickness + Padding.Left);
                 contentRect.Right -= (float)(StrokeThickness + Padding.Right);
                 contentRect.Top += (float)(StrokeThickness + Padding.Top);
                 contentRect.Bottom -= (float)(StrokeThickness + Padding.Bottom);
                 base.ArrangeOverride(contentRect);
+                return finalSize;
             }
-            return finalSize;
+            else
+            {
+                return new RectangleF();
+            }
         }
     }
 }
