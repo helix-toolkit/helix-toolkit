@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Initializes a new instance of the <see cref="DX11RenderBufferProxy"/> class.
         /// </summary>
         /// <param name="device">The device.</param>
-        public DX11Texture2DRenderBufferProxy(Device device) : base(device)
+        public DX11Texture2DRenderBufferProxy(IDeviceResources deviceResources) : base(deviceResources)
         {
         }
 
@@ -128,8 +128,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
             renderTargetNMS = Collect(new Texture2D(Device, colordescNMS));
             Device.ImmediateContext.ResolveSubresource(colorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-            d2dControls = Collect(new Device2DProxy());
-            d2dControls.Initialize(renderTargetNMS);
+            d2dTarget = Collect(new D2DTargetProxy());
+            d2dTarget.Initialize(renderTargetNMS, DeviceContext2D);
             return renderTargetNMS;
 #else
             return colorBuffer;

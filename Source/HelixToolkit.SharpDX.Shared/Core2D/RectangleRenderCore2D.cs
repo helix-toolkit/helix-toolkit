@@ -9,17 +9,17 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-    public class RectangleRenderable : ShapeRenderable2DBase
+    public class RectangleRenderCore2D : ShapeRenderCore2DBase
     {
         protected override void OnRender(IRenderContext2D context)
         {
             if (FillBrush != null)
             {
-                context.D2DTarget.FillRectangle(LocalDrawingRect, FillBrush);
+                context.DeviceContext.FillRectangle(LayoutBound, FillBrush);
             }
             if (StrokeBrush != null && StrokeStyle != null)
             {
-                context.D2DTarget.DrawRectangle(LocalDrawingRect, StrokeBrush, StrokeWidth, StrokeStyle);
+                context.DeviceContext.DrawRectangle(LayoutBound, StrokeBrush, StrokeWidth, StrokeStyle);
             }
         }
     }

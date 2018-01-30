@@ -17,6 +17,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public sealed class EmptyGeometryBufferModel : IGeometryBufferModel
     {
+
         /// <summary>
         /// Gets or sets the geometry.
         /// </summary>
@@ -77,6 +78,13 @@ namespace HelixToolkit.UWP.Core
                 return null;
             }
         }
+        /// <summary>
+        /// Gets the size of the vertex structure.
+        /// </summary>
+        /// <value>
+        /// The size of the vertex structure.
+        /// </value>
+        public int VertexStructSize { get { return 0; } }
 #pragma warning disable 0067
         /// <summary>
         /// Occurs when [invalidate renderer].
@@ -101,6 +109,12 @@ namespace HelixToolkit.UWP.Core
         {
             return true;
         }
+
+        public void AttachRenderHost(IRenderHost host)
+        {
+
+        }
+
         /// <summary>
         /// Detaches this instance.
         /// </summary>
@@ -108,6 +122,12 @@ namespace HelixToolkit.UWP.Core
         {
 
         }
+
+        public void DetachRenderHost(IRenderHost host)
+        {
+
+        }
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>

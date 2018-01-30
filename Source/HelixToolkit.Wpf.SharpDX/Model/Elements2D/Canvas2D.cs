@@ -6,223 +6,169 @@
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Windows;
-    using System.Windows.Markup;
-    using System.Linq;
-    using System.Collections;
     using Core2D;
-    using System;
-    using SharpDX;
     using global::SharpDX;
+    using System.Windows;
 
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement2DCollection 
     /// </summary>
-    [ContentProperty("Children")]
-    public class Canvas2D : Model2D
+    public class Canvas2D : Panel2D
     {
-        #region Attached Properties
+        #region Attached Properties        
+        /// <summary>
+        /// The left property
+        /// </summary>
         public static readonly DependencyProperty LeftProperty = DependencyProperty.RegisterAttached("Left", typeof(double), typeof(Canvas2D),
-            new PropertyMetadata(0.0, (d,e)=> { (d as Element2D).LayoutTranslate = new Vector2((float)(double)e.NewValue, (d as Element2D).LayoutTranslate.Y); }));
-
-        public static void SetLeft(Element2D element, double value)
+            new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        /// <summary>
+        /// Sets the left.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="value">The value.</param>
+        public static void SetLeft(Element2DCore element, double value)
         {
             element.SetValue(LeftProperty, value);
         }
-
-        public static double GetLeft(Element2D element)
+        /// <summary>
+        /// Gets the left.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        public static double GetLeft(Element2DCore element)
         {
             return (double)element.GetValue(LeftProperty);
         }
-
+        /// <summary>
+        /// The top property
+        /// </summary>
         public static readonly DependencyProperty TopProperty = DependencyProperty.RegisterAttached("Top", typeof(double), typeof(Canvas2D),
-            new PropertyMetadata(0.0, (d, e) => { (d as Element2D).LayoutTranslate = new Vector2((d as Element2D).LayoutTranslate.X, (float)(double)e.NewValue); }));
-        public static void SetTop(Element2D element, double value)
+            new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        /// <summary>
+        /// Sets the top.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="value">The value.</param>
+        public static void SetTop(Element2DCore element, double value)
         {
             element.SetValue(TopProperty, value);
         }
-
-        public static double GetTop(Element2D element)
+        /// <summary>
+        /// Gets the top.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        public static double GetTop(Element2DCore element)
         {
             return (double)element.GetValue(TopProperty);
         }
-        #endregion
-
-        private IList<Element2D> itemsSourceInternal;
         /// <summary>
-        /// ItemsSource for binding to collection. Please use ObservableElement2DCollection for observable, otherwise may cause memory leak.
+        /// The right property
         /// </summary>
-        public IList<Element2D> ItemsSource
+        public static readonly DependencyProperty RightProperty = DependencyProperty.RegisterAttached("Right", typeof(double), typeof(Canvas2D),
+            new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        /// <summary>
+        /// Sets the right.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="value">The value.</param>
+        public static void SetRight(Element2DCore element, double value)
         {
-            get { return (IList<Element2D>)this.GetValue(ItemsSourceProperty); }
-            set { this.SetValue(ItemsSourceProperty, value); }
+            element.SetValue(RightProperty, value);
         }
         /// <summary>
-        /// ItemsSource for binding to collection. Please use ObservableElement2DCollection for observable, otherwise may cause memory leak.
+        /// Gets the right.
         /// </summary>
-        public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(IList<Element2D>), typeof(Canvas2D),
-                new PropertyMetadata(null, 
-                    (d, e) => {
-                        (d as Canvas2D).OnItemsSourceChanged(e.NewValue as IList<Element2D>);
-                    }));
-
-        public IEnumerable<Element2D> Items
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        public static double GetRight(Element2DCore element)
         {
-            get
+            return (double)element.GetValue(RightProperty);
+        }
+        /// <summary>
+        /// The bottom property
+        /// </summary>
+        public static readonly DependencyProperty BottomProperty = DependencyProperty.RegisterAttached("Bottom", typeof(double), typeof(Canvas2D),
+            new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        /// <summary>
+        /// Sets the bottom.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="value">The value.</param>
+        public static void SetBottom(Element2DCore element, double value)
+        {
+            element.SetValue(BottomProperty, value);
+        }
+        /// <summary>
+        /// Gets the bottom.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns></returns>
+        public static double GetBottom(Element2DCore element)
+        {
+            return (double)element.GetValue(BottomProperty);
+        }
+        #endregion        
+        /// <summary>
+        /// Measures the override.
+        /// </summary>
+        /// <param name="availableSize">Size of the available.</param>
+        /// <returns></returns>
+        protected override Size2F MeasureOverride(Size2F availableSize)
+        {
+            var childConstraint = new Size2F(float.PositiveInfinity, float.PositiveInfinity);
+            foreach(var child in Items)
             {
-                return itemsSourceInternal == null ? Children : Children.Concat(itemsSourceInternal);
+                child.Measure(childConstraint);
             }
+            return new Size2F();
         }
-
-        public ObservableElement2DCollection Children
+        /// <summary>
+        /// Arranges the override.
+        /// </summary>
+        /// <param name="finalSize">The final size.</param>
+        /// <returns></returns>
+        protected override RectangleF ArrangeOverride(RectangleF finalSize)
         {
-            get;
-        } = new ObservableElement2DCollection();
-
-        public Canvas2D()
-        {
-            Children.CollectionChanged += Items_CollectionChanged;
-        }
-
-        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.OldItems != null)
+            foreach(var child in Items)
             {
-                DetachChildren(e.OldItems);
-            }
-            if (IsAttached)
-            {               
-                if(e.Action== NotifyCollectionChangedAction.Reset)
+                if(child is Element2DCore c)
                 {
-                    AttachChildren(sender as IEnumerable);
-                }
-                else if(e.NewItems != null)
-                {
-                    AttachChildren(e.NewItems);
-                }
-            }
-        }
+                    float xPos = 0;
+                    float yPos = 0;
+                    var left = GetLeft(c);
+                    var desired = c.DesiredSize;
+                    if(left != double.PositiveInfinity)
+                    {
+                        xPos = (float)left;
+                    }
+                    else
+                    {
+                        var right = GetRight(c);
+                        if (right != double.PositiveInfinity)
+                        {
+                            xPos = finalSize.Width - desired.X - (float)right;
+                        }
+                    }
 
-        protected void AttachChildren(IEnumerable children)
-        {
-            foreach (Element2D c in children)
-            {
-                if (c.Parent == null)
-                {
-                    this.AddLogicalChild(c);
-                }
+                    var top = GetTop(c);
+                    if (top != double.PositiveInfinity)
+                    {
+                        yPos = (float)top;
+                    }
+                    else
+                    {
+                        var bottom = GetBottom(c);
+                        if (bottom != double.PositiveInfinity)
+                        {
+                            yPos = finalSize.Height - desired.Y - (float)bottom;
+                        }
+                    }
 
-                c.Attach(renderHost);
-            }
-        }
-
-        protected void DetachChildren(IEnumerable children)
-        {
-            foreach (Element2D c in children)
-            {
-                c.Detach();
-                if (c.Parent == this)
-                {
-                    this.RemoveLogicalChild(c);
+                    c.Arrange(new RectangleF(xPos, yPos, desired.X + xPos, desired.Y + yPos));
                 }
             }
-        }
-
-        private void OnItemsSourceChanged(IList<Element2D> itemsSource)
-        {
-            if (itemsSourceInternal != null)
-            {
-                if (itemsSourceInternal is INotifyCollectionChanged)
-                {
-                    (itemsSourceInternal as INotifyCollectionChanged).CollectionChanged -= Items_CollectionChanged;
-                }
-                DetachChildren(this.itemsSourceInternal);
-            }
-            itemsSourceInternal = itemsSource;
-            if (itemsSourceInternal != null)
-            {
-                if (itemsSourceInternal is ObservableElement2DCollection)
-                {
-                    (itemsSourceInternal as INotifyCollectionChanged).CollectionChanged += Items_CollectionChanged;
-                }
-                if (IsAttached)
-                {
-                    AttachChildren(this.itemsSourceInternal); 
-                }            
-            }
-        }
-
-        protected override bool OnAttach(IRenderHost host)
-        {
-            AttachChildren(Items);
-            return true;
-        }
-
-        protected override void OnDetach()
-        {
-            DetachChildren(Items);
-            base.OnDetach();
-        }        
-
-        protected override bool CanRender(IRenderContext2D context)
-        {
-            return IsAttached && isRenderingInternal;
-        }
-
-        protected override void PreRender(IRenderContext2D context)
-        {
-            
-        }
-
-        protected override void OnRender(IRenderContext2D context)
-        {
-            foreach (var c in this.Items)
-            {
-                c.PushLayoutTranslate(this.LayoutTranslate);
-                var model = c as ITransformable2D;
-                if (model != null)
-                {                   
-                    model.PushMatrix(this.TransformMatrix);
-                    c.Render(context);
-                    model.PopMatrix();
-                }
-                else
-                {
-                    c.Render(context);
-                }
-                c.PopLayoutTranslate();
-            }
-        }
-
-        protected override void OnLayoutTranslationChanged(Vector2 translation)
-        {
-
-        }
-
-        protected override IRenderable2D CreateRenderCore(IDevice2DProxy host)
-        {
-            return null;
-        }
-
-        protected override void OnRenderTargetChanged(global::SharpDX.Direct2D1.RenderTarget newTarget)
-        {
-            
-        }
-
-        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
-        {
-            hitResult = null;
-            foreach (var item in Items.Reverse())
-            {
-                if (item.HitTest(mousePoint, out hitResult))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return finalSize;
         }
     }
 }

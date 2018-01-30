@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
+using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
-    public abstract class Clickable2D : Model2D
+    public abstract class Clickable2D : Border2D
     {
         public static long DoubleClickThreshold = 300;
 
@@ -54,6 +50,18 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public Clickable2D()
         {
             MouseDown2D += Clickable2D_MouseDown2D;
+            MouseEnter2D += Clickable2D_MouseEnter2D;
+            MouseLeave2D += Clickable2D_MouseLeave2D;
+        }
+
+        private void Clickable2D_MouseLeave2D(object sender, Mouse2DEventArgs e)
+        {
+
+        }
+
+        private void Clickable2D_MouseEnter2D(object sender, Mouse2DEventArgs e)
+        {
+
         }
 
         private void Clickable2D_MouseDown2D(object sender, Mouse2DEventArgs e)
@@ -77,6 +85,23 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                     Command?.Execute(e);
                 }
                 lastClickedTime = time;
+            }
+        }
+
+        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
+        {
+            hitResult = null;
+            if (LayoutBoundWithTransform.Contains(mousePoint))
+            {
+                if(!base.OnHitTest(ref mousePoint, out hitResult))
+                {
+                    hitResult = new HitTest2DResult(this);
+                }
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

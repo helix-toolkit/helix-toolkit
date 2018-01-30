@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderHost : IDisposable
+    public interface IRenderHost : IDisposable, IGUID
     {
         /// <summary>
         /// Fired whenever an exception occurred on this object.
@@ -52,6 +52,13 @@ namespace HelixToolkit.UWP
         /// The device.
         /// </value>
         Device Device { get; }
+        /// <summary>
+        /// Gets the device2d.
+        /// </summary>
+        /// <value>
+        /// The device2d.
+        /// </value>
+        global::SharpDX.Direct2D1.Device Device2D { get; }
         /// <summary>
         /// Gets or sets the color of the clear.
         /// </summary>
@@ -183,7 +190,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The d2d target.
         /// </value>
-        IDevice2DProxy D2DTarget { get; }
+        ID2DTargetProxy D2DTarget { get; }
         /// <summary>
         /// Starts the d3 d.
         /// </summary>

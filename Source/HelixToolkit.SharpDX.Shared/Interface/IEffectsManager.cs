@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public interface IEffectsManager : IDisposable
+    public interface IDeviceResources : IDisposable
     {
         /// <summary>
         /// 
@@ -26,15 +26,46 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        IConstantBufferPool ConstantBufferPool { get; }
-        /// <summary>
-        /// 
-        /// </summary>
         Device Device { get; }
         /// <summary>
+        /// Gets the device2d.
+        /// </summary>
+        /// <value>
+        /// The device2d.
+        /// </value>
+        global::SharpDX.Direct2D1.Device Device2D { get; }
+        /// <summary>
+        /// Gets the device context2d.
+        /// </summary>
+        /// <value>
+        /// The device context2d.
+        /// </value>
+        global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get; }
+        /// <summary>
         /// 
         /// </summary>
-        DriverType DriverType { get; }
+            DriverType DriverType { get; }
+
+        /// <summary>
+        /// Called when [device error].
+        /// </summary>
+        void OnDeviceError();
+        /// <summary>
+        /// Occurs when [on dispose resources].
+        /// </summary>
+        event EventHandler<bool> OnDisposeResources;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IEffectsManager : IDeviceResources
+    {
+
+        /// <summary>
+        /// 
+        /// </summary>
+        IConstantBufferPool ConstantBufferPool { get; }
+
         /// <summary>
         /// 
         /// </summary>
@@ -48,6 +79,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         IStatePoolManager StateManager { get; }
 
+        /// <summary>
+        /// Gets the geometry buffer manager.
+        /// </summary>
+        /// <value>
+        /// The geometry buffer manager.
+        /// </value>
+        IGeometryBufferManager GeometryBufferManager { get; }
         /// <summary>
         /// 
         /// </summary>
@@ -73,11 +111,5 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="name"></param>
         /// <returns></returns>
         bool RemoveTechnique(string name);
-        /// <summary>
-        /// Called when [device error].
-        /// </summary>
-        void OnDeviceError();
-
-        event EventHandler<bool> OnDisposeResources;
     }
 }

@@ -34,16 +34,19 @@ namespace HelixToolkit.UWP
         PrimitiveTopology Topology { set; get; }
 
         /// <summary>
-        /// Occurs when [invalidate renderer].
-        /// </summary>
-        event EventHandler<bool> InvalidateRenderer;
-        /// <summary>
         /// Gets the vertex buffer.
         /// </summary>
         /// <value>
         /// The vertex buffer.
         /// </value>
         IElementsBufferProxy VertexBuffer { get; }
+        /// <summary>
+        /// Gets the size of the vertex structure.
+        /// </summary>
+        /// <value>
+        /// The size of the vertex structure.
+        /// </value>
+        int VertexStructSize { get; }
         /// <summary>
         /// Gets the index buffer.
         /// </summary>
@@ -59,6 +62,17 @@ namespace HelixToolkit.UWP
         /// <param name="vertexBufferSlot">The vertex buffer slot.</param>
         /// <returns></returns>
         bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot);
+
+        /// <summary>
+        /// Attaches the render host.
+        /// </summary>
+        /// <param name="host">The host.</param>
+        void AttachRenderHost(IRenderHost host);
+        /// <summary>
+        /// Detaches the render host.
+        /// </summary>
+        /// <param name="host">The host.</param>
+        void DetachRenderHost(IRenderHost host);
     }
     /// <summary>
     /// 

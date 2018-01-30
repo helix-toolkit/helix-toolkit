@@ -16,7 +16,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using Utilities;
     using Core;
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="HelixToolkit.Wpf.SharpDX.GeometryModel3D" />
     public abstract class MaterialGeometryModel3D : GeometryModel3D
     {
         #region Dependency Properties
@@ -106,18 +109,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty MaterialProperty =
             DependencyProperty.Register("Material", typeof(Material), typeof(MaterialGeometryModel3D), new PropertyMetadata(null, MaterialChanged));
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty TextureCoodScaleProperty =
-            DependencyProperty.Register("TextureCoodScale", typeof(Vector2), typeof(MaterialGeometryModel3D), new PropertyMetadata(new Vector2(1, 1),
-                (d,e)=> 
-                {
-                    (d as MaterialGeometryModel3D).textureCoodScale = (Vector2)e.NewValue;
-                }));
-
-
         /// <summary>
         /// 
         /// </summary>
@@ -183,17 +174,6 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Material)this.GetValue(MaterialProperty); }
             set { this.SetValue(MaterialProperty, value); }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        [TypeConverter(typeof(Vector2Converter))]
-        public Vector2 TextureCoodScale
-        {
-            get { return (Vector2)this.GetValue(TextureCoodScaleProperty); }
-            set { this.SetValue(TextureCoodScaleProperty, value); }
-        }
-
-        protected Vector2 textureCoodScale = new Vector2(1,1);
         #endregion
 
         #region Static Methods

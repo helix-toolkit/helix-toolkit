@@ -14,25 +14,69 @@ namespace HelixToolkit.UWP.Core
     using global::SharpDX.DXGI;
     using System;
     using System.Linq;
+    using System.Collections.Generic;
+
     /// <summary>
     /// General Geometry Buffer Model.
     /// </summary>
     public abstract class GeometryBufferModel : DisposeObject, IGUID, IGeometryBufferModel
     {
+        /// <summary>
+        /// Gets the unique identifier.
+        /// </summary>
+        /// <value>
+        /// The unique identifier.
+        /// </value>
         public Guid GUID { get; } = Guid.NewGuid();
 
-        public event EventHandler<bool> InvalidateRenderer;
         /// <summary>
         /// change flags
         /// </summary>
         protected bool VertexChanged { private set; get; } = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [index changed].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [index changed]; otherwise, <c>false</c>.
+        /// </value>
         protected bool IndexChanged { private set; get; } = true;
-
+        /// <summary>
+        /// Gets or sets the vertex buffer.
+        /// </summary>
+        /// <value>
+        /// The vertex buffer.
+        /// </value>
         public IElementsBufferProxy VertexBuffer { private set; get; }
+
+        /// <summary>
+        /// Gets the size of the vertex structure.
+        /// </summary>
+        /// <value>
+        /// The size of the vertex structure.
+        /// </value>
+        public int VertexStructSize { get { return VertexBuffer.StructureSize; } }
+        /// <summary>
+        /// Gets or sets the index buffer.
+        /// </summary>
+        /// <value>
+        /// The index buffer.
+        /// </value>
         public IElementsBufferProxy IndexBuffer { private set; get; }
+        /// <summary>
+        /// Gets or sets the topology.
+        /// </summary>
+        /// <value>
+        /// The topology.
+        /// </value>
         public PrimitiveTopology Topology { set; get; }
 
         private Geometry3D geometry = null;
+        /// <summary>
+        /// Gets or sets the geometry.
+        /// </summary>
+        /// <value>
+        /// The geometry.
+        /// </value>
         public Geometry3D Geometry
         {
             set
@@ -50,7 +94,7 @@ namespace HelixToolkit.UWP.Core
                 }
                 VertexChanged = true;
                 IndexChanged = true;
-                InvalidateRenderer?.Invoke(this, true);
+                InvalidateRenderer();
             }
             get
             {
@@ -58,8 +102,15 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        #region Constructors
-        public GeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer)
+        private readonly Dictionary<Guid, HostCounter> attachedHost = new Dictionary<Guid, HostCounter>();
+        #region Constructors        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeometryBufferModel"/> class.
+        /// </summary>
+        /// <param name="topology">The topology.</param>
+        /// <param name="vertexBuffer">The vertex buffer.</param>
+        /// <param name="indexBuffer">The index buffer.</param>
+        protected GeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer)
         {
             Topology = topology;
             VertexBuffer = Collect(vertexBuffer);
@@ -75,21 +126,48 @@ namespace HelixToolkit.UWP.Core
             if (IsVertexBufferChanged(e.PropertyName))
             {
                 VertexChanged = true;
-                InvalidateRenderer?.Invoke(this, true);
+                InvalidateRenderer();
             }
             else if (IsIndexBufferChanged(e.PropertyName))
             {
                 IndexChanged = true;
-                InvalidateRenderer?.Invoke(this, true);
+                InvalidateRenderer();
             }
         }
 
-
+        private void InvalidateRenderer()
+        {
+            foreach(var hostContainer in attachedHost.Values)
+            {
+                IRenderHost h;
+                if(hostContainer.Host.TryGetTarget(out h))
+                {
+                    h.InvalidateRender();
+                }
+                else
+                {
+                    attachedHost.Remove(hostContainer.GUID);
+                }
+            }
+        }
+        /// <summary>
+        /// Determines whether [is vertex buffer changed] [the specified property name].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>
+        ///   <c>true</c> if [is vertex buffer changed] [the specified property name]; otherwise, <c>false</c>.
+        /// </returns>
         protected virtual bool IsVertexBufferChanged(string propertyName)
         {
             return propertyName.Equals(Geometry3D.VertexBuffer) || propertyName.Equals(nameof(Geometry3D.Positions));
         }
-
+        /// <summary>
+        /// Determines whether [is index buffer changed] [the specified property name].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>
+        ///   <c>true</c> if [is index buffer changed] [the specified property name]; otherwise, <c>false</c>.
+        /// </returns>
         protected virtual bool IsIndexBufferChanged(string propertyName)
         {
             return propertyName.Equals(Geometry3D.TriangleBuffer) || propertyName.Equals(nameof(Geometry3D.Indices));
@@ -114,10 +192,27 @@ namespace HelixToolkit.UWP.Core
             }
             return OnAttachBuffer(context, vertexLayout, vertexBufferSlot);
         }
-
+        /// <summary>
+        /// Called when [create vertex buffer].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="geometry">The geometry.</param>
         protected abstract void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry);
+        /// <summary>
+        /// Called when [create index buffer].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="geometry">The geometry.</param>
         protected abstract void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry);
-
+        /// <summary>
+        /// Called when [attach buffer].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="vertexLayout">The vertex layout.</param>
+        /// <param name="vertexBufferSlot">The vertex buffer slot.</param>
+        /// <returns></returns>
         protected virtual bool OnAttachBuffer(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot)
         {
             context.InputAssembler.InputLayout = vertexLayout;
@@ -137,56 +232,81 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
+        /// <summary>
+        /// Attaches the render host.
+        /// </summary>
+        /// <param name="host">The host.</param>
+        public void AttachRenderHost(IRenderHost host)
+        {
+            if (host == null)
+            { return; }
+            HostCounter counter;
+            if (attachedHost.TryGetValue(host.GUID, out counter))
+            {
+                counter.Inc();
+            }
+            else
+            {
+                attachedHost.Add(host.GUID, new HostCounter(host, 1));
+            }
+        }
+
+        public void DetachRenderHost(IRenderHost host)
+        {
+            if (host == null)
+            { return; }
+            HostCounter counter;
+            if (attachedHost.TryGetValue(host.GUID, out counter))
+            {
+                if (counter.Dec() <= 0)
+                {
+                    attachedHost.Remove(host.GUID);
+                }
+            }
+        }
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposeManagedResources)
         {
-            InvalidateRenderer = null;
             Geometry = null;// Release all events
+            attachedHost.Clear();
             base.Dispose(disposeManagedResources);
         }
 
         /// <summary>
-        /// Create mesh geometry buffer model with Topology = TriangleList
+        /// 
         /// </summary>
-        /// <typeparam name="VertexStruct"></typeparam>
-        /// <param name="layout"></param>
-        /// <param name="structSize"></param>
-        /// <returns></returns>
-        public static GeometryBufferModel CreateMeshBufferModel<VertexStruct>(int structSize) where VertexStruct : struct
+        private sealed class HostCounter : IGUID
         {
-            return new MeshGeometryBufferModel<VertexStruct>(structSize);
-        }
-        /// <summary>
-        /// Create line geometry buffer model with Topology = LineList
-        /// </summary>
-        /// <typeparam name="VertexStruct"></typeparam>
-        /// <param name="layout"></param>
-        /// <param name="structSize"></param>
-        /// <returns></returns>
-        public static GeometryBufferModel CreateLineBufferModel<VertexStruct>(int structSize) where VertexStruct : struct
-        {
-            return new LineGeometryBufferModel<VertexStruct>(structSize);
-        }
-        /// <summary>
-        /// Create point geometry buffer model with Topology = PointList
-        /// </summary>
-        /// <typeparam name="VertexStruct"></typeparam>
-        /// <param name="layout"></param>
-        /// <param name="structSize"></param>
-        /// <returns></returns>
-        public static GeometryBufferModel CreatePointBufferModel<VertexStruct>(int structSize) where VertexStruct : struct
-        {
-            return new PointGeometryBufferModel<VertexStruct>(structSize);
-        }
-        /// <summary>
-        /// Create billboard geometry buffer model with Topology = TriangleStrip
-        /// </summary>
-        /// <typeparam name="VertexStruct"></typeparam>
-        /// <param name="layout"></param>
-        /// <param name="structSize"></param>
-        /// <returns></returns>
-        public static GeometryBufferModel CreateBillboardBufferModel<VertexStruct>(int structSize) where VertexStruct : struct
-        {
-            return new BillboardBufferModel<VertexStruct>(structSize);
+            public int RefCount { private set; get; } = 0;
+            public WeakReference<IRenderHost> Host { private set; get; }
+
+            public Guid GUID { private set; get; }
+
+            public HostCounter(IRenderHost host, int initialValue = 0)
+            {
+                Host = new WeakReference<IRenderHost>(host);
+                RefCount = initialValue;
+                GUID = host.GUID;
+            }
+            /// <summary>
+            /// Increment reference.
+            /// </summary>
+            /// <returns></returns>
+            public int Inc()
+            {
+                return ++RefCount;
+            }
+            /// <summary>
+            /// Decrement reference
+            /// </summary>
+            /// <returns></returns>
+            public int Dec()
+            {
+                return --RefCount;
+            }
         }
     }
 }

@@ -2318,6 +2318,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 lastTick = ticks;
                 Viewport.InvalidateRender();
+                this.InvalidateVisual();
             }
             else
             {

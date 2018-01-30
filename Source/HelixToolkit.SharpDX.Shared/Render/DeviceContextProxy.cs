@@ -10,22 +10,36 @@ namespace HelixToolkit.UWP.Render
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
+    using Shaders;
     /// <summary>
     /// 
     /// </summary>
-    public class DeviceContextProxy : DisposeObject
+    public class DeviceContextProxy : DisposeObject, IDeviceContext
     {
         private DeviceContext deviceContext;
         /// <summary>
         /// 
         /// </summary>
         public DeviceContext DeviceContext { get { return deviceContext; } }
-
+        /// <summary>
+        /// Gets or sets the last shader pass.
+        /// </summary>
+        /// <value>
+        /// The last shader pass.
+        /// </value>
+        public IShaderPass LastShaderPass { set; get; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeviceContextProxy"/> class.
+        /// </summary>
+        /// <param name="device">The device.</param>
         public DeviceContextProxy(Device device)
         {
             deviceContext = Collect(new DeviceContext(device));
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeviceContextProxy"/> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
         public DeviceContextProxy(DeviceContext context)
         {
             this.deviceContext = context;

@@ -12,10 +12,10 @@ using HelixToolkit.Wpf.SharpDX.Extensions;
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
-    public abstract class ShapeModel2D : Model2D
+    public abstract class ShapeModel2D : Element2D
     {
         public static DependencyProperty FillProperty 
-            = DependencyProperty.Register("Fill", typeof(Brush), typeof(Model2D), new PropertyMetadata(new SolidColorBrush(Colors.Black), 
+            = DependencyProperty.Register("Fill", typeof(Brush), typeof(ShapeModel2D), new PropertyMetadata(new SolidColorBrush(Colors.Black), 
                 (d,e)=> 
                 {
                     (d as ShapeModel2D).fillChanged = true;
@@ -33,14 +33,14 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
 
-        public static DependencyProperty StrokeProperty
-        = DependencyProperty.Register("Stroke", typeof(Brush), typeof(Model2D), new PropertyMetadata(new SolidColorBrush(Colors.Black),
-            (d, e) =>
-            {
-                (d as ShapeModel2D).strokeChanged = true;
-            }));
-
         #region Stroke properties
+        public static DependencyProperty StrokeProperty
+            = DependencyProperty.Register("Stroke", typeof(Brush), typeof(ShapeModel2D), new PropertyMetadata(new SolidColorBrush(Colors.Black),
+                (d, e) =>
+                {
+                    (d as ShapeModel2D).strokeChanged = true;
+                }));
+
         public Brush Stroke
         {
             set
@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeDashCapProperty
-        = DependencyProperty.Register("StrokeDashCap", typeof(PenLineCap), typeof(Model2D), new PropertyMetadata(PenLineCap.Flat,
+        = DependencyProperty.Register("StrokeDashCap", typeof(PenLineCap), typeof(ShapeModel2D), new PropertyMetadata(PenLineCap.Flat,
             (d, e) =>
             {
                 (d as ShapeModel2D).strokeStyleChanged = true;
@@ -73,7 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeStartLineCapProperty
-            = DependencyProperty.Register("StrokeStartLineCap", typeof(PenLineCap), typeof(Model2D), new PropertyMetadata(PenLineCap.Flat,
+            = DependencyProperty.Register("StrokeStartLineCap", typeof(PenLineCap), typeof(ShapeModel2D), new PropertyMetadata(PenLineCap.Flat,
                 (d, e) =>
                 {
                     (d as ShapeModel2D).strokeStyleChanged = true;
@@ -92,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeEndLineCapProperty
-        = DependencyProperty.Register("StrokeEndLineCap", typeof(PenLineCap), typeof(Model2D), new PropertyMetadata(PenLineCap.Flat,
+        = DependencyProperty.Register("StrokeEndLineCap", typeof(PenLineCap), typeof(ShapeModel2D), new PropertyMetadata(PenLineCap.Flat,
             (d, e) =>
             {
                 (d as ShapeModel2D).strokeStyleChanged = true;
@@ -111,7 +111,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeDashArrayProperty
-            = DependencyProperty.Register("StrokeDashArray", typeof(DoubleCollection), typeof(Model2D), new PropertyMetadata(new DoubleCollection(),
+            = DependencyProperty.Register("StrokeDashArray", typeof(DoubleCollection), typeof(ShapeModel2D), new PropertyMetadata(null,
                 (d, e) =>
                 {
                     (d as ShapeModel2D).strokeStyleChanged = true;
@@ -130,7 +130,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeDashOffsetProperty
-            = DependencyProperty.Register("StrokeDashOffset", typeof(double), typeof(Model2D), new PropertyMetadata(0.0,
+            = DependencyProperty.Register("StrokeDashOffset", typeof(double), typeof(ShapeModel2D), new PropertyMetadata(0.0,
                 (d, e) =>
                 {
                     (d as ShapeModel2D).strokeStyleChanged = true;
@@ -149,7 +149,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeLineJoinProperty
-        = DependencyProperty.Register("StrokeLineJoin", typeof(PenLineJoin), typeof(Model2D), new PropertyMetadata(PenLineJoin.Bevel,
+        = DependencyProperty.Register("StrokeLineJoin", typeof(PenLineJoin), typeof(ShapeModel2D), new PropertyMetadata(PenLineJoin.Bevel,
             (d, e) =>
             {
                 (d as ShapeModel2D).strokeStyleChanged = true;
@@ -169,7 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeMiterLimitProperty
-            = DependencyProperty.Register("StrokeMiterLimit", typeof(double), typeof(Model2D), new PropertyMetadata(1.0,
+            = DependencyProperty.Register("StrokeMiterLimit", typeof(double), typeof(ShapeModel2D), new PropertyMetadata(1.0,
                 (d, e) =>
                 {
                     (d as ShapeModel2D).strokeStyleChanged = true;
@@ -188,15 +188,15 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeThicknessProperty
-            = DependencyProperty.Register("StrokeThickness", typeof(int), typeof(Model2D), new PropertyMetadata(1,
+            = DependencyProperty.Register("StrokeThickness", typeof(double), typeof(ShapeModel2D), new PropertyMetadata(1.0,
                 (d, e) =>
                 {
                     if((d as ShapeModel2D).shapeRenderable == null)
                     { return; }   
-                    (d as ShapeModel2D).shapeRenderable.StrokeWidth = Math.Max(0, (int)e.NewValue);
+                    (d as ShapeModel2D).shapeRenderable.StrokeWidth = (float)Math.Max(0, (double)e.NewValue);
                 }));
 
-        public int StrokeThickness
+        public double StrokeThickness
         {
             set
             {
@@ -204,52 +204,78 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
             get
             {
-                return (int)GetValue(StrokeThicknessProperty);
+                return (double)GetValue(StrokeThicknessProperty);
             }
         }
+
+
+        public DashStyle DashStyle
+        {
+            get { return (DashStyle)GetValue(DashStyleProperty); }
+            set { SetValue(DashStyleProperty, value); }
+        }
+
+        public static readonly DependencyProperty DashStyleProperty =
+            DependencyProperty.Register("DashStyle", typeof(DashStyle), typeof(ShapeModel2D), new PropertyMetadata(DashStyles.Solid,
+                (d,e)=> {
+                    (d as ShapeModel2D).strokeStyleChanged = true;
+                }));
+
+
         #endregion
 
         private bool fillChanged = true;
         private bool strokeChanged = true;
         private bool strokeStyleChanged = true;
 
-        protected ShapeRenderable2DBase shapeRenderable;
+        protected ShapeRenderCore2DBase shapeRenderable;
 
-        protected sealed override IRenderable2D CreateRenderCore(IDevice2DProxy host)
+
+        protected override IRenderCore2D CreateRenderCore()
         {
-            shapeRenderable = CreateShapeRenderCore(host);
+            shapeRenderable = CreateShapeRenderCore();
             AssignProperties();
             return shapeRenderable;
         }
 
-        protected abstract ShapeRenderable2DBase CreateShapeRenderCore(IDevice2DProxy host);
+        protected abstract ShapeRenderCore2DBase CreateShapeRenderCore();
+
+        protected override bool OnAttach(IRenderHost host)
+        {
+            if (base.OnAttach(host))
+            {
+                fillChanged = true;
+                strokeChanged = true;
+                strokeStyleChanged = true;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         protected virtual void AssignProperties()
         {
-            shapeRenderable.StrokeWidth = StrokeThickness;
+            shapeRenderable.StrokeWidth = (float)StrokeThickness;
         }
 
-        protected override void OnRenderTargetChanged(D2D.RenderTarget newTarget)
+        public override void Update(IRenderContext2D context)
         {
-            fillChanged = strokeChanged = strokeStyleChanged = true;
-        }
-
-        protected override void PreRender(IRenderContext2D context)
-        {
-            base.PreRender(context);
+            base.Update(context);
             if (fillChanged)
             {
-                shapeRenderable.FillBrush = Fill.ToD2DBrush(RenderTarget);
+                shapeRenderable.FillBrush = Fill.ToD2DBrush(context.DeviceContext);
                 fillChanged = false;
             }
             if (strokeChanged)
             {
-                shapeRenderable.StrokeBrush = Stroke.ToD2DBrush(RenderTarget);
+                shapeRenderable.StrokeBrush = Stroke.ToD2DBrush(context.DeviceContext);
                 strokeChanged = false;
             }
             if (strokeStyleChanged)
             {
-                shapeRenderable.StrokeStyle = new D2D.StrokeStyle(RenderTarget.Factory,
+                shapeRenderable.StrokeStyle = new D2D.StrokeStyle(context.DeviceContext.Factory,
                     new D2D.StrokeStyleProperties()
                     {
                         DashCap = this.StrokeDashCap.ToD2DCapStyle(),
@@ -258,9 +284,9 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                         DashOffset = (float)StrokeDashOffset,
                         LineJoin = StrokeLineJoin.ToD2DLineJoin(),
                         MiterLimit = Math.Max(1, (float)StrokeMiterLimit),
-                        DashStyle = D2D.DashStyle.Dash
-                    }, 
-                    StrokeDashArray.Select(x=>(float)x).ToArray());
+                        DashStyle = DashStyle.ToD2DDashStyle()
+                    },
+                    StrokeDashArray == null ? new float[0] : StrokeDashArray.Select(x=>(float)x).ToArray());
                 strokeStyleChanged = false;
             }
         }

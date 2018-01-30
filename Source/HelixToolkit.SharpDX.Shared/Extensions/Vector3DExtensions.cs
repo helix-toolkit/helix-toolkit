@@ -467,5 +467,106 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return new Vector3(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y), Math.Max(a.Z, b.Z));
         }
+        /// <summary>
+        /// To the vector2.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 ToVector2(this Size2F s)
+        {
+            return new Vector2(s.Width, s.Height);
+        }
+        /// <summary>
+        /// To the vector2.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 ToVector2(this Size2 s)
+        {
+            return new Vector2(s.Width, s.Height);
+        }
+        /// <summary>
+        /// To the size2 f.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Size2F ToSize2F(this Vector2 s)
+        {
+            return new Size2F(s.X, s.Y);
+        }
+        /// <summary>
+        /// To the size2.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Size2 ToSize2(this Vector2 s)
+        {
+            return new Size2((int)s.X, (int)s.Y);
+        }
+        /// <summary>
+        /// To the rectangle f.
+        /// </summary>
+        /// <param name="v">The v.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RectangleF ToRectangleF(this Vector2 v)
+        {
+            return new RectangleF(0, 0, v.X, v.Y);
+        }
+        /// <summary>
+        /// To the rectangle.
+        /// </summary>
+        /// <param name="v">The v.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Rectangle ToRectangle(this Vector2 v)
+        {
+            return new Rectangle(0, 0, (int)v.X, (int)v.Y);
+        }
+
+        /// <summary>
+        /// To the rectangle f.
+        /// </summary>
+        /// <param name="v">The v.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 ToVector2(this RectangleF v)
+        {
+            return new Vector2(v.Width, v.Height);
+        }
+        /// <summary>
+        /// To the rectangle.
+        /// </summary>
+        /// <param name="v">The v.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 ToRectangle(this Rectangle v)
+        {
+            return new Vector2(v.Width, v.Height);
+        }
+        /// <summary>
+        /// To the size f.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Size2F ToSizeF(this Size2 s)
+        {
+            return new Size2F(s.Width, s.Height);
+        }
+        /// <summary>
+        /// To the size2.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Size2 ToSize2(this Size2F s)
+        {
+            return new Size2((int)s.Width, (int)s.Height);
+        }
     }
 }

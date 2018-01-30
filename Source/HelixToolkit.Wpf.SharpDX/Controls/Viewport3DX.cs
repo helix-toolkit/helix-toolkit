@@ -9,7 +9,13 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Controls;
+    using Elements2D;
+    using HelixToolkit.Wpf;
+    using HelixToolkit.Wpf.SharpDX.Cameras;
+    using HelixToolkit.Wpf.SharpDX.Utilities;
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
@@ -21,18 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media;
     using System.Windows.Media.Animation;
     using System.Windows.Media.Media3D;
-
-    using HelixToolkit.Wpf;
-    using HelixToolkit.Wpf.SharpDX.Utilities;
-
     using MouseButtons = System.Windows.Forms.MouseButtons;
-    using System.Collections;
-    using System.Collections.Generic;
-    using Controls;
-    using Elements2D;
-    using Model;
-    using HelixToolkit.Wpf.SharpDX.Cameras;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -159,7 +154,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             private set
             {
-                if(mouseOverModel2D == value) { return; }
+                if (mouseOverModel2D == value) { return; }
                 mouseOverModel2D?.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseLeave2DEvent, mouseOverModel2D, this));
                 mouseOverModel2D = value;
                 mouseOverModel2D?.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseEnter2DEvent, mouseOverModel2D, this));
@@ -226,9 +221,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         yield return item;
                     }
-                    if(renderHostInternal.EnableSharingModelMode && renderHostInternal.SharedModelContainer != null)
+                    if (renderHostInternal.EnableSharingModelMode && renderHostInternal.SharedModelContainer != null)
                     {
-                        foreach(var item in renderHostInternal.SharedModelContainer.Renderables)
+                        foreach (var item in renderHostInternal.SharedModelContainer.Renderables)
                         {
                             yield return item;
                         }
@@ -239,17 +234,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public IEnumerable<IRenderable> D2DRenderables
+        public IEnumerable<IRenderable2D> D2DRenderables
         {
             get
             {
-                if (renderHostInternal != null && Items2D != null)
-                {
-                    foreach(IRenderable item in Items2D.Items)
-                    {
-                        yield return item;
-                    }
-                }
+                return Enumerable.Repeat<IRenderable2D>(overlay2D, 1);
             }
         }
 
@@ -258,6 +247,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public IRenderHost RenderHost { get { return this.renderHostInternal; } }
 
         private Window parentWindow;
+
+        private Overlay overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
@@ -273,7 +264,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public Viewport3DX()
         {
             FpsCounter = new FpsCounter();
-            Items2D = new Canvas2D();
             this.perspectiveCamera = new PerspectiveCamera();
             this.orthographicCamera = new OrthographicCamera();
             this.perspectiveCamera.Reset();
@@ -318,6 +308,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Unloaded += this.ControlUnloaded;            
 
             AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
+
+            AddLogicalChild(overlay2D);
         }
 
         /// <summary>
@@ -812,9 +804,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 e.Attach(host);
             }
-            if (this.Items2D != null)
+            foreach(IRenderable2D e in this.D2DRenderables)
             {
-                this.Items2D.Attach(host);
+                e.Attach(host);
             }
             StopWatch.Start();
         }
@@ -828,9 +820,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 e.Detach();
             }
-            if (this.Items2D != null)
+            foreach(IRenderable2D e in this.D2DRenderables)
             {
-                this.Items2D.Detach();
+                e.Detach();
             }
         }
 
@@ -1607,13 +1599,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseDownHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
-            if (Items2D != null)
+            if (overlay2D.HitTest(pt.ToVector2(), out currentHit2D))
             {
-                if (Items2D.HitTest(pt.ToVector2(), out currentHit2D))
+                if(currentHit2D.ModelHit is Element2D e)
                 {
-                    currentHit2D.ModelHit.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseDown2DEvent, currentHit2D.ModelHit, currentHit2D, pt, this, originalInputEventArgs));
-                    return;
+                    e.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseDown2DEvent, currentHit2D.ModelHit, currentHit2D, pt, this, originalInputEventArgs));
                 }
+                return;
             }
             if (!EnableMouseButtonHitTest)
             {
@@ -1654,19 +1646,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseMoveHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
-            if (Items2D != null)
+            HitTest2DResult hit2D;
+            if (overlay2D.HitTest(pt.ToVector2(), out hit2D))
             {
-                HitTest2DResult hit2D;
-                if (Items2D.HitTest(pt.ToVector2(), out hit2D))
+                if(hit2D.ModelHit is Element2D e)
                 {
-                    MouseOverModel2D = hit2D.ModelHit;
-                    hit2D.ModelHit.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseMove2DEvent, hit2D.ModelHit, hit2D, pt, this, originalInputEventArgs));
-                    return;
+                    MouseOverModel2D = e;
+                    e.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseMove2DEvent, hit2D.ModelHit, hit2D, pt, this, originalInputEventArgs));
+                    //Debug.WriteLine("hit 2D, name="+e.Name);
                 }
-                else
-                {
-                    MouseOverModel2D = null;
-                }
+                return;
+            }
+            else
+            {
+                MouseOverModel2D = null;
             }
             if (this.currentHit != null)
             {
@@ -1691,7 +1684,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (currentHit2D != null)
             {
-                currentHit2D.ModelHit.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseUp2DEvent, currentHit2D.ModelHit, currentHit2D, pt, this, originalInputEventArgs));
+                if (currentHit2D.ModelHit is Element2D element)
+                {
+                    element.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseUp2DEvent, currentHit2D.ModelHit, currentHit2D, pt, this, originalInputEventArgs));
+                }
                 currentHit2D = null;
             }
 

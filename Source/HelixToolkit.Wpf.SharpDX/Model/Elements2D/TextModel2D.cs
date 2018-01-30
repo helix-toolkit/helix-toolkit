@@ -1,17 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HelixToolkit.Wpf.SharpDX.Extensions;
 using System.Windows;
 using System.Windows.Media;
-using D2D = SharpDX.Direct2D1;
+using System.ComponentModel;
+using System.Windows.Markup;
+using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
-    public class TextModel2D : Model2D
+    using Utilities;    
+    using Extensions;
+
+    [ContentProperty("Text")]
+    public class TextModel2D : Element2D, ITextBlock
     {
         public static readonly string DefaultFont = "Arial";
 
@@ -42,7 +43,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 new PropertyMetadata(new SolidColorBrush(Colors.Black), (d, e) =>
                 {
                     var model = (d as TextModel2D);
-                    if (model.textRenderable == null) { return; }
                     model.foregroundChanged = true;
                 }));
 
@@ -55,6 +55,26 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             get
             {
                 return (Brush)GetValue(ForegroundProperty);
+            }
+        }
+
+        public static readonly DependencyProperty BackgroundProperty
+            = DependencyProperty.Register("Background", typeof(Brush), typeof(TextModel2D),
+                new PropertyMetadata(null, (d, e) =>
+            {
+                var model = (d as TextModel2D);
+                model.backgroundChanged = true;
+            }));
+
+        public Brush Background
+        {
+            set
+            {
+                SetValue(BackgroundProperty, value);
+            }
+            get
+            {
+                return (Brush)GetValue(BackgroundProperty);
             }
         }
 
@@ -142,30 +162,44 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
 
-        private TextRenderable textRenderable;
-        protected bool foregroundChanged = true;
+        private TextRenderCore2D textRenderable;
+        private bool foregroundChanged = true;
+        private bool backgroundChanged = true;
 
-        protected override IRenderable2D CreateRenderCore(IDevice2DProxy host)
+        protected override IRenderCore2D CreateRenderCore()
         {
-            textRenderable = new TextRenderable();
+            textRenderable = new TextRenderCore2D();
             AssignProperties();
             return textRenderable;
         }
 
-        protected override void OnRenderTargetChanged(D2D.RenderTarget newTarget)
+        protected override bool OnAttach(IRenderHost host)
         {
-            foregroundChanged = true;
+            if (base.OnAttach(host))
+            {
+                foregroundChanged = true;
+                backgroundChanged = true;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        protected override void PreRender(IRenderContext2D context)
+        public override void Update(IRenderContext2D context)
         {
-            base.PreRender(context);
+            base.Update(context);
             if (foregroundChanged)
             {
-                textRenderable.Foreground = Foreground.ToD2DBrush(RenderTarget);
+                textRenderable.Foreground = Foreground != null ? Foreground.ToD2DBrush(context.DeviceContext) : null;
+                foregroundChanged = false;
             }
-            textRenderable.Bound = this.Bound;
-            textRenderable.Transform = TransformMatrix; 
+            if (backgroundChanged)
+            {
+                textRenderable.Background = Background != null ? Background.ToD2DBrush(context.DeviceContext) : null;
+                backgroundChanged = false;
+            }
         }
 
         protected virtual void AssignProperties()
@@ -178,10 +212,34 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             textRenderable.FontSize = FontSize;
         }
 
-        protected override void OnDetach()
+        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
-            foregroundChanged = true;
-            base.OnDetach();
+            hitResult = null;
+            if (LayoutBoundWithTransform.Contains(mousePoint))
+            {
+                hitResult = new HitTest2DResult(this);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        protected override Size2F MeasureOverride(Size2F availableSize)
+        {
+            textRenderable.MaxWidth = availableSize.Width;
+            textRenderable.MaxHeight = availableSize.Height;
+            var metrices = textRenderable.Metrices;
+            return new Size2F(metrices.WidthIncludingTrailingWhitespace, metrices.Height);
+        }
+
+        protected override RectangleF ArrangeOverride(RectangleF finalSize)
+        {
+            textRenderable.MaxWidth = finalSize.Width;
+            textRenderable.MaxHeight = finalSize.Height;
+            var metrices = textRenderable.Metrices;
+            return finalSize;
         }
     }
 }

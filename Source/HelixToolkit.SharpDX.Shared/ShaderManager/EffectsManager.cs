@@ -17,11 +17,15 @@ namespace HelixToolkit.UWP
     using global::SharpDX.DXGI;
     using Shaders;
     using ShaderManager;
+    using Core;
     /// <summary>
     /// Shader and Technique manager
     /// </summary>
     public abstract class EffectsManager : DisposeObject, IEffectsManager
     {
+        /// <summary>
+        /// Occurs when [on dispose resources].
+        /// </summary>
         public event EventHandler<bool> OnDisposeResources;
         /// <summary>
         /// The minimum supported feature level.
@@ -52,11 +56,39 @@ namespace HelixToolkit.UWP
         /// </summary>
         public IStatePoolManager StateManager { get { return statePoolManager; } }
 
+        /// <summary>
+        /// Gets the geometry buffer manager.
+        /// </summary>
+        /// <value>
+        /// The geometry buffer manager.
+        /// </value>
+        public IGeometryBufferManager GeometryBufferManager { get { return geometryBufferManager; } }
+
+        private IGeometryBufferManager geometryBufferManager;
+
         private global::SharpDX.Direct3D11.Device device;
         /// <summary>
         /// 
         /// </summary>
         public global::SharpDX.Direct3D11.Device Device { get { return device; } }
+
+        private global::SharpDX.Direct2D1.Device device2D;
+        /// <summary>
+        /// Gets the device2 d.
+        /// </summary>
+        /// <value>
+        /// The device2 d.
+        /// </value>
+        public global::SharpDX.Direct2D1.Device Device2D { get { return device2D; } }
+
+        private global::SharpDX.Direct2D1.DeviceContext deviceContext2D;
+        /// <summary>
+        /// Gets or sets the device2 d context.
+        /// </summary>
+        /// <value>
+        /// The device2 d context.
+        /// </value>
+        public global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get { return deviceContext2D; } }
         /// <summary>
         /// 
         /// </summary>
@@ -124,6 +156,8 @@ namespace HelixToolkit.UWP
             RemoveAndDispose(ref statePoolManager);
             statePoolManager = Collect(new StatePoolManager(Device));
 
+            RemoveAndDispose(ref geometryBufferManager);
+            geometryBufferManager = Collect(new GeometryBufferManager());
 #endregion
 #region Initial Techniques
             var techniqueDescs = LoadTechniqueDescriptions();
@@ -131,7 +165,17 @@ namespace HelixToolkit.UWP
             {
                 AddTechnique(tech);
             }
-#endregion
+            #endregion
+
+            using (var factory = new global::SharpDX.Direct2D1.Factory1())
+            {
+                using (var dxgiDevice2 = device.QueryInterface<global::SharpDX.DXGI.Device>())
+                {
+                    device2D = Collect(new global::SharpDX.Direct2D1.Device(factory, dxgiDevice2));
+                    deviceContext2D = Collect(new global::SharpDX.Direct2D1.DeviceContext(device2D, global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations));
+                }
+            }
+
             Initialized = true;
         }
         /// <summary>

@@ -1,45 +1,48 @@
-﻿using SharpDX;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#if DEBUG
+//#define DEBUGMOUSEEVENT
+#endif
+using SharpDX;
 using System.Windows;
 using System.Windows.Input;
+using Media = System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
-    public abstract class Element2D : FrameworkContentElement, IDisposable, IRenderable2D, IGUID, IHitable2D
+    using System;
+    using System.Diagnostics;
+
+    public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     {
         #region Dependency Properties
         /// <summary>
-        /// Indicates, if this element should be rendered,
-        /// default is true
+        /// 
         /// </summary>
-        public static readonly DependencyProperty IsRenderingProperty =
-            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element2D), new PropertyMetadata(true,
-                (d, e) =>
-                {
-                    (d as Element2D).isRenderingInternal = (bool)e.NewValue;
-                }));
+        public static readonly DependencyProperty VisibilityProperty =
+            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element2D), new PropertyMetadata(Visibility.Visible, (d, e) =>
+            {
+                (d as Element2DCore).VisibilityInternal = (Visibility)e.NewValue;
+            }));
 
         /// <summary>
-        /// Indicates, if this element should be rendered.
-        /// Use this also to make the model visible/unvisible
-        /// default is true
+        /// 
         /// </summary>
-        public bool IsRendering
+        public Visibility Visibility
         {
-            get { return (bool)GetValue(IsRenderingProperty); }
-            set { SetValue(IsRenderingProperty, value); }
+            set
+            {
+                SetValue(VisibilityProperty, value);
+            }
+            get
+            {
+                return (Visibility)GetValue(VisibilityProperty);
+            }
         }
 
         public static readonly DependencyProperty IsHitTestVisibleProperty =
-            DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element2D), new PropertyMetadata(true, (d, e) =>
+            DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element2D), new PropertyMetadata(true, (d,e)=> 
             {
-                (d as Element2D).isHitTestVisibleInternal = (bool)e.NewValue;
+                (d as Element2DCore).IsHitTestVisibleInternal = (bool)e.NewValue;
             }));
 
         public bool IsHitTestVisible
@@ -55,11 +58,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public new static readonly DependencyProperty IsMouseOverProperty =
-            DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D), new PropertyMetadata(false, (d, e) =>
+            DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D),
+                new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender, (d, e) =>
             {
                 var model = d as Element2D;
-                if(model.renderCore == null) { return; }
-                model.renderCore.IsMouseOver = (bool)e.NewValue;
+                model.RenderCore.IsMouseOver = (bool)e.NewValue;
+                model.OnMouseOverChanged((bool)e.NewValue, (bool)e.OldValue);
             }));
 
         public new bool IsMouseOver
@@ -69,7 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(Element2D),
-            new PropertyMetadata(100.0));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).WidthInternal = (float)(double)e.NewValue; }));
 
         public double Width
         {
@@ -84,7 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(double), typeof(Element2D),
-            new PropertyMetadata(100.0));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).HeightInternal = (float)(double)e.NewValue; }));
 
         public double Height
         {
@@ -97,69 +101,157 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 return (double)GetValue(HeightProperty);
             }
         }
-        #endregion
-        private readonly Guid guid = Guid.NewGuid();
 
-        public Guid GUID { get { return guid; } }
+        public static readonly DependencyProperty MinimumWidthProperty = DependencyProperty.Register("MinimumWidth", typeof(double), typeof(Element2D),
+            new PropertyMetadata(0.0, (d, e) => { (d as Element2DCore).MinimumWidthInternal = (float)(double)e.NewValue; }));
 
-        protected bool isRenderingInternal { private set; get; } = true;
-
-        protected bool isHitTestVisibleInternal { private set; get; } = true;
-
-        public bool IsAttached { private set; get; }
-
-        public RectangleF Bound
+        public double MinimumWidth
         {
-            set { }
-            get { return new RectangleF(layoutTranslate.X, layoutTranslate.Y, (float)Width, (float)Height); }
+            set
+            {
+                SetValue(MinimumWidthProperty, value);
+            }
+            get
+            {
+                return (double)GetValue(MinimumWidthProperty);
+            }
         }
 
-        private readonly Stack<Vector2> layoutTranslateStack = new Stack<Vector2>();
-        private Vector2 layoutTranslate = Vector2.Zero;
+        public static readonly DependencyProperty MinimumHeightProperty = DependencyProperty.Register("MinimumHeight", typeof(double), typeof(Element2D),
+            new PropertyMetadata(0.0, (d, e) => { (d as Element2DCore).MinimumHeightInternal = (float)(double)e.NewValue; }));
+
+        public double MinimumHeight
+        {
+            set
+            {
+                SetValue(MinimumHeightProperty, value);
+            }
+            get
+            {
+                return (double)GetValue(MinimumHeightProperty);
+            }
+        }
+
+        public static readonly DependencyProperty MaximumWidthProperty = DependencyProperty.Register("MaximumWidth", typeof(double), typeof(Element2D),
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).MaximumWidthInternal = (float)(double)e.NewValue; }));
+
+        public double MaximumWidth
+        {
+            set
+            {
+                SetValue(MaximumWidthProperty, value);
+            }
+            get
+            {
+                return (double)GetValue(MaximumWidthProperty);
+            }
+        }
+
+        public static readonly DependencyProperty MaximumHeightProperty = DependencyProperty.Register("MaximumHeight", typeof(double), typeof(Element2D),
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).MaximumHeightInternal = (float)(double)e.NewValue; }));
+
+        public double MaximumHeight
+        {
+            set
+            {
+                SetValue(MaximumHeightProperty, value);
+            }
+            get
+            {
+                return (double)GetValue(MaximumHeightProperty);
+            }
+        }
+
+
+
+        public HorizontalAlignment HorizontalAlignment
+        {
+            get { return (HorizontalAlignment)GetValue(HorizontalAlignmentProperty); }
+            set { SetValue(HorizontalAlignmentProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty HorizontalAlignmentProperty =
+            DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(Element2D), 
+                new PropertyMetadata(HorizontalAlignment.Stretch, (d, e) => { (d as Element2DCore).HorizontalAlignmentInternal = (HorizontalAlignment)e.NewValue; }));
+
+
+
+        public VerticalAlignment VerticalAlignment
+        {
+            get { return (VerticalAlignment)GetValue(VerticalAlignmentProperty); }
+            set { SetValue(VerticalAlignmentProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty VerticalAlignmentProperty =
+            DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(Element2D), 
+                new PropertyMetadata(VerticalAlignment.Stretch, (d, e) => { (d as Element2DCore).VerticalAlignmentInternal = (VerticalAlignment)e.NewValue; }));
+
+
+
+
+        public Thickness Margin
+        {
+            get { return (Thickness)GetValue(MarginProperty); }
+            set { SetValue(MarginProperty, value); }
+        }
+
+        public static readonly DependencyProperty MarginProperty =
+            DependencyProperty.Register("Margin", typeof(Thickness), typeof(Element2D), new PropertyMetadata(new Thickness(), 
+                (d, e) => {
+                    (d as Element2DCore).MarginInternal = (Thickness)e.NewValue;
+                }));
+
+        public static readonly DependencyProperty TransformProperty =
+            DependencyProperty.Register("Transform", typeof(Media.Transform), typeof(Element2D), new PropertyMetadata(Media.Transform.Identity, (d, e) =>
+            {
+                (d as Element2DCore).ModelMatrix = e.NewValue == null ? Matrix3x2.Identity : ((Media.Transform)e.NewValue).Value.ToMatrix3x2();
+            }));
+
         /// <summary>
-        /// Layout Translation matrix. Layout only allows translation
+        /// Render transform
         /// </summary>
-        public Vector2 LayoutTranslate
+        public Media.Transform Transform
         {
-            set
-            {
-                if (layoutTranslate != value)
-                {
-                    layoutTranslate = value;
-                    layoutTranslationChanged = true;
-                }
-            }
             get
             {
-                return this.layoutTranslate;
+                return (Media.Transform)GetValue(TransformProperty);
+            }
+
+            set
+            {
+                SetValue(TransformProperty, value);
             }
         }
 
-        private bool layoutTranslationChanged { set; get; } = true;
 
-        private global::SharpDX.Direct2D1.RenderTarget renderTarget = null;
-        protected global::SharpDX.Direct2D1.RenderTarget RenderTarget
+
+        public System.Windows.Point RenderTransformOrigin
         {
-            set
-            {
-                if (renderTarget != value)
-                {
-                    renderTarget = value;
-                    OnRenderTargetChanged(value);
-                }
-            }
-            get
-            {
-                return renderTarget;
-            }
+            get { return (System.Windows.Point)GetValue(RenderTransformOriginProperty); }
+            set { SetValue(RenderTransformOriginProperty, value); }
         }
 
-        private IRenderable2D renderCore;
-        protected IRenderable2D RenderCore { get { return renderCore; } }
+        public static readonly DependencyProperty RenderTransformOriginProperty =
+            DependencyProperty.Register("RenderTransformOrigin", typeof(System.Windows.Point), typeof(Element2D), new PropertyMetadata(new System.Windows.Point(0.5,0.5),
+                (d,e)=> {
+                    (d as Element2DCore).RenderTransformOriginInternal = ((System.Windows.Point)e.NewValue).ToVector2();
+                }));
 
-        protected IRenderHost renderHost;
+        public bool EnableBitmapCache
+        {
+            get { return (bool)GetValue(EnableBitmapCacheProperty); }
+            set { SetValue(EnableBitmapCacheProperty, value); }
+        }
 
-        protected abstract IRenderable2D CreateRenderCore(IDevice2DProxy host);
+        public static readonly DependencyProperty EnableBitmapCacheProperty =
+            DependencyProperty.Register("EnableBitmapCache", typeof(bool), typeof(Element2D),
+                new PropertyMetadata(false, (d,e)=> { (d as Element2DCore).EnableBitmapCacheInternal = (bool)e.NewValue; }));
+
+
+        #endregion
+
 
         #region Events
         public delegate void Mouse2DRoutedEventHandler(object sender, Mouse2DEventArgs e);
@@ -209,169 +301,87 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
         #endregion
 
-        /// <summary>
-        /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
-        /// <para>To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/></para>
-        /// <para>Attach Flow: <see cref="SetRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttached"/> -> <see cref="InvalidateRender"/></para>
-        /// </summary>
-        /// <param name="host">The host.</param>
-        public void Attach(IRenderHost host)
+
+        public Element2D()
         {
-            if (IsAttached || host == null)
-            {
-                return;
-            }
-            renderHost = host;
-            IsAttached = OnAttach(host);
-            if (IsAttached)
-            {
-                this.MouseEnter2D += Element2D_MouseEnter2D;
-                this.MouseLeave2D += Element2D_MouseLeave2D;
-                OnAttached();
-            }
-            InvalidateRender();
+            VisibilityInternal = Visibility;
+            IsHitTestVisibleInternal = IsHitTestVisible;
+            WidthInternal = (float)Width;
+            HeightInternal = (float)Height;
+            MinimumWidthInternal = (float)MinimumWidth;
+            MaximumWidthInternal = MaximumWidth == double.PositiveInfinity ? float.PositiveInfinity : (float)MaximumWidth;
+            MaximumHeightInternal = MaximumHeight == double.PositiveInfinity ? float.PositiveInfinity : (float)MaximumHeight;
+            MinimumHeightInternal = (float)MinimumHeight;
+            HorizontalAlignmentInternal = HorizontalAlignment;
+            VerticalAlignmentInternal = VerticalAlignment;
+            MarginInternal = Margin;
+            EnableBitmapCacheInternal = EnableBitmapCache;
         }
 
-        /// <summary>
-        /// Called after <see cref="OnAttach(IRenderHost)"/>
-        /// </summary>
-        protected virtual void OnAttached()
-        {
-
-        }
 
         protected virtual void Element2D_MouseLeave2D(object sender, RoutedEventArgs e)
         {
-            if (renderCore == null) { return; }
+            if (!IsAttached) { return; }            
             IsMouseOver = false;
-#if DEBUG
-            //Debug.WriteLine("Element2D_MouseLeave2D");
+#if DEBUGMOUSEEVENT
+            Console.WriteLine("Element2D_MouseLeave2D");
 #endif
         }
 
         protected virtual void Element2D_MouseEnter2D(object sender, RoutedEventArgs e)
         {
-            if (renderCore == null) { return; }
+            if (!IsAttached) { return; }
             IsMouseOver = true;
-#if DEBUG
-            //Debug.WriteLine("Element2D_MouseEnter2D");
+#if DEBUGMOUSEEVENT
+            Console.WriteLine("Element2D_MouseEnter2D");
 #endif
         }
 
-        /// <summary>
-        /// To override Attach routine, please override this.
-        /// </summary>
-        /// <param name="host"></param>       
-        /// <returns>Return true if attached</returns>
-        protected virtual bool OnAttach(IRenderHost host)
+        protected override bool OnAttach(IRenderHost host)
         {
-            renderCore = CreateRenderCore(host.D2DTarget);
-            return true;
+            if (base.OnAttach(host))
+            {
+                this.MouseEnter2D += Element2D_MouseEnter2D;
+                this.MouseLeave2D += Element2D_MouseLeave2D;
+                return true;
+            }
+            else { return false; }
         }
 
-        protected abstract void OnRenderTargetChanged(global::SharpDX.Direct2D1.RenderTarget newTarget);
 
-        public virtual void Dispose()
-        {
-            Detach();
-        }
-
-        public void Detach()
+        protected override void OnDetach()
         {
             this.MouseEnter2D -= Element2D_MouseEnter2D;
             this.MouseLeave2D -= Element2D_MouseLeave2D;
             OnDetach();
         }
 
-        /// <summary>
-        /// Used to override Detach
-        /// </summary>
-        protected virtual void OnDetach()
+        protected virtual void OnMouseOverChanged(bool newValue, bool oldValue)
         {
-            Disposer.RemoveAndDispose(ref renderCore);
+#if DEBUGMOUSEEVENT
+            Debug.WriteLine("OnMouseOverChanged:"+newValue);
+#endif
         }
 
-        public void PushLayoutTranslate(Vector2 v)
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-            layoutTranslateStack.Push(layoutTranslate);
-            layoutTranslate = layoutTranslate + v;
-        }
-
-        public void PopLayoutTranslate()
-        {
-            layoutTranslate = layoutTranslateStack.Pop();
-        }
-
-        /// <summary>
-        /// <para>Determine if this can be rendered.</para>
-        /// <para>Default returns <see cref="IsAttached"/> &amp;&amp; <see cref="IsRendering"/> &amp;&amp; <see cref="Visibility"/> == <see cref="Visibility.Visible"/></para>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected virtual bool CanRender(IRenderContext2D context)
-        {
-            return IsAttached && isRenderingInternal && renderCore != null;
-        }
-        /// <summary>
-        /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
-        /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public void Render(IRenderContext2D context)
-        {
-            if (CanRender(context))
+            var pm = e.Property.GetMetadata(this);
+            if(pm is FrameworkPropertyMetadata fm)
             {
-                if (layoutTranslationChanged)
+                if (fm.AffectsMeasure)
                 {
-                    OnLayoutTranslationChanged(layoutTranslate);
-                    layoutTranslationChanged = false;
+                    InvalidateMeasure();
                 }
-                PreRender(context);
-                OnRender(context);
+                else if (fm.AffectsArrange)
+                {
+                    InvalidateArrange();
+                }
+                if (fm.AffectsRender)
+                {
+                    InvalidateVisual();
+                }
             }
-        }
-
-        /// <summary>
-        /// Used to overriding <see cref="Render"/> routine.
-        /// </summary>
-        /// <param name="context"></param>
-        protected virtual void OnRender(IRenderContext2D context)
-        {
-            renderCore.Render(context);
-        }
-
-        protected virtual void PreRender(IRenderContext2D context)
-        {
-            if (renderCore != null)
-            {
-                renderCore.Bound = this.Bound;
-            }
-        }
-
-        public bool HitTest(Vector2 mousePoint, out HitTest2DResult hitResult)
-        {      
-            if (!IsHitTestVisible || !IsAttached)
-            {
-                hitResult = null;
-                return false;
-            }
-            return OnHitTest(ref mousePoint, out hitResult);
-        }
-
-        protected abstract bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult);
-
-        
-        protected virtual void OnLayoutTranslationChanged(Vector2 translation)
-        {
-
-        }
-
-        /// <summary>
-        /// Tries to invalidate the current render.
-        /// </summary>
-        public void InvalidateRender()
-        {
-            renderHost?.InvalidateRender();
+            base.OnPropertyChanged(e);
         }
     }
 

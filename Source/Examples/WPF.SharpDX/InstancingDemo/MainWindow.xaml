@@ -52,7 +52,6 @@
                 InstanceParamArray="{Binding InstanceParam}"
                 Instances="{Binding ModelInstances}"
                 Material="{Binding ModelMaterial}"
-                ReuseVertexArrayBuffer="True"
                 Transform="{Binding ModelTransform}">
                 <hx:InstancingMeshGeometryModel3D.OctreeManager>
                     <hx:InstancingModel3DOctreeManager x:Name="manager" RecordHitPathBoundingBoxes="True" />

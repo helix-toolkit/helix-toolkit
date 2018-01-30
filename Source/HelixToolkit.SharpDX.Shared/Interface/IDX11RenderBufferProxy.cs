@@ -122,7 +122,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The d2 d controls.
         /// </value>
-        IDevice2DProxy D2DControls { get; }
+        ID2DTargetProxy D2DTarget { get; }
         /// <summary>
         /// Begins the draw.
         /// </summary>
@@ -133,16 +133,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <returns></returns>
         bool EndDraw();
-        /// <summary>
-        /// Begins the draw2 d.
-        /// </summary>
-        /// <returns></returns>
-        bool BeginDraw2D();
-        /// <summary>
-        /// Ends the draw2 d.
-        /// </summary>
-        /// <returns></returns>
-        bool EndDraw2D();
+
         /// <summary>
         /// Presents this instance.
         /// </summary>

@@ -2,37 +2,49 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System;
+using System.Linq;
+using SharpDX;
+using global::SharpDX.Direct3D;
+using global::SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using System;
-    using global::SharpDX.Direct3D;
-    using global::SharpDX.Direct3D11;
     using Utilities;
     /// <summary>
     /// Point Geometry Buffer Model. Use for point rendering
     /// </summary>
     /// <typeparam name="VertexStruct"></typeparam>
-    public class PointGeometryBufferModel<VertexStruct> : GeometryBufferModel where VertexStruct : struct
+    public abstract class PointGeometryBufferModel<VertexStruct> : GeometryBufferModel where VertexStruct : struct
     {
-        public delegate VertexStruct[] BuildVertexArrayHandler(PointGeometry3D geometry);
         /// <summary>
-        /// Create VertexStruct[] from geometry position, colors etc.
+        /// Called when [build vertex array].
         /// </summary>
-        public BuildVertexArrayHandler OnBuildVertexArray;
+        /// <param name="geometry">The geometry.</param>
+        /// <returns></returns>
+        protected abstract VertexStruct[] OnBuildVertexArray(PointGeometry3D geometry);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointGeometryBufferModel{VertexStruct}"/> class.
+        /// </summary>
+        /// <param name="structSize">Size of the structure.</param>
         public PointGeometryBufferModel(int structSize) : base(PrimitiveTopology.PointList,
             new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), null)
         {
         }
-
+        /// <summary>
+        /// Called when [create vertex buffer].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="geometry">The geometry.</param>
         protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
         {
             // -- set geometry if given
-            if (geometry != null && geometry.Positions != null && OnBuildVertexArray != null)
+            if (geometry != null && geometry.Positions != null)
             {
                 // --- get geometry
                 var mesh = geometry as PointGeometry3D;
@@ -44,10 +56,53 @@ namespace HelixToolkit.UWP.Core
                 buffer.DisposeAndClear();
             }
         }
-
+        /// <summary>
+        /// Called when [create index buffer].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="geometry">The geometry.</param>
         protected override void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
         {
             
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class DefaultPointGeometryBufferModel : PointGeometryBufferModel<PointsVertex>
+    {
+        [ThreadStatic]
+        private static PointsVertex[] vertexArrayBuffer;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultPointGeometryBufferModel"/> class.
+        /// </summary>
+        public DefaultPointGeometryBufferModel() : base(PointsVertex.SizeInBytes) { }
+
+        /// <summary>
+        /// Called when [build vertex array].
+        /// </summary>
+        /// <param name="geometry">The geometry.</param>
+        /// <returns></returns>
+        protected override PointsVertex[] OnBuildVertexArray(PointGeometry3D geometry)
+        {
+            var positions = geometry.Positions;
+            var vertexCount = geometry.Positions.Count;
+            var array = vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new PointsVertex[vertexCount];
+            var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
+            vertexArrayBuffer = array;
+            if (geometry.Colors != null && geometry.Colors.Any())
+            {
+                for (var i = 0; i < vertexCount; i++)
+                {
+                    colors.MoveNext();
+                    array[i].Position = new Vector4(positions[i], 1f);
+                    array[i].Color = colors.Current;
+                }
+            }
+            colors.Dispose();
+            return array;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using Utilities;
     using System;
     using System.Diagnostics;
-
+    using System.Linq;
     /// <summary>
     /// 
     /// </summary>
@@ -18,7 +18,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     {
         private const int MinWidth = 10;
         private const int MinHeight = 10;
+
         #region Properties
+        public Guid GUID { get; } = Guid.NewGuid();
+
         private IDX11RenderBufferProxy renderBuffer;
         /// <summary>
         /// Gets the render buffer.
@@ -40,6 +43,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 return EffectsManager.Device;
             }
         }
+        /// <summary>
+        /// Gets the device2d.
+        /// </summary>
+        /// <value>
+        /// The device2d.
+        /// </value>
+        public global::SharpDX.Direct2D1.Device Device2D { get { return EffectsManager.Device2D; } }
 
         private Color4 clearColor = Color.White;
         /// <summary>
@@ -107,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 viewport = value;
                 if (IsInitialized)
                 {
-                    AttachRenderable(Device.ImmediateContext);
+                    AttachRenderable(EffectsManager);
                 }
             }
             get { return viewport; }
@@ -120,6 +130,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public IRenderContext RenderContext
         {
             get { return renderContext; }
+        }
+
+        private IRenderContext2D renderContext2D;
+
+        public IRenderContext2D RenderContext2D
+        {
+            get { return renderContext2D; }
         }
 
         private IEffectsManager effectsManager;
@@ -327,9 +344,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The d2 d controls.
         /// </value>
-        public IDevice2DProxy D2DTarget
+        public ID2DTargetProxy D2DTarget
         {
-            get { return RenderBuffer.D2DControls; }
+            get { return RenderBuffer.D2DTarget; }
         }
         /// <summary>
         /// The renderer
@@ -417,18 +434,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 RenderContext.WorldMatrix = viewport.WorldMatrix;              
                 PreRender();
                 try
-                {
-                    
+                {                    
                     if (renderBuffer.BeginDraw())
                     {
                         OnRender(t0);
                         renderBuffer.EndDraw();
                     }
-                    if (renderBuffer.BeginDraw2D())
-                    {
-                        OnRender2D(t0);
-                        renderBuffer.EndDraw2D();
-                    }
+                    OnRender2D(t0);                        
                     renderBuffer.Present();
                 }
                 catch (SharpDXException ex)
@@ -528,7 +540,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             ActualHeight = height;
             CreateAndBindBuffers();
             IsInitialized = true;
-            AttachRenderable(Device.ImmediateContext);
+            AttachRenderable(EffectsManager);
             StartRendering();
         }
         /// <summary>
@@ -595,7 +607,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Attaches the renderable.
         /// </summary>
         /// <param name="context">The context.</param>
-        protected virtual void AttachRenderable(DeviceContext context)
+        protected virtual void AttachRenderable(IDeviceResources deviceResources)
         {
             if (!IsInitialized || Viewport == null) { return; }           
             if (EnableSharingModelMode && SharedModelContainer != null)
@@ -607,7 +619,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 viewport.Attach(this);
             }         
-            renderContext = Collect(CreateRenderContext(context));
+            renderContext = Collect(CreateRenderContext(deviceResources.Device.ImmediateContext));
+            renderContext2D = Collect(CreateRenderContext2D(deviceResources.DeviceContext2D));
         }
         /// <summary>
         /// Creates the render context.
@@ -617,6 +630,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected virtual IRenderContext CreateRenderContext(DeviceContext context)
         {
             return new RenderContext(this, context);
+        }
+
+        protected virtual IRenderContext2D CreateRenderContext2D(global::SharpDX.Direct2D1.DeviceContext context)
+        {
+            return new RenderContext2D(context, this);
         }
         /// <summary>
         /// 
@@ -659,7 +677,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected virtual void DetachRenderable()
         {
-            RemoveAndDispose(ref renderContext);            
+            RemoveAndDispose(ref renderContext);
+            RemoveAndDispose(ref renderContext2D);
             Viewport?.Detach();
         }
         /// <summary>
@@ -675,11 +694,20 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
             ActualWidth = width;
             ActualHeight = height;
+
             if (IsInitialized)
             {
                 StopRendering();
                 var texture = renderBuffer.Resize((int)ActualWidth, (int)ActualHeight);
                 OnNewRenderTargetTexture?.Invoke(this, texture);
+                if (Viewport != null)
+                {
+                    var overlay = Viewport.D2DRenderables.FirstOrDefault();
+                    if (overlay != null)
+                    {
+                        overlay.InvalidateAll();
+                    }
+                }
                 StartRendering();
             }
         }

@@ -16,8 +16,10 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct3D11;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="HelixToolkit.Wpf.SharpDX.MaterialGeometryModel3D" />
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
         #region Dependency Properties
@@ -153,14 +155,19 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (MeshTopologyEnum)GetValue(MeshTopologyProperty); }
         }
         #endregion
-        [ThreadStatic]
-        private static DefaultVertex[] vertexArrayBuffer = null;
 
+        /// <summary>
+        /// Called when [create render core].
+        /// </summary>
+        /// <returns></returns>
         protected override IRenderCore OnCreateRenderCore()
         {
             return new PatchMeshRenderCore();
         }
-
+        /// <summary>
+        /// Assigns the default values to core.
+        /// </summary>
+        /// <param name="core">The core.</param>
         protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
             var c = core as IInvertNormal;
@@ -177,14 +184,32 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             base.AssignDefaultValuesToCore(core);            
         }
-
-        protected override IGeometryBufferModel OnCreateBufferModel()
+        /// <summary>
+        /// Called when [create buffer model].
+        /// </summary>
+        /// <param name="modelGuid"></param>
+        /// <param name="geometry"></param>
+        /// <returns></returns>
+        protected override IGeometryBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
-            var buffer = new MeshGeometryBufferModel<DefaultVertex>(DefaultVertex.SizeInBytes);
-            buffer.OnBuildVertexArray = CreateDefaultVertexArray;
+            var buffer = EffectsManager.GeometryBufferManager.Register<DefaultMeshGeometryBufferModel>(modelGuid, geometry);
             return buffer;
         }
+        /// <summary>
+        /// Called when [unregister buffer model].
+        /// </summary>
+        /// <param name="modelGuid">The model unique identifier.</param>
+        /// <param name="geometry">The geometry.</param>
+        protected override void OnUnregisterBufferModel(Guid modelGuid, Geometry3D geometry)
+        {
+            EffectsManager.GeometryBufferManager.Unregister<DefaultMeshGeometryBufferModel>(modelGuid, geometry);
+        }
 
+        /// <summary>
+        /// Create raster state description.
+        /// <para>If <see cref="OnCreateRasterState" /> is set, then <see cref="OnCreateRasterState" /> instead of <see cref="CreateRasterState" /> will be called.</para>
+        /// </summary>
+        /// <returns></returns>
         protected override RasterizerStateDescription CreateRasterState()
         {
             return new RasterizerStateDescription()
@@ -202,64 +227,37 @@ namespace HelixToolkit.Wpf.SharpDX
                 IsScissorEnabled = IsThrowingShadow? false : IsScissorEnabled,
             };
         }
-
+        /// <summary>
+        /// Called when [check geometry].
+        /// </summary>
+        /// <param name="geometry">The geometry.</param>
+        /// <returns></returns>
         protected override bool OnCheckGeometry(Geometry3D geometry)
         {
             return base.OnCheckGeometry(geometry) && geometry is MeshGeometry3D;
         }
-
+        /// <summary>
+        /// Determines whether this instance [can hit test] the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
+        /// </returns>
         protected override bool CanHitTest(IRenderContext context)
         {
             return base.CanHitTest(context) && MeshTopology == MeshTopologyEnum.PNTriangles;
         }
-
+        /// <summary>
+        /// Called when [hit test].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="totalModelMatrix">The total model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="hits">The hits.</param>
+        /// <returns></returns>
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
         {
             return (Geometry as MeshGeometry3D).HitTest(context, totalModelMatrix, ref rayWS, ref hits, this);
-        }
-
-        /// <summary>
-        /// Creates a <see cref="T:DefaultVertex[]"/>.
-        /// </summary>
-        private DefaultVertex[] CreateDefaultVertexArray(MeshGeometry3D geometry)
-        {
-            //var geometry = this.geometryInternal as MeshGeometry3D;
-            var positions = geometry.Positions.GetEnumerator();
-            var vertexCount = geometry.Positions.Count;
-
-            var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
-            var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates.GetEnumerator() : Enumerable.Repeat(Vector2.Zero, vertexCount).GetEnumerator();
-            var texScale = textureCoodScale;
-            var normals = geometry.Normals != null ? geometry.Normals.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
-            var tangents = geometry.Tangents != null ? geometry.Tangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
-            var bitangents = geometry.BiTangents != null ? geometry.BiTangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
-            var array = reuseVertexArrayBuffer && vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new DefaultVertex[vertexCount];
-            if (reuseVertexArrayBuffer)
-            {
-                vertexArrayBuffer = array;
-            }
-            for (var i = 0; i < vertexCount; i++)
-            {
-                positions.MoveNext();
-                colors.MoveNext();
-                textureCoordinates.MoveNext();
-                normals.MoveNext();
-                tangents.MoveNext();
-                bitangents.MoveNext();
-                array[i].Position = new Vector4(positions.Current, 1f);
-                array[i].Color = colors.Current;
-                array[i].TexCoord = textureCoordinates.Current * texScale;
-                array[i].Normal = normals.Current;
-                array[i].Tangent = tangents.Current;
-                array[i].BiTangent = bitangents.Current;
-            }
-            colors.Dispose();
-            textureCoordinates.Dispose();
-            normals.Dispose();
-            tangents.Dispose();
-            bitangents.Dispose();
-            positions.Dispose();
-            return array;
         }
     }
 }

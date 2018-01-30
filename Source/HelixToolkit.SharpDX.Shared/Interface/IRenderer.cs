@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     /// </summary>
     public struct RenderParameter2D
     {
-
+        public global::SharpDX.Direct2D1.Bitmap1 RenderTarget;
     }
 
     /// <summary>
@@ -60,6 +60,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter"></param>
         /// <returns></returns>
         IEnumerable<IRenderable> UpdateSceneGraph(IRenderContext context, IEnumerable<IRenderable> renderables);
+
+        /// <summary>
+        /// Update scene graph, return the 2D renderables which will be rendered in this frame
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="renderables"></param>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        void UpdateSceneGraph2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables);
         /// <summary>
         /// 
         /// </summary>
@@ -87,6 +96,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void Render2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, ref RenderParameter2D parameter);
+        void RenderScene2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, ref RenderParameter2D parameter);
     }
 }

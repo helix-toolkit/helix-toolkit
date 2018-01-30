@@ -86,15 +86,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public class HitTest2DResult
     {
-#if NETFX_CORE
+        public IRenderable2D ModelHit { private set; get; }
 
-#else
-        public Elements2D.Element2D ModelHit { private set; get; }
-
-        public HitTest2DResult(Elements2D.Element2D model)
+        public HitTest2DResult(IRenderable2D model)
         {
             ModelHit = model;
         }
-#endif
     }
 }

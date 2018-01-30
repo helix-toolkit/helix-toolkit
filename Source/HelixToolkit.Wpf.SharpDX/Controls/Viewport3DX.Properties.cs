@@ -740,7 +740,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// <para>Enable deferred rendering. Use multithreading to call rendering procedure using different Deferred Context.</para> 
-        /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx"/></para>
+        /// <para>Deferred Rendering: https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx</para>
         /// <para>https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/d3d11deferredcontextssample.htm</para>
         /// <para>Note: Only if draw calls > 3000 to be benefit according to the online performance test.</para>
         /// </summary>
@@ -792,17 +792,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     (d as Viewport3DX).InvalidateRender();
                 }));
 
-        public static readonly DependencyProperty Items2DProperty
-            = DependencyProperty.Register("Items2D", typeof(Canvas2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
+        public static readonly DependencyProperty Content2DProperty
+            = DependencyProperty.Register("Content2D", typeof(Element2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
             {
-                if (e.OldValue != null)
-                {
-                    (d as Viewport3DX).RemoveLogicalChild(e.OldValue);
-                }
-                if (e.NewValue != null)
-                {
-                    (d as Viewport3DX).AddLogicalChild(e.NewValue);
-                }
+                 (d as Viewport3DX).overlay2D.Content2D = (Element2D)e.NewValue;
             }));
         /// <summary>
         /// Background Color
@@ -2456,7 +2449,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// <para>Enable deferred rendering. Use multithreading to call rendering procedure using different Deferred Context.</para> 
-        /// <para>Deferred Rendering: <see cref="https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx"/></para>
+        /// <para>Deferred Rendering: https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx</para>
         /// <para>https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/d3d11deferredcontextssample.htm</para>
         /// <para>Note: Only if draw calls > 3000 to be benefit according to the online performance test.</para>
         /// </summary>
@@ -2522,7 +2515,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private global::SharpDX.Matrix worldMatrixInternal = global::SharpDX.Matrix.Identity;
-
+        /// <summary>
+        /// Gets or sets the world matrix.
+        /// </summary>
+        /// <value>
+        /// The world matrix.
+        /// </value>
         public global::SharpDX.Matrix WorldMatrix
         {
             set
@@ -2534,16 +2532,21 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (global::SharpDX.Matrix)GetValue(WorldMatrixProperty);
             }
         }
-
-        public Canvas2D Items2D
+        /// <summary>
+        /// Gets or sets the content2d.
+        /// </summary>
+        /// <value>
+        /// The content2 d.
+        /// </value>
+        public Element2D Content2D
         {
             get
             {
-                return (Canvas2D)GetValue(Items2DProperty);
+                return (Element2D)GetValue(Content2DProperty);
             }
             set
             {
-                SetValue(Items2DProperty, value);
+                SetValue(Content2DProperty, value);
             }
         }
     }

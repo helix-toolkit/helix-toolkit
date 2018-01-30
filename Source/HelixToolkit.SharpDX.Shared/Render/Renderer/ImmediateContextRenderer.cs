@@ -23,7 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     {
         private readonly Stack<IEnumerator<IRenderable>> stackCache1 = new Stack<IEnumerator<IRenderable>>(20);
         private readonly Stack<IEnumerator<IRenderable>> stackCache2 = new Stack<IEnumerator<IRenderable>>(20);
-
+        private readonly Stack<IEnumerator<IRenderable2D>> stack2DCache1 = new Stack<IEnumerator<IRenderable2D>>(20);
         /// <summary>
         /// Gets or sets the immediate context.
         /// </summary>
@@ -53,6 +53,22 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         x.Update(context);
                         return x.IsRenderable && !(x is ILight3D);
                     }, stackCache1);
+        }
+
+
+        /// <summary>
+        /// Updates the scene graph.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="renderables">The renderables.</param>
+        /// <returns></returns>
+        public void UpdateSceneGraph2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables)
+        {
+            renderables.PreorderDFTRun((x) =>
+            {
+                x.Update(context);
+                return x.IsRenderable;
+            }, stack2DCache1);
         }
         /// <summary>
         /// Updates the global variables. Such as light buffer and global transformation buffer
@@ -116,7 +132,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void Render2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, ref RenderParameter2D parameter)
+        public virtual void RenderScene2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, ref RenderParameter2D parameter)
         {
             foreach (var e in renderables)
             {

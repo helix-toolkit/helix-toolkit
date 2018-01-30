@@ -109,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <value>
         ///   <c>true</c> if visible; otherwise, <c>false</c>.
         /// </value>
-        public bool Visible
+        internal bool Visible
         {
             set
             {
@@ -142,6 +142,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             get { return renderHost; }
         }
         /// <summary>
+        /// Gets the effects manager.
+        /// </summary>
+        /// <value>
+        /// The effects manager.
+        /// </value>
+        protected IEffectsManager EffectsManager { get { return renderHost.EffectsManager; } }
+        /// <summary>
         /// Gets the items.
         /// </summary>
         /// <value>
@@ -160,7 +167,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <value>
         ///   <c>true</c> if this instance is hit test visible; otherwise, <c>false</c>.
         /// </value>
-        public bool IsHitTestVisible { set; get; } = true;
+        internal bool IsHitTestVisibleInternal { set; get; } = true;
         #region Handling Transforms        
         /// <summary>
         /// Transforms the changed.
@@ -299,9 +306,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// </summary>
         public void Detach()
         {
-            IsAttached = false;
-            RenderCore.Detach();
-            OnDetach();
+            if (IsAttached)
+            {
+                IsAttached = false;
+                RenderCore.Detach();
+                OnDetach();
+            }
         }
 
         /// <summary>
@@ -385,7 +395,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         protected virtual bool CanHitTest(IRenderContext context)
         {
-            return IsHitTestVisible && IsRenderable;
+            return IsHitTestVisibleInternal && IsRenderable;
         }
 
         protected abstract bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits);

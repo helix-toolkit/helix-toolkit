@@ -53,7 +53,6 @@
                 IsThrowingShadow="True"
                 Material="{Binding DefaultMaterial}"
                 MeshTopology="{Binding MeshTopology}"
-                ReuseVertexArrayBuffer="True"
                 Transform="{Binding DefaultTransform}" />
             <!--<hx:MeshGeometryModel3D
                 x:Name="model1"

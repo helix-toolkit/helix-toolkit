@@ -48,16 +48,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// The D2D controls
         /// </summary>
-        protected Device2DProxy d2dControls;
+        protected D2DTargetProxy d2dTarget;
         /// <summary>
         /// Gets the d2 d controls.
         /// </summary>
         /// <value>
         /// The d2 d controls.
         /// </value>
-        public IDevice2DProxy D2DControls
+        public ID2DTargetProxy D2DTarget
         {
-            get { return d2dControls; }
+            get { return d2dTarget; }
         }
         /// <summary>
         /// Gets or sets the width of the target.
@@ -135,17 +135,32 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public Device Device
         {
-            private set; get;
+            get { return deviceResources.Device; }
         }
+        /// <summary>
+        /// Gets the device2 d.
+        /// </summary>
+        /// <value>
+        /// The device2 d.
+        /// </value>
+        public global::SharpDX.Direct2D1.Device Device2D { get { return deviceResources.Device2D; } }
 
+        public global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get { return deviceResources.DeviceContext2D; } }
+        /// <summary>
+        /// Gets or sets the device resources.
+        /// </summary>
+        /// <value>
+        /// The device resources.
+        /// </value>
+        protected IDeviceResources deviceResources { private set; get; }
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11RenderBufferProxyBase"/> class.
         /// </summary>
-        /// <param name="device">The device.</param>
-        public DX11RenderBufferProxyBase(Device device)
+        /// <param name="deviceResource">The device resources.</param>
+        public DX11RenderBufferProxyBase(IDeviceResources deviceResource)
         {
-            Device = device;
-            deviceContextPool = Collect(new DeviceContextPool(device));
+            this.deviceResources = deviceResource;
+            deviceContextPool = Collect(new DeviceContextPool(Device));
         }
 
         private Texture2D CreateRenderTarget(int width, int height, MSAALevel msaa)
@@ -164,7 +179,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         protected virtual void DisposeBuffers()
         {
-            RemoveAndDispose(ref d2dControls);
+            DeviceContext2D.Target = null;
+            RemoveAndDispose(ref d2dTarget);
             RemoveAndDispose(ref colorBufferView);
             RemoveAndDispose(ref depthStencilBufferView);
             RemoveAndDispose(ref colorBuffer);
@@ -277,24 +293,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             return true;
         }
-        /// <summary>
-        /// Begins the 2d drawing.
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool BeginDraw2D()
-        {
-            d2dControls.D2DTarget.BeginDraw();
-            return true;
-        }
-        /// <summary>
-        /// Ends the 2D drawing.
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool EndDraw2D()
-        {
-            d2dControls.D2DTarget.EndDraw();
-            return true;
-        }
+
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>

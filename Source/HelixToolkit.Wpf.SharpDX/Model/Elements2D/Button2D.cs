@@ -1,36 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HelixToolkit.Wpf.SharpDX.Core2D;
-using SharpDX.Direct2D1;
-using Media = System.Windows.Media;
+﻿using System.Windows;
+using System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
-    public class Button2D : ContentElement2D
+    public class Button2D : Clickable2D
     {
         public Button2D()
         {
-            Content2D = new DefaultButtonRenderer();
+            Background = SystemColors.ControlBrush;
+            Foreground = SystemColors.ControlTextBrush;
+            CornerRadius = 4;
+            StrokeThickness = 0.5;
+            Stroke = SystemColors.ActiveBorderBrush;
         }
 
-        protected override IRenderable2D CreateRenderCore(IDevice2DProxy host)
+        protected override void OnMouseOverChanged(bool newValue, bool oldValue)
         {
-            return null;
-        }
-
-        protected override void OnRenderTargetChanged(RenderTarget newTarget)
-        {
-
-        }
-
-        public class DefaultButtonRenderer : Canvas2D
-        {
-            public DefaultButtonRenderer()
+            if (newValue)
             {
-                Children.Add(new RectangleModel2D() { Fill = new Media.SolidColorBrush(Media.Colors.Gray), Width = 100, Height = 30 });
+                Background = SystemColors.HighlightBrush;
+            }
+            else
+            {
+                Background = SystemColors.ControlBrush;
             }
         }
     }
