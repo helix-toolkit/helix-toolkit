@@ -3,27 +3,19 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 Reference from https://jeremiahmorrill.wordpress.com/2013/02/06/direct2d-gui-librarygraphucks/
 */
+
+#if !NETFX_CORE
 using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-
-#if NETFX_CORE
-using Windows.UI.Xaml;
-namespace HelixToolkit.UWP.Core2D
-#else
 using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX.Core2D
-#endif
 {
-#if NETFX_CORE
     public abstract partial class Element2DCore
-#else
-    public abstract partial class Element2DCore
-#endif
     {
-        #region layout management        
-        #region Properties
+#region layout management        
+#region Properties
         /// <summary>
         /// Gets or sets a value indicating whether this instance is measure dirty.
         /// </summary>
@@ -298,7 +290,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         private Size2F? previousMeasureSize;
         private RectangleF? previousArrange; 
-        #endregion
+#endregion
 
         public void InvalidateMeasure()
         {
@@ -689,6 +681,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
             return availableSize;
         }
-        #endregion
+#endregion
     }
 }
+#endif

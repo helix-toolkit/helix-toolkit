@@ -2,24 +2,19 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+
+#if !NETFX_CORE
 #if DEBUG
 //#define DEBUGCACHECREATE
 #endif
 using SharpDX;
 using SharpDX.DXGI;
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Core2D
-#else
+
 namespace HelixToolkit.Wpf.SharpDX.Core2D
-#endif
 {
     using System.Diagnostics;
     using Utilities;
-#if NETFX_CORE
     public abstract partial class Element2DCore
-#else
-    public abstract partial class Element2DCore
-#endif
     {
         /// <summary>
         /// The minimum bitmap size by Bytes. Default 2048 * B8G8R8A8 format = 64kb. https://msdn.microsoft.com/en-us/library/windows/desktop/dd372260%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
@@ -76,3 +71,4 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
     }
 }
+#endif

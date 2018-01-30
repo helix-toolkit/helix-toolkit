@@ -6,6 +6,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 //#define DEBUGDRAWING
 //#define DISABLEBITMAPCACHE
 #endif
+
+#if !NETFX_CORE
 using SharpDX;
 using System;
 using System.Collections.Generic;
@@ -15,20 +17,10 @@ using System.Linq;
 using SharpDX.Direct2D1;
 using System.Diagnostics;
 
-
-#if NETFX_CORE
-using Windows.UI.Xaml;
-namespace HelixToolkit.UWP.Core2D
-#else
 using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX.Core2D
-#endif
 {
-#if NETFX_CORE
-    public abstract partial class Element2DCore : FrameworkElement, IDisposable, IRenderable2D, INotifyPropertyChanged
-#else
     public abstract partial class Element2DCore : FrameworkContentElement, IDisposable, IRenderable2D, INotifyPropertyChanged
-#endif
     {
         /// <summary>
         /// Gets the unique identifier.
@@ -217,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             IsRenderable = CanRender(context);          
         }
 
-        #region Handling Transforms        
+#region Handling Transforms        
         /// <summary>
         /// Transforms the changed.
         /// </summary>
@@ -230,8 +222,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// Occurs when [on transform changed].
         /// </summary>
         public event EventHandler<Matrix3x2> OnTransformChanged;
-        #endregion
-        #region Rendering
+#endregion
+#region Rendering
 
         /// <summary>
         /// <para>Determine if this can be rendered.</para>
@@ -477,3 +469,5 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endregion
     }
 }
+    
+#endif
