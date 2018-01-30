@@ -24,5 +24,17 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
             return false;
         }
+
+        protected override Size2F MeasureOverride(Size2F availableSize)
+        {
+            foreach (var item in Items)
+            {
+                if (item is Element2D e)
+                {
+                    e.Measure(availableSize);
+                }
+            }
+            return availableSize;
+        }
     }
 }
