@@ -15,7 +15,9 @@ using System.Linq;
 using SharpDX.Direct2D1;
 using System.Diagnostics;
 
+
 #if NETFX_CORE
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP.Core2D
 #else
 using System.Windows;
@@ -23,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
 #if NETFX_CORE
-    public abstract partial class Element2DCore : IDisposable, IRenderable2D, INotifyPropertyChanged
+    public abstract partial class Element2DCore : FrameworkElement, IDisposable, IRenderable2D, INotifyPropertyChanged
 #else
     public abstract partial class Element2DCore : FrameworkContentElement, IDisposable, IRenderable2D, INotifyPropertyChanged
 #endif
@@ -286,7 +288,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 {
                     context.DeviceContext.Transform = context.RelativeTransform * RelativeMatrix;                                     
                     context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), LayoutClipBound, 
-                        InterpolationMode.Linear, CompositeMode.SourceOver);
+                        InterpolationMode.Linear, global::SharpDX.Direct2D1.CompositeMode.SourceOver);
                 }
                     
             }
@@ -309,7 +311,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             {
                 context.DeviceContext.Transform = RelativeMatrix;
                 context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), new RectangleF(0, 0, RenderSize.X, RenderSize.Y),
-                    InterpolationMode.Linear, CompositeMode.SourceOver);
+                    InterpolationMode.Linear, global::SharpDX.Direct2D1.CompositeMode.SourceOver);
             }
         }
 

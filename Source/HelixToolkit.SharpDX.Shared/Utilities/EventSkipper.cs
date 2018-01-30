@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP.Utilities
                 if (Set(ref latency, value))
                 {
 #if !NETFX_CORE
-         //           Console.WriteLine($"Latency: {value}");
+                    Console.WriteLine($"Latency: {value}");
 #endif
                 }
             }

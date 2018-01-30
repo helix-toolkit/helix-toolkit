@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP.Core2D
 #else
 using System.Windows;
