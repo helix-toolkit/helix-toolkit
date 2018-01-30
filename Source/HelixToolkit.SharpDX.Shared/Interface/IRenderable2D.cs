@@ -105,6 +105,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         bool IsArrangeDirty { get; }
         /// <summary>
+        /// Gets a value indicating whether this instance is transform dirty.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is transform dirty; otherwise, <c>false</c>.
+        /// </value>
+        bool IsTransformDirty { get; }
+        /// <summary>
         /// Attaches the specified target.
         /// </summary>
         /// <param name="target">The target.</param>
@@ -141,6 +148,7 @@ namespace HelixToolkit.Wpf.SharpDX
         void InvalidateArrange();
         void InvalidateMeasure();
         void InvalidateVisual();
+        void InvalidateTransform();
         void InvalidateAll();
     }
 

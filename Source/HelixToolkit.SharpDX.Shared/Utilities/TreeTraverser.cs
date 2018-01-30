@@ -89,7 +89,7 @@ namespace HelixToolkit.UWP
         /// <param name="condition"></param>
         /// <param name="stackCache"></param>
         /// <returns></returns>
-        public static IEnumerable<IRenderable2D> PreorderDFT(this IEnumerable<IRenderable2D> nodes, Func<IRenderable2D, bool> condition,
+        public static void PreorderDFTRun(this IEnumerable<IRenderable2D> nodes, Func<IRenderable2D, bool> condition,
             Stack<IEnumerator<IRenderable2D>> stackCache = null)
         {
             var stack = stackCache == null ? new Stack<IEnumerator<IRenderable2D>>(20) : stackCache;
@@ -101,7 +101,6 @@ namespace HelixToolkit.UWP
                 {
                     var item = e.Current;
                     if (!condition(item)) { continue; }
-                    yield return item;
                     var elements = item.Items;
                     if (elements == null) continue;
                     stack.Push(e);

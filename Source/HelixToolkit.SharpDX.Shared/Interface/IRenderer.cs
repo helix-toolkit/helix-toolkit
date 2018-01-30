@@ -68,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
         /// <returns></returns>
-        IEnumerable<IRenderable2D> UpdateSceneGraph2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables);
+        void UpdateSceneGraph2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables);
         /// <summary>
         /// 
         /// </summary>

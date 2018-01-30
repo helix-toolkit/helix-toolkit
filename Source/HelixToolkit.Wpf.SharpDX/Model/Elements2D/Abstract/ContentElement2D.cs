@@ -204,6 +204,11 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
 
+        protected override bool CanRender(IRenderContext2D context)
+        {
+            return base.CanRender(context) && contentInternal != null;
+        }
+
         protected override bool CanHitTest()
         {
             return base.CanHitTest() && contentInternal != null;

@@ -62,9 +62,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <returns></returns>
-        public virtual IEnumerable<IRenderable2D> UpdateSceneGraph2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables)
+        public void UpdateSceneGraph2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables)
         {
-            return renderables.PreorderDFT((x) =>
+            renderables.PreorderDFTRun((x) =>
             {
                 x.Update(context);
                 return x.IsRenderable;

@@ -5,6 +5,7 @@ Reference from https://jeremiahmorrill.wordpress.com/2013/02/06/direct2d-gui-lib
 */
 using SharpDX;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
@@ -21,6 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
     {
         #region layout management        
+        #region Properties
         /// <summary>
         /// Gets or sets a value indicating whether this instance is measure dirty.
         /// </summary>
@@ -35,9 +37,19 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         ///   <c>true</c> if this instance is arrange dirty; otherwise, <c>false</c>.
         /// </value>
         public bool IsArrangeDirty { protected set; get; } = true;
-
-        internal bool IsTransformDirty { set; get; } = true;
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is transform dirty.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is transform dirty; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsTransformDirty { private set; get; } = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is visual dirty.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is visual dirty; otherwise, <c>false</c>.
+        /// </value>
         internal bool IsVisualDirty { set; get; } = true;
 
         private Thickness marginInternal = new Thickness();
@@ -196,23 +208,29 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             private set
             {
-                if(Set(ref layoutOffset, value))
+                if (Set(ref layoutOffset, value))
                 {
-                    InvalidateRender();
+                    InvalidateTransform();
                 }
             }
             get { return layoutOffset; }
         }
 
-        private Size2F renderSize = Size2F.Zero;
-        public Size2F RenderSize
+        private Vector2 renderSize = Vector2.Zero;
+        /// <summary>
+        /// Gets the render size. Same as the <see cref="LayoutBound"/> size
+        /// </summary>
+        /// <value>
+        /// The size of the render.
+        /// </value>
+        public Vector2 RenderSize
         {
             get { return renderSize; }
             private set
             {
                 if (Set(ref renderSize, value))
                 {
-                    InvalidateRender();
+                    InvalidateTransform();
                 }
             }
         }
@@ -222,24 +240,41 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                if(Set(ref renderTransformOriginInternal, value))
+                if (Set(ref renderTransformOriginInternal, value))
                 {
                     InvalidateRender();
                 }
             }
             get { return renderTransformOriginInternal; }
         }
-
+        /// <summary>
+        /// Gets the size of the desired size after measure.
+        /// </summary>
+        /// <value>
+        /// The size of the desired.
+        /// </value>
         public Vector2 DesiredSize { get; private set; }
+        /// <summary>
+        /// Gets the size of the unclipped desired size after measure.
+        /// </summary>
+        /// <value>
+        /// The size of the unclipped desired.
+        /// </value>
         public Vector2 UnclippedDesiredSize { get; private set; } = new Vector2(-1, -1);
 
-        public Vector2 Size { get { return new Vector2(widthInternal, heightInternal); } }
+        private Vector2 Size { get { return new Vector2(widthInternal, heightInternal); } }
 
         public bool ClipEnabled { private set; get; } = false;
 
         public bool ClipToBound { set; get; } = false;
 
-        public RectangleF ClipBound
+        /// <summary>
+        /// Gets or sets the layout clip bound. This bound includes the margin.
+        /// </summary>
+        /// <value>
+        /// The layout clip bound.
+        /// </value>
+        public RectangleF LayoutClipBound
         {
             private set
             {
@@ -248,15 +283,21 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             get { return RenderCore.LayoutClippingBound; }
         }
 
+        /// <summary>
+        /// Gets the size of the actual layout bound without margin.
+        /// </summary>
         public RectangleF LayoutBound
         {
             private set
             {
                 RenderCore.LayoutBound = value;
-                LayoutBoundWithTransform = value;
             }
             get { return RenderCore.LayoutBound; }
         }
+
+        private Size2F? previousMeasureSize;
+        private RectangleF? previousArrange; 
+        #endregion
 
         public void InvalidateMeasure()
         {
@@ -314,6 +355,21 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
+        public void InvalidateTransform()
+        {
+            IsTransformDirty = true;
+            TraverseUp(this, (e) => {
+                if (e.IsTransformDirty)
+                { return false; }
+                e.IsTransformDirty = true;
+                return true;
+            });
+            if (IsAttached)
+            {
+                InvalidateRender();
+            }
+        }
+
         public void InvalidateAll()
         {
             IsTransformDirty = true;
@@ -349,9 +405,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 ancestor = ancestor.Parent as Element2DCore;
             }
         }
-
-        private Size2F? previousMeasureSize;
-        private RectangleF? previousArrange;
 
         public void Measure(Size2F size)
         {
@@ -505,7 +558,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 arrangeSize.Y = calcedMaxHeight;
             }
 
-            var oldRenderSize = RenderSize.ToVector2();
+            var oldRenderSize = RenderSize;
             var arrangeResultSize = ArrangeOverride(new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, arrangeSize.X - MarginWidthHeight.X, arrangeSize.Y - MarginWidthHeight.Y)).ToVector2();
 
             bool arrangeSizeChanged = arrangeResultSize != oldRenderSize;
@@ -514,7 +567,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 InvalidateAll();
             }
 
-            RenderSize = arrangeResultSize.ToSize2F();
+            RenderSize = arrangeResultSize;
 
             var clippedArrangeResultSize = new Vector2(Math.Min(arrangeResultSize.X, maxSize.X), Math.Min(arrangeResultSize.Y, maxSize.Y));
             if (!ClipEnabled)
@@ -574,7 +627,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
             if (ClipEnabled || ClipToBound)
             {
-                ClipBound = new RectangleF(0, 0, clientSize.X, clientSize.Y);
+                LayoutClipBound = new RectangleF(0, 0, clientSize.X, clientSize.Y);
             }
 
             LayoutOffsets = layoutOffset;
@@ -613,8 +666,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         private void UpdateLayoutInternal()
         {
-            LayoutBound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.Width, RenderSize.Height);
-            ClipBound = new RectangleF(0, 0, RenderSize.Width + MarginWidthHeight.X, RenderSize.Height + MarginWidthHeight.Y);
+            LayoutBound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.X, RenderSize.Y);
+            LayoutClipBound = new RectangleF(0, 0, RenderSize.X + MarginWidthHeight.X, RenderSize.Y + MarginWidthHeight.Y);
             LayoutTranslate = Matrix3x2.Translation((float)Math.Round(LayoutOffsets.X), (float)Math.Round(LayoutOffsets.Y));
         }
 
