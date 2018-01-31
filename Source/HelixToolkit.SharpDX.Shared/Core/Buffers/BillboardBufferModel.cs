@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="geometry">The geometry.</param>
         /// <returns></returns>
-        protected abstract VertexStruct[] OnBuildVertexArray(IBillboardText geometry);
+        protected abstract VertexStruct[] OnBuildVertexArray(IBillboardText geometry, IDeviceResources deviceResources);
 
         private ShaderResourceView textureView;
         /// <summary>
@@ -56,7 +56,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
         /// <param name="geometry">The geometry.</param>
-        protected override void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
+        /// <param name="deviceResources">The device resources.</param>
+        protected override void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources)
         {
 
         }
@@ -66,7 +67,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
         /// <param name="geometry">The geometry.</param>
-        protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
+        /// <param name="deviceResources">The device resources.</param>
+        protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources)
         {
             RemoveAndDispose(ref textureView);
             var billboardGeometry = geometry as IBillboardText;
@@ -74,7 +76,7 @@ namespace HelixToolkit.UWP.Core
             if (billboardGeometry != null && billboardGeometry.BillboardVertices != null)
             {
                 Type = billboardGeometry.Type;              
-                var data = OnBuildVertexArray(billboardGeometry);
+                var data = OnBuildVertexArray(billboardGeometry, deviceResources);
                 buffer.UploadDataToBuffer(context, data, billboardGeometry.BillboardVertices.Count);
               
                 if (billboardGeometry.Texture != null)
@@ -127,11 +129,11 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="geometry">The geometry.</param>
         /// <returns></returns>
-        protected override BillboardVertex[] OnBuildVertexArray(IBillboardText geometry)
+        protected override BillboardVertex[] OnBuildVertexArray(IBillboardText geometry, IDeviceResources deviceResources)
         {
             // Gather all of the textInfo offsets.
             // These should be equal in number to the positions.
-            geometry.DrawTexture();
+            geometry.DrawTexture(deviceResources);
 
             var vertexCount = geometry.BillboardVertices.Count;
             var array = vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new BillboardVertex[vertexCount];

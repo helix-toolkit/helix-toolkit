@@ -87,7 +87,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         //public override IList<Vector2> TextureOffsets { get { return TextInfo.SelectMany(x => x.Offsets).ToArray(); } }
 
-        public override void DrawTexture()
+        public override void DrawTexture(IDeviceResources deviceResources)
         {
             BillboardVertices.Clear();
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp

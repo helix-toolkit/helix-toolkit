@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
 using Core;
-
+    using Extensions;
     public class BillboardSingleText3D : BillboardBase
     {
         private volatile bool isInitialized = false;
@@ -69,8 +69,8 @@ using Core;
             get { return mFontSize; }
         }
 
-        private Media.FontFamily mFontFamily = new Media.FontFamily("Arial");
-        public Media.FontFamily FontFamily
+        private string mFontFamily = "Arial";
+        public string FontFamily
         {
             set
             {
@@ -133,25 +133,22 @@ using Core;
             Height = height;
             predefinedSize = true;
         }
-        public override void DrawTexture()
+        public override void DrawTexture(IDeviceResources deviceResources)
         {
             if (!isInitialized)
             {
                 BillboardVertices.Clear();
                 if (!string.IsNullOrEmpty(TextInfo.Text))
                 {
-#if NETFX_CORE
-
-#else
-                    var bitmap = TextInfo.Text.StringToBitmapSource(FontSize, Media.Colors.White, Media.Colors.Black,
-                        this.FontFamily, this.FontWeight, this.FontStyle, Padding);
-                    Texture = bitmap.ToMemoryStream();
+                    var w = Width;
+                    var h = Height;
+                    Texture = TextInfo.Text.ToBitmapStream(FontSize, Color.White, Color.Black, FontFamily, FontWeight.ToDXFontWeight(), FontStyle.ToDXFontStyle(),
+                        new Vector4((float)Padding.Left, (float)Padding.Top, (float)Padding.Right, (float)Padding.Bottom), ref w, ref h, predefinedSize, deviceResources);
                     if (!predefinedSize)
                     {
-                        Width = (float)bitmap.Width;
-                        Height = (float)bitmap.Height;
+                        Width = w;
+                        Height = h;
                     }
-#endif
                     DrawCharacter(TextInfo.Text, TextInfo.Origin, Width, Height, TextInfo);
                 }
                 else

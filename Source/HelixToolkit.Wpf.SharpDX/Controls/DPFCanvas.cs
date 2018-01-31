@@ -180,16 +180,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void RenderHost_StopRenderLoop(object sender, bool e)
         {
-            CompositionTarget.Rendering -= CompositionTarget_Rendering;
+            CompositionTargetEx.Rendering -= CompositionTargetEx_Rendering;
         }
 
         private void RenderHost_StartRenderLoop(object sender, bool e)
         {
-            CompositionTarget.Rendering -= CompositionTarget_Rendering;
-            CompositionTarget.Rendering += CompositionTarget_Rendering;
+            CompositionTargetEx.Rendering -= CompositionTargetEx_Rendering;
+            CompositionTargetEx.Rendering += CompositionTargetEx_Rendering;
         }
 
-        private void CompositionTarget_Rendering(object sender, EventArgs e)
+        private void CompositionTargetEx_Rendering(object sender, RenderingEventArgs e)
         {
             RenderHost.UpdateAndRender();
         }

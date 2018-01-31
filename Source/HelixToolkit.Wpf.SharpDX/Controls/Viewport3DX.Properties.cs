@@ -244,16 +244,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 "FieldOfViewText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata(null));
 
         /// <summary>
-        /// The FPS counter property
-        /// </summary>
-        public static readonly DependencyPropertyKey FpsCounterProperty = DependencyProperty.RegisterReadOnly(
-            "FpsCounter", typeof(FpsCounter), typeof(Viewport3DX), new PropertyMetadata());
-
-        /// <summary>
         /// The frame rate property.
         /// </summary>
         public static readonly DependencyProperty FrameRateProperty = DependencyProperty.Register(
-            "FrameRate", typeof(int), typeof(Viewport3DX));
+            "FrameRate", typeof(double), typeof(Viewport3DX));
 
         /// <summary>
         /// The frame rate text property.
@@ -727,18 +721,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         /// <summary>
-        /// Set max FPS to provide a stable FPS for rendering
-        /// </summary>
-        public static readonly DependencyProperty MaxFPSProperty
-            = DependencyProperty.Register("MaxFPS", typeof(int), typeof(Viewport3DX), new PropertyMetadata(60, (s, e) => {
-                var viewport = s as Viewport3DX;
-                if (viewport.renderHostInternal != null)
-                {
-                    viewport.renderHostInternal.MaxFPS = (uint)e.NewValue;
-                }
-            }, (s, e) => { return Math.Max(1, (int)e); }));
-
-        /// <summary>
         /// <para>Enable deferred rendering. Use multithreading to call rendering procedure using different Deferred Context.</para> 
         /// <para>Deferred Rendering: https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx</para>
         /// <para>https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/d3d11deferredcontextssample.htm</para>
@@ -1200,35 +1182,16 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets the FPS counter.
-        /// </summary>
-        /// <value>
-        /// The FPS counter.
-        /// </value>
-        public FpsCounter FpsCounter
-        {
-            get
-            {
-                return (FpsCounter)this.GetValue(FpsCounterProperty.DependencyProperty);
-            }
-
-            private set
-            {
-                this.SetValue(FpsCounterProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the frame rate.
         /// </summary>
         /// <value>
         /// The frame rate.
         /// </value>
-        public int FrameRate
+        public double FrameRate
         {
             get
             {
-                return (int)this.GetValue(FrameRateProperty);
+                return (double)this.GetValue(FrameRateProperty);
             }
 
             set
@@ -2429,21 +2392,6 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (bool)GetValue(EnableRenderFrustumProperty);
-            }
-        }
-
-        /// <summary>
-        /// Set max FPS to provide a stable FPS for rendering, Default = 60Hz.
-        /// </summary>
-        public int MaxFPS
-        {
-            set
-            {
-                SetValue(MaxFPSProperty, value);
-            }
-            get
-            {
-                return (int)GetValue(MaxFPSProperty);
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HelixToolkit.Wpf.SharpDX.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -11,8 +12,10 @@ using System.Windows.Media.Imaging;
 using Media = System.Windows.Media;
 namespace HelixToolkit.Wpf.SharpDX
 {
+
     public static class BitmapExtension
     {
+  /*  
         public static BitmapSource ToBitmapSource(this TextBlock element, bool freeze = true)
         {
             var target = new RenderTargetBitmap((int)(element.RenderSize.Width), (int)(element.RenderSize.Height), 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
@@ -139,7 +142,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             return new Size(formattedText.Width + textBlock.Padding.Left + textBlock.Padding.Right, formattedText.Height + textBlock.Padding.Top + textBlock.Padding.Bottom);
         }
-
+    */
         public static MemoryStream ToMemoryStream(this BitmapSource writeBmp)
         {
             var outStream = new MemoryStream();
@@ -150,7 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return outStream;
         }
 
-        public static byte[] ToByteArray(this System.Windows.Media.Imaging.BitmapSource bitmapSource)
+        public static byte[] ToByteArray(this BitmapSource bitmapSource)
         {
             using (MemoryStream ms = new MemoryStream())
             {
@@ -161,4 +164,5 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
+
 }

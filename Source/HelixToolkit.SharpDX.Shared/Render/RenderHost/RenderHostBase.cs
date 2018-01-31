@@ -255,25 +255,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             set; get;
         }
 
-        private uint maxFPS = 60;
-        /// <summary>
-        /// Gets or sets the maximum FPS.
-        /// </summary>
-        /// <value>
-        /// The maximum FPS.
-        /// </value>
-        public uint MaxFPS
-        {
-            set
-            {
-                maxFPS = value;
-                frameRegulator.Threshold = 1000.0 / maxFPS;
-            }
-            get
-            {
-                return maxFPS;
-            }
-        }
         /// <summary>
         /// Gets or sets a value indicating whether [enable sharing model mode].
         /// </summary>
@@ -360,7 +341,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private readonly Stopwatch renderTimer = new Stopwatch();
 
         private TimeSpan lastRenderingDuration;
-        private readonly FrameRateRegulator frameRegulator = new FrameRateRegulator();
+
+        private TimeSpan lastRenderTime;
+        /// <summary>
+        /// Gets the render statistics.
+        /// </summary>
+        /// <value>
+        /// The render statistics.
+        /// </value>
+        public IRenderStatistics RenderStatistics { get; } = new RenderStatistics();
+        
         /// <summary>
         /// Occurs when [exception occurred].
         /// </summary>
@@ -413,8 +403,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </returns>
         protected virtual bool CanRender()
         {
-            return (IsInitialized && IsRendering && UpdateRequested && viewport != null && !frameRegulator.IsSkip())
-                || frameRegulator.DelayTrigger();
+            return IsInitialized && IsRendering && UpdateRequested && viewport != null;
         }
         /// <summary>
         /// Updates the and render.
@@ -425,6 +414,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 IsBusy = true;
                 var t0 = renderTimer.Elapsed;
+                RenderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
+                lastRenderTime = t0;
                 UpdateRequested = false;
                 viewport.Update(t0); 
                 
@@ -463,7 +454,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     IsBusy = false;
                 }
                 lastRenderingDuration = renderTimer.Elapsed - t0;
-                frameRegulator.Push(lastRenderingDuration.TotalMilliseconds);                
+                RenderStatistics.LatencyStatistics.Push(lastRenderingDuration.TotalMilliseconds);                
             }
         }
         /// <summary>
@@ -548,6 +539,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected virtual void StartRendering()
         {
+            RenderStatistics.Reset();
             renderTimer.Restart();
             InvalidateRender();
             StartRenderLoop?.Invoke(this, true);

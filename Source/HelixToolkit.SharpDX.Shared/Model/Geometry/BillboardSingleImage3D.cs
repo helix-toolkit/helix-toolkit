@@ -61,6 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
             TextureCoordinates = new Vector2Collection(6);
             MaskColor = Color.Transparent;
         }
+
 #if !NETFX_CORE
         public BillboardSingleImage3D(BitmapSource bitmapSource)
             : this()
@@ -68,18 +69,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Texture = bitmapSource.ToMemoryStream();
             Width = bitmapSource.PixelWidth;
             Height = bitmapSource.PixelHeight;
-        }
-
-        public BillboardSingleImage3D(BitmapSource bitmapSource, Stream imageStream)
-            : this(bitmapSource)
-        {
-            this.Texture = imageStream;
-            using (Image image = Image.Load(imageStream))
-            {
-                Width = Math.Max(this.Width, image.Description.Width);
-                Height = Math.Max(this.Height, image.Description.Height);
-            }
-            Texture.Position = 0;
         }
 #endif
         public BillboardSingleImage3D(Stream imageStream)
@@ -103,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Texture.Position = 0;
         }
 
-        public override void DrawTexture()
+        public override void DrawTexture(IDeviceResources deviceResources)
         {
             var w = Width;
             var h = Height;

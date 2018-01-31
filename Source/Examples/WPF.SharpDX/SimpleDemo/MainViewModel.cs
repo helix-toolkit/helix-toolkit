@@ -180,7 +180,7 @@ namespace SimpleDemo
                 FontSize = 12,
                 FontColor = Colors.Red.ToColor4(),
                 BackgroundColor = background.ToColor4(),
-                FontFamily = new System.Windows.Media.FontFamily("Times New Roman"),
+                FontFamily = "Times New Roman",
                 FontStyle= System.Windows.FontStyles.Italic,
                 Padding = new System.Windows.Thickness(2)
             };

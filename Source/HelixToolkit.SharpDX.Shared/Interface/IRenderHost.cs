@@ -142,13 +142,7 @@ namespace HelixToolkit.UWP
         ///   <c>true</c> if [enable render frustum]; otherwise, <c>false</c>.
         /// </value>
         bool EnableRenderFrustum { set; get; }
-        /// <summary>
-        /// Gets or sets the maximum FPS.
-        /// </summary>
-        /// <value>
-        /// The maximum FPS.
-        /// </value>
-        uint MaxFPS { set; get; }
+
         /// <summary>
         /// Gets or sets a value indicating whether [enable sharing model mode].
         /// </summary>
@@ -215,5 +209,7 @@ namespace HelixToolkit.UWP
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         void Resize(double width, double height);
+
+        IRenderStatistics RenderStatistics { get; }
     }
 }

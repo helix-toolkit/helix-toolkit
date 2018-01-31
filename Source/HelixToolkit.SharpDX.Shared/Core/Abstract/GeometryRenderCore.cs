@@ -220,7 +220,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnAttachBuffers(DeviceContext context)
         {
             base.OnAttachBuffers(context);
-            GeometryBuffer.AttachBuffers(context, this.VertexLayout, 0);
+            GeometryBuffer.AttachBuffers(context, this.VertexLayout, 0, EffectTechnique.EffectsManager);
             InstanceBuffer?.AttachBuffer(context, 1);           
         }
         /// <summary>

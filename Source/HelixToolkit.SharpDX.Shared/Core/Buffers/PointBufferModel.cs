@@ -41,7 +41,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
         /// <param name="geometry">The geometry.</param>
-        protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
+        /// <param name="deviceResources">The device resources.</param>
+        protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources)
         {
             // -- set geometry if given
             if (geometry != null && geometry.Positions != null)
@@ -62,7 +63,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context">The context.</param>
         /// <param name="buffer">The buffer.</param>
         /// <param name="geometry">The geometry.</param>
-        protected override void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry)
+        /// <param name="deviceResources">The device resources.</param>
+        protected override void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources)
         {
             
         }
