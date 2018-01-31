@@ -69,8 +69,8 @@ using Core;
             get { return mFontSize; }
         }
 
-        private Media.FontFamily mFontFamily = new Media.FontFamily("Arial");
-        public Media.FontFamily FontFamily
+        private string mFontFamily = "Arial";
+        public string FontFamily
         {
             set
             {
@@ -140,18 +140,10 @@ using Core;
                 BillboardVertices.Clear();
                 if (!string.IsNullOrEmpty(TextInfo.Text))
                 {
-#if NETFX_CORE
-
-#else
-                    //var bitmap = TextInfo.Text.StringToBitmapSource(FontSize, Media.Colors.White, Media.Colors.Black,
-                    //    this.FontFamily, this.FontWeight, this.FontStyle, Padding);
-                    //Texture = bitmap.ToMemoryStream();
-
                     var w = Width;
                     var h = Height;
-                    Texture = TextInfo.Text.ToBitmapStream(FontSize, Color.White, Color.Black, "Arial", FontWeight.ToDXFontWeight(), FontStyle.ToDXFontStyle(),
+                    Texture = TextInfo.Text.ToBitmapStream(FontSize, Color.White, Color.Black, FontFamily, FontWeight.ToDXFontWeight(), FontStyle.ToDXFontStyle(),
                         new Vector4((float)Padding.Left, (float)Padding.Top, (float)Padding.Right, (float)Padding.Bottom), ref w, ref h, predefinedSize, deviceResources);
-#endif
                     if (!predefinedSize)
                     {
                         Width = w;

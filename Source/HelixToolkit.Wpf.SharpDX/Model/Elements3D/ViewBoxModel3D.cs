@@ -88,17 +88,35 @@ namespace HelixToolkit.Wpf.SharpDX
             var sampler = (SamplerStateDescription)PhongMaterial.DiffuseAlphaMapSamplerProperty.DefaultMetadata.DefaultValue;
             sampler.BorderColor = Color.Gray;
             sampler.AddressU = sampler.AddressV = sampler.AddressW = TextureAddressMode.Border;
-            ViewBoxMeshModel.Material = new PhongMaterial()
-            {
-                DiffuseColor = Color.White,
-                DiffuseMap = BitmapExtension.CreateViewBoxBitmapSource("F", "B", "L", "R", "U", "D", Media.Colors.Red, Media.Colors.Red,
-                    Media.Colors.Blue, Media.Colors.Blue, Media.Colors.Green, Media.Colors.Green).ToMemoryStream(),
-                DiffuseMapSampler = sampler
-            };
+
             ViewBoxMeshModel.CullMode = CullMode.Back;
             ViewBoxMeshModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.ViewCube]; };
             this.Children.Add(ViewBoxMeshModel);
             UpdateModel(UpDirection.ToVector3());
+            ViewBoxMeshModel.Material = new PhongMaterial()
+            {
+                DiffuseColor = Color.White,
+                DiffuseMapSampler = sampler
+            };
+        }
+
+        protected override bool OnAttach(IRenderHost host)
+        {
+            if (base.OnAttach(host))
+            {
+                var material = (ViewBoxMeshModel.Material as PhongMaterial);
+                if (material.DiffuseMap == null)
+                {
+                    material.DiffuseMap = ViewBoxTexture == null ? BitmapExtensions.CreateViewBoxTexture(host.EffectsManager.DeviceContext2D,
+                        "F", "B", "L", "R", "U", "D", Color.Red, Color.Red, Color.Blue, Color.Blue, Color.Green, Color.Green,
+                        Color.White, Color.White, Color.White, Color.White, Color.White, Color.White) : ViewBoxTexture;
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private void UpdateTexture(Stream texture)
