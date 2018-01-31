@@ -80,11 +80,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private readonly ZoomHandler changeFieldOfViewHandler;
 
         /// <summary>
-        /// The frame rate stopwatch.
-        /// </summary>
-        private readonly Stopwatch fpsWatch = new Stopwatch();
-
-        /// <summary>
         /// The orthographic camera.
         /// </summary>
         private readonly OrthographicCamera orthographicCamera;
@@ -263,7 +258,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Viewport3DX()
         {
-            FpsCounter = new FpsCounter();
             this.perspectiveCamera = new PerspectiveCamera();
             this.orthographicCamera = new OrthographicCamera();
             this.perspectiveCamera.Reset();
@@ -299,10 +293,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.CommandBindings.Add(new CommandBinding(ViewportCommands.RightView, this.RightViewHandler));
 
             this.SetDefaultGestures();
-
-            this.fpsWatch.Start();
-
-            //this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
 
             this.Loaded += this.ControlLoaded;
             this.Unloaded += this.ControlUnloaded;            
@@ -607,7 +597,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.IsShadowMapEnabled = IsShadowMappingEnabled;
                 this.renderHostInternal.MSAA = this.MSAA;
                 this.renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
-                this.renderHostInternal.MaxFPS = (uint)this.MaxFPS;
                 this.renderHostInternal.EnableSharingModelMode = this.EnableSharedModelMode;
                 this.renderHostInternal.SharedModelContainer = this.SharedModelContainer;
                 this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
@@ -1281,12 +1270,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void OnCompositionTargetRendering()
         {
-            if (this.ShowFrameRate && this.fpsWatch.ElapsedMilliseconds > 500)
-            {
-                this.FrameRate = (int)this.FpsCounter.Value;
-                this.FrameRateText = this.FrameRate + " FPS";
-                this.fpsWatch.Restart();
-            }
+            this.FrameRate = Math.Round(renderHostInternal.RenderStatistics.FPSStatistics.AverageFrequency, 2);
+            this.FrameRateText = this.FrameRate + " FPS";
 
             // update the info fields every 100 frames
             // (it would be better to update only when the visual model of the Viewport3D changes)
@@ -1303,7 +1288,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="timeStamp"></param>
         public void Update(TimeSpan timeStamp)
         {
-            FpsCounter.AddFrame(timeStamp);
             OnCompositionTargetRendering();
             cameraController.OnCompositionTargetRendering(timeStamp.Ticks);
         }
