@@ -51,7 +51,7 @@ namespace HelixToolkit.UWP.Utilities
             {
                 if (Set(ref averageValue, value))
                 {
-                    AverageFrequency = 1000 / value;
+                    AverageFrequency = value < 1 ? 1000 : 1000 / value;
 #if !NETFX_CORE
       //              Console.WriteLine($"Latency: {value}");
 #endif
