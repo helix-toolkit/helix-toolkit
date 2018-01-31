@@ -7,8 +7,14 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
+    public struct FrameStatisticsArg
+    {
+        public double AverageValue;
+        public double AverageFrequency;
+    }
     public interface IFrameStatistics : INotifyPropertyChanged
     {
+        event EventHandler<FrameStatisticsArg> OnValueChanged;
         /// <summary>
         /// Gets the average value.
         /// </summary>
@@ -41,6 +47,8 @@ namespace HelixToolkit.UWP.Utilities
 
     public sealed class FrameStatistics : Model.ObservableObject, IFrameStatistics
     {
+        public event EventHandler<FrameStatisticsArg> OnValueChanged;
+
         private double averageValue = 0;
         /// <summary>
         /// Average latency
@@ -52,9 +60,7 @@ namespace HelixToolkit.UWP.Utilities
                 if (Set(ref averageValue, value))
                 {
                     AverageFrequency = value < 1 ? 1000 : 1000 / value;
-#if !NETFX_CORE
-      //              Console.WriteLine($"Latency: {value}");
-#endif
+                    OnValueChanged?.Invoke(this, new FrameStatisticsArg() { AverageValue = value, AverageFrequency = AverageFrequency });
                 }
             }
             get
