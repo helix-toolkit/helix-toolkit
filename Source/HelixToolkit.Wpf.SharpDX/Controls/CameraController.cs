@@ -2095,6 +2095,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.PushCameraSetting();
         }
 
+        private TimeSpan _last;
         /// <summary>
         /// The rendering event handler.
         /// </summary>
@@ -2106,8 +2107,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
         {
-            if (skipper.IsSkip())
+            RenderingEventArgs args = (RenderingEventArgs)e;
+            if (args.RenderingTime == _last)
                 return;
+            _last = args.RenderingTime;
             var ticks = e.RenderingTime.Ticks;
             var time = 100e-9 * (ticks - this.lastTick);
 

@@ -802,7 +802,7 @@ namespace HelixToolkit.Wpf.SharpDX
             CompositionTarget.Rendering -= OnRendering;
             renderTimer.Stop();
         }
-
+        private TimeSpan _last = TimeSpan.Zero;
         /// <summary>
         /// Handles the <see cref="CompositionTarget.Rendering"/> event.
         /// </summary>
@@ -813,6 +813,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (!renderTimer.IsRunning || !IsRendering)
                 return;
+            RenderingEventArgs args = (RenderingEventArgs)e;
+            if (args.RenderingTime == _last)
+                return;
+            _last = args.RenderingTime;
             UpdateAndRender();
         }
 
@@ -824,7 +828,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             try
             {
-                if (pendingValidationCycles && !mRenderThread.IsBusy && !skipper.IsSkip())
+                if (pendingValidationCycles && !mRenderThread.IsBusy)
                 {
                     var t0 = renderTimer.Elapsed;
                     if (mRenderThread.IsInitalized && renderRenderable != null)

@@ -1350,6 +1350,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private TimeSpan _last;
         /// <summary>
         /// The rendering event handler.
         /// </summary>
@@ -1361,6 +1362,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
         {
+            RenderingEventArgs args = (RenderingEventArgs)e;
+            if (args.RenderingTime == _last)
+                return;
+            _last = args.RenderingTime;
             if (this.ShowFrameRate && this.fpsWatch.ElapsedMilliseconds > 500)
             {
                 this.FrameRate = (int)this.FpsCounter.Value;
