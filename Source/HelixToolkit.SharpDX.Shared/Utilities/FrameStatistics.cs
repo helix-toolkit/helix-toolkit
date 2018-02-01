@@ -62,7 +62,7 @@ namespace HelixToolkit.UWP.Utilities
             {
                 if (Set(ref averageValue, value))
                 {
-                    AverageFrequency = value < 1 ? 1000 : 1000 / value;
+                    AverageFrequency = 1000 / value;
                     OnValueChanged?.Invoke(this, new FrameStatisticsArg() { AverageValue = value, AverageFrequency = AverageFrequency });
                 }
             }
@@ -105,6 +105,11 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="latency">The latency.</param>
         public void Push(double latency)
         {
+            if(latency > 1000)
+            {
+                Reset();
+                return;
+            }
             if (ringBuffer.IsFull())
             {
                 movingAverage -= (ringBuffer.First - movingAverage) / ringBuffer.Count;
@@ -125,6 +130,7 @@ namespace HelixToolkit.UWP.Utilities
             AverageValue = 0;
             movingAverage = 0;
             counter = 0;
+            ringBuffer.Clear();
         }
     }
     /// <summary>
