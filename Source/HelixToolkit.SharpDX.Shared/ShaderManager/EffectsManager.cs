@@ -66,6 +66,15 @@ namespace HelixToolkit.UWP
 
         private IGeometryBufferManager geometryBufferManager;
 
+        /// <summary>
+        /// Gets the material texture manager.
+        /// </summary>
+        /// <value>
+        /// The material texture manager.
+        /// </value>
+        public ITextureResourceManager MaterialTextureManager { get { return materialTextureManager; } }
+        private ITextureResourceManager materialTextureManager;
+
         private global::SharpDX.Direct3D11.Device device;
         /// <summary>
         /// 
@@ -158,6 +167,9 @@ namespace HelixToolkit.UWP
 
             RemoveAndDispose(ref geometryBufferManager);
             geometryBufferManager = Collect(new GeometryBufferManager());
+
+            RemoveAndDispose(ref materialTextureManager);
+            materialTextureManager = Collect(new Model.TextureResourceManager(Device));
 #endregion
 #region Initial Techniques
             var techniqueDescs = LoadTechniqueDescriptions();

@@ -187,7 +187,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected virtual IEffectMaterialVariables CreateEffectMaterialVariables(IEffectsManager manager)
         {
-            return new PhongMaterialVariables(manager);
+            return new TextureSharedPhongMaterialVariables(manager, this.GUID);//new PhongMaterialVariables(manager);
         }
         /// <summary>
         /// <see cref="RenderCoreBase{TModelStruct}.OnUpdatePerModelStruct(ref TModelStruct, IRenderContext)"/>

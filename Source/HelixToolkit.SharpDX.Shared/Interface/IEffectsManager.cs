@@ -86,6 +86,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The geometry buffer manager.
         /// </value>
         IGeometryBufferManager GeometryBufferManager { get; }
+
+        /// <summary>
+        /// Gets the material texture manager.
+        /// </summary>
+        /// <value>
+        /// The material texture manager.
+        /// </value>
+        ITextureResourceManager MaterialTextureManager { get; }
         /// <summary>
         /// 
         /// </summary>
