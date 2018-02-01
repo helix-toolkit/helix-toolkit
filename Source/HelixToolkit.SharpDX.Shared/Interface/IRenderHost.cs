@@ -209,7 +209,13 @@ namespace HelixToolkit.UWP
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         void Resize(double width, double height);
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [show statistics].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show statistics]; otherwise, <c>false</c>.
+        /// </value>
+        RenderDetail ShowRenderDetail { set; get; }
         IRenderStatistics RenderStatistics { get; }
     }
 }

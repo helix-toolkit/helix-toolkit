@@ -2,7 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:h="http://helix-toolkit.org/wpf"
-    xmlns:hx="clr-namespace:HelixToolkit.Wpf.SharpDX">
+    xmlns:hx="clr-namespace:HelixToolkit.Wpf.SharpDX"
+    xmlns:hx2D="clr-namespace:HelixToolkit.Wpf.SharpDX.Elements2D">
 
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <h:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter" />
@@ -86,57 +87,6 @@
                                         Visibility="{TemplateBinding SubTitle,
                                                                      Converter={StaticResource NotNullToVisibilityConverter}}" />
                                 </StackPanel>
-
-                                <StackPanel
-                                    Margin="6"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
-                                    Background="{TemplateBinding InfoBackground}">
-                                    <TextBlock
-                                        Padding="4"
-                                        HorizontalAlignment="Right"
-                                        Foreground="{TemplateBinding InfoForeground}"
-                                        Text="{TemplateBinding FrameRateText}"
-                                        Visibility="{TemplateBinding ShowFrameRate,
-                                                                     Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    <TextBlock
-                                        Padding="4"
-                                        HorizontalAlignment="Right"
-                                        Foreground="{TemplateBinding InfoForeground}"
-                                        Text="{TemplateBinding FieldOfViewText}"
-                                        Visibility="{TemplateBinding ShowFieldOfView,
-                                                                     Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    <TextBlock
-                                        HorizontalAlignment="Right"
-                                        Foreground="{TemplateBinding InfoForeground}"
-                                        Text="{TemplateBinding Status}"
-                                        Visibility="{TemplateBinding Status,
-                                                                     Converter={StaticResource NotNullToVisibilityConverter}}" />
-                                </StackPanel>
-
-                                <StackPanel
-                                    Margin="6"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Bottom"
-                                    Background="{TemplateBinding InfoBackground}">
-                                    <TextBlock
-                                        Padding="4"
-                                        Foreground="{TemplateBinding InfoForeground}"
-                                        Text="{TemplateBinding CameraInfo}"
-                                        Visibility="{TemplateBinding ShowCameraInfo,
-                                                                     Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    <TextBlock
-                                        Padding="4"
-                                        Foreground="{TemplateBinding InfoForeground}"
-                                        Text="{TemplateBinding TriangleCountInfo}"
-                                        Visibility="{TemplateBinding ShowTriangleCountInfo,
-                                                                     Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    <TextBlock
-                                        Foreground="{TemplateBinding InfoForeground}"
-                                        Text="{TemplateBinding DebugInfo}"
-                                        Visibility="{TemplateBinding DebugInfo,
-                                                                     Converter={StaticResource NotNullToVisibilityConverter}}" />
-                                </StackPanel>
                             </Grid>
                             <ItemsControl Visibility="Collapsed">
                                 <hx:ViewBoxModel3D
@@ -156,8 +106,11 @@
                                     RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}"
                                     RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"
                                     SizeScale="{TemplateBinding CoordinateSystemSize}" />
+                                <hx2D:FrameStatisticsModel2D
+                                    x:Name="PART_FrameStatisticView"
+                                    Background="{TemplateBinding InfoBackground}"
+                                    Foreground="{TemplateBinding InfoForeground}" />
                             </ItemsControl>
-
                             <!--  Message TextBox  -->
                             <TextBox
                                 Margin="6"

@@ -285,6 +285,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public IRenderStatistics RenderStatistics { get { return CurrentRenderHost != null ? CurrentRenderHost.RenderStatistics : null; } }
 
+        public RenderDetail ShowRenderDetail
+        {
+            set;get;
+        }
+
         public void Attach(IRenderHost host)
         {
             if (Interlocked.Increment(ref d3dCounter) == 1 && host.EffectsManager != null)

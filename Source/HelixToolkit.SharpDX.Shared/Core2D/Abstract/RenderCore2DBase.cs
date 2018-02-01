@@ -158,9 +158,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <summary>
         /// Called when [attach].
         /// </summary>
-        /// <param name="target">The target.</param>
+        /// <param name="host">The target.</param>
         /// <returns></returns>
-        protected virtual bool OnAttach(IRenderHost target)
+        protected virtual bool OnAttach(IRenderHost host)
         {
             return true;
         }
