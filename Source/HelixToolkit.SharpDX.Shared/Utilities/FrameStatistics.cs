@@ -93,11 +93,11 @@ namespace HelixToolkit.UWP.Utilities
         /// <value>
         /// The update frequency.
         /// </value>
-        public uint UpdateFrequency { set; get; } = 60;
+        public uint UpdateFrequency { set; get; } = 30;
 
         private double movingAverage = 0;
         private uint counter = 0;
-        private const int RingBufferSize = 20;
+        private const int RingBufferSize = 60;
         private readonly SimpleRingBuffer<double> ringBuffer = new SimpleRingBuffer<double>(RingBufferSize);
         /// <summary>
         /// Pushes the specified latency by milliseconds.
