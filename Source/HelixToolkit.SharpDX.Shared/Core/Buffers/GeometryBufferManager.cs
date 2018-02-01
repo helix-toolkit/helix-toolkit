@@ -2,7 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#define DEBUGDETAIL
+//#define DEBUGDETAIL
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
