@@ -383,9 +383,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         private readonly Stopwatch renderTimer = new Stopwatch();
 
-        private TimeSpan lastRenderingDuration;
+        private TimeSpan lastRenderingDuration = TimeSpan.Zero;
 
-        private TimeSpan lastRenderTime;
+        private TimeSpan lastRenderTime = TimeSpan.Zero;
         #endregion
 
         /// <summary>
@@ -561,6 +561,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             RenderStatistics.Reset();
             renderTimer.Restart();
+            lastRenderingDuration = TimeSpan.Zero;
+            lastRenderTime = TimeSpan.Zero;
             InvalidateRender();
             StartRenderLoop?.Invoke(this, true);
         }

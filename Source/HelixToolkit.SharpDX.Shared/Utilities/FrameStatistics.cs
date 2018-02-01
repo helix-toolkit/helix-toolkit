@@ -105,7 +105,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="latency">The latency.</param>
         public void Push(double latency)
         {
-            if(latency > 1000)
+            if(latency > 1000 || latency < 0)
             {
                 Reset();
                 return;
