@@ -75,11 +75,6 @@ namespace HelixToolkit.Wpf.SharpDX
             "IsMoveEnabled", typeof(bool), typeof(Viewport3DX), new UIPropertyMetadata(true));
 
         /// <summary>
-        /// The stop watch
-        /// </summary>
-        public static readonly Stopwatch StopWatch = new Stopwatch();
-
-        /// <summary>
         /// The change field of view handler
         /// </summary>
         private readonly ZoomHandler changeFieldOfViewHandler;
@@ -224,6 +219,22 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             yield return item;
                         }
+                    }
+                    yield return viewCube;
+                    yield return coordinateView;
+                }
+            }
+        }
+
+        private IEnumerable<IRenderable> OwnedRenderables
+        {
+            get
+            {
+                if (renderHostInternal != null)
+                {
+                    foreach (IRenderable item in Items)
+                    {
+                        yield return item;
                     }
                     yield return viewCube;
                     yield return coordinateView;
@@ -825,21 +836,26 @@ namespace HelixToolkit.Wpf.SharpDX
             ViewportExtensions.ZoomExtents(this, animationTime);
         }
 
+        private bool IsAttached = false;
         /// <summary>
         /// Attaches the elements to the specified host.
         /// </summary>
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
         {
-            foreach (IRenderable e in this.Renderables)
+            if (!IsAttached)
             {
-                e.Attach(host);
+                foreach (IRenderable e in this.OwnedRenderables)
+                {
+                    e.Attach(host);
+                }
+                sharedModelContainerInternal?.Attach(host);
+                foreach(IRenderable2D e in this.D2DRenderables)
+                {
+                    e.Attach(host);
+                }
+                IsAttached = true;
             }
-            foreach(IRenderable2D e in this.D2DRenderables)
-            {
-                e.Attach(host);
-            }
-            StopWatch.Start();
         }
 
         /// <summary>
@@ -847,13 +863,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void Detach()
         {
-            foreach (IRenderable e in this.Renderables)
+            if (IsAttached)
             {
-                e.Detach();
-            }
-            foreach(IRenderable2D e in this.D2DRenderables)
-            {
-                e.Detach();
+                IsAttached = false;
+                foreach (IRenderable e in this.OwnedRenderables)
+                {
+                    e.Detach();
+                }
+                sharedModelContainerInternal?.Detach();
+                foreach(IRenderable2D e in this.D2DRenderables)
+                {
+                    e.Detach();
+                }
             }
         }
 
@@ -1218,14 +1239,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void ParentWindow_Closed(object sender, EventArgs e)
         {
-            FormMouseMove -= Viewport3DX_FormMouseMove;
-            if (hostPresenter != null && hostPresenter.Content is IDisposable)
-            {
-                var content = hostPresenter.Content as IDisposable;
-                hostPresenter.Content = null;
-                content.Dispose();
-            }
-            this.UnsubscribeRenderingEvent();
+            ControlUnloaded(sender, null);
         }
 
         /// <summary>
