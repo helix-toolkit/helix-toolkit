@@ -40,15 +40,17 @@ namespace HelixToolkit.Wpf.SharpDX
         public static int GetTotalNumberOfTriangles(this Viewport3DX viewport)
         {
             int count = 0;
-            foreach (var item in viewport.Renderables)
+            var totalModel = viewport.Renderables.PreorderDFT((x) => 
             {
-                var model = item as MeshGeometryModel3D;
-                if (model != null && model.GeometryValid)
+                if(x is GeometryModel3D g)
                 {
-                    if (model.Visibility == Visibility.Visible)
-                        count += model.Geometry.Indices.Count / 3;
+                    if (g.Visible && g.Geometry != null && g.Geometry.Indices != null)
+                    {
+                        count += g.Geometry.Indices.Count / 3;
+                    }
                 }
-            }
+                return true;
+            }).Count();
             return count;
         }
 

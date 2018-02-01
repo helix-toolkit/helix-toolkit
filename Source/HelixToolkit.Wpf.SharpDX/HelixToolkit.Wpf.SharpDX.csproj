@@ -160,7 +160,6 @@
     <Compile Include="Core\Ray3D.cs" />
     <Compile Include="Controls\CameraExtensions.cs" />
     <Compile Include="Controls\DX11ImageSource.cs" />
-    <Compile Include="Controls\FpsCounter.cs" />
     <Compile Include="Controls\MouseHandlers\CameraMode.cs" />
     <Compile Include="Controls\MouseHandlers\CameraRotationMode.cs" />
     <Compile Include="Controls\MouseHandlers\CameraSetting.cs" />
@@ -178,6 +177,7 @@
     <Compile Include="Extensions\Matrix3DExtensions.cs" />
     <Compile Include="Model\Elements2D\Abstract\Clickable2D.cs" />
     <Compile Include="Model\Elements2D\Abstract\ContentElement2D.cs" />
+    <Compile Include="Model\Elements2D\FrameStatisticsModel2D.cs" />
     <Compile Include="Model\Elements2D\Panel2D.cs" />
     <Compile Include="Model\Elements2D\Abstract\ShapeModel2D.cs" />
     <Compile Include="Model\Elements2D\Border2D.cs" />

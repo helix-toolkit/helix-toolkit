@@ -162,6 +162,53 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
 
+
+        /// <summary>
+        /// Gets or sets the text alignment.
+        /// </summary>
+        /// <value>
+        /// The text alignment.
+        /// </value>
+        public TextAlignment TextAlignment
+        {
+            get { return (TextAlignment)GetValue(TextAlignmentProperty); }
+            set { SetValue(TextAlignmentProperty, value); }
+        }
+
+        /// <summary>
+        /// The text alignment property
+        /// </summary>
+        public static readonly DependencyProperty TextAlignmentProperty =
+            DependencyProperty.Register("TextAlignment", typeof(TextAlignment), typeof(TextModel2D), new PropertyMetadata(TextAlignment.Left, (d,e)=> 
+            {
+                var model = (d as TextModel2D);
+                if (model.textRenderable == null) { return; }
+                model.textRenderable.TextAlignment = ((TextAlignment)e.NewValue).ToD2DTextAlignment();
+            }));
+
+        /// <summary>
+        /// Gets or sets the text alignment.
+        /// </summary>
+        /// <value>
+        /// The text alignment.
+        /// </value>
+        public FlowDirection FlowDirection
+        {
+            get { return (FlowDirection)GetValue(FlowDirectionProperty); }
+            set { SetValue(FlowDirectionProperty, value); }
+        }
+
+        /// <summary>
+        /// The text alignment property
+        /// </summary>
+        public static readonly DependencyProperty FlowDirectionProperty =
+            DependencyProperty.Register("FlowDirection", typeof(FlowDirection), typeof(TextModel2D), new PropertyMetadata(FlowDirection.LeftToRight, (d, e) =>
+            {
+                var model = (d as TextModel2D);
+                if (model.textRenderable == null) { return; }
+                model.textRenderable.FlowDirection = ((FlowDirection)e.NewValue).ToD2DFlowDir();
+            }));
+
         private TextRenderCore2D textRenderable;
         private bool foregroundChanged = true;
         private bool backgroundChanged = true;
@@ -210,6 +257,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             textRenderable.FontWeight = FontWeight.ToDXFontWeight();
             textRenderable.FontStyle = FontStyle.ToDXFontStyle();
             textRenderable.FontSize = FontSize;
+            textRenderable.TextAlignment = TextAlignment.ToD2DTextAlignment();
+            textRenderable.FlowDirection = FlowDirection.ToD2DFlowDir();
         }
 
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)

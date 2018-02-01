@@ -20,9 +20,9 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public static MemoryStream ToBitmapStream(this string text, int fontSize, Color4 foreground,
             Color4 background, string fontFamily, FontWeight fontWeight, FontStyle fontStyle, Vector4 padding, ref float width, ref float height, bool predefinedSize,
-            IDeviceResources deviceResources)
+            IDevice2DResources deviceResources)
         {
-            using (var layout = GetTextLayoutMetrices(text, fontSize, fontFamily, fontWeight, fontStyle))
+            using (var layout = GetTextLayoutMetrices(text, deviceResources, fontSize, fontFamily, fontWeight, fontStyle))
             {
                 var metrices = layout.Metrics;
                 if (!predefinedSize)
@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     height = width / scale;
                 }
 
-                return CreateBitmapStream((int)width, (int)height, deviceResources.DeviceContext2D, Direct2DImageFormat.Bmp, (target) =>
+                return CreateBitmapStream(deviceResources, (int)width, (int)height, Direct2DImageFormat.Bmp, (target) =>
                 {
                     target.Clear(background);
                     using (var brush = new SolidColorBrush(target, foreground))
@@ -48,15 +48,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static TextLayout GetTextLayoutMetrices(this string text, int fontSize, string fontFamily, FontWeight fontWeight, FontStyle fontStyle, 
+        public static TextLayout GetTextLayoutMetrices(this string text, IDevice2DResources deviceResources, int fontSize, string fontFamily, FontWeight fontWeight, FontStyle fontStyle, 
             float maxWidth = float.MaxValue, float maxHeight = float.MaxValue)
         {
-            using (var factory = new global::SharpDX.DirectWrite.Factory(global::SharpDX.DirectWrite.FactoryType.Isolated))
+            using (var format = new TextFormat(deviceResources.DirectWriteFactory, fontFamily, fontWeight, fontStyle, fontSize))
             {
-                using (var format = new TextFormat(factory, fontFamily, fontWeight, fontStyle, fontSize))
-                {
-                    return new TextLayout(factory, text, format, maxWidth, maxHeight);
-                }
+                return new TextLayout(deviceResources.DirectWriteFactory, text, format, maxWidth, maxHeight);
             }
         }
 
@@ -88,58 +85,54 @@ namespace HelixToolkit.Wpf.SharpDX
             throw new NotSupportedException();
         }
 
-        public static MemoryStream CreateBitmapStream(int width, int height, DeviceContext context, Direct2DImageFormat imageType, Action<RenderTarget> drawingAction)
+        public static MemoryStream CreateBitmapStream(IDevice2DResources deviceResources, int width, int height, Direct2DImageFormat imageType, Action<RenderTarget> drawingAction)
         {
-            using (var imgFactory = new ImagingFactory())
+            using (var bitmap = new global::SharpDX.WIC.Bitmap(deviceResources.WICImgFactory, (int)width, (int)height, global::SharpDX.WIC.PixelFormat.Format32bppBGR,
+                BitmapCreateCacheOption.CacheOnDemand))
             {
-                using (var bitmap = new global::SharpDX.WIC.Bitmap(imgFactory, (int)width, (int)height, global::SharpDX.WIC.PixelFormat.Format32bppBGR,
-                    BitmapCreateCacheOption.CacheOnLoad))
+
+                using (var target = new WicRenderTarget(deviceResources.Factory2D, bitmap,
+                    new RenderTargetProperties()
+                    {
+                        DpiX = deviceResources.Factory2D.DesktopDpi.Width,
+                        DpiY = deviceResources.Factory2D.DesktopDpi.Height,
+                        MinLevel = FeatureLevel.Level_DEFAULT,
+                        PixelFormat = new global::SharpDX.Direct2D1.PixelFormat(global::SharpDX.DXGI.Format.Unknown, AlphaMode.Unknown)
+                    }))
                 {
+                    target.Transform = Matrix3x2.Identity;
+                    target.BeginDraw();
+                    drawingAction(target);
+                    target.EndDraw();
+                }
+                var systemStream = new MemoryStream();
 
-                    using (var target = new WicRenderTarget(context.Factory, bitmap,
-                        new RenderTargetProperties()
-                        {
-                            DpiX = context.DotsPerInch.Width,
-                            DpiY = context.DotsPerInch.Height,
-                            MinLevel = FeatureLevel.Level_DEFAULT,
-                            PixelFormat = new global::SharpDX.Direct2D1.PixelFormat(global::SharpDX.DXGI.Format.Unknown, AlphaMode.Unknown)
-                        }))
+                using (var stream = new WICStream(deviceResources.WICImgFactory, systemStream))
+                {
+                    using (var encoder = new BitmapEncoder(deviceResources.WICImgFactory, imageType.ToWICImageFormat()))
                     {
-                        target.Transform = Matrix3x2.Identity;
-                        target.BeginDraw();
-                        drawingAction(target);
-                        target.EndDraw();
-                    }
-
-                    var systemStream = new MemoryStream();
-
-                    using (var stream = new WICStream(imgFactory, systemStream))
-                    {
-                        using (var encoder = new BitmapEncoder(imgFactory, imageType.ToWICImageFormat()))
+                        encoder.Initialize(stream);
+                        using (var frameEncoder = new BitmapFrameEncode(encoder))
                         {
-                            encoder.Initialize(stream);
-                            using (var frameEncoder = new BitmapFrameEncode(encoder))
-                            {
-                                frameEncoder.Initialize();
-                                frameEncoder.SetSize((int)width, (int)height);
-                                frameEncoder.WriteSource(bitmap);
-                                frameEncoder.Commit();
-                                encoder.Commit();
-                                return systemStream;
-                            }
+                            frameEncoder.Initialize();
+                            frameEncoder.SetSize((int)width, (int)height);
+                            frameEncoder.WriteSource(bitmap);
+                            frameEncoder.Commit();
+                            encoder.Commit();
+                            return systemStream;
                         }
                     }
                 }
             }
         }
 
-        public static MemoryStream CreateViewBoxTexture(DeviceContext context, string front, string back, string left, string right, string top, string down, 
+        public static MemoryStream CreateViewBoxTexture(IDevice2DResources deviceResources, string front, string back, string left, string right, string top, string down, 
             Color4 frontFaceColor, Color4 backFaceColor, Color4 leftFaceColor, Color4 rightFaceColor, Color4 topFaceColor, Color4 bottomFaceColor,
             Color4 frontTextColor, Color4 backTextColor, Color4 leftTextColor, Color4 rightTextColor, Color4 topTextColor, Color4 bottomTextColor,
             string fontFamily = "Arial",
             FontWeight fontWeight = FontWeight.SemiBold, FontStyle fontStyle = FontStyle.Normal, int fontSize = 64, int faceSize = 100)
         {
-            return CreateBitmapStream(faceSize * 6, faceSize, context, Direct2DImageFormat.Bmp, (target) =>
+            return CreateBitmapStream(deviceResources, faceSize * 6, faceSize, Direct2DImageFormat.Bmp, (target) =>
             {
                 target.Clear(Color.Black);
                 RectangleF faceRect = new RectangleF(0, 0, faceSize, faceSize);
@@ -148,7 +141,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 string[] texts = new string[] { front, back, left, right, top, down };
                 for(int i=0; i<6; ++i)
                 {
-                    using (var layout = GetTextLayoutMetrices(texts[i], fontSize, fontFamily, fontWeight, fontStyle, faceSize, faceSize))
+                    using (var layout = GetTextLayoutMetrices(texts[i], deviceResources, fontSize, fontFamily, fontWeight, fontStyle, faceSize, faceSize))
                     {
                         var metrices = layout.Metrics;
                         var offset = new Vector2((faceSize - metrices.WidthIncludingTrailingWhitespace) / 2, (faceSize - metrices.Height) / 2);

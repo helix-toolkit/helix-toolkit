@@ -64,4 +64,14 @@ namespace HelixToolkit.Wpf.SharpDX
         DepthStencilState = 1 << 2,
         BlendState = 1 << 3
     }
+
+    [Flags]
+    public enum RenderDetail
+    {
+        None = 0,
+        FPS = 1,
+        Statistics = 2,
+        TriangleInfo = 4,
+        Camera = 8,
+    }
 }

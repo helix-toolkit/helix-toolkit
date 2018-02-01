@@ -305,6 +305,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), new RectangleF(0, 0, RenderSize.X, RenderSize.Y),
                     InterpolationMode.Linear, global::SharpDX.Direct2D1.CompositeMode.SourceOver);
             }
+            else
+            {
+                Render(context);
+            }
         }
 
         protected virtual void OnRender(IRenderContext2D context)

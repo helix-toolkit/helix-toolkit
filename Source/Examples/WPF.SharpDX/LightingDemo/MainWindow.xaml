@@ -35,7 +35,11 @@
             IsShadowMappingEnabled="True"
             MSAA="{Binding MSAA}"
             RenderTechnique="{Binding RenderTechnique}"
+            ShowCameraInfo="True"
             ShowCoordinateSystem="True"
+            ShowFrameDetails="True"
+            ShowFrameRate="True"
+            ShowTriangleCountInfo="True"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False">

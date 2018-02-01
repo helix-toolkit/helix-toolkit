@@ -75,10 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (currentRenderHost != value)
                 {
-                    if (currentRenderHost != null)
-                    { currentRenderHost.ExceptionOccurred -= ExceptionOccurred; }
                     currentRenderHost = value;
-                    currentRenderHost.ExceptionOccurred += ExceptionOccurred;
                     currentRenderHost.SetDefaultRenderTargets(false);
                 }
             }
@@ -86,10 +83,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return currentRenderHost;
             }
-        }
-
-        public ModelContainer3DX()
-        {
         }
        
         /// <summary>
@@ -285,6 +278,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public IRenderStatistics RenderStatistics { get { return CurrentRenderHost != null ? CurrentRenderHost.RenderStatistics : null; } }
 
+        public RenderDetail ShowRenderDetail
+        {
+            set;get;
+        }
+
         public void Attach(IRenderHost host)
         {
             if (Interlocked.Increment(ref d3dCounter) == 1 && host.EffectsManager != null)
@@ -318,7 +316,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public void EndD3D()
         {
-            
+
         }
 
         public void UpdateAndRender()
@@ -333,7 +331,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public void Dispose()
         {
-            
+            Detach();
+            CurrentRenderHost = null;
+            viewports.Clear();
         }
     }
 }

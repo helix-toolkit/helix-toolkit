@@ -40,6 +40,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [TemplatePart(Name = "PART_AdornerLayer", Type = typeof(AdornerDecorator))]
     [TemplatePart(Name = "PART_CoordinateView", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_ViewCube", Type = typeof(Viewport3D))]
+    [TemplatePart(Name = "PART_FrameStatisticView", Type = typeof(Viewport3D))]
     [Localizability(LocalizationCategory.NeverLocalize)]
     public partial class Viewport3DX : ItemsControl, IViewport3DX
     {
@@ -64,15 +65,14 @@ namespace HelixToolkit.Wpf.SharpDX
         private const string PartViewCube = "PART_ViewCube";
 
         /// <summary>
+        /// The frame statistic view part name
+        /// </summary>
+        private const string PartFrameStatisticView = "PART_FrameStatisticView";
+        /// <summary>
         ///   The is move enabled property.
         /// </summary>
         public static readonly DependencyProperty IsMoveEnabledProperty = DependencyProperty.Register(
             "IsMoveEnabled", typeof(bool), typeof(Viewport3DX), new UIPropertyMetadata(true));
-
-        /// <summary>
-        /// The stop watch
-        /// </summary>
-        public static readonly Stopwatch StopWatch = new Stopwatch();
 
         /// <summary>
         /// The change field of view handler
@@ -163,11 +163,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private bool hasBeenLoadedBefore;
 
         /// <summary>
-        /// The frame counter for info field updates.
-        /// </summary>
-        private int infoFrameCounter;
-
-        /// <summary>
         /// The is subscribed to rendering event.
         /// </summary>
         private bool isSubscribedToRenderingEvent;
@@ -191,6 +186,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The view cube.
         /// </summary>
         private Element3D viewCube;
+
+        private FrameStatisticsModel2D frameStatisticModel;
 
         /// <summary>
         /// Fired whenever an exception occurred at rendering subsystem.
@@ -229,11 +226,28 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private IEnumerable<IRenderable> OwnedRenderables
+        {
+            get
+            {
+                if (renderHostInternal != null)
+                {
+                    foreach (IRenderable item in Items)
+                    {
+                        yield return item;
+                    }
+                    yield return viewCube;
+                    yield return coordinateView;
+                }
+            }
+        }
+
         public IEnumerable<IRenderable2D> D2DRenderables
         {
             get
             {
-                return Enumerable.Repeat<IRenderable2D>(overlay2D, 1);
+                yield return overlay2D;
+                yield return frameStatisticModel;
             }
         }
 
@@ -603,6 +617,38 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.Viewport = this;
                 this.renderHostInternal.EffectsManager = this.EffectsManager;
                 this.renderHostInternal.IsRendering = this.Visibility == Visibility.Visible;
+                if (ShowFrameRate)
+                {
+                    this.renderHostInternal.ShowRenderDetail |= RenderDetail.FPS;
+                }
+                else
+                {
+                    this.renderHostInternal.ShowRenderDetail &= ~RenderDetail.FPS;
+                }
+                if (ShowFrameDetails)
+                {
+                    this.renderHostInternal.ShowRenderDetail |= RenderDetail.Statistics;
+                }
+                else
+                {
+                    this.renderHostInternal.ShowRenderDetail &= ~RenderDetail.Statistics;
+                }
+                if (ShowTriangleCountInfo)
+                {
+                    this.renderHostInternal.ShowRenderDetail |= RenderDetail.TriangleInfo;
+                }
+                else
+                {
+                    this.renderHostInternal.ShowRenderDetail &= ~RenderDetail.TriangleInfo;
+                }
+                if (ShowCameraInfo)
+                {
+                    this.renderHostInternal.ShowRenderDetail |= RenderDetail.Camera;
+                }
+                else
+                {
+                    this.renderHostInternal.ShowRenderDetail &= ~RenderDetail.Camera;
+                }
             }
 
             if (this.cameraController == null)
@@ -632,7 +678,14 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new HelixToolkitException("{0} is missing from the template.", PartViewCube);
             }
-
+            if(this.frameStatisticModel == null)
+            {
+                this.frameStatisticModel = this.Template.FindName(PartFrameStatisticView, this) as FrameStatisticsModel2D;
+            }
+            if(this.frameStatisticModel == null)
+            {
+                throw new HelixToolkitException("{0} is missing from the template.", PartFrameStatisticView);
+            }
             // update the coordinateview camera
             this.OnCameraChanged();           
         }
@@ -783,21 +836,26 @@ namespace HelixToolkit.Wpf.SharpDX
             ViewportExtensions.ZoomExtents(this, animationTime);
         }
 
+        private bool IsAttached = false;
         /// <summary>
         /// Attaches the elements to the specified host.
         /// </summary>
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
         {
-            foreach (IRenderable e in this.Renderables)
+            if (!IsAttached)
             {
-                e.Attach(host);
+                foreach (IRenderable e in this.OwnedRenderables)
+                {
+                    e.Attach(host);
+                }
+                sharedModelContainerInternal?.Attach(host);
+                foreach(IRenderable2D e in this.D2DRenderables)
+                {
+                    e.Attach(host);
+                }
+                IsAttached = true;
             }
-            foreach(IRenderable2D e in this.D2DRenderables)
-            {
-                e.Attach(host);
-            }
-            StopWatch.Start();
         }
 
         /// <summary>
@@ -805,13 +863,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void Detach()
         {
-            foreach (IRenderable e in this.Renderables)
+            if (IsAttached)
             {
-                e.Detach();
-            }
-            foreach(IRenderable2D e in this.D2DRenderables)
-            {
-                e.Detach();
+                IsAttached = false;
+                foreach (IRenderable e in this.OwnedRenderables)
+                {
+                    e.Detach();
+                }
+                sharedModelContainerInternal?.Detach();
+                foreach(IRenderable2D e in this.D2DRenderables)
+                {
+                    e.Detach();
+                }
             }
         }
 
@@ -825,20 +888,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
             var lookdir = projectionCamera.LookDirection;
             lookdir.Normalize();
-
-            if (this.ShowFieldOfView)
-            {
-                this.UpdateFieldOfViewInfo();
-            }
-
-            if (this.ShowCameraInfo)
-            {
-                this.UpdateCameraInfo();
-            }
-
             this.InvalidateRender();
         }
 
@@ -1188,14 +1239,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void ParentWindow_Closed(object sender, EventArgs e)
         {
-            FormMouseMove -= Viewport3DX_FormMouseMove;
-            if (hostPresenter != null && hostPresenter.Content is IDisposable)
-            {
-                var content = hostPresenter.Content as IDisposable;
-                hostPresenter.Content = null;
-                content.Dispose();
-            }
-            this.UnsubscribeRenderingEvent();
+            ControlUnloaded(sender, null);
         }
 
         /// <summary>
@@ -1272,16 +1316,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.FrameRate = Math.Round(renderHostInternal.RenderStatistics.FPSStatistics.AverageFrequency, 2);
             this.FrameRateText = this.FrameRate + " FPS";
-
-            // update the info fields every 100 frames
-            // (it would be better to update only when the visual model of the Viewport3D changes)
-            this.infoFrameCounter++;
-            if (this.ShowTriangleCountInfo && this.infoFrameCounter > 100)
-            {
-                int count = this.GetTotalNumberOfTriangles();
-                this.TriangleCountInfo = string.Format("Triangles: {0}", count);
-                this.infoFrameCounter = 0;
-            }
         }
         /// <summary>
         /// </summary>
@@ -1441,7 +1475,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (!this.isSubscribedToRenderingEvent)
             {
-               // RenderingEventManager.AddListener(this.renderingEventListener);
                 this.isSubscribedToRenderingEvent = true;
             }
             this.KeyDown += Viewport3DX_KeyDown;
@@ -1475,27 +1508,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.isSubscribedToRenderingEvent)
             {
-                //RenderingEventManager.RemoveListener(this.renderingEventListener);
                 this.isSubscribedToRenderingEvent = false;
             }
             this.KeyDown -= Viewport3DX_KeyDown;
-        }
-
-        /// <summary>
-        /// Updates the camera info.
-        /// </summary>
-        private void UpdateCameraInfo()
-        {
-            this.CameraInfo = this.Camera.GetInfo();
-        }
-
-        /// <summary>
-        /// The update field of view info.
-        /// </summary>
-        private void UpdateFieldOfViewInfo()
-        {
-            var pc = this.Camera as PerspectiveCamera;
-            this.FieldOfViewText = pc != null ? string.Format("FoV ∠ {0:0}°", pc.FieldOfView) : null;
         }
 
         /// <summary>

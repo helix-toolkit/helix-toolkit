@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Utilities
@@ -7,8 +8,16 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
+    using Cameras;
+
+    public struct FrameStatisticsArg
+    {
+        public double AverageValue;
+        public double AverageFrequency;
+    }
     public interface IFrameStatistics : INotifyPropertyChanged
     {
+        event EventHandler<FrameStatisticsArg> OnValueChanged;
         /// <summary>
         /// Gets the average value.
         /// </summary>
@@ -41,6 +50,8 @@ namespace HelixToolkit.UWP.Utilities
 
     public sealed class FrameStatistics : Model.ObservableObject, IFrameStatistics
     {
+        public event EventHandler<FrameStatisticsArg> OnValueChanged;
+
         private double averageValue = 0;
         /// <summary>
         /// Average latency
@@ -51,10 +62,8 @@ namespace HelixToolkit.UWP.Utilities
             {
                 if (Set(ref averageValue, value))
                 {
-                    AverageFrequency = value < 1 ? 1000 : 1000 / value;
-#if !NETFX_CORE
-      //              Console.WriteLine($"Latency: {value}");
-#endif
+                    AverageFrequency = 1000 / value;
+                    OnValueChanged?.Invoke(this, new FrameStatisticsArg() { AverageValue = value, AverageFrequency = AverageFrequency });
                 }
             }
             get
@@ -84,11 +93,11 @@ namespace HelixToolkit.UWP.Utilities
         /// <value>
         /// The update frequency.
         /// </value>
-        public uint UpdateFrequency { set; get; } = 60;
+        public uint UpdateFrequency { set; get; } = 30;
 
         private double movingAverage = 0;
         private uint counter = 0;
-        private const int RingBufferSize = 20;
+        private const int RingBufferSize = 60;
         private readonly SimpleRingBuffer<double> ringBuffer = new SimpleRingBuffer<double>(RingBufferSize);
         /// <summary>
         /// Pushes the specified latency by milliseconds.
@@ -96,6 +105,11 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="latency">The latency.</param>
         public void Push(double latency)
         {
+            if(latency > 1000 || latency < 0)
+            {
+                Reset();
+                return;
+            }
             if (ringBuffer.IsFull())
             {
                 movingAverage -= (ringBuffer.First - movingAverage) / ringBuffer.Count;
@@ -116,9 +130,12 @@ namespace HelixToolkit.UWP.Utilities
             AverageValue = 0;
             movingAverage = 0;
             counter = 0;
+            ringBuffer.Clear();
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IRenderStatistics
     {
         /// <summary>
@@ -136,13 +153,59 @@ namespace HelixToolkit.UWP.Utilities
         /// </value>
         IFrameStatistics LatencyStatistics { get; }
         /// <summary>
+        /// Gets or sets the number of model3d per frame.
+        /// </summary>
+        /// <value>
+        /// The number model3d.
+        /// </value>
+        int NumModel3D { set; get; }
+        /// <summary>
+        /// Gets or sets the number of render core3d per frame.
+        /// </summary>
+        /// <value>
+        /// The number core3 d.
+        /// </value>
+        int NumCore3D { set; get; }
+        /// <summary>
+        /// Gets or sets the number triangles rendered in geometry model
+        /// </summary>
+        /// <value>
+        /// The number triangles.
+        /// </value>
+        int NumTriangles { set; get; }
+        /// <summary>
+        /// Sets the camera
+        /// </summary>
+        ICamera Camera { set; get; }
+        /// <summary>
+        /// Gets or sets the frame detail for output.
+        /// </summary>
+        /// <value>
+        /// The frame detail.
+        /// </value>
+        RenderDetail FrameDetail { set; get; }
+        /// <summary>
+        /// Gets the detail string.
+        /// </summary>
+        /// <returns></returns>
+        string GetDetailString();
+        /// <summary>
+        /// Gets the detail string.
+        /// </summary>
+        /// <param name="detail">The detail.</param>
+        /// <returns></returns>
+        string GetDetailString(RenderDetail detail);
+        /// <summary>
         /// Resets all statistics.
         /// </summary>
         void Reset();
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class RenderStatistics : IRenderStatistics
     {
+        const string LineBreak = "\n---------\n";
         /// <summary>
         /// Gets the FPS statistics.
         /// </summary>
@@ -157,6 +220,96 @@ namespace HelixToolkit.UWP.Utilities
         /// The latency statistics.
         /// </value>
         public IFrameStatistics LatencyStatistics { get; } = new FrameStatistics();
+
+        /// <summary>
+        /// Gets or sets the number of model3d per frame.
+        /// </summary>
+        /// <value>
+        /// The number model3d.
+        /// </value>
+        public int NumModel3D { set; get; } = 0;
+        /// <summary>
+        /// Gets or sets the number of render core3d per frame.
+        /// </summary>
+        /// <value>
+        /// The number core3 d.
+        /// </value>
+        public int NumCore3D { set; get; } = 0;
+        /// <summary>
+        /// Gets or sets the number triangles rendered in geometry model
+        /// </summary>
+        /// <value>
+        /// The number triangles.
+        /// </value>
+        public int NumTriangles { set; get; } = 0;
+        /// <summary>
+        /// Gets or sets the camera.
+        /// </summary>
+        /// <value>
+        /// The camera.
+        /// </value>
+        public ICamera Camera { set; get; }
+        /// <summary>
+        /// Gets or sets the frame detail.
+        /// </summary>
+        /// <value>
+        /// The frame detail.
+        /// </value>
+        public RenderDetail FrameDetail { set; get; } = RenderDetail.None;
+
+        public string GetDetailString()
+        {
+            return GetDetailString(FrameDetail);
+        }
+
+        public string GetDetailString(RenderDetail detail)
+        {
+            if(detail == RenderDetail.None)
+            {
+                return "";
+            }
+            string s = "";
+            if((detail & RenderDetail.FPS) == RenderDetail.FPS)
+            {
+                s += GetFPS();
+            }
+            if((detail & RenderDetail.Statistics) == RenderDetail.Statistics)
+            {
+                s += GetStatistics();
+            }
+            if((detail & RenderDetail.TriangleInfo) == RenderDetail.TriangleInfo)
+            {
+                s += GetTriangleCount();
+            }
+            if((detail & RenderDetail.Camera) == RenderDetail.Camera)
+            {
+                s += GetCamera();
+            }
+            return s;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private string GetFPS()
+        {
+            return $"FPS:{Math.Round(FPSStatistics.AverageFrequency, 2)}" + LineBreak;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private string GetStatistics()
+        {
+            return $"Render(ms): {Math.Round(LatencyStatistics.AverageValue, 4)}\n" +
+                $"NumModel3D: {NumModel3D}\n" +
+                $"NumCore3D: {NumCore3D}" + LineBreak;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private string GetTriangleCount()
+        {
+            return $"NumTriangle: {NumTriangles}" + LineBreak;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private string GetCamera()
+        {
+            return Camera == null ? "" : "Camera:\n" + Camera.ToString() + LineBreak;
+        }
         /// <summary>
         /// Resets this instance.
         /// </summary>
@@ -164,6 +317,17 @@ namespace HelixToolkit.UWP.Utilities
         {
             FPSStatistics.Reset();
             LatencyStatistics.Reset();
+            NumTriangles = NumCore3D = NumModel3D = 0;
+        }
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return GetDetailString(RenderDetail.FPS | RenderDetail.Statistics);
         }
     }
 }

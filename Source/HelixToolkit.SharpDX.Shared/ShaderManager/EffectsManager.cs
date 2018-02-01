@@ -66,20 +66,36 @@ namespace HelixToolkit.UWP
 
         private IGeometryBufferManager geometryBufferManager;
 
+        /// <summary>
+        /// Gets the material texture manager.
+        /// </summary>
+        /// <value>
+        /// The material texture manager.
+        /// </value>
+        public ITextureResourceManager MaterialTextureManager { get { return materialTextureManager; } }
+        private ITextureResourceManager materialTextureManager;
+        #region 3D Resoruces
         private global::SharpDX.Direct3D11.Device device;
         /// <summary>
         /// 
         /// </summary>
         public global::SharpDX.Direct3D11.Device Device { get { return device; } }
+        /// <summary>
+        /// 
+        /// </summary>
+        public DriverType DriverType { private set; get; }
 
+        #endregion
+        #region 2D Resources
         private global::SharpDX.Direct2D1.Device device2D;
         /// <summary>
-        /// Gets the device2 d.
+        /// Gets the device2d.
         /// </summary>
         /// <value>
         /// The device2 d.
         /// </value>
         public global::SharpDX.Direct2D1.Device Device2D { get { return device2D; } }
+
 
         private global::SharpDX.Direct2D1.DeviceContext deviceContext2D;
         /// <summary>
@@ -90,9 +106,32 @@ namespace HelixToolkit.UWP
         /// </value>
         public global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get { return deviceContext2D; } }
         /// <summary>
-        /// 
+        /// Gets the factory2 d.
         /// </summary>
-        public DriverType DriverType { private set; get; }
+        /// <value>
+        /// The factory2 d.
+        /// </value>
+        public global::SharpDX.Direct2D1.Factory1 Factory2D { get { return factory2D; } }
+        private global::SharpDX.Direct2D1.Factory1 factory2D;
+
+        private global::SharpDX.WIC.ImagingFactory wicImgFactory;
+        /// <summary>
+        /// Gets the wic img factory.
+        /// </summary>
+        /// <value>
+        /// The wic img factory.
+        /// </value>
+        public global::SharpDX.WIC.ImagingFactory WICImgFactory { get { return wicImgFactory; } }
+
+        private global::SharpDX.DirectWrite.Factory directWriteFactory;
+        /// <summary>
+        /// Gets the direct write factory.
+        /// </summary>
+        /// <value>
+        /// The direct write factory.
+        /// </value>
+        public global::SharpDX.DirectWrite.Factory DirectWriteFactory { get { return directWriteFactory; } }
+        #endregion
         /// <summary>
         /// 
         /// </summary>
@@ -158,6 +197,9 @@ namespace HelixToolkit.UWP
 
             RemoveAndDispose(ref geometryBufferManager);
             geometryBufferManager = Collect(new GeometryBufferManager());
+
+            RemoveAndDispose(ref materialTextureManager);
+            materialTextureManager = Collect(new Model.TextureResourceManager(Device));
 #endregion
 #region Initial Techniques
             var techniqueDescs = LoadTechniqueDescriptions();
@@ -167,13 +209,13 @@ namespace HelixToolkit.UWP
             }
             #endregion
 
-            using (var factory = new global::SharpDX.Direct2D1.Factory1())
+            factory2D = Collect(new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.MultiThreaded));
+            wicImgFactory = Collect(new global::SharpDX.WIC.ImagingFactory());
+            directWriteFactory = Collect(new global::SharpDX.DirectWrite.Factory(global::SharpDX.DirectWrite.FactoryType.Shared));
+            using (var dxgiDevice2 = device.QueryInterface<global::SharpDX.DXGI.Device>())
             {
-                using (var dxgiDevice2 = device.QueryInterface<global::SharpDX.DXGI.Device>())
-                {
-                    device2D = Collect(new global::SharpDX.Direct2D1.Device(factory, dxgiDevice2));
-                    deviceContext2D = Collect(new global::SharpDX.Direct2D1.DeviceContext(device2D, global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations));
-                }
+                device2D = Collect(new global::SharpDX.Direct2D1.Device(factory2D, dxgiDevice2));
+                deviceContext2D = Collect(new global::SharpDX.Direct2D1.DeviceContext(device2D, global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations));
             }
 
             Initialized = true;

@@ -329,20 +329,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             get { return RenderBuffer.D2DTarget; }
         }
-        /// <summary>
-        /// The renderer
-        /// </summary>
-        protected IRenderer renderer;
-        /// <summary>
-        /// The update requested
-        /// </summary>
-        protected volatile bool UpdateRequested = true;
 
-        private readonly Stopwatch renderTimer = new Stopwatch();
-
-        private TimeSpan lastRenderingDuration;
-
-        private TimeSpan lastRenderTime;
         /// <summary>
         /// Gets the render statistics.
         /// </summary>
@@ -350,7 +337,20 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The render statistics.
         /// </value>
         public IRenderStatistics RenderStatistics { get; } = new RenderStatistics();
-        
+        /// <summary>
+        /// Gets or sets a value indicating whether [show render statistics].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show render statistics]; otherwise, <c>false</c>.
+        /// </value>
+        public RenderDetail ShowRenderDetail
+        {
+            set { RenderStatistics.FrameDetail = value; }
+            get { return RenderStatistics.FrameDetail; }
+        }
+        #endregion
+
+        #region Events
         /// <summary>
         /// Occurs when [exception occurred].
         /// </summary>
@@ -370,18 +370,37 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         private readonly Func<Device, IRenderer> createRendererFunction;
         #endregion
+
+        #region Private variables
+        /// <summary>
+        /// The renderer
+        /// </summary>
+        protected IRenderer renderer;
+        /// <summary>
+        /// The update requested
+        /// </summary>
+        protected volatile bool UpdateRequested = true;
+
+        private readonly Stopwatch renderTimer = new Stopwatch();
+
+        private TimeSpan lastRenderingDuration = TimeSpan.Zero;
+
+        private TimeSpan lastRenderTime = TimeSpan.Zero;
+        #endregion
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DX11RenderHostBase"/> class.
+        /// </summary>
+        public DX11RenderHostBase() { }
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11RenderHostBase"/> class.
         /// </summary>
         /// <param name="createRenderer">The create renderer.</param>
         public DX11RenderHostBase(Func<Device, IRenderer> createRenderer)
         {
-            createRendererFunction = createRenderer;
+            createRendererFunction = createRenderer;           
         }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DX11RenderHostBase"/> class.
-        /// </summary>
-        public DX11RenderHostBase() { }
+
         /// <summary>
         /// Creates the render buffer.
         /// </summary>
@@ -422,7 +441,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 RenderContext.EnableBoundingFrustum = EnableRenderFrustum;
                 RenderContext.TimeStamp = t0;
                 RenderContext.Camera = viewport.CameraCore;
-                RenderContext.WorldMatrix = viewport.WorldMatrix;              
+                RenderContext.WorldMatrix = viewport.WorldMatrix;
+                RenderStatistics.Camera = viewport.CameraCore;
                 PreRender();
                 try
                 {                    
@@ -541,6 +561,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             RenderStatistics.Reset();
             renderTimer.Restart();
+            lastRenderingDuration = TimeSpan.Zero;
+            lastRenderTime = TimeSpan.Zero;
             InvalidateRender();
             StartRenderLoop?.Invoke(this, true);
         }
@@ -610,7 +632,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             else
             {
                 viewport.Attach(this);
-            }         
+            }
             renderContext = Collect(CreateRenderContext(deviceResources.Device.ImmediateContext));
             renderContext2D = Collect(CreateRenderContext2D(deviceResources.DeviceContext2D));
         }

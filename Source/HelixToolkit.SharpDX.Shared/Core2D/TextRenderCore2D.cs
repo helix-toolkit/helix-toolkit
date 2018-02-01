@@ -123,6 +123,32 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         public D2D.DrawTextOptions DrawingOptions { set; get; } = D2D.DrawTextOptions.None;
 
+        private TextAlignment textAlignment = TextAlignment.Leading;
+        public TextAlignment TextAlignment
+        {
+            set
+            {
+                SetAffectsRender(ref textAlignment, value);
+            }
+            get
+            {
+                return textAlignment;
+            }
+        }
+
+        private FlowDirection flowDirection = FlowDirection.LeftToRight;
+        public FlowDirection FlowDirection
+        {
+            set
+            {
+                SetAffectsRender(ref flowDirection, value);
+            }
+            get
+            {
+                return flowDirection;
+            }
+        }
+
         private Factory textFactory;
         private TextFormat textFormat;
 
@@ -197,6 +223,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 textLayout = Collect(new TextLayout(textFactory, Text, textFormat, MaxWidth, MaxHeight));
                 textLayoutDirty = false;
             }
+            textLayout.TextAlignment = TextAlignment;
+            
         }
 
         protected override bool CanRender(IRenderContext2D context)

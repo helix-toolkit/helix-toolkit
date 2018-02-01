@@ -107,7 +107,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var material = (ViewBoxMeshModel.Material as PhongMaterial);
                 if (material.DiffuseMap == null)
                 {
-                    material.DiffuseMap = ViewBoxTexture == null ? BitmapExtensions.CreateViewBoxTexture(host.EffectsManager.DeviceContext2D,
+                    material.DiffuseMap = ViewBoxTexture == null ? BitmapExtensions.CreateViewBoxTexture(host.EffectsManager,
                         "F", "B", "L", "R", "U", "D", Color.Red, Color.Red, Color.Blue, Color.Blue, Color.Green, Color.Green,
                         Color.White, Color.White, Color.White, Color.White, Color.White, Color.White) : ViewBoxTexture;
                 }

@@ -353,7 +353,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             this.MouseEnter2D -= Element2D_MouseEnter2D;
             this.MouseLeave2D -= Element2D_MouseLeave2D;
-            OnDetach();
+            base.OnDetach();
         }
 
         protected virtual void OnMouseOverChanged(bool newValue, bool oldValue)

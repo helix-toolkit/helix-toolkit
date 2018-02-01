@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 {
     using Core;
     using global::SharpDX.Direct3D11;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// 
@@ -33,12 +34,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
 
         private Task asyncTask;
-
+        private Task getTriangleCountTask;
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
         /// </summary>
         public DefaultRenderHost() { }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
         /// </summary>
@@ -71,6 +71,22 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 renderer.UpdateNotRenderParallel(pendingRenderables);
             });
+            if ((ShowRenderDetail & RenderDetail.TriangleInfo) == RenderDetail.TriangleInfo)
+            {
+                getTriangleCountTask = Task.Factory.StartNew(() =>
+                {
+                    int count = 0;
+                    foreach(var core in pendingRenderCores)
+                    {
+                        if (core is IGeometryRenderCore c)
+                        {
+                            if(c.GeometryBuffer != null && c.GeometryBuffer.Geometry != null && c.GeometryBuffer.Geometry.Indices != null)
+                                count += c.GeometryBuffer.Geometry.Indices.Count / 3;
+                        }
+                    }
+                    RenderStatistics.NumTriangles = count;
+                });
+            }
         }
 
         /// <summary>
@@ -105,26 +121,36 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected override void OnRender2D(TimeSpan time)
         {
             var d2dRoot = Viewport.D2DRenderables.FirstOrDefault();
+            bool renderD2D = false;
             if (d2dRoot != null && d2dRoot.Items.Count() > 0)
             {
+                renderD2D = true;
                 d2dRoot.Measure(new Size2F((float)ActualWidth, (float)ActualHeight));
                 d2dRoot.Arrange(new RectangleF(0, 0, (float)ActualWidth, (float)ActualHeight));
-            }
-            else
+            }                
+            if(!renderD2D && ShowRenderDetail == RenderDetail.None)
             {
                 return;
             }
-            renderer.UpdateSceneGraph2D(RenderContext2D, Viewport.D2DRenderables);
-            //Render to bitmap cache
+            renderer.UpdateSceneGraph2D(RenderContext2D, Viewport.D2DRenderables);      
+            if (ShowRenderDetail != RenderDetail.None)
+            {
+                getTriangleCountTask?.Wait();
+                RenderStatistics.NumModel3D = pendingRenderables.Count;
+                RenderStatistics.NumCore3D = pendingRenderCores.Count;
+            }
             foreach (var item in Viewport.D2DRenderables)
             {
                 item.Render(RenderContext2D);
-            }
+            }   
             //Draw bitmap cache to render target
             RenderContext2D.PushRenderTarget(D2DTarget.D2DTarget, false);
-            foreach (var item in Viewport.D2DRenderables)
+            if (renderD2D || ShowRenderDetail != RenderDetail.None)
             {
-                item.RenderBitmapCache(RenderContext2D);
+                foreach (var item in Viewport.D2DRenderables)
+                {
+                    item.RenderBitmapCache(RenderContext2D);
+                }
             }
             RenderContext2D.PopRenderTarget();
         }

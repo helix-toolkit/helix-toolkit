@@ -8,6 +8,7 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
 #endif
 {
     using Model;
+    using System.Globalization;
 
     public abstract class CameraCore : ObservableObject, ICamera
     {
@@ -44,15 +45,49 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
         public abstract Matrix CreateProjectionMatrix(float aspectRatio);
 
         public abstract Matrix CreateViewMatrix();
+
+        public override string ToString()
+        {
+            var target = Position + LookDirection;
+            return string.Format(
+                        CultureInfo.InvariantCulture,
+                        "LookDirection:\t{0:0.000},{1:0.000},{2:0.000}",
+                        LookDirection.X,
+                        LookDirection.Y,
+                        LookDirection.Z) + "\n"
+                        + string.Format(
+                        CultureInfo.InvariantCulture,
+                        "UpDirection:\t{0:0.000},{1:0.000},{2:0.000}",
+                        UpDirection.X,
+                        UpDirection.Y,
+                        UpDirection.Z) + "\n"
+                        + string.Format(
+                        CultureInfo.InvariantCulture,
+                        "Position:\t\t{0:0.000},{1:0.000},{2:0.000}",
+                        Position.X,
+                        Position.Y,
+                        Position.Z) + "\n"
+                        + string.Format(
+                        CultureInfo.InvariantCulture,
+                        "Target:\t\t{0:0.000},{1:0.000},{2:0.000}",
+                        target.X,
+                        target.Y,
+                        target.Z);
+        }
     }
 
-    public class MatrixCameraCore: CameraCore
+    public class MatrixCameraCore : CameraCore
     {
         public Matrix ProjectionMatrix { set; get; }
         public Matrix ViewMatrix { set; get; }
         public override Matrix CreateProjectionMatrix(float aspectRatio) { return ProjectionMatrix; }
 
         public override Matrix CreateViewMatrix() { return ViewMatrix; }
+
+        public override string ToString()
+        {
+            return $"ProjMatrix: {ProjectionMatrix.ToString()} \nViewMatrix: {ViewMatrix.ToString()}";
+        }
     }
 
     public abstract class ProjectionCameraCore : CameraCore
@@ -127,8 +162,16 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
 
         public override Matrix CreateViewMatrix()
         {
-            return CreateLeftHandSystem ? Matrix.LookAtLH(this.Position, this.Position + this.LookDirection, this.UpDirection) 
+            return CreateLeftHandSystem ? Matrix.LookAtLH(this.Position, this.Position + this.LookDirection, this.UpDirection)
                 : Matrix.LookAtRH(this.Position, this.Position + this.LookDirection, this.UpDirection);
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + "\n" +
+                string.Format(
+                        CultureInfo.InvariantCulture, "NearPlaneDist:\t{0}", NearPlaneDistance) + "\n"
+                        + string.Format(CultureInfo.InvariantCulture, "FarPlaneDist:\t{0}", FarPlaneDistance);
         }
     }
 
@@ -161,13 +204,18 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
                     Math.Min(1e15f, this.FarPlaneDistance));
 
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + "\n" + string.Format(CultureInfo.InvariantCulture, "Width:\t{0:0.###}", Width);
+        }
     }
 
     public class PerspectiveCameraCore : ProjectionCameraCore
     {
         public float FieldOfView
         {
-            set;get;
+            set; get;
         }
 
         public override Matrix CreateProjectionMatrix(float aspectRatio)
@@ -192,6 +240,11 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
                 projM.M33 = projM.M43 = -1;
             }
             return projM;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + "\n" + string.Format(CultureInfo.InvariantCulture, "FieldOfView:\t{0:0.#}°", FieldOfView);
         }
     }
 }

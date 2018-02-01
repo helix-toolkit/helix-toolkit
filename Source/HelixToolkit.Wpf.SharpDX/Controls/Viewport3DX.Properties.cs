@@ -83,12 +83,6 @@ namespace HelixToolkit.Wpf.SharpDX
             "CameraInertiaFactor", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(0.93));
 
         /// <summary>
-        /// The camera info property.
-        /// </summary>
-        public static readonly DependencyProperty CameraInfoProperty = DependencyProperty.Register(
-            "CameraInfo", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata(null));
-
-        /// <summary>
         /// The camera mode property
         /// </summary>
         public static readonly DependencyProperty CameraModeProperty = DependencyProperty.Register(
@@ -206,12 +200,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         /// <summary>
-        /// The debug info property.
-        /// </summary>
-        public static readonly DependencyProperty DebugInfoProperty = DependencyProperty.Register(
-            "DebugInfo", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata(null));
-
-        /// <summary>
         /// Deferred Render accessor
         /// </summary>
         //public static readonly DependencyProperty DeferredRendererProperty = DependencyProperty.Register(
@@ -277,13 +265,13 @@ namespace HelixToolkit.Wpf.SharpDX
             "InfoBackground",
             typeof(Brush),
             typeof(Viewport3DX),
-            new UIPropertyMetadata(new SolidColorBrush(Color.FromArgb(0x80, 0xff, 0xff, 0xff))));
+            new UIPropertyMetadata(new SolidColorBrush(Color.FromArgb(0x80, 0x8f, 0x8f, 0x8f))));
 
         /// <summary>
         /// The info foreground property.
         /// </summary>
         public static readonly DependencyProperty InfoForegroundProperty = DependencyProperty.Register(
-            "InfoForeground", typeof(Brush), typeof(Viewport3DX), new UIPropertyMetadata(Brushes.Black));
+            "InfoForeground", typeof(Brush), typeof(Viewport3DX), new UIPropertyMetadata(Brushes.Blue));
 
         /// <summary>
         /// The message text property.
@@ -443,7 +431,20 @@ namespace HelixToolkit.Wpf.SharpDX
             "ShowCameraInfo",
             typeof(bool),
             typeof(Viewport3DX),
-            new UIPropertyMetadata(false, (s, e) => ((Viewport3DX)s).UpdateCameraInfo()));
+            new UIPropertyMetadata(false, (d, e) =>
+            {
+                if ((d as Viewport3DX).renderHostInternal != null)
+                {
+                    if (((bool)e.NewValue))
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail |= RenderDetail.Camera;
+                    }
+                    else
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail &= ~RenderDetail.Camera;
+                    }
+                }
+            }));
 
         /// <summary>
         /// The show camera target property.
@@ -458,25 +459,61 @@ namespace HelixToolkit.Wpf.SharpDX
             "ShowCoordinateSystem", typeof(bool), typeof(Viewport3DX), new UIPropertyMetadata(false));
 
         /// <summary>
-        /// The show field of view property.
+        /// The show frame rate property.
         /// </summary>
-        public static readonly DependencyProperty ShowFieldOfViewProperty = DependencyProperty.Register(
-            "ShowFieldOfView",
-            typeof(bool),
-            typeof(Viewport3DX),
-            new UIPropertyMetadata(false, (s, e) => ((Viewport3DX)s).UpdateFieldOfViewInfo()));
+        public static readonly DependencyProperty ShowFrameRateProperty = DependencyProperty.Register(
+            "ShowFrameRate", typeof(bool), typeof(Viewport3DX), new UIPropertyMetadata(false, (d,e)=> 
+            {
+                if ((d as Viewport3DX).renderHostInternal != null)
+                {
+                    if (((bool)e.NewValue))
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail |= RenderDetail.FPS;
+                    }
+                    else
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail &= ~RenderDetail.FPS;
+                    }
+                }
+            }));
 
         /// <summary>
         /// The show frame rate property.
         /// </summary>
-        public static readonly DependencyProperty ShowFrameRateProperty = DependencyProperty.Register(
-            "ShowFrameRate", typeof(bool), typeof(Viewport3DX), new UIPropertyMetadata(false));
+        public static readonly DependencyProperty ShowFrameDetailsProperty = DependencyProperty.Register(
+            "ShowFrameDetails", typeof(bool), typeof(Viewport3DX), new UIPropertyMetadata(false, (d,e)=> 
+            {
+                if ((d as Viewport3DX).renderHostInternal != null)
+                {
+                    if (((bool)e.NewValue))
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail |= RenderDetail.Statistics;
+                    }
+                    else
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail &= ~RenderDetail.Statistics;
+                    }
+                }
+            }));
 
         /// <summary>
         /// The show triangle count info property.
         /// </summary>
         public static readonly DependencyProperty ShowTriangleCountInfoProperty = DependencyProperty.Register(
-             "ShowTriangleCountInfo", typeof(bool), typeof(Viewport3DX), new UIPropertyMetadata(false));
+             "ShowTriangleCountInfo", typeof(bool), typeof(Viewport3DX), new UIPropertyMetadata(false, (d, e)=> 
+            {
+                if ((d as Viewport3DX).renderHostInternal != null)
+                {
+                    if (((bool)e.NewValue))
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail |= RenderDetail.TriangleInfo;
+    }
+                    else
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail &= ~RenderDetail.TriangleInfo;
+                    }
+                }
+            }));
 
         /// <summary>
         /// The show view cube property.
@@ -489,12 +526,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty SpinReleaseTimeProperty = DependencyProperty.Register(
             "SpinReleaseTime", typeof(int), typeof(Viewport3DX), new PropertyMetadata(200));
-
-        /// <summary>
-        /// The status property.
-        /// </summary>
-        public static readonly DependencyProperty StatusProperty = DependencyProperty.Register(
-            "Status", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The sub title property.
@@ -543,12 +574,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty TouchModeProperty = DependencyProperty.Register(
             "TouchMode", typeof(TouchMode), typeof(Viewport3DX), new UIPropertyMetadata(TouchMode.Panning));
-
-        /// <summary>
-        /// The triangle count info property.
-        /// </summary>
-        public static readonly DependencyProperty TriangleCountInfoProperty = DependencyProperty.Register(
-                "TriangleCountInfo", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The up down Pan sensitivity property.
@@ -758,6 +783,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         (e.NewValue as IModelContainer).AttachViewport3DX(viewport);
                     }
+                    viewport.sharedModelContainerInternal = (IModelContainer)e.NewValue;
                     if (viewport.renderHostInternal != null)
                     {
                         viewport.renderHostInternal.SharedModelContainer = (IModelContainer)e.NewValue;
@@ -850,25 +876,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 this.SetValue(CameraInertiaFactorProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the camera info.
-        /// </summary>
-        /// <value>
-        /// The camera info.
-        /// </value>
-        public string CameraInfo
-        {
-            get
-            {
-                return (string)this.GetValue(CameraInfoProperty);
-            }
-
-            set
-            {
-                this.SetValue(CameraInfoProperty, value);
             }
         }
 
@@ -1083,25 +1090,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 this.SetValue(CurrentPositionProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the debug info text.
-        /// </summary>
-        /// <value>
-        /// The debug info text.
-        /// </value>
-        public string DebugInfo
-        {
-            get
-            {
-                return (string)this.GetValue(DebugInfoProperty);
-            }
-
-            set
-            {
-                this.SetValue(DebugInfoProperty, value);
             }
         }
 
@@ -1729,25 +1717,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to show field of view.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if field of view should be shown; otherwise, <c>false</c> .
-        /// </value>
-        public bool ShowFieldOfView
-        {
-            get
-            {
-                return (bool)this.GetValue(ShowFieldOfViewProperty);
-            }
-
-            set
-            {
-                this.SetValue(ShowFieldOfViewProperty, value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether to show frame rate.
         /// </summary>
         /// <value>
@@ -1817,25 +1786,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 this.SetValue(SpinReleaseTimeProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the status.
-        /// </summary>
-        /// <value>
-        /// The status.
-        /// </value>
-        public string Status
-        {
-            get
-            {
-                return (string)this.GetValue(StatusProperty);
-            }
-
-            set
-            {
-                this.SetValue(StatusProperty, value);
             }
         }
 
@@ -1988,22 +1938,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 this.SetValue(TouchModeProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets TriangleCountInfo.
-        /// </summary>
-        public string TriangleCountInfo
-        {
-            get
-            {
-                return (string)this.GetValue(TriangleCountInfoProperty);
-            }
-
-            set
-            {
-                this.SetValue(TriangleCountInfoProperty, value);
             }
         }
 
@@ -2495,6 +2429,18 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 SetValue(Content2DProperty, value);
+            }
+        }
+
+        public bool ShowFrameDetails
+        {
+            set
+            {
+                SetValue(ShowFrameDetailsProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(ShowFrameDetailsProperty);
             }
         }
     }

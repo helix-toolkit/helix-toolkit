@@ -7,6 +7,7 @@ using D2D = SharpDX.Direct2D1;
 #if NETFX_CORE
 using Windows.UI.Text;
 using Media = Windows.UI.Xaml.Media;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.Foundation;
 #else
@@ -310,5 +311,35 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
 #else
 
 #endif
+
+        public static global::SharpDX.DirectWrite.TextAlignment ToD2DTextAlignment(this TextAlignment alignment)
+        {
+            switch (alignment)
+            {
+                case TextAlignment.Center:
+                    return global::SharpDX.DirectWrite.TextAlignment.Center;
+                case TextAlignment.Left:
+                    return global::SharpDX.DirectWrite.TextAlignment.Leading;
+                case TextAlignment.Right:
+                    return global::SharpDX.DirectWrite.TextAlignment.Trailing;
+                case TextAlignment.Justify:
+                    return global::SharpDX.DirectWrite.TextAlignment.Justified;
+                default:
+                    return global::SharpDX.DirectWrite.TextAlignment.Leading;
+            }
+        }
+
+        public static global::SharpDX.DirectWrite.FlowDirection ToD2DFlowDir(this FlowDirection direction)
+        {
+            switch (direction)
+            {
+                case FlowDirection.LeftToRight:
+                    return global::SharpDX.DirectWrite.FlowDirection.LeftToRight;
+                case FlowDirection.RightToLeft:
+                    return global::SharpDX.DirectWrite.FlowDirection.RightToLeft;
+                default:
+                    return global::SharpDX.DirectWrite.FlowDirection.LeftToRight;
+            }
+        }
     }
 }
