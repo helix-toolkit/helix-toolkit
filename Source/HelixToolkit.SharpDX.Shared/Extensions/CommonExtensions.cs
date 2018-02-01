@@ -7,6 +7,7 @@ using D2D = SharpDX.Direct2D1;
 #if NETFX_CORE
 using Windows.UI.Text;
 using Media = Windows.UI.Xaml.Media;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.Foundation;
 #else
@@ -311,7 +312,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
 
 #endif
 
-        public static global::SharpDX.DirectWrite.TextAlignment ToD2DTextAlignment(this System.Windows.TextAlignment alignment)
+        public static global::SharpDX.DirectWrite.TextAlignment ToD2DTextAlignment(this TextAlignment alignment)
         {
             switch (alignment)
             {
