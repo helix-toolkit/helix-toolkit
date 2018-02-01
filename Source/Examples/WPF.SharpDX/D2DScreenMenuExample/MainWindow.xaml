@@ -16,7 +16,7 @@
         <hx:Viewport3DX
             Camera="{Binding Camera}"
             EffectsManager="{Binding EffectsManager}"
-            EnableSwapChainRendering="True">
+            EnableSwapChainRendering="False">
             <hx:DirectionalLight3D Direction="{Binding VM3D.Light1Direction}" Color="{Binding VM3D.Light1Color}" />
             <hx:DirectionalLight3D Direction="{Binding VM3D.Light2Direction}" Color="{Binding VM3D.Light2Color}" />
             <hx:DirectionalLight3D Direction="{Binding VM3D.Light3Direction}" Color="{Binding VM3D.Light3Color}" />
@@ -67,7 +67,12 @@
                             Stroke="Red"
                             StrokeThickness="1" />
                     </hx2D:StackPanel2D>
-                    <hx2D:EllipseModel2D Width="50" Height="20" Fill="Green" Stroke="Red" StrokeThickness="2"/>
+                    <hx2D:EllipseModel2D
+                        Width="50"
+                        Height="20"
+                        Fill="Green"
+                        Stroke="Red"
+                        StrokeThickness="2" />
                 </hx2D:Panel2D>
             </hx:Viewport3DX.Content2D>
         </hx:Viewport3DX>
