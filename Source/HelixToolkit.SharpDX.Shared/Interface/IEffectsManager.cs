@@ -17,16 +17,15 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public interface IDeviceResources : IDisposable
+    public interface IDevice2DResources
     {
         /// <summary>
-        /// 
+        /// Gets the factory2 d.
         /// </summary>
-        int AdapterIndex { get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        Device Device { get; }
+        /// <value>
+        /// The factory2 d.
+        /// </value>
+        global::SharpDX.Direct2D1.Factory1 Factory2D { get; }
         /// <summary>
         /// Gets the device2d.
         /// </summary>
@@ -42,10 +41,44 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get; }
         /// <summary>
+        /// Gets the wic img factory.
+        /// </summary>
+        /// <value>
+        /// The wic img factory.
+        /// </value>
+        global::SharpDX.WIC.ImagingFactory WICImgFactory { get; }
+        /// <summary>
+        /// Gets the direct write factory.
+        /// </summary>
+        /// <value>
+        /// The direct write factory.
+        /// </value>
+        global::SharpDX.DirectWrite.Factory DirectWriteFactory { get; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IDevice3DResources
+    {
+        /// <summary>
         /// 
         /// </summary>
-            DriverType DriverType { get; }
+        int AdapterIndex { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        Device Device { get; }        
+        /// <summary>
+        /// 
+        /// </summary>
+        DriverType DriverType { get; }
+    }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IDeviceResources : IDevice3DResources, IDevice2DResources, IDisposable
+    {
         /// <summary>
         /// Called when [device error].
         /// </summary>
