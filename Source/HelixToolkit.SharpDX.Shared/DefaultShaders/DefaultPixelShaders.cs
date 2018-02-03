@@ -264,6 +264,21 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] PSScreenDup
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psScreenDup;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
     }
 
 
@@ -360,5 +375,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSSkybox = new ShaderDescription(nameof(PSSkybox), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSSkybox);
+
+        /// <summary>
+        /// The ps screen dup
+        /// </summary>
+        public static ShaderDescription PSScreenDup = new ShaderDescription(nameof(PSScreenDup), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSScreenDup);
     }
 }

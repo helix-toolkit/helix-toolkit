@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -323,6 +323,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psScreenDup {
+            get {
+                object obj = ResourceManager.GetObject("psScreenDup", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psShadow {
             get {
                 object obj = ResourceManager.GetObject("psShadow", resourceCulture);
@@ -526,6 +536,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] vsPointShadow {
             get {
                 object obj = ResourceManager.GetObject("vsPointShadow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsScreenDup {
+            get {
+                object obj = ResourceManager.GetObject("vsScreenDup", resourceCulture);
                 return ((byte[])(obj));
             }
         }

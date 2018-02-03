@@ -307,4 +307,12 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix CrossPlaneParams;
         public const int SizeInBytes = 4 * (4 * 2 + 4 * 4);
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct ScreenDuplicationVertexStruct
+    {
+        public Vector4 Position;
+        public Vector2 TexCoord;
+        public const int SizeInBytes = 4 * 6;
+    }
 }

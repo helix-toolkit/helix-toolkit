@@ -308,6 +308,7 @@
     <None Include="Resources\psParticle.cso" />
     <None Include="Resources\psPoint.cso" />
     <None Include="Resources\psPositions.cso" />
+    <None Include="Resources\psScreenDup.cso" />
     <None Include="Resources\psShadow.cso" />
     <None Include="Resources\psSkybox.cso" />
     <None Include="Resources\psViewCube.cso" />
@@ -327,6 +328,7 @@
     <None Include="Resources\vsParticle.cso" />
     <None Include="Resources\vsPoint.cso" />
     <None Include="Resources\vsPointShadow.cso" />
+    <None Include="Resources\vsScreenDup.cso" />
     <None Include="Resources\vsSkybox.cso" />
   </ItemGroup>
   <ItemGroup>

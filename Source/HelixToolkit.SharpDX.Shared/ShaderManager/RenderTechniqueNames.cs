@@ -90,6 +90,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Skybox = "Skybox";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string ScreenDuplication = "ScreenDup";
     }
     /// <summary>
     /// 

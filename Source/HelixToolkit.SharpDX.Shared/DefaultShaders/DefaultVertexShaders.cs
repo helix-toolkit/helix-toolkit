@@ -253,6 +253,21 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSScreenDup
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsScreenDup;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
     }
 
 
@@ -352,7 +367,12 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("TEXCOORD", 6, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 7, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
         };
-
+        /// <summary>
+        /// Gets the vs input billboard instancing.
+        /// </summary>
+        /// <value>
+        /// The vs input billboard instancing.
+        /// </value>
         public static InputElement[] VSInputBillboardInstancing { get; } = new InputElement[]
         {
             new InputElement("POSITION", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
@@ -371,7 +391,12 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("TEXCOORD", 8, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 9, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
         };
-
+        /// <summary>
+        /// Gets the vs input particle.
+        /// </summary>
+        /// <value>
+        /// The vs input particle.
+        /// </value>
         public static InputElement[] VSInputParticle { get; } = new InputElement[]
         {
             new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0, InputClassification.PerInstanceData, 1),
@@ -379,10 +404,26 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0, InputClassification.PerInstanceData, 1),
         };
-
+        /// <summary>
+        /// Gets the vs input skybox.
+        /// </summary>
+        /// <value>
+        /// The vs input skybox.
+        /// </value>
         public static InputElement[] VSInputSkybox { get; } = new InputElement[]
         {
             new InputElement("SV_POSITION", 0, Format.R32G32B32_Float,  InputElement.AppendAligned, 0),
+        };
+        /// <summary>
+        /// Gets the vs input screen dup.
+        /// </summary>
+        /// <value>
+        /// The vs input screen dup.
+        /// </value>
+        public static InputElement[] VSInputScreenDup { get; } = new InputElement[]
+        {
+            new InputElement("SV_POSITION", 0, Format.R32G32B32_Float, InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 0, Format.R32G32_Float, InputElement.AppendAligned, 0)
         };
     }
 
@@ -491,5 +532,10 @@ namespace HelixToolkit.UWP.Shaders
         /// 
         /// </summary>
         public static ShaderDescription VSSkybox = new ShaderDescription(nameof(VSSkybox), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSSkybox);
+
+        /// <summary>
+        /// The vs screen dup
+        /// </summary>
+        public static ShaderDescription VSScreenDup = new ShaderDescription(nameof(VSScreenDup), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSScreenDup);
     }
 }
