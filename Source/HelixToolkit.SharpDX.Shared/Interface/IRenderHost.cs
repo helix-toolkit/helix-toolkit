@@ -170,7 +170,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The color buffer view.
         /// </value>
-        RenderTargetView ColorBufferView { get; }
+        RenderTargetView RenderTargetBufferView { get; }
         /// <summary>
         /// Gets the depth stencil buffer view.
         /// </summary>
@@ -216,6 +216,53 @@ namespace HelixToolkit.UWP
         ///   <c>true</c> if [show statistics]; otherwise, <c>false</c>.
         /// </value>
         RenderDetail ShowRenderDetail { set; get; }
+        /// <summary>
+        /// Gets the render statistics.
+        /// </summary>
+        /// <value>
+        /// The render statistics.
+        /// </value>
         IRenderStatistics RenderStatistics { get; }
+        /// <summary>
+        /// Gets or sets the render configuration.
+        /// </summary>
+        /// <value>
+        /// The render configuration.
+        /// </value>
+        DX11RenderHostConfiguration RenderConfiguration { set; get; }
+
+        /// <summary>
+        /// Clears the render target.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="clearBackBuffer">if set to <c>true</c> [clear back buffer].</param>
+        /// <param name="clearDepthStencilBuffer">if set to <c>true</c> [clear depth stencil buffer].</param>
+        void ClearRenderTarget(DeviceContext context, bool clearBackBuffer, bool clearDepthStencilBuffer);
+    }
+
+    public struct DX11RenderHostConfiguration
+    {
+        /// <summary>
+        /// The render d2d
+        /// </summary>
+        public bool RenderD2D;
+        /// <summary>
+        /// The update global variable
+        /// </summary>
+        public bool UpdatePerFrameData;
+        /// <summary>
+        /// Gets or sets a value indicating whether [render lights].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render lights]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RenderLights;
+        /// <summary>
+        /// Gets or sets a value indicating whether [clear render target before each frame].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [clear render target before each frame]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ClearEachFrame;
     }
 }

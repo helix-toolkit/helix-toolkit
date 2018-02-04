@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string LightCB = "cbLights";
         public static string BoneCB = "cbBoneSkinning";
         public static string ClipParamsCB = "cbClipping";
-
+        public static string ScreenDuplicationCB = "cbScreenClone";
         //-----------Materials--------------------
         public static string DiffuseMapTB = "texDiffuseMap";
         public static string AlphaMapTB = "texAlphaMap";

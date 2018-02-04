@@ -309,10 +309,21 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct ScreenDuplicationVertexStruct
-    {
-        public Vector4 Position;
-        public Vector2 TexCoord;
-        public const int SizeInBytes = 4 * 6;
+    public struct ScreenDuplicationModelStruct
+    {        
+        public Vector4 TopRight;
+        public Vector4 TopLeft;
+        public Vector4 BottomRight;
+        public Vector4 BottomLeft;
+
+        public Vector2 TexTopRight;
+        Vector2 padding0;        
+        public Vector2 TexTopLeft;
+        Vector2 padding1;
+        public Vector2 TexBottomRight;
+        Vector2 padding2;
+        public Vector2 TexBottomLeft;
+        Vector2 padding3;
+        public const int SizeInBytes = 4 * 4 * 8;
     }
 }

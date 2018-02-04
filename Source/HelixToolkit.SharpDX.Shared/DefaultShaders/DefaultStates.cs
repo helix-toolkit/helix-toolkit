@@ -201,7 +201,7 @@ namespace HelixToolkit.UWP.Shaders
             DepthBias = 0,
             DepthBiasClamp = 0,
             SlopeScaledDepthBias = +0,
-            IsFrontCounterClockwise = false,
+            IsFrontCounterClockwise = true,
             IsMultisampleEnabled = false,
             IsAntialiasedLineEnabled = false,
         };

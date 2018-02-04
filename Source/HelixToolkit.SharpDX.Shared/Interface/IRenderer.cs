@@ -32,6 +32,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The scissor region
         /// </summary>
         public Rectangle ScissorRegion;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderLight;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool UpdatePerFrameData;
     }
 
     /// <summary>

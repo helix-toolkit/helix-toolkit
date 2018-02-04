@@ -78,13 +78,19 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         public virtual void UpdateGlobalVariables(IRenderContext context, IEnumerable<IRenderable> renderables, ref RenderParameter parameter)
         {
-            context.LightScene.LightModels.ResetLightCount();
-            foreach (IRenderable e in renderables.Take(Constants.MaxLights)
-                .PreorderDFT((x)=> x is ILight3D && x.IsRenderable, stackCache2).Take(Constants.MaxLights))
+            if (parameter.RenderLight)
             {
-                e.Render(context, ImmediateContext);
+                context.LightScene.LightModels.ResetLightCount();
+                foreach (IRenderable e in renderables.Take(Constants.MaxLights)
+                    .PreorderDFT((x) => x is ILight3D && x.IsRenderable, stackCache2).Take(Constants.MaxLights))
+                {
+                    e.Render(context, ImmediateContext);
+                }
             }
-            context.UpdatePerFrameData();
+            if (parameter.UpdatePerFrameData)
+            {
+                context.UpdatePerFrameData();
+            }
         }
 
         /// <summary>

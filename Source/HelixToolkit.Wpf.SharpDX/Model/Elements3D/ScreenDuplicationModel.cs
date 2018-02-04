@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
 
@@ -10,6 +9,25 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public class ScreenDuplicationModel : Element3D
     {
+        public Rect ScreenRectangle
+        {
+            get { return (Rect)GetValue(ScreenRectangleProperty); }
+            set { SetValue(ScreenRectangleProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScreenRectangleProperty =
+            DependencyProperty.Register("ScreenRectangle", typeof(Rect), typeof(ScreenDuplicationModel), new PropertyMetadata(new Rect()));
+
+        public int DisplayIndex
+        {
+            get { return (int)GetValue(DisplayIndexProperty); }
+            set { SetValue(DisplayIndexProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisplayIndexProperty =
+            DependencyProperty.Register("DisplayIndex", typeof(int), typeof(ScreenDuplicationModel), new PropertyMetadata(0));
+
+
         public ScreenDuplicationModel()
         {
             IsHitTestVisible = false;

@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP.Core
     using Render;
     using Shaders;
 
-    public class ScreenCloneRenderCore : RenderCoreBase<ModelStruct>
+    public class ScreenCloneRenderCore : RenderCoreBase<ScreenDuplicationModelStruct>
     {
         private int output = 0;
         public int Output
@@ -40,15 +40,29 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        private Rectangle cloneRectangle = new Rectangle(100, 100, 800, 400);
+        public Rectangle CloneRectangle
+        {
+            set
+            {
+                if(Set(ref cloneRectangle, value))
+                {
+                    clearTarget = true;
+                }
+            }
+            get { return cloneRectangle; }
+        }
+
         private DuplicationResource duplicationResource;
         private IShaderPass DefaultShaderPass;
         private int textureBindSlot = 0;
         private int samplerBindSlot = 0;
         private SamplerProxy textureSampler;
+        private bool clearTarget = true;
 
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
-            return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
+            return new ConstantBufferDescription(DefaultBufferNames.ScreenDuplicationCB, ScreenDuplicationModelStruct.SizeInBytes);
         }
 
         protected override bool OnAttach(IRenderTechnique technique)
@@ -88,6 +102,11 @@ namespace HelixToolkit.UWP.Core
         {
             FrameData data;
             bool isTimeOut;
+            if (clearTarget)
+            {
+                clearTarget = false;
+                context.RenderHost.ClearRenderTarget(deviceContext, true, false);
+            }
             if (duplicationResource.GetFrame(out data, out isTimeOut))
             {
                 if (data.FrameInfo.TotalMetadataBufferSize > 0)
@@ -114,9 +133,72 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref ScreenDuplicationModelStruct model, IRenderContext context)
         {
-
+            int width = Math.Abs(duplicationResource.OutputDescription.DesktopBounds.Right - duplicationResource.OutputDescription.DesktopBounds.Left);
+            int height = Math.Abs(duplicationResource.OutputDescription.DesktopBounds.Bottom - duplicationResource.OutputDescription.DesktopBounds.Top);
+            var texBound = GetTextureBound(width, height);
+            var verBound = GetVertexBound((int)context.ActualWidth, (int)context.ActualHeight);
+            model.TopLeft = new Vector4(verBound.X, verBound.Z, 0, 1);
+            model.TopRight = new Vector4(verBound.Y, verBound.Z, 0, 1);
+            model.BottomLeft = new Vector4(verBound.X, verBound.W, 0, 1);
+            model.BottomRight = new Vector4(verBound.Y, verBound.W, 0, 1);
+            model.TexTopLeft = new Vector2(texBound.X, texBound.Z);
+            model.TexTopRight = new Vector2(texBound.Y, texBound.Z);
+            model.TexBottomLeft = new Vector2(texBound.X, texBound.W);
+            model.TexBottomRight = new Vector2(texBound.Y, texBound.W);
+        }
+        /// <summary>
+        /// Gets the texture bound. Ouput: x(left), y(right), z(top), w(bottom)
+        /// </summary>
+        /// <param name="screenWidth">Width of the screen.</param>
+        /// <param name="screenHeight">Height of the screen.</param>
+        /// <returns></returns>
+        protected virtual Vector4 GetTextureBound(int screenWidth, int screenHeight)
+        {
+            if(cloneRectangle.Width == 0 || cloneRectangle.Height == 0)
+            {
+                return new Vector4(0, 1, 0, 1);
+            }
+            var bound = new Vector4();
+            bound.X = (float)cloneRectangle.Left / screenWidth;
+            bound.Y = (float)cloneRectangle.Right / screenWidth;
+            bound.Z = (float)cloneRectangle.Top / screenHeight;
+            bound.W = (float)cloneRectangle.Bottom / screenHeight;
+            return bound;
+        }
+        /// <summary>
+        /// Return Quad NDC coordinate for vertex. Ouput: x(left), y(right), z(top), w(bottom)
+        /// </summary>
+        /// <param name="viewportWidth"></param>
+        /// <param name="viewportHeight"></param>
+        /// <returns></returns>
+        protected virtual Vector4 GetVertexBound(int viewportWidth, int viewportHeight)
+        {
+            if (cloneRectangle.Width == 0 || cloneRectangle.Height == 0)
+            {
+                return new Vector4(0, 1, 0, 1);
+            }
+            var bound = new Vector4();
+            var viewportRatio = (float)viewportWidth / viewportHeight;
+            var cloneRatio = (float)cloneRectangle.Width / cloneRectangle.Height;
+            if (viewportRatio >= cloneRatio)
+            {
+                var ndcCloneW = (2.0f * cloneRatio) / viewportRatio;
+                bound.X = -1 + (2 - ndcCloneW)/2.0f;
+                bound.Y = bound.X + ndcCloneW;
+                bound.Z = 1;
+                bound.W = -1;
+            }
+            else
+            {
+                var ndcCloneH = viewportRatio * 2.0f / cloneRatio;
+                bound.X = -1;
+                bound.Y = 1;
+                bound.Z = 1 - (2 - ndcCloneH) / 2.0f;
+                bound.W = bound.Z - ndcCloneH;
+            }
+            return bound;
         }
 
         private class DuplicationResource : DisposeObject
@@ -239,7 +321,7 @@ namespace HelixToolkit.UWP.Core
 
         private struct FrameData
         {
-            public global::SharpDX.Direct3D11.Texture2D Frame;
+            public Texture2D Frame;
             public OutputDuplicateFrameInformation FrameInfo;
             public RawRectangle[] DirtyRectangles;
             public OutputDuplicateMoveRectangle[] MoveRectangles;

@@ -58,6 +58,13 @@ cbuffer cbMeshModel : register(b1)
 };
 #endif
 
+#if defined(SCREENDUPLICATION)
+    cbuffer cbScreenClone : register(b9)
+    {
+        float4 VertCoord[4];
+        float4 TextureCoord[4];
+    };
+#endif
 
 #define MaxBones 128
 
