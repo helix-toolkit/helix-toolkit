@@ -16,6 +16,16 @@ namespace HelixToolkit.UWP
     /// </summary>
     public class DefaultEffectsManager : EffectsManager
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
+        /// </summary>
+        /// <param name="adapterIndex">Index of the adapter.</param>
+        public DefaultEffectsManager(int adapterIndex) : base(adapterIndex) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
+        /// </summary>
+        public DefaultEffectsManager() : base() { }
+
         protected override IList<TechniqueDescription> LoadTechniqueDescriptions()
         {
             var renderBlinn = new TechniqueDescription(DefaultRenderTechniqueNames.Blinn)

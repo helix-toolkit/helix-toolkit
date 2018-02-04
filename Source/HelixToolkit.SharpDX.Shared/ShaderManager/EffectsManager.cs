@@ -148,19 +148,35 @@ namespace HelixToolkit.UWP
             Initialize();
         }
         /// <summary>
-        /// Initializes this instance.
+        /// Initializes a new instance of the <see cref="EffectsManager"/> class.
         /// </summary>
+        /// <param name="adapterIndex">Index of the adapter.</param>
+        public EffectsManager(int adapterIndex)
+        {
+            Initialize(adapterIndex);
+        }
+
         protected void Initialize()
         {
 #if DEBUGMEMORY
             global::SharpDX.Configuration.EnableObjectTracking = true;
 #endif
+
+            int adapterIndex = -1;
+            using (var adapter = GetBestAdapter(out adapterIndex))
+            {
+                Initialize(adapterIndex);
+            }
+        }
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
+        protected void Initialize(int adapterIndex)
+        {
             if (Initialized)
             { return; }
-            int adapterIndex = -1;
+            var adapter = GetAdapter(adapterIndex);
 #if DX11
-            var adapter = GetBestAdapter(out adapterIndex);
-
             if (adapter != null)
             {
                 if (adapter.Description.VendorId == 0x1414 && adapter.Description.DeviceId == 0x8c)
@@ -302,6 +318,14 @@ namespace HelixToolkit.UWP
                 }
 
                 return bestAdapter;
+            }
+        }
+
+        private static Adapter GetAdapter(int index)
+        {
+            using (var f = new Factory1())
+            {
+                return f.Adapters[index];
             }
         }
         /// <summary>
