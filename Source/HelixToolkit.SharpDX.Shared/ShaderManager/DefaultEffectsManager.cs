@@ -526,7 +526,7 @@ namespace HelixToolkit.UWP
                         },
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        RasterStateDescription = DefaultRasterDescriptions.RSSolidNoMSAA
+                        RasterStateDescription = DefaultRasterDescriptions.RSScreenDuplication
                     }
                 }
             };

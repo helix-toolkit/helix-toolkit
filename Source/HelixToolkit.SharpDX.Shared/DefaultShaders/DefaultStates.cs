@@ -193,5 +193,17 @@ namespace HelixToolkit.UWP.Shaders
             IsMultisampleEnabled = false,
             IsAntialiasedLineEnabled = false,
         };
+
+        public readonly static RasterizerStateDescription RSScreenDuplication = new RasterizerStateDescription()
+        {
+            FillMode = FillMode.Solid,
+            CullMode = CullMode.None,
+            DepthBias = 0,
+            DepthBiasClamp = 0,
+            SlopeScaledDepthBias = +0,
+            IsFrontCounterClockwise = false,
+            IsMultisampleEnabled = false,
+            IsAntialiasedLineEnabled = false,
+        };
     }
 }
