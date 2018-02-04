@@ -60,6 +60,8 @@ namespace HelixToolkit.UWP.Core
         private SamplerProxy textureSampler;
         private bool clearTarget = true;
 
+        private DX11RenderHostConfiguration config = new DX11RenderHostConfiguration() { ClearEachFrame = false, RenderD2D = false, RenderLights = false, UpdatePerFrameData = false };
+
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
             return new ConstantBufferDescription(DefaultBufferNames.ScreenDuplicationCB, ScreenDuplicationModelStruct.SizeInBytes);
@@ -100,6 +102,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
+            context.RenderHost.RenderConfiguration = config;
             FrameData data;
             bool isTimeOut;
             if (clearTarget)
