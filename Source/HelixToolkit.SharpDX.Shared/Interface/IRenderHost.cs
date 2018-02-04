@@ -240,29 +240,29 @@ namespace HelixToolkit.UWP
         void ClearRenderTarget(DeviceContext context, bool clearBackBuffer, bool clearDepthStencilBuffer);
     }
 
-    public struct DX11RenderHostConfiguration
+    public sealed class DX11RenderHostConfiguration
     {
         /// <summary>
         /// The render d2d
         /// </summary>
-        public bool RenderD2D;
+        public bool RenderD2D { set; get; } = true;
         /// <summary>
         /// The update global variable
         /// </summary>
-        public bool UpdatePerFrameData;
+        public bool UpdatePerFrameData { set; get; } = true;
         /// <summary>
         /// Gets or sets a value indicating whether [render lights].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [render lights]; otherwise, <c>false</c>.
         /// </value>
-        public bool RenderLights;
+        public bool RenderLights { set; get; } = true;
         /// <summary>
         /// Gets or sets a value indicating whether [clear render target before each frame].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [clear render target before each frame]; otherwise, <c>false</c>.
         /// </value>
-        public bool ClearEachFrame;
+        public bool ClearEachFrame { set; get; } = true;
     }
 }

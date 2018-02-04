@@ -132,4 +132,42 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="{x:Type hx:ScreenDuplicationViewport3DX}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type hx:ScreenDuplicationViewport3DX}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid IsHitTestVisible="False"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch">
+                            <ContentPresenter
+                                    x:Name="PART_Canvas"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    DataContext="{TemplateBinding DataContext}" />
+                            <TextBox
+                                Margin="6"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="Black"
+                                Foreground="White"
+                                BorderBrush="Tomato"
+                                BorderThickness="2"
+                                HorizontalScrollBarVisibility="Disabled"
+                                IsReadOnly="True"
+                                Text="{TemplateBinding MessageText}"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Hidden"
+                                Visibility="{TemplateBinding MessageText,
+                                                             Converter={StaticResource NotNullToVisibilityConverter}}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

@@ -147,6 +147,7 @@
     <Compile Include="Controls\RenderControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\ScreenDuplicationViewport3DX.cs" />
     <Compile Include="Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="Controls\VisualWrapper.cs" />
     <Compile Include="Controls\WinformHostExtend.cs" />

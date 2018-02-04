@@ -184,13 +184,16 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected virtual Vector4 GetVertexBound(int viewportWidth, int viewportHeight)
         {
-            if (cloneRectangle.Width == 0 || cloneRectangle.Height == 0)
+            int cloneWidth = cloneRectangle.Width;
+            int cloneHeight = cloneRectangle.Height;
+            if ( cloneWidth == 0 || cloneHeight == 0)
             {
-                return new Vector4(-1, 1, 1, -1);
+                cloneWidth = Math.Abs(duplicationResource.OutputDescription.DesktopBounds.Right - duplicationResource.OutputDescription.DesktopBounds.Left);
+                cloneHeight = Math.Abs(duplicationResource.OutputDescription.DesktopBounds.Bottom - duplicationResource.OutputDescription.DesktopBounds.Top);
             }
             var bound = new Vector4();
             var viewportRatio = (float)viewportWidth / viewportHeight;
-            var cloneRatio = (float)cloneRectangle.Width / cloneRectangle.Height;
+            var cloneRatio = (float)cloneWidth / cloneHeight;
             if (viewportRatio >= cloneRatio)
             {
                 var ndcCloneW = (2.0f * cloneRatio) / viewportRatio;

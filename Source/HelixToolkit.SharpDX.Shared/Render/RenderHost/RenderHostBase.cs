@@ -285,7 +285,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public bool IsRendering
         {
             set; get;
-        }
+        } = true;
         /// <summary>
         /// Gets or sets a value indicating whether this instance is initialized.
         /// </summary>
@@ -353,7 +353,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         public DX11RenderHostConfiguration RenderConfiguration { set; get; } 
-            = new DX11RenderHostConfiguration() { UpdatePerFrameData = true, RenderD2D = true, RenderLights = true };
+            = new DX11RenderHostConfiguration() { UpdatePerFrameData = true, RenderD2D = true, RenderLights = true, ClearEachFrame = true };
         #endregion
         #endregion
 

@@ -62,6 +62,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The depth stencil buffer.
         /// </value>
         Texture2D DepthStencilBuffer { get; }
+        /// <summary>
+        /// Gets a value indicating whether [use depth stencil buffer].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [use depth stencil buffer]; otherwise, <c>false</c>.
+        /// </value>
+        bool UseDepthStencilBuffer { get; }
 #if MSAA
         /// <summary>
         /// 

@@ -153,14 +153,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The device resources.
         /// </value>
         protected IDeviceResources deviceResources { private set; get; }
+
+        public bool UseDepthStencilBuffer { private set; get; } = true;
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11RenderBufferProxyBase"/> class.
         /// </summary>
         /// <param name="deviceResource">The device resources.</param>
-        public DX11RenderBufferProxyBase(IDeviceResources deviceResource)
+        public DX11RenderBufferProxyBase(IDeviceResources deviceResource, bool useDepthStencilBuffer = true)
         {
             this.deviceResources = deviceResource;
             deviceContextPool = Collect(new DeviceContextPool(Device));
+            this.UseDepthStencilBuffer = useDepthStencilBuffer;
         }
 
         private Texture2D CreateRenderTarget(int width, int height, MSAALevel msaa)
@@ -171,7 +174,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             TargetWidth = width;
             TargetHeight = height;
             DisposeBuffers();
-            var texture = OnCreateRenderTargetAndDepthBuffers(width, height);
+            var texture = OnCreateRenderTargetAndDepthBuffers(width, height, UseDepthStencilBuffer);
             Initialized = true;
             OnNewBufferCreated?.Invoke(this, texture);
             return texture;
@@ -193,7 +196,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        protected abstract Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height);
+        protected abstract Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height, bool createDepthStencilBuffer);
 
         /// <summary>
         /// Sets the default render-targets
