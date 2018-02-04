@@ -46,7 +46,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private Rectangle cloneRectangle = new Rectangle(100, 100, 800, 400);
+        private Rectangle cloneRectangle = new Rectangle();
         public Rectangle CloneRectangle
         {
             set
