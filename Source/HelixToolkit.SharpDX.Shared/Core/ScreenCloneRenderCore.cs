@@ -14,11 +14,17 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Utilities;
     using Render;
     using Shaders;
 
-    public class ScreenCloneRenderCore : RenderCoreBase<ScreenDuplicationModelStruct>
+    public interface IScreenClone
+    {
+        int Output { set; get; }
+        Rectangle CloneRectangle { set; get; }
+    }
+
+    public class ScreenCloneRenderCore : RenderCoreBase<ScreenDuplicationModelStruct>, IScreenClone
     {
         private int output = 0;
         public int Output
@@ -180,7 +186,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (cloneRectangle.Width == 0 || cloneRectangle.Height == 0)
             {
-                return new Vector4(0, 1, 0, 1);
+                return new Vector4(-1, 1, 1, -1);
             }
             var bound = new Vector4();
             var viewportRatio = (float)viewportWidth / viewportHeight;
