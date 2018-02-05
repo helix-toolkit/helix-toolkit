@@ -171,13 +171,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             context.RenderHost.RenderConfiguration = config;
             FrameData data;
             bool isTimeOut;
+            bool accessLost;
             if (clearTarget)
             {
                 clearTarget = false;
                 context.RenderHost.ClearRenderTarget(deviceContext, true, false);
             }
 
-            if (duplicationResource.GetFrame(Output, out data, out isTimeOut))
+            if (duplicationResource.GetFrame(Output, out data, out isTimeOut, out accessLost))
             {
                 if (data.FrameInfo.TotalMetadataBufferSize > 0)
                 {
@@ -194,13 +195,18 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
             if (isTimeOut)
             {
-                InvalidateRenderer();
+                
+            }
+            else if (accessLost)
+            {
+                Detach();
+                Attach(EffectTechnique);
             }
             else
             {
                 duplicationResource.ReleaseFrame();
-                InvalidateRenderer();
             }
+            InvalidateRenderer();
         }
         /// <summary>
         /// Called when [update per model structure].
@@ -361,18 +367,18 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
             
 
-            public bool GetFrame(int outputIndex, out FrameData data, out bool timeOut)
+            public bool GetFrame(int outputIndex, out FrameData data, out bool timeOut, out bool accessLost)
             {
+                accessLost = false;
+                timeOut = false;
                 data = new FrameData();
                 if (!IsInitialized)
                 {
-                    timeOut = false;
                     return false;
                 }
                 DuplicationInfo info;
                 if(!duplicationDict.TryGetValue(outputIndex, out info))
                 {
-                    timeOut = false;
                     return false;
                 }
                 OutputDuplicateFrameInformation frameInfo;
@@ -386,6 +392,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     if(ex.ResultCode.Code == ResultCode.WaitTimeout.Result.Code)
                     {
                         timeOut = true;
+                        return false;
+                    }
+                    else if(ex.ResultCode.Code == ResultCode.AccessLost.Code)
+                    {
+                        accessLost = true;
                         return false;
                     }
                     else
