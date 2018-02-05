@@ -323,6 +323,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             private readonly Stack<OutputDuplication> currentDuplicationStack = new Stack<OutputDuplication>();
             private readonly Stack<Texture2D> currentDuplicationTexture = new Stack<Texture2D>();
 
+            private int getFrameTimeOut = 10;
+
             public DuplicationResource(global::SharpDX.Direct3D11.Device device)
             {
                 this.device = device;
@@ -377,7 +379,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 Resource desktopResource;
                 try
                 {
-                    info.Duplication.AcquireNextFrame(500, out frameInfo, out desktopResource);
+                    info.Duplication.AcquireNextFrame(getFrameTimeOut, out frameInfo, out desktopResource);
                 }
                 catch(SharpDXException ex)
                 {
