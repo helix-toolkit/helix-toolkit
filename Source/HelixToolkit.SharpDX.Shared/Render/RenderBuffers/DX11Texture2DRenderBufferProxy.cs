@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11RenderBufferProxy"/> class.
         /// </summary>
-        /// <param name="device">The device.</param>
+        /// <param name="deviceResources"></param>
         public DX11Texture2DRenderBufferProxy(IDeviceResources deviceResources) : base(deviceResources)
         {
         }
@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        protected override Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height)
+        protected override Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height, bool createDepthStencilBuffer)
         {
 #if MSAA
             int sampleCount = 1;
@@ -92,25 +92,27 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 ArraySize = 1
             };
 
-            var depthdesc = new Texture2DDescription
-            {
-                BindFlags = BindFlags.DepthStencil,
-                Format = Format.D32_Float_S8X24_UInt,
-                Width = width,
-                Height = height,
-                MipLevels = 1,
-                SampleDescription = sampleDesc,
-                Usage = ResourceUsage.Default,
-                OptionFlags = ResourceOptionFlags.None,
-                CpuAccessFlags = CpuAccessFlags.None,
-                ArraySize = 1,
-            };
-
             colorBuffer = Collect(new Texture2D(Device, colordesc));
-            depthStencilBuffer = Collect(new Texture2D(Device, depthdesc));
-
             colorBufferView = Collect(new RenderTargetView(Device, colorBuffer));
-            depthStencilBufferView = Collect(new DepthStencilView(Device, depthStencilBuffer));
+
+            if (createDepthStencilBuffer)
+            {
+                var depthdesc = new Texture2DDescription
+                {
+                    BindFlags = BindFlags.DepthStencil,
+                    Format = Format.D32_Float_S8X24_UInt,
+                    Width = width,
+                    Height = height,
+                    MipLevels = 1,
+                    SampleDescription = sampleDesc,
+                    Usage = ResourceUsage.Default,
+                    OptionFlags = ResourceOptionFlags.None,
+                    CpuAccessFlags = CpuAccessFlags.None,
+                    ArraySize = 1,
+                };
+                depthStencilBuffer = Collect(new Texture2D(Device, depthdesc));
+                depthStencilBufferView = Collect(new DepthStencilView(Device, depthStencilBuffer));
+            }
 #if MSAA
             var colordescNMS = new Texture2DDescription
             {

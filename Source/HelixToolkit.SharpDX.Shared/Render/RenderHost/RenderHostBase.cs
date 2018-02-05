@@ -70,6 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 InvalidateRender();
             }
         }
+
         /// <summary>
         /// Gets or sets a value indicating whether shadow map enabled.
         /// </summary>
@@ -284,7 +285,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public bool IsRendering
         {
             set; get;
-        }
+        } = true;
         /// <summary>
         /// Gets or sets a value indicating whether this instance is initialized.
         /// </summary>
@@ -298,7 +299,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The color buffer view.
         /// </value>
-        public RenderTargetView ColorBufferView
+        public RenderTargetView RenderTargetBufferView
         {
             get
             {
@@ -337,6 +338,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The render statistics.
         /// </value>
         public IRenderStatistics RenderStatistics { get; } = new RenderStatistics();
+
+        #region Configuration
         /// <summary>
         /// Gets or sets a value indicating whether [show render statistics].
         /// </summary>
@@ -348,6 +351,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             set { RenderStatistics.FrameDetail = value; }
             get { return RenderStatistics.FrameDetail; }
         }
+
+        public DX11RenderHostConfiguration RenderConfiguration { set; get; } 
+            = new DX11RenderHostConfiguration() { UpdatePerFrameData = true, RenderD2D = true, RenderLights = true, ClearEachFrame = true };
+        #endregion
         #endregion
 
         #region Events
@@ -436,13 +443,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 RenderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
                 lastRenderTime = t0;
                 UpdateRequested = false;
-                viewport.Update(t0); 
-                
-                RenderContext.EnableBoundingFrustum = EnableRenderFrustum;
-                RenderContext.TimeStamp = t0;
-                RenderContext.Camera = viewport.CameraCore;
-                RenderContext.WorldMatrix = viewport.WorldMatrix;
-                RenderStatistics.Camera = viewport.CameraCore;
+                if (RenderConfiguration.UpdatePerFrameData)
+                {
+                    viewport.Update(t0);
+                    RenderContext.EnableBoundingFrustum = EnableRenderFrustum;
+                    RenderContext.TimeStamp = t0;
+                    RenderContext.Camera = viewport.CameraCore;
+                    RenderContext.WorldMatrix = viewport.WorldMatrix;
+                    RenderStatistics.Camera = viewport.CameraCore;
+                }
                 PreRender();
                 try
                 {                    
@@ -451,7 +460,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         OnRender(t0);
                         renderBuffer.EndDraw();
                     }
-                    OnRender2D(t0);                        
+                    OnRender2D(t0);                       
                     renderBuffer.Present();
                 }
                 catch (SharpDXException ex)
@@ -461,6 +470,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         || desc == global::SharpDX.DXGI.ResultCode.DeviceHung || desc == global::SharpDX.Direct2D1.ResultCode.RecreateTarget)
                     {
                         RenderBuffer_OnDeviceLost(RenderBuffer, true);
+                    }
+                    else
+                    {
+                        EndD3D();
+                        ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
                     }
                 }
                 catch(Exception ex)
@@ -477,12 +491,23 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 RenderStatistics.LatencyStatistics.Push(lastRenderingDuration.TotalMilliseconds);                
             }
         }
+
+        /// <summary>
+        /// Clears the render target.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="clearBackBuffer">if set to <c>true</c> [clear back buffer].</param>
+        /// <param name="clearDepthStencilBuffer">if set to <c>true</c> [clear depth stencil buffer].</param>
+        public void ClearRenderTarget(DeviceContext context, bool clearBackBuffer,bool clearDepthStencilBuffer)
+        {
+            renderBuffer?.ClearRenderTarget(context, ClearColor, clearBackBuffer, clearDepthStencilBuffer);
+        }
         /// <summary>
         /// Called before OnRender.
         /// </summary>
         protected virtual void PreRender()
         {
-            SetDefaultRenderTargets(Device.ImmediateContext, true);
+            SetDefaultRenderTargets(Device.ImmediateContext, RenderConfiguration.ClearEachFrame);
         }
         /// <summary>
         /// Called after OnRender.

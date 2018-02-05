@@ -97,10 +97,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             var renderParameter = new RenderParameter()
             {
-                RenderTargetView = ColorBufferView,
+                RenderTargetView = RenderTargetBufferView,
                 DepthStencilView = DepthStencilBufferView,
-                ScissorRegion = new Rectangle(0, 0, RenderBuffer.TargetWidth , RenderBuffer.TargetHeight),
-                ViewportRegion = new ViewportF(0, 0, RenderBuffer.TargetWidth, RenderBuffer.TargetHeight)
+                ScissorRegion = new Rectangle(0, 0, RenderBuffer.TargetWidth, RenderBuffer.TargetHeight),
+                ViewportRegion = new ViewportF(0, 0, RenderBuffer.TargetWidth, RenderBuffer.TargetHeight),
+                RenderLight = RenderConfiguration.RenderLights,
+                UpdatePerFrameData = RenderConfiguration.UpdatePerFrameData
             };
             renderer.UpdateGlobalVariables(RenderContext, Viewport.Renderables, ref renderParameter);
             renderer.RenderScene(RenderContext, pendingRenderCores, ref renderParameter);
@@ -122,7 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             var d2dRoot = Viewport.D2DRenderables.FirstOrDefault();
             bool renderD2D = false;
-            if (d2dRoot != null && d2dRoot.Items.Count() > 0)
+            if (d2dRoot != null && d2dRoot.Items.Count() > 0 && RenderConfiguration.RenderD2D)
             {
                 renderD2D = true;
                 d2dRoot.Measure(new Size2F((float)ActualWidth, (float)ActualHeight));

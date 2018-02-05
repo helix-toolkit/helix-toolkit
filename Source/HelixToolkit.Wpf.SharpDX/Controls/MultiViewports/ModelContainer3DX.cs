@@ -168,6 +168,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 return this.EffectsManager != null ? this.EffectsManager.Device2D : null;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the color of the clear.
+        /// </summary>
+        /// <value>
+        /// The color of the clear.
+        /// </value>
+        /// <exception cref="NotImplementedException"></exception>
         public Color4 ClearColor
         {
             get
@@ -252,11 +260,11 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return true; }
         }
 
-        public RenderTargetView ColorBufferView
+        public RenderTargetView RenderTargetBufferView
         {
             get
             {
-                return CurrentRenderHost != null ? CurrentRenderHost.ColorBufferView : null;
+                return CurrentRenderHost != null ? CurrentRenderHost.RenderTargetBufferView : null;
             }
         }
 
@@ -282,6 +290,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             set;get;
         }
+        public DX11RenderHostConfiguration RenderConfiguration { set; get; }
 
         public void Attach(IRenderHost host)
         {
@@ -334,6 +343,14 @@ namespace HelixToolkit.Wpf.SharpDX
             Detach();
             CurrentRenderHost = null;
             viewports.Clear();
+        }
+
+        public void ClearRenderTarget(DeviceContext context, bool clearBackBuffer, bool clearDepthStencilBuffer)
+        {
+            if (CurrentRenderHost != null)
+            {
+                CurrentRenderHost.ClearRenderTarget(context, clearBackBuffer, clearDepthStencilBuffer);
+            }
         }
     }
 }

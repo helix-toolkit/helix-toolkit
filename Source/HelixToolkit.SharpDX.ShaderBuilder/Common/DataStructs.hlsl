@@ -295,11 +295,17 @@ struct ParticleGS_INPUT
 //--------------------------------------------------------------------------------
 struct ParticlePS_INPUT
 {
-    float4 position : SV_Position;
-    noperspective
+    float4 position : SV_Position;    
 	float4 color : COLOR0;
+    noperspective
     float2 texcoords : TEXCOORD0;
     float opacity : OPACITY0;
     float pad0 : PAD;
+};
+
+struct ScreenDupVS_INPUT
+{
+    float4 Pos : SV_POSITION;
+    float2 Tex : TEXCOORD0;
 };
 #endif

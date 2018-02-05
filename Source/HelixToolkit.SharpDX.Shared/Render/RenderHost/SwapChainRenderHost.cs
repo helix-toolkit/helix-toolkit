@@ -2,12 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
 using SharpDX.Direct3D11;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
@@ -15,14 +11,12 @@ namespace HelixToolkit.UWP.Render
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
-    using Core;
-    using Core2D;
     /// <summary>
     /// 
     /// </summary>
     public class SwapChainRenderHost : DefaultRenderHost
     {
-        private IntPtr surface;
+        protected readonly IntPtr surface;
         /// <summary>
         /// Initializes a new instance of the <see cref="SwapChainRenderHost"/> class.
         /// </summary>

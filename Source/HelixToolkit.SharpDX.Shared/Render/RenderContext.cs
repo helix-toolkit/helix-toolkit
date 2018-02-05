@@ -100,9 +100,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public DeviceContext DeviceContext { private set; get; }
 
-        public double ActualWidth { get; private set; }
+        public double ActualWidth { get { return RenderHost.ActualWidth; } }
 
-        public double ActualHeight { get; private set; }
+        public double ActualHeight { get { return RenderHost.ActualHeight; } }
 
         public CameraCore Camera
         {
@@ -110,8 +110,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {                
                 this.camera = value;
-                ActualHeight = this.RenderHost.ActualHeight;
-                ActualWidth = this.RenderHost.ActualWidth;
                 ViewMatrix = this.camera.CreateViewMatrix();
                 var aspectRatio = this.ActualWidth / this.ActualHeight;
                 ProjectionMatrix = this.camera.CreateProjectionMatrix((float)aspectRatio);

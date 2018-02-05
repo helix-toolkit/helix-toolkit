@@ -147,6 +147,7 @@
     <Compile Include="Controls\RenderControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\ScreenDuplicationViewport3DX.cs" />
     <Compile Include="Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="Controls\VisualWrapper.cs" />
     <Compile Include="Controls\WinformHostExtend.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="Model\Elements3D\PatchGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\EnvironmentMap3D.cs" />
+    <Compile Include="Model\Elements3D\ScreenDuplicationModel.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Elements3D\XRayMeshGeometryModel3D.cs" />
     <Compile Include="Model\Materials\Material.cs" />
@@ -308,6 +310,7 @@
     <None Include="Resources\psParticle.cso" />
     <None Include="Resources\psPoint.cso" />
     <None Include="Resources\psPositions.cso" />
+    <None Include="Resources\psScreenDup.cso" />
     <None Include="Resources\psShadow.cso" />
     <None Include="Resources\psSkybox.cso" />
     <None Include="Resources\psViewCube.cso" />
@@ -327,6 +330,7 @@
     <None Include="Resources\vsParticle.cso" />
     <None Include="Resources\vsPoint.cso" />
     <None Include="Resources\vsPointShadow.cso" />
+    <None Include="Resources\vsScreenDup.cso" />
     <None Include="Resources\vsSkybox.cso" />
   </ItemGroup>
   <ItemGroup>

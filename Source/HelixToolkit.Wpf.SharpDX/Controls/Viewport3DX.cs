@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// Provides a Viewport control.
     /// </summary>
     [DefaultEvent("OnChildrenChanged")]
-    [DefaultProperty("Children")]
+    //[DefaultProperty("Children")]
     [ContentProperty("Items")]
     [TemplatePart(Name = "PART_CameraController", Type = typeof(CameraController))]
     [TemplatePart(Name = "PART_Canvas", Type = typeof(ContentPresenter))]
@@ -593,6 +593,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.renderHostInternal != null)
             {
                 this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
+                renderHostInternal?.Dispose();
             }
             hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
 

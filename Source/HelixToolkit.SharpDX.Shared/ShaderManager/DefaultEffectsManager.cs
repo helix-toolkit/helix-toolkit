@@ -16,6 +16,19 @@ namespace HelixToolkit.UWP
     /// </summary>
     public class DefaultEffectsManager : EffectsManager
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
+        /// </summary>
+        /// <param name="adapterIndex">Index of the adapter.</param>
+        public DefaultEffectsManager(int adapterIndex) : base(adapterIndex) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
+        /// </summary>
+        public DefaultEffectsManager() : base() { }
+        /// <summary>
+        /// Loads the technique descriptions.
+        /// </summary>
+        /// <returns></returns>
         protected override IList<TechniqueDescription> LoadTechniqueDescriptions()
         {
             var renderBlinn = new TechniqueDescription(DefaultRenderTechniqueNames.Blinn)
@@ -511,7 +524,26 @@ namespace HelixToolkit.UWP
                     },                   
                 }
             };
-
+#if !NETFX_CORE
+            var renderScreenDup = new TechniqueDescription(DefaultRenderTechniqueNames.ScreenDuplication)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSScreenDup, DefaultInputLayout.VSInputScreenDup),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSScreenDup,
+                            DefaultPSShaderDescriptions.PSScreenDup
+                        },
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        RasterStateDescription = DefaultRasterDescriptions.RSScreenDuplication
+                    }
+                }
+            };
+#endif
             return new List<TechniqueDescription>
             {
                 renderBlinn,
@@ -528,7 +560,10 @@ namespace HelixToolkit.UWP
                 renderViewCube,
                 renderMeshBlinnClipPlane,
                 renderParticle,
-                renderSkybox
+                renderSkybox,
+#if !NETFX_CORE
+                renderScreenDup,
+#endif
             };
         }
     }

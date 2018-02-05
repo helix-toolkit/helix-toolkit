@@ -76,6 +76,18 @@ namespace HelixToolkit.Wpf.SharpDX
             RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
         }
 
+        public DPFSurfaceSwapChain(Func<IntPtr, IRenderHost> createRenderHost)
+        {
+            Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
+            surfaceD3D = new RenderControl();
+            Child = surfaceD3D;
+            renderHost = createRenderHost(surfaceD3D.Handle);
+            RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
+            RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
+            RenderHost.ExceptionOccurred += (s, e) => { HandleExceptionOccured(e.Exception); };
+        }
+
         /// <summary>
         /// 
         /// </summary>

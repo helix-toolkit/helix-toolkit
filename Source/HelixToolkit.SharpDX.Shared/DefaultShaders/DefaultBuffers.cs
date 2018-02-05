@@ -20,7 +20,9 @@ namespace HelixToolkit.UWP.Shaders
         public static string LightCB = "cbLights";
         public static string BoneCB = "cbBoneSkinning";
         public static string ClipParamsCB = "cbClipping";
-
+#if !NETFX_CORE
+        public static string ScreenDuplicationCB = "cbScreenClone";
+#endif
         //-----------Materials--------------------
         public static string DiffuseMapTB = "texDiffuseMap";
         public static string AlphaMapTB = "texAlphaMap";

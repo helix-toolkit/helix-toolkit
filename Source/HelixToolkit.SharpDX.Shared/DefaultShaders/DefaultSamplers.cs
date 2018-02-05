@@ -10,8 +10,14 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class DefaultSamplers
     {
+        /// <summary>
+        /// The linear sampler wrap anisotropy =16
+        /// </summary>
         public static SamplerStateDescription LinearSamplerWrapAni16 = new SamplerStateDescription()
         {
             AddressU = TextureAddressMode.Wrap,
@@ -21,13 +27,17 @@ namespace HelixToolkit.UWP.Shaders
             MaximumAnisotropy = 16,
             MaximumLod = float.MaxValue
         };
-
+        /// <summary>
+        /// The linear sampler wrap anisotropy =8
+        /// </summary>
         public static SamplerStateDescription LinearSamplerWrapAni8 = new SamplerStateDescription()
         {
             AddressU = TextureAddressMode.Wrap, AddressV = TextureAddressMode.Wrap, AddressW = TextureAddressMode.Wrap,
             Filter = Filter.MinMagMipLinear, MaximumAnisotropy = 8,
         };
-
+        /// <summary>
+        /// The linear sampler wrap anisotropy = 4
+        /// </summary>
         public static SamplerStateDescription LinearSamplerWrapAni4 = new SamplerStateDescription()
         {
             AddressU = TextureAddressMode.Wrap,
@@ -37,7 +47,9 @@ namespace HelixToolkit.UWP.Shaders
             MaximumAnisotropy = 4,
             MaximumLod = float.MaxValue
         };
-
+        /// <summary>
+        /// The linear sampler wrap anisotropy =2
+        /// </summary>
         public static SamplerStateDescription LinearSamplerWrapAni2 = new SamplerStateDescription()
         {
             AddressU = TextureAddressMode.Wrap,
@@ -47,7 +59,9 @@ namespace HelixToolkit.UWP.Shaders
             MaximumAnisotropy = 2,
             MaximumLod = float.MaxValue
         };
-
+        /// <summary>
+        /// The linear sampler wrap anisotropy = 1
+        /// </summary>
         public static SamplerStateDescription LinearSamplerWrapAni1 = new SamplerStateDescription()
         {
             AddressU = TextureAddressMode.Wrap,
@@ -56,7 +70,9 @@ namespace HelixToolkit.UWP.Shaders
             Filter = Filter.MinMagMipLinear,
             MaximumLod = float.MaxValue
         };
-
+        /// <summary>
+        /// The point sampler wrap
+        /// </summary>
         public static SamplerStateDescription PointSamplerWrap = new SamplerStateDescription()
         {
             AddressU = TextureAddressMode.Wrap,
@@ -65,7 +81,9 @@ namespace HelixToolkit.UWP.Shaders
             Filter = Filter.MinMagMipPoint,
             MaximumLod = float.MaxValue
         };
-
+        /// <summary>
+        /// The shadow sampler
+        /// </summary>
         public static SamplerStateDescription ShadowSampler = new SamplerStateDescription()
         {
             AddressU = TextureAddressMode.Border,
@@ -75,7 +93,9 @@ namespace HelixToolkit.UWP.Shaders
             ComparisonFunction = Comparison.Less,
             BorderColor = new global::SharpDX.Mathematics.Interop.RawColor4(1, 1, 1, 0),
         };
-
+        /// <summary>
+        /// The cube sampler
+        /// </summary>
         public static SamplerStateDescription CubeSampler = new SamplerStateDescription()
         {
             AddressU = TextureAddressMode.Mirror,

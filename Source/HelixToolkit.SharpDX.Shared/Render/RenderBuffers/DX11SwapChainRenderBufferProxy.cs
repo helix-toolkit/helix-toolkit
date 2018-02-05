@@ -30,13 +30,25 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public SwapChain1 SwapChain { get { return swapChain; } }
 
-        private System.IntPtr surfacePtr;
+        protected readonly System.IntPtr surfacePtr;
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11SwapChainRenderBufferProxy"/> class.
         /// </summary>
         /// <param name="surfacePointer">The surface pointer.</param>
-        /// <param name="device">The device.</param>
+        /// <param name="deviceResource"></param>
         public DX11SwapChainRenderBufferProxy(System.IntPtr surfacePointer, IDeviceResources deviceResource) : base(deviceResource)
+        {
+            surfacePtr = surfacePointer;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DX11SwapChainRenderBufferProxy"/> class.
+        /// </summary>
+        /// <param name="surfacePointer">The surface pointer.</param>
+        /// <param name="deviceResource"></param>
+        /// <param name="useDepthStencilBuffer"></param>
+        public DX11SwapChainRenderBufferProxy(System.IntPtr surfacePointer, IDeviceResources deviceResource, bool useDepthStencilBuffer)
+            : base(deviceResource, useDepthStencilBuffer)
         {
             surfacePtr = surfacePointer;
         }
@@ -46,7 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <returns></returns>
-        protected override Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height)
+        protected override Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height, bool createDepthStencilBuffer)
         {
             if (swapChain == null || swapChain.IsDisposed)
             {
@@ -59,23 +71,26 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             colorBuffer = Collect(Texture2D.FromSwapChain<Texture2D>(swapChain, 0));
             var sampleDesc = swapChain.Description1.SampleDescription;
             colorBufferView = Collect(new RenderTargetView(Device, colorBuffer));
-            var depthdesc = new Texture2DDescription
-            {
-                BindFlags = BindFlags.DepthStencil,
-                //Format = Format.D24_UNorm_S8_UInt,
-                Format = Format.D32_Float_S8X24_UInt,
-                Width = width,
-                Height = height,
-                MipLevels = 1,
-                SampleDescription = sampleDesc,
-                Usage = ResourceUsage.Default,
-                OptionFlags = ResourceOptionFlags.None,
-                CpuAccessFlags = CpuAccessFlags.None,
-                ArraySize = 1,
-            };
-            depthStencilBuffer = Collect(new Texture2D(Device, depthdesc));
-            depthStencilBufferView = Collect(new DepthStencilView(Device, depthStencilBuffer));
 
+            if (createDepthStencilBuffer)
+            {
+                var depthdesc = new Texture2DDescription
+                {
+                    BindFlags = BindFlags.DepthStencil,
+                    //Format = Format.D24_UNorm_S8_UInt,
+                    Format = Format.D32_Float_S8X24_UInt,
+                    Width = width,
+                    Height = height,
+                    MipLevels = 1,
+                    SampleDescription = sampleDesc,
+                    Usage = ResourceUsage.Default,
+                    OptionFlags = ResourceOptionFlags.None,
+                    CpuAccessFlags = CpuAccessFlags.None,
+                    ArraySize = 1,
+                };
+                depthStencilBuffer = Collect(new Texture2D(Device, depthdesc));
+                depthStencilBufferView = Collect(new DepthStencilView(Device, depthStencilBuffer));
+            }
             d2dTarget = Collect(new D2DTargetProxy());
             d2dTarget.Initialize(swapChain, DeviceContext2D);
             return colorBuffer;

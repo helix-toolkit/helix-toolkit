@@ -62,9 +62,14 @@ namespace HelixToolkit.UWP.Shaders
             };
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public static class DefaultDepthStencilDescriptions
     {
+        /// <summary>
+        /// The DSS depth less
+        /// </summary>
         public readonly static DepthStencilStateDescription DSSDepthLess = new DepthStencilStateDescription()
         {
             IsDepthEnabled = true,
@@ -72,7 +77,9 @@ namespace HelixToolkit.UWP.Shaders
             DepthComparison = Comparison.Less,
             IsStencilEnabled = false
         };
-
+        /// <summary>
+        /// The DSS depth less equal
+        /// </summary>
         public readonly static DepthStencilStateDescription DSSDepthLessEqual = new DepthStencilStateDescription()
         {
             IsDepthEnabled = true,
@@ -80,7 +87,9 @@ namespace HelixToolkit.UWP.Shaders
             DepthComparison = Comparison.LessEqual,
             IsStencilEnabled = false
         };
-
+        /// <summary>
+        /// The DSS less no write
+        /// </summary>
         public readonly static DepthStencilStateDescription DSSLessNoWrite = new DepthStencilStateDescription()
         {
             IsDepthEnabled = true,
@@ -88,7 +97,9 @@ namespace HelixToolkit.UWP.Shaders
             DepthComparison = Comparison.Less,
             IsStencilEnabled = false
         };
-
+        /// <summary>
+        /// The DSS less equal no write
+        /// </summary>
         public readonly static DepthStencilStateDescription DSSLessEqualNoWrite = new DepthStencilStateDescription()
         {
             IsDepthEnabled = true,
@@ -96,14 +107,18 @@ namespace HelixToolkit.UWP.Shaders
             DepthComparison = Comparison.LessEqual,
             IsStencilEnabled = false
         };
-
+        /// <summary>
+        /// The DSS greater no write
+        /// </summary>
         public readonly static DepthStencilStateDescription DSSGreaterNoWrite = new DepthStencilStateDescription()
         {
             IsDepthEnabled = true,
             DepthWriteMask = DepthWriteMask.Zero,
             DepthComparison = Comparison.Greater
         };
-
+        /// <summary>
+        /// The DSS clip plane backface
+        /// </summary>
         public readonly static DepthStencilStateDescription DSSClipPlaneBackface = new DepthStencilStateDescription()
         {
             IsDepthEnabled = true,
@@ -127,7 +142,9 @@ namespace HelixToolkit.UWP.Shaders
                 FailOperation = StencilOperation.Keep
             }
         };
-
+        /// <summary>
+        /// The DSS clip plane fill quad
+        /// </summary>
         public readonly static DepthStencilStateDescription DSSClipPlaneFillQuad = new DepthStencilStateDescription()
         {
             IsDepthEnabled = false,
@@ -151,14 +168,18 @@ namespace HelixToolkit.UWP.Shaders
             StencilReadMask = 0xFF,
             StencilWriteMask = 0
         };
-
+        /// <summary>
+        /// The DSS depth always no stencil
+        /// </summary>
         public readonly static DepthStencilStateDescription DSSDepthAlwaysNoStencil = new DepthStencilStateDescription()
         {
             IsDepthEnabled = true,
             DepthComparison = Comparison.Always,
             IsStencilEnabled = false,
         };
-
+        /// <summary>
+        /// The DSS no depth no stencil
+        /// </summary>
         public readonly static DepthStencilStateDescription DSSNoDepthNoStencil = new DepthStencilStateDescription()
         {
             IsDepthEnabled = false,
@@ -168,8 +189,14 @@ namespace HelixToolkit.UWP.Shaders
         };
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static class DefaultRasterDescriptions
     {
+        /// <summary>
+        /// The solid no msaa RasterizerState
+        /// </summary>
         public readonly static RasterizerStateDescription RSSolidNoMSAA = new RasterizerStateDescription()
         {
             FillMode = FillMode.Solid,
@@ -182,6 +209,9 @@ namespace HelixToolkit.UWP.Shaders
             IsAntialiasedLineEnabled = false,
         };
 
+        /// <summary>
+        /// The skybox RasterizerState
+        /// </summary>
         public readonly static RasterizerStateDescription RSSkybox = new RasterizerStateDescription()
         {
             FillMode = FillMode.Solid,
@@ -193,5 +223,21 @@ namespace HelixToolkit.UWP.Shaders
             IsMultisampleEnabled = false,
             IsAntialiasedLineEnabled = false,
         };
+#if !NETFX_CORE        
+        /// <summary>
+        /// The screen duplication RasterizerState
+        /// </summary>
+        public readonly static RasterizerStateDescription RSScreenDuplication = new RasterizerStateDescription()
+        {
+            FillMode = FillMode.Solid,
+            CullMode = CullMode.None,
+            DepthBias = 0,
+            DepthBiasClamp = 0,
+            SlopeScaledDepthBias = +0,
+            IsFrontCounterClockwise = true,
+            IsMultisampleEnabled = false,
+            IsAntialiasedLineEnabled = false,
+        };
+#endif
     }
 }

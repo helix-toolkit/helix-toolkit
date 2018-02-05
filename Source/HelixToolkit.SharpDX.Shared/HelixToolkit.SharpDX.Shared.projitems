@@ -44,6 +44,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\ParticleRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PatchMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PointRenderCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ScreenCloneRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ScreenSpacedMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ShadowMapCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\SkyBoxRenderCore.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\Renderer\RenderTaskScheduler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\ScreenCloneRenderHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\SwapChainRenderHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\BufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ConstantBufferPool.cs" />
@@ -238,7 +240,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)Model\Collection\" />
     <Folder Include="$(MSBuildThisFileDirectory)Model\Lights\" />
     <Folder Include="$(MSBuildThisFileDirectory)Render\Renderer\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Render\RenderHost\" />
     <Folder Include="$(MSBuildThisFileDirectory)Utilities\Octrees\" />
   </ItemGroup>
 </Project>

@@ -90,6 +90,12 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Skybox = "Skybox";
+#if !NETFX_CORE
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string ScreenDuplication = "ScreenDup";
+#endif
     }
     /// <summary>
     /// 
