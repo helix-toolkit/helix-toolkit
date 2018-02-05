@@ -4,7 +4,7 @@
     <id>HelixToolkit.Wpf.SharpDX</id>
     <version>$version$</version>
     <title>HelixToolkit for WPF (based on SharpDX)</title>
-    <authors>objo</authors>
+    <authors>objo, Lunci</authors>
     <licenseUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/LICENSE</licenseUrl>
     <projectUrl>http://helix-toolkit.github.io/</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
