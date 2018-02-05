@@ -10,9 +10,6 @@ using System.Runtime.InteropServices;
 using Texture2D = SharpDX.Direct3D11.Texture2D;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
-#else
-namespace HelixToolkit.UWP.Core
-#endif
 {
     using Utilities;
     using Render;
@@ -342,3 +339,4 @@ namespace HelixToolkit.UWP.Core
         }
     }
 }
+#endif

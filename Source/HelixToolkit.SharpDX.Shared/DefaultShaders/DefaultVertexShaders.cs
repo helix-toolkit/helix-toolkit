@@ -253,7 +253,7 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
-
+#if !NETFX_CORE
         /// <summary>
         /// 
         /// </summary>
@@ -261,13 +261,10 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
                 return Properties.Resources.vsScreenDup;
-#else
-                throw new NotImplementedException();
-#endif
             }
         }
+#endif
     }
 
 
@@ -414,6 +411,8 @@ namespace HelixToolkit.UWP.Shaders
         {
             new InputElement("SV_POSITION", 0, Format.R32G32B32_Float,  InputElement.AppendAligned, 0),
         };
+
+#if !NETFX_CORE
         /// <summary>
         /// Gets the vs input screen dup.
         /// </summary>
@@ -425,6 +424,7 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("SV_POSITION", 0, Format.R32G32B32_Float, InputElement.AppendAligned, 0),
             new InputElement("TEXCOORD", 0, Format.R32G32_Float, InputElement.AppendAligned, 0)
         };
+#endif
     }
 
     /// <summary>
@@ -532,10 +532,11 @@ namespace HelixToolkit.UWP.Shaders
         /// 
         /// </summary>
         public static ShaderDescription VSSkybox = new ShaderDescription(nameof(VSSkybox), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSSkybox);
-
+#if !NETFX_CORE
         /// <summary>
         /// The vs screen dup
         /// </summary>
         public static ShaderDescription VSScreenDup = new ShaderDescription(nameof(VSScreenDup), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSScreenDup);
+#endif
     }
 }

@@ -4,11 +4,9 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System;
 
-#if NETFX_CORE
-namespace HelixToolkit.UWP.Render
-#else
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Render
-#endif
+
 {
     public class ScreenCloneRenderHost : SwapChainRenderHost
     {
@@ -26,3 +24,4 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
     }
 }
+#endif

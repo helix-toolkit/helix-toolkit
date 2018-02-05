@@ -25,7 +25,10 @@ namespace HelixToolkit.UWP
         /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
         /// </summary>
         public DefaultEffectsManager() : base() { }
-
+        /// <summary>
+        /// Loads the technique descriptions.
+        /// </summary>
+        /// <returns></returns>
         protected override IList<TechniqueDescription> LoadTechniqueDescriptions()
         {
             var renderBlinn = new TechniqueDescription(DefaultRenderTechniqueNames.Blinn)
@@ -521,7 +524,7 @@ namespace HelixToolkit.UWP
                     },                   
                 }
             };
-
+#if !NETFX_CORE
             var renderScreenDup = new TechniqueDescription(DefaultRenderTechniqueNames.ScreenDuplication)
             {
                 InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSScreenDup, DefaultInputLayout.VSInputScreenDup),
@@ -540,7 +543,7 @@ namespace HelixToolkit.UWP
                     }
                 }
             };
-
+#endif
             return new List<TechniqueDescription>
             {
                 renderBlinn,
@@ -558,7 +561,9 @@ namespace HelixToolkit.UWP
                 renderMeshBlinnClipPlane,
                 renderParticle,
                 renderSkybox,
-                renderScreenDup
+#if !NETFX_CORE
+                renderScreenDup,
+#endif
             };
         }
     }

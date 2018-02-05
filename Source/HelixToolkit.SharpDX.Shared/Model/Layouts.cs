@@ -307,7 +307,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix CrossPlaneParams;
         public const int SizeInBytes = 4 * (4 * 2 + 4 * 4);
     }
-
+#if !NETFX_CORE
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ScreenDuplicationModelStruct
     {        
@@ -326,4 +326,5 @@ namespace HelixToolkit.Wpf.SharpDX
         Vector2 padding3;
         public const int SizeInBytes = 4 * 4 * 8;
     }
+#endif
 }
