@@ -41,22 +41,9 @@ namespace HelixToolkit.Wpf
                                                 IEquatable<DoubleKeyDictionary<K, T, V>>
     {
         /// <summary>
-        /// The m_inner dictionary.
-        /// </summary>
-        private Dictionary<T, V> m_innerDictionary;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DoubleKeyDictionary{K,T,V}"/> class.
-        /// </summary>
-        public DoubleKeyDictionary()
-        {
-            this.OuterDictionary = new Dictionary<K, Dictionary<T, V>>();
-        }
-
-        /// <summary>
         /// Gets or sets OuterDictionary.
         /// </summary>
-        private Dictionary<K, Dictionary<T, V>> OuterDictionary { get; set; }
+        private Dictionary<K, Dictionary<T, V>> OuterDictionary { get; }= new Dictionary<K, Dictionary<T, V>>();
 
         /// <summary>
         /// Gets or sets the value with the specified indices.
@@ -80,9 +67,11 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public void Clear()
         {
-            OuterDictionary.Clear();
-            if (m_innerDictionary!=null)
-                m_innerDictionary.Clear();
+            foreach(var dict in OuterDictionary.Values)
+            {
+                dict?.Clear();
+            }
+            OuterDictionary.Clear();     
         }
 
         /// <summary>
@@ -99,24 +88,23 @@ namespace HelixToolkit.Wpf
         /// </param>
         public void Add(K key1, T key2, V value)
         {
-            if (this.OuterDictionary.ContainsKey(key1))
+            Dictionary<T, V> inner;
+            if(OuterDictionary.TryGetValue(key1, out inner))
             {
-                if (this.m_innerDictionary.ContainsKey(key2))
+                if (inner.ContainsKey(key2))
                 {
-                    this.OuterDictionary[key1][key2] = value;
+                    inner[key2] = value;
                 }
                 else
                 {
-                    this.m_innerDictionary = this.OuterDictionary[key1];
-                    this.m_innerDictionary.Add(key2, value);
-                    this.OuterDictionary[key1] = this.m_innerDictionary;
+                    inner.Add(key2, value);
                 }
             }
             else
             {
-                this.m_innerDictionary = new Dictionary<T, V>();
-                this.m_innerDictionary[key2] = value;
-                this.OuterDictionary.Add(key1, this.m_innerDictionary);
+                inner = new Dictionary<T, V>();
+                inner.Add(key2, value);
+                OuterDictionary.Add(key1, inner);
             }
         }
 
@@ -272,7 +260,22 @@ namespace HelixToolkit.Wpf
         /// <value>
         /// The values.
         /// </value>
-        public IEnumerable<V> Values { get { return m_innerDictionary.Values; } }
+        public IEnumerable<V> Values
+        {
+            get
+            {
+                foreach (var dict in OuterDictionary.Values)
+                {
+                    if (dict != null)
+                    {
+                        foreach(var item in dict.Values)
+                        {
+                            yield return item;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /// <summary>
