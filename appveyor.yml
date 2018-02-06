@@ -6,7 +6,7 @@ pull_requests:
 
 install:
   - cinst gitversion.portable --version=3.6.4 -y
-  - cinst gitlink --version=3.1.0 -y
+  - cinst gitlink --version=3.0.0 -y
 
 configuration: Release
 
