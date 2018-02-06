@@ -174,12 +174,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseMapSampler = sampler
             };
 
-            CornerModel = new InstancingMeshGeometryModel3D() { EnableViewFrustumCheck = false, Material = PhongMaterials.Silver,
+            CornerModel = new InstancingMeshGeometryModel3D() { EnableViewFrustumCheck = false, Material = PhongMaterials.Yellow,
                 Geometry = cornerGeometry, Instances = cornerInstances, IsRendering = false };
             CornerModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
             Children.Add(CornerModel);
 
-            EdgeModel = new InstancingMeshGeometryModel3D() { EnableViewFrustumCheck = false, Material = PhongMaterials.Yellow,
+            EdgeModel = new InstancingMeshGeometryModel3D() { EnableViewFrustumCheck = false, Material = PhongMaterials.Silver,
                 Geometry = edgeGeometry, Instances = edgeInstances, IsRendering = false };
             EdgeModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
             Children.Add(EdgeModel);
@@ -233,8 +233,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 double angle = 0 + (360 * i / (20 - 1));
                 double angleRad = angle / 180 * Math.PI;
                 var dir = (left * (float)Math.Cos(angleRad)) + (front * (float)Math.Sin(angleRad));
-                pts.Add(center + (dir * (size - 1.3f)));
-                pts.Add(center + (dir * (size + 0.5f)));
+                pts.Add(center + (dir * (size - 1.0f)));
+                pts.Add(center + (dir * (size + 0.9f)));
             }
             builder = new MeshBuilder(false, false, false);
             builder.AddTriangleStrip(pts);
