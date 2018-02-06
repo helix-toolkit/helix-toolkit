@@ -208,7 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 }
                 invalidRender = true;
             }
-            if (frameProcessor.SharedTexture != null)
+            if (frameProcessor.SharedTexture != null && !accessLost)
             {
                 if (clearTarget)
                 {
@@ -236,8 +236,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
             else if (accessLost)
             {
-                Detach();
-                Attach(EffectTechnique);
+                throw new SharpDXException(ResultCode.AccessLost);
             }
             else
             {
