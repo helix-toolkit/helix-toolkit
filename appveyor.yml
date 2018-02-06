@@ -5,8 +5,8 @@ pull_requests:
   do_not_increment_build_number: true
 
 install:
-  - cinst gitversion.portable --version=3.4.1 -y
-  - cinst gitlink --version=2.2.0 -y
+  - cinst gitversion.portable --version=3.6.4 -y
+  - cinst gitlink --version=3.1.0 -y
 
 configuration: Release
 
