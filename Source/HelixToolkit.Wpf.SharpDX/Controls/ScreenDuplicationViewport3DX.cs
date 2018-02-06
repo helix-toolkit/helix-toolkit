@@ -209,6 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
             this.renderHostInternal.Viewport = this;
             this.renderHostInternal.EffectsManager = this.EffectsManager;
+            this.renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();
         }
 
         /// <summary>
