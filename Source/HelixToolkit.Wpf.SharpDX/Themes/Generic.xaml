@@ -95,7 +95,8 @@
                                     RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}"
                                     RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
                                     SizeScale="{TemplateBinding ViewCubeSize}"
-                                    ViewBoxTexture="{TemplateBinding ViewCubeTexture}" />
+                                    ViewBoxTexture="{TemplateBinding ViewCubeTexture}" 
+                                    EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"/>
                                 <hx:CoordinateSystemModel3D
                                     x:Name="PART_CoordinateView"
                                     CoordinateSystemLabelX="{TemplateBinding CoordinateSystemLabelX}"

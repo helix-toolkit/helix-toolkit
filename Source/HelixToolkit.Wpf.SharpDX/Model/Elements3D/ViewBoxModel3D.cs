@@ -46,7 +46,47 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private MeshGeometryModel3D ViewBoxMeshModel;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable edge click].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable edge click]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableEdgeClick
+        {
+            get { return (bool)GetValue(EnableEdgeClickProperty); }
+            set { SetValue(EnableEdgeClickProperty, value); }
+        }
+
+        /// <summary>
+        /// The enable edge click property
+        /// </summary>
+        public static readonly DependencyProperty EnableEdgeClickProperty =
+            DependencyProperty.Register("EnableEdgeClick", typeof(bool), typeof(ViewBoxModel3D), new PropertyMetadata(false, (d,e)=> 
+            {
+                (d as ViewBoxModel3D).CornerModel.IsRendering = (d as ViewBoxModel3D).EdgeModel.IsRendering = (bool)e.NewValue;
+            }));
+
+        private const float size = 5;
+
+        private static readonly Vector3[] xAligned = { new Vector3(0, -1, -1), new Vector3(0, 1, -1), new Vector3(0, -1, 1), new Vector3(0, 1, 1) }; //x
+        private static readonly Vector3[] yAligned = { new Vector3(-1, 0, -1), new Vector3(1, 0, -1), new Vector3(-1, 0, 1), new Vector3(1, 0, 1) };//y
+        private static readonly Vector3[] zAligned = { new Vector3(-1, -1, 0), new Vector3(-1, 1, 0), new Vector3(1, -1, 0), new Vector3(1, 1, 0) };//z
+
+        private static readonly Vector3[] cornerPoints =   {
+                new Vector3(-1,-1,-1 ), new Vector3(1, -1, -1), new Vector3(1, 1, -1), new Vector3(-1, 1, -1),
+                new Vector3(-1,-1,1 ),new Vector3(1,-1,1 ),new Vector3(1,1,1 ),new Vector3(-1,1,1 )};
+
+        private static readonly Matrix[] cornerInstances;
+        private static readonly Matrix[] edgeInstances;
+        private static readonly Geometry3D cornerGeometry;
+        private static readonly Geometry3D edgeGeometry;
+
+        private readonly MeshGeometryModel3D ViewBoxMeshModel;
+        private readonly InstancingMeshGeometryModel3D EdgeModel;
+        private readonly InstancingMeshGeometryModel3D CornerModel;
+        
 
         public static readonly RoutedEvent ViewBoxClickedEvent =
             EventManager.RegisterRoutedEvent("ViewBoxClicked", RoutingStrategy.Bubble, typeof(EventHandler<ViewBoxClickedEventArgs>), typeof(ViewBoxModel3D));
@@ -81,6 +121,41 @@ namespace HelixToolkit.Wpf.SharpDX
             remove { RemoveHandler(ViewBoxClickedEvent, value); }
         }
 
+        static ViewBoxModel3D()
+        {
+            var builder = new MeshBuilder(true, false);
+            float cornerSize = size / 5;
+            builder.AddBox(Vector3.Zero, cornerSize, cornerSize, cornerSize);
+            cornerGeometry = builder.ToMesh();
+
+            builder = new MeshBuilder(true, false);
+            float halfSize = size / 2;
+            float edgeSize = halfSize * 1.5f;
+            builder.AddBox(Vector3.Zero, cornerSize, edgeSize, cornerSize);
+            edgeGeometry = builder.ToMesh();
+
+            cornerInstances = new Matrix[cornerPoints.Length];
+            for (int i = 0; i < cornerPoints.Length; ++i)
+            {
+                cornerInstances[i] = Matrix.Translation(cornerPoints[i] * size / 2 * 0.95f);
+            }
+            int count = xAligned.Length;
+            edgeInstances = new Matrix[count * 3];
+
+            for (int i = 0; i < count; ++i)
+            {
+                edgeInstances[i] = Matrix.RotationZ((float)Math.PI / 2) * Matrix.Translation(xAligned[i] * halfSize * 0.95f);
+            }
+            for (int i = count; i < count * 2; ++i)
+            {
+                edgeInstances[i] = Matrix.Translation(yAligned[i % count] * halfSize * 0.95f);
+            }
+            for (int i = count * 2; i < count * 3; ++i)
+            {
+                edgeInstances[i] = Matrix.RotationX((float)Math.PI / 2) * Matrix.Translation(zAligned[i % count] * halfSize * 0.95f);
+            }
+        }
+
         public ViewBoxModel3D()
         {
             RelativeScreenLocationX = 0.8;
@@ -98,6 +173,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseColor = Color.White,
                 DiffuseMapSampler = sampler
             };
+
+            CornerModel = new InstancingMeshGeometryModel3D() { EnableViewFrustumCheck = false, Material = PhongMaterials.Silver,
+                Geometry = cornerGeometry, Instances = cornerInstances, IsRendering = false };
+            CornerModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
+            Children.Add(CornerModel);
+
+            EdgeModel = new InstancingMeshGeometryModel3D() { EnableViewFrustumCheck = false, Material = PhongMaterials.Yellow,
+                Geometry = edgeGeometry, Instances = edgeInstances, IsRendering = false };
+            EdgeModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
+            Children.Add(EdgeModel);
         }
 
         protected override bool OnAttach(IRenderHost host)
@@ -129,7 +214,6 @@ namespace HelixToolkit.Wpf.SharpDX
             var left = new Vector3(up.Y, up.Z, up.X);
             var front = Vector3.Cross(left, up);
             var builder = new MeshBuilder(true, true, false);
-            float size = 5;
             builder.AddCubeFace(new Vector3(0, 0, 0), front, up, size, size, size);
             builder.AddCubeFace(new Vector3(0, 0, 0), -front, up, size, size, size);
             builder.AddCubeFace(new Vector3(0, 0, 0), left, up, size, size, size);
@@ -143,13 +227,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var pts = new List<Vector3>();
 
-            var center = up * -size / 2;
+            var center = up * -size / 2 * 1.3f;
             for (int i = 0; i < 20; i++)
             {
                 double angle = 0 + (360 * i / (20 - 1));
                 double angleRad = angle / 180 * Math.PI;
                 var dir = (left * (float)Math.Cos(angleRad)) + (front * (float)Math.Sin(angleRad));
-                pts.Add(center + (dir * (size - 1.5f)));
+                pts.Add(center + (dir * (size - 1.3f)));
                 pts.Add(center + (dir * (size + 0.5f)));
             }
             builder = new MeshBuilder(false, false, false);
@@ -237,7 +321,30 @@ namespace HelixToolkit.Wpf.SharpDX
                 hits = viewBoxHit;
                 Debug.WriteLine("View box hit.");
                 var hit = viewBoxHit[0];
-                var normal = -hit.NormalAtHit;
+                Vector3 normal = Vector3.Zero;
+                if(hit.ModelHit == ViewBoxMeshModel)
+                {
+                    normal = -hit.NormalAtHit;
+                }
+                else if(hit.Tag is int)
+                {
+                    int index = (int)hit.Tag;
+                    if(hit.ModelHit == EdgeModel && index < edgeInstances.Length)
+                    {
+                        Matrix transform = edgeInstances[index];
+                        normal = -transform.TranslationVector;
+                    }
+                    else if(hit.ModelHit == CornerModel && index < cornerInstances.Length)
+                    {
+                        Matrix transform = cornerInstances[index];
+                        normal = -transform.TranslationVector;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+                normal.Normalize();
                 if (Vector3.Cross(normal, UpDirection.ToVector3()).LengthSquared() < 1e-5)
                 {
                     var vecLeft = new Media3D.Vector3D(-normal.Y, -normal.Z, -normal.X);
