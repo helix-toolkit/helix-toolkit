@@ -555,7 +555,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The title font family property.
         /// </summary>
         public static readonly DependencyProperty TitleFontFamilyProperty = DependencyProperty.Register(
-                "TitleFontFamily", typeof(FontFamily), typeof(Viewport3DX), new UIPropertyMetadata(null));
+                "TitleFontFamily", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata(null));
 
         /// <summary>
         /// The title property.
@@ -803,7 +803,14 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty Content2DProperty
             = DependencyProperty.Register("Content2D", typeof(Element2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
             {
-                 (d as Viewport3DX).overlay2D.Content2D = (Element2D)e.NewValue;
+                if (e.OldValue != null)
+                {
+                    (d as Viewport3DX).overlay2D.Children.Remove((Element2D)e.OldValue);
+                }
+                if (e.NewValue != null)
+                {
+                    (d as Viewport3DX).overlay2D.Children.Add((Element2D)e.NewValue);
+                }
             }));
         /// <summary>
         /// Background Color
@@ -1890,11 +1897,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The title font family.
         /// </value>
-        public FontFamily TitleFontFamily
+        public string TitleFontFamily
         {
             get
             {
-                return (FontFamily)this.GetValue(TitleFontFamilyProperty);
+                return (string)this.GetValue(TitleFontFamilyProperty);
             }
 
             set

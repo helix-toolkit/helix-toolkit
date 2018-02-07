@@ -39,6 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [TemplatePart(Name = "PART_CoordinateView", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_ViewCube", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_FrameStatisticView", Type = typeof(Viewport3D))]
+    [TemplatePart(Name = "PART_TitleView", Type = typeof(StackPanel2D))]
     [Localizability(LocalizationCategory.NeverLocalize)]
     public partial class Viewport3DX : ItemsControl, IViewport3DX
     {
@@ -66,6 +67,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The frame statistic view part name
         /// </summary>
         private const string PartFrameStatisticView = "PART_FrameStatisticView";
+
+        /// <summary>
+        /// The part title view
+        /// </summary>
+        private const string PartTitleView = "PART_TitleView";
         /// <summary>
         ///   The is move enabled property.
         /// </summary>
@@ -684,6 +690,17 @@ namespace HelixToolkit.Wpf.SharpDX
             if(this.frameStatisticModel == null)
             {
                 throw new HelixToolkitException("{0} is missing from the template.", PartFrameStatisticView);
+            }
+
+            overlay2D.Children.Clear();
+            var titleView = Template.FindName(PartTitleView, this);
+            if (titleView is Element2D element)
+            {
+                overlay2D.Children.Add(element);
+            }
+            if (Content2D != null)
+            {
+                overlay2D.Children.Add(Content2D);
             }
             // update the coordinateview camera
             this.OnCameraChanged();           
