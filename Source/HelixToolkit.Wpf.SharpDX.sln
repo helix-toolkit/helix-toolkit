@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolki
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Tests", "HelixToolkit.Tests\HelixToolkit.Tests.csproj", "{E86BB7C0-A453-4923-916C-1AA32FF068F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf", "HelixToolkit.Wpf\HelixToolkit.Wpf.csproj", "{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.SharpDX", "HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj", "{39740654-F5F1-4936-B4EA-9BC97D4CDE37}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.SharpDX.Tests", "HelixToolkit.Wpf.SharpDX.Tests\HelixToolkit.Wpf.SharpDX.Tests.csproj", "{405C54C4-69F7-4F3D-A6BA-594346F42A2F}"
@@ -84,7 +82,6 @@ Global
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{1eaf532e-d750-497b-bb8f-ee85359c78a2}*SharedItemsImports = 13
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
-		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{3f3b4548-a9db-4874-86f7-e7c4fec8a351}*SharedItemsImports = 4
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{4ee18e80-7609-4fff-bd4b-f02728ec0688}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,14 +109,6 @@ Global
 		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Release|x64.ActiveCfg = Release|Any CPU
 		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Release|x86.ActiveCfg = Release|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|x64.ActiveCfg = Release|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|x86.ActiveCfg = Release|Any CPU
 		{39740654-F5F1-4936-B4EA-9BC97D4CDE37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{39740654-F5F1-4936-B4EA-9BC97D4CDE37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39740654-F5F1-4936-B4EA-9BC97D4CDE37}.Debug|x64.ActiveCfg = Debug|x64
