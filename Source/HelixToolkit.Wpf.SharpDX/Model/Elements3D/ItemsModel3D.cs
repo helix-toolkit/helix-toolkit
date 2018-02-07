@@ -13,14 +13,10 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Diagnostics;
     using System.Linq;
     using System.Windows;
-    using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
-    using SharpDX;
-    using System.Windows.Media;
-    using System.Diagnostics;
-    using System.Windows.Markup;
 
     /// <summary>
     ///     Represents a model that can be used to present a collection of items. supports generating child items by a
@@ -37,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
         ///     The item template property
         /// </summary>
         public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
-            "ItemTemplate", typeof(DataTemplate), typeof(ItemsModel3D), new AffectsRenderPropertyMetadata(null));
+            "ItemTemplate", typeof(DataTemplate), typeof(ItemsModel3D), new PropertyMetadata(null));
 
         /// <summary>
         ///     The items source property
@@ -46,13 +42,13 @@ namespace HelixToolkit.Wpf.SharpDX
             "ItemsSource",
             typeof(IEnumerable),
             typeof(ItemsModel3D),
-            new AffectsRenderPropertyMetadata(null, (s, e) => ((ItemsModel3D)s).ItemsSourceChanged(e)));
+            new PropertyMetadata(null, (s, e) => ((ItemsModel3D)s).ItemsSourceChanged(e)));
 
         /// <summary>
         /// Add octree manager to use octree hit test.
         /// </summary>
         public static readonly DependencyProperty OctreeManagerProperty = DependencyProperty.Register("OctreeManager",
-            typeof(IOctreeManager),
+            typeof(IOctreeManagerWrapper),
             typeof(ItemsModel3D), new PropertyMetadata(null, (s, e) =>
             {
                 var d = s as ItemsModel3D;
@@ -65,6 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     d.AddLogicalChild(e.NewValue);
                 }
+                d.octreeManager = e.NewValue == null ? null : ((IOctreeManagerWrapper)e.NewValue).Manager;
             }));
 
         /// <summary>
@@ -91,7 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(ItemsSourceProperty, value); }
         }
 
-        public IOctreeManager OctreeManager
+        public IOctreeManagerWrapper OctreeManager
         {
             set
             {
@@ -99,43 +96,18 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (IOctreeManager)GetValue(OctreeManagerProperty);
+                return (IOctreeManagerWrapper)GetValue(OctreeManagerProperty);
             }
         }
 
-        private readonly Dictionary<object, Model3D> mDictionary = new Dictionary<object, Model3D>();
-        //private bool loaded = false;
+        private readonly Dictionary<object, Element3D> mDictionary = new Dictionary<object, Element3D>();
+
         private IOctree Octree
         {
-            get { return OctreeManager == null ? null : OctreeManager.Octree; }
+            get { return octreeManager == null ? null : octreeManager.Octree; }
         }
 
-        public ItemsModel3D()
-        {
-            //this.Loaded += ItemsModel3D_Loaded;
-            //this.Unloaded += ItemsModel3D_Unloaded;
-        }
-
-        //private void ItemsModel3D_Unloaded(object sender, RoutedEventArgs e)
-        //{
-        //    loaded = false;
-        //    OctreeManager?.Clear();
-        //}
-
-        //private void ItemsModel3D_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    loaded = true;
-        //    UpdateBounds();
-        //    //if (Children.Count > 0)
-        //    //{
-        //    //    OctreeManager?.RequestRebuild();
-        //    //}
-        //}
-
-        private void UpdateOctree()
-        {
-            OctreeManager?.RebuildTree(this.Children);
-        }
+        protected IOctreeManager octreeManager { private set; get; }
 
         /// <summary>
         /// Handles changes in the ItemsSource property.
@@ -153,12 +125,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 (e.OldValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
             }
 
-            foreach (Model3D item in Children)
+            foreach (Element3D item in Children)
             {
                 item.DataContext = null;
             }
 
-            OctreeManager?.Clear();
+            octreeManager?.Clear();
             mDictionary.Clear();
             Children.Clear();
 
@@ -180,7 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         continue;
                     }
-                    var model = item as Model3D;
+                    var model = item as Element3D;
                     if (model != null)
                     {
                         this.Children.Add(model);
@@ -200,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         continue;
                     }
-                    var model = this.ItemTemplate.LoadContent() as Model3D;
+                    var model = this.ItemTemplate.LoadContent() as Element3D;
                     if (model != null)
                     {
                         model.DataContext = item;
@@ -215,7 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (Children.Count > 0)
             {
-                OctreeManager?.RequestRebuild();
+                octreeManager?.RequestRebuild();
             }
         }
 
@@ -224,8 +196,8 @@ namespace HelixToolkit.Wpf.SharpDX
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Reset:
-                    OctreeManager?.Clear();
-                    OctreeManager?.RequestRebuild();
+                    octreeManager?.Clear();
+                    octreeManager?.RequestRebuild();
                     break;
             }
             switch (e.Action)
@@ -240,7 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             {
                                 var model = mDictionary[item];
                                 if (model is GeometryModel3D)
-                                    OctreeManager?.RemoveItem(model as GeometryModel3D);
+                                    octreeManager?.RemoveItem(model as GeometryModel3D);
                                 model.DataContext = null;
                                 this.Children.Remove(model);
                                 mDictionary.Remove(item);
@@ -269,7 +241,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in this.ItemsSource)
                             {
-                                var model = item as Model3D;
+                                var model = item as Element3D;
                                 if (model != null)
                                 {
                                     this.Children.Add(model);
@@ -285,7 +257,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in this.ItemsSource)
                             {
-                                var model = this.ItemTemplate.LoadContent() as Model3D;
+                                var model = this.ItemTemplate.LoadContent() as Element3D;
                                 if (model != null)
                                 {
                                     model.DataContext = item;
@@ -313,13 +285,13 @@ namespace HelixToolkit.Wpf.SharpDX
                                 {
                                     continue;
                                 }
-                                var model = this.ItemTemplate.LoadContent() as Model3D;
+                                var model = this.ItemTemplate.LoadContent() as Element3D;
                                 if (model != null)
-                                {
-                                    OctreeManager?.AddPendingItem(model);
+                                {                                    
                                     model.DataContext = item;
                                     this.Children.Add(model);
                                     mDictionary.Add(item, model);
+                                    octreeManager?.AddPendingItem(model);
                                 }
                                 else
                                 {
@@ -335,12 +307,12 @@ namespace HelixToolkit.Wpf.SharpDX
                                 {
                                     continue;
                                 }
-                                var model = item as Model3D;
+                                var model = item as Element3D;
                                 if (model != null)
-                                {
-                                    OctreeManager?.AddPendingItem(model);
+                                {                                    
                                     this.Children.Add(model);
                                     mDictionary.Add(item, model);
+                                    octreeManager?.AddPendingItem(model);
                                 }
                                 else
                                 {
@@ -353,24 +325,25 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override void OnRender(RenderContext context)
+        public override void UpdateNotRender()
         {
-            base.OnRender(context);
-            if (OctreeManager != null)
+            base.UpdateNotRender();
+            if (octreeManager != null)
             {
-                if (OctreeManager.RequestUpdateOctree)
+                octreeManager.ProcessPendingItems();
+                if (octreeManager.RequestUpdateOctree)
                 {
-                    UpdateOctree();
+                    octreeManager?.RebuildTree(this.Children);
                 }
             }
         }
 
-        protected override bool OnHitTest(IRenderMatrices context, global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, global::SharpDX.Matrix totalModelMatrix, ref global::SharpDX.Ray ray, ref List<HitTestResult> hits)
         {
             bool isHit = false;
             if (Octree != null)
             {
-                isHit = Octree.HitTest(context, this, modelMatrix, ray, ref hits);
+                isHit = Octree.HitTest(context, this, totalModelMatrix, ray, ref hits);
 #if DEBUG
                 if (isHit)
                 {
@@ -380,7 +353,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                isHit = base.OnHitTest(context, ray, ref hits);
+                isHit = base.OnHitTest(context, totalModelMatrix, ref ray, ref hits);
             }
             return isHit;
         }

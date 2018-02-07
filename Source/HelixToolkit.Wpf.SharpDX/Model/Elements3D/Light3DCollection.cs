@@ -4,21 +4,30 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using HelixToolkit.Wpf.SharpDX.Model.Lights3D;
-
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System;
+    using System.Collections.Generic;
+    using HelixToolkit.Wpf.SharpDX.Core;
+
     public class Light3DCollection : GroupElement3D, ILight3D
     {
-        public Light3DSceneShared Light3DSceneShared
+        public LightType LightType
         {
-            private set; get;
+            get
+            {
+                return LightType.None;
+            }
         }
 
-        protected override bool OnAttach(IRenderHost host)
+        protected override bool CanHitTest(IRenderContext context)
         {
-            Light3DSceneShared = host.Light3DSceneShared;
-            return base.OnAttach(host);
+            return false;
+        }
+
+        protected override bool OnHitTest(IRenderContext context, global::SharpDX.Matrix totalModelMatrix, ref global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        {
+            throw new NotImplementedException();
         }
     }
 }

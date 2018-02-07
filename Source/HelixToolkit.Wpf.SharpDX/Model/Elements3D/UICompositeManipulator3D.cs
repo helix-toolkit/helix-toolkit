@@ -63,14 +63,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The diameter property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty = DependencyProperty.Register(
-            "Diameter", typeof(double), typeof(UICompositeManipulator3D), new AffectsRenderPropertyMetadata(2.0, ChildrenChanged));
+            "Diameter", typeof(double), typeof(UICompositeManipulator3D), new PropertyMetadata(2.0, ChildrenChanged));
 
         /// <summary>
         ///   The target transform property.
         /// </summary>
         public static readonly DependencyProperty TargetTransformProperty = DependencyProperty.Register(
             "TargetTransform", typeof(Transform3D), typeof(UICompositeManipulator3D), 
-            new AffectsRenderFrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender));
+            new FrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender));
 
         /// <summary>
         ///   Gets or sets TargetTransform.
@@ -210,35 +210,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="context"></param>
-        protected override void OnRender(RenderContext context)
-        {
-            foreach (var c in this.Children)
-            {
-                var model = c as ITransformable;
-                if (model != null)
-                {
-                    // apply transform
-                    model.Transform = this.Transform;
-                    //model.PushMatrix(this.modelMatrix);
-                    // render model
-                    c.Render(context);
-                    //model.PopMatrix();
-                }
-                else
-                {
-                    c.Render(context);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="ray"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        protected override bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
             foreach (var c in this.Children)
@@ -254,7 +229,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return hit;
         }
-
+        //protected override void TransformChanged(ref Matrix totalTransform)
+        //{
+        //    var model = this.TargetTransform.Value.ToMatrix().Inverted();
+        //    base.TransformChanged(ref model);
+        //}
         /// <summary>
         /// The on children changed.
         /// </summary>

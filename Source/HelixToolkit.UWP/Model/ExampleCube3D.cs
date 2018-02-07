@@ -69,17 +69,17 @@ namespace HelixToolkit.UWP
                                     * global::SharpDX.Matrix.RotationY((float)this.RotationSpeed * time * 2.0f) * global::SharpDX.Matrix.RotationZ((float)this.RotationSpeed * time * .7f)
                                     * viewProj;
                 worldViewProj.Transpose();
-
+                context.UpdateSubresource(ref worldViewProj, this.constantBuffer, 0);
                 // Setup the pipeline
                 context.InputAssembler.SetVertexBuffers(0, this.vertexBufferBinding);
                 context.InputAssembler.InputLayout = this.layout;
                 context.InputAssembler.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.TriangleList;
-                context.VertexShader.SetConstantBuffer(0, this.constantBuffer);
+
                 context.VertexShader.Set(this.vertexShader);
                 context.PixelShader.Set(this.pixelShader);
-
+                context.VertexShader.SetConstantBuffer(0, this.constantBuffer);
                 // Update Constant Buffer
-                context.UpdateSubresource(ref worldViewProj, this.constantBuffer, 0);
+
 
                 // Draw the cube
                 context.Draw(36, 0);

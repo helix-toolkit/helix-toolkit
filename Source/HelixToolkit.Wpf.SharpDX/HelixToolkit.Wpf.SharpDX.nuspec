@@ -4,7 +4,7 @@
     <id>HelixToolkit.Wpf.SharpDX</id>
     <version>$version$</version>
     <title>HelixToolkit for WPF (based on SharpDX)</title>
-    <authors>objo</authors>
+    <authors>objo, Lunci</authors>
     <licenseUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/LICENSE</licenseUrl>
     <projectUrl>http://helix-toolkit.github.io/</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
@@ -27,11 +27,6 @@
   </metadata>
   <files>
     <file src="bin\Release\HelixToolkit.Wpf.SharpDX.???" target="lib\net45" />
-    <file src="bin\Release\x86\d3dcompiler_47.dll" target="Content\x86\" />
-    <file src="bin\Release\x64\d3dcompiler_47.dll" target="Content\x64\" />
-    <file src="bin\Release\sharpdx_direct3d11_1_effects_arm.dll" target="Content\" />
-    <file src="bin\Release\sharpdx_direct3d11_1_effects_x64.dll" target="Content\" />
-    <file src="bin\Release\sharpdx_direct3d11_1_effects_x86.dll" target="Content\" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />

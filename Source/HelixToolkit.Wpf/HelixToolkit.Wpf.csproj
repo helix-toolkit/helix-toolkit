@@ -115,7 +115,6 @@
     <Compile Include="Helpers\WeakEventManagers\RenderingEventManager.cs" />
     <Compile Include="Helpers\WeakEventManagers\WeakEventManagerBase{TManager}.cs" />
     <Compile Include="Helpers\LoopSubdivision.cs" />
-    <Compile Include="Helpers\DoubleKeyDictionary.cs" />
     <Compile Include="Controls\CameraController\CameraController.cs" />
     <Compile Include="Controls\Stereo\AnaglyphView3D.xaml.cs">
       <DependentUpon>AnaglyphView3D.xaml</DependentUpon>

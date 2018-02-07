@@ -119,7 +119,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
             if (this.Camera is PerspectiveCamera)
             {
                 if (delta < -0.5)

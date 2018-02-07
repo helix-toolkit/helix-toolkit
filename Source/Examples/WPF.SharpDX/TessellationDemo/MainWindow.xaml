@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hx="clr-namespace:HelixToolkit.Wpf.SharpDX;assembly=HelixToolkit.Wpf.SharpDX"
+    xmlns:hxCore="clr-namespace:HelixToolkit.Wpf.SharpDX.Core;assembly=HelixToolkit.Wpf.SharpDX"
     xmlns:local="clr-namespace:TessellationDemo"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sdx="clr-namespace:SharpDX;assembly=SharpDX"
@@ -13,7 +14,7 @@
     Height="500"
     mc:Ignorable="d">
     <Window.Resources>
-        <x:StaticExtension x:Key="Shading" Member="hx:TessellationTechniques.Shading" />
+        <x:StaticExtension x:Key="Topology" Member="hxCore:MeshTopologies.Topologies" />
         <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter" />
     </Window.Resources>
     <Grid>
@@ -29,6 +30,7 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
+            IsShadowMappingEnabled="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
@@ -39,24 +41,29 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="Shift+RightClick" />
             </hx:Viewport3DX.InputBindings>
-
+            <hx:ShadowMap3D />
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection1}" Color="{Binding DirectionalLightColor}" />
-            <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection2}" Color="{Binding DirectionalLightColor}" />
-            <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection3}" Color="{Binding DirectionalLightColor}" />
-
             <hx:PatchGeometryModel3D
+                x:Name="model1"
+                EnableTessellation="True"
+                FillMode="{Binding FillMode}"
+                Geometry="{Binding DefaultModel}"
+                Instances="{Binding Instances}"
+                IsThrowingShadow="True"
+                Material="{Binding DefaultMaterial}"
+                MeshTopology="{Binding MeshTopology}"
+                Transform="{Binding DefaultTransform}" />
+            <!--<hx:MeshGeometryModel3D
                 x:Name="model1"
                 Geometry="{Binding DefaultModel}"
                 Material="{Binding DefaultMaterial}"
-                Transform="{Binding DefaultTransform}" />
-            <hx:LineGeometryModel3D
-                x:Name="grid"
-                Geometry="{Binding Grid}"
-                IsRendering="False"
-                Transform="{Binding GridTransform}"
-                Color="{Binding GridColor}" />
-
+                Transform="{Binding DefaultTransform}"
+                FillMode="{Binding FillMode}" ReuseVertexArrayBuffer="True"/>-->
+            <hx:MeshGeometryModel3D
+                Geometry="{Binding FloorModel}"
+                Material="{Binding FloorMaterial}"
+                RenderShadowMap="True" />
         </hx:Viewport3DX>
 
         <StackPanel Grid.Row="1">
@@ -100,8 +107,7 @@
                         Grid.Row="1"
                         Grid.ColumnSpan="2"
                         Margin="3"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding MeshTopologyList}"
+                        ItemsSource="{Binding Source={StaticResource Topology}}"
                         SelectedItem="{Binding MeshTopology}"
                         Text="" />
 
@@ -113,13 +119,9 @@
                     </TextBlock>
                     <!--<ComboBox  Grid.Row="3"  Grid.ColumnSpan="2" Text="" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3" />-->
                     <ComboBox
-                        Grid.Row="4"
-                        Grid.ColumnSpan="2"
                         Margin="3"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding Source={StaticResource Shading}}"
-                        SelectedItem="{Binding Shading, ElementName=model1}"
-                        Text="" />
+                        ItemsSource="{Binding EffectsManager.RenderTechniques}"
+                        SelectedItem="{Binding RenderTechniqueName}" />
                     <CheckBox
                         Grid.Row="5"
                         Grid.ColumnSpan="2"
@@ -138,8 +140,8 @@
                         Grid.Row="7"
                         Grid.ColumnSpan="2"
                         Margin="3"
-                        IsChecked="{Binding IsRendering, ElementName=grid}">
-                        Render Grid
+                        IsChecked="{Binding Wireframe}">
+                        Render Wireframe
                     </CheckBox>
 
                     <TextBlock
@@ -152,7 +154,7 @@
                         Grid.Row="8"
                         Grid.Column="1"
                         Margin="3"
-                        Text="{Binding TessellationFactor, ElementName=model1}" />
+                        Text="{Binding MinTessellationFactor, ElementName=model1}" />
                     <Slider
                         Grid.Row="9"
                         Grid.ColumnSpan="2"
@@ -161,7 +163,7 @@
                         Maximum="24"
                         Minimum="1"
                         TickFrequency="1"
-                        Value="{Binding TessellationFactor, ElementName=model1}" />
+                        Value="{Binding MinTessellationFactor, ElementName=model1}" />
 
                 </Grid>
             </Expander>
@@ -175,7 +177,7 @@
                 <TextBlock
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Text="{Binding FpsCounter.Value, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
+                    Text="{Binding FrameRate, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
             </StatusBarItem>
             <Separator />
             <StatusBarItem>

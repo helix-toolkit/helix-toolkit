@@ -7,7 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 #if SHARPDX
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 #else
 namespace HelixToolkit.Wpf
 #endif

@@ -12,14 +12,15 @@ namespace Workitem10048
 
     using HelixToolkit.Wpf.SharpDX;
     using SharpDX;
-    using Color = SharpDX.Color;
+    using System.Windows.Media;
+    using Color = System.Windows.Media.Color;
     using HitTestResult = HelixToolkit.Wpf.SharpDX.HitTestResult;
 
     public class MyLineGeometryModel3D : LineGeometryModel3D
     {
         private Color? initialColor = null;
 
-        public override bool HitTest(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (initialColor == null)
             {
@@ -31,14 +32,14 @@ namespace Workitem10048
 
             if (pressedMouseButtons == 0 || pressedMouseButtons.HasFlag(MouseButtons.Left))
             {
-                this.Color = result ? Color.Red : this.initialColor.Value;
+                this.Color = result ? Colors.Red : this.initialColor.Value;
             }
 
             return result;
         }
 
         // alternative way, 3.36 times faster, but wrong PointHit
-        protected bool HitTest2D(IRenderMatrices context, Ray rayWS, ref List<HitTestResult> hits)
+        protected bool HitTest2D(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             LineGeometry3D lineGeometry3D;
 
@@ -52,7 +53,7 @@ namespace Workitem10048
 
             // revert unprojection; probably better: overloaded HitTest() for LineGeometryModel3D?
             var svpm = context.ScreenViewProjectionMatrix;
-            var smvpm = this.modelMatrix * svpm;
+            var smvpm = this.ModelMatrix * svpm;
             var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
             Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
             var clickPoint = clickPoint4.ToVector3();
@@ -75,17 +76,18 @@ namespace Workitem10048
                     lastDist = dist;
                     Vector4 res;
                     var lp0 = line.P0;
-                    Vector3.Transform(ref lp0, ref this.modelMatrix, out res);
+                    var modelMatrix = ModelMatrix;
+                    Vector3.Transform(ref lp0, ref modelMatrix, out res);
                     lp0 = res.ToVector3();
 
                     var lp1 = line.P1;
-                    Vector3.Transform(ref lp1, ref this.modelMatrix, out res);
+                    Vector3.Transform(ref lp1, ref modelMatrix, out res);
                     lp1 = res.ToVector3();
 
                     var lv = lp1 - lp0;
                     var hitPointWS = lp0 + lv * t; // wrong, because t refers to screen space
                     result.Distance = (rayWS.Position - hitPointWS).Length();
-                    result.PointHit = hitPointWS.ToPoint3D();
+                    result.PointHit = hitPointWS;
                     result.ModelHit = this;
                     result.IsValid = true;
                     result.Tag = index; // ToDo: LineHitTag with additional info

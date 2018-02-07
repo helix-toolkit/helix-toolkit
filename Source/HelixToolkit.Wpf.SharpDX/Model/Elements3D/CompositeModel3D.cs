@@ -15,15 +15,32 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Linq;
     using global::SharpDX;
     using System;
-    using global::SharpDX.Direct3D11;
-
+    using System.Windows;
+    using Render;
     /// <summary>
     ///     Represents a composite Model3D.
     /// </summary>
     [ContentProperty("Children")]
-    public class CompositeModel3D : GeometryModel3D
+    public class CompositeModel3D : Element3D, IHitable, ISelectable, IMouse3D
     {
+        public static readonly DependencyProperty IsSelectedProperty =
+            DependencyProperty.Register("IsSelected", typeof(bool), typeof(CompositeModel3D), new PropertyMetadata(false));
+
+        public bool IsSelected
+        {
+            get
+            {
+                return (bool)this.GetValue(IsSelectedProperty);
+            }
+            set
+            {
+                this.SetValue(IsSelectedProperty, value);
+            }
+        }
+
         private readonly ObservableElement3DCollection children;
+
+        public override IEnumerable<IRenderable> Items { get { return children; } }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
@@ -33,8 +50,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.children = new ObservableElement3DCollection();
             this.children.CollectionChanged += this.ChildrenChanged;
         }
-
-        protected override RasterizerState CreateRasterState() { return null; }
 
         /// <summary>
         ///     Gets the children.
@@ -80,35 +95,18 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        protected override bool CanRender(RenderContext context)
-        {
-            return IsAttached && isRenderingInternal && visibleInternal;
-        }
         /// <summary>
         /// Renders the specified context.
         /// </summary>
         /// <param name="context">
         /// The context.
         /// </param>
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             // you mean like this?
-            foreach (var c in this.Children)
+            foreach (var model in this.Children)
             {
-                var model = c as ITransformable;
-                if (model != null)
-                {
-                    // push matrix                    
-                    model.PushMatrix(this.modelMatrix);
-                    // render model
-                    c.Render(context);
-                    // pop matrix                   
-                    model.PopMatrix();
-                }
-                else
-                {
-                    c.Render(context);
-                }
+                model.Render(context, deviceContext);
             }
         }
 
@@ -130,7 +128,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     case NotifyCollectionChangedAction.Reset:
                     case NotifyCollectionChangedAction.Remove:
                     case NotifyCollectionChangedAction.Replace:
-                        foreach (Model3D item in e.OldItems)
+                        foreach (Element3D item in e.OldItems)
                         {
                             // todo: detach?
                             // yes, always
@@ -151,7 +149,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     case NotifyCollectionChangedAction.Reset:
                     case NotifyCollectionChangedAction.Add:
                     case NotifyCollectionChangedAction.Replace:
-                        foreach (Model3D item in e.NewItems)
+                        foreach (Element3D item in e.NewItems)
                         {
                             if (this.IsAttached)
                             {
@@ -164,83 +162,35 @@ namespace HelixToolkit.Wpf.SharpDX
                                     this.AddLogicalChild(item);
                                 }
 
-                                item.Attach(this.renderHost);
+                                item.Attach(RenderHost);
                             }
                         }
                         break;
                 }
             }
-            UpdateBounds();
         }
 
-        /// <summary>
-        /// a Model3D does not have bounds, 
-        /// if you want to have a model with bounds, use GeometryModel3D instead:
-        /// but this prevents the CompositeModel3D containg lights, etc. (Lights3D are Models3D, which do not have bounds)
-        /// </summary>
-        protected void UpdateBounds()
+        protected override bool CanHitTest(IRenderContext context)
         {
-            var bb = this.Bounds;
-            foreach (var item in this.Children)
-            {
-                var model = item as IBoundable;
-                if (model != null)
-                {
-                    bb = BoundingBox.Merge(bb, model.Bounds);
-                }
-            }
-            this.Bounds = bb;
+            return base.CanHitTest(context) && Children.Count > 0;
         }
 
-        protected override bool CanHitTest(IRenderMatrices context)
-        {
-            return IsAttached && visibleInternal && isRenderingInternal && isHitTestVisibleInternal;
-        }
-
-        protected override bool CheckGeometry()
-        {
-            return true;
-        }
-        /// <summary>
-        /// Compute hit-testing for all children
-        /// </summary>
-        protected override bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             bool hit = false;
             foreach (var c in this.Children)
             {
-                var hc = c as IHitable;
-                if (hc != null)
+                if (c is IHitable)
                 {
-                    var tc = c as ITransformable;
-                    if (tc != null)
-                    {
-                        tc.PushMatrix(this.modelMatrix);
-                        if (hc.HitTest(context, ray, ref hits))
-                        {
-                            hit = true;
-                        }
-                        tc.PopMatrix();
-                    }
-                    else
-                    {
-                        if (hc.HitTest(context, ray, ref hits))
-                        {
-                            hit = true;
-                        }
-                    }
+                    ((IHitable)c).HitTest(context, ray, ref hits);
                 }
             }
             if (hit)
             {
-                hits = hits.OrderBy(x => Vector3.DistanceSquared(ray.Position, x.PointHit.ToVector3())).ToList();
+                var pos = ray.Position;
+                hits = hits.OrderBy(x => Vector3.DistanceSquared(pos, x.PointHit)).ToList();
             }
             return hit;
-        }
-
-        protected override void OnCreateGeometryBuffers()
-        {
-            
         }
     }
 }

@@ -1,3 +1,0 @@
-﻿
-Use this call to compile the shaders in the command(Make sure fxc is under DirectX SDK (June 2010)): 
-fxc /T fx_5_0 /I ./../ /Fo ..\Resources\_default.bfx Tessellation.fx
