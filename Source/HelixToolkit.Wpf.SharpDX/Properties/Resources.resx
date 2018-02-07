@@ -127,15 +127,6 @@
   <data name="DefaultViewboxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\textures\defaultviewboxtexture.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_default" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\_default.bfx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="_deferred" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\_deferred.bfx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="_Tessellation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\_tessellation.bfx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="psMeshBlinnPhong" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psmeshblinnphong.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

@@ -2093,7 +2093,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.PushCameraSetting();
         }
 
-        private TimeSpan _last;
         /// <summary>
         /// Called when [composition target rendering].
         /// </summary>

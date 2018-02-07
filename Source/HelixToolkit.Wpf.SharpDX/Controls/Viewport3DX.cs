@@ -11,13 +11,11 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Controls;
     using Elements2D;
-    using HelixToolkit.Wpf;
-    using HelixToolkit.Wpf.SharpDX.Cameras;
-    using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Cameras;
+    using Utilities;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -469,7 +467,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideTargetAdorner()
         {
-            var visual = this.renderHostInternal as Visual;
+            var visual = this.hostPresenter as Visual;
             if (visual == null)
             {
                 return;
@@ -492,7 +490,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideZoomRectangle()
         {
-            var visual = this.renderHostInternal as Visual;
+            var visual = this.hostPresenter as Visual;
             if (visual == null)
             {
                 return;
@@ -754,7 +752,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            var visual = this.renderHostInternal as UIElement;
+            var visual = this.hostPresenter as UIElement;
             if (visual == null)
             {
                 return;
@@ -776,7 +774,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            var visual = this.renderHostInternal as UIElement;
+            var visual = this.hostPresenter as UIElement;
             if (visual == null)
             {
                 return;
@@ -1304,7 +1302,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private TimeSpan _last;
         /// <summary>
         /// The rendering event handler.
         /// </summary>
