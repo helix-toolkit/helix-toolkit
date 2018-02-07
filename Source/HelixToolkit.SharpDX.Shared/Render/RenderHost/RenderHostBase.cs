@@ -163,7 +163,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         effectsManager.OnDisposeResources += OnManagerDisposed;
                         RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
                         if (IsInitialized)
-                        { Restart(false); }
+                        {
+                            Restart(false);
+                        }
+                        else if(isLoaded)
+                        {
+                            StartD3D(ActualWidth, ActualHeight);
+                        }
                     }
                     else
                     {
@@ -293,6 +299,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///   <c>true</c> if this instance is initialized; otherwise, <c>false</c>.
         /// </value>
         public bool IsInitialized { private set; get; } = false;
+
+        private bool isLoaded = false;
+
         /// <summary>
         /// Gets the color buffer view.
         /// </summary>
@@ -467,7 +476,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 {
                     var desc = ResultDescriptor.Find(ex.ResultCode);
                     if (desc == global::SharpDX.DXGI.ResultCode.DeviceRemoved || desc == global::SharpDX.DXGI.ResultCode.DeviceReset 
-                        || desc == global::SharpDX.DXGI.ResultCode.DeviceHung || desc == global::SharpDX.Direct2D1.ResultCode.RecreateTarget)
+                        || desc == global::SharpDX.DXGI.ResultCode.DeviceHung || desc == global::SharpDX.Direct2D1.ResultCode.RecreateTarget
+                        || desc == global::SharpDX.DXGI.ResultCode.AccessLost)
                     {
                         RenderBuffer_OnDeviceLost(RenderBuffer, true);
                     }
@@ -568,12 +578,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public void StartD3D(double width, double height)
         {
+            ActualWidth = width;
+            ActualHeight = height;
+            isLoaded = true;
             if (EffectsManager == null || EffectsManager.Device == null || EffectsManager.Device.IsDisposed)
             {
                 return;
             }
-            ActualWidth = width;
-            ActualHeight = height;
             CreateAndBindBuffers();
             IsInitialized = true;
             AttachRenderable(EffectsManager);
@@ -680,6 +691,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public void EndD3D()
         {
+            isLoaded = false;
             StopRendering();
             IsInitialized = false;
             DetachRenderable();

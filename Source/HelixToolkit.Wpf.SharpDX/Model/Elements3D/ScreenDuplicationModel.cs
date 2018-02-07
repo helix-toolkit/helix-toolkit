@@ -23,16 +23,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The screen rectangle.
         /// </value>
-        public Rect ScreenRectangle
+        public Rect CaptureRectangle
         {
-            get { return (Rect)GetValue(ScreenRectangleProperty); }
-            set { SetValue(ScreenRectangleProperty, value); }
+            get { return (Rect)GetValue(CaptureRectangleProperty); }
+            set { SetValue(CaptureRectangleProperty, value); }
         }
         /// <summary>
         /// The screen rectangle property
         /// </summary>
-        public static readonly DependencyProperty ScreenRectangleProperty =
-            DependencyProperty.Register("ScreenRectangle", typeof(Rect), typeof(ScreenDuplicationModel), new PropertyMetadata(new Rect(),
+        public static readonly DependencyProperty CaptureRectangleProperty =
+            DependencyProperty.Register("CaptureRectangle", typeof(Rect), typeof(ScreenDuplicationModel), new PropertyMetadata(new Rect(),
                 (d,e)=> 
                 {
                     var rect = (Rect)e.NewValue;
@@ -109,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.AssignDefaultValuesToCore(core);
             (core as IScreenClone).Output = this.DisplayIndex;
-            (core as IScreenClone).CloneRectangle = new Rectangle((int)ScreenRectangle.Left, (int)ScreenRectangle.Top, (int)ScreenRectangle.Width, (int)ScreenRectangle.Height);
+            (core as IScreenClone).CloneRectangle = new Rectangle((int)CaptureRectangle.Left, (int)CaptureRectangle.Top, (int)CaptureRectangle.Width, (int)CaptureRectangle.Height);
             (core as IScreenClone).StretchToFill = StretchToFill;
         }
         /// <summary>

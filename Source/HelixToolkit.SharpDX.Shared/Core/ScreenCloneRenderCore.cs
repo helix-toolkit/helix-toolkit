@@ -22,6 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
     using Shaders;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Diagnostics;
 
     /// <summary>
     /// 
@@ -71,7 +72,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             set
             {
-                Set(ref output, value);
+                if(Set(ref output, value))
+                {
+                    invalidRender = true;
+                }
             }
             get
             {
@@ -92,11 +96,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             {
                 if(Set(ref cloneRectangle, value))
                 {
+                    invalidRender = true;
                     clearTarget = true;
                 }
             }
             get { return cloneRectangle; }
         }
+
+        private bool stretchToFill = false;
         /// <summary>
         /// Gets or sets a value indicating cloned rectangle is stretched during rendering, default is false;
         /// </summary>
@@ -105,9 +112,19 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// </value>
         public bool StretchToFill
         {
-            set;
-            get;
-        } = false;
+            set
+            {
+                if(Set(ref stretchToFill, value))
+                {
+                    invalidRender = true;
+                    if (!value)
+                    {
+                        clearTarget = true;
+                    }
+                }
+            }
+            get { return stretchToFill; }
+        }
 
         private DuplicationResource duplicationResource;
         private FrameProcessing frameProcessor;
@@ -116,6 +133,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         private int samplerBindSlot = 0;
         private SamplerProxy textureSampler;
         private bool clearTarget = true;
+        private bool invalidRender = true;
 
         private DX11RenderHostConfiguration config = new DX11RenderHostConfiguration() { ClearEachFrame = false, RenderD2D = false, RenderLights = false, UpdatePerFrameData = false };
         /// <summary>
@@ -152,12 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             RemoveAndDispose(ref duplicationResource);
             duplicationResource = Collect(new DuplicationResource(manager.Device));
             frameProcessor = Collect(new FrameProcessing());
-            bool succ = duplicationResource.Initialize();
-            if (!succ)
-            {
-                RemoveAndDispose(ref duplicationResource);
-            }
-            return succ;
+            return true;
         }
         /// <summary>
         /// Determines whether this instance can render the specified context.
@@ -177,6 +190,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
+            bool succ = duplicationResource.Initialize();
+            if (!succ)
+            {
+                InvalidateRenderer();
+                return;
+            }
             context.RenderHost.RenderConfiguration = config;
             FrameData data;
             bool isTimeOut;
@@ -189,23 +208,29 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 {
                     frameProcessor.ProcessFrame(ref data, deviceContext);
                 }
+                invalidRender = true;
             }
-            if (frameProcessor.SharedTexture != null)
+            if (frameProcessor.SharedTexture != null && !accessLost)
             {
                 if (clearTarget)
                 {
                     clearTarget = false;
                     context.RenderHost.ClearRenderTarget(deviceContext, true, false);
                 }
-                DefaultShaderPass.BindShader(deviceContext);
-                DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
-                deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
-                DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerBindSlot, textureSampler);
-                using (var textureView = new global::SharpDX.Direct3D11.ShaderResourceView(deviceContext.DeviceContext.Device, frameProcessor.SharedTexture))
+                if (invalidRender)
                 {
-                    DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureBindSlot, textureView);
-                    deviceContext.DeviceContext.Draw(4, 0);
+                    DefaultShaderPass.BindShader(deviceContext);
+                    DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
+                    deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
+                    DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerBindSlot, textureSampler);
+                    using (var textureView = new global::SharpDX.Direct3D11.ShaderResourceView(deviceContext.DeviceContext.Device, frameProcessor.SharedTexture))
+                    {
+                        DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureBindSlot, textureView);
+                        deviceContext.DeviceContext.Draw(4, 0);
+                    }
+                    invalidRender = false;
                 }
+
             }
             if (isTimeOut)
             {
@@ -213,8 +238,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
             else if (accessLost)
             {
-                Detach();
-                Attach(EffectTechnique);
+                throw new SharpDXException(ResultCode.AccessLost);
             }
             else
             {
@@ -315,6 +339,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         protected override void OnDetach()
         {
             clearTarget = true;
+            invalidRender = true;
             base.OnDetach();
         }
 
@@ -366,7 +391,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             private readonly Stack<OutputDuplication> currentDuplicationStack = new Stack<OutputDuplication>();
             private readonly Stack<Texture2D> currentDuplicationTexture = new Stack<Texture2D>();
 
-            private int getFrameTimeOut = 10;
+            private int getFrameTimeOut = 5;
 
             public DuplicationResource(global::SharpDX.Direct3D11.Device device)
             {
@@ -375,6 +400,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
             public bool Initialize()
             {
+                if (IsInitialized)
+                { return true; }
                 var list = new List<DuplicationInfo>();
                 using (var dxgDevice = device.QueryInterface<Device>())
                 {
@@ -387,8 +414,22 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                             {
                                 using (var output1 = output.QueryInterface<Output1>())
                                 {
-                                    var duplication = Collect(output1.DuplicateOutput(device));
-                                    list.Add(new DuplicationInfo(output.Description, duplication));
+                                    try
+                                    {
+                                        var duplication = Collect(output1.DuplicateOutput(device));
+                                        list.Add(new DuplicationInfo(output.Description, duplication));
+                                    }
+                                    catch(SharpDXException ex)
+                                    {
+                                        if (ex.ResultCode.Code == global::SharpDX.Result.AccessDenied.Code)
+                                        {
+                                            return false;
+                                        }
+                                        else
+                                        {
+                                            throw ex;
+                                        }
+                                    }
                                 }
                             }
                         }
