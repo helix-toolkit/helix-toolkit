@@ -1304,6 +1304,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        private TimeSpan _last;
         /// <summary>
         /// The rendering event handler.
         /// </summary>

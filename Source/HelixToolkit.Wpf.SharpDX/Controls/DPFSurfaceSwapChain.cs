@@ -166,6 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX
             CompositionTargetEx.Rendering += CompositionTarget_Rendering;
         }
 
+
         private void CompositionTarget_Rendering(object sender, RenderingEventArgs e)
         {
             RenderHost.UpdateAndRender();

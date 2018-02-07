@@ -23,10 +23,10 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 News
 ====
 
-### 2017-10-15
+### 2018-02-06
 
-V1.0.0 release is available.
+V1.1.0 release is available.
 
-https://www.nuget.org/packages/HelixToolkit.Wpf/1.0.0
+https://www.nuget.org/packages/HelixToolkit.Wpf/1.1.0
 
-https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/1.0.0
+https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/1.1.0
