@@ -63,36 +63,6 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] _default {
-            get {
-                object obj = ResourceManager.GetObject("_default", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] _deferred {
-            get {
-                object obj = ResourceManager.GetObject("_deferred", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] _Tessellation {
-            get {
-                object obj = ResourceManager.GetObject("_Tessellation", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] csParticleInsert {
             get {
                 object obj = ResourceManager.GetObject("csParticleInsert", resourceCulture);

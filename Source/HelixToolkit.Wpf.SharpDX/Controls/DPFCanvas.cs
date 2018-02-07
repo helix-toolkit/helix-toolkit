@@ -193,7 +193,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             RenderHost.UpdateAndRender();
         }
-
+        private TimeSpan _last = TimeSpan.Zero;
         /// <summary>
         /// 
         /// </summary>

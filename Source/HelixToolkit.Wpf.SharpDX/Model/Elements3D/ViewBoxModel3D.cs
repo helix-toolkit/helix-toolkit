@@ -4,19 +4,13 @@
 // </copyright>
 
 using SharpDX;
-using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-using SharpDX.DXGI;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
-using static HelixToolkit.Wpf.ViewCubeVisual3D;
-using Media = System.Windows.Media;
 using Media3D = System.Windows.Media.Media3D;
 
 namespace HelixToolkit.Wpf.SharpDX

@@ -7,15 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolki
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Tests", "HelixToolkit.Tests\HelixToolkit.Tests.csproj", "{E86BB7C0-A453-4923-916C-1AA32FF068F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf", "HelixToolkit.Wpf\HelixToolkit.Wpf.csproj", "{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.SharpDX", "HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj", "{39740654-F5F1-4936-B4EA-9BC97D4CDE37}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.SharpDX.Tests", "HelixToolkit.Wpf.SharpDX.Tests\HelixToolkit.Wpf.SharpDX.Tests.csproj", "{405C54C4-69F7-4F3D-A6BA-594346F42A2F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{93A5184E-0275-4A75-9C9A-9516AE9634DD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeferredShadingDemo", "Examples\WPF.SharpDX\DeferredShadingDemo\DeferredShadingDemo.csproj", "{8E85B044-A3CD-4781-B65F-81B79DD0D2FE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoCore", "Examples\WPF.SharpDX\DemoCore\DemoCore.csproj", "{B475C12B-80F9-4BC0-88E5-815C88593BEE}"
 EndProject
@@ -42,8 +38,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleBrowser", "Examples\WPF.SharpDX\ExampleBrowser\ExampleBrowser.csproj", "{991A4C2B-D830-41CB-A810-047ADCF69219}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TessellationDemo", "Examples\WPF.SharpDX\TessellationDemo\TessellationDemo.csproj", "{82BB6745-9D34-453A-851C-01C8FD7A0F20}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenSpaceDemo", "Examples\WPF.SharpDX\ScreenSpaceDemo\ScreenSpaceDemo.csproj", "{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomShaderDemo", "Examples\WPF.SharpDX\CustomShaderDemo\CustomShaderDemo.csproj", "{829730D4-B471-4D12-B8B8-4900761E0722}"
 EndProject
@@ -84,7 +78,6 @@ Global
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{1eaf532e-d750-497b-bb8f-ee85359c78a2}*SharedItemsImports = 13
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
-		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{3f3b4548-a9db-4874-86f7-e7c4fec8a351}*SharedItemsImports = 4
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{4ee18e80-7609-4fff-bd4b-f02728ec0688}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,14 +105,6 @@ Global
 		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Release|x64.ActiveCfg = Release|Any CPU
 		{E86BB7C0-A453-4923-916C-1AA32FF068F9}.Release|x86.ActiveCfg = Release|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|x64.ActiveCfg = Release|Any CPU
-		{3F3B4548-A9DB-4874-86F7-E7C4FEC8A351}.Release|x86.ActiveCfg = Release|Any CPU
 		{39740654-F5F1-4936-B4EA-9BC97D4CDE37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{39740654-F5F1-4936-B4EA-9BC97D4CDE37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39740654-F5F1-4936-B4EA-9BC97D4CDE37}.Debug|x64.ActiveCfg = Debug|x64
@@ -140,14 +125,6 @@ Global
 		{405C54C4-69F7-4F3D-A6BA-594346F42A2F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{405C54C4-69F7-4F3D-A6BA-594346F42A2F}.Release|x64.ActiveCfg = Release|Any CPU
 		{405C54C4-69F7-4F3D-A6BA-594346F42A2F}.Release|x86.ActiveCfg = Release|Any CPU
-		{8E85B044-A3CD-4781-B65F-81B79DD0D2FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E85B044-A3CD-4781-B65F-81B79DD0D2FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E85B044-A3CD-4781-B65F-81B79DD0D2FE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{8E85B044-A3CD-4781-B65F-81B79DD0D2FE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8E85B044-A3CD-4781-B65F-81B79DD0D2FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E85B044-A3CD-4781-B65F-81B79DD0D2FE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E85B044-A3CD-4781-B65F-81B79DD0D2FE}.Release|x64.ActiveCfg = Release|Any CPU
-		{8E85B044-A3CD-4781-B65F-81B79DD0D2FE}.Release|x86.ActiveCfg = Release|Any CPU
 		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B475C12B-80F9-4BC0-88E5-815C88593BEE}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -252,14 +229,6 @@ Global
 		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Release|x64.ActiveCfg = Release|Any CPU
 		{82BB6745-9D34-453A-851C-01C8FD7A0F20}.Release|x86.ActiveCfg = Release|Any CPU
-		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Release|x64.ActiveCfg = Release|Any CPU
-		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22}.Release|x86.ActiveCfg = Release|Any CPU
 		{829730D4-B471-4D12-B8B8-4900761E0722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{829730D4-B471-4D12-B8B8-4900761E0722}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{829730D4-B471-4D12-B8B8-4900761E0722}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -441,7 +410,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{8E85B044-A3CD-4781-B65F-81B79DD0D2FE} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{B475C12B-80F9-4BC0-88E5-815C88593BEE} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{82D01A4F-51B2-4771-B6F2-EDC6240159E3} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{1C8BB886-9619-4D18-8D09-AD6A3E3506FD} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
@@ -455,7 +423,6 @@ Global
 		{10CF1F8D-1297-495C-92C2-A24E341AA7AC} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{991A4C2B-D830-41CB-A810-047ADCF69219} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{82BB6745-9D34-453A-851C-01C8FD7A0F20} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
-		{5CE2D1A0-D79D-4DAE-98DD-15BA0DFB1D22} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{829730D4-B471-4D12-B8B8-4900761E0722} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{04A4763C-907A-45EE-9270-2ECB1453770F} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{AEE87C0E-AA98-4D82-9ED8-9EBEA107DDD6} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}

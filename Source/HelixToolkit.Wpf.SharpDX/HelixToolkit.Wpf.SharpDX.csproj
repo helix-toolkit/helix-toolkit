@@ -141,24 +141,26 @@
     <Compile Include="Controls\CompositionTargetEX.cs" />
     <Compile Include="Controls\DPFCanvas.cs" />
     <Compile Include="Controls\DPFSurfaceSwapChain.cs" />
+    <Compile Include="Controls\DrawingContextExtensions.cs" />
     <Compile Include="Controls\DX11ImageSourceRenderHost.cs" />
     <Compile Include="Controls\IRenderCanvas.cs" />
     <Compile Include="Controls\MultiViewports\ModelContainer3DX.cs" />
+    <Compile Include="Controls\RectangleAdorner.cs" />
     <Compile Include="Controls\RenderControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\ScreenDuplicationViewport3DX.cs" />
+    <Compile Include="Controls\TargetSymbolAdorner.cs" />
     <Compile Include="Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="Controls\VisualWrapper.cs" />
     <Compile Include="Controls\WinformHostExtend.cs" />
+    <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
+    <Compile Include="Core\Ray3D.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\Geometry3DExtensions.cs" />
     <Compile Include="Controls\RenderTechniqueConverter.cs" />
     <Compile Include="Controls\Trackball.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
-    <Compile Include="Core\Box3D.cs" />
-    <Compile Include="Core\Ray3.cs" />
-    <Compile Include="Core\Ray3D.cs" />
     <Compile Include="Controls\CameraExtensions.cs" />
     <Compile Include="Controls\DX11ImageSource.cs" />
     <Compile Include="Controls\MouseHandlers\CameraMode.cs" />
@@ -347,19 +349,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HelixToolkit.Wpf\HelixToolkit.Wpf.csproj">
-      <Project>{3f3b4548-a9db-4874-86f7-e7c4fec8a351}</Project>
-      <Name>HelixToolkit.Wpf</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj">
       <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
       <Name>HelixToolkit</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-  <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
+  <ItemGroup />
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
+  <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

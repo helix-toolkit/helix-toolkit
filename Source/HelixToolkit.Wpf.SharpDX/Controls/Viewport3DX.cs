@@ -11,13 +11,11 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Controls;
     using Elements2D;
-    using HelixToolkit.Wpf;
-    using HelixToolkit.Wpf.SharpDX.Cameras;
-    using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Cameras;
+    using Utilities;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -41,6 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [TemplatePart(Name = "PART_CoordinateView", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_ViewCube", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_FrameStatisticView", Type = typeof(Viewport3D))]
+    [TemplatePart(Name = "PART_TitleView", Type = typeof(StackPanel2D))]
     [Localizability(LocalizationCategory.NeverLocalize)]
     public partial class Viewport3DX : ItemsControl, IViewport3DX
     {
@@ -68,6 +67,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The frame statistic view part name
         /// </summary>
         private const string PartFrameStatisticView = "PART_FrameStatisticView";
+
+        /// <summary>
+        /// The part title view
+        /// </summary>
+        private const string PartTitleView = "PART_TitleView";
         /// <summary>
         ///   The is move enabled property.
         /// </summary>
@@ -469,7 +473,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideTargetAdorner()
         {
-            var visual = this.renderHostInternal as Visual;
+            var visual = this.hostPresenter as Visual;
             if (visual == null)
             {
                 return;
@@ -492,7 +496,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideZoomRectangle()
         {
-            var visual = this.renderHostInternal as Visual;
+            var visual = this.hostPresenter as Visual;
             if (visual == null)
             {
                 return;
@@ -687,6 +691,17 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new HelixToolkitException("{0} is missing from the template.", PartFrameStatisticView);
             }
+
+            overlay2D.Children.Clear();
+            var titleView = Template.FindName(PartTitleView, this);
+            if (titleView is Element2D element)
+            {
+                overlay2D.Children.Add(element);
+            }
+            if (Content2D != null)
+            {
+                overlay2D.Children.Add(Content2D);
+            }
             // update the coordinateview camera
             this.OnCameraChanged();           
         }
@@ -754,7 +769,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            var visual = this.renderHostInternal as UIElement;
+            var visual = this.hostPresenter as UIElement;
             if (visual == null)
             {
                 return;
@@ -776,7 +791,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            var visual = this.renderHostInternal as UIElement;
+            var visual = this.hostPresenter as UIElement;
             if (visual == null)
             {
                 return;

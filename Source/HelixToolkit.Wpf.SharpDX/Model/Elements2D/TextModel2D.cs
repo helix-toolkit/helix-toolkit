@@ -4,6 +4,7 @@ using System.Windows.Media;
 using System.ComponentModel;
 using System.Windows.Markup;
 using SharpDX;
+using System.Linq;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
@@ -99,27 +100,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
 
-        public static readonly DependencyProperty FontProperty
-            = DependencyProperty.Register("Font", typeof(string), typeof(TextModel2D),
-                new PropertyMetadata(DefaultFont, (d, e) =>
-                {
-                    var model = (d as TextModel2D);
-                    if (model.textRenderable == null) { return; }
-                    model.textRenderable.FontFamily = e.NewValue == null ? "Arial" : (string)e.NewValue;
-                }));
-
-        public string Font
-        {
-            set
-            {
-                SetValue(FontProperty, value);
-            }
-            get
-            {
-                return (string)GetValue(FontProperty);
-            }
-        }
-
         public static readonly DependencyProperty FontWeightProperty
             = DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(TextModel2D),
                 new PropertyMetadata(FontWeights.Normal, (d, e) =>
@@ -209,6 +189,32 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 model.textRenderable.FlowDirection = ((FlowDirection)e.NewValue).ToD2DFlowDir();
             }));
 
+
+        /// <summary>
+        /// Gets or sets the font family.
+        /// </summary>
+        /// <value>
+        /// The font family.
+        /// </value>
+        public string FontFamily
+        {
+            get { return (string)GetValue(FontFamilyProperty); }
+            set { SetValue(FontFamilyProperty, value); }
+        }
+        /// <summary>
+        /// The font family property
+        /// </summary>
+        public static readonly DependencyProperty FontFamilyProperty =
+            DependencyProperty.Register("FontFamily", typeof(string), typeof(TextModel2D), new PropertyMetadata(DefaultFont, (d,e)=>
+            {
+                var model = (d as TextModel2D);
+                if (model.textRenderable == null) { return; }
+                model.textRenderable.FontFamily = e.NewValue == null ? "Arial" : (string)e.NewValue;
+            }));
+
+
+
+
         private TextRenderCore2D textRenderable;
         private bool foregroundChanged = true;
         private bool backgroundChanged = true;
@@ -253,7 +259,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             if (textRenderable == null) { return; }
             textRenderable.Text = Text == null ? "" : Text;
-            textRenderable.FontFamily = Font == null ? DefaultFont : Font;
+            textRenderable.FontFamily = FontFamily == null ? DefaultFont : FontFamily;
             textRenderable.FontWeight = FontWeight.ToDXFontWeight();
             textRenderable.FontStyle = FontStyle.ToDXFontStyle();
             textRenderable.FontSize = FontSize;
