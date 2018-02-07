@@ -22,6 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
     using Shaders;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Diagnostics;
 
     /// <summary>
     /// 
@@ -169,12 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             RemoveAndDispose(ref duplicationResource);
             duplicationResource = Collect(new DuplicationResource(manager.Device));
             frameProcessor = Collect(new FrameProcessing());
-            bool succ = duplicationResource.Initialize();
-            if (!succ)
-            {
-                RemoveAndDispose(ref duplicationResource);
-            }
-            return succ;
+            return true;
         }
         /// <summary>
         /// Determines whether this instance can render the specified context.
@@ -194,6 +190,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
+            bool succ = duplicationResource.Initialize();
+            if (!succ)
+            {
+                InvalidateRenderer();
+                return;
+            }
             context.RenderHost.RenderConfiguration = config;
             FrameData data;
             bool isTimeOut;
@@ -398,6 +400,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
             public bool Initialize()
             {
+                if (IsInitialized)
+                { return true; }
                 var list = new List<DuplicationInfo>();
                 using (var dxgDevice = device.QueryInterface<Device>())
                 {
@@ -410,8 +414,22 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                             {
                                 using (var output1 = output.QueryInterface<Output1>())
                                 {
-                                    var duplication = Collect(output1.DuplicateOutput(device));
-                                    list.Add(new DuplicationInfo(output.Description, duplication));
+                                    try
+                                    {
+                                        var duplication = Collect(output1.DuplicateOutput(device));
+                                        list.Add(new DuplicationInfo(output.Description, duplication));
+                                    }
+                                    catch(SharpDXException ex)
+                                    {
+                                        if (ex.ResultCode.Code == global::SharpDX.Result.AccessDenied.Code)
+                                        {
+                                            return false;
+                                        }
+                                        else
+                                        {
+                                            throw ex;
+                                        }
+                                    }
                                 }
                             }
                         }

@@ -175,7 +175,8 @@ namespace HelixToolkit.UWP
         {
             if (Initialized)
             { return; }
-            var adapter = GetAdapter(adapterIndex);
+            var adapter = GetAdapter(ref adapterIndex);
+            AdapterIndex = adapterIndex;
 #if DX11
             if (adapter != null)
             {
@@ -200,7 +201,7 @@ namespace HelixToolkit.UWP
 #else
             device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
-            AdapterIndex = adapterIndex;
+            
 #region Initial Internal Pools
             RemoveAndDispose(ref constantBufferPool);
             constantBufferPool = Collect(new ConstantBufferPool(Device));
@@ -321,11 +322,18 @@ namespace HelixToolkit.UWP
             }
         }
 
-        private static Adapter GetAdapter(int index)
+        private static Adapter GetAdapter(ref int index)
         {
             using (var f = new Factory1())
             {
-                return f.Adapters[index];
+                if (f.Adapters.Length <= index)
+                {
+                    return GetBestAdapter(out index);
+                }
+                else
+                {
+                    return f.Adapters[index];
+                }
             }
         }
         /// <summary>
@@ -395,7 +403,7 @@ namespace HelixToolkit.UWP
 #if DEBUGMEMORY
             ReportResources();
 #endif
-            Initialize();
+            Initialize(AdapterIndex);
         }
 #endregion
 
