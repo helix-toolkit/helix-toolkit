@@ -505,6 +505,7 @@ namespace HelixToolkit.Wpf
                     item.MouseLeftButtonDown += FaceMouseLeftButtonDown;
                     item.MouseEnter += EdggesMouseEnters;
                     item.MouseLeave += EdgesMouseLeaves;
+                    item.Visibility = Visibility.Visible;
                     ModelUIElement3D s = item as ModelUIElement3D;
                     (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(EdgeBrush);
                 }
@@ -516,6 +517,7 @@ namespace HelixToolkit.Wpf
                     item.MouseLeftButtonDown += FaceMouseLeftButtonDown;
                     item.MouseEnter += CornersMouseEnters;
                     item.MouseLeave += CornersMouseLeave;
+                    item.Visibility = Visibility.Visible;
                     ModelUIElement3D s = item as ModelUIElement3D;
                     (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(CornerBrush);
                 }
@@ -527,16 +529,14 @@ namespace HelixToolkit.Wpf
                     item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
                     item.MouseEnter -= EdggesMouseEnters;
                     item.MouseLeave -= EdgesMouseLeaves;
-                    ModelUIElement3D s = item as ModelUIElement3D;
-                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Transparent);
+                    item.Visibility = Visibility.Collapsed;
                 }
                 foreach (var item in CornerModels)
                 {
                     item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
                     item.MouseEnter -= CornersMouseEnters;
                     item.MouseLeave -= CornersMouseLeave;
-                    ModelUIElement3D s = item as ModelUIElement3D;
-                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Transparent);
+                    item.Visibility = Visibility.Collapsed;
                 }
             }
         }
