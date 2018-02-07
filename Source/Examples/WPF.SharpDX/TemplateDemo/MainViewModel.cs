@@ -16,9 +16,8 @@ namespace TemplateDemo
     {
         public IList<Shape> Items { get; set; }   
         
-        public DefaultEffectsManager EffectsManager { get; private set; }      
+        public IEffectsManager EffectsManager { get; private set; }      
 
-        public DefaultRenderTechniquesManager RenderTechniquesManager { get; private set; }
         public MainViewModel()
         {
             this.Items = new ObservableCollection<Shape>
@@ -40,8 +39,7 @@ namespace TemplateDemo
                                      }
                              };
 
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            EffectsManager = new DefaultEffectsManager();
         }
     }
 }

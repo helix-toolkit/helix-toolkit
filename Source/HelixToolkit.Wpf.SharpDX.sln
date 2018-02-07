@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
 EndProject
@@ -72,6 +72,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwapChainRenderingDemo", "Examples\WPF.SharpDX\SwapChainRenderingDemo\SwapChainRenderingDemo.csproj", "{E23D3A8B-376F-4B10-B2BD-ADC3F082805C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossSectionDemo", "Examples\WPF.SharpDX\CrossSectionDemo\CrossSectionDemo.csproj", "{7B612920-493C-448B-B21B-D5A453045AAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2DScreenMenuExample", "Examples\WPF.SharpDX\D2DScreenMenuExample\D2DScreenMenuExample.csproj", "{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.SharpDX.ShaderBuilder", "HelixToolkit.SharpDX.ShaderBuilder\HelixToolkit.SharpDX.ShaderBuilder.csproj", "{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenDuplicationDemo", "Examples\WPF.SharpDX\ScreenDuplicationDemo\ScreenDuplicationDemo.csproj", "{4050D84A-2F13-4C3B-AB32-844A421EA3EC}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -394,6 +400,42 @@ Global
 		{7B612920-493C-448B-B21B-D5A453045AAD}.Release|x64.Build.0 = Release|Any CPU
 		{7B612920-493C-448B-B21B-D5A453045AAD}.Release|x86.ActiveCfg = Release|Any CPU
 		{7B612920-493C-448B-B21B-D5A453045AAD}.Release|x86.Build.0 = Release|Any CPU
+		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE}.Debug|x64.Build.0 = Debug|Any CPU
+		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE}.Debug|x86.Build.0 = Debug|Any CPU
+		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE}.Release|x64.ActiveCfg = Release|Any CPU
+		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE}.Release|x64.Build.0 = Release|Any CPU
+		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE}.Release|x86.ActiveCfg = Release|Any CPU
+		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE}.Release|x86.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x64.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x86.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x64.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x64.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x86.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x86.Build.0 = Release|Any CPU
+		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Debug|x64.Build.0 = Debug|Any CPU
+		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Debug|x86.Build.0 = Debug|Any CPU
+		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Release|x64.ActiveCfg = Release|Any CPU
+		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Release|x64.Build.0 = Release|Any CPU
+		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Release|x86.ActiveCfg = Release|Any CPU
+		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -426,5 +468,22 @@ Global
 		{F03D69ED-DEE5-4245-9A2D-8AD000EC0584} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{E23D3A8B-376F-4B10-B2BD-ADC3F082805C} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{7B612920-493C-448B-B21B-D5A453045AAD} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
+		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
+		{4050D84A-2F13-4C3B-AB32-844A421EA3EC} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67B0DD22-D5CF-4D97-9E28-F8B59C583F78}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

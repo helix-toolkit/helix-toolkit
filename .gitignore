@@ -199,3 +199,7 @@ FakesAssemblies/
 # Helix Toolkit specific files
 !Models/obj/
 !Models/obj/**/*.obj
+/Source/HelixToolkit.SharpDX.Shared/Shaders/_Tessellation.bfx
+/Source/HelixToolkit.SharpDX.Shared/Shaders/_deferred.bfx
+/Source/HelixToolkit.SharpDX.Shared/Shaders/_default.bfx
+/Source/.vs/

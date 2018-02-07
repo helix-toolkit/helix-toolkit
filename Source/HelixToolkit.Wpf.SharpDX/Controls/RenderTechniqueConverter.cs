@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((KeyValuePair<string, RenderTechnique>)value).Value;
+            return ((KeyValuePair<string, IRenderTechnique>)value).Value;
         }
     }
 }

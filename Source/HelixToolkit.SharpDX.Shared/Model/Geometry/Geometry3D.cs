@@ -1,35 +1,37 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Geometry3D.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using System;
-
     using global::SharpDX;
-
-    using HelixToolkit.Wpf.SharpDX.Core;
-    using System.Runtime.InteropServices;
-    using System.ComponentModel;
-    using HelixToolkit.SharpDX.Shared.Model;
-    using System.Diagnostics;
+    using Core;
+    using Model;
+    using System.Runtime.Serialization;
+    using System.Collections.Generic;
 
 #if !NETFX_CORE
     [Serializable]
 #endif
+    [DataContract]
     public abstract class Geometry3D : ObservableObject, IGUID
     {
         public const string VertexBuffer = "VertexBuffer";
         public const string TriangleBuffer = "TriangleBuffer";
-
-        private readonly Guid guid = Guid.NewGuid();
-        public Guid GUID { get { return guid; } }
-
+        [DataMember]
+        public Guid GUID { set; get; } = Guid.NewGuid();
+        
         private IntCollection indices = null;
+
+        /// <summary>
+        /// Indices, can be triangle list, line list, etc.
+        /// </summary>
+        [DataMember]
         public IntCollection Indices
         {
             get
@@ -40,30 +42,17 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (Set(ref indices, value))
                 {
-#if !NETFX_CORE
                     Octree = null;
-#endif
                 }
             }
         }
 
-        //private int[] indicesArray = new int[0];
-        ///// <summary>
-        ///// Used to avoid excessive array copy
-        ///// </summary>
-        //public int[] IndicesArray
-        //{
-        //    get
-        //    {
-        //        if (indicesArray == null)
-        //        {
-        //            indicesArray = Indices != null ? Indices.ToArray() : new int[0];
-        //        }
-        //        return indicesArray;
-        //    }
-        //}
-
         private Vector3Collection position = null;
+
+        /// <summary>
+        /// Vertex Positions
+        /// </summary>
+        [DataMember]
         public Vector3Collection Positions
         {
             get
@@ -72,34 +61,19 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                if (Set(ref position, value))
-                {                 
-#if !NETFX_CORE
-                    Octree = null;
-                    UpdateBounds();
-#endif
-                }
+                if(position == value) { return; }
+                position = value;
+                Octree = null;
+                UpdateBounds();
+                RaisePropertyChanged();
             }
         }
 
-        //private Vector3[] positionArray = new Vector3[0];
-        ///// <summary>
-        ///// Used to avoid excessive array copy
-        ///// </summary>
-        //public Vector3[] PositionArray
-        //{
-        //    get
-        //    {
-        //        if (positionArray == null)
-        //        {
-        //            positionArray = Positions != null ? Positions.ToArray() : new Vector3[0];
-        //        }
-        //        return positionArray;
-        //    }
-        //}
-
-#if !NETFX_CORE
         private BoundingBox bound;
+        /// <summary>
+        /// Geometry AABB
+        /// </summary>
+        [IgnoreDataMember]
         public BoundingBox Bound
         {
             set
@@ -113,6 +87,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private BoundingSphere boundingSphere;
+        /// <summary>
+        /// Geometry Bounding Sphere
+        /// </summary>
+        [IgnoreDataMember]
         public BoundingSphere BoundingSphere
         {
             set
@@ -124,8 +102,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return boundingSphere;
             }
         }
-#endif
+
         private Color4Collection colors = null;
+        /// <summary>
+        /// Vertex Color
+        /// </summary>
+        [DataMember]
         public Color4Collection Colors
         {
             get
@@ -134,34 +116,16 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             set
             {
-                Set<Color4Collection>(ref colors, value);
+                Set(ref colors, value);
             }
         }
 
-        public struct Triangle
-        {
-            public Vector3 P0, P1, P2;
-        }
-
-        public struct Line
-        {
-            public Vector3 P0, P1;
-        }
-
-        public struct Point
-        {
-            public Vector3 P0;
-        }
-
-#if !NETFX_CORE
         /// <summary>
         /// TO use Octree during hit test to improve hit performance, please call UpdateOctree after model created.
         /// </summary>
         public IOctree Octree { private set; get; }
 
         public OctreeBuildParameter OctreeParameter { private set; get; } = new OctreeBuildParameter();
-#endif
-
         /// <summary>
         /// Call to manually update vertex buffer. Use with <see cref="ObservableObject.DisablePropertyChangedEvent"/>
         /// </summary>
@@ -177,7 +141,7 @@ namespace HelixToolkit.Wpf.SharpDX
             RaisePropertyChanged(TriangleBuffer);
         }
 
-#if !NETFX_CORE
+
         /// <summary>
         /// Create Octree for current model.
         /// </summary>
@@ -195,11 +159,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.Octree = null;
             }
         }
-
+        
         protected virtual bool CanCreateOctree()
         {
             return Positions != null && Indices != null && Positions.Count > 0 && Indices.Count > 0;
         }
+
 
         /// <summary>
         /// Override to create different octree in subclasses.
@@ -210,6 +175,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return null;
         }
 
+
         /// <summary>
         /// Set octree to null
         /// </summary>
@@ -217,8 +183,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Octree = null;
         }
-
-        public void UpdateBounds()
+        /// <summary>
+        /// Manually call this function to update AABB and Bounding Sphere
+        /// </summary>
+        public virtual void UpdateBounds()
         {
             if (position == null || position.Count == 0)
             {
@@ -235,6 +203,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 throw new Exception("Position vertex contains invalid value(Example: Float.NaN).");
             }
         }
-#endif
+
+        public struct Triangle
+        {
+            public Vector3 P0, P1, P2;
+        }
+
+        public struct Line
+        {
+            public Vector3 P0, P1;
+        }
+
+        public struct Point
+        {
+            public Vector3 P0;
+        }
     }
 }

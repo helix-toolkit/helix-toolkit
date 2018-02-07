@@ -4,24 +4,29 @@ using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System;
-using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Media3D = System.Windows.Media.Media3D;
+using Point3D = System.Windows.Media.Media3D.Point3D;
+using Vector3D = System.Windows.Media.Media3D.Vector3D;
+using Transform3D = System.Windows.Media.Media3D.Transform3D;
+using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
+using Color = System.Windows.Media.Color;
+using Plane = SharpDX.Plane;
+using Vector3 = SharpDX.Vector3;
+using Colors = System.Windows.Media.Colors;
+using Color4 = SharpDX.Color4;
 
 namespace DynamicTextureDemo
 {
     public class MainViewModel : BaseViewModel
     {
-        private Vector3 light1Direction = new Vector3();
-        public Vector3 Light1Direction
+        private Vector3D light1Direction = new Vector3D();
+        public Vector3D Light1Direction
         {
             set
             {
@@ -71,7 +76,7 @@ namespace DynamicTextureDemo
                 return showWireframe;
             }
         }
-        public Color4 Light1Color { get; set; }
+        public Color Light1Color { get; set; }
         public PhongMaterial ModelMaterial { get; set; }
 
         public PhongMaterial InnerModelMaterial { get; set; }
@@ -81,7 +86,7 @@ namespace DynamicTextureDemo
         public MeshGeometry3D InnerModel { get; private set; }
 
         //public MeshGeometry3D Other { get; private set; }
-        public Color4 AmbientLightColor { get; set; }
+        public Color AmbientLightColor { get; set; }
         DispatcherTimer timer = new DispatcherTimer();
 
         public bool DynamicTexture { set; get; } = true;
@@ -90,8 +95,8 @@ namespace DynamicTextureDemo
 
         public bool ReverseInnerRotation { set; get; } = false;
 
-        private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
-        public Media3D.Vector3D CamLookDir
+        private Vector3D camLookDir = new Vector3D(-10, -10, -10);
+        public Vector3D CamLookDir
         {
             set
             {
@@ -99,6 +104,7 @@ namespace DynamicTextureDemo
                 {
                     camLookDir = value;
                     OnPropertyChanged();
+                    Light1Direction = value;
                 }
             }
             get
@@ -116,18 +122,17 @@ namespace DynamicTextureDemo
         {            // titles
             this.Title = "DynamicTexture Demo";
             this.SubTitle = "WPF & SharpDX";
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];            
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {
-                Position = new Media3D.Point3D(10, 10, 10),
-                LookDirection = new Media3D.Vector3D(-10, -10, -10),
-                UpDirection = new Media3D.Vector3D(0, 1, 0)
+                Position = new Point3D(10, 10, 10),
+                LookDirection = new Vector3D(-10, -10, -10),
+                UpDirection = new Vector3D(0, 1, 0)
             };
-            this.Light1Color = (Color4)Color.White;
-            this.Light1Direction = new Vector3(-10, -10, -10);
-            this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
+            this.Light1Color = Colors.White;
+            this.Light1Direction = new Vector3D(-10, -10, -10);
+            this.AmbientLightColor = Colors.Black;
             SetupCameraBindings(this.Camera);
 
             var b2 = new MeshBuilder(true, true, true);
@@ -146,9 +151,9 @@ namespace DynamicTextureDemo
             var image = LoadFileToMemory(new System.Uri(@"test.png", System.UriKind.RelativeOrAbsolute).ToString());
             this.ModelMaterial = new PhongMaterial
             {
-                AmbientColor = Color.Gray,
-                DiffuseColor = Color.White,
-                SpecularColor = Color.White,
+                AmbientColor = Colors.Gray.ToColor4(),
+                DiffuseColor = Colors.White.ToColor4(),
+                SpecularColor = Colors.White.ToColor4(),
                 SpecularShininess = 100f,
                 DiffuseAlphaMap = image,
                 DiffuseMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString()),
@@ -157,33 +162,20 @@ namespace DynamicTextureDemo
 
             this.InnerModelMaterial = new PhongMaterial
             {
-                AmbientColor = Color.Gray,
+                AmbientColor = Colors.Gray.ToColor4(),
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
-                SpecularColor = Color.White,
+                SpecularColor = Colors.White.ToColor4(),
                 SpecularShininess = 100f,
                 DiffuseAlphaMap = image,
                 DiffuseMap = LoadFileToMemory(new System.Uri(@"TextureNoise1.jpg", System.UriKind.RelativeOrAbsolute).ToString()),
                 NormalMap = ModelMaterial.NormalMap
             };
 
-            //this.OtherMaterial = new PhongMaterial
-            //{
-            //    AmbientColor = Color.Gray,
-            //    DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
-            //    SpecularColor = Color.White,
-            //    SpecularShininess = 100f,
-            //    DiffuseMap = ModelMaterial.DiffuseMap,
-            //    NormalMap = ModelMaterial.NormalMap
-            //};
 
             initialPosition = Model.Positions;
             initialIndicies = Model.Indices;
 
-            //var b3 = new MeshBuilder(true, true, true);
-            //b3.AddBox(new Vector3(3, 3, 3), 1, 2,  2);
-            //Other = b3.ToMeshGeometry3D();
 
-            this.PropertyChanged += MainViewModel_PropertyChanged;
             timer.Interval = TimeSpan.FromMilliseconds(16);
             timer.Tick += Timer_Tick;
             timer.Start();
@@ -195,14 +187,6 @@ namespace DynamicTextureDemo
             image.Save(stream, format);
             stream.Position = 0;
             return stream;
-        }
-
-        private void MainViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName.Equals(nameof(CamLookDir)))
-            {
-                Light1Direction = CamLookDir.ToVector3();
-            }
         }
 
         public void SetupCameraBindings(Camera camera)
@@ -286,6 +270,13 @@ namespace DynamicTextureDemo
                 Model.Indices = indices;
                 InnerModel.Indices = indices;
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            timer.Stop();
+            timer.Tick -= Timer_Tick;
+            base.Dispose(disposing);
         }
     }
 }

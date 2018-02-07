@@ -1,17 +1,12 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TokenizerHelper.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// <summary>
-//   Constructor for TokenizerHelper which accepts an IFormatProvider.
-//   If the IFormatProvider is null, we use the thread's IFormatProvider info. 
-//   We will use ',' as the list separator, unless it's the same as the
-//   decimal separator.  If it *is*, then we can't determine if, say, "23,5" is one
-//   number or two.  In this case, we will use ";" as the separator.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Utilities
+#else
 namespace HelixToolkit.Wpf.SharpDX.Utilities
+#endif
 {
     using System;
     using System.Diagnostics;

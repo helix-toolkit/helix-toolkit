@@ -33,13 +33,13 @@ namespace MemoryLeakTester
             InitializeComponent();
             ProjectWinPairs.Add(new Tuple<string, Type>("CustomShaderDemo", typeof(CustomShaderDemo.MainWindow)));
             ProjectWinPairs.Add(new Tuple<string, Type>("BoneSkinDemo", typeof(BoneSkinDemo.MainWindow)));
-            ProjectWinPairs.Add(new Tuple<string, Type>("DeferredShadingDemo", typeof(DeferredShadingDemo.MainWindow)));
+           // ProjectWinPairs.Add(new Tuple<string, Type>("DeferredShadingDemo", typeof(DeferredShadingDemo.MainWindow)));
             ProjectWinPairs.Add(new Tuple<string, Type>("DynamicTextureDemo", typeof(DynamicTextureDemo.MainWindow)));
             ProjectWinPairs.Add(new Tuple<string, Type>("InstancingDemo", typeof(InstancingDemo.MainWindow)));
             ProjectWinPairs.Add(new Tuple<string, Type>("LightingDemo", typeof(LightingDemo.MainWindow)));
             ProjectWinPairs.Add(new Tuple<string, Type>("OctreeDemo", typeof(OctreeDemo.MainWindow)));
             ProjectWinPairs.Add(new Tuple<string, Type>("ParticleSystemDemo", typeof(ParticleSystemDemo.MainWindow)));
-            ProjectWinPairs.Add(new Tuple<string, Type>("ScreenSpaceDemo", typeof(ScreenSpaceDemo.MainWindow)));
+           // ProjectWinPairs.Add(new Tuple<string, Type>("ScreenSpaceDemo", typeof(ScreenSpaceDemo.MainWindow)));
             ProjectWinPairs.Add(new Tuple<string, Type>("ShadowMapDemo", typeof(ShadowMapDemo.MainWindow)));
             ProjectWinPairs.Add(new Tuple<string, Type>("TessellationDemo", typeof(TessellationDemo.MainWindow)));
             ProjectWinPairs.Add(new Tuple<string, Type>("SimpleDemo", typeof(SimpleDemo.MainWindow)));
