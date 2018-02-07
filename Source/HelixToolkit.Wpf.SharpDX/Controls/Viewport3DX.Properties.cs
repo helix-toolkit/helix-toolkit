@@ -239,8 +239,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The FPS counter property
         /// </summary>
-        public static readonly DependencyProperty FpsCounterProperty = DependencyProperty.Register(
-            "FpsCounter", typeof(FpsCounter), typeof(Viewport3DX), new PropertyMetadata(new FpsCounter()));
+        public static readonly DependencyPropertyKey FpsCounterProperty = DependencyProperty.RegisterReadOnly(
+            "FpsCounter", typeof(FpsCounter), typeof(Viewport3DX), new PropertyMetadata());
 
         /// <summary>
         /// The frame rate property.
@@ -578,7 +578,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The view cube back text property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeBackTextProperty = DependencyProperty.Register(
-                "ViewCubeBackText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("R"));
+                "ViewCubeBackText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("B"));
 
         /// <summary>
         /// The view cube bottom text property.
@@ -590,7 +590,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The view cube front text property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeFrontTextProperty = DependencyProperty.Register(
-                "ViewCubeFrontText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("L"));
+                "ViewCubeFrontText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("F"));
 
         /// <summary>
         /// The view cube height property.
@@ -611,7 +611,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The view cube left text property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeLeftTextProperty = DependencyProperty.Register(
-                "ViewCubeLeftText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("F"));
+                "ViewCubeLeftText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("L"));
 
         /// <summary>
         /// The view cube opacity property.
@@ -623,7 +623,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The view cube right text property.
         /// </summary>
         public static readonly DependencyProperty ViewCubeRightTextProperty = DependencyProperty.Register(
-                "ViewCubeRightText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("B"));
+                "ViewCubeRightText", typeof(string), typeof(Viewport3DX), new UIPropertyMetadata("R"));
 
         /// <summary>
         /// The view cube top text property.
@@ -1279,7 +1279,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return (FpsCounter)this.GetValue(FpsCounterProperty);
+                return (FpsCounter)this.GetValue(FpsCounterProperty.DependencyProperty);
             }
 
             private set

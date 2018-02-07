@@ -114,7 +114,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="MaterialType"/> dependency property.
         /// </summary>        
         public static readonly DependencyProperty MaterialTypeProperty =
-            DependencyProperty.Register("MaterialType", typeof(MaterialType), typeof(BillboardTextVisual3D), new PropertyMetadata(MaterialType.Diffuse));
+            DependencyProperty.Register("MaterialType", typeof(MaterialType), typeof(BillboardTextVisual3D), new PropertyMetadata(MaterialType.Diffuse, VisualChanged));
 
 
         /// <summary>

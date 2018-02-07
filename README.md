@@ -1,3 +1,6 @@
+Helix Toolkit
+====
+
 Helix Toolkit is a collection of 3D components for .NET. Currently it contains one component that adds functionality to the WPF 3D model (Media3D namespace), and one WPF component that creates a similar scene graph for DirectX (based on SharpDX).
 
 [![Build status](https://ci.appveyor.com/api/projects/status/tmqafdk9p7o98gw7)](https://ci.appveyor.com/project/objorke/helix-toolkit)
@@ -16,3 +19,14 @@ NuGet packages      | http://www.nuget.org/packages?q=HelixToolkit
 MyGet feed          | https://www.myget.org/F/helix-toolkit
 StackOverflow       | http://stackoverflow.com/questions/tagged/helix-3d-toolkit
 Twitter             | https://twitter.com/hashtag/Helix3DToolkit
+
+News
+====
+
+### 2018-02-06
+
+V1.1.0 release is available.
+
+https://www.nuget.org/packages/HelixToolkit.Wpf/1.1.0
+
+https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/1.1.0

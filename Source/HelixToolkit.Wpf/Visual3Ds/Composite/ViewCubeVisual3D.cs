@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="BackText"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty BackTextProperty = DependencyProperty.Register(
-            "BackText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("B", (d,e)=> 
+            "BackText", typeof(string), typeof(ViewCubeVisual3D), new UIPropertyMetadata("B", (d, e) =>
             {
                 var b = (d as ViewCubeVisual3D).GetCubefaceColor(1);
                 (d as ViewCubeVisual3D).UpdateCubefaceMaterial(1, b, e.NewValue == null ? "" : (string)e.NewValue);
@@ -117,7 +117,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public static readonly DependencyProperty ViewportProperty = DependencyProperty.Register(
             "Viewport", typeof(Viewport3D), typeof(ViewCubeVisual3D), new PropertyMetadata(null));
-            
+
         /// <summary>
         /// Set or Get if view cube edge clickable.
         /// </summary>
@@ -131,7 +131,7 @@ namespace HelixToolkit.Wpf
         /// Identifies the <see cref="EnableEdgeClicks"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EnableEdgeClicksProperty =
-            DependencyProperty.Register("EnableEdgeClicks", typeof(bool), typeof(ViewCubeVisual3D), new PropertyMetadata(false, (d,e)=>
+            DependencyProperty.Register("EnableEdgeClicks", typeof(bool), typeof(ViewCubeVisual3D), new PropertyMetadata(false, (d, e) =>
             {
                 (d as ViewCubeVisual3D).EnableDisableEdgeClicks();
             }));
@@ -146,9 +146,18 @@ namespace HelixToolkit.Wpf
         /// </summary>
         private readonly Dictionary<object, Vector3D> faceUpVectors = new Dictionary<object, Vector3D>();
 
-        private readonly IList<GeometryModel3D> CubeFaceModels = new List<GeometryModel3D>(6);
-        private readonly IList<ModelUIElement3D> EdgeModels = new List<ModelUIElement3D>();
-        private readonly IList<ModelUIElement3D> CornerModels = new List<ModelUIElement3D>();
+        private readonly IList<ModelUIElement3D> CubeFaceModels = new List<ModelUIElement3D>(6);
+        private readonly IList<ModelUIElement3D> EdgeModels = new List<ModelUIElement3D>(4 * 3);
+        private readonly IList<ModelUIElement3D> CornerModels = new List<ModelUIElement3D>(8);
+        private static readonly Point3D[] xAligned = { new Point3D(0, -1, -1), new Point3D(0, 1, -1), new Point3D(0, -1, 1), new Point3D(0, 1, 1) }; //x
+        private static readonly Point3D[] yAligned = { new Point3D(-1, 0, -1), new Point3D(1, 0, -1), new Point3D(-1, 0, 1), new Point3D(1, 0, 1) };//y
+        private static readonly Point3D[] zAligned = { new Point3D(-1, -1, 0), new Point3D(-1, 1, 0), new Point3D(1, -1, 0), new Point3D(1, 1, 0) };//z
+
+        private static readonly Point3D[] cornerPoints =   {
+                new Point3D(-1,-1,-1 ), new Point3D(1, -1, -1), new Point3D(1, 1, -1), new Point3D(-1, 1, -1),
+                new Point3D(-1,-1,1 ),new Point3D(1,-1,1 ),new Point3D(1,1,1 ),new Point3D(-1,1,1 )};
+
+        private readonly PieSliceVisual3D circle = new PieSliceVisual3D();
 
         private readonly Brush CornerBrush = Brushes.Gold;
         private readonly Brush EdgeBrush = Brushes.Silver;
@@ -158,7 +167,7 @@ namespace HelixToolkit.Wpf
         /// </summary>
         public ViewCubeVisual3D()
         {
-            this.UpdateVisuals();
+            this.InitialModels();
         }
 
         /// <summary>
@@ -381,32 +390,61 @@ namespace HelixToolkit.Wpf
             ((ViewCubeVisual3D)d).UpdateVisuals();
         }
 
+        private void InitialModels()
+        {
+            for (int i = 0; i < 6; ++i)
+            {
+                var element = new ModelUIElement3D();
+                CubeFaceModels.Add(element);
+                Children.Add(CubeFaceModels[i]);
+                element.MouseLeftButtonDown += this.FaceMouseLeftButtonDown;
+            }
+            this.Children.Add(circle);
+
+            for (int i = 0; i < xAligned.Length + yAligned.Length + zAligned.Length; ++i)
+            {
+                var element = new ModelUIElement3D();
+                EdgeModels.Add(element);
+                Children.Add(EdgeModels[i]);
+                element.MouseLeftButtonDown += FaceMouseLeftButtonDown;
+                element.MouseEnter += EdggesMouseEnters;
+                element.MouseLeave += EdgesMouseLeaves;
+            }
+
+            for (int i = 0; i < cornerPoints.Length; ++i)
+            {
+                var element = new ModelUIElement3D();
+                CornerModels.Add(element);
+                Children.Add(CornerModels[i]);
+                element.MouseLeftButtonDown += FaceMouseLeftButtonDown;
+                element.MouseEnter += EdggesMouseEnters;
+                element.MouseLeave += EdgesMouseLeaves;
+            }
+
+            UpdateVisuals();
+        }
 
         /// <summary>
         /// Updates the visuals.
         /// </summary>
         private void UpdateVisuals()
         {
-            this.Children.Clear();
-            faceNormals.Clear();
-            faceUpVectors.Clear();
-            CubeFaceModels.Clear();
-            EdgeModels.Clear();
-            CornerModels.Clear();
             var vecUp = this.ModelUpDirection;
             // create left vector 90° from up
             var vecLeft = new Vector3D(vecUp.Y, vecUp.Z, vecUp.X);
 
             var vecFront = Vector3D.CrossProduct(vecLeft, vecUp);
 
-            CubeFaceModels.Add(this.AddCubeFace(vecFront, vecUp, GetCubefaceColor(0), this.FrontText));
-            CubeFaceModels.Add(this.AddCubeFace(-vecFront, vecUp, GetCubefaceColor(1), this.BackText));
-            CubeFaceModels.Add(this.AddCubeFace(vecLeft, vecUp, GetCubefaceColor(2), this.LeftText));
-            CubeFaceModels.Add(this.AddCubeFace(-vecLeft, vecUp, GetCubefaceColor(3), this.RightText));
-            CubeFaceModels.Add(this.AddCubeFace(vecUp, vecLeft, GetCubefaceColor(4), this.TopText));
-            CubeFaceModels.Add(this.AddCubeFace(-vecUp, -vecLeft, GetCubefaceColor(5), this.BottomText));
+            faceNormals.Clear();
+            faceUpVectors.Clear();
+            AddCubeFace(CubeFaceModels[0], vecFront, vecUp, GetCubefaceColor(0), this.FrontText);
+            AddCubeFace(CubeFaceModels[1], -vecFront, vecUp, GetCubefaceColor(1), this.BackText);
+            AddCubeFace(CubeFaceModels[2], vecLeft, vecUp, GetCubefaceColor(2), this.LeftText);
+            AddCubeFace(CubeFaceModels[3], -vecLeft, vecUp, GetCubefaceColor(3), this.RightText);
+            AddCubeFace(CubeFaceModels[4], vecUp, vecLeft, GetCubefaceColor(4), this.TopText);
+            AddCubeFace(CubeFaceModels[5], -vecUp, -vecLeft, GetCubefaceColor(5), this.BottomText);
 
-            var circle = new PieSliceVisual3D();
+            //var circle = new PieSliceVisual3D();
             circle.BeginEdit();
             circle.Center = (this.ModelUpDirection * (-this.Size / 2)).ToPoint3D();
             circle.Normal = this.ModelUpDirection;
@@ -417,7 +455,6 @@ namespace HelixToolkit.Wpf
             circle.EndAngle = 360;
             circle.Fill = Brushes.Gray;
             circle.EndEdit();
-            this.Children.Add(circle);
 
             AddCorners();
             AddEdges();
@@ -468,6 +505,7 @@ namespace HelixToolkit.Wpf
                     item.MouseLeftButtonDown += FaceMouseLeftButtonDown;
                     item.MouseEnter += EdggesMouseEnters;
                     item.MouseLeave += EdgesMouseLeaves;
+                    item.Visibility = Visibility.Visible;
                     ModelUIElement3D s = item as ModelUIElement3D;
                     (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(EdgeBrush);
                 }
@@ -479,36 +517,35 @@ namespace HelixToolkit.Wpf
                     item.MouseLeftButtonDown += FaceMouseLeftButtonDown;
                     item.MouseEnter += CornersMouseEnters;
                     item.MouseLeave += CornersMouseLeave;
+                    item.Visibility = Visibility.Visible;
                     ModelUIElement3D s = item as ModelUIElement3D;
                     (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(CornerBrush);
                 }
             }
             else
             {
-                foreach(var item in EdgeModels)
+                foreach (var item in EdgeModels)
                 {
                     item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
                     item.MouseEnter -= EdggesMouseEnters;
                     item.MouseLeave -= EdgesMouseLeaves;
-                    ModelUIElement3D s = item as ModelUIElement3D;
-                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Transparent);
+                    item.Visibility = Visibility.Collapsed;
                 }
                 foreach (var item in CornerModels)
                 {
                     item.MouseLeftButtonDown -= FaceMouseLeftButtonDown;
                     item.MouseEnter -= CornersMouseEnters;
                     item.MouseLeave -= CornersMouseLeave;
-                    ModelUIElement3D s = item as ModelUIElement3D;
-                    (s.Model as GeometryModel3D).Material = MaterialHelper.CreateMaterial(Colors.Transparent);
+                    item.Visibility = Visibility.Collapsed;
                 }
             }
         }
 
         private void UpdateCubefaceMaterial(int index, Brush b, string text)
         {
-            if(CubeFaceModels.Count > 0 && index < CubeFaceModels.Count)
+            if (CubeFaceModels.Count > 0 && index < CubeFaceModels.Count)
             {
-                CubeFaceModels[index].Material = CreateTextMaterial(b, text);
+                (CubeFaceModels[index].Model as GeometryModel3D).Material = CreateTextMaterial(b, text);
             }
             else
             {
@@ -521,29 +558,29 @@ namespace HelixToolkit.Wpf
             var halfSize = Size / 2;
             var sideLength = halfSize / 2;
 
-            Point3D[] xAligned = { new Point3D(0, -1, -1), new Point3D(0, 1, -1), new Point3D(0, -1, 1), new Point3D(0, 1, 1) }; //x
+            int counter = 0;
             foreach (var p in xAligned)
             {
                 Point3D center = p.Multiply(halfSize);
-                AddEdge(center, 1.5 * halfSize, sideLength, sideLength, p.ToVector3D());
+                AddEdge(EdgeModels[counter++], center, 1.5 * halfSize, sideLength, sideLength, p.ToVector3D());
             }
 
-            Point3D[] yAligned = { new Point3D(-1, 0, -1), new Point3D(1, 0, -1), new Point3D(-1, 0, 1), new Point3D(1, 0, 1) };//y
+
             foreach (var p in yAligned)
             {
                 Point3D center = p.Multiply(halfSize);
-                AddEdge(center, sideLength, 1.5 * halfSize, sideLength, p.ToVector3D());
+                AddEdge(EdgeModels[counter++], center, sideLength, 1.5 * halfSize, sideLength, p.ToVector3D());
             }
 
-            Point3D[] zAligned = { new Point3D(-1, -1, 0), new Point3D(-1, 1, 0), new Point3D(1, -1, 0), new Point3D(1, 1, 0) };//z
+
             foreach (var p in zAligned)
             {
                 Point3D center = p.Multiply(halfSize);
-                AddEdge(center, sideLength, sideLength, 1.5 * halfSize, p.ToVector3D());
+                AddEdge(EdgeModels[counter++], center, sideLength, sideLength, 1.5 * halfSize, p.ToVector3D());
             }
         }
 
-        private void AddEdge(Point3D center, double x, double y, double z, Vector3D faceNormal)
+        private void AddEdge(ModelUIElement3D element, Point3D center, double x, double y, double z, Vector3D faceNormal)
         {
             var builder = new MeshBuilder(false, true);
 
@@ -553,29 +590,18 @@ namespace HelixToolkit.Wpf
             geometry.Freeze();
 
             var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(EdgeBrush) };
-            var element = new ModelUIElement3D { Model = model };
+            element.Model = model;
 
             faceNormals.Add(element, faceNormal);
             faceUpVectors.Add(element, ModelUpDirection);
-
-            element.MouseLeftButtonDown += FaceMouseLeftButtonDown;
-            element.MouseEnter += EdggesMouseEnters;
-            element.MouseLeave += EdgesMouseLeaves;
-
-            Children.Add(element);
-            EdgeModels.Add(element);
         }
 
         private void AddCorners()
         {
             var a = Size / 2;
             var sideLength = a / 2;
-
-            Point3D[] points =   {
-                new Point3D(-1,-1,-1 ), new Point3D(1, -1, -1), new Point3D(1, 1, -1), new Point3D(-1, 1, -1),
-                new Point3D(-1,-1,1 ),new Point3D(1,-1,1 ),new Point3D(1,1,1 ),new Point3D(-1,1,1 )};
-
-            foreach (var p in points)
+            int counter = 0;
+            foreach (var p in cornerPoints)
             {
                 var builder = new MeshBuilder(false, true);
 
@@ -585,17 +611,10 @@ namespace HelixToolkit.Wpf
                 geometry.Freeze();
 
                 var model = new GeometryModel3D { Geometry = geometry, Material = MaterialHelper.CreateMaterial(CornerBrush) };
-                var element = new ModelUIElement3D { Model = model };
-
+                var element = CornerModels[counter++];
+                element.Model = model;
                 faceNormals.Add(element, p.ToVector3D());
                 faceUpVectors.Add(element, ModelUpDirection);
-
-                element.MouseLeftButtonDown += FaceMouseLeftButtonDown;
-                element.MouseEnter += CornersMouseEnters;
-                element.MouseLeave += CornersMouseLeave;
-
-                Children.Add(element);
-                CornerModels.Add(element);
             }
         }
 
@@ -626,6 +645,8 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Adds a cube face.
         /// </summary>
+        /// <param name="element">
+        /// </param>
         /// <param name="normal">
         /// The normal.
         /// </param>
@@ -638,7 +659,7 @@ namespace HelixToolkit.Wpf
         /// <param name="text">
         /// The text.
         /// </param>
-        private GeometryModel3D AddCubeFace(Vector3D normal, Vector3D up, Brush b, string text)
+        private void AddCubeFace(ModelUIElement3D element, Vector3D normal, Vector3D up, Brush b, string text)
         {
             var material = CreateTextMaterial(b, text);
 
@@ -650,14 +671,11 @@ namespace HelixToolkit.Wpf
             geometry.Freeze();
 
             var model = new GeometryModel3D { Geometry = geometry, Material = material };
-            var element = new ModelUIElement3D { Model = model };
-            element.MouseLeftButtonDown += this.FaceMouseLeftButtonDown;
+
+            element.Model = model;
 
             this.faceNormals.Add(element, normal);
             this.faceUpVectors.Add(element, up);
-
-            this.Children.Add(element);
-            return model;
         }
 
         private Material CreateTextMaterial(Brush b, string text)

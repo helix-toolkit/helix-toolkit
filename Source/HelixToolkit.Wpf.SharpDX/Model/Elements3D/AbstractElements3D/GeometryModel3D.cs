@@ -159,6 +159,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 (e.NewValue as INotifyPropertyChanged).PropertyChanged += model.OnGeometryPropertyChangedPrivate;
             }
             model.geometryInternal = e.NewValue == null ? null : e.NewValue as Geometry3D;
+            if (model.geometryInternal != null && model.geometryInternal.Bound.Maximum == Vector3.Zero && model.geometryInternal.Bound.Minimum == Vector3.Zero)
+            {
+                model.geometryInternal.UpdateBounds();
+            }
             model.OnGeometryChanged(e);
             //Debug.WriteLine("Geometry Changed");
             model.InvalidateRender();

@@ -1,6 +1,27 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## For Next Release
+### Added
+### Improvement and Changes
+### Fixed.
+
+
+## [1.1.0] - 2018-2-6
+### Added
+### Improvement and Changes
+- More smooth render loop. Refer to #611 (WPF.SharpDX)
+- Call update bound automatically if not updated. Refer to #571 (WPF.SharpDX)
+- GroupElement3D itemsSource supports IList<Element3D> #572.(WPF.SharpDX)
+- Implement SetTarget Command #577.(WPF.SharpDX)
+
+### Fixed
+- SharpDX GetBestAdapter method will not always get (The Best) one for .NET 4.5 (#282)
+- BillboardTextVisual3D with Emissive material still affected by lights (#127)
+- Fixed FPS counter not current under multiple viewport (#599)
+- Fixed default viewbox text (#599)
+- Viewcube not clickable after modelupdirection change while running (#586)
+
 ## [1.0.0] - 2017-10-15
 ### Added
 - Gitlink build step (#123)

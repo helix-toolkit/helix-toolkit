@@ -630,7 +630,6 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                         }
-                        SetDefaultRenderTargets(false);
                     }
                     catch (Exception ex)
                     {
@@ -646,8 +645,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (EnableSharingModelMode && SharedModelContainer != null)
                 {
                     SharedModelContainer.CurrentRenderHost = this;
+                    ClearRenderTarget();
                 }
-                ClearRenderTarget();
+                else
+                {
+                    SetDefaultRenderTargets(true);
+                }
 
                 if (RenderTechnique == deferred)
                 {
@@ -705,7 +708,7 @@ namespace HelixToolkit.Wpf.SharpDX
             CompositionTarget.Rendering -= OnRendering;
             renderTimer.Stop();
         }
-
+        private TimeSpan _last = TimeSpan.Zero;
         /// <summary>
         /// Handles the <see cref="CompositionTarget.Rendering"/> event.
         /// </summary>
@@ -715,6 +718,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (!renderTimer.IsRunning || !IsRendering)
                 return;
+            RenderingEventArgs args = (RenderingEventArgs)e;
+            if (args.RenderingTime == _last)
+                return;
+            _last = args.RenderingTime;
             UpdateAndRender();
         }
 
@@ -724,7 +731,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void UpdateAndRender()
         {
-            if (((pendingValidationCycles && !skipper.IsSkip()) || skipper.DelayTrigger()) && surfaceD3D != null && renderRenderable != null)
+            if (pendingValidationCycles && surfaceD3D != null && renderRenderable != null)
             {
                 var t0 = renderTimer.Elapsed;
 
@@ -733,25 +740,23 @@ namespace HelixToolkit.Wpf.SharpDX
                 //renderRenderable.Update(t0);
                 try
                 {
+                    // Unfortunately, if DeviceRemoved/DeviceReset occurs while trying to acquire a lock,
+                    // the render thread will throw "COMException: UCEERR_RENDERTHREADFAILURE".
+                    // You can test this by executing the following command as administrator while running a demo: 
+                    //
+                    // "dxcap -forcetdr"
+                    //
+                    // Demos with permanent rendering like "LightingDemo" will fail to recover from 
+                    // DeviceRemoved/DeviceReset while static ones like "SimpleDemo" succeed.
+                    // See: https://blogs.msdn.microsoft.com/dsui_team/2013/11/18/wpf-render-thread-failures/
+                    // See: https://github.com/Microsoft/WPFDXInterop/issues/22
+                    // See: https://docs.microsoft.com/en-us/windows/uwp/gaming/handling-device-lost-scenarios
+                    surfaceD3D.Lock();
                     try
                     {
-                        // Unfortunately, if DeviceRemoved/DeviceReset occurs while trying to acquire a lock,
-                        // the render thread will throw "COMException: UCEERR_RENDERTHREADFAILURE".
-                        // You can test this by executing the following command as administrator while running a demo: 
-                        //
-                        // "dxcap -forcetdr"
-                        //
-                        // Demos with permanent rendering like "LightingDemo" will fail to recover from 
-                        // DeviceRemoved/DeviceReset while static ones like "SimpleDemo" succeed.
-                        // See: https://blogs.msdn.microsoft.com/dsui_team/2013/11/18/wpf-render-thread-failures/
-                        // See: https://github.com/Microsoft/WPFDXInterop/issues/22
-                        // See: https://docs.microsoft.com/en-us/windows/uwp/gaming/handling-device-lost-scenarios
-                        if (surfaceD3D.TryLock(new Duration(TimeSpan.FromMilliseconds(skipper.lag))))
-                        {
-                            pendingValidationCycles = false;
-                            Render(t0);
-                            surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
-                        }
+                        pendingValidationCycles = false;
+                        Render(t0);
+                        surfaceD3D.AddDirtyRect(new Int32Rect(0, 0, surfaceD3D.PixelWidth, surfaceD3D.PixelHeight));
                     }
                     finally
                     {

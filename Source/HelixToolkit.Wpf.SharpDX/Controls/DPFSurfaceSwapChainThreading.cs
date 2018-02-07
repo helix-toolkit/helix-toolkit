@@ -782,7 +782,6 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             deferredRenderer.InitBuffers(this, Format.B8G8R8A8_UNorm);
                         }
-                        SetDefaultRenderTargets(false);
                     }
                     catch (Exception ex)
                     {
@@ -799,8 +798,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (EnableSharingModelMode && SharedModelContainer != null)
                 {
                     SharedModelContainer.CurrentRenderHost = this;
+                    ClearRenderTarget();
                 }
-                ClearRenderTarget();
+                else
+                {
+                    SetDefaultRenderTargets(true);
+                }
                 if (RenderTechnique == deferred)
                 {
                     // set G-Buffer                    
@@ -858,7 +861,7 @@ namespace HelixToolkit.Wpf.SharpDX
             CompositionTarget.Rendering -= OnRendering;
             renderTimer.Stop();
         }
-
+        private TimeSpan _last = TimeSpan.Zero;
         /// <summary>
         /// Handles the <see cref="CompositionTarget.Rendering"/> event.
         /// </summary>
@@ -869,6 +872,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (!renderTimer.IsRunning || !IsRendering)
                 return;
+            RenderingEventArgs args = (RenderingEventArgs)e;
+            if (args.RenderingTime == _last)
+                return;
+            _last = args.RenderingTime;
             UpdateAndRender();
         }
 
@@ -879,7 +886,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void UpdateAndRender()
         {
-            if (((pendingValidationCycles && !skipper.IsSkip()) || skipper.DelayTrigger()) && !renderThread.IsBusy && renderRenderable != null)
+            if (pendingValidationCycles && !renderThread.IsBusy && renderRenderable != null)
             {
                 var t0 = renderTimer.Elapsed;
 

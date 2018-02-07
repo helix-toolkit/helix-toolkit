@@ -104,6 +104,7 @@
     <Compile Include="StereoHelperTests.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="Visual3Ds\MeshVisuals\CubeVisual3DTests.cs" />
+    <Compile Include="Visual3Ds\Text\BillboardTextVisual3DTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

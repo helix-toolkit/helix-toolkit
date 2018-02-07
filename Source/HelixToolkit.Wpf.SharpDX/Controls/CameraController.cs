@@ -2095,6 +2095,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.PushCameraSetting();
         }
 
+        private TimeSpan _last;
         /// <summary>
         /// The rendering event handler.
         /// </summary>
@@ -2106,8 +2107,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
         {
-            if (skipper.IsSkip())
+            RenderingEventArgs args = (RenderingEventArgs)e;
+            if (args.RenderingTime == _last)
                 return;
+            _last = args.RenderingTime;
             var ticks = e.RenderingTime.Ticks;
             var time = 100e-9 * (ticks - this.lastTick);
 
@@ -2268,7 +2271,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var factor = this.IsInertiaEnabled ? Math.Pow(this.InertiaFactor, time / 0.012) : 0;
             factor = this.Clamp(factor, 0.2, 1);
 
-            if (this.isSpinning && this.spinningSpeed.LengthSquared > 0)
+            if (this.isSpinning && this.spinningSpeed.LengthSquared > 0.1)
             {
                 this.rotateHandler.Rotate(
                     this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D);
@@ -2286,13 +2289,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.rotationSpeed *= factor;
             }
 
-            if (Math.Abs(this.panSpeed.LengthSquared) > 0.0001)
+            if (this.panSpeed.LengthSquared > 0.0001)
             {
                 this.panHandler.Pan(this.panSpeed * time);
                 this.panSpeed *= factor;
             }
 
-            if (Math.Abs(this.moveSpeed.LengthSquared) > 0.0001)
+            if (this.moveSpeed.LengthSquared > 0.0001)
             {
                 this.zoomHandler.MoveCameraPosition(this.moveSpeed * time);
                 this.moveSpeed *= factor;
