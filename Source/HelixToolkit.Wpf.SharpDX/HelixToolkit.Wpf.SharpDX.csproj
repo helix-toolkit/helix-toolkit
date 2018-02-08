@@ -181,6 +181,7 @@
     <Compile Include="Model\Elements2D\Abstract\Clickable2D.cs" />
     <Compile Include="Model\Elements2D\Abstract\ContentElement2D.cs" />
     <Compile Include="Model\Elements2D\FrameStatisticsModel2D.cs" />
+    <Compile Include="Model\Elements2D\ImageModel2D.cs" />
     <Compile Include="Model\Elements2D\Panel2D.cs" />
     <Compile Include="Model\Elements2D\Abstract\ShapeModel2D.cs" />
     <Compile Include="Model\Elements2D\Border2D.cs" />

@@ -803,13 +803,15 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty Content2DProperty
             = DependencyProperty.Register("Content2D", typeof(Element2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
             {
-                if (e.OldValue != null)
+                if (e.OldValue is Element2D elementOld)
                 {
-                    (d as Viewport3DX).overlay2D.Children.Remove((Element2D)e.OldValue);
+                    (d as Viewport3DX).RemoveLogicalChild(elementOld);
+                    (d as Viewport3DX).overlay2D.Children.Remove(elementOld);                   
                 }
-                if (e.NewValue != null)
+                if (e.NewValue is Element2D elementNew)
                 {
-                    (d as Viewport3DX).overlay2D.Children.Add((Element2D)e.NewValue);
+                    (d as Viewport3DX).AddLogicalChild(elementNew);
+                    (d as Viewport3DX).overlay2D.Children.Add(elementNew);                   
                 }
             }));
         /// <summary>

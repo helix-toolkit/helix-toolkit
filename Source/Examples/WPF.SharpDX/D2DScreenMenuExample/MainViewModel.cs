@@ -19,6 +19,7 @@ namespace D2DScreenMenuExample
     {
         public ViewModel3D VM3D { get; } = new ViewModel3D();
         public ViewModel2D VM2D { get; } = new ViewModel2D();
+
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
@@ -91,10 +92,29 @@ namespace D2DScreenMenuExample
             set; get;
         } = "Text Model 2D";
 
+        public Stream ImageStream
+        {
+            private set;get;
+        }
+
+        private string Texture = @"TextureCheckerboard2.jpg";
+
         public ViewModel2D()
         {
             //TextTransform = new Media.RotateTransform(45, 100, 0);
             TextTransform = CreateAnimatedTransform2(8);
+            ImageStream = LoadFileToMemory(Texture);
+        }
+
+
+        public static MemoryStream LoadFileToMemory(string filePath)
+        {
+            using (var file = new FileStream(filePath, FileMode.Open))
+            {
+                var memory = new MemoryStream();
+                file.CopyTo(memory);
+                return memory;
+            }
         }
 
         private Media.Transform CreateAnimatedTransform2(double speed = 4)
