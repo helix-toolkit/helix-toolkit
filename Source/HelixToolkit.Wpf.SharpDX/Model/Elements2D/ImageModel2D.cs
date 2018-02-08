@@ -156,7 +156,15 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
             hitResult = null;
-            return false;
+            if (LayoutBoundWithTransform.Contains(mousePoint))
+            {
+                hitResult = new HitTest2DResult(this);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
