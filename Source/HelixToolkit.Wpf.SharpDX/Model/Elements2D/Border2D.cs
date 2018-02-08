@@ -265,7 +265,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected override Size2F MeasureOverride(Size2F availableSize)
         {
-            if(contentInternal != null)
+            if (contentInternal != null)
             {
                 var margin = new Size2F((float)(StrokeThickness + Padding.Left + Padding.Right + MarginWidthHeight.X), (float)(StrokeThickness + Padding.Top + Padding.Bottom + MarginWidthHeight.Y));
                 var childAvail = new Size2F(Math.Max(0, availableSize.Width - margin.Width), Math.Max(0, availableSize.Height - margin.Height));
@@ -274,26 +274,20 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
             else
             {
-                return new Size2F((float)(StrokeThickness + Padding.Left + Padding.Right + MarginWidthHeight.X), (float)(StrokeThickness + Padding.Top + Padding.Bottom + MarginWidthHeight.Y));
+                return new Size2F((float)(StrokeThickness + Padding.Left + Padding.Right + MarginWidthHeight.X + WidthInternal == float.PositiveInfinity ? 0 : WidthInternal),
+                    (float)(StrokeThickness + Padding.Top + Padding.Bottom + MarginWidthHeight.Y + HeightInternal == float.PositiveInfinity ? 0 : HeightInternal));
             }
         }
 
         protected override RectangleF ArrangeOverride(RectangleF finalSize)
         {
-            if (contentInternal != null)
-            {
-                var contentRect = new RectangleF(finalSize.Left, finalSize.Top, finalSize.Width, finalSize.Height);
-                contentRect.Left += (float)(StrokeThickness + Padding.Left);
-                contentRect.Right -= (float)(StrokeThickness + Padding.Right);
-                contentRect.Top += (float)(StrokeThickness + Padding.Top);
-                contentRect.Bottom -= (float)(StrokeThickness + Padding.Bottom);
-                base.ArrangeOverride(contentRect);
-                return finalSize;
-            }
-            else
-            {
-                return new RectangleF();
-            }
+            var contentRect = new RectangleF(finalSize.Left, finalSize.Top, finalSize.Width, finalSize.Height);
+            contentRect.Left += (float)(StrokeThickness + Padding.Left);
+            contentRect.Right -= (float)(StrokeThickness + Padding.Right);
+            contentRect.Top += (float)(StrokeThickness + Padding.Top);
+            contentRect.Bottom -= (float)(StrokeThickness + Padding.Bottom);
+            base.ArrangeOverride(contentRect);
+            return finalSize;
         }
     }
 }

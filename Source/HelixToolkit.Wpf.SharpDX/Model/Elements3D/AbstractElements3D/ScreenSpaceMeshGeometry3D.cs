@@ -222,18 +222,18 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public ScreenSpacePositionMover()
         {
-            MoveLeftTop = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top, Content2D = new RectangleModel2D() { Width = 8, Height = 8, Fill = new SolidColorBrush(Colors.Yellow) } };
-            MoveLeftBottom = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Bottom, Content2D = new RectangleModel2D() { Width = 8, Height = 8, Fill = new SolidColorBrush(Colors.Yellow) } };
-            MoveRightTop = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top, Content2D = new RectangleModel2D() { Width = 8, Height = 8, Fill = new SolidColorBrush(Colors.Yellow) } };
-            MoveRightBottom = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Bottom, Content2D = new RectangleModel2D() { Width = 8, Height = 8, Fill = new SolidColorBrush(Colors.Yellow) } };
+            MoveLeftTop = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top};
+            MoveLeftBottom = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Bottom };
+            MoveRightTop = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top };
+            MoveRightBottom = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Bottom };
 
             buttons[0] = MoveLeftTop;
             buttons[1] = MoveLeftBottom;
             buttons[2] = MoveRightTop;
             buttons[3] = MoveRightBottom;
 
-            Width = 90;
-            Height = 90;
+            Width = 80;
+            Height = 80;
             
             foreach(var b in buttons)
             {

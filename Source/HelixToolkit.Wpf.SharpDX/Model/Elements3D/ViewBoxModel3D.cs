@@ -221,14 +221,15 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var pts = new List<Vector3>();
 
-            var center = up * -size / 2 * 1.3f;
-            for (int i = 0; i < 20; i++)
+            var center = up * -size / 2 * 1.1f;
+            int phi = 24;
+            for (int i = 0; i < phi; i++)
             {
-                double angle = 0 + (360 * i / (20 - 1));
+                double angle = 0 + (360 * i / (phi - 1));
                 double angleRad = angle / 180 * Math.PI;
                 var dir = (left * (float)Math.Cos(angleRad)) + (front * (float)Math.Sin(angleRad));
-                pts.Add(center + (dir * (size - 1.0f)));
-                pts.Add(center + (dir * (size + 0.9f)));
+                pts.Add(center + (dir * (size - 0.75f)));
+                pts.Add(center + (dir * (size + 1.1f)));
             }
             builder = new MeshBuilder(false, false, false);
             builder.AddTriangleStrip(pts);
