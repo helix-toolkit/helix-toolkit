@@ -136,7 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The coordinate view.
         /// </summary>
-        private Element3D coordinateView;
+        private ScreenSpacedElement3D coordinateView;
 
         /// <summary>
         /// The nearest valid result during a hit test.
@@ -667,7 +667,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (this.coordinateView == null)
             {
-                this.coordinateView = this.Template.FindName(PartCoordinateView, this) as Element3D;
+                this.coordinateView = this.Template.FindName(PartCoordinateView, this) as ScreenSpacedElement3D;
             }
             if (this.coordinateView == null)
             {
@@ -706,6 +706,10 @@ namespace HelixToolkit.Wpf.SharpDX
             if(viewCube != null)
             {
                 overlay2D.Children.Add(viewCube.MoverCanvas);
+            }
+            if(coordinateView != null)
+            {
+                overlay2D.Children.Add(coordinateView.MoverCanvas);
             }
             if (Content2D != null)
             {
