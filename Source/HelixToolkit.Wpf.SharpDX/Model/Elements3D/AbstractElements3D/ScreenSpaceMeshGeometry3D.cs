@@ -136,15 +136,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected IScreenSpacedRenderParams screenSpaceCore { get { return (IScreenSpacedRenderParams)RenderCore; } }
 
-        public ScreenSpacedElement3D()
-        {
-            InitializeMover();
-        }
-
         protected abstract void UpdateModel(Vector3 upDirection);
 
         protected override IRenderCore OnCreateRenderCore()
         {
+            InitializeMover();
             return new ScreenSpacedMeshRenderCore();
         }      
 
@@ -166,32 +162,45 @@ namespace HelixToolkit.Wpf.SharpDX
         #region 2D stuffs
         public RelativePositionCanvas2D MoverCanvas { private set; get; } 
             = new RelativePositionCanvas2D() { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
-        private ScreenSpacePositionMover mover = new ScreenSpacePositionMover();
+
+        private bool isMoverInitialized = false;
+
         private void InitializeMover()
         {
+            if (isMoverInitialized)
+            {
+                return;
+            }
+            var mover = OnCreateMover();
             MoverCanvas.Children.Add(mover);
             SetBinding(nameof(RelativeScreenLocationX), mover, RelativePositionCanvas2D.RelativeXProperty, this, BindingMode.TwoWay);
             SetBinding(nameof(RelativeScreenLocationY), mover, RelativePositionCanvas2D.RelativeYProperty, this, BindingMode.TwoWay);
             mover.OnMoveClicked += Mover_OnMoveClicked;
+            isMoverInitialized = true;
         }
 
-        private void Mover_OnMoveClicked(object sender, ScreenSpacePositionMover.MoveDirection e)
+        protected virtual ScreenSpacePositionMoverBase OnCreateMover()
+        {
+            return new ScreenSpacePositionMover();
+        }
+
+        private void Mover_OnMoveClicked(object sender, ScreenSpaceMoveDirection e)
         {
             switch (e)
             {
-                case ScreenSpacePositionMover.MoveDirection.LeftTop:
+                case ScreenSpaceMoveDirection.LeftTop:
                     this.RelativeScreenLocationX = -Math.Abs(RelativeScreenLocationX);
                     this.RelativeScreenLocationY = Math.Abs(RelativeScreenLocationY);
                     break;
-                case ScreenSpacePositionMover.MoveDirection.LeftBottom:
+                case ScreenSpaceMoveDirection.LeftBottom:
                     this.RelativeScreenLocationX = -Math.Abs(RelativeScreenLocationX);
                     this.RelativeScreenLocationY = -Math.Abs(RelativeScreenLocationY);
                     break;
-                case ScreenSpacePositionMover.MoveDirection.RightTop:
+                case ScreenSpaceMoveDirection.RightTop:
                     this.RelativeScreenLocationX = Math.Abs(RelativeScreenLocationX);
                     this.RelativeScreenLocationY = Math.Abs(RelativeScreenLocationY);
                     break;
-                case ScreenSpacePositionMover.MoveDirection.RightBottom:
+                case ScreenSpaceMoveDirection.RightBottom:
                     this.RelativeScreenLocationX = Math.Abs(RelativeScreenLocationX);
                     this.RelativeScreenLocationY = -Math.Abs(RelativeScreenLocationY);
                     break;
@@ -209,17 +218,44 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
     }
-
-    public class ScreenSpacePositionMover : Panel2D
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum ScreenSpaceMoveDirection
     {
-        public enum MoveDirection
+        LeftTop, LeftBottom, RightTop, RightBottom
+    };
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="HelixToolkit.Wpf.SharpDX.Elements2D.Panel2D" />
+    public abstract class ScreenSpacePositionMoverBase : Panel2D
+    {
+        /// <summary>
+        /// Occurs when [on move clicked].
+        /// </summary>
+        public event EventHandler<ScreenSpaceMoveDirection> OnMoveClicked;
+        /// <summary>
+        /// Raises the on move click.
+        /// </summary>
+        /// <param name="direction">The direction.</param>
+        protected void RaiseOnMoveClick(ScreenSpaceMoveDirection direction)
         {
-            LeftTop, LeftBottom, RightTop, RightBottom
-        };
-        public event EventHandler<MoveDirection> OnMoveClicked;
+            OnMoveClicked?.Invoke(this, direction);
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="HelixToolkit.Wpf.SharpDX.ScreenSpacePositionMoverBase" />
+    public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
+    {
         private Button2D MoveLeftTop, MoveLeftBottom, MoveRightTop, MoveRightBottom;
         private Button2D[] buttons = new Button2D[4];
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScreenSpacePositionMover"/> class.
+        /// </summary>
         public ScreenSpacePositionMover()
         {
             MoveLeftTop = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top};
@@ -232,8 +268,8 @@ namespace HelixToolkit.Wpf.SharpDX
             buttons[2] = MoveRightTop;
             buttons[3] = MoveRightBottom;
 
-            Width = 80;
-            Height = 80;
+            Width = 82;
+            Height = 82;
             
             foreach(var b in buttons)
             {
@@ -241,12 +277,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 Children.Add(b);
             }
 
-            MoveLeftTop.Clicked2D += (s, e) => { OnMoveClicked?.Invoke(MoveLeftTop, MoveDirection.LeftTop); };
-            MoveLeftBottom.Clicked2D += (s, e) => { OnMoveClicked?.Invoke(MoveLeftBottom, MoveDirection.LeftBottom); };
-            MoveRightTop.Clicked2D += (s, e) => { OnMoveClicked?.Invoke(MoveRightTop, MoveDirection.RightTop); };
-            MoveRightBottom.Clicked2D += (s, e) => { OnMoveClicked?.Invoke(MoveRightBottom, MoveDirection.RightBottom); };
+            MoveLeftTop.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.LeftTop); };
+            MoveLeftBottom.Clicked2D += (s, e) => { RaiseOnMoveClick( ScreenSpaceMoveDirection.LeftBottom); };
+            MoveRightTop.Clicked2D += (s, e) => { RaiseOnMoveClick( ScreenSpaceMoveDirection.RightTop); };
+            MoveRightBottom.Clicked2D += (s, e) => { RaiseOnMoveClick( ScreenSpaceMoveDirection.RightBottom); };
         }
 
+        /// <summary>
+        /// Called when [hit test].
+        /// </summary>
+        /// <param name="mousePoint">The mouse point.</param>
+        /// <param name="hitResult">The hit result.</param>
+        /// <returns></returns>
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
             hitResult = null;

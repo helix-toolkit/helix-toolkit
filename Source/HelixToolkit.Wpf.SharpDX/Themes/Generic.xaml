@@ -171,4 +171,19 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="{x:Type hx2D:Button2D}">
+        <Style.Setters>
+            <Setter Property="Background" Value="{x:Static SystemColors.ControlDarkBrush}" />
+            <Setter Property="Foreground" Value="{x:Static SystemColors.ControlTextBrush}" />
+            <Setter Property="CornerRadius" Value="2" />
+            <Setter Property="BorderBrush" Value="{x:Static SystemColors.InactiveBorderBrush}" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style.Setters>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver2D" Value="true">
+                <Setter Property="Background" Value="{x:Static SystemColors.HighlightBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

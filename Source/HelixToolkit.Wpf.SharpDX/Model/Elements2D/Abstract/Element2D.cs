@@ -59,20 +59,27 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 return (bool)GetValue(IsHitTestVisibleProperty);
             }
         }
-
-        public new static readonly DependencyProperty IsMouseOverProperty =
-            DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D),
+        /// <summary>
+        /// The is mouse over2 d property
+        /// </summary>
+        public static readonly DependencyProperty IsMouseOver2DProperty =
+            DependencyProperty.Register("IsMouseOver2D", typeof(bool), typeof(Element2D),
                 new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender, (d, e) =>
             {
                 var model = d as Element2D;
                 model.RenderCore.IsMouseOver = (bool)e.NewValue;
                 model.OnMouseOverChanged((bool)e.NewValue, (bool)e.OldValue);
             }));
-
-        public new bool IsMouseOver
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is mouse over2 d.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is mouse over2 d; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsMouseOver2D
         {
-            get { return (bool)GetValue(IsMouseOverProperty); }
-            set { SetValue(IsMouseOverProperty, value); }
+            get { return (bool)GetValue(IsMouseOver2DProperty); }
+            set { SetValue(IsMouseOver2DProperty, value); }
         }
 
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(Element2D),
@@ -324,8 +331,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected virtual void Element2D_MouseLeave2D(object sender, RoutedEventArgs e)
         {
-            if (!IsAttached) { return; }            
-            IsMouseOver = false;
+            if (!IsAttached) { return; }
+            IsMouseOver2D = false;
 #if DEBUGMOUSEEVENT
             Console.WriteLine("Element2D_MouseLeave2D");
 #endif
@@ -334,7 +341,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected virtual void Element2D_MouseEnter2D(object sender, RoutedEventArgs e)
         {
             if (!IsAttached) { return; }
-            IsMouseOver = true;
+            IsMouseOver2D = true;
 #if DEBUGMOUSEEVENT
             Console.WriteLine("Element2D_MouseEnter2D");
 #endif
