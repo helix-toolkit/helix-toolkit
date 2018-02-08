@@ -8,7 +8,11 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Core;
     using global::SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Elements2D;
     using Render;
+    using System;
+    using System.Windows.Data;
+    using System.Windows.Media;
 
     /// <summary>
     /// Base class for screen space rendering, such as Coordinate System or ViewBox
@@ -132,6 +136,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected IScreenSpacedRenderParams screenSpaceCore { get { return (IScreenSpacedRenderParams)RenderCore; } }
 
+        public ScreenSpacedElement3D()
+        {
+            InitializeMover();
+        }
+
         protected abstract void UpdateModel(Vector3 upDirection);
 
         protected override IRenderCore OnCreateRenderCore()
@@ -152,6 +161,111 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             RenderCore.Detach();
             base.OnDetach();
+        }
+
+        #region 2D stuffs
+        public RelativePositionCanvas2D MoverCanvas { private set; get; } 
+            = new RelativePositionCanvas2D() { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+        private ScreenSpacePositionMover mover = new ScreenSpacePositionMover();
+        private void InitializeMover()
+        {
+            MoverCanvas.Children.Add(mover);
+            SetBinding(nameof(RelativeScreenLocationX), mover, RelativePositionCanvas2D.RelativeXProperty, this, BindingMode.TwoWay);
+            SetBinding(nameof(RelativeScreenLocationY), mover, RelativePositionCanvas2D.RelativeYProperty, this, BindingMode.TwoWay);
+            mover.OnMoveClicked += Mover_OnMoveClicked;
+        }
+
+        private void Mover_OnMoveClicked(object sender, ScreenSpacePositionMover.MoveDirection e)
+        {
+            switch (e)
+            {
+                case ScreenSpacePositionMover.MoveDirection.LeftTop:
+                    this.RelativeScreenLocationX = -Math.Abs(RelativeScreenLocationX);
+                    this.RelativeScreenLocationY = Math.Abs(RelativeScreenLocationY);
+                    break;
+                case ScreenSpacePositionMover.MoveDirection.LeftBottom:
+                    this.RelativeScreenLocationX = -Math.Abs(RelativeScreenLocationX);
+                    this.RelativeScreenLocationY = -Math.Abs(RelativeScreenLocationY);
+                    break;
+                case ScreenSpacePositionMover.MoveDirection.RightTop:
+                    this.RelativeScreenLocationX = Math.Abs(RelativeScreenLocationX);
+                    this.RelativeScreenLocationY = Math.Abs(RelativeScreenLocationY);
+                    break;
+                case ScreenSpacePositionMover.MoveDirection.RightBottom:
+                    this.RelativeScreenLocationX = Math.Abs(RelativeScreenLocationX);
+                    this.RelativeScreenLocationY = -Math.Abs(RelativeScreenLocationY);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private static void SetBinding(string path, DependencyObject dobj, DependencyProperty property, object viewModel, BindingMode mode = BindingMode.TwoWay)
+        {
+            var binding = new Binding(path);
+            binding.Source = viewModel;
+            binding.Mode = mode;
+            BindingOperations.SetBinding(dobj, property, binding);
+        }
+        #endregion
+    }
+
+    public class ScreenSpacePositionMover : Panel2D
+    {
+        public enum MoveDirection
+        {
+            LeftTop, LeftBottom, RightTop, RightBottom
+        };
+        public event EventHandler<MoveDirection> OnMoveClicked;
+        private Button2D MoveLeftTop, MoveLeftBottom, MoveRightTop, MoveRightBottom;
+        private Button2D[] buttons = new Button2D[4];
+
+        public ScreenSpacePositionMover()
+        {
+            MoveLeftTop = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top, Content2D = new RectangleModel2D() { Width = 8, Height = 8, Fill = new SolidColorBrush(Colors.Yellow) } };
+            MoveLeftBottom = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Bottom, Content2D = new RectangleModel2D() { Width = 8, Height = 8, Fill = new SolidColorBrush(Colors.Yellow) } };
+            MoveRightTop = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top, Content2D = new RectangleModel2D() { Width = 8, Height = 8, Fill = new SolidColorBrush(Colors.Yellow) } };
+            MoveRightBottom = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Bottom, Content2D = new RectangleModel2D() { Width = 8, Height = 8, Fill = new SolidColorBrush(Colors.Yellow) } };
+
+            buttons[0] = MoveLeftTop;
+            buttons[1] = MoveLeftBottom;
+            buttons[2] = MoveRightTop;
+            buttons[3] = MoveRightBottom;
+
+            Width = 90;
+            Height = 90;
+            
+            foreach(var b in buttons)
+            {
+                b.Visibility = Visibility.Hidden;
+                Children.Add(b);
+            }
+
+            MoveLeftTop.Clicked2D += (s, e) => { OnMoveClicked?.Invoke(MoveLeftTop, MoveDirection.LeftTop); };
+            MoveLeftBottom.Clicked2D += (s, e) => { OnMoveClicked?.Invoke(MoveLeftBottom, MoveDirection.LeftBottom); };
+            MoveRightTop.Clicked2D += (s, e) => { OnMoveClicked?.Invoke(MoveRightTop, MoveDirection.RightTop); };
+            MoveRightBottom.Clicked2D += (s, e) => { OnMoveClicked?.Invoke(MoveRightBottom, MoveDirection.RightBottom); };
+        }
+
+        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
+        {
+            hitResult = null;
+            if (LayoutBoundWithTransform.Contains(mousePoint))
+            {             
+                foreach(var b in buttons)
+                {
+                    b.Visibility = Visibility.Visible;
+                }
+                return base.OnHitTest(ref mousePoint, out hitResult);
+            }
+            else
+            {
+                foreach (var b in buttons)
+                {
+                    b.Visibility = Visibility.Hidden;
+                }
+                return false;
+            }
         }
     }
 }

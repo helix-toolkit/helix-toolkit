@@ -610,7 +610,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "ViewCubeHorizontalPosition",
                 typeof(double),
                 typeof(Viewport3DX),
-                new UIPropertyMetadata(0.8));
+                new PropertyMetadata(-0.8));
 
         /// <summary>
         /// Identifies the <see cref=" IsViewCubeEdgeClicksEnabled"/> dependency property.
@@ -627,7 +627,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "ViewCubeVerticalPosition",
                 typeof(double),
                 typeof(Viewport3DX),
-                new UIPropertyMetadata(-0.8));
+                new PropertyMetadata(0.8));
 
         /// <summary>
         /// The view cube size property.

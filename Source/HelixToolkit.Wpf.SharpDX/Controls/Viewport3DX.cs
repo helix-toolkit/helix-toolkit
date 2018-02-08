@@ -189,7 +189,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The view cube.
         /// </summary>
-        private Element3D viewCube;
+        private ScreenSpacedElement3D viewCube;
 
         private FrameStatisticsModel2D frameStatisticModel;
 
@@ -675,11 +675,16 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (this.viewCube == null)
             {
-                this.viewCube = this.Template.FindName(PartViewCube, this) as Element3D;
+                this.viewCube = this.Template.FindName(PartViewCube, this) as ScreenSpacedElement3D;
             }
             if (this.viewCube == null)
             {
                 throw new HelixToolkitException("{0} is missing from the template.", PartViewCube);
+            }
+            else
+            {
+                this.viewCube.RelativeScreenLocationX = this.ViewCubeHorizontalPosition;
+                this.viewCube.RelativeScreenLocationY = this.ViewCubeVerticalPosition;
             }
             if(this.frameStatisticModel == null)
             {
@@ -697,6 +702,10 @@ namespace HelixToolkit.Wpf.SharpDX
             if (titleView is Element2D element)
             {
                 overlay2D.Children.Add(element);
+            }
+            if(viewCube != null)
+            {
+                overlay2D.Children.Add(viewCube.MoverCanvas);
             }
             if (Content2D != null)
             {

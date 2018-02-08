@@ -19,10 +19,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// 
         /// </summary>
         public static readonly DependencyProperty VisibilityProperty =
-            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element2D), new PropertyMetadata(Visibility.Visible, (d, e) =>
-            {
-                (d as Element2DCore).VisibilityInternal = (Visibility)e.NewValue;
-            }));
+            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element2D), new FrameworkPropertyMetadata(Visibility.Visible, 
+                FrameworkPropertyMetadataOptions.AffectsRender,
+                (d, e) =>
+                {
+                    (d as Element2DCore).VisibilityInternal = (Visibility)e.NewValue;
+                }));
 
         /// <summary>
         /// 
@@ -40,10 +42,11 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty IsHitTestVisibleProperty =
-            DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element2D), new PropertyMetadata(true, (d,e)=> 
-            {
-                (d as Element2DCore).IsHitTestVisibleInternal = (bool)e.NewValue;
-            }));
+            DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element2D), new PropertyMetadata(true,
+                (d,e)=> 
+                {
+                    (d as Element2DCore).IsHitTestVisibleInternal = (bool)e.NewValue;
+                }));
 
         public bool IsHitTestVisible
         {
