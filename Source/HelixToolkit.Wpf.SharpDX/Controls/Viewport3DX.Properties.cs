@@ -805,12 +805,10 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (e.OldValue is Element2D elementOld)
                 {
-                    (d as Viewport3DX).RemoveLogicalChild(elementOld);
                     (d as Viewport3DX).overlay2D.Children.Remove(elementOld);                   
                 }
                 if (e.NewValue is Element2D elementNew)
                 {
-                    (d as Viewport3DX).AddLogicalChild(elementNew);
                     (d as Viewport3DX).overlay2D.Children.Add(elementNew);                   
                 }
             }));

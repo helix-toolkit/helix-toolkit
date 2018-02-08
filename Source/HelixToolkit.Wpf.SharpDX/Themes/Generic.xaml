@@ -56,21 +56,21 @@
                                 -->
                                 <AdornerDecorator>
                                     <ContentPresenter
-                                            x:Name="PART_Canvas"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Stretch"
-                                            DataContext="{TemplateBinding DataContext}" />
+                                        x:Name="PART_Canvas"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        DataContext="{TemplateBinding DataContext}" />
                                 </AdornerDecorator>
                             </hx:CameraController>
                             <ItemsControl Visibility="Collapsed">
                                 <hx:ViewBoxModel3D
                                     x:Name="PART_ViewCube"
+                                    EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"
                                     IsRendering="{TemplateBinding ShowViewCube}"
                                     RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}"
                                     RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
                                     SizeScale="{TemplateBinding ViewCubeSize}"
-                                    ViewBoxTexture="{TemplateBinding ViewCubeTexture}" 
-                                    EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"/>
+                                    ViewBoxTexture="{TemplateBinding ViewCubeTexture}" />
                                 <hx:CoordinateSystemModel3D
                                     x:Name="PART_CoordinateView"
                                     CoordinateSystemLabelX="{TemplateBinding CoordinateSystemLabelX}"
@@ -87,23 +87,28 @@
                                     Foreground="{TemplateBinding InfoForeground}" />
                                 <hx2D:StackPanel2D
                                     x:Name="PART_TitleView"
-                                    Margin="5" Orientation="Vertical" EnableBitmapCache="True"
+                                    Margin="5"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Background="{TemplateBinding TitleBackground}" IsHitTestVisible="False">
-                                    <hx2D:TextModel2D FontFamily="{TemplateBinding TitleFontFamily}"
+                                    Background="{TemplateBinding TitleBackground}"
+                                    EnableBitmapCache="True"
+                                    IsHitTestVisible="False"
+                                    Orientation="Vertical">
+                                    <hx2D:TextModel2D
+                                        FontFamily="{TemplateBinding TitleFontFamily}"
                                         FontSize="{TemplateBinding TitleSize}"
                                         FontWeight="Bold"
                                         Foreground="{TemplateBinding TextBrush}"
                                         Text="{TemplateBinding Title}"
                                         Visibility="{TemplateBinding Title,
-                                        Converter={StaticResource NotNullToVisibilityConverter}}" />
-                                    <hx2D:TextModel2D FontFamily="{TemplateBinding TitleFontFamily}"
+                                                                     Converter={StaticResource NotNullToVisibilityConverter}}" />
+                                    <hx2D:TextModel2D
+                                        FontFamily="{TemplateBinding TitleFontFamily}"
                                         FontSize="{TemplateBinding SubTitleSize}"
                                         Foreground="{TemplateBinding TextBrush}"
                                         Text="{TemplateBinding SubTitle}"
                                         Visibility="{TemplateBinding SubTitle,
-                                        Converter={StaticResource NotNullToVisibilityConverter}}"/>
+                                                                     Converter={StaticResource NotNullToVisibilityConverter}}" />
                                 </hx2D:StackPanel2D>
                             </ItemsControl>
                             <!--  Message TextBox  -->
@@ -136,22 +141,23 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid IsHitTestVisible="False"
-                              HorizontalAlignment="Stretch"
-                              VerticalAlignment="Stretch">
+                        <Grid
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            IsHitTestVisible="False">
                             <ContentPresenter
-                                    x:Name="PART_Canvas"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    DataContext="{TemplateBinding DataContext}" />
+                                x:Name="PART_Canvas"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                DataContext="{TemplateBinding DataContext}" />
                             <TextBox
                                 Margin="6"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Background="Black"
-                                Foreground="White"
                                 BorderBrush="Tomato"
                                 BorderThickness="2"
+                                Foreground="White"
                                 HorizontalScrollBarVisibility="Disabled"
                                 IsReadOnly="True"
                                 Text="{TemplateBinding MessageText}"

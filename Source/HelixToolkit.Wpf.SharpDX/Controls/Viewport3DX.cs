@@ -316,8 +316,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Unloaded += this.ControlUnloaded;            
 
             AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
-
-            AddLogicalChild(overlay2D);
         }
 
         /// <summary>
@@ -693,6 +691,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             overlay2D.Children.Clear();
+            this.RemoveLogicalChild(overlay2D);
+            this.AddLogicalChild(overlay2D);
             var titleView = Template.FindName(PartTitleView, this);
             if (titleView is Element2D element)
             {
