@@ -321,7 +321,7 @@ namespace HelixToolkit.UWP.Core
             int offX = (int)(Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2);
             int offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
             deviceContext.DeviceContext.Rasterizer.SetViewport(offX, offY, viewportSize, viewportSize);
-            deviceContext.DeviceContext.Rasterizer.SetScissorRectangle(offX, offY, (int)viewportSize, (int)viewportSize);
+            deviceContext.DeviceContext.Rasterizer.SetScissorRectangle(offX, offY, (int)viewportSize + offX, (int)viewportSize + offY);
         }
     }
 }
