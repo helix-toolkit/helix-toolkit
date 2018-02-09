@@ -330,7 +330,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="HelixToolkit.Wpf.SharpDX.ScreenSpacePositionMoverBase" />
+    /// <seealso cref="HelixToolkit.Wpf.SharpDX.Elements2D.ScreenSpacePositionMoverBase" />
     public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
     {
         private Button2D MoveLeftTop, MoveLeftBottom, MoveRightTop, MoveRightBottom;

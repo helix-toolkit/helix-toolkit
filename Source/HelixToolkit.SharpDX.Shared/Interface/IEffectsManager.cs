@@ -94,7 +94,10 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public interface IEffectsManager : IDeviceResources
     {
-        ILogger Logger { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        LogWrapper Logger { get; }
         /// <summary>
         /// 
         /// </summary>

@@ -183,7 +183,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Create effect material varaible model
         /// </summary>
-        /// <param name="effect"></param>
+        /// <param name="manager"></param>
         /// <returns></returns>
         protected virtual IEffectMaterialVariables CreateEffectMaterialVariables(IEffectsManager manager)
         {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HelixToolkit.Logger
+﻿namespace HelixToolkit.Logger
 {
     /// <summary>
     /// Provide simple log interface for user to log helix toolkit internal logs.

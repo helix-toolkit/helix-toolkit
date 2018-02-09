@@ -30,12 +30,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// 
         /// </summary>
         /// <param name="swapChain"></param>
+        /// <param name="deviceContext"></param>
         void Initialize(SwapChain1 swapChain, DeviceContext2D deviceContext);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="texture"></param>
+        /// <param name="deviceContext"></param>
         void Initialize(Texture2D texture, DeviceContext2D deviceContext);
     }
 
@@ -58,6 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// 
         /// </summary>
         /// <param name="swapChain"></param>
+        /// <param name="deviceContext"></param>
         public void Initialize(SwapChain1 swapChain, DeviceContext2D deviceContext)
         {
             RemoveAndDispose(ref d2DTarget);
@@ -70,6 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// 
         /// </summary>
         /// <param name="texture"></param>
+        /// <param name="deviceContext"></param>
         public void Initialize(Texture2D texture, DeviceContext2D deviceContext)
         {
             RemoveAndDispose(ref d2DTarget);        

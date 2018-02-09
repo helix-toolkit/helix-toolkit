@@ -272,7 +272,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
-        /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttached"/> -> <see cref="InvalidateRender"/></para>
+        /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="InvalidateRender"/></para>
         /// </summary>
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
@@ -352,7 +352,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         /// <summary>
         /// <para>Determine if this can be rendered.</para>
-        /// <para>Default returns <see cref="IsAttached"/> &amp;&amp; <see cref="IsRendering"/> &amp;&amp; <see cref="Visibility"/> == <see cref="Visibility.Visible"/></para>
+        /// <para>Default returns <see cref="IsAttached"/> &amp;&amp; <see cref="Visibility"/> == <see cref="Visibility.Visible"/></para>
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
@@ -365,6 +365,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
         /// </summary>
         /// <param name="context">The context.</param>
+        /// <param name="deviceContext"></param>
         public void Render(IRenderContext context, DeviceContextProxy deviceContext)
         {
             Update(context);
@@ -373,14 +374,25 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 OnRender(context, deviceContext);
             }
         }
-
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
         protected virtual void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             RenderCore.Render(context, deviceContext);
         }
         #endregion
 
-        #region Hit Test
+        #region Hit Test        
+        /// <summary>
+        /// Hits the test.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="ray">The ray.</param>
+        /// <param name="hits">The hits.</param>
+        /// <returns></returns>
         public virtual bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             if (CanHitTest(context))
@@ -392,12 +404,25 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 return false;
             }
         }
-
+        /// <summary>
+        /// Determines whether this instance [can hit test] the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
+        /// </returns>
         protected virtual bool CanHitTest(IRenderContext context)
         {
             return IsHitTestVisibleInternal && IsRenderable;
         }
-
+        /// <summary>
+        /// Called when [hit test].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="totalModelMatrix">The total model matrix.</param>
+        /// <param name="ray">The ray.</param>
+        /// <param name="hits">The hits.</param>
+        /// <returns></returns>
         protected abstract bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits);
         #endregion
 

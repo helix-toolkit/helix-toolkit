@@ -20,6 +20,9 @@ using System.Diagnostics;
 using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract partial class Element2DCore : FrameworkContentElement, IDisposable, IRenderable2D, INotifyPropertyChanged
     {
         /// <summary>
@@ -48,12 +51,28 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         internal bool IsHitTestVisibleInternal { set; get; } = true;
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is attached.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is attached; otherwise, <c>false</c>.
+        /// </value>
         public bool IsAttached { private set; get; }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is renderable.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is renderable; otherwise, <c>false</c>.
+        /// </value>
         public bool IsRenderable { private set; get; } = true;
 
         private IRenderCore2D renderCore;
+        /// <summary>
+        /// Gets or sets the render core.
+        /// </summary>
+        /// <value>
+        /// The render core.
+        /// </value>
         public IRenderCore2D RenderCore
         {
             private set
@@ -80,12 +99,28 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 return renderCore;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the render host.
+        /// </summary>
+        /// <value>
+        /// The render host.
+        /// </value>
         protected IRenderHost RenderHost { private set; get; }
-
+        /// <summary>
+        /// Gets the items.
+        /// </summary>
+        /// <value>
+        /// The items.
+        /// </value>
         public virtual IEnumerable<IRenderable2D> Items { get { return Enumerable.Empty<IRenderable2D>(); } }
 
         private Matrix3x2 modelMatrix = Matrix3x2.Identity;
+        /// <summary>
+        /// Gets or sets the model matrix.
+        /// </summary>
+        /// <value>
+        /// The model matrix.
+        /// </value>
         public Matrix3x2 ModelMatrix
         {
             set
@@ -100,6 +135,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private Matrix3x2 layoutTranslate = Matrix3x2.Identity;
+        /// <summary>
+        /// Gets or sets the layout translate.
+        /// </summary>
+        /// <value>
+        /// The layout translate.
+        /// </value>
         public Matrix3x2 LayoutTranslate
         {
             set
@@ -113,6 +154,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private Matrix3x2 parentMatrix = Matrix3x2.Identity;
+        /// <summary>
+        /// Gets or sets the parent matrix.
+        /// </summary>
+        /// <value>
+        /// The parent matrix.
+        /// </value>
         public Matrix3x2 ParentMatrix
         {
             set
@@ -126,6 +173,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private Matrix3x2 totalTransform = Matrix3x2.Identity;
+        /// <summary>
+        /// Gets or sets the total model matrix.
+        /// </summary>
+        /// <value>
+        /// The total model matrix.
+        /// </value>
         public Matrix3x2 TotalModelMatrix
         {
             private set
@@ -153,17 +206,25 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// </value>
         private Matrix3x2 RelativeMatrix
         { set; get; }
-
+        /// <summary>
+        /// Gets or sets the layout bound with transform.
+        /// </summary>
+        /// <value>
+        /// The layout bound with transform.
+        /// </value>
         public RectangleF LayoutBoundWithTransform
         {
             private set;get;
         }
-
+        /// <summary>
+        /// Creates the render core.
+        /// </summary>
+        /// <returns></returns>
         protected virtual IRenderCore2D CreateRenderCore() { return new EmptyRenderCore2D(); }
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
-        /// <para>To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/></para>
-        /// <para>Attach Flow: <see cref="SetRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttached"/> -> <see cref="InvalidateRender"/></para>
+        /// <para>Attach Flow: Set RenderHost -> Get Effect ->
+        /// <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttach"/> -> <see cref="InvalidateRender"/></para>
         /// </summary>
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
@@ -187,7 +248,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             RenderCore.Attach(host);
             return true;
         }
-
+        /// <summary>
+        /// Detaches this instance.
+        /// </summary>
         public void Detach()
         {
             if (IsAttached)
@@ -198,12 +261,17 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 OnDetach();                
             }
         }
-
+        /// <summary>
+        /// Called when [detach].
+        /// </summary>
         protected virtual void OnDetach()
         {
             RenderHost = null;
         }
-
+        /// <summary>
+        /// Updates the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
         public virtual void Update(IRenderContext2D context)
         {         
             IsRenderable = CanRender(context);          
@@ -311,7 +379,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 Render(context);
             }
         }
-
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
         protected virtual void OnRender(IRenderContext2D context)
         {
             RenderCore.Render(context);
@@ -320,15 +391,30 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 c.Render(context);
             }
         }
-#endregion
-
+        #endregion
+        /// <summary>
+        /// Determines whether this instance [can hit test].
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance [can hit test]; otherwise, <c>false</c>.
+        /// </returns>
         protected virtual bool CanHitTest()
         {
             return IsAttached && IsHitTestVisibleInternal;
         }
-
+        /// <summary>
+        /// Called when [hit test].
+        /// </summary>
+        /// <param name="mousePoint">The mouse point.</param>
+        /// <param name="hitResult">The hit result.</param>
+        /// <returns></returns>
         protected abstract bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult);
-
+        /// <summary>
+        /// Hits the test.
+        /// </summary>
+        /// <param name="mousePoint">The mouse point.</param>
+        /// <param name="hitResult">The hit result.</param>
+        /// <returns></returns>
         public bool HitTest(Vector2 mousePoint, out HitTest2DResult hitResult)
         {
             if (CanHitTest())
@@ -346,7 +432,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             InvalidateRender();
         }
-
+        /// <summary>
+        /// Invalidates the render.
+        /// </summary>
         protected void InvalidateRender()
         {
             RenderHost?.InvalidateRender();

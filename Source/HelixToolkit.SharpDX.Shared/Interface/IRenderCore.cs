@@ -60,7 +60,6 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="host"></param>
         /// <param name="technique"></param>
         void Attach(IRenderTechnique technique);
         /// <summary>
@@ -71,6 +70,7 @@ namespace HelixToolkit.UWP.Core
         /// 
         /// </summary>
         /// <param name="context"></param>
+        /// <param name="deviceContext"></param>
         void Render(IRenderContext context, DeviceContextProxy deviceContext);
         /// <summary>
         /// Unsubscribe all OnInvalidateRenderer event handler;
@@ -430,6 +430,12 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public interface ISkyboxRenderParams
     {
+        /// <summary>
+        /// Gets or sets the cube texture.
+        /// </summary>
+        /// <value>
+        /// The cube texture.
+        /// </value>
         Stream CubeTexture { set; get; }
     }
     /// <summary>

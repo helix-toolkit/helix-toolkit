@@ -96,11 +96,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Renders the specified context.
+        /// Called when [render].
         /// </summary>
-        /// <param name="context">
-        /// The context.
-        /// </param>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             // you mean like this?

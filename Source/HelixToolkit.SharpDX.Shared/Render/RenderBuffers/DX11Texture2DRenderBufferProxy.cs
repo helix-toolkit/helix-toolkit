@@ -27,13 +27,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DX11RenderBufferProxy"/> class.
+        /// Initializes a new instance of the <see cref="DX11Texture2DRenderBufferProxy"/> class.
         /// </summary>
         /// <param name="deviceResources"></param>
         public DX11Texture2DRenderBufferProxy(IDeviceResources deviceResources) : base(deviceResources)
         {
         }
-
+        /// <summary>
+        /// Disposes the buffers.
+        /// </summary>
         protected override void DisposeBuffers()
         {
             base.DisposeBuffers();
@@ -46,6 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
+        /// <param name="createDepthStencilBuffer"></param>
         /// <returns></returns>
         protected override Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height, bool createDepthStencilBuffer)
         {
@@ -150,7 +153,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
             return true;
         }
-
+        /// <summary>
+        /// Presents this instance.
+        /// </summary>
+        /// <returns></returns>
         public override bool Present()
         {
             Device.ImmediateContext.Flush();

@@ -150,7 +150,6 @@ namespace HelixToolkit.UWP.Core
             /// Creates the specified structure size.
             /// </summary>
             /// <typeparam name="T"></typeparam>
-            /// <param name="structSize">Size of the structure.</param>
             /// <returns></returns>
             public static GeometryBufferContainer Create<T>() where T : IGeometryBufferModel
             {

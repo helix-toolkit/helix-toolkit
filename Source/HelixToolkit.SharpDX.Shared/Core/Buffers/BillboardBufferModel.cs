@@ -24,6 +24,7 @@ namespace HelixToolkit.UWP.Core
         /// Called when [build vertex array].
         /// </summary>
         /// <param name="geometry">The geometry.</param>
+        /// <param name="deviceResources"></param>
         /// <returns></returns>
         protected abstract VertexStruct[] OnBuildVertexArray(IBillboardText geometry, IDeviceResources deviceResources);
 
@@ -128,6 +129,7 @@ namespace HelixToolkit.UWP.Core
         /// Called when [build vertex array].
         /// </summary>
         /// <param name="geometry">The geometry.</param>
+        /// <param name="deviceResources"></param>
         /// <returns></returns>
         protected override BillboardVertex[] OnBuildVertexArray(IBillboardText geometry, IDeviceResources deviceResources)
         {

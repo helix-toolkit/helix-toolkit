@@ -207,7 +207,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// Create raster state description.
-        /// <para>If <see cref="OnCreateRasterState" /> is set, then <see cref="OnCreateRasterState" /> instead of <see cref="CreateRasterState" /> will be called.</para>
         /// </summary>
         /// <returns></returns>
         protected override RasterizerStateDescription CreateRasterState()

@@ -83,7 +83,6 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Call to attach the render core.
         /// </summary>
-        /// <param name="host"></param>
         /// <param name="technique"></param>
         public void Attach(IRenderTechnique technique)
         {
@@ -98,7 +97,6 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// During attatching render core. Create all local resources. Use Collect(resource) to let object be released automatically during Detach().
         /// </summary>
-        /// <param name="host"></param>
         /// <param name="technique"></param>
         /// <returns></returns>
         protected virtual bool OnAttach(IRenderTechnique technique)

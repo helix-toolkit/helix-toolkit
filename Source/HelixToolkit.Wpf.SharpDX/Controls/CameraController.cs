@@ -293,11 +293,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private readonly LinkedList<CameraSetting> cameraHistory = new LinkedList<CameraSetting>();
 
         /// <summary>
-        /// The rendering event listener.
-        /// </summary>
-        //private readonly RenderingEventListener renderingEventListener;
-
-        /// <summary>
         /// The change field of view event handler.
         /// </summary>
         private ZoomHandler changeFieldOfViewHandler;

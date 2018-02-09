@@ -201,7 +201,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <summary>
         /// Called when [render].
         /// </summary>
-        /// <param name="matrices">The matrices.</param>
+        /// <param name="context">The context.</param>
         protected abstract void OnRender(IRenderContext2D context);
         /// <summary>
         /// Determines whether this instance can render the specified context.

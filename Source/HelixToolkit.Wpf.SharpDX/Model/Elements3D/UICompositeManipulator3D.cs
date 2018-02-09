@@ -210,6 +210,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="context"></param>
+        /// <param name="totalModelMatrix"></param>
         /// <param name="ray"></param>
         /// <param name="hits"></param>
         /// <returns></returns>

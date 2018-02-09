@@ -17,7 +17,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <typeparam name="T">Geometry Buffer Type</typeparam>
         /// <param name="modelGuid">The model unique identifier.</param>
         /// <param name="geometry">The geometry.</param>
-        /// <param name="structSize">Size of the vertex structure.</param>
         /// <returns></returns>
         IGeometryBufferModel Register<T>(Guid modelGuid, Geometry3D geometry) where T : IGeometryBufferModel;
         /// <summary>

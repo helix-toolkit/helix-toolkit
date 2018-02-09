@@ -25,8 +25,14 @@ namespace HelixToolkit.UWP
     /// </summary>
     public abstract class EffectsManager : DisposeObject, IEffectsManager
     {
-        private readonly ILogger logger;
-        public ILogger Logger { private set; get; }
+        private readonly LogWrapper logger;
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public LogWrapper Logger { private set; get; }
         /// <summary>
         /// Occurs when [on dispose resources].
         /// </summary>
@@ -150,9 +156,9 @@ namespace HelixToolkit.UWP
         public EffectsManager()
         {
 #if DEBUG
-            logger = new DebugLogger();
+            logger = new LogWrapper(new DebugLogger());
 #else
-            logger = new NullLogger();
+            logger = new LogWrapper(new NullLogger());
 #endif
             Initialize();
         }
@@ -162,7 +168,7 @@ namespace HelixToolkit.UWP
         /// <param name="logger">The logger.</param>
         public EffectsManager(ILogger logger)
         {
-            this.logger = logger ?? new NullLogger();
+            this.logger = logger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(logger);
             Initialize();
         }
 
@@ -173,19 +179,27 @@ namespace HelixToolkit.UWP
         public EffectsManager(int adapterIndex)
         {
 #if DEBUG
-            logger = new DebugLogger();
+            logger = new LogWrapper(new DebugLogger());
 #else
-            logger = new NullLogger();
+            logger = new LogWrapper(new NullLogger());
 #endif
             Initialize(adapterIndex);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EffectsManager"/> class.
+        /// </summary>
+        /// <param name="adapterIndex">Index of the adapter.</param>
+        /// <param name="logger">The logger.</param>
         public EffectsManager(int adapterIndex, ILogger logger)
         {
-            this.logger = logger ?? new NullLogger();
+            this.logger = logger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(logger);
             Initialize(adapterIndex);
         }
 
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
         protected void Initialize()
         {
 #if DEBUGMEMORY

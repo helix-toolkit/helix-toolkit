@@ -53,6 +53,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="name"></param>
         /// <param name="type"></param>
+        /// <param name="isNull"></param>
         public ShaderBase(string name, ShaderStage type, bool isNull = false)
         {
             ShaderType = type;

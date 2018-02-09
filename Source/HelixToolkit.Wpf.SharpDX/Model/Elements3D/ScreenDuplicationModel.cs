@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// only monitor outputs using integrated graphics card is fully supported.
     /// Trying to clone monitor outputs by external graphics card, 
     /// the clone window must reside in those monitors which is rendered by external graphics card, or error will be occurred.
-    /// Ref: <see cref="https://support.microsoft.com/en-us/help/3019314/error-generated-when-desktop-duplication-api-capable-application-is-ru"/> 
+    /// Ref: https://support.microsoft.com/en-us/help/3019314/error-generated-when-desktop-duplication-api-capable-application-is-ru
     /// </summary>
     /// <seealso cref="HelixToolkit.Wpf.SharpDX.Element3D" />
     public class ScreenDuplicationModel : Element3D
@@ -114,7 +114,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         /// <summary>
         /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="OnSetRenderTechnique" /> is set, then <see cref="OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
+        /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
         /// </summary>
         /// <param name="host"></param>
         /// <returns>
