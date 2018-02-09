@@ -153,7 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty StrokeLineJoinProperty
-        = DependencyProperty.Register("StrokeLineJoin", typeof(PenLineJoin), typeof(Border2D), new PropertyMetadata(PenLineJoin.Bevel,
+        = DependencyProperty.Register("StrokeLineJoin", typeof(PenLineJoin), typeof(Border2D), new PropertyMetadata(PenLineJoin.Miter,
             (d, e) =>
             {
                 (d as Border2D).strokeStyleChanged = true;
@@ -247,7 +247,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
             if (strokeStyleChanged)
             {
-                borderCore.StrokeStyle = new D2D.StrokeStyle(context.DeviceContext.Factory,
+                borderCore.StrokeStyle = new D2D.StrokeStyle(context.DeviceResources.Factory2D,
                     new D2D.StrokeStyleProperties()
                     {
                         DashCap = this.StrokeDashCap.ToD2DCapStyle(),
@@ -256,9 +256,9 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                         DashOffset = (float)StrokeDashOffset,
                         LineJoin = StrokeLineJoin.ToD2DLineJoin(),
                         MiterLimit = Math.Max(1, (float)StrokeMiterLimit),
-                        DashStyle = D2D.DashStyle.Dash
+                        DashStyle = StrokeDashArray != null && StrokeDashArray.Count > 0 ? D2D.DashStyle.Custom : D2D.DashStyle.Dash,
                     },
-                    StrokeDashArray.Select(x => (float)x).ToArray());
+                    StrokeDashArray != null ? StrokeDashArray.Select(x => (float)x).ToArray() : new float[0]);
                 strokeStyleChanged = false;
             }
         }

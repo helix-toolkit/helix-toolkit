@@ -264,6 +264,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        protected override bool CanHitTest(IRenderContext context)
+        {
+            return base.CanHitTest(context) && context != null;
+        }
+
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             var p = Vector4.Transform(new Vector4(ray.Position, 1), context.ScreenViewProjectionMatrix);
