@@ -154,6 +154,7 @@
     <Compile Include="Controls\VisualTargetPresentationSource.cs" />
     <Compile Include="Controls\VisualWrapper.cs" />
     <Compile Include="Controls\WinformHostExtend.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
     <Compile Include="Core\Ray3D.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Model\Elements2D\Abstract\Clickable2D.cs" />
     <Compile Include="Model\Elements2D\Abstract\ContentElement2D.cs" />
     <Compile Include="Model\Elements2D\FrameStatisticsModel2D.cs" />
+    <Compile Include="Model\Elements2D\ImageModel2D.cs" />
     <Compile Include="Model\Elements2D\Panel2D.cs" />
     <Compile Include="Model\Elements2D\Abstract\ShapeModel2D.cs" />
     <Compile Include="Model\Elements2D\Border2D.cs" />
@@ -190,6 +192,7 @@
     <Compile Include="Model\Elements2D\Interfaces.cs" />
     <Compile Include="Model\Elements2D\Overlay.cs" />
     <Compile Include="Model\Elements2D\RectangleModel2D.cs" />
+    <Compile Include="Model\Elements2D\RelativePositionCanvas2D.cs" />
     <Compile Include="Model\Elements2D\StackPanel2D.cs" />
     <Compile Include="Model\Elements2D\TextModel2D.cs" />
     <Compile Include="Model\Elements2D\Abstract\Element2D.cs" />

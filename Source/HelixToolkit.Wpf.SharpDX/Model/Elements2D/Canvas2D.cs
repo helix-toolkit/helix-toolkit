@@ -164,8 +164,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                             yPos = finalSize.Height - desired.Y - (float)bottom;
                         }
                     }
-
-                    c.Arrange(new RectangleF(xPos, yPos, desired.X + xPos, desired.Y + yPos));
+                    c.Arrange(new RectangleF(xPos, yPos, desired.X, desired.Y));
+                    //c.Arrange(new RectangleF(xPos, yPos, desired.X + xPos, desired.Y + yPos));
                 }
             }
             return finalSize;

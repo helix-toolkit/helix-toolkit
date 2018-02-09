@@ -156,6 +156,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 new PropertyMetadata(Colors.DarkGray));
 
         /// <summary>
+        /// The is coordinate system mover enabled property
+        /// </summary>
+        public static readonly DependencyProperty IsCoordinateSystemMoverEnabledProperty =
+            DependencyProperty.Register("IsCoordinateSystemMoverEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+
+
+        /// <summary>
         /// The coordinate system label X property
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemLabelXProperty = DependencyProperty.Register(
@@ -610,7 +617,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "ViewCubeHorizontalPosition",
                 typeof(double),
                 typeof(Viewport3DX),
-                new UIPropertyMetadata(0.8));
+                new PropertyMetadata(0.8));
 
         /// <summary>
         /// Identifies the <see cref=" IsViewCubeEdgeClicksEnabled"/> dependency property.
@@ -618,6 +625,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsViewCubeEdgeClicksEnabledProperty =
             DependencyProperty.Register("IsViewCubeEdgeClicksEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
 
+        /// <summary>
+        /// Identifies the <see cref=" IsViewCubeEdgeClicksEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsViewCubeMoverEnabledProperty =
+            DependencyProperty.Register("IsViewCubeMoverEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
 
         /// <summary>
         /// The view cube vertical position property. Relative to viewport center.
@@ -627,7 +639,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "ViewCubeVerticalPosition",
                 typeof(double),
                 typeof(Viewport3DX),
-                new UIPropertyMetadata(-0.8));
+                new PropertyMetadata(-0.8));
 
         /// <summary>
         /// The view cube size property.
@@ -803,13 +815,13 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty Content2DProperty
             = DependencyProperty.Register("Content2D", typeof(Element2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
             {
-                if (e.OldValue != null)
+                if (e.OldValue is Element2D elementOld)
                 {
-                    (d as Viewport3DX).overlay2D.Children.Remove((Element2D)e.OldValue);
+                    (d as Viewport3DX).overlay2D.Children.Remove(elementOld);                   
                 }
-                if (e.NewValue != null)
+                if (e.NewValue is Element2D elementNew)
                 {
-                    (d as Viewport3DX).overlay2D.Children.Add((Element2D)e.NewValue);
+                    (d as Viewport3DX).overlay2D.Children.Add(elementNew);                   
                 }
             }));
         /// <summary>
@@ -2079,6 +2091,30 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(IsViewCubeEdgeClicksEnabledProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is view cube mover enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is view cube mover enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsViewCubeMoverEnabled
+        {
+            get { return (bool)GetValue(IsViewCubeMoverEnabledProperty); }
+            set { SetValue(IsViewCubeMoverEnabledProperty, value); }
+        }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether coordinate system mover enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if coordinate system mover enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsCoordinateSystemMoverEnabled
+        {
+            get { return (bool)GetValue(IsCoordinateSystemMoverEnabledProperty); }
+            set { SetValue(IsCoordinateSystemMoverEnabledProperty, value); }
+        }
 
         /// <summary>
         /// Gets or sets the vertical position of view cube viewport. Relative to viewport center

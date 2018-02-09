@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 {
                     AttachChildren(sender as IEnumerable);
                 }
-                else if (e.NewItems != null && IsAttached)
+                else if (e.NewItems != null)
                 {
                     AttachChildren(e.NewItems);
                 }

@@ -69,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             pendingRenderCores.AddRange(pendingRenderables.Select(x => x.RenderCore).Where(x => !x.IsEmpty));
             asyncTask = Task.Factory.StartNew(() =>
             {
-                renderer.UpdateNotRenderParallel(pendingRenderables);
+                renderer?.UpdateNotRenderParallel(pendingRenderables);
             });
             if ((ShowRenderDetail & RenderDetail.TriangleInfo) == RenderDetail.TriangleInfo)
             {
@@ -114,6 +114,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected override void PostRender()
         {
             asyncTask?.Wait();
+            asyncTask = null;
+            getTriangleCountTask?.Wait();
+            getTriangleCountTask = null;
         }
 
         /// <summary>
@@ -155,6 +158,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
             }
             RenderContext2D.PopRenderTarget();
+        }
+
+        /// <summary>
+        /// Called when [ending d3 d].
+        /// </summary>
+        protected override void OnEndingD3D()
+        {
+            asyncTask?.Wait();
+            getTriangleCountTask?.Wait();
+            base.OnEndingD3D();
         }
     }
 }

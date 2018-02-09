@@ -85,13 +85,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         protected override void OnRender(IRenderContext2D context)
         {
             var roundRect = new D2D.RoundedRectangle() { Rect = LayoutBound, RadiusX = CornerRadius, RadiusY = CornerRadius };
-            if (StrokeThickness > 0 && StrokeBrush != null && StrokeStyle != null)
-            {
-                context.DeviceContext.DrawRoundedRectangle(roundRect, StrokeBrush, StrokeThickness, StrokeStyle);
-            }
             if(Background != null)
             {
                 context.DeviceContext.FillRoundedRectangle(roundRect, Background);
+            }
+            if (StrokeThickness > 0 && StrokeBrush != null && StrokeStyle != null)
+            {
+                context.DeviceContext.DrawRoundedRectangle(roundRect, StrokeBrush, StrokeThickness, StrokeStyle);
             }
         }
     }

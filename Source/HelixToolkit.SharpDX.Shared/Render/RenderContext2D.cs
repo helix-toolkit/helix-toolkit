@@ -22,6 +22,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         DeviceContext DeviceContext { get; }
         /// <summary>
+        /// 
+        /// </summary>
+        IDevice2DResources DeviceResources { get; }
+        /// <summary>
         /// Gets the actual width.
         /// </summary>
         /// <value>
@@ -99,6 +103,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public DeviceContext DeviceContext { private set; get; }
         /// <summary>
+        /// Gets the device resources.
+        /// </summary>
+        /// <value>
+        /// The device resources.
+        /// </value>
+        public IDevice2DResources DeviceResources { private set; get; }
+        /// <summary>
         /// Gets or sets the last bitmap transform.
         /// </summary>
         /// <value>
@@ -147,6 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             DeviceContext = deviceContext;
             renderHost = host;
+            DeviceResources = host.EffectsManager;
         }
         /// <summary>
         /// Pushes the render target.

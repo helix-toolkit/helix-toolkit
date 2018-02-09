@@ -694,9 +694,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             isLoaded = false;
             StopRendering();
             IsInitialized = false;
+            OnEndingD3D();
             DetachRenderable();
             DisposeBuffers();
         }
+
+        protected virtual void OnEndingD3D() { }
 
         private void OnManagerDisposed(object sender, bool args)
         {

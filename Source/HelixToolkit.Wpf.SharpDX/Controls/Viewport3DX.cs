@@ -136,7 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The coordinate view.
         /// </summary>
-        private Element3D coordinateView;
+        private ScreenSpacedElement3D coordinateView;
 
         /// <summary>
         /// The nearest valid result during a hit test.
@@ -189,7 +189,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The view cube.
         /// </summary>
-        private Element3D viewCube;
+        private ScreenSpacedElement3D viewCube;
 
         private FrameStatisticsModel2D frameStatisticModel;
 
@@ -316,8 +316,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Unloaded += this.ControlUnloaded;            
 
             AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
-
-            AddLogicalChild(overlay2D);
         }
 
         /// <summary>
@@ -669,7 +667,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (this.coordinateView == null)
             {
-                this.coordinateView = this.Template.FindName(PartCoordinateView, this) as Element3D;
+                this.coordinateView = this.Template.FindName(PartCoordinateView, this) as ScreenSpacedElement3D;
             }
             if (this.coordinateView == null)
             {
@@ -677,11 +675,16 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (this.viewCube == null)
             {
-                this.viewCube = this.Template.FindName(PartViewCube, this) as Element3D;
+                this.viewCube = this.Template.FindName(PartViewCube, this) as ScreenSpacedElement3D;
             }
             if (this.viewCube == null)
             {
                 throw new HelixToolkitException("{0} is missing from the template.", PartViewCube);
+            }
+            else
+            {
+                this.viewCube.RelativeScreenLocationX = this.ViewCubeHorizontalPosition;
+                this.viewCube.RelativeScreenLocationY = this.ViewCubeVerticalPosition;
             }
             if(this.frameStatisticModel == null)
             {
@@ -693,10 +696,20 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             overlay2D.Children.Clear();
+            this.RemoveLogicalChild(overlay2D);
+            this.AddLogicalChild(overlay2D);
             var titleView = Template.FindName(PartTitleView, this);
             if (titleView is Element2D element)
             {
                 overlay2D.Children.Add(element);
+            }
+            if(viewCube != null)
+            {
+                overlay2D.Children.Add(viewCube.MoverCanvas);
+            }
+            if(coordinateView != null)
+            {
+                overlay2D.Children.Add(coordinateView.MoverCanvas);
             }
             if (Content2D != null)
             {

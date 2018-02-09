@@ -290,6 +290,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 RenderCore.Transform = context.RelativeTransform;
                 OnRender(context);
                 context.PopRelativeTransform();
+                IsVisualDirty = false;
             }
         }
 

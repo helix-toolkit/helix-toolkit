@@ -55,7 +55,10 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 }
                 if (model.contentInternal != null)
                 {
-                    model.AddLogicalChild(model.contentInternal);
+                    if (model.contentInternal.Parent == null)
+                    {
+                        model.AddLogicalChild(model.contentInternal);
+                    }
                     if (model.IsAttached)
                     {
                         model.contentInternal.Attach(model.RenderHost);
@@ -124,14 +127,14 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 new FrameworkPropertyMetadata(HorizontalAlignment.Center, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
 
-        public VerticalAlignment VerticalContentAlighment
+        public VerticalAlignment VerticalContentAlignment
         {
-            get { return (VerticalAlignment)GetValue(VerticalContentAlighmentProperty); }
-            set { SetValue(VerticalContentAlighmentProperty, value); }
+            get { return (VerticalAlignment)GetValue(VerticalContentAlignmentProperty); }
+            set { SetValue(VerticalContentAlignmentProperty, value); }
         }
 
-        public static readonly DependencyProperty VerticalContentAlighmentProperty =
-            DependencyProperty.Register("VerticalContentAlighment", typeof(VerticalAlignment), typeof(ContentElement2D), 
+        public static readonly DependencyProperty VerticalContentAlignmentProperty =
+            DependencyProperty.Register("VerticalContentAlignment", typeof(VerticalAlignment), typeof(ContentElement2D), 
                 new FrameworkPropertyMetadata(VerticalAlignment.Center, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         protected Element2D contentInternal { private set; get; }
@@ -206,17 +209,25 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected override bool CanRender(IRenderContext2D context)
         {
-            return base.CanRender(context) && contentInternal != null;
+            return base.CanRender(context);
         }
 
         protected override bool CanHitTest()
         {
-            return base.CanHitTest() && contentInternal != null;
+            return base.CanHitTest();
         }
 
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
-            return contentInternal.HitTest(mousePoint, out hitResult);
+            if(contentInternal != null && LayoutBoundWithTransform.Contains(mousePoint))
+            {
+                return contentInternal.HitTest(mousePoint, out hitResult);
+            }
+            else
+            {
+                hitResult = null;
+                return false;
+            }
         }
 
         protected override Size2F MeasureOverride(Size2F availableSize)
@@ -227,7 +238,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 if(item is Element2D e)
                 {
                     e.HorizontalAlignment = HorizontalContentAlignment;
-                    e.VerticalAlignment = VerticalContentAlighment;
+                    e.VerticalAlignment = VerticalContentAlignment;
                     e.Measure(availableSize);
                     maxContentSize.Width = Math.Max(maxContentSize.Width, e.DesiredSize.X);
                     maxContentSize.Height = Math.Max(maxContentSize.Height, e.DesiredSize.Y);
