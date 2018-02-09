@@ -188,12 +188,13 @@
 
     <Style TargetType="{x:Type hx2D:MoverButton2D}">
         <Style.Setters>
-            <Setter Property="Background" Value="#9B005FAB" />
-            <Setter Property="Foreground" Value="LightGreen" />
-            <Setter Property="CornerRadius" Value="2" />
-            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="#9B9D9D9D" />
+            <Setter Property="CornerRadius" Value="0" />
             <Setter Property="Width" Value="12" />
             <Setter Property="Height" Value="12" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="#007DFF" />
+            <Setter Property="Margin" Value="8" />
         </Style.Setters>
         <Style.Triggers>
             <Trigger Property="IsMouseOver2D" Value="true">
