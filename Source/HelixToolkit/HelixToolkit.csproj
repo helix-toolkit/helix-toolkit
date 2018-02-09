@@ -49,6 +49,10 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Logger\DebugLogger.cs" />
+    <Compile Include="Logger\ILogger.cs" />
+    <Compile Include="Logger\LogLevel.cs" />
+    <Compile Include="Logger\NullLogger.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
   </ItemGroup>
   <ItemGroup>

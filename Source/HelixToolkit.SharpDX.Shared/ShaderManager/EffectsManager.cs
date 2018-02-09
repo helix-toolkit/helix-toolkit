@@ -18,11 +18,15 @@ namespace HelixToolkit.UWP
     using Shaders;
     using ShaderManager;
     using Core;
+    using HelixToolkit.Logger;
+
     /// <summary>
     /// Shader and Technique manager
     /// </summary>
     public abstract class EffectsManager : DisposeObject, IEffectsManager
     {
+        private readonly ILogger logger;
+        public ILogger Logger { private set; get; }
         /// <summary>
         /// Occurs when [on dispose resources].
         /// </summary>
@@ -145,14 +149,40 @@ namespace HelixToolkit.UWP
         /// </summary>
         public EffectsManager()
         {
+#if DEBUG
+            logger = new DebugLogger();
+#else
+            logger = new NullLogger();
+#endif
             Initialize();
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EffectsManager"/> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        public EffectsManager(ILogger logger)
+        {
+            this.logger = logger ?? new NullLogger();
+            Initialize();
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EffectsManager"/> class.
         /// </summary>
         /// <param name="adapterIndex">Index of the adapter.</param>
         public EffectsManager(int adapterIndex)
         {
+#if DEBUG
+            logger = new DebugLogger();
+#else
+            logger = new NullLogger();
+#endif
+            Initialize(adapterIndex);
+        }
+
+        public EffectsManager(int adapterIndex, ILogger logger)
+        {
+            this.logger = logger ?? new NullLogger();
             Initialize(adapterIndex);
         }
 
@@ -224,7 +254,7 @@ namespace HelixToolkit.UWP
             {
                 AddTechnique(tech);
             }
-            #endregion
+#endregion
 
             factory2D = Collect(new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.MultiThreaded));
             wicImgFactory = Collect(new global::SharpDX.WIC.ImagingFactory());
