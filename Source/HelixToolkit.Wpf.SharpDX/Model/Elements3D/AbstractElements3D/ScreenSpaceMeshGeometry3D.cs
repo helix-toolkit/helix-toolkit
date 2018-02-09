@@ -61,10 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The enable mover property
         /// </summary>
         public static readonly DependencyProperty EnableMoverProperty =
-            DependencyProperty.Register("EnableMover", typeof(bool), typeof(ScreenSpacedElement3D), new PropertyMetadata(true, (d, e) =>
-            {
-                (d as ScreenSpacedElement3D).mover.EnableMover = (bool)e.NewValue;
-            }));
+            DependencyProperty.Register("EnableMover", typeof(bool), typeof(ScreenSpacedElement3D), new PropertyMetadata(true));
 
         /// <summary>
         /// The left handed property
@@ -210,6 +207,7 @@ namespace HelixToolkit.Wpf.SharpDX
             SetBinding(nameof(RelativeScreenLocationX), mover, RelativePositionCanvas2D.RelativeXProperty, this, BindingMode.TwoWay);
             SetBinding(nameof(RelativeScreenLocationY), mover, RelativePositionCanvas2D.RelativeYProperty, this, BindingMode.TwoWay);
             SetBinding(nameof(IsRendering), mover, Element2D.VisibilityProperty, this, BindingMode.OneWay, new BoolToVisibilityConverter());
+            SetBinding(nameof(EnableMover), mover, ScreenSpacePositionMoverBase.EnableMoverProperty, this, BindingMode.OneWay);
             mover.OnMoveClicked += Mover_OnMoveClicked;
             isMoverInitialized = true;
         }
