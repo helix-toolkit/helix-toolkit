@@ -115,6 +115,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             asyncTask?.Wait();
             asyncTask = null;
+            getTriangleCountTask?.Wait();
+            getTriangleCountTask = null;
         }
 
         /// <summary>
@@ -158,9 +160,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             RenderContext2D.PopRenderTarget();
         }
 
+        /// <summary>
+        /// Called when [ending d3 d].
+        /// </summary>
         protected override void OnEndingD3D()
         {
             asyncTask?.Wait();
+            getTriangleCountTask?.Wait();
             base.OnEndingD3D();
         }
     }
