@@ -2,17 +2,16 @@
 //   Copyright (c) 2017 Helix Toolkit contributors
 //   Author: Lunci Hua
 // </copyright>
+using SharpDX;
+using System;
 using System.Windows;
 using Media3D = System.Windows.Media.Media3D;
 namespace HelixToolkit.Wpf.SharpDX
 {
     using Core;
-    using global::SharpDX;
-    using HelixToolkit.Wpf.SharpDX.Elements2D;
-    using Render;
+    using Elements2D;
     using System;
     using System.Windows.Data;
-    using System.Windows.Media;
 
     /// <summary>
     /// Base class for screen space rendering, such as Coordinate System or ViewBox
@@ -218,6 +217,11 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
     }
+}
+
+
+namespace HelixToolkit.Wpf.SharpDX.Elements2D
+{
     /// <summary>
     /// 
     /// </summary>
@@ -246,6 +250,19 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     /// <summary>
+    /// Use to apply style for mover button from Generic.xaml/>
+    /// </summary>
+    /// <seealso cref="HelixToolkit.Wpf.SharpDX.Elements2D.Button2D" />
+    public sealed class MoverButton2D : Button2D
+    {
+        static MoverButton2D()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(
+                typeof(MoverButton2D), new FrameworkPropertyMetadata(typeof(MoverButton2D)));
+        }
+    }
+
+    /// <summary>
     /// 
     /// </summary>
     /// <seealso cref="HelixToolkit.Wpf.SharpDX.ScreenSpacePositionMoverBase" />
@@ -258,10 +275,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public ScreenSpacePositionMover()
         {
-            MoveLeftTop = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top};
-            MoveLeftBottom = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Bottom };
-            MoveRightTop = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top };
-            MoveRightBottom = new Button2D() { Width = 10, Height = 10, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Bottom };
+            MoveLeftTop = new MoverButton2D() { HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top };
+            MoveLeftBottom = new MoverButton2D() { HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Bottom };
+            MoveRightTop = new MoverButton2D() { HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top };
+            MoveRightBottom = new MoverButton2D() { HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Bottom };
 
             buttons[0] = MoveLeftTop;
             buttons[1] = MoveLeftBottom;
@@ -270,17 +287,17 @@ namespace HelixToolkit.Wpf.SharpDX
 
             Width = 82;
             Height = 82;
-            
-            foreach(var b in buttons)
+
+            foreach (var b in buttons)
             {
                 b.Visibility = Visibility.Hidden;
                 Children.Add(b);
             }
 
             MoveLeftTop.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.LeftTop); };
-            MoveLeftBottom.Clicked2D += (s, e) => { RaiseOnMoveClick( ScreenSpaceMoveDirection.LeftBottom); };
-            MoveRightTop.Clicked2D += (s, e) => { RaiseOnMoveClick( ScreenSpaceMoveDirection.RightTop); };
-            MoveRightBottom.Clicked2D += (s, e) => { RaiseOnMoveClick( ScreenSpaceMoveDirection.RightBottom); };
+            MoveLeftBottom.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.LeftBottom); };
+            MoveRightTop.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.RightTop); };
+            MoveRightBottom.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.RightBottom); };
         }
 
         /// <summary>
@@ -293,8 +310,8 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             hitResult = null;
             if (LayoutBoundWithTransform.Contains(mousePoint))
-            {             
-                foreach(var b in buttons)
+            {
+                foreach (var b in buttons)
                 {
                     b.Visibility = Visibility.Visible;
                 }

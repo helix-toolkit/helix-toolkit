@@ -55,7 +55,10 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 }
                 if (model.contentInternal != null)
                 {
-                    model.AddLogicalChild(model.contentInternal);
+                    if (model.contentInternal.Parent == null)
+                    {
+                        model.AddLogicalChild(model.contentInternal);
+                    }
                     if (model.IsAttached)
                     {
                         model.contentInternal.Attach(model.RenderHost);

@@ -177,12 +177,27 @@
             <Setter Property="Background" Value="{x:Static SystemColors.ControlDarkBrush}" />
             <Setter Property="Foreground" Value="{x:Static SystemColors.ControlTextBrush}" />
             <Setter Property="CornerRadius" Value="2" />
-            <Setter Property="BorderBrush" Value="{x:Static SystemColors.InactiveBorderBrush}" />
             <Setter Property="BorderThickness" Value="0" />
         </Style.Setters>
         <Style.Triggers>
             <Trigger Property="IsMouseOver2D" Value="true">
                 <Setter Property="Background" Value="{x:Static SystemColors.HighlightBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type hx2D:MoverButton2D}">
+        <Style.Setters>
+            <Setter Property="Background" Value="#9B005FAB" />
+            <Setter Property="Foreground" Value="LightGreen" />
+            <Setter Property="CornerRadius" Value="2" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Width" Value="12" />
+            <Setter Property="Height" Value="12" />
+        </Style.Setters>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver2D" Value="true">
+                <Setter Property="Background" Value="DarkOrange" />
             </Trigger>
         </Style.Triggers>
     </Style>
