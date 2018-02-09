@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
 
         protected override void PostRender()
         {
-            surfaceD3D.InvalidateD3DImage();
+            surfaceD3D?.InvalidateD3DImage();
             base.PostRender();
         }
 
