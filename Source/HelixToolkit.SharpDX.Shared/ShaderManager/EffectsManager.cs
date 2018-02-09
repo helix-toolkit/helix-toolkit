@@ -19,6 +19,7 @@ namespace HelixToolkit.UWP
     using ShaderManager;
     using Core;
     using HelixToolkit.Logger;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Shader and Technique manager
@@ -32,7 +33,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The logger.
         /// </value>
-        public LogWrapper Logger { private set; get; }
+        public LogWrapper Logger { get { return logger; } }
         /// <summary>
         /// Occurs when [on dispose resources].
         /// </summary>
@@ -165,10 +166,10 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Initializes a new instance of the <see cref="EffectsManager"/> class.
         /// </summary>
-        /// <param name="logger">The logger.</param>
-        public EffectsManager(ILogger logger)
+        /// <param name="externallogger">The logger.</param>
+        public EffectsManager(ILogger externallogger)
         {
-            this.logger = logger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(logger);
+            this.logger = externallogger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(externallogger);
             Initialize();
         }
 
@@ -190,10 +191,10 @@ namespace HelixToolkit.UWP
         /// Initializes a new instance of the <see cref="EffectsManager"/> class.
         /// </summary>
         /// <param name="adapterIndex">Index of the adapter.</param>
-        /// <param name="logger">The logger.</param>
-        public EffectsManager(int adapterIndex, ILogger logger)
+        /// <param name="externallogger">The logger.</param>
+        public EffectsManager(int adapterIndex, ILogger externallogger)
         {
-            this.logger = logger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(logger);
+            this.logger = externallogger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(externallogger);
             Initialize(adapterIndex);
         }
 
@@ -219,6 +220,7 @@ namespace HelixToolkit.UWP
         {
             if (Initialized)
             { return; }
+            Log(LogLevel.Information, $"Adapter Index = {adapterIndex}");
             var adapter = GetAdapter(ref adapterIndex);
             AdapterIndex = adapterIndex;
 #if DX11
@@ -245,8 +247,10 @@ namespace HelixToolkit.UWP
 #else
             device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
-            
+            Log(LogLevel.Information, $"Direct3D device initilized. DriverType: {DriverType}");
+
 #region Initial Internal Pools
+            Log(LogLevel.Information, "Initializing resource pools");
             RemoveAndDispose(ref constantBufferPool);
             constantBufferPool = Collect(new ConstantBufferPool(Device));
 
@@ -261,15 +265,17 @@ namespace HelixToolkit.UWP
 
             RemoveAndDispose(ref materialTextureManager);
             materialTextureManager = Collect(new Model.TextureResourceManager(Device));
-#endregion
-#region Initial Techniques
+            #endregion
+            #region Initial Techniques
+            Log(LogLevel.Information, "Load Technique Descriptions");
             var techniqueDescs = LoadTechniqueDescriptions();
             foreach(var tech in techniqueDescs)
             {
                 AddTechnique(tech);
             }
-#endregion
-
+            Log(LogLevel.Information, $"Load Technique Description finished. Number of Techniques: {techniqueDict.Count}");
+            #endregion
+            Log(LogLevel.Information, "Initializing Direct2D resources");
             factory2D = Collect(new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.MultiThreaded));
             wicImgFactory = Collect(new global::SharpDX.WIC.ImagingFactory());
             directWriteFactory = Collect(new global::SharpDX.DirectWrite.Factory(global::SharpDX.DirectWrite.FactoryType.Shared));
@@ -449,7 +455,7 @@ namespace HelixToolkit.UWP
 #endif
             Initialize(AdapterIndex);
         }
-#endregion
+        #endregion
 
 #if DEBUGMEMORY
         protected void ReportResources()
@@ -466,6 +472,10 @@ namespace HelixToolkit.UWP
             //}
         }
 #endif
+        private void Log<Type>(LogLevel level, Type msg, [CallerMemberName]string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
+        {
+            Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
+        }
     }
 
 

@@ -11,7 +11,9 @@
         /// <typeparam name="MsgType">The type of the sg type.</typeparam>
         /// <param name="logLevel">The log level.</param>
         /// <param name="msg">The MSG.</param>
-        /// <param name="caller">The caller.</param>
-        void Log<MsgType>(LogLevel logLevel, MsgType msg, string caller);
+        /// <param name="className"></param>
+        /// <param name="methodName">The caller.</param>
+        /// <param name="lineNumber"></param>
+        void Log<MsgType>(LogLevel logLevel, MsgType msg, string className, string methodName, int lineNumber);
     }
 }

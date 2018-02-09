@@ -15,9 +15,11 @@ namespace HelixToolkit.Logger
         /// <param name="logLevel">The log level.</param>
         /// <param name="msg">The MSG.</param>
         /// <param name="caller">The caller.</param>
-        public void Log<MsgType>(LogLevel logLevel, MsgType msg, string caller)
+        /// <param name="lineNumber"></param>
+        /// <param name="className"></param>
+        public void Log<MsgType>(LogLevel logLevel, MsgType msg, string className, string caller, int lineNumber)
         {
-            Debug.WriteLine($"Level: {logLevel}; Caller: {caller}; Text: {msg.ToString()};");
+            Debug.WriteLine($"Level: {logLevel}; Class: {className}; Caller: {caller}; Line: {lineNumber}; Text: {msg.ToString()};");
         }
     }
 }

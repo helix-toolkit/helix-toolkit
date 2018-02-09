@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace HelixToolkit.Logger
 {
@@ -32,18 +33,12 @@ namespace HelixToolkit.Logger
         /// <param name="logLevel">The log level.</param>
         /// <param name="msg">The MSG.</param>
         /// <param name="caller">The caller.</param>
-        public void Log<MsgType>(LogLevel logLevel, MsgType msg, [CallerMemberName]string caller = "")
+        /// <param name="className"></param>
+        /// <param name="sourceLineNumber"></param>
+        public void Log<MsgType>(LogLevel logLevel, MsgType msg, string className = "",
+            [CallerMemberName]string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
         {
-            logger.Log<MsgType>(logLevel, msg, caller);
-        }
-        /// <summary>
-        /// Logs the specified log level.
-        /// </summary>
-        /// <param name="logLevel">The log level.</param>
-        /// <param name="caller">The caller.</param>
-        public void Log(LogLevel logLevel, [CallerMemberName]string caller = "")
-        {
-            logger.Log(logLevel, "", caller);
+            logger.Log<MsgType>(logLevel, msg, className, caller, sourceLineNumber);
         }
     }
 }
