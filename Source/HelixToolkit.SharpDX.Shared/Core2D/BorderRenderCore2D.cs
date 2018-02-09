@@ -12,9 +12,18 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class BorderRenderCore2D : RenderCore2DBase
     {
         private D2D.Brush background = null;
+        /// <summary>
+        /// Gets or sets the background.
+        /// </summary>
+        /// <value>
+        /// The background.
+        /// </value>
         public D2D.Brush Background
         {
             set
@@ -30,6 +39,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private D2D.Brush strokeBrush = null;
+        /// <summary>
+        /// Gets or sets the stroke brush.
+        /// </summary>
+        /// <value>
+        /// The stroke brush.
+        /// </value>
         public D2D.Brush StrokeBrush
         {
             set
@@ -48,6 +63,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private float strokeThickness = 0;
+        /// <summary>
+        /// Gets or sets the stroke thickness.
+        /// </summary>
+        /// <value>
+        /// The stroke thickness.
+        /// </value>
         public float StrokeThickness
         {
             set { SetAffectsRender(ref strokeThickness, value); }
@@ -55,6 +76,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private D2D.StrokeStyle strokeStyle = null;
+        /// <summary>
+        /// Gets or sets the stroke style.
+        /// </summary>
+        /// <value>
+        /// The stroke style.
+        /// </value>
         public D2D.StrokeStyle StrokeStyle
         {
             set
@@ -73,6 +100,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private float cornerRadius = 0;
+        /// <summary>
+        /// Gets or sets the corner radius.
+        /// </summary>
+        /// <value>
+        /// The corner radius.
+        /// </value>
         public float CornerRadius
         {
             set
@@ -81,7 +114,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
             get { return cornerRadius; }
         }
-
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
         protected override void OnRender(IRenderContext2D context)
         {
             var roundRect = new D2D.RoundedRectangle() { Rect = LayoutBound, RadiusX = CornerRadius, RadiusY = CornerRadius };

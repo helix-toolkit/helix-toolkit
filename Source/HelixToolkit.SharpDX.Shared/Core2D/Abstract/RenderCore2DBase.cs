@@ -15,8 +15,9 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-    using global::SharpDX.DXGI;
-    using Utilities;
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class RenderCore2DBase : DisposeObject, IRenderCore2D
     {
         /// <summary>
@@ -60,6 +61,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private RectangleF clippingBound = new RectangleF();
+        /// <summary>
+        /// Gets or sets the layout clipping bound, includes border.
+        /// </summary>
+        /// <value>
+        /// The layout clipping bound.
+        /// </value>
         public RectangleF LayoutClippingBound
         {
             set

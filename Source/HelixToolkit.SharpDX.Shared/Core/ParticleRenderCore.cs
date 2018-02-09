@@ -19,9 +19,12 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     using Shaders;
     using Render;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class ParticleRenderCore : RenderCoreBase<PointLineModelStruct>
     {
+#pragma warning disable 1591
         public static readonly int DefaultParticleCount = 512;
         public static readonly float DefaultInitialVelocity = 1f;
         public static readonly Vector3 DefaultAcceleration = new Vector3(0, 0.1f, 0);
@@ -34,7 +37,7 @@ namespace HelixToolkit.UWP.Core
         public static readonly Vector3 DefaultBoundMinimum = new Vector3(-5, -5, -5);
         public static readonly float DefaultInitialEnergy = 5;
         public static readonly float DefaultEnergyDissipationRate = 1f;
-
+#pragma warning restore
         #region variables
         /// <summary>
         /// Texture tile columns
@@ -161,8 +164,13 @@ namespace HelixToolkit.UWP.Core
 
         private SamplerProxy textureSampler;
 
-        private float totalElapsed = 0;              
-
+        private float totalElapsed = 0;
+        /// <summary>
+        /// Gets a value indicating whether this instance has texture.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has texture; otherwise, <c>false</c>.
+        /// </value>
         public bool HasTexture { get { return particleTexture != null; } }
 
         /// <summary>
@@ -221,7 +229,12 @@ namespace HelixToolkit.UWP.Core
                 return FrameVariables.ExtraAcceleration;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the domain bound maximum.
+        /// </summary>
+        /// <value>
+        /// The domain bound maximum.
+        /// </value>
         public Vector3 DomainBoundMax
         {
             set
@@ -233,7 +246,12 @@ namespace HelixToolkit.UWP.Core
                 return FrameVariables.DomainBoundsMax;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the domain bound minimum.
+        /// </summary>
+        /// <value>
+        /// The domain bound minimum.
+        /// </value>
         public Vector3 DomainBoundMin
         {
             set
@@ -249,7 +267,12 @@ namespace HelixToolkit.UWP.Core
                 return FrameVariables.DomainBoundsMin;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the consumer gravity.
+        /// </summary>
+        /// <value>
+        /// The consumer gravity.
+        /// </value>
         public float ConsumerGravity
         {
             set
@@ -261,7 +284,12 @@ namespace HelixToolkit.UWP.Core
                 return FrameVariables.ConsumerGravity;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the consumer location.
+        /// </summary>
+        /// <value>
+        /// The consumer location.
+        /// </value>
         public Vector3 ConsumerLocation
         {
             set
@@ -273,7 +301,12 @@ namespace HelixToolkit.UWP.Core
                 return FrameVariables.ConsumerLocation;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the consumer radius.
+        /// </summary>
+        /// <value>
+        /// The consumer radius.
+        /// </value>
         public float ConsumerRadius
         {
             set
@@ -285,7 +318,12 @@ namespace HelixToolkit.UWP.Core
                 return FrameVariables.ConsumerRadius;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the energy dissipation rate.
+        /// </summary>
+        /// <value>
+        /// The energy dissipation rate.
+        /// </value>
         public float EnergyDissipationRate
         {
             set
@@ -294,31 +332,56 @@ namespace HelixToolkit.UWP.Core
             }
             get { return InsertVariables.EnergyDissipationRate; }
         }
-
+        /// <summary>
+        /// Gets or sets the initial acceleration.
+        /// </summary>
+        /// <value>
+        /// The initial acceleration.
+        /// </value>
         public Vector3 InitialAcceleration
         {
             set { InsertVariables.InitialAcceleration = value; }
             get { return InsertVariables.InitialAcceleration; }
         }
-
+        /// <summary>
+        /// Gets or sets the initial energy.
+        /// </summary>
+        /// <value>
+        /// The initial energy.
+        /// </value>
         public float InitialEnergy
         {
             set { InsertVariables.InitialEnergy = value; }
             get { return InsertVariables.InitialEnergy; }
         }
-
+        /// <summary>
+        /// Gets or sets the initial velocity.
+        /// </summary>
+        /// <value>
+        /// The initial velocity.
+        /// </value>
         public float InitialVelocity
         {
             set { InsertVariables.InitialVelocity = value; }
             get { return InsertVariables.InitialVelocity; }
         }
-
+        /// <summary>
+        /// Gets or sets the color of the particle blend.
+        /// </summary>
+        /// <value>
+        /// The color of the particle blend.
+        /// </value>
         public Color4 ParticleBlendColor
         {
             set { InsertVariables.ParticleBlendColor = value; }
             get { return InsertVariables.ParticleBlendColor; }
         }
-
+        /// <summary>
+        /// Gets or sets the emitter radius.
+        /// </summary>
+        /// <value>
+        /// The emitter radius.
+        /// </value>
         public float EmitterRadius
         {
             set { InsertVariables.EmitterRadius = value; }
@@ -348,7 +411,13 @@ namespace HelixToolkit.UWP.Core
 
         private ShaderResourceView textureView;
         #endregion
-        #region Buffers
+        #region Buffers        
+        /// <summary>
+        /// Gets or sets the instance buffer.
+        /// </summary>
+        /// <value>
+        /// The instance buffer.
+        /// </value>
         public IElementsBufferModel InstanceBuffer { set; get; }
 
         private BufferDescription bufferDesc = new BufferDescription()
@@ -388,7 +457,12 @@ namespace HelixToolkit.UWP.Core
             CpuAccessFlags = CpuAccessFlags.None,
             OptionFlags = ResourceOptionFlags.DrawIndirectArguments
         };
-
+        /// <summary>
+        /// Gets or sets the buffer proxies.
+        /// </summary>
+        /// <value>
+        /// The buffer proxies.
+        /// </value>
         protected UAVBufferViewProxy[] BufferProxies { private set; get; } = new UAVBufferViewProxy[2];
         private ParticleCountIndirectArgs drawArgument = new ParticleCountIndirectArgs();
         #endregion
@@ -407,7 +481,12 @@ namespace HelixToolkit.UWP.Core
             }
             get { return blendDesc; }
         }
-
+        /// <summary>
+        /// Gets or sets the vertex layout.
+        /// </summary>
+        /// <value>
+        /// The vertex layout.
+        /// </value>
         public InputLayout VertexLayout { private set; get; }
         #region Shader Variable Names
         /// <summary>
@@ -456,13 +535,21 @@ namespace HelixToolkit.UWP.Core
         private int samplerSlot;
         #endregion
 
+        /// <summary>
+        /// Gets the model constant buffer description.
+        /// </summary>
+        /// <returns></returns>
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
             return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
         }
 
-        
 
+        /// <summary>
+        /// Called when [update per model structure].
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="context">The context.</param>
         protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
@@ -471,12 +558,21 @@ namespace HelixToolkit.UWP.Core
             FrameVariables.RandomVector = VectorGenerator.RandomVector3;
         }
 
+        /// <summary>
+        /// Called when [upload per model constant buffers].
+        /// </summary>
+        /// <param name="context">The context.</param>
         protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
         {
             base.OnUploadPerModelConstantBuffers(context);
             perFrameCB.UploadDataToBuffer(context, ref FrameVariables);
         }
 
+        /// <summary>
+        /// Called when [attach].
+        /// </summary>
+        /// <param name="technique">The technique.</param>
+        /// <returns></returns>
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if (base.OnAttach(technique))
@@ -509,7 +605,9 @@ namespace HelixToolkit.UWP.Core
                 return false;
             }
         }
-
+        /// <summary>
+        /// Updates the insert throttle.
+        /// </summary>
         public void UpdateInsertThrottle()
         {
             InsertElapseThrottle = (8.0f * InsertVariables.InitialEnergy / InsertVariables.EnergyDissipationRate / System.Math.Max(0, (particleCount + 8)));
@@ -558,7 +656,9 @@ namespace HelixToolkit.UWP.Core
                 }
             }
         }
-
+        /// <summary>
+        /// Called when [detach].
+        /// </summary>
         protected override void OnDetach()
         {
             DisposeBuffers();
@@ -616,12 +716,22 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-
+        /// <summary>
+        /// Determines whether this instance can render the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can render the specified context; otherwise, <c>false</c>.
+        /// </returns>
         protected override bool CanRender(IRenderContext context)
         {
             return base.CanRender(context) && BufferProxies != null && !isInitialParticleChanged;
         }
-
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             OnTextureChanged();

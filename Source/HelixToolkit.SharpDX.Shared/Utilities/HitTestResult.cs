@@ -84,10 +84,22 @@ namespace HelixToolkit.Wpf.SharpDX
         public double LineHitPointScalar { get; set; }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class HitTest2DResult
     {
+        /// <summary>
+        /// Gets or sets the model hit.
+        /// </summary>
+        /// <value>
+        /// The model hit.
+        /// </value>
         public IRenderable2D ModelHit { private set; get; }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HitTest2DResult"/> class.
+        /// </summary>
+        /// <param name="model">The model.</param>
         public HitTest2DResult(IRenderable2D model)
         {
             ModelHit = model;

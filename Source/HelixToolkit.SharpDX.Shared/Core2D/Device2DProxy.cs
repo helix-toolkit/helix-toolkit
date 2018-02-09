@@ -83,6 +83,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="D2DTargetProxy"/> to <see cref="Bitmap1"/>.
+        /// </summary>
+        /// <param name="proxy">The proxy.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
         public static implicit operator Bitmap1(D2DTargetProxy proxy)
         {
             return proxy.d2DTarget;

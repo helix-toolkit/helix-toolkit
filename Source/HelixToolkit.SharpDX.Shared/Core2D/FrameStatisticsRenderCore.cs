@@ -14,11 +14,20 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
     using Utilities;
+    /// <summary>
+    /// 
+    /// </summary>
     public class FrameStatisticsRenderCore : RenderCore2DBase
     {
         private IRenderStatistics statistics;
 
         private D2D.Brush foreground = null;
+        /// <summary>
+        /// Gets or sets the foreground.
+        /// </summary>
+        /// <value>
+        /// The foreground.
+        /// </value>
         public D2D.Brush Foreground
         {
             set
@@ -37,6 +46,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private D2D.Brush background = null;
+        /// <summary>
+        /// Gets or sets the background.
+        /// </summary>
+        /// <value>
+        /// The background.
+        /// </value>
         public D2D.Brush Background
         {
             set
@@ -59,7 +74,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         private TextFormat format;
         private RectangleF renderBound = new RectangleF(0, 0, 100, 0);
         private string previousStr = "";
-
+        /// <summary>
+        /// Called when [attach].
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <returns></returns>
         protected override bool OnAttach(IRenderHost target)
         {
             factory = Collect(new Factory(FactoryType.Isolated));
@@ -68,12 +87,21 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             this.statistics = target.RenderStatistics;
             return base.OnAttach(target);
         }
-
+        /// <summary>
+        /// Determines whether this instance can render the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can render the specified context; otherwise, <c>false</c>.
+        /// </returns>
         protected override bool CanRender(IRenderContext2D context)
         {
             return base.CanRender(context) && statistics != null && statistics.FrameDetail != RenderDetail.None;
         }
-
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
         protected override void OnRender(IRenderContext2D context)
         {
             var str = statistics.GetDetailString();
