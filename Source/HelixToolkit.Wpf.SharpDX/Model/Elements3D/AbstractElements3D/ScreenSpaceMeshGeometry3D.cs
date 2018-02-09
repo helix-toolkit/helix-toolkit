@@ -10,6 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Core;
     using Elements2D;
+    using HelixToolkit.Wpf.SharpDX.Converters;
     using System;
     using System.Windows.Data;
 
@@ -55,6 +56,44 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d as ScreenSpacedElement3D).UpdateModel(((Media3D.Vector3D)e.NewValue).ToVector3());
             }));
 
+
+        /// <summary>
+        /// The enable mover property
+        /// </summary>
+        public static readonly DependencyProperty EnableMoverProperty =
+            DependencyProperty.Register("EnableMover", typeof(bool), typeof(ScreenSpacedElement3D), new PropertyMetadata(true, (d, e) =>
+            {
+                (d as ScreenSpacedElement3D).mover.EnableMover = (bool)e.NewValue;
+            }));
+
+        /// <summary>
+        /// The left handed property
+        /// </summary>
+        public static readonly DependencyProperty LeftHandedProperty = DependencyProperty.Register("LeftHanded", typeof(bool), typeof(ScreenSpacedElement3D),
+            new PropertyMetadata(false,
+            (d, e) =>
+            {
+                (d as ScreenSpacedElement3D).screenSpaceCore.IsRightHand = !(bool)e.NewValue;
+            }));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable mover].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable mover]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableMover
+        {
+            get { return (bool)GetValue(EnableMoverProperty); }
+            set { SetValue(EnableMoverProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets up direction.
+        /// </summary>
+        /// <value>
+        /// Up direction.
+        /// </value>
         public Media3D.Vector3D UpDirection
         {
             set
@@ -67,12 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static readonly DependencyProperty LeftHandedProperty = DependencyProperty.Register("LeftHanded", typeof(bool), typeof(ScreenSpacedElement3D),
-            new PropertyMetadata(false,
-            (d, e) =>
-            {
-                (d as ScreenSpacedElement3D).screenSpaceCore.IsRightHand = !(bool)e.NewValue;
-            }));
+
 
         public bool LeftHanded
         {
@@ -161,6 +195,7 @@ namespace HelixToolkit.Wpf.SharpDX
         #region 2D stuffs
         public RelativePositionCanvas2D MoverCanvas { private set; get; } 
             = new RelativePositionCanvas2D() { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch };
+        private ScreenSpacePositionMoverBase mover;
 
         private bool isMoverInitialized = false;
 
@@ -170,10 +205,11 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            var mover = OnCreateMover();
+            mover = OnCreateMover();
             MoverCanvas.Children.Add(mover);
             SetBinding(nameof(RelativeScreenLocationX), mover, RelativePositionCanvas2D.RelativeXProperty, this, BindingMode.TwoWay);
             SetBinding(nameof(RelativeScreenLocationY), mover, RelativePositionCanvas2D.RelativeYProperty, this, BindingMode.TwoWay);
+            SetBinding(nameof(IsRendering), mover, Element2D.VisibilityProperty, this, BindingMode.OneWay, new BoolToVisibilityConverter());
             mover.OnMoveClicked += Mover_OnMoveClicked;
             isMoverInitialized = true;
         }
@@ -208,11 +244,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private static void SetBinding(string path, DependencyObject dobj, DependencyProperty property, object viewModel, BindingMode mode = BindingMode.TwoWay)
+        private static void SetBinding(string path, DependencyObject dobj, DependencyProperty property, object viewModel, BindingMode mode = BindingMode.TwoWay, IValueConverter converter = null)
         {
             var binding = new Binding(path);
             binding.Source = viewModel;
             binding.Mode = mode;
+            if (converter != null)
+            { binding.Converter = converter; }
             BindingOperations.SetBinding(dobj, property, binding);
         }
         #endregion
@@ -236,9 +274,38 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     public abstract class ScreenSpacePositionMoverBase : Panel2D
     {
         /// <summary>
+        /// Gets or sets a value indicating whether [enable mover].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable mover]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableMover
+        {
+            get { return (bool)GetValue(EnableMoverProperty); }
+            set { SetValue(EnableMoverProperty, value); }
+        }
+
+        /// <summary>
+        /// The enable mover property
+        /// </summary>
+        public static readonly DependencyProperty EnableMoverProperty =
+            DependencyProperty.Register("EnableMover", typeof(bool), typeof(ScreenSpacePositionMover), new PropertyMetadata(true, (d, e) =>
+            {
+                (d as ScreenSpacePositionMover).enableMover = (bool)e.NewValue;
+            }));
+
+        /// <summary>
         /// Occurs when [on move clicked].
         /// </summary>
         public event EventHandler<ScreenSpaceMoveDirection> OnMoveClicked;
+
+        protected bool enableMover { private set; get; } = true;
+
+        protected override bool CanRender(IRenderContext2D context)
+        {
+            return base.CanRender(context) && enableMover;
+        }
+
         /// <summary>
         /// Raises the on move click.
         /// </summary>
@@ -268,25 +335,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     /// <seealso cref="HelixToolkit.Wpf.SharpDX.ScreenSpacePositionMoverBase" />
     public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether [enable mover].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable mover]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableMover
-        {
-            get { return (bool)GetValue(EnableMoverProperty); }
-            set { SetValue(EnableMoverProperty, value); }
-        }
-
-        /// <summary>
-        /// The enable mover property
-        /// </summary>
-        public static readonly DependencyProperty EnableMoverProperty =
-            DependencyProperty.Register("EnableMover", typeof(bool), typeof(ScreenSpacePositionMover), new PropertyMetadata(true));
-
-
         private Button2D MoveLeftTop, MoveLeftBottom, MoveRightTop, MoveRightBottom;
         private Button2D[] buttons = new Button2D[4];
         /// <summary>
@@ -344,6 +392,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
             hitResult = null;
+            if (!enableMover)
+            { return false; }
             if (LayoutBoundWithTransform.Contains(mousePoint))
             {
                 foreach (var b in buttons)

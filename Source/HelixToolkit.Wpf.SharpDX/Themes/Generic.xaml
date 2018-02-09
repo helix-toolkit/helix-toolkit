@@ -66,6 +66,7 @@
                                 <hx:ViewBoxModel3D
                                     x:Name="PART_ViewCube"
                                     EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"
+                                    EnableMover="{TemplateBinding IsViewCubeMoverEnabled}"
                                     IsRendering="{TemplateBinding ShowViewCube}"
                                     RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}"
                                     RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
@@ -76,6 +77,7 @@
                                     CoordinateSystemLabelX="{TemplateBinding CoordinateSystemLabelX}"
                                     CoordinateSystemLabelY="{TemplateBinding CoordinateSystemLabelY}"
                                     CoordinateSystemLabelZ="{TemplateBinding CoordinateSystemLabelZ}"
+                                    EnableMover="{TemplateBinding IsCoordinateSystemMoverEnabled}"
                                     IsRendering="{TemplateBinding ShowCoordinateSystem}"
                                     LabelColor="{TemplateBinding CoordinateSystemLabelForeground}"
                                     RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}"
@@ -188,7 +190,7 @@
 
     <Style TargetType="{x:Type hx2D:MoverButton2D}">
         <Style.Setters>
-            <Setter Property="Background" Value="#9B9D9D9D" />
+            <Setter Property="Background" Value="Transparent" />
             <Setter Property="CornerRadius" Value="0" />
             <Setter Property="Width" Value="12" />
             <Setter Property="Height" Value="12" />
