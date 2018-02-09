@@ -2,8 +2,10 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using HelixToolkit.Logger;
 using SharpDX.Direct3D11;
 using System;
+using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
@@ -41,7 +43,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         protected override IDX11RenderBufferProxy CreateRenderBuffer()
         {
+            Log(LogLevel.Information, "DX11SwapChainRenderBufferProxy");
             return new DX11SwapChainRenderBufferProxy(surface, EffectsManager);
+        }
+
+        private void Log<Type>(LogLevel level, Type msg, [CallerMemberName]string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
+        {
+            Logger.Log(level, msg, nameof(SwapChainRenderHost), caller, sourceLineNumber);
         }
     }
 }
