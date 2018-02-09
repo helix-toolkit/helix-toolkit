@@ -180,7 +180,7 @@
             <Setter Property="BorderThickness" Value="0" />
         </Style.Setters>
         <Style.Triggers>
-            <Trigger Property="IsMouseOver2D" Value="true">
+            <Trigger Property="IsMouseOver" Value="true">
                 <Setter Property="Background" Value="{x:Static SystemColors.HighlightBrush}" />
             </Trigger>
         </Style.Triggers>
@@ -197,7 +197,7 @@
             <Setter Property="Margin" Value="8" />
         </Style.Setters>
         <Style.Triggers>
-            <Trigger Property="IsMouseOver2D" Value="true">
+            <Trigger Property="IsMouseOver" Value="true">
                 <Setter Property="Background" Value="DarkOrange" />
             </Trigger>
         </Style.Triggers>

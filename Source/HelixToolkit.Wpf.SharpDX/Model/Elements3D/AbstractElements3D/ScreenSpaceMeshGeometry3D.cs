@@ -268,6 +268,25 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     /// <seealso cref="HelixToolkit.Wpf.SharpDX.ScreenSpacePositionMoverBase" />
     public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable mover].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable mover]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableMover
+        {
+            get { return (bool)GetValue(EnableMoverProperty); }
+            set { SetValue(EnableMoverProperty, value); }
+        }
+
+        /// <summary>
+        /// The enable mover property
+        /// </summary>
+        public static readonly DependencyProperty EnableMoverProperty =
+            DependencyProperty.Register("EnableMover", typeof(bool), typeof(ScreenSpacePositionMover), new PropertyMetadata(true));
+
+
         private Button2D MoveLeftTop, MoveLeftBottom, MoveRightTop, MoveRightBottom;
         private Button2D[] buttons = new Button2D[4];
         /// <summary>

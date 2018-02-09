@@ -62,8 +62,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// <summary>
         /// The is mouse over2 d property
         /// </summary>
-        public static readonly DependencyProperty IsMouseOver2DProperty =
-            DependencyProperty.Register("IsMouseOver2D", typeof(bool), typeof(Element2D),
+        public new static readonly DependencyProperty IsMouseOverProperty =
+            DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D),
                 new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender, (d, e) =>
             {
                 var model = d as Element2D;
@@ -76,10 +76,10 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// <value>
         ///   <c>true</c> if this instance is mouse over2 d; otherwise, <c>false</c>.
         /// </value>
-        public bool IsMouseOver2D
+        public new bool IsMouseOver
         {
-            get { return (bool)GetValue(IsMouseOver2DProperty); }
-            set { SetValue(IsMouseOver2DProperty, value); }
+            get { return (bool)GetValue(IsMouseOverProperty); }
+            set { SetValue(IsMouseOverProperty, value); }
         }
 
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(Element2D),
@@ -332,7 +332,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected virtual void Element2D_MouseLeave2D(object sender, RoutedEventArgs e)
         {
             if (!IsAttached) { return; }
-            IsMouseOver2D = false;
+            IsMouseOver = false;
 #if DEBUGMOUSEEVENT
             Console.WriteLine("Element2D_MouseLeave2D");
 #endif
@@ -341,7 +341,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected virtual void Element2D_MouseEnter2D(object sender, RoutedEventArgs e)
         {
             if (!IsAttached) { return; }
-            IsMouseOver2D = true;
+            IsMouseOver = true;
 #if DEBUGMOUSEEVENT
             Console.WriteLine("Element2D_MouseEnter2D");
 #endif
