@@ -592,11 +592,8 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnApplyTemplate();
             if (IsInDesignMode)
             { return; }
-            if (this.renderHostInternal != null)
-            {
-                this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
-                renderHostInternal?.Dispose();
-            }
+
+            renderHostInternal?.Dispose();
             hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
 
             if (EnableSwapChainRendering)
@@ -1410,6 +1407,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.MessageText = e.Exception.ToString();
                 e.Handled = true;
             }
+            hostPresenter.Content = null;
+            renderHostInternal?.Dispose();
         }
 
         /// <summary>
