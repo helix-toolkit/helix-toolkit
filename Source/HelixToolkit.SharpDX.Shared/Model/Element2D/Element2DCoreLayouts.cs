@@ -401,7 +401,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         public void Measure(Size2F size)
         {
-            if (!IsAttached || VisibilityInternal == Visibility.Collapsed || (!IsMeasureDirty && previousMeasureSize != size))
+            if (!IsAttached || VisibilityInternal == Visibility.Collapsed || (!IsMeasureDirty && previousMeasureSize == size))
             {
                 return;
             }
@@ -585,7 +585,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 tempHorizontalAlign = HorizontalAlignment.Left;
             }
 
-            if (tempVerticalAlign == VerticalAlignment.Stretch && clippedArrangeResultSize.Y > clientSize.Y)
+            if (tempVerticalAlign == VerticalAlignment.Stretch && clippedArrangeResultSize.Y >= clientSize.Y)
             {
                 tempVerticalAlign = VerticalAlignment.Top;
             }
