@@ -267,26 +267,42 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             if (contentInternal != null)
             {
-                var margin = new Size2F((float)(BorderThickness.Left + Padding.Left + BorderThickness.Right + Padding.Right + MarginWidthHeight.X), 
-                    (float)(BorderThickness.Top + Padding.Top + BorderThickness.Bottom + Padding.Bottom + MarginWidthHeight.Y));
+                var margin = new Size2F((float)(BorderThickness.Left/2 + Padding.Left + BorderThickness.Right/2 + Padding.Right), 
+                    (float)(BorderThickness.Top/2 + Padding.Top + BorderThickness.Bottom/2 + Padding.Bottom));
                 var childAvail = new Size2F(Math.Max(0, availableSize.Width - margin.Width), Math.Max(0, availableSize.Height - margin.Height));
                 
-                return base.MeasureOverride(childAvail);
+                var size = base.MeasureOverride(childAvail);
+                if(WidthInternal != float.PositiveInfinity && HeightInternal != float.PositiveInfinity)
+                {
+                    return availableSize;
+                }
+                else
+                {
+                    if(WidthInternal != float.PositiveInfinity)
+                    {
+                        size.Width = WidthInternal;
+                    }
+                    if(HeightInternal != float.PositiveInfinity)
+                    {
+                        size.Height = HeightInternal;
+                    }
+                    return size;
+                }
             }
             else
             {
-                return new Size2F((float)(BorderThickness.Left + Padding.Left + BorderThickness.Right + Padding.Right + MarginWidthHeight.X + WidthInternal == float.PositiveInfinity ? 0 : WidthInternal),
-                    (float)(BorderThickness.Top + Padding.Top + BorderThickness.Bottom + Padding.Bottom + MarginWidthHeight.Y + HeightInternal == float.PositiveInfinity ? 0 : HeightInternal));
+                return new Size2F((float)(BorderThickness.Left/2 + Padding.Left + BorderThickness.Right/2 + Padding.Right + MarginWidthHeight.X + WidthInternal == float.PositiveInfinity ? 0 : WidthInternal),
+                    (float)(BorderThickness.Top/2 + Padding.Top + BorderThickness.Bottom/2 + Padding.Bottom + MarginWidthHeight.Y + HeightInternal == float.PositiveInfinity ? 0 : HeightInternal));
             }
         }
 
         protected override RectangleF ArrangeOverride(RectangleF finalSize)
         {
             var contentRect = new RectangleF(finalSize.Left, finalSize.Top, finalSize.Width, finalSize.Height);
-            contentRect.Left += (float)(BorderThickness.Left + Padding.Left);
-            contentRect.Right -= (float)(BorderThickness.Right + Padding.Right);
-            contentRect.Top += (float)(BorderThickness.Top + Padding.Top);
-            contentRect.Bottom -= (float)(BorderThickness.Bottom + Padding.Bottom);
+            contentRect.Left += (float)(BorderThickness.Left/2 + Padding.Left);
+            contentRect.Right -= (float)(BorderThickness.Right/2 + Padding.Right);
+            contentRect.Top += (float)(BorderThickness.Top/2 + Padding.Top);
+            contentRect.Bottom -= (float)(BorderThickness.Bottom/2 + Padding.Bottom);
             base.ArrangeOverride(contentRect);
             return finalSize;
         }
