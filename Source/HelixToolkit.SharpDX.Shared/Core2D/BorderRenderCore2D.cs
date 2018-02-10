@@ -176,95 +176,102 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 context.DeviceContext.FillRoundedRectangle(roundRect, Background);
             }
 
-            if (!borderThickness.IsZero)
+            if (!borderThickness.IsZero && StrokeBrush != null && StrokeStyle != null)
             {
-                if (isBorderGeometryChanged)
+                if(borderThickness.X == borderThickness.Y && borderThickness.X == borderThickness.Z && borderThickness.X == borderThickness.W)
                 {
-                    
-                    var topLeft = LayoutBound.TopLeft + new Vector2(0, CornerRadius);
-                    var topRight = LayoutBound.TopRight - new Vector2(CornerRadius, 0);
-                    var bottomRight = LayoutBound.BottomRight - new Vector2(0, CornerRadius);
-                    var bottomLeft = LayoutBound.BottomLeft + new Vector2(CornerRadius, 0);
-
-                    if (borderThickness.X > 0)
-                    {
-                        var figures = new List<Figure>();     
-                        var figure = new Figure(topLeft, false, false);
-                        if (CornerRadius > 0)
-                        {
-                            figure.AddSegment(new ArcSegment(LayoutBound.TopLeft + new Vector2(CornerRadius, 0), new Size2F(CornerRadius, CornerRadius), 0, 
-                                D2D.SweepDirection.Clockwise, D2D.ArcSize.Small));
-                        }
-                        figure.AddSegment(new LineSegment(topRight));
-                        figures.Add(figure);
-                        borderRenderCore[0].Figures = figures;
-                        borderRenderCore[0].StrokeWidth = borderThickness.X;
-                    }
-                    else
-                    {
-                        borderRenderCore[0].Figures = null;
-                    }
-                    if(borderThickness.Y > 0)
-                    {
-                        var figures = new List<Figure>();
-                        var figure = new Figure(topRight, false, false);
-                        if(CornerRadius > 0)
-                        {
-                            figure.AddSegment(new ArcSegment(LayoutBound.TopRight + new Vector2(0, CornerRadius) , new Size2F(CornerRadius, CornerRadius), 0,
-                                D2D.SweepDirection.Clockwise, D2D.ArcSize.Small));
-                        }
-                        figure.AddSegment(new LineSegment(bottomRight));
-                        figures.Add(figure);
-                        borderRenderCore[1].Figures = figures;
-                        borderRenderCore[1].StrokeWidth = borderThickness.Y;
-                    }
-                    else
-                    {
-                        borderRenderCore[1].Figures = null;
-                    }
-                    if (borderThickness.Z > 0)
-                    {
-                        var figures = new List<Figure>();
-                        var figure = new Figure(bottomRight, false, false);
-                        if (CornerRadius > 0)
-                        {
-                            figure.AddSegment(new ArcSegment(LayoutBound.BottomRight - new Vector2(CornerRadius, 0), new Size2F(CornerRadius, CornerRadius), 0,
-                                D2D.SweepDirection.Clockwise, D2D.ArcSize.Small));
-                        }
-                        figure.AddSegment(new LineSegment(bottomLeft));
-                        figures.Add(figure);
-                        borderRenderCore[2].Figures = figures;
-                        borderRenderCore[2].StrokeWidth = borderThickness.Z;
-                    }
-                    else
-                    {
-                        borderRenderCore[2].Figures = null;
-                    }
-                    if (borderThickness.W > 0)
-                    {
-                        var figures = new List<Figure>();
-                        var figure = new Figure(bottomLeft, false, false);
-                        if (CornerRadius > 0)
-                        {
-                            figure.AddSegment(new ArcSegment(LayoutBound.BottomLeft - new Vector2(0, CornerRadius), new Size2F(CornerRadius, CornerRadius), 0,
-                                D2D.SweepDirection.Clockwise, D2D.ArcSize.Small));
-                        }
-                        figure.AddSegment(new LineSegment(topLeft));
-                        figures.Add(figure);
-                        borderRenderCore[3].Figures = figures;
-                        borderRenderCore[3].StrokeWidth = borderThickness.W;
-                    }
-                    else
-                    {
-                        borderRenderCore[3].Figures = null;
-                    }
-                    isBorderGeometryChanged = false;
+                    context.DeviceContext.DrawRoundedRectangle(roundRect, StrokeBrush, borderThickness.X, StrokeStyle);
                 }
-                foreach(var core in borderRenderCore)
+                else
                 {
-                    core.Transform = this.Transform;
-                    core.LocalTransform = this.LocalTransform;
-                    core.Render(context);
+                    if (isBorderGeometryChanged)
+                    {
+                    
+                        var topLeft = LayoutBound.TopLeft + new Vector2(0, CornerRadius);
+                        var topRight = LayoutBound.TopRight - new Vector2(CornerRadius, 0);
+                        var bottomRight = LayoutBound.BottomRight - new Vector2(0, CornerRadius);
+                        var bottomLeft = LayoutBound.BottomLeft + new Vector2(CornerRadius, 0);
+
+                        if (borderThickness.X > 0)
+                        {
+                            var figures = new List<Figure>();     
+                            var figure = new Figure(topLeft, false, false);
+                            if (CornerRadius > 0)
+                            {
+                                figure.AddSegment(new ArcSegment(LayoutBound.TopLeft + new Vector2(CornerRadius, 0), new Size2F(CornerRadius, CornerRadius), 0, 
+                                    D2D.SweepDirection.Clockwise, D2D.ArcSize.Small));
+                            }
+                            figure.AddSegment(new LineSegment(topRight));
+                            figures.Add(figure);
+                            borderRenderCore[0].Figures = figures;
+                            borderRenderCore[0].StrokeWidth = borderThickness.X;
+                        }
+                        else
+                        {
+                            borderRenderCore[0].Figures = null;
+                        }
+                        if(borderThickness.Y > 0)
+                        {
+                            var figures = new List<Figure>();
+                            var figure = new Figure(topRight, false, false);
+                            if(CornerRadius > 0)
+                            {
+                                figure.AddSegment(new ArcSegment(LayoutBound.TopRight + new Vector2(0, CornerRadius) , new Size2F(CornerRadius, CornerRadius), 0,
+                                    D2D.SweepDirection.Clockwise, D2D.ArcSize.Small));
+                            }
+                            figure.AddSegment(new LineSegment(bottomRight));
+                            figures.Add(figure);
+                            borderRenderCore[1].Figures = figures;
+                            borderRenderCore[1].StrokeWidth = borderThickness.Y;
+                        }
+                        else
+                        {
+                            borderRenderCore[1].Figures = null;
+                        }
+                        if (borderThickness.Z > 0)
+                        {
+                            var figures = new List<Figure>();
+                            var figure = new Figure(bottomRight, false, false);
+                            if (CornerRadius > 0)
+                            {
+                                figure.AddSegment(new ArcSegment(LayoutBound.BottomRight - new Vector2(CornerRadius, 0), new Size2F(CornerRadius, CornerRadius), 0,
+                                    D2D.SweepDirection.Clockwise, D2D.ArcSize.Small));
+                            }
+                            figure.AddSegment(new LineSegment(bottomLeft));
+                            figures.Add(figure);
+                            borderRenderCore[2].Figures = figures;
+                            borderRenderCore[2].StrokeWidth = borderThickness.Z;
+                        }
+                        else
+                        {
+                            borderRenderCore[2].Figures = null;
+                        }
+                        if (borderThickness.W > 0)
+                        {
+                            var figures = new List<Figure>();
+                            var figure = new Figure(bottomLeft, false, false);
+                            if (CornerRadius > 0)
+                            {
+                                figure.AddSegment(new ArcSegment(LayoutBound.BottomLeft - new Vector2(0, CornerRadius), new Size2F(CornerRadius, CornerRadius), 0,
+                                    D2D.SweepDirection.Clockwise, D2D.ArcSize.Small));
+                            }
+                            figure.AddSegment(new LineSegment(topLeft));
+                            figures.Add(figure);
+                            borderRenderCore[3].Figures = figures;
+                            borderRenderCore[3].StrokeWidth = borderThickness.W;
+                        }
+                        else
+                        {
+                            borderRenderCore[3].Figures = null;
+                        }
+                        isBorderGeometryChanged = false;
+                    }
+                    foreach(var core in borderRenderCore)
+                    {
+                        core.Transform = this.Transform;
+                        core.LocalTransform = this.LocalTransform;
+                        core.Render(context);
+                    }
                 }
             }
         }
