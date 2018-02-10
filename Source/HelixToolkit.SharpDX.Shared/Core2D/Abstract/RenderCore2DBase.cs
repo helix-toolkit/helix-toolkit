@@ -52,7 +52,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                SetAffectsRender(ref rect, value);
+                if(SetAffectsRender(ref rect, value))
+                {
+                    OnLayoutBoundChanged(value);
+                }
             }
             get
             {
@@ -177,8 +180,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         public void Detach()
         {
             IsAttached = false;
+            OnDetach();
             DisposeAndClear();
         }
+        /// <summary>
+        /// Called when [detach].
+        /// </summary>
+        protected virtual void OnDetach() { }
         /// <summary>
         /// Renders the specified context.
         /// </summary>
@@ -229,6 +237,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             OnInvalidateRenderer?.Invoke(this, true);
         }
 
+        /// <summary>
+        /// Called when [layout bound changed].
+        /// </summary>
+        /// <param name="layoutBound">The layout bound.</param>
+        protected virtual void OnLayoutBoundChanged(RectangleF layoutBound) { }
         /// <summary>
         /// 
         /// </summary>

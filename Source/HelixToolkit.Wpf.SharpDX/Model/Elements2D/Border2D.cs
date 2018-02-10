@@ -114,22 +114,22 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
 
-        public static DependencyProperty StrokeDashArrayProperty
-            = DependencyProperty.Register("StrokeDashArray", typeof(DoubleCollection), typeof(Border2D), new PropertyMetadata(new DoubleCollection(),
+        public static DependencyProperty StrokeDashStyleProperty
+            = DependencyProperty.Register("StrokeDashStyle", typeof(DashStyle), typeof(Border2D), new PropertyMetadata(DashStyles.Solid,
                 (d, e) =>
                 {
                     (d as Border2D).strokeStyleChanged = true;
                 }));
 
-        public DoubleCollection StrokeDashArray
+        public DashStyle StrokeDashStyle
         {
             set
             {
-                SetValue(StrokeDashArrayProperty, value);
+                SetValue(StrokeDashStyleProperty, value);
             }
             get
             {
-                return (DoubleCollection)GetValue(StrokeDashArrayProperty);
+                return (DashStyle)GetValue(StrokeDashStyleProperty);
             }
         }
 
@@ -192,15 +192,16 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static DependencyProperty BorderThicknessProperty
-            = DependencyProperty.Register("BorderThickness", typeof(double), typeof(Border2D), 
-                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure, (d, e) =>
+            = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border2D), 
+                new FrameworkPropertyMetadata(new Thickness(0,0,0,0), FrameworkPropertyMetadataOptions.AffectsMeasure, (d, e) =>
                 {
                     if ((d as Border2D).borderCore == null)
                     { return; }
-                    (d as Border2D).borderCore.StrokeThickness = (float)Math.Max(0, (double)e.NewValue);
+                    var thick = (Thickness)e.NewValue;
+                    (d as Border2D).borderCore.BorderThickness = new Vector4((float)thick.Left, (float)thick.Top, (float)thick.Right, (float)thick.Bottom);
                 }));
 
-        public double BorderThickness
+        public Thickness BorderThickness
         {
             set
             {
@@ -208,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
             get
             {
-                return (double)GetValue(BorderThicknessProperty);
+                return (Thickness)GetValue(BorderThicknessProperty);
             }
         }
         #endregion
@@ -234,7 +235,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected virtual void OnAssignVariables()
         {
             borderCore.CornerRadius = (float)this.CornerRadius;
-            borderCore.StrokeThickness = (float)this.BorderThickness;
+            borderCore.BorderThickness = new Vector4((float)BorderThickness.Left, (float)BorderThickness.Top, (float)BorderThickness.Right, (float)BorderThickness.Bottom);
         }
 
         public override void Update(IRenderContext2D context)
@@ -256,9 +257,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                         DashOffset = (float)StrokeDashOffset,
                         LineJoin = StrokeLineJoin.ToD2DLineJoin(),
                         MiterLimit = Math.Max(1, (float)StrokeMiterLimit),
-                        DashStyle = StrokeDashArray != null && StrokeDashArray.Count > 0 ? D2D.DashStyle.Custom : D2D.DashStyle.Dash,
-                    },
-                    StrokeDashArray != null ? StrokeDashArray.Select(x => (float)x).ToArray() : new float[0]);
+                        DashStyle = StrokeDashStyle.ToD2DDashStyle()
+                    });
                 strokeStyleChanged = false;
             }
         }
@@ -267,25 +267,26 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             if (contentInternal != null)
             {
-                var margin = new Size2F((float)(BorderThickness + Padding.Left + Padding.Right + MarginWidthHeight.X), (float)(BorderThickness + Padding.Top + Padding.Bottom + MarginWidthHeight.Y));
+                var margin = new Size2F((float)(BorderThickness.Left + Padding.Left + BorderThickness.Right + Padding.Right + MarginWidthHeight.X), 
+                    (float)(BorderThickness.Top + Padding.Top + BorderThickness.Bottom + Padding.Bottom + MarginWidthHeight.Y));
                 var childAvail = new Size2F(Math.Max(0, availableSize.Width - margin.Width), Math.Max(0, availableSize.Height - margin.Height));
                 
                 return base.MeasureOverride(childAvail);
             }
             else
             {
-                return new Size2F((float)(BorderThickness + Padding.Left + Padding.Right + MarginWidthHeight.X + WidthInternal == float.PositiveInfinity ? 0 : WidthInternal),
-                    (float)(BorderThickness + Padding.Top + Padding.Bottom + MarginWidthHeight.Y + HeightInternal == float.PositiveInfinity ? 0 : HeightInternal));
+                return new Size2F((float)(BorderThickness.Left + Padding.Left + BorderThickness.Right + Padding.Right + MarginWidthHeight.X + WidthInternal == float.PositiveInfinity ? 0 : WidthInternal),
+                    (float)(BorderThickness.Top + Padding.Top + BorderThickness.Bottom + Padding.Bottom + MarginWidthHeight.Y + HeightInternal == float.PositiveInfinity ? 0 : HeightInternal));
             }
         }
 
         protected override RectangleF ArrangeOverride(RectangleF finalSize)
         {
             var contentRect = new RectangleF(finalSize.Left, finalSize.Top, finalSize.Width, finalSize.Height);
-            contentRect.Left += (float)(BorderThickness + Padding.Left);
-            contentRect.Right -= (float)(BorderThickness + Padding.Right);
-            contentRect.Top += (float)(BorderThickness + Padding.Top);
-            contentRect.Bottom -= (float)(BorderThickness + Padding.Bottom);
+            contentRect.Left += (float)(BorderThickness.Left + Padding.Left);
+            contentRect.Right -= (float)(BorderThickness.Right + Padding.Right);
+            contentRect.Top += (float)(BorderThickness.Top + Padding.Top);
+            contentRect.Bottom -= (float)(BorderThickness.Bottom + Padding.Bottom);
             base.ArrangeOverride(contentRect);
             return finalSize;
         }
