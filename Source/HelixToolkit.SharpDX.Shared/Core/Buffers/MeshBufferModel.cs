@@ -123,7 +123,6 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMeshGeometryBufferModel"/> class.
         /// </summary>
-        /// <param name="structSize">Size of the structure.</param>
         public DefaultMeshGeometryBufferModel() : base(DefaultVertex.SizeInBytes) { }
 
         /// <summary>

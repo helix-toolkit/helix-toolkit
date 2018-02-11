@@ -11,6 +11,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using System;
     using System.Diagnostics;
     using System.Linq;
+    using HelixToolkit.Logger;
+    using System.Runtime.CompilerServices;
+
     /// <summary>
     /// 
     /// </summary>
@@ -18,8 +21,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     {
         private const int MinWidth = 10;
         private const int MinHeight = 10;
-
-        #region Properties
+        private static readonly LogWrapper NullLogger = new LogWrapper(new NullLogger());
+        #region Properties        
+        /// <summary>
+        /// Gets the unique identifier.
+        /// </summary>
+        /// <value>
+        /// The unique identifier.
+        /// </value>
         public Guid GUID { get; } = Guid.NewGuid();
 
         private IDX11RenderBufferProxy renderBuffer;
@@ -114,6 +123,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 {
                     return;
                 }
+                Log(LogLevel.Information, $"Set Viewport, Initialized = {IsInitialized}");
                 DetachRenderable();
                 viewport = value;
                 if (IsInitialized)
@@ -134,7 +144,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         private IRenderContext2D renderContext2D;
-
+        /// <summary>
+        /// Gets the render context2d.
+        /// </summary>
+        /// <value>
+        /// The render context2d.
+        /// </value>
         public IRenderContext2D RenderContext2D
         {
             get { return renderContext2D; }
@@ -154,6 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 var currentManager = effectsManager;
                 if (Set(ref effectsManager, value))
                 {
+                    Log(LogLevel.Information, $"Set new EffectsManager;");
                     if (currentManager != null)
                     {
                         currentManager.OnDisposeResources -= OnManagerDisposed;
@@ -182,6 +198,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 return effectsManager;
             }
         }
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public LogWrapper Logger { get { return EffectsManager != null ? EffectsManager.Logger : NullLogger; } }
 
         /// <summary>
         /// Gets or sets the render technique.
@@ -479,16 +503,19 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         || desc == global::SharpDX.DXGI.ResultCode.DeviceHung || desc == global::SharpDX.Direct2D1.ResultCode.RecreateTarget
                         || desc == global::SharpDX.DXGI.ResultCode.AccessLost)
                     {
+                        Log(LogLevel.Warning, $"Device Lost, code = {desc.Code}");
                         RenderBuffer_OnDeviceLost(RenderBuffer, true);
                     }
                     else
                     {
+                        Log(LogLevel.Error, ex);
                         EndD3D();
                         ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));
                     }
                 }
                 catch(Exception ex)
                 {
+                    Log(LogLevel.Error, ex);
                     EndD3D();
                     ExceptionOccurred?.Invoke(this, new RelayExceptionEventArgs(ex));  
                 }
@@ -558,8 +585,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="hotRestart">if set to <c>true</c> [hotRestart].</param>
         protected void Restart(bool hotRestart)
         {
+            Log(LogLevel.Information, $"Init = {IsInitialized}; HotRestart = {hotRestart};");
             if (!IsInitialized)
-            { return; }
+            {
+                return;
+            }
             if (hotRestart)
             {
                 StopRendering();
@@ -578,11 +608,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public void StartD3D(double width, double height)
         {
+            Log(LogLevel.Information, $"Width = {width}; Height = {height};");
             ActualWidth = width;
             ActualHeight = height;
             isLoaded = true;
             if (EffectsManager == null || EffectsManager.Device == null || EffectsManager.Device.IsDisposed)
             {
+                Log(LogLevel.Information, $"EffectsManager is not valid");
                 return;
             }
             CreateAndBindBuffers();
@@ -595,6 +627,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected virtual void StartRendering()
         {
+            Log(LogLevel.Information, "");
             RenderStatistics.Reset();
             renderTimer.Restart();
             lastRenderingDuration = TimeSpan.Zero;
@@ -607,6 +640,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected void CreateAndBindBuffers()
         {
+            Log(LogLevel.Information, "");
             RemoveAndDispose(ref renderBuffer);
             renderBuffer = Collect(CreateRenderBuffer());
             renderBuffer.OnNewBufferCreated += RenderBuffer_OnNewBufferCreated;
@@ -653,13 +687,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             buffer.Initialize((int)ActualWidth, (int)ActualHeight, MSAA);
         }
+
         /// <summary>
         /// Attaches the renderable.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="deviceResources">The device resources.</param>
         protected virtual void AttachRenderable(IDeviceResources deviceResources)
         {
-            if (!IsInitialized || Viewport == null) { return; }           
+            if (!IsInitialized || Viewport == null)
+            { return; }
+            Log(LogLevel.Information, "");
             if (EnableSharingModelMode && SharedModelContainer != null)
             {
                 SharedModelContainer.CurrentRenderHost = this;
@@ -681,7 +718,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             return new RenderContext(this, context);
         }
-
+        /// <summary>
+        /// Creates the render context2 d.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
         protected virtual IRenderContext2D CreateRenderContext2D(global::SharpDX.Direct2D1.DeviceContext context)
         {
             return new RenderContext2D(context, this);
@@ -691,6 +732,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public void EndD3D()
         {
+            Log(LogLevel.Information, "");
             isLoaded = false;
             StopRendering();
             IsInitialized = false;
@@ -698,18 +740,22 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             DetachRenderable();
             DisposeBuffers();
         }
-
+        /// <summary>
+        /// Called when [ending d3 d].
+        /// </summary>
         protected virtual void OnEndingD3D() { }
 
         private void OnManagerDisposed(object sender, bool args)
         {
+            Log(LogLevel.Information, "");
             EndD3D();
         }
         /// <summary>
         /// Stops the rendering.
         /// </summary>
         protected virtual void StopRendering()
-        {            
+        {
+            Log(LogLevel.Information, "");
             StopRenderLoop?.Invoke(this, true);
             renderTimer.Stop();
         }
@@ -718,6 +764,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected virtual void DisposeBuffers()
         {
+            Log(LogLevel.Information, "");
             if (renderBuffer != null)
             {
                 renderBuffer.OnNewBufferCreated -= RenderBuffer_OnNewBufferCreated;
@@ -731,6 +778,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected virtual void DetachRenderable()
         {
+            Log(LogLevel.Information, "");
             RemoveAndDispose(ref renderContext);
             RemoveAndDispose(ref renderContext2D);
             Viewport?.Detach();
@@ -748,7 +796,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
             ActualWidth = width;
             ActualHeight = height;
-
+            Log(LogLevel.Information, $"Width = {width}; Height = {height};");
             if (IsInitialized)
             {
                 StopRendering();
@@ -786,6 +834,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             StartRenderLoop = null;
             StopRenderLoop = null;
             base.Dispose(disposeManagedResources);
+        }
+
+        private void Log<Type>(LogLevel level, Type msg, [CallerMemberName]string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
+        {
+            Logger.Log(level, msg, nameof(DX11RenderHostBase), caller, sourceLineNumber);
         }
     }
 }

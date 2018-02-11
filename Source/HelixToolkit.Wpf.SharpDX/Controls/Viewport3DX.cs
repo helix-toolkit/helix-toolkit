@@ -99,11 +99,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private readonly PerspectiveCamera perspectiveCamera;
 
         /// <summary>
-        /// The rendering event listener.
-        /// </summary>
-        //private readonly RenderingEventListener renderingEventListener;
-
-        /// <summary>
         /// The rotate handler
         /// </summary>
         private readonly RotateHandler rotateHandler;
@@ -122,11 +117,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The zoom rectangle handler
         /// </summary>
         private readonly ZoomRectangleHandler zoomRectangleHandler;
-
-        /// <summary>
-        /// The adorner layer.
-        /// </summary>
-        //private AdornerDecorator adornerLayer;
 
         /// <summary>
         /// The camera controller.
@@ -592,11 +582,8 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnApplyTemplate();
             if (IsInDesignMode)
             { return; }
-            if (this.renderHostInternal != null)
-            {
-                this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
-                renderHostInternal?.Dispose();
-            }
+
+            renderHostInternal?.Dispose();
             hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
 
             if (EnableSwapChainRendering)
@@ -1335,12 +1322,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The rendering event handler.
         /// </summary>
-        /// <param name="sender">
-        /// The sender. 
-        /// </param>
-        /// <param name="e">
-        /// The event arguments. 
-        /// </param>
         private void OnCompositionTargetRendering()
         {
             this.FrameRate = Math.Round(renderHostInternal.RenderStatistics.FPSStatistics.AverageFrequency, 2);
@@ -1410,6 +1391,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.MessageText = e.Exception.ToString();
                 e.Handled = true;
             }
+            hostPresenter.Content = null;
+            renderHostInternal?.Dispose();
         }
 
         /// <summary>

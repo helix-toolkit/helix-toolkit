@@ -12,6 +12,9 @@ namespace HelixToolkit.UWP.Core
 {
     using Shaders;
     using Render;
+    /// <summary>
+    /// 
+    /// </summary>
     public class MeshOutlineRenderCore : PatchMeshRenderCore, IMeshOutlineParams
     {
         #region Properties
@@ -88,6 +91,12 @@ namespace HelixToolkit.UWP.Core
         }
 
         private string outlinePassName = DefaultPassNames.MeshOutline;
+        /// <summary>
+        /// Gets or sets the name of the outline pass.
+        /// </summary>
+        /// <value>
+        /// The name of the outline pass.
+        /// </value>
         public string OutlinePassName
         {
             set
@@ -108,24 +117,38 @@ namespace HelixToolkit.UWP.Core
         /// 
         /// </summary>
         protected IShaderPass outlineShaderPass { private set; get; }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MeshOutlineRenderCore"/> class.
+        /// </summary>
         public MeshOutlineRenderCore()
         {
             OutlineFadingFactor = 1.5f;
         }
-
+        /// <summary>
+        /// Called when [attach].
+        /// </summary>
+        /// <param name="technique">The technique.</param>
+        /// <returns></returns>
         protected override bool OnAttach(IRenderTechnique technique)
         {
             outlineShaderPass = technique[OutlinePassName];
             return base.OnAttach(technique);
         }
-
+        /// <summary>
+        /// Called when [update per model structure].
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="context">The context.</param>
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {            
             base.OnUpdatePerModelStruct(ref model, context);
             model.Params.Y = OutlineFadingFactor;
         }
-
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             if (DrawOutlineBeforeMesh)
@@ -146,9 +169,14 @@ namespace HelixToolkit.UWP.Core
             }
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class MeshXRayRenderCore : MeshOutlineRenderCore
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MeshXRayRenderCore"/> class.
+        /// </summary>
         public MeshXRayRenderCore()
         {
             DrawOutlineBeforeMesh = true;

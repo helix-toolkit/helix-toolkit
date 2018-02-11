@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 {
     using Core;
     using global::SharpDX.Direct3D11;
+    using HelixToolkit.Logger;
     using System.Runtime.CompilerServices;
 
     /// <summary>
@@ -54,6 +55,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         protected override IDX11RenderBufferProxy CreateRenderBuffer()
         {
+            Log(LogLevel.Information, "DX11Texture2DRenderBufferProxy");
             return new DX11Texture2DRenderBufferProxy(EffectsManager);
         }
 
@@ -165,9 +167,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected override void OnEndingD3D()
         {
+            Log(LogLevel.Information, "");
             asyncTask?.Wait();
             getTriangleCountTask?.Wait();
             base.OnEndingD3D();
+        }
+
+        private void Log<Type>(LogLevel level, Type msg, [CallerMemberName]string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
+        {
+            Logger.Log(level, msg, nameof(DefaultRenderHost), caller, sourceLineNumber);
         }
     }
 }

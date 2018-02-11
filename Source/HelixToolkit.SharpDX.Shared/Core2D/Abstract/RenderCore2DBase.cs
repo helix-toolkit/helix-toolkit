@@ -15,8 +15,9 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
-    using global::SharpDX.DXGI;
-    using Utilities;
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class RenderCore2DBase : DisposeObject, IRenderCore2D
     {
         /// <summary>
@@ -51,7 +52,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                SetAffectsRender(ref rect, value);
+                if(SetAffectsRender(ref rect, value))
+                {
+                    OnLayoutBoundChanged(value);
+                }
             }
             get
             {
@@ -60,6 +64,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private RectangleF clippingBound = new RectangleF();
+        /// <summary>
+        /// Gets or sets the layout clipping bound, includes border.
+        /// </summary>
+        /// <value>
+        /// The layout clipping bound.
+        /// </value>
         public RectangleF LayoutClippingBound
         {
             set
@@ -170,8 +180,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         public void Detach()
         {
             IsAttached = false;
+            OnDetach();
             DisposeAndClear();
         }
+        /// <summary>
+        /// Called when [detach].
+        /// </summary>
+        protected virtual void OnDetach() { }
         /// <summary>
         /// Renders the specified context.
         /// </summary>
@@ -201,7 +216,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <summary>
         /// Called when [render].
         /// </summary>
-        /// <param name="matrices">The matrices.</param>
+        /// <param name="context">The context.</param>
         protected abstract void OnRender(IRenderContext2D context);
         /// <summary>
         /// Determines whether this instance can render the specified context.
@@ -222,6 +237,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             OnInvalidateRenderer?.Invoke(this, true);
         }
 
+        /// <summary>
+        /// Called when [layout bound changed].
+        /// </summary>
+        /// <param name="layoutBound">The layout bound.</param>
+        protected virtual void OnLayoutBoundChanged(RectangleF layoutBound) { }
         /// <summary>
         /// 
         /// </summary>

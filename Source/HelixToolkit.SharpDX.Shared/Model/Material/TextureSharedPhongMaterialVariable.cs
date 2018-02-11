@@ -79,7 +79,7 @@ namespace HelixToolkit.UWP.Model
 
         private bool renderDiffuseMap = true;
         /// <summary>
-        /// <see cref="IMaterialRenderParams.RenderDiffuseMap"/> 
+        /// 
         /// </summary>
         public bool RenderDiffuseMap
         {
@@ -97,7 +97,7 @@ namespace HelixToolkit.UWP.Model
         }
         private bool renderDiffuseAlphaMap = true;
         /// <summary>
-        /// <see cref="IMaterialRenderParams.RenderDiffuseAlphaMap"/> 
+        ///
         /// </summary>
         public bool RenderDiffuseAlphaMap
         {
@@ -115,7 +115,7 @@ namespace HelixToolkit.UWP.Model
         }
         private bool renderNormalMap = true;
         /// <summary>
-        /// <see cref="IMaterialRenderParams.RenderNormalMap"/> 
+        ///
         /// </summary>
         public bool RenderNormalMap
         {
@@ -133,7 +133,7 @@ namespace HelixToolkit.UWP.Model
         }
         private bool renderDisplacementMap = true;
         /// <summary>
-        /// <see cref="IMaterialRenderParams.RenderDisplacementMap"/> 
+        ///
         /// </summary>
         public bool RenderDisplacementMap
         {
@@ -153,7 +153,7 @@ namespace HelixToolkit.UWP.Model
         private bool renderShadowMap = false;
 
         /// <summary>
-        /// <see cref="IMaterialRenderParams.RenderShadowMap"/> 
+        /// 
         /// </summary>
         public bool RenderShadowMap
         {
@@ -197,7 +197,7 @@ namespace HelixToolkit.UWP.Model
 
         private PhongMaterialCore material;
         /// <summary>
-        /// <see cref="IMaterialRenderParams.Material"/> 
+        ///
         /// </summary>
         public MaterialCore Material
         {
@@ -231,6 +231,7 @@ namespace HelixToolkit.UWP.Model
         /// 
         /// </summary>
         /// <param name="manager"></param>
+        /// <param name="modelGuid"></param>
         public TextureSharedPhongMaterialVariables(IEffectsManager manager, Guid modelGuid)
         {
             ModelGuid = modelGuid;
@@ -345,10 +346,11 @@ namespace HelixToolkit.UWP.Model
             modelstruct.RenderShadowMap = RenderShadowMap ? 1 : 0;
             modelstruct.HasCubeMap = RenderEnvironmentMap ? 1 : 0;
         }
+
         /// <summary>
-        /// <see cref="IEffectMaterialVariables.UpdateMaterialConstantBuffer(DeviceContext)"/>
+        /// Updates the material variables.
         /// </summary>
-        /// <param name="context"></param>
+        /// <param name="modelstruct">The modelstruct.</param>
         /// <returns></returns>
         public bool UpdateMaterialVariables(ref ModelStruct modelstruct)
         {

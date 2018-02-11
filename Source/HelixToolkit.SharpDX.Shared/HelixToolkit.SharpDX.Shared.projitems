@@ -16,6 +16,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\EmptyRenderCore2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\FrameStatisticsRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\ImageRenderCore2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core2D\Models\ArcSegment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core2D\Models\BezierSegment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core2D\Models\Figure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core2D\Models\LineSegment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core2D\Models\Segment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core2D\PathRenderCore2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core2D\RectangleRenderCore2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\GeometryRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\MaterialGeometryRenderCore.cs" />

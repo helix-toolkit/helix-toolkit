@@ -536,7 +536,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
             protected override void Dispose(bool disposeManagedResources)
             {
-                ReleaseFrame();
+                while (currentDuplicationTexture.Count > 0)
+                {
+                    currentDuplicationTexture.Pop().Dispose();
+                }
                 duplicationDict.Clear();
                 base.Dispose(disposeManagedResources);
             }

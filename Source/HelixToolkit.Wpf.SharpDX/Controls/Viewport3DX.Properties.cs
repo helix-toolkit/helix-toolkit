@@ -70,7 +70,9 @@ namespace HelixToolkit.Wpf.SharpDX
             add { this.AddHandler(GeometryModel3D.MouseMove3DEvent, value); }
             remove { this.RemoveHandler(GeometryModel3D.MouseMove3DEvent, value); }
         }
-
+        /// <summary>
+        /// Occurs when [form mouse move].
+        /// </summary>
         public event WinformHostExtend.FormMouseMoveEventHandler FormMouseMove
         {
             add { this.AddHandler(WinformHostExtend.FormMouseMoveEvent, value); }
@@ -205,12 +207,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 typeof(Viewport3DX),
                 new FrameworkPropertyMetadata(
                     new Point3D(0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-
-        /// <summary>
-        /// Deferred Render accessor
-        /// </summary>
-        //public static readonly DependencyProperty DeferredRendererProperty = DependencyProperty.Register(
-        //    "DeferredRenderer", typeof(DeferredRenderer), typeof(Viewport3DX), new PropertyMetadata(null));
 
         /// <summary>
         /// The default camera property.
@@ -801,17 +797,23 @@ namespace HelixToolkit.Wpf.SharpDX
                         viewport.renderHostInternal.SharedModelContainer = (IModelContainer)e.NewValue;
                     }
                 }));
-
+        /// <summary>
+        /// The enable swap chain rendering property
+        /// </summary>
         public static readonly DependencyProperty EnableSwapChainRenderingProperty
             = DependencyProperty.Register("EnableSwapChainRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
-
+        /// <summary>
+        /// The world matrix property
+        /// </summary>
         public static readonly DependencyProperty WorldMatrixProperty
             = DependencyProperty.Register("WorldMatrix", typeof(global::SharpDX.Matrix), typeof(Viewport3DX), new PropertyMetadata(global::SharpDX.Matrix.Identity,
                 (d, e) => {
                     (d as Viewport3DX).worldMatrixInternal = (global::SharpDX.Matrix)e.NewValue;
                     (d as Viewport3DX).InvalidateRender();
                 }));
-
+        /// <summary>
+        /// The content2 d property
+        /// </summary>
         public static readonly DependencyProperty Content2DProperty
             = DependencyProperty.Register("Content2D", typeof(Element2D), typeof(Viewport3DX), new PropertyMetadata(null, (d, e)=> 
             {
@@ -1112,9 +1114,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        /// <summary>
-        /// Read-Only DP for the deferred renderes (little bit hacky...)
-        /// </summary>
+
         //public DeferredRenderer DeferredRenderer
         //{
         //    get { return (DeferredRenderer)this.GetValue(DeferredRendererProperty); }
@@ -1310,7 +1310,12 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Exception)this.GetValue(RenderExceptionProperty); }
             set { this.SetValue(RenderExceptionProperty, value); }
         }
-
+        /// <summary>
+        /// Gets or sets the render host internal.
+        /// </summary>
+        /// <value>
+        /// The render host internal.
+        /// </value>
         protected IRenderHost renderHostInternal { private set; get; }
         /// <summary>
         /// Gets or sets value for the shading model shading is used
@@ -2064,22 +2069,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets the opacity of the ViewCube when inactive.
-        /// </summary>
-        //public double ViewCubeOpacity
-        //{
-        //    get
-        //    {
-        //        return (double)this.GetValue(ViewCubeOpacityProperty);
-        //    }
-
-        //    set
-        //    {
-        //        this.SetValue(ViewCubeOpacityProperty, value);
-        //    }
-        //}
-
-        /// <summary>
         /// Gets or sets if the view cube edge clickable.
         /// </summary>
         /// <value>
@@ -2418,7 +2407,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (IModelContainer)GetValue(SharedModelContainerProperty);
             }
         }
-
+        /// <summary>
+        /// Gets or sets the shared model container internal.
+        /// </summary>
+        /// <value>
+        /// The shared model container internal.
+        /// </value>
         protected IModelContainer sharedModelContainerInternal { private set; get; } = null;
 
         /// <summary>
@@ -2474,7 +2468,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 SetValue(Content2DProperty, value);
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [show frame details].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show frame details]; otherwise, <c>false</c>.
+        /// </value>
         public bool ShowFrameDetails
         {
             set

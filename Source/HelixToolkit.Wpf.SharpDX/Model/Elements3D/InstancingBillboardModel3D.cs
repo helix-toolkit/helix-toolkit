@@ -36,36 +36,65 @@ namespace HelixToolkit.Wpf.SharpDX
             model.instanceParamBuffer.Elements = e.NewValue as IList<BillboardInstanceParameter>;
         }
 
+        /// <summary>
+        /// The instance parameter buffer
+        /// </summary>
         protected IElementsBufferModel<BillboardInstanceParameter> instanceParamBuffer = new InstanceParamsBufferModel<BillboardInstanceParameter>(BillboardInstanceParameter.SizeInBytes);
         #region Overridable Methods
 
+        /// <summary>
+        /// Called when [create render core].
+        /// </summary>
+        /// <returns></returns>
         protected override IRenderCore OnCreateRenderCore()
         {
             return new InstancingBillboardRenderCore() { ParameterBuffer = this.instanceParamBuffer };
         }
 
+
         /// <summary>
-        /// 
+        /// Determines whether this instance [can hit test] the specified context.
         /// </summary>
-        /// <param name="rayWS"></param>
-        /// <param name="hits"></param>
-        /// <returns></returns>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
+        /// </returns>
         protected override bool CanHitTest(IRenderContext context)
         {
             //Implementation pending.
             return false;
         }
-
+        /// <summary>
+        /// Called when [hit test].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="totalModelMatrix">The total model matrix.</param>
+        /// <param name="ray">The ray.</param>
+        /// <param name="hits">The hits.</param>
+        /// <returns></returns>
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }
-
+        /// <summary>
+        /// Override this function to set render technique during Attach Host.
+        /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns>
+        /// Return RenderTechnique
+        /// </returns>
         protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.BillboardInstancing];
         }
-
+        /// <summary>
+        /// To override Attach routine, please override this.
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns>
+        /// Return true if attached
+        /// </returns>
         protected override bool OnAttach(IRenderHost host)
         {
             // --- attach
@@ -76,7 +105,9 @@ namespace HelixToolkit.Wpf.SharpDX
             instanceParamBuffer.Initialize();
             return true;
         }
-
+        /// <summary>
+        /// Used to override Detach
+        /// </summary>
         protected override void OnDetach()
         {
             instanceParamBuffer.DisposeAndClear();

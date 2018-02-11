@@ -61,10 +61,23 @@ namespace HelixToolkit.UWP.ShaderManager
                 return value;
             }
         }
-
+        /// <summary>
+        /// Gets the key.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
         protected abstract TKEY GetKey(ref TDescription description);
+        /// <summary>
+        /// Creates the specified device.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
         protected abstract TVALUE Create(Device device, ref TDescription description);
-
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposeManagedResources)
         {
             pool.Clear();
@@ -91,7 +104,6 @@ namespace HelixToolkit.UWP.ShaderManager
         /// 
         /// </summary>
         /// <param name="device"></param>
-        /// <param name="cbPool"></param>
         public ResourcePoolBase(Device device)
         {
             this.Device = device;
@@ -117,9 +129,23 @@ namespace HelixToolkit.UWP.ShaderManager
                 return value;
             }
         }
-
+        /// <summary>
+        /// Gets the key.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
         protected abstract TKEY GetKey(ref TDescription description);
+        /// <summary>
+        /// Creates the specified device.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
         protected abstract TVALUE Create(Device device, ref TDescription description);
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void Dispose(bool disposeManagedResources)
         {
             pool.Clear();

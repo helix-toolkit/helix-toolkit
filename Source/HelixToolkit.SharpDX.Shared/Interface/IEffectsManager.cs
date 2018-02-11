@@ -11,6 +11,7 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using HelixToolkit.Logger;
     using ShaderManager;
     using Shaders;
     using System;
@@ -93,7 +94,10 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public interface IEffectsManager : IDeviceResources
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
+        LogWrapper Logger { get; }
         /// <summary>
         /// 
         /// </summary>

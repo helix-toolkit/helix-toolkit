@@ -11,6 +11,10 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+#pragma warning disable 1591
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct DefaultVertex
     {
@@ -23,7 +27,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public const int SizeInBytes = 4 * (4 + 4 + 2 + 3 + 3 + 3);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct LinesVertex
     {
@@ -31,7 +37,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public Color4 Color;
         public const int SizeInBytes = 4 * (4 + 4);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct PointsVertex
     {
@@ -39,14 +47,18 @@ namespace HelixToolkit.Wpf.SharpDX
         public Color4 Color;
         public const int SizeInBytes = 4 * (4 + 4);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct CubeVertex
     {
         public Vector4 Position;
         public const int SizeInBytes = 4 * 4;
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct BillboardVertex
     {
@@ -59,7 +71,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector2 OffBR;
         public const int SizeInBytes = 4 * (4  * 3 + 2 * 4);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct BillboardInstanceParameter
     {
@@ -68,7 +82,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector2 TexCoordOffset;
         public const int SizeInBytes = 4 * (4 + 2 + 2);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct InstanceParameter
     {
@@ -78,7 +94,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector2 TexCoordOffset;
         public const int SizeInBytes = 4 * (4 * 3 + 2);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct BoneIds
     {
@@ -90,8 +108,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public const int SizeInBytes = 4 * (4 + 4);
     }
-
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct BoneMatricesStruct
     {
@@ -100,7 +119,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix[] Bones;
         public const int SizeInBytes = 4 * (4 * 4 * NumberOfBones);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Particle
     {
@@ -115,7 +136,9 @@ namespace HelixToolkit.Wpf.SharpDX
         uint texColumn;
         public const int SizeInBytes = 4 * (4 * 4 + 2);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ParticlePerFrame
     {
@@ -145,7 +168,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public const int SizeInBytes = 4 * (4 * 7);
         public const int NumParticlesOffset = 0;
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ParticleInsertParameters
     {
@@ -164,7 +189,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public const int SizeInBytes = 4 * (4 * 4);
         public const int NumParticlesOffset = 0;
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ParticleCountIndirectArgs
     {
@@ -175,7 +202,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public const int SizeInBytes = 4 * 4;
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct MaterialStruct
     {
@@ -198,7 +227,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public const int SizeInBytes = 4 * (4 * 8);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ShadowMapParamStruct
     {
@@ -209,7 +240,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix LightViewProjection;
         public const int SizeInBytes = 4 * (4 * 2 + 4*4);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct GlobalTransformStruct
     {
@@ -228,6 +261,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 3);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ModelStruct
     {
@@ -264,7 +300,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public const int SizeInBytes = 4 * (4 * 4 + 4 * 4 + 4) + 4 * (4 * 8);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct PointLineModelStruct
     {
@@ -278,7 +316,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public const int SizeInBytes = 4 * (4 * 4 + 4 * 4);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct LightStruct
     {
@@ -293,7 +333,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix LightProj;
         public const int SizeInBytes = 4 * (4 * 6 + 4 * 4 * 2);
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ClipPlaneStruct
     {
@@ -308,6 +350,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public const int SizeInBytes = 4 * (4 * 2 + 4 * 4);
     }
 #if !NETFX_CORE
+    /// <summary>
+    /// 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct ScreenDuplicationModelStruct
     {        
@@ -327,4 +372,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public const int SizeInBytes = 4 * 4 * 8;
     }
 #endif
+
+#pragma warning restore 1591
 }

@@ -260,10 +260,10 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
-        /// <see cref="IShaderPass.BindStates(DeviceContext, StateType)"/>
+        /// Binds the states.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="type"></param>
+        /// <param name="context">The context.</param>
+        /// <param name="type">The type.</param>
         public void BindStates(IDeviceContext context, StateType type)
         {
             if (type == StateType.None)

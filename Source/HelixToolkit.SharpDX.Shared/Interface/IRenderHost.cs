@@ -24,11 +24,20 @@ namespace HelixToolkit.UWP
     using Utilities;
     using Model;
     using Core2D;
+    using HelixToolkit.Logger;
+
     /// <summary>
     /// 
     /// </summary>
     public interface IRenderHost : IDisposable, IGUID
     {
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        LogWrapper Logger { get; }
         /// <summary>
         /// Fired whenever an exception occurred on this object.
         /// </summary>

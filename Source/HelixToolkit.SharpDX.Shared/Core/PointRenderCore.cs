@@ -12,8 +12,17 @@ namespace HelixToolkit.UWP.Core
 {
     using Shaders;
     using Render;
+    /// <summary>
+    /// 
+    /// </summary>
     public class PointRenderCore : GeometryRenderCore<PointLineModelStruct>, IPointRenderParams
     {
+        /// <summary>
+        /// Gets or sets the width.
+        /// </summary>
+        /// <value>
+        /// The width.
+        /// </value>
         public float Width
         {
             set
@@ -22,7 +31,12 @@ namespace HelixToolkit.UWP.Core
             }
             get { return modelStruct.Params.X; }
         }
-
+        /// <summary>
+        /// Gets or sets the height.
+        /// </summary>
+        /// <value>
+        /// The height.
+        /// </value>
         public float Height
         {
             set
@@ -31,6 +45,12 @@ namespace HelixToolkit.UWP.Core
             }
             get { return modelStruct.Params.Y; }
         }
+        /// <summary>
+        /// Gets or sets the figure.
+        /// </summary>
+        /// <value>
+        /// The figure.
+        /// </value>
         public PointFigure Figure
         {
             set
@@ -39,6 +59,12 @@ namespace HelixToolkit.UWP.Core
             }
             get { return (PointFigure)modelStruct.Params.Z; }
         }
+        /// <summary>
+        /// Gets or sets the figure ratio.
+        /// </summary>
+        /// <value>
+        /// The figure ratio.
+        /// </value>
         public float FigureRatio
         {
             set
@@ -61,7 +87,9 @@ namespace HelixToolkit.UWP.Core
                 return modelStruct.Color.ToColor4();
             }
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointRenderCore"/> class.
+        /// </summary>
         public PointRenderCore()
         {
             Width = 0.5f;
@@ -70,19 +98,30 @@ namespace HelixToolkit.UWP.Core
             FigureRatio = 0.25f;
             PointColor = Color.Black;
         }
-
+        /// <summary>
+        /// Called when [update per model structure].
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="context">The context.</param>
         protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             modelStruct.Color = PointColor;
         }
-
+        /// <summary>
+        /// Gets the model constant buffer description.
+        /// </summary>
+        /// <returns></returns>
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
             return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
         }
-
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             DefaultShaderPass.BindShader(deviceContext);

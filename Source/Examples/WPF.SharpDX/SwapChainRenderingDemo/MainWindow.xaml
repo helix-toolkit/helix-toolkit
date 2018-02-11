@@ -99,8 +99,6 @@
                 Material="{Binding FloorMaterial}"
                 Transform="{Binding FloorTransform}" />
             <hx:LineGeometryModel3D Geometry="{Binding LineGeo}" Color="Blue" />
-            <hx:CoordinateSystemModel3D />
-            <hx:ViewBoxModel3D />
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"

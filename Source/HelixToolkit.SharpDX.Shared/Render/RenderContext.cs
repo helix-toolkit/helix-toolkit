@@ -32,11 +32,22 @@ namespace HelixToolkit.Wpf.SharpDX
         private Matrix worldMatrix = Matrix.Identity;
         private Matrix viewMatrix;
         private Matrix projectionMatrix;
+        /// <summary>
+        /// Gets or sets the bounding frustum.
+        /// </summary>
+        /// <value>
+        /// The bounding frustum.
+        /// </value>
         public BoundingFrustum BoundingFrustum { set; get; }
         private CameraCore camera; 
 
         private bool matrixChanged = true;
-
+        /// <summary>
+        /// Gets the view matrix.
+        /// </summary>
+        /// <value>
+        /// The view matrix.
+        /// </value>
         public Matrix ViewMatrix
         {
             get { return viewMatrix; }
@@ -47,7 +58,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 matrixChanged = true;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the projection matrix.
+        /// </summary>
+        /// <value>
+        /// The projection matrix.
+        /// </value>
         public Matrix ProjectionMatrix
         {
             get { return projectionMatrix; }
@@ -61,7 +77,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 matrixChanged = true;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the world matrix.
+        /// </summary>
+        /// <value>
+        /// The world matrix.
+        /// </value>
         public Matrix WorldMatrix
         {
             get { return worldMatrix; }
@@ -75,7 +96,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 matrixChanged = true;
             }
         }
-
+        /// <summary>
+        /// Gets the viewport matrix.
+        /// </summary>
+        /// <value>
+        /// The viewport matrix.
+        /// </value>
         public Matrix ViewportMatrix
         {
             get
@@ -88,6 +114,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         private Matrix screenViewProjectionMatrix = Matrix.Identity;
+        /// <summary>
+        /// Gets the screen view projection matrix.
+        /// </summary>
+        /// <value>
+        /// The screen view projection matrix.
+        /// </value>
         public Matrix ScreenViewProjectionMatrix
         {
             get
@@ -95,15 +127,40 @@ namespace HelixToolkit.Wpf.SharpDX
                 return GetScreenViewProjectionMatrix();
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable bounding frustum].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable bounding frustum]; otherwise, <c>false</c>.
+        /// </value>
         public bool EnableBoundingFrustum { set; get; } = false;
-
+        /// <summary>
+        /// Gets or sets the device context.
+        /// </summary>
+        /// <value>
+        /// The device context.
+        /// </value>
         public DeviceContext DeviceContext { private set; get; }
-
+        /// <summary>
+        /// Gets the actual width.
+        /// </summary>
+        /// <value>
+        /// The actual width.
+        /// </value>
         public double ActualWidth { get { return RenderHost.ActualWidth; } }
-
+        /// <summary>
+        /// Gets the actual height.
+        /// </summary>
+        /// <value>
+        /// The actual height.
+        /// </value>
         public double ActualHeight { get { return RenderHost.ActualHeight; } }
-
+        /// <summary>
+        /// Gets or sets the camera.
+        /// </summary>
+        /// <value>
+        /// The camera.
+        /// </value>
         public CameraCore Camera
         {
             get { return this.camera; }
@@ -133,29 +190,68 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
         }
-            
 
+        /// <summary>
+        /// Gets the render host.
+        /// </summary>
+        /// <value>
+        /// The render host.
+        /// </value>
         public IRenderHost RenderHost { get; private set; }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether is shadow pass.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if is shadow pass; otherwise, <c>false</c>.
+        /// </value>
         public bool IsShadowPass { get; set; } = false;
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is deferred pass.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is deferred pass; otherwise, <c>false</c>.
+        /// </value>
         public bool IsDeferredPass { get; set; }
-
+        /// <summary>
+        /// Gets or sets the time stamp.
+        /// </summary>
+        /// <value>
+        /// The time stamp.
+        /// </value>
         public TimeSpan TimeStamp { set; get; }
-
+        /// <summary>
+        /// Gets or sets the light scene.
+        /// </summary>
+        /// <value>
+        /// The light scene.
+        /// </value>
         public Light3DSceneShared LightScene { private set; get; }
 
         private IConstantBufferProxy cbuffer;
-
+        
         private GlobalTransformStruct globalTransform;
-
+        /// <summary>
+        /// Gets the global transform.
+        /// </summary>
+        /// <value>
+        /// The global transform.
+        /// </value>
         public GlobalTransformStruct GlobalTransform { get { return globalTransform; } }
-
+        /// <summary>
+        /// Gets or sets the shared resource.
+        /// </summary>
+        /// <value>
+        /// The shared resource.
+        /// </value>
         public IContextSharedResource SharedResource
         {
             private set;get;
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RenderContext"/> class.
+        /// </summary>
+        /// <param name="renderHost">The render host.</param>
+        /// <param name="renderContext">The render context.</param>
         public RenderContext(IRenderHost renderHost, DeviceContext renderContext)
         {
             this.RenderHost = renderHost;
@@ -166,7 +262,10 @@ namespace HelixToolkit.Wpf.SharpDX
             LightScene = Collect(new Light3DSceneShared(renderHost.EffectsManager.ConstantBufferPool));
             SharedResource = Collect(new ContextSharedResource());
         }
-
+        /// <summary>
+        /// Gets the screen view projection matrix.
+        /// </summary>
+        /// <returns></returns>
         public Matrix GetScreenViewProjectionMatrix()
         {
             return screenViewProjectionMatrix;

@@ -412,7 +412,7 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSBillboardText
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
                     }
                 }
             };

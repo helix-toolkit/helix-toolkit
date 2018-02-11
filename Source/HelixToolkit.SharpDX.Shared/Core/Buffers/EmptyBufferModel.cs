@@ -104,12 +104,16 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context">The context.</param>
         /// <param name="vertexLayout">The vertex layout.</param>
         /// <param name="vertexBufferSlot">The vertex buffer slot.</param>
+        /// <param name="deviceResources"></param>
         /// <returns></returns>
         public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot, IDeviceResources deviceResources)
         {
             return true;
         }
-
+        /// <summary>
+        /// Attaches the render host.
+        /// </summary>
+        /// <param name="host">The host.</param>
         public void AttachRenderHost(IRenderHost host)
         {
 
@@ -122,7 +126,10 @@ namespace HelixToolkit.UWP.Core
         {
 
         }
-
+        /// <summary>
+        /// Detaches the render host.
+        /// </summary>
+        /// <param name="host">The host.</param>
         public void DetachRenderHost(IRenderHost host)
         {
 

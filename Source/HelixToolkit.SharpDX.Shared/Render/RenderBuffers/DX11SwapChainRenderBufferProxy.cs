@@ -29,7 +29,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The swap chain.
         /// </value>
         public SwapChain1 SwapChain { get { return swapChain; } }
-
+        /// <summary>
+        /// The surface pointer
+        /// </summary>
         protected readonly System.IntPtr surfacePtr;
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11SwapChainRenderBufferProxy"/> class.
@@ -57,6 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
+        /// <param name="createDepthStencilBuffer"></param>
         /// <returns></returns>
         protected override Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height, bool createDepthStencilBuffer)
         {

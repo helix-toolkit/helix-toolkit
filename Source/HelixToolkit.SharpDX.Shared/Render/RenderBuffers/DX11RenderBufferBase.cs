@@ -112,7 +112,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public IDeviceContextPool DeviceContextPool { get { return deviceContextPool; } }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="DX11RenderBufferProxy"/> is initialized.
+        /// Gets or sets a value indicating whether this is initialized.
         /// </summary>
         /// <value>
         ///   <c>true</c> if initialized; otherwise, <c>false</c>.
@@ -144,7 +144,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The device2 d.
         /// </value>
         public global::SharpDX.Direct2D1.Device Device2D { get { return deviceResources.Device2D; } }
-
+        /// <summary>
+        /// Gets the device context2 d.
+        /// </summary>
+        /// <value>
+        /// The device context2 d.
+        /// </value>
         public global::SharpDX.Direct2D1.DeviceContext DeviceContext2D { get { return deviceResources.DeviceContext2D; } }
         /// <summary>
         /// Gets or sets the device resources.
@@ -153,12 +158,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The device resources.
         /// </value>
         protected IDeviceResources deviceResources { private set; get; }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [use depth stencil buffer].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [use depth stencil buffer]; otherwise, <c>false</c>.
+        /// </value>
         public bool UseDepthStencilBuffer { private set; get; } = true;
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11RenderBufferProxyBase"/> class.
         /// </summary>
         /// <param name="deviceResource">The device resources.</param>
+        /// <param name="useDepthStencilBuffer"></param>
         public DX11RenderBufferProxyBase(IDeviceResources deviceResource, bool useDepthStencilBuffer = true)
         {
             this.deviceResources = deviceResource;
@@ -179,7 +190,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             OnNewBufferCreated?.Invoke(this, texture);
             return texture;
         }
-
+        /// <summary>
+        /// Disposes the buffers.
+        /// </summary>
         protected virtual void DisposeBuffers()
         {
             DeviceContext2D.Target = null;
@@ -195,6 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
+        /// <param name="createDepthStencilBuffer"></param>
         /// <returns></returns>
         protected abstract Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height, bool createDepthStencilBuffer);
 

@@ -496,9 +496,10 @@ namespace HelixToolkit.Wpf.SharpDX
             BoundManager.DisposeAndClear();
             base.OnDetach();
         }
+
         /// <summary>
         /// <para>Determine if this can be rendered.</para>
-        /// <para>Default returns <see cref="IsAttached" /> &amp;&amp; <see cref="IsRendering" /> &amp;&amp; <see cref="Visibility" /> == <see cref="Visibility.Visible" /></para>
+        /// <para>Default returns <see cref="Element3DCore.IsAttached" /> &amp;&amp; <see cref="Visibility" /> == <see cref="Visibility.Visible" /></para>
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>

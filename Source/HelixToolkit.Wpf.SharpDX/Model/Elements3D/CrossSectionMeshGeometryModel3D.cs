@@ -256,16 +256,23 @@ namespace HelixToolkit.Wpf.SharpDX
         { get { return (ICrossSectionRenderParams)RenderCore; } }
 
         #endregion
+
         /// <summary>
-        /// The SetRenderTechnique
+        /// Override this function to set render technique during Attach Host.
+        /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
         /// </summary>
-        /// <param name="host">The <see cref="IRenderHost"/></param>
-        /// <returns>The <see cref="RenderTechnique"/></returns>
+        /// <param name="host"></param>
+        /// <returns>
+        /// Return RenderTechnique
+        /// </returns>
         protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.CrossSection];
         }
-
+        /// <summary>
+        /// Called when [create render core].
+        /// </summary>
+        /// <returns></returns>
         protected override IRenderCore OnCreateRenderCore()
         {
             return new CrossSectionMeshRenderCore();

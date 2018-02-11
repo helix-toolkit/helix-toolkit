@@ -48,6 +48,7 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         /// <param name="context"></param>
+        /// <param name="deviceContext"></param>
         void Render(IRenderContext context, DeviceContextProxy deviceContext);
     }
 

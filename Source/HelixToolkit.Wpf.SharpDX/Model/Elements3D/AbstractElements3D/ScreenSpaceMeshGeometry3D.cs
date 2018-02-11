@@ -330,7 +330,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="HelixToolkit.Wpf.SharpDX.ScreenSpacePositionMoverBase" />
+    /// <seealso cref="HelixToolkit.Wpf.SharpDX.Elements2D.ScreenSpacePositionMoverBase" />
     public class ScreenSpacePositionMover : ScreenSpacePositionMoverBase
     {
         private Button2D MoveLeftTop, MoveLeftBottom, MoveRightTop, MoveRightBottom;
@@ -343,22 +343,25 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             MoveLeftTop = new MoverButton2D()
             {
                 HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top,
-                StrokeDashArray = new System.Windows.Media.DoubleCollection() { 6, 12, 6 }
+                BorderThickness = new Thickness(2, 0, 0, 2)
             };
-            MoveLeftBottom = new MoverButton2D()
-            {
-                HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Bottom,
-                StrokeDashArray = new System.Windows.Media.DoubleCollection() { 0, 12, 12 }
-            };
+
             MoveRightTop = new MoverButton2D()
             {
                 HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Top,
-                StrokeDashArray = new System.Windows.Media.DoubleCollection() { 12, 12 }
+                BorderThickness = new Thickness(2, 2, 0, 0)
             };
+
+            MoveLeftBottom = new MoverButton2D()
+            {
+                HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Bottom,
+                BorderThickness = new Thickness(0, 0, 2, 2)
+            };
+
             MoveRightBottom = new MoverButton2D()
             {
                 HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Bottom,
-                StrokeDashArray = new System.Windows.Media.DoubleCollection() { 0, 6, 12, 6 }
+                BorderThickness = new Thickness(0, 2, 2, 0)
             };
 
             buttons[0] = MoveLeftTop;

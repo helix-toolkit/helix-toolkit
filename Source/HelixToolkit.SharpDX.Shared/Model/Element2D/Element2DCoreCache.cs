@@ -16,10 +16,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     using Utilities;
     public abstract partial class Element2DCore
     {
+#pragma warning disable 
         /// <summary>
-        /// The minimum bitmap size by Bytes. Default 2048 * B8G8R8A8 format = 64kb. https://msdn.microsoft.com/en-us/library/windows/desktop/dd372260%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
+        /// The minimum bitmap size by Bytes. Default 2048 * B8G8R8A8 format = 64kb. 
+        /// <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd372260%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396">Here</see>
         /// </summary>
         private const int MinimumBitmapSize = 2048;
+#pragma warning restore
         /// <summary>
         /// Gets or sets a value indicating whether [enable bitmap cache].
         /// </summary>

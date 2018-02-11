@@ -60,6 +60,7 @@ namespace HelixToolkit.UWP
         /// <param name="context">The context.</param>
         /// <param name="vertexLayout">The vertex layout.</param>
         /// <param name="vertexBufferSlot">The vertex buffer slot.</param>
+        /// <param name="deviceResources"></param>
         /// <returns></returns>
         bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot, IDeviceResources deviceResources);
 

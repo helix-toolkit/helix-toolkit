@@ -23,23 +23,77 @@ namespace HelixToolkit.UWP.Shaders
     [DataContract]
     public class ShaderDescription
     {
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         [DataMember]
         public string Name { set; get; }
+        /// <summary>
+        /// Gets or sets the type of the shader.
+        /// </summary>
+        /// <value>
+        /// The type of the shader.
+        /// </value>
         [DataMember]
         public ShaderStage ShaderType { set; get; }
+        /// <summary>
+        /// Gets or sets the level.
+        /// </summary>
+        /// <value>
+        /// The level.
+        /// </value>
         [DataMember]
         public FeatureLevel Level { set; get; }
+        /// <summary>
+        /// Gets or sets the byte code.
+        /// </summary>
+        /// <value>
+        /// The byte code.
+        /// </value>
         [DataMember]
         public byte[] ByteCode { set; get; }
+        /// <summary>
+        /// Gets or sets the constant buffer mappings.
+        /// </summary>
+        /// <value>
+        /// The constant buffer mappings.
+        /// </value>
         [DataMember]
         public ConstantBufferMapping[] ConstantBufferMappings { set; get; }
+        /// <summary>
+        /// Gets or sets the texture mappings.
+        /// </summary>
+        /// <value>
+        /// The texture mappings.
+        /// </value>
         [DataMember]
         public TextureMapping[] TextureMappings { set; get; }
+        /// <summary>
+        /// Gets or sets the uav mappings.
+        /// </summary>
+        /// <value>
+        /// The uav mappings.
+        /// </value>
         [DataMember]
         public UAVMapping[] UAVMappings { get; set; }
+        /// <summary>
+        /// Gets or sets the sampler mappings.
+        /// </summary>
+        /// <value>
+        /// The sampler mappings.
+        /// </value>
         [DataMember]
         public SamplerMapping[] SamplerMappings { set; get; }
 
+        /// <summary>
+        /// Gets or sets the shader reflector.
+        /// </summary>
+        /// <value>
+        /// The shader reflector.
+        /// </value>
         protected IShaderReflector shaderReflector { private set; get; }
         /// <summary>
         /// Create a empty description
@@ -69,6 +123,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="byteCode"></param>
         /// <param name="constantBuffers"></param>
         /// <param name="textures"></param>
+        /// <param name="samplers"></param>
         public ShaderDescription(string name, ShaderStage type, FeatureLevel featureLevel, byte[] byteCode,
             ConstantBufferMapping[] constantBuffers = null, TextureMapping[] textures = null, SamplerMapping[] samplers = null)
             : this(name, type, byteCode)
@@ -175,6 +230,10 @@ namespace HelixToolkit.UWP.Shaders
             return shader;
         }
 
+        /// <summary>
+        /// Clones this instance.
+        /// </summary>
+        /// <returns></returns>
         public ShaderDescription Clone()
         {
             return new ShaderDescription(this.Name, this.ShaderType, this.Level, this.ByteCode,

@@ -142,12 +142,25 @@ namespace SimpleDemo
             Points.Indices = ptIdx;
 
             Text = new BillboardText3D();
-
-            for (var i = 0; i < 50; i++)
+            int numRows = 10;
+            int numColumns = 10;
+            string[] texts = new string[]
             {
-                for (var j = 0; j < 50; j++)
+                "HelixToolkit",
+                "abcde",
+                "random",
+                "SharpDX",
+                "DirectX"
+            };
+            for (var i = 0; i < numRows; i++)
+            {
+                for (var j = 0; j < numColumns; j++)
                 {
-                    Text.TextInfo.Add(new TextInfo("Hello World", new Vector3(i,j,0)));
+                    Text.TextInfo.Add(new TextInfo(texts[(i+j)%texts.Length], new Vector3((i-numRows/2) * 4, (j-numColumns/2) * 4, 0))
+                    {
+                        Foreground = new Color4((float)i / numRows, 0, 0, 1f),
+                        Background = new Color4(0, (float)(numColumns - j) / numColumns, 1, 0.8f),
+                    });
                 }
             }
 
