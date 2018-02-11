@@ -114,9 +114,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         default:
                             Character data = bmpFont[character];
                             int kerning = bmpFont.GetKerning(previousCharacter, character);
-
-                            //DrawCharacter(data, x + data.Offset.X + kerning, y + data.Offset.Y, builder);
-                            DrawCharacter(data, new Vector3(x, y, 0), w, h, kerning, textInfo);
+                            DrawCharacter(data, new Vector3(x + data.Offset.X, y - data.Offset.Y, 0), w, h, kerning, textInfo);
 
                             x += data.XAdvance + kerning;
                             break;
@@ -134,8 +132,8 @@ namespace HelixToolkit.Wpf.SharpDX
             var ch = character.Bounds.Height;
             var cu = character.Bounds.Left;
             var cv = character.Bounds.Top;
-            var tl = new Vector2(origin.X + kerning, origin.Y + ch);
-            var br = new Vector2(origin.X + cw + kerning, origin.Y);
+            var tl = new Vector2(origin.X + kerning, origin.Y );
+            var br = new Vector2(origin.X + cw + kerning, origin.Y - ch);
 
             var uv_tl = new Vector2(cu / w, cv / h);
             var uv_br = new Vector2((cu + cw) / w, (cv + ch) / h);
