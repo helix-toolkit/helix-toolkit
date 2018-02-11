@@ -91,8 +91,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             BillboardVertices.Clear();
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
+
+            var tempList = new List<BillboardVertex>(100);
             foreach (var textInfo in TextInfo)
             {
+                tempList.Clear();
                 int x = 0;
                 int y = 0;
                 var w = bmpFont.TextureSize.Width;
@@ -102,7 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 previousCharacter = ' ';
                 var normalizedText = textInfo.Text;
-
+                var rect = new RectangleF(textInfo.Origin.X, textInfo.Origin.Y, 0, 0);
                 foreach (char character in normalizedText)
                 {
                     switch (character)
@@ -114,19 +117,33 @@ namespace HelixToolkit.Wpf.SharpDX
                         default:
                             Character data = bmpFont[character];
                             int kerning = bmpFont.GetKerning(previousCharacter, character);
-                            DrawCharacter(data, new Vector3(x + data.Offset.X, y - data.Offset.Y, 0), w, h, kerning, textInfo);
+                            tempList.Add(DrawCharacter(data, new Vector3(x + data.Offset.X, y - data.Offset.Y, 0), w, h, kerning, textInfo));
 
                             x += data.XAdvance + kerning;
                             break;
                     }
-
                     previousCharacter = character;
+                    if (tempList.Count > 0)
+                    {
+                        rect.Width = Math.Max(rect.Width, x);
+                        rect.Height = Math.Max(rect.Height, Math.Abs(tempList.Last().OffBR.Y));
+                    }
                 }
+                BillboardVertices.Add(new BillboardVertex()
+                {
+                    Position = textInfo.Origin.ToVector4(),
+                    Background = textInfo.Background,
+                    TexTL = Vector2.Zero,
+                    TexBR = Vector2.Zero,
+                    OffTL = Vector2.Zero,
+                    OffBR = new Vector2(rect.Width, -rect.Height),
+                });
+                tempList.ForEach(BillboardVertices.Add);
             }
             UpdateBounds();
         }
 
-        private void DrawCharacter(Character character, Vector3 origin, float w, float h, float kerning, TextInfo info)
+        private BillboardVertex DrawCharacter(Character character, Vector3 origin, float w, float h, float kerning, TextInfo info)
         {
             var cw = character.Bounds.Width;
             var ch = character.Bounds.Height;
@@ -138,16 +155,16 @@ namespace HelixToolkit.Wpf.SharpDX
             var uv_tl = new Vector2(cu / w, cv / h);
             var uv_br = new Vector2((cu + cw) / w, (cv + ch) / h);
 
-            BillboardVertices.Add(new BillboardVertex()
+            return new BillboardVertex()
             {
                 Position = info.Origin.ToVector4(),
                 Foreground = info.Foreground,
-                Background = info.Background,
+                Background = Color.Transparent,
                 TexTL = uv_tl,
                 TexBR = uv_br,
                 OffTL = tl,
                 OffBR = br
-            });
+            };
         }
     }
 #endif
