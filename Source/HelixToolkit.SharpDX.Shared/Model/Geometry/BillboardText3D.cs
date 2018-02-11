@@ -83,6 +83,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public virtual BitmapFont BitmapFont
+        {
+            get
+            {
+                return bmpFont;
+            }
+        }
+
         public List<TextInfo> TextInfo { get; } = new List<TextInfo>();
 
         //public override IList<Vector2> TextureOffsets { get { return TextInfo.SelectMany(x => x.Offsets).ToArray(); } }
@@ -98,8 +106,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 tempList.Clear();
                 int x = 0;
                 int y = 0;
-                var w = bmpFont.TextureSize.Width;
-                var h = bmpFont.TextureSize.Height;
+                var w = BitmapFont.TextureSize.Width;
+                var h = BitmapFont.TextureSize.Height;
 
                 char previousCharacter;
 
@@ -112,11 +120,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         case '\n':
                             x = 0;
-                            y -= bmpFont.LineHeight;
+                            y -= BitmapFont.LineHeight;
                             break;
                         default:
-                            Character data = bmpFont[character];
-                            int kerning = bmpFont.GetKerning(previousCharacter, character);
+                            Character data = BitmapFont[character];
+                            int kerning = BitmapFont.GetKerning(previousCharacter, character);
                             tempList.Add(DrawCharacter(data, new Vector3(x + data.Offset.X, y - data.Offset.Y, 0), w, h, kerning, textInfo));
 
                             x += data.XAdvance + kerning;
