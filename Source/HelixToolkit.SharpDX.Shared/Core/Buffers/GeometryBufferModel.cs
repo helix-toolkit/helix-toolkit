@@ -182,7 +182,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot, IDeviceResources deviceResources)
         {
-            if (VertexChanged)
+            if (VertexChanged && VertexBuffer != null)
             {
                 lock (VertexBuffer)
                 {
@@ -193,7 +193,7 @@ namespace HelixToolkit.UWP.Core
                     VertexChanged = false;
                 }
             }
-            if (IndexChanged)
+            if (IndexChanged && IndexBuffer != null)
             {
                 lock (IndexBuffer)
                 {
