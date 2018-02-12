@@ -33,6 +33,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public Color4 Background { set; get; } = Color.Transparent;
 
+        public float Width { internal set; get; }
+
+        public float Height { internal set; get; }
+
         public TextInfo()
         {
         }
@@ -137,18 +141,44 @@ namespace HelixToolkit.Wpf.SharpDX
                         rect.Height = Math.Max(rect.Height, Math.Abs(tempList.Last().OffBR.Y));
                     }
                 }
+                var halfW = rect.Width / 2;
+                var halfH = rect.Height / 2;
                 BillboardVertices.Add(new BillboardVertex()
                 {
                     Position = textInfo.Origin.ToVector4(),
                     Background = textInfo.Background,
                     TexTL = Vector2.Zero,
                     TexBR = Vector2.Zero,
-                    OffTL = Vector2.Zero,
-                    OffBR = new Vector2(rect.Width, -rect.Height),
+                    OffTL = new Vector2(-halfW, halfH),
+                    OffBR = new Vector2(halfW, -halfH),
                 });
-                tempList.ForEach(BillboardVertices.Add);
+                textInfo.Width = rect.Width;
+                textInfo.Height = rect.Height;
+
+                foreach(var vert in tempList)
+                {
+                    var v = vert;
+                    v.OffTL += new Vector2(-halfW, halfH);
+                    v.OffBR += new Vector2(-halfW, halfH);
+                    BillboardVertices.Add(v);
+                }
             }
             UpdateBounds();
+        }
+
+        private static ref T ElementAt<T>(ref T[] array, int position)
+        {
+            if (array == null)
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
+
+            if (position < 0 || position >= array.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(position));
+            }
+
+            return ref array[position];
         }
 
         private BillboardVertex DrawCharacter(Character character, Vector3 origin, float w, float h, float kerning, TextInfo info)
