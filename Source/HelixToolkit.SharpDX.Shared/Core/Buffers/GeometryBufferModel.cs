@@ -184,13 +184,25 @@ namespace HelixToolkit.UWP.Core
         {
             if (VertexChanged)
             {
-                OnCreateVertexBuffer(context, VertexBuffer, Geometry, deviceResources);
-                VertexChanged = false;
+                lock (VertexBuffer)
+                {
+                    if (VertexChanged)
+                    {
+                        OnCreateVertexBuffer(context, VertexBuffer, Geometry, deviceResources);
+                    }
+                    VertexChanged = false;
+                }
             }
             if (IndexChanged)
             {
-                OnCreateIndexBuffer(context, IndexBuffer, Geometry, deviceResources);
-                IndexChanged = false;
+                lock (IndexBuffer)
+                {
+                    if (IndexChanged)
+                    {
+                        OnCreateIndexBuffer(context, IndexBuffer, Geometry, deviceResources);
+                    }
+                    IndexChanged = false;
+                }               
             }
             return OnAttachBuffer(context, vertexLayout, vertexBufferSlot);
         }
