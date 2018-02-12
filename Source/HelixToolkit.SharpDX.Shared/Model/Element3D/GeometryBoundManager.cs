@@ -224,10 +224,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
             else
             {
-                Bounds = Geometry.Bound;
-                BoundsSphere = Geometry.BoundingSphere;
                 if (!HasInstances)
                 {
+                    Bounds = Geometry.Bound;
+                    BoundsSphere = Geometry.BoundingSphere;
                     BoundsWithTransform = Bounds.Transform(elementCore.ModelMatrix);
                     BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.ModelMatrix);
                 }
@@ -264,6 +264,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                             BoundingSphere.Merge(ref boundSphere, ref bs, out boundSphere);
                         }
                     }
+                    Bounds = bound;
+                    BoundsSphere = boundSphere;
                     BoundsWithTransform = Bounds.Transform(elementCore.ModelMatrix);
                     BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.ModelMatrix);
                 }
