@@ -23,6 +23,8 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Core;
+    using System.Collections.ObjectModel;
+    using System.Diagnostics;
 
     public class TextInfo
     {
@@ -33,9 +35,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public Color4 Background { set; get; } = Color.Transparent;
 
-        public float Width { internal set; get; }
+        public float ActualWidth { protected set; get; }
 
-        public float Height { internal set; get; }
+        public float AcutalHeight { protected set; get; }
 
         public TextInfo()
         {
@@ -46,6 +48,15 @@ namespace HelixToolkit.Wpf.SharpDX
             Text = text;
             Origin = origin;
         }
+
+        public virtual void UpdateTextInfo(float actualWidth, float actualHeight)
+        {
+            ActualWidth = actualWidth;
+            AcutalHeight = actualHeight;
+            BoundSphere = new BoundingSphere(Origin, Math.Max(actualWidth, actualHeight) / 2);
+        }
+
+        public BoundingSphere BoundSphere { get; private set; }
     }
 #if !NETFX_CORE
     [Serializable]
@@ -95,15 +106,35 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public List<TextInfo> TextInfo { get; } = new List<TextInfo>();
-
-        //public override IList<Vector2> TextureOffsets { get { return TextInfo.SelectMany(x => x.Offsets).ToArray(); } }
-
-        public override void DrawTexture(IDeviceResources deviceResources)
+        private ObservableCollection<TextInfo> textInfo = new ObservableCollection<TextInfo>();
+        public ObservableCollection<TextInfo> TextInfo
         {
-            BillboardVertices.Clear();
-            // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
+            set
+            {
+                var old = textInfo;
+                if(Set(ref textInfo, value))
+                {
+                    old.CollectionChanged -= CollectionChanged;
+                    IsInitialized = false;
+                    if (value != null)
+                    {
+                        value.CollectionChanged += CollectionChanged;
+                    }
+                }
+            }
+            get { return textInfo; }
+        }
 
+        private void CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            IsInitialized = false;
+        }
+
+        protected override void OnDrawTexture(IDeviceResources deviceResources)
+        {
+            Width = 0;
+            Height = 0;
+            // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
             var tempList = new List<BillboardVertex>(100);
             foreach (var textInfo in TextInfo)
             {
@@ -152,8 +183,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     OffTL = new Vector2(-halfW, halfH),
                     OffBR = new Vector2(halfW, -halfH),
                 });
-                textInfo.Width = rect.Width;
-                textInfo.Height = rect.Height;
+
+                textInfo.UpdateTextInfo(rect.Width, rect.Height);
 
                 foreach(var vert in tempList)
                 {
@@ -162,23 +193,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     v.OffBR += new Vector2(-halfW, halfH);
                     BillboardVertices.Add(v);
                 }
+                Width += rect.Width;
+                Height += rect.Height;
             }
-            UpdateBounds();
-        }
-
-        private static ref T ElementAt<T>(ref T[] array, int position)
-        {
-            if (array == null)
-            {
-                throw new ArgumentNullException(nameof(array));
-            }
-
-            if (position < 0 || position >= array.Length)
-            {
-                throw new ArgumentOutOfRangeException(nameof(position));
-            }
-
-            return ref array[position];
         }
 
         private BillboardVertex DrawCharacter(Character character, Vector3 origin, float w, float h, float kerning, TextInfo info)
@@ -203,6 +220,54 @@ namespace HelixToolkit.Wpf.SharpDX
                 OffTL = tl,
                 OffBR = br
             };
+        }
+
+        public override bool HitTest(IRenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
+            IRenderable originalSource, bool fixedSize)
+        {
+            var h = false;
+            var result = new HitTestResult();
+            result.Distance = double.MaxValue;
+
+            if (context == null || Width == 0 || Height == 0 || (fixedSize && !BoundingSphere.Intersects(ref rayWS)))
+            {
+                return false;
+            }
+
+            var projectionMatrix = context.ProjectionMatrix;
+            var viewMatrix = context.ViewMatrix;
+            var visualToScreen = context.ScreenViewProjectionMatrix;
+            foreach (var info in TextInfo)
+            {
+                var left = -info.ActualWidth / 2;
+                var right = -left;
+                var top = -info.AcutalHeight / 2;
+                var bottom = -top;
+                var b = GetHitTestBound(info.Origin, left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref visualToScreen,
+                    fixedSize, (float)context.ActualWidth, (float)context.ActualHeight);
+
+                if (rayWS.Intersects(ref b))
+                {
+
+                    float distance;
+                    if (Collision.RayIntersectsBox(ref rayWS, ref b, out distance))
+                    {
+                        h = true;
+                        result.ModelHit = originalSource;
+                        result.IsValid = true;
+                        result.PointHit = rayWS.Position + (rayWS.Direction * distance);
+                        result.Distance = distance;
+                        result.Tag = info;
+                        Debug.WriteLine($"Hit; Text:{info.Text}; HitPoint:{result.PointHit};");
+                        break;
+                    }
+                }
+            }
+            if (h)
+            {
+                hits.Add(result);
+            }
+            return h;
         }
     }
 #endif

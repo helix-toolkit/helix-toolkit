@@ -24,7 +24,6 @@ using Core;
     using Extensions;
     public class BillboardSingleText3D : BillboardBase
     {
-        private volatile bool isInitialized = false;
         private readonly bool predefinedSize = false;
         /// <summary>
         /// Billboard type, <see cref="BillboardType"/>
@@ -43,29 +42,49 @@ using Core;
             get { return mTextInfo; }
             set
             {
-                mTextInfo = value;
-                isInitialized = false;
+                if(Set(ref mTextInfo, value))
+                {
+                    IsInitialized = false;
+                }
             }
         }
 
         private Color4 mFontColor = Color.Black;
         public Color4 FontColor
         {
-            set { mFontColor = value; }
+            set
+            {
+                if(Set(ref mFontColor, value))
+                {
+                    IsInitialized = false;
+                }
+            }
             get { return mFontColor; }
         }
 
         private Color4 mBackgroundColor = Color.Transparent;
         public Color4 BackgroundColor
         {
-            set { mBackgroundColor = value; }
+            set
+            {
+                if(Set(ref mBackgroundColor, value))
+                {
+                    IsInitialized = false;
+                }
+            }
             get { return mBackgroundColor; }
         }
 
         private int mFontSize = 12;
         public int FontSize
         {
-            set { mFontSize = value; }
+            set
+            {
+                if(Set(ref mFontSize, value))
+                {
+                    IsInitialized = false;
+                }
+            }
             get { return mFontSize; }
         }
 
@@ -74,7 +93,10 @@ using Core;
         {
             set
             {
-                mFontFamily = value;
+                if(Set(ref mFontFamily, value))
+                {
+                    IsInitialized = false;
+                }
             }
             get
             {
@@ -87,7 +109,10 @@ using Core;
         {
             set
             {
-                mFontWeight = value;
+                if(Set(ref mFontWeight, value))
+                {
+                    IsInitialized = false;
+                }
             }
             get
             {
@@ -103,7 +128,10 @@ using Core;
         {
             set
             {
-                mFontStyle = value;
+                if(Set(ref mFontStyle, value))
+                {
+                    IsInitialized = false;
+                }
             }
             get
             {
@@ -116,8 +144,12 @@ using Core;
         {
             set
             {
-                mPadding = value;
-            }get
+                if(Set(ref mPadding, value))
+                {
+                    IsInitialized = false;
+                }
+            }
+            get
             {
                 return mPadding;
             }
@@ -133,36 +165,32 @@ using Core;
             Height = height;
             predefinedSize = true;
         }
-        public override void DrawTexture(IDeviceResources deviceResources)
+
+        protected override void OnDrawTexture(IDeviceResources deviceResources)
         {
-            if (!isInitialized)
+            if (!string.IsNullOrEmpty(TextInfo.Text))
             {
-                BillboardVertices.Clear();
-                if (!string.IsNullOrEmpty(TextInfo.Text))
+                var w = Width;
+                var h = Height;
+                Texture = TextInfo.Text.ToBitmapStream(FontSize, Color.White, Color.Black, FontFamily, FontWeight.ToDXFontWeight(), FontStyle.ToDXFontStyle(),
+                    new Vector4((float)Padding.Left, (float)Padding.Top, (float)Padding.Right, (float)Padding.Bottom), ref w, ref h, predefinedSize, deviceResources);
+                if (!predefinedSize)
                 {
-                    var w = Width;
-                    var h = Height;
-                    Texture = TextInfo.Text.ToBitmapStream(FontSize, Color.White, Color.Black, FontFamily, FontWeight.ToDXFontWeight(), FontStyle.ToDXFontStyle(),
-                        new Vector4((float)Padding.Left, (float)Padding.Top, (float)Padding.Right, (float)Padding.Bottom), ref w, ref h, predefinedSize, deviceResources);
-                    if (!predefinedSize)
-                    {
-                        Width = w;
-                        Height = h;
-                    }
-                    DrawCharacter(TextInfo.Text, TextInfo.Origin, Width, Height, TextInfo);
+                    Width = w;
+                    Height = h;
                 }
-                else
-                {
-                    Texture = null;
-                    if (!predefinedSize)
-                    {
-                        Width = 0;
-                        Height = 0;
-                    }
-                }
-                isInitialized = true;
-                UpdateBounds();
+                DrawCharacter(TextInfo.Text, TextInfo.Origin, Width, Height, TextInfo);
             }
+            else
+            {
+                Texture = null;
+                if (!predefinedSize)
+                {
+                    Width = 0;
+                    Height = 0;
+                }
+            }
+            TextInfo.UpdateTextInfo(Width, Height);
         }
 
         private void DrawCharacter(string text, Vector3 origin, float w, float h, TextInfo info)

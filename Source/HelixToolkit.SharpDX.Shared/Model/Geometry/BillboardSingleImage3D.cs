@@ -52,13 +52,8 @@ namespace HelixToolkit.Wpf.SharpDX
             set;get;
         }
 
-        public Vector2Collection TextureCoordinates { set; get; }
-
         protected BillboardSingleImage3D()
         {
-            Positions = new Vector3Collection(6);
-            Colors = new Color4Collection(6);
-            TextureCoordinates = new Vector2Collection(6);
             MaskColor = Color.Transparent;
         }
 
@@ -92,7 +87,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Texture.Position = 0;
         }
 
-        public override void DrawTexture(IDeviceResources deviceResources)
+        protected override void OnDrawTexture(IDeviceResources deviceResources)
         {
             var w = Width;
             var h = Height;
@@ -113,7 +108,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 OffTL = tl,
                 OffBR = br
             });
-            UpdateBounds();
         }
     }
 }
