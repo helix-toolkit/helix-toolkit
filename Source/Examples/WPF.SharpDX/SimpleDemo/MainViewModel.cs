@@ -86,9 +86,9 @@ namespace SimpleDemo
             DirectionalLightDirection = new Vector3D(-2, -5, -2);
 
             // floor plane grid
-            Grid = LineBuilder.GenerateGrid();
+            Grid = LineBuilder.GenerateGrid(new Vector3(0, 1, 0), -5, 5, -5, 5);
             GridColor = Colors.Black;
-            GridTransform = new Media3D.TranslateTransform3D(-5, -1, -5);
+            GridTransform = new Media3D.TranslateTransform3D(0, -3, 0);
 
             // scene model3d
             var b1 = new MeshBuilder();            
@@ -143,8 +143,8 @@ namespace SimpleDemo
             Points.Indices = ptIdx;
 
             Text = new BillboardText3D();
-            int numRows = 10;
-            int numColumns = 10;
+            int numRows = 11;
+            int numColumns = 11;
             string[] texts = new string[]
             {
                 "HelixToolkit",
@@ -157,7 +157,7 @@ namespace SimpleDemo
             {
                 for (var j = 0; j < numColumns; j++)
                 {
-                    Text.TextInfo.Add(new TextInfo(texts[(i + j) % texts.Length], new Vector3((i - numRows / 2) * 4, (j - numColumns / 2) * 4, 0))
+                    Text.TextInfo.Add(new TextInfo(texts[(i + j) % texts.Length], new Vector3((i - numRows / 2), 0.2f, (j - numColumns / 2)))
                     {
                         Foreground = new Color4((float)i / numRows, 0, 0, 1f),
                         Background = new Color4(0, (float)(numColumns - j) / numColumns, 1, 0.8f),
