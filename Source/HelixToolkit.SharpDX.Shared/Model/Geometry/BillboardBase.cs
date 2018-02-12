@@ -117,14 +117,15 @@ namespace HelixToolkit.Wpf.SharpDX
             var bottom = -top;
             var projectionMatrix = context.ProjectionMatrix;
             var viewMatrix = context.ViewMatrix;
+            var viewMatrixInv = viewMatrix.PsudoInvert();
             var visualToScreen = context.ScreenViewProjectionMatrix;
             foreach(var center in BillboardVertices.Select(x=>x.Position))
             {
-                var b = GetHitTestBound(center.ToVector3(), left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref visualToScreen,
+                var b = GetHitTestBound(Vector3.TransformCoordinate(center.ToVector3(), modelMatrix), 
+                    left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref viewMatrixInv, ref visualToScreen,
                     fixedSize, (float)context.ActualWidth, (float)context.ActualHeight);
                 if (rayWS.Intersects(ref b))
                 {
-
                     float distance;
                     if (Collision.RayIntersectsBox(ref rayWS, ref b, out distance))
                     {
@@ -146,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected virtual BoundingBox GetHitTestBound(Vector3 center, float left, float right, float top, float bottom, 
-            ref Matrix projectionMatrix, ref Matrix viewMatrix, ref Matrix visualToScreen,
+            ref Matrix projectionMatrix, ref Matrix viewMatrix, ref Matrix viewMatrixInv, ref Matrix visualToScreen,
             bool fixedSize, float viewportWidth, float viewportHeight)
         {
             if (fixedSize)
@@ -157,7 +158,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 var spy = screenPoint.Y;
                 var spz = screenPoint.Z / spw / projectionMatrix.M33;
 
-                var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
                 Vector3 v = new Vector3();
 
                 var x = spx + left * spw;
@@ -167,7 +167,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Z = spz;
 
                 Vector3 bl;
-                Vector3.TransformCoordinate(ref v, ref matrix, out bl);
+                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out bl);
 
 
                 x = spx + right * spw;
@@ -177,7 +177,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Z = spz;
 
                 Vector3 br;
-                Vector3.TransformCoordinate(ref v, ref matrix, out br);
+                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out br);
 
                 x = spx + right * spw;
                 y = spy + top * spw;
@@ -186,7 +186,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Z = spz;
 
                 Vector3 tr;
-                Vector3.TransformCoordinate(ref v, ref matrix, out tr);
+                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out tr);
 
                 x = spx + left * spw;
                 y = spy + top * spw;
@@ -195,7 +195,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Z = spz;
 
                 Vector3 tl;
-                Vector3.TransformCoordinate(ref v, ref matrix, out tl);
+                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out tl);
                 return BoundingBox.FromPoints(new Vector3[] { tl, tr, bl, br });
             }
             else
@@ -208,15 +208,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 var br = new Vector4(vcX + right, vcY + bottom, vcenter.Z, vcenter.W);
                 var tr = new Vector4(vcX + right, vcY + top, vcenter.Z, vcenter.W);
                 var tl = new Vector4(vcX + left, vcY + top, vcenter.Z, vcenter.W);
-                var invViewMatrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
 
-                bl = Vector4.Transform(bl, invViewMatrix);
+                bl = Vector4.Transform(bl, viewMatrixInv);
                 bl /= bl.W;
-                br = Vector4.Transform(br, invViewMatrix);
+                br = Vector4.Transform(br, viewMatrixInv);
                 br /= br.W;
-                tr = Vector4.Transform(tr, invViewMatrix);
+                tr = Vector4.Transform(tr, viewMatrixInv);
                 tr /= tr.W;
-                tl = Vector4.Transform(tl, invViewMatrix);
+                tl = Vector4.Transform(tl, viewMatrixInv);
                 tl /= tl.W;
                 return BoundingBox.FromPoints(new Vector3[] { tl.ToVector3(), tr.ToVector3(), bl.ToVector3(), br.ToVector3() });
             }

@@ -238,6 +238,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var projectionMatrix = context.ProjectionMatrix;
             var viewMatrix = context.ViewMatrix;
+            var viewMatrixInv = viewMatrix.PsudoInvert();
             var visualToScreen = context.ScreenViewProjectionMatrix;
             foreach (var info in TextInfo)
             {
@@ -245,12 +246,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 var right = -left;
                 var top = -info.AcutalHeight / 2;
                 var bottom = -top;
-                var b = GetHitTestBound(info.Origin, left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref visualToScreen,
+                var b = GetHitTestBound(Vector3.TransformCoordinate(info.Origin, modelMatrix), 
+                    left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref viewMatrixInv, ref visualToScreen,
                     fixedSize, (float)context.ActualWidth, (float)context.ActualHeight);
 
                 if (rayWS.Intersects(ref b))
                 {
-
                     float distance;
                     if (Collision.RayIntersectsBox(ref rayWS, ref b, out distance))
                     {
