@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("IsRendering", typeof(bool), typeof(Light3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    (d as Element3DCore).Visible = (bool)e.NewValue;
+                    (d as Light3D).Visible = (bool)e.NewValue;
                 }));
 
         /// <summary>

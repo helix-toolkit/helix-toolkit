@@ -109,9 +109,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <value>
         ///   <c>true</c> if visible; otherwise, <c>false</c>.
         /// </value>
-        internal bool Visible
+        public bool Visible
         {
-            set
+            protected set
             {
                 if(Set(ref visible, value))
                 { InvalidateRender(); }
