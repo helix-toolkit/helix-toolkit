@@ -39,6 +39,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public float AcutalHeight { protected set; get; }
 
+        public float Scale { set; get; } = 1;
+
         public TextInfo()
         {
         }
@@ -168,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     previousCharacter = character;
                     if (tempList.Count > 0)
                     {
-                        rect.Width = Math.Max(rect.Width, x);
+                        rect.Width = Math.Max(rect.Width, x * textInfo.Scale);
                         rect.Height = Math.Max(rect.Height, Math.Abs(tempList.Last().OffBR.Y));
                     }
                 }
@@ -217,8 +219,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 Background = Color.Transparent,
                 TexTL = uv_tl,
                 TexBR = uv_br,
-                OffTL = tl,
-                OffBR = br
+                OffTL = tl * info.Scale,
+                OffBR = br * info.Scale
             };
         }
 

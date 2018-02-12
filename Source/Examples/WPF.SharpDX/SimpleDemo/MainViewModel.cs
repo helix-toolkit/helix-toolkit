@@ -27,6 +27,7 @@ namespace SimpleDemo
     using System.Windows.Media.Imaging;
     using System.IO;
     using System.Windows.Input;
+    using System;
 
     public class MainViewModel : BaseViewModel
     {
@@ -156,10 +157,11 @@ namespace SimpleDemo
             {
                 for (var j = 0; j < numColumns; j++)
                 {
-                    Text.TextInfo.Add(new TextInfo(texts[(i+j)%texts.Length], new Vector3((i-numRows/2) * 4, (j-numColumns/2) * 4, 0))
+                    Text.TextInfo.Add(new TextInfo(texts[(i + j) % texts.Length], new Vector3((i - numRows / 2) * 4, (j - numColumns / 2) * 4, 0))
                     {
                         Foreground = new Color4((float)i / numRows, 0, 0, 1f),
                         Background = new Color4(0, (float)(numColumns - j) / numColumns, 1, 0.8f),
+                        Scale = Math.Max(0.5f, (float)i / numRows * 1.2f),
                     });
                 }
             }

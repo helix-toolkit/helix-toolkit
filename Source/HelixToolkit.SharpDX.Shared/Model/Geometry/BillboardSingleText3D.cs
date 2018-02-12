@@ -209,8 +209,8 @@ using Core;
                 Background = BackgroundColor,
                 TexTL = uv_tl,
                 TexBR = uv_br,
-                OffTL = tl,
-                OffBR = br
+                OffTL = tl * info.Scale,
+                OffBR = br * info.Scale
             });
         }
     }
