@@ -14,6 +14,7 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Utilities;
+    using Model;
     /// <summary>
     /// 
     /// </summary>
@@ -28,7 +29,10 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected abstract VertexStruct[] OnBuildVertexArray(IBillboardText geometry, IDeviceResources deviceResources);
 
-        private ShaderResourceView textureView;
+        /// <summary>
+        /// Use the shared texture resource proxy
+        /// </summary>
+        private SharedTextureResourceProxy textureView;
         /// <summary>
         /// Gets the texture view.
         /// </summary>
@@ -71,7 +75,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceResources">The device resources.</param>
         protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources)
         {
-            RemoveAndDispose(ref textureView);
+            textureView?.Detach(this.GUID);
+            textureView = null;
             var billboardGeometry = geometry as IBillboardText;
             
             if (billboardGeometry != null && billboardGeometry.BillboardVertices != null)
@@ -82,13 +87,24 @@ namespace HelixToolkit.UWP.Core
               
                 if (billboardGeometry.Texture != null)
                 {
-                    textureView = Collect(global::SharpDX.Toolkit.Graphics.Texture.Load(context.Device, billboardGeometry.Texture));
+                    textureView = deviceResources.MaterialTextureManager.Register(this.GUID, billboardGeometry.Texture);
                 }
             }
             else
             {
                 buffer.DisposeAndClear();
             }
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposeManagedResources)
+        {
+            textureView?.Detach(this.GUID);
+            textureView = null;
+            base.Dispose(disposeManagedResources);
         }
         /// <summary>
         /// Called when [attach buffer].

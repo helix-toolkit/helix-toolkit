@@ -32,7 +32,7 @@ namespace HelixToolkit.UWP.Model
         private const int NUMSAMPLERS = 5;
         private const int DiffuseIdx = 0, AlphaIdx = 1, NormalIdx = 2, DisplaceIdx = 3, ShadowIdx = 4;
 
-        private TextureResourceProxy[] TextureResources = new TextureResourceProxy[NUMTEXTURES];
+        private SharedTextureResourceProxy[] TextureResources = new SharedTextureResourceProxy[NUMTEXTURES];
         private int[][] TextureBindingMap = new int[Constants.NumShaderStages][];
 
         private SamplerProxy[] SamplerResources = new SamplerProxy[NUMSAMPLERS];

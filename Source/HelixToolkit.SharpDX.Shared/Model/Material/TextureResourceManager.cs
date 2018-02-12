@@ -11,11 +11,13 @@ namespace HelixToolkit.UWP.Model
     using global::SharpDX.Direct3D11;
     using Utilities;
     /// <summary>
-    /// 
+    /// Use for texture resource sharing between models. It uses texture stream as key for each texture.
+    /// <para>Call Register to get(if already exists) or create a new shared texture.</para>
+    /// <para>Call Unregister to detach the texture from model. Call detach from SharedTextureResourceProxy achieves the same result.</para>
     /// </summary>
     public class TextureResourceManager : DisposeObject, ITextureResourceManager
     {
-        private readonly Dictionary<Stream, TextureResourceProxy> resourceDictionary = new Dictionary<Stream, TextureResourceProxy>();
+        private readonly Dictionary<Stream, SharedTextureResourceProxy> resourceDictionary = new Dictionary<Stream, SharedTextureResourceProxy>();
         private readonly Device device;
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureResourceManager"/> class.
@@ -32,9 +34,9 @@ namespace HelixToolkit.UWP.Model
         /// <param name="modelGuid">The material unique identifier.</param>
         /// <param name="textureStream">The texture steam.</param>
         /// <returns></returns>
-        public TextureResourceProxy Register(Guid modelGuid, Stream textureStream)
+        public SharedTextureResourceProxy Register(Guid modelGuid, Stream textureStream)
         {
-            TextureResourceProxy proxy;
+            SharedTextureResourceProxy proxy;
             lock (resourceDictionary)
             {
                 if (resourceDictionary.TryGetValue(textureStream, out proxy))
@@ -43,7 +45,7 @@ namespace HelixToolkit.UWP.Model
                 }
                 else
                 {
-                    proxy = new TextureResourceProxy(device, textureStream);
+                    proxy = new SharedTextureResourceProxy(device, textureStream);
                     proxy.Attach(modelGuid);
                     proxy.Disposing += (s, e) => { resourceDictionary.Remove(textureStream); };
                     resourceDictionary.Add(textureStream, proxy);
@@ -58,7 +60,7 @@ namespace HelixToolkit.UWP.Model
         /// <param name="textureStream">The texture stream.</param>
         public void Unregister(Guid modelGuid, Stream textureStream)
         {
-            TextureResourceProxy proxy;
+            SharedTextureResourceProxy proxy;
             lock (resourceDictionary)
             {
                 if (resourceDictionary.TryGetValue(textureStream, out proxy))
@@ -80,12 +82,13 @@ namespace HelixToolkit.UWP.Model
     }
 
     /// <summary>
-    /// 
+    /// Shared texture resource proxy. Used in Texture Resource Manager for texture resource sharing
+    /// <para>When using this proxy, do not dispose this object. Instead, call detach(Model GUID) to remove it from the model. It will be disposed automatically when no model is detached.</para>
     /// </summary>
-    public sealed class TextureResourceProxy : DisposeObject
+    public sealed class SharedTextureResourceProxy : ResourceSharedObject
     {
         private ShaderResouceViewProxy resource;
-        private readonly HashSet<Guid> hashSet = new HashSet<Guid>();
+
         /// <summary>
         /// Gets the texture view.
         /// </summary>
@@ -94,54 +97,35 @@ namespace HelixToolkit.UWP.Model
         /// </value>
         public ShaderResourceView TextureView { get { return resource.TextureView; } }
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextureResourceProxy"/> class.
+        /// Initializes a new instance of the <see cref="SharedTextureResourceProxy"/> class.
         /// </summary>
         /// <param name="device">The device.</param>
         /// <param name="stream">The stream.</param>
-        public TextureResourceProxy(Device device, Stream stream)
+        public SharedTextureResourceProxy(Device device, Stream stream)
         {
             resource = Collect(new ShaderResouceViewProxy(device));
             resource.CreateView(stream);
         }
+
         /// <summary>
-        /// Attaches the specified model unique identifier.
-        /// </summary>
-        /// <param name="modelGuid">The model unique identifier.</param>
-        public void Attach(Guid modelGuid)
-        {
-            hashSet.Add(modelGuid);
-        }
-        /// <summary>
-        /// Detaches the specified model unique identifier.
-        /// </summary>
-        /// <param name="modelGuid">The model unique identifier.</param>
-        public void Detach(Guid modelGuid)
-        {
-            hashSet.Remove(modelGuid);
-            if (hashSet.Count == 0)
-            {
-                this.Dispose();
-            }
-        }
-        /// <summary>
-        /// Performs an implicit conversion from <see cref="TextureResourceProxy"/> to <see cref="ShaderResouceViewProxy"/>.
+        /// Performs an implicit conversion from <see cref="SharedTextureResourceProxy"/> to <see cref="ShaderResouceViewProxy"/>.
         /// </summary>
         /// <param name="proxy">The proxy.</param>
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static implicit operator ShaderResouceViewProxy(TextureResourceProxy proxy)
+        public static implicit operator ShaderResouceViewProxy(SharedTextureResourceProxy proxy)
         {
             return proxy.resource;
         }
         /// <summary>
-        /// Performs an implicit conversion from <see cref="TextureResourceProxy"/> to <see cref="ShaderResourceView"/>.
+        /// Performs an implicit conversion from <see cref="SharedTextureResourceProxy"/> to <see cref="ShaderResourceView"/>.
         /// </summary>
         /// <param name="proxy">The proxy.</param>
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static implicit operator ShaderResourceView(TextureResourceProxy proxy)
+        public static implicit operator ShaderResourceView(SharedTextureResourceProxy proxy)
         {
             return proxy.resource;
         }

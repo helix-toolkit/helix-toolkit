@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Utilities;
     /// <summary>
     /// Use to manage geometry vertex/index buffers. 
     /// Same geometry with same buffer type will share the same buffer across all models.
@@ -53,7 +54,7 @@ namespace HelixToolkit.UWP.Core
 #if DEBUGDETAIL
                     Debug.WriteLine("Existing buffer found, GeomoetryGUID = " + geometry.GUID);
 #endif
-                    container.AttachModel(modelGuid);
+                    container.Attach(modelGuid);
                 }
                 else
                 {
@@ -67,7 +68,7 @@ namespace HelixToolkit.UWP.Core
                         bufferDictionary.Remove(typeof(T), id);
                     };
                     container.Buffer.Geometry = geometry;
-                    container.AttachModel(modelGuid);
+                    container.Attach(modelGuid);
                     bufferDictionary.Add(typeof(T), geometry.GUID, container);
                 
                 }
@@ -95,7 +96,7 @@ namespace HelixToolkit.UWP.Core
 #if DEBUGDETAIL
                     Debug.WriteLine("Existing buffer found, Detach model from buffer. ModelGUID = " + modelGuid);
 #endif
-                    container.DetachModel(modelGuid);
+                    container.Detach(modelGuid);
                     return true;
                 }
                 else
@@ -126,9 +127,8 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        private sealed class GeometryBufferContainer : DisposeObject
+        private sealed class GeometryBufferContainer : ResourceSharedObject
         {
-            private readonly HashSet<Guid> models = new HashSet<Guid>();
             private readonly IGeometryBufferModel buffer;
             /// <summary>
             /// Gets the buffer.
@@ -155,27 +155,6 @@ namespace HelixToolkit.UWP.Core
             {
                 var buffer = Activator.CreateInstance(typeof(T)) as IGeometryBufferModel;
                 return new GeometryBufferContainer(buffer);
-            }
-            /// <summary>
-            /// Attaches the model.
-            /// </summary>
-            /// <param name="modelGuid">The model unique identifier.</param>
-            /// <returns></returns>
-            public bool AttachModel(Guid modelGuid)
-            {
-                return models.Add(modelGuid);
-            }
-            /// <summary>
-            /// Detaches the model.
-            /// </summary>
-            /// <param name="modelGuid">The model unique identifier.</param>
-            public void DetachModel(Guid modelGuid)
-            {
-                models.Remove(modelGuid);
-                if (models.Count == 0)
-                {
-                    Dispose();
-                }
             }
         }
     }
