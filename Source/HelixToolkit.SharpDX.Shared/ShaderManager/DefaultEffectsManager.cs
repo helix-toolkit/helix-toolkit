@@ -10,6 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
+    using HelixToolkit.Logger;
     using Shaders;
     /// <summary>
     /// Default shader technique manager, includes all internal shaders
@@ -20,16 +21,49 @@ namespace HelixToolkit.UWP
         /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
         /// </summary>
         /// <param name="adapterIndex">Index of the adapter.</param>
-        public DefaultEffectsManager(int adapterIndex) : base(adapterIndex) { }
+        public DefaultEffectsManager(int adapterIndex) : base(adapterIndex)
+        {
+            AddDefaultTechniques();
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
         /// </summary>
-        public DefaultEffectsManager() : base() { }
+        /// <param name="adapterIndex">Index of the adapter.</param>
+        /// <param name="externallogger">The externallogger.</param>
+        public DefaultEffectsManager(int adapterIndex, ILogger externallogger): base(adapterIndex, externallogger)
+        {
+            AddDefaultTechniques();
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
+        /// </summary>
+        public DefaultEffectsManager() : base()
+        {
+            AddDefaultTechniques();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultEffectsManager"/> class.
+        /// </summary>
+        /// <param name="externallogger">The externallogger.</param>
+        public DefaultEffectsManager(ILogger externallogger) : base(externallogger)
+        {
+            AddDefaultTechniques();
+        }
+
+        private void AddDefaultTechniques()
+        {
+            foreach(var technique in LoadTechniqueDescriptions())
+            {
+                AddTechnique(technique);
+            }
+        }
         /// <summary>
         /// Loads the technique descriptions.
         /// </summary>
         /// <returns></returns>
-        protected override IList<TechniqueDescription> LoadTechniqueDescriptions()
+        private IEnumerable<TechniqueDescription> LoadTechniqueDescriptions()
         {
             var renderBlinn = new TechniqueDescription(DefaultRenderTechniqueNames.Blinn)
             {
@@ -544,27 +578,24 @@ namespace HelixToolkit.UWP
                 }
             };
 #endif
-            return new List<TechniqueDescription>
-            {
-                renderBlinn,
-                renderBlinnInstancing,
-                renderBoneSkinning,
-                renderPoint,
-                renderLine,
-                renderBillboardText,
-                renderBillboardInstancing,
-                renderNormals,
-                renderColors,
-                renderPositions,
-                renderDiffuseMap,
-                renderViewCube,
-                renderMeshBlinnClipPlane,
-                renderParticle,
-                renderSkybox,
+            yield return renderBlinn;
+            yield return renderBlinnInstancing;
+            yield return renderBoneSkinning;
+            yield return renderPoint;
+            yield return renderLine;
+            yield return renderBillboardText;
+            yield return renderBillboardInstancing;
+            yield return renderNormals;
+            yield return renderColors;
+            yield return renderPositions;
+            yield return renderDiffuseMap;
+            yield return renderViewCube;
+            yield return renderMeshBlinnClipPlane;
+            yield return renderParticle;
+            yield return renderSkybox;
 #if !NETFX_CORE
-                renderScreenDup,
+            yield return renderScreenDup;
 #endif
-            };
         }
     }
 }

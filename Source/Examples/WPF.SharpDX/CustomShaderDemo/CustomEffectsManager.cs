@@ -59,9 +59,14 @@ namespace CustomShaderDemo
 
     public class CustomEffectsManager : DefaultEffectsManager
     {
-        protected override IList<TechniqueDescription> LoadTechniqueDescriptions()
+        public CustomEffectsManager()
         {
-            var techniqueList = base.LoadTechniqueDescriptions();
+            LoadCustomTechniqueDescriptions();
+        }
+
+
+        private void LoadCustomTechniqueDescriptions()
+        {
             var dataSampling = new TechniqueDescription(CustomShaderNames.DataSampling)
             {
                 InputLayoutDescription = new InputLayoutDescription(CustomVSShaderDescription.VSMeshDataSamplerByteCode, DefaultInputLayout.VSInput),
@@ -96,9 +101,8 @@ namespace CustomShaderDemo
                     }
                 }
             };
-            techniqueList.Add(dataSampling);
-            techniqueList.Add(noiseMesh);
-            return techniqueList;
+            AddTechnique(dataSampling);
+            AddTechnique(noiseMesh);
         }
     }
 }

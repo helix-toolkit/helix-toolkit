@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// Shader and Technique manager
     /// </summary>
-    public abstract class EffectsManager : DisposeObject, IEffectsManager
+    public class EffectsManager : DisposeObject, IEffectsManager
     {
         private readonly LogWrapper logger;
         /// <summary>
@@ -161,6 +161,7 @@ namespace HelixToolkit.UWP
 #else
             logger = new LogWrapper(new NullLogger());
 #endif
+            Initialize();
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="EffectsManager"/> class.
@@ -169,6 +170,7 @@ namespace HelixToolkit.UWP
         public EffectsManager(ILogger externallogger)
         {
             this.logger = externallogger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(externallogger);
+            Initialize();
         }
 
         /// <summary>
@@ -182,7 +184,7 @@ namespace HelixToolkit.UWP
 #else
             logger = new LogWrapper(new NullLogger());
 #endif
-            AdapterIndex = adapterIndex;
+            Initialize(adapterIndex);
         }
 
         /// <summary>
@@ -193,16 +195,14 @@ namespace HelixToolkit.UWP
         public EffectsManager(int adapterIndex, ILogger externallogger)
         {
             this.logger = externallogger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(externallogger);
-            AdapterIndex = adapterIndex;
+            Initialize(adapterIndex);
         }
 
         /// <summary>
         /// Initializes this instance.
         /// </summary>
-        public void Initialize()
+        private void Initialize()
         {
-            if (Initialized)
-            { return; }
 #if DEBUGMEMORY
             global::SharpDX.Configuration.EnableObjectTracking = true;
 #endif
@@ -270,15 +270,6 @@ namespace HelixToolkit.UWP
             RemoveAndDispose(ref materialTextureManager);
             materialTextureManager = Collect(new Model.TextureResourceManager(Device));
             #endregion
-            #region Initial Techniques
-            Log(LogLevel.Information, "Load Technique Descriptions");
-            var techniqueDescs = LoadTechniqueDescriptions();
-            foreach(var tech in techniqueDescs)
-            {
-                AddTechnique(tech);
-            }
-            Log(LogLevel.Information, $"Load Technique Description finished. Number of Techniques: {techniqueDict.Count}");
-            #endregion
             Log(LogLevel.Information, "Initializing Direct2D resources");
             factory2D = Collect(new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.MultiThreaded));
             wicImgFactory = Collect(new global::SharpDX.WIC.ImagingFactory());
@@ -288,9 +279,9 @@ namespace HelixToolkit.UWP
                 device2D = Collect(new global::SharpDX.Direct2D1.Device(factory2D, dxgiDevice2));
                 deviceContext2D = Collect(new global::SharpDX.Direct2D1.DeviceContext(device2D, global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations));
             }
-
             Initialized = true;
         }
+
         /// <summary>
         /// <see cref="IEffectsManager.AddTechnique(TechniqueDescription)"/>
         /// </summary>
@@ -319,11 +310,6 @@ namespace HelixToolkit.UWP
             }
             return techniqueDict.Remove(name);
         }
-        /// <summary>
-        /// Loads the technique descriptions.
-        /// </summary>
-        /// <returns></returns>
-        protected abstract IList<TechniqueDescription> LoadTechniqueDescriptions();
 
         /// <summary>
         /// 
@@ -398,11 +384,7 @@ namespace HelixToolkit.UWP
         /// <exception cref="Exception">Manager has not been initialized.</exception>
         /// <exception cref="ArgumentException"></exception>
         public IRenderTechnique GetTechnique(string name)
-        {
-            if (!Initialized)
-            {
-                Initialize();
-            }
+        {            
             Lazy<IRenderTechnique> t;
             techniqueDict.TryGetValue(name, out t);
             if (t == null)
