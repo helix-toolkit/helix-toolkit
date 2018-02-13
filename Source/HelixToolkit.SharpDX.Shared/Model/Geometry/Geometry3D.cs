@@ -69,10 +69,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+#if !NETFX_CORE
+        [NonSerialized]
+#endif
         private BoundingBox bound;
         /// <summary>
         /// Geometry AABB
-        /// </summary>
+        /// </summary>       
         [IgnoreDataMember]
         public BoundingBox Bound
         {
@@ -86,6 +89,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+#if !NETFX_CORE
+        [NonSerialized]
+#endif
         private BoundingSphere boundingSphere;
         /// <summary>
         /// Geometry Bounding Sphere

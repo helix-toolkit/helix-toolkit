@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderHost : IDisposable, IGUID
+    public interface IRenderHost : IGUID, IDisposable
     {
         /// <summary>
         /// Gets the logger.

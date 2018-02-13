@@ -71,7 +71,8 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(technique))
             {
-                textureSampler = Collect(new SamplerProxy(technique.EffectsManager.StateManager, SamplerDescription));
+                textureSampler = Collect(new SamplerProxy(technique.EffectsManager.StateManager));
+                textureSampler.Description = SamplerDescription;
                 return true;
             }
             else

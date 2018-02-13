@@ -582,8 +582,7 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnApplyTemplate();
             if (IsInDesignMode)
             { return; }
-
-            renderHostInternal?.Dispose();
+            Disposer.RemoveAndDispose(ref renderHostInternal);
             hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;
 
             if (EnableSwapChainRendering)
@@ -1392,7 +1391,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 e.Handled = true;
             }
             hostPresenter.Content = null;
-            renderHostInternal?.Dispose();
+            Disposer.RemoveAndDispose(ref renderHostInternal);
         }
 
         /// <summary>

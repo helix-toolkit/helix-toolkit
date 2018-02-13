@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
     /// <summary>
     /// 
     /// </summary>
-    public interface IShaderPass : IDisposable
+    public interface IShaderPass
     {
         /// <summary>
         /// 

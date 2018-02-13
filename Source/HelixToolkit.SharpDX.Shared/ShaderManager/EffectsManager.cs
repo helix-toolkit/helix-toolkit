@@ -20,6 +20,7 @@ namespace HelixToolkit.UWP
     using Core;
     using HelixToolkit.Logger;
     using System.Runtime.CompilerServices;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Shader and Technique manager
@@ -413,6 +414,7 @@ namespace HelixToolkit.UWP
         /// <see cref="DisposeObject.Dispose(bool)"/>
         /// </summary>
         /// <param name="disposeManagedResources"></param>
+        [SuppressMessage("Microsoft.Usage", "CA2213", Justification = "False positive.")]
         protected override void Dispose(bool disposeManagedResources)
         {
             OnDisposeResources?.Invoke(this, EventArgs.Empty);

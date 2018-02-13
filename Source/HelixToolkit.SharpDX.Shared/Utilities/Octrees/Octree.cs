@@ -17,13 +17,6 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    public delegate void OnHitEventHandler(object sender, EventArgs args);
-
-    /// <summary>
     /// General interface for octree
     /// </summary>
     public interface IOctree
@@ -31,7 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        event OnHitEventHandler OnHit;
+        event EventHandler<EventArgs> OnHit;
         /// <summary>
         /// This is a bitmask indicating which child nodes are actively being used.
         /// It adds slightly more complexity, but is faster for performance since there is only one comparison instead of 8.
@@ -293,7 +286,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public event OnHitEventHandler OnHit;
+        public event EventHandler<EventArgs> OnHit;
         /// <summary>
         /// The minumum size for enclosing region is a 1x1x1 cube.
         /// </summary>

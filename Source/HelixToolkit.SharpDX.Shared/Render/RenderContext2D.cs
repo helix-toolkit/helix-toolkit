@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderContext2D : IDisposable
+    public interface IRenderContext2D
     {
         /// <summary>
         /// Gets the device context.

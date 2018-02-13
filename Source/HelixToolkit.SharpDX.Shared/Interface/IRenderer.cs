@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderer : IDisposable
+    public interface IRenderer
     {
         /// <summary>
         /// Default ImmediateContext. Same as Device.ImmediateContext.

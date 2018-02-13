@@ -2,21 +2,29 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SDX11 = SharpDX.Direct3D11;
 using SharpDX.Direct3D11;
 using System;
-using System.Collections.Generic;
-using SharpDX;
+using System.Diagnostics.CodeAnalysis;
+using SDX11 = SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Utilities
 #else
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class UAVBufferViewProxy : IDisposable
     {
         private SDX11.Buffer buffer;
+        /// <summary>
+        /// The uav
+        /// </summary>
         public UnorderedAccessView uav;
+        /// <summary>
+        /// The SRV
+        /// </summary>
         public ShaderResourceView srv;
 
         /// <summary>
@@ -28,14 +36,25 @@ namespace HelixToolkit.UWP.Utilities
         /// Get ShaderResourceView
         /// </summary>
         public ShaderResourceView SRV { get { return srv; } }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UAVBufferViewProxy"/> class.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="bufferDesc">The buffer desc.</param>
+        /// <param name="uavDesc">The uav desc.</param>
+        /// <param name="srvDesc">The SRV desc.</param>
         public UAVBufferViewProxy(Device device, ref BufferDescription bufferDesc, ref UnorderedAccessViewDescription uavDesc, ref ShaderResourceViewDescription srvDesc)
         {
             buffer = new SDX11.Buffer(device, bufferDesc);
             srv = new ShaderResourceView(device, buffer);
             uav = new UnorderedAccessView(device, buffer, uavDesc);
         }
-
+        /// <summary>
+        /// Copies the count.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="destBuffer">The dest buffer.</param>
+        /// <param name="offset">The offset.</param>
         public void CopyCount(DeviceContext device, SDX11.Buffer destBuffer, int offset)
         {
             device.CopyStructureCount(destBuffer, offset, UAV);
@@ -44,6 +63,7 @@ namespace HelixToolkit.UWP.Utilities
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
+        [SuppressMessage("Microsoft.Usage", "CA2213: Disposable fields should be disposed", Justification = "False positive.")]
         void Dispose(bool disposing)
         {
             if (!disposedValue)

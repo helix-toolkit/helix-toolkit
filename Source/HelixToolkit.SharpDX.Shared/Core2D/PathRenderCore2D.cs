@@ -71,6 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                     {
                         figure.Create(sink);
                     }
+                    sink.Close();
                 }
                 isGeometryChanged = false;
             }

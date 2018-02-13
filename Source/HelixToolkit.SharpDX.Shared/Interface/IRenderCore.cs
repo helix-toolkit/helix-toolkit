@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderCore : IGUID, IThrowingShadow, IDisposable
+    public interface IRenderCore : IGUID, IThrowingShadow
     {
         /// <summary>
         /// Occurs when [on invalidate renderer].

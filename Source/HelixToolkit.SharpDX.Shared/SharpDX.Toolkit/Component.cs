@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SharpDX.Toolkit
 {
@@ -61,6 +62,7 @@ namespace SharpDX.Toolkit
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
         public void Dispose()
         {
             if (!IsDisposed)
@@ -68,14 +70,10 @@ namespace SharpDX.Toolkit
                 IsDisposing = true;
 
                 // Call the disposing event.
-                var handler = Disposing;
-                if (handler != null)
-                {
-                    handler(this, EventArgs.Empty);
-                }
-
+                Disposing?.Invoke(this, EventArgs.Empty);             
                 Dispose(true);
                 IsDisposed = true;
+                GC.SuppressFinalize(this);
             }
         }
 

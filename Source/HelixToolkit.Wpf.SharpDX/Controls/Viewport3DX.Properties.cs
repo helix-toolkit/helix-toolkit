@@ -1316,7 +1316,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The render host internal.
         /// </value>
-        protected IRenderHost renderHostInternal { private set; get; }
+        protected IRenderHost renderHostInternal;
         /// <summary>
         /// Gets or sets value for the shading model shading is used
         /// </summary>

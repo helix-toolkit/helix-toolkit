@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderCore2D : IDisposable
+    public interface IRenderCore2D
     {        
         /// <summary>
         /// Occurs when [on invalidate renderer].

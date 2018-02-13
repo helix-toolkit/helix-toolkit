@@ -6,6 +6,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -29,11 +30,12 @@ namespace HelixToolkit.UWP
         /// </summary>
         public event EventHandler<BoolArgs> Disposed;
 
-#pragma warning disable 1063
+
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
         /// <see cref="DisposeBase"/> is reclaimed by garbage collection.
         /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
         ~DisposeBase()
         {
             // Finalizer calls Dispose(false)
@@ -51,11 +53,11 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
         public void Dispose()
         {
             CheckAndDispose(true);
         }
-#pragma warning restore 1063
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>

@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Contains all the global transformation matrices, camera info, light info for rendering
     /// </summary>
-    public interface IRenderContext : IDisposable
+    public interface IRenderContext
     {
         /// <summary>
         /// Gets or sets the camera.

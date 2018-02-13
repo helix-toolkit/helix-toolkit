@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Data;
 using System.Windows.Controls;
+using System.Diagnostics.CodeAnalysis;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -27,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
     ///     enables basic functionality like Loaded, which depends on
     ///     a PresentationSource being available.
     /// </remarks>
-    public class VisualTargetPresentationSource : PresentationSource
+    public class VisualTargetPresentationSource : PresentationSource, IDisposable
     {
         public VisualTargetPresentationSource(HostVisual hostVisual)
         {
@@ -148,5 +149,41 @@ namespace HelixToolkit.Wpf.SharpDX
         private VisualTarget _visualTarget;
         private object _dataContext;
         private string _propertyName;
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+        [SuppressMessage("Microsoft.Usage", "CA2213", Justification = "False positive.")]
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _visualTarget?.Dispose();
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~VisualTargetPresentationSource() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
