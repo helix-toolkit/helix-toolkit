@@ -180,6 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
             screenSpaceCore.RelativeScreenLocationX = (float)this.RelativeScreenLocationX;
             screenSpaceCore.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
             screenSpaceCore.SizeScale = (float)this.SizeScale;
+            UpdateModel(UpDirection.ToVector3());
             return base.OnAttach(host);
         }
 

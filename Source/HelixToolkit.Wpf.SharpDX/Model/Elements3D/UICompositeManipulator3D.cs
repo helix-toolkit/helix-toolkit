@@ -20,44 +20,61 @@ namespace HelixToolkit.Wpf.SharpDX
     public class UICompositeManipulator3D : CompositeModel3D
     {
         private UIRotateManipulator3D rotateX, rotateY, rotateZ;
-        private UITranslateManipulator3D translateX, translateY, translateZ;
-
+        private UITranslateManipulator3D translateX, translateY, translateZ;       
 
         /// <summary>
         /// The can rotate x property.
         /// </summary>
         public static readonly DependencyProperty CanRotateXProperty = DependencyProperty.Register(
-            "CanRotateX", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, ChildrenChanged));
+            "CanRotateX", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, (d,e)=>
+            {
+                (d as UICompositeManipulator3D).rotateX.IsRendering = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// The can rotate y property.
         /// </summary>
         public static readonly DependencyProperty CanRotateYProperty = DependencyProperty.Register(
-            "CanRotateY", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, ChildrenChanged));
+            "CanRotateY", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, (d, e) =>
+            {
+                (d as UICompositeManipulator3D).rotateY.IsRendering = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// The can rotate z property.
         /// </summary>
         public static readonly DependencyProperty CanRotateZProperty = DependencyProperty.Register(
-            "CanRotateZ", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, ChildrenChanged));
+            "CanRotateZ", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, (d, e) =>
+            {
+                (d as UICompositeManipulator3D).rotateZ.IsRendering = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// The can translate x property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateXProperty = DependencyProperty.Register(
-            "CanTranslateX", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, ChildrenChanged));
+            "CanTranslateX", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, (d, e) =>
+            {
+                (d as UICompositeManipulator3D).translateX.IsRendering = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// The can translate y property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateYProperty = DependencyProperty.Register(
-            "CanTranslateY", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true,  ChildrenChanged));
+            "CanTranslateY", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, (d, e) =>
+            {
+                (d as UICompositeManipulator3D).translateY.IsRendering = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// The can translate z property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateZProperty = DependencyProperty.Register(
-            "CanTranslateZ", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, ChildrenChanged));
+            "CanTranslateZ", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, (d, e) =>
+            {
+                (d as UICompositeManipulator3D).translateZ.IsRendering = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// The diameter property.
@@ -181,9 +198,39 @@ namespace HelixToolkit.Wpf.SharpDX
             //BindingOperations.SetBinding(this.rotateZ, UIManipulator3D.TransformProperty, new Binding("TargetTransform") { Source = this });
 
             // bind this.Transform to this.TargetTransform (TwoWay)
-            BindingOperations.SetBinding(this, TransformProperty, new Binding("TargetTransform") { Source = this, Mode = BindingMode.TwoWay, });            
+            BindingOperations.SetBinding(this, TransformProperty, new Binding("TargetTransform") { Source = this, Mode = BindingMode.TwoWay, });
 
-            this.OnChildrenChanged();
+            this.Children.Clear();
+
+            if (this.CanTranslateX)
+            {
+                this.Children.Add(this.translateX);
+            }
+
+            if (this.CanTranslateY)
+            {
+                this.Children.Add(this.translateY);
+            }
+
+            if (this.CanTranslateZ)
+            {
+                this.Children.Add(this.translateZ);
+            }
+
+            if (this.CanRotateX)
+            {
+                this.Children.Add(this.rotateX);
+            }
+
+            if (this.CanRotateY)
+            {
+                this.Children.Add(this.rotateY);
+            }
+
+            if (this.CanRotateZ)
+            {
+                this.Children.Add(this.rotateZ);
+            }
         }
 
         /// <summary>
@@ -231,11 +278,20 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return hit;
         }
-        //protected override void TransformChanged(ref Matrix totalTransform)
-        //{
-        //    var model = this.TargetTransform.Value.ToMatrix().Inverted();
-        //    base.TransformChanged(ref model);
-        //}
+
+        protected override bool OnAttach(IRenderHost host)
+        {
+            if (base.OnAttach(host))
+            {
+                OnChildrenChanged();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// The on children changed.
         /// </summary>
@@ -256,38 +312,6 @@ namespace HelixToolkit.Wpf.SharpDX
             rotateX.OuterDiameter = rotateX.InnerDiameter + 0.25;
             rotateY.OuterDiameter = rotateY.InnerDiameter + 0.25;
             rotateZ.OuterDiameter = rotateZ.InnerDiameter + 0.25;
-
-            this.Children.Clear();
-
-            if (this.CanTranslateX)
-            {
-                this.Children.Add(this.translateX);
-            }
-
-            if (this.CanTranslateY)
-            {
-                this.Children.Add(this.translateY);
-            }
-
-            if (this.CanTranslateZ)
-            {
-                this.Children.Add(this.translateZ);
-            }
-
-            if (this.CanRotateX)
-            {
-                this.Children.Add(this.rotateX);
-            }
-
-            if (this.CanRotateY)
-            {
-                this.Children.Add(this.rotateY);
-            }
-
-            if (this.CanRotateZ)
-            {
-                this.Children.Add(this.rotateZ);
-            }
         }
 
         /// <summary>

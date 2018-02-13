@@ -78,7 +78,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public UITranslateManipulator3D()
         {
-            OnModelChanged();
             this.Material = PhongMaterials.Red;
             this.Transform = new TranslateTransform3D();
         }

@@ -249,6 +249,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected abstract void OnModelChanged();
 
+        protected override bool OnAttach(IRenderHost host)
+        {
+            if (base.OnAttach(host))
+            {
+                OnModelChanged();
+                return true;
+            }
+            else { return false; }
+        }
+
         /// <summary>
         /// 
         /// </summary>

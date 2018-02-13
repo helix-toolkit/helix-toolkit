@@ -109,7 +109,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public UIRotateManipulator3D()
         {
-            OnModelChanged();
             this.Transform = new System.Windows.Media.Media3D.RotateTransform3D();
         }
 
