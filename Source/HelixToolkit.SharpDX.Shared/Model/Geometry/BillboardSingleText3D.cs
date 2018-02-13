@@ -22,6 +22,10 @@ namespace HelixToolkit.Wpf.SharpDX
 {
 using Core;
     using Extensions;
+    using System;
+    /// <summary>
+    /// 
+    /// </summary>
     public class BillboardSingleText3D : BillboardBase
     {
         private readonly bool predefinedSize = false;
@@ -37,6 +41,12 @@ using Core;
         }
 
         private TextInfo mTextInfo = new TextInfo("", new Vector3());
+        /// <summary>
+        /// Gets or sets the text information.
+        /// </summary>
+        /// <value>
+        /// The text information.
+        /// </value>
         public TextInfo TextInfo
         {
             get { return mTextInfo; }
@@ -50,6 +60,12 @@ using Core;
         }
 
         private Color4 mFontColor = Color.Black;
+        /// <summary>
+        /// Gets or sets the color of the font.
+        /// </summary>
+        /// <value>
+        /// The color of the font.
+        /// </value>
         public Color4 FontColor
         {
             set
@@ -63,6 +79,12 @@ using Core;
         }
 
         private Color4 mBackgroundColor = Color.Transparent;
+        /// <summary>
+        /// Gets or sets the color of the background.
+        /// </summary>
+        /// <value>
+        /// The color of the background.
+        /// </value>
         public Color4 BackgroundColor
         {
             set
@@ -76,6 +98,12 @@ using Core;
         }
 
         private int mFontSize = 12;
+        /// <summary>
+        /// Gets or sets the size of the font.
+        /// </summary>
+        /// <value>
+        /// The size of the font.
+        /// </value>
         public int FontSize
         {
             set
@@ -89,6 +117,12 @@ using Core;
         }
 
         private string mFontFamily = "Arial";
+        /// <summary>
+        /// Gets or sets the font family.
+        /// </summary>
+        /// <value>
+        /// The font family.
+        /// </value>
         public string FontFamily
         {
             set
@@ -105,6 +139,12 @@ using Core;
         }
 
         private FontWeight mFontWeight = FontWeights.Normal;
+        /// <summary>
+        /// Gets or sets the font weight.
+        /// </summary>
+        /// <value>
+        /// The font weight.
+        /// </value>
         public FontWeight FontWeight
         {
             set
@@ -123,7 +163,13 @@ using Core;
         private FontStyle mFontStyle = FontStyle.Normal;
 #else
         private FontStyle mFontStyle = FontStyles.Normal;
-#endif
+#endif        
+        /// <summary>
+        /// Gets or sets the font style.
+        /// </summary>
+        /// <value>
+        /// The font style.
+        /// </value>
         public FontStyle FontStyle
         {
             set
@@ -140,6 +186,12 @@ using Core;
         }
 
         private Thickness mPadding = new Thickness(0);
+        /// <summary>
+        /// Gets or sets the padding.
+        /// </summary>
+        /// <value>
+        /// The padding.
+        /// </value>
         public Thickness Padding
         {
             set
@@ -154,10 +206,17 @@ using Core;
                 return mPadding;
             }
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BillboardSingleText3D"/> class.
+        /// </summary>
         public BillboardSingleText3D()
         {
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BillboardSingleText3D"/> class.
+        /// </summary>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
         public BillboardSingleText3D(float width, float height)
         {
             TextInfo = new TextInfo();
@@ -165,7 +224,18 @@ using Core;
             Height = height;
             predefinedSize = true;
         }
+        /// <summary>
+        /// Updates the bounds.
+        /// </summary>
+        public override void UpdateBounds()
+        {
+            BoundingSphere = new BoundingSphere(TextInfo.Origin, (float)Math.Sqrt(Width * Width + Height * Height) / 2);
+        }
 
+        /// <summary>
+        /// Called when [draw texture].
+        /// </summary>
+        /// <param name="deviceResources">The device resources.</param>
         protected override void OnDrawTexture(IDeviceResources deviceResources)
         {
             if (!string.IsNullOrEmpty(TextInfo.Text))

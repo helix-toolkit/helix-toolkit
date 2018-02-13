@@ -94,11 +94,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         }
 
-        public override void UpdateBounds()
-        {
-            BoundingSphere = new BoundingSphere(Vector3.Zero, Math.Max(Width, Height) / 2);
-        }
-
         /// <summary>
         /// Hits the test.
         /// </summary>
@@ -117,7 +112,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var result = new BillboardHitResult();
             result.Distance = double.MaxValue;
 
-            if (context == null || Width == 0 || Height == 0 || (fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
+            if (context == null || Width == 0 || Height == 0 || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
             {
                 return false;
             }

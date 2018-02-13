@@ -244,7 +244,7 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var info in TextInfo)
             {
                 ++index;
-                if(fixedSize && !info.BoundSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS))
+                if(!fixedSize && !info.BoundSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS))
                 {
                     continue;
                 }
