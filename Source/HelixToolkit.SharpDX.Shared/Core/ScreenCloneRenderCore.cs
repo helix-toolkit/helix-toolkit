@@ -427,7 +427,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                                         }
                                         else
                                         {
-                                            throw ex;
+                                            throw new SharpDXException(ex.ResultCode);
                                         }
                                     }
                                 }
