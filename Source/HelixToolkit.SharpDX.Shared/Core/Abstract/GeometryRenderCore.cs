@@ -54,7 +54,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private void InstanceBuffer_OnElementChanged(object sender, bool e)
+        private void InstanceBuffer_OnElementChanged(object sender, EventArgs e)
         {
             InvalidateRenderer();
         }

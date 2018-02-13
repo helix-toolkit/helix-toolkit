@@ -8,13 +8,6 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
-    using Cameras;
-
-    public struct FrameStatisticsArg
-    {
-        public double AverageValue;
-        public double AverageFrequency;
-    }
     public interface IFrameStatistics : INotifyPropertyChanged
     {
         event EventHandler<FrameStatisticsArg> OnValueChanged;
@@ -63,7 +56,7 @@ namespace HelixToolkit.UWP.Utilities
                 if (Set(ref averageValue, value))
                 {
                     AverageFrequency = 1000 / value;
-                    OnValueChanged?.Invoke(this, new FrameStatisticsArg() { AverageValue = value, AverageFrequency = AverageFrequency });
+                    OnValueChanged?.Invoke(this, new FrameStatisticsArg(value, AverageFrequency));
                 }
             }
             get

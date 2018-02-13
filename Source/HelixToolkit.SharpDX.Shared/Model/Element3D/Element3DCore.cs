@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 if(Set(ref totalModelMatrix, value))
                 {
                     TransformChanged(ref value);
-                    OnTransformChanged?.Invoke(this, value);
+                    OnTransformChanged?.Invoke(this, new TransformArgs(ref value));
                     RenderCore.ModelMatrix = value;
                 }
             }
@@ -186,7 +186,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <summary>
         /// Occurs when [on transform changed].
         /// </summary>
-        public event EventHandler<Matrix> OnTransformChanged;
+        public event EventHandler<TransformArgs> OnTransformChanged;
         #endregion
         #region RenderCore
         private IRenderCore renderCore = null;
@@ -264,7 +264,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <param name="core">The core.</param>
         protected virtual void AssignDefaultValuesToCore(IRenderCore core) { }
 
-        private void RenderCore_OnInvalidateRenderer(object sender, bool e)
+        private void RenderCore_OnInvalidateRenderer(object sender, EventArgs e)
         {
             InvalidateRender();
         }

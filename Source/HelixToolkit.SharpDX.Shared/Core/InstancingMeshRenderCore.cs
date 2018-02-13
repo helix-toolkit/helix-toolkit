@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX.Direct3D11;
+using System;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -33,7 +34,7 @@ namespace HelixToolkit.UWP.Core
             get { return parameterBufferModel; }
         }
 
-        private void ParameterBufferModel_OnElementChanged(object sender, bool e)
+        private void ParameterBufferModel_OnElementChanged(object sender, EventArgs e)
         {
             InvalidateRenderer();
         }

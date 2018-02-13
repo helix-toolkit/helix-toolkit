@@ -208,7 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         }
 
-        private void OnTransformChanged(object sender, Matrix e)
+        private void OnTransformChanged(object sender, TransformArgs e)
         {
             BoundsWithTransform = Bounds.Transform(e);
             BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(e);

@@ -45,15 +45,15 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Occurs when [on new render target texture].
         /// </summary>
-        event EventHandler<Texture2D> OnNewRenderTargetTexture;
+        event EventHandler<Texture2DArgs> OnNewRenderTargetTexture;
         /// <summary>
         /// Occurs when [start render loop].
         /// </summary>
-        event EventHandler<bool> StartRenderLoop;
+        event EventHandler<EventArgs> StartRenderLoop;
         /// <summary>
         /// Occurs when [stop render loop].
         /// </summary>
-        event EventHandler<bool> StopRenderLoop;
+        event EventHandler<EventArgs> StopRenderLoop;
         /// <summary>
         /// Gets the device.
         /// </summary>

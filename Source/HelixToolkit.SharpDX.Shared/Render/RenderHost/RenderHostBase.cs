@@ -398,15 +398,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Occurs when [start render loop].
         /// </summary>
-        public event EventHandler<bool> StartRenderLoop;
+        public event EventHandler<EventArgs> StartRenderLoop;
         /// <summary>
         /// Occurs when [stop render loop].
         /// </summary>
-        public event EventHandler<bool> StopRenderLoop;
+        public event EventHandler<EventArgs> StopRenderLoop;
         /// <summary>
         /// Occurs when [on new render target texture].
         /// </summary>
-        public event EventHandler<Texture2D> OnNewRenderTargetTexture;
+        public event EventHandler<Texture2DArgs> OnNewRenderTargetTexture;
 
         private readonly Func<Device, IRenderer> createRendererFunction;
         #endregion
@@ -504,7 +504,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         || desc == global::SharpDX.DXGI.ResultCode.AccessLost)
                     {
                         Log(LogLevel.Warning, $"Device Lost, code = {desc.Code}");
-                        RenderBuffer_OnDeviceLost(RenderBuffer, true);
+                        RenderBuffer_OnDeviceLost(RenderBuffer, EventArgs.Empty);
                     }
                     else
                     {
@@ -633,7 +633,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             lastRenderingDuration = TimeSpan.Zero;
             lastRenderTime = TimeSpan.Zero;
             InvalidateRender();
-            StartRenderLoop?.Invoke(this, true);
+            StartRenderLoop?.Invoke(this, EventArgs.Empty);
         }
         /// <summary>
         /// Creates the and bind buffers.
@@ -651,7 +651,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             OnInitializeBuffers(renderBuffer, renderer);
         }
 
-        private void RenderBuffer_OnDeviceLost(object sender, bool e)
+        private void RenderBuffer_OnDeviceLost(object sender, EventArgs e)
         {
             EndD3D();
             EffectsManager?.OnDeviceError();
@@ -674,7 +674,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
-        private void RenderBuffer_OnNewBufferCreated(object sender, Texture2D e)
+        private void RenderBuffer_OnNewBufferCreated(object sender, Texture2DArgs e)
         {
             OnNewRenderTargetTexture?.Invoke(this, e);
         }
@@ -745,7 +745,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected virtual void OnEndingD3D() { }
 
-        private void OnManagerDisposed(object sender, bool args)
+        private void OnManagerDisposed(object sender, EventArgs args)
         {
             Log(LogLevel.Information, "");
             EndD3D();
@@ -756,7 +756,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected virtual void StopRendering()
         {
             Log(LogLevel.Information, "");
-            StopRenderLoop?.Invoke(this, true);
+            StopRenderLoop?.Invoke(this, EventArgs.Empty);
             renderTimer.Stop();
         }
         /// <summary>
@@ -801,7 +801,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 StopRendering();
                 var texture = renderBuffer.Resize((int)ActualWidth, (int)ActualHeight);
-                OnNewRenderTargetTexture?.Invoke(this, texture);
+                OnNewRenderTargetTexture?.Invoke(this, new Texture2DArgs(texture));
                 if (Viewport != null)
                 {
                     var overlay = Viewport.D2DRenderables.FirstOrDefault();

@@ -216,7 +216,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             octreeOpt = Dispatcher.BeginInvoke(DispatcherPriority.Background,
                                 new Action(() =>
                                 {
-                                    this.Octree = e;
+                                    this.Octree = e.Octree;
                                 }));
                         }
                     };

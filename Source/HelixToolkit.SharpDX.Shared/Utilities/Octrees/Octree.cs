@@ -19,16 +19,9 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public sealed class OnHitEventArgs : EventArgs
-    {
-
-    }
-    /// <summary>
-    /// 
-    /// </summary>
     /// <param name="sender"></param>
     /// <param name="args"></param>
-    public delegate void OnHitEventHandler(object sender, OnHitEventArgs args);
+    public delegate void OnHitEventHandler(object sender, EventArgs args);
 
     /// <summary>
     /// General interface for octree
@@ -832,7 +825,7 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 hits.AddRange(modelHits);
-                OnHit?.Invoke(this, new OnHitEventArgs());
+                OnHit?.Invoke(this, EventArgs.Empty);
             }
             return isHit;
         }

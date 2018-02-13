@@ -73,15 +73,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when [on new render target texture].
         /// </summary>
-        public event EventHandler<Texture2D> OnNewRenderTargetTexture;
+        public event EventHandler<Texture2DArgs> OnNewRenderTargetTexture;
         /// <summary>
         /// Occurs when [start render loop].
         /// </summary>
-        public event EventHandler<bool> StartRenderLoop;
+        public event EventHandler<EventArgs> StartRenderLoop;
         /// <summary>
         /// Occurs when [stop render loop].
         /// </summary>
-        public event EventHandler<bool> StopRenderLoop;
+        public event EventHandler<EventArgs> StopRenderLoop;
 #pragma warning restore 0067        
         /// <summary>
         /// Gets the unique identifier.

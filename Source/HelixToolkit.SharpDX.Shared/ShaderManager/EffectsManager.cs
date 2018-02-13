@@ -37,7 +37,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Occurs when [on dispose resources].
         /// </summary>
-        public event EventHandler<bool> OnDisposeResources;
+        public event EventHandler<EventArgs> OnDisposeResources;
         /// <summary>
         /// The minimum supported feature level.
         /// </summary>
@@ -415,7 +415,7 @@ namespace HelixToolkit.UWP
         /// <param name="disposeManagedResources"></param>
         protected override void Dispose(bool disposeManagedResources)
         {
-            OnDisposeResources?.Invoke(this, true);
+            OnDisposeResources?.Invoke(this, EventArgs.Empty);
             techniqueDict.Clear();
             base.Dispose(disposeManagedResources);
             Initialized = false;
@@ -432,7 +432,7 @@ namespace HelixToolkit.UWP
         public void OnDeviceError()
         {
             techniqueDict.Clear();
-            OnDisposeResources?.Invoke(this, true);
+            OnDisposeResources?.Invoke(this, EventArgs.Empty);
             this.DisposeAndClear();
             Disposer.RemoveAndDispose(ref device);
             Initialized = false;

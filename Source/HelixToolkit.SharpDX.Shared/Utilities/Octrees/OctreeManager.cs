@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <summary>
         /// Occurs when [on octree created].
         /// </summary>
-        public event EventHandler<IOctree> OnOctreeCreated;
+        public event EventHandler<OctreeArgs> OnOctreeCreated;
 
         private IOctree octree;
         /// <summary>
@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 if(Set(ref octree, value))
                 {
-                    OnOctreeCreated?.Invoke(this, value);
+                    OnOctreeCreated?.Invoke(this, new OctreeArgs(value));
                 }
             }
             get

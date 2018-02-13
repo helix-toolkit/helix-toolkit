@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
-        event EventHandler<bool> OnInvalidateRenderer;
+        event EventHandler<EventArgs> OnInvalidateRenderer;
         /// <summary>
         /// Gets a value indicating whether this instance is empty.
         /// </summary>

@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP.Model
         /// <summary>
         /// <see cref="IEffectMaterialVariables.OnInvalidateRenderer"/> 
         /// </summary>
-        public event EventHandler<bool> OnInvalidateRenderer;
+        public event EventHandler<EventArgs> OnInvalidateRenderer;
 
         /// <summary>
         ///
@@ -251,7 +251,7 @@ namespace HelixToolkit.UWP.Model
             SamplerResources[ShadowIdx] = Collect(new SamplerProxy(manager.StateManager));
             CreateTextureViews();
             CreateSamplers();
-            this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, true); };
+            this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, new EventArgs()); };
         }
 
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -293,7 +293,7 @@ namespace HelixToolkit.UWP.Model
             {
                 SamplerResources[NormalIdx].Description = (sender as IPhongMaterial).NormalMapSampler;
             }
-            OnInvalidateRenderer?.Invoke(this, true);
+            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
         }
 
         private void CreateTextureView(System.IO.Stream stream, ShaderResouceViewProxy proxy)

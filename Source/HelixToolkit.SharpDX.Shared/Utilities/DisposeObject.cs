@@ -22,12 +22,12 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Occurs when this instance is starting to be disposed.
         /// </summary>
-        public event EventHandler<bool> Disposing;
+        public event EventHandler<BoolArgs> Disposing;
 
         /// <summary>
         /// Occurs when this instance is fully disposed.
         /// </summary>
-        public event EventHandler<bool> Disposed;
+        public event EventHandler<BoolArgs> Disposed;
 
 #pragma warning disable 1063
         /// <summary>
@@ -64,14 +64,14 @@ namespace HelixToolkit.UWP
             // TODO Should we throw an exception if this method is called more than once?
             if (!IsDisposed)
             {
-                Disposing?.Invoke(this, disposing);
+                Disposing?.Invoke(this, disposing ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
 
                 Dispose(disposing);
                 GC.SuppressFinalize(this);
 
                 IsDisposed = true;
 
-                Disposed?.Invoke(this, disposing);
+                Disposed?.Invoke(this, disposing ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
                 Disposing = null;
                 Disposed = null;
             }

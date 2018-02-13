@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// <see cref="IRenderCore.OnInvalidateRenderer"/>
         /// </summary>
-        public event EventHandler<bool> OnInvalidateRenderer;
+        public event EventHandler<EventArgs> OnInvalidateRenderer;
         /// <summary>
         /// <see cref="IGUID.GUID"/>
         /// </summary>
@@ -214,7 +214,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         protected void InvalidateRenderer()
         {
-            OnInvalidateRenderer?.Invoke(this, true);
+            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
