@@ -106,6 +106,10 @@
       <Project>{39740654-f5f1-4936-b4ea-9bc97d4cde37}</Project>
       <Name>HelixToolkit.Wpf.SharpDX</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\HelixToolkit\HelixToolkit.csproj">
+      <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
+      <Name>HelixToolkit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DemoCore\DemoCore.csproj">
       <Project>{b475c12b-80f9-4bc0-88e5-815c88593bee}</Project>
       <Name>DemoCore</Name>
