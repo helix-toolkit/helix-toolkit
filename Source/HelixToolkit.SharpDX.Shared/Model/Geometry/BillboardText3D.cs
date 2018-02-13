@@ -4,16 +4,15 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.Collections.Generic;
 using SharpDX;
-
+using System;
+using System.Linq;
+using System.IO;
+using System.Reflection;
 #if NETFX_CORE
 
 #else
-using System.IO;
-using System.Reflection;
-using System;
 using Media = System.Windows.Media;
 using Cyotek.Drawing.BitmapFont;
-using System.Linq;
 #endif
 
 #if NETFX_CORE
