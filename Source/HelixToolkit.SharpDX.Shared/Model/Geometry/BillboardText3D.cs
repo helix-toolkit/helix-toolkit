@@ -91,14 +91,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override Stream Texture
-        {
-            get
-            {
-                return TextureStatic;            
-            }
-        }
-
         public virtual BitmapFont BitmapFont
         {
             get
@@ -133,6 +125,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void OnDrawTexture(IDeviceResources deviceResources)
         {
+            Texture = TextureStatic;
             Width = 0;
             Height = 0;
             // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp

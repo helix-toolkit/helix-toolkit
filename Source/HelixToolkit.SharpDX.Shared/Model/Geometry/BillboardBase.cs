@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get;
         }
 
-        public virtual Stream Texture
+        public Stream Texture
         {
             protected set;
             get;
@@ -103,7 +103,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="hits">The hits.</param>
         /// <param name="originalSource">The original source.</param>
         /// <param name="fixedSize">if set to <c>true</c> [fixed size].</param>
-        /// <param name="scaleVector">The scale vector.</param>
         /// <returns></returns>
         public virtual bool HitTest(IRenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
             IRenderable originalSource, bool fixedSize)

@@ -23,7 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "FieldOfView", typeof(double), typeof(PerspectiveCamera), new PropertyMetadata(45.0, 
                 (d,e)=>
                 {
-                    ((d as Camera).cameraInternal as PerspectiveCameraCore).FieldOfView = (float)(double)e.NewValue;
+                    ((d as Camera).CameraInternal as PerspectiveCameraCore).FieldOfView = (float)(double)e.NewValue;
                 }));
 
         /// <summary>

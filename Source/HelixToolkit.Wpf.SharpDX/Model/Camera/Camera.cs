@@ -49,27 +49,33 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Creates the view matrix.
         /// </summary>
         /// <returns>A <see cref="Matrix" />.</returns>
-        public Matrix CreateViewMatrix() { return cameraInternal.CreateViewMatrix(); }
+        public Matrix CreateViewMatrix() { return CameraInternal.CreateViewMatrix(); }
 
         /// <summary>
         /// Creates the projection matrix.
         /// </summary>
         /// <param name="aspectRatio">The aspect ratio.</param>
         /// <returns>A <see cref="Matrix" />.</returns>
-        public Matrix CreateProjectionMatrix(double aspectRatio) { return cameraInternal.CreateProjectionMatrix((float)aspectRatio); }
+        public Matrix CreateProjectionMatrix(double aspectRatio) { return CameraInternal.CreateProjectionMatrix((float)aspectRatio); }
 
-        public readonly CameraCore cameraInternal;
-
-        public Camera()
+        private CameraCore core;
+        public CameraCore CameraInternal
         {
-            cameraInternal = CreatePortableCameraCore();
+            get
+            {
+                if (core == null)
+                {
+                    core = CreatePortableCameraCore();
+                }
+                return core;
+            }
         }
 
         protected abstract CameraCore CreatePortableCameraCore();
 
         public static implicit operator CameraCore(Camera camera)
         {
-            return camera == null ? null : camera.cameraInternal;
+            return camera == null ? null : camera.CameraInternal;
         }
     }
 }

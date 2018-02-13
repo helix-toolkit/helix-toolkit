@@ -38,9 +38,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public sealed class DX11ImageSource : D3DImage, IDisposable
     {
-        [DllImport("user32.dll", SetLastError = false)]
-        private static extern IntPtr GetDesktopWindow();
-
         private Direct3DEx context;
         private DeviceEx device;
 
@@ -52,11 +49,6 @@ namespace HelixToolkit.Wpf.SharpDX
             this.adapterIndex = adapterIndex;        
             this.StartD3D();
             
-        }
-
-        public void Dispose()
-        {
-            this.EndD3D();
         }
 
         public void InvalidateD3DImage()
@@ -169,5 +161,47 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return (sharedTexture.Description.OptionFlags & ResourceOptionFlags.Shared) != 0;
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    this.EndD3D();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~DX11ImageSource() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
+
+    }
+
+    public static class NativeMethods
+    {
+        [DllImport("user32.dll", SetLastError = false)]
+        private static extern IntPtr GetDesktopWindow();
     }
 }

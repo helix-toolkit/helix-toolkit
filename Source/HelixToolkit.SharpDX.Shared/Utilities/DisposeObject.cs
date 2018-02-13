@@ -29,6 +29,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public event EventHandler<bool> Disposed;
 
+#pragma warning disable 1063
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
         /// <see cref="DisposeBase"/> is reclaimed by garbage collection.
@@ -50,11 +51,11 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
             CheckAndDispose(true);
         }
-
+#pragma warning restore 1063
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>

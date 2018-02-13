@@ -146,7 +146,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public int AdapterIndex { private set; get; }
+        public int AdapterIndex { private set; get; } = -1;
         /// <summary>
         /// 
         /// </summary>
@@ -161,7 +161,6 @@ namespace HelixToolkit.UWP
 #else
             logger = new LogWrapper(new NullLogger());
 #endif
-            Initialize();
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="EffectsManager"/> class.
@@ -170,7 +169,6 @@ namespace HelixToolkit.UWP
         public EffectsManager(ILogger externallogger)
         {
             this.logger = externallogger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(externallogger);
-            Initialize();
         }
 
         /// <summary>
@@ -184,7 +182,7 @@ namespace HelixToolkit.UWP
 #else
             logger = new LogWrapper(new NullLogger());
 #endif
-            Initialize(adapterIndex);
+            AdapterIndex = adapterIndex;
         }
 
         /// <summary>
@@ -195,31 +193,37 @@ namespace HelixToolkit.UWP
         public EffectsManager(int adapterIndex, ILogger externallogger)
         {
             this.logger = externallogger == null ? new LogWrapper(new NullLogger()) : new LogWrapper(externallogger);
-            Initialize(adapterIndex);
+            AdapterIndex = adapterIndex;
         }
 
         /// <summary>
         /// Initializes this instance.
         /// </summary>
-        protected void Initialize()
+        public void Initialize()
         {
+            if (Initialized)
+            { return; }
 #if DEBUGMEMORY
             global::SharpDX.Configuration.EnableObjectTracking = true;
 #endif
-
-            int adapterIndex = -1;
-            using (var adapter = GetBestAdapter(out adapterIndex))
+            if (AdapterIndex == -1)
             {
-                Initialize(adapterIndex);
+                int adapterIndex = -1;
+                using (var adapter = GetBestAdapter(out adapterIndex))
+                {
+                    Initialize(adapterIndex);
+                }
+            }
+            else
+            {
+                Initialize(AdapterIndex);
             }
         }
         /// <summary>
         /// Initializes this instance.
         /// </summary>
-        protected void Initialize(int adapterIndex)
+        private void Initialize(int adapterIndex)
         {
-            if (Initialized)
-            { return; }
             Log(LogLevel.Information, $"Adapter Index = {adapterIndex}");
             var adapter = GetAdapter(ref adapterIndex);
             AdapterIndex = adapterIndex;
@@ -397,7 +401,7 @@ namespace HelixToolkit.UWP
         {
             if (!Initialized)
             {
-                throw new Exception("Manager has not been initialized.");
+                Initialize();
             }
             Lazy<IRenderTechnique> t;
             techniqueDict.TryGetValue(name, out t);
