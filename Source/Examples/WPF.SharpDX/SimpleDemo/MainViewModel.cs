@@ -161,7 +161,7 @@ namespace SimpleDemo
                     {
                         Foreground = new Color4((float)i / numRows, 0, 0, 1f),
                         Background = new Color4(0, (float)(numColumns - j) / numColumns, 1, 0.8f),
-                        Scale = Math.Max(0.5f, (float)i / numRows * 1.2f),
+                        Scale = Math.Max(0.01f, (float)i / numRows * 0.02f),
                     });
                 }
             }
@@ -180,7 +180,7 @@ namespace SimpleDemo
             background.A = (byte)120;
             Billboard2Model = new BillboardSingleText3D()
             {
-                TextInfo = new TextInfo("Model 1", new Vector3(2, 1, 0)),
+                TextInfo = new TextInfo("Model 2", new Vector3(2, 1, 0)),
                 FontSize =12,
                 FontColor = Colors.Green.ToColor4(),
                 BackgroundColor = background.ToColor4(),
@@ -191,7 +191,7 @@ namespace SimpleDemo
             background.A = (byte)50;
             Billboard3Model = new BillboardSingleText3D(2,0.8f)
             {
-                TextInfo = new TextInfo("Model 1", new Vector3(-2, 1, 0)),
+                TextInfo = new TextInfo("Model 3", new Vector3(-2, 1, 0)),
                 FontSize = 12,
                 FontColor = Colors.Red.ToColor4(),
                 BackgroundColor = background.ToColor4(),
