@@ -228,23 +228,29 @@ namespace HelixToolkit.Wpf.SharpDX
             IRenderable originalSource, bool fixedSize)
         {
             var h = false;
-            var result = new HitTestResult();
+            var result = new BillboardHitResult();
             result.Distance = double.MaxValue;
 
-            if (context == null || Width == 0 || Height == 0 || (fixedSize && !BoundingSphere.Intersects(ref rayWS)))
+            if (context == null || Width == 0 || Height == 0)
             {
                 return false;
             }
-
+            var scale = modelMatrix.ScaleVector;
             var projectionMatrix = context.ProjectionMatrix;
             var viewMatrix = context.ViewMatrix;
             var viewMatrixInv = viewMatrix.PsudoInvert();
             var visualToScreen = context.ScreenViewProjectionMatrix;
+            int index = -1;
             foreach (var info in TextInfo)
             {
-                var left = -info.ActualWidth / 2;
+                ++index;
+                if(fixedSize && !info.BoundSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS))
+                {
+                    continue;
+                }
+                var left = -(info.ActualWidth * scale.X) / 2;
                 var right = -left;
-                var top = -info.AcutalHeight / 2;
+                var top = -(info.AcutalHeight * scale.Y) / 2;
                 var bottom = -top;
                 var b = GetHitTestBound(Vector3.TransformCoordinate(info.Origin, modelMatrix), 
                     left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref viewMatrixInv, ref visualToScreen,
@@ -260,7 +266,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         result.IsValid = true;
                         result.PointHit = rayWS.Position + (rayWS.Direction * distance);
                         result.Distance = distance;
-                        result.Tag = info;
+                        result.TextInfo = info;
+                        result.TextInfoIndex = index;
                         Debug.WriteLine($"Hit; Text:{info.Text}; HitPoint:{result.PointHit};");
                         break;
                     }

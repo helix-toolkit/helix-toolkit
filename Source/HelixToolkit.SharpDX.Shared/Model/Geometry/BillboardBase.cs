@@ -99,21 +99,32 @@ namespace HelixToolkit.Wpf.SharpDX
             BoundingSphere = new BoundingSphere(Vector3.Zero, Math.Max(Width, Height) / 2);
         }
 
+        /// <summary>
+        /// Hits the test.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="originalSource">The original source.</param>
+        /// <param name="fixedSize">if set to <c>true</c> [fixed size].</param>
+        /// <param name="scaleVector">The scale vector.</param>
+        /// <returns></returns>
         public virtual bool HitTest(IRenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
             IRenderable originalSource, bool fixedSize)
         {
             var h = false;
-            var result = new HitTestResult();
+            var result = new BillboardHitResult();
             result.Distance = double.MaxValue;
 
-            if (context == null || Width == 0 || Height == 0 || (fixedSize && !BoundingSphere.Intersects(ref rayWS)))
+            if (context == null || Width == 0 || Height == 0 || (fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
             {
                 return false;
             }
-
-            var left = -Width / 2;
+            var scale = modelMatrix.ScaleVector;
+            var left = -(Width * scale.X) / 2;
             var right = -left;
-            var top = -Height / 2;
+            var top = -(Height * scale.Y) / 2;
             var bottom = -top;
             var projectionMatrix = context.ProjectionMatrix;
             var viewMatrix = context.ViewMatrix;
