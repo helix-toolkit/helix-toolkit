@@ -46,19 +46,22 @@ namespace HelixToolkit.UWP.ShaderManager
         {
             TVALUE value;
             TKEY key = GetKey(ref description);
-            if (pool.TryGetValue(key, out value))
+            lock (pool)
             {
-                return value.QueryInterface<TVALUE>();
-            }
-            else
-            {
-                value = Collect(Create(Device, ref description));
-                pool.Add(key, value);
-                value.Disposed += (s, e) => 
+                if (pool.TryGetValue(key, out value))
                 {
-                    pool.Remove(key);
-                };
-                return value;
+                    return value.QueryInterface<TVALUE>();
+                }
+                else
+                {
+                    value = Collect(Create(Device, ref description));
+                    pool.Add(key, value);
+                    value.Disposed += (s, e) => 
+                    {
+                        pool.Remove(key);
+                    };
+                    return value;
+                }
             }
         }
         /// <summary>
@@ -118,15 +121,18 @@ namespace HelixToolkit.UWP.ShaderManager
             if (description == null) { return null; }
             TVALUE value;
             TKEY key = GetKey(ref description);
-            if (pool.TryGetValue(key, out value))
+            lock (pool)
             {
-                return value;
-            }
-            else
-            {
-                value = Collect(Create(Device, ref description));
-                pool.Add(key, value);
-                return value;
+                if (pool.TryGetValue(key, out value))
+                {
+                    return value;
+                }
+                else
+                {
+                    value = Collect(Create(Device, ref description));
+                    pool.Add(key, value);
+                    return value;
+                }
             }
         }
         /// <summary>

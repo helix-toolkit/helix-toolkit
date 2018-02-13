@@ -168,10 +168,6 @@ namespace HelixToolkit.UWP.Utilities
         {
             get
             {
-                if (i >= bufferSize)
-                {
-                    throw new IndexOutOfRangeException();
-                }
                 return buffer[(first + i) % bufferSize];
             }
         }
