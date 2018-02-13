@@ -3,7 +3,6 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-using System.Collections.Generic;
 using System;
 using System.IO;
 using SharpDX.Toolkit.Graphics;
@@ -19,8 +18,9 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using Core;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class BillboardSingleImage3D : BillboardBase
     {
         /// <summary>
@@ -51,18 +51,19 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             set;get;
         }
-
-        public Vector2Collection TextureCoordinates { set; get; }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BillboardSingleImage3D"/> class.
+        /// </summary>
         protected BillboardSingleImage3D()
         {
-            Positions = new Vector3Collection(6);
-            Colors = new Color4Collection(6);
-            TextureCoordinates = new Vector2Collection(6);
             MaskColor = Color.Transparent;
         }
 
-#if !NETFX_CORE
+#if !NETFX_CORE        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BillboardSingleImage3D"/> class.
+        /// </summary>
+        /// <param name="bitmapSource">The bitmap source.</param>
         public BillboardSingleImage3D(BitmapSource bitmapSource)
             : this()
         {
@@ -70,7 +71,11 @@ namespace HelixToolkit.Wpf.SharpDX
             Width = bitmapSource.PixelWidth;
             Height = bitmapSource.PixelHeight;
         }
-#endif
+#endif        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BillboardSingleImage3D"/> class.
+        /// </summary>
+        /// <param name="imageStream">The image stream.</param>
         public BillboardSingleImage3D(Stream imageStream)
             : this()
         {
@@ -83,6 +88,12 @@ namespace HelixToolkit.Wpf.SharpDX
             Texture.Position = 0;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BillboardSingleImage3D"/> class.
+        /// </summary>
+        /// <param name="imageStream">The image stream.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
         public BillboardSingleImage3D(Stream imageStream, float width, float height)
             : this()
         {
@@ -92,7 +103,19 @@ namespace HelixToolkit.Wpf.SharpDX
             Texture.Position = 0;
         }
 
-        public override void DrawTexture(IDeviceResources deviceResources)
+        /// <summary>
+        /// Updates the bounds.
+        /// </summary>
+        public override void UpdateBounds()
+        {
+            BoundingSphere = new BoundingSphere(Center, (float)Math.Sqrt(Width * Width + Height * Height) / 2);
+        }
+
+        /// <summary>
+        /// Called when [draw texture].
+        /// </summary>
+        /// <param name="deviceResources">The device resources.</param>
+        protected override void OnDrawTexture(IDeviceResources deviceResources)
         {
             var w = Width;
             var h = Height;
@@ -113,7 +136,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 OffTL = tl,
                 OffBR = br
             });
-            UpdateBounds();
         }
     }
 }

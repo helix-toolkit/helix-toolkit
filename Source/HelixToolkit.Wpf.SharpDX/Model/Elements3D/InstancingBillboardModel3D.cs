@@ -7,6 +7,7 @@ using SharpDX.Direct3D11;
 using HelixToolkit.Wpf.SharpDX.Utilities;
 using System;
 using HelixToolkit.Wpf.SharpDX.Core;
+using System.Diagnostics;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -51,19 +52,6 @@ namespace HelixToolkit.Wpf.SharpDX
             return new InstancingBillboardRenderCore() { ParameterBuffer = this.instanceParamBuffer };
         }
 
-
-        /// <summary>
-        /// Determines whether this instance [can hit test] the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
-        /// </returns>
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            //Implementation pending.
-            return false;
-        }
         /// <summary>
         /// Called when [hit test].
         /// </summary>
@@ -74,8 +62,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
-            return false;
+            if((Geometry as BillboardBase).HitTest(context, totalModelMatrix, ref ray, ref hits, this, FixedSize))
+            {
+                Debug.WriteLine("Billboard hit");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
+
         /// <summary>
         /// Override this function to set render technique during Attach Host.
         /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>

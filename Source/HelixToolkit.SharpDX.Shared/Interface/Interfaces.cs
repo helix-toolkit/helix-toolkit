@@ -50,15 +50,16 @@ namespace HelixToolkit.Wpf.SharpDX
     public interface IResourceSharing : IDisposable
     {
         /// <summary>
-        /// Get reference count
+        /// Attaches the specified model unique identifier.
         /// </summary>
-        int ReferenceCount { get; }
+        /// <param name="modelGuid">The model unique identifier.</param>
+        void Attach(Guid modelGuid);
 
         /// <summary>
-        /// Add reference counter;
+        /// Detaches the specified model unique identifier.
         /// </summary>
-        /// <returns>Current count</returns>
-        int AddReference();
+        /// <param name="modelGuid">The model unique identifier.</param>
+        void Detach(Guid modelGuid);
     }
     /// <summary>
     /// 

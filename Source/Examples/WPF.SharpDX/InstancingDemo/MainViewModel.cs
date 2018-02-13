@@ -114,7 +114,7 @@ namespace InstancingDemo
 
         List<Matrix> billboardinstances = new List<Matrix>(num * 2);
         List<BillboardInstanceParameter> billboardParams = new List<BillboardInstanceParameter>(num * 2);
-        int counter = 0;
+
         private void CreateModels()
         {
             instances.Clear();

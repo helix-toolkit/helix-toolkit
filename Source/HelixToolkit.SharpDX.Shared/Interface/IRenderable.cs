@@ -22,12 +22,17 @@ namespace HelixToolkit.UWP
     public interface IRenderable : IAttachable, IBoundable, IGUID, ITransform
     {
         /// <summary>
-        /// Gets a value indicating whether this instance is renderable.
+        /// Gets a value indicating whether this instance is renderable. Test includes Visible and view frustum test.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is renderable; otherwise, <c>false</c>.
         /// </value>
         bool IsRenderable { get; }
+
+        /// <summary>
+        /// Whether is visible, controlled by Visibility and IsRendering
+        /// </summary>
+        bool Visible { get; }
 
         /// <summary>
         /// Optional for scene graph traverse

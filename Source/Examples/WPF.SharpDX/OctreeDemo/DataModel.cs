@@ -27,7 +27,7 @@ namespace OctreeDemo
         public readonly Media3D.TranslateTransform3D translateTransform = new Media3D.TranslateTransform3D();
         public Media3D.Transform3DGroup DynamicTransform { get; private set; } = new Media3D.Transform3DGroup();
 
-        private PhongMaterial orgMaterial;
+
         private PhongMaterial material;
         public PhongMaterial Material
         {
@@ -104,7 +104,6 @@ namespace OctreeDemo
             Center = center;
             Radius = radius;
             CreateModel();
-            isConstructed = true;
             if (enableTransform)
             {
                 CreateAnimatedTransform1(DynamicTransform, center.ToVector3D(), new Media3D.Vector3D(rnd.Next(-1, 1), rnd.Next(-1, 1), rnd.Next(-1, 1)), rnd.Next(10, 100));
@@ -112,8 +111,6 @@ namespace OctreeDemo
             var color = rnd.NextColor();
             Material = new PhongMaterial() { DiffuseColor = color.ToColor4() };
         }
-
-        private bool isConstructed = false;
 
         private Vector3 center;
         public Vector3 Center

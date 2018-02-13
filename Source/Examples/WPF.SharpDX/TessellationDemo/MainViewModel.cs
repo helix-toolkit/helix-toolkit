@@ -93,20 +93,6 @@ namespace TessellationDemo
             }
         }
 
-        private string renderTechniqueName = DefaultRenderTechniqueNames.Blinn;
-        public string RenderTechniqueName
-        {
-            set
-            {
-                renderTechniqueName = value;
-                RenderTechnique = EffectsManager[value];
-            }
-            get
-            {
-                return renderTechniqueName;
-            }
-        }
-
         public IList<Matrix> Instances { private set; get; }
 
         public MainViewModel()

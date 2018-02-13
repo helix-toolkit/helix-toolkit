@@ -27,6 +27,7 @@ namespace SimpleDemo
     using System.Windows.Media.Imaging;
     using System.IO;
     using System.Windows.Input;
+    using System;
 
     public class MainViewModel : BaseViewModel
     {
@@ -85,9 +86,9 @@ namespace SimpleDemo
             DirectionalLightDirection = new Vector3D(-2, -5, -2);
 
             // floor plane grid
-            Grid = LineBuilder.GenerateGrid();
+            Grid = LineBuilder.GenerateGrid(new Vector3(0, 1, 0), -5, 5, -5, 5);
             GridColor = Colors.Black;
-            GridTransform = new Media3D.TranslateTransform3D(-5, -1, -5);
+            GridTransform = new Media3D.TranslateTransform3D(0, -3, 0);
 
             // scene model3d
             var b1 = new MeshBuilder();            
@@ -142,8 +143,8 @@ namespace SimpleDemo
             Points.Indices = ptIdx;
 
             Text = new BillboardText3D();
-            int numRows = 10;
-            int numColumns = 10;
+            int numRows = 11;
+            int numColumns = 11;
             string[] texts = new string[]
             {
                 "HelixToolkit",
@@ -156,10 +157,11 @@ namespace SimpleDemo
             {
                 for (var j = 0; j < numColumns; j++)
                 {
-                    Text.TextInfo.Add(new TextInfo(texts[(i+j)%texts.Length], new Vector3((i-numRows/2) * 4, (j-numColumns/2) * 4, 0))
+                    Text.TextInfo.Add(new TextInfo(texts[(i + j) % texts.Length], new Vector3((i - numRows / 2), 0.0f, (j - numColumns / 2)))
                     {
                         Foreground = new Color4((float)i / numRows, 0, 0, 1f),
                         Background = new Color4(0, (float)(numColumns - j) / numColumns, 1, 0.8f),
+                        Scale = Math.Max(0.01f, (float)i / numRows * 0.02f),
                     });
                 }
             }
@@ -178,7 +180,7 @@ namespace SimpleDemo
             background.A = (byte)120;
             Billboard2Model = new BillboardSingleText3D()
             {
-                TextInfo = new TextInfo("Model 1", new Vector3(2, 1, 0)),
+                TextInfo = new TextInfo("Model 2", new Vector3(2, 1, 0)),
                 FontSize =12,
                 FontColor = Colors.Green.ToColor4(),
                 BackgroundColor = background.ToColor4(),
@@ -189,7 +191,7 @@ namespace SimpleDemo
             background.A = (byte)50;
             Billboard3Model = new BillboardSingleText3D(2,0.8f)
             {
-                TextInfo = new TextInfo("Model 1", new Vector3(-2, 1, 0)),
+                TextInfo = new TextInfo("Model 3", new Vector3(-2, 1, 0)),
                 FontSize = 12,
                 FontColor = Colors.Red.ToColor4(),
                 BackgroundColor = background.ToColor4(),

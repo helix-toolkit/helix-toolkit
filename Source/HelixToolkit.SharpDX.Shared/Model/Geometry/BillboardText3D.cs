@@ -4,16 +4,15 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.Collections.Generic;
 using SharpDX;
-
+using System;
+using System.Linq;
+using System.IO;
+using System.Reflection;
 #if NETFX_CORE
 
 #else
-using System.IO;
-using System.Reflection;
-using System;
 using Media = System.Windows.Media;
 using Cyotek.Drawing.BitmapFont;
-using System.Linq;
 #endif
 
 #if NETFX_CORE
@@ -23,6 +22,8 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Core;
+    using System.Collections.ObjectModel;
+    using System.Diagnostics;
 
     public class TextInfo
     {
@@ -33,6 +34,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public Color4 Background { set; get; } = Color.Transparent;
 
+        public float ActualWidth { protected set; get; }
+
+        public float AcutalHeight { protected set; get; }
+
+        public float Scale { set; get; } = 1;
+
         public TextInfo()
         {
         }
@@ -42,6 +49,15 @@ namespace HelixToolkit.Wpf.SharpDX
             Text = text;
             Origin = origin;
         }
+
+        public virtual void UpdateTextInfo(float actualWidth, float actualHeight)
+        {
+            ActualWidth = actualWidth;
+            AcutalHeight = actualHeight;
+            BoundSphere = new BoundingSphere(Origin, Math.Max(actualWidth, actualHeight) / 2);
+        }
+
+        public BoundingSphere BoundSphere { get; private set; }
     }
 #if !NETFX_CORE
     [Serializable]
@@ -91,15 +107,35 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public List<TextInfo> TextInfo { get; } = new List<TextInfo>();
-
-        //public override IList<Vector2> TextureOffsets { get { return TextInfo.SelectMany(x => x.Offsets).ToArray(); } }
-
-        public override void DrawTexture(IDeviceResources deviceResources)
+        private ObservableCollection<TextInfo> textInfo = new ObservableCollection<TextInfo>();
+        public ObservableCollection<TextInfo> TextInfo
         {
-            BillboardVertices.Clear();
-            // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
+            set
+            {
+                var old = textInfo;
+                if(Set(ref textInfo, value))
+                {
+                    old.CollectionChanged -= CollectionChanged;
+                    IsInitialized = false;
+                    if (value != null)
+                    {
+                        value.CollectionChanged += CollectionChanged;
+                    }
+                }
+            }
+            get { return textInfo; }
+        }
 
+        private void CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            IsInitialized = false;
+        }
+
+        protected override void OnDrawTexture(IDeviceResources deviceResources)
+        {
+            Width = 0;
+            Height = 0;
+            // http://www.cyotek.com/blog/angelcode-bitmap-font-parsing-using-csharp
             var tempList = new List<BillboardVertex>(100);
             foreach (var textInfo in TextInfo)
             {
@@ -133,22 +169,34 @@ namespace HelixToolkit.Wpf.SharpDX
                     previousCharacter = character;
                     if (tempList.Count > 0)
                     {
-                        rect.Width = Math.Max(rect.Width, x);
+                        rect.Width = Math.Max(rect.Width, x * textInfo.Scale);
                         rect.Height = Math.Max(rect.Height, Math.Abs(tempList.Last().OffBR.Y));
                     }
                 }
+                var halfW = rect.Width / 2;
+                var halfH = rect.Height / 2;
                 BillboardVertices.Add(new BillboardVertex()
                 {
                     Position = textInfo.Origin.ToVector4(),
                     Background = textInfo.Background,
                     TexTL = Vector2.Zero,
                     TexBR = Vector2.Zero,
-                    OffTL = Vector2.Zero,
-                    OffBR = new Vector2(rect.Width, -rect.Height),
+                    OffTL = new Vector2(-halfW, halfH),
+                    OffBR = new Vector2(halfW, -halfH),
                 });
-                tempList.ForEach(BillboardVertices.Add);
+
+                textInfo.UpdateTextInfo(rect.Width, rect.Height);
+
+                foreach(var vert in tempList)
+                {
+                    var v = vert;
+                    v.OffTL += new Vector2(-halfW, halfH);
+                    v.OffBR += new Vector2(-halfW, halfH);
+                    BillboardVertices.Add(v);
+                }
+                Width += rect.Width;
+                Height += rect.Height;
             }
-            UpdateBounds();
         }
 
         private BillboardVertex DrawCharacter(Character character, Vector3 origin, float w, float h, float kerning, TextInfo info)
@@ -170,9 +218,65 @@ namespace HelixToolkit.Wpf.SharpDX
                 Background = Color.Transparent,
                 TexTL = uv_tl,
                 TexBR = uv_br,
-                OffTL = tl,
-                OffBR = br
+                OffTL = tl * info.Scale,
+                OffBR = br * info.Scale
             };
+        }
+
+        public override bool HitTest(IRenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
+            IRenderable originalSource, bool fixedSize)
+        {
+            var h = false;
+            var result = new BillboardHitResult();
+            result.Distance = double.MaxValue;
+
+            if (context == null || Width == 0 || Height == 0)
+            {
+                return false;
+            }
+            var scale = modelMatrix.ScaleVector;
+            var projectionMatrix = context.ProjectionMatrix;
+            var viewMatrix = context.ViewMatrix;
+            var viewMatrixInv = viewMatrix.PsudoInvert();
+            var visualToScreen = context.ScreenViewProjectionMatrix;
+            int index = -1;
+            foreach (var info in TextInfo)
+            {
+                ++index;
+                if(!fixedSize && !info.BoundSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS))
+                {
+                    continue;
+                }
+                var left = -(info.ActualWidth * scale.X) / 2;
+                var right = -left;
+                var top = -(info.AcutalHeight * scale.Y) / 2;
+                var bottom = -top;
+                var b = GetHitTestBound(Vector3.TransformCoordinate(info.Origin, modelMatrix), 
+                    left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref viewMatrixInv, ref visualToScreen,
+                    fixedSize, (float)context.ActualWidth, (float)context.ActualHeight);
+
+                if (rayWS.Intersects(ref b))
+                {
+                    float distance;
+                    if (Collision.RayIntersectsBox(ref rayWS, ref b, out distance))
+                    {
+                        h = true;
+                        result.ModelHit = originalSource;
+                        result.IsValid = true;
+                        result.PointHit = rayWS.Position + (rayWS.Direction * distance);
+                        result.Distance = distance;
+                        result.TextInfo = info;
+                        result.TextInfoIndex = index;
+                        Debug.WriteLine($"Hit; Text:{info.Text}; HitPoint:{result.PointHit};");
+                        break;
+                    }
+                }
+            }
+            if (h)
+            {
+                hits.Add(result);
+            }
+            return h;
         }
     }
 #endif

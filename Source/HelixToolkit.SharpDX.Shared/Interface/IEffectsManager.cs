@@ -73,6 +73,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         DriverType DriverType { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        IStatePoolManager StateManager { get; }
+        /// <summary>
+        /// Gets the geometry buffer manager.
+        /// </summary>
+        /// <value>
+        /// The geometry buffer manager.
+        /// </value>
+        IGeometryBufferManager GeometryBufferManager { get; }
+        /// <summary>
+        /// Gets the material texture manager.
+        /// </summary>
+        /// <value>
+        /// The material texture manager.
+        /// </value>
+        ITextureResourceManager MaterialTextureManager { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        IConstantBufferPool ConstantBufferPool { get; }
     }
 
     /// <summary>
@@ -101,36 +123,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        IConstantBufferPool ConstantBufferPool { get; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         IShaderPoolManager ShaderManager { get; }
         /// <summary>
         /// Get list of existing technique names
         /// </summary>
         IEnumerable<string> RenderTechniques { get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        IStatePoolManager StateManager { get; }
 
-        /// <summary>
-        /// Gets the geometry buffer manager.
-        /// </summary>
-        /// <value>
-        /// The geometry buffer manager.
-        /// </value>
-        IGeometryBufferManager GeometryBufferManager { get; }
-
-        /// <summary>
-        /// Gets the material texture manager.
-        /// </summary>
-        /// <value>
-        /// The material texture manager.
-        /// </value>
-        ITextureResourceManager MaterialTextureManager { get; }
         /// <summary>
         /// 
         /// </summary>

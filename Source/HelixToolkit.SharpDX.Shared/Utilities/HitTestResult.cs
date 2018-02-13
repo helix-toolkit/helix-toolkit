@@ -84,6 +84,12 @@ namespace HelixToolkit.Wpf.SharpDX
         public double LineHitPointScalar { get; set; }
     }
 
+    public class BillboardHitResult : HitTestResult
+    {
+        public int TextInfoIndex { set; get; } = 0;
+        public TextInfo TextInfo { set; get; } = null;
+    }
+
     /// <summary>
     /// 
     /// </summary>

@@ -11,52 +11,54 @@ namespace HelixToolkit.UWP.Utilities
 #endif
 {
     using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
 #if DEBUG_REF
     using System.Diagnostics;
 #endif
-    using System.Threading;
 
     /// <summary>
     /// 
     /// </summary>
     public abstract class ResourceSharedObject : DisposeObject, IResourceSharing
     {
+        private readonly HashSet<Guid> hashSet = new HashSet<Guid>();
         /// <summary>
-        /// Start with reference = 1.
+        /// Attaches the specified model unique identifier.
         /// </summary>
-        private int referenceCount = 1;
-        /// <summary>
-        /// Manually increase/decrease reference count. Used for resource sharing between multiple models.
-        /// </summary>
-        public int ReferenceCount
+        /// <param name="modelGuid">The model unique identifier.</param>
+        public void Attach(Guid modelGuid)
         {
-            get { return referenceCount; }
-        }
-
-        /// <summary>
-        /// Increment reference counter by 1.
-        /// </summary>
-        /// <returns>Current count</returns>
-        public int AddReference()
-        {
-#if DEBUG_REF
-            var r = Interlocked.Increment(ref referenceCount);
-            Debug.WriteLine("AddReference, Ref = " + r);
-            return r;
-#else
-            return Interlocked.Increment(ref referenceCount);
-#endif
-        }
-
-        /// <summary>
-        /// Decrease the reference counter. If counter reach zero, dispose the actual contents
-        /// </summary>
-        public override void Dispose()
-        {
-            if(Interlocked.Decrement(ref referenceCount) == 0)
+            lock (hashSet)
             {
-                base.Dispose();
+                hashSet.Add(modelGuid);
             }
+        }
+        /// <summary>
+        /// Detaches the specified model unique identifier. If no model is attached to this resource, resource will be disposed automatically
+        /// </summary>
+        /// <param name="modelGuid">The model unique identifier.</param>
+        public void Detach(Guid modelGuid)
+        {
+            lock (hashSet)
+            {
+                hashSet.Remove(modelGuid);
+                if (hashSet.Count == 0)
+                {
+                    this.Dispose();
+                }
+            }
+        }
+
+        protected override void Dispose(bool disposeManagedResources)
+        {
+#if DEBUG
+            if (hashSet.Count > 0)
+            {
+                Debug.WriteLine($"ResourceSharedObject, called dispose but still attached to some model. Model Counts:{hashSet.Count}");
+            }
+#endif
+            base.Dispose(disposeManagedResources);
         }
     }
 }
