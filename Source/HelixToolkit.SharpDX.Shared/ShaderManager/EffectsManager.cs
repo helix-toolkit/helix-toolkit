@@ -411,15 +411,15 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// <see cref="DisposeObject.Dispose(bool)"/>
+        /// <see cref="DisposeObject.OnDispose(bool)"/>
         /// </summary>
         /// <param name="disposeManagedResources"></param>
         [SuppressMessage("Microsoft.Usage", "CA2213", Justification = "False positive.")]
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             OnDisposeResources?.Invoke(this, EventArgs.Empty);
             techniqueDict.Clear();
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
             Initialized = false;
             Disposer.RemoveAndDispose(ref device);
 #if DEBUGMEMORY

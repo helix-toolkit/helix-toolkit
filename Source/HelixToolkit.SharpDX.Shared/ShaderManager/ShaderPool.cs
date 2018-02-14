@@ -78,10 +78,10 @@ namespace HelixToolkit.UWP.ShaderManager
             return layoutPool.Register(description.Description);
         }
 
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             shaderPools.Clear();
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }       
     }
 }

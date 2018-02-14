@@ -74,10 +74,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// 
         /// </summary>
         /// <param name="disposeManagedResources"></param>
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             ClearRenderTagetBindings();
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
 
         /// <summary>

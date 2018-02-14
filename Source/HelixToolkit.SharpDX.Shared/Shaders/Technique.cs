@@ -105,13 +105,13 @@ namespace HelixToolkit.UWP.Shaders
         /// 
         /// </summary>
         /// <param name="disposeManagedResources"></param>
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             passDict.Clear();
             passList.Clear();
             EffectsManager = null;
             Layout = null;
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
     }
 }

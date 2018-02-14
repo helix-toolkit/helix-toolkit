@@ -39,7 +39,7 @@ namespace HelixToolkit.UWP
         ~DisposeBase()
         {
             // Finalizer calls Dispose(false)
-            CheckAndDispose(false);
+            Dispose(false);
         }
 
         /// <summary>
@@ -56,19 +56,19 @@ namespace HelixToolkit.UWP
         [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
         public void Dispose()
         {
-            CheckAndDispose(true);
+            Dispose(true);
         }
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        private void CheckAndDispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             // TODO Should we throw an exception if this method is called more than once?
             if (!IsDisposed)
             {
                 Disposing?.Invoke(this, disposing ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
 
-                Dispose(disposing);
+                OnDispose(disposing);
                 GC.SuppressFinalize(this);
 
                 IsDisposed = true;
@@ -83,7 +83,7 @@ namespace HelixToolkit.UWP
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected abstract void Dispose(bool disposing);
+        protected abstract void OnDispose(bool disposing);
     }
 
 
@@ -107,7 +107,7 @@ namespace HelixToolkit.UWP
         /// Disposes all object collected by this class and clear the list. The collector can still be used for collecting.
         /// </summary>
         /// <remarks>
-        /// To completely dispose this instance and avoid further dispose, use <see cref="Dispose"/> method instead.
+        /// To completely dispose this instance and avoid further dispose, use <see cref="OnDispose"/> method instead.
         /// </remarks>
         public virtual void DisposeAndClear()
         {
@@ -130,7 +130,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="disposeManagedResources">If true, managed resources should be
         /// disposed of in addition to unmanaged resources.</param>
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             DisposeAndClear();
         }

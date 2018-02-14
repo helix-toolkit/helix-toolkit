@@ -454,7 +454,7 @@ namespace HelixToolkit.UWP.Model
         /// 
         /// </summary>
         /// <param name="disposeManagedResources"></param>
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             this.Material = null;
             TextureResources = null;
@@ -462,7 +462,7 @@ namespace HelixToolkit.UWP.Model
             TextureBindingMap = null;
             SamplerBindingMap = null;
             OnInvalidateRenderer = null;
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
     }
 }

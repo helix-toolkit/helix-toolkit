@@ -16,7 +16,9 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        [NonSerialized]
         private MaterialCore core;
+        
         public MaterialCore Core
         {
             get

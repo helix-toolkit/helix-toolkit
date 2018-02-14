@@ -73,10 +73,10 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             Initialized = false;
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
         /// <summary>
         /// Disposes the internal resources. Object is reusable.

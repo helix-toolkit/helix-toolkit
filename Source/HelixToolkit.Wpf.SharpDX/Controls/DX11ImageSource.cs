@@ -126,7 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void EndD3D()
         {
-            Disposer.RemoveAndDispose(ref this.renderTarget);                
+            Disposer.RemoveAndDispose(ref renderTarget);                
             Disposer.RemoveAndDispose(ref device);
             Disposer.RemoveAndDispose(ref context);               
         }
@@ -173,9 +173,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (disposing)
                 {
-                    renderTarget?.Dispose();
-                    device?.Dispose();
-                    context?.Dispose();
+                    EndD3D();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.

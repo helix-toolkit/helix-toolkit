@@ -74,10 +74,10 @@ namespace HelixToolkit.UWP.Model
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             resourceDictionary.Clear();
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
     }
 

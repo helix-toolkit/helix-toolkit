@@ -278,14 +278,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             base.DisposeAndClear();
         }
 
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             elementCore.OnTransformChanged -= OnTransformChanged;
             OnBoundChanged = null;
             OnTransformBoundChanged = null;
             OnBoundSphereChanged = null;
             OnTransformBoundSphereChanged = null;
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
     }
 }

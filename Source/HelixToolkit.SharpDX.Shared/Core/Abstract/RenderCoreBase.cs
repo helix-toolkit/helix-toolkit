@@ -225,10 +225,10 @@ namespace HelixToolkit.UWP.Core
             OnInvalidateRenderer = null;
         }
 
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             OnInvalidateRenderer = null;
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
 
         /// <summary>
