@@ -110,38 +110,17 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public override Point3D Position
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-                throw new System.NotImplementedException();
-            }
+            set;get;
         }
 
         public override Vector3D UpDirection
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-                throw new System.NotImplementedException();
-            }
+            set;get;
         }
 
         public override Vector3D LookDirection
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-                throw new System.NotImplementedException();
-            }
+            set;get;
         }
     }
 }

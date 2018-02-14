@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Occurs when [on element changed].
         /// </summary>
-        event EventHandler<bool> OnElementChanged;
+        event EventHandler<EventArgs> OnElementChanged;
         /// <summary>
         /// Gets a value indicating whether this instance has elements.
         /// </summary>

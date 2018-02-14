@@ -100,11 +100,11 @@ namespace HelixToolkit.UWP.Core
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             textureView?.Detach(this.GUID);
             textureView = null;
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
         /// <summary>
         /// Called when [attach buffer].

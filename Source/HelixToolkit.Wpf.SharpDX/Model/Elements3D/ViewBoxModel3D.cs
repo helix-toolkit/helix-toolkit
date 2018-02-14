@@ -160,8 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             ViewBoxMeshModel.CullMode = CullMode.Back;
             ViewBoxMeshModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.ViewCube]; };
-            this.Children.Add(ViewBoxMeshModel);
-            UpdateModel(UpDirection.ToVector3());
+            this.Children.Add(ViewBoxMeshModel);           
             ViewBoxMeshModel.Material = new PhongMaterial()
             {
                 DiffuseColor = Color.White,
@@ -182,7 +181,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override bool OnAttach(IRenderHost host)
         {
             if (base.OnAttach(host))
-            {
+            {               
                 var material = (ViewBoxMeshModel.Material as PhongMaterial);
                 if (material.DiffuseMap == null)
                 {

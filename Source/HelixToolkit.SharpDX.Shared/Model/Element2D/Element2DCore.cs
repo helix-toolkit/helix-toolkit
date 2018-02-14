@@ -190,7 +190,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                         item.ParentMatrix = totalTransform;
                     }
                     TransformChanged(ref value);
-                    OnTransformChanged?.Invoke(this, value);
+                    OnTransformChanged?.Invoke(this, new Transform2DArgs(ref value));
                 }
             }
             get
@@ -289,7 +289,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <summary>
         /// Occurs when [on transform changed].
         /// </summary>
-        public event EventHandler<Matrix3x2> OnTransformChanged;
+        public event EventHandler<Transform2DArgs> OnTransformChanged;
 #endregion
 #region Rendering
 
@@ -428,7 +428,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
-        private void RenderCore_OnInvalidateRenderer(object sender, bool e)
+        private void RenderCore_OnInvalidateRenderer(object sender, EventArgs e)
         {
             InvalidateRender();
         }

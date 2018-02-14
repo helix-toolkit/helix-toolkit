@@ -20,11 +20,12 @@ namespace HelixToolkit.UWP
     using Core;
     using HelixToolkit.Logger;
     using System.Runtime.CompilerServices;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Shader and Technique manager
     /// </summary>
-    public abstract class EffectsManager : DisposeObject, IEffectsManager
+    public class EffectsManager : DisposeObject, IEffectsManager
     {
         private readonly LogWrapper logger;
         /// <summary>
@@ -37,7 +38,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Occurs when [on dispose resources].
         /// </summary>
-        public event EventHandler<bool> OnDisposeResources;
+        public event EventHandler<EventArgs> OnDisposeResources;
         /// <summary>
         /// The minimum supported feature level.
         /// </summary>
@@ -48,11 +49,11 @@ namespace HelixToolkit.UWP
         /// </summary>
         public IEnumerable<string> RenderTechniques { get { return techniqueDict.Keys; } }
 
+        private IConstantBufferPool constantBufferPool;
         /// <summary>
-        /// <see cref="IEffectsManager.ConstantBufferPool"/>
+        /// <see cref="IDevice3DResources.ConstantBufferPool"/>
         /// </summary>
         public IConstantBufferPool ConstantBufferPool { get { return constantBufferPool; } }
-        private IConstantBufferPool constantBufferPool;
 
         private IShaderPoolManager shaderPoolManager;
         /// <summary>
@@ -63,7 +64,7 @@ namespace HelixToolkit.UWP
         private IStatePoolManager statePoolManager;
 
         /// <summary>
-        /// <see cref="IEffectsManager.StateManager"/> 
+        /// <see cref="IDevice3DResources.StateManager"/> 
         /// </summary>
         public IStatePoolManager StateManager { get { return statePoolManager; } }
 
@@ -146,7 +147,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public int AdapterIndex { private set; get; }
+        public int AdapterIndex { private set; get; } = -1;
         /// <summary>
         /// 
         /// </summary>
@@ -201,25 +202,29 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Initializes this instance.
         /// </summary>
-        protected void Initialize()
+        private void Initialize()
         {
 #if DEBUGMEMORY
             global::SharpDX.Configuration.EnableObjectTracking = true;
 #endif
-
-            int adapterIndex = -1;
-            using (var adapter = GetBestAdapter(out adapterIndex))
+            if (AdapterIndex == -1)
             {
-                Initialize(adapterIndex);
+                int adapterIndex = -1;
+                using (var adapter = GetBestAdapter(out adapterIndex))
+                {
+                    Initialize(adapterIndex);
+                }
+            }
+            else
+            {
+                Initialize(AdapterIndex);
             }
         }
         /// <summary>
         /// Initializes this instance.
         /// </summary>
-        protected void Initialize(int adapterIndex)
+        private void Initialize(int adapterIndex)
         {
-            if (Initialized)
-            { return; }
             Log(LogLevel.Information, $"Adapter Index = {adapterIndex}");
             var adapter = GetAdapter(ref adapterIndex);
             AdapterIndex = adapterIndex;
@@ -266,15 +271,6 @@ namespace HelixToolkit.UWP
             RemoveAndDispose(ref materialTextureManager);
             materialTextureManager = Collect(new Model.TextureResourceManager(Device));
             #endregion
-            #region Initial Techniques
-            Log(LogLevel.Information, "Load Technique Descriptions");
-            var techniqueDescs = LoadTechniqueDescriptions();
-            foreach(var tech in techniqueDescs)
-            {
-                AddTechnique(tech);
-            }
-            Log(LogLevel.Information, $"Load Technique Description finished. Number of Techniques: {techniqueDict.Count}");
-            #endregion
             Log(LogLevel.Information, "Initializing Direct2D resources");
             factory2D = Collect(new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.MultiThreaded));
             wicImgFactory = Collect(new global::SharpDX.WIC.ImagingFactory());
@@ -284,9 +280,9 @@ namespace HelixToolkit.UWP
                 device2D = Collect(new global::SharpDX.Direct2D1.Device(factory2D, dxgiDevice2));
                 deviceContext2D = Collect(new global::SharpDX.Direct2D1.DeviceContext(device2D, global::SharpDX.Direct2D1.DeviceContextOptions.EnableMultithreadedOptimizations));
             }
-
             Initialized = true;
         }
+
         /// <summary>
         /// <see cref="IEffectsManager.AddTechnique(TechniqueDescription)"/>
         /// </summary>
@@ -315,11 +311,6 @@ namespace HelixToolkit.UWP
             }
             return techniqueDict.Remove(name);
         }
-        /// <summary>
-        /// Loads the technique descriptions.
-        /// </summary>
-        /// <returns></returns>
-        protected abstract IList<TechniqueDescription> LoadTechniqueDescriptions();
 
         /// <summary>
         /// 
@@ -394,11 +385,7 @@ namespace HelixToolkit.UWP
         /// <exception cref="Exception">Manager has not been initialized.</exception>
         /// <exception cref="ArgumentException"></exception>
         public IRenderTechnique GetTechnique(string name)
-        {
-            if (!Initialized)
-            {
-                throw new Exception("Manager has not been initialized.");
-            }
+        {            
             Lazy<IRenderTechnique> t;
             techniqueDict.TryGetValue(name, out t);
             if (t == null)
@@ -424,14 +411,15 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// <see cref="DisposeObject.Dispose(bool)"/>
+        /// <see cref="DisposeObject.OnDispose(bool)"/>
         /// </summary>
         /// <param name="disposeManagedResources"></param>
-        protected override void Dispose(bool disposeManagedResources)
+        [SuppressMessage("Microsoft.Usage", "CA2213", Justification = "False positive.")]
+        protected override void OnDispose(bool disposeManagedResources)
         {
-            OnDisposeResources?.Invoke(this, true);
+            OnDisposeResources?.Invoke(this, EventArgs.Empty);
             techniqueDict.Clear();
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
             Initialized = false;
             Disposer.RemoveAndDispose(ref device);
 #if DEBUGMEMORY
@@ -446,7 +434,7 @@ namespace HelixToolkit.UWP
         public void OnDeviceError()
         {
             techniqueDict.Clear();
-            OnDisposeResources?.Invoke(this, true);
+            OnDisposeResources?.Invoke(this, EventArgs.Empty);
             this.DisposeAndClear();
             Disposer.RemoveAndDispose(ref device);
             Initialized = false;

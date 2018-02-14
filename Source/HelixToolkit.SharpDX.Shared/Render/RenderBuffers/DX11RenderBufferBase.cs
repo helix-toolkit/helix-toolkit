@@ -24,11 +24,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Occurs when [on new buffer created].
         /// </summary>
-        public event EventHandler<Texture2D> OnNewBufferCreated;
+        public event EventHandler<Texture2DArgs> OnNewBufferCreated;
         /// <summary>
         /// Occurs when [on device lost].
         /// </summary>
-        public event EventHandler<bool> OnDeviceLost;
+        public event EventHandler<EventArgs> OnDeviceLost;
         /// <summary>
         /// The color buffer
         /// </summary>
@@ -187,7 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             DisposeBuffers();
             var texture = OnCreateRenderTargetAndDepthBuffers(width, height, UseDepthStencilBuffer);
             Initialized = true;
-            OnNewBufferCreated?.Invoke(this, texture);
+            OnNewBufferCreated?.Invoke(this, new Texture2DArgs(texture));
             return texture;
         }
         /// <summary>
@@ -315,12 +315,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             OnNewBufferCreated = null;
             OnDeviceLost = null;
             Initialized = false;
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
 
         #region ERROR HANDLING        
@@ -329,7 +329,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected void RaiseOnDeviceLost()
         {
-            OnDeviceLost?.Invoke(this, true);
+            OnDeviceLost?.Invoke(this, EventArgs.Empty);
         }
         #endregion
     }

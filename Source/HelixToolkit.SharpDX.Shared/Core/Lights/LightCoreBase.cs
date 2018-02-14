@@ -96,7 +96,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
-        public event EventHandler<bool> OnInvalidateRenderer;
+        public event EventHandler<EventArgs> OnInvalidateRenderer;
         /// <summary>
         /// Renders the specified context.
         /// </summary>
@@ -143,7 +143,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         protected void InvalidateRenderer()
         {
-            OnInvalidateRenderer?.Invoke(this, true);
+            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
         }
         /// <summary>
         /// Attaches the specified technique.

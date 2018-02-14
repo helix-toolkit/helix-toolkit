@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register(
                 "CreateLeftHandSystem", typeof(bool), typeof(ProjectionCamera), new PropertyMetadata(false, (d,e)=>
                 {
-                    ((d as Camera).cameraInternal as ProjectionCameraCore).CreateLeftHandSystem = (bool)e.NewValue;
+                    ((d as Camera).CameraInternal as ProjectionCameraCore).CreateLeftHandSystem = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register(
                 "FarPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(1e3, (d, e) =>
                 {
-                    ((d as Camera).cameraInternal as ProjectionCameraCore).FarPlaneDistance = (float)(double)e.NewValue;
+                    ((d as Camera).CameraInternal as ProjectionCameraCore).FarPlaneDistance = (float)(double)e.NewValue;
                 }));
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty LookDirectionProperty = DependencyProperty.Register(
             "LookDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(0, 0, -5), (d, e) =>
             {
-                ((d as Camera).cameraInternal as ProjectionCameraCore).LookDirection = ((Vector3D)e.NewValue).ToVector3();
+                ((d as Camera).CameraInternal as ProjectionCameraCore).LookDirection = ((Vector3D)e.NewValue).ToVector3();
             }));
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register(
                 "NearPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(1e-1, (d, e) =>
                 {
-                    ((d as Camera).cameraInternal as ProjectionCameraCore).NearPlaneDistance = (float)(double)e.NewValue;
+                    ((d as Camera).CameraInternal as ProjectionCameraCore).NearPlaneDistance = (float)(double)e.NewValue;
                 }));
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX
             typeof(ProjectionCamera),
             new PropertyMetadata(new Point3D(0, 0, +5), (d, e) =>
             {
-                ((d as Camera).cameraInternal as ProjectionCameraCore).Position = ((Point3D)e.NewValue).ToVector3();
+                ((d as Camera).CameraInternal as ProjectionCameraCore).Position = ((Point3D)e.NewValue).ToVector3();
             }));
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
             "UpDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(0, 1, 0), (d, e) =>
             {
-                ((d as Camera).cameraInternal as ProjectionCameraCore).UpDirection = ((Vector3D)e.NewValue).ToVector3();
+                ((d as Camera).CameraInternal as ProjectionCameraCore).UpDirection = ((Vector3D)e.NewValue).ToVector3();
             }));
 
         /// <summary>

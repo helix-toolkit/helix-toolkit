@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private void OctreeLineGeometryModel3D_OnHit(object sender, OnHitEventArgs args)
+        private void OctreeLineGeometryModel3D_OnHit(object sender, EventArgs args)
         {
             var node = sender as IOctree;
             if (node.HitPathBoundingBoxes.Count > 0 && Visibility == Visibility.Visible && IsRendering)

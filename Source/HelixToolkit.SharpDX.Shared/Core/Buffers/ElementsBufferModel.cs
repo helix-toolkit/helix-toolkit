@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class ElementsBufferModel<T> : DisposeObject, IElementsBufferModel<T> where T : struct
     {
-        public event EventHandler<bool> OnElementChanged;
+        public event EventHandler<EventArgs> OnElementChanged;
         public Guid GUID { get; } = Guid.NewGuid();
         public bool Initialized { private set; get; }
         public bool HasElements { private set; get; } = false;
@@ -40,7 +40,7 @@ namespace HelixToolkit.UWP.Core
                     elements = value;
                     instanceChanged = true;
                     HasElements = elements != null && elements.Any();
-                    OnElementChanged?.Invoke(this, true);
+                    OnElementChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
             get { return elements; }
@@ -73,10 +73,10 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             Initialized = false;
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
         /// <summary>
         /// Disposes the internal resources. Object is reusable.

@@ -140,7 +140,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
-        event EventHandler<bool> OnInvalidateRenderer;
+        event EventHandler<EventArgs> OnInvalidateRenderer;
         /// <summary>
         /// 
         /// </summary>

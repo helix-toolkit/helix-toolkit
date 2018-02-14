@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Shaders
     /// <summary>
     /// 
     /// </summary>
-    public interface IShader : IDisposable
+    public interface IShader
     {
         /// <summary>
         /// Gets the name.

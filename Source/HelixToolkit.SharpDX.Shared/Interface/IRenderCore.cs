@@ -19,12 +19,12 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderCore : IGUID, IThrowingShadow, IDisposable
+    public interface IRenderCore : IGUID, IThrowingShadow
     {
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
-        event EventHandler<bool> OnInvalidateRenderer;
+        event EventHandler<EventArgs> OnInvalidateRenderer;
         /// <summary>
         /// Gets a value indicating whether this instance is empty.
         /// </summary>

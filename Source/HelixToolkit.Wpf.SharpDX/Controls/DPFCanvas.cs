@@ -105,9 +105,9 @@ namespace HelixToolkit.Wpf.SharpDX
             (RenderHost as DX11ImageSourceRenderHost).OnImageSourceChanged += DPFCanvas_OnImageSourceChanged;
         }
 
-        private void DPFCanvas_OnImageSourceChanged(object sender, DX11ImageSource e)
+        private void DPFCanvas_OnImageSourceChanged(object sender, DX11ImageSourceArgs e)
         {
-            this.Source = e;
+            this.Source = e.Source;
         }
 
         /// <summary>
@@ -178,12 +178,12 @@ namespace HelixToolkit.Wpf.SharpDX
             return true;
         }
 
-        private void RenderHost_StopRenderLoop(object sender, bool e)
+        private void RenderHost_StopRenderLoop(object sender, EventArgs e)
         {
             CompositionTargetEx.Rendering -= CompositionTargetEx_Rendering;
         }
 
-        private void RenderHost_StartRenderLoop(object sender, bool e)
+        private void RenderHost_StartRenderLoop(object sender, EventArgs e)
         {
             CompositionTargetEx.Rendering -= CompositionTargetEx_Rendering;
             CompositionTargetEx.Rendering += CompositionTargetEx_Rendering;

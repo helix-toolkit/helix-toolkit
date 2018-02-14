@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     /// <summary>
     /// 
     /// </summary>
-    public interface ID2DTargetProxy : IDisposable
+    public interface ID2DTargetProxy
     {
         /// <summary>
         /// 

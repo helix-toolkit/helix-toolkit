@@ -22,13 +22,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         protected override IDX11RenderBufferProxy CreateRenderBuffer()
         {
-            Log(LogLevel.Information, "DX11SwapChainRenderBufferProxy");
+            Logger.Log(LogLevel.Information, "DX11SwapChainRenderBufferProxy", nameof(ScreenCloneRenderHost));
             return new DX11SwapChainRenderBufferProxy(surface, EffectsManager, false);
-        }
-
-        private void Log<Type>(LogLevel level, Type msg, [CallerMemberName]string caller = "", [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            Logger.Log(level, msg, nameof(ScreenCloneRenderHost), caller, sourceLineNumber);
         }
     }
 }

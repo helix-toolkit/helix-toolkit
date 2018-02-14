@@ -156,7 +156,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 DefaultShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.Default];// technique[DefaultPassNames.Default];
                 textureBindSlot = DefaultShaderPass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 samplerBindSlot = DefaultShaderPass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
-                textureSampler = Collect(new SamplerProxy(technique.EffectsManager.StateManager, DefaultSamplers.LinearSamplerWrapAni2));
+                textureSampler = Collect(new SamplerProxy(technique.EffectsManager.StateManager));
+                textureSampler.Description = DefaultSamplers.LinearSamplerWrapAni2;
                 return Initialize(technique.EffectsManager);
             }
             else
@@ -427,7 +428,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                                         }
                                         else
                                         {
-                                            throw ex;
+                                            throw new SharpDXException(ex.ResultCode);
                                         }
                                     }
                                 }
@@ -534,14 +535,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 }
             }
 
-            protected override void Dispose(bool disposeManagedResources)
+            protected override void OnDispose(bool disposeManagedResources)
             {
                 while (currentDuplicationTexture.Count > 0)
                 {
                     currentDuplicationTexture.Pop().Dispose();
                 }
                 duplicationDict.Clear();
-                base.Dispose(disposeManagedResources);
+                base.OnDispose(disposeManagedResources);
             }
 
             public bool TryGetInfo(int output, out DuplicationInfo info)

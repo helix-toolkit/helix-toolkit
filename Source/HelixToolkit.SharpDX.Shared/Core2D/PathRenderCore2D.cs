@@ -5,6 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 //#define DEBUGBOUNDS
 using SharpDX;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using D2D = global::SharpDX.Direct2D1;
 
 #if NETFX_CORE
@@ -13,12 +14,27 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class PathRenderCore2D : ShapeRenderCore2DBase
-    {     
+    {
+        /// <summary>
+        /// The is geometry changed
+        /// </summary>
         protected bool isGeometryChanged = true;
+        /// <summary>
+        /// The geometry
+        /// </summary>
         protected D2D.PathGeometry1 geometry;
 
         private IList<Figure> figures = new List<Figure>();
+        /// <summary>
+        /// Gets or sets the figures.
+        /// </summary>
+        /// <value>
+        /// The figures.
+        /// </value>
         public IList<Figure> Figures
         {
             set
@@ -35,6 +51,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private D2D.FillMode fillMode = D2D.FillMode.Alternate;
+        /// <summary>
+        /// Gets or sets the fill mode.
+        /// </summary>
+        /// <value>
+        /// The fill mode.
+        /// </value>
         public D2D.FillMode FillMode
         {
             set
@@ -46,18 +68,26 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
             get { return fillMode; }
         }
-
+        /// <summary>
+        /// Called when [attach].
+        /// </summary>
+        /// <param name="host">The host.</param>
+        /// <returns></returns>
         protected override bool OnAttach(IRenderHost host)
         {
             isGeometryChanged = true;
             return base.OnAttach(host);
         }
 
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        [SuppressMessage("Microsoft.Usage", "CA2202: Do not dispose objects multiple times", Justification = "False positive.")]
         protected override void OnRender(IRenderContext2D context)
         {
             if (isGeometryChanged)
-            {
-                
+            {               
                 RemoveAndDispose(ref geometry);
                 if(Figures == null || Figures.Count == 0)
                 {

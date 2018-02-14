@@ -208,7 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         }
 
-        private void OnTransformChanged(object sender, Matrix e)
+        private void OnTransformChanged(object sender, TransformArgs e)
         {
             BoundsWithTransform = Bounds.Transform(e);
             BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(e);
@@ -278,14 +278,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             base.DisposeAndClear();
         }
 
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             elementCore.OnTransformChanged -= OnTransformChanged;
             OnBoundChanged = null;
             OnTransformBoundChanged = null;
             OnBoundSphereChanged = null;
             OnTransformBoundSphereChanged = null;
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
     }
 }

@@ -22,11 +22,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Occurs when [on new buffer created].
         /// </summary>
-        event EventHandler<Texture2D> OnNewBufferCreated;
+        event EventHandler<Texture2DArgs> OnNewBufferCreated;
         /// <summary>
         /// Occurs when [on device lost].
         /// </summary>
-        event EventHandler<bool> OnDeviceLost;
+        event EventHandler<EventArgs> OnDeviceLost;
         /// <summary>
         /// Gets a value indicating whether this <see cref="IDX11RenderBufferProxy"/> is initialized.
         /// </summary>

@@ -180,6 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
             screenSpaceCore.RelativeScreenLocationX = (float)this.RelativeScreenLocationX;
             screenSpaceCore.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
             screenSpaceCore.SizeScale = (float)this.SizeScale;
+            UpdateModel(UpDirection.ToVector3());
             return base.OnAttach(host);
         }
 
@@ -217,9 +218,9 @@ namespace HelixToolkit.Wpf.SharpDX
             return new ScreenSpacePositionMover();
         }
 
-        private void Mover_OnMoveClicked(object sender, ScreenSpaceMoveDirection e)
+        private void Mover_OnMoveClicked(object sender, ScreenSpaceMoveDirArgs e)
         {
-            switch (e)
+            switch (e.Direction)
             {
                 case ScreenSpaceMoveDirection.LeftTop:
                     this.RelativeScreenLocationX = -Math.Abs(RelativeScreenLocationX);
@@ -265,6 +266,15 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     {
         LeftTop, LeftBottom, RightTop, RightBottom
     };
+
+    public sealed class ScreenSpaceMoveDirArgs : EventArgs
+    {
+        public readonly ScreenSpaceMoveDirection Direction;
+        public ScreenSpaceMoveDirArgs(ScreenSpaceMoveDirection direction)
+        {
+            Direction = direction;
+        }
+    }
     /// <summary>
     /// 
     /// </summary>
@@ -295,7 +305,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// <summary>
         /// Occurs when [on move clicked].
         /// </summary>
-        public event EventHandler<ScreenSpaceMoveDirection> OnMoveClicked;
+        public event EventHandler<ScreenSpaceMoveDirArgs> OnMoveClicked;
 
         protected bool enableMover { private set; get; } = true;
 
@@ -310,7 +320,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// <param name="direction">The direction.</param>
         protected void RaiseOnMoveClick(ScreenSpaceMoveDirection direction)
         {
-            OnMoveClicked?.Invoke(this, direction);
+            OnMoveClicked?.Invoke(this, new ScreenSpaceMoveDirArgs(direction));
         }
     }
 

@@ -16,12 +16,12 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderCore2D : IDisposable
+    public interface IRenderCore2D
     {        
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
-        event EventHandler<bool> OnInvalidateRenderer;
+        event EventHandler<EventArgs> OnInvalidateRenderer;
         /// <summary>
         /// Gets or sets the bound.
         /// </summary>

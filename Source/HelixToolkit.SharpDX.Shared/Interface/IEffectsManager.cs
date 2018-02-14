@@ -109,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when [on dispose resources].
         /// </summary>
-        event EventHandler<bool> OnDisposeResources;
+        event EventHandler<EventArgs> OnDisposeResources;
     }
     /// <summary>
     /// 

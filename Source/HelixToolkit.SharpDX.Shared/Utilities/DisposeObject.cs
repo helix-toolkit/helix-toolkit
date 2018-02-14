@@ -6,6 +6,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -22,21 +23,23 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Occurs when this instance is starting to be disposed.
         /// </summary>
-        public event EventHandler<bool> Disposing;
+        public event EventHandler<BoolArgs> Disposing;
 
         /// <summary>
         /// Occurs when this instance is fully disposed.
         /// </summary>
-        public event EventHandler<bool> Disposed;
+        public event EventHandler<BoolArgs> Disposed;
+
 
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
         /// <see cref="DisposeBase"/> is reclaimed by garbage collection.
         /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
         ~DisposeBase()
         {
             // Finalizer calls Dispose(false)
-            CheckAndDispose(false);
+            Dispose(false);
         }
 
         /// <summary>
@@ -50,27 +53,27 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public virtual void Dispose()
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
+        public void Dispose()
         {
-            CheckAndDispose(true);
+            Dispose(true);
         }
-
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        private void CheckAndDispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             // TODO Should we throw an exception if this method is called more than once?
             if (!IsDisposed)
             {
-                Disposing?.Invoke(this, disposing);
+                Disposing?.Invoke(this, disposing ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
 
-                Dispose(disposing);
+                OnDispose(disposing);
                 GC.SuppressFinalize(this);
 
                 IsDisposed = true;
 
-                Disposed?.Invoke(this, disposing);
+                Disposed?.Invoke(this, disposing ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
                 Disposing = null;
                 Disposed = null;
             }
@@ -80,7 +83,7 @@ namespace HelixToolkit.UWP
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected abstract void Dispose(bool disposing);
+        protected abstract void OnDispose(bool disposing);
     }
 
 
@@ -104,7 +107,7 @@ namespace HelixToolkit.UWP
         /// Disposes all object collected by this class and clear the list. The collector can still be used for collecting.
         /// </summary>
         /// <remarks>
-        /// To completely dispose this instance and avoid further dispose, use <see cref="Dispose"/> method instead.
+        /// To completely dispose this instance and avoid further dispose, use <see cref="OnDispose"/> method instead.
         /// </remarks>
         public virtual void DisposeAndClear()
         {
@@ -127,7 +130,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="disposeManagedResources">If true, managed resources should be
         /// disposed of in addition to unmanaged resources.</param>
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             DisposeAndClear();
         }

@@ -275,7 +275,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="color"></param>
         /// <param name="label"></param>
         /// <param name="labelColor"></param>
-        protected virtual void UpdateAxisColor(Geometry3D mesh, int which, Color4 color, string label, Color4 labelColor)
+        protected void UpdateAxisColor(Geometry3D mesh, int which, Color4 color, string label, Color4 labelColor)
         {
             switch (which)
             {

@@ -241,13 +241,22 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((UIManipulator3D)d).OnModelChanged();
+            if (((UIManipulator3D)d).IsAttached)
+            {
+                ((UIManipulator3D)d).OnModelChanged();
+            }
         }
 
         /// <summary>
         /// 
         /// </summary>
         protected abstract void OnModelChanged();
+
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            OnModelChanged();
+        }
 
         /// <summary>
         /// 

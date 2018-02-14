@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP.Model
         /// <summary>
         /// <see cref="IEffectMaterialVariables.OnInvalidateRenderer"/> 
         /// </summary>
-        public event EventHandler<bool> OnInvalidateRenderer;
+        public event EventHandler<EventArgs> OnInvalidateRenderer;
 
         private readonly ITextureResourceManager textureManager;
 
@@ -248,7 +248,7 @@ namespace HelixToolkit.UWP.Model
             SamplerResources[ShadowIdx] = Collect(new SamplerProxy(manager.StateManager));
             CreateTextureViews();
             CreateSamplers();
-            this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, true); };
+            this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, EventArgs.Empty); };
         }
 
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -290,7 +290,7 @@ namespace HelixToolkit.UWP.Model
             {
                 SamplerResources[NormalIdx].Description = (sender as IPhongMaterial).NormalMapSampler;
             }
-            OnInvalidateRenderer?.Invoke(this, true);
+            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
         }
 
         private void CreateTextureView(System.IO.Stream stream, int index)
@@ -453,7 +453,7 @@ namespace HelixToolkit.UWP.Model
         /// 
         /// </summary>
         /// <param name="disposeManagedResources"></param>
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             this.Material = null;
             for(int i=0; i< NUMTEXTURES; ++i)
@@ -465,7 +465,7 @@ namespace HelixToolkit.UWP.Model
             TextureBindingMap = null;
             SamplerBindingMap = null;
             OnInvalidateRenderer = null;
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        event EventHandler<IOctree> OnOctreeCreated;
+        event EventHandler<OctreeArgs> OnOctreeCreated;
         /// <summary>
         /// Gets the octree.
         /// </summary>

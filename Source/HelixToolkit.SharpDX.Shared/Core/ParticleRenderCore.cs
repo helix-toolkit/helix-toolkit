@@ -597,7 +597,8 @@ namespace HelixToolkit.UWP.Core
                 {
                     OnInitialParticleChanged(ParticleCount);
                 }
-                textureSampler = Collect(new SamplerProxy(technique.EffectsManager.StateManager, SamplerDescription));
+                textureSampler = Collect(new SamplerProxy(technique.EffectsManager.StateManager));
+                textureSampler.Description = SamplerDescription;
                 return true;
             }
             else

@@ -6,6 +6,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -65,7 +66,10 @@ namespace HelixToolkit.UWP.Core
                     var id = geometry.GUID;
                     container.Disposed += (s, e) => 
                     {
-                        bufferDictionary.Remove(typeof(T), id);
+                        lock (bufferDictionary)
+                        {
+                            bufferDictionary.Remove(typeof(T), id);
+                        }
                     };
                     container.Buffer.Geometry = geometry;
                     container.Attach(modelGuid);
@@ -111,17 +115,20 @@ namespace HelixToolkit.UWP.Core
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
             if (disposeManagedResources)
             {
-                foreach (var buffer in bufferDictionary.Values)
+                lock (bufferDictionary)
                 {
-                    buffer.Dispose();
+                    foreach (var buffer in bufferDictionary.Values.ToArray())
+                    {
+                        buffer.Dispose();
+                    }
+                    bufferDictionary.Clear();
                 }
-                bufferDictionary.Clear();
             }
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
 
         /// <summary>

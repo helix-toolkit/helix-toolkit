@@ -6,9 +6,18 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
     using Render;
     using System.Diagnostics;
 
+    public sealed class DX11ImageSourceArgs : EventArgs
+    {
+        public readonly DX11ImageSource Source;
+        public DX11ImageSourceArgs(DX11ImageSource source)
+        {
+            Source = source;
+        }
+    }
+
     public sealed class DX11ImageSourceRenderHost : DefaultRenderHost
     {
-        public event EventHandler<DX11ImageSource> OnImageSourceChanged;
+        public event EventHandler<DX11ImageSourceArgs> OnImageSourceChanged;
 
         private DX11ImageSource surfaceD3D;
 
@@ -39,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             base.DisposeBuffers();
         }
 
-        private void DX11ImageSourceRenderer_OnNewBufferCreated(object sender, Texture2D e)
+        private void DX11ImageSourceRenderer_OnNewBufferCreated(object sender, Texture2DArgs e)
         {
             if (surfaceD3D == null)
             {
@@ -47,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
                 surfaceD3D = Collect(new DX11ImageSource(EffectsManager.AdapterIndex));
             }
             surfaceD3D.SetRenderTargetDX11(e);
-            OnImageSourceChanged(this, surfaceD3D);
+            OnImageSourceChanged(this, new DX11ImageSourceArgs(surfaceD3D));
         }
     }
 }

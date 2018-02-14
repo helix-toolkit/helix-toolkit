@@ -242,7 +242,7 @@ namespace HelixToolkit.UWP.Core
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception(ex.Message);
             }
             finally
             {

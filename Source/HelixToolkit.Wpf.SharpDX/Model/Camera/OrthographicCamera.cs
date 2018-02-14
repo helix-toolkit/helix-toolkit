@@ -23,7 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
             "Width", typeof(double), typeof(OrthographicCamera), new PropertyMetadata(10.0, (d,e)=> 
             {
-                ((d as Camera).cameraInternal as OrthographicCameraCore).Width = (float)(double)e.NewValue;
+                ((d as Camera).CameraInternal as OrthographicCameraCore).Width = (float)(double)e.NewValue;
             }));
 
         /// <summary>

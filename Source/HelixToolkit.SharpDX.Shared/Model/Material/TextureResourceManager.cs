@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
@@ -47,7 +48,13 @@ namespace HelixToolkit.UWP.Model
                 {
                     proxy = new SharedTextureResourceProxy(device, textureStream);
                     proxy.Attach(modelGuid);
-                    proxy.Disposing += (s, e) => { resourceDictionary.Remove(textureStream); };
+                    proxy.Disposed += (s, e) =>
+                    {
+                        lock (resourceDictionary)
+                        {
+                            resourceDictionary.Remove(textureStream);
+                        }
+                    };
                     resourceDictionary.Add(textureStream, proxy);
                 }
             }
@@ -74,10 +81,20 @@ namespace HelixToolkit.UWP.Model
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
-            resourceDictionary.Clear();
-            base.Dispose(disposeManagedResources);
+            if (disposeManagedResources)
+            {
+                lock (resourceDictionary)
+                {
+                    foreach(var resource in resourceDictionary.Values.ToArray())
+                    {
+                        resource.Dispose();
+                    }
+                    resourceDictionary.Clear();
+                }
+            }
+            base.OnDispose(disposeManagedResources);
         }
     }
 

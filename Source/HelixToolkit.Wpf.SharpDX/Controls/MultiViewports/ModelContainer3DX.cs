@@ -73,15 +73,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when [on new render target texture].
         /// </summary>
-        public event EventHandler<Texture2D> OnNewRenderTargetTexture;
+        public event EventHandler<Texture2DArgs> OnNewRenderTargetTexture;
         /// <summary>
         /// Occurs when [start render loop].
         /// </summary>
-        public event EventHandler<bool> StartRenderLoop;
+        public event EventHandler<EventArgs> StartRenderLoop;
         /// <summary>
         /// Occurs when [stop render loop].
         /// </summary>
-        public event EventHandler<bool> StopRenderLoop;
+        public event EventHandler<EventArgs> StopRenderLoop;
 #pragma warning restore 0067        
         /// <summary>
         /// Gets the unique identifier.
@@ -474,15 +474,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             
         }
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Detach();
-            CurrentRenderHost = null;
-            viewports.Clear();
-        }
+
         /// <summary>
         /// Clears the render target.
         /// </summary>
@@ -496,5 +488,43 @@ namespace HelixToolkit.Wpf.SharpDX
                 CurrentRenderHost.ClearRenderTarget(context, clearBackBuffer, clearDepthStencilBuffer);
             }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Detach();
+                    // TODO: dispose managed state (managed objects).
+                    viewports.Clear();
+                    currentRenderHost = null;
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~ModelContainer3DX() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

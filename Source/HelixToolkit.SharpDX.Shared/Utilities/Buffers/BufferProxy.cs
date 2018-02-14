@@ -14,7 +14,7 @@ namespace HelixToolkit.UWP.Utilities
     /// <summary>
     /// 
     /// </summary>
-    public interface IBufferProxy : IDisposable
+    public interface IBufferProxy
     {
         /// <summary>
         /// Raw Buffer

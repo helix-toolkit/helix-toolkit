@@ -50,7 +50,7 @@ namespace HelixToolkit.UWP.Utilities
             }
         }
 
-        protected override void Dispose(bool disposeManagedResources)
+        protected override void OnDispose(bool disposeManagedResources)
         {
 #if DEBUG
             if (hashSet.Count > 0)
@@ -58,7 +58,7 @@ namespace HelixToolkit.UWP.Utilities
                 Debug.WriteLine($"ResourceSharedObject, called dispose but still attached to some model. Model Counts:{hashSet.Count}");
             }
 #endif
-            base.Dispose(disposeManagedResources);
+            base.OnDispose(disposeManagedResources);
         }
     }
 }
