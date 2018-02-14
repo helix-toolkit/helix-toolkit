@@ -10,78 +10,168 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
 namespace HelixToolkit.UWP.ShaderManager
 #endif
 {
-    ///Not Used
-    ///
-    public class BlendStatePool : ComPoolBase<BlendStateDescription, BlendState, BlendStateDescription>
-    {
-        public BlendStatePool(Device device) : base(device) { }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class BlendStatePool : ComPoolBase<BlendStateDescription, BlendState, BlendStateDescription>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BlendStatePool"/> class.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        public BlendStatePool(Device device) : base(device) { }
+        /// <summary>
+        /// Creates the specified device.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
         protected override BlendState Create(Device device, ref BlendStateDescription description)
         {
             return new BlendState(device, description);
         }
-
+        /// <summary>
+        /// Gets the key.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
         protected override BlendStateDescription GetKey(ref BlendStateDescription description)
         {
             return description;
         }
     }
-
-    public class DepthStencilStatePool : ComPoolBase<DepthStencilStateDescription, DepthStencilState, DepthStencilStateDescription>
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class DepthStencilStatePool : ComPoolBase<DepthStencilStateDescription, DepthStencilState, DepthStencilStateDescription>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DepthStencilStatePool"/> class.
+        /// </summary>
+        /// <param name="device">The device.</param>
         public DepthStencilStatePool(Device device) : base(device) { }
-
+        /// <summary>
+        /// Creates the specified device.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
         protected override DepthStencilState Create(Device device, ref DepthStencilStateDescription description)
         {
             return new DepthStencilState(device, description);
         }
-
+        /// <summary>
+        /// Gets the key.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
         protected override DepthStencilStateDescription GetKey(ref DepthStencilStateDescription description)
         {
             return description;
         }
     }
-
-    public class RasterStatePool : ComPoolBase<RasterizerStateDescription, RasterizerState, RasterizerStateDescription>
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class RasterStatePool : ComPoolBase<RasterizerStateDescription, RasterizerState, RasterizerStateDescription>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RasterStatePool"/> class.
+        /// </summary>
+        /// <param name="device">The device.</param>
         public RasterStatePool(Device device) : base(device) { }
-
+        /// <summary>
+        /// Creates the specified device.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
         protected override RasterizerState Create(Device device, ref RasterizerStateDescription description)
         {
             return new RasterizerState(device, description);
         }
-
+        /// <summary>
+        /// Gets the key.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
         protected override RasterizerStateDescription GetKey(ref RasterizerStateDescription description)
         {
             return description;
         }
     }
-
-    public class SamplerStatePool : ComPoolBase<SamplerStateDescription, SamplerState, SamplerStateDescription>
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class SamplerStatePool : ComPoolBase<SamplerStateDescription, SamplerState, SamplerStateDescription>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SamplerStatePool"/> class.
+        /// </summary>
+        /// <param name="device">The device.</param>
         public SamplerStatePool(Device device) : base(device)
         {
         }
-
+        /// <summary>
+        /// Creates the specified device.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
         protected override SamplerState Create(Device device, ref SamplerStateDescription description)
         {
             return new SamplerState(device, description);
         }
-
+        /// <summary>
+        /// Gets the key.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
         protected override SamplerStateDescription GetKey(ref SamplerStateDescription description)
         {
             return description;
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class StatePoolManager : DisposeObject, IStatePoolManager
     {
+        /// <summary>
+        /// Gets or sets the blend state pool.
+        /// </summary>
+        /// <value>
+        /// The blend state pool.
+        /// </value>
         public BlendStatePool BlendStatePool { private set; get; }
+        /// <summary>
+        /// Gets or sets the raster state pool.
+        /// </summary>
+        /// <value>
+        /// The raster state pool.
+        /// </value>
         public RasterStatePool RasterStatePool { private set; get; }
+        /// <summary>
+        /// Gets or sets the depth stencil state pool.
+        /// </summary>
+        /// <value>
+        /// The depth stencil state pool.
+        /// </value>
         public DepthStencilStatePool DepthStencilStatePool { private set; get; }
 
+        /// <summary>
+        /// Gets or sets the sampler state pool.
+        /// </summary>
+        /// <value>
+        /// The sampler state pool.
+        /// </value>
         public SamplerStatePool SamplerStatePool { private set; get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StatePoolManager"/> class.
+        /// </summary>
+        /// <param name="device">The device.</param>
         public StatePoolManager(Device device)
         {
             BlendStatePool = Collect(new BlendStatePool(device));
@@ -90,21 +180,38 @@ namespace HelixToolkit.UWP.ShaderManager
             SamplerStatePool = Collect(new SamplerStatePool(device));
         }
 
+        /// <summary>
+        /// Registers the specified desc.
+        /// </summary>
+        /// <param name="desc">The desc.</param>
+        /// <returns></returns>
         public BlendState Register(BlendStateDescription desc)
         {
             return BlendStatePool.Register(desc);
         }
-
+        /// <summary>
+        /// Registers the specified desc.
+        /// </summary>
+        /// <param name="desc">The desc.</param>
+        /// <returns></returns>
         public RasterizerState Register(RasterizerStateDescription desc)
         {
             return RasterStatePool.Register(desc);
         }
-
+        /// <summary>
+        /// Registers the specified desc.
+        /// </summary>
+        /// <param name="desc">The desc.</param>
+        /// <returns></returns>
         public DepthStencilState Register(DepthStencilStateDescription desc)
         {
             return DepthStencilStatePool.Register(desc);
         }
-
+        /// <summary>
+        /// Registers the specified desc.
+        /// </summary>
+        /// <param name="desc">The desc.</param>
+        /// <returns></returns>
         public SamplerState Register(SamplerStateDescription desc)
         {
             return SamplerStatePool.Register(desc);
