@@ -6,6 +6,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -65,7 +66,10 @@ namespace HelixToolkit.UWP.Core
                     var id = geometry.GUID;
                     container.Disposed += (s, e) => 
                     {
-                        bufferDictionary.Remove(typeof(T), id);
+                        lock (bufferDictionary)
+                        {
+                            bufferDictionary.Remove(typeof(T), id);
+                        }
                     };
                     container.Buffer.Geometry = geometry;
                     container.Attach(modelGuid);
@@ -115,11 +119,14 @@ namespace HelixToolkit.UWP.Core
         {
             if (disposeManagedResources)
             {
-                foreach (var buffer in bufferDictionary.Values)
+                lock (bufferDictionary)
                 {
-                    buffer.Dispose();
+                    foreach (var buffer in bufferDictionary.Values.ToArray())
+                    {
+                        buffer.Dispose();
+                    }
+                    bufferDictionary.Clear();
                 }
-                bufferDictionary.Clear();
             }
             base.OnDispose(disposeManagedResources);
         }
