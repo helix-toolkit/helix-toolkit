@@ -454,7 +454,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected abstract RasterizerStateDescription CreateRasterState();
 
         /// <summary>
-        /// To override Attach routine, please override this.
+        /// This function initialize the Geometry Buffer and Instance Buffer
         /// </summary>
         /// <param name="host"></param>
         /// <returns>

@@ -201,36 +201,12 @@ namespace HelixToolkit.Wpf.SharpDX
             BindingOperations.SetBinding(this, TransformProperty, new Binding("TargetTransform") { Source = this, Mode = BindingMode.TwoWay, });
 
             this.Children.Clear();
-
-            if (this.CanTranslateX)
-            {
-                this.Children.Add(this.translateX);
-            }
-
-            if (this.CanTranslateY)
-            {
-                this.Children.Add(this.translateY);
-            }
-
-            if (this.CanTranslateZ)
-            {
-                this.Children.Add(this.translateZ);
-            }
-
-            if (this.CanRotateX)
-            {
-                this.Children.Add(this.rotateX);
-            }
-
-            if (this.CanRotateY)
-            {
-                this.Children.Add(this.rotateY);
-            }
-
-            if (this.CanRotateZ)
-            {
-                this.Children.Add(this.rotateZ);
-            }
+            this.Children.Add(this.translateX);
+            this.Children.Add(this.translateY);
+            this.Children.Add(this.translateZ);
+            this.Children.Add(this.rotateX);
+            this.Children.Add(this.rotateY);
+            this.Children.Add(this.rotateZ);
         }
 
         /// <summary>
@@ -279,17 +255,10 @@ namespace HelixToolkit.Wpf.SharpDX
             return hit;
         }
 
-        protected override bool OnAttach(IRenderHost host)
+        protected override void OnAttached()
         {
-            if (base.OnAttach(host))
-            {
-                OnChildrenChanged();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            base.OnAttached();
+            OnChildrenChanged();
         }
 
         /// <summary>
@@ -325,7 +294,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private static void ChildrenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((UICompositeManipulator3D)d).OnChildrenChanged();
+            if ((d as UICompositeManipulator3D).IsAttached)
+            {
+                ((UICompositeManipulator3D)d).OnChildrenChanged();
+            }
         }
     }
 }

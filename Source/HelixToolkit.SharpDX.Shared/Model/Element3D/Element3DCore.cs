@@ -287,6 +287,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             {
                 renderTechnique = RenderHost.EffectsManager[renderTechnique.Name];
                 IsAttached = OnAttach(host);
+                if (IsAttached)
+                {
+                    OnAttached();
+                }
             }
             InvalidateRender();
         }
@@ -301,6 +305,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             RenderCore.Attach(renderTechnique);
             return RenderCore == null ? false : RenderCore.IsAttached;
         }
+
+        /// <summary>
+        /// Called when [attached] and <see cref="IsAttached"/> = true.
+        /// </summary>
+        protected virtual void OnAttached() { }
         /// <summary>
         /// Detaches the element from the host. Override <see cref="OnDetach"/>
         /// </summary>
