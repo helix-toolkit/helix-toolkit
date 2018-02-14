@@ -57,7 +57,7 @@ namespace HelixToolkit.UWP
 
         private IShaderPoolManager shaderPoolManager;
         /// <summary>
-        /// <see cref="IDevice3DResources.ShaderManager"/>
+        /// <see cref="IEffectsManager.ShaderManager"/>
         /// </summary>
         public IShaderPoolManager ShaderManager { get { return shaderPoolManager; } }
 
