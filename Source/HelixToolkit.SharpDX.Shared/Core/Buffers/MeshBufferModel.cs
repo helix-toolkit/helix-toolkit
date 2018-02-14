@@ -66,9 +66,9 @@ namespace HelixToolkit.UWP.Core
         /// <returns>
         ///   <c>true</c> if [is vertex buffer changed] [the specified property name]; otherwise, <c>false</c>.
         /// </returns>
-        protected override bool IsVertexBufferChanged(string propertyName)
+        protected override bool IsVertexBufferChanged(string propertyName, int bufferIndex)
         {
-            return base.IsVertexBufferChanged(propertyName) || propertyName.Equals(nameof(MeshGeometry3D.Colors)) || propertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates));
+            return base.IsVertexBufferChanged(propertyName, bufferIndex) || propertyName.Equals(nameof(MeshGeometry3D.Colors)) || propertyName.Equals(nameof(MeshGeometry3D.TextureCoordinates));
         }
         /// <summary>
         /// Called when [create vertex buffer].
@@ -77,7 +77,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="buffer">The buffer.</param>
         /// <param name="geometry">The geometry.</param>
         /// <param name="deviceResources">The device resources.</param>
-        protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources)
+        protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
         {
             // -- set geometry if given
             if (geometry != null && geometry.Positions != null)

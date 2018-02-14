@@ -135,7 +135,8 @@ namespace HelixToolkit.UWP.Core
             if (CanRender(context))
             {
                 OnUpdatePerModelStruct(ref modelStruct, context);
-                OnAttachBuffers(deviceContext);
+                int vertStartSlot = 0;
+                OnAttachBuffers(deviceContext, ref vertStartSlot);
                 OnUploadPerModelConstantBuffers(deviceContext);
                 OnBindRasterState(deviceContext);
                 switch (context.IsShadowPass)
@@ -162,7 +163,8 @@ namespace HelixToolkit.UWP.Core
         /// Attach vertex buffer routine
         /// </summary>
         /// <param name="context"></param>
-        protected virtual void OnAttachBuffers(DeviceContext context)
+        /// <param name="vertStartSlot">Start slot for vertex buffer binding</param>
+        protected virtual void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
         {
             
         }

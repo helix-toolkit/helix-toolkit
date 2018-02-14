@@ -60,7 +60,7 @@ namespace HelixToolkit.UWP.Core
             instanceChanged = true;
         }
 
-        public virtual void AttachBuffer(DeviceContext context, int vertexBufferSlot)
+        public virtual void AttachBuffer(DeviceContext context, ref int vertexBufferStartSlot)
         {
             if (HasElements)
             {
@@ -69,7 +69,7 @@ namespace HelixToolkit.UWP.Core
                     elementBuffer.UploadDataToBuffer(context, elements, elements.Count);
                     instanceChanged = false;
                 }
-                context.InputAssembler.SetVertexBuffers(vertexBufferSlot, new VertexBufferBinding(Buffer.Buffer, Buffer.StructureSize, Buffer.Offset));
+                context.InputAssembler.SetVertexBuffers(vertexBufferStartSlot++, new VertexBufferBinding(Buffer.Buffer, Buffer.StructureSize, Buffer.Offset));
             }
         }
 

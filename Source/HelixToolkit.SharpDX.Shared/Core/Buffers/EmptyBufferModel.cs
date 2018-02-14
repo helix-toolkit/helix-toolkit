@@ -11,6 +11,7 @@ namespace HelixToolkit.UWP.Core
     using global::SharpDX.Direct3D;
     using global::SharpDX.Direct3D11;
     using System;
+    using System.Collections.Generic;
     using Utilities;
     /// <summary>
     /// 
@@ -71,20 +72,17 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The vertex buffer.
         /// </value>
-        public IElementsBufferProxy VertexBuffer
+        public IElementsBufferProxy[] VertexBuffer
         {
-            get
-            {
-                return null;
-            }
-        }
+            get;
+        } = new IElementsBufferProxy[0];
         /// <summary>
         /// Gets the size of the vertex structure.
         /// </summary>
         /// <value>
         /// The size of the vertex structure.
         /// </value>
-        public int VertexStructSize { get { return 0; } }
+        public IEnumerable<int> VertexStructSize { get { yield return 0; } }
 #pragma warning disable 0067
         /// <summary>
         /// Occurs when [invalidate renderer].
@@ -103,10 +101,10 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="vertexLayout">The vertex layout.</param>
-        /// <param name="vertexBufferSlot">The vertex buffer slot.</param>
+        /// <param name="vertexBufferStartSlot">The vertex buffer start slot. Returns next available bind slot</param>
         /// <param name="deviceResources"></param>
         /// <returns></returns>
-        public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot, IDeviceResources deviceResources)
+        public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {
             return true;
         }
