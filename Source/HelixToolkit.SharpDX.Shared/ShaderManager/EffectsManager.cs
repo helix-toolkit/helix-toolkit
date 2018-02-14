@@ -49,22 +49,22 @@ namespace HelixToolkit.UWP
         /// </summary>
         public IEnumerable<string> RenderTechniques { get { return techniqueDict.Keys; } }
 
+        private IConstantBufferPool constantBufferPool;
         /// <summary>
-        /// <see cref="IEffectsManager.ConstantBufferPool"/>
+        /// <see cref="IDevice3DResources.ConstantBufferPool"/>
         /// </summary>
         public IConstantBufferPool ConstantBufferPool { get { return constantBufferPool; } }
-        private IConstantBufferPool constantBufferPool;
 
         private IShaderPoolManager shaderPoolManager;
         /// <summary>
-        /// <see cref="IEffectsManager.ShaderManager"/>
+        /// <see cref="IDevice3DResources.ShaderManager"/>
         /// </summary>
         public IShaderPoolManager ShaderManager { get { return shaderPoolManager; } }
 
         private IStatePoolManager statePoolManager;
 
         /// <summary>
-        /// <see cref="IEffectsManager.StateManager"/> 
+        /// <see cref="IDevice3DResources.StateManager"/> 
         /// </summary>
         public IStatePoolManager StateManager { get { return statePoolManager; } }
 

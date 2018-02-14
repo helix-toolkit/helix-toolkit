@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.ShaderManager
 #endif
 {
     /// <summary>
-    /// Use to store resources for <see cref="ComObject"/>. Each register will increase the reference counter for ComObject by calling <see cref="ComObject.QueryInterface{T}"/>
+    /// Use to store resources for <see cref="ComObject"/>. Each register will increase the reference counter for ComObject by calling <see cref="ComObject.QueryInterface{T}()"/>
     /// </summary>
     /// <typeparam name="TKEY"></typeparam>
     /// <typeparam name="TVALUE"></typeparam>
@@ -38,7 +38,7 @@ namespace HelixToolkit.UWP.ShaderManager
             this.Device = device;
         }
         /// <summary>
-        /// Each register will increase the reference counter for ComObject by calling <see cref="ComObject.QueryInterface{T}"/>
+        /// Each register will increase the reference counter for ComObject by calling <see cref="ComObject.QueryInterface{T}()"/>
         /// Calling owner is responsible for dispose the obtained resource. Resource will be disposed automatically once reference counter = 0.
         /// </summary>
         /// <param name="description"></param>

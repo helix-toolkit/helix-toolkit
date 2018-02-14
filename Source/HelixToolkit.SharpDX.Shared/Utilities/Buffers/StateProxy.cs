@@ -9,6 +9,7 @@ namespace HelixToolkit.UWP.Utilities
 #endif
 {
     using ShaderManager;
+
     /// <summary>
     /// 
     /// </summary>
@@ -71,7 +72,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <returns></returns>
         protected abstract StateType CreateState(IStatePoolManager poolManager, ref StateTypeDescription description);
         /// <summary>
-        /// Performs an implicit conversion from <see cref="StateProxy{StateType, StateTypeDescription}"/> to <see cref="StateType"/>.
+        /// Performs an implicit conversion
         /// </summary>
         /// <param name="proxy">The proxy.</param>
         /// <returns>
@@ -82,7 +83,7 @@ namespace HelixToolkit.UWP.Utilities
             return proxy.State;
         }
         /// <summary>
-        /// Performs an implicit conversion from <see cref="StateProxy{StateType, StateTypeDescription}"/> to <see cref="StateTypeDescription"/>.
+        /// Performs an implicit conversion.
         /// </summary>
         /// <param name="proxy">The proxy.</param>
         /// <returns>

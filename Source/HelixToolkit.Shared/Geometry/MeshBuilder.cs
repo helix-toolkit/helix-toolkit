@@ -24,7 +24,6 @@ namespace HelixToolkit.Wpf
 #if SHARPDX
     using System.Linq;
     using global::SharpDX;
-    using SharpDX;
 #if NETFX_CORE
     using HelixToolkit.UWP;
     using HelixToolkit.Wpf;
