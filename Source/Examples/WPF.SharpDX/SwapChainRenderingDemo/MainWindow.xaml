@@ -92,8 +92,8 @@
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}" />
             <hx:MeshGeometryModel3D
-                x:Name="floor"
-                CullMode="Back"
+                x:Name="floor" WireframeColor="Red"
+                CullMode="Back" RenderWireframe="{Binding ElementName=carModel, Path=RenderWireframe}"
                 FillMode="{Binding FillMode}"
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
@@ -109,7 +109,7 @@
             <CheckBox
                 Margin="4"
                 Foreground="White"
-                IsChecked="{Binding ShowWireframe}">
+                IsChecked="{Binding ElementName=carModel, Path=RenderWireframe}">
                 Show Wireframe
             </CheckBox>
         </StackPanel>

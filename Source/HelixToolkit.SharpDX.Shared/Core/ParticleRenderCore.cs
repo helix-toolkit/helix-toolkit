@@ -799,7 +799,8 @@ namespace HelixToolkit.UWP.Core
             renderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, textureSampler);
             deviceContext.DeviceContext.InputAssembler.InputLayout = VertexLayout;
             deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
-            InstanceBuffer?.AttachBuffer(deviceContext, 0);
+            int firstSlot = 0;
+            InstanceBuffer?.AttachBuffer(deviceContext, ref firstSlot);
             deviceContext.DeviceContext.OutputMerger.SetBlendState(blendState, null, 0xFFFFFFFF);
             deviceContext.DeviceContext.DrawInstancedIndirect(particleCountGSIABuffer.Buffer, 0);
             InvalidateRenderer();//Since particle is running all the time. Invalidate once finished rendering

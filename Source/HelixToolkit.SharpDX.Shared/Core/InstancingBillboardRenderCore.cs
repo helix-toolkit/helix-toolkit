@@ -49,10 +49,10 @@ namespace HelixToolkit.UWP.Core
             model.HasInstanceParams = ParameterBuffer != null && ParameterBuffer.HasElements ? 1 : 0;
         }
 
-        protected override void OnAttachBuffers(DeviceContext context)
+        protected override void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
         {
-            base.OnAttachBuffers(context);
-            ParameterBuffer?.AttachBuffer(context, 2);
+            base.OnAttachBuffers(context, ref vertStartSlot);
+            ParameterBuffer?.AttachBuffer(context, ref vertStartSlot);
         }
     }
 }

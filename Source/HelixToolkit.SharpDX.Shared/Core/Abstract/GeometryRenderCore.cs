@@ -217,11 +217,11 @@ namespace HelixToolkit.UWP.Core
         /// Attach vertex buffer routine
         /// </summary>
         /// <param name="context"></param>
-        protected override void OnAttachBuffers(DeviceContext context)
+        /// <param name="vertStartSlot"></param>
+        protected override void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
         {
-            base.OnAttachBuffers(context);
-            GeometryBuffer.AttachBuffers(context, this.VertexLayout, 0, EffectTechnique.EffectsManager);
-            InstanceBuffer?.AttachBuffer(context, 1);           
+            GeometryBuffer.AttachBuffers(context, this.VertexLayout, ref vertStartSlot, EffectTechnique.EffectsManager);
+            InstanceBuffer?.AttachBuffer(context, ref vertStartSlot);           
         }
         /// <summary>
         /// 
@@ -251,16 +251,16 @@ namespace HelixToolkit.UWP.Core
                     context.DrawIndexedInstanced(GeometryBuffer.IndexBuffer.ElementCount, instanceModel.Buffer.ElementCount, GeometryBuffer.IndexBuffer.Offset, 0, instanceModel.Buffer.Offset);
                 }
             }
-            else if (GeometryBuffer.VertexBuffer != null)
+            else if (GeometryBuffer.VertexBuffer.Length > 0)
             {
                 if (instanceModel == null || !instanceModel.HasElements)
                 {
-                    context.Draw(GeometryBuffer.VertexBuffer.ElementCount, GeometryBuffer.VertexBuffer.Offset);
+                    context.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
                 }
                 else
                 {
-                    context.DrawInstanced(GeometryBuffer.VertexBuffer.ElementCount, instanceModel.Buffer.ElementCount,
-                        GeometryBuffer.VertexBuffer.Offset, instanceModel.Buffer.Offset);
+                    context.DrawInstanced(GeometryBuffer.VertexBuffer[0].ElementCount, instanceModel.Buffer.ElementCount,
+                        0, instanceModel.Buffer.Offset);
                 }
             }
         }

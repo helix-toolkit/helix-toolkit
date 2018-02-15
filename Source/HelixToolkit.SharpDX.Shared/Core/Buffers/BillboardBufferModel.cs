@@ -73,7 +73,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="buffer">The buffer.</param>
         /// <param name="geometry">The geometry.</param>
         /// <param name="deviceResources">The device resources.</param>
-        protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources)
+        /// <param name="bufferIndex"></param>
+        protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
         {
             textureView?.Detach(this.GUID);
             textureView = null;
@@ -111,15 +112,16 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="vertexLayout">The vertex layout.</param>
-        /// <param name="vertexBufferSlot">The vertex buffer slot.</param>
+        /// <param name="vertexBufferStartSlot">The vertex buffer start slot. Returns next available bind slot</param>
         /// <returns></returns>
-        protected override bool OnAttachBuffer(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot)
+        protected override bool OnAttachBuffer(DeviceContext context, InputLayout vertexLayout, ref int vertexBufferStartSlot)
         {
             context.InputAssembler.PrimitiveTopology = Topology;
             context.InputAssembler.InputLayout = vertexLayout;
-            if (VertexBuffer != null)
+            if (VertexBuffer.Length > 0)
             {
-                context.InputAssembler.SetVertexBuffers(vertexBufferSlot, new VertexBufferBinding(VertexBuffer.Buffer, VertexBuffer.StructureSize, VertexBuffer.Offset));
+                context.InputAssembler.SetVertexBuffers(vertexBufferStartSlot, VertexBuffer.Select(x=> new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset)).ToArray());
+                vertexBufferStartSlot += VertexBuffer.Length;
             }
             else
             {

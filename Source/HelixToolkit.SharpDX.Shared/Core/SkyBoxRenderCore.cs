@@ -189,6 +189,11 @@ namespace HelixToolkit.UWP.Core
             cubeTextureSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
             textureSamplerSlot = pass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
         }
+
+        protected override bool CanRender(IRenderContext context)
+        {
+            return base.CanRender(context) && GeometryBuffer.VertexBuffer.Length > 0;
+        }
         /// <summary>
         /// Called when [render].
         /// </summary>
@@ -200,7 +205,7 @@ namespace HelixToolkit.UWP.Core
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
             DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);
             DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, textureSamplerSlot, textureSampler);
-            deviceContext.DeviceContext.Draw(GeometryBuffer.VertexBuffer.ElementCount, 0);
+            deviceContext.DeviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
         }
         /// <summary>
         /// Called when [update per model structure].

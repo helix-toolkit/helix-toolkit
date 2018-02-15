@@ -42,8 +42,8 @@ namespace HelixToolkit.UWP
         /// Attaches the buffer.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="vertexBufferSlot">The vertex buffer slot.</param>
-        void AttachBuffer(DeviceContext context, int vertexBufferSlot);
+        /// <param name="vertexBufferStartSlot">The vertex buffer slot. Returns the next available slot after binding</param>
+        void AttachBuffer(DeviceContext context, ref int vertexBufferStartSlot);
         /// <summary>
         /// Initializes this instance.
         /// </summary>

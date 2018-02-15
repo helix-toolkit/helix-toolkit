@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
+    using System.Collections.Generic;
     using Utilities;
     /// <summary>
     /// 
@@ -39,14 +40,14 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The vertex buffer.
         /// </value>
-        IElementsBufferProxy VertexBuffer { get; }
+        IElementsBufferProxy[] VertexBuffer { get; }
         /// <summary>
         /// Gets the size of the vertex structure.
         /// </summary>
         /// <value>
         /// The size of the vertex structure.
         /// </value>
-        int VertexStructSize { get; }
+        IEnumerable<int> VertexStructSize { get; }
         /// <summary>
         /// Gets the index buffer.
         /// </summary>
@@ -59,10 +60,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="vertexLayout">The vertex layout.</param>
-        /// <param name="vertexBufferSlot">The vertex buffer slot.</param>
+        /// <param name="vertexBufferStartSlot">The vertex buffer slot. It will be changed to next available slot after binding.</param>
         /// <param name="deviceResources"></param>
         /// <returns></returns>
-        bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, int vertexBufferSlot, IDeviceResources deviceResources);
+        bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources);
 
         /// <summary>
         /// Attaches the render host.

@@ -46,10 +46,10 @@ namespace HelixToolkit.UWP.Core
             return base.CanRender(context) && VertexBoneIdBuffer != null && VertexBoneIdBuffer.HasElements;
         }
 
-        protected override void OnAttachBuffers(DeviceContext context)
+        protected override void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
         {
-            base.OnAttachBuffers(context);         
-            VertexBoneIdBuffer?.AttachBuffer(context, 2);
+            base.OnAttachBuffers(context, ref vertStartSlot);         
+            VertexBoneIdBuffer?.AttachBuffer(context, ref vertStartSlot);
         }
 
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)

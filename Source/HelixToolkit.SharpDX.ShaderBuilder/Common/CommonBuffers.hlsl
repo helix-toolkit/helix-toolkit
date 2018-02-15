@@ -55,6 +55,7 @@ cbuffer cbMeshModel : register(b1)
     bool bRenderShadowMap = false;
     float paddingMaterial0;
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
+    float4 wireframeColor = float4(0,0,1,1);
 };
 #endif
 

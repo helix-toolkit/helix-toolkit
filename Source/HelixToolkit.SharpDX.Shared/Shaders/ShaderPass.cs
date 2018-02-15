@@ -12,12 +12,28 @@ namespace HelixToolkit.UWP.Shaders
 #endif
 {
     using Utilities;
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class NullShaderPass : IShaderPass
     {
+        /// <summary>
+        /// The null pass
+        /// </summary>
         public static readonly NullShaderPass NullPass = new NullShaderPass();
-
+        /// <summary>
+        /// Gets a value indicating whether this instance is null.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is null; otherwise, <c>false</c>.
+        /// </value>
         public bool IsNULL { get; } = true;
-
+        /// <summary>
+        /// Gets the state of the blend.
+        /// </summary>
+        /// <value>
+        /// The state of the blend.
+        /// </value>
         public BlendStateProxy BlendState
         {
             get
@@ -25,7 +41,12 @@ namespace HelixToolkit.UWP.Shaders
                 return null;
             }
         }
-
+        /// <summary>
+        /// Gets the state of the depth stencil.
+        /// </summary>
+        /// <value>
+        /// The state of the depth stencil.
+        /// </value>
         public DepthStencilStateProxy DepthStencilState
         {
             get
@@ -33,7 +54,12 @@ namespace HelixToolkit.UWP.Shaders
                 return null;
             }
         }
-
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public string Name
         {
             get
@@ -41,7 +67,12 @@ namespace HelixToolkit.UWP.Shaders
                 return "NULL";
             }
         }
-
+        /// <summary>
+        /// Gets the state of the raster.
+        /// </summary>
+        /// <value>
+        /// The state of the raster.
+        /// </value>
         public RasterizerStateProxy RasterState
         {
             get
@@ -49,7 +80,12 @@ namespace HelixToolkit.UWP.Shaders
                 return null;
             }
         }
-
+        /// <summary>
+        /// Gets the shaders.
+        /// </summary>
+        /// <value>
+        /// The shaders.
+        /// </value>
         public IEnumerable<IShader> Shaders
         {
             get
@@ -57,21 +93,34 @@ namespace HelixToolkit.UWP.Shaders
                 return new IShader[0];
             }
         }
-
+        /// <summary>
+        /// Binds the shader.
+        /// </summary>
+        /// <param name="context">The context.</param>
         public void BindShader(IDeviceContext context)
         {
             
         }
-
+        /// <summary>
+        /// Binds the states.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="type">The type.</param>
         public void BindStates(IDeviceContext context, StateType type)
         {
 
         }
-
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
         public void Dispose()
         {
         }
-
+        /// <summary>
+        /// Gets the shader.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
         public IShader GetShader(ShaderStage type)
         {
             switch (type)
