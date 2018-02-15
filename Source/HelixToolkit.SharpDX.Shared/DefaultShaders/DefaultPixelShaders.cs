@@ -265,6 +265,21 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] PSMeshWireframe
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psWireframe;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -374,6 +389,12 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSSkybox = new ShaderDescription(nameof(PSSkybox), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSSkybox);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription PSMeshWireframe = new ShaderDescription(nameof(PSMeshWireframe), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshWireframe);
 #if !NETFX_CORE
         /// <summary>
         /// The ps screen dup

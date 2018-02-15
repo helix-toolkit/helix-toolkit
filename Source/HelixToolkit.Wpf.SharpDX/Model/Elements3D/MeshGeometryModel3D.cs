@@ -22,57 +22,126 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <seealso cref="HelixToolkit.Wpf.SharpDX.MaterialGeometryModel3D" />
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
-        #region Dependency Properties
+        #region Dependency Properties        
+        /// <summary>
+        /// The front counter clockwise property
+        /// </summary>
         public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(MeshGeometryModel3D),
             new PropertyMetadata(true, RasterStateChanged));
+        /// <summary>
+        /// The cull mode property
+        /// </summary>
         public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(MeshGeometryModel3D), 
             new PropertyMetadata(CullMode.None, RasterStateChanged));
-
+        /// <summary>
+        /// The invert normal property
+        /// </summary>
         public static readonly DependencyProperty InvertNormalProperty = DependencyProperty.Register("InvertNormal", typeof(bool), typeof(MeshGeometryModel3D),
             new PropertyMetadata(false, (d,e)=> { ((d as GeometryModel3D).RenderCore as MeshRenderCore).InvertNormal = (bool)e.NewValue; }));
-
+        /// <summary>
+        /// The enable tessellation property
+        /// </summary>
         public static readonly DependencyProperty EnableTessellationProperty = DependencyProperty.Register("EnableTessellation", typeof(bool), typeof(MeshGeometryModel3D),
             new PropertyMetadata(false, (d, e) => { ((d as GeometryModel3D).RenderCore as PatchMeshRenderCore).EnableTessellation = (bool)e.NewValue; }));
-
+        /// <summary>
+        /// The maximum tessellation factor property
+        /// </summary>
         public static readonly DependencyProperty MaxTessellationFactorProperty =
             DependencyProperty.Register("MaxTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
             {
-                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
+                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams r)
                 {
-                    (((GeometryModel3D)d).RenderCore as IPatchRenderParams).MaxTessellationFactor = (float)(double)e.NewValue;
+                    r.MaxTessellationFactor = (float)(double)e.NewValue;
                 }
             }));
-
+        /// <summary>
+        /// The minimum tessellation factor property
+        /// </summary>
         public static readonly DependencyProperty MinTessellationFactorProperty =
             DependencyProperty.Register("MinTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(2.0, (d, e) =>
             {
-                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
-                    (((GeometryModel3D)d).RenderCore as IPatchRenderParams).MinTessellationFactor = (float)(double)e.NewValue;
+                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams r)
+                    r.MinTessellationFactor = (float)(double)e.NewValue;
             }));
-
+        /// <summary>
+        /// The maximum tessellation distance property
+        /// </summary>
         public static readonly DependencyProperty MaxTessellationDistanceProperty =
             DependencyProperty.Register("MaxTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(50.0, (d, e) =>
             {
-                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
-                    (((GeometryModel3D)d).RenderCore as IPatchRenderParams).MaxTessellationDistance = (float)(double)e.NewValue;
+                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams r)
+                    r.MaxTessellationDistance = (float)(double)e.NewValue;
             }));
-
+        /// <summary>
+        /// The minimum tessellation distance property
+        /// </summary>
         public static readonly DependencyProperty MinTessellationDistanceProperty =
             DependencyProperty.Register("MinTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
             {
-                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
-                    (((GeometryModel3D)d).RenderCore as IPatchRenderParams).MinTessellationDistance = (float)(double)e.NewValue;
+                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams r)
+                    r.MinTessellationDistance = (float)(double)e.NewValue;
             }));
 
-
+        /// <summary>
+        /// The mesh topology property
+        /// </summary>
         public static readonly DependencyProperty MeshTopologyProperty =
             DependencyProperty.Register("MeshTopology", typeof(MeshTopologyEnum), typeof(MeshGeometryModel3D), new PropertyMetadata(
                 MeshTopologyEnum.PNTriangles, (d, e) =>
                 {
-                    if (((GeometryModel3D)d).RenderCore is IPatchRenderParams)
-                        (((GeometryModel3D)d).RenderCore as IPatchRenderParams).MeshType = (MeshTopologyEnum)e.NewValue;
+                    if (((GeometryModel3D)d).RenderCore is IPatchRenderParams r)
+                        r.MeshType = (MeshTopologyEnum)e.NewValue;
                 }));
 
+        /// <summary>
+        /// The render wireframe property
+        /// </summary>
+        public static readonly DependencyProperty RenderWireframeProperty =
+            DependencyProperty.Register("RenderWireframe", typeof(bool), typeof(MeshGeometryModel3D), new PropertyMetadata(false, (d,e)=>
+            {
+                if (((GeometryModel3D)d).RenderCore is IMeshRenderParams r)
+                    r.RenderWireframe = (bool)e.NewValue;
+            }));
+
+        /// <summary>
+        /// The wireframe color property
+        /// </summary>
+        public static readonly DependencyProperty WireframeColorProperty =
+            DependencyProperty.Register("WireframeColor", typeof(System.Windows.Media.Color), typeof(MeshGeometryModel3D), new PropertyMetadata(System.Windows.Media.Colors.SkyBlue, (d,e)=> 
+            {
+                if (((GeometryModel3D)d).RenderCore is IMeshRenderParams r)
+                    r.WireframeColor = ((System.Windows.Media.Color)e.NewValue).ToColor4();
+            }));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [render overlapping wireframe].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render wireframe]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RenderWireframe
+        {
+            get { return (bool)GetValue(RenderWireframeProperty); }
+            set { SetValue(RenderWireframeProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the color of the wireframe.
+        /// </summary>
+        /// <value>
+        /// The color of the wireframe.
+        /// </value>
+        public System.Windows.Media.Color WireframeColor
+        {
+            get { return (System.Windows.Media.Color)GetValue(WireframeColorProperty); }
+            set { SetValue(WireframeColorProperty, value); }
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [front counter clockwise].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [front counter clockwise]; otherwise, <c>false</c>.
+        /// </value>
         public bool FrontCounterClockwise
         {
             set
@@ -85,7 +154,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-
+        /// <summary>
+        /// Gets or sets the cull mode.
+        /// </summary>
+        /// <value>
+        /// The cull mode.
+        /// </value>
         public CullMode CullMode
         {
             set
@@ -112,7 +186,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(InvertNormalProperty);
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable tessellation].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable tessellation]; otherwise, <c>false</c>.
+        /// </value>
         public bool EnableTessellation
         {
             set
@@ -124,31 +203,56 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(EnableTessellationProperty);
             }
         }
-
+        /// <summary>
+        /// Gets or sets the maximum tessellation factor.
+        /// </summary>
+        /// <value>
+        /// The maximum tessellation factor.
+        /// </value>
         public double MaxTessellationFactor
         {
             get { return (double)GetValue(MaxTessellationFactorProperty); }
             set { SetValue(MaxTessellationFactorProperty, value); }
         }
-
+        /// <summary>
+        /// Gets or sets the minimum tessellation factor.
+        /// </summary>
+        /// <value>
+        /// The minimum tessellation factor.
+        /// </value>
         public double MinTessellationFactor
         {
             get { return (double)GetValue(MinTessellationFactorProperty); }
             set { SetValue(MinTessellationFactorProperty, value); }
         }
-
+        /// <summary>
+        /// Gets or sets the maximum tessellation distance.
+        /// </summary>
+        /// <value>
+        /// The maximum tessellation distance.
+        /// </value>
         public double MaxTessellationDistance
         {
             get { return (double)GetValue(MaxTessellationDistanceProperty); }
             set { SetValue(MaxTessellationDistanceProperty, value); }
         }
-
+        /// <summary>
+        /// Gets or sets the minimum tessellation distance.
+        /// </summary>
+        /// <value>
+        /// The minimum tessellation distance.
+        /// </value>
         public double MinTessellationDistance
         {
             get { return (double)GetValue(MinTessellationDistanceProperty); }
             set { SetValue(MinTessellationDistanceProperty, value); }
         }
-
+        /// <summary>
+        /// Gets or sets the mesh topology.
+        /// </summary>
+        /// <value>
+        /// The mesh topology.
+        /// </value>
         public MeshTopologyEnum MeshTopology
         {
             set { SetValue(MeshTopologyProperty, value); }
@@ -170,8 +274,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="core">The core.</param>
         protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
-            var c = core as IInvertNormal;
+            var c = core as IMeshRenderParams;
             c.InvertNormal = this.InvertNormal;
+            c.WireframeColor = this.WireframeColor.ToColor4();
+            c.RenderWireframe = this.RenderWireframe;
             var tessCore = core as IPatchRenderParams;
             if (tessCore != null)
             {

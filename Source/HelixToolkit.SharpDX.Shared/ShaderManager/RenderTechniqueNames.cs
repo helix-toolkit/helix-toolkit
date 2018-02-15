@@ -134,6 +134,11 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string ScreenQuad = "ScreenQuad";
+
+        /// <summary>
+        /// The wireframe
+        /// </summary>
+        public const string Wireframe = "Wireframe";
     }
     /// <summary>
     /// 

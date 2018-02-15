@@ -163,6 +163,16 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         bool RenderEnvironmentMap { set; get; }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IMeshRenderParams : IInvertNormal
+    {
+        bool RenderWireframe { set; get; }
+        Color4 WireframeColor { set; get; }
+    }
+
     /// <summary>
     /// 
     /// </summary>
