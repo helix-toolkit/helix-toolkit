@@ -51,10 +51,9 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="MeshGeometryBufferModel{VertexStruct}"/> class.
         /// </summary>
-        /// <param name="structSize">Size of the structure.</param>
         /// <param name="topology">The topology.</param>
         /// <param name="vertexBuffers"></param>
-        public MeshGeometryBufferModel(int structSize, PrimitiveTopology topology, IElementsBufferProxy[] vertexBuffers)
+        public MeshGeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy[] vertexBuffers)
             : base(topology, vertexBuffers, new ImmutableBufferProxy(sizeof(int), BindFlags.VertexBuffer))
         {
         }
@@ -62,11 +61,10 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="MeshGeometryBufferModel{VertexStruct}"/> class.
         /// </summary>
-        /// <param name="structSize">Size of the structure.</param>
         /// <param name="topology">The topology.</param>
         /// <param name="vertexBuffer">The vertex buffer.</param>
         /// <param name="indexBuffer">The index buffer.</param>
-        protected MeshGeometryBufferModel(int structSize, PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer) 
+        protected MeshGeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer) 
             : base(topology, vertexBuffer, indexBuffer)
         {
         }
