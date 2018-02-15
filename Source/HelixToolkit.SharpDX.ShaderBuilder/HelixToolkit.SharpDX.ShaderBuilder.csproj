@@ -47,7 +47,9 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
-    <PixelShader Include="PS\psWireframe.hlsl" />
+    <PixelShader Include="PS\psWireframe.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Common\CommonBuffers.hlsl" />
