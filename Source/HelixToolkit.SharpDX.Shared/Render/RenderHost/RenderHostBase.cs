@@ -1,11 +1,16 @@
-﻿using SharpDX.Direct3D11;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+
+using SharpDX.Direct3D11;
+using SharpDX;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
 #else
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
-    using global::SharpDX;
     using Core2D;
     using Utilities;
     using System;
@@ -13,6 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using System.Linq;
     using HelixToolkit.Logger;
     using System.Runtime.CompilerServices;
+    using System.Collections.Generic;
 
     /// <summary>
     /// 
@@ -371,6 +377,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The render statistics.
         /// </value>
         public IRenderStatistics RenderStatistics { get; } = new RenderStatistics();
+
+        /// <summary>
+        /// Gets the current frame renderables for rendering.
+        /// </summary>
+        /// <value>
+        /// The per frame renderable.
+        /// </value>
+        public abstract IEnumerable<IRenderable> PerFrameRenderables { get; }
 
         #region Configuration
         /// <summary>

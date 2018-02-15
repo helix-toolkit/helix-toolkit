@@ -25,6 +25,7 @@ namespace HelixToolkit.UWP
     using Model;
     using Core2D;
     using HelixToolkit.Logger;
+    using System.Collections.Generic;
 
     /// <summary>
     /// 
@@ -194,6 +195,13 @@ namespace HelixToolkit.UWP
         /// The d2d target.
         /// </value>
         ID2DTargetProxy D2DTarget { get; }
+        /// <summary>
+        /// Gets the current frame renderables for rendering.
+        /// </summary>
+        /// <value>
+        /// The per frame renderable.
+        /// </value>
+        IEnumerable<IRenderable> PerFrameRenderables { get; }
         /// <summary>
         /// Starts the d3 d.
         /// </summary>
