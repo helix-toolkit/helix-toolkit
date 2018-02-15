@@ -141,11 +141,35 @@ namespace HelixToolkit.UWP.Core
                 OnBindRasterState(deviceContext);
                 switch (context.IsShadowPass)
                 {
-                    case false:
-                        OnRender(context, deviceContext);
+                    case true:
+                        switch (context.IsCustomPass)
+                        {
+                            case true:
+                                var pass = EffectTechnique[context.CustomPassName];
+                                if (!pass.IsNULL)
+                                {
+                                    OnRenderCustom(context, deviceContext, pass);
+                                }
+                                break;
+                            default:
+                                OnRenderShadow(context, deviceContext);
+                                break;
+                        }
                         break;
-                    case true:                        
-                        OnRenderShadow(context, deviceContext);
+                    default:
+                        switch (context.IsCustomPass)
+                        {
+                            case true:
+                                var pass = EffectTechnique[context.CustomPassName];
+                                if (!pass.IsNULL)
+                                {
+                                    OnRenderCustom(context, deviceContext, pass);
+                                }
+                                break;
+                            default:
+                                OnRender(context, deviceContext);
+                                break;
+                        }
                         break;
                 }
                 PostRender(context);
@@ -179,6 +203,11 @@ namespace HelixToolkit.UWP.Core
         /// Actual render function. Used to attach different render states and call the draw call.
         /// </summary>
         protected abstract void OnRender(IRenderContext context, DeviceContextProxy deviceContext);
+
+        /// <summary>
+        /// Render function for custom shader pass. Used to do special effects
+        /// </summary>
+        protected virtual void OnRenderCustom(IRenderContext context, DeviceContextProxy deviceContext, IShaderPass shaderPass) { }
 
         /// <summary>
         /// Called when [update per model structure].

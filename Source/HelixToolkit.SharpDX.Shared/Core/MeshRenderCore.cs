@@ -137,16 +137,5 @@ namespace HelixToolkit.UWP.Core
                 OnDraw(deviceContext, InstanceBuffer);
             }
         }
-
-        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
-        {
-            if (!IsThrowingShadow)
-            {
-                return;
-            }
-            ShadowPass.BindShader(deviceContext);
-            ShadowPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-            OnDraw(deviceContext, InstanceBuffer);
-        }
     }
 }

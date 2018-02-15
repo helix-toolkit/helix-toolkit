@@ -123,5 +123,10 @@ namespace HelixToolkit.UWP.Core
                 context.DrawInstanced(vertexCount, instanceModel.Buffer.ElementCount, 0, 0);
             }
         }
+
+        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
+        {
+            
+        }
     }
 }

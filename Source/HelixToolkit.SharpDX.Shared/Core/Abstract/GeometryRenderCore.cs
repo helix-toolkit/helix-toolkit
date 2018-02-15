@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using HelixToolkit.Wpf.SharpDX.Render;
     using Shaders;
     /// <summary>
     /// 
@@ -263,6 +264,21 @@ namespace HelixToolkit.UWP.Core
                         0, instanceModel.Buffer.Offset);
                 }
             }
+        }
+
+        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (!IsThrowingShadow) { return; }
+            ShadowPass.BindShader(deviceContext);
+            ShadowPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            OnDraw(deviceContext, InstanceBuffer);
+        }
+
+        protected override void OnRenderCustom(IRenderContext context, DeviceContextProxy deviceContext, IShaderPass shaderPass)
+        {
+            shaderPass.BindShader(deviceContext);
+            shaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            OnDraw(deviceContext, InstanceBuffer);
         }
     }
 }

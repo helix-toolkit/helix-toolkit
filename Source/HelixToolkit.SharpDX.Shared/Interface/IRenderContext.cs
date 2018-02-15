@@ -139,6 +139,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The shared resource.
         /// </value>
         IContextSharedResource SharedResource { get; }
+        /// <summary>
+        /// Gets or sets the name of the custom shader pass. This is used to do special effects only
+        /// </summary>
+        /// <value>
+        /// The name of the shader pass.
+        /// </value>
+        string CustomPassName { set; get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this render pass is using custom pass specified by <see cref="CustomPassName"/>.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is custom pass; otherwise, <c>false</c>.
+        /// </value>
+        bool IsCustomPass { set; get; }
     }
     /// <summary>
     /// Contains the shared resources across all renderables. 
