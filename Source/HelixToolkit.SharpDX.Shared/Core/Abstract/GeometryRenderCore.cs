@@ -217,6 +217,7 @@ namespace HelixToolkit.UWP.Core
         /// Attach vertex buffer routine
         /// </summary>
         /// <param name="context"></param>
+        /// <param name="vertStartSlot"></param>
         protected override void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
         {
             GeometryBuffer.AttachBuffers(context, this.VertexLayout, ref vertStartSlot, EffectTechnique.EffectsManager);
