@@ -49,8 +49,7 @@
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
             <hx:MeshGeometryModel3D
-                CullMode="Back"
-                FillMode="{Binding FillMode}"
+                CullMode="Back" x:Name="model"
                 Geometry="{Binding Model}"
                 IsMultisampleEnabled="False"
                 Material="{Binding ModelMaterial}"
@@ -82,7 +81,7 @@
             <CheckBox
                 Margin="4"
                 Foreground="White"
-                IsChecked="{Binding ShowWireframe}">
+                IsChecked="{Binding ElementName=model, Path=RenderWireframe}">
                 Show Wireframe
             </CheckBox>
             <Button Margin="4" Command="{Binding ResetCommand}">Reset</Button>
