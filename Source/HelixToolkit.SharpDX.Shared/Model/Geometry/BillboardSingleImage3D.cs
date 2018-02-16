@@ -50,14 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public Color4 MaskColor
         {
             set;get;
-        }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BillboardSingleImage3D"/> class.
-        /// </summary>
-        protected BillboardSingleImage3D()
-        {
-            MaskColor = Color.Transparent;
-        }
+        } = Color.Transparent;
 
 #if !NETFX_CORE        
         /// <summary>
@@ -65,7 +58,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="bitmapSource">The bitmap source.</param>
         public BillboardSingleImage3D(BitmapSource bitmapSource)
-            : this()
         {
             this.Texture = bitmapSource.ToMemoryStream();
             Width = bitmapSource.PixelWidth;
@@ -77,7 +69,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="imageStream">The image stream.</param>
         public BillboardSingleImage3D(Stream imageStream)
-            : this()
         {
             this.Texture = imageStream;
             using (Image image = Image.Load(imageStream))
@@ -95,7 +86,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         public BillboardSingleImage3D(Stream imageStream, float width, float height)
-            : this()
         {
             this.Texture = imageStream;
             Width = width;
@@ -130,7 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 Position = Center.ToVector4(),
                 Foreground = Color.White,
-                Background = Color.White,
+                Background = MaskColor,
                 TexTL = uv_tl,
                 TexBR = uv_br,
                 OffTL = tl,
