@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using HelixToolkit.Wpf.SharpDX.Render;
+    using Render;
     using Shaders;
     /// <summary>
     /// 
