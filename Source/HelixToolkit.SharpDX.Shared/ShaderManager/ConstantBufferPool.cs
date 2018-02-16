@@ -12,6 +12,8 @@ namespace HelixToolkit.UWP.ShaderManager
     using Utilities;
     using Shaders;
     using global::SharpDX.Direct3D11;
+    using System;
+
     /// <summary>
     /// Pool to store and share constant buffers. Do not dispose constant buffer object externally.
     /// </summary>
@@ -72,7 +74,18 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <returns></returns>
         protected override string GetKey(ref ConstantBufferDescription description)
         {
-            return description.Name + description.StructSize;
+            return description.Name;
+        }
+
+        protected override void ErrorCheck(IConstantBufferProxy value, ref ConstantBufferDescription description)
+        {
+            if(value.StructureSize != description.StructSize)
+            {
+                throw new ArgumentException($"Constant buffer with same name is found but their size does not match.\n" +
+                    $"Name: {description.Name}. Existing Size:{value.StructureSize}; New Size:{description.StructSize}.\n" +
+                    $"Potential Causes: Different Constant buffer header has been used.\n" +
+                    $"Please refer and update to latest HelixToolkit.SharpDX.ShaderBuilder.CommonBuffers.hlsl. Link: https://github.com/helix-toolkit/helix-toolkit");
+            }
         }
         /// <summary>
         /// Registers the specified name.
