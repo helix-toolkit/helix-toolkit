@@ -47,10 +47,16 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
         /// </summary>
         RasterizerStateProxy RasterState { get; }
         /// <summary>
-        /// Binds the shader.
+        /// Binds the shader and its constant buffers
         /// </summary>
         /// <param name="context">The context.</param>
         void BindShader(IDeviceContext context);
+        /// <summary>
+        /// Binds the shader. Optionally bind its constant buffers
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="bindConstantBuffer"></param>
+        void BindShader(IDeviceContext context, bool bindConstantBuffer);
         /// <summary>
         /// Gets the shader.
         /// </summary>

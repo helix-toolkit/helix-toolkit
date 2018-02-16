@@ -326,6 +326,7 @@
     <None Include="Resources\vsBoneSkinning.cso" />
     <None Include="Resources\vsBoneSkinningShadow.cso" />
     <None Include="Resources\vsBoneSkinningTessellation.cso" />
+    <None Include="Resources\vsBoneSkinningWireframe.cso" />
     <None Include="Resources\vsCubeMap.cso" />
     <None Include="Resources\vsMeshClipPlaneQuad.cso" />
     <None Include="Resources\vsMeshDefault.cso" />
@@ -333,6 +334,7 @@
     <None Include="Resources\vsMeshInstancingTessellation.cso" />
     <None Include="Resources\vsMeshShadow.cso" />
     <None Include="Resources\vsMeshTessellation.cso" />
+    <None Include="Resources\vsMeshWireframe.cso" />
     <None Include="Resources\vsMeshXRay.cso" />
     <None Include="Resources\vsParticle.cso" />
     <None Include="Resources\vsPoint.cso" />

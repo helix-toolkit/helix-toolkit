@@ -131,7 +131,7 @@ namespace HelixToolkit.UWP.Core
             OnDraw(deviceContext, InstanceBuffer);
             if (RenderWireframe && WireframePass != NullShaderPass.NullPass)
             {
-                WireframePass.BindShader(deviceContext);
+                WireframePass.BindShader(deviceContext, false);
                 WireframePass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                 deviceContext.DeviceContext.Rasterizer.State = RasterStateWireframe;
                 OnDraw(deviceContext, InstanceBuffer);
