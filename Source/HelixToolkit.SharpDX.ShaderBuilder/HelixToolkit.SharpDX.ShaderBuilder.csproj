@@ -47,8 +47,12 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
-    <VertexShader Include="VS\vsBoneSkinningWireframe.hlsl" />
-    <VertexShader Include="VS\vsMeshWireframe.hlsl" />
+    <VertexShader Include="VS\vsBoneSkinningWireframe.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsMeshWireframe.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
     <PixelShader Include="PS\psWireframe.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
