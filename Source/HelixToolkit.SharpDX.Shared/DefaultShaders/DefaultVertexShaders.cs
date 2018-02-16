@@ -253,6 +253,36 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSMeshWireframe
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsMeshWireframe;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSMeshBoneSkinningWireframe
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsBoneSkinningWireframe;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -532,6 +562,16 @@ namespace HelixToolkit.UWP.Shaders
         /// 
         /// </summary>
         public static ShaderDescription VSSkybox = new ShaderDescription(nameof(VSSkybox), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSSkybox);
+        /// <summary>
+        /// The vs mesh wireframe
+        /// </summary>
+        public static ShaderDescription VSMeshWireframe = new ShaderDescription(nameof(VSMeshWireframe), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshWireframe);
+
+        /// <summary>
+        /// The vs bone skinning wireframe
+        /// </summary>
+        public static ShaderDescription VSBoneSkinningWireframe = new ShaderDescription(nameof(VSBoneSkinningWireframe), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshBoneSkinningWireframe);
+
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

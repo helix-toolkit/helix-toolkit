@@ -213,6 +213,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool IsDeferredPass { get; set; }
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is custom pass.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is custom pass; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsCustomPass { set; get; } = false;
+        /// <summary>
+        /// Gets or sets the name of the custom pass.
+        /// </summary>
+        /// <value>
+        /// The name of the custom pass.
+        /// </value>
+        public string CustomPassName { set; get; } = "";
+        /// <summary>
         /// Gets or sets the time stamp.
         /// </summary>
         /// <value>

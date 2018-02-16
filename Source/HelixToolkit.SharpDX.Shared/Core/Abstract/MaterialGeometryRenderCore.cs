@@ -171,6 +171,12 @@ namespace HelixToolkit.UWP.Core
                 return false;
             }
         }
+
+        protected override void OnDetach()
+        {
+            materialVariables = null;
+            base.OnDetach();
+        }
         /// <summary>
         /// <see cref="RenderCoreBase{TModelStruct}.GetModelConstantBufferDescription"/>
         /// </summary>

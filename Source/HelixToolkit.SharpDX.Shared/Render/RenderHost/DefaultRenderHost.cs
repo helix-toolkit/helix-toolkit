@@ -17,7 +17,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using Core;
     using global::SharpDX.Direct3D11;
     using HelixToolkit.Logger;
-    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// 
@@ -28,6 +27,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The pending renderables
         /// </summary>
         protected readonly List<IRenderable> pendingRenderables = new List<IRenderable>();
+
+        /// <summary>
+        /// Gets the current frame renderables.
+        /// </summary>
+        /// <value>
+        /// The per frame renderables.
+        /// </value>
+        public override IEnumerable<IRenderable> PerFrameRenderables { get { return pendingRenderables; } }
         /// <summary>
         /// The pending render cores
         /// </summary>

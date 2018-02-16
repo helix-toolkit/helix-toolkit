@@ -55,9 +55,17 @@ cbuffer cbMeshModel : register(b1)
     bool bRenderShadowMap = false;
     float paddingMaterial0;
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
+    float4 wireframeColor = float4(0,0,1,1);
 };
 #endif
 
+#if defined(SCREENDUPLICATION)
+    cbuffer cbScreenClone : register(b9)
+    {
+        float4 VertCoord[4];
+        float4 TextureCoord[4];
+    };
+#endif
 
 #define MaxBones 128
 
@@ -77,7 +85,7 @@ cbuffer cbLights : register(b3)
     float3 padding;
 };
 
-#if defined(LINE) // model for line, point and billboard
+#if defined(POINTLINE) // model for line, point and billboard
 //Per model
 cbuffer cbPointLineModel : register(b4)
 {
@@ -97,7 +105,7 @@ cbuffer cbShadow : register(b5)
     bool bHasShadowMap = false;
     float paddingShadow0;
     float4 vShadowMapInfo = float4(0.005, 1.0, 0.5, 0.0);
-	float4x4 vLightViewProjection;
+    float4x4 vLightViewProjection;
 };
 
 cbuffer cbClipping : register(b6)
@@ -111,7 +119,7 @@ cbuffer cbClipping : register(b6)
 	// M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin
     float4x4 CrossPlaneParams;
 }
-
+#if defined(PARTICLE)
 cbuffer cbParticleFrame : register(b7)
 {
     uint NumParticles;
@@ -151,7 +159,7 @@ cbuffer cbParticleCreateParameters : register(b8)
     float EnergyDissipationRate; //Energy dissipation rate per second
     float3 InitialAcceleration;
 };
-
+#endif
 ///------------------Textures---------------------
 Texture2D texDiffuseMap : register(t0);
 Texture2D texAlphaMap : register(t1);

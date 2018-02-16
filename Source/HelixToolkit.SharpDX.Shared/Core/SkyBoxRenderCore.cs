@@ -207,6 +207,16 @@ namespace HelixToolkit.UWP.Core
             DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, textureSamplerSlot, textureSampler);
             deviceContext.DeviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
         }
+
+        /// <summary>
+        /// Called when [render shadow].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
+        {
+            
+        }
         /// <summary>
         /// Called when [update per model structure].
         /// </summary>

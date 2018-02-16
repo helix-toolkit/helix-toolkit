@@ -267,6 +267,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var model = d as GeometryModel3D;
             model.GeometryInternal = e.NewValue == null ? null : e.NewValue as Geometry3D;
+            model.OnGeometryChanged(e);
+        }
+
+        protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
+        {
+
         }
 
         /// <summary>
@@ -368,6 +374,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     BoundManager.Geometry = value;
                     BufferModelInternal = OnCreateBufferModel(this.GUID, geometryInternal);
                 }
+                RaisePropertyChanged(nameof(Geometry));
             }
             get
             {

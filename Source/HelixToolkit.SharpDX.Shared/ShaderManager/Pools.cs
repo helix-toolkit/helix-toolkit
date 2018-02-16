@@ -142,6 +142,7 @@ namespace HelixToolkit.UWP.ShaderManager
             {
                 if (pool.TryGetValue(key, out value))
                 {
+                    ErrorCheck(value, ref description);
                     return value;
                 }
                 else
@@ -151,6 +152,10 @@ namespace HelixToolkit.UWP.ShaderManager
                     return value;
                 }
             }
+        }
+
+        protected virtual void ErrorCheck(TVALUE value, ref TDescription description)
+        {
         }
         /// <summary>
         /// Gets the key.

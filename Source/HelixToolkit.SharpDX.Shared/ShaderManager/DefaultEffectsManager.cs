@@ -126,7 +126,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultVSShaderDescriptions.VSMeshWireframe,
                             DefaultPSShaderDescriptions.PSMeshWireframe
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
@@ -176,7 +176,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultVSShaderDescriptions.VSMeshWireframe,
                             DefaultPSShaderDescriptions.PSMeshWireframe
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
@@ -226,7 +226,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultVSShaderDescriptions.VSMeshWireframe,
                             DefaultPSShaderDescriptions.PSMeshWireframe
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
@@ -276,7 +276,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultVSShaderDescriptions.VSMeshWireframe,
                             DefaultPSShaderDescriptions.PSMeshWireframe
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
@@ -326,7 +326,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultVSShaderDescriptions.VSMeshWireframe,
                             DefaultPSShaderDescriptions.PSMeshWireframe
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
@@ -394,7 +394,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultVSShaderDescriptions.VSMeshWireframe,
                             DefaultPSShaderDescriptions.PSMeshWireframe
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
@@ -444,7 +444,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultVSShaderDescriptions.VSBoneSkinningWireframe,
                             DefaultPSShaderDescriptions.PSMeshWireframe
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
@@ -578,7 +578,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultVSShaderDescriptions.VSMeshWireframe,
                             DefaultPSShaderDescriptions.PSMeshWireframe
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,

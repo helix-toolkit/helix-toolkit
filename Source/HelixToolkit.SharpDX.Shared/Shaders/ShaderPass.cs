@@ -101,6 +101,16 @@ namespace HelixToolkit.UWP.Shaders
         {
             
         }
+
+        /// <summary>
+        /// Binds the shader.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="bindConstantBuffer"></param>
+        public void BindShader(IDeviceContext context, bool bindConstantBuffer)
+        {
+
+        }
         /// <summary>
         /// Binds the states.
         /// </summary>
@@ -299,6 +309,16 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="context"></param>
         public void BindShader(IDeviceContext context)
         {
+            BindShader(context, true);
+        }
+
+        /// <summary>
+        /// Bind shaders and its constant buffer for this technique
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="bindConstantBuffer"></param>
+        public void BindShader(IDeviceContext context, bool bindConstantBuffer)
+        {
             if (context.LastShaderPass == this)
             {
                 return;
@@ -306,7 +326,10 @@ namespace HelixToolkit.UWP.Shaders
             foreach (var shader in Shaders)
             {
                 shader.Bind(context.DeviceContext);
-                shader.BindConstantBuffers(context.DeviceContext);
+                if (bindConstantBuffer)
+                {
+                    shader.BindConstantBuffers(context.DeviceContext);
+                }
             }
             context.LastShaderPass = this;
         }

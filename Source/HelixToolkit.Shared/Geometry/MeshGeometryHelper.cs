@@ -785,5 +785,30 @@ namespace HelixToolkit.Wpf
             }
             Debug.WriteLine(string.Format("Remesh finished. Output NumVert:{0};", verticesOut.Count));
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="triangles"></param>
+        /// <param name="numVerts"></param>
+        public static void RemoveOutOfRangeTriangles(this IList<int> triangles, int numVerts)
+        {
+            var removeOutOfRangeTriangles = new List<int>();
+            for (int i = 0; i < triangles.Count; i += 3)
+            {
+                if (triangles[i] >= numVerts || triangles[i + 1] >= numVerts || triangles[i + 2] >= numVerts)
+                {
+                    removeOutOfRangeTriangles.Add(i);
+                }
+            }
+            if (removeOutOfRangeTriangles.Count > 0)
+            {
+                removeOutOfRangeTriangles.Reverse();
+                foreach (var idx in removeOutOfRangeTriangles)
+                {
+                    removeOutOfRangeTriangles.RemoveRange(idx, 3);
+                }
+            }
+        }
     }
 }

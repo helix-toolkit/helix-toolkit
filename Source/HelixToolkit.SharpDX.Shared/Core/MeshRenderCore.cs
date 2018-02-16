@@ -131,22 +131,11 @@ namespace HelixToolkit.UWP.Core
             OnDraw(deviceContext, InstanceBuffer);
             if (RenderWireframe && WireframePass != NullShaderPass.NullPass)
             {
-                WireframePass.BindShader(deviceContext);
+                WireframePass.BindShader(deviceContext, false);
                 WireframePass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                 deviceContext.DeviceContext.Rasterizer.State = RasterStateWireframe;
                 OnDraw(deviceContext, InstanceBuffer);
             }
-        }
-
-        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
-        {
-            if (!IsThrowingShadow)
-            {
-                return;
-            }
-            ShadowPass.BindShader(deviceContext);
-            ShadowPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-            OnDraw(deviceContext, InstanceBuffer);
         }
     }
 }
