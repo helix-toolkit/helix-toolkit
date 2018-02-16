@@ -40,6 +40,7 @@
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
             <hx:BoneSkinMeshGeometryModel3D
+                x:Name="model"
                 BoneMatrices="{Binding Bones}"
                 CullMode="Back"
                 FillMode="{Binding FillMode}"
@@ -58,7 +59,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Orientation="Vertical">
-            <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+            <CheckBox IsChecked="{Binding ElementName=model, Path=RenderWireframe}">Show Wireframe</CheckBox>
             <CheckBox IsChecked="{Binding EnableAnimation}">Animation</CheckBox>
         </StackPanel>
     </Grid>
