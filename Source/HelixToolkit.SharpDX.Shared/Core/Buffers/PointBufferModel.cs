@@ -35,6 +35,24 @@ namespace HelixToolkit.UWP.Core
             new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), null)
         {
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointGeometryBufferModel{VertexStruct}"/> class.
+        /// </summary>
+        /// <param name="vertexBuffer"></param>
+        public PointGeometryBufferModel(IElementsBufferProxy vertexBuffer) : base(PrimitiveTopology.PointList,
+            vertexBuffer, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointGeometryBufferModel{VertexStruct}"/> class.
+        /// </summary>
+        /// <param name="vertexBuffer"></param>
+        public PointGeometryBufferModel(IElementsBufferProxy[] vertexBuffer) : base(PrimitiveTopology.PointList,
+            vertexBuffer, null)
+        {
+        }
         /// <summary>
         /// Called when [create vertex buffer].
         /// </summary>

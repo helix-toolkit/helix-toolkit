@@ -69,8 +69,9 @@ namespace HelixToolkit.UWP.Core
                     elementBuffer.UploadDataToBuffer(context, elements, elements.Count);
                     instanceChanged = false;
                 }
-                context.InputAssembler.SetVertexBuffers(vertexBufferStartSlot++, new VertexBufferBinding(Buffer.Buffer, Buffer.StructureSize, Buffer.Offset));
+                context.InputAssembler.SetVertexBuffers(vertexBufferStartSlot, new VertexBufferBinding(Buffer.Buffer, Buffer.StructureSize, Buffer.Offset));
             }
+            ++vertexBufferStartSlot;
         }
 
         protected override void OnDispose(bool disposeManagedResources)

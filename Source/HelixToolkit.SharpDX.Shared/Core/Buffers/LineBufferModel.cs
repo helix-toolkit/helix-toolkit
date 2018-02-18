@@ -32,7 +32,45 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="structSize">Size of the structure.</param>
         public LineGeometryBufferModel(int structSize) : base(PrimitiveTopology.LineList,
-            new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy(sizeof(int), BindFlags.VertexBuffer))
+            new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineGeometryBufferModel{VertexStruct}"/> class.
+        /// </summary>
+        /// <param name="vertexBuffer"></param>
+        public LineGeometryBufferModel(IElementsBufferProxy vertexBuffer) : base(PrimitiveTopology.LineList,
+            vertexBuffer, new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineGeometryBufferModel{VertexStruct}"/> class.
+        /// </summary>
+        /// <param name="vertexBuffer"></param>
+        public LineGeometryBufferModel(IElementsBufferProxy[] vertexBuffer) : base(PrimitiveTopology.LineList,
+            vertexBuffer, new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer))
+        {
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineGeometryBufferModel{VertexStruct}"/> class.
+        /// </summary>
+        /// <param name="vertexBuffer"></param>
+        /// <param name="indexBuffer"></param>
+        public LineGeometryBufferModel(IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer)
+            : base(PrimitiveTopology.LineList,
+            vertexBuffer, indexBuffer)
+        {
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineGeometryBufferModel{VertexStruct}"/> class.
+        /// </summary>
+        /// <param name="vertexBuffer"></param>
+        /// <param name="indexBuffer"></param>
+        public LineGeometryBufferModel(IElementsBufferProxy[] vertexBuffer, IElementsBufferProxy indexBuffer) 
+            : base(PrimitiveTopology.LineList,
+            vertexBuffer, indexBuffer)
         {
         }
         /// <summary>
