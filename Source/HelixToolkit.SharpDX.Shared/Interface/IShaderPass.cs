@@ -64,6 +64,11 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
         /// <returns></returns>
         IShader GetShader(ShaderStage type);
         /// <summary>
+        /// Sets the shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        void SetShader(IShader shader);
+        /// <summary>
         /// Binds the states.
         /// </summary>
         /// <param name="context">The context.</param>
