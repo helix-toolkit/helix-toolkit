@@ -151,6 +151,11 @@ namespace HelixToolkit.UWP.Shaders
                     return new NullShader(type);
             }            
         }
+        /// <summary>
+        /// Sets the shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        public void SetShader(IShader shader) { }
     }
 
     /// <summary>
@@ -341,6 +346,15 @@ namespace HelixToolkit.UWP.Shaders
         public IShader GetShader(ShaderStage type)
         {
             return shaders[GetShaderArrayIndex(type)];
+        }
+
+        /// <summary>
+        /// Sets the shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        public void SetShader(IShader shader)
+        {
+            shaders[GetShaderArrayIndex(shader.ShaderType)] = shader;
         }
 
         /// <summary>
