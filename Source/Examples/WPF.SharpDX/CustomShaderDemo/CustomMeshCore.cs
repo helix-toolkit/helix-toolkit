@@ -85,9 +85,9 @@ namespace CustomShaderDemo
             model.Params.Y = dataHeightScale;
         }
 
-        protected override void OnAttachBuffers(DeviceContext context)
+        protected override void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
         {
-            base.OnAttachBuffers(context);
+            base.OnAttachBuffers(context, ref vertStartSlot);
             if (colorChanged)
             {
                 RemoveAndDispose(ref colorGradientResource);
