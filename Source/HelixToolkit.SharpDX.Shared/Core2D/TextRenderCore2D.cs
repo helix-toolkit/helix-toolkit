@@ -198,6 +198,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             if (base.OnAttach(host))
             {
+                textLayoutDirty = true;
                 textFactory = Collect(new Factory(FactoryType.Isolated));
                 textFormat = Collect(new TextFormat(textFactory, FontFamily, FontWeight, FontStyle, FontSize));
                 return true;
@@ -223,9 +224,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 textLayout = Collect(new TextLayout(textFactory, Text, textFormat, MaxWidth, MaxHeight));
                 textLayoutDirty = false;
             }
-            textLayout.TextAlignment = TextAlignment;
-            
-        }
+            textLayout.TextAlignment = TextAlignment;            
+        }       
 
         protected override bool CanRender(IRenderContext2D context)
         {
