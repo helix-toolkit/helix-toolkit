@@ -191,8 +191,32 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The bounding box.</returns>
         public static Rect3D FindBounds(this Viewport3DX viewport)
         {
-            var bounds = new global::SharpDX.BoundingBox();
             var maxVector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            var firstModel = viewport.Renderables.PreorderDFT((r) =>
+            {
+                if (r.Visible && !(r is ScreenSpacedElement3D))
+                {
+                    return true;
+                }
+                return false;
+            }).Where(x =>
+            {
+                if (x is IBoundable b)
+                {
+                    return b.BoundsWithTransform.Maximum != b.BoundsWithTransform.Minimum 
+                    && b.BoundsWithTransform.Maximum != Vector3.Zero && b.BoundsWithTransform.Maximum != maxVector;
+                }
+                else
+                {
+                    return false;
+                }
+            }).FirstOrDefault();
+            if(firstModel == null)
+            {
+                return new Rect3D();
+            }
+            var bounds = firstModel.BoundsWithTransform;
+            
             foreach(var renderable in viewport.Renderables.PreorderDFT((r) =>
             {               
                 if (r.Visible && !(r is ScreenSpacedElement3D))
