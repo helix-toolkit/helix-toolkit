@@ -188,7 +188,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The bounding box.</returns>
         public static Rect3D FindBounds(this Viewport3DX viewport)
         {
-            var bounds = new global::SharpDX.BoundingBox();
+            var ele = viewport.Renderables.Where(x =>
+            {
+                if (x is GeometryModel3D m)
+                {
+                    return m.Visibility != Visibility.Collapsed && m.GeometryValid;
+                }
+                return false;
+            }).FirstOrDefault();
+            if (ele == null)
+            {
+                return new Rect3D();
+            }
+            var bounds = (ele as GeometryModel3D).BoundsWithTransform;
             foreach (var element in viewport.Renderables)
             {
                 var model = element as GeometryModel3D;
@@ -196,8 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     if (model.Visibility != Visibility.Collapsed && model.GeometryValid)
                     {
-                        model.Geometry.UpdateBounds();
-                        bounds = global::SharpDX.BoundingBox.Merge(bounds, model.Bounds);
+                        bounds = global::SharpDX.BoundingBox.Merge(bounds, model.BoundsWithTransform);
                     }
                 }
             }
