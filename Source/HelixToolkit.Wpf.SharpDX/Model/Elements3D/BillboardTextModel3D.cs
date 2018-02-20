@@ -135,6 +135,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled,
             };
         }
+
+        public override void Update(IRenderContext context)
+        {         
+            (Geometry as IBillboardText).DrawTexture(EffectsManager);
+            base.Update(context);
+        }
         /// <summary>
         /// Called when [hit test].
         /// </summary>

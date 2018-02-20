@@ -202,12 +202,14 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 var sphere = TextInfo[0].BoundSphere;
+                var bound = BoundingBox.FromSphere(sphere);
                 foreach(var info in TextInfo)
                 {
                     sphere = BoundingSphere.Merge(sphere, info.BoundSphere);
+                    bound = BoundingBox.Merge(bound, BoundingBox.FromSphere(info.BoundSphere));
                 }
                 BoundingSphere = sphere;
-                Bound = BoundingBox.FromSphere(BoundingSphere);
+                Bound = bound;
             }
         }
 

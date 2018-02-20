@@ -151,8 +151,6 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected override BillboardVertex[] OnBuildVertexArray(IBillboardText geometry, IDeviceResources deviceResources)
         {
-            // Gather all of the textInfo offsets.
-            // These should be equal in number to the positions.
             geometry.DrawTexture(deviceResources);
 
             var vertexCount = geometry.BillboardVertices.Count;
