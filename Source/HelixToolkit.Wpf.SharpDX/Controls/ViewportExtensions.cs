@@ -190,8 +190,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var ele = viewport.Renderables.Where(x =>
             {
-                if (x is GeometryModel3D m)
+                if (x is GeometryModel3D)
                 {
+                    var m = x as GeometryModel3D;
                     return m.Visibility != Visibility.Collapsed && m.GeometryValid;
                 }
                 return false;
