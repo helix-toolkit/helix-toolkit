@@ -136,6 +136,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 return boundsSphereWithTransform;
             }
         }
+
+        public bool HasBound { set; get; } = true;
         #endregion
         #endregion
         #region Events and Delegates

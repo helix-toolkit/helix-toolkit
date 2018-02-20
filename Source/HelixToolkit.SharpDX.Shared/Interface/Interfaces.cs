@@ -118,6 +118,13 @@ namespace HelixToolkit.Wpf.SharpDX
     public interface IBoundable
     {
         /// <summary>
+        /// Gets or sets a value indicating whether [bound enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [bound enabled]; otherwise, <c>false</c>.
+        /// </value>
+        bool HasBound { get; }
+        /// <summary>
         /// Gets the bounds.
         /// </summary>
         /// <value>

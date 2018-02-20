@@ -485,6 +485,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             get { return MaxBoundSphere; }
         }
         /// <summary>
+        /// Gets or sets a value indicating whether this instance has bound.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has bound; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasBound { protected set; get; } = false;
+        /// <summary>
         /// Occurs when [property changed].
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;

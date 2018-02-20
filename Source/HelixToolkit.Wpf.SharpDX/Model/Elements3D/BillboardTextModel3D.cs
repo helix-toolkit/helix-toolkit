@@ -23,7 +23,9 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Element3D).RenderCore as IBillboardRenderParams).FixedSize = (bool)e.NewValue;
+                    var model = d as BillboardTextModel3D;
+                    (model.RenderCore as IBillboardRenderParams).FixedSize = (bool)e.NewValue;
+                    model.HasBound = !(bool)e.NewValue;//If fixed size, disable the bound. 
                 }));
 
         /// <summary>
@@ -45,6 +47,10 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         #region Overridable Methods        
+        public BillboardTextModel3D()
+        {
+            HasBound = false;
+        }
         /// <summary>
         /// Called when [create render core].
         /// </summary>
@@ -95,16 +101,16 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.BillboardText];
         }
-        ///// <summary>
-        ///// Checks the bounding frustum.
-        ///// </summary>
-        ///// <param name="viewFrustum">The view frustum.</param>
-        ///// <returns></returns>
-        //protected override bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
-        //{
-        //    var sphere = Geometry.BoundingSphere;
-        //    return viewFrustum.Intersects(ref sphere);
-        //}
+        /// <summary>
+        /// Checks the bounding frustum.
+        /// </summary>
+        /// <param name="viewFrustum">The view frustum.</param>
+        /// <returns></returns>
+        protected override bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
+        {
+            var sphere = this.BoundsSphereWithTransform;
+            return  viewFrustum.Intersects(ref sphere);
+        }
         /// <summary>
         /// Called when [check geometry].
         /// </summary>
@@ -136,11 +142,6 @@ namespace HelixToolkit.Wpf.SharpDX
             };
         }
 
-        public override void Update(IRenderContext context)
-        {         
-            (Geometry as IBillboardText).DrawTexture(EffectsManager);
-            base.Update(context);
-        }
         /// <summary>
         /// Called when [hit test].
         /// </summary>

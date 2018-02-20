@@ -203,7 +203,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (x is IBoundable b)
                 {
-                    return b.BoundsWithTransform.Maximum != b.BoundsWithTransform.Minimum 
+                    return b.HasBound && b.BoundsWithTransform.Maximum != b.BoundsWithTransform.Minimum 
                     && b.BoundsWithTransform.Maximum != Vector3.Zero && b.BoundsWithTransform.Maximum != maxVector;
                 }
                 else
@@ -228,7 +228,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if(renderable is IBoundable r)
                 {
-                    if (r.BoundsWithTransform.Maximum != maxVector)
+                    if (r.HasBound && r.BoundsWithTransform.Maximum != maxVector)
                     {
                         bounds = global::SharpDX.BoundingBox.Merge(bounds, r.BoundsWithTransform);
                     }
