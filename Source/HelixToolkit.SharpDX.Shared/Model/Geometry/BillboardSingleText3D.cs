@@ -230,6 +230,7 @@ using Core;
         public override void UpdateBounds()
         {
             BoundingSphere = new BoundingSphere(TextInfo.Origin, (float)Math.Sqrt(Width * Width + Height * Height) / 2);
+            Bound = BoundingBox.FromSphere(BoundingSphere);
         }
 
         /// <summary>

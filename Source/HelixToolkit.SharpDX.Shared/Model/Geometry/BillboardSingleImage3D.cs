@@ -99,6 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void UpdateBounds()
         {
             BoundingSphere = new BoundingSphere(Center, (float)Math.Sqrt(Width * Width + Height * Height) / 2);
+            Bound = BoundingBox.FromSphere(BoundingSphere);
         }
 
         /// <summary>

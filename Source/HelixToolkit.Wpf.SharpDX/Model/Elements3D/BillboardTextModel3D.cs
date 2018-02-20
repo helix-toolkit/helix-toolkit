@@ -23,7 +23,9 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Element3D).RenderCore as IBillboardRenderParams).FixedSize = (bool)e.NewValue;
+                    var model = d as BillboardTextModel3D;
+                    (model.RenderCore as IBillboardRenderParams).FixedSize = (bool)e.NewValue;
+                    model.HasBound = !(bool)e.NewValue;//If fixed size, disable the bound. 
                 }));
 
         /// <summary>
@@ -45,6 +47,10 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         #region Overridable Methods        
+        public BillboardTextModel3D()
+        {
+            HasBound = false;
+        }
         /// <summary>
         /// Called when [create render core].
         /// </summary>
@@ -102,7 +108,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected override bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
         {
-            return true;
+            var sphere = this.BoundsSphereWithTransform;
+            return  viewFrustum.Intersects(ref sphere);
         }
         /// <summary>
         /// Called when [check geometry].
@@ -134,6 +141,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled,
             };
         }
+
         /// <summary>
         /// Called when [hit test].
         /// </summary>

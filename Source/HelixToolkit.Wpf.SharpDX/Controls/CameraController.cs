@@ -2312,13 +2312,13 @@ namespace HelixToolkit.Wpf.SharpDX
             if (needUpdate)
             {
                 lastTick = ticks;
-                Viewport.InvalidateRender();
-                this.InvalidateVisual();
+                Viewport.InvalidateRender();              
             }
             else
             {
                 lastTick = 0;
             }
+            this.InvalidateVisual();//Keep composition rendering thread busy
         }
 
         /// <summary>
@@ -2334,20 +2334,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void RefreshViewport()
         {
-            // todo: this is a hack, should be improved
-
-            // var mg = new ModelVisual3D { Content = new AmbientLight(Colors.White) };
-            // Viewport.Children.Add(mg);
-            // Viewport.Children.Remove(mg);
-            var c = this.Viewport.Camera;
-            this.Viewport.Camera = null;
-            this.Viewport.Camera = c;
-
-            // var w = Viewport.Width;
-            // Viewport.Width = w-1;
-            // Viewport.Width = w;
-
-            // Viewport.InvalidateVisual();
+            Viewport.InvalidateVisual();
         }
 
         /// <summary>

@@ -136,6 +136,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 return boundsSphereWithTransform;
             }
         }
+
+        public bool HasBound { set; get; } = true;
         #endregion
         #endregion
         #region Events and Delegates
@@ -185,6 +187,16 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             if (e.PropertyName.Equals(nameof(Geometry3D.Positions)))
             {
                 UpdateBounds();
+            }
+            else if (e.PropertyName.Equals(nameof(Geometry3D.Bound)))
+            {
+                Bounds = Geometry.Bound;
+                BoundsWithTransform = Bounds.Transform(elementCore.ModelMatrix);
+            }
+            else if (e.PropertyName.Equals(nameof(Geometry3D.BoundingSphere)))
+            {
+                BoundsSphere = Geometry.BoundingSphere;
+                BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.ModelMatrix);
             }
             if (GeometryValid)
             {

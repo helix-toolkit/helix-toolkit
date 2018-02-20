@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
     /// </summary>
-    public abstract class GeometryModel3D : Element3D, IHitable, IBoundable, IThrowingShadow, ISelectable, IMouse3D, IInstancing
+    public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, ISelectable, IMouse3D, IInstancing
     {
         #region DependencyProperties        
         /// <summary>
@@ -381,20 +381,47 @@ namespace HelixToolkit.Wpf.SharpDX
                 return geometryInternal;
             }
         }
-
+        /// <summary>
+        /// Gets a value indicating whether [geometry valid].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [geometry valid]; otherwise, <c>false</c>.
+        /// </value>
         public bool GeometryValid { get { return BoundManager.GeometryValid; } }
-        public GeometryBoundManager BoundManager { private set; get; }
 
+        /// <summary>
+        /// Gets or sets the bound manager.
+        /// </summary>
+        /// <value>
+        /// The bound manager.
+        /// </value>
+        public GeometryBoundManager BoundManager { private set; get; }
+        /// <summary>
+        /// Gets the bounds.
+        /// </summary>
+        /// <value>
+        /// The bounds.
+        /// </value>
         public override BoundingBox Bounds
         {
             get { return BoundManager.Bounds; }
         }
-
+        /// <summary>
+        /// Gets the bounds with transform.
+        /// </summary>
+        /// <value>
+        /// The bounds with transform.
+        /// </value>
         public override BoundingBox BoundsWithTransform
         {
             get { return BoundManager.BoundsWithTransform; }
         }
-
+        /// <summary>
+        /// Gets the bounds sphere.
+        /// </summary>
+        /// <value>
+        /// The bounds sphere.
+        /// </value>
         public override BoundingSphere BoundsSphere
         {
             get
@@ -402,7 +429,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return BoundManager.BoundsSphere;
             }
         }
-
+        /// <summary>
+        /// Gets the bounds sphere with transform.
+        /// </summary>
+        /// <value>
+        /// The bounds sphere with transform.
+        /// </value>
         public override BoundingSphere BoundsSphereWithTransform
         {
             get
@@ -410,7 +442,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 return BoundManager.BoundsSphereWithTransform;
             }
         }
-
         #endregion        
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryModel3D"/> class.
@@ -423,6 +454,7 @@ namespace HelixToolkit.Wpf.SharpDX
             BoundManager.OnBoundSphereChanged += (s, e) => { RaiseOnBoundSphereChanged(e); };
             BoundManager.OnTransformBoundSphereChanged += (s, e) => { RaiseOnTransformBoundSphereChanged(e); };
             BoundManager.OnCheckGeometry = OnCheckGeometry;
+            HasBound = true;
         }
         /// <summary>
         /// Called when [check geometry].
@@ -529,6 +561,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected virtual bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
         {
+            if (!HasBound)
+            {
+                return true;
+            }
             var bound = BoundsWithTransform;
             var sphere = BoundsSphereWithTransform;
             return viewFrustum.Intersects(ref bound) && viewFrustum.Intersects(ref sphere);
