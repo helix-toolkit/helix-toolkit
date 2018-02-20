@@ -95,15 +95,16 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.BillboardText];
         }
-        /// <summary>
-        /// Checks the bounding frustum.
-        /// </summary>
-        /// <param name="viewFrustum">The view frustum.</param>
-        /// <returns></returns>
-        protected override bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
-        {
-            return true;
-        }
+        ///// <summary>
+        ///// Checks the bounding frustum.
+        ///// </summary>
+        ///// <param name="viewFrustum">The view frustum.</param>
+        ///// <returns></returns>
+        //protected override bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
+        //{
+        //    var sphere = Geometry.BoundingSphere;
+        //    return viewFrustum.Intersects(ref sphere);
+        //}
         /// <summary>
         /// Called when [check geometry].
         /// </summary>

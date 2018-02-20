@@ -192,6 +192,25 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public override void UpdateBounds()
+        {
+            if (TextInfo.Count == 0)
+            {
+                Bound = new BoundingBox();
+                BoundingSphere = new BoundingSphere();
+            }
+            else
+            {
+                var sphere = TextInfo[0].BoundSphere;
+                foreach(var info in TextInfo)
+                {
+                    sphere = BoundingSphere.Merge(sphere, info.BoundSphere);
+                }
+                BoundingSphere = sphere;
+                Bound = BoundingBox.FromSphere(BoundingSphere);
+            }
+        }
+
         private BillboardVertex DrawCharacter(Character character, Vector3 origin, float w, float h, float kerning, TextInfo info)
         {
             var cw = character.Bounds.Width;

@@ -186,6 +186,16 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             {
                 UpdateBounds();
             }
+            else if (e.PropertyName.Equals(nameof(Geometry3D.Bound)))
+            {
+                Bounds = Geometry.Bound;
+                BoundsWithTransform = Bounds.Transform(elementCore.ModelMatrix);
+            }
+            else if (e.PropertyName.Equals(nameof(Geometry3D.BoundingSphere)))
+            {
+                BoundsSphere = Geometry.BoundingSphere;
+                BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.ModelMatrix);
+            }
             if (GeometryValid)
             {
                 OnGeometryPropertyChanged(sender, e);
