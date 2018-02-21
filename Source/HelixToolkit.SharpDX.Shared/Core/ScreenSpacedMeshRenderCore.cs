@@ -166,6 +166,7 @@ namespace HelixToolkit.UWP.Core
         /// Viewport Height
         /// </summary>
         public float Height { private set; get; }
+
         /// <summary>
         /// Default size. To scale, use <see cref="SizeScale"/>
         /// </summary>
@@ -262,9 +263,11 @@ namespace HelixToolkit.UWP.Core
         protected void UpdateProjectionMatrix(float width, float height)
         {
             var ratio = width / height;
-            if (ScreenRatio != ratio)
+            if (ScreenRatio != ratio || Width != width || Height != height)
             {
                 ScreenRatio = ratio;
+                Width = width;
+                Height = height;
                 OnCreateProjectionMatrix(SizeScale);
             }
         }
@@ -277,7 +280,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override bool CanRender(IRenderContext context)
         {
-            return true;
+            return context.ActualWidth > Size && context.ActualHeight > Size;
         }
 
         protected override void OnRender(IRenderContext renderContext, DeviceContextProxy deviceContext)
@@ -307,11 +310,10 @@ namespace HelixToolkit.UWP.Core
                 deviceContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
                 dsView.Dispose();
             }
-            Width = (float)context.ActualWidth;
-            Height = (float)context.ActualHeight;
+
             float viewportSize = Size * SizeScale;
             var globalTrans = context.GlobalTransform;
-            UpdateProjectionMatrix(Width, Height);
+            UpdateProjectionMatrix((float)context.ActualWidth, (float)context.ActualHeight);
             globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
             globalTrans.Projection = projectionMatrix;
             globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
