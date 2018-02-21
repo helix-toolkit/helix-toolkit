@@ -277,7 +277,6 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRenderCustom(IRenderContext context, DeviceContextProxy deviceContext, IShaderPass shaderPass)
         {
             shaderPass.BindShader(deviceContext);
-            shaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
             OnDraw(deviceContext, InstanceBuffer);
         }
     }
