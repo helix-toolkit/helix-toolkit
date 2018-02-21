@@ -53,6 +53,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public event EventHandler<RelayExceptionEventArgs> ExceptionOccurred = delegate { };
 
+        private readonly CompositionTargetEx compositionTarget = new CompositionTargetEx();
+
         /// <summary>
         /// 
         /// </summary>
@@ -157,13 +159,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void RenderHost_StopRenderLoop(object sender, EventArgs e)
         {
-            CompositionTargetEx.Rendering -= CompositionTarget_Rendering;
+            compositionTarget.Rendering -= CompositionTarget_Rendering;
         }
 
         private void RenderHost_StartRenderLoop(object sender, EventArgs e)
         {
-            CompositionTargetEx.Rendering -= CompositionTarget_Rendering;
-            CompositionTargetEx.Rendering += CompositionTarget_Rendering;
+            compositionTarget.Rendering -= CompositionTarget_Rendering;
+            compositionTarget.Rendering += CompositionTarget_Rendering;
         }
 
 

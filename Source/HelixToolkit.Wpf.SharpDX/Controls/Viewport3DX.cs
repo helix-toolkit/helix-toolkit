@@ -927,9 +927,9 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseDown(MouseButtonEventArgs e)
+        protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
         {
-            base.OnMouseDown(e);
+            base.OnPreviewMouseDown(e);
             if (this.touchDownDevice == null)
             {
                 this.Focus();
@@ -1026,9 +1026,9 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <inheritdoc/>
-        protected override void OnMouseUp(MouseButtonEventArgs e)
+        protected override void OnPreviewMouseUp(MouseButtonEventArgs e)
         {
-            base.OnMouseUp(e);
+            base.OnPreviewMouseUp(e);
             this.MouseUpHitTest(e.GetPosition(this), e);
         }
 
@@ -1617,6 +1617,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 return;
             }
+            if (ViewBoxHitTest(pt))
+            {
+                return;
+            }
             if (!EnableMouseButtonHitTest)
             {
                 return;
@@ -1644,6 +1648,27 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 // Raise event from Viewport3DX if there's no hit
                 this.RaiseEvent(new MouseDown3DEventArgs(this, null, pt, this));
+            }
+        }
+
+        private bool ViewBoxHitTest(Point p)
+        {
+            var camera = Camera as ProjectionCamera;
+            if (camera == null)
+            {
+                return false;
+            }
+
+            var ray = this.UnProject(p.ToVector2());
+            var hits = new List<HitTestResult>();
+            if(viewCube.HitTest(RenderContext, ray, ref hits))
+            {
+                viewCube.RaiseEvent(new MouseDown3DEventArgs(viewCube, this.currentHit, p, this));
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
