@@ -283,6 +283,22 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSMeshOutlineP1
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsMeshOutlinePass1;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -572,6 +588,10 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription VSBoneSkinningWireframe = new ShaderDescription(nameof(VSBoneSkinningWireframe), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshBoneSkinningWireframe);
 
+        /// <summary>
+        /// The vs mesh outline pass1
+        /// </summary>
+        public static ShaderDescription VSMeshOutlinePass1 = new ShaderDescription(nameof(VSMeshOutlinePass1), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshOutlineP1);
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

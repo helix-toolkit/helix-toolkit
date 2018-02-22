@@ -212,6 +212,7 @@
     <Compile Include="Model\Elements3D\PatchGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\EnvironmentMap3D.cs" />
+    <Compile Include="Model\Elements3D\PostEffects\PostEffectMeshBorderHighlight.cs" />
     <Compile Include="Model\Elements3D\ScreenDuplicationModel.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Elements3D\XRayMeshGeometryModel3D.cs" />
@@ -304,6 +305,7 @@
     <None Include="Resources\hsMeshTriTessellation.cso" />
     <None Include="Resources\psBillboardText.cso" />
     <None Include="Resources\psColor.cso" />
+    <None Include="Resources\psDepthStencilOnly.cso" />
     <None Include="Resources\psDiffuseMap.cso" />
     <None Include="Resources\psLine.cso" />
     <None Include="Resources\psLineColor.cso" />
@@ -332,6 +334,7 @@
     <None Include="Resources\vsMeshDefault.cso" />
     <None Include="Resources\vsMeshInstancing.cso" />
     <None Include="Resources\vsMeshInstancingTessellation.cso" />
+    <None Include="Resources\vsMeshOutlinePass1.cso" />
     <None Include="Resources\vsMeshShadow.cso" />
     <None Include="Resources\vsMeshTessellation.cso" />
     <None Include="Resources\vsMeshWireframe.cso" />

@@ -173,6 +173,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psDepthStencilOnly {
+            get {
+                object obj = ResourceManager.GetObject("psDepthStencilOnly", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psDiffuseMap {
             get {
                 object obj = ResourceManager.GetObject("psDiffuseMap", resourceCulture);
@@ -466,6 +476,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] vsMeshInstancingTessellation {
             get {
                 object obj = ResourceManager.GetObject("vsMeshInstancingTessellation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshOutlinePass1 {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshOutlinePass1", resourceCulture);
                 return ((byte[])(obj));
             }
         }

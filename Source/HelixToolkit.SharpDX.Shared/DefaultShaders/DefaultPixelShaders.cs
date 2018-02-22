@@ -280,6 +280,21 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] PSDepthStencilTestOnly
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psDepthStencilOnly;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -395,6 +410,12 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSMeshWireframe = new ShaderDescription(nameof(PSMeshWireframe), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshWireframe);
+
+        /// <summary>
+        /// The ps depth stencil only
+        /// </summary>
+        public static ShaderDescription PSDepthStencilOnly = new ShaderDescription(nameof(PSDepthStencilOnly), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSDepthStencilTestOnly);
 #if !NETFX_CORE
         /// <summary>
         /// The ps screen dup

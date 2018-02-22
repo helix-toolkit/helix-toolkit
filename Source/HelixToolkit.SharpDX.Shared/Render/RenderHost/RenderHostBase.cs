@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using HelixToolkit.Logger;
     using System.Runtime.CompilerServices;
     using System.Collections.Generic;
-
+    using Core;
     /// <summary>
     /// 
     /// </summary>
@@ -385,6 +385,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The per frame renderable.
         /// </value>
         public abstract IEnumerable<IRenderable> PerFrameRenderables { get; }
+        /// <summary>
+        /// Gets the post effects render cores for this frame
+        /// </summary>
+        /// <value>
+        /// The post effects render cores.
+        /// </value>
+        public abstract IEnumerable<IRenderCore> PerFramePostEffectCores { get; }
 
         #region Configuration
         /// <summary>
