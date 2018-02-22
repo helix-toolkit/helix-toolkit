@@ -47,6 +47,13 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
+    <PixelShader Include="PS\psDepthStencilOnly.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsMeshOutlinePass1.hlsl">
+      <EntryPointName>VSMeshOutlineP1</EntryPointName>
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
     <VertexShader Include="VS\vsBoneSkinningWireframe.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </VertexShader>

@@ -58,6 +58,13 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         bool IsAttached { get; }
         /// <summary>
+        /// Gets the post effects for this model.
+        /// </summary>
+        /// <value>
+        /// The post effects.
+        /// </value>
+        HashSet<PostEffect> PostEffects { get; }
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="technique"></param>

@@ -67,6 +67,13 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public bool IsAttached { private set; get; } = false;
 
+        /// <summary>
+        /// Gets or sets the post effects.
+        /// </summary>
+        /// <value>
+        /// The post effects.
+        /// </value>
+        public HashSet<PostEffect> PostEffects { get; } = new HashSet<PostEffect>();
 
         /// <summary>
         /// The model structure
@@ -90,6 +97,7 @@ namespace HelixToolkit.UWP.Core
             {
                 return;
             }
+            //PostEffects.Add(new PostEffect(DefaultRenderTechniqueNames.PostEffectMeshOutline));
             EffectTechnique = technique;
             IsAttached = OnAttach(technique);
         }

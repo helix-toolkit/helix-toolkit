@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Core2D;
     using HelixToolkit.Logger;
     using System.Linq;
+    using HelixToolkit.Wpf.SharpDX.Core;
 
     /// <summary>
     /// Use to contain shared models for multiple viewports. 
@@ -126,7 +127,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The per frame renderable.
         /// </value>
         public IEnumerable<IRenderable> PerFrameRenderables { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameRenderables : Enumerable.Empty<IRenderable>(); } }
-
+        /// <summary>
+        /// Gets the per frame post effect cores.
+        /// </summary>
+        /// <value>
+        /// The per frame post effect cores.
+        /// </value>
+        public IEnumerable<IRenderCore> PerFramePostEffectCores { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFramePostEffectCores : Enumerable.Empty<IRenderCore>(); } }
         /// <summary>
         /// Handles the change of the effects manager.
         /// </summary>

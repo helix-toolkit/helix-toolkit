@@ -26,7 +26,7 @@ namespace HelixToolkit.UWP
     using Core2D;
     using HelixToolkit.Logger;
     using System.Collections.Generic;
-
+    using Core;
     /// <summary>
     /// 
     /// </summary>
@@ -202,6 +202,13 @@ namespace HelixToolkit.UWP
         /// The per frame renderable.
         /// </value>
         IEnumerable<IRenderable> PerFrameRenderables { get; }
+        /// <summary>
+        /// Gets the per frame post effects cores.
+        /// </summary>
+        /// <value>
+        /// The per frame post effects cores.
+        /// </value>
+        IEnumerable<IRenderCore> PerFramePostEffectCores { get; }
         /// <summary>
         /// Starts the d3 d.
         /// </summary>

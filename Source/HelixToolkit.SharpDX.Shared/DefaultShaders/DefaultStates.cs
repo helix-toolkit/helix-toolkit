@@ -142,6 +142,88 @@ namespace HelixToolkit.UWP.Shaders
                 FailOperation = StencilOperation.Keep
             }
         };
+
+        /// <summary>
+        /// The DSS mesh outline pass1
+        /// </summary>
+        public readonly static DepthStencilStateDescription DSSMeshOutlineP1 = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = false,
+            IsStencilEnabled = true,
+            DepthWriteMask = DepthWriteMask.Zero,
+            DepthComparison = Comparison.Never,
+            StencilWriteMask = 0xFF,
+            StencilReadMask = 0,
+            BackFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Never,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            },
+            FrontFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Replace,
+                Comparison = Comparison.Always,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            }
+        };
+
+        /// <summary>
+        /// The DSS mesh outline pass1
+        /// </summary>
+        public readonly static DepthStencilStateDescription DSSMeshOutlineP2 = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = false,
+            IsStencilEnabled = true,
+            DepthWriteMask = DepthWriteMask.Zero,
+            DepthComparison = Comparison.Never,
+            StencilWriteMask = 0xFF,
+            StencilReadMask = 0,
+            BackFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Never,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            },
+            FrontFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Zero,
+                Comparison = Comparison.Always,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            }
+        };
+
+        /// <summary>
+        /// The DSS clip plane fill quad
+        /// </summary>
+        public readonly static DepthStencilStateDescription DSSOutlineFillQuad = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = false,
+            IsStencilEnabled = true,
+            DepthWriteMask = DepthWriteMask.Zero,
+            DepthComparison = Comparison.Less,
+            FrontFace = new DepthStencilOperationDescription()
+            {
+                FailOperation = StencilOperation.Keep,
+                DepthFailOperation = StencilOperation.Keep,
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Less
+            },
+            BackFace = new DepthStencilOperationDescription()
+            {
+                Comparison = Comparison.Never,
+                FailOperation = StencilOperation.Keep,
+                DepthFailOperation = StencilOperation.Keep,
+                PassOperation = StencilOperation.Keep
+            },
+            StencilReadMask = 0xFF,
+            StencilWriteMask = 0
+        };
+
         /// <summary>
         /// The DSS clip plane fill quad
         /// </summary>
@@ -213,6 +295,18 @@ namespace HelixToolkit.UWP.Shaders
         /// The skybox RasterizerState
         /// </summary>
         public readonly static RasterizerStateDescription RSSkybox = new RasterizerStateDescription()
+        {
+            FillMode = FillMode.Solid,
+            CullMode = CullMode.None,
+            DepthBias = 0,
+            DepthBiasClamp = -10,
+            SlopeScaledDepthBias = +0,
+            IsFrontCounterClockwise = true,
+            IsMultisampleEnabled = false,
+            IsAntialiasedLineEnabled = false,
+        };
+
+        public readonly static RasterizerStateDescription RSOutline = new RasterizerStateDescription()
         {
             FillMode = FillMode.Solid,
             CullMode = CullMode.None,

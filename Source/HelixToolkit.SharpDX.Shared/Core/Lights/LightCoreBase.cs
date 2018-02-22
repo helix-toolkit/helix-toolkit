@@ -93,6 +93,9 @@ namespace HelixToolkit.UWP.Core
         ///   <c>true</c> if this instance is throwing shadow; otherwise, <c>false</c>.
         /// </value>
         public bool IsThrowingShadow { get; set; } = false;
+
+        public HashSet<PostEffect> PostEffects { get; } = new HashSet<PostEffect>();
+
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>

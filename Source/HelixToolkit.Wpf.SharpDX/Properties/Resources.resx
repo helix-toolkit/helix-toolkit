@@ -268,4 +268,10 @@
   <data name="vsBoneSkinningWireframe" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsboneskinningwireframe.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="psDepthStencilOnly" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psdepthstencilonly.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsMeshOutlinePass1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsmeshoutlinepass1.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

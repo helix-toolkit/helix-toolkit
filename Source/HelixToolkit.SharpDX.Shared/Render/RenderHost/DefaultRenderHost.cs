@@ -40,6 +40,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected readonly List<IRenderCore> pendingRenderCores = new List<IRenderCore>();
 
+        /// <summary>
+        /// Gets the per frame post effects cores.
+        /// </summary>
+        /// <value>
+        /// The per frame post effects cores.
+        /// </value>
+        public override IEnumerable<IRenderCore> PerFramePostEffectCores
+        {
+            get { return pendingRenderCores.Where(x => x.PostEffects.Count > 0); }
+        }
+
 
         private Task asyncTask;
         private Task getTriangleCountTask;
