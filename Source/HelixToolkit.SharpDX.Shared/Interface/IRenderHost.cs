@@ -203,12 +203,17 @@ namespace HelixToolkit.UWP
         /// </value>
         IEnumerable<IRenderable> PerFrameRenderables { get; }
         /// <summary>
-        /// Gets the per frame post effects cores.
+        /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameGeneralRenderCores"/>
         /// </summary>
         /// <value>
         /// The per frame post effects cores.
         /// </value>
-        IEnumerable<IRenderCore> PerFramePostEffectCores { get; }
+        IEnumerable<IRenderCore> PerFrameGeneralCoresWithPostEffect { get; }
+        /// <summary>
+        /// Gets the per frame render cores for normal rendering routine. <see cref="RenderType.Normal"/> && <see cref="RenderType.Others"/> && <see cref="RenderType.Particle"/>
+        /// <para>This does not include <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
+        /// </summary>
+        IEnumerable<IRenderCore> PerFrameGeneralRenderCores { get; }
         /// <summary>
         /// Starts the d3 d.
         /// </summary>

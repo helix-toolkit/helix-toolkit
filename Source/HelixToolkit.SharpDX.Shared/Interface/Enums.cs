@@ -9,6 +9,11 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    public enum RenderType
+    {
+        None, Light, PreProc, Normal, Particle, PostProc, ScreenSpaced, Others
+    }
+
     public enum MSAALevel
     {
         Disable = 0, Maximum = 1, Two = 2, Four = 4, Eight = 8

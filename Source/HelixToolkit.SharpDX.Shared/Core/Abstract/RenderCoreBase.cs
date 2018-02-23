@@ -22,6 +22,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public abstract class RenderCoreBase<TModelStruct> : DisposeObject, IRenderCore where TModelStruct : struct
     {
+        #region Properties
         /// <summary>
         /// <see cref="IRenderCore.OnInvalidateRenderer"/>
         /// </summary>
@@ -30,8 +31,13 @@ namespace HelixToolkit.UWP.Core
         /// <see cref="IGUID.GUID"/>
         /// </summary>
         public Guid GUID { get; } = Guid.NewGuid();
-
-        public bool IsEmpty { protected set; get; } = false;
+        /// <summary>
+        /// Gets or sets the type of the render.
+        /// </summary>
+        /// <value>
+        /// The type of the render.
+        /// </value>
+        public RenderType RenderType { private set; get; }
 
         private bool isThrowingShadow = false;
         /// <summary>
@@ -103,7 +109,16 @@ namespace HelixToolkit.UWP.Core
         ///   <c>true</c> if this instance has any post effect; otherwise, <c>false</c>.
         /// </value>
         public bool HasAnyPostEffect { get { return postEffectNames.Count > 0; } }
+        #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RenderCoreBase{TModelStruct}"/> class.
+        /// </summary>
+        /// <param name="renderType">Type of the render.</param>
+        public RenderCoreBase(RenderType renderType)
+        {
+            RenderType = renderType;
+        }
         /// <summary>
         /// Call to attach the render core.
         /// </summary>

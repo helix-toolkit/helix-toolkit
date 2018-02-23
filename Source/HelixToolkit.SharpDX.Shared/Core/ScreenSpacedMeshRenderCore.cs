@@ -202,11 +202,26 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScreenSpacedMeshRenderCore"/> class.
+        /// </summary>
+        public ScreenSpacedMeshRenderCore() : base(RenderType.ScreenSpaced) { }
+
+        /// <summary>
+        /// Gets the model constant buffer description.
+        /// </summary>
+        /// <returns></returns>
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
             return new ConstantBufferDescription(DefaultBufferNames.ModelCB, ModelStruct.SizeInBytes);
         }
 
+        /// <summary>
+        /// Creates the state of the raster.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <param name="force">if set to <c>true</c> [force].</param>
+        /// <returns></returns>
         protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
         {
             if (!IsAttached && !force)
@@ -216,6 +231,11 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
+        /// <summary>
+        /// Called when [attach].
+        /// </summary>
+        /// <param name="technique">The technique.</param>
+        /// <returns></returns>
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if(base.OnAttach(technique))
@@ -229,12 +249,20 @@ namespace HelixToolkit.UWP.Core
                 return false;
             }
         }
-
+        /// <summary>
+        /// Called when [bind raster state].
+        /// </summary>
+        /// <param name="context">The context.</param>
         protected override void OnBindRasterState(DeviceContext context)
         {
             context.Rasterizer.State = rasterState;
         }
-
+        /// <summary>
+        /// Creates the view matrix.
+        /// </summary>
+        /// <param name="renderContext">The render context.</param>
+        /// <param name="eye">The eye.</param>
+        /// <returns></returns>
         protected Matrix CreateViewMatrix(IRenderContext renderContext, out Vector3 eye)
         {
             eye = -renderContext.Camera.LookDirection.Normalized() * CameraDistance;
@@ -247,7 +275,10 @@ namespace HelixToolkit.UWP.Core
                 return Matrix.LookAtLH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
             }
         }
-
+        /// <summary>
+        /// Called when [create projection matrix].
+        /// </summary>
+        /// <param name="scale">The scale.</param>
         protected virtual void OnCreateProjectionMatrix(float scale)
         {
             if (IsPerspective)
@@ -259,7 +290,11 @@ namespace HelixToolkit.UWP.Core
                 projectionMatrix = IsRightHand ? Matrix.OrthoRH(CameraDistance, CameraDistance, 0.1f, 100f) : Matrix.OrthoLH(CameraDistance, CameraDistance, 0.1f, 100f);
             }
         }
-
+        /// <summary>
+        /// Updates the projection matrix.
+        /// </summary>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
         protected void UpdateProjectionMatrix(float width, float height)
         {
             var ratio = width / height;
@@ -271,31 +306,60 @@ namespace HelixToolkit.UWP.Core
                 OnCreateProjectionMatrix(SizeScale);
             }
         }
-
+        /// <summary>
+        /// Called when [update per model structure].
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="context">The context.</param>
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = 0;
         }
-
+        /// <summary>
+        /// Determines whether this instance can render the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can render the specified context; otherwise, <c>false</c>.
+        /// </returns>
         protected override bool CanRender(IRenderContext context)
         {
             return context.ActualWidth > Size && context.ActualHeight > Size;
         }
-
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="renderContext">The render context.</param>
+        /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(IRenderContext renderContext, DeviceContextProxy deviceContext)
         {
             SetScreenSpacedCoordinates(renderContext, deviceContext);
         }
-
+        /// <summary>
+        /// Posts the render.
+        /// </summary>
+        /// <param name="context">The context.</param>
         protected override void PostRender(IRenderContext context)
         {
         }
+
+        /// <summary>
+        /// Sets the screen spaced coordinates.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
         public void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext)
         {
             SetScreenSpacedCoordinates(context, deviceContext, true);
         }
 
+        /// <summary>
+        /// Sets the screen spaced coordinates.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        /// <param name="clearDepthBuffer">if set to <c>true</c> [clear depth buffer].</param>
         protected virtual void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer)
         {
             DepthStencilView dsView;

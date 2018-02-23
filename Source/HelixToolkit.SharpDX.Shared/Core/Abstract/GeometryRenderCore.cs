@@ -164,6 +164,8 @@ namespace HelixToolkit.UWP.Core
                 return shadowPass;
             }
         }
+
+        public GeometryRenderCore() : base(RenderType.Normal) { }
         /// <summary>
         /// 
         /// </summary>

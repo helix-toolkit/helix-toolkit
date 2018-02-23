@@ -391,7 +391,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The post effects render cores.
         /// </value>
-        public abstract IEnumerable<IRenderCore> PerFramePostEffectCores { get; }
+        public abstract IEnumerable<IRenderCore> PerFrameGeneralCoresWithPostEffect { get; }
+        /// <summary>
+        /// Gets the per frame render cores.
+        /// </summary>
+        /// <value>
+        /// The per frame render cores.
+        /// </value>
+        public abstract IEnumerable<IRenderCore> PerFrameGeneralRenderCores { get; }
 
         #region Configuration
         /// <summary>

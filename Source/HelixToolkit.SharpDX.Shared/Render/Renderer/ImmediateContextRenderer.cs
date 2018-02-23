@@ -22,7 +22,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     public class ImmediateContextRenderer : DisposeObject, IRenderer
     {
         private readonly Stack<IEnumerator<IRenderable>> stackCache1 = new Stack<IEnumerator<IRenderable>>(20);
-        private readonly Stack<IEnumerator<IRenderable>> stackCache2 = new Stack<IEnumerator<IRenderable>>(20);
         private readonly Stack<IEnumerator<IRenderable2D>> stack2DCache1 = new Stack<IEnumerator<IRenderable2D>>(20);
         /// <summary>
         /// Gets or sets the immediate context.
@@ -51,7 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             return renderables.PreorderDFT((x) =>
                     {
                         x.Update(context);
-                        return x.IsRenderable && !(x is ILight3D);
+                        return x.IsRenderable;
                     }, stackCache1);
         }
 
@@ -81,8 +80,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (parameter.RenderLight)
             {
                 context.LightScene.LightModels.ResetLightCount();
-                foreach (IRenderable e in renderables.Take(Constants.MaxLights)
-                    .PreorderDFT((x) => x is ILight3D && x.IsRenderable, stackCache2).Take(Constants.MaxLights))
+                foreach (IRenderable e in renderables.Take(Constants.MaxLights))
                 {
                     e.Render(context, ImmediateContext);
                 }
@@ -101,7 +99,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         public virtual void RenderScene(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter)
         {
-            SetRenderTargets(ImmediateContext, ref parameter);
             foreach (var renderable in renderables)
             {
                 renderable.Render(context, ImmediateContext);
@@ -124,11 +121,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="parameter">The parameter.</param>
-        protected void SetRenderTargets(DeviceContext context, ref RenderParameter parameter)
+        public void SetRenderTargets(ref RenderParameter parameter)
         {
-            context.OutputMerger.SetTargets(parameter.DepthStencilView, parameter.RenderTargetView);
-            context.Rasterizer.SetViewport(parameter.ViewportRegion);
-            context.Rasterizer.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top, 
+            ImmediateContext.DeviceContext.OutputMerger.SetTargets(parameter.DepthStencilView, parameter.RenderTargetView);
+            ImmediateContext.DeviceContext.Rasterizer.SetViewport(parameter.ViewportRegion);
+            ImmediateContext.DeviceContext.Rasterizer.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top, 
                 parameter.ScissorRegion.Right, parameter.ScissorRegion.Bottom);
         }
 
@@ -144,6 +141,28 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 e.Render(context);
             }
+        }
+
+        /// <summary>
+        /// Renders the pre proc.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="renderables">The renderables.</param>
+        /// <param name="parameter">The parameter.</param>
+        public virtual void RenderPreProc(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter)
+        {
+            RenderScene(context, renderables, ref parameter);
+        }
+
+        /// <summary>
+        /// Renders the post proc.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="renderables">The renderables.</param>
+        /// <param name="parameter">The parameter.</param>
+        public virtual void RenderPostProc(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter)
+        {
+            RenderScene(context, renderables, ref parameter);
         }
     }
 

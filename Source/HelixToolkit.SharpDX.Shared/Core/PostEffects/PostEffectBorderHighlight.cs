@@ -111,7 +111,7 @@ namespace HelixToolkit.UWP.Core
             Texture2D = new DepthStencilViewDescription.Texture2DResource() {  MipSlice = 0 }
         };
 
-        public PostEffectMeshBorderHighlightCore()
+        public PostEffectMeshBorderHighlightCore() : base(RenderType.PostProc)
         {
             BorderColor = Color.Red;
         }
@@ -182,7 +182,7 @@ namespace HelixToolkit.UWP.Core
             BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, renderTargetDesc.Width, renderTargetDesc.Height);
             // deviceContext.DeviceContext.OutputMerger.SetRenderTargets(depthStencilBuffer, new RenderTargetView[0]);
             context.IsCustomPass = true;
-            foreach (var mesh in context.RenderHost.PerFramePostEffectCores)
+            foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
             {
                 if (mesh.HasPostEffect(EffectName))
                 {

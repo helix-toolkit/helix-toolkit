@@ -21,17 +21,12 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public interface IRenderCore : IGUID, IThrowingShadow
     {
+        RenderType RenderType { get; }
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
         event EventHandler<EventArgs> OnInvalidateRenderer;
-        /// <summary>
-        /// Gets a value indicating whether this instance is empty.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
-        /// </value>
-        bool IsEmpty { get; }
+
         /// <summary>
         /// Gets or sets the model matrix.
         /// </summary>
