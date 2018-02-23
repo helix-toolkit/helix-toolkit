@@ -137,20 +137,10 @@ namespace HelixToolkit.UWP
                         ShaderList = new[]
                         {
                             DefaultVSShaderDescriptions.VSMeshDefault,
-                            DefaultPSShaderDescriptions.PSDepthStencilOnly
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
-                    },
-                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP2)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
-                            DefaultPSShaderDescriptions.PSMeshClipScreenQuad
+                            DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
                     },
                 }
             };
@@ -668,8 +658,8 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSScreenQuad,
-                            DefaultPSShaderDescriptions.PSMeshClipScreenQuad
+                            DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
+                            DefaultPSShaderDescriptions.PSMeshOutlineScreenQuad
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSOutlineFillQuad,
@@ -694,7 +684,7 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSMeshOutlineScreenQuad
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSOutlineFillQuad,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
                         RasterStateDescription = DefaultRasterDescriptions.RSOutline
                     },
                 }

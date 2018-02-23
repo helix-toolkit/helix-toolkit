@@ -319,6 +319,18 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
 
+        public static byte[] PSMeshOutlineScreenQuadStencil
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psMeshOutlineQuadStencil;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -452,6 +464,12 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSMeshOutlineFullScreenBlur = new ShaderDescription(nameof(PSMeshOutlineFullScreenBlur), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshOutlineFullScreenBlur);
+
+        /// <summary>
+        ///
+        /// </summary>
+        public static ShaderDescription PSMeshOutlineQuadStencil = new ShaderDescription(nameof(PSMeshOutlineQuadStencil), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshOutlineScreenQuadStencil);
 #if !NETFX_CORE
         /// <summary>
         /// The ps screen dup

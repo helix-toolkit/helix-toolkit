@@ -6,9 +6,7 @@
 
 float4 main(float4 input : SV_POSITION) : SV_Target
 {
-    //return CrossSectionColors;
-    return float4(0, 0, 1, 1);
-
+    return CrossSectionColors;
 }
 
 #endif

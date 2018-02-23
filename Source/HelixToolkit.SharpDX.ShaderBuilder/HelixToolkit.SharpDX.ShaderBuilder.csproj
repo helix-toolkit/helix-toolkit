@@ -47,6 +47,9 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
+    <PixelShader Include="PS\psMeshOutlineQuadStencil.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
     <PixelShader Include="PS\psDepthStencilOnly.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>

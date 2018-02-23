@@ -283,4 +283,7 @@
   <data name="psMeshOutlineGaussianBlur" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psmeshoutlinegaussianblur.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="psMeshOutlineQuadStencil" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psmeshoutlinequadstencil.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

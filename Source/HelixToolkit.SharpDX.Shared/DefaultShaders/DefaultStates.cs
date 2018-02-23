@@ -202,7 +202,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public readonly static DepthStencilStateDescription DSSOutlineFillQuad = new DepthStencilStateDescription()
         {
-            IsDepthEnabled = true,
+            IsDepthEnabled = false,
             IsStencilEnabled = true,
             DepthWriteMask = DepthWriteMask.Zero,
             DepthComparison = Comparison.Always,
@@ -215,13 +215,13 @@ namespace HelixToolkit.UWP.Shaders
             },
             BackFace = new DepthStencilOperationDescription()
             {
-                Comparison = Comparison.Equal,
+                Comparison = Comparison.Never,
                 FailOperation = StencilOperation.Keep,
                 DepthFailOperation = StencilOperation.Keep,
                 PassOperation = StencilOperation.Keep
             },
             StencilReadMask = 0xFF,
-            StencilWriteMask = 0xFF
+            StencilWriteMask = 0
         };
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace HelixToolkit.UWP.Shaders
         public readonly static RasterizerStateDescription RSOutline = new RasterizerStateDescription()
         {
             FillMode = FillMode.Solid,
-            CullMode = CullMode.Back,
+            CullMode = CullMode.None,
             DepthBias = 0,
             DepthBiasClamp = -10,
             SlopeScaledDepthBias = +0,

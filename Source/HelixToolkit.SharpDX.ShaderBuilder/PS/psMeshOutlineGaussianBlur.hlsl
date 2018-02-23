@@ -20,11 +20,11 @@ float4 main(MeshOutlinePS_INPUT input) : SV_Target
         a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, 0)) * weight[i]).a;
         a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, 0)) * weight[i]).a;
 
-        //a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, offY)) * weight[i]).a;
-        //a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, offY)) * weight[i]).a;
-        //a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, -offY)) * weight[i]).a;
-        //a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, -offY)) * weight[i]).a;
+        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, offY)) * weight[i]).a;
+        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, offY)) * weight[i]).a;
+        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, -offY)) * weight[i]).a;
+        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, -offY)) * weight[i]).a;
     }
-    return float4(wireframeColor.xyz, a);
+    return float4(CrossSectionColors.xyz, a);
 
 }
