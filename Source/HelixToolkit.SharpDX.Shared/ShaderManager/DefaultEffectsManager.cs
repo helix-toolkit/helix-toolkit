@@ -681,7 +681,7 @@ namespace HelixToolkit.UWP
                         ShaderList = new[]
                         {
                             DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
-                            DefaultPSShaderDescriptions.PSMeshOutlineScreenQuad
+                            DefaultPSShaderDescriptions.PSMeshOutlineQuadFinal
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,

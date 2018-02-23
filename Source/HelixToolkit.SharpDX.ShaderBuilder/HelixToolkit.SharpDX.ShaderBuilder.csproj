@@ -71,6 +71,9 @@
     <Content Include="Common\CommonBuffers.hlsl" />
     <Content Include="Common\Common.hlsl" />
     <Content Include="Common\DataStructs.hlsl" />
+    <PixelShader Include="PS\psMeshOutlineQualFinal.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
     <PixelShader Include="PS\psMeshOutlineGaussianBlur.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>

@@ -7,24 +7,23 @@ static const float scale = 1;
 
 float4 main(MeshOutlinePS_INPUT input) : SV_Target
 {
-    float4 color = texDiffuseMap.Sample(samplerDiffuse, input.Tex) * weight[0];
-    float a = color.a;
+    float a = texDiffuseMap.Sample(samplerDiffuse, input.Tex).r * weight[0];
     [unroll]
     for (int i = 1; i < 5; ++i)
     {
         float off = offset[i];
         float offX = off / vViewport.x * scale;
         float offY = off / vViewport.y * scale;
-        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(0, offY)) * weight[i]).a;
-        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(0, offY)) * weight[i]).a;
-        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, 0)) * weight[i]).a;
-        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, 0)) * weight[i]).a;
+        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(0, offY)).r * weight[i]);
+        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(0, offY)).r * weight[i]);
+        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, 0)).r * weight[i]);
+        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, 0)).r * weight[i]);
 
-        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, offY)) * weight[i]).a;
-        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, offY)) * weight[i]).a;
-        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, -offY)) * weight[i]).a;
-        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, -offY)) * weight[i]).a;
+        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, offY)).r * weight[i]);
+        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, offY)).r * weight[i]);
+        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, -offY)).r * weight[i]);
+        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, -offY)).r * weight[i]);
     }
-    return float4(CrossSectionColors.xyz, a);
+    return float4(a, 1, 1, 1);
 
 }

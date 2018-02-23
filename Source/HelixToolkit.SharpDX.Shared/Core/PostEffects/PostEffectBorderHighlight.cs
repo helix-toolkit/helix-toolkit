@@ -64,12 +64,12 @@ namespace HelixToolkit.UWP.Core
 
         private SamplerState sampler;
 
-        private const int downSamplingScale = 2;
+        private const int downSamplingScale = 1;
 
         private Texture2DDescription renderTargetDesc = new Texture2DDescription()
         {
             BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-            CpuAccessFlags = CpuAccessFlags.None, Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
+            CpuAccessFlags = CpuAccessFlags.None, Format = global::SharpDX.DXGI.Format.R32_Float,
             Usage = ResourceUsage.Default, ArraySize = 1, MipLevels = 1, OptionFlags = ResourceOptionFlags.None,
             SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0)
         };
@@ -88,7 +88,8 @@ namespace HelixToolkit.UWP.Core
 
         private ShaderResourceViewDescription targetResourceViewDesc = new ShaderResourceViewDescription()
         {
-            Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm, Dimension = ShaderResourceViewDimension.Texture2D,
+            Format = global::SharpDX.DXGI.Format.R32_Float,
+            Dimension = ShaderResourceViewDimension.Texture2D,
             Texture2D = new ShaderResourceViewDescription.Texture2DResource()
             {
                 MipLevels = 1,
@@ -98,7 +99,7 @@ namespace HelixToolkit.UWP.Core
 
         private RenderTargetViewDescription renderTargetViewDesc = new RenderTargetViewDescription()
         {
-            Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm, Dimension = RenderTargetViewDimension.Texture2D,
+            Format = global::SharpDX.DXGI.Format.R32_Float, Dimension = RenderTargetViewDimension.Texture2D,
             Texture2D = new RenderTargetViewDescription.Texture2DResource() {  MipSlice = 0 }
         };
 

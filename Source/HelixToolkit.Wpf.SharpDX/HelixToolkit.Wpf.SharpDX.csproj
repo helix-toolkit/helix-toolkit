@@ -316,6 +316,7 @@
     <None Include="Resources\psMeshOutlineGaussianBlur.cso" />
     <None Include="Resources\psMeshOutlineQuad.cso" />
     <None Include="Resources\psMeshOutlineQuadStencil.cso" />
+    <None Include="Resources\psMeshOutlineQualFinal.cso" />
     <None Include="Resources\psMeshXRay.cso" />
     <None Include="Resources\psNormals.cso" />
     <None Include="Resources\psParticle.cso" />
