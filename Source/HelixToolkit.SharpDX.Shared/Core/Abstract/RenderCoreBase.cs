@@ -73,7 +73,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The post effects.
         /// </value>
-        public HashSet<PostEffect> PostEffects { get; } = new HashSet<PostEffect>();
+        private readonly HashSet<string> postEffectNames = new HashSet<string>();
 
         /// <summary>
         /// The model structure
@@ -86,6 +86,23 @@ namespace HelixToolkit.UWP.Core
         /// The model cb.
         /// </value>
         protected IConstantBufferProxy modelCB { private set; get; }
+        /// <summary>
+        /// Gets the post effect names.
+        /// </summary>
+        /// <value>
+        /// The post effect names.
+        /// </value>
+        IEnumerable<string> IRenderCore.PostEffectNames
+        {
+            get { return postEffectNames; }
+        }
+        /// <summary>
+        /// Gets a value indicating whether this instance has any post effect.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has any post effect; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasAnyPostEffect { get { return postEffectNames.Count > 0; } }
 
         /// <summary>
         /// Call to attach the render core.
@@ -97,7 +114,6 @@ namespace HelixToolkit.UWP.Core
             {
                 return;
             }
-            //PostEffects.Add(new PostEffect(DefaultRenderTechniqueNames.PostEffectMeshOutline));
             EffectTechnique = technique;
             IsAttached = OnAttach(technique);
         }
@@ -290,5 +306,51 @@ namespace HelixToolkit.UWP.Core
             InvalidateRenderer();
             return true;
         }
+
+
+
+        #region POST EFFECT        
+        /// <summary>
+        /// Adds the post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        public void AddPostEffect(string effectName)
+        {
+            if (postEffectNames.Add(effectName))
+            {
+                InvalidateRenderer();
+            }
+        }
+        /// <summary>
+        /// Removes the post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        public void RemovePostEffect(string effectName)
+        {
+            if (postEffectNames.Remove(effectName))
+            {
+                InvalidateRenderer();
+            }
+        }
+        /// <summary>
+        /// Determines whether [has post effect] [the specified effect name].
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        /// <returns>
+        ///   <c>true</c> if [has post effect] [the specified effect name]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasPostEffect(string effectName)
+        {
+            return postEffectNames.Contains(effectName);
+        }
+        /// <summary>
+        /// Clears the post effect.
+        /// </summary>
+        public void ClearPostEffect()
+        {
+            postEffectNames.Clear();
+            InvalidateRenderer();
+        }
+        #endregion
     }
 }

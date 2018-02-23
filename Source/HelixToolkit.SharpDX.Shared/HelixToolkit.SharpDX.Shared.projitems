@@ -134,7 +134,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Vector2Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Vector3Collection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\PostEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11RenderBufferBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11SwapChainRenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\Renderer\ImmediateContextRenderer.cs" />

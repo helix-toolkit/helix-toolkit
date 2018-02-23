@@ -308,4 +308,11 @@ struct ScreenDupVS_INPUT
     float4 Pos : SV_POSITION;
     float2 Tex : TEXCOORD0;
 };
+
+struct MeshOutlinePS_INPUT
+{
+    float4 Pos : SV_POSITION;
+    noperspective
+    float2 Tex : TEXCOORD0;
+};
 #endif

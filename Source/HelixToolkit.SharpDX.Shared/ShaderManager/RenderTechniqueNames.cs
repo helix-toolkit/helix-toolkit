@@ -126,6 +126,11 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
+        public const string MeshOutlineBlur = "RenderMeshOutlineBlur";
+
+        /// <summary>
+        /// 
+        /// </summary>
         public const string MeshOutlineP1 = "RenderMeshOutlineP1";
 
         /// <summary>

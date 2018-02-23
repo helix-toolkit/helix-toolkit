@@ -295,6 +295,30 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
 
+        public static byte[] PSMeshOutlineScreenQuad
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psMeshOutlineQuad;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
+        public static byte[] PSMeshOutlineFullScreenBlur
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psMeshOutlineGaussianBlur;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -416,6 +440,18 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSDepthStencilOnly = new ShaderDescription(nameof(PSDepthStencilOnly), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSDepthStencilTestOnly);
+
+        /// <summary>
+        ///
+        /// </summary>
+        public static ShaderDescription PSMeshOutlineScreenQuad = new ShaderDescription(nameof(PSMeshOutlineScreenQuad), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshOutlineScreenQuad);
+
+        /// <summary>
+        ///
+        /// </summary>
+        public static ShaderDescription PSMeshOutlineFullScreenBlur = new ShaderDescription(nameof(PSMeshOutlineFullScreenBlur), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshOutlineFullScreenBlur);
 #if !NETFX_CORE
         /// <summary>
         /// The ps screen dup

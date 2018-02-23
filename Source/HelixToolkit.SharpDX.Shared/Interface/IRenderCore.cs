@@ -58,12 +58,41 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         bool IsAttached { get; }
         /// <summary>
-        /// Gets the post effects for this model.
+        /// Gets the post effect name collections for this model.
         /// </summary>
         /// <value>
-        /// The post effects.
+        /// The post effect names
         /// </value>
-        HashSet<PostEffect> PostEffects { get; }
+        IEnumerable<string> PostEffectNames { get; }
+        /// <summary>
+        /// Gets a value indicating whether this instance has any post effect.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has any post effect; otherwise, <c>false</c>.
+        /// </value>
+        bool HasAnyPostEffect { get; }
+        /// <summary>
+        /// Adds the post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        void AddPostEffect(string effectName);
+        /// <summary>
+        /// Removes the post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        void RemovePostEffect(string effectName);
+        /// <summary>
+        /// Determines whether [has post effect] [the specified effect name].
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        /// <returns>
+        ///   <c>true</c> if [has post effect] [the specified effect name]; otherwise, <c>false</c>.
+        /// </returns>
+        bool HasPostEffect(string effectName);
+        /// <summary>
+        /// Clears the post effect.
+        /// </summary>
+        void ClearPostEffect();
         /// <summary>
         /// 
         /// </summary>

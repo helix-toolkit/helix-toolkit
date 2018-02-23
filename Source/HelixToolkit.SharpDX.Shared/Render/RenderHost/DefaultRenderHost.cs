@@ -48,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public override IEnumerable<IRenderCore> PerFramePostEffectCores
         {
-            get { return pendingRenderCores.Where(x => x.PostEffects.Count > 0); }
+            get { return pendingRenderCores.Where(x => x.HasAnyPostEffect); }
         }
 
 

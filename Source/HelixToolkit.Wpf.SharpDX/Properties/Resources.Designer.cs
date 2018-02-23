@@ -253,6 +253,26 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psMeshOutlineGaussianBlur {
+            get {
+                object obj = ResourceManager.GetObject("psMeshOutlineGaussianBlur", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psMeshOutlineQuad {
+            get {
+                object obj = ResourceManager.GetObject("psMeshOutlineQuad", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psMeshXRay {
             get {
                 object obj = ResourceManager.GetObject("psMeshXRay", resourceCulture);
@@ -486,6 +506,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] vsMeshOutlinePass1 {
             get {
                 object obj = ResourceManager.GetObject("vsMeshOutlinePass1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshOutlineScreenQuad {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshOutlineScreenQuad", resourceCulture);
                 return ((byte[])(obj));
             }
         }

@@ -299,6 +299,22 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSMeshOutlineScreenQuad
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsMeshOutlineScreenQuad;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -592,6 +608,11 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs mesh outline pass1
         /// </summary>
         public static ShaderDescription VSMeshOutlinePass1 = new ShaderDescription(nameof(VSMeshOutlinePass1), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshOutlineP1);
+
+        /// <summary>
+        /// The vs mesh outline pass1
+        /// </summary>
+        public static ShaderDescription VSMeshOutlineScreenQuad = new ShaderDescription(nameof(VSMeshOutlineScreenQuad), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshOutlineScreenQuad);
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

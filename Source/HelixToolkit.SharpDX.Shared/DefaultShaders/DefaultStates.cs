@@ -151,7 +151,7 @@ namespace HelixToolkit.UWP.Shaders
             IsDepthEnabled = false,
             IsStencilEnabled = true,
             DepthWriteMask = DepthWriteMask.Zero,
-            DepthComparison = Comparison.Never,
+            DepthComparison = Comparison.Always,
             StencilWriteMask = 0xFF,
             StencilReadMask = 0,
             BackFace = new DepthStencilOperationDescription()
@@ -176,10 +176,10 @@ namespace HelixToolkit.UWP.Shaders
         public readonly static DepthStencilStateDescription DSSMeshOutlineP2 = new DepthStencilStateDescription()
         {
             IsDepthEnabled = false,
-            IsStencilEnabled = true,
+            IsStencilEnabled = false,
             DepthWriteMask = DepthWriteMask.Zero,
-            DepthComparison = Comparison.Never,
-            StencilWriteMask = 0xFF,
+            DepthComparison = Comparison.Always,
+            StencilWriteMask = 0,
             StencilReadMask = 0,
             BackFace = new DepthStencilOperationDescription()
             {
@@ -191,7 +191,7 @@ namespace HelixToolkit.UWP.Shaders
             FrontFace = new DepthStencilOperationDescription()
             {
                 PassOperation = StencilOperation.Zero,
-                Comparison = Comparison.Always,
+                Comparison = Comparison.Never,
                 DepthFailOperation = StencilOperation.Keep,
                 FailOperation = StencilOperation.Keep
             }
@@ -202,26 +202,26 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public readonly static DepthStencilStateDescription DSSOutlineFillQuad = new DepthStencilStateDescription()
         {
-            IsDepthEnabled = false,
+            IsDepthEnabled = true,
             IsStencilEnabled = true,
             DepthWriteMask = DepthWriteMask.Zero,
-            DepthComparison = Comparison.Less,
+            DepthComparison = Comparison.Always,
             FrontFace = new DepthStencilOperationDescription()
             {
                 FailOperation = StencilOperation.Keep,
                 DepthFailOperation = StencilOperation.Keep,
                 PassOperation = StencilOperation.Keep,
-                Comparison = Comparison.Less
+                Comparison = Comparison.Equal
             },
             BackFace = new DepthStencilOperationDescription()
             {
-                Comparison = Comparison.Never,
+                Comparison = Comparison.Equal,
                 FailOperation = StencilOperation.Keep,
                 DepthFailOperation = StencilOperation.Keep,
                 PassOperation = StencilOperation.Keep
             },
             StencilReadMask = 0xFF,
-            StencilWriteMask = 0
+            StencilWriteMask = 0xFF
         };
 
         /// <summary>
@@ -267,7 +267,23 @@ namespace HelixToolkit.UWP.Shaders
             IsDepthEnabled = false,
             IsStencilEnabled = false,
             DepthWriteMask = DepthWriteMask.Zero,
-            DepthComparison = Comparison.Always
+            DepthComparison = Comparison.Always,
+            FrontFace = new DepthStencilOperationDescription()
+            {
+                FailOperation = StencilOperation.Keep,
+                DepthFailOperation = StencilOperation.Keep,
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Always
+            },
+            BackFace = new DepthStencilOperationDescription()
+            {
+                Comparison = Comparison.Always,
+                FailOperation = StencilOperation.Keep,
+                DepthFailOperation = StencilOperation.Keep,
+                PassOperation = StencilOperation.Keep
+            },
+            StencilReadMask = 0,
+            StencilWriteMask = 0
         };
     }
 
@@ -309,7 +325,7 @@ namespace HelixToolkit.UWP.Shaders
         public readonly static RasterizerStateDescription RSOutline = new RasterizerStateDescription()
         {
             FillMode = FillMode.Solid,
-            CullMode = CullMode.None,
+            CullMode = CullMode.Back,
             DepthBias = 0,
             DepthBiasClamp = -10,
             SlopeScaledDepthBias = +0,

@@ -276,7 +276,6 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRenderCustom(IRenderContext context, DeviceContextProxy deviceContext, IShaderPass shaderPass)
         {
-            shaderPass.BindShader(deviceContext);
             OnDraw(deviceContext, InstanceBuffer);
         }
     }
