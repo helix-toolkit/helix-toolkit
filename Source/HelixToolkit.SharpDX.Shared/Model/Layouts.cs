@@ -349,6 +349,15 @@ namespace HelixToolkit.Wpf.SharpDX
         public Matrix CrossPlaneParams;
         public const int SizeInBytes = 4 * (4 * 2 + 4 * 4);
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct BorderEffectStruct
+    {
+        public Color4 Color;
+        public Vector4 Param;
+
+        public const int SizeInBytes = 4 * (4 * 2);
+    }
 #if !NETFX_CORE
     /// <summary>
     /// 

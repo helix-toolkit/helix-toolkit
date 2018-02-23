@@ -17,34 +17,102 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     using Render;
     using Shaders;
-    public class PostEffectMeshBorderHighlightCore : RenderCoreBase<ClipPlaneStruct>
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IPostEffectBorderHighlight
     {
+        /// <summary>
+        /// Gets or sets the name of the effect.
+        /// </summary>
+        /// <value>
+        /// The name of the effect.
+        /// </value>
+        string EffectName { set; get; }
+        /// <summary>
+        /// Gets or sets the color of the border.
+        /// </summary>
+        /// <value>
+        /// The color of the border.
+        /// </value>
+        Color4 BorderColor { set; get; }
+        /// <summary>
+        /// Gets or sets the scale x.
+        /// </summary>
+        /// <value>
+        /// The scale x.
+        /// </value>
+        float ScaleX { set; get; }
+        /// <summary>
+        /// Gets or sets the scale y.
+        /// </summary>
+        /// <value>
+        /// The scale y.
+        /// </value>
+        float ScaleY { set; get; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public class PostEffectMeshBorderHighlightCore : RenderCoreBase<BorderEffectStruct>, IPostEffectBorderHighlight
+    {
+        /// <summary>
+        /// Gets or sets the name of the effect.
+        /// </summary>
+        /// <value>
+        /// The name of the effect.
+        /// </value>
         public string EffectName
         {
             set; get;
         } = DefaultRenderTechniqueNames.PostEffectMeshOutline;
-
-        private IList<MeshRenderCore> meshes;
-        public IList<MeshRenderCore> Meshes
-        {
-            set
-            {
-                SetAffectsRender(ref meshes, value);
-            }
-            get
-            {
-                return meshes;
-            }
-        }
-
+        /// <summary>
+        /// Gets or sets the color of the border.
+        /// </summary>
+        /// <value>
+        /// The color of the border.
+        /// </value>
         public Color4 BorderColor
         {
             set
             {
-                SetAffectsRender(ref modelStruct.CrossSectionColors, value);
+                SetAffectsRender(ref modelStruct.Color, value);
             }
-            get { return modelStruct.CrossSectionColors.ToColor4(); }
+            get { return modelStruct.Color; }
         }
+
+        private float scaleX = 1;
+        /// <summary>
+        /// Gets or sets the scale x.
+        /// </summary>
+        /// <value>
+        /// The scale x.
+        /// </value>
+        public float ScaleX
+        {
+            set
+            {
+                SetAffectsRender(ref scaleX, value);
+            }
+            get { return scaleX; }
+        }
+
+        private float scaleY = 1;
+        /// <summary>
+        /// Gets or sets the scale y.
+        /// </summary>
+        /// <value>
+        /// The scale y.
+        /// </value>
+        public float ScaleY
+        {
+            set
+            {
+                SetAffectsRender(ref scaleY, value);
+            }
+            get { return scaleY; }
+        }
+
 
         private IShaderPass screenQuadPass;
 
@@ -118,7 +186,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
-            return new ConstantBufferDescription(DefaultBufferNames.ClipParamsCB, ClipPlaneStruct.SizeInBytes);
+            return new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes);
         }
 
         protected override bool OnAttach(IRenderTechnique technique)
@@ -141,7 +209,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override bool CanRender(IRenderContext context)
         {
-            return true;
+            return !string.IsNullOrEmpty(EffectName);
         }
 
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
@@ -246,9 +314,10 @@ namespace HelixToolkit.UWP.Core
             context.Rasterizer.SetScissorRectangle(0, 0, width, height);
         }
 
-        protected override void OnUpdatePerModelStruct(ref ClipPlaneStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, IRenderContext context)
         {
-            
+            model.Param.X = scaleX;
+            model.Param.Y = ScaleY;
         }
 
         protected override void OnRenderCustom(IRenderContext context, DeviceContextProxy deviceContext, IShaderPass shaderPass)

@@ -136,7 +136,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultVSShaderDescriptions.VSMeshWireframe,
                             DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
@@ -341,7 +341,17 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
-                    }
+                    },
+                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshWireframe,
+                            DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
+                    },
                 }
             };
 
@@ -409,7 +419,17 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
-                    }
+                    },
+                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshWireframe,
+                            DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
+                    },
                 }
             };
 
@@ -459,7 +479,17 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
-                    }
+                    },
+                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSBoneSkinningWireframe,
+                            DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
+                    },
                 }
             };
 
@@ -478,7 +508,17 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
-                    }
+                    },
+                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSPoint,
+                            DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
+                    },
                 }
             };
 
@@ -508,7 +548,17 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
-                    }
+                    },
+                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSPoint,
+                            DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
+                    },
                 }
             };
 
@@ -527,7 +577,18 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
-                    }
+                    },
+                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSBillboardText,
+                            DefaultGSShaderDescriptions.GSBillboard,
+                            DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
+                    },
                 }
             };
             var renderBillboardInstancing = new TechniqueDescription(DefaultRenderTechniqueNames.BillboardInstancing)
@@ -545,7 +606,18 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
-                    }
+                    },
+                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSBillboardInstancing,
+                            DefaultGSShaderDescriptions.GSBillboard,
+                            DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
+                    },
                 }
             };
 
@@ -593,7 +665,17 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
-                    }
+                    },
+                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshWireframe,
+                            DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
+                    },
                 }
             };
 
