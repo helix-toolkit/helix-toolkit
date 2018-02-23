@@ -1026,16 +1026,16 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <inheritdoc/>
-        protected override void OnPreviewMouseUp(MouseButtonEventArgs e)
+        protected override void OnMouseUp(MouseButtonEventArgs e)
         {
-            base.OnPreviewMouseUp(e);
+            base.OnMouseUp(e);
             this.MouseUpHitTest(e.GetPosition(this), e);
         }
 
         /// <inheritdoc/>
-        protected override void OnPreviewTouchUp(TouchEventArgs e)
+        protected override void OnTouchUp(TouchEventArgs e)
         {
-            base.OnPreviewTouchUp(e);
+            base.OnTouchUp(e);
             if (this.touchDownDevice == e.TouchDevice)
             {
                 this.touchDownDevice = null;
@@ -1717,6 +1717,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseUpHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
+            Mouse.Capture(this, CaptureMode.None);
             if (currentHit2D != null)
             {
                 if (currentHit2D.ModelHit is Element2D element)
@@ -1724,11 +1725,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     element.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseUp2DEvent, currentHit2D.ModelHit, currentHit2D, pt, this, originalInputEventArgs));
                 }
                 currentHit2D = null;
-            }
-
+            }           
             if (this.currentHit != null)
-            {
-                Mouse.Capture(this, CaptureMode.None);
+            {               
                 (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
                     new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                 this.currentHit = null;
