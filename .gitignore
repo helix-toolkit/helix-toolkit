@@ -202,4 +202,5 @@ FakesAssemblies/
 /Source/HelixToolkit.SharpDX.Shared/Shaders/_Tessellation.bfx
 /Source/HelixToolkit.SharpDX.Shared/Shaders/_deferred.bfx
 /Source/HelixToolkit.SharpDX.Shared/Shaders/_default.bfx
+/Source/HelixToolkit.Wpf.SharpDX/Resources/*.cso
 /Source/.vs/
