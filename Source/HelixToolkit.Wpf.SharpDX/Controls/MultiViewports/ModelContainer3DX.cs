@@ -133,7 +133,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The per frame post effect cores.
         /// </value>
-        public IEnumerable<IRenderCore> PerFramePostEffectCores { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFramePostEffectCores : Enumerable.Empty<IRenderCore>(); } }
+        public IEnumerable<IRenderCore> PerFrameGeneralCoresWithPostEffect { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralCoresWithPostEffect : Enumerable.Empty<IRenderCore>(); } }
+        /// <summary>
+        /// Gets the per frame general render cores.
+        /// </summary>
+        /// <value>
+        /// The per frame general render cores.
+        /// </value>
+        public IEnumerable<IRenderCore> PerFrameGeneralRenderCores { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralRenderCores : Enumerable.Empty<IRenderCore>(); } }
+
         /// <summary>
         /// Handles the change of the effects manager.
         /// </summary>
@@ -425,6 +433,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The render configuration.
         /// </value>
         public DX11RenderHostConfiguration RenderConfiguration { set; get; }
+
         /// <summary>
         /// Attaches the specified host.
         /// </summary>
