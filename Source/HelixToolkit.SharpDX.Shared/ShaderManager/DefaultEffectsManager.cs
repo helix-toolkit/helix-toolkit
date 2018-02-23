@@ -514,6 +514,7 @@ namespace HelixToolkit.UWP
                         ShaderList = new[]
                         {
                             DefaultVSShaderDescriptions.VSPoint,
+                            DefaultGSShaderDescriptions.GSPoint,
                             DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
@@ -554,6 +555,7 @@ namespace HelixToolkit.UWP
                         ShaderList = new[]
                         {
                             DefaultVSShaderDescriptions.VSPoint,
+                            DefaultGSShaderDescriptions.GSLine,
                             DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
@@ -578,17 +580,6 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
                     },
-                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSBillboardText,
-                            DefaultGSShaderDescriptions.GSBillboard,
-                            DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
-                    },
                 }
             };
             var renderBillboardInstancing = new TechniqueDescription(DefaultRenderTechniqueNames.BillboardInstancing)
@@ -606,18 +597,7 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
-                    },
-                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSBillboardInstancing,
-                            DefaultGSShaderDescriptions.GSBillboard,
-                            DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
-                    },
+                    },                    
                 }
             };
 
