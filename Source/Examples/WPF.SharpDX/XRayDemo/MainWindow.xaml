@@ -48,26 +48,23 @@
                 CullMode="Back"
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}" />
-            <hx:XRayMeshGeometryModel3D
+            <hx:MeshGeometryModel3D
                 x:Name="model"
                 CullMode="Back"
-                EnableOutline="True"
                 Geometry="{Binding Model}"
                 Instances="{Binding Instances}"
                 Material="{Binding ModelMaterial}"
-                OutlineColor="Orange"
+                PostEffects="xray"
                 Transform="{Binding ModelTransform}" />
 
-            <hx:OutLineMeshGeometryModel3D
+            <hx:MeshGeometryModel3D
                 CullMode="Back"
-                EnableOutline="True"
                 Geometry="{Binding Model}"
                 Instances="{Binding OutlineInstances}"
-                IsDrawGeometry="{Binding ElementName=model, Path=IsDrawGeometry}"
                 Material="{Binding ModelMaterial}"
-                OutlineColor="{Binding ElementName=model, Path=OutlineColor}"
-                OutlineFadingFactor="{Binding ElementName=model, Path=OutlineFadingFactor}"
                 Transform="{Binding ModelTransform}" />
+
+            <hx:PostEffectMeshXRay x:Name="xrayEffect" EffectName="xray" />
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"
@@ -75,17 +72,11 @@
             Orientation="Vertical"
             TextBlock.Foreground="White">
             <Label Foreground="White">X Ray Color:</Label>
-            <pt:ColorPicker Margin="4" SelectedColor="{Binding ElementName=model, Path=OutlineColor}" />
-            <CheckBox
-                Margin="4"
-                Foreground="White"
-                IsChecked="{Binding ElementName=model, Path=IsDrawGeometry}">
-                Draw Geometry
-            </CheckBox>
+            <pt:ColorPicker Margin="4" SelectedColor="{Binding ElementName=xrayEffect, Path=OutlineColor}" />
             <Slider
                 Maximum="4"
                 Minimum="1"
-                Value="{Binding ElementName=model, Path=OutlineFadingFactor}" />
+                Value="{Binding ElementName=xrayEffect, Path=OutlineFadingFactor}" />
         </StackPanel>
     </Grid>
 </Window>
