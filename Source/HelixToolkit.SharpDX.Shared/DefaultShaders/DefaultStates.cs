@@ -173,13 +173,13 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// The DSS mesh outline pass1
         /// </summary>
-        public readonly static DepthStencilStateDescription DSSMeshOutlineP2 = new DepthStencilStateDescription()
+        public readonly static DepthStencilStateDescription DSSEffectMeshXRayP1 = new DepthStencilStateDescription()
         {
             IsDepthEnabled = false,
-            IsStencilEnabled = false,
+            IsStencilEnabled = true,
             DepthWriteMask = DepthWriteMask.Zero,
             DepthComparison = Comparison.Always,
-            StencilWriteMask = 0,
+            StencilWriteMask = 0xFF,
             StencilReadMask = 0,
             BackFace = new DepthStencilOperationDescription()
             {
@@ -190,13 +190,38 @@ namespace HelixToolkit.UWP.Shaders
             },
             FrontFace = new DepthStencilOperationDescription()
             {
-                PassOperation = StencilOperation.Zero,
-                Comparison = Comparison.Never,
+                PassOperation = StencilOperation.Increment,
+                Comparison = Comparison.Always,
                 DepthFailOperation = StencilOperation.Keep,
                 FailOperation = StencilOperation.Keep
             }
         };
-
+        /// <summary>
+        /// The DSS mesh outline pass1
+        /// </summary>
+        public readonly static DepthStencilStateDescription DSSEffectMeshXRayP2 = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = true,
+            IsStencilEnabled = true,
+            DepthWriteMask = DepthWriteMask.Zero,
+            DepthComparison = Comparison.Greater,
+            StencilWriteMask = 0,
+            StencilReadMask = 0xFF,
+            BackFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Never,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            },
+            FrontFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Equal,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            }
+        };
         /// <summary>
         /// The DSS clip plane fill quad
         /// </summary>
