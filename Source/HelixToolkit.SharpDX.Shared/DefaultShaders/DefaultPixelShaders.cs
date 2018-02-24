@@ -294,55 +294,91 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
-
-        public static byte[] PSMeshOutlineScreenQuad
+        /// <summary>
+        /// Gets the ps mesh outline screen quad.
+        /// </summary>
+        /// <value>
+        /// The ps mesh outline screen quad.
+        /// </value>
+        public static byte[] PSEffectOutlineScreenQuad
         {
             get
             {
 #if !NETFX_CORE
-                return Properties.Resources.psMeshOutlineQuad;
+                return Properties.Resources.psEffectOutlineQuad;
 #else
                 throw new NotImplementedException();
 #endif
             }
         }
-
-        public static byte[] PSMeshOutlineFullScreenBlur
+        /// <summary>
+        /// Gets the ps mesh outline full screen blur.
+        /// </summary>
+        /// <value>
+        /// The ps mesh outline full screen blur.
+        /// </value>
+        public static byte[] PSEffectOutlineFullScreenBlur
         {
             get
             {
 #if !NETFX_CORE
-                return Properties.Resources.psMeshOutlineGaussianBlur;
+                return Properties.Resources.psEffectOutlineGaussianBlur;
 #else
                 throw new NotImplementedException();
 #endif
             }
         }
-
-        public static byte[] PSMeshOutlineScreenQuadStencil
+        /// <summary>
+        /// Gets the ps mesh outline screen quad stencil.
+        /// </summary>
+        /// <value>
+        /// The ps mesh outline screen quad stencil.
+        /// </value>
+        public static byte[] PSEffectOutlineScreenQuadStencil
         {
             get
             {
 #if !NETFX_CORE
-                return Properties.Resources.psMeshOutlineQuadStencil;
+                return Properties.Resources.psEffectOutlineQuadStencil;
 #else
                 throw new NotImplementedException();
 #endif
             }
         }
-
-        public static byte[] PSMeshOutlineQuadFinal
+        /// <summary>
+        /// Gets the ps mesh outline quad final.
+        /// </summary>
+        /// <value>
+        /// The ps mesh outline quad final.
+        /// </value>
+        public static byte[] PSEffectOutlineQuadFinal
         {
             get
             {
 #if !NETFX_CORE
-                return Properties.Resources.psMeshOutlineQualFinal;
+                return Properties.Resources.psEffectOutlineQualFinal;
 #else
                 throw new NotImplementedException();
 #endif
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value>
+        /// The ps mesh outline quad final.
+        /// </value>
+        public static byte[] PSEffectMeshXRay
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psEffectMeshXRay;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -469,25 +505,31 @@ namespace HelixToolkit.UWP.Shaders
         ///
         /// </summary>
         public static ShaderDescription PSMeshOutlineScreenQuad = new ShaderDescription(nameof(PSMeshOutlineScreenQuad), ShaderStage.Pixel, new ShaderReflector(),
-            DefaultPSShaderByteCodes.PSMeshOutlineScreenQuad);
+            DefaultPSShaderByteCodes.PSEffectOutlineScreenQuad);
 
         /// <summary>
         ///
         /// </summary>
         public static ShaderDescription PSMeshOutlineFullScreenBlur = new ShaderDescription(nameof(PSMeshOutlineFullScreenBlur), ShaderStage.Pixel, new ShaderReflector(),
-            DefaultPSShaderByteCodes.PSMeshOutlineFullScreenBlur);
+            DefaultPSShaderByteCodes.PSEffectOutlineFullScreenBlur);
 
         /// <summary>
         ///
         /// </summary>
         public static ShaderDescription PSMeshOutlineQuadStencil = new ShaderDescription(nameof(PSMeshOutlineQuadStencil), ShaderStage.Pixel, new ShaderReflector(),
-            DefaultPSShaderByteCodes.PSMeshOutlineScreenQuadStencil);
+            DefaultPSShaderByteCodes.PSEffectOutlineScreenQuadStencil);
 
         /// <summary>
         ///
         /// </summary>
         public static ShaderDescription PSMeshOutlineQuadFinal = new ShaderDescription(nameof(PSMeshOutlineQuadFinal), ShaderStage.Pixel, new ShaderReflector(),
-            DefaultPSShaderByteCodes.PSMeshOutlineQuadFinal);
+            DefaultPSShaderByteCodes.PSEffectOutlineQuadFinal);
+
+        /// <summary>
+        ///
+        /// </summary>
+        public static ShaderDescription PSEffectMeshXRay = new ShaderDescription(nameof(PSEffectMeshXRay), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectMeshXRay);
 #if !NETFX_CORE
         /// <summary>
         /// The ps screen dup

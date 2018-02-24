@@ -84,9 +84,10 @@ struct VSInstancingInput
 struct PSInput
 {
 	float4 p : SV_POSITION;
-	float4 wp : POSITION0;
-	float4 sp : TEXCOORD1;
+    float4 vEye : POSITION0;
 	float3 n : NORMAL; // normal
+    float4 wp : POSITION1;
+	float4 sp : TEXCOORD1;
 	float2 t : TEXCOORD0; // tex coord	
 	float3 t1 : TANGENT; // tangent
 	float3 t2 : BINORMAL; // bi-tangent	

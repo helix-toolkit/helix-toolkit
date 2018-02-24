@@ -20,15 +20,8 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public interface IPostEffectBorderHighlight
+    public interface IPostEffectBorderHighlight : IPostEffect
     {
-        /// <summary>
-        /// Gets or sets the name of the effect.
-        /// </summary>
-        /// <value>
-        /// The name of the effect.
-        /// </value>
-        string EffectName { set; get; }
         /// <summary>
         /// Gets or sets the color of the border.
         /// </summary>
@@ -248,14 +241,14 @@ namespace HelixToolkit.UWP.Core
 
             deviceContext.DeviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
             BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, renderTargetDesc.Width, renderTargetDesc.Height);
-            // deviceContext.DeviceContext.OutputMerger.SetRenderTargets(depthStencilBuffer, new RenderTargetView[0]);
+
             context.IsCustomPass = true;
             foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
             {
                 if (mesh.HasPostEffect(EffectName))
                 {
-                    context.CustomPassName = DefaultPassNames.MeshOutlineP1;
-                    var pass = mesh.EffectTechnique[DefaultPassNames.MeshOutlineP1];
+                    context.CustomPassName = DefaultPassNames.EffectOutlineP1;
+                    var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
                     if (pass.IsNULL) { continue; }
                     pass.BindShader(deviceContext);
                     pass.BindStates(deviceContext, StateType.BlendState);
@@ -318,14 +311,6 @@ namespace HelixToolkit.UWP.Core
         {
             model.Param.X = scaleX;
             model.Param.Y = ScaleY;
-        }
-
-        protected override void OnRenderCustom(IRenderContext context, DeviceContextProxy deviceContext, IShaderPass shaderPass)
-        {
-        }
-
-        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
-        {
         }
     }
 }

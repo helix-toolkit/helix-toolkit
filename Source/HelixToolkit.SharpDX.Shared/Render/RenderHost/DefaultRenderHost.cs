@@ -58,7 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public override IEnumerable<IRenderable> PerFrameRenderables { get { return renderables; } }
 
         /// <summary>
-        /// Gets the per frame render cores for normal rendering routine. <see cref="RenderType.Normal"/> && <see cref="RenderType.Others"/> && <see cref="RenderType.Particle"/>
+        /// Gets the per frame render cores for normal rendering routine. <see cref="RenderType.Normal"/>, <see cref="RenderType.Others"/>, <see cref="RenderType.Particle"/>
         /// <para>This does not include <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
         public override IEnumerable<IRenderCore> PerFrameGeneralRenderCores { get { return generalRenderCores; } }

@@ -96,21 +96,11 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshXRay,
+                            DefaultVSShaderDescriptions.VSMeshDefault,
                             DefaultPSShaderDescriptions.PSMeshXRay
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOverlayBlending,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite
-                    },
-                    new ShaderPassDescription(DefaultPassNames.MeshXRay)
-                    {
-                        ShaderList = new[]
-                        {
-                            DefaultVSShaderDescriptions.VSMeshXRay,
-                            DefaultPSShaderDescriptions.PSMeshXRay
-                        },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSOverlayBlending,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSGreaterNoWrite
                     },
                     new ShaderPassDescription(DefaultPassNames.ShadowPass)
                     {
@@ -132,7 +122,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
                     },
-                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    new ShaderPassDescription(DefaultPassNames.EffectOutlineP1)
                     {
                         ShaderList = new[]
                         {
@@ -141,6 +131,16 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
+                    },
+                    new ShaderPassDescription(DefaultPassNames.EffectMeshXRay)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultPSShaderDescriptions.PSEffectMeshXRay
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSOverlayBlending,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSGreaterNoWrite
                     },
                 }
             };
@@ -342,7 +342,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
                     },
-                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    new ShaderPassDescription(DefaultPassNames.EffectOutlineP1)
                     {
                         ShaderList = new[]
                         {
@@ -420,7 +420,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
                     },
-                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    new ShaderPassDescription(DefaultPassNames.EffectOutlineP1)
                     {
                         ShaderList = new[]
                         {
@@ -429,6 +429,16 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
+                    },
+                    new ShaderPassDescription(DefaultPassNames.EffectMeshXRay)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshInstancing,
+                            DefaultPSShaderDescriptions.PSEffectMeshXRay
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSOverlayBlending,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSGreaterNoWrite
                     },
                 }
             };
@@ -480,7 +490,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
                     },
-                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    new ShaderPassDescription(DefaultPassNames.EffectOutlineP1)
                     {
                         ShaderList = new[]
                         {
@@ -489,6 +499,16 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
+                    },
+                    new ShaderPassDescription(DefaultPassNames.EffectMeshXRay)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
+                            DefaultPSShaderDescriptions.PSEffectMeshXRay
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSOverlayBlending,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSGreaterNoWrite
                     },
                 }
             };
@@ -509,7 +529,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
                     },
-                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    new ShaderPassDescription(DefaultPassNames.EffectOutlineP1)
                     {
                         ShaderList = new[]
                         {
@@ -550,7 +570,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
                     },
-                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    new ShaderPassDescription(DefaultPassNames.EffectOutlineP1)
                     {
                         ShaderList = new[]
                         {
@@ -646,7 +666,7 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
                     },
-                    new ShaderPassDescription(DefaultPassNames.MeshOutlineP1)
+                    new ShaderPassDescription(DefaultPassNames.EffectOutlineP1)
                     {
                         ShaderList = new[]
                         {
@@ -655,6 +675,16 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSMeshOutlineP1,
+                    },
+                    new ShaderPassDescription(DefaultPassNames.EffectMeshXRay)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultPSShaderDescriptions.PSEffectMeshXRay
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSOverlayBlending,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSGreaterNoWrite
                     },
                 }
             };

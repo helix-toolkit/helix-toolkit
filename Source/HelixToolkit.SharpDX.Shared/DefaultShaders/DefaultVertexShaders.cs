@@ -197,21 +197,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshXRay
-        {
-            get
-            {
-#if !NETFX_CORE
-                return Properties.Resources.vsMeshXRay;
-#else
-                throw new NotImplementedException();
-#endif
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public static byte[] VSMeshClipPlaneQuad
         {
             get
@@ -569,13 +554,6 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription VSBillboardInstancing = new ShaderDescription(nameof(VSBillboardInstancing), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSBillboardInstancing);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static ShaderDescription VSMeshXRay = new ShaderDescription(nameof(VSMeshXRay), ShaderStage.Vertex,
-            new ShaderReflector(),
-            DefaultVSShaderByteCodes.VSMeshXRay);
 
         /// <summary>
         /// 

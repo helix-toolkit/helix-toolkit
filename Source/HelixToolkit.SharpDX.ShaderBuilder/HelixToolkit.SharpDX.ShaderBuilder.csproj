@@ -47,7 +47,7 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
-    <PixelShader Include="PS\psMeshOutlineQuadStencil.hlsl">
+    <PixelShader Include="PS\psEffectOutlineQuadStencil.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
     <PixelShader Include="PS\psDepthStencilOnly.hlsl">
@@ -71,16 +71,19 @@
     <Content Include="Common\CommonBuffers.hlsl" />
     <Content Include="Common\Common.hlsl" />
     <Content Include="Common\DataStructs.hlsl" />
-    <PixelShader Include="PS\psMeshOutlineQualFinal.hlsl">
+    <PixelShader Include="PS\psEffectMeshXRay.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
-    <PixelShader Include="PS\psMeshOutlineGaussianBlur.hlsl">
+    <PixelShader Include="PS\psEffectOutlineQualFinal.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psEffectOutlineGaussianBlur.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
     <VertexShader Include="VS\vsMeshOutlineScreenQuad.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </VertexShader>
-    <PixelShader Include="PS\psMeshOutlineQuad.hlsl">
+    <PixelShader Include="PS\psEffectOutlineQuad.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
     <PixelShader Include="PS\psScreenDup.hlsl" />
@@ -188,9 +191,6 @@
     <PixelShader Include="PS\psMeshXRay.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
-    <VertexShader Include="VS\vsMeshXRay.hlsl">
-      <ShaderModel>4_0</ShaderModel>
-    </VertexShader>
     <VertexShader Include="VS\vsBoneSkinning.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </VertexShader>

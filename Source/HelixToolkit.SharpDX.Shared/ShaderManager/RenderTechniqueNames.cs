@@ -94,6 +94,11 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string PostEffectMeshOutline = "PostEffectMeshOutline";
+
+        /// <summary>
+        /// The post effect mesh x ray
+        /// </summary>
+        public const string PostEffectMeshXRay = "PostEffectMeshXRay";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -131,7 +136,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public const string MeshOutlineP1 = "RenderMeshOutlineP1";
+        public const string EffectOutlineP1 = "RenderMeshOutlineP1";
 
         /// <summary>
         /// 
@@ -140,7 +145,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public const string MeshXRay = "RenderMeshXRay";
+        public const string EffectMeshXRay = "RenderMeshXRay";
         /// <summary>
         /// 
         /// </summary>

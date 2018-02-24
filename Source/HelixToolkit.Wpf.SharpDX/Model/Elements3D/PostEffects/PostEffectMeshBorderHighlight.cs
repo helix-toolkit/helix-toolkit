@@ -108,7 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         /// <summary>
         /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="OnSetRenderTechnique" /> is set, then <see cref="OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
+        /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
         /// </summary>
         /// <param name="host"></param>
         /// <returns>
@@ -117,6 +117,15 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.PostEffectMeshOutline];
+        }
+
+        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        {
+            base.AssignDefaultValuesToCore(core);
+            (core as IPostEffectBorderHighlight).EffectName = EffectName;
+            (core as IPostEffectBorderHighlight).BorderColor = Color.ToColor4();
+            (core as IPostEffectBorderHighlight).ScaleX = (float)ScaleX;
+            (core as IPostEffectBorderHighlight).ScaleY = (float)ScaleY;
         }
         /// <summary>
         /// Determines whether this instance [can hit test] the specified context.

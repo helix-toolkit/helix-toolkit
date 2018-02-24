@@ -86,7 +86,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="context"></param>
         /// <param name="parameter"></param>
         void SetRenderTargets(ref RenderParameter parameter);
 

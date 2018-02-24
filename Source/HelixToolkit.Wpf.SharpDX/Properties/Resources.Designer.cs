@@ -193,6 +193,56 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psEffectMeshXRay {
+            get {
+                object obj = ResourceManager.GetObject("psEffectMeshXRay", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectOutlineGaussianBlur {
+            get {
+                object obj = ResourceManager.GetObject("psEffectOutlineGaussianBlur", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectOutlineQuad {
+            get {
+                object obj = ResourceManager.GetObject("psEffectOutlineQuad", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectOutlineQuadStencil {
+            get {
+                object obj = ResourceManager.GetObject("psEffectOutlineQuadStencil", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectOutlineQualFinal {
+            get {
+                object obj = ResourceManager.GetObject("psEffectOutlineQualFinal", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psLine {
             get {
                 object obj = ResourceManager.GetObject("psLine", resourceCulture);
@@ -246,46 +296,6 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] psMeshClipPlaneQuad {
             get {
                 object obj = ResourceManager.GetObject("psMeshClipPlaneQuad", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] psMeshOutlineGaussianBlur {
-            get {
-                object obj = ResourceManager.GetObject("psMeshOutlineGaussianBlur", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] psMeshOutlineQuad {
-            get {
-                object obj = ResourceManager.GetObject("psMeshOutlineQuad", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] psMeshOutlineQuadStencil {
-            get {
-                object obj = ResourceManager.GetObject("psMeshOutlineQuadStencil", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] psMeshOutlineQualFinal {
-            get {
-                object obj = ResourceManager.GetObject("psMeshOutlineQualFinal", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -566,16 +576,6 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] vsMeshWireframe {
             get {
                 object obj = ResourceManager.GetObject("vsMeshWireframe", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] vsMeshXRay {
-            get {
-                object obj = ResourceManager.GetObject("vsMeshXRay", resourceCulture);
                 return ((byte[])(obj));
             }
         }

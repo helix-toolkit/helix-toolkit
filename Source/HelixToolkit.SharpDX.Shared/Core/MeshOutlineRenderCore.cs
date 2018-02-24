@@ -169,18 +169,4 @@ namespace HelixToolkit.UWP.Core
             }
         }
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    public class MeshXRayRenderCore : MeshOutlineRenderCore
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MeshXRayRenderCore"/> class.
-        /// </summary>
-        public MeshXRayRenderCore()
-        {
-            DrawOutlineBeforeMesh = true;
-            OutlinePassName = DefaultPassNames.MeshXRay;
-        }
-    }
 }

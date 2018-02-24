@@ -154,9 +154,6 @@
   <data name="vsCubeMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vscubemap.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="vsMeshXRay" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\vsmeshxray.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="gsPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\gspoint.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -274,19 +271,22 @@
   <data name="vsMeshOutlinePass1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsmeshoutlinepass1.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="psMeshOutlineQuad" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\psmeshoutlinequad.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="vsMeshOutlineScreenQuad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsmeshoutlinescreenquad.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="psMeshOutlineGaussianBlur" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\psmeshoutlinegaussianblur.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="psEffectMeshXRay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectmeshxray.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="psMeshOutlineQuadStencil" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\psmeshoutlinequadstencil.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="psEffectOutlineGaussianBlur" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectoutlinegaussianblur.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="psMeshOutlineQualFinal" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\psmeshoutlinequalfinal.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="psEffectOutlineQuad" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectoutlinequad.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psEffectOutlineQuadStencil" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectoutlinequadstencil.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psEffectOutlineQualFinal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectoutlinequalfinal.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
