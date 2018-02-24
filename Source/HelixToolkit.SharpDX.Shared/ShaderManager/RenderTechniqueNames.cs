@@ -141,11 +141,11 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public const string MeshOutlineP2 = "RenderMeshOutlineP2";
+        public const string EffectMeshXRayP1 = "EffectMeshXRayP1";
         /// <summary>
         /// 
         /// </summary>
-        public const string EffectMeshXRay = "RenderMeshXRay";
+        public const string EffectMeshXRayP2 = "EffectMeshXRayP2";
         /// <summary>
         /// 
         /// </summary>

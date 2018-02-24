@@ -3,7 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-
+using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -12,6 +12,8 @@ namespace HelixToolkit.UWP.Core
 {
     using Render;
     using Shaders;
+    using System.Collections.Generic;
+
     /// <summary>
     /// 
     /// </summary>
@@ -31,6 +33,13 @@ namespace HelixToolkit.UWP.Core
         /// The outline fading factor.
         /// </value>
         float OutlineFadingFactor { set; get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [double pass]. Double pass uses stencil buffer to reduce overlapping artifacts
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [double pass]; otherwise, <c>false</c>.
+        /// </value>
+        bool DoublePass { set; get; }
     }
     /// <summary>
     /// 
@@ -74,6 +83,25 @@ namespace HelixToolkit.UWP.Core
             get { return modelStruct.Param.X; }
         }
 
+        private bool doublePass = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether [double pass]. Double pass uses stencil buffer to reduce overlapping artifacts
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [double pass]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DoublePass
+        {
+            set
+            {
+                SetAffectsRender(ref doublePass, value);
+            }
+            get
+            {
+                return doublePass;
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PostEffectMeshXRayCore"/> class.
         /// </summary>
@@ -81,6 +109,8 @@ namespace HelixToolkit.UWP.Core
         {
             Color = global::SharpDX.Color.Blue;
         }
+
+        private readonly List<IRenderCore> currentCores = new List<IRenderCore>();
 
         /// <summary>
         /// Gets the model constant buffer description.
@@ -98,17 +128,60 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            context.IsCustomPass = true;
-            foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
+            DepthStencilView dsView;
+            var renderTargets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1, out dsView);
+            if (dsView == null)
             {
-                if (mesh.HasPostEffect(EffectName))
+                return;
+            }
+            deviceContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
+            dsView.Dispose();
+            foreach (var t in renderTargets)
+            { t.Dispose(); }
+            context.IsCustomPass = true;
+            if (DoublePass)
+            {
+                currentCores.Clear();
+                foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
                 {
-                    context.CustomPassName = DefaultPassNames.EffectMeshXRay;
-                    var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRay];
+                    if (mesh.HasPostEffect(EffectName))
+                    {
+                        currentCores.Add(mesh);
+                        context.CustomPassName = DefaultPassNames.EffectMeshXRayP1;
+                        var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP1];
+                        if (pass.IsNULL) { continue; }
+                        pass.BindShader(deviceContext);
+                        pass.BindStates(deviceContext, StateType.BlendState);
+                        deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(pass.DepthStencilState, 0);
+                        mesh.Render(context, deviceContext);
+                    }
+                }
+                foreach (var mesh in currentCores)
+                {
+                    context.CustomPassName = DefaultPassNames.EffectMeshXRayP2;
+                    var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP2];
                     if (pass.IsNULL) { continue; }
                     pass.BindShader(deviceContext);
-                    pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                    pass.BindStates(deviceContext, StateType.BlendState);
+                    deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(pass.DepthStencilState, 1);
                     mesh.Render(context, deviceContext);
+                }
+                currentCores.Clear();
+            }
+            else
+            {
+                foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
+                {
+                    if (mesh.HasPostEffect(EffectName))
+                    {
+                        context.CustomPassName = DefaultPassNames.EffectMeshXRayP2;
+                        var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP2];
+                        if (pass.IsNULL) { continue; }
+                        pass.BindShader(deviceContext);
+                        pass.BindStates(deviceContext, StateType.BlendState);
+                        deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(pass.DepthStencilState, 0);
+                        mesh.Render(context, deviceContext);
+                    }
                 }
             }
             context.IsCustomPass = false;

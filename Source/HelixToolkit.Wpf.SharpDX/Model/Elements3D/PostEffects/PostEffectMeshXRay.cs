@@ -17,6 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <seealso cref="HelixToolkit.Wpf.SharpDX.Element3D" />
     public class PostEffectMeshXRay : Element3D
     {
+        #region Dependency Properties
         /// <summary>
         /// The effect name property
         /// </summary>
@@ -92,6 +93,27 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (double)GetValue(OutlineFadingFactorProperty);
             }
         }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [double pass]. Double pass uses stencil buffer to reduce overlapping artifacts
+        /// </summary>
+        public bool EnableDoublePass
+        {
+            get { return (bool)GetValue(EnableDoublePassProperty); }
+            set { SetValue(EnableDoublePassProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [double pass]. Double pass uses stencil buffer to reduce overlapping artifacts
+        /// </summary>
+        public static readonly DependencyProperty EnableDoublePassProperty =
+            DependencyProperty.Register("EnableDoublePass", typeof(bool), typeof(PostEffectMeshXRay), new PropertyMetadata(false, (d,e)=>
+            {
+                ((d as IRenderable).RenderCore as IPostEffectMeshXRay).DoublePass = (bool)e.NewValue;
+            }));
+        #endregion
+
         /// <summary>
         /// Called when [create render core].
         /// </summary>
@@ -110,6 +132,7 @@ namespace HelixToolkit.Wpf.SharpDX
             (core as IPostEffectMeshXRay).EffectName = EffectName;
             (core as IPostEffectMeshXRay).Color = OutlineColor.ToColor4();
             (core as IPostEffectMeshXRay).OutlineFadingFactor = (float)OutlineFadingFactor;
+            (core as IPostEffectMeshXRay).DoublePass = EnableDoublePass;
         }
 
         protected override bool CanHitTest(IRenderContext context)

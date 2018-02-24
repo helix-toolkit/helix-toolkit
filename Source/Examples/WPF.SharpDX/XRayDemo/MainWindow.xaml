@@ -64,7 +64,10 @@
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}" />
 
-            <hx:PostEffectMeshXRay x:Name="xrayEffect" EffectName="xray" />
+            <hx:PostEffectMeshXRay
+                x:Name="xrayEffect"
+                EffectName="xray"
+                EnableDoublePass="True" />
         </hx:Viewport3DX>
         <StackPanel
             HorizontalAlignment="Right"
