@@ -82,6 +82,29 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
         void UpdateGlobalVariables(IRenderContext context, IEnumerable<IRenderable> renderables, ref RenderParameter parameter);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameter"></param>
+        void SetRenderTargets(ref RenderParameter parameter);
+
+        /// <summary>
+        /// Render pre processings, such as Shadow pass etc.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="renderables"></param>
+        /// <param name="parameter"></param>
+        void RenderPreProc(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter);
+
+        /// <summary>
+        /// Render post processing, such as bloom effects etc.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="renderables"></param>
+        /// <param name="parameter"></param>
+        void RenderPostProc(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter);
+
         /// <summary>
         /// Run actual rendering for render cores.
         /// </summary>

@@ -21,17 +21,12 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public interface IRenderCore : IGUID, IThrowingShadow
     {
+        RenderType RenderType { get; }
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
         event EventHandler<EventArgs> OnInvalidateRenderer;
-        /// <summary>
-        /// Gets a value indicating whether this instance is empty.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
-        /// </value>
-        bool IsEmpty { get; }
+
         /// <summary>
         /// Gets or sets the model matrix.
         /// </summary>
@@ -57,6 +52,42 @@ namespace HelixToolkit.UWP.Core
         /// If render core is attached or not
         /// </summary>
         bool IsAttached { get; }
+        /// <summary>
+        /// Gets the post effect name collections for this model.
+        /// </summary>
+        /// <value>
+        /// The post effect names
+        /// </value>
+        IEnumerable<string> PostEffectNames { get; }
+        /// <summary>
+        /// Gets a value indicating whether this instance has any post effect.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has any post effect; otherwise, <c>false</c>.
+        /// </value>
+        bool HasAnyPostEffect { get; }
+        /// <summary>
+        /// Adds the post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        void AddPostEffect(string effectName);
+        /// <summary>
+        /// Removes the post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        void RemovePostEffect(string effectName);
+        /// <summary>
+        /// Determines whether [has post effect] [the specified effect name].
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        /// <returns>
+        ///   <c>true</c> if [has post effect] [the specified effect name]; otherwise, <c>false</c>.
+        /// </returns>
+        bool HasPostEffect(string effectName);
+        /// <summary>
+        /// Clears the post effect.
+        /// </summary>
+        void ClearPostEffect();
         /// <summary>
         /// 
         /// </summary>

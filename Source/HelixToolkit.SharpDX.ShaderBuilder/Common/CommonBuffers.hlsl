@@ -105,9 +105,9 @@ cbuffer cbShadow : register(b5)
     bool bHasShadowMap = false;
     float paddingShadow0;
     float4 vShadowMapInfo = float4(0.005, 1.0, 0.5, 0.0);
-	float4x4 vLightViewProjection;
+    float4x4 vLightViewProjection;
 };
-
+#if defined(CLIPPLANE)
 cbuffer cbClipping : register(b6)
 {
     bool4 EnableCrossPlane;
@@ -119,6 +119,17 @@ cbuffer cbClipping : register(b6)
 	// M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin
     float4x4 CrossPlaneParams;
 }
+#endif
+
+#if defined(BORDEREFFECTS)
+
+cbuffer cbBorderEffect : register(b6)
+{
+    float4 Color;
+    float4 Param;
+};
+#endif
+
 #if defined(PARTICLE)
 cbuffer cbParticleFrame : register(b7)
 {

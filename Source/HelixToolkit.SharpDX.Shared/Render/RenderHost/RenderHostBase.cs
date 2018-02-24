@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using HelixToolkit.Logger;
     using System.Runtime.CompilerServices;
     using System.Collections.Generic;
-
+    using Core;
     /// <summary>
     /// 
     /// </summary>
@@ -385,6 +385,20 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The per frame renderable.
         /// </value>
         public abstract IEnumerable<IRenderable> PerFrameRenderables { get; }
+        /// <summary>
+        /// Gets the post effects render cores for this frame
+        /// </summary>
+        /// <value>
+        /// The post effects render cores.
+        /// </value>
+        public abstract IEnumerable<IRenderCore> PerFrameGeneralCoresWithPostEffect { get; }
+        /// <summary>
+        /// Gets the per frame render cores.
+        /// </summary>
+        /// <value>
+        /// The per frame render cores.
+        /// </value>
+        public abstract IEnumerable<IRenderCore> PerFrameGeneralRenderCores { get; }
 
         #region Configuration
         /// <summary>
@@ -476,7 +490,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </returns>
         protected virtual bool CanRender()
         {
-            return IsInitialized && IsRendering && UpdateRequested && viewport != null;
+            return IsInitialized && IsRendering && UpdateRequested && viewport != null && ActualWidth > 10 && ActualHeight > 10;
         }
         /// <summary>
         /// Updates the and render.

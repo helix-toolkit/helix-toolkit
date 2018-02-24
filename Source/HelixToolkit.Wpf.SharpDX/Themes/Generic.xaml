@@ -67,11 +67,11 @@
                                     x:Name="PART_ViewCube"
                                     EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"
                                     EnableMover="{TemplateBinding IsViewCubeMoverEnabled}"
-                                    IsRendering="{TemplateBinding ShowViewCube}" 
-                                    UpDirection="{TemplateBinding ModelUpDirection}"
+                                    IsRendering="{TemplateBinding ShowViewCube}"
                                     RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}"
                                     RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
                                     SizeScale="{TemplateBinding ViewCubeSize}"
+                                    UpDirection="{TemplateBinding ModelUpDirection}"
                                     ViewBoxTexture="{TemplateBinding ViewCubeTexture}" />
                                 <hx:CoordinateSystemModel3D
                                     x:Name="PART_CoordinateView"
@@ -80,11 +80,11 @@
                                     CoordinateSystemLabelZ="{TemplateBinding CoordinateSystemLabelZ}"
                                     EnableMover="{TemplateBinding IsCoordinateSystemMoverEnabled}"
                                     IsRendering="{TemplateBinding ShowCoordinateSystem}"
-                                    UpDirection="{TemplateBinding ModelUpDirection}"
                                     LabelColor="{TemplateBinding CoordinateSystemLabelForeground}"
                                     RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}"
                                     RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"
-                                    SizeScale="{TemplateBinding CoordinateSystemSize}" />
+                                    SizeScale="{TemplateBinding CoordinateSystemSize}"
+                                    UpDirection="{TemplateBinding ModelUpDirection}" />
                                 <hx2D:FrameStatisticsModel2D
                                     x:Name="PART_FrameStatisticView"
                                     Background="{TemplateBinding InfoBackground}"

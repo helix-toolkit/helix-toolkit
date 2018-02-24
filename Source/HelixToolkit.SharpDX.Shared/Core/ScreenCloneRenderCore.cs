@@ -137,6 +137,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         private DX11RenderHostConfiguration config = new DX11RenderHostConfiguration() { ClearEachFrame = false, RenderD2D = false, RenderLights = false, UpdatePerFrameData = false };
         /// <summary>
+        /// Initializes a new instance of the <see cref="ScreenCloneRenderCore"/> class.
+        /// </summary>
+        public ScreenCloneRenderCore() : base(RenderType.Others) { }
+        /// <summary>
         /// Gets the model constant buffer description.
         /// </summary>
         /// <returns></returns>

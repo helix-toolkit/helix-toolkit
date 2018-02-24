@@ -105,5 +105,17 @@ namespace HelixToolkit.UWP.Shaders
             MaximumAnisotropy = 2,
             MaximumLod = float.MaxValue
         };
+
+        /// <summary>
+        /// The linear sampler clamp ani4
+        /// </summary>
+        public static SamplerStateDescription LinearSamplerClampAni4 = new SamplerStateDescription()
+        {
+            AddressU = TextureAddressMode.Clamp,
+            AddressV = TextureAddressMode.Clamp,
+            AddressW = TextureAddressMode.Clamp,
+            Filter = Filter.MinMagMipLinear,
+            MaximumAnisotropy = 4,
+        };
     }
 }

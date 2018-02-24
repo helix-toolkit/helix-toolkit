@@ -221,6 +221,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
             return null;
         }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            var pm = e.Property.GetMetadata(this);
+            if (pm is FrameworkPropertyMetadata fm)
+            {
+                if (fm.AffectsRender)
+                {
+                    InvalidateRender();
+                }
+            }
+            base.OnPropertyChanged(e);
+        }
     }
 
     public abstract class Mouse3DEventArgs : RoutedEventArgs

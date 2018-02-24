@@ -22,6 +22,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public abstract class RenderCoreBase<TModelStruct> : DisposeObject, IRenderCore where TModelStruct : struct
     {
+        #region Properties
         /// <summary>
         /// <see cref="IRenderCore.OnInvalidateRenderer"/>
         /// </summary>
@@ -30,8 +31,13 @@ namespace HelixToolkit.UWP.Core
         /// <see cref="IGUID.GUID"/>
         /// </summary>
         public Guid GUID { get; } = Guid.NewGuid();
-
-        public bool IsEmpty { protected set; get; } = false;
+        /// <summary>
+        /// Gets or sets the type of the render.
+        /// </summary>
+        /// <value>
+        /// The type of the render.
+        /// </value>
+        public RenderType RenderType { private set; get; }
 
         private bool isThrowingShadow = false;
         /// <summary>
@@ -67,6 +73,13 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public bool IsAttached { private set; get; } = false;
 
+        /// <summary>
+        /// Gets or sets the post effects.
+        /// </summary>
+        /// <value>
+        /// The post effects.
+        /// </value>
+        private readonly HashSet<string> postEffectNames = new HashSet<string>();
 
         /// <summary>
         /// The model structure
@@ -79,7 +92,33 @@ namespace HelixToolkit.UWP.Core
         /// The model cb.
         /// </value>
         protected IConstantBufferProxy modelCB { private set; get; }
+        /// <summary>
+        /// Gets the post effect names.
+        /// </summary>
+        /// <value>
+        /// The post effect names.
+        /// </value>
+        IEnumerable<string> IRenderCore.PostEffectNames
+        {
+            get { return postEffectNames; }
+        }
+        /// <summary>
+        /// Gets a value indicating whether this instance has any post effect.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has any post effect; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasAnyPostEffect { get { return postEffectNames.Count > 0; } }
+        #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RenderCoreBase{TModelStruct}"/> class.
+        /// </summary>
+        /// <param name="renderType">Type of the render.</param>
+        public RenderCoreBase(RenderType renderType)
+        {
+            RenderType = renderType;
+        }
         /// <summary>
         /// Call to attach the render core.
         /// </summary>
@@ -282,5 +321,51 @@ namespace HelixToolkit.UWP.Core
             InvalidateRenderer();
             return true;
         }
+
+
+
+        #region POST EFFECT        
+        /// <summary>
+        /// Adds the post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        public void AddPostEffect(string effectName)
+        {
+            if (postEffectNames.Add(effectName))
+            {
+                InvalidateRenderer();
+            }
+        }
+        /// <summary>
+        /// Removes the post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        public void RemovePostEffect(string effectName)
+        {
+            if (postEffectNames.Remove(effectName))
+            {
+                InvalidateRenderer();
+            }
+        }
+        /// <summary>
+        /// Determines whether [has post effect] [the specified effect name].
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        /// <returns>
+        ///   <c>true</c> if [has post effect] [the specified effect name]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasPostEffect(string effectName)
+        {
+            return postEffectNames.Contains(effectName);
+        }
+        /// <summary>
+        /// Clears the post effect.
+        /// </summary>
+        public void ClearPostEffect()
+        {
+            postEffectNames.Clear();
+            InvalidateRenderer();
+        }
+        #endregion
     }
 }

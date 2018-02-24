@@ -535,6 +535,7 @@ namespace HelixToolkit.UWP.Core
         private int samplerSlot;
         #endregion
 
+        public ParticleRenderCore() : base(RenderType.Particle) { }
         /// <summary>
         /// Gets the model constant buffer description.
         /// </summary>

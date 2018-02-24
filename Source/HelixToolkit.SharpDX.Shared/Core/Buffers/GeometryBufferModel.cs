@@ -162,7 +162,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private void InvalidateRenderer()
+        protected void InvalidateRenderer()
         {
             foreach(var hostContainer in attachedHost.Values)
             {
@@ -299,6 +299,7 @@ namespace HelixToolkit.UWP.Core
             {
                 attachedHost.Add(host.GUID, new HostCounter(host, 1));
             }
+            InvalidateRenderer();
         }
 
         public void DetachRenderHost(IRenderHost host)

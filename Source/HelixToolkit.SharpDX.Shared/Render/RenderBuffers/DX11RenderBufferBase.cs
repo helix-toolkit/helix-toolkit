@@ -218,7 +218,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public void SetDefaultRenderTargets(DeviceContext context)
         {
             context.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
-            context.Rasterizer.SetViewport(0, 0, TargetWidth, TargetWidth, 0.0f, 1.0f);
+            context.Rasterizer.SetViewport(0, 0, TargetWidth, TargetHeight, 0.0f, 1.0f);
             context.Rasterizer.SetScissorRectangle(0, 0, TargetWidth, TargetHeight);
         }
         /// <summary>

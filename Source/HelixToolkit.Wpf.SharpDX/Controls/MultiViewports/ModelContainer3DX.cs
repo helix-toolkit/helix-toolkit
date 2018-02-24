@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Core2D;
     using HelixToolkit.Logger;
     using System.Linq;
+    using HelixToolkit.Wpf.SharpDX.Core;
 
     /// <summary>
     /// Use to contain shared models for multiple viewports. 
@@ -126,6 +127,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The per frame renderable.
         /// </value>
         public IEnumerable<IRenderable> PerFrameRenderables { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameRenderables : Enumerable.Empty<IRenderable>(); } }
+        /// <summary>
+        /// Gets the per frame post effect cores.
+        /// </summary>
+        /// <value>
+        /// The per frame post effect cores.
+        /// </value>
+        public IEnumerable<IRenderCore> PerFrameGeneralCoresWithPostEffect { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralCoresWithPostEffect : Enumerable.Empty<IRenderCore>(); } }
+        /// <summary>
+        /// Gets the per frame general render cores.
+        /// </summary>
+        /// <value>
+        /// The per frame general render cores.
+        /// </value>
+        public IEnumerable<IRenderCore> PerFrameGeneralRenderCores { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralRenderCores : Enumerable.Empty<IRenderCore>(); } }
 
         /// <summary>
         /// Handles the change of the effects manager.
@@ -418,6 +433,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The render configuration.
         /// </value>
         public DX11RenderHostConfiguration RenderConfiguration { set; get; }
+
         /// <summary>
         /// Attaches the specified host.
         /// </summary>

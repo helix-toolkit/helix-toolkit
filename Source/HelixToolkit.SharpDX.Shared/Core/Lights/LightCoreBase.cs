@@ -16,6 +16,8 @@ namespace HelixToolkit.UWP.Core
 {
     using Model;
     using Render;
+    using System.Linq;
+
     /// <summary>
     /// 
     /// </summary>
@@ -28,7 +30,13 @@ namespace HelixToolkit.UWP.Core
         /// The unique identifier.
         /// </value>
         public Guid GUID { get; } = Guid.NewGuid();
-
+        /// <summary>
+        /// Gets the type of the render.
+        /// </summary>
+        /// <value>
+        /// The type of the render.
+        /// </value>
+        public RenderType RenderType { get; } = RenderType.Light;
         /// <summary>
         /// Gets a value indicating whether this instance is empty.
         /// </summary>
@@ -93,6 +101,16 @@ namespace HelixToolkit.UWP.Core
         ///   <c>true</c> if this instance is throwing shadow; otherwise, <c>false</c>.
         /// </value>
         public bool IsThrowingShadow { get; set; } = false;
+
+        public IEnumerable<string> PostEffectNames { get { return Enumerable.Empty<string>(); } }
+        /// <summary>
+        /// Gets a value indicating whether this instance has post effect.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has post effect; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasAnyPostEffect { get { return false; } }
+
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
@@ -138,6 +156,7 @@ namespace HelixToolkit.UWP.Core
             lightScene.LightModels.Lights[idx].LightColor = Color;
             lightScene.LightModels.Lights[idx].LightType = (int)LightType;
         }
+        
         /// <summary>
         /// Invalidates the renderer.
         /// </summary>
@@ -188,6 +207,40 @@ namespace HelixToolkit.UWP.Core
             InvalidateRenderer();
             return true;
         }
+
+        #region POST EFFECT        
+        /// <summary>
+        /// Adds the post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        public void AddPostEffect(string effectName)
+        {
+        }
+        /// <summary>
+        /// Removes the post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        public void RemovePostEffect(string effectName)
+        {
+        }
+        /// <summary>
+        /// Determines whether [has post effect] [the specified effect name].
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        /// <returns>
+        ///   <c>true</c> if [has post effect] [the specified effect name]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasPostEffect(string effectName)
+        {
+            return false;
+        }
+        /// <summary>
+        /// Clears the post effect.
+        /// </summary>
+        public void ClearPostEffect()
+        {
+        }
+        #endregion
     }
     /// <summary>
     /// 

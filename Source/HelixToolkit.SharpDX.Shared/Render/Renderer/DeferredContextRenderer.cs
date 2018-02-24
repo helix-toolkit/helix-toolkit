@@ -54,5 +54,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 base.RenderScene(context, renderables, ref parameter);
             }
         }
+
+        public override void RenderPreProc(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter)
+        {
+            base.RenderScene(context, renderables, ref parameter);
+        }
+
+        public override void RenderPostProc(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter)
+        {
+            base.RenderScene(context, renderables, ref parameter);
+        }
     }
 }

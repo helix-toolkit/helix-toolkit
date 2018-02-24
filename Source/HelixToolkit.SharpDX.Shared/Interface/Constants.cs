@@ -49,6 +49,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     return -1;
             }
         }
+
+        public static readonly char[] Separators = { ';', ' ', ',' };
     }
 
 }

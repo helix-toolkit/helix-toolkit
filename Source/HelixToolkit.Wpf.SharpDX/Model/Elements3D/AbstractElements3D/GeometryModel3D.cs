@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Windows;
+    using System.Linq;
 
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
@@ -70,6 +71,31 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(GeometryModel3D),
             new PropertyMetadata(true, RasterStateChanged));
 
+
+        // Using a DependencyProperty as the backing store for PostEffects.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PostEffectsProperty =
+            DependencyProperty.Register("PostEffects", typeof(string), typeof(GeometryModel3D), new PropertyMetadata("", (d,e)=> 
+            {
+                var core = (d as Element3DCore).RenderCore;
+                core.ClearPostEffect();
+                if (e.NewValue != null)
+                {
+                    var effects = (string)e.NewValue;
+                    if (!string.IsNullOrEmpty(effects))
+                    {
+                        foreach(var effect in effects.Split(Constants.Separators, StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            core.AddPostEffect(effect);
+                        }
+                    }
+                }
+            }));
+
+        public string PostEffects
+        {
+            get { return (string)GetValue(PostEffectsProperty); }
+            set { SetValue(PostEffectsProperty, value); }
+        }
 
         /// <summary>
         /// Gets or sets the geometry.

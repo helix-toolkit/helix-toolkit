@@ -113,7 +113,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        public ShadowMapCore()
+        public ShadowMapCore() : base(RenderType.PreProc)
         {
             Bias = 0.0015f;
             Intensity = 0.5f;
@@ -203,9 +203,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private readonly List<IRenderCore> pendingRenders = new List<IRenderCore>(100);
-        private readonly Stack<IEnumerator<IRenderable>> stackCache = new Stack<IEnumerator<IRenderable>>(20);
-
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             if (resolutionChanged)
@@ -232,10 +229,7 @@ namespace HelixToolkit.UWP.Core
             try
             {
                 deviceContext.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
-                pendingRenders.Clear();
-                pendingRenders.AddRange(context.RenderHost.Viewport.Renderables
-                    .PreorderDFTGetCores(x => x.IsRenderable && !(x is ILight3D) && x.RenderCore.IsThrowingShadow, stackCache));
-                foreach (var item in pendingRenders)
+                foreach (var item in context.RenderHost.PerFrameGeneralRenderCores.Where(x=>x.IsThrowingShadow))
                 {
                     item.Render(context, deviceContext);
                 }

@@ -90,6 +90,15 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Skybox = "Skybox";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string PostEffectMeshOutline = "PostEffectMeshOutline";
+
+        /// <summary>
+        /// The post effect mesh x ray
+        /// </summary>
+        public const string PostEffectMeshXRay = "PostEffectMeshXRay";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -118,10 +127,25 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string MeshOutline = "RenderMeshOutline";
+
         /// <summary>
         /// 
         /// </summary>
-        public const string MeshXRay = "RenderMeshXRay";
+        public const string MeshOutlineBlur = "RenderMeshOutlineBlur";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectOutlineP1 = "RenderMeshOutlineP1";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string MeshOutlineP2 = "RenderMeshOutlineP2";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectMeshXRay = "RenderMeshXRay";
         /// <summary>
         /// 
         /// </summary>

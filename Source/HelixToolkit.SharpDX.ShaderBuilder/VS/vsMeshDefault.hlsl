@@ -39,7 +39,7 @@ PSInput main(VSInput input)
 
 	//set position into world space	
 	output.p = mul(inputp, mWorld);
-	
+    output.vEye = float4(normalize(vEyePos - output.p.xyz), 1); //Use wp for camera->vertex direction
 	//set normal for interpolation	
     output.n = normalize(mul(inputn, (float3x3) mWorld));
 

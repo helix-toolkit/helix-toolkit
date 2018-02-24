@@ -142,6 +142,88 @@ namespace HelixToolkit.UWP.Shaders
                 FailOperation = StencilOperation.Keep
             }
         };
+
+        /// <summary>
+        /// The DSS mesh outline pass1
+        /// </summary>
+        public readonly static DepthStencilStateDescription DSSMeshOutlineP1 = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = false,
+            IsStencilEnabled = true,
+            DepthWriteMask = DepthWriteMask.Zero,
+            DepthComparison = Comparison.Always,
+            StencilWriteMask = 0xFF,
+            StencilReadMask = 0,
+            BackFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Never,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            },
+            FrontFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Replace,
+                Comparison = Comparison.Always,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            }
+        };
+
+        /// <summary>
+        /// The DSS mesh outline pass1
+        /// </summary>
+        public readonly static DepthStencilStateDescription DSSMeshOutlineP2 = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = false,
+            IsStencilEnabled = false,
+            DepthWriteMask = DepthWriteMask.Zero,
+            DepthComparison = Comparison.Always,
+            StencilWriteMask = 0,
+            StencilReadMask = 0,
+            BackFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Never,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            },
+            FrontFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Zero,
+                Comparison = Comparison.Never,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            }
+        };
+
+        /// <summary>
+        /// The DSS clip plane fill quad
+        /// </summary>
+        public readonly static DepthStencilStateDescription DSSOutlineFillQuad = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = false,
+            IsStencilEnabled = true,
+            DepthWriteMask = DepthWriteMask.Zero,
+            DepthComparison = Comparison.Always,
+            FrontFace = new DepthStencilOperationDescription()
+            {
+                FailOperation = StencilOperation.Keep,
+                DepthFailOperation = StencilOperation.Keep,
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Equal
+            },
+            BackFace = new DepthStencilOperationDescription()
+            {
+                Comparison = Comparison.Never,
+                FailOperation = StencilOperation.Keep,
+                DepthFailOperation = StencilOperation.Keep,
+                PassOperation = StencilOperation.Keep
+            },
+            StencilReadMask = 0xFF,
+            StencilWriteMask = 0
+        };
+
         /// <summary>
         /// The DSS clip plane fill quad
         /// </summary>
@@ -185,7 +267,23 @@ namespace HelixToolkit.UWP.Shaders
             IsDepthEnabled = false,
             IsStencilEnabled = false,
             DepthWriteMask = DepthWriteMask.Zero,
-            DepthComparison = Comparison.Always
+            DepthComparison = Comparison.Always,
+            FrontFace = new DepthStencilOperationDescription()
+            {
+                FailOperation = StencilOperation.Keep,
+                DepthFailOperation = StencilOperation.Keep,
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Always
+            },
+            BackFace = new DepthStencilOperationDescription()
+            {
+                Comparison = Comparison.Always,
+                FailOperation = StencilOperation.Keep,
+                DepthFailOperation = StencilOperation.Keep,
+                PassOperation = StencilOperation.Keep
+            },
+            StencilReadMask = 0,
+            StencilWriteMask = 0
         };
     }
 
@@ -213,6 +311,18 @@ namespace HelixToolkit.UWP.Shaders
         /// The skybox RasterizerState
         /// </summary>
         public readonly static RasterizerStateDescription RSSkybox = new RasterizerStateDescription()
+        {
+            FillMode = FillMode.Solid,
+            CullMode = CullMode.None,
+            DepthBias = 0,
+            DepthBiasClamp = -10,
+            SlopeScaledDepthBias = +0,
+            IsFrontCounterClockwise = true,
+            IsMultisampleEnabled = false,
+            IsAntialiasedLineEnabled = false,
+        };
+
+        public readonly static RasterizerStateDescription RSOutline = new RasterizerStateDescription()
         {
             FillMode = FillMode.Solid,
             CullMode = CullMode.None,

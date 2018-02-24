@@ -51,7 +51,7 @@ HSInput main(VSInstancingInput input)
         output.c = input.diffuseC;
         output.c2 = input.emissiveC + input.ambientC * vLightAmbient;
     }
-	output.p = inputp.xyz;
+    output.p = mul(inputp, mWorld).xyz;
 	output.n = inputn;
 	output.t1 = inputt1;
 	output.t2 = inputt2;

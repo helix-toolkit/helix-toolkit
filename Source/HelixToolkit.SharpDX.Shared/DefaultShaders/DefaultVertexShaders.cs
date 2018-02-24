@@ -197,21 +197,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshXRay
-        {
-            get
-            {
-#if !NETFX_CORE
-                return Properties.Resources.vsMeshXRay;
-#else
-                throw new NotImplementedException();
-#endif
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public static byte[] VSMeshClipPlaneQuad
         {
             get
@@ -283,6 +268,38 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSMeshOutlineP1
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsMeshOutlinePass1;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSMeshOutlineScreenQuad
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsMeshOutlineScreenQuad;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -541,13 +558,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static ShaderDescription VSMeshXRay = new ShaderDescription(nameof(VSMeshXRay), ShaderStage.Vertex,
-            new ShaderReflector(),
-            DefaultVSShaderByteCodes.VSMeshXRay);
-
-        /// <summary>
-        /// 
-        /// </summary>
         public static ShaderDescription VSScreenQuad = new ShaderDescription(nameof(VSScreenQuad), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshClipPlaneQuad);
@@ -572,6 +582,15 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription VSBoneSkinningWireframe = new ShaderDescription(nameof(VSBoneSkinningWireframe), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshBoneSkinningWireframe);
 
+        /// <summary>
+        /// The vs mesh outline pass1
+        /// </summary>
+        public static ShaderDescription VSMeshOutlinePass1 = new ShaderDescription(nameof(VSMeshOutlinePass1), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshOutlineP1);
+
+        /// <summary>
+        /// The vs mesh outline pass1
+        /// </summary>
+        public static ShaderDescription VSMeshOutlineScreenQuad = new ShaderDescription(nameof(VSMeshOutlineScreenQuad), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshOutlineScreenQuad);
 #if !NETFX_CORE
         /// <summary>
         /// The vs screen dup

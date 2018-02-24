@@ -55,6 +55,7 @@ PSInput main(VSBoneSkinInput input)
 		
 	//set position into world space	
     output.p = mul(output.p, mWorld);
+    output.vEye = float4(normalize(vEyePos - output.p.xyz), 1); //Use wp for camera->vertex direction
 	//set normal for interpolation	
     output.n = normalize(mul(output.n.xyz, (float3x3) mWorld));
     if (bHasDisplacementMap)

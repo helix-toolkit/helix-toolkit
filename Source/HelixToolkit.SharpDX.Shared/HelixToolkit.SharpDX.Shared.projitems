@@ -51,6 +51,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\ParticleRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PatchMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PointRenderCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectBorderHighlight.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectMeshXRay.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ScreenCloneRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ScreenSpacedMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ShadowMapCore.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\Interfaces.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IOctreeManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IPoolManagers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interface\IPostEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRandomVector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderable2D.cs" />
