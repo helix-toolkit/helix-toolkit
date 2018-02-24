@@ -1717,7 +1717,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseUpHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
-            Mouse.Capture(this, CaptureMode.None);
+            
             if (currentHit2D != null)
             {
                 if (currentHit2D.ModelHit is Element2D element)
@@ -1731,6 +1731,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
                     new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
                 this.currentHit = null;
+                Mouse.Capture(this, CaptureMode.None);
             }
             else
             {
