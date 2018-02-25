@@ -125,13 +125,25 @@ namespace HelixToolkit.UWP.Core
 
         private SamplerState sampler;
 
-        private const int downSamplingScale = 1;
+        private const int downSamplingScale = 2;
 
         private Texture2DDescription renderTargetDesc = new Texture2DDescription()
         {
             BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
             CpuAccessFlags = CpuAccessFlags.None, Format = global::SharpDX.DXGI.Format.R32_Float,
             Usage = ResourceUsage.Default, ArraySize = 1, MipLevels = 1, OptionFlags = ResourceOptionFlags.None,
+            SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0)
+        };
+
+        private Texture2DDescription renderTargetBlurDesc = new Texture2DDescription()
+        {
+            BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+            CpuAccessFlags = CpuAccessFlags.None,
+            Format = global::SharpDX.DXGI.Format.R32_Float,
+            Usage = ResourceUsage.Default,
+            ArraySize = 1,
+            MipLevels = 1,
+            OptionFlags = ResourceOptionFlags.None,
             SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0)
         };
 
@@ -215,11 +227,11 @@ namespace HelixToolkit.UWP.Core
             }
             
             if(renderTargetFull == null 
-                || renderTargetDesc.Width != (int)(context.ActualWidth / downSamplingScale)
-                || renderTargetDesc.Height != (int)(context.ActualHeight / downSamplingScale))
+                || renderTargetDesc.Width != (int)(context.ActualWidth)
+                || renderTargetDesc.Height != (int)(context.ActualHeight))
             {
-                depthdesc.Width = renderTargetDesc.Width = (int)(context.ActualWidth / downSamplingScale);
-                depthdesc.Height = renderTargetDesc.Height = (int)(context.ActualHeight / downSamplingScale);
+                depthdesc.Width = renderTargetDesc.Width = (int)(context.ActualWidth);
+                depthdesc.Height = renderTargetDesc.Height = (int)(context.ActualHeight);
 
                 RemoveAndDispose(ref renderTargetFull);
                 RemoveAndDispose(ref renderTargetBlur);
@@ -229,8 +241,9 @@ namespace HelixToolkit.UWP.Core
                 renderTargetFull.CreateView(renderTargetViewDesc);
                 renderTargetFull.CreateView(targetResourceViewDesc);
 
-                
-                renderTargetBlur = Collect(new ShaderResouceViewProxy(deviceContext.DeviceContext.Device, renderTargetDesc));
+                renderTargetBlurDesc.Width = (int)(context.ActualWidth / downSamplingScale);
+                renderTargetBlurDesc.Height = (int)(context.ActualHeight / downSamplingScale);
+                renderTargetBlur = Collect(new ShaderResouceViewProxy(deviceContext.DeviceContext.Device, renderTargetBlurDesc));
                 renderTargetBlur.CreateView(renderTargetViewDesc);
                 renderTargetBlur.CreateView(targetResourceViewDesc);
 
@@ -260,7 +273,7 @@ namespace HelixToolkit.UWP.Core
             
             deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             #region Do Blur
-            BindTarget(depthStencilBuffer, renderTargetBlur, deviceContext, renderTargetDesc.Width, renderTargetDesc.Height);
+            BindTarget(null, renderTargetBlur, deviceContext, renderTargetBlurDesc.Width, renderTargetBlurDesc.Height);
             screenBlurPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
             screenBlurPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetFull.TextureView);
             screenBlurPass.BindShader(deviceContext);
