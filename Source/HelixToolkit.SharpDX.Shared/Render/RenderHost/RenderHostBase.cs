@@ -386,6 +386,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public abstract IEnumerable<IRenderable> PerFrameRenderables { get; }
         /// <summary>
+        /// Gets the per frame lights.
+        /// </summary>
+        /// <value>
+        /// The per frame lights.
+        /// </value>
+        public abstract IEnumerable<ILight3D> PerFrameLights { get; }
+        /// <summary>
         /// Gets the post effects render cores for this frame
         /// </summary>
         /// <value>

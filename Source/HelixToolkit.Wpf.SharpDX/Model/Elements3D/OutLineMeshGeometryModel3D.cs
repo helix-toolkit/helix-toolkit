@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty EnableOutlineProperty = DependencyProperty.Register("EnableOutline", typeof(bool), typeof(OutLineMeshGeometryModel3D),
             new PropertyMetadata(true, (d, e) =>
             {
-                ((d as OutLineMeshGeometryModel3D).RenderCore as MeshOutlineRenderCore).OutlineEnabled = (bool)e.NewValue;
+                ((d as IRenderable).RenderCore as IMeshOutlineParams).OutlineEnabled = (bool)e.NewValue;
             }));
 
         public bool EnableOutline
@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Media.Colors.White,
             (d, e) =>
             {
-                ((d as OutLineMeshGeometryModel3D).RenderCore as MeshOutlineRenderCore).Color = ((Media.Color)e.NewValue).ToColor4();
+                ((d as IRenderable).RenderCore as IMeshOutlineParams).Color = ((Media.Color)e.NewValue).ToColor4();
             }));
 
         public Media.Color OutlineColor
@@ -48,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static DependencyProperty IsDrawGeometryProperty = DependencyProperty.Register("IsDrawGeometry", typeof(bool), typeof(OutLineMeshGeometryModel3D),
             new PropertyMetadata(true, (d, e) => {
-                ((d as OutLineMeshGeometryModel3D).RenderCore as MeshOutlineRenderCore).DrawMesh = (bool)e.NewValue;
+                ((d as IRenderable).RenderCore as IMeshOutlineParams).DrawMesh = (bool)e.NewValue;
             }));
 
         public bool IsDrawGeometry
@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static DependencyProperty OutlineFadingFactorProperty = DependencyProperty.Register("OutlineFadingFactor", typeof(double), typeof(OutLineMeshGeometryModel3D),
             new PropertyMetadata(1.5, (d, e) => {
-                ((d as OutLineMeshGeometryModel3D).RenderCore as MeshOutlineRenderCore).OutlineFadingFactor = (float)(double)e.NewValue;
+                ((d as IRenderable).RenderCore as IMeshOutlineParams).OutlineFadingFactor = (float)(double)e.NewValue;
             }));
 
         public double OutlineFadingFactor
@@ -88,7 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void AssignDefaultValuesToCore(IRenderCore core)
         {
-            var c = core as MeshOutlineRenderCore;
+            var c = core as IMeshOutlineParams;
             c.Color = this.OutlineColor.ToColor4();
             c.OutlineEnabled = this.EnableOutline;
             c.OutlineFadingFactor = (float)this.OutlineFadingFactor;

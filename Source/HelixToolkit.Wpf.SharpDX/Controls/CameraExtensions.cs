@@ -539,14 +539,13 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Point3D newPosition = target - newLookDirection;
 
-            if (camera is PerspectiveCamera)
+            if (camera is PerspectiveCamera persp)
             {
-                AnimateTo(camera as PerspectiveCamera, newPosition, newLookDirection, newUpDirection, animationTime);
+                AnimateTo(persp, newPosition, newLookDirection, newUpDirection, animationTime);
             }
-
-            if (camera is OrthographicCamera)
+            else if (camera is OrthographicCamera orth)
             {
-                AnimateTo(camera as OrthographicCamera, newPosition, newLookDirection, newUpDirection, animationTime);
+                AnimateTo(orth, newPosition, newLookDirection, newUpDirection, animationTime);
             }
         }
 
@@ -723,9 +722,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             // var target = Camera.Position + Camera.LookDirection;
-            if (camera is PerspectiveCamera)
+            if (camera is PerspectiveCamera pcam)
             {
-                var pcam = camera as PerspectiveCamera;
                 double disth = radius / Math.Tan(0.5 * pcam.FieldOfView * Math.PI / 180);
                 double vfov = pcam.FieldOfView / viewport.ActualWidth * viewport.ActualHeight;
                 double distv = radius / Math.Tan(0.5 * vfov * Math.PI / 180);
@@ -735,8 +733,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 dir.Normalize();
                 LookAt(projectionCamera, center, dir * dist, animationTime);
             }
-
-            if (camera is OrthographicCamera)
+            else if (camera is OrthographicCamera orth)
             {
                 LookAt(projectionCamera, center, projectionCamera.LookDirection, animationTime);
                 double newWidth = radius * 2;
@@ -746,7 +743,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     newWidth = radius * 2 * viewport.ActualWidth / viewport.ActualHeight;
                 }
 
-                AnimateWidth(camera as OrthographicCamera, newWidth, animationTime);
+                AnimateWidth(orth, newWidth, animationTime);
             }
         }
 

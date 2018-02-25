@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d,e)=> 
                 {
                     var rect = (Rect)e.NewValue;
-                    ((d as ScreenDuplicationModel).RenderCore as IScreenClone).CloneRectangle = new Rectangle((int)rect.Left, (int)rect.Top, (int)rect.Width, (int)rect.Height);
+                    ((d as IRenderable).RenderCore as IScreenClone).CloneRectangle = new Rectangle((int)rect.Left, (int)rect.Top, (int)rect.Width, (int)rect.Height);
                 }));
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("DisplayIndex", typeof(int), typeof(ScreenDuplicationModel), new PropertyMetadata(0, 
                 (d,e)=>
                 {
-                    ((d as ScreenDuplicationModel).RenderCore as IScreenClone).Output = (int)e.NewValue;
+                    ((d as IRenderable).RenderCore as IScreenClone).Output = (int)e.NewValue;
                 }));
 
 
@@ -80,7 +80,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("StretchToFill", typeof(bool), typeof(ScreenDuplicationModel), new PropertyMetadata(false,
                 (d,e)=> 
                 {
-                    ((d as ScreenDuplicationModel).RenderCore as IScreenClone).StretchToFill = (bool)e.NewValue;
+                    ((d as IRenderable).RenderCore as IScreenClone).StretchToFill = (bool)e.NewValue;
                 }));
 
 

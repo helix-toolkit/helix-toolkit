@@ -9,13 +9,8 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System.ComponentModel;
-    using System.Windows;
-
-    using global::SharpDX;
-
-    using Utilities;
     using Core;
+    using System.Windows;
     /// <summary>
     /// 
     /// </summary>
@@ -30,10 +25,9 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderDiffuseMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    var model = d as MaterialGeometryModel3D;
-                    if (model.RenderCore is IMaterialRenderParams)
+                    if ((d as IRenderable).RenderCore is IMaterialRenderParams m)
                     {
-                        (model.RenderCore as IMaterialRenderParams).RenderDiffuseMap = (bool)e.NewValue;
+                        m.RenderDiffuseMap = (bool)e.NewValue;
                     }
                 }));
         /// <summary>
@@ -43,10 +37,9 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderDiffuseAlphaMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    var model = d as MaterialGeometryModel3D;
-                    if (model.RenderCore is IMaterialRenderParams)
+                    if ((d as IRenderable).RenderCore is IMaterialRenderParams m)
                     {
-                        (model.RenderCore as IMaterialRenderParams).RenderDiffuseAlphaMap = (bool)e.NewValue;
+                        m.RenderDiffuseAlphaMap = (bool)e.NewValue;
                     }
                 }));
         /// <summary>
@@ -56,10 +49,9 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderNormalMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    var model = d as MaterialGeometryModel3D;
-                    if (model.RenderCore is IMaterialRenderParams)
+                    if ((d as IRenderable).RenderCore is IMaterialRenderParams m)
                     {
-                        (model.RenderCore as IMaterialRenderParams).RenderNormalMap = (bool)e.NewValue;
+                        m.RenderNormalMap = (bool)e.NewValue;
                     }
                 }));
         /// <summary>
@@ -69,10 +61,9 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderDisplacementMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    var model = d as MaterialGeometryModel3D;
-                    if (model.RenderCore is IMaterialRenderParams)
+                    if ((d as IRenderable).RenderCore is IMaterialRenderParams m)
                     {
-                        (model.RenderCore as IMaterialRenderParams).RenderDisplacementMap = (bool)e.NewValue;
+                        m.RenderDisplacementMap = (bool)e.NewValue;
                     }
                 }));
 
@@ -83,10 +74,9 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    var model = d as MaterialGeometryModel3D;
-                    if (model.RenderCore is IMaterialRenderParams)
+                    if ((d as IRenderable).RenderCore is IMaterialRenderParams m)
                     {
-                        (model.RenderCore as IMaterialRenderParams).RenderShadowMap = (bool)e.NewValue;
+                        m.RenderShadowMap = (bool)e.NewValue;
                     }
                 }));
 
@@ -97,10 +87,9 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderEnvironmentMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    var model = d as MaterialGeometryModel3D;
-                    if (model.RenderCore is IMaterialRenderParams)
+                    if ((d as IRenderable).RenderCore is IMaterialRenderParams m)
                     {
-                        (model.RenderCore as IMaterialRenderParams).RenderEnvironmentMap = (bool)e.NewValue;
+                        m.RenderEnvironmentMap = (bool)e.NewValue;
                     }
                 }));
         /// <summary>
@@ -182,10 +171,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected static void MaterialChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue is PhongMaterial)
+            if (e.NewValue is PhongMaterial material)
             {
-                var model = ((MaterialGeometryModel3D)d);
-                (model.RenderCore as IMaterialRenderParams).Material = e.NewValue as PhongMaterial;
+                var model = d as MaterialGeometryModel3D;
+                (model.RenderCore as IMaterialRenderParams).Material = material;
                 if (model.RenderHost != null)
                 {
                     if (model.IsAttached)

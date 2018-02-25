@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnHitTest(IRenderContext context, global::SharpDX.Matrix totalModelMatrix, ref global::SharpDX.Ray ray, ref List<HitTestResult> hits)
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

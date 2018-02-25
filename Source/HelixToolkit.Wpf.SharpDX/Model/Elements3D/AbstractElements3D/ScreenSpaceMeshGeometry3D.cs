@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(-0.8,
                 (d, e) =>
                 {
-                   ((d as ScreenSpacedElement3D).RenderCore as IScreenSpacedRenderParams).RelativeScreenLocationX = (float)(double)e.NewValue;
+                   ((d as IRenderable).RenderCore as IScreenSpacedRenderParams).RelativeScreenLocationX = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// <see cref="RelativeScreenLocationY"/>
@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(-0.8,
                 (d, e) =>
                 {
-                    ((d as ScreenSpacedElement3D).RenderCore as IScreenSpacedRenderParams).RelativeScreenLocationY = (float)(double)e.NewValue;
+                    ((d as IRenderable).RenderCore as IScreenSpacedRenderParams).RelativeScreenLocationY = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// <see cref="SizeScale"/>
@@ -44,7 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(1.0,
                 (d, e) =>
                 {
-                    ((d as ScreenSpacedElement3D).RenderCore as IScreenSpacedRenderParams).SizeScale = (float)(double)e.NewValue;
+                    ((d as IRenderable).RenderCore as IScreenSpacedRenderParams).SizeScale = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// 

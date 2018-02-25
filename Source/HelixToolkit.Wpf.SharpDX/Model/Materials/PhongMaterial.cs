@@ -95,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty DiffuseMapProperty =
             DependencyProperty.Register("DiffuseMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as IPhongMaterial).DiffuseMap = (Stream)e.NewValue; }));
+                (d, e) => { ((d as Material).Core as IPhongMaterial).DiffuseMap = e.NewValue as Stream; }));
 
         /// <summary>
         /// Supports alpha channel image, such as PNG.
@@ -105,21 +105,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty DiffuseAlphaMapProperty =
             DependencyProperty.Register("DiffuseAlphaMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null, 
-                (d,e)=> { ((d as Material).Core as IPhongMaterial).DiffuseAlphaMap = (Stream)e.NewValue; }));
+                (d,e)=> { ((d as Material).Core as IPhongMaterial).DiffuseAlphaMap = e.NewValue as Stream; }));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty NormalMapProperty =
             DependencyProperty.Register("NormalMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as IPhongMaterial).NormalMap = (Stream)e.NewValue; }));
+                (d, e) => { ((d as Material).Core as IPhongMaterial).NormalMap = e.NewValue as Stream; }));
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty DisplacementMapProperty =
             DependencyProperty.Register("DisplacementMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as IPhongMaterial).DisplacementMap = (Stream)e.NewValue; }));
+                (d, e) => { ((d as Material).Core as IPhongMaterial).DisplacementMap = e.NewValue as Stream; }));
 
         /// <summary>
         /// 

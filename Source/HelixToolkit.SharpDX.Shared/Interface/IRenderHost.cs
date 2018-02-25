@@ -203,6 +203,13 @@ namespace HelixToolkit.UWP
         /// </value>
         IEnumerable<IRenderable> PerFrameRenderables { get; }
         /// <summary>
+        /// Gets the current frame renderables for rendering.
+        /// </summary>
+        /// <value>
+        /// The per frame renderable.
+        /// </value>
+        IEnumerable<ILight3D> PerFrameLights { get; }
+        /// <summary>
         /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameGeneralRenderCores"/>
         /// </summary>
         /// <value>

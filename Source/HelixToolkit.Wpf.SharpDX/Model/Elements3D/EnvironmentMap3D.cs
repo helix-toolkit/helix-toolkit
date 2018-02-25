@@ -13,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty TextureProperty = DependencyProperty.Register("Texture", typeof(Stream), typeof(EnvironmentMap3D),
             new PropertyMetadata(null,(d,e)=> 
             {
-                ((d as Element3D).RenderCore as ISkyboxRenderParams).CubeTexture = (Stream)e.NewValue;
+                ((d as IRenderable).RenderCore as ISkyboxRenderParams).CubeTexture = (Stream)e.NewValue;
             }));
 
         public Stream Texture
@@ -51,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
-            throw new System.NotImplementedException();
+            return false;
         }
     }
 }

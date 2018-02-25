@@ -57,11 +57,14 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             if (rayWS.Intersects(ref bound))
             {
                 isIntersect = true;
-                foreach (var t in this.Objects.Where(x=>x is IHitable))
+                foreach (var r in this.Objects)
                 {
-                    isHit |=((IHitable)t).HitTest(context, rayWS, ref tempHits);
-                    hits.AddRange(tempHits);
-                    tempHits.Clear();
+                    if(r is IHitable t)
+                    {
+                        isHit |= t.HitTest(context, rayWS, ref tempHits);
+                        hits.AddRange(tempHits);
+                        tempHits.Clear();
+                    }
                 }
             }
             return isHit;

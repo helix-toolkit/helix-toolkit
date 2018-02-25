@@ -74,7 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty TransformProperty =
             DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new PropertyMetadata(Transform3D.Identity, (d,e)=>
             {
-                ((IRenderable)d).ModelMatrix = e.NewValue != null ? ((Transform3D)e.NewValue).Value.ToMatrix() : Matrix.Identity;
+                (d as IRenderable).ModelMatrix = e.NewValue != null ? (e.NewValue as Transform3D).Value.ToMatrix() : Matrix.Identity;
             }));
         /// <summary>
         /// 
@@ -88,9 +88,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsThrowingShadowProperty =
             DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(Element3D), new PropertyMetadata(false, (d, e) =>
             {
-                if ((d as IRenderable).RenderCore is IThrowingShadow)
+                if ((d as IRenderable).RenderCore is IThrowingShadow t)
                 {
-                    ((d as IRenderable).RenderCore as IThrowingShadow).IsThrowingShadow = (bool)e.NewValue;
+                    t.IsThrowingShadow = (bool)e.NewValue;
                 }
             }));
         /// <summary>

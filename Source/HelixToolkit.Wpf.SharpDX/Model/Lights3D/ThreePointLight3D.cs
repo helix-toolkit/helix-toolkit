@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
 
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

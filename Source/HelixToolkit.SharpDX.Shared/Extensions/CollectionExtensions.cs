@@ -38,13 +38,13 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
         public static T[] GetArrayByType<T>(this IList<T> list)
         {
             T[] array;
-            if (list is List<T>)
+            if (list is List<T> l)
             {
-                array = (list as List<T>).GetInternalArray();
+                array = l.GetInternalArray();
             }
-            else if (list is T[])
+            else if (list is T[] t)
             {
-                array = list as T[];
+                array = t;
             }
             else
             {
@@ -92,13 +92,13 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
         public static T[] GetArrayByType<T>(this IList<T> list)
         {
             T[] array;
-            if (list is List<T>)
+            if (list is List<T> l)
             {
-                array = (list as List<T>).GetInternalArray();
+                array = l.GetInternalArray();
             }
-            else if (list is T[])
+            else if (list is T[] t)
             {
-                array = list as T[];
+                array = t;
             }
             else
             {
