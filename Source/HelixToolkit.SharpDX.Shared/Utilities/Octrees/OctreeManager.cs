@@ -239,12 +239,11 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 return null;
             }
-            var list = items.ToList();
-            var tree = new RenderableBoundingOctree(list, Parameter);
+            var tree = new RenderableBoundingOctree(items.ToList(), Parameter);
             tree.BuildTree();
             if (tree.TreeBuilt)
             {
-                foreach (var item in list)
+                foreach (var item in items)
                 {
                     SubscribeBoundChangeEvent(item);
                 }
