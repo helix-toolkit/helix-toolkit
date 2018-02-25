@@ -127,7 +127,15 @@ namespace HelixToolkit.Wpf.SharpDX
             var visualToScreen = context.ScreenViewProjectionMatrix;
             foreach(var center in BillboardVertices.Select(x=>x.Position))
             {
-                var b = GetHitTestBound(Vector3.TransformCoordinate(center.ToVector3(), modelMatrix), 
+                var c = Vector3.TransformCoordinate(center.ToVector3(), modelMatrix);
+                var dir = c - rayWS.Position;
+                dir.Normalize();
+                if(Vector3.Dot(dir, rayWS.Direction.Normalized()) < 0)
+                {
+                    continue;
+                }
+
+                var b = GetHitTestBound(c, 
                     left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref viewMatrixInv, ref visualToScreen,
                     fixedSize, (float)context.ActualWidth, (float)context.ActualHeight);
                 if (rayWS.Intersects(ref b))
