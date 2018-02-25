@@ -225,13 +225,12 @@
     <Error Condition="!Exists('..\packages\Microsoft.HLSL.CSharpVB.1.0.1\build\Microsoft.HLSL.CSharpVB.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.HLSL.CSharpVB.1.0.1\build\Microsoft.HLSL.CSharpVB.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y /f $(TargetDir)VS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-
-xcopy /y /f $(TargetDir)PS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /f $(TargetDir)GS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /f $(TargetDir)DS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /f $(TargetDir)HS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /f $(TargetDir)CS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"</PostBuildEvent>
+    <PostBuildEvent>xcopy /y /f /i $(TargetDir)VS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /f /i $(TargetDir)PS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /f /i $(TargetDir)GS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /f /i $(TargetDir)DS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /f /i $(TargetDir)HS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+xcopy /y /f /i $(TargetDir)CS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

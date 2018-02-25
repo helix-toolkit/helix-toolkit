@@ -12,6 +12,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.SharpDX", "HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj", "{39740654-F5F1-4936-B4EA-9BC97D4CDE37}"
+	ProjectSection(ProjectDependencies) = postProject
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE} = {50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UWP", "UWP", "{77CD79C5-CF65-45D2-8739-B6DAD25DE150}"
 EndProject
@@ -70,6 +73,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XRayDemo", "Examples\WPF.SharpDX\XRayDemo\XRayDemo.csproj", "{C4F7AE1D-C03F-4060-A89B-C8CE47AD5EB0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenDuplicationDemo", "Examples\WPF.SharpDX\ScreenDuplicationDemo\ScreenDuplicationDemo.csproj", "{4050D84A-2F13-4C3B-AB32-844A421EA3EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.SharpDX.ShaderBuilder", "HelixToolkit.SharpDX.ShaderBuilder\HelixToolkit.SharpDX.ShaderBuilder.csproj", "{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -559,6 +564,22 @@ Global
 		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Release|x64.Build.0 = Release|Any CPU
 		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Release|x86.ActiveCfg = Release|Any CPU
 		{4050D84A-2F13-4C3B-AB32-844A421EA3EC}.Release|x86.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|ARM.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x64.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x86.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|ARM.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|ARM.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x64.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x64.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x86.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
