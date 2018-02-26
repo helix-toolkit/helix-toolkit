@@ -59,15 +59,5 @@ namespace CustomShaderDemo.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] _custom {
-            get {
-                object obj = ResourceManager.GetObject("_custom", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }
