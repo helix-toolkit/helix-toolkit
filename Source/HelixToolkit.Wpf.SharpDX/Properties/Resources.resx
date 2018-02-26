@@ -277,9 +277,6 @@
   <data name="psEffectMeshXRay" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\pseffectmeshxray.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="psEffectOutlineGaussianBlur" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\pseffectoutlinegaussianblur.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="psEffectOutlineQuad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\pseffectoutlinequad.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -288,5 +285,14 @@
   </data>
   <data name="psEffectOutlineQualFinal" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\pseffectoutlinequalfinal.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psEffectMeshBorderHighlight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectmeshborderhighlight.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psEffectGaussianBlurHorizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectgaussianblurhorizontal.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psEffectGaussianBlurVertical" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectgaussianblurvertical.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

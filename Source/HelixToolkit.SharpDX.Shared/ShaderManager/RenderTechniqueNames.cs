@@ -93,12 +93,17 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public const string PostEffectMeshOutline = "PostEffectMeshOutline";
+        public const string PostEffectMeshBorderHighlight = "PostEffectMeshBorderHighlight";
 
         /// <summary>
         /// The post effect mesh x ray
         /// </summary>
         public const string PostEffectMeshXRay = "PostEffectMeshXRay";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string PostEffectMeshOutlineBlur = "PostEffectMeshOutlineBlur";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -131,7 +136,12 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public const string MeshOutlineBlur = "RenderMeshOutlineBlur";
+        public const string EffectBlurVertical = "EffectBlurVertical";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectBlurHorizontal = "EffectBlurHorizontal";
 
         /// <summary>
         /// 
