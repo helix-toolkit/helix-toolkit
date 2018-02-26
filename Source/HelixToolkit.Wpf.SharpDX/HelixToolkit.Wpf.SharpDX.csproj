@@ -213,6 +213,7 @@
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\EnvironmentMap3D.cs" />
     <Compile Include="Model\Elements3D\PostEffects\PostEffectMeshBorderHighlight.cs" />
+    <Compile Include="Model\Elements3D\PostEffects\PostEffectMeshOutlineBlur.cs" />
     <Compile Include="Model\Elements3D\PostEffects\PostEffectMeshXRay.cs" />
     <Compile Include="Model\Elements3D\ScreenDuplicationModel.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
@@ -259,7 +260,6 @@
     <Compile Include="Model\Lights3D\PointLight3D.cs" />
     <Compile Include="Model\Lights3D\ShadowMap3D.cs" />
     <Compile Include="Model\Lights3D\SpotLight3D.cs" />
-    <Compile Include="Model\Elements3D\AbstractElements3D\UIElement3D.cs" />
     <Compile Include="Model\Interfaces.cs" />
     <Compile Include="Model\Lights3D\ThreePointLight3D.cs" />
     <Compile Include="Utilities\Exporter.cs" />
@@ -307,8 +307,10 @@
     <None Include="Resources\psColor.cso" />
     <None Include="Resources\psDepthStencilOnly.cso" />
     <None Include="Resources\psDiffuseMap.cso" />
+    <None Include="Resources\psEffectGaussianBlurHorizontal.cso" />
+    <None Include="Resources\psEffectGaussianBlurVertical.cso" />
+    <None Include="Resources\psEffectMeshBorderHighlight.cso" />
     <None Include="Resources\psEffectMeshXRay.cso" />
-    <None Include="Resources\psEffectOutlineGaussianBlur.cso" />
     <None Include="Resources\psEffectOutlineQuad.cso" />
     <None Include="Resources\psEffectOutlineQuadStencil.cso" />
     <None Include="Resources\psEffectOutlineQualFinal.cso" />

@@ -18,19 +18,21 @@ namespace HelixToolkit.UWP.Shaders
     /// </summary>
     public static class DefaultBlendStateDescriptions
     {
-        public readonly static BlendStateDescription BSNormal;
+        public readonly static BlendStateDescription BSAlphaBlend;
         public readonly static BlendStateDescription BSSourceAlways;
         public readonly static BlendStateDescription NoBlend;
         public readonly static BlendStateDescription BSOverlayBlending;
+        public readonly static BlendStateDescription AdditiveBlend;
+
         static DefaultBlendStateDescriptions()
         {
-            BSNormal.RenderTarget[0] = new RenderTargetBlendDescription()
+            BSAlphaBlend.RenderTarget[0] = new RenderTargetBlendDescription()
             {
                 AlphaBlendOperation = BlendOperation.Add,
                 BlendOperation = BlendOperation.Add,
                 DestinationBlend = BlendOption.InverseSourceAlpha,
                 SourceBlend = BlendOption.SourceAlpha,
-                DestinationAlphaBlend = BlendOption.DestinationAlpha,
+                DestinationAlphaBlend = BlendOption.InverseSourceAlpha,
                 SourceAlphaBlend = BlendOption.SourceAlpha,
                 IsBlendEnabled = true,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All
@@ -56,6 +58,18 @@ namespace HelixToolkit.UWP.Shaders
                 DestinationBlend = BlendOption.One,
                 BlendOperation = BlendOperation.Add,
                 SourceAlphaBlend = BlendOption.Zero,
+                DestinationAlphaBlend = BlendOption.One,
+                AlphaBlendOperation = BlendOperation.Add,
+                RenderTargetWriteMask = ColorWriteMaskFlags.All
+            };
+
+            AdditiveBlend.RenderTarget[0] = new RenderTargetBlendDescription()
+            {
+                IsBlendEnabled = true,
+                SourceBlend = BlendOption.SourceAlpha,
+                DestinationBlend = BlendOption.One,
+                BlendOperation = BlendOperation.Add,
+                SourceAlphaBlend = BlendOption.SourceAlpha,
                 DestinationAlphaBlend = BlendOption.One,
                 AlphaBlendOperation = BlendOperation.Add,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All

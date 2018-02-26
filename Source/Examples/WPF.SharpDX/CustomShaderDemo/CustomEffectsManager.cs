@@ -79,7 +79,17 @@ namespace CustomShaderDemo
                             CustomVSShaderDescription.VSDataSampling,
                             CustomPSShaderDescription.PSDataSampling
                         },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    },
+                    new ShaderPassDescription(DefaultPassNames.Wireframe)
+                    {
+                        ShaderList = new[]
+                        {
+                            CustomVSShaderDescription.VSDataSampling,
+                            DefaultPSShaderDescriptions.PSMeshWireframe
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.AdditiveBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
                     }
                 }
@@ -96,7 +106,7 @@ namespace CustomShaderDemo
                             DefaultVSShaderDescriptions.VSMeshDefault,
                             CustomPSShaderDescription.PSNoiseMesh
                         },
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSNormal,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
                     }
                 }

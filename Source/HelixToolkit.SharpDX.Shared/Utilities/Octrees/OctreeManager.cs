@@ -239,13 +239,11 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 return null;
             }
-            var list = items.Where(x => x is IRenderable).Select(x => x as IRenderable).ToList();
-            var array = list.ToArray();
-            var tree = new RenderableBoundingOctree(list, Parameter);
+            var tree = new RenderableBoundingOctree(items.ToList(), Parameter);
             tree.BuildTree();
             if (tree.TreeBuilt)
             {
-                foreach (var item in array)
+                foreach (var item in items)
                 {
                     SubscribeBoundChangeEvent(item);
                 }
@@ -264,14 +262,13 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         {
             lock (lockObj)
             {
-                if (Enabled && item is IRenderable)
+                if (Enabled && item != null)
                 {
-                    var model = item as IRenderable;
-                    model.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
-                    model.OnTransformBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
-                    if (model.Bounds != ZeroBound)
+                    item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                    item.OnTransformBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
+                    if (item.Bounds != ZeroBound)
                     {
-                        AddItem(model);
+                        AddItem(item);
                     }
                     return true;
                 }
@@ -291,11 +288,10 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 
         private void AddItem(IRenderable item)
         {
-            if (Enabled && item is IRenderable)
+            if (Enabled && item != null)
             {
                 var tree = mOctree;
                 UpdateOctree(null);
-                var model = item as IRenderable;
                 if (tree == null)
                 {
                     RequestRebuild();
@@ -304,9 +300,9 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 {
                     bool succeed = true;
                     int counter = 0;
-                    while (!tree.Add(model))
+                    while (!tree.Add(item))
                     {
-                        var direction = (model.Bounds.Minimum + model.Bounds.Maximum)
+                        var direction = (item.Bounds.Minimum + item.Bounds.Maximum)
                             - (tree.Bound.Minimum + tree.Bound.Maximum);
                         tree = tree.Expand(ref direction) as RenderableBoundingOctree;
                         ++counter;
@@ -323,7 +319,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     if (succeed)
                     {
                         UpdateOctree(tree);
-                        SubscribeBoundChangeEvent(model);
+                        SubscribeBoundChangeEvent(item);
                     }
                     else
                     {
@@ -338,16 +334,15 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="item">The item.</param>
         public override void RemoveItem(IRenderable item)
         {           
-            if (Enabled && Octree != null && item is IRenderable)
+            if (Enabled && Octree != null && item != null)
             {
                 lock (lockObj)
                 {
                     var tree = mOctree;
                     UpdateOctree(null);
-                    var model = item as IRenderable;
-                    model.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
-                    UnsubscribeBoundChangeEvent(model);
-                    if (!tree.RemoveByBound(model))
+                    item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                    UnsubscribeBoundChangeEvent(item);
+                    if (!tree.RemoveByBound(item))
                     {
                         //Console.WriteLine("Remove failed.");
                     }
@@ -421,13 +416,13 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             Clear();
             if (items == null)
             { return; }
-            var model3D = items.Where(x => x is IInstancing && x is IRenderable).FirstOrDefault() as IInstancing;
-            if (model3D == null)
-            { return; }
-            var instMatrix = model3D.InstanceBuffer.Elements;
-            var octree = new InstancingModel3DOctree(instMatrix, (model3D as IRenderable).Bounds, this.Parameter, new Stack<IEnumerator<IOctree>>(10));
-            octree.BuildTree();
-            Octree = octree;
+            if(items.FirstOrDefault() is IInstancing inst)
+            {
+                var instMatrix = inst.InstanceBuffer.Elements;
+                var octree = new InstancingModel3DOctree(instMatrix, (inst as IRenderable).Bounds, this.Parameter, new Stack<IEnumerator<IOctree>>(10));
+                octree.BuildTree();
+                Octree = octree;
+            }
         }
         /// <summary>
         /// Removes the item.

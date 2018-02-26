@@ -76,11 +76,10 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty PostEffectsProperty =
             DependencyProperty.Register("PostEffects", typeof(string), typeof(GeometryModel3D), new PropertyMetadata("", (d,e)=> 
             {
-                var core = (d as Element3DCore).RenderCore;
+                var core = (d as IRenderable).RenderCore;
                 core.ClearPostEffect();
-                if (e.NewValue != null)
+                if (e.NewValue is string effects)
                 {
-                    var effects = (string)e.NewValue;
                     if (!string.IsNullOrEmpty(effects))
                     {
                         foreach(var effect in effects.Split(Constants.Separators, StringSplitOptions.RemoveEmptyEntries))
@@ -282,7 +281,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
         protected static void RasterStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((GeometryModel3D)d).OnRasterStateChanged();
+            (d as GeometryModel3D).OnRasterStateChanged();
         }
         /// <summary>
         /// Geometries the changed.
@@ -505,9 +504,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected virtual void OnRasterStateChanged()
         {
-            if (RenderCore is IGeometryRenderCore)
+            if (RenderCore is IGeometryRenderCore r)
             {
-                (RenderCore as IGeometryRenderCore).RasterDescription = OnCreateRasterState != null ? OnCreateRasterState() : CreateRasterState();
+                r.RasterDescription = OnCreateRasterState != null ? OnCreateRasterState() : CreateRasterState();
             }
         }
 
@@ -533,9 +532,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 BoundManager.Geometry = GeometryInternal;
                 InstanceBuffer.Initialize();
                 InstanceBuffer.Elements = this.Instances;
-                if (RenderCore is IGeometryRenderCore)
+                if (RenderCore is IGeometryRenderCore r)
                 {                    
-                    ((IGeometryRenderCore)RenderCore).InstanceBuffer = InstanceBuffer;
+                    r.InstanceBuffer = InstanceBuffer;
                 }
                 OnRasterStateChanged();
                 return true;

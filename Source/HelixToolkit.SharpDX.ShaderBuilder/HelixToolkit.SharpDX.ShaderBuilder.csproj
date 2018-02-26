@@ -47,6 +47,12 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
+    <PixelShader Include="PS\psEffectGaussianBlurVertical.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psEffectMeshBorderHighlight.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
     <PixelShader Include="PS\psEffectOutlineQuadStencil.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
@@ -77,7 +83,7 @@
     <PixelShader Include="PS\psEffectOutlineQualFinal.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
-    <PixelShader Include="PS\psEffectOutlineGaussianBlur.hlsl">
+    <PixelShader Include="PS\psEffectGaussianBlurHorizontal.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
     <VertexShader Include="VS\vsMeshOutlineScreenQuad.hlsl">

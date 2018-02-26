@@ -312,17 +312,53 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
-        /// Gets the ps mesh outline full screen blur.
+        /// Gets the ps effect full screen blur vertical.
         /// </summary>
         /// <value>
-        /// The ps mesh outline full screen blur.
+        /// The ps effect full screen blur vertical.
         /// </value>
-        public static byte[] PSEffectOutlineFullScreenBlur
+        public static byte[] PSEffectFullScreenBlurVertical
         {
             get
             {
 #if !NETFX_CORE
-                return Properties.Resources.psEffectOutlineGaussianBlur;
+                return Properties.Resources.psEffectGaussianBlurVertical;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
+        /// <summary>
+        /// Gets the ps effect full screen blur horizontal.
+        /// </summary>
+        /// <value>
+        /// The ps effect full screen blur horizontal.
+        /// </value>
+        public static byte[] PSEffectFullScreenBlurHorizontal
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psEffectGaussianBlurHorizontal;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+
+        /// <summary>
+        /// Gets the ps mesh border highlight
+        /// </summary>
+        /// <value>
+        /// The ps mesh mesh border highlight
+        /// </value>
+        public static byte[] PSEffectMeshBorderHighlight
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psEffectMeshBorderHighlight;
 #else
                 throw new NotImplementedException();
 #endif
@@ -510,9 +546,18 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         ///
         /// </summary>
-        public static ShaderDescription PSMeshOutlineFullScreenBlur = new ShaderDescription(nameof(PSMeshOutlineFullScreenBlur), ShaderStage.Pixel, new ShaderReflector(),
-            DefaultPSShaderByteCodes.PSEffectOutlineFullScreenBlur);
-
+        public static ShaderDescription PSEffectFullScreenBlurVertical = new ShaderDescription(nameof(PSEffectFullScreenBlurVertical), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectFullScreenBlurVertical);
+        /// <summary>
+        ///
+        /// </summary>
+        public static ShaderDescription PSEffectFullScreenBlurHorizontal = new ShaderDescription(nameof(PSEffectFullScreenBlurHorizontal), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectFullScreenBlurHorizontal);
+        /// <summary>
+        ///
+        /// </summary>
+        public static ShaderDescription PSEffectMeshBorderHighlight = new ShaderDescription(nameof(PSEffectMeshBorderHighlight), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectMeshBorderHighlight);
         /// <summary>
         ///
         /// </summary>

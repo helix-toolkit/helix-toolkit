@@ -170,9 +170,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 ViewMatrix = this.camera.CreateViewMatrix();
                 var aspectRatio = this.ActualWidth / this.ActualHeight;
                 ProjectionMatrix = this.camera.CreateProjectionMatrix((float)aspectRatio);
-                if (this.camera is ProjectionCameraCore)
+                if (this.camera is ProjectionCameraCore c)
                 {
-                    var c = this.camera as ProjectionCameraCore;
                     // viewport: W,H,0,0   
                     globalTransform.Viewport = new Vector4((float)ActualWidth, (float)ActualHeight, 0, 0);
                     var ar = globalTransform.Viewport.X / globalTransform.Viewport.Y;

@@ -59,10 +59,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType != null && value is Vector2Collection)
+            if (destinationType != null && value is Vector2Collection instance)
             {
-                var instance = (Vector2Collection)value;
-
                 if (destinationType == typeof(string))
                 {
                     return instance.ConvertToString(null, culture);
@@ -94,10 +92,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType != null && value is Vector3Collection)
+            if (destinationType != null && value is Vector3Collection instance)
             {
-                var instance = (Vector3Collection)value;
-
                 if (destinationType == typeof(string))
                 {
                     return instance.ConvertToString(null, culture);
@@ -129,10 +125,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType != null && value is IntCollection)
+            if (destinationType != null && value is IntCollection instance)
             {
-                var instance = (IntCollection)value;
-
                 if (destinationType == typeof(string))
                 {
                     return instance.ConvertToString(null, culture);
@@ -164,10 +158,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType != null && value is Color4Collection)
+            if (destinationType != null && value is Color4Collection instance)
             {
-                var instance = (Color4Collection)value;
-
                 if (destinationType == typeof(string))
                 {
                     return instance.ConvertToString(null, culture);
@@ -186,30 +178,25 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 throw GetConvertFromException(value);
             }
-            if(value is string)
+            if(value is string source)
             {
-                var source = value as string;
-
-                if (source != null)
+                try
                 {
-                    try
+                    var c = System.Windows.Media.ColorConverter.ConvertFromString(source);
+                    if (c != null)
                     {
-                        var c = System.Windows.Media.ColorConverter.ConvertFromString(source);
-                        if (c != null)
-                        {
-                            var color = (System.Windows.Media.Color)c;
-                            return new Color(color.R, color.G, color.B, color.A);
-                        }
+                        var color = (System.Windows.Media.Color)c;
+                        return new Color(color.R, color.G, color.B, color.A);
                     }
-                    catch (FormatException) { }
-                    var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
-                    var result = new Color(
-                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
-                        Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
-                    return result;
                 }
+                catch (FormatException) { }
+                var th = new TokenizerHelper(source, CultureInfo.InvariantCulture);
+                var result = new Color(
+                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture),
+                    Convert.ToSingle(th.NextTokenRequired(), CultureInfo.InvariantCulture));
+                return result;
             }
             else if(value is System.Windows.Media.Color)
             {
@@ -521,9 +508,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType == typeof(string) && value is Quaternion)
+            if (destinationType == typeof(string) && value is Quaternion val)
             {
-                var val = (Quaternion)value;
                 var str = string.Format("{0},{1},{2},{3}", val.X, val.Y, val.Z, val.W);
                 return str;
             }

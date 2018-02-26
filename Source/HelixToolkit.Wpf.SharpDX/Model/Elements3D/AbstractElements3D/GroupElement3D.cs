@@ -106,18 +106,18 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (itemsSourceInternal != null)
             {
-                if (itemsSourceInternal is INotifyCollectionChanged)
+                if (itemsSourceInternal is INotifyCollectionChanged s)
                 {
-                    (itemsSourceInternal as INotifyCollectionChanged).CollectionChanged -= Items_CollectionChanged;
+                    s.CollectionChanged -= Items_CollectionChanged;
                 }
                 DetachChildren(this.itemsSourceInternal);
             }
             itemsSourceInternal = itemsSource;
             if (itemsSourceInternal != null)
             {
-                if (itemsSourceInternal is INotifyCollectionChanged)
+                if (itemsSourceInternal is INotifyCollectionChanged s)
                 {
-                    (itemsSourceInternal as INotifyCollectionChanged).CollectionChanged += Items_CollectionChanged;
+                    s.CollectionChanged += Items_CollectionChanged;
                 }
                 if (IsAttached)
                 {
@@ -151,9 +151,9 @@ namespace HelixToolkit.Wpf.SharpDX
             bool hit = false;
             foreach (var c in this.Items)
             {
-                if (c is IHitable)
+                if (c is IHitable h)
                 {
-                    if (((IHitable)c).HitTest(context, ray, ref hits))
+                    if (h.HitTest(context, ray, ref hits))
                     {
                         hit = true;
                     }

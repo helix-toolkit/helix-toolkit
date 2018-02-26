@@ -257,7 +257,15 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var info in TextInfo)
             {
                 ++index;
-                if(!fixedSize && !info.BoundSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS))
+                var c = Vector3.TransformCoordinate(info.Origin, modelMatrix);
+                var dir = c - rayWS.Position;
+                dir.Normalize();
+                if (Vector3.Dot(dir, rayWS.Direction.Normalized()) < 0)
+                {
+                    continue;
+                }
+
+                if (!fixedSize && !info.BoundSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS))
                 {
                     continue;
                 }
@@ -265,7 +273,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var right = -left;
                 var top = -(info.AcutalHeight * scale.Y) / 2;
                 var bottom = -top;
-                var b = GetHitTestBound(Vector3.TransformCoordinate(info.Origin, modelMatrix), 
+                var b = GetHitTestBound(c, 
                     left, right, top, bottom, ref projectionMatrix, ref viewMatrix, ref viewMatrixInv, ref visualToScreen,
                     fixedSize, (float)context.ActualWidth, (float)context.ActualHeight);
 

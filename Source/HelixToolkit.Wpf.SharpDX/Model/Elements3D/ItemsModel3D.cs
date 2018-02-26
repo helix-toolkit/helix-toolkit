@@ -61,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     d.AddLogicalChild(e.NewValue);
                 }
-                d.octreeManager = e.NewValue == null ? null : ((IOctreeManagerWrapper)e.NewValue).Manager;
+                d.octreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
             }));
 
         /// <summary>
@@ -120,9 +120,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </exception>
         private void ItemsSourceChanged(DependencyPropertyChangedEventArgs e)
         {
-            if (e.OldValue is INotifyCollectionChanged)
+            if (e.OldValue is INotifyCollectionChanged o)
             {
-                (e.OldValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
+                o.CollectionChanged -= ItemsModel3D_CollectionChanged;
             }
 
             foreach (Element3D item in Children)
@@ -134,10 +134,10 @@ namespace HelixToolkit.Wpf.SharpDX
             mDictionary.Clear();
             Children.Clear();
 
-            if (e.NewValue is INotifyCollectionChanged)
+            if (e.NewValue is INotifyCollectionChanged n)
             {
-                (e.NewValue as INotifyCollectionChanged).CollectionChanged -= ItemsModel3D_CollectionChanged;
-                (e.NewValue as INotifyCollectionChanged).CollectionChanged += ItemsModel3D_CollectionChanged;
+                n.CollectionChanged -= ItemsModel3D_CollectionChanged;
+                n.CollectionChanged += ItemsModel3D_CollectionChanged;
             }
 
             if (ItemsSource == null)
@@ -211,8 +211,8 @@ namespace HelixToolkit.Wpf.SharpDX
                             if (mDictionary.ContainsKey(item))
                             {
                                 var model = mDictionary[item];
-                                if (model is GeometryModel3D)
-                                    octreeManager?.RemoveItem(model as GeometryModel3D);
+                                if (model is GeometryModel3D m)
+                                    octreeManager?.RemoveItem(m);
                                 model.DataContext = null;
                                 this.Children.Remove(model);
                                 mDictionary.Remove(item);

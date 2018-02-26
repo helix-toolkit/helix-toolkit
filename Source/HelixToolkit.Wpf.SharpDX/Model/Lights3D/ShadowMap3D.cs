@@ -28,8 +28,8 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("Resolution", typeof(Size), typeof(ShadowMap3D), new PropertyMetadata(new Size(1024, 1024), (d, e) =>
             {
                 var resolution = (Size)e.NewValue;
-                ((d as ShadowMap3D).RenderCore as ShadowMapCore).Width = (int)resolution.Width;
-                ((d as ShadowMap3D).RenderCore as ShadowMapCore).Height = (int)resolution.Height;
+                ((d as IRenderable).RenderCore as ShadowMapCore).Width = (int)resolution.Width;
+                ((d as IRenderable).RenderCore as ShadowMapCore).Height = (int)resolution.Height;
             }));
 
 
@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty BiasProperty =
                 DependencyProperty.Register("Bias", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(0.0015, (d, e)=>
                 {
-                    ((d as ShadowMap3D).RenderCore as ShadowMapCore).Bias = (float)(double)e.NewValue;
+                    ((d as IRenderable).RenderCore as ShadowMapCore).Bias = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// The intensity property
@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IntensityProperty =
                 DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(0.5, (d, e)=>
                 {
-                    ((d as ShadowMap3D).RenderCore as ShadowMapCore).Intensity = (float)(double)e.NewValue;
+                    ((d as IRenderable).RenderCore as ShadowMapCore).Intensity = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// The light camera property

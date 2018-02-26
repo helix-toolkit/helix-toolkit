@@ -17,6 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using Core;
     using global::SharpDX.Direct3D11;
     using HelixToolkit.Logger;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// 
@@ -48,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The pending render cores
         /// </summary>
         protected readonly List<IRenderCore> screenSpacedRenderCores = new List<IRenderCore>();
-        #endregion
+
         /// <summary>
         /// Gets the current frame renderables.
         /// </summary>
@@ -56,7 +57,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The per frame renderables.
         /// </value>
         public override IEnumerable<IRenderable> PerFrameRenderables { get { return renderables; } }
-
+        /// <summary>
+        /// Gets the per frame lights.
+        /// </summary>
+        /// <value>
+        /// The per frame lights.
+        /// </value>
+        public override IEnumerable<ILight3D> PerFrameLights
+        {
+            get { return lightRenderables.Select(x=>x as ILight3D); }
+        }
         /// <summary>
         /// Gets the per frame render cores for normal rendering routine. <see cref="RenderType.Normal"/>, <see cref="RenderType.Others"/>, <see cref="RenderType.Particle"/>
         /// <para>This does not include <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
@@ -72,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             get { return generalRenderCores.Where(x => x.HasAnyPostEffect); }
         }
-
+        #endregion
 
         private Task asyncTask;
         private Task getTriangleCountTask;
@@ -99,6 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             return new DX11Texture2DRenderBufferProxy(EffectsManager);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void SeparateRenderables()
         {
             renderables.Clear();

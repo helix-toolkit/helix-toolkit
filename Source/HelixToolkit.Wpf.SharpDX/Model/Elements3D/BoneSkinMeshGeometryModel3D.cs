@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static DependencyProperty VertexBoneIdsProperty = DependencyProperty.Register("VertexBoneIds", typeof(IList<BoneIds>), typeof(BoneSkinMeshGeometryModel3D), 
             new PropertyMetadata(null, (d,e)=>
             {
-                (d as BoneSkinMeshGeometryModel3D).bonesBufferModel.Elements = e.NewValue == null ? null : (IList<BoneIds>)e.NewValue;
+                (d as BoneSkinMeshGeometryModel3D).bonesBufferModel.Elements = e.NewValue as IList<BoneIds>;
             }));
 
         public IList<BoneIds> VertexBoneIds

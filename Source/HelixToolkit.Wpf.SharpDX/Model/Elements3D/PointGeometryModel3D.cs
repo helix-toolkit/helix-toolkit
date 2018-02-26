@@ -15,7 +15,7 @@
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(PointGeometryModel3D),
                 new PropertyMetadata(Media.Colors.Black, (d, e) =>
                 {
-                    (d as PointGeometryModel3D).pointRenderCore.PointColor = ((Media.Color)e.NewValue).ToColor4();
+                    ((d as IRenderable).RenderCore as IPointRenderParams).PointColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
         public static readonly DependencyProperty SizeProperty =
@@ -23,22 +23,22 @@
                 (d,e)=> 
                 {
                     var size = (Size)e.NewValue;
-                    (d as PointGeometryModel3D).pointRenderCore.Width = (float)size.Width;
-                    (d as PointGeometryModel3D).pointRenderCore.Height = (float)size.Height;
+                    ((d as IRenderable).RenderCore as IPointRenderParams).Width = (float)size.Width;
+                    ((d as IRenderable).RenderCore as IPointRenderParams).Height = (float)size.Height;
                 }));
 
         public static readonly DependencyProperty FigureProperty =
             DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new PropertyMetadata(PointFigure.Rect,
                 (d, e)=> 
                 {
-                    (d as PointGeometryModel3D).pointRenderCore.Figure = (PointFigure)e.NewValue;
+                    ((d as IRenderable).RenderCore as IPointRenderParams).Figure = (PointFigure)e.NewValue;
                 }));
 
         public static readonly DependencyProperty FigureRatioProperty =
             DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(0.25,
                 (d, e)=> 
                 {
-                    (d as PointGeometryModel3D).pointRenderCore.FigureRatio = (float)(double)e.NewValue;
+                    ((d as IRenderable).RenderCore as IPointRenderParams).FigureRatio = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
@@ -77,13 +77,6 @@
             set { this.SetValue(HitTestThicknessProperty, value); }
         }
         #endregion
-        private IPointRenderParams pointRenderCore
-        {
-            get
-            {
-                return (IPointRenderParams)RenderCore;
-            }
-        }
 
         /// <summary>
         /// Distances the ray to point.

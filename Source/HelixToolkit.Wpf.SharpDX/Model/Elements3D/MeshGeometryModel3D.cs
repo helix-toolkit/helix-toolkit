@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty MaxTessellationFactorProperty =
             DependencyProperty.Register("MaxTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
             {
-                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams r)
+                if ((d as IRenderable).RenderCore is IPatchRenderParams r)
                 {
                     r.MaxTessellationFactor = (float)(double)e.NewValue;
                 }
@@ -60,7 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty MinTessellationFactorProperty =
             DependencyProperty.Register("MinTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(2.0, (d, e) =>
             {
-                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams r)
+                if ((d as IRenderable).RenderCore is IPatchRenderParams r)
                     r.MinTessellationFactor = (float)(double)e.NewValue;
             }));
         /// <summary>
@@ -69,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty MaxTessellationDistanceProperty =
             DependencyProperty.Register("MaxTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(50.0, (d, e) =>
             {
-                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams r)
+                if ((d as IRenderable).RenderCore is IPatchRenderParams r)
                     r.MaxTessellationDistance = (float)(double)e.NewValue;
             }));
         /// <summary>
@@ -78,7 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty MinTessellationDistanceProperty =
             DependencyProperty.Register("MinTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
             {
-                if (((GeometryModel3D)d).RenderCore is IPatchRenderParams r)
+                if ((d as IRenderable).RenderCore is IPatchRenderParams r)
                     r.MinTessellationDistance = (float)(double)e.NewValue;
             }));
 
@@ -89,7 +89,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("MeshTopology", typeof(MeshTopologyEnum), typeof(MeshGeometryModel3D), new PropertyMetadata(
                 MeshTopologyEnum.PNTriangles, (d, e) =>
                 {
-                    if (((GeometryModel3D)d).RenderCore is IPatchRenderParams r)
+                    if ((d as IRenderable).RenderCore is IPatchRenderParams r)
                         r.MeshType = (MeshTopologyEnum)e.NewValue;
                 }));
 
@@ -99,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty RenderWireframeProperty =
             DependencyProperty.Register("RenderWireframe", typeof(bool), typeof(MeshGeometryModel3D), new PropertyMetadata(false, (d,e)=>
             {
-                if (((GeometryModel3D)d).RenderCore is IMeshRenderParams r)
+                if ((d as IRenderable).RenderCore is IMeshRenderParams r)
                     r.RenderWireframe = (bool)e.NewValue;
             }));
 
@@ -109,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty WireframeColorProperty =
             DependencyProperty.Register("WireframeColor", typeof(System.Windows.Media.Color), typeof(MeshGeometryModel3D), new PropertyMetadata(System.Windows.Media.Colors.SkyBlue, (d,e)=> 
             {
-                if (((GeometryModel3D)d).RenderCore is IMeshRenderParams r)
+                if ((d as IRenderable).RenderCore is IMeshRenderParams r)
                     r.WireframeColor = ((System.Windows.Media.Color)e.NewValue).ToColor4();
             }));
 

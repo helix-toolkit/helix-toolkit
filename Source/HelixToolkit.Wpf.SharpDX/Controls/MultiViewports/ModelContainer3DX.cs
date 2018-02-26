@@ -128,6 +128,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public IEnumerable<IRenderable> PerFrameRenderables { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameRenderables : Enumerable.Empty<IRenderable>(); } }
         /// <summary>
+        /// Gets the current frame Lights for rendering.
+        /// </summary>
+        /// <value>
+        /// The per frame renderable.
+        /// </value>
+        public IEnumerable<ILight3D> PerFrameLights { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameLights : Enumerable.Empty<ILight3D>(); } }
+        /// <summary>
         /// Gets the per frame post effect cores.
         /// </summary>
         /// <value>

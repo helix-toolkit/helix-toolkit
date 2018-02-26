@@ -98,8 +98,16 @@ namespace SharpDX.Toolkit.Graphics
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            return obj is ImageDescription && Equals((ImageDescription) obj);
+            if(obj is ImageDescription o)
+            {
+                return Equals(o);
+            }
+            else
+            {
+                return false;
+            }
+            //if (ReferenceEquals(null, obj)) return false;
+            //return obj is ImageDescription && Equals((ImageDescription) obj);
         }
 
         /// <summary>

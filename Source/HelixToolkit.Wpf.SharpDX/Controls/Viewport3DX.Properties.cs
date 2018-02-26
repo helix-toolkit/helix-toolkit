@@ -783,13 +783,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d, e) =>
                 {
                     var viewport = d as Viewport3DX;
-                    if (e.OldValue is IModelContainer)
+                    if (e.OldValue is IModelContainer o)
                     {
-                        (e.OldValue as IModelContainer).DettachViewport3DX(viewport);
+                        o.DettachViewport3DX(viewport);
                     }
-                    if (e.NewValue is IModelContainer)
+                    if (e.NewValue is IModelContainer n)
                     {
-                        (e.NewValue as IModelContainer).AttachViewport3DX(viewport);
+                        n.AttachViewport3DX(viewport);
                     }
                     viewport.sharedModelContainerInternal = (IModelContainer)e.NewValue;
                     if (viewport.renderHostInternal != null)

@@ -193,9 +193,9 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] psEffectMeshXRay {
+        internal static byte[] psEffectGaussianBlurHorizontal {
             get {
-                object obj = ResourceManager.GetObject("psEffectMeshXRay", resourceCulture);
+                object obj = ResourceManager.GetObject("psEffectGaussianBlurHorizontal", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -203,9 +203,29 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] psEffectOutlineGaussianBlur {
+        internal static byte[] psEffectGaussianBlurVertical {
             get {
-                object obj = ResourceManager.GetObject("psEffectOutlineGaussianBlur", resourceCulture);
+                object obj = ResourceManager.GetObject("psEffectGaussianBlurVertical", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectMeshBorderHighlight {
+            get {
+                object obj = ResourceManager.GetObject("psEffectMeshBorderHighlight", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectMeshXRay {
+            get {
+                object obj = ResourceManager.GetObject("psEffectMeshXRay", resourceCulture);
                 return ((byte[])(obj));
             }
         }

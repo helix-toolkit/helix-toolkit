@@ -44,7 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(Light3D), new PropertyMetadata(Media.Colors.Gray, (d,e)=>
             {
-                (((IRenderable)d).RenderCore as LightCoreBase).Color = ((Media.Color)e.NewValue).ToColor4();
+                ((d as IRenderable).RenderCore as LightCoreBase).Color = ((Media.Color)e.NewValue).ToColor4();
             }));
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty TransformProperty =
             DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Light3D), new PropertyMetadata(Transform3D.Identity, (d, e) =>
             {
-                ((IRenderable)d).ModelMatrix = e.NewValue != null ? ((Transform3D)e.NewValue).Value.ToMatrix() : Matrix.Identity;
+                (d as IRenderable).ModelMatrix = e.NewValue != null ? ((Transform3D)e.NewValue).Value.ToMatrix() : Matrix.Identity;
             }));
         /// <summary>
         /// 

@@ -113,9 +113,9 @@ namespace HelixToolkit.UWP
         {
             foreach(var valueToDispose in disposables)
             {
-                if (valueToDispose is IDisposable)
+                if (valueToDispose is IDisposable v)
                 {
-                    ((IDisposable)valueToDispose).Dispose();
+                    v.Dispose();
                 }
                 else
                 {

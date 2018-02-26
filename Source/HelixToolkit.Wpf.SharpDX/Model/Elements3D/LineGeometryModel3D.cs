@@ -26,20 +26,20 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(LineGeometryModel3D), new PropertyMetadata(Media.Colors.Black, (d, e) =>
             {
-                ((d as LineGeometryModel3D).RenderCore as LineRenderCore).LineColor = ((Media.Color)e.NewValue).ToColor4();
+                ((d as IRenderable).RenderCore as ILineRenderParams).LineColor = ((Media.Color)e.NewValue).ToColor4();
             }));
 
         public static readonly DependencyProperty ThicknessProperty =
             DependencyProperty.Register("Thickness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
             {
-                ((d as LineGeometryModel3D).RenderCore as LineRenderCore).Thickness = (float)(double)e.NewValue;
+                ((d as IRenderable).RenderCore as ILineRenderParams).Thickness = (float)(double)e.NewValue;
             }));
 
         public static readonly DependencyProperty SmoothnessProperty =
             DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(0.0,
             (d, e) =>
             {
-                ((d as LineGeometryModel3D).RenderCore as LineRenderCore).Smoothness = (float)(double)e.NewValue;
+                ((d as IRenderable).RenderCore as ILineRenderParams).Smoothness = (float)(double)e.NewValue;
             }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
@@ -83,8 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected override IGeometryBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
-            var buffer = EffectsManager.GeometryBufferManager.Register<DefaultLineGeometryBufferModel>(modelGuid, geometry);
-            return buffer;
+            return EffectsManager.GeometryBufferManager.Register<DefaultLineGeometryBufferModel>(modelGuid, geometry);
         }
         /// <summary>
         /// Called when [unregister buffer model].

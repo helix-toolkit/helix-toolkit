@@ -212,15 +212,21 @@ namespace InstancingDemo
             var hitTests = viewport.FindHits(point);
             if (hitTests.Count > 0)
             {
-                var index = (int)hitTests[0].Tag;
-                if (hitTests[0].ModelHit is InstancingMeshGeometryModel3D)
-                {                    
-                    InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor != Colors.Yellow.ToColor4()? Colors.Yellow.ToColor4() : Colors.Black.ToColor4();
-                    InstanceParam = (InstanceParameter[])InstanceParam.Clone();
-                }
-                else if(hitTests[0].ModelHit is LineGeometryModel3D)
-                {
-                    SelectedLineInstances = new Matrix[] { ModelInstances[index] };
+                foreach(var hit in hitTests)
+                {                  
+                    if (hit.ModelHit is InstancingMeshGeometryModel3D)
+                    {
+                        var index = (int)hit.Tag;
+                        InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor != Colors.Yellow.ToColor4()? Colors.Yellow.ToColor4() : Colors.Black.ToColor4();
+                        InstanceParam = (InstanceParameter[])InstanceParam.Clone();
+                        break;
+                    }
+                    else if(hit.ModelHit is LineGeometryModel3D)
+                    {
+                        var index = (int)hit.Tag;
+                        SelectedLineInstances = new Matrix[] { ModelInstances[index] };
+                        break;
+                    }
                 }
             }
         }

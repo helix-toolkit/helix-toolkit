@@ -179,9 +179,9 @@ namespace HelixToolkit.Wpf.SharpDX
             bool hit = false;
             foreach (var c in this.Children)
             {
-                if (c is IHitable)
+                if (c is IHitable h)
                 {
-                    ((IHitable)c).HitTest(context, ray, ref hits);
+                    h.HitTest(context, ray, ref hits);
                 }
             }
             if (hit)
