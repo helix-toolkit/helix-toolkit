@@ -411,7 +411,7 @@ namespace HelixToolkit.UWP.Model
 
             foreach (var shader in shaderPass.Shaders.Where(x => !x.IsNULL && Constants.CanBindTextureStages.HasFlag(x.ShaderType)))
             {
-                int idx = Constants.Convert(shader.ShaderType);
+                int idx = shader.ShaderType.ToIndex();
                 TextureBindingMap[idx][DiffuseIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderDiffuseTexName);
                 TextureBindingMap[idx][AlphaIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderAlphaTexName);
                 TextureBindingMap[idx][NormalIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderNormalTexName);
@@ -437,7 +437,7 @@ namespace HelixToolkit.UWP.Model
             {
                 return;
             }
-            int idx = Constants.Convert(shader.ShaderType);
+            int idx = shader.ShaderType.ToIndex();
             for (int i = 0; i < NUMTEXTURES; ++i)
             {
                 if (TextureResources[i] == null) { continue; }

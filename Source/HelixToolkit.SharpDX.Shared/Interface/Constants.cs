@@ -24,29 +24,55 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Stages that can bind textures
         /// </summary>
         public const ShaderStage CanBindTextureStages = ShaderStage.Vertex | ShaderStage.Pixel | ShaderStage.Domain | ShaderStage.Compute;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public const int VertexIdx = 0, HullIdx = 1, DomainIdx = 2, GeometryIdx = 3, PixelIdx = 4, ComputeIdx = 5;
         /// <summary>
         /// Convert shader stage into 0~5 stage numbers
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static int Convert(ShaderStage type)
+        public static int ToIndex(this ShaderStage type)
         {
             switch (type)
             {
                 case ShaderStage.Vertex:
-                    return 0;
+                    return VertexIdx;
                 case ShaderStage.Hull:
-                    return 1;
+                    return HullIdx;
                 case ShaderStage.Domain:
-                    return 2;
+                    return DomainIdx;
                 case ShaderStage.Geometry:
-                    return 3;
+                    return GeometryIdx;
                 case ShaderStage.Pixel:
-                    return 4;
+                    return PixelIdx;
                 case ShaderStage.Compute:
-                    return 5;
+                    return ComputeIdx;
                 default:
                     return -1;
+            }
+        }
+
+        public static ShaderStage ToShaderStage(this int index)
+        {
+            switch (index)
+            {
+                case VertexIdx:
+                    return ShaderStage.Vertex;
+                case DomainIdx:
+                    return ShaderStage.Domain;
+                case HullIdx:
+                    return ShaderStage.Hull;
+                case GeometryIdx:
+                    return ShaderStage.Geometry;
+                case PixelIdx:
+                    return ShaderStage.Pixel;
+                case ComputeIdx:
+                    return ShaderStage.Compute;
+                default:
+                    return ShaderStage.None;
             }
         }
 

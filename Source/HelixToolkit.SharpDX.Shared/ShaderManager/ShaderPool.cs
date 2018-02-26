@@ -88,7 +88,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// </summary>
     public class ShaderPoolManager : DisposeObject, IShaderPoolManager
     {
-        private readonly Dictionary<ShaderStage, ShaderPool> shaderPools = new Dictionary<ShaderStage, ShaderPool>();
+        private readonly ShaderPool[] shaderPools = new ShaderPool[Constants.NumShaderStages];
         private readonly LayoutPool layoutPool;
         /// <summary>
         /// Initializes a new instance of the <see cref="ShaderPoolManager"/> class.
@@ -97,12 +97,12 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="cbPool">The cb pool.</param>
         public ShaderPoolManager(Device device, IConstantBufferPool cbPool)
         {
-            shaderPools.Add(ShaderStage.Vertex, Collect(new ShaderPool(device, cbPool)));
-            shaderPools.Add(ShaderStage.Domain, Collect(new ShaderPool(device, cbPool)));
-            shaderPools.Add(ShaderStage.Hull, Collect(new ShaderPool(device, cbPool)));
-            shaderPools.Add(ShaderStage.Geometry, Collect(new ShaderPool(device, cbPool)));
-            shaderPools.Add(ShaderStage.Pixel, Collect(new ShaderPool(device, cbPool)));
-            shaderPools.Add(ShaderStage.Compute, Collect(new ShaderPool(device, cbPool)));
+            shaderPools[ShaderStage.Vertex.ToIndex()] = Collect(new ShaderPool(device, cbPool));
+            shaderPools[ShaderStage.Domain.ToIndex()] = Collect(new ShaderPool(device, cbPool));
+            shaderPools[ShaderStage.Hull.ToIndex()] = Collect(new ShaderPool(device, cbPool));
+            shaderPools[ShaderStage.Geometry.ToIndex()] = Collect(new ShaderPool(device, cbPool));
+            shaderPools[ShaderStage.Pixel.ToIndex()] = Collect(new ShaderPool(device, cbPool));
+            shaderPools[ShaderStage.Compute.ToIndex()] = Collect(new ShaderPool(device, cbPool));
             layoutPool = Collect(new LayoutPool(device));
         }
         /// <summary>
@@ -112,7 +112,7 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <returns></returns>
         public IShader RegisterShader(ShaderDescription description)
         {
-            return shaderPools[description.ShaderType].Register(description);
+            return shaderPools[description.ShaderType.ToIndex()].Register(description);
         }
         /// <summary>
         /// Registers the input layout.
@@ -129,7 +129,10 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="disposeManagedResources">if set to <c>true</c> [dispose managed resources].</param>
         protected override void OnDispose(bool disposeManagedResources)
         {
-            shaderPools.Clear();
+            for(int i=0; i < shaderPools.Length; ++i)
+            {
+                shaderPools[i] = null;
+            }
             base.OnDispose(disposeManagedResources);
         }       
     }
