@@ -39,20 +39,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </devdoc>
         private static void FillConstants(Hashtable hash, Type enumType)
         {
-            MethodAttributes attrs = MethodAttributes.Public | MethodAttributes.Static;
-            PropertyInfo[] props = enumType.GetProperties();
+            //MethodAttributes attrs = MethodAttributes.Public | MethodAttributes.Static;
+            var fields = enumType.GetFields();
 
-            for (int i = 0; i < props.Length; i++)
+            for (int i = 0; i < fields.Length; i++)
             {
-                PropertyInfo prop = props[i];
-                if (prop.PropertyType == typeof(Color))
+                var field = fields[i];
+                if (field.FieldType == typeof(Color))
                 {
-                    MethodInfo method = prop.GetGetMethod();
-                    if (method != null && (method.Attributes & attrs) == attrs)
-                    {
-                        object[] tempIndex = null;
-                        hash[prop.Name] = prop.GetValue(null, tempIndex);
-                    }
+                    hash[field.Name] = field.GetValue(field);
                 }
             }
         }

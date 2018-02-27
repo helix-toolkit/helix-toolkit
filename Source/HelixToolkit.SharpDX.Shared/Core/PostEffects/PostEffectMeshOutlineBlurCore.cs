@@ -69,8 +69,6 @@ namespace HelixToolkit.UWP.Core
             set; get;
         } = DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur;
 
-        public static string ColorAttributeName = "color";
-
         private Color4 color = global::SharpDX.Color.Red;
         /// <summary>
         /// Gets or sets the color of the border.
@@ -291,7 +289,7 @@ namespace HelixToolkit.UWP.Core
                 {
                     object attribute;
                     var color = Color;
-                    if (effect.TryGetAttribute(ColorAttributeName, out attribute) && attribute is string colorStr)
+                    if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out attribute) && attribute is string colorStr)
                     {
                         color = colorStr.ToColor4();
                     }
