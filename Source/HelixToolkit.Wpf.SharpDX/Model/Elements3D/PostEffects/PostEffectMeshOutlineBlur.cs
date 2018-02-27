@@ -55,7 +55,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Color), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(Colors.Red, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IPostEffectOutlineBlur).BorderColor = ((Color)e.NewValue).ToColor4();
+                ((d as IRenderable).RenderCore as IPostEffectOutlineBlur).Color = ((Color)e.NewValue).ToColor4();
             }));
 
 
@@ -148,7 +148,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.AssignDefaultValuesToCore(core);
             (core as IPostEffectOutlineBlur).EffectName = EffectName;
-            (core as IPostEffectOutlineBlur).BorderColor = Color.ToColor4();
+            (core as IPostEffectOutlineBlur).Color = Color.ToColor4();
             (core as IPostEffectOutlineBlur).ScaleX = (float)ScaleX;
             (core as IPostEffectOutlineBlur).ScaleY = (float)ScaleY;
             (core as IPostEffectOutlineBlur).NumberOfBlurPass = (int)NumberOfBlurPass;

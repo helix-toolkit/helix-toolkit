@@ -209,11 +209,12 @@ namespace HelixToolkit.UWP.Core
         }
 
         #region POST EFFECT        
+
         /// <summary>
         /// Adds the post effect.
         /// </summary>
-        /// <param name="effectName">Name of the effect.</param>
-        public void AddPostEffect(string effectName)
+        /// <param name="effect">The effect.</param>
+        public void AddPostEffect(IEffectAttributes effect)
         {
         }
         /// <summary>
@@ -239,6 +240,17 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public void ClearPostEffect()
         {
+        }
+        /// <summary>
+        /// Tries the get post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        /// <param name="effect">The effect.</param>
+        /// <returns></returns>
+        public bool TryGetPostEffect(string effectName, out IEffectAttributes effect)
+        {
+            effect = null;
+            return false;
         }
         #endregion
     }

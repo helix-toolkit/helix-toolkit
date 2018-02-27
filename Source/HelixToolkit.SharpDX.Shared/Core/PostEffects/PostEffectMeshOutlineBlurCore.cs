@@ -17,6 +17,7 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     using Render;
     using Shaders;
+    using Model;
     /// <summary>
     /// 
     /// </summary>
@@ -28,7 +29,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The color of the border.
         /// </value>
-        Color4 BorderColor { set; get; }
+        Color4 Color { set; get; }
         /// <summary>
         /// Gets or sets the scale x.
         /// </summary>
@@ -67,19 +68,23 @@ namespace HelixToolkit.UWP.Core
         {
             set; get;
         } = DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur;
+
+        public static string ColorAttributeName = "color";
+
+        private Color4 color = global::SharpDX.Color.Red;
         /// <summary>
         /// Gets or sets the color of the border.
         /// </summary>
         /// <value>
         /// The color of the border.
         /// </value>
-        public Color4 BorderColor
+        public Color4 Color
         {
             set
             {
-                SetAffectsRender(ref modelStruct.Color, value);
+                SetAffectsRender(ref color, value);
             }
-            get { return modelStruct.Color; }
+            get { return color; }
         }
 
         private float scaleX = 1;
@@ -155,7 +160,7 @@ namespace HelixToolkit.UWP.Core
         {
             BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
             CpuAccessFlags = CpuAccessFlags.None,
-            Format = global::SharpDX.DXGI.Format.R32_Float,
+            Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
             Usage = ResourceUsage.Default,
             ArraySize = 1,
             MipLevels = 1,
@@ -177,7 +182,7 @@ namespace HelixToolkit.UWP.Core
 
         private ShaderResourceViewDescription targetResourceViewDesc = new ShaderResourceViewDescription()
         {
-            Format = global::SharpDX.DXGI.Format.R32_Float,
+            Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
             Dimension = ShaderResourceViewDimension.Texture2D,
             Texture2D = new ShaderResourceViewDescription.Texture2DResource()
             {
@@ -188,7 +193,7 @@ namespace HelixToolkit.UWP.Core
 
         private RenderTargetViewDescription renderTargetViewDesc = new RenderTargetViewDescription()
         {
-            Format = global::SharpDX.DXGI.Format.R32_Float,
+            Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
             Dimension = RenderTargetViewDimension.Texture2D,
             Texture2D = new RenderTargetViewDescription.Texture2DResource() { MipSlice = 0 }
         };
@@ -209,7 +214,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public PostEffectMeshOutlineBlurCore() : base(RenderType.PostProc)
         {
-            BorderColor = Color.Red;
+            Color = global::SharpDX.Color.Red;
         }
 
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
@@ -228,7 +233,7 @@ namespace HelixToolkit.UWP.Core
                 textureSlot = screenOutlinePass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 samplerSlot = screenOutlinePass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
                 sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni4));
-                blurCore = Collect(new PostEffectBlurCore(global::SharpDX.DXGI.Format.R32_Float, blurPassVertical,
+                blurCore = Collect(new PostEffectBlurCore(global::SharpDX.DXGI.Format.B8G8R8A8_UNorm, blurPassVertical,
                     blurPassHorizontal, textureSlot, samplerSlot, DefaultSamplers.LinearSamplerClampAni4, technique.EffectsManager));
                 return true;
             }
@@ -281,8 +286,20 @@ namespace HelixToolkit.UWP.Core
             context.IsCustomPass = true;
             foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
             {
-                if (mesh.HasPostEffect(EffectName))
+                IEffectAttributes effect;
+                if (mesh.TryGetPostEffect(EffectName, out effect))
                 {
+                    object attribute;
+                    var color = Color;
+                    if (effect.TryGetAttribute(ColorAttributeName, out attribute) && attribute is string colorStr)
+                    {
+                        color = colorStr.ToColor4();
+                    }
+                    if (modelStruct.Color != color)
+                    {
+                        modelStruct.Color = color;
+                        OnUploadPerModelConstantBuffers(deviceContext);
+                    }
                     context.CustomPassName = DefaultPassNames.EffectOutlineP1;
                     var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
                     if (pass.IsNULL) { continue; }
@@ -297,7 +314,7 @@ namespace HelixToolkit.UWP.Core
 
             deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             #region Do Blur Pass
-            BindTarget(null, blurCore.CurrentRTV, deviceContext, blurCore.Width, blurCore.Height, false);
+            BindTarget(null, blurCore.CurrentRTV, deviceContext, blurCore.Width, blurCore.Height, true);
             blurPassVertical.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
             blurPassVertical.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetFull);
             blurPassVertical.BindShader(deviceContext);
@@ -346,7 +363,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (clear)
             {
-                context.ClearRenderTargetView(targetView, Color.Transparent);
+                context.ClearRenderTargetView(targetView, global::SharpDX.Color.Transparent);
             }
             context.OutputMerger.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
             context.Rasterizer.SetViewport(0, 0, width, height);
@@ -357,6 +374,7 @@ namespace HelixToolkit.UWP.Core
         {
             model.Param.X = scaleX;
             model.Param.Y = ScaleY;
+            modelStruct.Color = color;
         }
     }
 }

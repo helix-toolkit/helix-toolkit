@@ -3,5 +3,5 @@
 
 float4 main(MeshOutlinePS_INPUT input) : SV_Target
 {
-    return float4(Color.rgb, texDiffuseMap.Sample(samplerDiffuse, input.Tex).r);
+    return saturate(texDiffuseMap.Sample(samplerDiffuse, input.Tex));
 }
