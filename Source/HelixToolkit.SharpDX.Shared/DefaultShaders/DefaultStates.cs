@@ -43,9 +43,9 @@ namespace HelixToolkit.UWP.Shaders
                 AlphaBlendOperation = BlendOperation.Add,
                 BlendOperation = BlendOperation.Add,
                 DestinationBlend = BlendOption.Zero,
-                SourceBlend = BlendOption.SourceAlpha,
+                SourceBlend = BlendOption.One,
                 DestinationAlphaBlend = BlendOption.Zero,
-                SourceAlphaBlend = BlendOption.SourceAlpha,
+                SourceAlphaBlend = BlendOption.One,
                 IsBlendEnabled = true,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All
             };

@@ -71,6 +71,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingSphereExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Color4Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommonExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DataStreamExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DeviceContextExtension.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Camera\Camera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Color4Collection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ContextSharedResource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\EffectAttributes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element2D\Element2DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element2D\Element2DCoreCache.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element2D\Element2DCoreLayouts.cs" />

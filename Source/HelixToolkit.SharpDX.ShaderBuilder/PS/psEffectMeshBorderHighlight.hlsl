@@ -8,18 +8,22 @@ static const float scale = 1;
 
 float4 main(MeshOutlinePS_INPUT input) : SV_Target
 {
-    float a = texDiffuseMap.Sample(samplerDiffuse, input.Tex).r * weight[0];
+    float4 color = texDiffuseMap.Sample(samplerDiffuse, input.Tex);
+    float a = color.a * weight[0];
     [unroll]
     for (int i = 1; i < 4; ++i)
     {
         float off = offset[i];
         float offX = off / vViewport.x * Param.x;
         float offY = off / vViewport.y * Param.y;
-        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, offY)).r * weight[i]);
-        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, offY)).r * weight[i]);
-        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(-offX, offY)).r * weight[i]);
-        a += (texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(-offX, offY)).r * weight[i]);
+        float4 c = texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, offY));
+        c += texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, offY));
+        c += texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(-offX, offY));
+        c += texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(-offX, offY));
+        color += c;
+        a += c.a * weight[i];
     }
-    return float4(clamp(a, 0, 1), 1, 1, 1);
+    color.a = a;
+    return saturate(color);
 
 }

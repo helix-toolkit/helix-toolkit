@@ -1,4 +1,6 @@
-﻿namespace HelixToolkit.Wpf.SharpDX
+﻿using HelixToolkit.Wpf.SharpDX.Core;
+
+namespace HelixToolkit.Wpf.SharpDX
 {
     /// <summary>
     /// Highlight the border of meshes

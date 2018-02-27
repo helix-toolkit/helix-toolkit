@@ -66,11 +66,12 @@ namespace HelixToolkit.UWP.Core
         ///   <c>true</c> if this instance has any post effect; otherwise, <c>false</c>.
         /// </value>
         bool HasAnyPostEffect { get; }
+
         /// <summary>
         /// Adds the post effect.
         /// </summary>
-        /// <param name="effectName">Name of the effect.</param>
-        void AddPostEffect(string effectName);
+        /// <param name="effect">The effect.</param>
+        void AddPostEffect(IEffectAttributes effect);
         /// <summary>
         /// Removes the post effect.
         /// </summary>
@@ -84,6 +85,13 @@ namespace HelixToolkit.UWP.Core
         ///   <c>true</c> if [has post effect] [the specified effect name]; otherwise, <c>false</c>.
         /// </returns>
         bool HasPostEffect(string effectName);
+        /// <summary>
+        /// Tries the get post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        /// <param name="effect">The effect.</param>
+        /// <returns></returns>
+        bool TryGetPostEffect(string effectName, out IEffectAttributes effect);
         /// <summary>
         /// Clears the post effect.
         /// </summary>

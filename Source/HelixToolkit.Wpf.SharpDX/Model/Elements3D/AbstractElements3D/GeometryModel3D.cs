@@ -17,6 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.ComponentModel;
     using System.Windows;
     using System.Linq;
+    using HelixToolkit.Wpf.SharpDX.Model;
 
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
@@ -82,7 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     if (!string.IsNullOrEmpty(effects))
                     {
-                        foreach(var effect in effects.Split(Constants.Separators, StringSplitOptions.RemoveEmptyEntries))
+                        foreach(var effect in EffectAttributes.Parse(effects))
                         {
                             core.AddPostEffect(effect);
                         }

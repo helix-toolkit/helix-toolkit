@@ -160,7 +160,7 @@ namespace HelixToolkit.UWP.Core
 
         private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContext context, int width, int height)
         {
-            //context.ClearRenderTargetView(targetView, Color.Transparent);
+            //context.ClearRenderTargetView(targetView, Color.White);
             context.OutputMerger.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
             context.Rasterizer.SetViewport(0, 0, width, height);
             context.Rasterizer.SetScissorRectangle(0, 0, width, height);

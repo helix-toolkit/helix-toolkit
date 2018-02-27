@@ -13,7 +13,7 @@ namespace HelixToolkit.UWP.Core
     using Render;
     using Shaders;
     using System.Collections.Generic;
-
+    using Model;
     /// <summary>
     /// 
     /// </summary>
@@ -56,19 +56,21 @@ namespace HelixToolkit.UWP.Core
         {
             set; get;
         } = DefaultRenderTechniqueNames.PostEffectMeshXRay;
+
+        private Color4 color = global::SharpDX.Color.Red;
         /// <summary>
-        /// Outline color
+        /// Gets or sets the color of the border.
         /// </summary>
+        /// <value>
+        /// The color of the border.
+        /// </value>
         public Color4 Color
         {
             set
             {
-                SetAffectsRender(ref modelStruct.Color, value);
+                SetAffectsRender(ref color, value);
             }
-            get
-            {
-                return modelStruct.Color;
-            }
+            get { return color; }
         }
 
         /// <summary>
@@ -110,7 +112,7 @@ namespace HelixToolkit.UWP.Core
             Color = global::SharpDX.Color.Blue;
         }
 
-        private readonly List<IRenderCore> currentCores = new List<IRenderCore>();
+        private readonly List<KeyValuePair<IRenderCore, IEffectAttributes>> currentCores = new List<KeyValuePair<IRenderCore, IEffectAttributes>>();
 
         /// <summary>
         /// Gets the model constant buffer description.
@@ -144,9 +146,10 @@ namespace HelixToolkit.UWP.Core
                 currentCores.Clear();
                 foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
                 {
-                    if (mesh.HasPostEffect(EffectName))
+                    IEffectAttributes effect;
+                    if (mesh.TryGetPostEffect(EffectName, out effect))
                     {
-                        currentCores.Add(mesh);
+                        currentCores.Add(new KeyValuePair<IRenderCore, IEffectAttributes>(mesh, effect));
                         context.CustomPassName = DefaultPassNames.EffectMeshXRayP1;
                         var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP1];
                         if (pass.IsNULL) { continue; }
@@ -158,13 +161,26 @@ namespace HelixToolkit.UWP.Core
                 }
                 foreach (var mesh in currentCores)
                 {
+                    IEffectAttributes effect = mesh.Value;
+                    object attribute;
+                    var color = Color;
+                    if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out attribute) && attribute is string colorStr)
+                    {
+                        color = colorStr.ToColor4();
+                    }
+                    if (modelStruct.Color != color)
+                    {
+                        modelStruct.Color = color;
+                        OnUploadPerModelConstantBuffers(deviceContext);
+                    }
+
                     context.CustomPassName = DefaultPassNames.EffectMeshXRayP2;
-                    var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP2];
+                    var pass = mesh.Key.EffectTechnique[DefaultPassNames.EffectMeshXRayP2];
                     if (pass.IsNULL) { continue; }
                     pass.BindShader(deviceContext);
                     pass.BindStates(deviceContext, StateType.BlendState);
                     deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(pass.DepthStencilState, 1);
-                    mesh.Render(context, deviceContext);
+                    mesh.Key.Render(context, deviceContext);
                 }
                 currentCores.Clear();
             }
@@ -172,8 +188,20 @@ namespace HelixToolkit.UWP.Core
             {
                 foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
                 {
-                    if (mesh.HasPostEffect(EffectName))
+                    IEffectAttributes effect;
+                    if (mesh.TryGetPostEffect(EffectName, out effect))
                     {
+                        object attribute;
+                        var color = Color;
+                        if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out attribute) && attribute is string colorStr)
+                        {
+                            color = colorStr.ToColor4();
+                        }
+                        if (modelStruct.Color != color)
+                        {
+                            modelStruct.Color = color;
+                            OnUploadPerModelConstantBuffers(deviceContext);
+                        }
                         context.CustomPassName = DefaultPassNames.EffectMeshXRayP2;
                         var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP2];
                         if (pass.IsNULL) { continue; }
@@ -189,7 +217,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, IRenderContext context)
         {
-            
+            modelStruct.Color = color;
         }
     }
 }

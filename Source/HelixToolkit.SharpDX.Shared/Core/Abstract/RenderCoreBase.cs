@@ -17,6 +17,7 @@ namespace HelixToolkit.UWP.Core
     using System.Runtime.CompilerServices;
     using Utilities;
     using Render;
+    using Model;
     /// <summary>
     /// Base class for all render core classes
     /// </summary>
@@ -79,7 +80,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The post effects.
         /// </value>
-        private readonly HashSet<string> postEffectNames = new HashSet<string>();
+        private readonly Dictionary<string, IEffectAttributes> postEffectNames = new Dictionary<string, IEffectAttributes>();
 
         /// <summary>
         /// The model structure
@@ -100,7 +101,7 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         IEnumerable<string> IRenderCore.PostEffectNames
         {
-            get { return postEffectNames; }
+            get { return postEffectNames.Keys; }
         }
         /// <summary>
         /// Gets a value indicating whether this instance has any post effect.
@@ -325,16 +326,19 @@ namespace HelixToolkit.UWP.Core
 
 
         #region POST EFFECT        
+
         /// <summary>
         /// Adds the post effect.
         /// </summary>
-        /// <param name="effectName">Name of the effect.</param>
-        public void AddPostEffect(string effectName)
+        /// <param name="effect">The effect.</param>
+        public void AddPostEffect(IEffectAttributes effect)
         {
-            if (postEffectNames.Add(effectName))
+            if (postEffectNames.ContainsKey(effect.EffectName))
             {
-                InvalidateRenderer();
+                return;
             }
+            postEffectNames.Add(effect.EffectName, effect);
+            InvalidateRenderer();
         }
         /// <summary>
         /// Removes the post effect.
@@ -356,7 +360,17 @@ namespace HelixToolkit.UWP.Core
         /// </returns>
         public bool HasPostEffect(string effectName)
         {
-            return postEffectNames.Contains(effectName);
+            return postEffectNames.ContainsKey(effectName);
+        }
+        /// <summary>
+        /// Tries the get post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        /// <param name="effect">The effect.</param>
+        /// <returns></returns>
+        public bool TryGetPostEffect(string effectName, out IEffectAttributes effect)
+        {
+            return postEffectNames.TryGetValue(effectName, out effect);
         }
         /// <summary>
         /// Clears the post effect.

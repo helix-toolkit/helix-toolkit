@@ -171,11 +171,8 @@ namespace HelixToolkit.UWP.Shaders
         /// 
         /// </summary>
         public bool IsNULL { get; } = false;
-        /// <summary>
-        /// 
-        /// </summary>
-        public const int VertexIdx = 0, HullIdx = 1, DomainIdx = 2, GeometryIdx = 3, PixelIdx = 4, ComputeIdx = 5;
-        private readonly IShader[] shaders = new IShader[6];
+
+        private readonly IShader[] shaders = new IShader[Constants.NumShaderStages];
         /// <summary>
         /// <see cref="IShaderPass.Shaders"/>
         /// </summary>
@@ -206,14 +203,14 @@ namespace HelixToolkit.UWP.Shaders
             {
                 foreach (var shader in passDescription.ShaderList)
                 {
-                    shaders[GetShaderArrayIndex(shader.ShaderType)] = manager.ShaderManager.RegisterShader(shader);
+                    shaders[shader.ShaderType.ToIndex()] = manager.ShaderManager.RegisterShader(shader);
                 }
             }
             for(int i=0; i<shaders.Length; ++i)
             {
                 if (shaders[i] == null)
                 {
-                    var type = GetShaderStageByArrayIndex(i);
+                    var type = i.ToShaderStage();
                     switch (type)
                     {
                         case ShaderStage.Vertex:
@@ -258,57 +255,6 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
-        /// Convert shader stage to internal array index
-        /// </summary>
-        /// <param name="stage"></param>
-        /// <returns></returns>
-        public static int GetShaderArrayIndex(ShaderStage stage)
-        {
-            switch (stage)
-            {
-                case ShaderStage.Vertex:
-                    return VertexIdx;
-                case ShaderStage.Domain:
-                    return DomainIdx;
-                case ShaderStage.Hull:
-                    return HullIdx;
-                case ShaderStage.Geometry:
-                    return GeometryIdx;
-                case ShaderStage.Pixel:
-                    return PixelIdx;
-                case ShaderStage.Compute:
-                    return ComputeIdx;
-                default:
-                    return -1;
-            }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="arrayIndex"></param>
-        /// <returns></returns>
-        public static ShaderStage GetShaderStageByArrayIndex(int arrayIndex)
-        {
-            switch (arrayIndex)
-            {
-                case VertexIdx:
-                    return ShaderStage.Vertex;
-                case DomainIdx:
-                    return ShaderStage.Domain;
-                case HullIdx:
-                    return ShaderStage.Hull;
-                case GeometryIdx:
-                    return ShaderStage.Geometry;
-                case PixelIdx:
-                    return ShaderStage.Pixel;
-                case ComputeIdx:
-                    return ShaderStage.Compute;
-                default:
-                    return ShaderStage.None;
-            }
-        }
-
-        /// <summary>
         /// Bind shaders and its constant buffer for this technique
         /// </summary>
         /// <param name="context"></param>
@@ -345,7 +291,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <returns></returns>
         public IShader GetShader(ShaderStage type)
         {
-            return shaders[GetShaderArrayIndex(type)];
+            return shaders[type.ToIndex()];
         }
 
         /// <summary>
@@ -354,7 +300,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="shader">The shader.</param>
         public void SetShader(IShader shader)
         {
-            shaders[GetShaderArrayIndex(shader.ShaderType)] = shader;
+            shaders[shader.ShaderType.ToIndex()] = shader;
         }
 
         /// <summary>
