@@ -19,6 +19,8 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     using Shaders;
     using Render;
+    using System;
+
     /// <summary>
     /// 
     /// </summary>
@@ -617,7 +619,7 @@ namespace HelixToolkit.UWP.Core
 
         private void UpdateTime(IRenderContext context, ref float totalElapsed)
         {
-            float timeElapsed = ((float)context.TimeStamp.TotalMilliseconds - prevTimeMillis) / 1000;
+            float timeElapsed = Math.Max(0, ((float)context.TimeStamp.TotalMilliseconds - prevTimeMillis) / 1000);
             prevTimeMillis = (float)context.TimeStamp.TotalMilliseconds;
             totalElapsed += timeElapsed;
             //Update perframe variables
