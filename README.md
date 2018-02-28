@@ -32,7 +32,8 @@ All 1.x.x related pull requests, please use [1.1.0/Release](https://github.com/h
 3. Support basic direct2d rendering and layouts arrangement. (Still needs a lot of implementations)
 4. No more HelixToolkit.WPF project dependency.
 5. Unify dependency property types. All WPF.SharpDx model's dependency properties are using class under System.Windows.Media. Such as Vector3D and Color. More Xaml friendly.
-6. Other on going changes.
+6. Post effect support.
+7. Other on going changes.
 
 ### 2018-02-06
 
