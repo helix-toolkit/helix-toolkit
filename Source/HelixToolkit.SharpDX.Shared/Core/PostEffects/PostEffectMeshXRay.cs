@@ -130,19 +130,19 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            DepthStencilView dsView;
-            var renderTargets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1, out dsView);
-            if (dsView == null)
-            {
-                return;
-            }
-            deviceContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
-            dsView.Dispose();
-            foreach (var t in renderTargets)
-            { t.Dispose(); }
             context.IsCustomPass = true;
             if (DoublePass)
             {
+                DepthStencilView dsView;
+                var renderTargets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1, out dsView);
+                if (dsView == null)
+                {
+                    return;
+                }
+                deviceContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
+                dsView.Dispose();
+                foreach (var t in renderTargets)
+                { t.Dispose(); }
                 currentCores.Clear();
                 foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
                 {

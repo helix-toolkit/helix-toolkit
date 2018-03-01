@@ -32,11 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
             FillConstants(Colors, typeof(Color));
         }
 
-        /// <include file='doc\ColorConverter.uex' path='docs/doc[@for="ColorConverter.FillConstants"]/*' />
-        /// <devdoc>
-        ///      Fills the given hashtable with field name / value pairs.  It walks all public static
-        ///      properties of enumType that have a property type of Color.
-        /// </devdoc>
+
         private static void FillConstants(Hashtable hash, Type enumType)
         {
             //MethodAttributes attrs = MethodAttributes.Public | MethodAttributes.Static;

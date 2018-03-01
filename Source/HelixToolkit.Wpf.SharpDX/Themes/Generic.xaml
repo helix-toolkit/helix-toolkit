@@ -15,54 +15,50 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid FocusVisualStyle="{x:Null}">
-
-                            <hx:CameraController
-                                x:Name="PART_CameraController"
-                                CameraMode="{TemplateBinding CameraMode}"
-                                CameraRotationMode="{TemplateBinding CameraRotationMode}"
-                                ChangeFieldOfViewCursor="{TemplateBinding ChangeFieldOfViewCursor}"
-                                DefaultCamera="{TemplateBinding DefaultCamera}"
-                                InertiaFactor="{TemplateBinding CameraInertiaFactor}"
-                                InfiniteSpin="{TemplateBinding InfiniteSpin}"
-                                IsChangeFieldOfViewEnabled="{TemplateBinding IsChangeFieldOfViewEnabled}"
-                                IsInertiaEnabled="{TemplateBinding IsInertiaEnabled}"
-                                IsMoveEnabled="{TemplateBinding IsMoveEnabled}"
-                                IsPanEnabled="{TemplateBinding IsPanEnabled}"
-                                IsRotationEnabled="{TemplateBinding IsRotationEnabled}"
-                                IsTouchZoomEnabled="{TemplateBinding IsTouchZoomEnabled}"
-                                IsZoomEnabled="{TemplateBinding IsZoomEnabled}"
-                                LeftRightPanSensitivity="{TemplateBinding LeftRightPanSensitivity}"
-                                LeftRightRotationSensitivity="{TemplateBinding LeftRightRotationSensitivity}"
-                                MaximumFieldOfView="{TemplateBinding MaximumFieldOfView}"
-                                MinimumFieldOfView="{TemplateBinding MinimumFieldOfView}"
-                                ModelUpDirection="{TemplateBinding ModelUpDirection}"
-                                PageUpDownZoomSensitivity="{TemplateBinding PageUpDownZoomSensitivity}"
-                                PanCursor="{TemplateBinding PanCursor}"
-                                RotateAroundMouseDownPoint="{TemplateBinding RotateAroundMouseDownPoint}"
-                                RotateCursor="{TemplateBinding RotateCursor}"
-                                RotationSensitivity="{TemplateBinding RotationSensitivity}"
-                                ShowCameraTarget="{TemplateBinding ShowCameraTarget}"
-                                UpDownPanSensitivity="{TemplateBinding UpDownPanSensitivity}"
-                                UpDownRotationSensitivity="{TemplateBinding UpDownRotationSensitivity}"
-                                ZoomAroundMouseDownPoint="{TemplateBinding ZoomAroundMouseDownPoint}"
-                                ZoomCursor="{TemplateBinding ZoomCursor}"
-                                ZoomRectangleCursor="{TemplateBinding ZoomRectangleCursor}"
-                                ZoomSensitivity="{TemplateBinding ZoomSensitivity}">
-                                <!-- ToDo: hx:CameraController.InputBindings?
-                                <hx:CameraController.InputBindings>
-                                    <h:InputBinding />
-                                </hx:CameraController.InputBindings>
-                                -->
-                                <AdornerDecorator>
-                                    <ContentPresenter
-                                        x:Name="PART_Canvas"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"
-                                        DataContext="{TemplateBinding DataContext}" />
-                                </AdornerDecorator>
-                            </hx:CameraController>
-                            <ItemsControl Visibility="Collapsed">
+                        <hx:CameraController
+                            x:Name="PART_CameraController"
+                            CameraMode="{TemplateBinding CameraMode}"
+                            CameraRotationMode="{TemplateBinding CameraRotationMode}"
+                            ChangeFieldOfViewCursor="{TemplateBinding ChangeFieldOfViewCursor}"
+                            DefaultCamera="{TemplateBinding DefaultCamera}"
+                            FocusVisualStyle="{x:Null}"
+                            InertiaFactor="{TemplateBinding CameraInertiaFactor}"
+                            InfiniteSpin="{TemplateBinding InfiniteSpin}"
+                            IsChangeFieldOfViewEnabled="{TemplateBinding IsChangeFieldOfViewEnabled}"
+                            IsInertiaEnabled="{TemplateBinding IsInertiaEnabled}"
+                            IsMoveEnabled="{TemplateBinding IsMoveEnabled}"
+                            IsPanEnabled="{TemplateBinding IsPanEnabled}"
+                            IsRotationEnabled="{TemplateBinding IsRotationEnabled}"
+                            IsTouchZoomEnabled="{TemplateBinding IsTouchZoomEnabled}"
+                            IsZoomEnabled="{TemplateBinding IsZoomEnabled}"
+                            LeftRightPanSensitivity="{TemplateBinding LeftRightPanSensitivity}"
+                            LeftRightRotationSensitivity="{TemplateBinding LeftRightRotationSensitivity}"
+                            MaximumFieldOfView="{TemplateBinding MaximumFieldOfView}"
+                            MinimumFieldOfView="{TemplateBinding MinimumFieldOfView}"
+                            ModelUpDirection="{TemplateBinding ModelUpDirection}"
+                            PageUpDownZoomSensitivity="{TemplateBinding PageUpDownZoomSensitivity}"
+                            PanCursor="{TemplateBinding PanCursor}"
+                            RotateAroundMouseDownPoint="{TemplateBinding RotateAroundMouseDownPoint}"
+                            RotateCursor="{TemplateBinding RotateCursor}"
+                            RotationSensitivity="{TemplateBinding RotationSensitivity}"
+                            ShowCameraTarget="{TemplateBinding ShowCameraTarget}"
+                            Style="{x:Null}"
+                            UpDownPanSensitivity="{TemplateBinding UpDownPanSensitivity}"
+                            UpDownRotationSensitivity="{TemplateBinding UpDownRotationSensitivity}"
+                            ZoomAroundMouseDownPoint="{TemplateBinding ZoomAroundMouseDownPoint}"
+                            ZoomCursor="{TemplateBinding ZoomCursor}"
+                            ZoomRectangleCursor="{TemplateBinding ZoomRectangleCursor}"
+                            ZoomSensitivity="{TemplateBinding ZoomSensitivity}">
+                            <ContentPresenter
+                                x:Name="PART_Canvas"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                DataContext="{TemplateBinding DataContext}" />
+                            <ItemsControl
+                                Focusable="False"
+                                IsHitTestVisible="False"
+                                Style="{x:Null}"
+                                Visibility="Collapsed">
                                 <hx:ViewBoxModel3D
                                     x:Name="PART_ViewCube"
                                     EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"
@@ -124,13 +120,14 @@
                                 BorderBrush="Tomato"
                                 BorderThickness="2"
                                 HorizontalScrollBarVisibility="Disabled"
+                                IsHitTestVisible="False"
                                 IsReadOnly="True"
                                 Text="{TemplateBinding MessageText}"
                                 TextWrapping="Wrap"
                                 VerticalScrollBarVisibility="Hidden"
                                 Visibility="{TemplateBinding MessageText,
                                                              Converter={StaticResource NotNullToVisibilityConverter}}" />
-                        </Grid>
+                        </hx:CameraController>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
