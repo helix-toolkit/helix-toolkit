@@ -54,7 +54,8 @@ namespace HelixToolkit.UWP.Core
     }
 
     /// <summary>
-    /// 
+    /// Outline blur effect
+    /// <para>Must not put in shared model across multiple viewport, otherwise may causes performance issue if each viewport sizes are different.</para>
     /// </summary>
     public class PostEffectMeshOutlineBlurCore : RenderCoreBase<BorderEffectStruct>, IPostEffectOutlineBlur
     {
@@ -282,6 +283,7 @@ namespace HelixToolkit.UWP.Core
             BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, renderTargetDesc.Width, renderTargetDesc.Height);
 
             context.IsCustomPass = true;
+            bool hasMesh = false;
             foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
             {
                 IEffectAttributes effect;
@@ -305,43 +307,46 @@ namespace HelixToolkit.UWP.Core
                     pass.BindStates(deviceContext, StateType.BlendState);
                     deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(pass.DepthStencilState, 1);
                     mesh.Render(context, deviceContext);
+                    hasMesh = true;
                 }
             }
             context.IsCustomPass = false;
             #endregion
+            if (hasMesh)
+            {
+                deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+                #region Do Blur Pass
+                BindTarget(null, blurCore.CurrentRTV, deviceContext, blurCore.Width, blurCore.Height, true);
+                blurPassVertical.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
+                blurPassVertical.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetFull);
+                blurPassVertical.BindShader(deviceContext);
+                blurPassVertical.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
+                deviceContext.DeviceContext.Draw(4, 0);
 
-            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-            #region Do Blur Pass
-            BindTarget(null, blurCore.CurrentRTV, deviceContext, blurCore.Width, blurCore.Height, true);
-            blurPassVertical.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
-            blurPassVertical.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetFull);
-            blurPassVertical.BindShader(deviceContext);
-            blurPassVertical.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-            deviceContext.DeviceContext.Draw(4, 0);
+                blurCore.Run(deviceContext, NumberOfBlurPass, 1, 0);//Already blur once on vertical, pass 1 as initial index.            
+                #endregion
 
-            blurCore.Run(deviceContext, NumberOfBlurPass, 1, 0);//Already blur once on vertical, pass 1 as initial index.            
-            #endregion
+                #region Draw back with stencil test
+                BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, renderTargetDesc.Width, renderTargetDesc.Height);
+                screenQuadPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
+                screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, blurCore.CurrentSRV);
+                screenQuadPass.BindShader(deviceContext);
+                deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(screenQuadPass.DepthStencilState, 0);
+                screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState);
+                deviceContext.DeviceContext.Draw(4, 0);
+                screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
+                #endregion
 
-            #region Draw back with stencil test
-            BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, renderTargetDesc.Width, renderTargetDesc.Height);
-            screenQuadPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
-            screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, blurCore.CurrentSRV);
-            screenQuadPass.BindShader(deviceContext);
-            deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(screenQuadPass.DepthStencilState, 0);
-            screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState);
-            deviceContext.DeviceContext.Draw(4, 0);
-            screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
-            #endregion
-
-            #region Draw outline onto original target
-            context.RenderHost.SetDefaultRenderTargets(false);
-            screenOutlinePass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
-            screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetFull);
-            screenOutlinePass.BindShader(deviceContext);
-            screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-            deviceContext.DeviceContext.Draw(4, 0);
-            screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
-            #endregion
+                #region Draw outline onto original target
+                context.RenderHost.SetDefaultRenderTargets(false);
+                screenOutlinePass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
+                screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetFull);
+                screenOutlinePass.BindShader(deviceContext);
+                screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
+                deviceContext.DeviceContext.Draw(4, 0);
+                screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
+                #endregion
+            }
 
             //Decrement ref count. See OutputMerger.GetRenderTargets remarks
             dsView.Dispose();
