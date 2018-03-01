@@ -347,6 +347,10 @@ namespace HelixToolkit.UWP.Core
                 screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
                 #endregion
             }
+            else
+            {
+                context.RenderHost.SetDefaultRenderTargets(false);
+            }
 
             //Decrement ref count. See OutputMerger.GetRenderTargets remarks
             dsView.Dispose();
