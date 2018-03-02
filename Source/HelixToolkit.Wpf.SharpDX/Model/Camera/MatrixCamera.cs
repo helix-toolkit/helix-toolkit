@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "ProjectionMatrix", typeof(Matrix3D), typeof(MatrixCamera), new PropertyMetadata(Matrix3D.Identity, 
                     (d,e)=> 
                     {
-                        ((d as ICamera) as MatrixCameraCore).ProjectionMatrix = ((Matrix3D)e.NewValue).ToMatrix();
+                        ((d as Camera).CameraInternal as MatrixCameraCore).ProjectionMatrix = ((Matrix3D)e.NewValue).ToMatrix();
                     }));
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "ViewMatrix", typeof(Matrix3D), typeof(MatrixCamera), new PropertyMetadata(Matrix3D.Identity,
                 (d, e) =>
                 {
-                    ((d as ICamera) as MatrixCameraCore).ViewMatrix = ((Matrix3D)e.NewValue).ToMatrix();
+                    ((d as Camera).CameraInternal as MatrixCameraCore).ViewMatrix = ((Matrix3D)e.NewValue).ToMatrix();
                 }));
 
         /// <summary>
