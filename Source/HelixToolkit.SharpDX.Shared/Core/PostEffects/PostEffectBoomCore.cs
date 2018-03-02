@@ -141,7 +141,7 @@ namespace HelixToolkit.UWP.Core
         private IShaderPass screenOutlinePass;
         #region Texture Resources
 
-        private IList<PostEffectBlurCore> renderTargetFull = new List<PostEffectBlurCore>();
+        private readonly IList<PostEffectBlurCore> renderTargetFull = new List<PostEffectBlurCore>();
 
         private int textureSlot;
 
@@ -149,35 +149,7 @@ namespace HelixToolkit.UWP.Core
 
         private SamplerState sampler;
 
-        private Texture2DDescription renderTargetDesc = new Texture2DDescription()
-        {
-            BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-            CpuAccessFlags = CpuAccessFlags.None,
-            Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
-            Usage = ResourceUsage.Default,
-            ArraySize = 1,
-            MipLevels = 1,
-            OptionFlags = ResourceOptionFlags.None,
-            SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0)
-        };
-
-        private ShaderResourceViewDescription targetResourceViewDesc = new ShaderResourceViewDescription()
-        {
-            Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
-            Dimension = ShaderResourceViewDimension.Texture2D,
-            Texture2D = new ShaderResourceViewDescription.Texture2DResource()
-            {
-                MipLevels = 1,
-                MostDetailedMip = 0,
-            }
-        };
-
-        private RenderTargetViewDescription renderTargetViewDesc = new RenderTargetViewDescription()
-        {
-            Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
-            Dimension = RenderTargetViewDimension.Texture2D,
-            Texture2D = new RenderTargetViewDescription.Texture2DResource() { MipSlice = 0 }
-        };
+        private int width, height;
         #endregion
 
         /// <summary>
@@ -232,11 +204,11 @@ namespace HelixToolkit.UWP.Core
             }
             #region Initialize textures
             if (renderTargetFull.Count == 0
-                || renderTargetDesc.Width != (int)(context.ActualWidth)
-                || renderTargetDesc.Height != (int)(context.ActualHeight))
+                || width != (int)(context.ActualWidth)
+                || height != (int)(context.ActualHeight))
             {
-                renderTargetDesc.Width = (int)(context.ActualWidth);
-                renderTargetDesc.Height = (int)(context.ActualHeight);
+                width = (int)(context.ActualWidth);
+                height = (int)(context.ActualHeight);
                 for (int i = 0; i < renderTargetFull.Count; ++i)
                 {
                     var target = renderTargetFull[i];
@@ -244,8 +216,8 @@ namespace HelixToolkit.UWP.Core
                 }
                 renderTargetFull.Clear();
 
-                int w = renderTargetDesc.Width;
-                int h = renderTargetDesc.Height;
+                int w = width;
+                int h = height;
                 int count = 0;
                 while(w > 1 && h > 1 && count < Math.Max(0, MaximumDownSamplingStep) + 1)
                 {
@@ -260,8 +232,14 @@ namespace HelixToolkit.UWP.Core
             }
             #endregion
 
-            #region Render objects onto offscreen texture
-            deviceContext.DeviceContext.ResolveSubresource(renderTargets[0].Resource, 0, renderTargetFull[0].CurrentRTV.Resource, 0, global::SharpDX.DXGI.Format.B8G8R8A8_UNorm);
+            #region Render objects onto offscreen texture    
+            using (var resource1 = renderTargets[0].Resource)
+            {
+                using (var resource2 = renderTargetFull[0].CurrentRTV.Resource)
+                {
+                    deviceContext.DeviceContext.ResolveSubresource(resource1, 0, resource2, 0, global::SharpDX.DXGI.Format.B8G8R8A8_UNorm);
+                }
+            }               
             #endregion
 
             deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
@@ -293,7 +271,7 @@ namespace HelixToolkit.UWP.Core
                 renderTargetFull[i].Run(deviceContext, NumberOfBlurPass);
 
                 //Up sampling
-                screenOutlinePass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);           
+                screenOutlinePass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
                 screenOutlinePass.BindShader(deviceContext);
                 screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
                 BindTarget(null, renderTargetFull[i - 1].CurrentRTV, deviceContext, renderTargetFull[i - 1].Width, renderTargetFull[i - 1].Height, false);
@@ -321,7 +299,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnDetach()
         {
-            renderTargetDesc.Width = renderTargetDesc.Height = 0;
+            width = height = 0;
             renderTargetFull.Clear();
             base.OnDetach();
         }
