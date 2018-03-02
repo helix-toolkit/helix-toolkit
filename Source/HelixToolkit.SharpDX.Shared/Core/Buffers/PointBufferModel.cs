@@ -113,14 +113,11 @@ namespace HelixToolkit.UWP.Core
             var array = vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new PointsVertex[vertexCount];
             var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
             vertexArrayBuffer = array;
-            if (geometry.Colors != null && geometry.Colors.Any())
+            for (var i = 0; i < vertexCount; i++)
             {
-                for (var i = 0; i < vertexCount; i++)
-                {
-                    colors.MoveNext();
-                    array[i].Position = new Vector4(positions[i], 1f);
-                    array[i].Color = colors.Current;
-                }
+                colors.MoveNext();
+                array[i].Position = new Vector4(positions[i], 1f);
+                array[i].Color = colors.Current;
             }
             colors.Dispose();
             return array;

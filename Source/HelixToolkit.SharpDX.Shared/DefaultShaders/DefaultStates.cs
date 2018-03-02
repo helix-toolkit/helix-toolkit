@@ -66,10 +66,10 @@ namespace HelixToolkit.UWP.Shaders
             AdditiveBlend.RenderTarget[0] = new RenderTargetBlendDescription()
             {
                 IsBlendEnabled = true,
-                SourceBlend = BlendOption.SourceAlpha,
+                SourceBlend = BlendOption.One,
                 DestinationBlend = BlendOption.One,
                 BlendOperation = BlendOperation.Add,
-                SourceAlphaBlend = BlendOption.SourceAlpha,
+                SourceAlphaBlend = BlendOption.One,
                 DestinationAlphaBlend = BlendOption.One,
                 AlphaBlendOperation = BlendOperation.Add,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All

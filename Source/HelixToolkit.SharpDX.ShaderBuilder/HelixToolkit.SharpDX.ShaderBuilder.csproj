@@ -78,6 +78,15 @@
     <Content Include="Common\CommonBuffers.hlsl" />
     <Content Include="Common\Common.hlsl" />
     <Content Include="Common\DataStructs.hlsl" />
+    <PixelShader Include="PS\psEffectBloomCombine.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psEffectBloomBlurHorizontal.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psEffectBloomBlurVertical.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
     <PixelShader Include="PS\psEffectMeshXRay.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
@@ -194,6 +203,10 @@
       <ShaderModel>5_0</ShaderModel>
     </ComputeShader>
     <Content Include="License.txt" />
+    <PixelShader Include="PS\psEffectBloomExtract.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+      <EntryPointName>psBloomExtract</EntryPointName>
+    </PixelShader>
     <Content Include="PS\psCommon.hlsl" />
     <PixelShader Include="PS\psMeshXRay.hlsl">
       <ShaderModel>4_0</ShaderModel>

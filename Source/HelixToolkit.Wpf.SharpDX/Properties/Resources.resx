@@ -295,4 +295,16 @@
   <data name="psEffectGaussianBlurVertical" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\pseffectgaussianblurvertical.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="psEffectBloomExtract" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectbloomextract.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psEffectBloomBlurHorizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectbloomblurhorizontal.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psEffectBloomBlurVertical" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectbloomblurvertical.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psEffectBloomCombine" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectbloomcombine.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

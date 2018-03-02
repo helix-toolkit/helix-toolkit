@@ -104,6 +104,11 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string PostEffectMeshOutlineBlur = "PostEffectMeshOutlineBlur";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string PostEffectBloom = "PostEffectBloom";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -168,7 +173,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string ScreenQuad = "ScreenQuad";
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string ScreenQuadCopy = "ScreenQuadCopy";
         /// <summary>
         /// The wireframe
         /// </summary>

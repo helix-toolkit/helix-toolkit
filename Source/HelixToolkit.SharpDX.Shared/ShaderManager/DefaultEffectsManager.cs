@@ -874,6 +874,68 @@ namespace HelixToolkit.UWP
                 }
             };
 
+            var bloomPostEffect = new TechniqueDescription(DefaultRenderTechniqueNames.PostEffectBloom)
+            {
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.ScreenQuad)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
+                            DefaultPSShaderDescriptions.PSEffectBloomExtract
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                    },
+                    new ShaderPassDescription(DefaultPassNames.ScreenQuadCopy)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
+                            DefaultPSShaderDescriptions.PSMeshOutlineQuadFinal
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                    },
+                    new ShaderPassDescription(DefaultPassNames.EffectBlurVertical)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
+                            DefaultPSShaderDescriptions.PSEffectBloomVerticalBlur
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                    },
+                    new ShaderPassDescription(DefaultPassNames.EffectBlurHorizontal)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
+                            DefaultPSShaderDescriptions.PSEffectBloomHorizontalBlur
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                    },
+                    new ShaderPassDescription(DefaultPassNames.MeshOutline)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
+                            DefaultPSShaderDescriptions.PSEffectBloomCombine
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.AdditiveBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                    },
+                }
+            };
             #endregion
 
 #if !NETFX_CORE
@@ -913,6 +975,7 @@ namespace HelixToolkit.UWP
             yield return renderSkybox;
             yield return meshOutlineBlurPostEffect;
             yield return meshBorderHighlightPostEffect;
+            yield return bloomPostEffect;
 #if !NETFX_CORE
             yield return renderScreenDup;
 #endif

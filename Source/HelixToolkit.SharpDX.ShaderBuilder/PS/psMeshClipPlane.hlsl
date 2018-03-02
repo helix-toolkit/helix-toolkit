@@ -11,34 +11,22 @@ void DetermineCutPlane(float3 pixelPos)
     if (EnableCrossPlane.x)
     {
         float3 p = pixelPos - CrossPlaneParams._m00_m01_m02 * CrossPlaneParams._m03;
-        if (dot(CrossPlaneParams._m00_m01_m02, p) < 0)
-        {
-            discard;
-        }
+        clip(dot(CrossPlaneParams._m00_m01_m02, p));
     }
     if (EnableCrossPlane.y)
     {
         float3 p = pixelPos - CrossPlaneParams._m10_m11_m12 * CrossPlaneParams._m13;
-        if (dot(CrossPlaneParams._m10_m11_m12, p) < 0)
-        {
-            discard;
-        }
+        clip(dot(CrossPlaneParams._m10_m11_m12, p));
     }
     if (EnableCrossPlane.z)
     {
         float3 p = pixelPos - CrossPlaneParams._m20_m21_m22 * CrossPlaneParams._m23;
-        if (dot(CrossPlaneParams._m20_m21_m22, p) < 0)
-        {
-            discard;
-        }
+        clip(dot(CrossPlaneParams._m20_m21_m22, p));
     }
     if (EnableCrossPlane.w)
     {
         float3 p = pixelPos - CrossPlaneParams._m30_m31_m32 * CrossPlaneParams._m33;
-        if (dot(CrossPlaneParams._m20_m21_m22, p) < 0)
-        {
-            discard;
-        }
+        clip(dot(CrossPlaneParams._m20_m21_m22, p));
     }
 }
 

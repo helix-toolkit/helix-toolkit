@@ -402,7 +402,7 @@ namespace HelixToolkit.UWP.Shaders
         /// 
         /// </summary>
         /// <value>
-        /// The ps mesh outline quad final.
+        /// 
         /// </value>
         public static byte[] PSEffectMeshXRay
         {
@@ -410,6 +410,74 @@ namespace HelixToolkit.UWP.Shaders
             {
 #if !NETFX_CORE
                 return Properties.Resources.psEffectMeshXRay;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+        /// <summary>
+        /// Gets the ps effect bloom extract.
+        /// </summary>
+        /// <value>
+        /// The ps effect bloom extract.
+        /// </value>
+        public static byte[] PSEffectBloomExtract
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psEffectBloomExtract;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+        /// <summary>
+        /// Gets the ps effect bloom vertical blur.
+        /// </summary>
+        /// <value>
+        /// The ps effect bloom vertical blur.
+        /// </value>
+        public static byte[] PSEffectBloomVerticalBlur
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psEffectBloomBlurVertical;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+        /// <summary>
+        /// Gets the ps effect bloom horizontal blur.
+        /// </summary>
+        /// <value>
+        /// The ps effect bloom horizontal blur.
+        /// </value>
+        public static byte[] PSEffectBloomHorizontalBlur
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psEffectBloomBlurHorizontal;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
+        /// <summary>
+        /// Gets the ps effect bloom combine.
+        /// </summary>
+        /// <value>
+        /// The ps effect bloom combine.
+        /// </value>
+        public static byte[] PSEffectBloomCombine
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.psEffectBloomCombine;
 #else
                 throw new NotImplementedException();
 #endif
@@ -575,6 +643,28 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSEffectMeshXRay = new ShaderDescription(nameof(PSEffectMeshXRay), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSEffectMeshXRay);
+
+        /// <summary>
+        ///
+        /// </summary>
+        public static ShaderDescription PSEffectBloomExtract = new ShaderDescription(nameof(PSEffectBloomExtract), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectBloomExtract);
+        /// <summary>
+        /// The ps effect bloom vertical blur
+        /// </summary>
+        public static ShaderDescription PSEffectBloomVerticalBlur = new ShaderDescription(nameof(PSEffectBloomVerticalBlur), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectBloomVerticalBlur);
+        /// <summary>
+        /// The ps effect bloom horizontal blur
+        /// </summary>
+        public static ShaderDescription PSEffectBloomHorizontalBlur = new ShaderDescription(nameof(PSEffectBloomHorizontalBlur), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectBloomHorizontalBlur);
+
+        /// <summary>
+        /// The ps effect bloom combine
+        /// </summary>
+        public static ShaderDescription PSEffectBloomCombine = new ShaderDescription(nameof(PSEffectBloomCombine), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectBloomCombine);
 #if !NETFX_CORE
         /// <summary>
         /// The ps screen dup

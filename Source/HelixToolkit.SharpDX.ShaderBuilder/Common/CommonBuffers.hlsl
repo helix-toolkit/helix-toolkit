@@ -126,7 +126,7 @@ cbuffer cbClipping : register(b6)
 cbuffer cbBorderEffect : register(b6)
 {
     float4 Color;
-    float4 Param;
+    float4x4 Param;
 };
 #endif
 
