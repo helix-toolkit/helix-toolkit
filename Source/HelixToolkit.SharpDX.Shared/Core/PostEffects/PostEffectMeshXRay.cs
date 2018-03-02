@@ -155,7 +155,7 @@ namespace HelixToolkit.UWP.Core
                         if (pass.IsNULL) { continue; }
                         pass.BindShader(deviceContext);
                         pass.BindStates(deviceContext, StateType.BlendState);
-                        deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(pass.DepthStencilState, 0);
+                        deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(pass.DepthStencilState, 0);//Increment the stencil value
                         mesh.Render(context, deviceContext);
                     }
                 }
@@ -179,7 +179,7 @@ namespace HelixToolkit.UWP.Core
                     if (pass.IsNULL) { continue; }
                     pass.BindShader(deviceContext);
                     pass.BindStates(deviceContext, StateType.BlendState);
-                    deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(pass.DepthStencilState, 1);
+                    deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(pass.DepthStencilState, 1);//Do stencil test only on value = 1.
                     mesh.Key.Render(context, deviceContext);
                 }
                 currentCores.Clear();

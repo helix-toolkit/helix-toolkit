@@ -133,9 +133,9 @@ namespace HelixToolkit.UWP.Core
         public virtual void Run(DeviceContextProxy deviceContext, int iteration, int initVerticalIter = 0, int initHorizontalIter = 0)
         {
             deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+            deviceContext.DeviceContext.PixelShader.SetSampler(samplerSlot, sampler);
             if (!screenBlurPassVertical.IsNULL)
             {
-                screenBlurPassVertical.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
                 screenBlurPassVertical.BindShader(deviceContext);
                 screenBlurPassVertical.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
                 for (int i = initVerticalIter; i < iteration; ++i)
@@ -145,12 +145,10 @@ namespace HelixToolkit.UWP.Core
                     screenBlurPassVertical.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetBlur[1].TextureView);
                     deviceContext.DeviceContext.Draw(4, 0);
                 }
-                screenBlurPassVertical.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
             }
           
             if (!screenBlurPassHorizontal.IsNULL)
             {
-                screenBlurPassHorizontal.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
                 screenBlurPassHorizontal.BindShader(deviceContext);
                 screenBlurPassHorizontal.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
                 for (int i = initHorizontalIter; i < iteration; ++i)
@@ -160,8 +158,8 @@ namespace HelixToolkit.UWP.Core
                     screenBlurPassHorizontal.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetBlur[1].TextureView);
                     deviceContext.DeviceContext.Draw(4, 0);
                 }
-                screenBlurPassHorizontal.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
             }
+            deviceContext.DeviceContext.PixelShader.SetShaderResource(textureSlot, null);
         }
 
         public void SwapTargets()
