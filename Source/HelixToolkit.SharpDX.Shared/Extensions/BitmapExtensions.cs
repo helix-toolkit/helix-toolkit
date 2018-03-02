@@ -94,8 +94,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 using (var target = new WicRenderTarget(deviceResources.Factory2D, bitmap,
                     new RenderTargetProperties()
                     {
-                        DpiX = deviceResources.Factory2D.DesktopDpi.Width,
-                        DpiY = deviceResources.Factory2D.DesktopDpi.Height,
+                        DpiX = 96,
+                        DpiY = 96,
                         MinLevel = FeatureLevel.Level_DEFAULT,
                         PixelFormat = new global::SharpDX.Direct2D1.PixelFormat(global::SharpDX.DXGI.Format.Unknown, AlphaMode.Unknown)
                     }))
