@@ -29,6 +29,13 @@ namespace HelixToolkit.UWP.Core
         /// The current SRV.
         /// </value>
         public ShaderResourceView CurrentSRV { get { return renderTargetBlur[0].TextureView; } }
+        /// <summary>
+        /// Gets the next SRV.
+        /// </summary>
+        /// <value>
+        /// The next SRV.
+        /// </value>
+        public ShaderResourceView NextSRV { get { return renderTargetBlur[1].TextureView; } }
 
         public int Width { get { return texture2DDesc.Width; } }
 
@@ -40,6 +47,13 @@ namespace HelixToolkit.UWP.Core
         /// The current RTV.
         /// </value>
         public RenderTargetView CurrentRTV { get { return renderTargetBlur[0].RenderTargetView; } }
+        /// <summary>
+        /// Gets the next RTV.
+        /// </summary>
+        /// <value>
+        /// The next RTV.
+        /// </value>
+        public RenderTargetView NextRTV { get { return renderTargetBlur[1].RenderTargetView; } }
 
         private IShaderPass screenBlurPassVertical;
 
@@ -150,7 +164,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private void SwapTargets()
+        public void SwapTargets()
         {
             //swap buffer
             var current = renderTargetBlur[0];
@@ -164,6 +178,14 @@ namespace HelixToolkit.UWP.Core
             context.OutputMerger.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
             context.Rasterizer.SetViewport(0, 0, width, height);
             context.Rasterizer.SetScissorRectangle(0, 0, width, height);
+        }
+
+        public void ClearTargets(DeviceContext context, Color c)
+        {
+            foreach(var target in renderTargetBlur)
+            {
+                context.ClearRenderTargetView(target, c);
+            }
         }
     }
 }

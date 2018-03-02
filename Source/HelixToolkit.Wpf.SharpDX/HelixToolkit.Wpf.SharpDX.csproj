@@ -212,6 +212,7 @@
     <Compile Include="Model\Elements3D\PatchGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\PointGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\EnvironmentMap3D.cs" />
+    <Compile Include="Model\Elements3D\PostEffects\PostEffectBoom.cs" />
     <Compile Include="Model\Elements3D\PostEffects\PostEffectMeshBorderHighlight.cs" />
     <Compile Include="Model\Elements3D\PostEffects\PostEffectMeshOutlineBlur.cs" />
     <Compile Include="Model\Elements3D\PostEffects\PostEffectMeshXRay.cs" />
@@ -307,6 +308,10 @@
     <None Include="Resources\psColor.cso" />
     <None Include="Resources\psDepthStencilOnly.cso" />
     <None Include="Resources\psDiffuseMap.cso" />
+    <None Include="Resources\psEffectBloomBlurHorizontal.cso" />
+    <None Include="Resources\psEffectBloomBlurVertical.cso" />
+    <None Include="Resources\psEffectBloomCombine.cso" />
+    <None Include="Resources\psEffectBloomExtract.cso" />
     <None Include="Resources\psEffectGaussianBlurHorizontal.cso" />
     <None Include="Resources\psEffectGaussianBlurVertical.cso" />
     <None Include="Resources\psEffectMeshBorderHighlight.cso" />

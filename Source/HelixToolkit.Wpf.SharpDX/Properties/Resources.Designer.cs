@@ -193,6 +193,46 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psEffectBloomBlurHorizontal {
+            get {
+                object obj = ResourceManager.GetObject("psEffectBloomBlurHorizontal", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectBloomBlurVertical {
+            get {
+                object obj = ResourceManager.GetObject("psEffectBloomBlurVertical", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectBloomCombine {
+            get {
+                object obj = ResourceManager.GetObject("psEffectBloomCombine", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectBloomExtract {
+            get {
+                object obj = ResourceManager.GetObject("psEffectBloomExtract", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psEffectGaussianBlurHorizontal {
             get {
                 object obj = ResourceManager.GetObject("psEffectGaussianBlurHorizontal", resourceCulture);

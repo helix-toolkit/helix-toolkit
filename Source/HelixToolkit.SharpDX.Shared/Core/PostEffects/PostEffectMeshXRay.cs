@@ -80,9 +80,9 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                SetAffectsRender(ref modelStruct.Param.X, value);
+                SetAffectsRender(ref modelStruct.Param.M11, value);
             }
-            get { return modelStruct.Param.X; }
+            get { return modelStruct.Param.M11; }
         }
 
         private bool doublePass = false;

@@ -354,9 +354,9 @@ namespace HelixToolkit.Wpf.SharpDX
     public struct BorderEffectStruct
     {
         public Color4 Color;
-        public Vector4 Param;
+        public Matrix Param;
 
-        public const int SizeInBytes = 4 * (4 * 2);
+        public const int SizeInBytes = 4 * (4 + 4 * 4);
     }
 #if !NETFX_CORE
     /// <summary>

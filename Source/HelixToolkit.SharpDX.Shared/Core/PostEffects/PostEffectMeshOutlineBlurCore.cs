@@ -379,8 +379,8 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, IRenderContext context)
         {
-            model.Param.X = scaleX;
-            model.Param.Y = ScaleY;
+            model.Param.M11 = scaleX;
+            model.Param.M12 = ScaleY;
             modelStruct.Color = color;
         }
     }
