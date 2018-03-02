@@ -29,6 +29,8 @@ namespace HelixToolkit.UWP.Core
         float BloomCombineSaturation { set; get; }
 
         float BloomCombineIntensity { set; get; }
+        int NumberOfBlurPass { set; get; }
+        int MaximumDownSamplingStep { set; get; }
     }
     /// <summary>
     /// Outline blur effect
