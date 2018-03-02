@@ -143,7 +143,7 @@ namespace HelixToolkit.UWP.Core
         private IShaderPass screenOutlinePass;
         #region Texture Resources
 
-        private readonly IList<PostEffectBlurCore> renderTargetFull = new List<PostEffectBlurCore>();
+        private readonly IList<PostEffectBlurCore> offScreenRenderTargets = new List<PostEffectBlurCore>();
 
         private int textureSlot;
 
@@ -198,25 +198,19 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            DepthStencilView dsView;
-            var renderTargets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1, out dsView);
-            if (dsView == null)
-            {
-                return;
-            }
             #region Initialize textures
-            if (renderTargetFull.Count == 0
+            if (offScreenRenderTargets.Count == 0
                 || width != (int)(context.ActualWidth)
                 || height != (int)(context.ActualHeight))
             {
                 width = (int)(context.ActualWidth);
                 height = (int)(context.ActualHeight);
-                for (int i = 0; i < renderTargetFull.Count; ++i)
+                for (int i = 0; i < offScreenRenderTargets.Count; ++i)
                 {
-                    var target = renderTargetFull[i];
+                    var target = offScreenRenderTargets[i];
                     RemoveAndDispose(ref target);
                 }
-                renderTargetFull.Clear();
+                offScreenRenderTargets.Clear();
 
                 int w = width;
                 int h = height;
@@ -226,7 +220,7 @@ namespace HelixToolkit.UWP.Core
                     var target = Collect(new PostEffectBlurCore(global::SharpDX.DXGI.Format.B8G8R8A8_UNorm, blurPassVertical, blurPassHorizontal, textureSlot, samplerSlot,
                         DefaultSamplers.LinearSamplerClampAni4, EffectTechnique.EffectsManager));
                     target.Resize(Device, w, h);
-                    renderTargetFull.Add(target);
+                    offScreenRenderTargets.Add(target);
                     w >>= 2;
                     h >>= 2;
                     ++count;
@@ -235,74 +229,70 @@ namespace HelixToolkit.UWP.Core
             #endregion
 
             #region Render objects onto offscreen texture    
+            var renderTargets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1);
             using (var resource1 = renderTargets[0].Resource)
             {
-                using (var resource2 = renderTargetFull[0].CurrentRTV.Resource)
+                using (var resource2 = offScreenRenderTargets[0].CurrentRTV.Resource)
                 {
                     deviceContext.DeviceContext.ResolveSubresource(resource1, 0, resource2, 0, global::SharpDX.DXGI.Format.B8G8R8A8_UNorm);
                 }
-            }               
+            }
+            //Decrement ref count. See OutputMerger.GetRenderTargets remarks
+            foreach (var t in renderTargets)
+            { t.Dispose(); }
             #endregion
 
             deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             #region Do Bloom Pass
+            deviceContext.DeviceContext.PixelShader.SetSampler(samplerSlot, sampler);
 
             //Extract bloom samples
-            BindTarget(null, renderTargetFull[0].NextRTV, deviceContext, renderTargetFull[0].Width, renderTargetFull[0].Height, false);
-            screenQuadPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
-            screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetFull[0].CurrentSRV);
+            BindTarget(null, offScreenRenderTargets[0].NextRTV, deviceContext, offScreenRenderTargets[0].Width, offScreenRenderTargets[0].Height, false);
+            screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, offScreenRenderTargets[0].CurrentSRV);
             screenQuadPass.BindShader(deviceContext);
             screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
             deviceContext.DeviceContext.Draw(4, 0);
-            renderTargetFull[0].SwapTargets();
+            offScreenRenderTargets[0].SwapTargets();
 
             // Down sampling
-            screenQuadCopy.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
             screenQuadCopy.BindShader(deviceContext);
             screenQuadCopy.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-            for (int i = 1; i < renderTargetFull.Count; ++i)
+            for (int i = 1; i < offScreenRenderTargets.Count; ++i)
             {
-                BindTarget(null, renderTargetFull[i].CurrentRTV, deviceContext, renderTargetFull[i].Width, renderTargetFull[i].Height, false);
-                screenQuadCopy.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetFull[i - 1].CurrentSRV);
+                BindTarget(null, offScreenRenderTargets[i].CurrentRTV, deviceContext, offScreenRenderTargets[i].Width, offScreenRenderTargets[i].Height, false);
+                screenQuadCopy.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, offScreenRenderTargets[i - 1].CurrentSRV);
                 deviceContext.DeviceContext.Draw(4, 0);
             }
 
-            for (int i = renderTargetFull.Count - 1; i >= 1; --i)
+            for (int i = offScreenRenderTargets.Count - 1; i >= 1; --i)
             {
                 //Run blur pass
-                renderTargetFull[i].Run(deviceContext, NumberOfBlurPass);
+                offScreenRenderTargets[i].Run(deviceContext, NumberOfBlurPass);
 
                 //Up sampling
-                screenOutlinePass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
                 screenOutlinePass.BindShader(deviceContext);
                 screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-                BindTarget(null, renderTargetFull[i - 1].CurrentRTV, deviceContext, renderTargetFull[i - 1].Width, renderTargetFull[i - 1].Height, false);
-                screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetFull[i].CurrentSRV);
+                BindTarget(null, offScreenRenderTargets[i - 1].CurrentRTV, deviceContext, offScreenRenderTargets[i - 1].Width, offScreenRenderTargets[i - 1].Height, false);
+                screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, offScreenRenderTargets[i].CurrentSRV);
                 deviceContext.DeviceContext.Draw(4, 0);
             }
-            renderTargetFull[0].Run(deviceContext, NumberOfBlurPass);
+            offScreenRenderTargets[0].Run(deviceContext, NumberOfBlurPass);
             #endregion
 
             #region Draw outline onto original target
             context.RenderHost.SetDefaultRenderTargets(false);
-            screenOutlinePass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
-            screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetFull[0].CurrentSRV);
+            screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, offScreenRenderTargets[0].CurrentSRV);
             screenOutlinePass.BindShader(deviceContext);
             screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
             deviceContext.DeviceContext.Draw(4, 0);
             screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
             #endregion
-
-            //Decrement ref count. See OutputMerger.GetRenderTargets remarks
-            dsView.Dispose();
-            foreach (var t in renderTargets)
-            { t.Dispose(); }
         }
 
         protected override void OnDetach()
         {
             width = height = 0;
-            renderTargetFull.Clear();
+            offScreenRenderTargets.Clear();
             base.OnDetach();
         }
 

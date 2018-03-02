@@ -249,12 +249,6 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            DepthStencilView dsView;
-            var renderTargets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1, out dsView);
-            if (dsView == null)
-            {
-                return;
-            }
             #region Initialize textures
             if (renderTargetFull == null
                 || renderTargetDesc.Width != (int)(context.ActualWidth)
@@ -315,9 +309,9 @@ namespace HelixToolkit.UWP.Core
             if (hasMesh)
             {
                 deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+                deviceContext.DeviceContext.PixelShader.SetSampler(samplerSlot, sampler);
                 #region Do Blur Pass
                 BindTarget(null, blurCore.CurrentRTV, deviceContext, blurCore.Width, blurCore.Height, true);
-                blurPassVertical.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
                 blurPassVertical.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetFull);
                 blurPassVertical.BindShader(deviceContext);
                 blurPassVertical.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
@@ -328,18 +322,15 @@ namespace HelixToolkit.UWP.Core
 
                 #region Draw back with stencil test
                 BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, renderTargetDesc.Width, renderTargetDesc.Height);
-                screenQuadPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
                 screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, blurCore.CurrentSRV);
                 screenQuadPass.BindShader(deviceContext);
                 deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(screenQuadPass.DepthStencilState, 0);
                 screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState);
                 deviceContext.DeviceContext.Draw(4, 0);
-                screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
                 #endregion
 
                 #region Draw outline onto original target
                 context.RenderHost.SetDefaultRenderTargets(false);
-                screenOutlinePass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
                 screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetFull);
                 screenOutlinePass.BindShader(deviceContext);
                 screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
@@ -351,11 +342,6 @@ namespace HelixToolkit.UWP.Core
             {
                 context.RenderHost.SetDefaultRenderTargets(false);
             }
-
-            //Decrement ref count. See OutputMerger.GetRenderTargets remarks
-            dsView.Dispose();
-            foreach (var t in renderTargets)
-            { t.Dispose(); }
         }
 
         protected override void OnDetach()
