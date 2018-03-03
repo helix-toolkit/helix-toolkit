@@ -308,7 +308,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (renderHostInternal != null)
                 {
-                    renderHostInternal.IsRendering = (Visibility)e.NewValue == Visibility.Visible;
+                    renderHostInternal.IsRendering = (bool)e.NewValue;
                 }
             };
             AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
