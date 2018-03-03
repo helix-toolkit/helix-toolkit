@@ -35,6 +35,11 @@ All 1.x.x related pull requests, please use [1.1.0/Release](https://github.com/h
 6. Post effect support.
 7. Other on going changes.
 
+#### Project Build
+Visual Studio 2017. Windows 10 SDK.
+
+(Missing fxc.exe issue with newest Windows 10 SDK: Copy fxc.exe in C:\Program Files (x86)\Windows Kits\10\Bin\10.0.xxx\x86 to C:\Program Files (x86)\Windows Kits\10\bin\x86 to fix this issue. Because the HLSL compile tool hard coded the path.)
+
 ### 2018-02-06
 
 V1.1.0 release is available.
