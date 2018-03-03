@@ -303,8 +303,14 @@ namespace HelixToolkit.Wpf.SharpDX
             this.SetDefaultGestures();
 
             this.Loaded += this.ControlLoaded;
-            this.Unloaded += this.ControlUnloaded;            
-
+            this.Unloaded += this.ControlUnloaded;
+            this.IsVisibleChanged += (d, e) =>
+            {
+                if (renderHostInternal != null)
+                {
+                    renderHostInternal.IsRendering = (Visibility)e.NewValue == Visibility.Visible;
+                }
+            };
             AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
         }
 
@@ -1738,15 +1744,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 // Raise event from Viewport3DX if there's no hit
                 this.RaiseEvent(new MouseUp3DEventArgs(this, null, pt, this));
             }
-        }
-
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if(e.Property == VisibilityProperty && renderHostInternal != null)
-            {
-                renderHostInternal.IsRendering = (Visibility)e.NewValue == Visibility.Visible;
-            }
-            base.OnPropertyChanged(e);
         }
 
         public static T FindVisualAncestor<T>(DependencyObject obj) where T : DependencyObject
