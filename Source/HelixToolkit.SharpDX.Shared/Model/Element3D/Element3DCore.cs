@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
+using System.Linq;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Core
@@ -283,14 +283,19 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
             renderHost = host;
             this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : OnCreateRenderTechnique(host);
-            if (renderTechnique != null)
+            if(renderTechnique == null)
             {
-                renderTechnique = RenderHost.EffectsManager[renderTechnique.Name];
-                IsAttached = OnAttach(host);
-                if (IsAttached)
+                var techniqueName = RenderHost.EffectsManager.RenderTechniques.FirstOrDefault();
+                if (string.IsNullOrEmpty(techniqueName))
                 {
-                    OnAttached();
+                    return;
                 }
+                renderTechnique = RenderHost.EffectsManager[techniqueName];
+            }
+            IsAttached = OnAttach(host);
+            if (IsAttached)
+            {
+                OnAttached();
             }
             InvalidateRender();
         }
