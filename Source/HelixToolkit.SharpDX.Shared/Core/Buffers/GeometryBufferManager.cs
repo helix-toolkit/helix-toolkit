@@ -2,7 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-//#define DEBUGDETAIL
+#define DEBUGDETAIL
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,6 +15,65 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Utilities;
+
+    public sealed class GeometryBufferProxy<T> : IGeometryBufferProxy where T : IGeometryBufferModel
+    {
+        public static readonly IGeometryBufferProxy Empty = new GeometryBufferProxy<T>();
+        public Guid ModelGuid { get; private set; } = Guid.Empty;
+        public Guid GeometryGuid { get; private set; } = Guid.Empty;
+        public IGeometryBufferModel BufferModel { private set; get; }
+
+        private readonly IGeometryBufferManager manager;
+
+        public GeometryBufferProxy(Guid modelGuid, Guid geometryGuid, IGeometryBufferModel buffer, IGeometryBufferManager manager)
+        {
+            this.ModelGuid = modelGuid;
+            this.GeometryGuid = geometryGuid;
+            this.manager = manager;
+            this.BufferModel = buffer;
+        }
+
+        private GeometryBufferProxy()
+        {
+            this.BufferModel = EmptyGeometryBufferModel.Empty;
+        }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    manager?.Unregister<T>(this);
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~GeometryBufferProxy() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
+    }
+
     /// <summary>
     /// Use to manage geometry vertex/index buffers. 
     /// Same geometry with same buffer type will share the same buffer across all models.
@@ -41,11 +100,11 @@ namespace HelixToolkit.UWP.Core
         /// <param name="modelGuid">The model unique identifier.</param>
         /// <param name="geometry">The geometry.</param>
         /// <returns></returns>
-        public IGeometryBufferModel Register<T>(Guid modelGuid, Geometry3D geometry) where T:IGeometryBufferModel
+        public IGeometryBufferProxy Register<T>(Guid modelGuid, Geometry3D geometry) where T:IGeometryBufferModel
         {
             if (geometry == null || modelGuid == Guid.Empty)
             {
-                return new EmptyGeometryBufferModel();
+                return GeometryBufferProxy<T>.Empty;
             }
             lock (bufferDictionary)
             {
@@ -76,9 +135,10 @@ namespace HelixToolkit.UWP.Core
                     bufferDictionary.Add(typeof(T), geometry.GUID, container);
                 
                 }
-                return container.Buffer;
+                return new GeometryBufferProxy<T>(modelGuid, geometry.GUID, container.Buffer, this);
             }
         }
+
         /// <summary>
         /// Unregisters the specified model unique identifier.
         /// </summary>
@@ -86,21 +146,21 @@ namespace HelixToolkit.UWP.Core
         /// <param name="modelGuid">The model unique identifier.</param>
         /// <param name="geometry">The geometry.</param>
         /// <returns></returns>
-        public bool Unregister<T>(Guid modelGuid, Geometry3D geometry) where T:IGeometryBufferModel
+        public bool Unregister<T>(IGeometryBufferProxy proxy) where T:IGeometryBufferModel
         {
-            if (geometry == null || modelGuid == Guid.Empty)
+            if (proxy.GeometryGuid == Guid.Empty || proxy.ModelGuid == Guid.Empty)
             {
                 return false;
             }
             lock (bufferDictionary)
             {
                 GeometryBufferContainer container = null;
-                if(bufferDictionary.TryGetValue(typeof(T), geometry.GUID, out container))
+                if(bufferDictionary.TryGetValue(typeof(T), proxy.GeometryGuid, out container))
                 {
 #if DEBUGDETAIL
-                    Debug.WriteLine("Existing buffer found, Detach model from buffer. ModelGUID = " + modelGuid);
+                    Debug.WriteLine("Existing buffer found, Detach model from buffer. ModelGUID = " + proxy.ModelGuid);
 #endif
-                    container.Detach(modelGuid);
+                    container.Detach(proxy.ModelGuid);
                     return true;
                 }
                 else

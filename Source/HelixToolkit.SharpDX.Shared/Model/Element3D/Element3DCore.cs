@@ -331,6 +331,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             renderHost = null;
         }
 
+        protected void InvalidateRenderEvent(object sender, EventArgs arg)
+        {
+            renderHost?.InvalidateRender();
+        }
+
         /// <summary>
         /// Tries to invalidate the current render.
         /// </summary>

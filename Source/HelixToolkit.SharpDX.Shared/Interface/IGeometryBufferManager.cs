@@ -9,6 +9,16 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
+    public interface IGeometryBufferProxy : IDisposable
+    {
+        IGeometryBufferModel BufferModel { get; }
+        Guid ModelGuid { get; }
+        Guid GeometryGuid { get; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IGeometryBufferManager : IDisposable
     {
         /// <summary>
@@ -18,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="modelGuid">The model unique identifier.</param>
         /// <param name="geometry">The geometry.</param>
         /// <returns></returns>
-        IGeometryBufferModel Register<T>(Guid modelGuid, Geometry3D geometry) where T : IGeometryBufferModel;
+        IGeometryBufferProxy Register<T>(Guid modelGuid, Geometry3D geometry) where T : IGeometryBufferModel;
         /// <summary>
         /// Unregisters the specified model unique identifier.
         /// </summary>
@@ -26,6 +36,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="modelGuid">The model unique identifier.</param>
         /// <param name="geometry">The geometry.</param>
         /// <returns></returns>
-        bool Unregister<T>(Guid modelGuid, Geometry3D geometry) where T : IGeometryBufferModel;
+        bool Unregister<T>(IGeometryBufferProxy proxy) where T : IGeometryBufferModel;
     }
 }

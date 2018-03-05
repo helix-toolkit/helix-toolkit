@@ -20,6 +20,10 @@ namespace HelixToolkit.UWP
     public interface IGeometryBufferModel : IGUID, IDisposable
     {
         /// <summary>
+        /// Occurs when [on invalidate renderer].
+        /// </summary>
+        event EventHandler<EventArgs> OnInvalidateRender;
+        /// <summary>
         /// Gets or sets the geometry.
         /// </summary>
         /// <value>
@@ -65,16 +69,16 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources);
 
-        /// <summary>
-        /// Attaches the render host.
-        /// </summary>
-        /// <param name="host">The host.</param>
-        void AttachRenderHost(IRenderHost host);
-        /// <summary>
-        /// Detaches the render host.
-        /// </summary>
-        /// <param name="host">The host.</param>
-        void DetachRenderHost(IRenderHost host);
+        ///// <summary>
+        ///// Attaches the render host.
+        ///// </summary>
+        ///// <param name="host">The host.</param>
+        //void AttachRenderHost(IRenderHost host);
+        ///// <summary>
+        ///// Detaches the render host.
+        ///// </summary>
+        ///// <param name="host">The host.</param>
+        //void DetachRenderHost(IRenderHost host);
     }
     /// <summary>
     /// 

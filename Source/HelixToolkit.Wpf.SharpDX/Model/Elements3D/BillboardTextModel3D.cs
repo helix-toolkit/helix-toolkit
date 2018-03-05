@@ -75,20 +75,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="modelGuid"></param>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected override IGeometryBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
+        protected override IGeometryBufferProxy OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
-            var buffer = EffectsManager.GeometryBufferManager.Register<DefaultBillboardBufferModel>(modelGuid, geometry);
-            return buffer;
+            return EffectsManager.GeometryBufferManager.Register<DefaultBillboardBufferModel>(modelGuid, geometry);
         }
-        /// <summary>
-        /// Called when [unregister buffer model].
-        /// </summary>
-        /// <param name="modelGuid">The model unique identifier.</param>
-        /// <param name="geometry">The geometry.</param>
-        protected override void OnUnregisterBufferModel(Guid modelGuid, Geometry3D geometry)
-        {
-            EffectsManager.GeometryBufferManager.Unregister<DefaultBillboardBufferModel>(modelGuid, geometry);
-        }
+
         /// <summary>
         /// Override this function to set render technique during Attach Host.
         /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
