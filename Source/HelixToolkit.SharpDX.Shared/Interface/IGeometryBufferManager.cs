@@ -33,8 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Unregisters the specified model unique identifier.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="modelGuid">The model unique identifier.</param>
-        /// <param name="geometry">The geometry.</param>
+        /// <param name="proxy">Buffer Proxy return from <see cref="Register{T}(Guid, Geometry3D)"/>.</param>
         /// <returns></returns>
         bool Unregister<T>(IGeometryBufferProxy proxy) where T : IGeometryBufferModel;
     }

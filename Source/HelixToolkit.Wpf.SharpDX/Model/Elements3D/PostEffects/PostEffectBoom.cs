@@ -217,7 +217,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         /// <summary>
         /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="OnSetRenderTechnique" /> is set, then <see cref="OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
+        /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="Element3DCore.OnCreateRenderTechnique" /> function will be called.</para>
         /// </summary>
         /// <param name="host"></param>
         /// <returns>

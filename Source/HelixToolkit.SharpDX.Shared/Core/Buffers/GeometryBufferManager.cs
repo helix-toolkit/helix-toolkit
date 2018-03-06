@@ -143,8 +143,7 @@ namespace HelixToolkit.UWP.Core
         /// Unregisters the specified model unique identifier.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="modelGuid">The model unique identifier.</param>
-        /// <param name="geometry">The geometry.</param>
+        /// <param name="proxy">Buffer Proxy</param>
         /// <returns></returns>
         public bool Unregister<T>(IGeometryBufferProxy proxy) where T:IGeometryBufferModel
         {
