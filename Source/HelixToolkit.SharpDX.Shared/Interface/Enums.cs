@@ -9,12 +9,12 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    public enum RenderType
+    public enum RenderType : ushort
     {
         None, Light, PreProc, Normal, Particle, PostProc, ScreenSpaced, Others
     }
 
-    public enum MSAALevel
+    public enum MSAALevel : ushort
     {
         Disable = 0, Maximum = 1, Two = 2, Four = 4, Eight = 8
     }
@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public enum PointFigure
+    public enum PointFigure : ushort
     {
         Rect,
         Ellipse,
@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public enum MeshTopologyEnum
+    public enum MeshTopologyEnum : ushort
     {
         PNTriangles,
         PNQuads
@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// 
     /// </summary>
     [Flags]
-    public enum ShaderStage
+    public enum ShaderStage : ushort
     {
         None = 0,
         Vertex = 1,
@@ -62,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// 
     /// </summary>
     [Flags]
-    public enum StateType
+    public enum StateType : ushort
     {
         None = 0,
         RasterState = 1,
@@ -71,12 +71,30 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     [Flags]
-    public enum RenderDetail
+    public enum RenderDetail : ushort
     {
         None = 0,
         FPS = 1,
         Statistics = 2,
         TriangleInfo = 4,
         Camera = 8,
+    }
+
+    public struct EnumHelper
+    {
+        public static bool HasFlag(ShaderStage option, ShaderStage flag)
+        {
+            return (option & flag) != 0;
+        }
+
+        public static bool HasFlag(StateType option, StateType flag)
+        {
+            return (option & flag) != 0;
+        }
+
+        public static bool HasFlag(RenderDetail option, RenderDetail flag)
+        {
+            return (option & flag) != 0;
+        }
     }
 }

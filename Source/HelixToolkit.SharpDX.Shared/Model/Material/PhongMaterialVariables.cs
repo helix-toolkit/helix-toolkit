@@ -395,7 +395,7 @@ namespace HelixToolkit.UWP.Model
                 return false;
             }
             UpdateMappings(shaderPass);
-            foreach (var s in shaderPass.Shaders.Where(x => !x.IsNULL && Constants.CanBindTextureStages.HasFlag(x.ShaderType)))
+            foreach (var s in shaderPass.Shaders.Where(x => !x.IsNULL && EnumHelper.HasFlag(Constants.CanBindTextureStages, x.ShaderType)))
             {
                 OnBindMaterialTextures(context, s);
             }
@@ -410,7 +410,7 @@ namespace HelixToolkit.UWP.Model
             }
             currentPass = shaderPass;
 
-            foreach (var shader in shaderPass.Shaders.Where(x => !x.IsNULL && Constants.CanBindTextureStages.HasFlag(x.ShaderType)))
+            foreach (var shader in shaderPass.Shaders.Where(x => !x.IsNULL && EnumHelper.HasFlag(Constants.CanBindTextureStages, x.ShaderType)))
             {
                 int idx = shader.ShaderType.ToIndex();
                 TextureBindingMap[idx][DiffuseIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderDiffuseTexName);

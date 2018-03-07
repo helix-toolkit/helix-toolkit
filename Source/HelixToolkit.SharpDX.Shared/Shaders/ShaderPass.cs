@@ -314,15 +314,15 @@ namespace HelixToolkit.UWP.Shaders
             {
                 return;
             }
-            if (type.HasFlag(StateType.BlendState))
+            if (EnumHelper.HasFlag(type, StateType.BlendState))
             {
                 context.DeviceContext.OutputMerger.BlendState = BlendState;
             }
-            if (type.HasFlag(StateType.DepthStencilState))
+            if (EnumHelper.HasFlag(type, StateType.DepthStencilState))
             {
                 context.DeviceContext.OutputMerger.DepthStencilState = DepthStencilState;
             }
-            if (type.HasFlag(StateType.RasterState))
+            if (EnumHelper.HasFlag(type, StateType.RasterState))
             {
                 context.DeviceContext.Rasterizer.State = RasterState;
             }
