@@ -783,7 +783,7 @@ namespace HelixToolkit.UWP
             #region Post Effects
             var meshOutlineBlurPostEffect = new TechniqueDescription(DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur)
             {
-                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                InputLayoutDescription = InputLayoutDescription.EmptyInputLayout,
                 PassDescriptions = new[]
                 {
                     new ShaderPassDescription(DefaultPassNames.ScreenQuad)
@@ -835,7 +835,7 @@ namespace HelixToolkit.UWP
 
             var meshBorderHighlightPostEffect = new TechniqueDescription(DefaultRenderTechniqueNames.PostEffectMeshBorderHighlight)
             {
-                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                InputLayoutDescription = InputLayoutDescription.EmptyInputLayout,
                 PassDescriptions = new[]
                 {
                     new ShaderPassDescription(DefaultPassNames.ScreenQuad)
@@ -876,7 +876,7 @@ namespace HelixToolkit.UWP
 
             var bloomPostEffect = new TechniqueDescription(DefaultRenderTechniqueNames.PostEffectBloom)
             {
-                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                InputLayoutDescription = InputLayoutDescription.EmptyInputLayout,
                 PassDescriptions = new[]
                 {
                     new ShaderPassDescription(DefaultPassNames.ScreenQuad)

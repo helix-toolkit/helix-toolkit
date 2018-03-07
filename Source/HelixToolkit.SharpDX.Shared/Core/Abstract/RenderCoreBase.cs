@@ -99,7 +99,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The post effect names.
         /// </value>
-        IEnumerable<string> IRenderCore.PostEffectNames
+        public IEnumerable<string> PostEffectNames
         {
             get { return postEffectNames.Keys; }
         }

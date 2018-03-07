@@ -40,12 +40,12 @@ namespace HelixToolkit.UWP.Core
                 {
                     if (instanceBuffer != null)
                     {
-                        instanceBuffer.OnElementChanged -= InstanceBuffer_OnElementChanged;
+                        instanceBuffer.OnElementChanged -= InvalidateRenderEvent;
                     }
                     instanceBuffer = value;
                     if (instanceBuffer != null)
                     {
-                        instanceBuffer.OnElementChanged += InstanceBuffer_OnElementChanged;
+                        instanceBuffer.OnElementChanged += InvalidateRenderEvent;
                     }
                 }
             }
@@ -55,14 +55,30 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private void InstanceBuffer_OnElementChanged(object sender, EventArgs e)
-        {
-            InvalidateRenderer();
-        }
+        private IGeometryBufferModel geometryBuffer;
         /// <summary>
         /// 
         /// </summary>
-        public IGeometryBufferModel GeometryBuffer{ set; get; }
+        public IGeometryBufferModel GeometryBuffer
+        {
+            set
+            {
+                if(geometryBuffer == value)
+                {
+                    return;
+                }
+                if(geometryBuffer != null)
+                {
+                    geometryBuffer.OnInvalidateRender -= InvalidateRenderEvent;
+                }
+                geometryBuffer = value;
+                if (geometryBuffer != null)
+                {
+                    geometryBuffer.OnInvalidateRender += InvalidateRenderEvent;
+                }
+            }
+            get { return geometryBuffer; }
+        }
 
         private RasterizerStateDescription rasterDescription = new RasterizerStateDescription()
         {
@@ -279,6 +295,11 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRenderCustom(IRenderContext context, DeviceContextProxy deviceContext, IShaderPass shaderPass)
         {
             OnDraw(deviceContext, InstanceBuffer);
+        }
+
+        protected void InvalidateRenderEvent(object sender, EventArgs e)
+        {
+            InvalidateRenderer();
         }
     }
 }

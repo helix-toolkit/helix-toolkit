@@ -348,26 +348,19 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #region Properties       
 
-        private IGeometryBufferModel bufferModelInternal;
+        private IGeometryBufferProxy bufferModelInternal;
         /// <summary>
         /// The buffer model internal
         /// </summary>
-        protected IGeometryBufferModel BufferModelInternal
+        protected IGeometryBufferProxy BufferModelInternal
         {
             set
-            {
+            {                
                 if (bufferModelInternal == value)
                 { return; }
-                if (bufferModelInternal != null)
-                {
-                    bufferModelInternal.DetachRenderHost(RenderHost);
-                }
+                Disposer.RemoveAndDispose(ref bufferModelInternal);
                 bufferModelInternal = value;
-                if (bufferModelInternal != null)
-                {
-                    bufferModelInternal.AttachRenderHost(RenderHost);
-                    ((IGeometryRenderCore)RenderCore).GeometryBuffer = bufferModelInternal;
-                }
+                ((IGeometryRenderCore)RenderCore).GeometryBuffer = bufferModelInternal == null ? null : bufferModelInternal.BufferModel;
             }
             get
             {
@@ -390,10 +383,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     return;
                 }
-                if (IsAttached)
-                {
-                    OnUnregisterBufferModel(this.GUID, geometryInternal);
-                }
                 geometryInternal = value;
                 if (IsAttached)
                 {
@@ -401,6 +390,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     BufferModelInternal = OnCreateBufferModel(this.GUID, geometryInternal);
                 }
                 RaisePropertyChanged(nameof(Geometry));
+                InvalidateRender();
             }
             get
             {
@@ -496,9 +486,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Called when [create buffer model].
         /// </summary>
         /// <returns></returns>
-        protected virtual IGeometryBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry) { return new EmptyGeometryBufferModel(); }
-
-        protected virtual void OnUnregisterBufferModel(Guid modelGuid, Geometry3D geometry) { }
+        protected virtual IGeometryBufferProxy OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
+        {
+            return GeometryBufferProxy<EmptyGeometryBufferModel>.Empty;
+        }
 
         /// <summary>
         /// Called when [raster state changed].
@@ -555,7 +546,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected override void OnDetach()
         {
-            OnUnregisterBufferModel(this.GUID, geometryInternal);
             BufferModelInternal = null;
             InstanceBuffer.DisposeAndClear();
             BoundManager.DisposeAndClear();

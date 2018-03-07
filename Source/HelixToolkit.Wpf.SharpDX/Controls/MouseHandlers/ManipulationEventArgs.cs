@@ -9,12 +9,13 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using System;
     using System.Windows;
 
     /// <summary>
     /// Provides data for the manipulation events.
     /// </summary>
-    public class ManipulationEventArgs
+    public sealed class ManipulationEventArgs : EventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ManipulationEventArgs"/> class.

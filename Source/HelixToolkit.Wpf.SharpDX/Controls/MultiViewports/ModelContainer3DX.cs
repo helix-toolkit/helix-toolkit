@@ -441,6 +441,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public DX11RenderHostConfiguration RenderConfiguration { set; get; }
 
+        public ModelContainer3DX()
+        {
+            this.Visibility = Visibility.Collapsed;
+            this.Focusable = false;
+            this.IsHitTestVisible = false;
+        }
+
         /// <summary>
         /// Attaches the specified host.
         /// </summary>

@@ -81,19 +81,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="modelGuid"></param>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected override IGeometryBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
+        protected override IGeometryBufferProxy OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
             return EffectsManager.GeometryBufferManager.Register<DefaultLineGeometryBufferModel>(modelGuid, geometry);
         }
-        /// <summary>
-        /// Called when [unregister buffer model].
-        /// </summary>
-        /// <param name="modelGuid">The model unique identifier.</param>
-        /// <param name="geometry">The geometry.</param>
-        protected override void OnUnregisterBufferModel(Guid modelGuid, Geometry3D geometry)
-        {
-            EffectsManager.GeometryBufferManager.Unregister<DefaultLineGeometryBufferModel>(modelGuid, geometry);
-        }
+
         /// <summary>
         /// Called when [create render core].
         /// </summary>

@@ -21,6 +21,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public abstract class GeometryBufferModel : DisposeObject, IGUID, IGeometryBufferModel
     {
+        public event EventHandler<EventArgs> OnInvalidateRender;
         /// <summary>
         /// Gets the unique identifier.
         /// </summary>
@@ -105,7 +106,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private readonly Dictionary<Guid, HostCounter> attachedHost = new Dictionary<Guid, HostCounter>();
         #region Constructors        
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryBufferModel"/> class.
@@ -161,21 +161,12 @@ namespace HelixToolkit.UWP.Core
                 InvalidateRenderer();
             }
         }
-
+        /// <summary>
+        /// Invalidates the renderer.
+        /// </summary>
         protected void InvalidateRenderer()
         {
-            foreach(var hostContainer in attachedHost.Values)
-            {
-                IRenderHost h;
-                if(hostContainer.Host.TryGetTarget(out h))
-                {
-                    h.InvalidateRender();
-                }
-                else
-                {
-                    attachedHost.Remove(hostContainer.GUID);
-                }
-            }
+            OnInvalidateRender?.Invoke(this, EventArgs.Empty);
         }
         /// <summary>
         /// Determines whether [is vertex buffer changed] [the specified property name].
@@ -282,82 +273,16 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
-        /// <summary>
-        /// Attaches the render host.
-        /// </summary>
-        /// <param name="host">The host.</param>
-        public void AttachRenderHost(IRenderHost host)
-        {
-            if (host == null)
-            { return; }
-            HostCounter counter;
-            if (attachedHost.TryGetValue(host.GUID, out counter))
-            {
-                counter.Inc();
-            }
-            else
-            {
-                attachedHost.Add(host.GUID, new HostCounter(host, 1));
-            }
-            InvalidateRenderer();
-        }
 
-        public void DetachRenderHost(IRenderHost host)
-        {
-            if (host == null)
-            { return; }
-            HostCounter counter;
-            if (attachedHost.TryGetValue(host.GUID, out counter))
-            {
-                if (counter.Dec() <= 0)
-                {
-                    attachedHost.Remove(host.GUID);
-                }
-            }
-        }
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void OnDispose(bool disposeManagedResources)
         {
-            Geometry = null;// Release all events
-            attachedHost.Clear();
+            OnInvalidateRender = null;
+            Geometry = null;          
             base.OnDispose(disposeManagedResources);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private sealed class HostCounter : IGUID
-        {
-            public int RefCount { private set; get; } = 0;
-            public WeakReference<IRenderHost> Host { private set; get; }
-
-            public Guid GUID { private set; get; }
-
-            public HostCounter(IRenderHost host, int initialValue = 0)
-            {
-                Host = new WeakReference<IRenderHost>(host);
-                RefCount = initialValue;
-                GUID = host.GUID;
-            }
-            /// <summary>
-            /// Increment reference.
-            /// </summary>
-            /// <returns></returns>
-            public int Inc()
-            {
-                return ++RefCount;
-            }
-            /// <summary>
-            /// Decrement reference
-            /// </summary>
-            /// <returns></returns>
-            public int Dec()
-            {
-                return --RefCount;
-            }
         }
     }
 }

@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public sealed class EmptyGeometryBufferModel : IGeometryBufferModel
     {
-
+        public static readonly IGeometryBufferModel Empty = new EmptyGeometryBufferModel();
         /// <summary>
         /// Gets or sets the geometry.
         /// </summary>
@@ -87,7 +87,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Occurs when [invalidate renderer].
         /// </summary>
-        public event EventHandler<EventArgs> InvalidateRenderer;
+        public event EventHandler<EventArgs> OnInvalidateRender;
 #pragma warning restore 0067
         /// <summary>
         /// Attaches this instance.

@@ -135,9 +135,12 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <returns></returns>
         public TVALUE Register(TDescription description)
         {
-            if (description == null) { return null; }
+            if (description == null)
+            { return null; }
             TVALUE value;
             TKEY key = GetKey(ref description);
+            if (key == null)
+            { return null; }
             lock (pool)
             {
                 if (pool.TryGetValue(key, out value))
