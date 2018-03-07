@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
         /// <value>
         /// The shaders.
         /// </value>
-        IEnumerable<IShader> Shaders { get; }
+        IEnumerable<ShaderBase> Shaders { get; }
         /// <summary>
         /// Gets the state of the blend.
         /// </summary>
@@ -62,12 +62,12 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns></returns>
-        IShader GetShader(ShaderStage type);
+        ShaderBase GetShader(ShaderStage type);
         /// <summary>
         /// Sets the shader.
         /// </summary>
         /// <param name="shader">The shader.</param>
-        void SetShader(IShader shader);
+        void SetShader(ShaderBase shader);
         /// <summary>
         /// Binds the states.
         /// </summary>

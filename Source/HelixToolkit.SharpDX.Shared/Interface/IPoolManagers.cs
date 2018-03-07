@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
         /// </summary>
         /// <param name="description">The description.</param>
         /// <returns></returns>
-        IShader RegisterShader(ShaderDescription description);
+        ShaderBase RegisterShader(ShaderDescription description);
         /// <summary>
         /// Registers the input layout.
         /// </summary>

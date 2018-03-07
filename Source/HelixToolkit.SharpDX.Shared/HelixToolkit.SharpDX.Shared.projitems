@@ -103,7 +103,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderTechnique.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Interface\IShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IShaderPass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IShaderReflector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ITextureResourceManager.cs" />

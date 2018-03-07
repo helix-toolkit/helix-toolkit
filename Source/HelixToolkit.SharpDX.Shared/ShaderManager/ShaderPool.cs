@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <summary>
     /// Pool to store and share shaders. Do not dispose shader object externally.
     /// </summary>
-    public sealed class ShaderPool : ResourcePoolBase<byte[], IShader, ShaderDescription>
+    public sealed class ShaderPool : ResourcePoolBase<byte[], ShaderBase, ShaderDescription>
     {
         /// <summary>
         /// Gets or sets the constant buffer pool.
@@ -46,7 +46,7 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="device">The device.</param>
         /// <param name="description">The description.</param>
         /// <returns></returns>
-        protected override IShader Create(Device device, ref ShaderDescription description)
+        protected override ShaderBase Create(Device device, ref ShaderDescription description)
         {
             return description.ByteCode == null ? new NullShader(description.ShaderType) : description.CreateShader(device, ConstantBufferPool);
         }
@@ -110,7 +110,7 @@ namespace HelixToolkit.UWP.ShaderManager
         /// </summary>
         /// <param name="description">The description.</param>
         /// <returns></returns>
-        public IShader RegisterShader(ShaderDescription description)
+        public ShaderBase RegisterShader(ShaderDescription description)
         {
             return shaderPools[description.ShaderType.ToIndex()].Register(description);
         }

@@ -32,7 +32,7 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
-        /// <see cref="IShader.Bind(DeviceContext)"/>
+        /// <see cref="ShaderBase.Bind(DeviceContext)"/>
         /// </summary>
         /// <param name="context"></param>
         public override void Bind(DeviceContext context)
@@ -40,7 +40,7 @@ namespace HelixToolkit.UWP.Shaders
             context.HullShader.Set(shader);
         }
         /// <summary>
-        /// <see cref="IShader.BindConstantBuffers(DeviceContext)"/>
+        /// <see cref="ShaderBase.BindConstantBuffers(DeviceContext)"/>
         /// </summary>
         /// <param name="context"></param>
         public override void BindConstantBuffers(DeviceContext context)
@@ -51,7 +51,7 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
-        /// <see cref="IShader.BindTexture(DeviceContext, string, ShaderResourceView)"/>
+        /// <see cref="ShaderBase.BindTexture(DeviceContext, string, ShaderResourceView)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="name"></param>
@@ -60,7 +60,7 @@ namespace HelixToolkit.UWP.Shaders
         {
         }
         /// <summary>
-        /// <see cref="IShader.BindTexture(DeviceContext, int, ShaderResourceView)"/>
+        /// <see cref="ShaderBase.BindTexture(DeviceContext, int, ShaderResourceView)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="index"></param>
@@ -69,7 +69,7 @@ namespace HelixToolkit.UWP.Shaders
         {
         }
         /// <summary>
-        /// <see cref="IShader.BindTextures(DeviceContext, IEnumerable{KeyValuePair{int, ShaderResourceView}})"/>
+        /// <see cref="ShaderBase.BindTextures(DeviceContext, IEnumerable{KeyValuePair{int, ShaderResourceView}})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="textures"></param>

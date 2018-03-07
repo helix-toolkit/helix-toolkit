@@ -153,7 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context"></param>
         /// <param name="shader"></param>
         /// <returns></returns>
-        bool BindMaterialTextures(DeviceContext context, IShader shader);
+        bool BindMaterialTextures(DeviceContext context, ShaderBase shader);
         /// <summary>
         /// Bind material texture maps to multiple shaders
         /// </summary>

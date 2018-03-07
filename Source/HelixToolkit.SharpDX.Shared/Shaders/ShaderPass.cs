@@ -86,11 +86,11 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The shaders.
         /// </value>
-        public IEnumerable<IShader> Shaders
+        public IEnumerable<ShaderBase> Shaders
         {
             get
             {
-                return new IShader[0];
+                return new ShaderBase[0];
             }
         }
         /// <summary>
@@ -131,7 +131,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns></returns>
-        public IShader GetShader(ShaderStage type)
+        public ShaderBase GetShader(ShaderStage type)
         {
             switch (type)
             {
@@ -155,7 +155,7 @@ namespace HelixToolkit.UWP.Shaders
         /// Sets the shader.
         /// </summary>
         /// <param name="shader">The shader.</param>
-        public void SetShader(IShader shader) { }
+        public void SetShader(ShaderBase shader) { }
     }
 
     /// <summary>
@@ -172,11 +172,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public bool IsNULL { get; } = false;
 
-        private readonly IShader[] shaders = new IShader[Constants.NumShaderStages];
+        private readonly ShaderBase[] shaders = new ShaderBase[Constants.NumShaderStages];
         /// <summary>
         /// <see cref="IShaderPass.Shaders"/>
         /// </summary>
-        public IEnumerable<IShader> Shaders { get { return shaders; } }
+        public IEnumerable<ShaderBase> Shaders { get { return shaders; } }
         /// <summary>
         /// <see cref="IShaderPass.BlendState"/>
         /// </summary>
@@ -289,7 +289,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public IShader GetShader(ShaderStage type)
+        public ShaderBase GetShader(ShaderStage type)
         {
             return shaders[type.ToIndex()];
         }
@@ -298,7 +298,7 @@ namespace HelixToolkit.UWP.Shaders
         /// Sets the shader.
         /// </summary>
         /// <param name="shader">The shader.</param>
-        public void SetShader(IShader shader)
+        public void SetShader(ShaderBase shader)
         {
             shaders[shader.ShaderType.ToIndex()] = shader;
         }

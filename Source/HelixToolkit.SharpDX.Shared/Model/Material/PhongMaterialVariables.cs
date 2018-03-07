@@ -368,12 +368,12 @@ namespace HelixToolkit.UWP.Model
         }
 
         /// <summary>
-        /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContext, IShader)"/>
+        /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContext, ShaderBase)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="shader"></param>
         /// <returns></returns>
-        public bool BindMaterialTextures(DeviceContext context, IShader shader)
+        public bool BindMaterialTextures(DeviceContext context, ShaderBase shader)
         {
             if (material == null)
             {
@@ -432,7 +432,7 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         /// <param name="context"></param>
         /// <param name="shader"></param>
-        private void OnBindMaterialTextures(DeviceContext context, IShader shader)
+        private void OnBindMaterialTextures(DeviceContext context, ShaderBase shader)
         {
             if (shader.IsNULL)
             {
