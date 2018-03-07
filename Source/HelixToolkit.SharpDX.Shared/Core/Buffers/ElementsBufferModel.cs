@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP.Core
         private IElementsBufferProxy elementBuffer;
 
         public bool Changed { get { return instanceChanged; } }
-        private bool instanceChanged = true;
+        private volatile bool instanceChanged = true;
 
         private IList<T> elements = null;
         public IList<T> Elements

@@ -33,14 +33,14 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// change flags
         /// </summary>
-        protected bool[] VertexChanged { private set; get; }
+        protected volatile bool[] VertexChanged;
         /// <summary>
         /// Gets or sets a value indicating whether [index changed].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [index changed]; otherwise, <c>false</c>.
         /// </value>
-        protected bool IndexChanged { private set; get; } = true;
+        protected volatile bool IndexChanged = true;
         /// <summary>
         /// Gets or sets the vertex buffer.
         /// </summary>
