@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.Shaders
     /// <summary>
     /// 
     /// </summary>
-    public sealed class ComputeShader : ShaderBase
+    public sealed class ComputeShader : ShaderBase, IShader
     {
         private readonly global::SharpDX.Direct3D11.ComputeShader shader;
 
@@ -35,7 +35,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <see cref="IShader.Bind(DeviceContext)"/>
         /// </summary>
         /// <param name="context"></param>
-        public override void Bind(DeviceContext context)
+        public void Bind(DeviceContext context)
         {
             context.ComputeShader.Set(shader);
         }
@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <see cref="IShader.BindConstantBuffers(DeviceContext)"/>
         /// </summary>
         /// <param name="context"></param>
-        public override void BindConstantBuffers(DeviceContext context)
+        public void BindConstantBuffers(DeviceContext context)
         {
             foreach (var buff in this.ConstantBufferMapping.Mappings)
             {
@@ -56,7 +56,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="context"></param>
         /// <param name="name"></param>
         /// <param name="texture"></param>
-        public override void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
+        public void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
         {
             int slot = ShaderResourceViewMapping.TryGetBindSlot(name);
             if (slot < 0)
@@ -69,7 +69,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="context"></param>
         /// <param name="slot"></param>
         /// <param name="texture"></param>
-        public override void BindTexture(DeviceContext context, int slot, ShaderResourceView texture)
+        public void BindTexture(DeviceContext context, int slot, ShaderResourceView texture)
         {
             if (slot < 0)
             { return; }
@@ -80,7 +80,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context"></param>
         /// <param name="textures"></param>
-        public override void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures)
+        public void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures)
         {
             foreach (var texture in textures)
             {
@@ -93,7 +93,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="context"></param>
         /// <param name="slot"></param>
         /// <param name="uav"></param>
-        public override void BindUAV(DeviceContext context, int slot, UnorderedAccessView uav)
+        public void BindUAV(DeviceContext context, int slot, UnorderedAccessView uav)
         {
             context.ComputeShader.SetUnorderedAccessView(slot, uav);
         }
@@ -103,7 +103,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="context"></param>
         /// <param name="name"></param>
         /// <param name="uav"></param>
-        public override void BindUAV(DeviceContext context, string name, UnorderedAccessView uav)
+        public void BindUAV(DeviceContext context, string name, UnorderedAccessView uav)
         {
             int slot = UnorderedAccessViewMapping.TryGetBindSlot(name);
             if (slot < 0)
@@ -115,7 +115,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context"></param>
         /// <param name="uavs"></param>
-        public override void BindUAVs(DeviceContext context, IEnumerable<KeyValuePair<int, UnorderedAccessView>> uavs)
+        public void BindUAVs(DeviceContext context, IEnumerable<KeyValuePair<int, UnorderedAccessView>> uavs)
         {
             foreach(var uav in uavs)
             {
@@ -129,7 +129,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="context"></param>
         /// <param name="slot"></param>
         /// <param name="sampler"></param>
-        public override void BindSampler(DeviceContext context, int slot, SamplerState sampler)
+        public void BindSampler(DeviceContext context, int slot, SamplerState sampler)
         {
             if (slot < 0)
             { return; }
@@ -141,7 +141,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="context"></param>
         /// <param name="name"></param>
         /// <param name="sampler"></param>
-        public override void BindSampler(DeviceContext context, string name, SamplerState sampler)
+        public void BindSampler(DeviceContext context, string name, SamplerState sampler)
         {
             int slot = SamplerMapping.TryGetBindSlot(name);
             if (slot < 0)
@@ -154,7 +154,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context"></param>
         /// <param name="samplers"></param>
-        public override void BindSamplers(DeviceContext context, IEnumerable<KeyValuePair<int, SamplerState>> samplers)
+        public void BindSamplers(DeviceContext context, IEnumerable<KeyValuePair<int, SamplerState>> samplers)
         {
             foreach (var sampler in samplers)
             {
