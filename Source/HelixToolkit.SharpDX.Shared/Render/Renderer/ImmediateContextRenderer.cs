@@ -102,7 +102,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         public virtual void RenderScene(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
         {
-            ImmediateContext.ResetLastHistory();
             int count = renderables.Count;
             for (int i = 0; i < count; ++i)
             {

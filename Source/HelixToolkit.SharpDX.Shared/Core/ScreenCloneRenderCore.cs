@@ -364,7 +364,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             private Texture2DDescription sharedDescription;
             public Texture2D SharedTexture { get { return sharedTexture; } }
 
-            public void ProcessFrame(ref FrameData data, IDeviceContext context)
+            public void ProcessFrame(ref FrameData data, DeviceContextProxy context)
             {
                 if (sharedTexture == null || sharedDescription.Width != data.Frame.Description.Width || sharedDescription.Height != data.Frame.Description.Height)
                 {

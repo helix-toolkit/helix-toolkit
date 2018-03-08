@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 {
     using System;
     using Utilities;
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -50,13 +51,13 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
         /// Binds the shader and its constant buffers
         /// </summary>
         /// <param name="context">The context.</param>
-        void BindShader(IDeviceContext context);
+        void BindShader(DeviceContextProxy context);
         /// <summary>
         /// Binds the shader. Optionally bind its constant buffers
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="bindConstantBuffer"></param>
-        void BindShader(IDeviceContext context, bool bindConstantBuffer);
+        void BindShader(DeviceContextProxy context, bool bindConstantBuffer);
         /// <summary>
         /// Gets the shader.
         /// </summary>
@@ -73,6 +74,6 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="type">The type.</param>
-        void BindStates(IDeviceContext context, StateType type);
+        void BindStates(DeviceContextProxy context, StateType type);
     }
 }

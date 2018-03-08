@@ -40,7 +40,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         public override void RenderScene(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
         {
-            ImmediateContext.ResetLastHistory();
             if(scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, commandList))
             {
                 foreach(var command in commandList.OrderBy(x=>x.Key))

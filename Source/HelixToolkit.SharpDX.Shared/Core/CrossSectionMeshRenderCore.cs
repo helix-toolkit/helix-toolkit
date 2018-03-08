@@ -249,7 +249,7 @@ namespace HelixToolkit.UWP.Core
             deviceContext.SetRasterState(backfaceRasterState);
             drawBackfacePass.BindShader(deviceContext);
             drawBackfacePass.BindStates(deviceContext, StateType.BlendState);
-            deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(drawBackfacePass.DepthStencilState, 1); //Draw backface onto stencil buffer, set value to 1
+            deviceContext.SetDepthStencilState(drawBackfacePass.DepthStencilState, 1); //Draw backface onto stencil buffer, set value to 1
             OnDraw(deviceContext, InstanceBuffer);
 
             //Draw full screen quad to fill cross section            
@@ -258,7 +258,7 @@ namespace HelixToolkit.UWP.Core
             drawScreenQuadPass.BindShader(deviceContext);
             drawScreenQuadPass.BindStates(deviceContext, StateType.BlendState);
             deviceContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, renderTargets);//Rebind render target
-            deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(drawScreenQuadPass.DepthStencilState, 1); //Only pass stencil buffer test if value is 1
+            deviceContext.SetDepthStencilState(drawScreenQuadPass.DepthStencilState, 1); //Only pass stencil buffer test if value is 1
             deviceContext.DeviceContext.Draw(4, 0);
 
             //Decrement ref count. See OutputMerger.GetRenderTargets remarks

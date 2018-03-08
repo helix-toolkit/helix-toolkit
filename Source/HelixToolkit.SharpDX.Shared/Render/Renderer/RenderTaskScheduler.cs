@@ -117,7 +117,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 Parallel.ForEach(partitionParams, (range, state) =>
                 {
                     var deferred = pool.Get();
-                    deferred.ResetLastHistory();
                     SetRenderTargets(deferred, parameter);
                     for(int i=range.Item1; i<range.Item2; ++i)
                     {

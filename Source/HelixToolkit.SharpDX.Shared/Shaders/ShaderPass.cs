@@ -12,6 +12,7 @@ namespace HelixToolkit.UWP.Shaders
 #endif
 {
     using Utilities;
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -97,7 +98,7 @@ namespace HelixToolkit.UWP.Shaders
         /// Binds the shader.
         /// </summary>
         /// <param name="context">The context.</param>
-        public void BindShader(IDeviceContext context)
+        public void BindShader(DeviceContextProxy context)
         {
             
         }
@@ -107,7 +108,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="bindConstantBuffer"></param>
-        public void BindShader(IDeviceContext context, bool bindConstantBuffer)
+        public void BindShader(DeviceContextProxy context, bool bindConstantBuffer)
         {
 
         }
@@ -116,7 +117,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="type">The type.</param>
-        public void BindStates(IDeviceContext context, StateType type)
+        public void BindStates(DeviceContextProxy context, StateType type)
         {
 
         }
@@ -249,7 +250,7 @@ namespace HelixToolkit.UWP.Shaders
         /// Bind shaders and its constant buffer for this technique
         /// </summary>
         /// <param name="context"></param>
-        public void BindShader(IDeviceContext context)
+        public void BindShader(DeviceContextProxy context)
         {
             BindShader(context, true);
         }
@@ -259,7 +260,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context"></param>
         /// <param name="bindConstantBuffer"></param>
-        public void BindShader(IDeviceContext context, bool bindConstantBuffer)
+        public void BindShader(DeviceContextProxy context, bool bindConstantBuffer)
         {
             if (context.LastShaderPass == this)
             {
@@ -299,7 +300,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="type">The type.</param>
-        public void BindStates(IDeviceContext context, StateType type)
+        public void BindStates(DeviceContextProxy context, StateType type)
         {
             if (type == StateType.None)
             {
