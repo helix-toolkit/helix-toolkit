@@ -456,8 +456,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected volatile bool UpdateRequested = true;
 
-        private readonly Stopwatch renderTimer = new Stopwatch();
-
         private TimeSpan lastRenderingDuration = TimeSpan.Zero;
 
         private TimeSpan lastRenderTime = TimeSpan.Zero;
@@ -507,7 +505,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (CanRender())
             {
                 IsBusy = true;
-                var t0 = renderTimer.Elapsed;
+                var t0 = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp()/Stopwatch.Frequency);
                 RenderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
                 lastRenderTime = t0;
                 UpdateRequested = false;
@@ -559,7 +557,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     PostRender();
                     IsBusy = false;
                 }
-                lastRenderingDuration = renderTimer.Elapsed - t0;
+                lastRenderingDuration = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp() / Stopwatch.Frequency) - t0;
                 RenderStatistics.LatencyStatistics.Push(lastRenderingDuration.TotalMilliseconds);                
             }
         }
@@ -664,7 +662,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             Log(LogLevel.Information, "");
             RenderStatistics.Reset();
-            renderTimer.Restart();
             lastRenderingDuration = TimeSpan.Zero;
             lastRenderTime = TimeSpan.Zero;
             InvalidateRender();
@@ -792,7 +789,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             Log(LogLevel.Information, "");
             StopRenderLoop?.Invoke(this, EventArgs.Empty);
-            renderTimer.Stop();
         }
         /// <summary>
         /// Disposes the buffers.
