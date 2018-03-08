@@ -33,6 +33,21 @@ namespace HelixToolkit.UWP.Model
         private const int DiffuseIdx = 0, AlphaIdx = 1, NormalIdx = 2, DisplaceIdx = 3, ShadowIdx = 4;
 
         private SharedTextureResourceProxy[] TextureResources = new SharedTextureResourceProxy[NUMTEXTURES];
+        private bool HasTextures
+        {
+            get
+            {
+                for (int i = 0; i < TextureResources.Length; ++i)
+                {
+                    if (TextureResources[i] != null)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
         private int[][] TextureBindingMap = new int[Constants.NumShaderStages][];
 
         private SamplerProxy[] SamplerResources = new SamplerProxy[NUMSAMPLERS];
@@ -367,21 +382,6 @@ namespace HelixToolkit.UWP.Model
         }
 
         /// <summary>
-        /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContext, ShaderBase)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="shader"></param>
-        /// <returns></returns>
-        public bool BindMaterialTextures(DeviceContext context, ShaderBase shader)
-        {
-            if (material == null)
-            {
-                return false;
-            }
-            OnBindMaterialTextures(context, shader);
-            return true;
-        }
-        /// <summary>
         /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContext, IShaderPass)"/>
         /// </summary>
         /// <param name="context"></param>
@@ -393,10 +393,22 @@ namespace HelixToolkit.UWP.Model
             {
                 return false;
             }
-            UpdateMappings(shaderPass);
-            foreach (var s in shaderPass.Shaders.Where(x => !x.IsNULL && EnumHelper.HasFlag(Constants.CanBindTextureStages, x.ShaderType)))
+            if (HasTextures)
             {
-                OnBindMaterialTextures(context, s);
+                UpdateMappings(shaderPass);
+                for (int i = 0; i < shaderPass.Shaders.Count; ++i)
+                {
+                    var shader = shaderPass.Shaders[i];
+                    if (shader.IsNULL || !EnumHelper.HasFlag(Constants.CanBindTextureStages, shader.ShaderType))
+                    {
+                        continue;
+                    }
+                    OnBindMaterialTextures(context, shader);
+                }
+            }
+            if (RenderShadowMap)
+            {
+                shaderPass.GetShader(ShaderStage.Pixel).BindSampler(context, SamplerBindingMap[ShaderStage.Pixel.ToIndex()][NUMSAMPLERS - 1], SamplerResources[NUMSAMPLERS - 1]);
             }
             return true;
         }
@@ -408,10 +420,14 @@ namespace HelixToolkit.UWP.Model
                 return;
             }
             currentPass = shaderPass;
-
-            foreach (var shader in shaderPass.Shaders.Where(x => !x.IsNULL && EnumHelper.HasFlag(Constants.CanBindTextureStages, x.ShaderType)))
+            for(int i = 0; i < shaderPass.Shaders.Count; ++i)
             {
-                int idx = shader.ShaderType.ToIndex();
+                var shader = shaderPass.Shaders[i];
+                if (shader.IsNULL || !EnumHelper.HasFlag(Constants.CanBindTextureStages, shader.ShaderType))
+                {
+                    continue;
+                }
+                int idx = shaderPass.Shaders[i].ShaderType.ToIndex();
                 TextureBindingMap[idx][DiffuseIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderDiffuseTexName);
                 TextureBindingMap[idx][AlphaIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderAlphaTexName);
                 TextureBindingMap[idx][NormalIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderNormalTexName);
@@ -433,10 +449,6 @@ namespace HelixToolkit.UWP.Model
         /// <param name="shader"></param>
         private void OnBindMaterialTextures(DeviceContext context, ShaderBase shader)
         {
-            if (shader.IsNULL)
-            {
-                return;
-            }
             int idx = shader.ShaderType.ToIndex();
             for (int i = 0; i < NUMTEXTURES; ++i)
             {

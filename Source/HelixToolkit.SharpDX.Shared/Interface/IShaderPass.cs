@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
         /// <value>
         /// The shaders.
         /// </value>
-        IEnumerable<ShaderBase> Shaders { get; }
+        IReadOnlyList<ShaderBase> Shaders { get; }
         /// <summary>
         /// Gets the state of the blend.
         /// </summary>

@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             DependencyProperty.Register("Background", typeof(Brush), typeof(Panel2D), new PropertyMetadata(new SolidColorBrush(Colors.Transparent)));
 
 
-        public override IEnumerable<IRenderable2D> Items
+        public override IList<IRenderable2D> Items
         {
             get
             {

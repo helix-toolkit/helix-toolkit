@@ -112,7 +112,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <value>
         /// The items.
         /// </value>
-        public virtual IEnumerable<IRenderable2D> Items { get { return Enumerable.Empty<IRenderable2D>(); } }
+        public virtual IList<IRenderable2D> Items { get; } = Constants.EmptyRenderable2D;
 
         private Matrix3x2 modelMatrix = Matrix3x2.Identity;
         /// <summary>
@@ -185,9 +185,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             {
                 if(Set(ref totalTransform, value))
                 {
-                    foreach (var item in Items)
+                    for (int i = 0; i < Items.Count; ++i)
                     {
-                        item.ParentMatrix = totalTransform;
+                        Items[i].ParentMatrix = totalTransform;
                     }
                     TransformChanged(ref value);
                     OnTransformChanged?.Invoke(this, new Transform2DArgs(ref value));
@@ -386,9 +386,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         protected virtual void OnRender(IRenderContext2D context)
         {
             RenderCore.Render(context);
-            foreach (var c in this.Items)
+            for (int i = 0; i < this.Items.Count; ++i)
             {
-                c.Render(context);
+                Items[i].Render(context);
             }
         }
         #endregion

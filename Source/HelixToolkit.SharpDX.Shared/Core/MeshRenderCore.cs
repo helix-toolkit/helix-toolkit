@@ -117,10 +117,10 @@ namespace HelixToolkit.UWP.Core
         }
 
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
-        {                  
+        {
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-            if(!BindMaterialTextures(deviceContext, DefaultShaderPass))
+            if (!BindMaterialTextures(deviceContext, DefaultShaderPass))
             {
                 return;
             }

@@ -86,7 +86,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The shaders.
         /// </value>
-        public IEnumerable<ShaderBase> Shaders
+        public IReadOnlyList<ShaderBase> Shaders
         {
             get
             {
@@ -176,7 +176,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// <see cref="IShaderPass.Shaders"/>
         /// </summary>
-        public IEnumerable<ShaderBase> Shaders { get { return shaders; } }
+        public IReadOnlyList<ShaderBase> Shaders { get { return shaders; } }
         /// <summary>
         /// <see cref="IShaderPass.BlendState"/>
         /// </summary>
@@ -274,12 +274,12 @@ namespace HelixToolkit.UWP.Shaders
             {
                 return;
             }
-            foreach (var shader in Shaders)
+            for (int i = 0; i < shaders.Length; ++i)
             {
-                shader.Bind(context.DeviceContext);
+                shaders[i].Bind(context.DeviceContext);
                 if (bindConstantBuffer)
                 {
-                    shader.BindConstantBuffers(context.DeviceContext);
+                    shaders[i].BindConstantBuffers(context.DeviceContext);
                 }
             }
             context.LastShaderPass = this;

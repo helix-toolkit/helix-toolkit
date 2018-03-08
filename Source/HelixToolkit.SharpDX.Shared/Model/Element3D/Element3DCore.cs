@@ -148,19 +148,17 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// The effects manager.
         /// </value>
         protected IEffectsManager EffectsManager { get { return renderHost.EffectsManager; } }
+
         /// <summary>
         /// Gets the items.
         /// </summary>
         /// <value>
         /// The items.
         /// </value>
-        public virtual IEnumerable<IRenderable> Items
+        public virtual IList<IRenderable> Items
         {
-            get
-            {
-                return System.Linq.Enumerable.Empty<IRenderable>();
-            }
-        }
+            get;
+        } = Constants.EmptyRenderable;
         /// <summary>
         /// Gets or sets a value indicating whether this instance is hit test visible.
         /// </summary>
@@ -175,11 +173,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <param name="totalTransform">The total transform.</param>
         protected virtual void TransformChanged(ref Matrix totalTransform)
         {
-            foreach (var item in Items)
+            for (int i = 0; i< Items.Count; ++i)
             {
-                if (item is ITransform)
+                if (Items[i] is ITransform)
                 {
-                    item.ParentMatrix = totalTransform;
+                    Items[i].ParentMatrix = totalTransform;
                 }
             }
         }

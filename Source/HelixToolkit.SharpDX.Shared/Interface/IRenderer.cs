@@ -65,8 +65,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="context"></param>
         /// <param name="renderables"></param>
+        /// <param name="results"></param>
         /// <returns></returns>
-        IEnumerable<IRenderable> UpdateSceneGraph(IRenderContext context, IEnumerable<IRenderable> renderables);
+        void UpdateSceneGraph(IRenderContext context, IList<IRenderable> renderables, IList<IRenderable> results);
 
         /// <summary>
         /// Update scene graph, return the 2D renderables which will be rendered in this frame
@@ -74,14 +75,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <returns></returns>
-        void UpdateSceneGraph2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables);
+        void UpdateSceneGraph2D(IRenderContext2D context, IList<IRenderable2D> renderables);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void UpdateGlobalVariables(IRenderContext context, IEnumerable<IRenderable> renderables, ref RenderParameter parameter);
+        void UpdateGlobalVariables(IRenderContext context, IList<IRenderable> renderables, ref RenderParameter parameter);
 
         /// <summary>
         /// 
@@ -118,13 +119,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="renderables"></param>
         /// <returns></returns>
-        void UpdateNotRenderParallel(IEnumerable<IRenderable> renderables);
+        void UpdateNotRenderParallel(IList<IRenderable> renderables);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderScene2D(IRenderContext2D context, IEnumerable<IRenderable2D> renderables, ref RenderParameter2D parameter);
+        void RenderScene2D(IRenderContext2D context, IList<IRenderable2D> renderables, ref RenderParameter2D parameter);
     }
 }

@@ -17,6 +17,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Windows;
     using Render;
+    using HelixToolkit.Wpf.SharpDX.Core;
+
     /// <summary>
     ///     Represents a composite Model3D.
     /// </summary>
@@ -40,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private readonly ObservableElement3DCollection children;
 
-        public override IEnumerable<IRenderable> Items { get { return children; } }
+        public override IList<IRenderable> Items { get { return children; } }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
@@ -69,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             foreach (var model in this.Children)
             {
-                if (model.Parent == null)
+                if ((model as Element3DCore).Parent == null)
                 {
                     this.AddLogicalChild(model);
                 }
@@ -87,7 +89,7 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var model in this.Children)
             {
                 model.Detach();
-                if (model.Parent == this)
+                if ((model as Element3DCore).Parent == this)
                 {
                     this.RemoveLogicalChild(model);
                 }

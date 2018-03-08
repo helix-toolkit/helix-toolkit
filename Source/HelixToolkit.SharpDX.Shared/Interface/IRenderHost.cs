@@ -201,7 +201,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The per frame renderable.
         /// </value>
-        IEnumerable<IRenderable> PerFrameRenderables { get; }
+        IReadOnlyList<IRenderable> PerFrameRenderables { get; }
         /// <summary>
         /// Gets the current frame renderables for rendering.
         /// </summary>
@@ -220,7 +220,7 @@ namespace HelixToolkit.UWP
         /// Gets the per frame render cores for normal rendering routine. <see cref="RenderType.Normal"/>, <see cref="RenderType.Others"/>, <see cref="RenderType.Particle"/>
         /// <para>This does not include <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
-        IEnumerable<IRenderCore> PerFrameGeneralRenderCores { get; }
+        IReadOnlyList<IRenderCore> PerFrameGeneralRenderCores { get; }
         /// <summary>
         /// Starts the d3 d.
         /// </summary>

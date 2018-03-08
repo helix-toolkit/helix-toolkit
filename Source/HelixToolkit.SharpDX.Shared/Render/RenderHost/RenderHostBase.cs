@@ -395,7 +395,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public abstract IEnumerable<IRenderable> PerFrameRenderables { get; }
+        public abstract IReadOnlyList<IRenderable> PerFrameRenderables { get; }
         /// <summary>
         /// Gets the per frame lights.
         /// </summary>
@@ -416,7 +416,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame render cores.
         /// </value>
-        public abstract IEnumerable<IRenderCore> PerFrameGeneralRenderCores { get; }
+        public abstract IReadOnlyList<IRenderCore> PerFrameGeneralRenderCores { get; }
 
         #region Configuration
         /// <summary>
@@ -519,7 +519,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 var t0 = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp()/Stopwatch.Frequency);
                 RenderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
                 lastRenderTime = t0;
-                UpdateRequested = false;
+                //UpdateRequested = false;
                 if (RenderConfiguration.UpdatePerFrameData)
                 {
                     viewport.Update(t0);
