@@ -68,7 +68,8 @@ namespace HelixToolkit.UWP.Utilities
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
-
+                Disposed?.Invoke(this, EventArgs.Empty);
+                Disposed = null;
                 disposedValue = true;
             }
         }
@@ -87,10 +88,15 @@ namespace HelixToolkit.UWP.Utilities
             {
                 // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
                 Dispose(true);
-                Disposed?.Invoke(this, EventArgs.Empty);
                 // TODO: uncomment the following line if the finalizer is overridden above.
                 // GC.SuppressFinalize(this);
             }
+        }
+
+        internal void ForceDispose()
+        {
+            refCounter = 0;
+            Dispose();
         }
         #endregion
     }

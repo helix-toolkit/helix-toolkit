@@ -56,7 +56,7 @@ namespace HelixToolkit.UWP.ShaderManager
                 }
                 else
                 {
-                    value = Create(Device, ref description);
+                    value = Collect(Create(Device, ref description));
                     pool.Add(key, value);
                     value.Disposed += (s, e) => 
                     {
@@ -94,7 +94,7 @@ namespace HelixToolkit.UWP.ShaderManager
                 {
                     foreach(var item in pool.Values.ToArray())
                     {
-                        item.Dispose();
+                        item.ForceDispose();
                     }
                     pool.Clear();
                 }
