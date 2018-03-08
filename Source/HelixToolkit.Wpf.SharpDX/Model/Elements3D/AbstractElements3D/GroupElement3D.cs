@@ -77,6 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     AttachChildren(e.NewItems);
                 }
             }
+            forceUpdateTransform = true;
         }
 
         protected void AttachChildren(IEnumerable children)

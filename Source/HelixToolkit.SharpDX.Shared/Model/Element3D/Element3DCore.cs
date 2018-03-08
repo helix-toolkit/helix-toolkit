@@ -32,6 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         public Guid GUID { get; } = Guid.NewGuid();
 
         private Matrix totalModelMatrix = Matrix.Identity;
+        protected bool forceUpdateTransform = false;
         /// <summary>
         /// 
         /// </summary>
@@ -39,11 +40,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             private set
             {
-                if(Set(ref totalModelMatrix, value))
+                if(Set(ref totalModelMatrix, value) || forceUpdateTransform)
                 {
                     TransformChanged(ref value);
                     OnTransformChanged?.Invoke(this, new TransformArgs(ref value));
                     RenderCore.ModelMatrix = value;
+                    forceUpdateTransform = false;
                 }
             }
             get

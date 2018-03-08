@@ -169,6 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         break;
                 }
             }
+            forceUpdateTransform = true;
         }
 
         protected override bool CanHitTest(IRenderContext context)
