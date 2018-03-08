@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+#define DEBUG
 using SharpDX;
 using System;
 using System.Collections.Generic;
@@ -110,7 +111,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="hitThickness">Only used for point/line hit test</param>
         /// <param name="rayModel"></param>
         /// <returns></returns>
-        bool HitTestCurrentNodeExcludeChild(IRenderContext context, IRenderable model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, 
+        bool HitTestCurrentNodeExcludeChild(IRenderContext context, IRenderable model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
             ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness);
 
         /// <summary>
@@ -176,100 +177,10 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     /// <summary>
-    /// Base class template interface for octree
+    /// Base class template implementation for <see cref="IOctree"/>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IOctreeBase<T> : IOctree
-    {
-        /// <summary>
-        /// Objects for current node.
-        /// </summary>
-        List<T> Objects { get; }
-
-        /// <summary>
-        /// <para>Add item into octree. Return true if successful, otherwise return false to indicate the tree needs to be recreated.</para>
-        /// <para>Note: When return false, it usually indicates the bound of new object is outside the max bound of current octree. </para>
-        /// </summary>
-        /// <param name="item"></param>
-        bool Add(T item);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="octant">The octant object belongs</param>
-        /// <returns></returns>
-        bool Add(T item, out IOctree octant);
-        /// <summary>
-        /// Expand the octree to direction
-        /// </summary>
-        /// <param name="direction"></param>
-        /// <returns></returns>
-        IOctree Expand(ref Vector3 direction);
-
-        /// <summary>
-        /// Shrink root if there is no objects
-        /// </summary>
-        /// <returns></returns>
-        IOctree Shrink();
-
-        /// <summary>
-        /// Remove item(fast). Search using its bounding box. <see cref="FindChildByItemBound(T, out int)"/>
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns>Return false if item not found</returns>
-        bool RemoveByBound(T item);
-        /// <summary>
-        /// Remove item(fast). Search using manual bounding box, this is useful if the item's bound has been changed, use its old bound. <see cref="FindChildByItemBound(T, ref BoundingBox, out int)"/>
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="bound"></param>
-        /// <returns>Return false if item not found</returns>
-        bool RemoveByBound(T item, ref BoundingBox bound);
-
-        /// <summary>
-        /// Remove item using exhaust search(Slow). <see cref="FindChildByItem(T, out int)"/>
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns>Return false if item not found</returns>
-        bool RemoveSafe(T item);
-
-        /// <summary>
-        /// Remove item from current node by its index in Objects
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns>Return false if index out of bound</returns>
-        bool RemoveAt(int index);
-        /// <summary>
-        /// Fast search node by item bound
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="index">The item index in Objects, if not found, output -1</param>
-        /// <returns></returns>
-        IOctree FindChildByItemBound(T item, out int index);
-
-        /// <summary>
-        /// Fast search node by item bound
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <param name="bound">The bounding-box.</param>
-        /// <param name="index">The item index in Objects, if not found, output -1</param>
-        /// <returns></returns>
-        IOctree FindChildByItemBound(T item, ref BoundingBox bound, out int index);
-
-        /// <summary>
-        /// Exhaust search, slow.
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="index">The item index in Objects, if not found, output -1</param>
-        /// <returns></returns>
-        IOctree FindChildByItem(T item, out int index);
-    }
-    /// <summary>
-    /// Base class template implementation for <see cref="IOctreeBase{T}"/>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public abstract class OctreeBase<T> : IOctreeBase<T>
+    public abstract class OctreeBase<T> : IOctree
     {
         /// <summary>
         /// 
@@ -326,7 +237,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         /// <summary>
-        /// <see cref="IOctreeBase{T}.Objects"/>
+        /// <see cref="OctreeBase{T}.Objects"/>
         /// </summary>
         public List<T> Objects { protected set; get; }
 
@@ -543,9 +454,9 @@ namespace HelixToolkit.Wpf.SharpDX
                                 e = tree.ChildNodes.AsEnumerable().GetEnumerator();
                             }
                         }
-                    }                   
+                    }
                     if (stack.Count == 0) { break; }
-                    e.Dispose();                   
+                    e.Dispose();
                     e = stack.Pop();
                 }
                 e.Dispose();
@@ -648,8 +559,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 var obj = Objects[i];
                 for (int x = 0; x < 8; ++x)
-                {                      
-                    if(IsContains(Octants[x], obj))
+                {
+                    if (IsContains(Octants[x], obj))
                     {
                         octList[x].Add(obj);
                         Objects[i] = Objects[--count]; //Disard the existing object from location i, replaced with last valid object.
@@ -771,7 +682,7 @@ namespace HelixToolkit.Wpf.SharpDX
             bool isHit = false;
             modelHits.Clear();
             var modelInv = modelMatrix.Inverted();
-            if(modelInv == Matrix.Zero) { return false; }//Cannot be inverted
+            if (modelInv == Matrix.Zero) { return false; }//Cannot be inverted
             var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInv), Vector3.TransformNormal(rayWS.Direction, modelInv));
 
             var e = Enumerable.Repeat<IOctree>(this, 1).GetEnumerator();
@@ -798,12 +709,12 @@ namespace HelixToolkit.Wpf.SharpDX
                             n = n.Parent;
                         }
                     }
-                }                
+                }
                 if (hitStack.Count == 0)
                 {
                     break;
                 }
-                e.Dispose();               
+                e.Dispose();
                 e = hitStack.Pop();
             }
             e.Dispose();
@@ -945,7 +856,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         public abstract bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
         /// <summary>
-        /// <see cref="IOctreeBase{T}.Add(T)"/>
+        /// <see cref="OctreeBase{T}.Add(T)"/>
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
@@ -955,7 +866,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return Add(item, out octant);
         }
         /// <summary>
-        /// <see cref="IOctreeBase{T}.Add(T, out IOctree)"/>
+        /// <see cref="OctreeBase{T}.Add(T, out IOctree)"/>
         /// </summary>
         /// <param name="item"></param>
         /// <param name="octant"></param>
@@ -971,11 +882,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                var nodeBase = node as IOctreeBase<T>;
+                var nodeBase = node as OctreeBase<T>;
                 nodeBase.Objects.Add(item);
                 if (nodeBase.Objects.Count > Parameter.MinObjectSizeToSplit)
                 {
-                    int index = (node as IOctreeBase<T>).Objects.Count - 1;
+                    int index = (node as OctreeBase<T>).Objects.Count - 1;
                     PushExistingToChild(nodeBase, index, IsContains, CreateNodeWithParent, out octant);
                 }
                 return true;
@@ -1019,7 +930,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="createNodeFunc"></param>
         /// <param name="octant"></param>
         /// <returns>True: Pushed into child. Otherwise false.</returns>
-        public static bool PushExistingToChild(IOctreeBase<T> node, int index, Func<BoundingBox, T, bool> isContains,
+        public static bool PushExistingToChild(OctreeBase<T> node, int index, Func<BoundingBox, T, bool> isContains,
             CreateNodeDelegate createNodeFunc, out IOctree octant)
         {
             var item = node.Objects[index];
@@ -1032,7 +943,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     node.Objects.RemoveAt(index);
                     if (node.ChildNodes[i] != null)
                     {
-                        (node.ChildNodes[i] as IOctreeBase<T>).Objects.Add(item);
+                        (node.ChildNodes[i] as OctreeBase<T>).Objects.Add(item);
                         octant = node.ChildNodes[i];
                     }
                     else
@@ -1041,7 +952,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         node.ActiveNodes |= (byte)(1 << i);
                         node.ChildNodes[i].BuildTree();
                         int idx = -1;
-                        octant = (node.ChildNodes[i] as IOctreeBase<T>).FindChildByItemBound(item, out idx);
+                        octant = (node.ChildNodes[i] as OctreeBase<T>).FindChildByItemBound(item, out idx);
                     }
                     pushToChild = true;
                     break;
@@ -1188,7 +1099,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return root;
             }
-            else if ((root as IOctreeBase<T>).Objects.Count == 0 && (root.ActiveNodes & (root.ActiveNodes - 1)) == 0)
+            else if ((root as OctreeBase<T>).Objects.Count == 0 && (root.ActiveNodes & (root.ActiveNodes - 1)) == 0)
             {
                 for (int i = 0; i < root.ChildNodes.Length; ++i)
                 {
@@ -1227,7 +1138,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="root"></param>
         /// <param name="stackCache"></param>
         /// <returns></returns>
-        private static IOctree FindSmallestNodeContainsBoundingBox<E>(BoundingBox bound, E item, Func<BoundingBox, E, bool> isContains, IOctreeBase<E> root, Stack<IEnumerator<IOctree>> stackCache)
+        private static IOctree FindSmallestNodeContainsBoundingBox<E>(BoundingBox bound, E item, Func<BoundingBox, E, bool> isContains, OctreeBase<E> root, Stack<IEnumerator<IOctree>> stackCache)
         {
             IOctree result = null;
             TreeTraversal(root, stackCache,
@@ -1254,14 +1165,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="stackCache"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static IOctree FindChildByItem<E>(E item, IOctreeBase<E> root, Stack<IEnumerator<IOctree>> stackCache, out int index)
+        public static IOctree FindChildByItem<E>(E item, OctreeBase<E> root, Stack<IEnumerator<IOctree>> stackCache, out int index)
         {
             IOctree result = null;
             int idx = -1;
             TreeTraversal(root, stackCache, null,
                 (node) =>
                 {
-                    idx = (node as IOctreeBase<E>).Objects.IndexOf(item);
+                    idx = (node as OctreeBase<E>).Objects.IndexOf(item);
                     result = idx != -1 ? node : null;
                 },
                 () => { return idx != -1; });
@@ -1292,7 +1203,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                var nodeBase = node as IOctreeBase<T>;
+                var nodeBase = node as OctreeBase<T>;
                 nodeBase.Objects.RemoveAt(index);
                 if (nodeBase.IsEmpty && nodeBase.AutoDeleteIfEmpty)
                 {
@@ -1323,7 +1234,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var node = FindChildByItem(item, out index);
             if (node != null)
             {
-                (node as IOctreeBase<T>).Objects.RemoveAt(index);
+                (node as OctreeBase<T>).Objects.RemoveAt(index);
                 if (node.IsEmpty && node.AutoDeleteIfEmpty)
                 {
                     node.RemoveSelf();
@@ -1414,16 +1325,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="stackCache"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static IOctree FindChildByItemBound<E>(E item, BoundingBox bound, Func<BoundingBox, BoundingBox, E, bool> isContains, IOctreeBase<E> root, Stack<IEnumerator<IOctree>> stackCache, out int index)
+        public static IOctree FindChildByItemBound<E>(E item, BoundingBox bound, Func<BoundingBox, BoundingBox, E, bool> isContains, OctreeBase<E> root, Stack<IEnumerator<IOctree>> stackCache, out int index)
         {
             int idx = -1;
             IOctree result = null;
-            IOctreeBase<E> lastNode = null;
+            OctreeBase<E> lastNode = null;
             TreeTraversal(root, stackCache,
                 (node) => { return isContains(node.Bound, bound, item); },
                 (node) =>
                 {
-                    lastNode = node as IOctreeBase<E>;
+                    lastNode = node as OctreeBase<E>;
                     idx = lastNode.Objects.IndexOf(item);
                     result = idx != -1 ? node : null;
                 },
@@ -1437,7 +1348,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     index = lastNode.Objects.IndexOf(item);
                     if (index == -1)
                     {
-                        lastNode = lastNode.Parent as IOctreeBase<E>;
+                        lastNode = lastNode.Parent as OctreeBase<E>;
                     }
                     else
                     {
@@ -1475,7 +1386,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return FindNearestPointBySphere(context, ref sphere, ref result);
         }
 
-#region Accessors
+        #region Accessors
         /// <summary>
         /// <see cref="IOctree.IsRoot"/>
         /// </summary>
@@ -1504,7 +1415,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return !HasChildren && Objects.Count == 0;
             }
         }
-#endregion
+        #endregion
     }
 
     /// <summary>
@@ -1693,7 +1604,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="isIntersect"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        public override bool HitTestCurrentNodeExcludeChild(IRenderContext context, IRenderable model, Matrix modelMatrix, ref Ray rayWS, 
+        public override bool HitTestCurrentNodeExcludeChild(IRenderContext context, IRenderable model, Matrix modelMatrix, ref Ray rayWS,
             ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
         {
             isIntersect = false;
@@ -1921,7 +1832,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="rayModel"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        public override bool HitTestCurrentNodeExcludeChild(IRenderContext context, IRenderable model, Matrix modelMatrix, 
+        public override bool HitTestCurrentNodeExcludeChild(IRenderContext context, IRenderable model, Matrix modelMatrix,
             ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
         {
             isIntersect = false;

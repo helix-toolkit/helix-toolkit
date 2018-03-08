@@ -91,7 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 TreeTraversal(this, stack, null, (node) =>
                 {
-                    foreach (var item in (node as IOctreeBase<IRenderable>).Objects)
+                    foreach (var item in (node as OctreeBase<IRenderable>).Objects)
                     {
                         OctantDictionary.Add(item.GUID, node);
                     }
@@ -106,7 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             if (root.OctantDictionary.ContainsKey(guid))
             {
                 var node = root.OctantDictionary[guid];
-                index = (node as IOctreeBase<IRenderable>).Objects.IndexOf(item);
+                index = (node as OctreeBase<IRenderable>).Objects.IndexOf(item);
                 return root.OctantDictionary[guid];
             }
             else
