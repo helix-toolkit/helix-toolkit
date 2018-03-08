@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables">The renderables.</param>
         /// <param name="results"></param>
         /// <returns></returns>
-        public virtual void UpdateSceneGraph(IRenderContext context, IList<IRenderable> renderables, IList<IRenderable> results)
+        public virtual void UpdateSceneGraph(IRenderContext context, List<IRenderable> renderables, List<IRenderable> results)
         {
             renderables.PreorderDFT(context, updateFunc, results, stackCache1);
         }
@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <returns></returns>
-        public void UpdateSceneGraph2D(IRenderContext2D context, IList<IRenderable2D> renderables)
+        public void UpdateSceneGraph2D(IRenderContext2D context, List<IRenderable2D> renderables)
         {
             renderables.PreorderDFTRun((x) =>
             {
@@ -77,12 +77,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void UpdateGlobalVariables(IRenderContext context, IList<IRenderable> renderables, ref RenderParameter parameter)
+        public virtual void UpdateGlobalVariables(IRenderContext context, List<IRenderable> renderables, ref RenderParameter parameter)
         {
             if (parameter.RenderLight)
             {
                 context.LightScene.LightModels.ResetLightCount();
-                for(int i = 0; i < renderables.Count && i < Constants.MaxLights; ++i)
+                int count = renderables.Count;
+                for (int i = 0; i < count && i < Constants.MaxLights; ++i)
                 {
                     renderables[i].Render(context, ImmediateContext);
                 }
@@ -99,21 +100,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderScene(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter)
+        public virtual void RenderScene(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
         {
-            for (int i = 0; i < renderables.Count; ++i)
+            ImmediateContext.ResetLastHistory();
+            int count = renderables.Count;
+            for (int i = 0; i < count; ++i)
             {
                 renderables[i].Render(context, ImmediateContext);
             }
         }
         /// <summary>
-        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IList{IRenderable})"/>
+        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(List{IRenderable})"/>
         /// </summary>
         /// <param name="renderables">The renderables.</param>
         /// <returns></returns>
-        public virtual void UpdateNotRenderParallel(IList<IRenderable> renderables)
+        public virtual void UpdateNotRenderParallel(List<IRenderable> renderables)
         {
-            for(int i = 0; i < renderables.Count; ++i)
+            int count = renderables.Count;
+            for(int i = 0; i < count; ++i)
             {
                 renderables[i].UpdateNotRender();
             }
@@ -136,9 +140,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderScene2D(IRenderContext2D context, IList<IRenderable2D> renderables, ref RenderParameter2D parameter)
+        public virtual void RenderScene2D(IRenderContext2D context, List<IRenderable2D> renderables, ref RenderParameter2D parameter)
         {
-            for (int i = 0; i < renderables.Count; ++ i)
+            int count = renderables.Count;
+            for (int i = 0; i < count; ++ i)
             {
                 renderables[i].Render(context);
             }
@@ -150,7 +155,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderPreProc(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter)
+        public virtual void RenderPreProc(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
         {
             RenderScene(context, renderables, ref parameter);
         }
@@ -161,7 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderPostProc(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter)
+        public virtual void RenderPostProc(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
         {
             RenderScene(context, renderables, ref parameter);
         }

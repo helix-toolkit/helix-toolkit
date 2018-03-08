@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Shaders;
     using System;
+    using Utilities;
     /// <summary>
     /// 
     /// </summary>
@@ -32,5 +33,36 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The last shader pass.
         /// </value>
         IShaderPass LastShaderPass { set; get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        RasterizerStateProxy LastRasterState { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        DepthStencilStateProxy LastDepthStencilState { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        BlendStateProxy LastBlendState { get; }
+        /// <summary>
+        /// Sets the state of the raster.
+        /// </summary>
+        /// <param name="rasterState">State of the raster.</param>
+        void SetRasterState(RasterizerStateProxy rasterState);
+        /// <summary>
+        /// Sets the state of the depth stencil.
+        /// </summary>
+        /// <param name="depthStencilState">State of the depth stencil.</param>
+        void SetDepthStencilState(DepthStencilStateProxy depthStencilState);
+        /// <summary>
+        /// Sets the state of the blend.
+        /// </summary>
+        /// <param name="blendState">State of the blend.</param>
+        void SetBlendState(BlendStateProxy blendState);
+        /// <summary>
+        /// 
+        /// </summary>
+        void ResetLastHistory();
     }
 }

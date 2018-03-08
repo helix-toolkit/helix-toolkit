@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using HelixToolkit.Wpf.SharpDX.Utilities;
     using Render;
     using Shaders;
     /// <summary>
@@ -19,11 +20,11 @@ namespace HelixToolkit.UWP.Core
     /// <typeparam name="MODELSTRUCT"></typeparam>
     public abstract class GeometryRenderCore<MODELSTRUCT> : RenderCoreBase<MODELSTRUCT>, IGeometryRenderCore where MODELSTRUCT : struct
     {
-        private RasterizerState rasterState = null;
+        private RasterizerStateProxy rasterState = null;
         /// <summary>
         /// 
         /// </summary>
-        public RasterizerState RasterState { get { return rasterState; } }
+        public RasterizerStateProxy RasterState { get { return rasterState; } }
         /// <summary>
         /// 
         /// </summary>
@@ -190,10 +191,10 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
         {
+            RemoveAndDispose(ref rasterState);
             rasterDescription = description;
             if (!IsAttached && !force)
             { return false; }
-            RemoveAndDispose(ref rasterState);
             rasterState = Collect(EffectTechnique.EffectsManager.StateManager.Register(description));
             return true;
         }
@@ -209,11 +210,12 @@ namespace HelixToolkit.UWP.Core
                 DefaultShaderPass = technique[DefaultShaderPassName];
                 ShadowPass = technique[DefaultShadowPassName];
                 this.VertexLayout = technique.Layout;
-                CreateRasterState(rasterDescription, true);
+                CreateRasterState(rasterDescription, true);       
                 return true;
             }
             return false;
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -228,9 +230,9 @@ namespace HelixToolkit.UWP.Core
         /// Set all necessary states and buffers
         /// </summary>
         /// <param name="context"></param>
-        protected override void OnBindRasterState(DeviceContext context)
+        protected override void OnBindRasterState(DeviceContextProxy context)
         {
-            context.Rasterizer.State = rasterState;
+            context.SetRasterState(rasterState);
         }
         /// <summary>
         /// Attach vertex buffer routine

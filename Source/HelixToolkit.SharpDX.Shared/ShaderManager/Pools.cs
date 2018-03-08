@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
 namespace HelixToolkit.UWP.ShaderManager
 #endif
 {
+    using Utilities;
     /// <summary>
     /// Use to store resources for <see cref="ComObject"/>. Each register will increase the reference counter for ComObject by calling <see cref="ComObject.QueryInterface{T}()"/>
     /// </summary>
@@ -23,7 +24,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <typeparam name="TDescription"></typeparam>
     public abstract class ComPoolBase<TKEY, TVALUE, TDescription> : DisposeObject where TVALUE : ComObject
     {
-        private readonly Dictionary<TKEY, TVALUE> pool = new Dictionary<TKEY, TVALUE>();
+        private readonly Dictionary<TKEY, StateProxy<TVALUE>> pool = new Dictionary<TKEY, StateProxy<TVALUE>>();
         /// <summary>
         /// 
         /// </summary>
@@ -43,15 +44,15 @@ namespace HelixToolkit.UWP.ShaderManager
         /// </summary>
         /// <param name="description"></param>
         /// <returns></returns>
-        public TVALUE Register(TDescription description)
+        public StateProxy<TVALUE> Register(TDescription description)
         {
-            TVALUE value;
+            StateProxy<TVALUE> value;
             TKEY key = GetKey(ref description);
             lock (pool)
             {
                 if (pool.TryGetValue(key, out value))
                 {
-                    return value.QueryInterface<TVALUE>();
+                    return value.Register();
                 }
                 else
                 {
@@ -64,7 +65,7 @@ namespace HelixToolkit.UWP.ShaderManager
                             pool.Remove(key);
                         }
                     };
-                    return value;
+                    return value.Register();
                 }
             }
         }
@@ -80,7 +81,7 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="device">The device.</param>
         /// <param name="description">The description.</param>
         /// <returns></returns>
-        protected abstract TVALUE Create(Device device, ref TDescription description);
+        protected abstract StateProxy<TVALUE> Create(Device device, ref TDescription description);
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>

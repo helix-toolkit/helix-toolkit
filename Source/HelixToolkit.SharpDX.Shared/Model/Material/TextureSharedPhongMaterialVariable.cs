@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.Model
     using Shaders;
     using System;
     using Utilities;
-
+    using ShaderManager;
     /// <summary>
     /// Default PhongMaterial Variables
     /// </summary>
@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP.Model
         public event EventHandler<EventArgs> OnInvalidateRenderer;
 
         private readonly ITextureResourceManager textureManager;
-
+        private readonly IStatePoolManager statePoolManager;
         private const int NUMTEXTURES = 4;
         private const int NUMSAMPLERS = 5;
         private const int DiffuseIdx = 0, AlphaIdx = 1, NormalIdx = 2, DisplaceIdx = 3, ShadowIdx = 4;
@@ -50,7 +50,7 @@ namespace HelixToolkit.UWP.Model
 
         private int[][] TextureBindingMap = new int[Constants.NumShaderStages][];
 
-        private SamplerProxy[] SamplerResources = new SamplerProxy[NUMSAMPLERS];
+        private SamplerStateProxy[] SamplerResources = new SamplerStateProxy[NUMSAMPLERS];
         private int[][] SamplerBindingMap = new int[Constants.NumShaderStages][];
 
         private IShaderPass currentPass;
@@ -256,11 +256,7 @@ namespace HelixToolkit.UWP.Model
                 SamplerBindingMap[i] = new int[NUMSAMPLERS];
             }
             textureManager = manager.MaterialTextureManager;
-            SamplerResources[DiffuseIdx] = Collect(new SamplerProxy(manager.StateManager));
-            SamplerResources[NormalIdx] = Collect(new SamplerProxy(manager.StateManager));
-            SamplerResources[DisplaceIdx] = Collect(new SamplerProxy(manager.StateManager));
-            SamplerResources[AlphaIdx] = Collect(new SamplerProxy(manager.StateManager));
-            SamplerResources[ShadowIdx] = Collect(new SamplerProxy(manager.StateManager));
+            statePoolManager = manager.StateManager;
             CreateTextureViews();
             CreateSamplers();
             this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, EventArgs.Empty); };
@@ -291,19 +287,23 @@ namespace HelixToolkit.UWP.Model
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseMapSampler)))
             {
-                SamplerResources[DiffuseIdx].Description = (sender as IPhongMaterial).DiffuseMapSampler;
+                RemoveAndDispose(ref SamplerResources[DiffuseIdx]);
+                SamplerResources[DiffuseIdx] = Collect(statePoolManager.Register((sender as IPhongMaterial).DiffuseMapSampler));
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseAlphaMapSampler)))
             {
-                SamplerResources[AlphaIdx].Description = (sender as IPhongMaterial).DiffuseAlphaMapSampler;
+                RemoveAndDispose(ref SamplerResources[AlphaIdx]);
+                SamplerResources[AlphaIdx] = Collect(statePoolManager.Register((sender as IPhongMaterial).DiffuseAlphaMapSampler));
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.DisplacementMapSampler)))
             {
-                SamplerResources[DisplaceIdx].Description = (sender as IPhongMaterial).DisplacementMapSampler;
+                RemoveAndDispose(ref SamplerResources[DisplaceIdx]);
+                SamplerResources[DisplaceIdx] = Collect(statePoolManager.Register((sender as IPhongMaterial).DisplacementMapSampler));
             }
             else if (e.PropertyName.Equals(nameof(IPhongMaterial.NormalMapSampler)))
             {
-                SamplerResources[NormalIdx].Description = (sender as IPhongMaterial).NormalMapSampler;
+                RemoveAndDispose(ref SamplerResources[NormalIdx]);
+                SamplerResources[NormalIdx] = Collect(statePoolManager.Register((sender as IPhongMaterial).NormalMapSampler));
             }
             OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
         }
@@ -337,11 +337,11 @@ namespace HelixToolkit.UWP.Model
         {
             if (material != null)
             {
-                SamplerResources[DiffuseIdx].Description = material.DiffuseMapSampler;
-                SamplerResources[NormalIdx].Description = material.NormalMapSampler;
-                SamplerResources[AlphaIdx].Description = material.DiffuseAlphaMapSampler;
-                SamplerResources[DisplaceIdx].Description = material.DisplacementMapSampler;
-                SamplerResources[ShadowIdx].Description = DefaultSamplers.ShadowSampler;
+                SamplerResources[DiffuseIdx] = Collect(statePoolManager.Register(material.DiffuseMapSampler));
+                SamplerResources[NormalIdx] = Collect(statePoolManager.Register(material.NormalMapSampler));
+                SamplerResources[AlphaIdx] = Collect(statePoolManager.Register(material.DiffuseAlphaMapSampler));
+                SamplerResources[DisplaceIdx] = Collect(statePoolManager.Register(material.DisplacementMapSampler));
+                SamplerResources[ShadowIdx] = Collect(statePoolManager.Register(DefaultSamplers.ShadowSampler));
             }
         }
 

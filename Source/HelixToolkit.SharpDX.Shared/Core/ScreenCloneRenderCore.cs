@@ -131,7 +131,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         private IShaderPass DefaultShaderPass;
         private int textureBindSlot = 0;
         private int samplerBindSlot = 0;
-        private SamplerProxy textureSampler;
+        private SamplerStateProxy textureSampler;
         private bool clearTarget = true;
         private bool invalidRender = true;
 
@@ -160,8 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 DefaultShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.Default];// technique[DefaultPassNames.Default];
                 textureBindSlot = DefaultShaderPass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 samplerBindSlot = DefaultShaderPass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
-                textureSampler = Collect(new SamplerProxy(technique.EffectsManager.StateManager));
-                textureSampler.Description = DefaultSamplers.LinearSamplerWrapAni2;
+                textureSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerWrapAni2));
                 return Initialize(technique.EffectsManager);
             }
             else

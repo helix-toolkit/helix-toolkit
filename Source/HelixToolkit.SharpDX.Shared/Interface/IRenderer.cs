@@ -67,7 +67,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables"></param>
         /// <param name="results"></param>
         /// <returns></returns>
-        void UpdateSceneGraph(IRenderContext context, IList<IRenderable> renderables, IList<IRenderable> results);
+        void UpdateSceneGraph(IRenderContext context, List<IRenderable> renderables, List<IRenderable> results);
 
         /// <summary>
         /// Update scene graph, return the 2D renderables which will be rendered in this frame
@@ -75,14 +75,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <returns></returns>
-        void UpdateSceneGraph2D(IRenderContext2D context, IList<IRenderable2D> renderables);
+        void UpdateSceneGraph2D(IRenderContext2D context, List<IRenderable2D> renderables);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void UpdateGlobalVariables(IRenderContext context, IList<IRenderable> renderables, ref RenderParameter parameter);
+        void UpdateGlobalVariables(IRenderContext context, List<IRenderable> renderables, ref RenderParameter parameter);
 
         /// <summary>
         /// 
@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderPreProc(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter);
+        void RenderPreProc(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter);
 
         /// <summary>
         /// Render post processing, such as bloom effects etc.
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderPostProc(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter);
+        void RenderPostProc(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter);
 
         /// <summary>
         /// Run actual rendering for render cores.
@@ -112,20 +112,20 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderScene(IRenderContext context, IList<IRenderCore> renderables, ref RenderParameter parameter);
+        void RenderScene(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter);
         /// <summary>
-        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderScene(IRenderContext, IList{IRenderCore}, ref RenderParameter)"/>
+        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderScene(IRenderContext, List{IRenderCore}, ref RenderParameter)"/>
         /// <para>Warning: Dependency properties are thread affinity. Do not get/set any dependency property in this function.</para>
         /// </summary>
         /// <param name="renderables"></param>
         /// <returns></returns>
-        void UpdateNotRenderParallel(IList<IRenderable> renderables);
+        void UpdateNotRenderParallel(List<IRenderable> renderables);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderScene2D(IRenderContext2D context, IList<IRenderable2D> renderables, ref RenderParameter2D parameter);
+        void RenderScene2D(IRenderContext2D context, List<IRenderable2D> renderables, ref RenderParameter2D parameter);
     }
 }

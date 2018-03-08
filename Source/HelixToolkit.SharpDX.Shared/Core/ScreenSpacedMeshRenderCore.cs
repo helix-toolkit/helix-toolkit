@@ -180,7 +180,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public float Fov { get; } = (float)(45 * Math.PI / 180);
 
-        private RasterizerState rasterState;
+        private RasterizerStateProxy rasterState;
 
         private RasterizerStateDescription rasterDescription = new RasterizerStateDescription()
         {
@@ -227,7 +227,7 @@ namespace HelixToolkit.UWP.Core
             if (!IsAttached && !force)
             { return false; }
             RemoveAndDispose(ref rasterState);
-            rasterState = Collect(new RasterizerState(Device, description));
+            rasterState = Collect(EffectTechnique.EffectsManager.StateManager.Register(description));
             return true;
         }
 
@@ -253,9 +253,9 @@ namespace HelixToolkit.UWP.Core
         /// Called when [bind raster state].
         /// </summary>
         /// <param name="context">The context.</param>
-        protected override void OnBindRasterState(DeviceContext context)
+        protected override void OnBindRasterState(DeviceContextProxy context)
         {
-            context.Rasterizer.State = rasterState;
+            context.SetRasterState(rasterState);
         }
         /// <summary>
         /// Creates the view matrix.

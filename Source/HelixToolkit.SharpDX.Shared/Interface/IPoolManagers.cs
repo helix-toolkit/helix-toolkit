@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
 #endif
 {
     using Shaders;
-
+    using Utilities;
     /// <summary>
     /// 
     /// </summary>
@@ -39,25 +39,25 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
         /// </summary>
         /// <param name="desc">The desc.</param>
         /// <returns></returns>
-        BlendState Register(BlendStateDescription desc);
+        BlendStateProxy Register(BlendStateDescription desc);
 
         /// <summary>
         /// Registers the specified desc.
         /// </summary>
         /// <param name="desc">The desc.</param>
         /// <returns></returns>
-        RasterizerState Register(RasterizerStateDescription desc);
+        RasterizerStateProxy Register(RasterizerStateDescription desc);
         /// <summary>
         /// Registers the specified desc.
         /// </summary>
         /// <param name="desc">The desc.</param>
         /// <returns></returns>
-        DepthStencilState Register(DepthStencilStateDescription desc);
+        DepthStencilStateProxy Register(DepthStencilStateDescription desc);
         /// <summary>
         /// Registers the specified desc.
         /// </summary>
         /// <param name="desc">The desc.</param>
         /// <returns></returns>
-        SamplerState Register(SamplerStateDescription desc);
+        SamplerStateProxy Register(SamplerStateDescription desc);
     }
 }

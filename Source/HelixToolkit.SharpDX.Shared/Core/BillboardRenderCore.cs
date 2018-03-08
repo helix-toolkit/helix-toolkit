@@ -32,13 +32,10 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(SetAffectsRender(ref samplerDescription, value))
+                if(SetAffectsRender(ref samplerDescription, value) && IsAttached)
                 {
-                    if (textureSampler == null)
-                    {
-                        return;
-                    }
-                    textureSampler.Description = value;
+                    RemoveAndDispose(ref textureSampler);
+                    textureSampler = Collect(EffectTechnique.EffectsManager.StateManager.Register(value));
                 }
             }
             get
@@ -47,7 +44,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private SamplerProxy textureSampler;
+        private SamplerStateProxy textureSampler;
         /// <summary>
         /// Set texture variable name insider shader for binding
         /// </summary>
@@ -71,8 +68,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(technique))
             {
-                textureSampler = Collect(new SamplerProxy(technique.EffectsManager.StateManager));
-                textureSampler.Description = SamplerDescription;
+                textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
                 return true;
             }
             else

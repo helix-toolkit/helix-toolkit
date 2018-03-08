@@ -10,6 +10,7 @@ namespace HelixToolkit.UWP.Render
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
+    using HelixToolkit.Wpf.SharpDX.Utilities;
     using Shaders;
     /// <summary>
     /// 
@@ -28,6 +29,28 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The last shader pass.
         /// </value>
         public IShaderPass LastShaderPass { set; get; }
+        /// <summary>
+        /// Gets or sets the last state of the raster.
+        /// </summary>
+        /// <value>
+        /// The last state of the raster.
+        /// </value>
+        public RasterizerStateProxy LastRasterState { private set; get; }
+        /// <summary>
+        /// Gets or sets the last state of the depth stencil.
+        /// </summary>
+        /// <value>
+        /// The last state of the depth stencil.
+        /// </value>
+        public DepthStencilStateProxy LastDepthStencilState { private set; get; }
+        /// <summary>
+        /// Gets or sets the last state of the blend.
+        /// </summary>
+        /// <value>
+        /// The last state of the blend.
+        /// </value>
+        public BlendStateProxy LastBlendState { private set; get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceContextProxy"/> class.
         /// </summary>
@@ -87,6 +110,35 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public static implicit operator DeviceContext(DeviceContextProxy proxy)
         {
             return proxy.DeviceContext;
+        }
+
+        public void ResetLastHistory()
+        {
+            LastShaderPass = null;
+            LastBlendState = null;
+            LastDepthStencilState = null;
+            LastRasterState = null;
+        }
+
+        public void SetRasterState(RasterizerStateProxy rasterState)
+        {
+            if(LastRasterState == rasterState) { return; }
+            DeviceContext.Rasterizer.State = rasterState;
+            LastRasterState = rasterState;
+        }
+
+        public void SetDepthStencilState(DepthStencilStateProxy depthStencilState)
+        {
+            if(LastDepthStencilState == depthStencilState) { return; }
+            DeviceContext.OutputMerger.DepthStencilState = depthStencilState;
+            LastDepthStencilState = depthStencilState;
+        }
+
+        public void SetBlendState(BlendStateProxy blendState)
+        {
+            if(LastBlendState == blendState) { return; }
+            DeviceContext.OutputMerger.BlendState = blendState;
+            LastBlendState = blendState;
         }
     }
 }

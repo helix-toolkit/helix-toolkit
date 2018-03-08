@@ -26,6 +26,7 @@ namespace HelixToolkit.UWP.Core
         public bool HasElements { private set; get; } = false;
         public IElementsBufferProxy Buffer { get { return elementBuffer; } }
         private IElementsBufferProxy elementBuffer;
+        private VertexBufferBinding bufferBinding;
 
         public bool Changed { get { return instanceChanged; } }
         private volatile bool instanceChanged = true;
@@ -68,8 +69,9 @@ namespace HelixToolkit.UWP.Core
                 {
                     elementBuffer.UploadDataToBuffer(context, elements, elements.Count);
                     instanceChanged = false;
+                    bufferBinding = new VertexBufferBinding(Buffer.Buffer, Buffer.StructureSize, Buffer.Offset);
                 }
-                context.InputAssembler.SetVertexBuffers(vertexBufferStartSlot, new VertexBufferBinding(Buffer.Buffer, Buffer.StructureSize, Buffer.Offset));
+                context.InputAssembler.SetVertexBuffers(vertexBufferStartSlot, bufferBinding);
             }
             ++vertexBufferStartSlot;
         }

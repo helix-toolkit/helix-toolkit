@@ -46,6 +46,7 @@ namespace HelixToolkit.UWP
             while (stack.Count != 0)
             { stack.Pop().Dispose(); }
         }
+        
         /// <summary>
         /// Preorders the DFT without using Linq.
         /// </summary>
@@ -54,32 +55,35 @@ namespace HelixToolkit.UWP
         /// <param name="condition">The condition.</param>
         /// <param name="results">The results.</param>
         /// <param name="stackCache">The stack cache.</param>
-        public static void PreorderDFT(this IList<IRenderable> nodes, IRenderContext context,
-            Func<IRenderable, IRenderContext, bool> condition, IList<IRenderable> results,
+        public static void PreorderDFT(this List<IRenderable> nodes, IRenderContext context,
+            Func<IRenderable, IRenderContext, bool> condition, List<IRenderable> results,
             Stack<KeyValuePair<int, IList<IRenderable>>> stackCache = null)
         {
             var stack = stackCache == null ? new Stack<KeyValuePair<int, IList<IRenderable>>>(20) : stackCache;
             int i = -1;
+            IList<IRenderable> currNodes = nodes;
             while (true)
             {
-                while(++i < nodes.Count)
+                var length = currNodes.Count;
+                while(++i < length)
                 {
-                    var item = nodes[i];              
+                    var item = currNodes[i];              
                     if (!condition(item, context))
                     { continue; }
                     results.Add(item);
                     var elements = item.Items;
                     if(elements == null || elements.Count == 0)
                     { continue; }
-                    stack.Push(new KeyValuePair<int, IList<IRenderable>>(i, nodes));
+                    stack.Push(new KeyValuePair<int, IList<IRenderable>>(i, currNodes));
                     i = -1;
-                    nodes = elements;
+                    currNodes = elements;
+                    length = currNodes.Count;
                 }
                 if (stack.Count == 0)
                 { break; }
                 var prev = stack.Pop();
                 i = prev.Key;
-                nodes = prev.Value;
+                currNodes = prev.Value;
             }
         }
 

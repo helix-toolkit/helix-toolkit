@@ -235,23 +235,14 @@ namespace HelixToolkit.UWP.Shaders
                 }
             }
 
-            BlendState = passDescription.BlendStateDescription != null ? Collect(new BlendStateProxy(manager.StateManager)) : null;
-            if(BlendState != null)
-            {
-                BlendState.Description = (BlendStateDescription)passDescription.BlendStateDescription;
-            }
+            BlendState = passDescription.BlendStateDescription != null ? 
+                Collect(manager.StateManager.Register((BlendStateDescription)passDescription.BlendStateDescription)) : BlendStateProxy.Empty;
 
-            DepthStencilState = passDescription.DepthStencilStateDescription != null ? Collect(new DepthStencilStateProxy(manager.StateManager)) : null;
-            if(DepthStencilState != null)
-            {
-                DepthStencilState.Description = (DepthStencilStateDescription)passDescription.DepthStencilStateDescription;
-            }
+            DepthStencilState = passDescription.DepthStencilStateDescription != null ?
+                Collect(manager.StateManager.Register((DepthStencilStateDescription)passDescription.DepthStencilStateDescription)) : DepthStencilStateProxy.Empty;
 
-            RasterState = passDescription.RasterStateDescription != null ? Collect(new RasterizerStateProxy(manager.StateManager)) : null;
-            if(RasterState != null)
-            {
-                RasterState.Description = (RasterizerStateDescription)passDescription.RasterStateDescription;
-            }
+            RasterState = passDescription.RasterStateDescription != null ?
+                Collect(manager.StateManager.Register((RasterizerStateDescription)passDescription.RasterStateDescription)) : RasterizerStateProxy.Empty;
         }
 
         /// <summary>
@@ -316,15 +307,15 @@ namespace HelixToolkit.UWP.Shaders
             }
             if (EnumHelper.HasFlag(type, StateType.BlendState))
             {
-                context.DeviceContext.OutputMerger.BlendState = BlendState;
+                context.SetBlendState(BlendState);
             }
             if (EnumHelper.HasFlag(type, StateType.DepthStencilState))
             {
-                context.DeviceContext.OutputMerger.DepthStencilState = DepthStencilState;
+                context.SetDepthStencilState(DepthStencilState);
             }
             if (EnumHelper.HasFlag(type, StateType.RasterState))
             {
-                context.DeviceContext.Rasterizer.State = RasterState;
+                context.SetRasterState(RasterState);
             }
         }
     }
