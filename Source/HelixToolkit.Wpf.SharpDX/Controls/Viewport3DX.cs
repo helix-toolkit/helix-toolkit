@@ -1167,18 +1167,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Handles the change of the render technique        
         /// </summary>
-        private void RenderTechniquePropertyChanged()
+        private void RenderTechniquePropertyChanged(IRenderTechnique technique)
         {
             if (this.renderHostInternal != null)
             {
-                // remove the scene
-                this.renderHostInternal.Viewport = null;
-
-                // if new rendertechnique set, attach the scene
-                if (this.RenderTechnique != null)
-                {
-                    this.renderHostInternal.Viewport = this;
-                }
+                this.renderHostInternal.RenderTechnique = technique;
             }
         }
 

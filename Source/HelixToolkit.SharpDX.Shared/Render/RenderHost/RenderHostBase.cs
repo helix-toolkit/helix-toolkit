@@ -213,6 +213,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public LogWrapper Logger { get { return EffectsManager != null ? EffectsManager.Logger : NullLogger; } }
 
+        private IRenderTechnique renderTechnique;
         /// <summary>
         /// Gets or sets the render technique.
         /// </summary>
@@ -221,7 +222,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public IRenderTechnique RenderTechnique
         {
-            protected set; get;
+            set
+            {
+                if(Set(ref renderTechnique, value) && IsInitialized)
+                {
+                    Restart(false);
+                }
+            }
+            get
+            {
+                return renderTechnique;
+            }
         }
         /// <summary>
         /// Gets a value indicating whether this instance is deferred lighting.

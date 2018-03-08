@@ -118,7 +118,7 @@ namespace HelixToolkit.UWP
         /// by all Element3D if not specified otherwise in
         /// the elements itself
         /// </summary>
-        IRenderTechnique RenderTechnique { get; }
+        IRenderTechnique RenderTechnique { set; get; }
         /// <summary>
         /// Gets a value indicating whether this instance is deferred lighting.
         /// </summary>
