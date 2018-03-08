@@ -393,9 +393,9 @@ namespace HelixToolkit.UWP.Model
             {
                 return false;
             }
+            UpdateMappings(shaderPass);
             if (HasTextures)
-            {
-                UpdateMappings(shaderPass);
+            {                
                 for (int i = 0; i < shaderPass.Shaders.Count; ++i)
                 {
                     var shader = shaderPass.Shaders[i];
