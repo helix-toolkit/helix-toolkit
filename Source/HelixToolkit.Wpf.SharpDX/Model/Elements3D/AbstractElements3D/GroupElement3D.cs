@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Markup;
     using Render;
     using HelixToolkit.Wpf.SharpDX.Core;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement3DCollection 
@@ -49,10 +50,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public ObservableElement3DCollection Children
+        public ObservableCollection<IRenderable> Children
         {
             get;
-        } = new ObservableElement3DCollection();
+        } = new ObservableCollection<IRenderable>();
 
 
         public GroupElement3D()

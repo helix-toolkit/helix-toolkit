@@ -72,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             set
             {
-                if(Set(ref modelMatrix, value) || forceUpdateTransform)
+                if(Set(ref modelMatrix, value))
                 {
                     needMatrixUpdate = true;
                     InvalidateRender();
@@ -355,7 +355,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <param name="context">The time since last update.</param>
         public virtual void Update(IRenderContext context)
         {
-            if (needMatrixUpdate)
+            if (needMatrixUpdate || forceUpdateTransform)
             {
                 TotalModelMatrix = modelMatrix * parentMatrix;
                 needMatrixUpdate = false;

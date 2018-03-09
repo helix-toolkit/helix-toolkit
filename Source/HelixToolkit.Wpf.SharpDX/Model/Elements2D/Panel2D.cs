@@ -1,6 +1,7 @@
 ﻿using SharpDX;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
@@ -30,10 +31,10 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
 
-        public ObservableElement2DCollection Children
+        public ObservableCollection<IRenderable2D> Children
         {
             get;
-        } = new ObservableElement2DCollection();
+        } = new ObservableCollection<IRenderable2D>();
 
         public Panel2D()
         {
