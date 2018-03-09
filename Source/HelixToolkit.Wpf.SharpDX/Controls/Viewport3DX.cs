@@ -1254,6 +1254,11 @@ namespace HelixToolkit.Wpf.SharpDX
         private void ParentWindow_Closed(object sender, EventArgs e)
         {
             ControlUnloaded(sender, null);
+            if (hostPresenter.Content is IDisposable d)
+            {
+                hostPresenter.Content = null;
+                d.Dispose();
+            }            
         }
 
         /// <summary>
