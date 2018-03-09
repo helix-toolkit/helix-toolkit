@@ -147,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="elapsedTime">
         /// The elapsed time (milliseconds).
         /// </param>
-        protected override void OnInertiaStarting(int elapsedTime)
+        protected override void OnInertiaStarting(double elapsedTime)
         {
             var speed = (this.LastPoint - this.MouseDownPoint) * (40.0 / elapsedTime);
             this.Viewport.AddPanForce(speed.X, speed.Y);

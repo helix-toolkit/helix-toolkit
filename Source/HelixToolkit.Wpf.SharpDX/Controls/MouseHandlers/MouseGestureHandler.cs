@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected MouseGestureHandler(Viewport3DX viewport)
         {
             this.Viewport = viewport;
-            this.ManipulationWatch = new Stopwatch();
+            //this.ManipulationWatch = new Stopwatch();
         }
 
         /// <summary>
@@ -87,11 +87,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the last point (in 3D world coordinates).
         /// </summary>
         protected Point3D? LastPoint3D { get; set; }
-
-        /// <summary>
-        /// Gets or sets the manipulation stopwatch.
-        /// </summary>
-        protected Stopwatch ManipulationWatch { get; set; }
 
         /// <summary>
         /// Gets the model up direction.
@@ -163,11 +158,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public virtual void Completed(Point e)
         {
-            var elapsed = this.ManipulationWatch.ElapsedMilliseconds;
+            var elapsed = (double)(Stopwatch.GetTimestamp() - startTick) / Stopwatch.Frequency * 1000; //this.ManipulationWatch.ElapsedMilliseconds;
             if (elapsed > 0 && elapsed < this.Viewport.SpinReleaseTime)
             {
-                this.OnInertiaStarting((int)this.ManipulationWatch.ElapsedMilliseconds);
+                this.OnInertiaStarting(elapsed);
             }
+            startTick = Stopwatch.GetTimestamp();
         }
 
         /// <summary>
@@ -205,6 +201,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Viewport.MouseMove += this.OnMouseMove;
         }
 
+        private long startTick;
         /// <summary>
         /// Occurs when the manipulation is started.
         /// </summary>
@@ -216,7 +213,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.SetMouseDownPoint(e);
             this.LastPoint = this.MouseDownPoint;
             this.LastPoint3D = this.MouseDownPoint3D;
-            this.ManipulationWatch.Restart();
+            //this.ManipulationWatch.Restart();
+            startTick = Stopwatch.GetTimestamp();
         }
 
         /// <summary>
@@ -298,7 +296,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="elapsedTime">
         /// The elapsed time (milliseconds).
         /// </param>
-        protected virtual void OnInertiaStarting(int elapsedTime)
+        protected virtual void OnInertiaStarting(double elapsedTime)
         {
         }
 

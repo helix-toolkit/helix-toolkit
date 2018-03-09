@@ -20,6 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
     using Utilities;
+    using HelixToolkit.Wpf.SharpDX;
     /// <summary>
     /// Provides a control that manipulates the camera by mouse and keyboard gestures.
     /// </summary>
@@ -290,7 +291,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <remarks>
         /// Implemented as a list since we want to remove items at the bottom of the stack.
         /// </remarks>
-        private readonly LinkedList<CameraSetting> cameraHistory = new LinkedList<CameraSetting>();
+        private readonly SimpleRingBuffer<CameraSetting> cameraHistory = new SimpleRingBuffer<CameraSetting>(100);
 
         /// <summary>
         /// The change field of view event handler.
@@ -401,6 +402,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The zoom speed.
         /// </summary>
         private double zoomSpeed;
+
+        private static readonly Point PointZero = new Point(0, 0);
+        private static readonly Vector VectorZero = new Vector();
+        private static readonly Vector3D Vector3DZero = new Vector3D();
 
         /// <summary>
         /// Initializes static members of the <see cref="CameraController" /> class.
@@ -1531,8 +1536,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void PushCameraSetting()
         {
-            this.cameraHistory.AddLast(new CameraSetting(this.ActualCamera));
-            if (this.cameraHistory.Count > 100)
+            this.cameraHistory.Add(new CameraSetting(this.ActualCamera));
+            if (this.cameraHistory.IsFull())
             {
                 this.cameraHistory.RemoveFirst();
             }
@@ -1576,7 +1581,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.cameraHistory.Count > 0)
             {
-                var cs = this.cameraHistory.Last.Value;
+                var cs = this.cameraHistory.Last;
                 this.cameraHistory.RemoveLast();
                 cs.UpdateCamera(this.ActualCamera);
                 return true;
@@ -2245,27 +2250,27 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 lastTick = ticks;
             }
-            var time = 100e-9 * (ticks - this.lastTick);
+            var time = (double)(ticks - this.lastTick) / Stopwatch.Frequency;
             // should be independent of time
-            var factor = this.IsInertiaEnabled ? Math.Pow(this.InertiaFactor, time / 0.012) : 0;
-            factor = this.Clamp(factor, 0.2, 1);
+            var factor = this.IsInertiaEnabled ? Math.Pow(this.InertiaFactor, time / 0.025) : 0;
+            factor = this.Clamp(factor, 0.1, 1);
             bool needUpdate = false;
 
             if (this.rotationSpeed.LengthSquared > 0.1)
             {
                 this.rotateHandler.Rotate(
-                    this.rotationPosition, this.rotationPosition + (this.rotationSpeed * time), this.rotationPoint3D);
+                    PointZero, (this.rotationSpeed * time).ToPoint(), this.rotationPoint3D);
                 this.rotationSpeed *= factor;
                 needUpdate = true;
-                this.spinningSpeed = new Vector();
+                this.spinningSpeed = VectorZero;
             }
             else
             {
-                this.rotationSpeed = new Vector();
+                this.rotationSpeed = VectorZero;
                 if (this.isSpinning && this.spinningSpeed.LengthSquared > 0.1)
                 {
                     this.rotateHandler.Rotate(
-                        this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D);
+                        PointZero, (this.spinningSpeed * time).ToPoint(), this.spinningPoint3D);
 
                     if (!this.InfiniteSpin)
                     {
@@ -2275,7 +2280,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 else
                 {
-                    this.spinningSpeed = new Vector();
+                    this.spinningSpeed = VectorZero;
                 }
             }
 
@@ -2287,7 +2292,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                this.panSpeed = new Vector3D();
+                this.panSpeed = Vector3DZero;
             }
 
             if (this.moveSpeed.LengthSquared > 0.0001)
@@ -2298,7 +2303,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                this.moveSpeed = new Vector3D();
+                this.moveSpeed = Vector3DZero;
             }
 
             if (Math.Abs(this.zoomSpeed) > 0.001)
@@ -2308,16 +2313,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 needUpdate = true;
             }
             else
-            { zoomSpeed = 0; }
+            {
+                zoomSpeed = 0;
+            }
             if (needUpdate)
             {
                 lastTick = ticks;
-                Viewport.InvalidateRender();              
+                Viewport.InvalidateRender();                
             }
             else
             {
                 lastTick = 0;
             }
+            this.InvalidateVisual();
         }
 
         /// <summary>

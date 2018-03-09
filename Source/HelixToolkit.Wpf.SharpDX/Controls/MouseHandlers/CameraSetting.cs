@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Represents camera settings.
     /// </summary>
-    public class CameraSetting
+    public struct CameraSetting
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CameraSetting"/> class.
@@ -35,11 +35,19 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.FieldOfView = pcamera.FieldOfView;
             }
+            else
+            {
+                this.FieldOfView = 45;
+            }
 
             var ocamera = camera as OrthographicCamera;
             if (ocamera != null)
             {
                 this.Width = ocamera.Width;
+            }
+            else
+            {
+                this.Width = 100;
             }
         }
 

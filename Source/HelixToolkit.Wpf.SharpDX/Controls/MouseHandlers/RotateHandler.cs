@@ -375,7 +375,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="elapsedTime">
         /// The elapsed time.
         /// </param>
-        protected override void OnInertiaStarting(int elapsedTime)
+        protected override void OnInertiaStarting(double elapsedTime)
         {
             Vector delta = this.LastPoint - this.MouseDownPoint;
 

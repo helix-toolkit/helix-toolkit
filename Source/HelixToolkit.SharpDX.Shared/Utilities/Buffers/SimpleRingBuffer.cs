@@ -53,7 +53,7 @@ namespace HelixToolkit.UWP.Utilities
             }
         }
         /// <summary>
-        /// 
+        /// Remove the last element added into the buffer
         /// </summary>
         /// <returns></returns>
         public bool RemoveLast()
@@ -72,7 +72,7 @@ namespace HelixToolkit.UWP.Utilities
             }
         }
         /// <summary>
-        /// 
+        /// Remove the first element added into the buffer
         /// </summary>
         /// <returns></returns>
         public bool RemoveFirst()
