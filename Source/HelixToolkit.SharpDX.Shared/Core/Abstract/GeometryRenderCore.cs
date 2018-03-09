@@ -1,4 +1,4 @@
-﻿/*
+/*
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Utilities;
     using Render;
     using Shaders;
     /// <summary>

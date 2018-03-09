@@ -1,4 +1,4 @@
-﻿using SharpDX;
+using SharpDX;
 using SharpDX.Direct3D11;
 
 #if NETFX_CORE
@@ -7,7 +7,7 @@ namespace HelixToolkit.UWP.Render
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
-    using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Utilities;
     using Shaders;
     /// <summary>
     /// 
