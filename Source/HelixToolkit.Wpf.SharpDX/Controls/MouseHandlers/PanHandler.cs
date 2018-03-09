@@ -39,11 +39,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Delta(ManipulationEventArgs e)
+        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+        public override void Delta(Point e)
         {
             base.Delta(e);
-            var thisPoint3D = this.UnProject(e.CurrentPosition, this.panPoint3D, this.Camera.LookDirection);
+            var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.LookDirection);
 
             if (this.LastPoint3D == null || thisPoint3D == null)
             {
@@ -53,8 +53,8 @@ namespace HelixToolkit.Wpf.SharpDX
             var delta3D = this.LastPoint3D.Value - thisPoint3D.Value;
             this.Pan(delta3D);
 
-            this.LastPoint = e.CurrentPosition;
-            this.LastPoint3D = this.UnProject(e.CurrentPosition, this.panPoint3D, this.Camera.LookDirection);
+            this.LastPoint = e;
+            this.LastPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.LookDirection);
         }
 
         /// <summary>
@@ -106,8 +106,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when the manipulation is started.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Started(ManipulationEventArgs e)
+        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+        public override void Started(Point e)
         {
             base.Started(e);
             this.panPoint3D = this.Camera.Target;

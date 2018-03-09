@@ -159,9 +159,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Occurs when the manipulation is completed.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="Point"/> instance containing the event data.
         /// </param>
-        public virtual void Completed(ManipulationEventArgs e)
+        public virtual void Completed(Point e)
         {
             var elapsed = this.ManipulationWatch.ElapsedMilliseconds;
             if (elapsed > 0 && elapsed < this.Viewport.SpinReleaseTime)
@@ -174,9 +174,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="Point"/> instance containing the event data.
         /// </param>
-        public virtual void Delta(ManipulationEventArgs e)
+        public virtual void Delta(Point e)
         {
         }
 
@@ -209,11 +209,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Occurs when the manipulation is started.
         /// </summary>
         /// <param name="e">
-        /// The <see cref="ManipulationEventArgs"/> instance containing the event data.
+        /// The <see cref="Point"/> instance containing the event data.
         /// </param>
-        public virtual void Started(ManipulationEventArgs e)
+        public virtual void Started(Point e)
         {
-            this.SetMouseDownPoint(e.CurrentPosition);
+            this.SetMouseDownPoint(e);
             this.LastPoint = this.MouseDownPoint;
             this.LastPoint3D = this.MouseDownPoint3D;
             this.ManipulationWatch.Restart();
@@ -313,7 +313,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected virtual void OnMouseDown(object sender, MouseEventArgs e)
         {
-            this.Started(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
+            this.Started(Mouse.GetPosition(this.Viewport));
 
             this.OldCursor = this.Viewport.Cursor;
             this.Viewport.Cursor = this.GetCursor();
@@ -330,7 +330,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected virtual void OnMouseMove(object sender, MouseEventArgs e)
         {
-            this.Delta(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
+            this.Delta(Mouse.GetPosition(this.Viewport));
         }
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Viewport.MouseUp -= this.OnMouseUp;
             this.Viewport.ReleaseMouseCapture();
             this.Viewport.Cursor = this.OldCursor;
-            this.Completed(new ManipulationEventArgs(Mouse.GetPosition(this.Viewport)));
+            this.Completed(Mouse.GetPosition(this.Viewport));
         }
 
         /// <summary>
