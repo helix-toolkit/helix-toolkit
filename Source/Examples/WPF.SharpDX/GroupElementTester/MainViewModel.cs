@@ -17,6 +17,8 @@ using Colors = System.Windows.Media.Colors;
 using Color4 = SharpDX.Color4;
 using HelixToolkit.Wpf.SharpDX.Core;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
+using System.Windows.Media.Animation;
 
 namespace GroupElementTester
 {
@@ -33,7 +35,9 @@ namespace GroupElementTester
 
         public PhongMaterial BlueMaterial { get { return PhongMaterials.Blue; } }
         public PhongMaterial GreenMaterial { get { return PhongMaterials.Green; } }
-        public Transform3D GroupModel3DTransform { get; } = new Media3D.TranslateTransform3D(5, 0, 0);
+
+        public Transform3D GroupModel3DTransform { private set; get; } = new Media3D.TranslateTransform3D(5, 0, 0);
+        public Transform3D ItemsModel3DTransform { private set; get; } = new Media3D.TranslateTransform3D(0, 0, 5);
 
         public Transform3D Transform1 { get; } = new Media3D.TranslateTransform3D(0, 0, 0);
 
@@ -44,10 +48,21 @@ namespace GroupElementTester
         public Transform3D Transform4 { get; } = new Media3D.TranslateTransform3D(-6, 0, 0);
 
         public ObservableElement3DCollection GroupModelSource { get; } = new ObservableElement3DCollection();
-
+        public ObservableCollection<MeshDataModel> ItemsSource { get; } = new ObservableCollection<MeshDataModel>();
         public ICommand AddGroupModelCommand { get; private set; }
 
         public ICommand RemoveGroupModelCommand { private set; get; }
+
+        public ICommand ClearGroupModelCommand { private set; get; }
+
+        public ICommand AnimateGroupModelCommand { private set; get; }
+
+        public ICommand AddItemsModelCommand { get; private set; }
+
+        public ICommand RemoveItemsModelCommand { private set; get; }
+        public ICommand ClearItemsModelCommand { private set; get; }
+
+        public ICommand AnimateItemsModelCommand { private set; get; }
 
         public MainViewModel()
         {
@@ -89,6 +104,12 @@ namespace GroupElementTester
             BoxModel = meshBuilder.ToMesh();
             AddGroupModelCommand = new RelayCommand(AddGroupModel);
             RemoveGroupModelCommand = new RelayCommand(RemoveGroupModel);
+            ClearGroupModelCommand = new RelayCommand((o) => { GroupModelSource.Clear(); });
+            AnimateGroupModelCommand = new RelayCommand(AnimateGroupModel);
+            AddItemsModelCommand = new RelayCommand(AddItemsModel);
+            RemoveItemsModelCommand = new RelayCommand(RemoveItemsModel);
+            ClearItemsModelCommand = new RelayCommand((o) => { ItemsSource.Clear(); });
+            AnimateItemsModelCommand = new RelayCommand(AnimateItemsModel);
         }
 
         private void AddGroupModel(object o)
@@ -96,7 +117,7 @@ namespace GroupElementTester
             var model = new MeshGeometryModel3D();
             model.Geometry = SphereModel;
             model.Material = BlueMaterial;
-            model.Transform = new Media3D.TranslateTransform3D((GroupModelSource.Count + 1) * 2, 0, 0);
+            model.Transform = new Media3D.TranslateTransform3D(0, (GroupModelSource.Count + 1) * 2, 0);
             GroupModelSource.Add(model);
         }
 
@@ -105,5 +126,62 @@ namespace GroupElementTester
             if (GroupModelSource.Count > 0)
             { GroupModelSource.RemoveAt(GroupModelSource.Count - 1); }
         }
+
+        private void AddItemsModel(object o)
+        {
+            var model = new MeshDataModel();
+            model.Geometry = SphereModel;
+            model.Material = GreenMaterial;
+            model.Transform = new Media3D.TranslateTransform3D(0, - (ItemsSource.Count) * 2, 0);
+            ItemsSource.Add(model);
+        }
+
+        private void RemoveItemsModel(object o)
+        {
+            if (ItemsSource.Count > 0)
+            { ItemsSource.RemoveAt(ItemsSource.Count - 1); }
+        }
+
+        private void AnimateGroupModel(object o)
+        {
+            GroupModel3DTransform = CreateAnimatedTransform1(new Media3D.Transform3DGroup(), new Vector3D(5, 0, 0), new Vector3D(0, 1, 0));
+            OnPropertyChanged(nameof(GroupModel3DTransform));
+        }
+
+        private void AnimateItemsModel(object o)
+        {
+            ItemsModel3DTransform = CreateAnimatedTransform1(new Media3D.Transform3DGroup(), new Vector3D(0, 0, 5), new Vector3D(0, 0, 1));
+            OnPropertyChanged(nameof(ItemsModel3DTransform));
+        }
+
+        private static Media3D.Transform3D CreateAnimatedTransform1(Media3D.Transform3DGroup transformGroup,
+            Media3D.Vector3D center, Media3D.Vector3D axis, double speed = 4)
+        {
+            var rotateAnimation1 = new Rotation3DAnimation
+            {
+                RepeatBehavior = RepeatBehavior.Forever,
+                By = new Media3D.AxisAngleRotation3D(axis, 240),
+                Duration = TimeSpan.FromSeconds(speed / 4),
+                IsCumulative = true,
+            };
+
+            var rotateTransform1 = new Media3D.RotateTransform3D();
+            rotateTransform1.CenterX = 0;
+            rotateTransform1.CenterY = 0;
+            rotateTransform1.CenterZ = 0;
+            rotateTransform1.BeginAnimation(Media3D.RotateTransform3D.RotationProperty, rotateAnimation1);
+
+            transformGroup.Children.Add(rotateTransform1);
+            transformGroup.Children.Add(new TranslateTransform3D(center));
+
+            return transformGroup;
+        }
+    }
+
+    public class MeshDataModel
+    {
+        public Geometry3D Geometry { set; get; }
+        public Material Material { set; get; }
+        public Transform3D Transform { set; get; }
     }
 }

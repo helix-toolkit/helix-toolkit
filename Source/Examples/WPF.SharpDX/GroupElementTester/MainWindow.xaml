@@ -69,6 +69,16 @@
                     Material="{Binding RedMaterial}"
                     Transform="{Binding Transform4}" />
             </hx:GroupModel3D>
+            <hx:ItemsModel3D ItemsSource="{Binding ItemsSource}" Transform="{Binding ItemsModel3DTransform}">
+                <hx:ItemsModel3D.ItemTemplate>
+                    <DataTemplate>
+                        <hx:MeshGeometryModel3D
+                            Geometry="{Binding Geometry}"
+                            Material="{Binding Material}"
+                            Transform="{Binding Transform}" />
+                    </DataTemplate>
+                </hx:ItemsModel3D.ItemTemplate>
+            </hx:ItemsModel3D>
             <hx:CompositeModel3D>
                 <hx:LineGeometryModel3D Geometry="{Binding AxisModel}" Color="White" />
                 <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding AxisLabel}" />
@@ -80,6 +90,14 @@
             Orientation="Vertical">
             <Button Command="{Binding AddGroupModelCommand}">Add Group Model</Button>
             <Button Command="{Binding RemoveGroupModelCommand}">Remove Group Model</Button>
+            <Button Command="{Binding ClearGroupModelCommand}">Clear Group Model</Button>
+            <Button Command="{Binding AnimateGroupModelCommand}">Animate Group Model</Button>
+            <Separator />
+            <Button Command="{Binding AddItemsModelCommand}">Add Items Model</Button>
+            <Button Command="{Binding RemoveItemsModelCommand}">Remove Items Model</Button>
+            <Button Command="{Binding ClearItemsModelCommand}">Clear Items Model</Button>
+            <Button Command="{Binding AnimateItemsModelCommand}">Animate Items Model</Button>
+            <Separator />
         </StackPanel>
     </Grid>
 </Window>
