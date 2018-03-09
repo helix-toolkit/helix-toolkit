@@ -17,13 +17,13 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// Only root contains dictionary
         /// </summary>
         private Dictionary<Guid, IOctree> OctantDictionary = null;
-        public RenderableBoundingOctree(List<IRenderable> objList, Stack<IEnumerator<IOctree>> queueCache = null)
+        public RenderableBoundingOctree(List<IRenderable> objList, Stack<KeyValuePair<int, IOctree[]>> queueCache = null)
             : this(objList, null, queueCache)
         {
 
         }
 
-        public RenderableBoundingOctree(List<IRenderable> objList, OctreeBuildParameter paramter, Stack<IEnumerator<IOctree>> queueCache = null)
+        public RenderableBoundingOctree(List<IRenderable> objList, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IOctree[]>> queueCache = null)
             : base(null, paramter, queueCache)
         {
             Objects = objList;
@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
         }
 
-        protected RenderableBoundingOctree(BoundingBox bound, List<IRenderable> objList, IOctree parent, OctreeBuildParameter paramter, Stack<IEnumerator<IOctree>> queueCache)
+        protected RenderableBoundingOctree(BoundingBox bound, List<IRenderable> objList, IOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IOctree[]>> queueCache)
             : base(ref bound, objList, parent, paramter, queueCache)
         { }
 
