@@ -12,6 +12,7 @@ namespace HelixToolkit.UWP.Shaders
 #endif
 {
     using Utilities;
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -86,18 +87,18 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The shaders.
         /// </value>
-        public IEnumerable<IShader> Shaders
+        public IReadOnlyList<ShaderBase> Shaders
         {
             get
             {
-                return new IShader[0];
+                return new ShaderBase[0];
             }
         }
         /// <summary>
         /// Binds the shader.
         /// </summary>
         /// <param name="context">The context.</param>
-        public void BindShader(IDeviceContext context)
+        public void BindShader(DeviceContextProxy context)
         {
             
         }
@@ -107,7 +108,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="bindConstantBuffer"></param>
-        public void BindShader(IDeviceContext context, bool bindConstantBuffer)
+        public void BindShader(DeviceContextProxy context, bool bindConstantBuffer)
         {
 
         }
@@ -116,7 +117,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="type">The type.</param>
-        public void BindStates(IDeviceContext context, StateType type)
+        public void BindStates(DeviceContextProxy context, StateType type)
         {
 
         }
@@ -131,7 +132,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns></returns>
-        public IShader GetShader(ShaderStage type)
+        public ShaderBase GetShader(ShaderStage type)
         {
             switch (type)
             {
@@ -155,7 +156,7 @@ namespace HelixToolkit.UWP.Shaders
         /// Sets the shader.
         /// </summary>
         /// <param name="shader">The shader.</param>
-        public void SetShader(IShader shader) { }
+        public void SetShader(ShaderBase shader) { }
     }
 
     /// <summary>
@@ -172,11 +173,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public bool IsNULL { get; } = false;
 
-        private readonly IShader[] shaders = new IShader[Constants.NumShaderStages];
+        private readonly ShaderBase[] shaders = new ShaderBase[Constants.NumShaderStages];
         /// <summary>
         /// <see cref="IShaderPass.Shaders"/>
         /// </summary>
-        public IEnumerable<IShader> Shaders { get { return shaders; } }
+        public IReadOnlyList<ShaderBase> Shaders { get { return shaders; } }
         /// <summary>
         /// <see cref="IShaderPass.BlendState"/>
         /// </summary>
@@ -235,30 +236,21 @@ namespace HelixToolkit.UWP.Shaders
                 }
             }
 
-            BlendState = passDescription.BlendStateDescription != null ? Collect(new BlendStateProxy(manager.StateManager)) : null;
-            if(BlendState != null)
-            {
-                BlendState.Description = (BlendStateDescription)passDescription.BlendStateDescription;
-            }
+            BlendState = passDescription.BlendStateDescription != null ? 
+                Collect(manager.StateManager.Register((BlendStateDescription)passDescription.BlendStateDescription)) : BlendStateProxy.Empty;
 
-            DepthStencilState = passDescription.DepthStencilStateDescription != null ? Collect(new DepthStencilStateProxy(manager.StateManager)) : null;
-            if(DepthStencilState != null)
-            {
-                DepthStencilState.Description = (DepthStencilStateDescription)passDescription.DepthStencilStateDescription;
-            }
+            DepthStencilState = passDescription.DepthStencilStateDescription != null ?
+                Collect(manager.StateManager.Register((DepthStencilStateDescription)passDescription.DepthStencilStateDescription)) : DepthStencilStateProxy.Empty;
 
-            RasterState = passDescription.RasterStateDescription != null ? Collect(new RasterizerStateProxy(manager.StateManager)) : null;
-            if(RasterState != null)
-            {
-                RasterState.Description = (RasterizerStateDescription)passDescription.RasterStateDescription;
-            }
+            RasterState = passDescription.RasterStateDescription != null ?
+                Collect(manager.StateManager.Register((RasterizerStateDescription)passDescription.RasterStateDescription)) : RasterizerStateProxy.Empty;
         }
 
         /// <summary>
         /// Bind shaders and its constant buffer for this technique
         /// </summary>
         /// <param name="context"></param>
-        public void BindShader(IDeviceContext context)
+        public void BindShader(DeviceContextProxy context)
         {
             BindShader(context, true);
         }
@@ -268,18 +260,18 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context"></param>
         /// <param name="bindConstantBuffer"></param>
-        public void BindShader(IDeviceContext context, bool bindConstantBuffer)
+        public void BindShader(DeviceContextProxy context, bool bindConstantBuffer)
         {
             if (context.LastShaderPass == this)
             {
                 return;
             }
-            foreach (var shader in Shaders)
+            for (int i = 0; i < shaders.Length; ++i)
             {
-                shader.Bind(context.DeviceContext);
+                shaders[i].Bind(context.DeviceContext);
                 if (bindConstantBuffer)
                 {
-                    shader.BindConstantBuffers(context.DeviceContext);
+                    shaders[i].BindConstantBuffers(context.DeviceContext);
                 }
             }
             context.LastShaderPass = this;
@@ -289,7 +281,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public IShader GetShader(ShaderStage type)
+        public ShaderBase GetShader(ShaderStage type)
         {
             return shaders[type.ToIndex()];
         }
@@ -298,7 +290,7 @@ namespace HelixToolkit.UWP.Shaders
         /// Sets the shader.
         /// </summary>
         /// <param name="shader">The shader.</param>
-        public void SetShader(IShader shader)
+        public void SetShader(ShaderBase shader)
         {
             shaders[shader.ShaderType.ToIndex()] = shader;
         }
@@ -308,23 +300,23 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="type">The type.</param>
-        public void BindStates(IDeviceContext context, StateType type)
+        public void BindStates(DeviceContextProxy context, StateType type)
         {
             if (type == StateType.None)
             {
                 return;
             }
-            if (type.HasFlag(StateType.BlendState))
+            if (EnumHelper.HasFlag(type, StateType.BlendState))
             {
-                context.DeviceContext.OutputMerger.BlendState = BlendState;
+                context.SetBlendState(BlendState);
             }
-            if (type.HasFlag(StateType.DepthStencilState))
+            if (EnumHelper.HasFlag(type, StateType.DepthStencilState))
             {
-                context.DeviceContext.OutputMerger.DepthStencilState = DepthStencilState;
+                context.SetDepthStencilState(DepthStencilState);
             }
-            if (type.HasFlag(StateType.RasterState))
+            if (EnumHelper.HasFlag(type, StateType.RasterState))
             {
-                context.DeviceContext.Rasterizer.State = RasterState;
+                context.SetRasterState(RasterState);
             }
         }
     }

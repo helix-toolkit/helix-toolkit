@@ -15,16 +15,43 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Utilities;
-
-    public sealed class GeometryBufferProxy<T> : IGeometryBufferProxy where T : IGeometryBufferModel
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public sealed class GeometryBufferProxy<T> : IGeometryBufferProxy where T : class, IGeometryBufferModel
     {
         public static readonly IGeometryBufferProxy Empty = new GeometryBufferProxy<T>();
+        /// <summary>
+        /// Gets the model unique identifier.
+        /// </summary>
+        /// <value>
+        /// The model unique identifier.
+        /// </value>
         public Guid ModelGuid { get; private set; } = Guid.Empty;
+        /// <summary>
+        /// Gets the geometry unique identifier.
+        /// </summary>
+        /// <value>
+        /// The geometry unique identifier.
+        /// </value>
         public Guid GeometryGuid { get; private set; } = Guid.Empty;
+        /// <summary>
+        /// Gets or sets the buffer model.
+        /// </summary>
+        /// <value>
+        /// The buffer model.
+        /// </value>
         public IGeometryBufferModel BufferModel { private set; get; }
-
+        
         private readonly IGeometryBufferManager manager;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeometryBufferProxy{T}"/> class.
+        /// </summary>
+        /// <param name="modelGuid">The model unique identifier.</param>
+        /// <param name="geometryGuid">The geometry unique identifier.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="manager">The manager.</param>
         public GeometryBufferProxy(Guid modelGuid, Guid geometryGuid, IGeometryBufferModel buffer, IGeometryBufferManager manager)
         {
             this.ModelGuid = modelGuid;
@@ -100,7 +127,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="modelGuid">The model unique identifier.</param>
         /// <param name="geometry">The geometry.</param>
         /// <returns></returns>
-        public IGeometryBufferProxy Register<T>(Guid modelGuid, Geometry3D geometry) where T:IGeometryBufferModel
+        public IGeometryBufferProxy Register<T>(Guid modelGuid, Geometry3D geometry) where T : class, IGeometryBufferModel, new()
         {
             if (geometry == null || modelGuid == Guid.Empty)
             {
@@ -145,7 +172,7 @@ namespace HelixToolkit.UWP.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="proxy">Buffer Proxy</param>
         /// <returns></returns>
-        public bool Unregister<T>(IGeometryBufferProxy proxy) where T:IGeometryBufferModel
+        public bool Unregister<T>(IGeometryBufferProxy proxy) where T : class, IGeometryBufferModel
         {
             if (proxy.GeometryGuid == Guid.Empty || proxy.ModelGuid == Guid.Empty)
             {
@@ -217,10 +244,9 @@ namespace HelixToolkit.UWP.Core
             /// </summary>
             /// <typeparam name="T"></typeparam>
             /// <returns></returns>
-            public static GeometryBufferContainer Create<T>() where T : IGeometryBufferModel
+            public static GeometryBufferContainer Create<T>() where T : class, IGeometryBufferModel, new()
             {
-                var buffer = Activator.CreateInstance(typeof(T)) as IGeometryBufferModel;
-                return new GeometryBufferContainer(buffer);
+                return new GeometryBufferContainer(new T());
             }
         }
     }

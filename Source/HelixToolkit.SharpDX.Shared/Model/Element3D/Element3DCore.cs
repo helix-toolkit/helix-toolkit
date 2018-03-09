@@ -32,6 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         public Guid GUID { get; } = Guid.NewGuid();
 
         private Matrix totalModelMatrix = Matrix.Identity;
+        protected bool forceUpdateTransform = false;
         /// <summary>
         /// 
         /// </summary>
@@ -39,11 +40,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             private set
             {
-                if(Set(ref totalModelMatrix, value))
+                if(Set(ref totalModelMatrix, value) || forceUpdateTransform)
                 {
                     TransformChanged(ref value);
                     OnTransformChanged?.Invoke(this, new TransformArgs(ref value));
                     RenderCore.ModelMatrix = value;
+                    forceUpdateTransform = false;
                 }
             }
             get
@@ -148,19 +150,17 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// The effects manager.
         /// </value>
         protected IEffectsManager EffectsManager { get { return renderHost.EffectsManager; } }
+
         /// <summary>
         /// Gets the items.
         /// </summary>
         /// <value>
         /// The items.
         /// </value>
-        public virtual IEnumerable<IRenderable> Items
+        public virtual IList<IRenderable> Items
         {
-            get
-            {
-                return System.Linq.Enumerable.Empty<IRenderable>();
-            }
-        }
+            get;
+        } = Constants.EmptyRenderable;
         /// <summary>
         /// Gets or sets a value indicating whether this instance is hit test visible.
         /// </summary>
@@ -175,11 +175,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <param name="totalTransform">The total transform.</param>
         protected virtual void TransformChanged(ref Matrix totalTransform)
         {
-            foreach (var item in Items)
+            for (int i = 0; i< Items.Count; ++i)
             {
-                if (item is ITransform)
+                if (Items[i] is ITransform)
                 {
-                    item.ParentMatrix = totalTransform;
+                    Items[i].ParentMatrix = totalTransform;
                 }
             }
         }
@@ -355,7 +355,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <param name="context">The time since last update.</param>
         public virtual void Update(IRenderContext context)
         {
-            if (needMatrixUpdate)
+            if (needMatrixUpdate || forceUpdateTransform)
             {
                 TotalModelMatrix = modelMatrix * parentMatrix;
                 needMatrixUpdate = false;

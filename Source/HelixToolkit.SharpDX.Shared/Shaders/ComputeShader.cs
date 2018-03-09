@@ -32,7 +32,7 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
-        /// <see cref="IShader.Bind(DeviceContext)"/>
+        /// <see cref="ShaderBase.Bind(DeviceContext)"/>
         /// </summary>
         /// <param name="context"></param>
         public override void Bind(DeviceContext context)
@@ -40,7 +40,7 @@ namespace HelixToolkit.UWP.Shaders
             context.ComputeShader.Set(shader);
         }
         /// <summary>
-        /// <see cref="IShader.BindConstantBuffers(DeviceContext)"/>
+        /// <see cref="ShaderBase.BindConstantBuffers(DeviceContext)"/>
         /// </summary>
         /// <param name="context"></param>
         public override void BindConstantBuffers(DeviceContext context)
@@ -51,7 +51,7 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
-        /// <see cref="IShader.BindTexture(DeviceContext, string, ShaderResourceView)"/>
+        /// <see cref="ShaderBase.BindTexture(DeviceContext, string, ShaderResourceView)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="name"></param>
@@ -64,7 +64,7 @@ namespace HelixToolkit.UWP.Shaders
             context.ComputeShader.SetShaderResource(slot, texture);
         }
         /// <summary>
-        /// <see cref="IShader.BindTexture(DeviceContext, int, ShaderResourceView)"/>
+        /// <see cref="ShaderBase.BindTexture(DeviceContext, int, ShaderResourceView)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="slot"></param>
@@ -76,7 +76,7 @@ namespace HelixToolkit.UWP.Shaders
             context.ComputeShader.SetShaderResource(slot, texture);
         }
         /// <summary>
-        /// <see cref="IShader.BindTextures(DeviceContext, IEnumerable{KeyValuePair{int, ShaderResourceView}})"/>
+        /// <see cref="ShaderBase.BindTextures(DeviceContext, IEnumerable{KeyValuePair{int, ShaderResourceView}})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="textures"></param>
@@ -88,7 +88,7 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
-        /// <see cref="IShader.BindUAV(DeviceContext, int, UnorderedAccessView)"/>
+        /// <see cref="ShaderBase.BindUAV(DeviceContext, int, UnorderedAccessView)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="slot"></param>
@@ -98,7 +98,7 @@ namespace HelixToolkit.UWP.Shaders
             context.ComputeShader.SetUnorderedAccessView(slot, uav);
         }
         /// <summary>
-        /// <see cref="IShader.BindUAV(DeviceContext, string, UnorderedAccessView)"/>
+        /// <see cref="ShaderBase.BindUAV(DeviceContext, string, UnorderedAccessView)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="name"></param>
@@ -111,7 +111,7 @@ namespace HelixToolkit.UWP.Shaders
             context.ComputeShader.SetUnorderedAccessView(slot, uav);
         }
         /// <summary>
-        /// <see cref="IShader.BindUAVs(DeviceContext, IEnumerable{KeyValuePair{int, UnorderedAccessView}})"/>
+        /// <see cref="ShaderBase.BindUAVs(DeviceContext, IEnumerable{KeyValuePair{int, UnorderedAccessView}})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="uavs"></param>
@@ -124,7 +124,7 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
-        /// <see cref="IShader.BindSampler(DeviceContext, int, SamplerState)"/>
+        /// <see cref="ShaderBase.BindSampler(DeviceContext, int, SamplerState)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="slot"></param>
@@ -136,7 +136,7 @@ namespace HelixToolkit.UWP.Shaders
             context.ComputeShader.SetSampler(slot, sampler);
         }
         /// <summary>
-        /// <see cref="IShader.BindSampler(DeviceContext, string, SamplerState)"/> 
+        /// <see cref="ShaderBase.BindSampler(DeviceContext, string, SamplerState)"/> 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="name"></param>
@@ -150,7 +150,7 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
-        /// <see cref="IShader.BindSamplers(DeviceContext, IEnumerable{KeyValuePair{int, SamplerState}})"/> 
+        /// <see cref="ShaderBase.BindSamplers(DeviceContext, IEnumerable{KeyValuePair{int, SamplerState}})"/> 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="samplers"></param>

@@ -8,7 +8,7 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.Direct3D;
 using SharpDX.DXGI;
-using System.Linq;
+
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -16,7 +16,6 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Shaders;
-    using System.Collections.Generic;
     using Utilities;
     using Render;
 
@@ -224,14 +223,15 @@ namespace HelixToolkit.UWP.Core
             context.BoundingFrustum = new BoundingFrustum(LightViewProjectMatrix);
 #if !TEST            
             deviceContext.DeviceContext.Rasterizer.SetViewport(0, 0, Width, Height);
-            DepthStencilView orgDSV;
-            var orgRT = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1, out orgDSV);
             try
             {
                 deviceContext.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
-                foreach (var item in context.RenderHost.PerFrameGeneralRenderCores.Where(x=>x.IsThrowingShadow))
+                for (int i = 0; i < context.RenderHost.PerFrameGeneralRenderCores.Count; ++i)
                 {
-                    item.Render(context, deviceContext);
+                    if (context.RenderHost.PerFrameGeneralRenderCores[i].IsThrowingShadow)
+                    {
+                        context.RenderHost.PerFrameGeneralRenderCores[i].Render(context, deviceContext);
+                    }
                 }
             }
             catch (Exception ex)
@@ -242,13 +242,7 @@ namespace HelixToolkit.UWP.Core
             {
                 context.IsShadowPass = false;
                 context.BoundingFrustum = orgFrustum;
-                deviceContext.DeviceContext.OutputMerger.SetRenderTargets(orgDSV, orgRT);
-                orgDSV?.Dispose();
-                foreach (var rt in orgRT)
-                {
-                    rt?.Dispose();
-                }
-                deviceContext.DeviceContext.Rasterizer.SetViewport(0, 0, (float)context.ActualWidth, (float)context.ActualHeight);
+                context.RenderHost.SetDefaultRenderTargets(false);
                 context.SharedResource.ShadowView = viewResource.TextureView;
             }
 #endif

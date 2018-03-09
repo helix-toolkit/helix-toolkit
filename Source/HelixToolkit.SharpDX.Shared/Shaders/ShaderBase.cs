@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Shaders
     /// <summary>
     /// 
     /// </summary>
-    public abstract class ShaderBase : DisposeObject, IShader
+    public abstract class ShaderBase : DisposeObject
     {
         /// <summary>
         /// 
@@ -37,11 +37,11 @@ namespace HelixToolkit.UWP.Shaders
         public MappingProxy<SamplerMapping> SamplerMapping { get; } = new MappingProxy<SamplerMapping>();
 
         /// <summary>
-        /// <see cref="IShader.ShaderType"/>
+        /// <see cref="ShaderBase.ShaderType"/>
         /// </summary>
         public ShaderStage ShaderType { private set; get; }
         /// <summary>
-        /// <see cref="IShader.IsNULL"/>
+        /// <see cref="ShaderBase.IsNULL"/>
         /// </summary>
         public bool IsNULL { private set; get; }
         /// <summary>
@@ -93,42 +93,42 @@ namespace HelixToolkit.UWP.Shaders
         public abstract void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures);
 
         /// <summary>
-        /// <see cref="IShader.BindUAV(DeviceContext, string, UnorderedAccessView)"/>
+        /// <see cref="ShaderBase.BindUAV(DeviceContext, string, UnorderedAccessView)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="name"></param>
         /// <param name="uav"></param>
         public virtual void BindUAV(DeviceContext context, string name, UnorderedAccessView uav) {  }
         /// <summary>
-        /// <see cref="IShader.BindUAV(DeviceContext, int, UnorderedAccessView)"/>
+        /// <see cref="ShaderBase.BindUAV(DeviceContext, int, UnorderedAccessView)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="slot"></param>
         /// <param name="uav"></param>
         public virtual void BindUAV(DeviceContext context, int slot, UnorderedAccessView uav) { }
         /// <summary>
-        /// <see cref="IShader.BindUAVs(DeviceContext, IEnumerable{KeyValuePair{int, UnorderedAccessView}})"/>
+        /// <see cref="ShaderBase.BindUAVs(DeviceContext, IEnumerable{KeyValuePair{int, UnorderedAccessView}})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="uavs"></param>
         public virtual void BindUAVs(DeviceContext context, IEnumerable<KeyValuePair<int, UnorderedAccessView>> uavs) { }
 
         /// <summary>
-        /// <see cref="IShader.BindSampler(DeviceContext, string, SamplerState)"/>
+        /// <see cref="ShaderBase.BindSampler(DeviceContext, string, SamplerState)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="name"></param>
         /// <param name="sampler"></param>
         public virtual void BindSampler(DeviceContext context, string name, SamplerState sampler) { }
         /// <summary>
-        /// <see cref="IShader.BindSampler(DeviceContext, int, SamplerState)"/>
+        /// <see cref="ShaderBase.BindSampler(DeviceContext, int, SamplerState)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="slot"></param>
         /// <param name="sampler"></param>
         public virtual void BindSampler(DeviceContext context, int slot, SamplerState sampler) { }
         /// <summary>
-        /// <see cref="IShader.BindSamplers(DeviceContext, IEnumerable{KeyValuePair{int, SamplerState}})"/>
+        /// <see cref="ShaderBase.BindSamplers(DeviceContext, IEnumerable{KeyValuePair{int, SamplerState}})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="samplers"></param>

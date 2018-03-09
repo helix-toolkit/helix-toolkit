@@ -97,6 +97,7 @@
 
             var landerItems = Load3ds("Car.3ds").Select(x => x.Geometry as MeshGeometry3D).ToArray();
             Model = MeshGeometry3D.Merge(landerItems);
+            Model.UpdateOctree();
             ModelMaterial = PhongMaterials.Bronze;
             var transGroup = new Media3D.Transform3DGroup();
             transGroup.Children.Add(new Media3D.ScaleTransform3D(0.01, 0.01, 0.01));

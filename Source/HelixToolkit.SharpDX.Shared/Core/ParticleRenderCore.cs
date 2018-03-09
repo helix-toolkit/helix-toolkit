@@ -87,7 +87,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public float InsertElapseThrottle { private set; get; } = 0;
 
-        private float prevTimeMillis = 0;
+        private double prevTimeMillis = 0;
 
         /// <summary>
         /// Random generator, used to generate particle for different direction, etc
@@ -149,13 +149,10 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(Set(ref samplerDescription, value))
+                if(Set(ref samplerDescription, value) && IsAttached)
                 {
-                    if (textureSampler == null)
-                    {
-                        return;
-                    }
-                    textureSampler.Description = value;
+                    RemoveAndDispose(ref textureSampler);
+                    textureSampler = Collect(EffectTechnique.EffectsManager.StateManager.Register(value));
                 }
             }
             get
@@ -164,9 +161,9 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private SamplerProxy textureSampler;
+        private SamplerStateProxy textureSampler;
 
-        private float totalElapsed = 0;
+        private double totalElapsed = 0;
         /// <summary>
         /// Gets a value indicating whether this instance has texture.
         /// </summary>
@@ -600,8 +597,7 @@ namespace HelixToolkit.UWP.Core
                 {
                     OnInitialParticleChanged(ParticleCount);
                 }
-                textureSampler = Collect(new SamplerProxy(technique.EffectsManager.StateManager));
-                textureSampler.Description = SamplerDescription;
+                textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
                 return true;
             }
             else
@@ -617,13 +613,13 @@ namespace HelixToolkit.UWP.Core
             InsertElapseThrottle = (8.0f * InsertVariables.InitialEnergy / InsertVariables.EnergyDissipationRate / System.Math.Max(0, (particleCount + 8)));
         }
 
-        private void UpdateTime(IRenderContext context, ref float totalElapsed)
+        private void UpdateTime(IRenderContext context, ref double totalElapsed)
         {
-            float timeElapsed = Math.Max(0, ((float)context.TimeStamp.TotalMilliseconds - prevTimeMillis) / 1000);
-            prevTimeMillis = (float)context.TimeStamp.TotalMilliseconds;
+            double timeElapsed = Math.Max(0, (context.TimeStamp.TotalMilliseconds - prevTimeMillis) / 1000);
+            prevTimeMillis = context.TimeStamp.TotalMilliseconds;
             totalElapsed += timeElapsed;
             //Update perframe variables
-            FrameVariables.TimeFactors = timeElapsed;
+            FrameVariables.TimeFactors = (float)timeElapsed;
         }
 
 

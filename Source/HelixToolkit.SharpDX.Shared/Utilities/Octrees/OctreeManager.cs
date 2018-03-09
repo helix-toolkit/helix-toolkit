@@ -419,7 +419,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             if(items.FirstOrDefault() is IInstancing inst)
             {
                 var instMatrix = inst.InstanceBuffer.Elements;
-                var octree = new InstancingModel3DOctree(instMatrix, (inst as IRenderable).Bounds, this.Parameter, new Stack<IEnumerator<IOctree>>(10));
+                var octree = new InstancingModel3DOctree(instMatrix, (inst as IRenderable).Bounds, this.Parameter, new Stack<KeyValuePair<int, IOctree[]>>(10));
                 octree.BuildTree();
                 Octree = octree;
             }

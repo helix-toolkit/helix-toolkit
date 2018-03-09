@@ -82,7 +82,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\Enums.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\EventArguments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ICamera.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Interface\IDeviceContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IDX11RenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IEffectsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IGeometryBufferManager.cs" />
@@ -103,7 +102,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderTechnique.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Interface\IShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IShaderPass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IShaderReflector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ITextureResourceManager.cs" />

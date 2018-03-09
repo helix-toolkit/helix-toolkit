@@ -133,20 +133,12 @@ namespace HelixToolkit.UWP.Core
             context.IsCustomPass = true;
             if (DoublePass)
             {
-                DepthStencilView dsView;
-                var renderTargets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1, out dsView);
-                if (dsView == null)
-                {
-                    return;
-                }
-                deviceContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
-                dsView.Dispose();
-                foreach (var t in renderTargets)
-                { t.Dispose(); }
+                deviceContext.DeviceContext.ClearDepthStencilView(context.RenderHost.DepthStencilBufferView, DepthStencilClearFlags.Stencil, 0, 0);
                 currentCores.Clear();
-                foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
+                for (int i = 0; i < context.RenderHost.PerFrameGeneralCoresWithPostEffect.Count; ++i)
                 {
                     IEffectAttributes effect;
+                    var mesh = context.RenderHost.PerFrameGeneralCoresWithPostEffect[i];
                     if (mesh.TryGetPostEffect(EffectName, out effect))
                     {
                         currentCores.Add(new KeyValuePair<IRenderCore, IEffectAttributes>(mesh, effect));
@@ -155,12 +147,13 @@ namespace HelixToolkit.UWP.Core
                         if (pass.IsNULL) { continue; }
                         pass.BindShader(deviceContext);
                         pass.BindStates(deviceContext, StateType.BlendState);
-                        deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(pass.DepthStencilState, 0);//Increment the stencil value
+                        deviceContext.SetDepthStencilState(pass.DepthStencilState, 0);//Increment the stencil value
                         mesh.Render(context, deviceContext);
                     }
                 }
-                foreach (var mesh in currentCores)
+                for (int i = 0; i < currentCores.Count; ++i)
                 {
+                    var mesh = currentCores[i];
                     IEffectAttributes effect = mesh.Value;
                     object attribute;
                     var color = Color;
@@ -179,16 +172,17 @@ namespace HelixToolkit.UWP.Core
                     if (pass.IsNULL) { continue; }
                     pass.BindShader(deviceContext);
                     pass.BindStates(deviceContext, StateType.BlendState);
-                    deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(pass.DepthStencilState, 1);//Do stencil test only on value = 1.
+                    deviceContext.SetDepthStencilState(pass.DepthStencilState, 1);//Do stencil test only on value = 1.
                     mesh.Key.Render(context, deviceContext);
                 }
                 currentCores.Clear();
             }
             else
             {
-                foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
+                for (int i =0; i < context.RenderHost.PerFrameGeneralCoresWithPostEffect.Count; ++i)
                 {
                     IEffectAttributes effect;
+                    var mesh = context.RenderHost.PerFrameGeneralCoresWithPostEffect[i];
                     if (mesh.TryGetPostEffect(EffectName, out effect))
                     {
                         object attribute;
@@ -207,7 +201,7 @@ namespace HelixToolkit.UWP.Core
                         if (pass.IsNULL) { continue; }
                         pass.BindShader(deviceContext);
                         pass.BindStates(deviceContext, StateType.BlendState);
-                        deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(pass.DepthStencilState, 0);
+                        deviceContext.SetDepthStencilState(pass.DepthStencilState, 0);
                         mesh.Render(context, deviceContext);
                     }
                 }

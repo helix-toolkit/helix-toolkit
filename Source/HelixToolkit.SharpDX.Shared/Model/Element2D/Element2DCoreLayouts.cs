@@ -456,9 +456,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             if (DesiredSize != clippedDesiredSize)
             {
                 DesiredSize = clippedDesiredSize;
-                foreach (var item in Items)
+                for (int i = 0; i < Items.Count; ++i)
                 {
-                    item.InvalidateMeasure();
+                    Items[i].InvalidateMeasure();
                 }
             }
             else
@@ -666,18 +666,18 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         protected virtual RectangleF ArrangeOverride(RectangleF finalSize)
         {
-            foreach(var item in Items)
+            for(int i = 0; i < Items.Count; ++i)
             {
-                item.Arrange(finalSize);
+                Items[i].Arrange(finalSize);
             }
             return finalSize;
         }
 
         protected virtual Size2F MeasureOverride(Size2F availableSize)
         {
-            foreach(var item in Items)
+            for (int i = 0; i < Items.Count; ++i)
             {
-                item.Measure(availableSize);
+                Items[i].Measure(availableSize);
             }
             return availableSize;
         }

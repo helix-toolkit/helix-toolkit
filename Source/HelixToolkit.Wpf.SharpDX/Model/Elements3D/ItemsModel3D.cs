@@ -10,6 +10,7 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using HelixToolkit.Wpf.SharpDX.Core;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -223,7 +224,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     var array = this.Children.ToArray();
-                    foreach (var item in array)
+                    foreach (var item in array.Select(x => x as Element3DCore))
                     {
                         item.DataContext = null;
                         this.Children.Remove(item);

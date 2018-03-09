@@ -13,6 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.SharpDX", 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.SharpDX.Tests", "HelixToolkit.Wpf.SharpDX.Tests\HelixToolkit.Wpf.SharpDX.Tests.csproj", "{405C54C4-69F7-4F3D-A6BA-594346F42A2F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{39740654-F5F1-4936-B4EA-9BC97D4CDE37} = {39740654-F5F1-4936-B4EA-9BC97D4CDE37}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{93A5184E-0275-4A75-9C9A-9516AE9634DD}"
 EndProject
@@ -77,6 +80,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenDuplicationDemo", "Examples\WPF.SharpDX\ScreenDuplicationDemo\ScreenDuplicationDemo.csproj", "{4050D84A-2F13-4C3B-AB32-844A421EA3EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostEffectsDemo", "Examples\WPF.SharpDX\PostEffectsDemo\PostEffectsDemo.csproj", "{931D2262-63B7-4551-8036-36923A04ACF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroupElementTester", "Examples\WPF.SharpDX\GroupElementTester\GroupElementTester.csproj", "{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -422,6 +427,18 @@ Global
 		{931D2262-63B7-4551-8036-36923A04ACF0}.Release|x64.Build.0 = Release|Any CPU
 		{931D2262-63B7-4551-8036-36923A04ACF0}.Release|x86.ActiveCfg = Release|Any CPU
 		{931D2262-63B7-4551-8036-36923A04ACF0}.Release|x86.Build.0 = Release|Any CPU
+		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB}.Debug|x64.Build.0 = Debug|Any CPU
+		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB}.Debug|x86.Build.0 = Debug|Any CPU
+		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB}.Release|x64.ActiveCfg = Release|Any CPU
+		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB}.Release|x64.Build.0 = Release|Any CPU
+		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB}.Release|x86.ActiveCfg = Release|Any CPU
+		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -455,6 +472,7 @@ Global
 		{0AB7D9F3-CF1F-462E-8763-7DC1E672CAAE} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{4050D84A-2F13-4C3B-AB32-844A421EA3EC} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{931D2262-63B7-4551-8036-36923A04ACF0} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
+		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {67B0DD22-D5CF-4D97-9E28-F8B59C583F78}

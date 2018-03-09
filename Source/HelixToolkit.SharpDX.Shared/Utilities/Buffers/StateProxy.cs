@@ -1,6 +1,7 @@
 ﻿using SharpDX;
 using SharpDX.Direct3D11;
 using System;
+using System.Threading;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Utilities
@@ -8,23 +9,18 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
-    using ShaderManager;
+
 
     /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="StateType">The type of the tate type.</typeparam>
-    /// <typeparam name="StateTypeDescription">The type of the tate type description.</typeparam>
-    public abstract class StateProxy<StateType, StateTypeDescription> : IDisposable where StateType : ComObject where StateTypeDescription : struct
-    {
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        public string Name { set; get; }
-        private StateType state;
+    public abstract class StateProxy<StateType> : IDisposable where StateType : ComObject
+    {       
+        public event EventHandler<EventArgs> Disposed;
+
+        private int refCounter = 0;
+
         /// <summary>
         /// Gets the state.
         /// </summary>
@@ -32,45 +28,19 @@ namespace HelixToolkit.UWP.Utilities
         /// The state.
         /// </value>
         public StateType State { get { return state; } }
-        private StateTypeDescription description;
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
-        public StateTypeDescription Description
+        private StateType state;
+
+        public StateProxy(StateType state)
         {
-            set
-            {
-                if(description.Equals(value)) { return; }
-                description = value;
-                Disposer.RemoveAndDispose(ref state);
-                state = CreateState(poolManager, ref description);
-            }
-            get
-            {
-                return description;
-            }
+            this.state = state;
         }
-        private readonly IStatePoolManager poolManager;
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StateProxy{StateType, StateTypeDescription}"/> class.
-        /// </summary>
-        /// <param name="poolManager">The pool manager.</param>
-        /// <param name="name">The name.</param>
-        public StateProxy(IStatePoolManager poolManager, string name = "")
+
+        public StateProxy<StateType> Register()
         {
-            this.poolManager = poolManager;
-            Name = name;
+            Interlocked.Increment(ref refCounter);
+            return this;
         }
-        /// <summary>
-        /// Creates the state.
-        /// </summary>
-        /// <param name="poolManager">The pool manager.</param>
-        /// <param name="description">The description.</param>
-        /// <returns></returns>
-        protected abstract StateType CreateState(IStatePoolManager poolManager, ref StateTypeDescription description);
+
         /// <summary>
         /// Performs an implicit conversion
         /// </summary>
@@ -78,20 +48,9 @@ namespace HelixToolkit.UWP.Utilities
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static implicit operator StateType(StateProxy<StateType, StateTypeDescription> proxy)
+        public static implicit operator StateType(StateProxy<StateType> proxy)
         {
             return proxy.State;
-        }
-        /// <summary>
-        /// Performs an implicit conversion.
-        /// </summary>
-        /// <param name="proxy">The proxy.</param>
-        /// <returns>
-        /// The result of the conversion.
-        /// </returns>
-        public static implicit operator StateTypeDescription(StateProxy<StateType, StateTypeDescription> proxy)
-        {
-            return proxy.Description;
         }
 
         #region IDisposable Support
@@ -109,7 +68,8 @@ namespace HelixToolkit.UWP.Utilities
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
-
+                Disposed?.Invoke(this, EventArgs.Empty);
+                Disposed = null;
                 disposedValue = true;
             }
         }
@@ -123,10 +83,20 @@ namespace HelixToolkit.UWP.Utilities
         // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
+            var count = Interlocked.Decrement(ref refCounter);
+            if (count <= 0)
+            {
+                // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+                Dispose(true);
+                // TODO: uncomment the following line if the finalizer is overridden above.
+                // GC.SuppressFinalize(this);
+            }
+        }
+
+        internal void ForceDispose()
+        {
+            refCounter = 0;
+            Dispose();
         }
         #endregion
     }
@@ -134,100 +104,34 @@ namespace HelixToolkit.UWP.Utilities
     /// <summary>
     /// 
     /// </summary>
-    public sealed class SamplerProxy : StateProxy<SamplerState, SamplerStateDescription>
+    public sealed class RasterizerStateProxy : StateProxy<RasterizerState>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SamplerProxy"/> class.
-        /// </summary>
-        /// <param name="poolManager">The pool manager.</param>
-        /// <param name="name">The name.</param>
-        public SamplerProxy(IStatePoolManager poolManager, string name = "") : base(poolManager, name)
-        {
-        }
-
-        /// <summary>
-        /// Creates the state.
-        /// </summary>
-        /// <param name="poolManager">The pool manager.</param>
-        /// <param name="desc">The desc.</param>
-        /// <returns></returns>
-        protected override SamplerState CreateState(IStatePoolManager poolManager, ref SamplerStateDescription desc)
-        {
-            return poolManager.Register(desc);
-        }
+        public static readonly RasterizerStateProxy Empty = new RasterizerStateProxy(null);
+        public RasterizerStateProxy(RasterizerState state) : base(state) { }
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public sealed class RasterizerStateProxy : StateProxy<RasterizerState, RasterizerStateDescription>
+    public sealed class BlendStateProxy : StateProxy<BlendState>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RasterizerStateProxy"/> class.
-        /// </summary>
-        /// <param name="poolManager">The pool manager.</param>
-        /// <param name="name">The name.</param>
-        public RasterizerStateProxy(IStatePoolManager poolManager, string name = "") : base(poolManager, name)
-        {
-        }
-        /// <summary>
-        /// Creates the state.
-        /// </summary>
-        /// <param name="poolManager">The pool manager.</param>
-        /// <param name="desc">The desc.</param>
-        /// <returns></returns>
-        protected override RasterizerState CreateState(IStatePoolManager poolManager, ref RasterizerStateDescription desc)
-        {
-            return poolManager.Register(desc);
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public sealed class BlendStateProxy : StateProxy<BlendState, BlendStateDescription>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BlendStateProxy"/> class.
-        /// </summary>
-        /// <param name="poolManager">The pool manager.</param>
-        /// <param name="name">The name.</param>
-        public BlendStateProxy(IStatePoolManager poolManager, string name = "") : base(poolManager, name)
-        {
-        }
-        /// <summary>
-        /// Creates the state.
-        /// </summary>
-        /// <param name="poolManager">The pool manager.</param>
-        /// <param name="desc">The desc.</param>
-        /// <returns></returns>
-        protected override BlendState CreateState(IStatePoolManager poolManager, ref BlendStateDescription desc)
-        {
-            return poolManager.Register(desc);
-        }
+        public static readonly BlendStateProxy Empty = new BlendStateProxy(null);
+        public BlendStateProxy(BlendState state) : base(state) { }
     }
     /// <summary>
     /// 
     /// </summary>
-    public sealed class DepthStencilStateProxy : StateProxy<DepthStencilState, DepthStencilStateDescription>
+    public sealed class DepthStencilStateProxy : StateProxy<DepthStencilState>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DepthStencilStateProxy"/> class.
-        /// </summary>
-        /// <param name="poolManager">The pool manager.</param>
-        /// <param name="name">The name.</param>
-        public DepthStencilStateProxy(IStatePoolManager poolManager, string name = "") : base(poolManager, name)
-        {
-        }
-        /// <summary>
-        /// Creates the state.
-        /// </summary>
-        /// <param name="poolManager">The pool manager.</param>
-        /// <param name="desc">The desc.</param>
-        /// <returns></returns>
-        protected override DepthStencilState CreateState(IStatePoolManager poolManager, ref DepthStencilStateDescription desc)
-        {
-            return poolManager.Register(desc);
-        }
+        public static readonly DepthStencilStateProxy Empty = new DepthStencilStateProxy(null);
+        public DepthStencilStateProxy(DepthStencilState state) : base(state) { }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class SamplerStateProxy : StateProxy<SamplerState>
+    {
+        public static readonly SamplerStateProxy Empty = new SamplerStateProxy(null);
+        public SamplerStateProxy(SamplerState state) : base(state) { }
     }
 }

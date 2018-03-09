@@ -118,7 +118,7 @@ namespace HelixToolkit.UWP
         /// by all Element3D if not specified otherwise in
         /// the elements itself
         /// </summary>
-        IRenderTechnique RenderTechnique { get; }
+        IRenderTechnique RenderTechnique { set; get; }
         /// <summary>
         /// Gets a value indicating whether this instance is deferred lighting.
         /// </summary>
@@ -201,7 +201,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The per frame renderable.
         /// </value>
-        IEnumerable<IRenderable> PerFrameRenderables { get; }
+        List<IRenderable> PerFrameRenderables { get; }
         /// <summary>
         /// Gets the current frame renderables for rendering.
         /// </summary>
@@ -215,12 +215,12 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The per frame post effects cores.
         /// </value>
-        IEnumerable<IRenderCore> PerFrameGeneralCoresWithPostEffect { get; }
+        List<IRenderCore> PerFrameGeneralCoresWithPostEffect { get; }
         /// <summary>
         /// Gets the per frame render cores for normal rendering routine. <see cref="RenderType.Normal"/>, <see cref="RenderType.Others"/>, <see cref="RenderType.Particle"/>
         /// <para>This does not include <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
-        IEnumerable<IRenderCore> PerFrameGeneralRenderCores { get; }
+        List<IRenderCore> PerFrameGeneralRenderCores { get; }
         /// <summary>
         /// Starts the d3 d.
         /// </summary>

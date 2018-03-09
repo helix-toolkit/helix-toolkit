@@ -33,14 +33,14 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// change flags
         /// </summary>
-        protected bool[] VertexChanged { private set; get; }
+        protected volatile bool[] VertexChanged;
         /// <summary>
         /// Gets or sets a value indicating whether [index changed].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [index changed]; otherwise, <c>false</c>.
         /// </value>
-        protected bool IndexChanged { private set; get; } = true;
+        protected volatile bool IndexChanged = true;
         /// <summary>
         /// Gets or sets the vertex buffer.
         /// </summary>
@@ -49,6 +49,7 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public IElementsBufferProxy[] VertexBuffer { private set; get; } = new IElementsBufferProxy[0];
 
+        private VertexBufferBinding[] vertexBufferBindings;
         /// <summary>
         /// Gets the size of the vertex structure.
         /// </summary>
@@ -201,6 +202,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {
+            bool updateVBinding = false;
             for(int i=0; i < VertexChanged.Length; ++i)
             {
                 if (VertexChanged[i] && VertexBuffer[i] != null)
@@ -212,8 +214,13 @@ namespace HelixToolkit.UWP.Core
                             OnCreateVertexBuffer(context, VertexBuffer[i], i, Geometry, deviceResources);
                         }
                         VertexChanged[i] = false;
+                        updateVBinding = true;                        
                     }
                 }
+            }
+            if (updateVBinding)
+            {
+                vertexBufferBindings = VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray();
             }
             if (IndexChanged && IndexBuffer != null)
             {
@@ -266,8 +273,7 @@ namespace HelixToolkit.UWP.Core
             }
             if (VertexBuffer.Length > 0)
             {
-                context.InputAssembler.SetVertexBuffers(vertexBufferStartSlot,
-                    VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray());
+                context.InputAssembler.SetVertexBuffers(vertexBufferStartSlot, vertexBufferBindings);
                 vertexBufferStartSlot += VertexBuffer.Length;
             }
             return true;
@@ -281,7 +287,8 @@ namespace HelixToolkit.UWP.Core
         protected override void OnDispose(bool disposeManagedResources)
         {
             OnInvalidateRender = null;
-            Geometry = null;          
+            Geometry = null;
+            vertexBufferBindings = null;
             base.OnDispose(disposeManagedResources);
         }
     }

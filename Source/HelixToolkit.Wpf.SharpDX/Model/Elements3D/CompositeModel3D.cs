@@ -17,6 +17,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Windows;
     using Render;
+    using HelixToolkit.Wpf.SharpDX.Core;
+    using System.Collections.ObjectModel;
+
     /// <summary>
     ///     Represents a composite Model3D.
     /// </summary>
@@ -38,26 +41,22 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private readonly ObservableElement3DCollection children;
-
-        public override IEnumerable<IRenderable> Items { get { return children; } }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
-        /// </summary>
-        public CompositeModel3D()
-        {
-            this.children = new ObservableElement3DCollection();
-            this.children.CollectionChanged += this.ChildrenChanged;
-        }
-
+        public override IList<IRenderable> Items { get { return Children; } }
         /// <summary>
         ///     Gets the children.
         /// </summary>
         /// <value>
         ///     The children.
         /// </value>
-        public ObservableElement3DCollection Children { get { return this.children; } }
+        public ObservableCollection<IRenderable> Children { get; } = new ObservableCollection<IRenderable>();
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
+        /// </summary>
+        public CompositeModel3D()
+        {
+            Children.CollectionChanged += this.ChildrenChanged;
+        }
 
         /// <summary>
         /// Attaches the specified host.
@@ -69,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             foreach (var model in this.Children)
             {
-                if (model.Parent == null)
+                if ((model as Element3DCore).Parent == null)
                 {
                     this.AddLogicalChild(model);
                 }
@@ -87,7 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var model in this.Children)
             {
                 model.Detach();
-                if (model.Parent == this)
+                if ((model as Element3DCore).Parent == this)
                 {
                     this.RemoveLogicalChild(model);
                 }
@@ -167,6 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         break;
                 }
             }
+            forceUpdateTransform = true;
         }
 
         protected override bool CanHitTest(IRenderContext context)

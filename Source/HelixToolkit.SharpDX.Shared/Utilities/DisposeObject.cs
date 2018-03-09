@@ -92,7 +92,7 @@ namespace HelixToolkit.UWP
     /// </summary>
     public abstract class DisposeObject : DisposeBase, INotifyPropertyChanged
     {
-        private readonly HashSet<object> disposables = new HashSet<object>();
+        private readonly HashSet<IDisposable> disposables = new HashSet<IDisposable>();
 
         /// <summary>
         /// Gets the number of elements to dispose.
@@ -113,14 +113,7 @@ namespace HelixToolkit.UWP
         {
             foreach(var valueToDispose in disposables)
             {
-                if (valueToDispose is IDisposable v)
-                {
-                    v.Dispose();
-                }
-                else
-                {
-                    global::SharpDX.Utilities.FreeMemory((IntPtr)valueToDispose);
-                }
+                valueToDispose.Dispose();
             }
             disposables.Clear();
         }
@@ -142,23 +135,20 @@ namespace HelixToolkit.UWP
         /// <exception cref="ArgumentException">If toDispose argument is not IDisposable or a valid memory pointer allocated by <see cref="global::SharpDX.Utilities.AllocateMemory"/></exception>
         public T Collect<T>(T toDispose)
         {
-            if(toDispose == null) { return default(T); }
-            if (!(toDispose is IDisposable || toDispose is IntPtr))
-                throw new ArgumentException("Argument must be IDisposable or IntPtr");
-
-            // Check memory alignment
-            if (toDispose is IntPtr)
+            if(toDispose == null)
+            { return default(T); }
+            else if(toDispose is IDisposable disposible)
             {
-                var memoryPtr = (IntPtr)(object)toDispose;
-                if (!global::SharpDX.Utilities.IsMemoryAligned(memoryPtr))
-                    throw new ArgumentException("Memory pointer is invalid. Memory must have been allocated with Utilties.AllocateMemory");
+                if (!Equals(toDispose, default(T)) && !disposables.Contains(disposible))
+                {
+                    disposables.Add(disposible);
+                }
+                return toDispose;
             }
-
-            if (!Equals(toDispose, default(T)) && !disposables.Contains(toDispose))
+            else
             {
-                disposables.Add(toDispose);
+                throw new ArgumentException("Argument must be IDisposable");
             }
-            return toDispose;
         }
 
         /// <summary>
@@ -167,22 +157,11 @@ namespace HelixToolkit.UWP
         /// <param name="objectToDispose">Object to dispose.</param>
         public void RemoveAndDispose<T>(ref T objectToDispose)
         {
-            if (objectToDispose != null)
+            if (objectToDispose != null && objectToDispose is IDisposable disposible)
             {
-                Remove(objectToDispose);
-
-                var disposableObject = objectToDispose as IDisposable;
-                if (disposableObject != null)
-                {
-                    // Dispose the component
-                    disposableObject.Dispose();
-                }
-                else
-                {
-                    var localData = (object)objectToDispose;
-                    var dataPointer = (IntPtr)localData;
-                    global::SharpDX.Utilities.FreeMemory(dataPointer);
-                }
+                Remove(disposible);
+                // Dispose the component
+                disposible.Dispose();
                 objectToDispose = default(T);
             }
         }
@@ -194,9 +173,9 @@ namespace HelixToolkit.UWP
         /// <param name="toDisposeArg">To dispose.</param>
         public void Remove<T>(T toDisposeArg)
         {
-            if (disposables.Contains(toDisposeArg))
+            if (toDisposeArg is IDisposable disposible)
             {
-                disposables.Remove(toDisposeArg);
+                disposables.Remove(disposible);
             }
         }
 

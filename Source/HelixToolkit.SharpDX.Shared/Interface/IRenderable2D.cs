@@ -123,7 +123,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Optional for scene graph traverse
         /// </summary>
-        IEnumerable<IRenderable2D> Items { get; }
+        IList<IRenderable2D> Items { get; }
 
         IRenderCore2D RenderCore { get; }
         /// <summary>

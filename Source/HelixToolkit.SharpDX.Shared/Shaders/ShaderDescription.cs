@@ -155,7 +155,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="device"></param>
         /// <param name="pool"></param>
         /// <returns></returns>
-        public IShader CreateShader(Device device, IConstantBufferPool pool)
+        public ShaderBase CreateShader(Device device, IConstantBufferPool pool)
         {
             if (ByteCode == null)
             {
@@ -174,7 +174,7 @@ namespace HelixToolkit.UWP.Shaders
                 this.UAVMappings = shaderReflector.UAVMappings.Values.ToArray();
                 this.SamplerMappings = shaderReflector.SamplerMappings.Values.ToArray();
             }
-            IShader shader = null;
+            ShaderBase shader = null;
             switch (ShaderType)
             {
                 case ShaderStage.Vertex:

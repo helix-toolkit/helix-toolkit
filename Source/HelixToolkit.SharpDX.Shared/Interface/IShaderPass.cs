@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 {
     using System;
     using Utilities;
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -30,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
         /// <value>
         /// The shaders.
         /// </value>
-        IEnumerable<IShader> Shaders { get; }
+        IReadOnlyList<ShaderBase> Shaders { get; }
         /// <summary>
         /// Gets the state of the blend.
         /// </summary>
@@ -50,29 +51,29 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
         /// Binds the shader and its constant buffers
         /// </summary>
         /// <param name="context">The context.</param>
-        void BindShader(IDeviceContext context);
+        void BindShader(DeviceContextProxy context);
         /// <summary>
         /// Binds the shader. Optionally bind its constant buffers
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="bindConstantBuffer"></param>
-        void BindShader(IDeviceContext context, bool bindConstantBuffer);
+        void BindShader(DeviceContextProxy context, bool bindConstantBuffer);
         /// <summary>
         /// Gets the shader.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns></returns>
-        IShader GetShader(ShaderStage type);
+        ShaderBase GetShader(ShaderStage type);
         /// <summary>
         /// Sets the shader.
         /// </summary>
         /// <param name="shader">The shader.</param>
-        void SetShader(IShader shader);
+        void SetShader(ShaderBase shader);
         /// <summary>
         /// Binds the states.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="type">The type.</param>
-        void BindStates(IDeviceContext context, StateType type);
+        void BindStates(DeviceContextProxy context, StateType type);
     }
 }

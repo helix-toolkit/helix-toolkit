@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
 namespace HelixToolkit.UWP.ShaderManager
 #endif
 {
-
+    using Utilities;
     /// <summary>
     /// 
     /// </summary>
@@ -27,9 +27,9 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="device">The device.</param>
         /// <param name="description">The description.</param>
         /// <returns></returns>
-        protected override BlendState Create(Device device, ref BlendStateDescription description)
+        protected override StateProxy<BlendState> Create(Device device, ref BlendStateDescription description)
         {
-            return new BlendState(device, description);
+            return new BlendStateProxy(new BlendState(device, description));
         }
         /// <summary>
         /// Gets the key.
@@ -57,9 +57,9 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="device">The device.</param>
         /// <param name="description">The description.</param>
         /// <returns></returns>
-        protected override DepthStencilState Create(Device device, ref DepthStencilStateDescription description)
+        protected override StateProxy<DepthStencilState> Create(Device device, ref DepthStencilStateDescription description)
         {
-            return new DepthStencilState(device, description);
+            return new DepthStencilStateProxy(new DepthStencilState(device, description));
         }
         /// <summary>
         /// Gets the key.
@@ -87,9 +87,9 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="device">The device.</param>
         /// <param name="description">The description.</param>
         /// <returns></returns>
-        protected override RasterizerState Create(Device device, ref RasterizerStateDescription description)
+        protected override StateProxy<RasterizerState> Create(Device device, ref RasterizerStateDescription description)
         {
-            return new RasterizerState(device, description);
+            return new RasterizerStateProxy(new RasterizerState(device, description));
         }
         /// <summary>
         /// Gets the key.
@@ -119,9 +119,9 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="device">The device.</param>
         /// <param name="description">The description.</param>
         /// <returns></returns>
-        protected override SamplerState Create(Device device, ref SamplerStateDescription description)
+        protected override StateProxy<SamplerState> Create(Device device, ref SamplerStateDescription description)
         {
-            return new SamplerState(device, description);
+            return new SamplerStateProxy(new SamplerState(device, description));
         }
         /// <summary>
         /// Gets the key.
@@ -136,7 +136,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <summary>
     /// 
     /// </summary>
-    public class StatePoolManager : DisposeObject, IStatePoolManager
+    public sealed class StatePoolManager : DisposeObject, IStatePoolManager
     {
         /// <summary>
         /// Gets or sets the blend state pool.
@@ -185,36 +185,36 @@ namespace HelixToolkit.UWP.ShaderManager
         /// </summary>
         /// <param name="desc">The desc.</param>
         /// <returns></returns>
-        public BlendState Register(BlendStateDescription desc)
+        public BlendStateProxy Register(BlendStateDescription desc)
         {
-            return BlendStatePool.Register(desc);
+            return BlendStatePool.Register(desc) as BlendStateProxy;
         }
         /// <summary>
         /// Registers the specified desc.
         /// </summary>
         /// <param name="desc">The desc.</param>
         /// <returns></returns>
-        public RasterizerState Register(RasterizerStateDescription desc)
+        public RasterizerStateProxy Register(RasterizerStateDescription desc)
         {
-            return RasterStatePool.Register(desc);
+            return RasterStatePool.Register(desc) as RasterizerStateProxy;
         }
         /// <summary>
         /// Registers the specified desc.
         /// </summary>
         /// <param name="desc">The desc.</param>
         /// <returns></returns>
-        public DepthStencilState Register(DepthStencilStateDescription desc)
+        public DepthStencilStateProxy Register(DepthStencilStateDescription desc)
         {
-            return DepthStencilStatePool.Register(desc);
+            return DepthStencilStatePool.Register(desc) as DepthStencilStateProxy;
         }
         /// <summary>
         /// Registers the specified desc.
         /// </summary>
         /// <param name="desc">The desc.</param>
         /// <returns></returns>
-        public SamplerState Register(SamplerStateDescription desc)
+        public SamplerStateProxy Register(SamplerStateDescription desc)
         {
-            return SamplerStatePool.Register(desc);
+            return SamplerStatePool.Register(desc) as SamplerStateProxy;
         }
     }
 }

@@ -14,6 +14,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows;
     using System.Windows.Markup;
     using Render;
+    using HelixToolkit.Wpf.SharpDX.Core;
+    using System.Collections.ObjectModel;
+
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement3DCollection 
     /// </summary>
@@ -39,18 +42,18 @@ namespace HelixToolkit.Wpf.SharpDX
                         (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
                     }));
 
-        public override IEnumerable<IRenderable> Items
+        public override IList<IRenderable> Items
         {
             get
             {
-                return itemsSourceInternal == null ? Children : Children.Concat(itemsSourceInternal);
+                return Children;
             }
         }
 
-        public ObservableElement3DCollection Children
+        public ObservableCollection<IRenderable> Children
         {
             get;
-        } = new ObservableElement3DCollection();
+        } = new ObservableCollection<IRenderable>();
 
 
         public GroupElement3D()
@@ -66,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (IsAttached)
             {               
-                if(e.Action== NotifyCollectionChangedAction.Reset)
+                if(e.Action == NotifyCollectionChangedAction.Reset)
                 {
                     AttachChildren(sender as IEnumerable);
                 }
@@ -75,11 +78,12 @@ namespace HelixToolkit.Wpf.SharpDX
                     AttachChildren(e.NewItems);
                 }
             }
+            forceUpdateTransform = true;
         }
 
         protected void AttachChildren(IEnumerable children)
         {
-            foreach (Element3D c in children)
+            foreach (Element3DCore c in children)
             {
                 if (c.Parent == null)
                 {
@@ -92,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected void DetachChildren(IEnumerable children)
         {
-            foreach (Element3D c in children)
+            foreach (Element3DCore c in children)
             {
                 c.Detach();
                 if (c.Parent == this)
@@ -108,21 +112,42 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (itemsSourceInternal is INotifyCollectionChanged s)
                 {
-                    s.CollectionChanged -= Items_CollectionChanged;
+                    s.CollectionChanged -= S_CollectionChanged;
                 }
-                DetachChildren(this.itemsSourceInternal);
+                foreach(var child in itemsSourceInternal)
+                {
+                    Children.Remove(child);
+                }
             }
             itemsSourceInternal = itemsSource;
             if (itemsSourceInternal != null)
             {
                 if (itemsSourceInternal is INotifyCollectionChanged s)
                 {
-                    s.CollectionChanged += Items_CollectionChanged;
+                    s.CollectionChanged += S_CollectionChanged;
                 }
-                if (IsAttached)
+                foreach(var child in itemsSourceInternal)
                 {
-                    AttachChildren(this.itemsSourceInternal); 
-                }            
+                    Children.Add(child);
+                }    
+            }
+        }
+
+        private void S_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach(Element3DCore item in e.OldItems)
+                {
+                    Children.Remove(item);
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach(Element3DCore item in e.NewItems)
+                {
+                    Children.Add(item);
+                }
             }
         }
 

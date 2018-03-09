@@ -37,7 +37,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Optional for scene graph traverse
         /// </summary>
-        IEnumerable<IRenderable> Items { get; }
+        IList<IRenderable> Items { get; }
 
         IRenderCore RenderCore { get; }
         /// <summary>

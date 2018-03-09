@@ -1,8 +1,5 @@
-﻿using SharpDX;
+using SharpDX;
 using SharpDX.Direct3D11;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
@@ -10,11 +7,12 @@ namespace HelixToolkit.UWP.Render
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
+    using Utilities;
     using Shaders;
     /// <summary>
     /// 
     /// </summary>
-    public class DeviceContextProxy : DisposeObject, IDeviceContext
+    public class DeviceContextProxy : DisposeObject
     {
         private DeviceContext deviceContext;
         /// <summary>
@@ -28,6 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The last shader pass.
         /// </value>
         public IShaderPass LastShaderPass { set; get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceContextProxy"/> class.
         /// </summary>
@@ -87,6 +86,61 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public static implicit operator DeviceContext(DeviceContextProxy proxy)
         {
             return proxy.DeviceContext;
+        }
+
+        /// <summary>
+        /// Sets the state of the raster. 
+        /// </summary>
+        /// <param name="rasterState">State of the raster.</param>
+        public void SetRasterState(RasterizerStateProxy rasterState)
+        {
+            DeviceContext.Rasterizer.State = rasterState;
+        }
+        /// <summary>
+        /// Sets the state of the depth stencil. 
+        /// </summary>
+        /// <param name="depthStencilState">State of the depth stencil.</param>
+        public void SetDepthStencilState(DepthStencilStateProxy depthStencilState)
+        {
+            DeviceContext.OutputMerger.SetDepthStencilState(depthStencilState);
+        }
+        /// <summary>
+        /// Sets the state of the depth stencil.
+        /// </summary>
+        /// <param name="depthStencilState">State of the depth stencil.</param>
+        /// <param name="stencilRef">The stencil reference.</param>
+        public void SetDepthStencilState(DepthStencilStateProxy depthStencilState, int stencilRef)
+        {
+            DeviceContext.OutputMerger.SetDepthStencilState(depthStencilState, stencilRef);
+        }
+        /// <summary>
+        /// Sets the state of the blend. 
+        /// </summary>
+        /// <param name="blendState">State of the blend.</param>
+        public void SetBlendState(BlendStateProxy blendState)
+        {
+            DeviceContext.OutputMerger.SetBlendState(blendState);
+        }
+
+        /// <summary>
+        /// Sets the state of the blend.
+        /// </summary>
+        /// <param name="blendState">State of the blend.</param>
+        /// <param name="blendFactor">The blend factor.</param>
+        /// <param name="sampleMask">The sample mask.</param>
+        public void SetBlendState(BlendStateProxy blendState, Color4? blendFactor = null, int sampleMask = -1)
+        {
+            DeviceContext.OutputMerger.SetBlendState(blendState, blendFactor, sampleMask);
+        }
+        /// <summary>
+        /// Sets the state of the blend.
+        /// </summary>
+        /// <param name="blendState">State of the blend.</param>
+        /// <param name="blendFactor">The blend factor.</param>
+        /// <param name="sampleMask">The sample mask.</param>
+        public void SetBlendState(BlendStateProxy blendState, Color4? blendFactor, uint sampleMask)
+        {
+            DeviceContext.OutputMerger.SetBlendState(blendState, blendFactor, sampleMask);
         }
     }
 }

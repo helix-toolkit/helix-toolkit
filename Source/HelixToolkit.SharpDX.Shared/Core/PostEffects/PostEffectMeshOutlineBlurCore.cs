@@ -5,8 +5,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-using System.Collections.Generic;
-using System.Linq;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -278,9 +276,10 @@ namespace HelixToolkit.UWP.Core
 
             context.IsCustomPass = true;
             bool hasMesh = false;
-            foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
+            for (int i = 0; i < context.RenderHost.PerFrameGeneralCoresWithPostEffect.Count; ++i)
             {
                 IEffectAttributes effect;
+                var mesh = context.RenderHost.PerFrameGeneralCoresWithPostEffect[i];
                 if (mesh.TryGetPostEffect(EffectName, out effect))
                 {
                     object attribute;
@@ -299,7 +298,7 @@ namespace HelixToolkit.UWP.Core
                     if (pass.IsNULL) { continue; }
                     pass.BindShader(deviceContext);
                     pass.BindStates(deviceContext, StateType.BlendState);
-                    deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(pass.DepthStencilState, 1);
+                    deviceContext.SetDepthStencilState(pass.DepthStencilState, 1);
                     mesh.Render(context, deviceContext);
                     hasMesh = true;
                 }
@@ -324,7 +323,7 @@ namespace HelixToolkit.UWP.Core
                 BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, renderTargetDesc.Width, renderTargetDesc.Height);
                 screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, blurCore.CurrentSRV);
                 screenQuadPass.BindShader(deviceContext);
-                deviceContext.DeviceContext.OutputMerger.SetDepthStencilState(screenQuadPass.DepthStencilState, 0);
+                deviceContext.SetDepthStencilState(screenQuadPass.DepthStencilState, 0);
                 screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState);
                 deviceContext.DeviceContext.Draw(4, 0);
                 #endregion

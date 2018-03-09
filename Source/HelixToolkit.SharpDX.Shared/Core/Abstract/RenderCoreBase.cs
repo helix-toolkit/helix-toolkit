@@ -143,7 +143,7 @@ namespace HelixToolkit.UWP.Core
         {
             modelCB = technique.ConstantBufferPool.Register(GetModelConstantBufferDescription());
             return true;
-        }
+        }        
 
         /// <summary>
         /// Gets the model constant buffer description.
@@ -237,7 +237,7 @@ namespace HelixToolkit.UWP.Core
         /// Set model default raster state
         /// </summary>
         /// <param name="context"></param>
-        protected virtual void OnBindRasterState(DeviceContext context) { }
+        protected virtual void OnBindRasterState(DeviceContextProxy context) { }
 
         /// <summary>
         /// Actual render function. Used to attach different render states and call the draw call.

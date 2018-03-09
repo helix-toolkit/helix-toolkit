@@ -32,8 +32,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         /// <param name="outputCommands">The output commands.</param>
         /// <returns></returns>
-        bool ScheduleAndRun(IList<IRenderCore> items, IDeviceContextPool pool,
-            IRenderContext context, RenderParameter parameter, IList<KeyValuePair<int, CommandList>> outputCommands);
+        bool ScheduleAndRun(List<IRenderCore> items, IDeviceContextPool pool,
+            IRenderContext context, RenderParameter parameter, List<KeyValuePair<int, CommandList>> outputCommands);
     }
     /// <summary>
     /// 
@@ -99,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// <see cref="IRenderTaskScheduler.ScheduleAndRun(IList{IRenderCore}, IDeviceContextPool, IRenderContext, RenderParameter, IList{KeyValuePair{int, CommandList}})"/>
+        /// <see cref="IRenderTaskScheduler.ScheduleAndRun(List{IRenderCore}, IDeviceContextPool, IRenderContext, RenderParameter, List{KeyValuePair{int, CommandList}})"/>
         /// </summary>
         /// <param name="items">The items.</param>
         /// <param name="pool">The pool.</param>
@@ -107,8 +107,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         /// <param name="outputCommands">The output commands.</param>
         /// <returns></returns>
-        public bool ScheduleAndRun(IList<IRenderCore> items, IDeviceContextPool pool,
-            IRenderContext context, RenderParameter parameter, IList<KeyValuePair<int, CommandList>> outputCommands)
+        public bool ScheduleAndRun(List<IRenderCore> items, IDeviceContextPool pool,
+            IRenderContext context, RenderParameter parameter, List<KeyValuePair<int, CommandList>> outputCommands)
         {
             outputCommands.Clear();
             if(items.Count > schedulerParams.MinimumDrawCalls)
@@ -116,7 +116,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 var partitionParams = Partitioner.Create(0, items.Count, items.Count/schedulerParams.MaxNumberOfTasks+1);
                 Parallel.ForEach(partitionParams, (range, state) =>
                 {
-                    var deferred = pool.Get();                   
+                    var deferred = pool.Get();
                     SetRenderTargets(deferred, parameter);
                     for(int i=range.Item1; i<range.Item2; ++i)
                     {

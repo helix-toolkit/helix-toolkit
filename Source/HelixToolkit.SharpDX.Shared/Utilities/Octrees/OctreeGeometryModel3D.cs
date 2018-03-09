@@ -17,13 +17,13 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// Only root contains dictionary
         /// </summary>
         private Dictionary<Guid, IOctree> OctantDictionary = null;
-        public RenderableBoundingOctree(List<IRenderable> objList, Stack<IEnumerator<IOctree>> queueCache = null)
+        public RenderableBoundingOctree(List<IRenderable> objList, Stack<KeyValuePair<int, IOctree[]>> queueCache = null)
             : this(objList, null, queueCache)
         {
 
         }
 
-        public RenderableBoundingOctree(List<IRenderable> objList, OctreeBuildParameter paramter, Stack<IEnumerator<IOctree>> queueCache = null)
+        public RenderableBoundingOctree(List<IRenderable> objList, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IOctree[]>> queueCache = null)
             : base(null, paramter, queueCache)
         {
             Objects = objList;
@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
         }
 
-        protected RenderableBoundingOctree(BoundingBox bound, List<IRenderable> objList, IOctree parent, OctreeBuildParameter paramter, Stack<IEnumerator<IOctree>> queueCache)
+        protected RenderableBoundingOctree(BoundingBox bound, List<IRenderable> objList, IOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IOctree[]>> queueCache)
             : base(ref bound, objList, parent, paramter, queueCache)
         { }
 
@@ -91,7 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 TreeTraversal(this, stack, null, (node) =>
                 {
-                    foreach (var item in (node as IOctreeBase<IRenderable>).Objects)
+                    foreach (var item in (node as OctreeBase<IRenderable>).Objects)
                     {
                         OctantDictionary.Add(item.GUID, node);
                     }
@@ -106,7 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             if (root.OctantDictionary.ContainsKey(guid))
             {
                 var node = root.OctantDictionary[guid];
-                index = (node as IOctreeBase<IRenderable>).Objects.IndexOf(item);
+                index = (node as OctreeBase<IRenderable>).Objects.IndexOf(item);
                 return root.OctantDictionary[guid];
             }
             else

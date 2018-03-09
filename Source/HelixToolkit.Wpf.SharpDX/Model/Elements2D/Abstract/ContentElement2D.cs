@@ -139,11 +139,17 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected Element2D contentInternal { private set; get; }
 
-        public override IEnumerable<IRenderable2D> Items
+        private readonly IRenderable2D[] contentArray = new IRenderable2D[1];
+
+        public override IList<IRenderable2D> Items
         {
             get
             {
-                return contentInternal == null ? Enumerable.Empty<IRenderable2D>() : Enumerable.Repeat<IRenderable2D>(contentInternal, 1);
+                if(contentInternal != null)
+                {
+                    contentArray[0] = contentInternal;
+                }
+                return contentInternal == null ? Constants.EmptyRenderable2D : contentArray;
             }
         }
 

@@ -12,7 +12,7 @@ namespace HelixToolkit.UWP.Core
     using Render;
     using global::SharpDX.Direct3D11;
     using global::SharpDX;
-
+    using Utilities;
     public class MeshRenderCore : MaterialGeometryRenderCore, IMeshRenderParams
     {
         /// <summary>
@@ -63,14 +63,14 @@ namespace HelixToolkit.UWP.Core
             get { return modelStruct.WireframeColor; }
         }
 
-        private RasterizerState rasterStateWireframe = null;
+        private RasterizerStateProxy rasterStateWireframe = null;
         /// <summary>
         /// Gets the raster state wireframe.
         /// </summary>
         /// <value>
         /// The raster state wireframe.
         /// </value>
-        protected RasterizerState RasterStateWireframe { get { return rasterStateWireframe; } }
+        protected RasterizerStateProxy RasterStateWireframe { get { return rasterStateWireframe; } }
 
         protected IShaderPass WireframePass { private set; get; }
 
@@ -117,10 +117,10 @@ namespace HelixToolkit.UWP.Core
         }
 
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
-        {                  
+        {
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-            if(!BindMaterialTextures(deviceContext, DefaultShaderPass))
+            if (!BindMaterialTextures(deviceContext, DefaultShaderPass))
             {
                 return;
             }
@@ -133,7 +133,7 @@ namespace HelixToolkit.UWP.Core
             {
                 WireframePass.BindShader(deviceContext, false);
                 WireframePass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-                deviceContext.DeviceContext.Rasterizer.State = RasterStateWireframe;
+                deviceContext.SetRasterState(RasterStateWireframe);
                 OnDraw(deviceContext, InstanceBuffer);
             }
         }

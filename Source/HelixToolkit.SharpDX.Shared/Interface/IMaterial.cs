@@ -147,13 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="modelstruct"></param>
         /// <returns></returns>
         bool UpdateMaterialVariables(ref ModelStruct modelstruct);
-        /// <summary>
-        /// Bind the material texture maps to registers defined inside shader
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="shader"></param>
-        /// <returns></returns>
-        bool BindMaterialTextures(DeviceContext context, IShader shader);
+
         /// <summary>
         /// Bind material texture maps to multiple shaders
         /// </summary>

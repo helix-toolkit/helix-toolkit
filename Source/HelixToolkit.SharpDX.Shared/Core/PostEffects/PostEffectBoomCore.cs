@@ -6,7 +6,6 @@ using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
-using System.Linq;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -14,10 +13,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Utilities;
     using Render;
     using Shaders;
-    using Model;
     using System;
 
     public interface IPostEffectBloom : IPostEffect
@@ -143,7 +140,7 @@ namespace HelixToolkit.UWP.Core
         private IShaderPass screenOutlinePass;
         #region Texture Resources
 
-        private readonly IList<PostEffectBlurCore> offScreenRenderTargets = new List<PostEffectBlurCore>();
+        private readonly List<PostEffectBlurCore> offScreenRenderTargets = new List<PostEffectBlurCore>();
 
         private int textureSlot;
 
