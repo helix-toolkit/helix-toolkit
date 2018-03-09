@@ -72,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             set
             {
-                if(Set(ref modelMatrix, value))
+                if(Set(ref modelMatrix, value) || forceUpdateTransform)
                 {
                     needMatrixUpdate = true;
                     InvalidateRender();
