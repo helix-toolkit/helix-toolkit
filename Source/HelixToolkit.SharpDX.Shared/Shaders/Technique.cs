@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Shaders
     public class Technique :  DisposeObject, IRenderTechnique
     {
         private readonly Dictionary<string, Lazy<IShaderPass>> passDict = new Dictionary<string, Lazy<IShaderPass>>();
-        private readonly IList<Lazy<IShaderPass>> passList = new List<Lazy<IShaderPass>>();
+        private readonly List<Lazy<IShaderPass>> passList = new List<Lazy<IShaderPass>>();
 
         /// <summary>
         /// <see cref="IRenderTechnique.Layout"/>

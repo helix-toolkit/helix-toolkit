@@ -5,8 +5,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-using System.Collections.Generic;
-using System.Linq;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -278,9 +276,10 @@ namespace HelixToolkit.UWP.Core
 
             context.IsCustomPass = true;
             bool hasMesh = false;
-            foreach (var mesh in context.RenderHost.PerFrameGeneralCoresWithPostEffect)
+            for (int i = 0; i < context.RenderHost.PerFrameGeneralCoresWithPostEffect.Count; ++i)
             {
                 IEffectAttributes effect;
+                var mesh = context.RenderHost.PerFrameGeneralCoresWithPostEffect[i];
                 if (mesh.TryGetPostEffect(EffectName, out effect))
                 {
                     object attribute;

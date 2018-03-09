@@ -395,7 +395,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public abstract IReadOnlyList<IRenderable> PerFrameRenderables { get; }
+        public abstract List<IRenderable> PerFrameRenderables { get; }
         /// <summary>
         /// Gets the per frame lights.
         /// </summary>
@@ -409,14 +409,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The post effects render cores.
         /// </value>
-        public abstract IEnumerable<IRenderCore> PerFrameGeneralCoresWithPostEffect { get; }
+        public abstract List<IRenderCore> PerFrameGeneralCoresWithPostEffect { get; }
         /// <summary>
         /// Gets the per frame render cores.
         /// </summary>
         /// <value>
         /// The per frame render cores.
         /// </value>
-        public abstract IReadOnlyList<IRenderCore> PerFrameGeneralRenderCores { get; }
+        public abstract List<IRenderCore> PerFrameGeneralRenderCores { get; }
 
         #region Configuration
         /// <summary>

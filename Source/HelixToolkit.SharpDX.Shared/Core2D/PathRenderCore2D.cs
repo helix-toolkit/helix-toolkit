@@ -28,14 +28,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// </summary>
         protected D2D.PathGeometry1 geometry;
 
-        private IList<Figure> figures = new List<Figure>();
+        private List<Figure> figures = new List<Figure>();
         /// <summary>
         /// Gets or sets the figures.
         /// </summary>
         /// <value>
         /// The figures.
         /// </value>
-        public IList<Figure> Figures
+        public List<Figure> Figures
         {
             set
             {

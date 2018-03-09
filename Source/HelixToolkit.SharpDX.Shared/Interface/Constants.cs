@@ -11,6 +11,8 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Core;
+    using System.Collections.Generic;
+
     /// <summary>
     /// 
     /// </summary>
@@ -79,9 +81,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly char[] Separators = { ';', ' ', ',' };
 
-        public static readonly IRenderable[] EmptyRenderable = new IRenderable[0];
-        public static readonly IRenderCore[] EmptyCore = new IRenderCore[0];
-        public static readonly IRenderable2D[] EmptyRenderable2D = new IRenderable2D[0];
-        public static readonly IRenderCore2D[] EmptyCore2D = new IRenderCore2D[0];
+        public static readonly List<IRenderable> EmptyRenderable = new List<IRenderable>();
+        public static readonly List<IRenderCore> EmptyCore = new List<IRenderCore>();
+        public static readonly IList<IRenderable2D> EmptyRenderable2D = new List<IRenderable2D>();
+        public static readonly IList<IRenderCore2D> EmptyCore2D = new List<IRenderCore2D>();
     }
 }

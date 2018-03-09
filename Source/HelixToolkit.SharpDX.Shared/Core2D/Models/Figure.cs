@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     /// </summary>
     public class Figure
     {
-        private IList<SegmentData> Segments { get; } = new List<SegmentData>();
+        private List<SegmentData> Segments { get; } = new List<SegmentData>();
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Figure"/> is closed.
@@ -76,9 +76,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         public void Create(D2D.GeometrySink sink)
         {
             sink.BeginFigure(StartPoint, Filled ? D2D.FigureBegin.Filled : D2D.FigureBegin.Hollow);
-            foreach(var segment in Segments)
+            for(int i = 0; i < Segments.Count; ++i)
             {
                 D2D.PathSegment flag = D2D.PathSegment.None;
+                var segment = Segments[i];
                 if (!segment.IsStroked)
                 {
                     flag |= D2D.PathSegment.ForceUnstroked;

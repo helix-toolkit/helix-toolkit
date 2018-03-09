@@ -127,7 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public IReadOnlyList<IRenderable> PerFrameRenderables { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameRenderables : Constants.EmptyRenderable; } }
+        public List<IRenderable> PerFrameRenderables { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameRenderables : Constants.EmptyRenderable; } }
         /// <summary>
         /// Gets the current frame Lights for rendering.
         /// </summary>
@@ -141,14 +141,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The per frame post effect cores.
         /// </value>
-        public IEnumerable<IRenderCore> PerFrameGeneralCoresWithPostEffect { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralCoresWithPostEffect : Enumerable.Empty<IRenderCore>(); } }
+        public List<IRenderCore> PerFrameGeneralCoresWithPostEffect { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralCoresWithPostEffect : Constants.EmptyCore; } }
         /// <summary>
         /// Gets the per frame general render cores.
         /// </summary>
         /// <value>
         /// The per frame general render cores.
         /// </value>
-        public IReadOnlyList<IRenderCore> PerFrameGeneralRenderCores { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralRenderCores : Constants.EmptyCore; } }
+        public List<IRenderCore> PerFrameGeneralRenderCores { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralRenderCores : Constants.EmptyCore; } }
 
         /// <summary>
         /// Handles the change of the effects manager.
