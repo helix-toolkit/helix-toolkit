@@ -286,17 +286,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 RenderStatistics.NumModel3D = perFrameRenderables.Count;
                 RenderStatistics.NumCore3D = generalRenderCores.Count;
             }
-            foreach (var item in Viewport.D2DRenderables)
+            for (int i = 0; i < viewportRenderable2D.Count; ++i)
             {
-                item.Render(RenderContext2D);
-            }   
+                viewportRenderable2D[i].Render(RenderContext2D);
+            }
             //Draw bitmap cache to render target
             RenderContext2D.PushRenderTarget(D2DTarget.D2DTarget, false);
             if (renderD2D || ShowRenderDetail != RenderDetail.None)
             {
-                foreach (var item in Viewport.D2DRenderables)
+                for (int i = 0; i < viewportRenderable2D.Count; ++i)
                 {
-                    item.RenderBitmapCache(RenderContext2D);
+                    viewportRenderable2D[i].RenderBitmapCache(RenderContext2D);
                 }
             }
             RenderContext2D.PopRenderTarget();
