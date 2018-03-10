@@ -232,6 +232,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\LineBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\MappingCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\NVOptimusEnabler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\Octree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\OctreeGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\OctreeManager.cs" />
