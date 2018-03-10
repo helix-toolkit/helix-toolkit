@@ -38,7 +38,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The type of the render.
         /// </value>
-        public RenderType RenderType { private set; get; }
+        public RenderType RenderType { set; get; }
 
         private bool isThrowingShadow = false;
         /// <summary>

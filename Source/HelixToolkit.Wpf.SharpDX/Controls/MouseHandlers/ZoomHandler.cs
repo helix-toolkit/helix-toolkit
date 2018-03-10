@@ -53,8 +53,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when the manipulation is completed.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Completed(ManipulationEventArgs e)
+        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+        public override void Completed(Point e)
         {
             base.Completed(e);
             this.Viewport.HideTargetAdorner();
@@ -63,19 +63,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Delta(ManipulationEventArgs e)
+        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+        public override void Delta(Point e)
         {
-            var delta = e.CurrentPosition - this.LastPoint;
-            this.LastPoint = e.CurrentPosition;
+            var delta = e - this.LastPoint;
+            this.LastPoint = e;
             this.Zoom(delta.Y * 0.01, this.zoomPoint3D);
         }
 
         /// <summary>
         /// Occurs when the manipulation is started.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Started(ManipulationEventArgs e)
+        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+        public override void Started(Point e)
         {
             base.Started(e);
             this.zoomPoint = new Point(this.Viewport.ActualWidth / 2, this.Viewport.ActualHeight / 2);

@@ -154,6 +154,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             RelativeScreenLocationX = 0.8;
             ViewBoxMeshModel = new MeshGeometryModel3D() { EnableViewFrustumCheck = false };
+            ViewBoxMeshModel.RenderCore.RenderType = RenderType.ScreenSpaced;
             var sampler = (SamplerStateDescription)PhongMaterial.DiffuseAlphaMapSamplerProperty.DefaultMetadata.DefaultValue;
             sampler.BorderColor = Color.Gray;
             sampler.AddressU = sampler.AddressV = sampler.AddressW = TextureAddressMode.Border;
@@ -170,11 +171,13 @@ namespace HelixToolkit.Wpf.SharpDX
             CornerModel = new InstancingMeshGeometryModel3D() { EnableViewFrustumCheck = false, Material = PhongMaterials.Yellow,
                 Geometry = cornerGeometry, Instances = cornerInstances, IsRendering = false };
             CornerModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
+            CornerModel.RenderCore.RenderType = RenderType.ScreenSpaced;
             Children.Add(CornerModel);
 
             EdgeModel = new InstancingMeshGeometryModel3D() { EnableViewFrustumCheck = false, Material = PhongMaterials.Silver,
                 Geometry = edgeGeometry, Instances = edgeInstances, IsRendering = false };
             EdgeModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
+            EdgeModel.RenderCore.RenderType = RenderType.ScreenSpaced;
             Children.Add(EdgeModel);
         }
 

@@ -36,7 +36,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The type of the render.
         /// </value>
-        public RenderType RenderType { get; } = RenderType.Light;
+        public RenderType RenderType { set; get; } = RenderType.Light;
         /// <summary>
         /// Gets a value indicating whether this instance is empty.
         /// </summary>

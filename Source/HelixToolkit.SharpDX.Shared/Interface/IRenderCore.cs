@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public interface IRenderCore : IGUID, IThrowingShadow
     {
-        RenderType RenderType { get; }
+        RenderType RenderType { set; get; }
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>

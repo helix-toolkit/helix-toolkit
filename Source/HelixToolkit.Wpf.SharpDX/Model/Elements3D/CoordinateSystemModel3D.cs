@@ -206,10 +206,15 @@ namespace HelixToolkit.Wpf.SharpDX
             arrowMeshModel.CullMode = CullMode.Back;
             arrowMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Colors]; };
             arrowMeshModel.IsHitTestVisible = false;
+            arrowMeshModel.RenderCore.RenderType = RenderType.ScreenSpaced;
 
             axisBillboards[0] = new BillboardTextModel3D() { IsHitTestVisible = false, EnableViewFrustumCheck = false };
             axisBillboards[1] = new BillboardTextModel3D() { IsHitTestVisible = false, EnableViewFrustumCheck = false };
             axisBillboards[2] = new BillboardTextModel3D() { IsHitTestVisible = false, EnableViewFrustumCheck = false };
+            for(int i=0; i < axisBillboards.Length; ++i)
+            {
+                axisBillboards[i].RenderCore.RenderType = RenderType.ScreenSpaced;
+            }
             UpdateAxisColor(mesh, 0, AxisXColor.ToColor4(), CoordinateSystemLabelX, LabelColor.ToColor4());
             UpdateAxisColor(mesh, 1, AxisYColor.ToColor4(), CoordinateSystemLabelY, LabelColor.ToColor4());
             UpdateAxisColor(mesh, 2, AxisZColor.ToColor4(), CoordinateSystemLabelZ, LabelColor.ToColor4());

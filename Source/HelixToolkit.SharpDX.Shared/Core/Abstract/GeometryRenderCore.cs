@@ -181,8 +181,15 @@ namespace HelixToolkit.UWP.Core
                 return shadowPass;
             }
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeometryRenderCore{MODELSTRUCT}"/> class.
+        /// </summary>
         public GeometryRenderCore() : base(RenderType.Normal) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeometryRenderCore{MODELSTRUCT}"/> class.
+        /// </summary>
+        /// <param name="renderType">Type of the render.</param>
+        public GeometryRenderCore(RenderType renderType) : base(renderType) { }
         /// <summary>
         /// 
         /// </summary>
