@@ -2318,13 +2318,16 @@ namespace HelixToolkit.Wpf.SharpDX
             if (needUpdate)
             {
                 lastTick = ticks;
-                Viewport.InvalidateRender();                
+                Viewport.InvalidateRender();              
             }
             else
             {
                 lastTick = 0;
             }
-            this.InvalidateVisual();
+            if (Viewport.EnableSwapChainRendering)
+            {
+                this.InvalidateVisual();  
+            }
         }
 
         /// <summary>
