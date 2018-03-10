@@ -156,10 +156,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         break;
                     case RenderType.ScreenSpaced:
                         screenSpacedRenderCores.Add(renderable.RenderCore);
-                        for(; i < perFrameRenderables.Count; ++i)
-                        {
-                            screenSpacedRenderCores.Add(perFrameRenderables[i].RenderCore);
-                        }
                         break;
                 }
             }
