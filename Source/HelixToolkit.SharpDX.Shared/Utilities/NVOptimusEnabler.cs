@@ -6,6 +6,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
+#if !NETFX_CORE
     /// <summary>
     /// Enable dedicated graphics card for rendering. https://stackoverflow.com/questions/17270429/forcing-hardware-accelerated-rendering
     /// </summary>
@@ -21,6 +22,7 @@ namespace HelixToolkit.UWP.Utilities
         {
             try
             {
+
                 if (Environment.Is64BitProcess)
                     LoadNvApi64();
                 else
@@ -29,4 +31,5 @@ namespace HelixToolkit.UWP.Utilities
             catch { } // will always fail since 'fake' entry point doesn't exists
         }
     };
+#endif
 }
