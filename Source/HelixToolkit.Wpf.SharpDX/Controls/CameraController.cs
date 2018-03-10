@@ -2252,8 +2252,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             var time = (double)(ticks - this.lastTick) / Stopwatch.Frequency;
             // should be independent of time
-            var factor = this.IsInertiaEnabled ? Math.Pow(this.InertiaFactor, time / 0.025) : 0;
-            factor = this.Clamp(factor, 0.1, 1);
+            var factor = this.IsInertiaEnabled ?  this.Clamp(Math.Pow(this.InertiaFactor, time / 0.025), 0.1, 1) : 0;
             bool needUpdate = false;
 
             if (this.rotationSpeed.LengthSquared > 0.1)
