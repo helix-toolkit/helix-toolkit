@@ -68,7 +68,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
         {
-            model.World = ModelMatrix * context.WorldMatrix;
+            model.World = RenderType == RenderType.ScreenSpaced ? ModelMatrix : ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
         }
 
