@@ -537,7 +537,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         OnRender(t0);
                         renderBuffer.EndDraw();
                     }
-                    OnRender2D(t0);                       
+                    if (RenderConfiguration.RenderD2D)
+                    { OnRender2D(t0); }
                     renderBuffer.Present();
                 }
                 catch (SharpDXException ex)
