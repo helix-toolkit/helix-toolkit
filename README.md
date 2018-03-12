@@ -1,5 +1,6 @@
-Helix Toolkit
-====
+<img src='https://avatars3.githubusercontent.com/u/8432523?s=200&v=4' width='64' />
+
+# Helix Toolkit
 
 Helix Toolkit is a collection of 3D components for .NET. Currently it contains one component that adds functionality to the WPF 3D model (Media3D namespace), and one WPF component that creates a similar scene graph for DirectX (based on SharpDX).
 
@@ -20,7 +21,8 @@ MyGet feed          | https://www.myget.org/F/helix-toolkit
 StackOverflow       | http://stackoverflow.com/questions/tagged/helix-3d-toolkit
 Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
-### Project Build
+## Project Build
+
 Visual Studio 2017. Windows 10 SDK.
 
 (Missing **fxc.exe** issue with newest Windows 10 SDK: Copy fxc.exe in **C:\Program Files (x86)\Windows Kits\10\Bin\10.0.xxx\x86** to **C:\Program Files (x86)\Windows Kits\10\bin\x86** to fix this issue. Because the HLSL compile tool hard coded the path.)
@@ -29,7 +31,8 @@ Visual Studio 2017. Windows 10 SDK.
 Auto adapter selection in EffectsManager does not guarantee to use external Nvidia graphic card for rendering. To make sure using the Nvidia graphic card, add *`static NVOptimusEnabler nvEnabler = new NVOptimusEnabler();`* in *`MainWindow.xaml.cs`*.
 
 
-### News
+## News
+
 We are currently working on HelixToolkit 2.0 under develop branch. Mainly focus on HelixToolkit.SharpDX.
 
 All 1.x.x related pull requests, please use [1.1.0/Release](https://github.com/helix-toolkit/helix-toolkit/tree/release/1.1.0) branch.
