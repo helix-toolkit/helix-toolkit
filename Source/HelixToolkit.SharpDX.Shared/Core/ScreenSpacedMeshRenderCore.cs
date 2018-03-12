@@ -313,7 +313,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context">The context.</param>
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
-            model.World = Matrix.Identity;
+            model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = 0;
         }
         /// <summary>
