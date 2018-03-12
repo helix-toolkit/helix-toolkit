@@ -612,6 +612,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.Viewport = this;
                 this.renderHostInternal.EffectsManager = this.EffectsManager;
                 this.renderHostInternal.IsRendering = this.Visibility == Visibility.Visible;
+                this.renderHostInternal.RenderConfiguration.RenderD2D = EnableD2DRendering;
                 if (ShowFrameRate)
                 {
                     this.renderHostInternal.ShowRenderDetail |= RenderDetail.FPS;

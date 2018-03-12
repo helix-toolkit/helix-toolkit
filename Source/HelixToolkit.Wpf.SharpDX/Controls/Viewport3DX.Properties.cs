@@ -826,6 +826,21 @@ namespace HelixToolkit.Wpf.SharpDX
                     (d as Viewport3DX).overlay2D.Children.Add(elementNew);                   
                 }
             }));
+
+        /// <summary>
+        /// The enable d2 d rendering property
+        /// </summary>
+        public static readonly DependencyProperty EnableD2DRenderingProperty =
+            DependencyProperty.Register("EnableD2DRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d,e)=>
+            {
+                var viewport = d as Viewport3DX;
+                if(viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.RenderD2D = (bool)e.NewValue;
+                }
+            }));
+
+
         /// <summary>
         /// Background Color
         /// </summary>
@@ -2484,6 +2499,17 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return (bool)GetValue(ShowFrameDetailsProperty);
             }
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable direct2D rendering]. Default is On
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render d2d]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableD2DRendering
+        {
+            get { return (bool)GetValue(EnableD2DRenderingProperty); }
+            set { SetValue(EnableD2DRenderingProperty, value); }
         }
     }
 }
