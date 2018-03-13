@@ -69,8 +69,10 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
+            
+            EnableSwapChainRendering="True"
             IsShadowMappingEnabled="False"
-            MSAA="Four"
+            MSAA="Two"
             ShowCoordinateSystem="False"
             ShowFrameRate="True"
             SubTitle="{Binding SubTitle}"
@@ -93,7 +95,7 @@
 
             <hx:LineGeometryModel3D
                 Geometry="{Binding BoundingLines}"
-                Thickness="0.2"
+                Thickness="0.5"
                 Transform="{Binding BoundingLineTransform}"
                 Color="Red" />
             <hx:DraggableGeometryModel3D
@@ -221,6 +223,16 @@
                                 Minimum="-500"
                                 SmallChange="1"
                                 Value="{Binding AccelerationZ}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Turbulance:</Label>
+                            <Slider
+                                Width="200"
+                                LargeChange="10"
+                                Maximum="100"
+                                Minimum="0"
+                                SmallChange="1"
+                                Value="{Binding Turbulance, ElementName=particleModel}" />
                         </StackPanel>
                     </StackPanel>
                 </Grid>

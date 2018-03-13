@@ -408,6 +408,23 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+
+
+        public double Turbulance
+        {
+            get { return (double)GetValue(TurbulanceProperty); }
+            set { SetValue(TurbulanceProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty TurbulanceProperty =
+            DependencyProperty.Register("Turbulance", typeof(double), typeof(ParticleStormModel3D), new PropertyMetadata(0.0, (d, e) =>
+                {
+                    (d as ParticleStormModel3D).particleCore.Turbulance = (float)(double)e.NewValue;
+                }));
+
+
+
         public static DependencyProperty BlendProperty = DependencyProperty.Register("Blend", typeof(BlendOperation), typeof(ParticleStormModel3D),
             new PropertyMetadata(BlendOperation.Add, (d, e) =>
             {

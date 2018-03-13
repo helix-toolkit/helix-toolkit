@@ -153,7 +153,8 @@ cbuffer cbParticleFrame : register(b7)
     uint NumTexRow;
     bool AnimateByEnergyLevel;
     float2 ParticleSize;
-    float2 pad0;
+    float Turbulance;
+    float pad0;
 };
 
 cbuffer cbParticleCreateParameters : register(b8)
