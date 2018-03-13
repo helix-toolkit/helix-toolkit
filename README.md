@@ -29,10 +29,12 @@ Missing **fxc.exe** issue with newest Windows 10 SDK:
 
 Copy **fxc.exe** in **C:\Program Files (x86)\Windows Kits\10\Bin\10.0.xxx\x86** to **C:\Program Files (x86)\Windows Kits\10\bin\x86** to fix this issue. Because the HLSL compile tool hard coded the path.
 
-#### Laptops with Nvidia Optimus (Dual graphics card)(HelixToolkit.SharpDX Only)
+## Notes
+
+#### 1. Laptops with Nvidia Optimus (Dual graphics card)(HelixToolkit.SharpDX Only)
 Auto adapter selection in EffectsManager does not guarantee to use external Nvidia graphic card for rendering. To make sure using the Nvidia graphic card, add *`static NVOptimusEnabler nvEnabler = new NVOptimusEnabler();`* in *`MainWindow.xaml.cs`*.
 
-#### Using [RenderDoc](https://github.com/baldurk/renderdoc) for SharpDX render profiling
+#### 2. Using [RenderDoc](https://github.com/baldurk/renderdoc) for SharpDX render profiling
 To use RenderDoc, following settings must be set on Viewport3DX. 
 ```
 EnableSwapChainRendering = true;
