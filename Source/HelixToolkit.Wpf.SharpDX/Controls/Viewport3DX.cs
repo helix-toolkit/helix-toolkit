@@ -252,6 +252,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private Window parentWindow;
 
         private Overlay overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
+
+        private bool useSwapChain = false;
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
@@ -593,10 +595,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (EnableSwapChainRendering)
             {
+                useSwapChain = true;
                 hostPresenter.Content = new DPFSurfaceSwapChain(EnableDeferredRendering);
             }
             else
             {
+                useSwapChain = false;
                 hostPresenter.Content = new DPFCanvas(EnableDeferredRendering);
             }
             renderHostInternal = (hostPresenter.Content as IRenderCanvas).RenderHost;
@@ -935,8 +939,20 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <inheritdoc/>
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
-        {
+        {            
             base.OnPreviewMouseDown(e);
+            if (useSwapChain) { return; }
+            if (this.touchDownDevice == null)
+            {
+                this.Focus();
+                this.MouseDownHitTest(e.GetPosition(this), e);
+            }
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseDown(e);
+            if (!useSwapChain) { return; }
             if (this.touchDownDevice == null)
             {
                 this.Focus();

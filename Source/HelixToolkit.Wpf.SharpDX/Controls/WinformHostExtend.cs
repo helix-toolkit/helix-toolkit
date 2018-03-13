@@ -69,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             Capture();
             RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, DateTime.Now.Millisecond, wpfButton.Value)
             {
-                RoutedEvent = Mouse.PreviewMouseDownEvent,
+                RoutedEvent = Mouse.MouseDownEvent,
                 Source = this,
             });
         }
