@@ -313,7 +313,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context">The context.</param>
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
-            model.World = ModelMatrix * context.WorldMatrix;
+            model.World = Matrix.Identity;
             model.HasInstances = 0;
         }
         /// <summary>
@@ -362,6 +362,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="clearDepthBuffer">if set to <c>true</c> [clear depth buffer].</param>
         protected virtual void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer)
         {
+            context.WorldMatrix = Matrix.Identity;
             DepthStencilView dsView;
             if (clearDepthBuffer)
             {
