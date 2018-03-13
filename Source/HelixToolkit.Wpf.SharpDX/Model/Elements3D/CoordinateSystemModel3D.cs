@@ -185,7 +185,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private readonly BillboardTextModel3D[] axisBillboards = new BillboardTextModel3D[3];
+        private readonly BillboardTextModel3D axisBillboard = new BillboardTextModel3D();
         private readonly MeshGeometryModel3D arrowMeshModel = new MeshGeometryModel3D(){ EnableViewFrustumCheck = false };
         private static readonly float arrowSize = 5.5f;
         private static readonly float arrowWidth = 0.6f;
@@ -208,21 +208,20 @@ namespace HelixToolkit.Wpf.SharpDX
             arrowMeshModel.IsHitTestVisible = false;
             arrowMeshModel.RenderCore.RenderType = RenderType.ScreenSpaced;
 
-            axisBillboards[0] = new BillboardTextModel3D() { IsHitTestVisible = false, EnableViewFrustumCheck = false };
-            axisBillboards[1] = new BillboardTextModel3D() { IsHitTestVisible = false, EnableViewFrustumCheck = false };
-            axisBillboards[2] = new BillboardTextModel3D() { IsHitTestVisible = false, EnableViewFrustumCheck = false };
-            for(int i=0; i < axisBillboards.Length; ++i)
-            {
-                axisBillboards[i].RenderCore.RenderType = RenderType.ScreenSpaced;
-            }
+            axisBillboard.IsHitTestVisible = false;
+            axisBillboard.RenderCore.RenderType = RenderType.ScreenSpaced;
+            axisBillboard.EnableViewFrustumCheck = false;
+            var axisLabel = new BillboardText3D();
+            axisLabel.TextInfo.Add(new TextInfo());
+            axisLabel.TextInfo.Add(new TextInfo());
+            axisLabel.TextInfo.Add(new TextInfo());
+            axisBillboard.Geometry = axisLabel;
             UpdateAxisColor(mesh, 0, AxisXColor.ToColor4(), CoordinateSystemLabelX, LabelColor.ToColor4());
             UpdateAxisColor(mesh, 1, AxisYColor.ToColor4(), CoordinateSystemLabelY, LabelColor.ToColor4());
             UpdateAxisColor(mesh, 2, AxisZColor.ToColor4(), CoordinateSystemLabelZ, LabelColor.ToColor4());
 
             Children.Add(arrowMeshModel);
-            Children.Add(axisBillboards[0]);
-            Children.Add(axisBillboards[1]);
-            Children.Add(axisBillboards[2]);
+            Children.Add(axisBillboard);
         }
 
         protected override void UpdateModel(Vector3 upDirection)
@@ -282,19 +281,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="labelColor"></param>
         protected void UpdateAxisColor(Geometry3D mesh, int which, Color4 color, string label, Color4 labelColor)
         {
+            var labelText = axisBillboard.Geometry as BillboardText3D;
             switch (which)
             {
                 case 0:
-                    axisBillboards[which].Geometry = new BillboardSingleText3D()
-                    { TextInfo = new TextInfo(label, new Vector3(arrowSize + 1, 0, 0)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = labelColor };
+                    labelText.TextInfo[which] = new TextInfo(label, new Vector3(arrowSize + 1.5f, 0, 0)) { Foreground = labelColor, Scale = 0.9f };
                     break;
                 case 1:
-                    axisBillboards[which].Geometry = new BillboardSingleText3D()
-                    { TextInfo = new TextInfo(label, new Vector3(0, arrowSize + 1, 0)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = labelColor };
+                    labelText.TextInfo[which] = new TextInfo(label, new Vector3(0, arrowSize + 1.5f, 0)) { Foreground = labelColor, Scale = 0.9f };
                     break;
                 case 2:
-                    axisBillboards[which].Geometry = new BillboardSingleText3D()
-                    { TextInfo = new TextInfo(label, new Vector3(0, 0, arrowSize + 1)), BackgroundColor = Color.Transparent, FontSize = 12, FontColor = labelColor };
+                    labelText.TextInfo[which] = new TextInfo(label, new Vector3(0, 0, arrowSize + 1.5f)) { Foreground = labelColor, Scale = 0.9f };
                     break;
             }
             int segment = mesh.Positions.Count / 3;
