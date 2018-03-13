@@ -33,6 +33,6 @@ namespace HelixToolkit.Wpf.SharpDX.Utility
             }
         }
 
-        private readonly Random random = new Random(DateTime.Now.Millisecond);
+        private readonly Random random = new Random(Environment.TickCount);
     }
 }
