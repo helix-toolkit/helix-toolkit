@@ -53,6 +53,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         ///   <c>true</c> if stretch; otherwise, <c>false</c>.
         /// </value>
         bool StretchToFill { set; get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [show mouse cursor].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show mouse cursor]; otherwise, <c>false</c>.
+        /// </value>
+        bool ShowMouseCursor { set; get; }
     }
     /// <summary>
     /// Limitation: Under switchable graphics card setup(Laptop with integrated graphics card and external graphics card), 
@@ -238,7 +245,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     clearTarget = false;
                     context.RenderHost.ClearRenderTarget(deviceContext, true, false);
                 }
-
+                bool cursorValid = false;
                 if (pointer.Visible)
                 {
                     Vector4 rect;
@@ -262,6 +269,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                         modelStruct.CursorBottomLeft.Y = -1 * ((rect.Y + rect.W) - centerY) / centerY * Math.Abs(modelStruct.BottomLeft.Y);
                         modelStruct.CursorBottomLeft.W = 1;
                         invalidRender = true;
+                        cursorValid = true;
                     }
                 }
                 if (invalidRender)
@@ -271,26 +279,20 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     DefaultShaderPass.BindStates(deviceContext,StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);                  
                     deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
                     DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerBindSlot, textureSampler);
-                    //int width = frameProcessor.SharedTexture.Description.Width;
-                    //int height = frameProcessor.SharedTexture.Description.Height;
-                    //int left = (int)((1 - Math.Abs(modelStruct.TopLeft.Y)) * width/2);
-                    //int top = (int)((1 - Math.Abs(modelStruct.TopLeft.X)) * height/2);
-                    //int right = width - left;
-                    //int bottom = height - top;
-
-                    //deviceContext.DeviceContext.Rasterizer.SetScissorRectangle(left, top, right, bottom);
+                    int left = (int)(context.ActualWidth * Math.Abs(modelStruct.TopLeft.X + 1) / 2);
+                    int top = (int)(context.ActualHeight * Math.Abs(modelStruct.TopLeft.Y - 1) / 2);
+                    deviceContext.DeviceContext.Rasterizer.SetScissorRectangle(left, top, (int)context.ActualWidth - left, (int)context.ActualHeight - top);
                     using (var textureView = new global::SharpDX.Direct3D11.ShaderResourceView(deviceContext.DeviceContext.Device, frameProcessor.SharedTexture))
                     {
                         DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureBindSlot, textureView);
                         deviceContext.DeviceContext.Draw(4, 0);
                     }
-                    if (ShowMouseCursor)
+                    if (ShowMouseCursor && cursorValid)
                     {                    
                         DrawCursor(ref pointer, deviceContext);
                     }
                     invalidRender = false;
                 }
-
             }
             if (isTimeOut)
             {
@@ -320,7 +322,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             CursorShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureBindSlot, frameProcessor.PointerResource);
             CursorShaderPass.BindShader(deviceContext);
             CursorShaderPass.BindStates(deviceContext, StateType.DepthStencilState | StateType.RasterState);
-            deviceContext.DeviceContext.OutputMerger.SetBlendState(CursorShaderPass.BlendState, new RawColor4(0, 0, 0, 0));
+            deviceContext.DeviceContext.OutputMerger.SetBlendState(CursorShaderPass.BlendState, new RawColor4(0, 0, 0, 0)); //Set special blend factor
             deviceContext.DeviceContext.Draw(4, 0);
         }
 
@@ -424,6 +426,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             clearTarget = true;
             invalidRender = true;
+            pointer = new PointerInfo();
             base.OnDetach();
         }
 
@@ -443,6 +446,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             private Texture2D sharedTexture;
             private Texture2DDescription sharedDescription;
             public Texture2D SharedTexture { get { return sharedTexture; } }
+
+            public int TextureWidth { get { return sharedDescription.Width; } }
+            public int TextureHeight { get { return sharedDescription.Height; } }
 
             public void ProcessFrame(ref FrameData data, DeviceContextProxy context)
             {
@@ -515,8 +521,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                         ProcessMonoMask(context, false, ref pointer, out width, out height, out left, out top, ref initBuffer);
                         break;
                     default:
-                        rect = new Vector4(left, top, pointerTexDesc.Width, pointerTexDesc.Height);
-                        //Console.WriteLine("0");
+                        rect = Vector4.Zero; //Invalid cursor type
                         return false;
                 }
 
@@ -603,22 +608,22 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                                 uint skipY = (givenTop < 0) ? (uint)(-1 * givenTop) : 0;
                                 if (isMono)
                                 {
-                                    for (int Row = 0; Row < stageTextureDesc.Height; ++Row)
+                                    for (int row = 0; row < stageTextureDesc.Height; ++row)
                                     {
                                         // Set mask
                                         byte Mask = 0x80;
                                         Mask = (byte)(Mask >> (byte)(skipX % 8));
-                                        for (int Col = 0; Col < stageTextureDesc.Width; ++Col)
+                                        for (int col = 0; col < stageTextureDesc.Width; ++col)
                                         {
                                             // Get masks using appropriate offsets
-                                            byte AndMask = (byte)(info.PtrShapeBuffer[((Col + skipX) / 8) + ((Row + skipY) * (info.ShapeInfo.Pitch))] & Mask);
-                                            byte XorMask = (byte)(info.PtrShapeBuffer[((Col + skipX) / 8) + ((Row + skipY + (info.ShapeInfo.Height / 2)) 
+                                            byte AndMask = (byte)(info.PtrShapeBuffer[((col + skipX) / 8) + ((row + skipY) * (info.ShapeInfo.Pitch))] & Mask);
+                                            byte XorMask = (byte)(info.PtrShapeBuffer[((col + skipX) / 8) + ((row + skipY + (info.ShapeInfo.Height / 2)) 
                                                 * (info.ShapeInfo.Pitch))] & Mask);
                                             uint AndMask32 = (AndMask > 0) ? 0xFFFFFFFF : 0xFF000000;
                                             uint XorMask32 = (XorMask > 0) ? (uint)0x00FFFFFF : 0x00000000;
 
                                             // Set new pixel
-                                            InitBuffer32[(Row * stageTextureDesc.Width) + Col] = (desktop32[(Row * desktopPitchInPixels) + Col] & AndMask32) ^ XorMask32;
+                                            InitBuffer32[(row * stageTextureDesc.Width) + col] = (desktop32[(row * desktopPitchInPixels) + col] & AndMask32) ^ XorMask32;
 
                                             // Adjust mask
                                             if (Mask == 0x01)
@@ -639,23 +644,23 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                                         uint* Buffer32 = (uint*)shapeBufferPtr;
 
                                         // Iterate through pixels
-                                        for (int Row = 0; Row < stageTextureDesc.Height; ++Row)
+                                        for (int row = 0; row < stageTextureDesc.Height; ++row)
                                         {
-                                            for (int Col = 0; Col < stageTextureDesc.Width; ++Col)
+                                            for (int col = 0; col < stageTextureDesc.Width; ++col)
                                             {
                                                 // Set up mask
-                                                uint MaskVal = 0xFF000000 & Buffer32[(Col + skipX) + ((Row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))];
+                                                uint MaskVal = 0xFF000000 & Buffer32[(col + skipX) + ((row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))];
                                                 if (MaskVal > 0)
                                                 {
                                                     // Mask was 0xFF
-                                                    InitBuffer32[(Row * stageTextureDesc.Width) + Col] = (desktop32[(Row * desktopPitchInPixels) + Col] 
-                                                        ^ Buffer32[(Col + skipX) + ((Row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))]) | 0xFF000000;
+                                                    InitBuffer32[(row * stageTextureDesc.Width) + col] = (desktop32[(row * desktopPitchInPixels) + col] 
+                                                        ^ Buffer32[(col + skipX) + ((row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))]) | 0xFF000000;
                                                 }
                                                 else
                                                 {
                                                     // Mask was 0x00
-                                                    InitBuffer32[(Row * stageTextureDesc.Width) + Col] 
-                                                        = Buffer32[(Col + skipX) + ((Row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))] | 0xFF000000;
+                                                    InitBuffer32[(row * stageTextureDesc.Width) + col] 
+                                                        = Buffer32[(col + skipX) + ((row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))] | 0xFF000000;
                                                 }
                                             }
                                         }
