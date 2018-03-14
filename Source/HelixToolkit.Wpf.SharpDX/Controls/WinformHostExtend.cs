@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
@@ -54,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
 
         private void OnMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            RaiseEvent(new MouseWheelEventArgs(Mouse.PrimaryDevice, DateTime.Now.Millisecond, e.Delta)
+            RaiseEvent(new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, e.Delta)
             {
                 RoutedEvent = Mouse.MouseWheelEvent,
                 Source = this,
@@ -67,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             if (!wpfButton.HasValue)
                 return;
             Capture();
-            RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, DateTime.Now.Millisecond, wpfButton.Value)
+            RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, wpfButton.Value)
             {
                 RoutedEvent = Mouse.MouseDownEvent,
                 Source = this,
@@ -79,7 +76,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             if (!wpfButton.HasValue)
                 return;
             Capture();
-            RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, DateTime.Now.Millisecond, wpfButton.Value)
+            RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, wpfButton.Value)
             {
                 RoutedEvent = Mouse.MouseUpEvent,
                 Source = this,

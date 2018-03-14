@@ -82,6 +82,15 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        public float Turbulance
+        {
+            set
+            {
+                FrameVariables.Turbulance = value;
+            }
+            get { return FrameVariables.Turbulance; }
+        }
+
         /// <summary>
         /// Minimum time elapse to insert new particles
         /// </summary>

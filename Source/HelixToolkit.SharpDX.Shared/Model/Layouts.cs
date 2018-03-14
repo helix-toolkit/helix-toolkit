@@ -163,7 +163,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public int AnimateByEnergyLevel;
 
         public Vector2 ParticleSize;
-        Vector2 padding;
+        public float Turbulance;
+        float padding;
 
         public const int SizeInBytes = 4 * (4 * 7);
         public const int NumParticlesOffset = 0;
