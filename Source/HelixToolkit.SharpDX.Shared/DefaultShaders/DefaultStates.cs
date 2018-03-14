@@ -23,6 +23,7 @@ namespace HelixToolkit.UWP.Shaders
         public readonly static BlendStateDescription NoBlend;
         public readonly static BlendStateDescription BSOverlayBlending;
         public readonly static BlendStateDescription AdditiveBlend;
+        public readonly static BlendStateDescription BSScreenDupCursorBlend;
 
         static DefaultBlendStateDescriptions()
         {
@@ -73,6 +74,18 @@ namespace HelixToolkit.UWP.Shaders
                 DestinationAlphaBlend = BlendOption.One,
                 AlphaBlendOperation = BlendOperation.Add,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All
+            };
+
+            BSScreenDupCursorBlend.RenderTarget[0] = new RenderTargetBlendDescription()
+            {
+                SourceBlend = BlendOption.SourceAlpha,
+                DestinationBlend = BlendOption.InverseSourceAlpha,
+                BlendOperation = BlendOperation.Add,
+                SourceAlphaBlend = BlendOption.One,
+                DestinationAlphaBlend = BlendOption.Zero,
+                AlphaBlendOperation = BlendOperation.Add,
+                RenderTargetWriteMask = ColorWriteMaskFlags.All,
+                IsBlendEnabled = true
             };
         }
     }

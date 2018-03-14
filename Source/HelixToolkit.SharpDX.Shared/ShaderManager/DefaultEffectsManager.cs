@@ -963,7 +963,7 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSScreenDup
                         },
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSScreenDupCursorBlend,
                         RasterStateDescription = DefaultRasterDescriptions.RSScreenDuplication
                     }
                 }

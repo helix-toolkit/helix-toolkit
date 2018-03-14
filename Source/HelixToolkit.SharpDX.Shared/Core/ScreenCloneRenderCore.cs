@@ -256,7 +256,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 {
                     modelCB.UploadDataToBuffer(deviceContext, ref modelStruct);
                     DefaultShaderPass.BindShader(deviceContext);
-                    DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
+                    DefaultShaderPass.BindStates(deviceContext, StateType.DepthStencilState | StateType.RasterState);
+                    deviceContext.DeviceContext.OutputMerger.SetBlendState(DefaultShaderPass.BlendState, new RawColor4(0, 0, 0, 0));
                     deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
                     DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerBindSlot, textureSampler);
                     using (var textureView = new global::SharpDX.Direct3D11.ShaderResourceView(deviceContext.DeviceContext.Device, frameProcessor.SharedTexture))
