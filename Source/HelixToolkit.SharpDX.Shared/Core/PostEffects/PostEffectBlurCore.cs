@@ -62,7 +62,7 @@ namespace HelixToolkit.UWP.Core
         #region Texture Resources
         private const int NumPingPongBlurBuffer = 2;
 
-        private ShaderResouceViewProxy[] renderTargetBlur = new ShaderResouceViewProxy[NumPingPongBlurBuffer];
+        private ShaderResourceViewProxy[] renderTargetBlur = new ShaderResourceViewProxy[NumPingPongBlurBuffer];
 
         private int textureSlot;
 
@@ -123,7 +123,7 @@ namespace HelixToolkit.UWP.Core
                 for (int i = 0; i < NumPingPongBlurBuffer; ++i)
                 {
                     RemoveAndDispose(ref renderTargetBlur[i]);
-                    renderTargetBlur[i] = Collect(new ShaderResouceViewProxy(device, texture2DDesc));
+                    renderTargetBlur[i] = Collect(new ShaderResourceViewProxy(device, texture2DDesc));
                     renderTargetBlur[i].CreateView(renderTargetViewDesc);
                     renderTargetBlur[i].CreateView(targetResourceViewDesc);
                 }

@@ -22,7 +22,7 @@ namespace CustomShaderDemo
 
         private bool colorChanged = true;
 
-        private ShaderResouceViewProxy colorGradientResource;
+        private ShaderResourceViewProxy colorGradientResource;
 
         private Color4Collection colorGradients;
         /// <summary>
@@ -93,7 +93,7 @@ namespace CustomShaderDemo
                 RemoveAndDispose(ref colorGradientResource);
                 if(ColorGradients != null)
                 {
-                    colorGradientResource = new ShaderResouceViewProxy(Device);
+                    colorGradientResource = new ShaderResourceViewProxy(Device);
                     colorGradientResource.CreateView(colorGradients.ToArray(), global::SharpDX.Toolkit.Graphics.PixelFormat.R32G32B32A32.Float);
                 }
                 colorChanged = false;

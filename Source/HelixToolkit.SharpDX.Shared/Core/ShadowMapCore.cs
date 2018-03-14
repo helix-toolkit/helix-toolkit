@@ -27,7 +27,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        protected ShaderResouceViewProxy viewResource;
+        protected ShaderResourceViewProxy viewResource;
 
         private bool resolutionChanged = true;
         /// <summary>
@@ -207,7 +207,7 @@ namespace HelixToolkit.UWP.Core
             if (resolutionChanged)
             {
                 RemoveAndDispose(ref viewResource);
-                viewResource = Collect(new ShaderResouceViewProxy(Device, ShadowMapTextureDesc));
+                viewResource = Collect(new ShaderResourceViewProxy(Device, ShadowMapTextureDesc));
                 viewResource.CreateView(DepthStencilViewDesc);
                 viewResource.CreateView(ShaderResourceViewDesc);
                 resolutionChanged = false;

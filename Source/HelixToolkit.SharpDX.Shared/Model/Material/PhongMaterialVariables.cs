@@ -35,7 +35,7 @@ namespace HelixToolkit.UWP.Model
         private const int NUMSAMPLERS = 5;
         private const int DiffuseIdx = 0, AlphaIdx = 1, NormalIdx = 2, DisplaceIdx = 3, ShadowIdx = 4;
 
-        private ShaderResouceViewProxy[] TextureResources = new ShaderResouceViewProxy[NUMTEXTURES];
+        private ShaderResourceViewProxy[] TextureResources = new ShaderResourceViewProxy[NUMTEXTURES];
 
         private bool HasTextures
         {
@@ -257,10 +257,10 @@ namespace HelixToolkit.UWP.Model
             }
             Device = manager.Device;
             statePoolManager = manager.StateManager;
-            TextureResources[DiffuseIdx] = Collect(new ShaderResouceViewProxy(Device));
-            TextureResources[NormalIdx] = Collect(new ShaderResouceViewProxy(Device));
-            TextureResources[DisplaceIdx] = Collect(new ShaderResouceViewProxy(Device));
-            TextureResources[AlphaIdx] = Collect(new ShaderResouceViewProxy(Device));
+            TextureResources[DiffuseIdx] = Collect(new ShaderResourceViewProxy(Device));
+            TextureResources[NormalIdx] = Collect(new ShaderResourceViewProxy(Device));
+            TextureResources[DisplaceIdx] = Collect(new ShaderResourceViewProxy(Device));
+            TextureResources[AlphaIdx] = Collect(new ShaderResourceViewProxy(Device));
             CreateTextureViews();
             CreateSamplers();
             this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, new EventArgs()); };
@@ -312,7 +312,7 @@ namespace HelixToolkit.UWP.Model
             OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
         }
 
-        private void CreateTextureView(System.IO.Stream stream, ShaderResouceViewProxy proxy)
+        private void CreateTextureView(System.IO.Stream stream, ShaderResourceViewProxy proxy)
         {
             proxy.CreateView(stream);
         }
