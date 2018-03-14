@@ -380,11 +380,12 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector2 TexBottomLeft;
         Vector2 pad3;
 
-        public Vector2 MousePoint;
-        public Vector2 DesktopCenter;
-        public Vector4 CursorRect;
+        public Vector4 CursorTopRight;
+        public Vector4 CursorTopLeft;
+        public Vector4 CursorBottomRight;
+        public Vector4 CursorBottomLeft;
 
-        public const int SizeInBytes = 4 * 4 * 10;
+        public const int SizeInBytes = 4 * 4 * 12;
     }
 #endif
 

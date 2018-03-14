@@ -241,9 +241,24 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 {
                     Vector4 rect;
                     frameProcessor.ProcessCursor(ref pointer, deviceContext, out rect);
-                    modelStruct.CursorRect = rect;
-                    modelStruct.MousePoint = new Vector2(pointer.Position.X, pointer.Position.Y);
-                    modelStruct.DesktopCenter = new Vector2(frameProcessor.SharedTexture.Description.Width / 2, frameProcessor.SharedTexture.Description.Height / 2);
+                    var centerX = frameProcessor.SharedTexture.Description.Width / 2;
+                    var centerY = frameProcessor.SharedTexture.Description.Height / 2;
+
+                    modelStruct.CursorTopRight.X = ((rect.X + rect.Z) - centerX) / centerX * Math.Abs(modelStruct.TopRight.X);
+                    modelStruct.CursorTopRight.Y = -1 * (rect.Y - centerY) / centerY * Math.Abs(modelStruct.TopRight.Y);
+                    modelStruct.CursorTopRight.W = 1;
+
+                    modelStruct.CursorTopLeft.X = (rect.X - centerX) / centerX * Math.Abs(modelStruct.TopLeft.X); ;
+                    modelStruct.CursorTopLeft.Y = -1 * (rect.Y - centerY) / centerY * Math.Abs(modelStruct.TopLeft.Y);
+                    modelStruct.CursorTopLeft.W = 1;
+
+                    modelStruct.CursorBottomRight.X = ((rect.X + rect.Z) - centerX) / centerX * Math.Abs(modelStruct.BottomRight.X); ;
+                    modelStruct.CursorBottomRight.Y = -1 * ((rect.Y + rect.W) - centerY) / centerY * Math.Abs(modelStruct.BottomRight.Y);
+                    modelStruct.CursorBottomRight.W = 1;
+
+                    modelStruct.CursorBottomLeft.X = (rect.X - centerX) / centerX * Math.Abs(modelStruct.BottomLeft.X);
+                    modelStruct.CursorBottomLeft.Y = -1 * ((rect.Y + rect.W) - centerY) / centerY * Math.Abs(modelStruct.BottomLeft.Y);
+                    modelStruct.CursorBottomLeft.W = 1;
                     invalidRender = true;
                 }
                 if (invalidRender)
@@ -254,6 +269,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     deviceContext.DeviceContext.OutputMerger.SetBlendState(DefaultShaderPass.BlendState, new RawColor4(0, 0, 0, 0));
                     deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
                     DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerBindSlot, textureSampler);
+                   // deviceContext.DeviceContext.Rasterizer.SetScissorRectangle((int)modelStruct.TopLeft.Y, (int)modelStruct.TopLeft.X, (int)modelStruct.BottomRight.Y, (int)modelStruct.BottomRight.X);
                     using (var textureView = new global::SharpDX.Direct3D11.ShaderResourceView(deviceContext.DeviceContext.Device, frameProcessor.SharedTexture))
                     {
                         DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureBindSlot, textureView);
@@ -288,7 +304,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         private void DrawCursor(ref PointerInfo pointer, DeviceContextProxy deviceContext)
         {
-            if (!pointer.Visible)
+            if (!pointer.Visible || frameProcessor.PointerResource == null)
             {
                 return;
             }
@@ -322,7 +338,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             model.TexTopLeft = new Vector2(texBound.X, texBound.Z);
             model.TexTopRight = new Vector2(texBound.Y, texBound.Z);
             model.TexBottomLeft = new Vector2(texBound.X, texBound.W);
-            model.TexBottomRight = new Vector2(texBound.Y, texBound.W);
+            model.TexBottomRight = new Vector2(texBound.Y, texBound.W);           
         }
 
         protected override void OnUploadPerModelConstantBuffers(global::SharpDX.Direct3D11.DeviceContext context)
@@ -390,6 +406,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
             return bound;
         }
+
         /// <summary>
         /// Called when [detach].
         /// </summary>
