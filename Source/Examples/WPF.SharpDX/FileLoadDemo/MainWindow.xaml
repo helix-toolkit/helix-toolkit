@@ -4,24 +4,53 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     Title="FileLoadDemo"
-    Width="525"
-    Height="350">
+    Width="1000"
+    Height="800">
 
 
     <Grid>
-
-        <hx:Viewport3DX x:Name="view" EffectsManager="{Binding EffectsManager}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <hx:Viewport3DX
+            x:Name="view"
+            Grid.Row="1"
+            Camera="{Binding Camera}"
+            CameraMode="Inspect"
+            CameraRotationMode="Turnball"
+            EffectsManager="{Binding EffectsManager}"
+            MSAA="Two">
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
+            </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D />
-            <hx:DirectionalLight3D Direction="-2,-5,-2" />
-            <hx:GroupModel3D
-                x:Name="group"
-                ItemsSource="{Binding ModelGeometry}"
-                Transform="{Binding ModelTransform}" />
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" />
+            <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ModelGeometry}" />
         </hx:Viewport3DX>
-        <Menu Height="20" VerticalAlignment="Top">
+        <Menu
+            Grid.Row="0"
+            Height="20"
+            VerticalAlignment="Top">
             <MenuItem Header="File">
                 <MenuItem Command="{Binding OpenFileCommand}" Header="Open File" />
             </MenuItem>
         </Menu>
+        <Button
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Command="{Binding ResetCameraCommand}">
+            Reset Camera
+        </Button>
     </Grid>
 </Window>

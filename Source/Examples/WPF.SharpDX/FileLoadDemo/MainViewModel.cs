@@ -8,45 +8,20 @@ namespace FileLoadDemo
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf.SharpDX;
     using Microsoft.Win32;
     using System.Windows.Input;
     using System.IO;
     using System.ComponentModel;
+    using DemoCore;
 
-    public abstract class ObservableObject : INotifyPropertyChanged
+    public class MainViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string info)
-        {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(info));
-            }
-        }
-
-        protected bool SetValue<T>(ref T backingField, T value, string propertyName)
-        {
-            if (object.Equals(backingField, value))
-            {
-                return false;
-            }
-
-            backingField = value;
-            this.OnPropertyChanged(propertyName);
-            return true;
-        }
-    }
-
-    public class MainViewModel : ObservableObject
-    {
-        private const string OpenFileFilter = "3D model files (*.obj;*.3ds)|*.obj;*.3ds";
+        private const string OpenFileFilter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;";
 
         public Element3DCollection ModelGeometry { get; private set; }
-        public Transform3D ModelTransform { get; private set; }
+
         public Viewport3DX modelView
         {
             get;
@@ -58,16 +33,23 @@ namespace FileLoadDemo
         {
             get; set;
         }
-        public DefaultEffectsManager EffectsManager { get; private set; }
+
+        public ICommand ResetCameraCommand
+        {
+            set;get;
+        }
 
 
         public MainViewModel()
         {
             this.OpenFileCommand = new DelegateCommand(this.OpenFile);
-            this.ModelTransform = new TranslateTransform3D(0, 0, 0);
-
             this.ModelGeometry = new Element3DCollection();
             EffectsManager = new DefaultEffectsManager();
+            Camera = new OrthographicCamera() {
+                LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -10, -10),
+                Position = new System.Windows.Media.Media3D.Point3D(0, 10, 10),
+                FarPlaneDistance = 10000, NearPlaneDistance = 0.1 };
+            ResetCameraCommand = new DelegateCommand(() => { Camera.Reset(); });
         }
 
         private void OpenFile()
@@ -81,9 +63,13 @@ namespace FileLoadDemo
             {
                 Load3ds(path);
             }
-            else
+            else if(Path.GetExtension(path).ToLower() == ".obj")
             {
                 LoadObj(path);
+            }
+            else if(Path.GetExtension(path).ToLower() == ".stl")
+            {
+                LoadStl(path);
             }
         }
         public void Load3ds(string path)
@@ -99,9 +85,15 @@ namespace FileLoadDemo
             var objCol = reader.Read(path);
             AttachModelList(objCol);
         }
+
+        public void LoadStl(string path)
+        {
+            var reader = new StLReader();
+            var objCol = reader.Read(path);
+            AttachModelList(objCol);
+        }
         public void AttachModelList(List<Object3D> objs)
         {
-            this.ModelTransform = new TranslateTransform3D(0, 0, 0);
             this.ModelGeometry = new Element3DCollection();
             foreach (var ob in objs)
             {

@@ -141,34 +141,13 @@ namespace DemoCore
             {
                 if (cameraModel == Orthographic)
                 {
-                    //if (this.Camera != null)
-                    //{
-                    //    var newCamera = new OrthographicCamera();
-                    //    this.Camera.CopyTo(newCamera);
-                    //    newCamera.NearPlaneDistance = znear;
-                    //    newCamera.FarPlaneDistance = zfar;
-                    //    this.Camera = newCamera;
-
-                    //}
-                    //else
-                    {
+                    if(!(Camera is OrthographicCamera))
                         Camera = defaultOrthographicCamera;
-                    }
                 }
                 else if (cameraModel == Perspective)
                 {
-                    //if (this.Camera != null)
-                    //{
-                    //    var newCamera = new PerspectiveCamera();
-                    //    this.Camera.CopyTo(newCamera);
-                    //    newCamera.NearPlaneDistance = znear;
-                    //    newCamera.FarPlaneDistance = zfar;
-                    //    this.Camera = newCamera;
-                    //}
-                    //else
-                    {
+                    if(!(Camera is PerspectiveCamera))
                         Camera = defaultPerspectiveCamera;
-                    }
                 }
                 else
                 {
