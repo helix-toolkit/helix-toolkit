@@ -941,7 +941,7 @@ namespace HelixToolkit.UWP
 #if !NETFX_CORE
             var renderScreenDup = new TechniqueDescription(DefaultRenderTechniqueNames.ScreenDuplication)
             {
-                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSScreenDup, DefaultInputLayout.VSInputScreenDup),
+                InputLayoutDescription = InputLayoutDescription.EmptyInputLayout,
                 PassDescriptions = new[]
                 {
                     new ShaderPassDescription(DefaultPassNames.Default)
@@ -949,6 +949,17 @@ namespace HelixToolkit.UWP
                         ShaderList = new[]
                         {
                             DefaultVSShaderDescriptions.VSScreenDup,
+                            DefaultPSShaderDescriptions.PSScreenDup
+                        },
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        RasterStateDescription = DefaultRasterDescriptions.RSScreenDuplication
+                    },
+                    new ShaderPassDescription(DefaultPassNames.ScreenQuad)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSScreenDupCursor,
                             DefaultPSShaderDescriptions.PSScreenDup
                         },
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,

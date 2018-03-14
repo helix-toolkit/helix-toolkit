@@ -24,7 +24,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
     using System.Collections.Generic;
     using System.Linq;
     using System.Diagnostics;
-    
+
+
     /// <summary>
     /// 
     /// </summary>
@@ -140,6 +141,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         private DuplicationResource duplicationResource;
         private FrameProcessing frameProcessor;
         private IShaderPass DefaultShaderPass;
+        private IShaderPass CursorShaderPass;
         private int textureBindSlot = 0;
         private int samplerBindSlot = 0;
         private SamplerStateProxy textureSampler;
@@ -169,6 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             if (base.OnAttach(technique))
             {
                 DefaultShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.Default];// technique[DefaultPassNames.Default];
+                CursorShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.ScreenQuad];
                 textureBindSlot = DefaultShaderPass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 samplerBindSlot = DefaultShaderPass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
                 textureSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerWrapAni2));
@@ -218,14 +221,15 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             bool accessLost;
 
 
-            if (duplicationResource.GetFrame(Output, out data, out pointer, out isTimeOut, out accessLost) || pointer.Visible)
-            {
+            if (duplicationResource.GetFrame(Output, out data, out pointer, out isTimeOut, out accessLost))
+            {              
                 if (data.FrameInfo.TotalMetadataBufferSize > 0)
                 {
                     frameProcessor.ProcessFrame(ref data, deviceContext);
                 }
                 invalidRender = true;
             }
+
             if (frameProcessor.SharedTexture != null && !accessLost)
             {
                 if (clearTarget)
@@ -233,8 +237,24 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     clearTarget = false;
                     context.RenderHost.ClearRenderTarget(deviceContext, true, false);
                 }
+                if (pointer.Visible)
+                {
+                    if (pointer.ShapeInfo.Width != 0 && pointer.ShapeInfo.Height != 0)
+                    {
+                        modelStruct.CursorRect = new Vector4(pointer.Position.X, pointer.Position.Y, pointer.ShapeInfo.Width, pointer.ShapeInfo.Height);
+                    }
+                    else
+                    {
+                        modelStruct.CursorRect.X = pointer.Position.X;
+                        modelStruct.CursorRect.Y = pointer.Position.Y;
+                    }
+                    modelStruct.MousePoint = new Vector2(pointer.Position.X, pointer.Position.Y);
+                    modelStruct.DesktopCenter = new Vector2(frameProcessor.SharedTexture.Description.Width / 2, frameProcessor.SharedTexture.Description.Height / 2);
+                    invalidRender = true;
+                }
                 if (invalidRender)
                 {
+                    modelCB.UploadDataToBuffer(deviceContext, ref modelStruct);
                     DefaultShaderPass.BindShader(deviceContext);
                     DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
                     deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
@@ -245,7 +265,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                         deviceContext.DeviceContext.Draw(4, 0);
                     }
                     if (ShowMouseCursor)
-                    {
+                    {                    
                         DrawCursor(ref pointer, deviceContext);
                     }
                     invalidRender = false;
@@ -284,12 +304,17 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         private void DrawCursor(ref PointerInfo pointer, DeviceContextProxy deviceContext)
         {
-            if (!pointer.Visible || pointer.ShapeInfo.Width == 0 || pointer.ShapeInfo.Height == 0)
+            if (!pointer.Visible)
             {
                 return;
             }
-            if (pointerResource == null || pointerTexDesc.Width != pointer.ShapeInfo.Width || pointerTexDesc.Height != pointer.ShapeInfo.Height)
+            if(pointerResource == null && pointer.ShapeInfo.Width == 0 && pointer.ShapeInfo.Height == 0)
             {
+                return;
+            }
+            else if (pointer.ShapeInfo.Width != 0 && pointer.ShapeInfo.Height != 0)
+            {
+                Console.WriteLine($"Cursor changed, type = {pointer.ShapeInfo.Type}");
                 RemoveAndDispose(ref pointerResource);
                 pointerTexDesc.Width = pointer.ShapeInfo.Width;
                 pointerTexDesc.Height = pointer.ShapeInfo.Height;
@@ -302,7 +327,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 });
                 pointerResource.CreateView(pointerSRVDesc);
             }
-            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureBindSlot, pointerResource);
+            CursorShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureBindSlot, pointerResource);
+            CursorShaderPass.BindShader(deviceContext);
+            CursorShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
             deviceContext.DeviceContext.Draw(4, 0);
         }
 
@@ -331,6 +358,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             model.TexTopRight = new Vector2(texBound.Y, texBound.Z);
             model.TexBottomLeft = new Vector2(texBound.X, texBound.W);
             model.TexBottomRight = new Vector2(texBound.Y, texBound.W);
+        }
+
+        protected override void OnUploadPerModelConstantBuffers(global::SharpDX.Direct3D11.DeviceContext context)
+        {
         }
         /// <summary>
         /// Gets the texture bound. Ouput: x(left), y(right), z(top), w(bottom)

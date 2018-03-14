@@ -683,6 +683,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] vsScreenDupCursor {
+            get {
+                object obj = ResourceManager.GetObject("vsScreenDupCursor", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] vsSkybox {
             get {
                 object obj = ResourceManager.GetObject("vsSkybox", resourceCulture);
