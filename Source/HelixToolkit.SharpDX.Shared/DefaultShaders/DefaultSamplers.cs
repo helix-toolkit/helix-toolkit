@@ -117,5 +117,15 @@ namespace HelixToolkit.UWP.Shaders
             Filter = Filter.MinMagLinearMipPoint,
             MaximumAnisotropy = 4,
         };
+        /// <summary>
+        /// The screen dup sampler
+        /// </summary>
+        public static SamplerStateDescription ScreenDupSampler = new SamplerStateDescription()
+        {
+            AddressU = TextureAddressMode.Clamp,
+            AddressV = TextureAddressMode.Clamp,
+            AddressW = TextureAddressMode.Clamp,
+            Filter = Filter.MinMagMipLinear           
+        };
     }
 }

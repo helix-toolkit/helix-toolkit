@@ -399,6 +399,7 @@ namespace HelixToolkit.UWP.Shaders
             IsFrontCounterClockwise = true,
             IsMultisampleEnabled = false,
             IsAntialiasedLineEnabled = false,
+            IsScissorEnabled = true
         };
 #endif
     }
