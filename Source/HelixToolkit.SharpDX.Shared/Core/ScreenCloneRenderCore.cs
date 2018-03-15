@@ -677,85 +677,82 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
                 context.DeviceContext.CopySubresourceRegion(SharedTexture, 0,
                     new global::SharpDX.Direct3D11.ResourceRegion(left, top, 0, left + width, top + height, 1), copyBuffer, 0);
-                using (var surface = copyBuffer.QueryInterface<global::SharpDX.DXGI.Surface>())
-                {
-                    var mappedSurface = surface.Map(MapFlags.Read);
+
+                var dataBox = context.DeviceContext.MapSubresource(copyBuffer, 0, global::SharpDX.Direct3D11.MapMode.Read, global::SharpDX.Direct3D11.MapFlags.None);
 #region process
-                    unsafe // Call unmanaged code
-                    {
-                        fixed(byte* initBufferPtr = initBuffer)
-                        {                                                         
-                            uint* initBuffer32 = (uint*)initBufferPtr;
-                            uint* desktop32 = (uint*)mappedSurface.DataPointer;
-                            int desktopPitchInPixels = mappedSurface.Pitch / sizeof(int);
-                            uint skipX = (givenLeft < 0) ? (uint)(-1 * givenLeft) : 0;
-                            uint skipY = (givenTop < 0) ? (uint)(-1 * givenTop) : 0;
-                            if (isMono)
+                unsafe // Call unmanaged code
+                {
+                    fixed(byte* initBufferPtr = initBuffer)
+                    {                                                         
+                        uint* initBuffer32 = (uint*)initBufferPtr;
+                        uint* desktop32 = (uint*)dataBox.DataPointer;
+                        int desktopPitchInPixels = dataBox.RowPitch / sizeof(int);
+                        uint skipX = (givenLeft < 0) ? (uint)(-1 * givenLeft) : 0;
+                        uint skipY = (givenTop < 0) ? (uint)(-1 * givenTop) : 0;
+                        if (isMono)
+                        {
+                            for (int row = 0; row < stageTextureDesc.Height; ++row)
                             {
-                                for (int row = 0; row < stageTextureDesc.Height; ++row)
+                                // Set mask
+                                byte Mask = 0x80;
+                                Mask = (byte)(Mask >> (byte)(skipX % 8));
+                                for (int col = 0; col < stageTextureDesc.Width; ++col)
                                 {
-                                    // Set mask
-                                    byte Mask = 0x80;
-                                    Mask = (byte)(Mask >> (byte)(skipX % 8));
-                                    for (int col = 0; col < stageTextureDesc.Width; ++col)
+                                    // Get masks using appropriate offsets
+                                    byte AndMask = (byte)(info.PtrShapeBuffer[((col + skipX) / 8) + ((row + skipY) * (info.ShapeInfo.Pitch))] & Mask);
+                                    byte XorMask = (byte)(info.PtrShapeBuffer[((col + skipX) / 8) + ((row + skipY + (info.ShapeInfo.Height / 2)) 
+                                        * (info.ShapeInfo.Pitch))] & Mask);
+                                    uint AndMask32 = (AndMask > 0) ? 0xFFFFFFFF : 0xFF000000;
+                                    uint XorMask32 = (XorMask > 0) ? (uint)0x00FFFFFF : 0x00000000;
+
+                                    // Set new pixel
+                                    initBuffer32[(row * stageTextureDesc.Width) + col] = (desktop32[(row * desktopPitchInPixels) + col] & AndMask32) ^ XorMask32;
+
+                                    // Adjust mask
+                                    if (Mask == 0x01)
                                     {
-                                        // Get masks using appropriate offsets
-                                        byte AndMask = (byte)(info.PtrShapeBuffer[((col + skipX) / 8) + ((row + skipY) * (info.ShapeInfo.Pitch))] & Mask);
-                                        byte XorMask = (byte)(info.PtrShapeBuffer[((col + skipX) / 8) + ((row + skipY + (info.ShapeInfo.Height / 2)) 
-                                            * (info.ShapeInfo.Pitch))] & Mask);
-                                        uint AndMask32 = (AndMask > 0) ? 0xFFFFFFFF : 0xFF000000;
-                                        uint XorMask32 = (XorMask > 0) ? (uint)0x00FFFFFF : 0x00000000;
-
-                                        // Set new pixel
-                                        initBuffer32[(row * stageTextureDesc.Width) + col] = (desktop32[(row * desktopPitchInPixels) + col] & AndMask32) ^ XorMask32;
-
-                                        // Adjust mask
-                                        if (Mask == 0x01)
-                                        {
-                                            Mask = 0x80;
-                                        }
-                                        else
-                                        {
-                                            Mask = (byte)(Mask >> 1);
-                                        }
+                                        Mask = 0x80;
+                                    }
+                                    else
+                                    {
+                                        Mask = (byte)(Mask >> 1);
                                     }
                                 }
                             }
-                            else
+                        }
+                        else
+                        {
+                            fixed(byte* shapeBufferPtr = info.PtrShapeBuffer)
                             {
-                                fixed(byte* shapeBufferPtr = info.PtrShapeBuffer)
-                                {
-                                    uint* Buffer32 = (uint*)shapeBufferPtr;
+                                uint* Buffer32 = (uint*)shapeBufferPtr;
 
-                                    // Iterate through pixels
-                                    for (int row = 0; row < stageTextureDesc.Height; ++row)
+                                // Iterate through pixels
+                                for (int row = 0; row < stageTextureDesc.Height; ++row)
+                                {
+                                    for (int col = 0; col < stageTextureDesc.Width; ++col)
                                     {
-                                        for (int col = 0; col < stageTextureDesc.Width; ++col)
+                                        // Set up mask
+                                        uint MaskVal = 0xFF000000 & Buffer32[(col + skipX) + ((row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))];
+                                        if (MaskVal > 0)
                                         {
-                                            // Set up mask
-                                            uint MaskVal = 0xFF000000 & Buffer32[(col + skipX) + ((row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))];
-                                            if (MaskVal > 0)
-                                            {
-                                                // Mask was 0xFF
-                                                initBuffer32[(row * stageTextureDesc.Width) + col] = (desktop32[(row * desktopPitchInPixels) + col] 
-                                                    ^ Buffer32[(col + skipX) + ((row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))]) | 0xFF000000;
-                                            }
-                                            else
-                                            {
-                                                // Mask was 0x00
-                                                initBuffer32[(row * stageTextureDesc.Width) + col] 
-                                                    = Buffer32[(col + skipX) + ((row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))] | 0xFF000000;
-                                            }
+                                            // Mask was 0xFF
+                                            initBuffer32[(row * stageTextureDesc.Width) + col] = (desktop32[(row * desktopPitchInPixels) + col] 
+                                                ^ Buffer32[(col + skipX) + ((row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))]) | 0xFF000000;
+                                        }
+                                        else
+                                        {
+                                            // Mask was 0x00
+                                            initBuffer32[(row * stageTextureDesc.Width) + col] 
+                                                = Buffer32[(col + skipX) + ((row + skipY) * (info.ShapeInfo.Pitch / sizeof(uint)))] | 0xFF000000;
                                         }
                                     }
                                 }
                             }
                         }
-
                     }
-#endregion
-                    surface.Unmap();
                 }
+#endregion
+                context.DeviceContext.UnmapSubresource(copyBuffer, 0);
             }
         }
 
