@@ -178,7 +178,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             if (base.OnAttach(technique))
             {
-                DefaultShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.Default];// technique[DefaultPassNames.Default];
+                DefaultShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.Default];
                 CursorShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.ScreenQuad];
                 textureBindSlot = DefaultShaderPass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 samplerBindSlot = DefaultShaderPass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
@@ -251,23 +251,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     Vector4 rect;
                     if(frameProcessor.ProcessCursor(ref pointer, deviceContext, out rect))
                     {
-                        var centerX = frameProcessor.SharedTexture.Description.Width / 2;
-                        var centerY = frameProcessor.SharedTexture.Description.Height / 2;
-                        modelStruct.CursorTopRight.X = ((rect.X + rect.Z) - centerX) / centerX * Math.Abs(modelStruct.TopRight.X);
-                        modelStruct.CursorTopRight.Y = -1 * (rect.Y - centerY) / centerY * Math.Abs(modelStruct.TopRight.Y);
-                        modelStruct.CursorTopRight.W = 1;
-
-                        modelStruct.CursorTopLeft.X = (rect.X - centerX) / centerX * Math.Abs(modelStruct.TopLeft.X); ;
-                        modelStruct.CursorTopLeft.Y = -1 * (rect.Y - centerY) / centerY * Math.Abs(modelStruct.TopLeft.Y);
-                        modelStruct.CursorTopLeft.W = 1;
-
-                        modelStruct.CursorBottomRight.X = ((rect.X + rect.Z) - centerX) / centerX * Math.Abs(modelStruct.BottomRight.X); ;
-                        modelStruct.CursorBottomRight.Y = -1 * ((rect.Y + rect.W) - centerY) / centerY * Math.Abs(modelStruct.BottomRight.Y);
-                        modelStruct.CursorBottomRight.W = 1;
-
-                        modelStruct.CursorBottomLeft.X = (rect.X - centerX) / centerX * Math.Abs(modelStruct.BottomLeft.X);
-                        modelStruct.CursorBottomLeft.Y = -1 * ((rect.Y + rect.W) - centerY) / centerY * Math.Abs(modelStruct.BottomLeft.Y);
-                        modelStruct.CursorBottomLeft.W = 1;
+                        GetCursorVertexBound((int)context.ActualWidth, (int)context.ActualHeight, frameProcessor.TextureWidth, frameProcessor.TextureHeight, ref rect);
                         invalidRender = true;
                         cursorValid = true;
                     }
@@ -387,7 +371,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             int cloneWidth = cloneRectangle.Width;
             int cloneHeight = cloneRectangle.Height;
-            if ( cloneWidth == 0 || cloneHeight == 0)
+            if (cloneWidth == 0 || cloneHeight == 0)
             {
                 cloneWidth = deskWidth;
                 cloneHeight = deskHeight;
@@ -419,6 +403,63 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             return bound;
         }
 
+        protected virtual void GetCursorVertexBound(int viewportWidth, int viewportHeight, int deskWidth, int deskHeight, ref Vector4 rect)
+        {
+            int cloneWidth = cloneRectangle.Width;
+            int cloneHeight = cloneRectangle.Height;
+            if (cloneWidth == 0 || cloneHeight == 0)
+            {
+                cloneWidth = deskWidth;
+                cloneHeight = deskHeight;
+            }
+
+            var centerX = cloneRectangle.Width != 0 ? (cloneRectangle.Left + cloneWidth / 2) : cloneWidth / 2;
+            var centerY = cloneRectangle.Height != 0 ? (cloneRectangle.Top + cloneHeight / 2) : cloneHeight / 2;
+            var viewportCenterX = viewportWidth / 2;
+            var viewportCenterY = viewportHeight / 2;
+
+            var offX = viewportCenterX - centerX;
+            var offY = viewportCenterY - centerY;
+
+            var viewportRatio = (float)viewportWidth / viewportHeight;
+            var cloneRatio = (float)cloneWidth / cloneHeight;
+            var scaleX = 1f;
+            var scaleY = 1f;
+
+            if (StretchToFill)
+            {
+                scaleX = (float)viewportWidth / cloneWidth;
+                scaleY = (float)viewportHeight / cloneHeight;
+            }
+            else
+            {
+                if (viewportRatio >= cloneRatio)
+                {
+                    scaleX = scaleY = (float)viewportHeight / cloneHeight;
+                }
+                else
+                {
+                    scaleX = scaleY = (float)viewportWidth / cloneWidth;
+                }
+            }
+
+
+            modelStruct.CursorTopRight.X = ((rect.X + rect.Z) - viewportCenterX + offX) / viewportCenterX * scaleX;
+            modelStruct.CursorTopRight.Y = -1 * (rect.Y - viewportCenterY + offY) / viewportCenterY * scaleY;
+            modelStruct.CursorTopRight.W = 1;
+
+            modelStruct.CursorTopLeft.X = (rect.X - viewportCenterX + offX) / viewportCenterX * scaleX;
+            modelStruct.CursorTopLeft.Y = -1 * (rect.Y - viewportCenterY + offY) / viewportCenterY * scaleY;
+            modelStruct.CursorTopLeft.W = 1;
+
+            modelStruct.CursorBottomRight.X = ((rect.X + rect.Z) - viewportCenterX + offX) / viewportCenterX * scaleX;
+            modelStruct.CursorBottomRight.Y = -1 * ((rect.Y + rect.W) - viewportCenterY + offY) / viewportCenterY * scaleY;
+            modelStruct.CursorBottomRight.W = 1;
+
+            modelStruct.CursorBottomLeft.X = (rect.X - viewportCenterX + offX) / viewportCenterX * scaleX;
+            modelStruct.CursorBottomLeft.Y = -1 * ((rect.Y + rect.W) - viewportCenterY + offY) / viewportCenterY * scaleY;
+            modelStruct.CursorBottomLeft.W = 1;
+        }
         /// <summary>
         /// Called when [detach].
         /// </summary>
