@@ -577,13 +577,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 int rowPitch = pointer.ShapeInfo.Type == (int)OutputDuplicatePointerShapeType.Color ? pointer.ShapeInfo.Pitch : width * BPP;
                 int slicePitch = 0;
 
-                if (pointerResource == null || currentType != pointer.ShapeInfo.Type || pointerTexDesc.Width != width || pointerTexDesc.Height != height)
+                if (pointerResource == null || currentType != pointer.ShapeInfo.Type
+                    || pointerTexDesc.Width != width || pointerTexDesc.Height != height)
                 {
                     RemoveAndDispose(ref pointerResource);
                     pointerTexDesc.Width = width;
                     pointerTexDesc.Height = height;
                     currentType = pointer.ShapeInfo.Type;
-
+                    
                     global::SharpDX.Utilities.Pin(pointer.ShapeInfo.Type == (int)OutputDuplicatePointerShapeType.Color ? pointer.PtrShapeBuffer : initBuffer, ptr =>
                     {
                         pointerResource = Collect(new ShaderResourceViewProxy(context.DeviceContext.Device,
@@ -591,18 +592,38 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     });
                     pointerResource.CreateView(pointerSRVDesc);
 #if OUTPUTDETAIL
-                    Console.WriteLine("Create new cursor texture.");
+                    Console.WriteLine("Create new cursor texture. Type = " + pointer.ShapeInfo.Type);
 #endif
                 }
-                else if(pointer.ShapeInfo.Type != (int)OutputDuplicatePointerShapeType.Color)
+                else
                 {
-#if OUTPUTDETAIL
-                    Console.WriteLine("Reuse existing cursor texture for Mono and Mask.");
-#endif
                     var dataBox = context.DeviceContext.MapSubresource(pointerResource.Resource, 0, global::SharpDX.Direct3D11.MapMode.WriteDiscard, 
-                        global::SharpDX.Direct3D11.MapFlags.None);        
-                    if(dataBox.RowPitch == rowPitch && dataBox.SlicePitch == initBuffer.Length)
+                        global::SharpDX.Direct3D11.MapFlags.None);
+                    if (pointer.ShapeInfo.Type == (int)OutputDuplicatePointerShapeType.Color)
                     {
+#if OUTPUTDETAIL
+                        Console.WriteLine("Reuse existing cursor texture for Color.");
+#endif
+                        unsafe
+                        {
+                            int row = pointer.ShapeInfo.Height;
+                            int sourceCounter = 0;
+                            byte* target32 = (byte*)dataBox.DataPointer;
+                            for (int i = 0; i < row; ++i)
+                            {
+                                int targetCounter = i * dataBox.RowPitch;
+                                for (int j = 0; j < pointer.ShapeInfo.Pitch; ++j)
+                                {
+                                    target32[targetCounter++] = pointer.PtrShapeBuffer[sourceCounter++];
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+#if OUTPUTDETAIL
+                        Console.WriteLine("Reuse existing cursor texture for Mono and Mask.");
+#endif
                         unsafe // Call unmanaged code
                         {
                             byte* target32 = (byte*)dataBox.DataPointer;
@@ -615,7 +636,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     context.DeviceContext.UnmapSubresource(pointerResource.Resource, 0);
                 }
                 return true;
-            }
+            }           
 
             private void ProcessMonoMask(DeviceContextProxy context,
                 bool isMono, ref PointerInfo info, out int width, out int height, out int left, out int top)
