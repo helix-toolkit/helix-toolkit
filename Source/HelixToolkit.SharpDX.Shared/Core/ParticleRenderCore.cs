@@ -755,7 +755,7 @@ namespace HelixToolkit.UWP.Core
                 perFrameCB.UploadDataToBuffer(deviceContext, ref FrameVariables);
                 #endregion
 
-                deviceContext.DeviceContext.Dispatch(Math.Max(1, particleCount / 512), 1, 1);
+                deviceContext.DeviceContext.Dispatch(Math.Max(1, (int)Math.Ceiling((double)FrameVariables.NumParticles / 512)), 1, 1);
                 // Get append buffer count
                 BufferProxies[1].CopyCount(deviceContext, particleCountGSIABuffer.Buffer, 0);
             }
