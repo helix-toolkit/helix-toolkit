@@ -82,6 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Reads the model from the specified stream.
         /// </summary>
         /// <param name="stream">The stream.</param>
+        /// <param name="info"></param>
         /// <returns>The model.</returns>
         public override Mesh3DGroup Read(Stream stream, ModelInfo info = default(ModelInfo))
         {

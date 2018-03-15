@@ -64,6 +64,7 @@ cbuffer cbMeshModel : register(b1)
     {
         float4 VertCoord[4];
         float4 TextureCoord[4];
+        float4 CursorVertCoord[4];
     };
 #endif
 

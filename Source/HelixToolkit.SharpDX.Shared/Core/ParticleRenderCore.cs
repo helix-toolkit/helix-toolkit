@@ -5,9 +5,11 @@ Copyright (c) 2018 Helix Toolkit contributors
 //#if DEBUG
 //#define OUTPUTDEBUGGING
 //#endif
+using System;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.Direct3D;
+
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -19,7 +21,7 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     using Shaders;
     using Render;
-    using System;
+
 
     /// <summary>
     /// 
@@ -439,11 +441,12 @@ namespace HelixToolkit.UWP.Core
 
         //Buffer indirectArgsBuffer;
         private readonly ConstantBufferProxy particleCountGSIABuffer 
-            = new ConstantBufferProxy(ParticleCountIndirectArgs.SizeInBytes, BindFlags.None, CpuAccessFlags.None, ResourceOptionFlags.DrawIndirectArguments);
+            = new ConstantBufferProxy(ParticleCountIndirectArgs.SizeInBytes, BindFlags.None, CpuAccessFlags.None, 
+                ResourceOptionFlags.DrawIndirectArguments);
 
-#if OUTPUTDEBUGGING
-        private Buffer particleCountStaging;
-#endif
+        private ConstantBufferProxy particleCountStaging
+            = new ConstantBufferProxy(4 * sizeof(int), BindFlags.None, CpuAccessFlags.Read, ResourceOptionFlags.None, ResourceUsage.Staging);
+
         private UnorderedAccessViewDescription UAVBufferViewDesc = new UnorderedAccessViewDescription()
         {
             Dimension = UnorderedAccessViewDimension.Buffer,
@@ -454,16 +457,6 @@ namespace HelixToolkit.UWP.Core
         private ShaderResourceViewDescription SRVBufferViewDesc = new ShaderResourceViewDescription()
         {
             Dimension = ShaderResourceViewDimension.Buffer
-        };
-
-        private BufferDescription renderIndirectArgsBufDesc = new BufferDescription
-        {
-            BindFlags = BindFlags.None,
-            SizeInBytes = 4 * global::SharpDX.Utilities.SizeOf<uint>(),
-            StructureByteStride = 0,
-            Usage = ResourceUsage.Default,
-            CpuAccessFlags = CpuAccessFlags.None,
-            OptionFlags = ResourceOptionFlags.DrawIndirectArguments
         };
         /// <summary>
         /// Gets or sets the buffer proxies.
@@ -574,7 +567,6 @@ namespace HelixToolkit.UWP.Core
         protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
         {
             base.OnUploadPerModelConstantBuffers(context);
-            perFrameCB.UploadDataToBuffer(context, ref FrameVariables);
         }
 
         /// <summary>
@@ -641,7 +633,6 @@ namespace HelixToolkit.UWP.Core
             }
             else if (bufferDesc.SizeInBytes < count * Particle.SizeInBytes) // Create new buffer, otherwise reuse existing buffers
             {
-                Debug.WriteLine("Create buffers");
                 DisposeBuffers();
                 InitializeBuffers(count);
             }
@@ -653,9 +644,9 @@ namespace HelixToolkit.UWP.Core
         private void DisposeBuffers()
         {
             particleCountGSIABuffer.DisposeAndClear();
-#if OUTPUTDEBUGGING
-            RemoveAndDispose(ref particleCountStaging);
-#endif
+
+            particleCountStaging.DisposeAndClear();
+
             if (BufferProxies != null)
             {
                 for (int i = 0; i < BufferProxies.Length; ++i)
@@ -684,17 +675,7 @@ namespace HelixToolkit.UWP.Core
                 BufferProxies[i] = new UAVBufferViewProxy(Device, ref bufferDesc, ref UAVBufferViewDesc, ref SRVBufferViewDesc);
             }
 
-#if OUTPUTDEBUGGING
-            var stagingbufferDesc = new BufferDescription()
-            {
-                BindFlags = BindFlags.None,
-                OptionFlags = ResourceOptionFlags.None,
-                SizeInBytes = 4 * global::SharpDX.Utilities.SizeOf<uint>(),
-                CpuAccessFlags = CpuAccessFlags.Read,
-                Usage = ResourceUsage.Staging
-            };
-            particleCountStaging = Collect(new Buffer(this.Device, stagingbufferDesc));
-#endif
+            particleCountStaging.CreateBuffer(this.Device); 
             particleCountGSIABuffer.CreateBuffer(this.Device);
         }
 
@@ -758,21 +739,29 @@ namespace HelixToolkit.UWP.Core
 
             if (isRestart)
             {
+                FrameVariables.NumParticles = 0;
+                perFrameCB.UploadDataToBuffer(deviceContext, ref FrameVariables);
                 // Call ComputeShader to add initial particles
                 deviceContext.DeviceContext.Dispatch(1, 1, 1);
                 isRestart = false;
             }
             else
             {
-                // Get consume buffer count
-                BufferProxies[0].CopyCount(deviceContext, perFrameCB.Buffer, ParticlePerFrame.NumParticlesOffset);
-                deviceContext.DeviceContext.Dispatch(System.Math.Max(1, particleCount / 512), 1, 1);
+                #region Get consume buffer count
+                // Get consume buffer count.
+                //Due to some intel integrated graphic card having issue copy structure count directly into constant buffer.
+                //Has to use staging buffer to read and pass into constant buffer              
+                FrameVariables.NumParticles = (uint)ReadCount("", deviceContext, BufferProxies[0]);
+                perFrameCB.UploadDataToBuffer(deviceContext, ref FrameVariables);
+                #endregion
+
+                deviceContext.DeviceContext.Dispatch(Math.Max(1, (int)Math.Ceiling((double)FrameVariables.NumParticles / 512)), 1, 1);
                 // Get append buffer count
                 BufferProxies[1].CopyCount(deviceContext, particleCountGSIABuffer.Buffer, 0);
             }
 
 #if OUTPUTDEBUGGING
-            DebugCount("UAV 0", deviceContext, BufferProxies[0].UAV);
+            ReadCount("UAV 0", deviceContext, BufferProxies[0].UAV);
 #endif
 
 
@@ -781,11 +770,11 @@ namespace HelixToolkit.UWP.Core
                 insertCB.UploadDataToBuffer(deviceContext, ref InsertVariables);
                 // Add more particles 
                 insertPass.BindShader(deviceContext);
-                updatePass.GetShader(ShaderStage.Compute).BindUAV(deviceContext, newStateSlot, BufferProxies[1].UAV);
+                insertPass.GetShader(ShaderStage.Compute).BindUAV(deviceContext, newStateSlot, BufferProxies[1].UAV);
                 deviceContext.DeviceContext.Dispatch(1, 1, 1);
                 totalElapsed = 0;
 #if OUTPUTDEBUGGING
-                DebugCount("UAV 1", deviceContext, BufferProxies[1].UAV);
+                ReadCount("UAV 1", deviceContext, BufferProxies[1].UAV);
 #endif
             }
 
@@ -814,16 +803,18 @@ namespace HelixToolkit.UWP.Core
             InvalidateRenderer();//Since particle is running all the time. Invalidate once finished rendering
         }
 
-#if OUTPUTDEBUGGING
-        private void DebugCount(string src, DeviceContext context, UnorderedAccessView uav)
+
+        private int ReadCount(string src, DeviceContext context, UnorderedAccessView uav)
         {
             context.CopyStructureCount(particleCountStaging, 0, uav);
             DataStream ds;
             var db = context.MapSubresource(particleCountStaging, MapMode.Read, MapFlags.None, out ds);
             int CurrentParticleCount = ds.ReadInt();
+#if OUTPUTDEBUGGING
             Debug.WriteLine("{0}: {1}", src, CurrentParticleCount);
-            context.UnmapSubresource(particleCountStaging, 0);
-        }
 #endif
+            context.UnmapSubresource(particleCountStaging, 0);
+            return CurrentParticleCount;
+        }
     }
 }

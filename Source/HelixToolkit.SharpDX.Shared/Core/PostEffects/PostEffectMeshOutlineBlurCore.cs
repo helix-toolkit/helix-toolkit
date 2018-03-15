@@ -141,9 +141,9 @@ namespace HelixToolkit.UWP.Core
         private IShaderPass screenOutlinePass;
         #region Texture Resources
 
-        private ShaderResouceViewProxy renderTargetFull;       
+        private ShaderResourceViewProxy renderTargetFull;       
 
-        private ShaderResouceViewProxy depthStencilBuffer;
+        private ShaderResourceViewProxy depthStencilBuffer;
 
         private int textureSlot;
 
@@ -258,10 +258,10 @@ namespace HelixToolkit.UWP.Core
                 RemoveAndDispose(ref renderTargetFull);
                 RemoveAndDispose(ref depthStencilBuffer);
 
-                renderTargetFull = Collect(new ShaderResouceViewProxy(deviceContext.DeviceContext.Device, renderTargetDesc));
+                renderTargetFull = Collect(new ShaderResourceViewProxy(deviceContext.DeviceContext.Device, renderTargetDesc));
                 renderTargetFull.CreateView(renderTargetViewDesc);
                 renderTargetFull.CreateView(targetResourceViewDesc);
-                depthStencilBuffer = Collect(new ShaderResouceViewProxy(deviceContext.DeviceContext.Device, depthdesc));
+                depthStencilBuffer = Collect(new ShaderResourceViewProxy(deviceContext.DeviceContext.Device, depthdesc));
                 depthStencilBuffer.CreateView(depthStencilViewDesc);
 
                 blurCore.Resize(deviceContext.DeviceContext.Device,

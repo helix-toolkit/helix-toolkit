@@ -69,6 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Reads the model from the specified path.
         /// </summary>
         /// <param name="path">The path.</param>
+        /// <param name="info"></param>
         /// <returns>The model.</returns>
         public virtual Mesh3DGroup Read(string path, ModelInfo info = default(ModelInfo))
         {
@@ -83,6 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Reads the model from the specified stream.
         /// </summary>
         /// <param name="s">The stream.</param>
+        /// <param name="info"></param>
         /// <returns>The model.</returns>
         public abstract Mesh3DGroup Read(Stream s, ModelInfo info = default(ModelInfo));
 

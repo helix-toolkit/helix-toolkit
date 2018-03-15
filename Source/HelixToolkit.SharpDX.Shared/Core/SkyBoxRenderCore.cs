@@ -127,7 +127,7 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public string ShaderCubeTextureSamplerName { set; get; } = DefaultSamplerStateNames.CubeMapSampler;
 
-        private ShaderResouceViewProxy cubeTextureRes;
+        private ShaderResourceViewProxy cubeTextureRes;
         private int cubeTextureSlot;
         private SamplerState textureSampler;
         private int textureSamplerSlot;
@@ -151,7 +151,7 @@ namespace HelixToolkit.UWP.Core
                 buffer.Geometry = new PointGeometry3D() { Positions = BoxPositions };
                 buffer.Topology = PrimitiveTopology.TriangleList;
                 GeometryBuffer = buffer;
-                cubeTextureRes = Collect(new ShaderResouceViewProxy(Device));
+                cubeTextureRes = Collect(new ShaderResourceViewProxy(Device));
                 if (cubeTexture != null)
                 {
                     cubeTextureRes.CreateView(cubeTexture);

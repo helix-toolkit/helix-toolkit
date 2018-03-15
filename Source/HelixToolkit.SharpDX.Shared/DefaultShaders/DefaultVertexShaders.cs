@@ -311,6 +311,16 @@ namespace HelixToolkit.UWP.Shaders
                 return Properties.Resources.vsScreenDup;
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSScreenDupCursor
+        {
+            get
+            {
+                return Properties.Resources.vsScreenDupCursor;
+            }
+        }
 #endif
     }
 
@@ -458,20 +468,6 @@ namespace HelixToolkit.UWP.Shaders
         {
             new InputElement("SV_POSITION", 0, Format.R32G32B32_Float,  InputElement.AppendAligned, 0),
         };
-
-#if !NETFX_CORE
-        /// <summary>
-        /// Gets the vs input screen dup.
-        /// </summary>
-        /// <value>
-        /// The vs input screen dup.
-        /// </value>
-        public static InputElement[] VSInputScreenDup { get; } = new InputElement[]
-        {
-            new InputElement("SV_POSITION", 0, Format.R32G32B32_Float, InputElement.AppendAligned, 0),
-            new InputElement("TEXCOORD", 0, Format.R32G32_Float, InputElement.AppendAligned, 0)
-        };
-#endif
     }
 
     /// <summary>
@@ -596,6 +592,12 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs screen dup
         /// </summary>
         public static ShaderDescription VSScreenDup = new ShaderDescription(nameof(VSScreenDup), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSScreenDup);
+
+        /// <summary>
+        /// The vs screen dup mouse cursor
+        /// </summary>
+        public static ShaderDescription VSScreenDupCursor = new ShaderDescription(nameof(VSScreenDupCursor), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSScreenDupCursor);
+
 #endif
     }
 }

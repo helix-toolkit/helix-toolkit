@@ -104,7 +104,7 @@ namespace HelixToolkit.UWP.Model
     /// </summary>
     public sealed class SharedTextureResourceProxy : ResourceSharedObject
     {
-        private ShaderResouceViewProxy resource;
+        private ShaderResourceViewProxy resource;
 
         /// <summary>
         /// Gets the texture view.
@@ -120,18 +120,18 @@ namespace HelixToolkit.UWP.Model
         /// <param name="stream">The stream.</param>
         public SharedTextureResourceProxy(Device device, Stream stream)
         {
-            resource = Collect(new ShaderResouceViewProxy(device));
+            resource = Collect(new ShaderResourceViewProxy(device));
             resource.CreateView(stream);
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="SharedTextureResourceProxy"/> to <see cref="ShaderResouceViewProxy"/>.
+        /// Performs an implicit conversion from <see cref="SharedTextureResourceProxy"/> to <see cref="ShaderResourceViewProxy"/>.
         /// </summary>
         /// <param name="proxy">The proxy.</param>
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static implicit operator ShaderResouceViewProxy(SharedTextureResourceProxy proxy)
+        public static implicit operator ShaderResourceViewProxy(SharedTextureResourceProxy proxy)
         {
             return proxy.resource;
         }

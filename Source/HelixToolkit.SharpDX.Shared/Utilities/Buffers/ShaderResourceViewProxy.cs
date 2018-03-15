@@ -9,7 +9,7 @@ namespace HelixToolkit.UWP.Utilities
     /// <summary>
     /// A proxy container to handle view resources
     /// </summary>
-    public sealed class ShaderResouceViewProxy : DisposeObject
+    public sealed class ShaderResourceViewProxy : DisposeObject
     {
         /// <summary>
         /// Gets the texture view.
@@ -47,37 +47,47 @@ namespace HelixToolkit.UWP.Utilities
         private readonly Device device;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShaderResouceViewProxy"/> class.
+        /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
         /// </summary>
         /// <param name="device">The device.</param>
-        public ShaderResouceViewProxy(Device device) { this.device = device; }
+        public ShaderResourceViewProxy(Device device) { this.device = device; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShaderResouceViewProxy"/> class.
+        /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
         /// </summary>
         /// <param name="device">The device.</param>
         /// <param name="textureDesc">The texture desc.</param>
-        public ShaderResouceViewProxy(Device device, Texture1DDescription textureDesc) : this(device)
+        public ShaderResourceViewProxy(Device device, Texture1DDescription textureDesc) : this(device)
         {
             resource = Collect(new Texture1D(device, textureDesc));
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShaderResouceViewProxy"/> class.
+        /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
         /// </summary>
         /// <param name="device">The device.</param>
         /// <param name="textureDesc">The texture desc.</param>
-        public ShaderResouceViewProxy(Device device, Texture2DDescription textureDesc) : this(device)
+        public ShaderResourceViewProxy(Device device, Texture2DDescription textureDesc) : this(device)
         {
             resource = Collect(new Texture2D(device, textureDesc));
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShaderResouceViewProxy"/> class.
+        /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
         /// </summary>
         /// <param name="device">The device.</param>
         /// <param name="textureDesc">The texture desc.</param>
-        public ShaderResouceViewProxy(Device device, Texture3DDescription textureDesc) : this(device)
+        public ShaderResourceViewProxy(Device device, Texture3DDescription textureDesc) : this(device)
         {
             resource = Collect(new Texture3D(device, textureDesc));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="resource"></param>
+        public ShaderResourceViewProxy(Device device, Resource resource) : this(device)
+        {
+            this.resource = Collect(resource);
         }
 
         /// <summary>
@@ -137,35 +147,35 @@ namespace HelixToolkit.UWP.Utilities
             }
         }
         /// <summary>
-        /// Performs an implicit conversion from <see cref="ShaderResouceViewProxy"/> to <see cref="ShaderResourceView"/>.
+        /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="ShaderResourceView"/>.
         /// </summary>
         /// <param name="proxy">The proxy.</param>
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static implicit operator ShaderResourceView(ShaderResouceViewProxy proxy)
+        public static implicit operator ShaderResourceView(ShaderResourceViewProxy proxy)
         {
             return proxy.textureView;
         }
         /// <summary>
-        /// Performs an implicit conversion from <see cref="ShaderResouceViewProxy"/> to <see cref="DepthStencilView"/>.
+        /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="DepthStencilView"/>.
         /// </summary>
         /// <param name="proxy">The proxy.</param>
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static implicit operator DepthStencilView(ShaderResouceViewProxy proxy)
+        public static implicit operator DepthStencilView(ShaderResourceViewProxy proxy)
         {
             return proxy.depthStencilView;
         }
         /// <summary>
-        /// Performs an implicit conversion from <see cref="ShaderResouceViewProxy"/> to <see cref="RenderTargetView"/>.
+        /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="RenderTargetView"/>.
         /// </summary>
         /// <param name="proxy">The proxy.</param>
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static implicit operator RenderTargetView(ShaderResouceViewProxy proxy)
+        public static implicit operator RenderTargetView(ShaderResourceViewProxy proxy)
         {
             return proxy.renderTargetView;
         }

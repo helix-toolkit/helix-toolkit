@@ -248,5 +248,10 @@ namespace HelixToolkit.UWP.Utilities
             bufferDesc.SizeInBytes = structSize;            
             buffer = Collect(new SDX11.Buffer(device, bufferDesc));
         }
+
+        public static implicit operator SDX11.Buffer(ConstantBufferProxy proxy)
+        {
+            return proxy.buffer;
+        }
     }
 }

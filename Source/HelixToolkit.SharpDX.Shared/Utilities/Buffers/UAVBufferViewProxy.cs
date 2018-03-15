@@ -60,6 +60,16 @@ namespace HelixToolkit.UWP.Utilities
             device.CopyStructureCount(destBuffer, offset, UAV);
         }
 
+        public static implicit operator UnorderedAccessView(UAVBufferViewProxy proxy)
+        {
+            return proxy.uav;
+        }
+
+        public static implicit operator ShaderResourceView(UAVBufferViewProxy proxy)
+        {
+            return proxy.srv;
+        }
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 

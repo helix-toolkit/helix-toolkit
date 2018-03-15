@@ -372,14 +372,20 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector4 BottomLeft;
 
         public Vector2 TexTopRight;
-        Vector2 padding0;        
+        Vector2 pad0;
         public Vector2 TexTopLeft;
-        Vector2 padding1;
+        Vector2 pad1;
         public Vector2 TexBottomRight;
-        Vector2 padding2;
+        Vector2 pad2;
         public Vector2 TexBottomLeft;
-        Vector2 padding3;
-        public const int SizeInBytes = 4 * 4 * 8;
+        Vector2 pad3;
+
+        public Vector4 CursorTopRight;
+        public Vector4 CursorTopLeft;
+        public Vector4 CursorBottomRight;
+        public Vector4 CursorBottomLeft;
+
+        public const int SizeInBytes = 4 * 4 * 12;
     }
 #endif
 

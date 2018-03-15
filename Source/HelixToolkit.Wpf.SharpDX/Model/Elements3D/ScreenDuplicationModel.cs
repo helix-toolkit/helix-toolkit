@@ -84,6 +84,26 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [show mouse cursor].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show mouse cursor]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ShowMouseCursor
+        {
+            get { return (bool)GetValue(ShowMouseCursorProperty); }
+            set { SetValue(ShowMouseCursorProperty, value); }
+        }
+
+        /// <summary>
+        /// The show mouse cursor property
+        /// </summary>
+        public static readonly DependencyProperty ShowMouseCursorProperty =
+            DependencyProperty.Register("ShowMouseCursor", typeof(bool), typeof(ScreenDuplicationModel), new PropertyMetadata(true,
+                (d,e)=> {
+                    ((d as IRenderable).RenderCore as IScreenClone).ShowMouseCursor = (bool)e.NewValue;
+                }));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenDuplicationModel"/> class.
@@ -91,7 +111,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public ScreenDuplicationModel()
         {
             IsHitTestVisible = false;
-
         }
         /// <summary>
         /// Called when [create render core].
