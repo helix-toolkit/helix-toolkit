@@ -435,7 +435,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <summary>
         /// Invalidates the render.
         /// </summary>
-        protected void InvalidateRender()
+        public void InvalidateRender()
         {
             RenderHost?.InvalidateRender();
         }

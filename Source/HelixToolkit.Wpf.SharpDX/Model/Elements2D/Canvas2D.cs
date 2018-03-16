@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// The left property
         /// </summary>
         public static readonly DependencyProperty LeftProperty = DependencyProperty.RegisterAttached("Left", typeof(double), typeof(Canvas2D),
-            new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).InvalidateMeasure(); }));
         /// <summary>
         /// Sets the left.
         /// </summary>
@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// The top property
         /// </summary>
         public static readonly DependencyProperty TopProperty = DependencyProperty.RegisterAttached("Top", typeof(double), typeof(Canvas2D),
-            new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).InvalidateMeasure(); }));
         /// <summary>
         /// Sets the top.
         /// </summary>
@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// The right property
         /// </summary>
         public static readonly DependencyProperty RightProperty = DependencyProperty.RegisterAttached("Right", typeof(double), typeof(Canvas2D),
-            new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).InvalidateMeasure(); }));
         /// <summary>
         /// Sets the right.
         /// </summary>
@@ -89,7 +89,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// The bottom property
         /// </summary>
         public static readonly DependencyProperty BottomProperty = DependencyProperty.RegisterAttached("Bottom", typeof(double), typeof(Canvas2D),
-            new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).InvalidateMeasure(); }));
         /// <summary>
         /// Sets the bottom.
         /// </summary>

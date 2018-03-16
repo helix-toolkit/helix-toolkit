@@ -22,8 +22,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The EffectsManager property.
         /// </summary>
         public static readonly DependencyProperty EffectsManagerProperty = DependencyProperty.Register(
-            "EffectsManager", typeof(IEffectsManager), typeof(ScreenDuplicationViewport3DX), new FrameworkPropertyMetadata(
-                null, FrameworkPropertyMetadataOptions.AffectsRender,
+            "EffectsManager", typeof(IEffectsManager), typeof(ScreenDuplicationViewport3DX), new PropertyMetadata(
+                null,
                 (s, e) => ((ScreenDuplicationViewport3DX)s).EffectsManagerPropertyChanged()));
 
         /// <summary>

@@ -35,11 +35,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// The image stream property
         /// </summary>
         public static readonly DependencyProperty ImageStreamProperty =
-            DependencyProperty.Register("ImageStream", typeof(Stream), typeof(ImageModel2D), new FrameworkPropertyMetadata(null,
-                FrameworkPropertyMetadataOptions.AffectsRender,
+            DependencyProperty.Register("ImageStream", typeof(Stream), typeof(ImageModel2D), new PropertyMetadata(null,
                 (d,e)=> 
                 {
-                    (d as ImageModel2D).bitmapChanged = true;
+                    var m = d as ImageModel2D;
+                    m.bitmapChanged = true;
+                    m.InvalidateRender();
                 }));
 
 

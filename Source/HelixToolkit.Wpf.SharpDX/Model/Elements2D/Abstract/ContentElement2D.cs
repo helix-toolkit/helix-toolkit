@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     public abstract class ContentElement2D : Element2D
     {
         public static readonly DependencyProperty Content2DProperty = DependencyProperty.Register("Content2D", typeof(object), typeof(ContentElement2D), 
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure,
+            new PropertyMetadata(null, 
                 (d,e)=>
             {
                 var model = d as ContentElement2D;
@@ -64,6 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                         model.contentInternal.Attach(model.RenderHost);
                     }
                 }
+                model.InvalidateMeasure();
             }));
 
         [Bindable(true)]
@@ -81,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty ForegroundProperty
             = DependencyProperty.Register("Foreground", typeof(Brush), typeof(ContentElement2D),
-                new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black), FrameworkPropertyMetadataOptions.AffectsRender));
+                new PropertyMetadata(new SolidColorBrush(Colors.Black), (d,e)=> { (d as Element2DCore).InvalidateRender(); }));
 
         public Brush Foreground
         {
@@ -97,10 +98,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty BackgroundProperty
             = DependencyProperty.Register("Background", typeof(Brush), typeof(ContentElement2D),
-                new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Transparent), FrameworkPropertyMetadataOptions.AffectsRender,
+                new PropertyMetadata(new SolidColorBrush(Colors.Transparent), 
                 (d,e)=>
                 {
-                    (d as ContentElement2D).backgroundChanged = true;
+                    var m = d as ContentElement2D;
+                    m.backgroundChanged = true;
+                    m.InvalidateRender();
                 }));
 
         public Brush Background
@@ -124,7 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty HorizontalContentAlignmentProperty =
             DependencyProperty.Register("HorizontalContentAlignment", typeof(HorizontalAlignment), typeof(ContentElement2D), 
-                new FrameworkPropertyMetadata(HorizontalAlignment.Center, FrameworkPropertyMetadataOptions.AffectsMeasure));
+                new PropertyMetadata(HorizontalAlignment.Center, (d,e)=> { (d as Element2DCore).InvalidateMeasure(); }));
 
 
         public VerticalAlignment VerticalContentAlignment
@@ -135,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty VerticalContentAlignmentProperty =
             DependencyProperty.Register("VerticalContentAlignment", typeof(VerticalAlignment), typeof(ContentElement2D), 
-                new FrameworkPropertyMetadata(VerticalAlignment.Center, FrameworkPropertyMetadataOptions.AffectsMeasure));
+                new PropertyMetadata(VerticalAlignment.Center, (d, e) => { (d as Element2DCore).InvalidateMeasure(); }));
 
         protected Element2D contentInternal { private set; get; }
 

@@ -13,27 +13,28 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     {
         public static readonly DependencyProperty Content2DProperty = DependencyProperty.Register("Content", typeof(Element2DCore), 
             typeof(ContentPresenter2D),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure,
-        (d, e) =>
-        {
-            var model = d as ContentPresenter2D;
-
-            if (model.contentInternal != null)
+            new PropertyMetadata(null, 
+            (d, e) =>
             {
-                model.RemoveLogicalChild(model.contentInternal);
-                model.contentInternal.Detach();
-            }
-            model.contentInternal = (Element2DCore)e.NewValue;
+                var model = d as ContentPresenter2D;
 
-            if (model.contentInternal != null)
-            {
-                model.AddLogicalChild(model.contentInternal);
-                if (model.IsAttached)
+                if (model.contentInternal != null)
                 {
-                    model.contentInternal.Attach(model.RenderHost);
+                    model.RemoveLogicalChild(model.contentInternal);
+                    model.contentInternal.Detach();
                 }
-            }
-        }));
+                model.contentInternal = (Element2DCore)e.NewValue;
+
+                if (model.contentInternal != null)
+                {
+                    model.AddLogicalChild(model.contentInternal);
+                    if (model.IsAttached)
+                    {
+                        model.contentInternal.Attach(model.RenderHost);
+                    }
+                }
+                model.InvalidateMeasure();
+            }));
 
         [Bindable(true)]
         public Element2DCore Content2D
