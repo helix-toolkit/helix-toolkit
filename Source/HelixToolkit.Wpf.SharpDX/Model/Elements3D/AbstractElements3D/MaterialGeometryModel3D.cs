@@ -99,6 +99,21 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("Material", typeof(Material), typeof(MaterialGeometryModel3D), new PropertyMetadata(null, MaterialChanged));
 
         /// <summary>
+        /// Specifiy if model material is transparent. 
+        /// During rendering, transparent objects are rendered after opaque objects. Transparent objects' order in scene graph are preserved.
+        /// </summary>
+        public static readonly DependencyProperty IsTransparentProperty =
+            DependencyProperty.Register("IsTransparent", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false, (d, e) =>
+            {
+                var model = d as Element3DCore;
+                if (model.RenderCore.RenderType == RenderType.Opaque || model.RenderCore.RenderType == RenderType.Transparent)
+                {
+                    model.RenderCore.RenderType = (bool)e.NewValue ? RenderType.Transparent : RenderType.Opaque;
+                }
+            }));
+
+
+        /// <summary>
         /// 
         /// </summary>
         public bool RenderDiffuseMap
@@ -162,6 +177,16 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (Material)this.GetValue(MaterialProperty); }
             set { this.SetValue(MaterialProperty, value); }
+        }
+
+        /// <summary>
+        /// Specifiy if model material is transparent. 
+        /// During rendering, transparent objects are rendered after opaque objects. Transparent objects' order in scene graph are preserved.
+        /// </summary>
+        public bool IsTransparent
+        {
+            get { return (bool)GetValue(IsTransparentProperty); }
+            set { SetValue(IsTransparentProperty, value); }
         }
         #endregion
 

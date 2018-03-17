@@ -9,16 +9,23 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    /// <summary>
+    /// Used for render ordering. Order is the same as render type defined.
+    /// </summary>
     public enum RenderType : ushort
     {
-        None, Light, PreProc, Normal, Particle, PostProc, ScreenSpaced, Others
+        None, Light, PreProc, Opaque, Particle, Transparent, PostProc, ScreenSpaced
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public enum MSAALevel : ushort
     {
         Disable = 0, Maximum = 1, Two = 2, Four = 4, Eight = 8
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public enum LightType : ushort
     {
         Ambient = 0, Directional = 1, Point = 2, Spot = 3, ThreePoint = 4, None = 5
@@ -79,7 +86,9 @@ namespace HelixToolkit.Wpf.SharpDX
         TriangleInfo = 4,
         Camera = 8,
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public struct EnumHelper
     {
         public static bool HasFlag(ShaderStage option, ShaderStage flag)

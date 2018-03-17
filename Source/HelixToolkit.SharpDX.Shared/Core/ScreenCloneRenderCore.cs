@@ -161,7 +161,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenCloneRenderCore"/> class.
         /// </summary>
-        public ScreenCloneRenderCore() : base(RenderType.Others) { }
+        public ScreenCloneRenderCore() : base(RenderType.Opaque) { }
         /// <summary>
         /// Gets the model constant buffer description.
         /// </summary>

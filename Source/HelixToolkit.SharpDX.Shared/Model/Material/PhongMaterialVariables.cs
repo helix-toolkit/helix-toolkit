@@ -25,7 +25,6 @@ namespace HelixToolkit.UWP.Model
         /// <see cref="IEffectMaterialVariables.OnInvalidateRenderer"/> 
         /// </summary>
         public event EventHandler<EventArgs> OnInvalidateRenderer;
-
         /// <summary>
         ///
         /// </summary>
@@ -273,41 +272,41 @@ namespace HelixToolkit.UWP.Model
             {
                 return;
             }
-            if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseMap)))
+            if (e.PropertyName.Equals(nameof(PhongMaterialCore.DiffuseMap)))
             {
-                CreateTextureView((sender as IPhongMaterial).DiffuseMap, TextureResources[DiffuseIdx]);
+                CreateTextureView((sender as PhongMaterialCore).DiffuseMap, TextureResources[DiffuseIdx]);
             }
-            else if (e.PropertyName.Equals(nameof(IPhongMaterial.NormalMap)))
+            else if (e.PropertyName.Equals(nameof(PhongMaterialCore.NormalMap)))
             {
-                CreateTextureView((sender as IPhongMaterial).NormalMap, TextureResources[NormalIdx]);
+                CreateTextureView((sender as PhongMaterialCore).NormalMap, TextureResources[NormalIdx]);
             }
-            else if (e.PropertyName.Equals(nameof(IPhongMaterial.DisplacementMap)))
+            else if (e.PropertyName.Equals(nameof(PhongMaterialCore.DisplacementMap)))
             {
-                CreateTextureView((sender as IPhongMaterial).DisplacementMap, TextureResources[DisplaceIdx]);
+                CreateTextureView((sender as PhongMaterialCore).DisplacementMap, TextureResources[DisplaceIdx]);
             }
-            else if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseAlphaMap)))
+            else if (e.PropertyName.Equals(nameof(PhongMaterialCore.DiffuseAlphaMap)))
             {
-                CreateTextureView((sender as IPhongMaterial).DiffuseAlphaMap, TextureResources[AlphaIdx]);
+                CreateTextureView((sender as PhongMaterialCore).DiffuseAlphaMap, TextureResources[AlphaIdx]);
             }
-            else if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseMapSampler)))
+            else if (e.PropertyName.Equals(nameof(PhongMaterialCore.DiffuseMapSampler)))
             {
                 RemoveAndDispose(ref SamplerResources[DiffuseIdx]);
-                SamplerResources[DiffuseIdx] = Collect(statePoolManager.Register((sender as IPhongMaterial).DiffuseMapSampler));
+                SamplerResources[DiffuseIdx] = Collect(statePoolManager.Register((sender as PhongMaterialCore).DiffuseMapSampler));
             }
-            else if (e.PropertyName.Equals(nameof(IPhongMaterial.DiffuseAlphaMapSampler)))
+            else if (e.PropertyName.Equals(nameof(PhongMaterialCore.DiffuseAlphaMapSampler)))
             {
                 RemoveAndDispose(ref SamplerResources[AlphaIdx]);
-                SamplerResources[AlphaIdx] = Collect(statePoolManager.Register((sender as IPhongMaterial).DiffuseAlphaMapSampler));
+                SamplerResources[AlphaIdx] = Collect(statePoolManager.Register((sender as PhongMaterialCore).DiffuseAlphaMapSampler));
             }
-            else if (e.PropertyName.Equals(nameof(IPhongMaterial.DisplacementMapSampler)))
+            else if (e.PropertyName.Equals(nameof(PhongMaterialCore.DisplacementMapSampler)))
             {
                 RemoveAndDispose(ref SamplerResources[DisplaceIdx]);
-                SamplerResources[DisplaceIdx] = Collect(statePoolManager.Register((sender as IPhongMaterial).DisplacementMapSampler));
+                SamplerResources[DisplaceIdx] = Collect(statePoolManager.Register((sender as PhongMaterialCore).DisplacementMapSampler));
             }
-            else if (e.PropertyName.Equals(nameof(IPhongMaterial.NormalMapSampler)))
+            else if (e.PropertyName.Equals(nameof(PhongMaterialCore.NormalMapSampler)))
             {
                 RemoveAndDispose(ref SamplerResources[NormalIdx]);
-                SamplerResources[NormalIdx] = Collect(statePoolManager.Register((sender as IPhongMaterial).NormalMapSampler));
+                SamplerResources[NormalIdx] = Collect(statePoolManager.Register((sender as PhongMaterialCore).NormalMapSampler));
             }
             OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
         }

@@ -23,6 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     {
         private readonly Stack<KeyValuePair<int, IList<IRenderable>>> stackCache1 = new Stack<KeyValuePair<int, IList<IRenderable>>>(20);
         private readonly Stack<KeyValuePair<int, IList<IRenderable2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<IRenderable2D>>>(20);
+        protected readonly List<IRenderCore> filters = new List<IRenderCore>();
         /// <summary>
         /// Gets or sets the immediate context.
         /// </summary>
@@ -103,9 +104,32 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public virtual void RenderScene(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
         {
             int count = renderables.Count;
+            filters.Clear();
             for (int i = 0; i < count; ++i)
             {
-                renderables[i].Render(context, ImmediateContext);
+                if (renderables[i].RenderType == RenderType.Opaque)
+                {
+                    renderables[i].Render(context, ImmediateContext);
+                }
+                else
+                {
+                    filters.Add(renderables[i]);
+                }
+            }
+            count = filters.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                if (filters[i].RenderType == RenderType.Particle)
+                {
+                    filters[i].Render(context, ImmediateContext);
+                }
+            }
+            for (int i = 0; i < count; ++i)
+            {
+                if (filters[i].RenderType == RenderType.Transparent)
+                {
+                    filters[i].Render(context, ImmediateContext);
+                }
             }
         }
         /// <summary>
@@ -156,7 +180,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         public virtual void RenderPreProc(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
         {
-            RenderScene(context, renderables, ref parameter);
+            int count = renderables.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                renderables[i].Render(context, ImmediateContext);
+            }
         }
 
         /// <summary>
@@ -167,7 +195,19 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         public virtual void RenderPostProc(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
         {
-            RenderScene(context, renderables, ref parameter);
+            int count = renderables.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                renderables[i].Render(context, ImmediateContext);
+            }
+        }
+
+        protected override void OnDispose(bool disposeManagedResources)
+        {
+            filters.Clear();
+            stackCache1.Clear();
+            stack2DCache1.Clear();
+            base.OnDispose(disposeManagedResources);
         }
     }
 

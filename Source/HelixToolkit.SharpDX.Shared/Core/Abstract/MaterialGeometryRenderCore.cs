@@ -163,7 +163,7 @@ namespace HelixToolkit.UWP.Core
                 MaterialVariables.RenderDisplacementMap = this.RenderDisplacementMap;
                 MaterialVariables.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
                 MaterialVariables.RenderEnvironmentMap = this.RenderEnvironmentMap;
-                MaterialVariables.OnInvalidateRenderer += (s,e)=> { InvalidateRenderer(); };
+                MaterialVariables.OnInvalidateRenderer += (s,e)=> { InvalidateRenderer(); };                
                 return true;
             }
             else

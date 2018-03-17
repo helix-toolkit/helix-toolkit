@@ -147,10 +147,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public override bool EndDraw()
         {
+            Device.ImmediateContext.Flush();
 #if MSAA
             Device.ImmediateContext.ResolveSubresource(ColorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-#endif
-
+#endif            
             return true;
         }
         /// <summary>
@@ -158,8 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <returns></returns>
         public override bool Present()
-        {
-            Device.ImmediateContext.Flush();
+        {          
             return true;
         }
     }
