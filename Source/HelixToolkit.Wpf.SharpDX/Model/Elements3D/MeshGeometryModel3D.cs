@@ -264,7 +264,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Called when [create render core].
         /// </summary>
         /// <returns></returns>
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {
             return new PatchMeshRenderCore();
         }
@@ -272,7 +272,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Assigns the default values to core.
         /// </summary>
         /// <param name="core">The core.</param>
-        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        protected override void AssignDefaultValuesToCore(RenderCore core)
         {
             var c = core as IMeshRenderParams;
             c.InvertNormal = this.InvertNormal;

@@ -37,23 +37,23 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// The pending render cores
         /// </summary>
-        protected readonly List<IRenderCore> generalRenderCores = new List<IRenderCore>();
+        protected readonly List<RenderCore> generalRenderCores = new List<RenderCore>();
         /// <summary>
         /// The pending render cores
         /// </summary>
-        protected readonly List<IRenderCore> preProcRenderCores = new List<IRenderCore>();
+        protected readonly List<RenderCore> preProcRenderCores = new List<RenderCore>();
         /// <summary>
         /// The pending render cores
         /// </summary>
-        protected readonly List<IRenderCore> postProcRenderCores = new List<IRenderCore>();
+        protected readonly List<RenderCore> postProcRenderCores = new List<RenderCore>();
         /// <summary>
         /// The render cores for post render
         /// </summary>
-        protected readonly List<IRenderCore> renderCoresForPostRender = new List<IRenderCore>();
+        protected readonly List<RenderCore> renderCoresForPostRender = new List<RenderCore>();
         /// <summary>
         /// The pending render cores
         /// </summary>
-        protected readonly List<IRenderCore> screenSpacedRenderCores = new List<IRenderCore>();
+        protected readonly List<RenderCore> screenSpacedRenderCores = new List<RenderCore>();
 
         /// <summary>
         /// The viewport renderable2D
@@ -81,14 +81,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Gets the per frame render cores for normal rendering routine. <see cref="RenderType.Opaque"/>, <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
         /// <para>This does not include <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
-        public override List<IRenderCore> PerFrameGeneralRenderCores { get { return generalRenderCores; } }
+        public override List<RenderCore> PerFrameGeneralRenderCores { get { return generalRenderCores; } }
         /// <summary>
         /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameGeneralRenderCores"/>
         /// </summary>
         /// <value>
         /// The per frame post effects cores.
         /// </value>
-        public override List<IRenderCore> PerFrameGeneralCoresWithPostEffect
+        public override List<RenderCore> PerFrameGeneralCoresWithPostEffect
         {
             get { return renderCoresForPostRender; }
         }

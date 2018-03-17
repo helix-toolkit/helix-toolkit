@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderPreProc(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter);
+        void RenderPreProc(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter);
 
         /// <summary>
         /// Render post processing, such as bloom effects etc.
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderPostProc(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter);
+        void RenderPostProc(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter);
 
         /// <summary>
         /// Run actual rendering for render cores.
@@ -112,9 +112,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderScene(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter);
+        void RenderScene(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter);
         /// <summary>
-        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderScene(IRenderContext, List{IRenderCore}, ref RenderParameter)"/>
+        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderScene(IRenderContext, List{RenderCore}, ref RenderParameter)"/>
         /// <para>Warning: Dependency properties are thread affinity. Do not get/set any dependency property in this function.</para>
         /// </summary>
         /// <param name="renderables"></param>

@@ -95,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return host.EffectsManager[DefaultRenderTechniqueNames.InstancingBlinn];
         }
 
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {
             return new InstancingMeshRenderCore() { ParameterBuffer = this.instanceParamBuffer };
         }

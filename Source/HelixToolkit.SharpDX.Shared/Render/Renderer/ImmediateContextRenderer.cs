@@ -23,7 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     {
         private readonly Stack<KeyValuePair<int, IList<IRenderable>>> stackCache1 = new Stack<KeyValuePair<int, IList<IRenderable>>>(20);
         private readonly Stack<KeyValuePair<int, IList<IRenderable2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<IRenderable2D>>>(20);
-        protected readonly List<IRenderCore> filters = new List<IRenderCore>();
+        protected readonly List<RenderCore> filters = new List<RenderCore>();
         /// <summary>
         /// Gets or sets the immediate context.
         /// </summary>
@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderScene(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
+        public virtual void RenderScene(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter)
         {
             int count = renderables.Count;
             filters.Clear();
@@ -178,7 +178,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderPreProc(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
+        public virtual void RenderPreProc(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter)
         {
             int count = renderables.Count;
             for (int i = 0; i < count; ++i)
@@ -193,7 +193,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderPostProc(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
+        public virtual void RenderPostProc(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter)
         {
             int count = renderables.Count;
             for (int i = 0; i < count; ++i)

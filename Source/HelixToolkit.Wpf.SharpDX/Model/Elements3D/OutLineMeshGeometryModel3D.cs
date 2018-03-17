@@ -81,12 +81,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {
             return new MeshOutlineRenderCore();
         }
 
-        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        protected override void AssignDefaultValuesToCore(RenderCore core)
         {
             var c = core as IMeshOutlineParams;
             c.Color = this.OutlineColor.ToColor4();

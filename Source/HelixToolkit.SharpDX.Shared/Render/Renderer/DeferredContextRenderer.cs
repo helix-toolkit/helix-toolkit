@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public override void RenderScene(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
+        public override void RenderScene(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter)
         {          
             if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, RenderType.Opaque, commandList))
             {
@@ -77,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
 
 
-        private void RenderOthers(List<IRenderCore> list, RenderType filter, IRenderContext context, IDeviceContextPool deviceContextPool,
+        private void RenderOthers(List<RenderCore> list, RenderType filter, IRenderContext context, IDeviceContextPool deviceContextPool,
             ref RenderParameter parameter,
             CommandList[] commandsArray,int idx)
         {

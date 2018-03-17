@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly char[] Separators = { ';', ' ', ',' };
 
         public static readonly List<IRenderable> EmptyRenderable = new List<IRenderable>();
-        public static readonly List<IRenderCore> EmptyCore = new List<IRenderCore>();
+        public static readonly List<RenderCore> EmptyCore = new List<RenderCore>();
         public static readonly IList<IRenderable2D> EmptyRenderable2D = new List<IRenderable2D>();
         public static readonly IList<IRenderCore2D> EmptyCore2D = new List<IRenderCore2D>();
     }

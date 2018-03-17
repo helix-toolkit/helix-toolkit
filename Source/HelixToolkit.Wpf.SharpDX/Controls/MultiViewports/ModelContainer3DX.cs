@@ -141,14 +141,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The per frame post effect cores.
         /// </value>
-        public List<IRenderCore> PerFrameGeneralCoresWithPostEffect { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralCoresWithPostEffect : Constants.EmptyCore; } }
+        public List<RenderCore> PerFrameGeneralCoresWithPostEffect { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralCoresWithPostEffect : Constants.EmptyCore; } }
         /// <summary>
         /// Gets the per frame general render cores.
         /// </summary>
         /// <value>
         /// The per frame general render cores.
         /// </value>
-        public List<IRenderCore> PerFrameGeneralRenderCores { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralRenderCores : Constants.EmptyCore; } }
+        public List<RenderCore> PerFrameGeneralRenderCores { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralRenderCores : Constants.EmptyCore; } }
 
         /// <summary>
         /// Handles the change of the effects manager.

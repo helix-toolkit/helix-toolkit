@@ -55,12 +55,12 @@ namespace HelixToolkit.Wpf.SharpDX
             return host.EffectsManager[DefaultRenderTechniqueNames.BoneSkinBlinn];
         }
 
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {         
             return new BoneSkinRenderCore();
         }
 
-        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        protected override void AssignDefaultValuesToCore(RenderCore core)
         {
             base.AssignDefaultValuesToCore(core);
             boneSkinRenderCore.BoneMatrices = BoneMatrices;

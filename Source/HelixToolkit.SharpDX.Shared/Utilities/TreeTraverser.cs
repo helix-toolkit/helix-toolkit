@@ -94,7 +94,7 @@ namespace HelixToolkit.UWP
         /// <param name="condition"></param>
         /// <param name="stackCache"></param>
         /// <returns></returns>
-        public static IEnumerable<IRenderCore> PreorderDFTGetCores(this IEnumerable<IRenderable> nodes, Func<IRenderable, bool> condition,
+        public static IEnumerable<RenderCore> PreorderDFTGetCores(this IEnumerable<IRenderable> nodes, Func<IRenderable, bool> condition,
             Stack<IEnumerator<IRenderable>> stackCache = null)
         {
             var stack = stackCache == null ? new Stack<IEnumerator<IRenderable>>(20) : stackCache;

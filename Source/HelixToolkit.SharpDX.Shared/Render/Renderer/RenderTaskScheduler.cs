@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="outputCommands">The output commands.</param>
         /// <param name="filterType"></param>
         /// <returns></returns>
-        bool ScheduleAndRun(List<IRenderCore> items, IDeviceContextPool pool,
+        bool ScheduleAndRun(List<RenderCore> items, IDeviceContextPool pool,
             IRenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands);
     }
     /// <summary>
@@ -109,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="filterType"></param>
         /// <param name="outputCommands"></param>
         /// <returns></returns>
-        public bool ScheduleAndRun(List<IRenderCore> items, IDeviceContextPool pool,
+        public bool ScheduleAndRun(List<RenderCore> items, IDeviceContextPool pool,
             IRenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands)
         {
             outputCommands.Clear();

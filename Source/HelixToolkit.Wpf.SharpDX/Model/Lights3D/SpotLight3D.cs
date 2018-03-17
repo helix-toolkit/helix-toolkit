@@ -85,12 +85,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }   
 
 
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {
             return new SpotLightCore();
         }
 
-        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        protected override void AssignDefaultValuesToCore(RenderCore core)
         {
             base.AssignDefaultValuesToCore(core);
             (core as SpotLightCore).Direction = Direction.ToVector3();

@@ -39,7 +39,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         IList<IRenderable> Items { get; }
 
-        IRenderCore RenderCore { get; }
+        RenderCore RenderCore { get; }
         /// <summary>
         /// Update render related parameters such as model matrix by scene graph and bounding boxes
         /// </summary>
