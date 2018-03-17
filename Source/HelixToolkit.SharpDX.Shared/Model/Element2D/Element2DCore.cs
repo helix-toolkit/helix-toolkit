@@ -66,14 +66,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// </value>
         public bool IsRenderable { private set; get; } = true;
 
-        private IRenderCore2D renderCore;
+        private RenderCore2D renderCore;
         /// <summary>
         /// Gets or sets the render core.
         /// </summary>
         /// <value>
         /// The render core.
         /// </value>
-        public IRenderCore2D RenderCore
+        public RenderCore2D RenderCore
         {
             private set
             {
@@ -220,7 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// Creates the render core.
         /// </summary>
         /// <returns></returns>
-        protected virtual IRenderCore2D CreateRenderCore() { return new EmptyRenderCore2D(); }
+        protected virtual RenderCore2D CreateRenderCore() { return new EmptyRenderCore2D(); }
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>Attach Flow: Set RenderHost -> Get Effect ->

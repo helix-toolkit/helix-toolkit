@@ -231,7 +231,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected ShapeRenderCore2DBase shapeRenderable;
 
 
-        protected override IRenderCore2D CreateRenderCore()
+        protected override RenderCore2D CreateRenderCore()
         {
             shapeRenderable = CreateShapeRenderCore();
             AssignProperties();

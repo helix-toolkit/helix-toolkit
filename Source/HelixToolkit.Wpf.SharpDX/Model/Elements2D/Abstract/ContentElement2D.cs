@@ -160,7 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected BorderRenderCore2D borderCore { private set; get; }
 
-        protected override IRenderCore2D CreateRenderCore()
+        protected override RenderCore2D CreateRenderCore()
         {
             borderCore = new BorderRenderCore2D();
             return borderCore;

@@ -69,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected bool bitmapChanged { private set; get; } = true;
 
-        protected override IRenderCore2D CreateRenderCore()
+        protected override RenderCore2D CreateRenderCore()
         {
             return new ImageRenderCore2D();
         }

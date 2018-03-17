@@ -10,6 +10,8 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Core;
+    using Core2D;
+
     public static class TreeTraverser
     {
         /// <summary>
@@ -162,7 +164,7 @@ namespace HelixToolkit.UWP
         /// <param name="condition"></param>
         /// <param name="stackCache"></param>
         /// <returns></returns>
-        public static IEnumerable<IRenderCore2D> PreorderDFTGetCores(this IEnumerable<IRenderable2D> nodes, Func<IRenderable2D, bool> condition,
+        public static IEnumerable<RenderCore2D> PreorderDFTGetCores(this IEnumerable<IRenderable2D> nodes, Func<IRenderable2D, bool> condition,
             Stack<IEnumerator<IRenderable2D>> stackCache = null)
         {
             var stack = stackCache == null ? new Stack<IEnumerator<IRenderable2D>>(20) : stackCache;
