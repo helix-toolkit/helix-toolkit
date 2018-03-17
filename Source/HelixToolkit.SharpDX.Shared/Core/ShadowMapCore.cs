@@ -223,28 +223,21 @@ namespace HelixToolkit.UWP.Core
             context.BoundingFrustum = new BoundingFrustum(LightViewProjectMatrix);
 #if !TEST            
             deviceContext.DeviceContext.Rasterizer.SetViewport(0, 0, Width, Height);
-            try
+
+            deviceContext.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
+            for (int i = 0; i < context.RenderHost.PerFrameGeneralRenderCores.Count; ++i)
             {
-                deviceContext.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
-                for (int i = 0; i < context.RenderHost.PerFrameGeneralRenderCores.Count; ++i)
+                var core = context.RenderHost.PerFrameGeneralRenderCores[i];
+                if (core.IsThrowingShadow && core.RenderType == RenderType.Opaque)
                 {
-                    if (context.RenderHost.PerFrameGeneralRenderCores[i].IsThrowingShadow)
-                    {
-                        context.RenderHost.PerFrameGeneralRenderCores[i].Render(context, deviceContext);
-                    }
+                    core.Render(context, deviceContext);
                 }
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            finally
-            {
-                context.IsShadowPass = false;
-                context.BoundingFrustum = orgFrustum;
-                context.RenderHost.SetDefaultRenderTargets(false);
-                context.SharedResource.ShadowView = viewResource.TextureView;
-            }
+
+            context.IsShadowPass = false;
+            context.BoundingFrustum = orgFrustum;
+            context.RenderHost.SetDefaultRenderTargets(false);
+            context.SharedResource.ShadowView = viewResource.TextureView;
 #endif
         }
 
