@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             set
             {
                 if (Set(ref visibilityInternal, value))
-                { InvalidateRender(); }
+                { InvalidateVisual(); }
             }
             get { return visibilityInternal; }
         }
@@ -427,10 +427,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 return false;
             }
         }
-
+        /// <summary>
+        /// Use InvalidateVisual if render update required.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void RenderCore_OnInvalidateRenderer(object sender, EventArgs e)
         {
-            InvalidateRender();
+            InvalidateVisual();
         }
         /// <summary>
         /// Invalidates the render.
