@@ -184,7 +184,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryRenderCore{MODELSTRUCT}"/> class.
         /// </summary>
-        public GeometryRenderCore() : base(RenderType.Normal) { }
+        public GeometryRenderCore() : base(RenderType.Opaque) { }
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryRenderCore{MODELSTRUCT}"/> class.
         /// </summary>

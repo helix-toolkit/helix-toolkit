@@ -4,7 +4,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
 using SharpDX.Direct3D11;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -15,107 +14,6 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Model;
-    using Render;
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IRenderCore : IGUID, IThrowingShadow
-    {
-        RenderType RenderType { set; get; }
-        /// <summary>
-        /// Occurs when [on invalidate renderer].
-        /// </summary>
-        event EventHandler<EventArgs> OnInvalidateRenderer;
-
-        /// <summary>
-        /// Gets or sets the model matrix.
-        /// </summary>
-        /// <value>
-        /// The model matrix.
-        /// </value>
-        Matrix ModelMatrix { set; get; }
-        /// <summary>
-        /// Gets the effect technique.
-        /// </summary>
-        /// <value>
-        /// The effect technique.
-        /// </value>
-        IRenderTechnique EffectTechnique { get; }
-        /// <summary>
-        /// Gets the device.
-        /// </summary>
-        /// <value>
-        /// The device.
-        /// </value>
-        Device Device { get; }
-        /// <summary>
-        /// If render core is attached or not
-        /// </summary>
-        bool IsAttached { get; }
-        /// <summary>
-        /// Gets the post effect name collections for this model.
-        /// </summary>
-        /// <value>
-        /// The post effect names
-        /// </value>
-        IEnumerable<string> PostEffectNames { get; }
-        /// <summary>
-        /// Gets a value indicating whether this instance has any post effect.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance has any post effect; otherwise, <c>false</c>.
-        /// </value>
-        bool HasAnyPostEffect { get; }
-
-        /// <summary>
-        /// Adds the post effect.
-        /// </summary>
-        /// <param name="effect">The effect.</param>
-        void AddPostEffect(IEffectAttributes effect);
-        /// <summary>
-        /// Removes the post effect.
-        /// </summary>
-        /// <param name="effectName">Name of the effect.</param>
-        void RemovePostEffect(string effectName);
-        /// <summary>
-        /// Determines whether [has post effect] [the specified effect name].
-        /// </summary>
-        /// <param name="effectName">Name of the effect.</param>
-        /// <returns>
-        ///   <c>true</c> if [has post effect] [the specified effect name]; otherwise, <c>false</c>.
-        /// </returns>
-        bool HasPostEffect(string effectName);
-        /// <summary>
-        /// Tries the get post effect.
-        /// </summary>
-        /// <param name="effectName">Name of the effect.</param>
-        /// <param name="effect">The effect.</param>
-        /// <returns></returns>
-        bool TryGetPostEffect(string effectName, out IEffectAttributes effect);
-        /// <summary>
-        /// Clears the post effect.
-        /// </summary>
-        void ClearPostEffect();
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="technique"></param>
-        void Attach(IRenderTechnique technique);
-        /// <summary>
-        /// 
-        /// </summary>
-        void Detach();
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="deviceContext"></param>
-        void Render(IRenderContext context, DeviceContextProxy deviceContext);
-        /// <summary>
-        /// Unsubscribe all OnInvalidateRenderer event handler;
-        /// </summary>
-        void ResetInvalidateHandler();
-    }
     /// <summary>
     /// 
     /// </summary>
@@ -150,6 +48,7 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         RasterizerStateDescription RasterDescription { set; get; }
     }
+
     /// <summary>
     /// 
     /// </summary>

@@ -219,7 +219,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         private bool foregroundChanged = true;
         private bool backgroundChanged = true;
 
-        protected override IRenderCore2D CreateRenderCore()
+        protected override RenderCore2D CreateRenderCore()
         {
             textRenderable = new TextRenderCore2D();
             AssignProperties();

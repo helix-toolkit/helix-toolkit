@@ -168,7 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected abstract void UpdateModel(Vector3 upDirection);
 
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {
             InitializeMover();
             return new ScreenSpacedMeshRenderCore();

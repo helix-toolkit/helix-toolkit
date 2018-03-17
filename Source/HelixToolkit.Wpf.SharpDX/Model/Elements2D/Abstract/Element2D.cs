@@ -19,8 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// 
         /// </summary>
         public static readonly DependencyProperty VisibilityProperty =
-            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element2D), new FrameworkPropertyMetadata(Visibility.Visible, 
-                FrameworkPropertyMetadataOptions.AffectsRender,
+            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element2D), new PropertyMetadata(Visibility.Visible, 
                 (d, e) =>
                 {
                     (d as Element2DCore).VisibilityInternal = (Visibility)e.NewValue;
@@ -64,11 +63,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// </summary>
         public new static readonly DependencyProperty IsMouseOverProperty =
             DependencyProperty.Register("IsMouseOver", typeof(bool), typeof(Element2D),
-                new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender, (d, e) =>
+                new PropertyMetadata(false, (d, e) =>
             {
                 var model = d as Element2D;
                 model.RenderCore.IsMouseOver = (bool)e.NewValue;
                 model.OnMouseOverChanged((bool)e.NewValue, (bool)e.OldValue);
+                model.InvalidateRender();
             }));
         /// <summary>
         /// Gets or sets a value indicating whether this instance is mouse over2 d.
@@ -373,26 +373,26 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 #endif
         }
 
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
-        {
-            var pm = e.Property.GetMetadata(this);
-            if(pm is FrameworkPropertyMetadata fm)
-            {
-                if (fm.AffectsMeasure)
-                {
-                    InvalidateMeasure();
-                }
-                else if (fm.AffectsArrange)
-                {
-                    InvalidateArrange();
-                }
-                if (fm.AffectsRender)
-                {
-                    InvalidateVisual();
-                }
-            }
-            base.OnPropertyChanged(e);
-        }
+        //protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        //{
+        //    var pm = e.Property.GetMetadata(this);
+        //    if(pm is FrameworkPropertyMetadata fm)
+        //    {
+        //        if (fm.AffectsMeasure)
+        //        {
+        //            InvalidateMeasure();
+        //        }
+        //        else if (fm.AffectsArrange)
+        //        {
+        //            InvalidateArrange();
+        //        }
+        //        if (fm.AffectsRender)
+        //        {
+        //            InvalidateVisual();
+        //        }
+        //    }
+        //    base.OnPropertyChanged(e);
+        //}
     }
 
     public class Mouse2DEventArgs : RoutedEventArgs

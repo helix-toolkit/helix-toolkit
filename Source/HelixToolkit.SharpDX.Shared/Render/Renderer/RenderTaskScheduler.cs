@@ -31,9 +31,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="parameter">The parameter.</param>
         /// <param name="outputCommands">The output commands.</param>
+        /// <param name="filterType"></param>
         /// <returns></returns>
-        bool ScheduleAndRun(List<IRenderCore> items, IDeviceContextPool pool,
-            IRenderContext context, RenderParameter parameter, List<KeyValuePair<int, CommandList>> outputCommands);
+        bool ScheduleAndRun(List<RenderCore> items, IDeviceContextPool pool,
+            IRenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands);
     }
     /// <summary>
     /// 
@@ -56,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The minimum item per task.
         /// </value>
-        public int MinimumDrawCalls { set; get; } = 1000;
+        public int MinimumDrawCalls { set; get; } = 600;
 
         /// <summary>
         /// Gets or sets the maximum number of tasks.
@@ -99,16 +100,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// <see cref="IRenderTaskScheduler.ScheduleAndRun(List{IRenderCore}, IDeviceContextPool, IRenderContext, RenderParameter, List{KeyValuePair{int, CommandList}})"/>
+        /// 
         /// </summary>
-        /// <param name="items">The items.</param>
-        /// <param name="pool">The pool.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="parameter">The parameter.</param>
-        /// <param name="outputCommands">The output commands.</param>
+        /// <param name="items"></param>
+        /// <param name="pool"></param>
+        /// <param name="context"></param>
+        /// <param name="parameter"></param>
+        /// <param name="filterType"></param>
+        /// <param name="outputCommands"></param>
         /// <returns></returns>
-        public bool ScheduleAndRun(List<IRenderCore> items, IDeviceContextPool pool,
-            IRenderContext context, RenderParameter parameter, List<KeyValuePair<int, CommandList>> outputCommands)
+        public bool ScheduleAndRun(List<RenderCore> items, IDeviceContextPool pool,
+            IRenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands)
         {
             outputCommands.Clear();
             if(items.Count > schedulerParams.MinimumDrawCalls)
@@ -117,10 +119,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 Parallel.ForEach(partitionParams, (range, state) =>
                 {
                     var deferred = pool.Get();
-                    SetRenderTargets(deferred, parameter);
+                    SetRenderTargets(deferred, ref parameter);
                     for(int i=range.Item1; i<range.Item2; ++i)
                     {
-                        items[i].Render(context, deferred);
+                        if (items[i].RenderType == filterType)
+                        {
+                            items[i].Render(context, deferred);
+                        }
                     }
                     var command = deferred.DeviceContext.FinishCommandList(false);
                     pool.Put(deferred);
@@ -139,7 +144,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="parameter">The parameter.</param>
-        protected void SetRenderTargets(DeviceContext context, RenderParameter parameter)
+        private void SetRenderTargets(DeviceContext context, ref RenderParameter parameter)
         {
             context.OutputMerger.SetTargets(parameter.DepthStencilView, parameter.RenderTargetView);
             context.Rasterizer.SetViewport(parameter.ViewportRegion);

@@ -65,7 +65,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             return base.OnAttach(host);
         }
 
-        protected override IRenderCore2D CreateRenderCore()
+        protected override RenderCore2D CreateRenderCore()
         {
             return new FrameStatisticsRenderCore();
         }

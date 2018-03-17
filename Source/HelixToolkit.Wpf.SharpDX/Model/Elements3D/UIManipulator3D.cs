@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
-
+    using Core;
     /// <summary>
     ///   An abstract base class for manipulators.
     /// </summary>
@@ -33,7 +33,8 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   Bind the Tranform of the Target to this Property
         /// </summary>
         public static readonly DependencyProperty TargetTransformProperty = DependencyProperty.Register(
-            "TargetTransform", typeof(Transform3D), typeof(UIManipulator3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender));
+            "TargetTransform", typeof(Transform3D), typeof(UIManipulator3D), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                (d,e)=> { (d as Element3DCore).InvalidateRender(); }));
 
         /// <summary>
         ///   The offset property.
@@ -45,7 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   The value property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-            "Value", typeof(double), typeof(UIManipulator3D), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, ValueChanged));
+            "Value", typeof(double), typeof(UIManipulator3D), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ValueChanged));
 
 
         //public static readonly DependencyProperty PositionProperty =
@@ -69,7 +70,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private static void ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((UIManipulator3D)d).OnValueChanged(e);
+            var m = d as UIManipulator3D;
+            m.OnValueChanged(e);
+            m.InvalidateRender();
         }
 
         /// <summary>
@@ -79,7 +82,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         private static void OffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((UIManipulator3D)d).OnOffetChanged(e);
+            var m = d as UIManipulator3D;
+            m.OnOffetChanged(e);
+            m.InvalidateRender();
         }
 
 
@@ -241,9 +246,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         protected static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (((UIManipulator3D)d).IsAttached)
+            var m = d as UIManipulator3D;
+            if (m.IsAttached)
             {
-                ((UIManipulator3D)d).OnModelChanged();
+                m.OnModelChanged();
+                m.InvalidateRender();
             }
         }
 

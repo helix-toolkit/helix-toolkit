@@ -72,10 +72,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         public static readonly DependencyProperty TransformProperty =
-            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new PropertyMetadata(Transform3D.Identity, (d,e)=>
-            {
-                (d as IRenderable).ModelMatrix = e.NewValue != null ? (e.NewValue as Transform3D).Value.ToMatrix() : Matrix.Identity;
-            }));
+            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new PropertyMetadata(Transform3D.Identity,
+                (d,e)=>
+                {
+                    (d as IRenderable).ModelMatrix = e.NewValue != null ? (e.NewValue as Transform3D).Value.ToMatrix() : Matrix.Identity;
+                }));
         /// <summary>
         /// 
         /// </summary>
@@ -222,18 +223,18 @@ namespace HelixToolkit.Wpf.SharpDX
             return null;
         }
 
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
-        {
-            var pm = e.Property.GetMetadata(this);
-            if (pm is FrameworkPropertyMetadata fm)
-            {
-                if (fm.AffectsRender)
-                {
-                    InvalidateRender();
-                }
-            }
-            base.OnPropertyChanged(e);
-        }
+        //protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        //{
+        //    var pm = e.Property.GetMetadata(this);
+        //    if (pm is FrameworkPropertyMetadata fm)
+        //    {
+        //        if (fm.AffectsRender)
+        //        {
+        //            InvalidateRender();
+        //        }
+        //    }
+        //    base.OnPropertyChanged(e);
+        //}
     }
 
     public abstract class Mouse3DEventArgs : RoutedEventArgs

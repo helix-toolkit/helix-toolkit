@@ -9,7 +9,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Extensions;
     using SharpDX;
-
+    using Core2D;
     public class Border2D : ContentElement2D
     {
         public double CornerRadius
@@ -35,7 +35,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty PaddingProperty =
-            DependencyProperty.Register("Padding", typeof(Thickness), typeof(Border2D), new FrameworkPropertyMetadata(new Thickness(0,0,0,0), FrameworkPropertyMetadataOptions.AffectsMeasure));
+            DependencyProperty.Register("Padding", typeof(Thickness), typeof(Border2D), new PropertyMetadata(new Thickness(0,0,0,0), 
+                (d, e) => { (d as Element2DCore).InvalidateMeasure(); }));
 
         #region Stroke properties
         public static DependencyProperty BorderBrushProperty
@@ -193,12 +194,14 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static DependencyProperty BorderThicknessProperty
             = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border2D), 
-                new FrameworkPropertyMetadata(new Thickness(0,0,0,0), FrameworkPropertyMetadataOptions.AffectsMeasure, (d, e) =>
+                new PropertyMetadata(new Thickness(0,0,0,0), (d, e) =>
                 {
-                    if ((d as Border2D).borderCore == null)
+                    var m = d as Border2D;
+                    if (m.borderCore == null)
                     { return; }
                     var thick = (Thickness)e.NewValue;
-                    (d as Border2D).borderCore.BorderThickness = new Vector4((float)thick.Left, (float)thick.Top, (float)thick.Right, (float)thick.Bottom);
+                    m.borderCore.BorderThickness = new Vector4((float)thick.Left, (float)thick.Top, (float)thick.Right, (float)thick.Bottom);
+                    m.InvalidateMeasure();
                 }));
 
         public Thickness BorderThickness

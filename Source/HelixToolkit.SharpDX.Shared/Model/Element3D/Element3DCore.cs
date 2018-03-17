@@ -189,14 +189,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         public event EventHandler<TransformArgs> OnTransformChanged;
         #endregion
         #region RenderCore
-        private IRenderCore renderCore = null;
+        private RenderCore renderCore = null;
         /// <summary>
         /// Gets or sets the render core.
         /// </summary>
         /// <value>
         /// The render core.
         /// </value>
-        public IRenderCore RenderCore
+        public RenderCore RenderCore
         {
             private set
             {
@@ -257,12 +257,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// Called when [create render core].
         /// </summary>
         /// <returns></returns>
-        protected virtual IRenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
+        protected virtual RenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
         /// <summary>
         /// Assigns the default values to core.
         /// </summary>
         /// <param name="core">The core.</param>
-        protected virtual void AssignDefaultValuesToCore(IRenderCore core) { }
+        protected virtual void AssignDefaultValuesToCore(RenderCore core) { }
 
         private void RenderCore_OnInvalidateRenderer(object sender, EventArgs e)
         {

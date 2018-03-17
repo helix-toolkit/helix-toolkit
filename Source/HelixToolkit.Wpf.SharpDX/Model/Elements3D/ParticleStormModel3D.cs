@@ -575,7 +575,7 @@ namespace HelixToolkit.Wpf.SharpDX
             blendChanged = true;
         }
 
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {
             return new ParticleRenderCore();
         }

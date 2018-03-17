@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Data;
 
     using global::SharpDX;
-
+    using Core;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
 
     public class UICompositeManipulator3D : CompositeModel3D
@@ -87,7 +87,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty TargetTransformProperty = DependencyProperty.Register(
             "TargetTransform", typeof(Transform3D), typeof(UICompositeManipulator3D), 
-            new FrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender));
+            new FrameworkPropertyMetadata(Transform3D.Identity, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                (d,e)=> { (d as Element3DCore).InvalidateRender(); }));
 
         /// <summary>
         ///   Gets or sets TargetTransform.

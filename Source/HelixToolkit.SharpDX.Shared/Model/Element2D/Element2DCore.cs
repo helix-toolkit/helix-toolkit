@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             set
             {
                 if (Set(ref visibilityInternal, value))
-                { InvalidateRender(); }
+                { InvalidateVisual(); }
             }
             get { return visibilityInternal; }
         }
@@ -66,14 +66,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// </value>
         public bool IsRenderable { private set; get; } = true;
 
-        private IRenderCore2D renderCore;
+        private RenderCore2D renderCore;
         /// <summary>
         /// Gets or sets the render core.
         /// </summary>
         /// <value>
         /// The render core.
         /// </value>
-        public IRenderCore2D RenderCore
+        public RenderCore2D RenderCore
         {
             private set
             {
@@ -220,7 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// Creates the render core.
         /// </summary>
         /// <returns></returns>
-        protected virtual IRenderCore2D CreateRenderCore() { return new EmptyRenderCore2D(); }
+        protected virtual RenderCore2D CreateRenderCore() { return new EmptyRenderCore2D(); }
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>Attach Flow: Set RenderHost -> Get Effect ->
@@ -427,15 +427,19 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 return false;
             }
         }
-
+        /// <summary>
+        /// Use InvalidateVisual if render update required.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void RenderCore_OnInvalidateRenderer(object sender, EventArgs e)
         {
-            InvalidateRender();
+            InvalidateVisual();
         }
         /// <summary>
         /// Invalidates the render.
         /// </summary>
-        protected void InvalidateRender()
+        public void InvalidateRender()
         {
             RenderHost?.InvalidateRender();
         }

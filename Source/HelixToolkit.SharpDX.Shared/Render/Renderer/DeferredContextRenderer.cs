@@ -13,6 +13,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
     using Core;
+    using System;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// 
     /// </summary>
@@ -21,6 +24,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private IDeviceContextPool deferredContextPool;
         private readonly IRenderTaskScheduler scheduler;
         private readonly List<KeyValuePair<int, CommandList>> commandList = new List<KeyValuePair<int, CommandList>>();
+        private readonly CommandList[] postCommandList = new CommandList[2];
+        private Task renderOthersTask;
         /// <summary>
         /// Initializes a new instance of the <see cref="DeferredContextRenderer"/> class.
         /// </summary>
@@ -38,16 +43,31 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public override void RenderScene(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
-        {
-            if(scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, commandList))
+        public override void RenderScene(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter)
+        {          
+            if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, RenderType.Opaque, commandList))
             {
+                RenderParameter param = parameter;
+                renderOthersTask = Task.Run(()=>
+                {
+                    RenderOthers(renderables, RenderType.Particle, context, deferredContextPool, ref param, postCommandList, 0);
+                    RenderOthers(renderables, RenderType.Transparent, context, deferredContextPool, ref param, postCommandList, 1);
+                });
+
                 foreach(var command in commandList.OrderBy(x=>x.Key))
                 {
                     ImmediateContext.DeviceContext.ExecuteCommandList(command.Value, false);
                     command.Value.Dispose();
                 }
+
                 commandList.Clear();
+                renderOthersTask.Wait();
+                renderOthersTask = null;
+                for (int i = 0; i < postCommandList.Length; ++ i)
+                {
+                    ImmediateContext.DeviceContext.ExecuteCommandList(postCommandList[i], false);
+                    postCommandList[i].Dispose();
+                }
             }
             else
             {
@@ -55,14 +75,39 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
-        public override void RenderPreProc(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
+
+
+        private void RenderOthers(List<RenderCore> list, RenderType filter, IRenderContext context, IDeviceContextPool deviceContextPool,
+            ref RenderParameter parameter,
+            CommandList[] commandsArray,int idx)
         {
-            base.RenderScene(context, renderables, ref parameter);
+            var deviceContext = deviceContextPool.Get();
+            SetRenderTargets(deviceContext, ref parameter);
+            for(int i = 0; i < list.Count; ++i)
+            {
+                if(list[i].RenderType == filter)
+                {
+                    list[i].Render(context, deviceContext);
+                }
+            }
+            commandsArray[idx] = deviceContext.DeviceContext.FinishCommandList(false);
+            deviceContextPool.Put(deviceContext);
         }
 
-        public override void RenderPostProc(IRenderContext context, List<IRenderCore> renderables, ref RenderParameter parameter)
+
+        private void SetRenderTargets(DeviceContext context, ref RenderParameter parameter)
         {
-            base.RenderScene(context, renderables, ref parameter);
+            context.OutputMerger.SetTargets(parameter.DepthStencilView, parameter.RenderTargetView);
+            context.Rasterizer.SetViewport(parameter.ViewportRegion);
+            context.Rasterizer.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top,
+                parameter.ScissorRegion.Right, parameter.ScissorRegion.Bottom);
+        }
+
+        protected override void OnDispose(bool disposeManagedResources)
+        {
+            commandList.Clear();
+            renderOthersTask?.Wait();
+            base.OnDispose(disposeManagedResources);
         }
     }
 }

@@ -78,7 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (RenderCore as ILight3D).LightType; }
         }
 
-        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        protected override void AssignDefaultValuesToCore(RenderCore core)
         {
             base.AssignDefaultValuesToCore(core);
             (core as LightCoreBase).Color = Color.ToColor4();

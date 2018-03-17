@@ -63,12 +63,12 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(RangeProperty, value); }
         }
 
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {
             return new PointLightCore();
         }
 
-        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        protected override void AssignDefaultValuesToCore(RenderCore core)
         {
             base.AssignDefaultValuesToCore(core);
             (core as PointLightCore).Attenuation = Attenuation.ToVector3();

@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             set
             {
-                if(Set(ref text, value))
+                if(SetAffectsRender(ref text, value))
                 {
                     textLayoutDirty = true;
                 }

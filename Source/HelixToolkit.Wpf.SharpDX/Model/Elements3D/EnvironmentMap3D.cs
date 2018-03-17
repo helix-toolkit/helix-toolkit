@@ -28,12 +28,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {
             return new SkyBoxRenderCore();
         }
 
-        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        protected override void AssignDefaultValuesToCore(RenderCore core)
         {
             base.AssignDefaultValuesToCore(core);
             (RenderCore as ISkyboxRenderParams).CubeTexture = Texture;

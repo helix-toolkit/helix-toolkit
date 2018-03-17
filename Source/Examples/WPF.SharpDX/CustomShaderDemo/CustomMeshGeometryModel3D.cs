@@ -48,7 +48,7 @@ namespace CustomShaderDemo
             }
         }
 
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {
             return new CustomMeshCore();
         }
@@ -58,7 +58,7 @@ namespace CustomShaderDemo
             return host.EffectsManager[CustomShaderNames.DataSampling];
         }
 
-        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        protected override void AssignDefaultValuesToCore(RenderCore core)
         {
             base.AssignDefaultValuesToCore(core);
             (core as CustomMeshCore).ColorGradients = ColorGradient;

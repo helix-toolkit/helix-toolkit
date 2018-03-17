@@ -267,7 +267,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Called when [create render core].
         /// </summary>
         /// <returns></returns>
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {
             return new CrossSectionMeshRenderCore();
         }

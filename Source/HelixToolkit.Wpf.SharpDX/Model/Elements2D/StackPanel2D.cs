@@ -25,7 +25,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// The orientation property
         /// </summary>
         public static readonly DependencyProperty OrientationProperty =
-            DependencyProperty.Register("Orientation", typeof(Orientation), typeof(StackPanel2D), new FrameworkPropertyMetadata(Orientation.Horizontal, FrameworkPropertyMetadataOptions.AffectsMeasure));
+            DependencyProperty.Register("Orientation", typeof(Orientation), typeof(StackPanel2D), new PropertyMetadata(Orientation.Horizontal, 
+                (d, e) => { (d as Element2DCore).InvalidateMeasure(); }));
 
         public StackPanel2D()
         {

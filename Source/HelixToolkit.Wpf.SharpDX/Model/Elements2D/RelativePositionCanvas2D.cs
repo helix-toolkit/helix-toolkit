@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// The relative x property
         /// </summary>
         public static readonly DependencyProperty RelativeXProperty = DependencyProperty.RegisterAttached("RelativeX", typeof(double), typeof(RelativePositionCanvas2D),
-            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure));
+            new PropertyMetadata(0.0, (d, e) => { (d as Element2DCore).InvalidateMeasure(); }));
 
         /// <summary>
         /// Sets the relative x.
@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// The relative y property
         /// </summary>
         public static readonly DependencyProperty RelativeYProperty = DependencyProperty.RegisterAttached("RelativeY", typeof(double), typeof(RelativePositionCanvas2D),
-            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure));
+            new PropertyMetadata(0.0, (d, e) => { (d as Element2DCore).InvalidateMeasure(); }));
         /// <summary>
         /// Sets the relative y.
         /// </summary>

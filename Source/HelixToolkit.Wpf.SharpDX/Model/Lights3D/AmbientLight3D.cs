@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public sealed class AmbientLight3D : Light3D
     {
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {
             return new AmbientLightCore();
         }

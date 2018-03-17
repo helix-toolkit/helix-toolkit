@@ -112,7 +112,7 @@
         /// Called when [create render core].
         /// </summary>
         /// <returns></returns>
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {
             return new PointRenderCore();
         }
@@ -120,7 +120,7 @@
         /// Assigns the default values to core.
         /// </summary>
         /// <param name="core">The core.</param>
-        protected override void AssignDefaultValuesToCore(IRenderCore core)
+        protected override void AssignDefaultValuesToCore(RenderCore core)
         {
             base.AssignDefaultValuesToCore(core);
             var c = core as IPointRenderParams;

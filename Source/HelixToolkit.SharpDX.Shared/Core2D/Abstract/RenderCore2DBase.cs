@@ -4,9 +4,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 //#define DEBUGBOUNDS
 using SharpDX;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using D2D = global::SharpDX.Direct2D1;
 
 #if NETFX_CORE
@@ -18,105 +15,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     /// <summary>
     /// 
     /// </summary>
-    public abstract class RenderCore2DBase : DisposeObject, IRenderCore2D
+    public abstract class RenderCore2DBase : RenderCore2D
     {
-        /// <summary>
-        /// Occurs when [on invalidate renderer].
-        /// </summary>
-        public event EventHandler<EventArgs> OnInvalidateRenderer;
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is empty.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsEmpty { get; } = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is rendering.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is rendering; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsRendering
-        {
-            set; get;
-        } = true;
-
-        private RectangleF rect = new RectangleF();
-        /// <summary>
-        /// Absolute layout rectangle cooridnate for renderable
-        /// </summary>
-        public RectangleF LayoutBound
-        {
-            set
-            {
-                if(SetAffectsRender(ref rect, value))
-                {
-                    OnLayoutBoundChanged(value);
-                }
-            }
-            get
-            {
-                return rect;
-            }
-        }
-
-        private RectangleF clippingBound = new RectangleF();
-        /// <summary>
-        /// Gets or sets the layout clipping bound, includes border.
-        /// </summary>
-        /// <value>
-        /// The layout clipping bound.
-        /// </value>
-        public RectangleF LayoutClippingBound
-        {
-            set
-            {
-                SetAffectsRender(ref clippingBound, value);
-            }
-            get { return clippingBound; }
-        }
-
-        private Matrix3x2 transform = Matrix3x2.Identity;
-        /// <summary>
-        /// Gets or sets the transform. <see cref="IRenderCore2D.Transform"/>
-        /// </summary>
-        /// <value>
-        /// The transform.
-        /// </value>
-        public Matrix3x2 Transform
-        {
-            set
-            {
-                SetAffectsRender(ref transform, value);
-            }
-            get
-            {
-                return transform;
-            }
-        }
-
-        private Matrix3x2 localTransform = Matrix3x2.Identity;
-        /// <summary>
-        /// Gets or sets the local transform. This only transform local position. Same as RenderTransform
-        /// </summary>
-        /// <value>
-        /// The local transform.
-        /// </value>
-        public Matrix3x2 LocalTransform
-        {
-            set
-            {
-                SetAffectsRender(ref localTransform, value);
-            }
-            get
-            {
-                return localTransform;
-            }
-        }
-
 #if DEBUGBOUNDS
         /// <summary>
         /// 
@@ -128,70 +28,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// </summary>
         public bool ShowDrawingBorder { set; get; } = false;
 #endif
-
-        private bool isMouseOver = false;
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is mouse over.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is mouse over; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsMouseOver
-        {
-            set
-            {
-                SetAffectsRender(ref isMouseOver, value);
-            }
-            get
-            {
-                return isMouseOver;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is attached.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is attached; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsAttached { private set; get; } = false;
-        /// <summary>
-        /// Attaches the specified host.
-        /// </summary>
-        /// <param name="host">The host.</param>
-        public void Attach(IRenderHost host)
-        {
-            if (IsAttached)
-            { return; }
-            IsAttached = OnAttach(host);
-        }
-        /// <summary>
-        /// Called when [attach].
-        /// </summary>
-        /// <param name="host">The target.</param>
-        /// <returns></returns>
-        protected virtual bool OnAttach(IRenderHost host)
-        {
-            return true;
-        }
-        /// <summary>
-        /// Detaches this instance.
-        /// </summary>
-        public void Detach()
-        {
-            IsAttached = false;
-            OnDetach();
-            DisposeAndClear();
-        }
-        /// <summary>
-        /// Called when [detach].
-        /// </summary>
-        protected virtual void OnDetach() { }
         /// <summary>
         /// Renders the specified context.
         /// </summary>
         /// <param name="context">The context.</param>
-        public void Render(IRenderContext2D context)
+        public override void Render(IRenderContext2D context)
         {
             if (CanRender(context))
             {
@@ -228,39 +69,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         protected virtual bool CanRender(IRenderContext2D context)
         {
             return IsAttached && IsRendering;
-        }
-        /// <summary>
-        /// Invalidates the renderer.
-        /// </summary>
-        protected void InvalidateRenderer()
-        {
-            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Called when [layout bound changed].
-        /// </summary>
-        /// <param name="layoutBound">The layout bound.</param>
-        protected virtual void OnLayoutBoundChanged(RectangleF layoutBound) { }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="backingField"></param>
-        /// <param name="value"></param>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
-        protected bool SetAffectsRender<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(backingField, value))
-            {
-                return false;
-            }
-
-            backingField = value;
-            this.RaisePropertyChanged(propertyName);
-            InvalidateRenderer();
-            return true;
         }
     }
 }

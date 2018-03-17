@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
 
 
-        protected override IRenderCore OnCreateRenderCore()
+        protected override RenderCore OnCreateRenderCore()
         {
             return new PatchMeshRenderCore() { EnableTessellation = true };
         }
