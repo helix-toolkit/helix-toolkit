@@ -32,13 +32,22 @@ namespace HelixToolkit.UWP.Core
         /// <see cref="IGUID.GUID"/>
         /// </summary>
         public Guid GUID { get; } = Guid.NewGuid();
+
+        private RenderType renderType = RenderType.None;
         /// <summary>
         /// Gets or sets the type of the render.
         /// </summary>
         /// <value>
         /// The type of the render.
         /// </value>
-        public RenderType RenderType { set; get; }
+        public RenderType RenderType
+        {
+            set
+            {
+                SetAffectsRender(ref renderType, value);
+            }
+            get { return renderType; }
+        }
 
         private bool isThrowingShadow = false;
         /// <summary>
@@ -48,10 +57,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (Set(ref isThrowingShadow, value))
-                {
-                    InvalidateRenderer();
-                }
+                SetAffectsRender(ref isThrowingShadow, value);
             }
             get { return isThrowingShadow; }
         }

@@ -519,7 +519,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 var t0 = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp()/Stopwatch.Frequency);
                 RenderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
                 lastRenderTime = t0;
-                //UpdateRequested = false;
+                UpdateRequested = false;
                 if (RenderConfiguration.UpdatePerFrameData)
                 {
                     viewport.Update(t0);
