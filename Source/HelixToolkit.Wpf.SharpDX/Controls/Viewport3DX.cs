@@ -254,6 +254,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private Overlay overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
 
         private bool useSwapChain = false;
+
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
@@ -595,8 +596,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (EnableSwapChainRendering)
             {
+                double dpiXScale = 1;
+                double dpiYScale = 1;
+                PresentationSource source = PresentationSource.FromVisual(this);
+                if (source != null)
+                {
+                    dpiXScale = 1.0 / source.CompositionTarget.TransformToDevice.M11;
+                    dpiYScale = 1.0 / source.CompositionTarget.TransformToDevice.M22;
+                }
                 useSwapChain = true;
-                hostPresenter.Content = new DPFSurfaceSwapChain(EnableDeferredRendering);
+                hostPresenter.Content = new DPFSurfaceSwapChain(EnableDeferredRendering) { DPIXScale = dpiXScale, DPIYScale = dpiYScale };
             }
             else
             {
@@ -713,7 +722,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 overlay2D.Children.Add(Content2D);
             }
             // update the coordinateview camera
-            this.OnCameraChanged();           
+            this.OnCameraChanged();
         }
 
         /// <summary>
@@ -996,7 +1005,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void Viewport3DX_FormMouseMove(object sender, WinformHostExtend.FormMouseMoveEventArgs e)
         {
             if (this.touchDownDevice == null)
-            {            
+            {
                 var pt = e.Location;
                 this.MouseMoveHitTest(pt);
                 this.UpdateCurrentPosition(pt);
