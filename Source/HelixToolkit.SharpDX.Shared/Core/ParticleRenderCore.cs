@@ -786,7 +786,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
-        {            
+        {
+            perFrameCB.UploadDataToBuffer(deviceContext, ref FrameVariables);
             // Clear binding
             updatePass.GetShader(ShaderStage.Compute).BindUAV(deviceContext, currentStateSlot, null);
             updatePass.GetShader(ShaderStage.Compute).BindUAV(deviceContext, newStateSlot, null);
