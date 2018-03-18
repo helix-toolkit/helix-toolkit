@@ -47,6 +47,13 @@ namespace HelixToolkit.UWP.Core
             get { return renderType; }
         }
 
+        /// <summary>
+        /// Indicate whether render host should call <see cref="Update(IRenderContext, DeviceContextProxy)"/> before <see cref="Render(IRenderContext, DeviceContextProxy)"/>
+        /// <para><see cref="Update(IRenderContext, DeviceContextProxy)"/> is used to run such as compute shader before rendering. </para>
+        /// <para>Compute shader can be run at the beginning of any other <see cref="Render(IRenderContext, DeviceContextProxy)"/> routine to avoid waiting.</para>
+        /// </summary>
+        public bool NeedUpdate { protected set; get; } = false;
+
         private bool isThrowingShadow = false;
         /// <summary>
         /// <see cref="IThrowingShadow.IsThrowingShadow"/>
@@ -150,11 +157,19 @@ namespace HelixToolkit.UWP.Core
             DisposeAndClear();
         }
         /// <summary>
-        /// Trigger OnRender function delegate if CanRender()==true
+        /// Render routine
         /// </summary>
         /// <param name="context"></param>
         /// <param name="deviceContext"></param>
         public abstract void Render(IRenderContext context, DeviceContextProxy deviceContext);
+
+        /// <summary>
+        /// Update routine. Only used to run update computation such as compute shader in particle system. 
+        /// <para>Compute shader can be run at the beginning of any other <see cref="Render(IRenderContext, DeviceContextProxy)"/> routine to avoid waiting.</para>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="deviceContext"></param>
+        public virtual void Update(IRenderContext context, DeviceContextProxy deviceContext) { }
 
         /// <summary>
         /// Resets the invalidate handler.

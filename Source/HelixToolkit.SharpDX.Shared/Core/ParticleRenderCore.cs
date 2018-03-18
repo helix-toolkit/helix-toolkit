@@ -9,6 +9,8 @@ using System;
 using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.Direct3D;
+using System.Diagnostics;
+using System.IO;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -16,12 +18,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using System.Diagnostics;
-    using System.IO;
     using Utilities;
     using Shaders;
     using Render;
-
 
     /// <summary>
     /// 
@@ -536,7 +535,7 @@ namespace HelixToolkit.UWP.Core
         private int samplerSlot;
         #endregion
 
-        public ParticleRenderCore() : base(RenderType.Particle) { }
+        public ParticleRenderCore() : base(RenderType.Particle) { NeedUpdate = true; }
         /// <summary>
         /// Gets the model constant buffer description.
         /// </summary>
@@ -717,16 +716,14 @@ namespace HelixToolkit.UWP.Core
         {
             return base.CanRender(context) && BufferProxies != null && !isInitialParticleChanged;
         }
-        /// <summary>
-        /// Called when [render].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
-        {
-            OnTextureChanged();
-            OnBlendStateChanged();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="deviceContext"></param>
+        protected override void OnUpdate(IRenderContext context, DeviceContextProxy deviceContext)
+        {        
             UpdateTime(context, ref totalElapsed);
             //Set correct instance count from instance buffer
             drawArgument.InstanceCount = InstanceBuffer == null || !InstanceBuffer.HasElements ? 1 : (uint)InstanceBuffer.Buffer.ElementCount;
@@ -778,14 +775,24 @@ namespace HelixToolkit.UWP.Core
 #endif
             }
 
-            // Clear
-            updatePass.GetShader(ShaderStage.Compute).BindUAV(deviceContext, currentStateSlot, null);
-            updatePass.GetShader(ShaderStage.Compute).BindUAV(deviceContext, newStateSlot, null);
-
             // Swap UAV buffers for next frame
             var bproxy = BufferProxies[0];
             BufferProxies[0] = BufferProxies[1];
             BufferProxies[1] = bproxy;
+        }
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        {            
+            // Clear binding
+            updatePass.GetShader(ShaderStage.Compute).BindUAV(deviceContext, currentStateSlot, null);
+            updatePass.GetShader(ShaderStage.Compute).BindUAV(deviceContext, newStateSlot, null);
+
+            OnTextureChanged();
+            OnBlendStateChanged();
 
             // Render existing particles
             renderPass.BindShader(deviceContext);
