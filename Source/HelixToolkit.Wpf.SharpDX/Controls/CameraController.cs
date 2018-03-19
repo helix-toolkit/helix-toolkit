@@ -2270,7 +2270,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     this.rotateHandler.Rotate(
                         this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D);
-                    Debug.WriteLine(this.spinningSpeed * time);
                     if (!this.InfiniteSpin)
                     {
                         this.spinningSpeed *= factor;
