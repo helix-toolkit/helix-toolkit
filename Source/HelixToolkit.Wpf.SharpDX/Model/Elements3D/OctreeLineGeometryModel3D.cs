@@ -81,6 +81,12 @@ namespace HelixToolkit.Wpf.SharpDX
             OctreeVisual.Thickness = 0;
             OctreeVisual.FillMode = global::SharpDX.Direct3D11.FillMode.Wireframe;
             HitVisual.Thickness = 1.5;
+            this.OnVisibleChanged += OctreeLineGeometryModel3D_OnVisibleChanged;
+        }
+
+        private void OctreeLineGeometryModel3D_OnVisibleChanged(object sender, BoolArgs e)
+        {
+            CreateOctreeLines();
         }
 
         private void CreateOctreeLines()

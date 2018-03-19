@@ -82,6 +82,7 @@
                         x:Name="groupOctreeMgr"
                         AutoDeleteIfEmpty="{Binding AutoDeleteEmptyNode}"
                         Cubify="True"
+                        EnableOctreeOutput="{Binding OctreeFrameVisible}"
                         MinObjectSizeToSplit="4"
                         RecordHitPathBoundingBoxes="False" />
                 </hx:ItemsModel3D.OctreeManager>
@@ -112,7 +113,7 @@
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>-->
-            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding PointsModel.Octree}" />
+            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding PointsModel.Octree}" LineColor="Blue"/>
             <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" />
             <!--<hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />-->
             <!--<hx:OctreeLineGeometryModel3D
