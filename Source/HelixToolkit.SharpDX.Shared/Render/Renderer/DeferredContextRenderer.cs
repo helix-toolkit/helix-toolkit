@@ -48,25 +48,28 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, RenderType.Opaque, commandList))
             {
                 RenderParameter param = parameter;
-                renderOthersTask = Task.Run(()=>
+                renderOthersTask = Task.Run(() =>
                 {
                     RenderOthers(renderables, RenderType.Particle, context, deferredContextPool, ref param, postCommandList, 0);
                     RenderOthers(renderables, RenderType.Transparent, context, deferredContextPool, ref param, postCommandList, 1);
                 });
 
-                foreach(var command in commandList.OrderBy(x=>x.Key))
+                foreach (var command in commandList.OrderBy(x=>x.Key))
                 {
-                    ImmediateContext.DeviceContext.ExecuteCommandList(command.Value, false);
+                    ImmediateContext.DeviceContext.ExecuteCommandList(command.Value, true);
                     command.Value.Dispose();
                 }
 
                 commandList.Clear();
                 renderOthersTask.Wait();
                 renderOthersTask = null;
-                for (int i = 0; i < postCommandList.Length; ++ i)
+                for (int i = 0; i < postCommandList.Length; ++i)
                 {
-                    ImmediateContext.DeviceContext.ExecuteCommandList(postCommandList[i], false);
-                    postCommandList[i].Dispose();
+                    if (postCommandList[i] != null)
+                    {
+                        ImmediateContext.DeviceContext.ExecuteCommandList(postCommandList[i], true);
+                        RemoveAndDispose(ref postCommandList[i]);
+                    }
                 }
             }
             else
@@ -83,14 +86,23 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             var deviceContext = deviceContextPool.Get();
             SetRenderTargets(deviceContext, ref parameter);
+            bool hasValue = false;
             for(int i = 0; i < list.Count; ++i)
             {
                 if(list[i].RenderType == filter)
                 {
                     list[i].Render(context, deviceContext);
+                    hasValue = true;
                 }
             }
-            commandsArray[idx] = deviceContext.DeviceContext.FinishCommandList(false);
+            if (hasValue)
+            {
+                commandsArray[idx] = deviceContext.DeviceContext.FinishCommandList(true);
+            }
+            else
+            {
+                commandsArray[idx] = null;
+            }
             deviceContextPool.Put(deviceContext);
         }
 
