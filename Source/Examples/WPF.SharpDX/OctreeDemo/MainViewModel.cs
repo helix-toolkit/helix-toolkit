@@ -281,11 +281,11 @@ namespace OctreeDemo
             PointsModel.Indices = new IntCollection(Enumerable.Range(0, PointsModel.Positions.Count));
             PointsModel.OctreeParameter.RecordHitPathBoundingBoxes = true;
             PointsModel.UpdateOctree();
-            for (int i = 0; i < 10; ++i)
+            for (int i = 0; i < 50; ++i)
             {
                 for (int j = 0; j < 10; ++j)
                 {
-                    Items.Add(new SphereModel(new Vector3(-10f + i + (float)Math.Pow((float)j / 2, 2), -10f + (float)Math.Pow((float)i / 2, 2), -10f + (float)Math.Pow(j, ((float)i / 5))), rnd.NextDouble(1,3)));
+                    Items.Add(new SphereModel(new Vector3(i - 50, j - 25, i + j - 75), rnd.NextDouble(1,3)));
                 }
             }
             PointsHitModel = new PointGeometry3D() { Positions = new Vector3Collection(), Indices = new IntCollection() };

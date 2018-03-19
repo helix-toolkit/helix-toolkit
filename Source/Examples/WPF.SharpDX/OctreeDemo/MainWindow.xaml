@@ -32,14 +32,14 @@
             CameraRotationMode="Trackball"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            EnableDeferredRendering="False"
+            EnableDeferredRendering="True" 
             EnableRenderFrustum="True"
             EnableSwapChainRendering="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             ShowFrameDetails="True"
             ShowFrameRate="True"
-            ShowTriangleCountInfo="True"
+            ShowTriangleCountInfo="False" 
             TextBrush="Black"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
