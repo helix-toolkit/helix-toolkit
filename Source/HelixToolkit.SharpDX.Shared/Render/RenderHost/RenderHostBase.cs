@@ -470,6 +470,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private TimeSpan lastRenderingDuration = TimeSpan.Zero;
 
         private TimeSpan lastRenderTime = TimeSpan.Zero;
+
+        private int updateCounter = 0; // Used to render at least twice. D3DImage sometimes not getting refresh if only render once.
         #endregion
 
         /// <summary>
@@ -497,6 +499,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public void InvalidateRender()
         {
             UpdateRequested = true;
+            updateCounter = 0;
         }
         /// <summary>
         /// Determines whether this instance can render.
@@ -506,7 +509,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </returns>
         protected virtual bool CanRender()
         {
-            return IsInitialized && IsRendering && UpdateRequested && viewport != null && ActualWidth > 10 && ActualHeight > 10;
+            return IsInitialized && IsRendering && (UpdateRequested || updateCounter < 2) && viewport != null && ActualWidth > 10 && ActualHeight > 10;
         }
         /// <summary>
         /// Updates the and render.
@@ -520,6 +523,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 RenderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
                 lastRenderTime = t0;
                 UpdateRequested = false;
+                ++updateCounter;
                 if (RenderConfiguration.UpdatePerFrameData)
                 {
                     viewport.Update(t0);

@@ -140,6 +140,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     case RenderType.Transparent:
                     case RenderType.Particle:
                         generalRenderCores.Add(renderable.RenderCore);
+                        if(renderable.RenderCore.NeedUpdate) // Run update function at the beginning of actual rendering.
+                        {
+                            renderable.RenderCore.Update(RenderContext, renderer.ImmediateContext);
+                        }
                         break;
                     case RenderType.PreProc:
                         preProcRenderCores.Add(renderable.RenderCore);

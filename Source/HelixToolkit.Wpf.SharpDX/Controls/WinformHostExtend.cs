@@ -20,6 +20,11 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
         }
 
         protected UIElement ParentControl { set; get; }
+
+        public double DPIXScale { set; get; } = 1;
+
+        public double DPIYScale { set; get; } = 1;
+
         public WinformHostExtend()
         {
             ChildChanged += OnChildChanged;
@@ -46,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
 
         private void OnMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            RaiseEvent(new FormMouseMoveEventArgs(FormMouseMoveEvent, new Point(e.Location.X, e.Location.Y), e.X, e.Y, e.Delta) { Source = this });
+            RaiseEvent(new FormMouseMoveEventArgs(FormMouseMoveEvent, new Point(e.Location.X * DPIXScale, e.Location.Y * DPIYScale), e.X, e.Y, e.Delta) { Source = this });
         }
 
         private void OnMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)

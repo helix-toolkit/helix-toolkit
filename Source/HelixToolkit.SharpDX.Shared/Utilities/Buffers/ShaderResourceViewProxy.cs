@@ -155,7 +155,7 @@ namespace HelixToolkit.UWP.Utilities
         /// </returns>
         public static implicit operator ShaderResourceView(ShaderResourceViewProxy proxy)
         {
-            return proxy.textureView;
+            return proxy == null ? null : proxy.textureView;
         }
         /// <summary>
         /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="DepthStencilView"/>.
@@ -166,7 +166,7 @@ namespace HelixToolkit.UWP.Utilities
         /// </returns>
         public static implicit operator DepthStencilView(ShaderResourceViewProxy proxy)
         {
-            return proxy.depthStencilView;
+            return proxy == null ? null : proxy.depthStencilView;
         }
         /// <summary>
         /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="RenderTargetView"/>.
@@ -177,7 +177,7 @@ namespace HelixToolkit.UWP.Utilities
         /// </returns>
         public static implicit operator RenderTargetView(ShaderResourceViewProxy proxy)
         {
-            return proxy.renderTargetView;
+            return proxy == null ? null : proxy.renderTargetView;
         }
     }
 }

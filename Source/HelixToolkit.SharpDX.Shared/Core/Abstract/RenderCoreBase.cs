@@ -110,6 +110,14 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        public override void Update(IRenderContext context, DeviceContextProxy deviceContext)
+        {
+            if (CanRender(context))
+            {
+                OnUpdate(context, deviceContext);
+            }
+        }
+
         /// <summary>
         /// Called when [render shadow].
         /// </summary>
@@ -138,6 +146,13 @@ namespace HelixToolkit.UWP.Core
         /// Actual render function. Used to attach different render states and call the draw call.
         /// </summary>
         protected abstract void OnRender(IRenderContext context, DeviceContextProxy deviceContext);
+
+        /// <summary>
+        /// Only used for running compute shader such as in particle system.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="deviceContext"></param>
+        protected virtual void OnUpdate(IRenderContext context, DeviceContextProxy deviceContext) { }
 
         /// <summary>
         /// Render function for custom shader pass. Used to do special effects

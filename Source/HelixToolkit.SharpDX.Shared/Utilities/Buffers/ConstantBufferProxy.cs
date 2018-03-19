@@ -251,7 +251,7 @@ namespace HelixToolkit.UWP.Utilities
 
         public static implicit operator SDX11.Buffer(ConstantBufferProxy proxy)
         {
-            return proxy.buffer;
+            return proxy == null ? null : proxy.buffer;
         }
     }
 }

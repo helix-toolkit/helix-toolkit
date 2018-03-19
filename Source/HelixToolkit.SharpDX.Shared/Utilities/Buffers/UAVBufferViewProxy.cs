@@ -62,12 +62,12 @@ namespace HelixToolkit.UWP.Utilities
 
         public static implicit operator UnorderedAccessView(UAVBufferViewProxy proxy)
         {
-            return proxy.uav;
+            return proxy == null ? null : proxy.uav;
         }
 
         public static implicit operator ShaderResourceView(UAVBufferViewProxy proxy)
         {
-            return proxy.srv;
+            return proxy == null ? null : proxy.srv;
         }
 
         #region IDisposable Support

@@ -133,7 +133,7 @@ namespace HelixToolkit.UWP.Model
         /// </returns>
         public static implicit operator ShaderResourceViewProxy(SharedTextureResourceProxy proxy)
         {
-            return proxy.resource;
+            return proxy == null ? null : proxy.resource;
         }
         /// <summary>
         /// Performs an implicit conversion from <see cref="SharedTextureResourceProxy"/> to <see cref="ShaderResourceView"/>.
@@ -144,7 +144,7 @@ namespace HelixToolkit.UWP.Model
         /// </returns>
         public static implicit operator ShaderResourceView(SharedTextureResourceProxy proxy)
         {
-            return proxy.resource;
+            return proxy == null ? null : proxy.resource;
         }
     }
 }
