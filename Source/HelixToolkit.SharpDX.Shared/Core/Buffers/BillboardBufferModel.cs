@@ -80,7 +80,7 @@ namespace HelixToolkit.UWP.Core
             textureView = null;
             var billboardGeometry = geometry as IBillboardText;
             
-            if (billboardGeometry != null && billboardGeometry.BillboardVertices != null)
+            if (billboardGeometry != null && billboardGeometry.BillboardVertices != null && billboardGeometry.BillboardVertices.Count > 0)
             {
                 Type = billboardGeometry.Type;              
                 var data = OnBuildVertexArray(billboardGeometry, deviceResources);

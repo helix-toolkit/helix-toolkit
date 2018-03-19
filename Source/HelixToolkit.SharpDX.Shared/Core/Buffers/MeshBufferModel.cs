@@ -104,7 +104,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
         {
             // -- set geometry if given
-            if (geometry != null && geometry.Positions != null)
+            if (geometry != null && geometry.Positions != null && geometry.Positions.Count > 0)
             {
                 // --- get geometry
                 var mesh = geometry as MeshGeometry3D;
@@ -125,7 +125,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceResources">The device resources.</param>
         protected override void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources)
         {
-            if (geometry.Indices != null && geometry.Indices.Count > 0)
+            if (geometry != null && geometry.Indices != null && geometry.Indices.Count > 0)
             {
                 buffer.UploadDataToBuffer(context, geometry.Indices, geometry.Indices.Count);
             }

@@ -64,7 +64,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
         {
             // -- set geometry if given
-            if (geometry != null && geometry.Positions != null)
+            if (geometry != null && geometry.Positions != null && geometry.Positions.Count > 0)
             {
                 // --- get geometry
                 var mesh = geometry as PointGeometry3D;
