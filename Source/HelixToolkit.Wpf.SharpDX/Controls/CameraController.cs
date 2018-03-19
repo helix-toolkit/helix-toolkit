@@ -2258,7 +2258,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.rotationSpeed.LengthSquared > 0.1)
             {
                 this.rotateHandler.Rotate(
-                    PointZero, (this.rotationSpeed * time).ToPoint(), this.rotationPoint3D);
+                    this.rotationPosition, this.rotationPosition + (this.rotationSpeed * time), this.rotationPoint3D);
                 this.rotationSpeed *= factor;
                 needUpdate = true;
                 this.spinningSpeed = VectorZero;
@@ -2269,8 +2269,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (this.isSpinning && this.spinningSpeed.LengthSquared > 0.1)
                 {
                     this.rotateHandler.Rotate(
-                        PointZero, (this.spinningSpeed * time).ToPoint(), this.spinningPoint3D);
-
+                        this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D);
+                    Debug.WriteLine(this.spinningSpeed * time);
                     if (!this.InfiniteSpin)
                     {
                         this.spinningSpeed *= factor;
