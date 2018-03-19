@@ -125,7 +125,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceResources">The device resources.</param>
         protected override void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources)
         {
-            if (geometry.Indices != null)
+            if (geometry.Indices != null && geometry.Indices.Count > 0)
             {
                 buffer.UploadDataToBuffer(context, geometry.Indices, geometry.Indices.Count);
             }
