@@ -116,7 +116,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             protected set
             {
                 if(Set(ref visible, value))
-                { InvalidateRender(); }
+                {
+                    OnVisibleChanged?.Invoke(this, value ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
+                    InvalidateRender();
+                }
             }
             get { return visible; }
         }
@@ -268,6 +271,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             InvalidateRender();
         }
+        #endregion
+        #region Events
+        public event EventHandler<BoolArgs> OnVisibleChanged;
         #endregion
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>

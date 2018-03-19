@@ -2252,13 +2252,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             var time = (double)(ticks - this.lastTick) / Stopwatch.Frequency;
             // should be independent of time
-            var factor = this.IsInertiaEnabled ?  this.Clamp(Math.Pow(this.InertiaFactor, time / 0.025), 0.1, 1) : 0;
+            var factor = this.IsInertiaEnabled ?  this.Clamp(Math.Pow(this.InertiaFactor, time / 0.02), 0.1, 1) : 0;
             bool needUpdate = false;
 
             if (this.rotationSpeed.LengthSquared > 0.1)
             {
                 this.rotateHandler.Rotate(
-                    PointZero, (this.rotationSpeed * time).ToPoint(), this.rotationPoint3D);
+                    this.rotationPosition, this.rotationPosition + (this.rotationSpeed * time), this.rotationPoint3D);
                 this.rotationSpeed *= factor;
                 needUpdate = true;
                 this.spinningSpeed = VectorZero;
@@ -2269,8 +2269,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (this.isSpinning && this.spinningSpeed.LengthSquared > 0.1)
                 {
                     this.rotateHandler.Rotate(
-                        PointZero, (this.spinningSpeed * time).ToPoint(), this.spinningPoint3D);
-
+                        this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D);
                     if (!this.InfiniteSpin)
                     {
                         this.spinningSpeed *= factor;
