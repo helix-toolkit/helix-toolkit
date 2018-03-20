@@ -178,9 +178,6 @@
   <data name="gsBillboard" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\gsbillboard.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="psMeshClipPlane" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\psmeshclipplane.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="psMeshClipPlaneBackface" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psmeshclipplanebackface.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -309,5 +306,8 @@
   </data>
   <data name="vsScreenDupCursor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\vsscreendupcursor.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="vsMeshClipPlane" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\vsmeshclipplane.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

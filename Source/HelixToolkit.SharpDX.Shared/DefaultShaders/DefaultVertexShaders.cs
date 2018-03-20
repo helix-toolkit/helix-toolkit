@@ -193,7 +193,20 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public static byte[] VSMeshClipPlane
+        {
+            get
+            {
+#if !NETFX_CORE
+                return Properties.Resources.vsMeshClipPlane;
+#else
+                throw new NotImplementedException();
+#endif
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -550,6 +563,13 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription VSBillboardInstancing = new ShaderDescription(nameof(VSBillboardInstancing), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSBillboardInstancing);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSMeshClipPlane = new ShaderDescription(nameof(VSMeshClipPlane), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshClipPlane);
 
         /// <summary>
         /// 

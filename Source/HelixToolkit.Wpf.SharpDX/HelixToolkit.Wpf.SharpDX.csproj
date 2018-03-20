@@ -324,7 +324,6 @@
     <None Include="Resources\psLine.cso" />
     <None Include="Resources\psLineColor.cso" />
     <None Include="Resources\psMeshBlinnPhong.cso" />
-    <None Include="Resources\psMeshClipPlane.cso" />
     <None Include="Resources\psMeshClipPlaneBackface.cso" />
     <None Include="Resources\psMeshClipPlaneQuad.cso" />
     <None Include="Resources\psMeshXRay.cso" />
@@ -344,6 +343,7 @@
     <None Include="Resources\vsBoneSkinningTessellation.cso" />
     <None Include="Resources\vsBoneSkinningWireframe.cso" />
     <None Include="Resources\vsCubeMap.cso" />
+    <None Include="Resources\vsMeshClipPlane.cso" />
     <None Include="Resources\vsMeshClipPlaneQuad.cso" />
     <None Include="Resources\vsMeshDefault.cso" />
     <None Include="Resources\vsMeshInstancing.cso" />
