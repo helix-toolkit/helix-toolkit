@@ -1,6 +1,11 @@
 using SharpDX;
 using SharpDX.Direct3D11;
 
+#if DX11_1
+using Device = SharpDX.Direct3D11.Device1;
+using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
+#endif
+
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
 #else
@@ -19,6 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// 
         /// </summary>
         public DeviceContext DeviceContext { get { return deviceContext; } }
+
         /// <summary>
         /// Gets or sets the last shader pass.
         /// </summary>

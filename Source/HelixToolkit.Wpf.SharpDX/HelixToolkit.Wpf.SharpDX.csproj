@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;SHARPDX; </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

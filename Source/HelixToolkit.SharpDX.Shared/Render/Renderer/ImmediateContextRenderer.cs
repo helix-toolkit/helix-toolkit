@@ -7,6 +7,9 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
+#if DX11_1
+using Device = global::SharpDX.Direct3D11.Device1;
+#endif
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
 #else
@@ -38,7 +41,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="device">The device.</param>
         public ImmediateContextRenderer(Device device)
         {
+#if DX11_1
+            ImmediateContext = Collect(new DeviceContextProxy(device.ImmediateContext1));
+#else
             ImmediateContext = Collect(new DeviceContextProxy(device.ImmediateContext));
+#endif
         }
 
         private static readonly Func<IRenderable, IRenderContext, bool> updateFunc = (x, context) =>

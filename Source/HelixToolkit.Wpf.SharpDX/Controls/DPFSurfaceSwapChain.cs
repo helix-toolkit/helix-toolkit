@@ -6,17 +6,24 @@
 //
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+using System;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Threading;
+using global::SharpDX;
+#if DX11_1
+using Device = SharpDX.Direct3D11.Device1;
+using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
+#else
+using Device = SharpDX.Direct3D11.Device;
+#endif
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using global::SharpDX;
-    using HelixToolkit.Wpf.SharpDX.Controls;
+
+    using Controls;
     using Render;
-    using System;
-    using System.ComponentModel;
-    using System.Windows;
-    using System.Windows.Media;
-    using System.Windows.Threading;
     using Utilities;
 
     /// <summary>

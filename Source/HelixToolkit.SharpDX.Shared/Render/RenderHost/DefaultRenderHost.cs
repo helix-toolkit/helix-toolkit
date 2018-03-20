@@ -7,6 +7,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using global::SharpDX.Direct3D11;
+
+#if DX11_1
+using Device = SharpDX.Direct3D11.Device1;
+using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
+#else
+using Device = SharpDX.Direct3D11.Device;
+#endif
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
@@ -15,9 +24,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
     using Core;
-    using global::SharpDX.Direct3D11;
     using HelixToolkit.Logger;
-    using System.Runtime.CompilerServices;
+
 
     /// <summary>
     /// 

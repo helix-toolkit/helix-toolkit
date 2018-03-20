@@ -6,7 +6,12 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using System;
-
+#if DX11_1
+using Device = SharpDX.Direct3D11.Device1;
+using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
+#else
+using Device = SharpDX.Direct3D11.Device;
+#endif
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
 #else

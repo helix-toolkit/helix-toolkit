@@ -1,8 +1,15 @@
 ﻿using System;
+using global::SharpDX.Direct3D11;
 
+#if DX11_1
+using Device = SharpDX.Direct3D11.Device1;
+using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
+#else
+using Device = SharpDX.Direct3D11.Device;
+#endif
 namespace HelixToolkit.Wpf.SharpDX.Controls
 {
-    using global::SharpDX.Direct3D11;
+
     using Render;
     using System.Diagnostics;
 

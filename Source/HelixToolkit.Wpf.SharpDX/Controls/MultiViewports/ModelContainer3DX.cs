@@ -5,6 +5,11 @@ using System.Windows.Controls;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System.Threading;
+using System.Linq;
+#if DX11_1
+using Device = SharpDX.Direct3D11.Device1;
+using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
+#endif
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -12,8 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Utilities;
     using Core2D;
     using HelixToolkit.Logger;
-    using System.Linq;
-    using HelixToolkit.Wpf.SharpDX.Core;
+    using Core;
 
     /// <summary>
     /// Use to contain shared models for multiple viewports. 

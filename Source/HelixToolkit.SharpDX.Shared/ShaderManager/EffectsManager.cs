@@ -5,6 +5,15 @@ Copyright (c) 2018 Helix Toolkit contributors
 //#define DEBUGMEMORY
 using System;
 using System.Collections.Generic;
+using global::SharpDX.Direct3D;
+using global::SharpDX.Direct3D11;
+using global::SharpDX.DXGI;
+#if DX11_1
+using Device = SharpDX.Direct3D11.Device1;
+using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
+#else
+using Device = SharpDX.Direct3D11.Device;
+#endif
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -12,9 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
-    using global::SharpDX.Direct3D;
-    using global::SharpDX.Direct3D11;
-    using global::SharpDX.DXGI;
+
     using Shaders;
     using ShaderManager;
     using Core;
@@ -87,11 +94,21 @@ namespace HelixToolkit.UWP
         public ITextureResourceManager MaterialTextureManager { get { return materialTextureManager; } }
         private ITextureResourceManager materialTextureManager;
         #region 3D Resoruces
+
         private global::SharpDX.Direct3D11.Device device;
+
+#if DX11_1
+        private global::SharpDX.Direct3D11.Device1 device1;
         /// <summary>
         /// 
         /// </summary>
-        public global::SharpDX.Direct3D11.Device Device { get { return device; } }
+        public Device Device { get { return device1; } }
+#else
+        /// <summary>
+        /// 
+        /// </summary>
+        public Device Device { get { return device; } }
+#endif
         /// <summary>
         /// 
         /// </summary>
@@ -243,6 +260,9 @@ namespace HelixToolkit.UWP
                     device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport | DeviceCreationFlags.Debug);
 #else
                     device = new global::SharpDX.Direct3D11.Device(adapter, DeviceCreationFlags.BgraSupport);
+#if DX11_1
+                    device1 = device.QueryInterface<global::SharpDX.Direct3D11.Device1>();
+#endif
 #endif
                     // DeviceCreationFlags.Debug should not be used in productive mode!
                     // See: http://sharpdx.org/forum/4-general/1774-how-to-debug-a-sharpdxexception
@@ -421,6 +441,9 @@ namespace HelixToolkit.UWP
             techniqueDict.Clear();
             base.OnDispose(disposeManagedResources);
             Initialized = false;
+#if DX11_1
+            Disposer.RemoveAndDispose(ref device1);
+#endif
             Disposer.RemoveAndDispose(ref device);
 #if DEBUGMEMORY
             ReportResources();
