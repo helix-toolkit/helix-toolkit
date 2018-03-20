@@ -78,6 +78,9 @@
     <Content Include="Common\CommonBuffers.hlsl" />
     <Content Include="Common\Common.hlsl" />
     <Content Include="Common\DataStructs.hlsl" />
+    <VertexShader Include="VS\vsMeshClipPlane.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
     <VertexShader Include="VS\vsScreenDupCursor.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </VertexShader>
@@ -167,10 +170,6 @@
     </VertexShader>
     <PixelShader Include="PS\psMeshClipPlaneBackface.hlsl">
       <EntryPointName>psClipPlaneBackFace</EntryPointName>
-      <ShaderModel>4_0</ShaderModel>
-    </PixelShader>
-    <PixelShader Include="PS\psMeshClipPlane.hlsl">
-      <EntryPointName>psClipPlaneMesh</EntryPointName>
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
     <VertexShader Include="VS\vsBillboard.hlsl">

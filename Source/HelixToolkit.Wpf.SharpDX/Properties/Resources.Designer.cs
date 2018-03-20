@@ -333,16 +333,6 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] psMeshClipPlane {
-            get {
-                object obj = ResourceManager.GetObject("psMeshClipPlane", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] psMeshClipPlaneBackface {
             get {
                 object obj = ResourceManager.GetObject("psMeshClipPlaneBackface", resourceCulture);
@@ -546,6 +536,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] vsCubeMap {
             get {
                 object obj = ResourceManager.GetObject("vsCubeMap", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshClipPlane {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshClipPlane", resourceCulture);
                 return ((byte[])(obj));
             }
         }

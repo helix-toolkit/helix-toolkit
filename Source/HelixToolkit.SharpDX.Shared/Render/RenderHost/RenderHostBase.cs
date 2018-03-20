@@ -2,9 +2,14 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-
+using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using SharpDX.Direct3D11;
 using SharpDX;
+#if DX11_1
+using Device = SharpDX.Direct3D11.Device1;
+using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
+#endif
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
 #else
@@ -17,8 +22,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using System.Diagnostics;
     using System.Linq;
     using HelixToolkit.Logger;
-    using System.Runtime.CompilerServices;
-    using System.Collections.Generic;
     using Core;
     /// <summary>
     /// 
@@ -593,7 +596,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected virtual void PreRender()
         {
+#if DX11_1
+            SetDefaultRenderTargets(Device.ImmediateContext1, RenderConfiguration.ClearEachFrame);
+#else
             SetDefaultRenderTargets(Device.ImmediateContext, RenderConfiguration.ClearEachFrame);
+#endif
         }
         /// <summary>
         /// Called after OnRender.
@@ -754,7 +761,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 viewport.Attach(this);
             }
+#if DX11_1
+            renderContext = Collect(CreateRenderContext(deviceResources.Device.ImmediateContext1));
+#else
             renderContext = Collect(CreateRenderContext(deviceResources.Device.ImmediateContext));
+#endif
+
             renderContext2D = Collect(CreateRenderContext2D(deviceResources.DeviceContext2D));
         }
         /// <summary>
@@ -866,7 +878,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="clear">if set to <c>true</c> [clear].</param>
         public virtual void SetDefaultRenderTargets(bool clear)
         {
+#if DX11_1
+            SetDefaultRenderTargets(Device.ImmediateContext1, clear);
+#else
             SetDefaultRenderTargets(Device.ImmediateContext, clear);
+#endif
         }
 
         /// <summary>

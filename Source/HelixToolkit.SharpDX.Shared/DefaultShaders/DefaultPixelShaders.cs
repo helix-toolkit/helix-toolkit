@@ -193,20 +193,7 @@ namespace HelixToolkit.UWP.Shaders
 #endif
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        public static byte[] PSMeshClipPlane
-        {
-            get
-            {
-#if !NETFX_CORE
-                return Properties.Resources.psMeshClipPlane;
-#else
-                throw new NotImplementedException();
-#endif
-            }
-        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -565,11 +552,6 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription PSShadow = new ShaderDescription(nameof(PSShadow), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSShadow);
         #region Mesh Clipping
-        /// <summary>
-        /// 
-        /// </summary>
-        public static ShaderDescription PSMeshClipPlane = new ShaderDescription(nameof(PSMeshClipPlane), ShaderStage.Pixel, new ShaderReflector(),
-            DefaultPSShaderByteCodes.PSMeshClipPlane);
         /// <summary>
         /// /
         /// </summary>

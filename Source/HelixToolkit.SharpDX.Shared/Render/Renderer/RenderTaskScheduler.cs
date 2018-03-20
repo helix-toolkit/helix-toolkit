@@ -127,7 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                             items[i].Render(context, deferred);
                         }
                     }
-                    var command = deferred.DeviceContext.FinishCommandList(false);
+                    var command = deferred.DeviceContext.FinishCommandList(true);
                     pool.Put(deferred);
                     lock (outputCommands)
                     {

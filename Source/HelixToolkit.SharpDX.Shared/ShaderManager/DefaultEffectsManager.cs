@@ -660,8 +660,8 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
-                            DefaultPSShaderDescriptions.PSMeshClipPlane
+                            DefaultVSShaderDescriptions.VSMeshClipPlane,
+                            DefaultPSShaderDescriptions.PSMeshBlinnPhong
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
@@ -670,7 +670,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultVSShaderDescriptions.VSMeshClipPlane,
                             DefaultPSShaderDescriptions.PSMeshClipBackface
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
@@ -690,7 +690,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshWireframe,
+                            DefaultVSShaderDescriptions.VSMeshClipPlane,
                             DefaultPSShaderDescriptions.PSMeshWireframe
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
@@ -700,7 +700,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshWireframe,
+                            DefaultVSShaderDescriptions.VSMeshClipPlane,
                             DefaultPSShaderDescriptions.PSMeshOutlineQuadStencil
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
@@ -710,7 +710,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshWireframe,
+                            DefaultVSShaderDescriptions.VSMeshClipPlane,
                             DefaultPSShaderDescriptions.PSDepthStencilOnly
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
@@ -720,7 +720,7 @@ namespace HelixToolkit.UWP
                     {
                         ShaderList = new[]
                         {
-                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultVSShaderDescriptions.VSMeshClipPlane,
                             DefaultPSShaderDescriptions.PSEffectMeshXRay
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOverlayBlending,
