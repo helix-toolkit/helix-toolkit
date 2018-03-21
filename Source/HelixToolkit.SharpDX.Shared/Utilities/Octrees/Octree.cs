@@ -17,6 +17,7 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using Model;
     /// <summary>
     /// General interface for octree
     /// </summary>
@@ -1427,32 +1428,58 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public sealed class OctreeBuildParameter
+    public sealed class OctreeBuildParameter : ObservableObject
     {
+        private float minimumOctantSize = 1f;
         /// <summary>
         /// Minimum Octant size.
         /// </summary>
-        public float MinimumOctantSize = 1f;
+        public float MinimumOctantSize
+        {
+            set
+            {
+                Set(ref minimumOctantSize, value);
+            }
+            get { return minimumOctantSize; }
+        }
+
+        private int minObjectSizeToSplit = 2;
         /// <summary>
         /// Minimum object in each octant to start splitting into smaller octant during build
         /// </summary>
-        public int MinObjectSizeToSplit = 2;
+        public int MinObjectSizeToSplit
+        {
+            set { Set(ref minObjectSizeToSplit, value); }
+            get { return minObjectSizeToSplit; }
+        }
+
+        private bool autoDeleteIfEmpty = true;
         /// <summary>
         /// Delete empty octant automatically
         /// </summary>
-        public bool AutoDeleteIfEmpty = true;
+        public bool AutoDeleteIfEmpty
+        {
+            set { Set(ref autoDeleteIfEmpty, value); }
+            get { return autoDeleteIfEmpty; }
+        }
+
+        private bool cubify = false;
         /// <summary>
         /// Generate cube octants instead of rectangle octants
         /// </summary>
-        public bool Cubify = false;
+        public bool Cubify
+        {
+            set { Set(ref cubify, value); }
+            get { return cubify; }
+        }
         /// <summary>
         /// Record hit path bounding boxes for debugging or display purpose only
         /// </summary>
-        public bool RecordHitPathBoundingBoxes = false;
+        public bool RecordHitPathBoundingBoxes { set; get; } = false;
         /// <summary>
         /// Use parallel tree traversal to build the octree
         /// </summary>
-        public bool EnableParallelBuild = false;
+        public bool EnableParallelBuild { set; get; } = false;
         /// <summary>
         /// 
         /// </summary>

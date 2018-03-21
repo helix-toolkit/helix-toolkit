@@ -137,8 +137,24 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   <c>true</c> if [octree dirty]; otherwise, <c>false</c>.
         /// </value>
         public bool OctreeDirty { private set; get; } = true;
-
+        /// <summary>
+        /// Gets or sets the octree parameter.
+        /// </summary>
+        /// <value>
+        /// The octree parameter.
+        /// </value>
         public OctreeBuildParameter OctreeParameter { private set; get; } = new OctreeBuildParameter();
+
+        public Geometry3D()
+        {
+            OctreeParameter.PropertyChanged += OctreeParameter_PropertyChanged;
+        }
+
+        private void OctreeParameter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            OctreeDirty = true;
+        }
+
         /// <summary>
         /// Call to manually update vertex buffer. Use with <see cref="ObservableObject.DisablePropertyChangedEvent"/>
         /// </summary>
@@ -157,17 +173,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Create Octree for current model.
         /// </summary>
-        public void UpdateOctree(float minSize = 1f, bool autoDeleteIfEmpty = true)
+        public void UpdateOctree(bool force = false)
         {
-            if(OctreeParameter.MinimumOctantSize != minSize || OctreeParameter.AutoDeleteIfEmpty != autoDeleteIfEmpty)
-            {
-                OctreeDirty = true;
-            }
-            OctreeParameter.MinimumOctantSize = minSize;
-            OctreeParameter.AutoDeleteIfEmpty = autoDeleteIfEmpty;
             if (CanCreateOctree())
             {
-                if (OctreeDirty)
+                if (OctreeDirty || force)
                 {
                     this.Octree = CreateOctree(this.OctreeParameter);              
                     if (this.Octree != null)
