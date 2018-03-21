@@ -48,7 +48,8 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Update things not related to rendering, such as OctreeManager etc. Called parallel with rendering process.
         /// </summary>
-        void UpdateNotRender();
+        /// <param name="context"></param>
+        void UpdateNotRender(IRenderContext context);
         /// <summary>
         /// 
         /// </summary>

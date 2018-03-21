@@ -198,7 +198,7 @@
             };
             var models = Load3ds("wall12.obj").Select(x => x.Geometry as MeshGeometry3D).ToArray();
             Floor = models[0];
-            Floor.UpdateOctree();
+            Floor.OctreeParameter.EnableParallelBuild = true;
             this.FloorTransform = new Media3D.TranslateTransform3D(0, 0, 0);
             this.FloorMaterial = new PhongMaterial
             {
@@ -210,7 +210,7 @@
 
             var landerItems = Load3ds("Car.3ds").Select(x => x.Geometry as MeshGeometry3D).ToArray();
             Model = MeshGeometry3D.Merge(landerItems);
-            Model.UpdateOctree();
+            Model.OctreeParameter.EnableParallelBuild = true;
             ModelMaterial = PhongMaterials.BlackRubber;
             var transGroup = new Media3D.Transform3DGroup();
             transGroup.Children.Add(new Media3D.ScaleTransform3D(0.04, 0.04, 0.04));

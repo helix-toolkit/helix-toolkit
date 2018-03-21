@@ -633,6 +633,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return base.CanHitTest(context) && GeometryValid;
         }
+
+        public override void UpdateNotRender(IRenderContext context)
+        {
+            base.UpdateNotRender(context);
+            if (IsHitTestVisibleInternal && context.AutoUpdateOctree)
+            {
+                geometryInternal?.UpdateOctree();
+            }
+        }
     }
 
 

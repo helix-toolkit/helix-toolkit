@@ -326,9 +326,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override void UpdateNotRender()
+        public override void UpdateNotRender(IRenderContext context)
         {
-            base.UpdateNotRender();
+            base.UpdateNotRender(context);
             if (octreeManager != null)
             {
                 octreeManager.ProcessPendingItems();

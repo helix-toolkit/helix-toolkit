@@ -371,7 +371,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <summary>
         /// 
         /// </summary>
-        public virtual void UpdateNotRender() { }
+        public virtual void UpdateNotRender(IRenderContext context) { }
 
         #region Rendering
 

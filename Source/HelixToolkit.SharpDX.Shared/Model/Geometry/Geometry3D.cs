@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (Set(ref indices, value))
                 {
-                    Octree = null;
+                    ClearOctree();
                 }
             }
         }
@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if(position == value) { return; }
                 position = value;
-                Octree = null;
+                ClearOctree();
                 UpdateBounds();
                 RaisePropertyChanged();
             }
@@ -130,6 +130,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// TO use Octree during hit test to improve hit performance, please call UpdateOctree after model created.
         /// </summary>
         public IOctree Octree { private set; get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [octree dirty], needs update.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [octree dirty]; otherwise, <c>false</c>.
+        /// </value>
+        public bool OctreeDirty { private set; get; } = true;
 
         public OctreeBuildParameter OctreeParameter { private set; get; } = new OctreeBuildParameter();
         /// <summary>
@@ -147,22 +154,33 @@ namespace HelixToolkit.Wpf.SharpDX
             RaisePropertyChanged(TriangleBuffer);
         }
 
-
         /// <summary>
         /// Create Octree for current model.
         /// </summary>
         public void UpdateOctree(float minSize = 1f, bool autoDeleteIfEmpty = true)
         {
+            if(OctreeParameter.MinimumOctantSize != minSize || OctreeParameter.AutoDeleteIfEmpty != autoDeleteIfEmpty)
+            {
+                OctreeDirty = true;
+            }
+            OctreeParameter.MinimumOctantSize = minSize;
+            OctreeParameter.AutoDeleteIfEmpty = autoDeleteIfEmpty;
             if (CanCreateOctree())
             {
-                OctreeParameter.MinimumOctantSize = minSize;
-                OctreeParameter.AutoDeleteIfEmpty = autoDeleteIfEmpty;
-                this.Octree = CreateOctree(this.OctreeParameter);
-                this.Octree?.BuildTree();
+                if (OctreeDirty)
+                {
+                    this.Octree = CreateOctree(this.OctreeParameter);              
+                    if (this.Octree != null)
+                    {
+                        this.Octree.BuildTree();
+                        OctreeDirty = false;
+                    }
+                }
             }
             else
             {
                 this.Octree = null;
+                OctreeDirty = true;
             }
         }
         
@@ -188,6 +206,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void ClearOctree()
         {
             Octree = null;
+            OctreeDirty = true;
         }
         /// <summary>
         /// Manually call this function to update AABB and Bounding Sphere
