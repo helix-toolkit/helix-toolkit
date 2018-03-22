@@ -185,6 +185,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         this.Octree.BuildTree();
                         OctreeDirty = false;
                     }
+                    RaisePropertyChanged(nameof(Octree));
                 }
             }
             else

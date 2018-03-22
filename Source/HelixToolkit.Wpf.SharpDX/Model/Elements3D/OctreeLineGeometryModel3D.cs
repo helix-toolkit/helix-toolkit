@@ -73,7 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public OctreeLineGeometryModel3D()
         {
-            IsHitTestVisible = false;
+            IsHitTestVisible = OctreeVisual.IsHitTestVisible = HitVisual.IsHitTestVisible = false;
             Children.Add(OctreeVisual);
             Children.Add(HitVisual);
             OctreeVisual.Color = LineColor;

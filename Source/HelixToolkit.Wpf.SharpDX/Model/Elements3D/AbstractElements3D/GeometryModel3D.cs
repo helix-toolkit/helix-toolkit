@@ -637,7 +637,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void UpdateNotRender(IRenderContext context)
         {
             base.UpdateNotRender(context);
-            if (IsHitTestVisibleInternal && context.AutoUpdateOctree)
+            if (IsHitTestVisibleInternal && context.AutoUpdateOctree && geometryInternal != null && geometryInternal.OctreeDirty)
             {
                 geometryInternal?.UpdateOctree();
             }
