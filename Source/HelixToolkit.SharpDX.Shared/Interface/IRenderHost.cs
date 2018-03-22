@@ -302,5 +302,10 @@ namespace HelixToolkit.UWP
         ///   <c>true</c> if [clear render target before each frame]; otherwise, <c>false</c>.
         /// </value>
         public bool ClearEachFrame { set; get; } = true;
+
+        /// <summary>
+        /// Auto update octree in geometry during rendering. 
+        /// </summary>
+        public bool AutoUpdateOctree { set; get; } = false;
     }
 }

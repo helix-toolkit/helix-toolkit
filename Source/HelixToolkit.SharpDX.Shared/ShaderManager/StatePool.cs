@@ -27,9 +27,14 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="device">The device.</param>
         /// <param name="description">The description.</param>
         /// <returns></returns>
-        protected override StateProxy<BlendState> Create(Device device, ref BlendStateDescription description)
+        protected override BlendState Create(Device device, ref BlendStateDescription description)
         {
-            return new BlendStateProxy(new BlendState(device, description));
+            return new BlendState(device, description);
+        }
+
+        protected override StateProxy<BlendState> CreateProxy(BlendState state)
+        {
+            return new BlendStateProxy(state);
         }
         /// <summary>
         /// Gets the key.
@@ -57,9 +62,14 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="device">The device.</param>
         /// <param name="description">The description.</param>
         /// <returns></returns>
-        protected override StateProxy<DepthStencilState> Create(Device device, ref DepthStencilStateDescription description)
+        protected override DepthStencilState Create(Device device, ref DepthStencilStateDescription description)
         {
-            return new DepthStencilStateProxy(new DepthStencilState(device, description));
+            return new DepthStencilState(device, description);
+        }
+
+        protected override StateProxy<DepthStencilState> CreateProxy(DepthStencilState state)
+        {
+            return new DepthStencilStateProxy(state);
         }
         /// <summary>
         /// Gets the key.
@@ -87,9 +97,14 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="device">The device.</param>
         /// <param name="description">The description.</param>
         /// <returns></returns>
-        protected override StateProxy<RasterizerState> Create(Device device, ref RasterizerStateDescription description)
+        protected override RasterizerState Create(Device device, ref RasterizerStateDescription description)
         {
-            return new RasterizerStateProxy(new RasterizerState(device, description));
+            return new RasterizerState(device, description);
+        }
+
+        protected override StateProxy<RasterizerState> CreateProxy(RasterizerState state)
+        {
+            return new RasterizerStateProxy(state);
         }
         /// <summary>
         /// Gets the key.
@@ -119,9 +134,14 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="device">The device.</param>
         /// <param name="description">The description.</param>
         /// <returns></returns>
-        protected override StateProxy<SamplerState> Create(Device device, ref SamplerStateDescription description)
+        protected override SamplerState Create(Device device, ref SamplerStateDescription description)
         {
-            return new SamplerStateProxy(new SamplerState(device, description));
+            return new SamplerState(device, description);
+        }
+
+        protected override StateProxy<SamplerState> CreateProxy(SamplerState state)
+        {
+            return new SamplerStateProxy(state);
         }
         /// <summary>
         /// Gets the key.

@@ -32,14 +32,15 @@
             CameraRotationMode="Trackball"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            EnableDeferredRendering="True" 
+            EnableAutoOctreeUpdate="True"
+            EnableDeferredRendering="True"
             EnableRenderFrustum="True"
             EnableSwapChainRendering="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             ShowFrameDetails="True"
             ShowFrameRate="True"
-            ShowTriangleCountInfo="False" 
+            ShowTriangleCountInfo="False"
             TextBrush="Black"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
@@ -51,8 +52,8 @@
                 <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
                 <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
                 <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
-                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
-                <!--<MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />-->
+                <!--<MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />-->
+                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="MiddleClick" />
             </hx:Viewport3DX.InputBindings>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseLeftButtonDown">
@@ -61,11 +62,6 @@
             </i:Interaction.Triggers>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
-            <!--<hx:MeshGeometryModel3D
-                FillMode="{Binding FillMode}"
-                Geometry="{Binding DefaultModel}"
-                IsRendering="{Binding Visibility}"
-                Material="{Binding Material}" />-->
             <hx:PointGeometryModel3D
                 Figure="Ellipse"
                 Geometry="{Binding PointsModel}"
@@ -76,13 +72,14 @@
                 Geometry="{Binding PointsHitModel}"
                 Size="5 5"
                 Color="{Binding PointHitColor}" />
+            <hx:LineGeometryModel3D Geometry="{Binding LinesModel}" Color="#D1BB00" />
             <hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding Items}">
                 <hx:ItemsModel3D.OctreeManager>
                     <hx:GeometryModel3DOctreeManager
                         x:Name="groupOctreeMgr"
                         AutoDeleteIfEmpty="{Binding AutoDeleteEmptyNode}"
                         Cubify="True"
-                        EnableOctreeOutput="{Binding OctreeFrameVisible}"
+                        EnableOctreeOutput="{Binding ElementName=dynamicOctree, Path=IsRendering, Mode=OneWay}"
                         MinObjectSizeToSplit="4"
                         RecordHitPathBoundingBoxes="False" />
                 </hx:ItemsModel3D.OctreeManager>
@@ -97,29 +94,15 @@
                     </DataTemplate>
                 </hx:ItemsModel3D.ItemTemplate>
             </hx:ItemsModel3D>
-            <!--<hx:ItemsModel3D IsRendering="{Binding Visibility}" ItemsSource="{Binding LanderItems}">
-                <hx:ItemsModel3D.OctreeManager>
-                    <hx:GeometryModel3DOctreeManager
-                        x:Name="landerOctreeMgr"
-                        AutoDeleteIfEmpty="{Binding AutoDeleteEmptyNode}"
-                        RecordHitPathBoundingBoxes="True" />
-                </hx:ItemsModel3D.OctreeManager>
-                <hx:ItemsModel3D.ItemTemplate>
-                    <DataTemplate>
-                        <hx:MeshGeometryModel3D
-                            FillMode="{Binding DataContext.FillMode, RelativeSource={RelativeSource AncestorType=hx:Viewport3DX}}"
-                            Geometry="{Binding Model}"
-                            Material="{Binding Material}" />
-                    </DataTemplate>
-                </hx:ItemsModel3D.ItemTemplate>
-            </hx:ItemsModel3D>-->
-            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding PointsModel.Octree}" LineColor="Blue"/>
-            <hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" />
-            <!--<hx:OctreeLineGeometryModel3D IsRendering="{Binding OctreeFrameVisible}" Octree="{Binding ElementName=landerOctreeMgr, Path=Octree}" />-->
-            <!--<hx:OctreeLineGeometryModel3D
+            <hx:OctreeLineGeometryModel3D
                 IsRendering="{Binding OctreeFrameVisible}"
-                LineColor="{Binding LineColor}"
-                Octree="{Binding DefaultModel.Octree}" ReuseVertexArrayBuffer="True"/>-->
+                LineColor="Blue"
+                Octree="{Binding PointsModel.Octree}" />
+            <hx:OctreeLineGeometryModel3D
+                IsRendering="{Binding OctreeFrameVisible}"
+                LineColor="Blue"
+                Octree="{Binding LinesModel.Octree}" />
+            <hx:OctreeLineGeometryModel3D x:Name="dynamicOctree" IsRendering="False" Octree="{Binding ElementName=groupOctreeMgr, Path=Octree}" />
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"
@@ -139,7 +122,8 @@
             <CheckBox IsChecked="{Binding HitThrough}">Hit Through</CheckBox>
             <!--<CheckBox IsChecked="{Binding UseOctreeHitTest}">Enable Octree</CheckBox>-->
             <CheckBox IsChecked="{Binding AutoDeleteEmptyNode}">Auto Delete Empty Node</CheckBox>
-            <CheckBox IsChecked="{Binding OctreeFrameVisible}">Octree Wireframe</CheckBox>
+            <CheckBox IsChecked="{Binding OctreeFrameVisible}">Static Octree</CheckBox>
+            <CheckBox IsChecked="{Binding ElementName=dynamicOctree, Path=IsRendering}">Dynamic Octree</CheckBox>
             <Button Command="{Binding AddModelCommand}" IsEnabled="{Binding Enabled}">Add Model</Button>
             <Button Command="{Binding RemoveModelCommand}" IsEnabled="{Binding Enabled}">Remove Model</Button>
             <Button Command="{Binding ClearModelCommand}">Clear Models</Button>

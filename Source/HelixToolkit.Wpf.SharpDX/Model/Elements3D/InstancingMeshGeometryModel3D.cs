@@ -120,9 +120,9 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }
 
-        public override void UpdateNotRender()
+        public override void UpdateNotRender(IRenderContext context)
         {
-            base.UpdateNotRender();
+            base.UpdateNotRender(context);
             if (isInstanceChanged)
             {
                 BuildOctree();

@@ -204,7 +204,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
             asyncTask = Task.Factory.StartNew(() =>
             {
-                renderer?.UpdateNotRenderParallel(perFrameRenderables);
+                renderer?.UpdateNotRenderParallel(RenderContext, perFrameRenderables);
             });
             if ((ShowRenderDetail & RenderDetail.TriangleInfo) == RenderDetail.TriangleInfo)
             {

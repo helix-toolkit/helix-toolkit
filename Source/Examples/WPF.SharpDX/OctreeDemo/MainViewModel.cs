@@ -151,6 +151,8 @@ namespace OctreeDemo
                 return pointsHitModel;
             }
         }
+
+        public LineGeometry3D LinesModel { private set; get; }
         public ObservableCollection<DataModel> Items { set; get; }
         public List<DataModel> LanderItems { private set; get; }
 
@@ -272,7 +274,6 @@ namespace OctreeDemo
             b2.AddTube(new Vector3[] { new Vector3(10f, 5f, 0f), new Vector3(10f, 7f, 0f) }, 2, 12, false, true, true);
             DefaultModel = b2.ToMeshGeometry3D();
             DefaultModel.OctreeParameter.RecordHitPathBoundingBoxes = true;
-            DefaultModel.UpdateOctree();
 
             PointsModel = new PointGeometry3D();
             var offset = new Vector3(1, 1, 1);
@@ -280,7 +281,6 @@ namespace OctreeDemo
             PointsModel.Positions = new Vector3Collection(DefaultModel.Positions.Select(x=>x+offset));
             PointsModel.Indices = new IntCollection(Enumerable.Range(0, PointsModel.Positions.Count));
             PointsModel.OctreeParameter.RecordHitPathBoundingBoxes = true;
-            PointsModel.UpdateOctree();
             for (int i = 0; i < 50; ++i)
             {
                 for (int j = 0; j < 10; ++j)
@@ -288,6 +288,20 @@ namespace OctreeDemo
                     Items.Add(new SphereModel(new Vector3(i - 50, j - 25, i + j - 75), rnd.NextDouble(1,3)));
                 }
             }
+
+            var b3 = new LineBuilder();
+            for (int i = 0; i < 10; ++i)
+            {
+                for(int j =0; j< 5; ++j)
+                {
+                    for (int k = 0; k < 5; ++k)
+                    {
+                        b3.AddBox(new Vector3(-10 - i * 5, j * 5, k * 5), 5, 5, 5);
+                    }
+                }
+            }
+            LinesModel = b3.ToLineGeometry3D();
+            LinesModel.OctreeParameter.RecordHitPathBoundingBoxes = true;
             PointsHitModel = new PointGeometry3D() { Positions = new Vector3Collection(), Indices = new IntCollection() };
             //var landerItems = Load3ds("Car.3ds").Select(x => new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
             //var scale = new Vector3(0.007f);

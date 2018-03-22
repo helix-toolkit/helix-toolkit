@@ -840,6 +840,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }));
 
+        /// <summary>
+        /// The enable automatic octree update property
+        /// </summary>
+        public static readonly DependencyProperty EnableAutoOctreeUpdateProperty =
+            DependencyProperty.Register("EnableAutoOctreeUpdate", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d,e)=>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.AutoUpdateOctree = (bool)e.NewValue;
+                }
+            }));
 
         /// <summary>
         /// Background Color
@@ -2510,6 +2522,18 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (bool)GetValue(EnableD2DRenderingProperty); }
             set { SetValue(EnableD2DRenderingProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable automatic update octree for geometry models].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable automatic octree update]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableAutoOctreeUpdate
+        {
+            get { return (bool)GetValue(EnableAutoOctreeUpdateProperty); }
+            set { SetValue(EnableAutoOctreeUpdateProperty, value); }
         }
     }
 }

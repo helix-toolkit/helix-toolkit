@@ -113,7 +113,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The is hit test visible property
         /// </summary>
         public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D),
-            new PropertyMetadata(true, (d, e) => { (d as Element3DCore).IsHitTestVisibleInternal = (bool)e.NewValue; }));
+            new PropertyMetadata(true, (d, e) => {
+                (d as Element3DCore).IsHitTestVisibleInternal = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// Indicates, if this element should be hit-tested.

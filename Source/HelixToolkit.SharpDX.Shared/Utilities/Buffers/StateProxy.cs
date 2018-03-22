@@ -9,18 +9,12 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
-
-
     /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="StateType">The type of the tate type.</typeparam>
     public abstract class StateProxy<StateType> : IDisposable where StateType : ComObject
     {       
-        public event EventHandler<EventArgs> Disposed;
-
-        private int refCounter = 0;
-
         /// <summary>
         /// Gets the state.
         /// </summary>
@@ -33,12 +27,6 @@ namespace HelixToolkit.UWP.Utilities
         public StateProxy(StateType state)
         {
             this.state = state;
-        }
-
-        public StateProxy<StateType> Register()
-        {
-            Interlocked.Increment(ref refCounter);
-            return this;
         }
 
         /// <summary>
@@ -68,8 +56,8 @@ namespace HelixToolkit.UWP.Utilities
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
-                Disposed?.Invoke(this, EventArgs.Empty);
-                Disposed = null;
+                //Disposed?.Invoke(this, EventArgs.Empty);
+                //Disposed = null;
                 disposedValue = true;
             }
         }
@@ -83,20 +71,10 @@ namespace HelixToolkit.UWP.Utilities
         // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
-            var count = Interlocked.Decrement(ref refCounter);
-            if (count <= 0)
-            {
-                // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-                Dispose(true);
-                // TODO: uncomment the following line if the finalizer is overridden above.
-                // GC.SuppressFinalize(this);
-            }
-        }
-
-        internal void ForceDispose()
-        {
-            refCounter = 0;
-            Dispose();
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
         }
         #endregion
     }

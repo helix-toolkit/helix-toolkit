@@ -118,8 +118,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <para>Warning: Dependency properties are thread affinity. Do not get/set any dependency property in this function.</para>
         /// </summary>
         /// <param name="renderables"></param>
+        /// <param name="context"></param>
         /// <returns></returns>
-        void UpdateNotRenderParallel(List<IRenderable> renderables);
+        void UpdateNotRenderParallel(IRenderContext context, List<IRenderable> renderables);
         /// <summary>
         /// 
         /// </summary>
