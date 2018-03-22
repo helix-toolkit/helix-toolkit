@@ -136,7 +136,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///   <c>true</c> if [octree dirty]; otherwise, <c>false</c>.
         /// </value>
-        public bool OctreeDirty { private set; get; } = true;
+        public bool OctreeDirty { get { return octreeDirty; } }
+
+        private volatile bool octreeDirty = true;
+
+        private readonly object octreeLock = new object();
         /// <summary>
         /// Gets or sets the octree parameter.
         /// </summary>
@@ -152,7 +156,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void OctreeParameter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            OctreeDirty = true;
+            octreeDirty = true;
         }
 
         /// <summary>
@@ -177,13 +181,19 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (CanCreateOctree())
             {
-                if (OctreeDirty || force)
+                if (octreeDirty || force)
                 {
-                    this.Octree = CreateOctree(this.OctreeParameter);              
-                    if (this.Octree != null)
+                    lock (octreeLock)
                     {
-                        this.Octree.BuildTree();
-                        OctreeDirty = false;
+                        if (octreeDirty || force)
+                        {
+                            this.Octree = CreateOctree(this.OctreeParameter);              
+                            if (this.Octree != null)
+                            {
+                                this.Octree.BuildTree();                                
+                            }
+                            octreeDirty = false;   
+                        }                 
                     }
                     RaisePropertyChanged(nameof(Octree));
                 }
@@ -191,7 +201,7 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 this.Octree = null;
-                OctreeDirty = true;
+                octreeDirty = true;
             }
         }
         
@@ -217,7 +227,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void ClearOctree()
         {
             Octree = null;
-            OctreeDirty = true;
+            octreeDirty = true;
         }
         /// <summary>
         /// Manually call this function to update AABB and Bounding Sphere

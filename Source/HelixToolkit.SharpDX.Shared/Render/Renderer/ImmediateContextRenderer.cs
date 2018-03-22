@@ -140,7 +140,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
         /// <summary>
-        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(List{IRenderable})"/>
+        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IRenderContext, List{IRenderable})"/>
         /// </summary>
         /// <param name="renderables">The renderables.</param>
         /// <param name="context"></param>
