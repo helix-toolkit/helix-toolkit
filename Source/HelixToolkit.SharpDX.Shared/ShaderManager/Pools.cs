@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <typeparam name="TDescription"></typeparam>
     public abstract class ComPoolBase<TKEY, TVALUE, TDescription> : DisposeObject where TVALUE : ComObject
     {
-        private readonly Dictionary<TKEY, StateProxy<TVALUE>> pool = new Dictionary<TKEY, StateProxy<TVALUE>>();
+        private readonly Dictionary<TKEY, TVALUE> pool = new Dictionary<TKEY, TVALUE>();
         /// <summary>
         /// 
         /// </summary>
@@ -46,13 +46,13 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <returns></returns>
         public StateProxy<TVALUE> Register(TDescription description)
         {
-            StateProxy<TVALUE> value;
+            TVALUE value;
             TKEY key = GetKey(ref description);
             lock (pool)
             {
                 if (pool.TryGetValue(key, out value))
                 {
-                    return value.Register();
+                    return CreateProxy(value.QueryInterface<TVALUE>());
                 }
                 else
                 {
@@ -65,7 +65,7 @@ namespace HelixToolkit.UWP.ShaderManager
                             pool.Remove(key);
                         }
                     };
-                    return value.Register();
+                    return CreateProxy(value);
                 }
             }
         }
@@ -81,7 +81,13 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="device">The device.</param>
         /// <param name="description">The description.</param>
         /// <returns></returns>
-        protected abstract StateProxy<TVALUE> Create(Device device, ref TDescription description);
+        protected abstract TVALUE Create(Device device, ref TDescription description);
+        /// <summary>
+        /// Creates the proxy.
+        /// </summary>
+        /// <param name="state">The state.</param>
+        /// <returns></returns>
+        protected abstract StateProxy<TVALUE> CreateProxy(TVALUE state);
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
@@ -92,9 +98,9 @@ namespace HelixToolkit.UWP.ShaderManager
             {
                 lock (pool)
                 {
-                    foreach(var item in pool.Values.ToArray())
+                    foreach (var item in pool.Values.ToArray())
                     {
-                        item.ForceDispose();
+                        item.Dispose();
                     }
                     pool.Clear();
                 }
