@@ -29,6 +29,7 @@
             BackgroundColor="Black"
             Camera="{Binding Camera}"
             EffectsManager="{Binding EffectsManager}"
+            EnableAutoOctreeUpdate="True"
             EnableDeferredRendering="False"
             EnableSwapChainRendering="True"
             MSAA="Two"
@@ -92,12 +93,14 @@
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}" />
             <hx:MeshGeometryModel3D
-                x:Name="floor" WireframeColor="Red"
-                CullMode="Back" RenderWireframe="{Binding ElementName=carModel, Path=RenderWireframe}"
+                x:Name="floor"
+                CullMode="Back"
                 FillMode="{Binding FillMode}"
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
-                Transform="{Binding FloorTransform}" />
+                RenderWireframe="{Binding ElementName=carModel, Path=RenderWireframe}"
+                Transform="{Binding FloorTransform}"
+                WireframeColor="Red" />
             <hx:LineGeometryModel3D Geometry="{Binding LineGeo}" Color="Blue" />
         </hx:Viewport3DX>
         <StackPanel

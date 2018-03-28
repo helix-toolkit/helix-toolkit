@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The time stamp.
         /// </value>
-        TimeSpan TimeStamp { set; get; }
+        TimeSpan TimeStamp { get; }
         /// <summary>
         /// Gets the light scene.
         /// </summary>
@@ -117,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///   <c>true</c> if [enable bounding frustum]; otherwise, <c>false</c>.
         /// </value>
-        bool EnableBoundingFrustum { set; get; }
+        bool EnableBoundingFrustum { get; }
         /// <summary>
         /// Gets or sets the bounding frustum.
         /// </summary>
@@ -153,6 +153,13 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   <c>true</c> if this instance is custom pass; otherwise, <c>false</c>.
         /// </value>
         bool IsCustomPass { set; get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [update octree].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [update octree]; otherwise, <c>false</c>.
+        /// </value>
+        bool AutoUpdateOctree { get; }
     }
     /// <summary>
     /// Contains the shared resources across all renderables. 

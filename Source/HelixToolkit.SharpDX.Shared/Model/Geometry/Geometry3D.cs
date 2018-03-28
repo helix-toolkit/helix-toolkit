@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (Set(ref indices, value))
                 {
-                    Octree = null;
+                    ClearOctree();
                 }
             }
         }
@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if(position == value) { return; }
                 position = value;
-                Octree = null;
+                ClearOctree();
                 UpdateBounds();
                 RaisePropertyChanged();
             }
@@ -130,8 +130,35 @@ namespace HelixToolkit.Wpf.SharpDX
         /// TO use Octree during hit test to improve hit performance, please call UpdateOctree after model created.
         /// </summary>
         public IOctree Octree { private set; get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [octree dirty], needs update.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [octree dirty]; otherwise, <c>false</c>.
+        /// </value>
+        public bool OctreeDirty { get { return octreeDirty; } }
 
+        private volatile bool octreeDirty = true;
+
+        private readonly object octreeLock = new object();
+        /// <summary>
+        /// Gets or sets the octree parameter.
+        /// </summary>
+        /// <value>
+        /// The octree parameter.
+        /// </value>
         public OctreeBuildParameter OctreeParameter { private set; get; } = new OctreeBuildParameter();
+
+        public Geometry3D()
+        {
+            OctreeParameter.PropertyChanged += OctreeParameter_PropertyChanged;
+        }
+
+        private void OctreeParameter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            octreeDirty = true;
+        }
+
         /// <summary>
         /// Call to manually update vertex buffer. Use with <see cref="ObservableObject.DisablePropertyChangedEvent"/>
         /// </summary>
@@ -147,22 +174,34 @@ namespace HelixToolkit.Wpf.SharpDX
             RaisePropertyChanged(TriangleBuffer);
         }
 
-
         /// <summary>
         /// Create Octree for current model.
         /// </summary>
-        public void UpdateOctree(float minSize = 1f, bool autoDeleteIfEmpty = true)
+        public void UpdateOctree(bool force = false)
         {
             if (CanCreateOctree())
             {
-                OctreeParameter.MinimumOctantSize = minSize;
-                OctreeParameter.AutoDeleteIfEmpty = autoDeleteIfEmpty;
-                this.Octree = CreateOctree(this.OctreeParameter);
-                this.Octree?.BuildTree();
+                if (octreeDirty || force)
+                {
+                    lock (octreeLock)
+                    {
+                        if (octreeDirty || force)
+                        {
+                            this.Octree = CreateOctree(this.OctreeParameter);              
+                            if (this.Octree != null)
+                            {
+                                this.Octree.BuildTree();                                
+                            }
+                            octreeDirty = false;   
+                        }                 
+                    }
+                    RaisePropertyChanged(nameof(Octree));
+                }
             }
             else
             {
                 this.Octree = null;
+                octreeDirty = true;
             }
         }
         
@@ -188,6 +227,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void ClearOctree()
         {
             Octree = null;
+            octreeDirty = true;
         }
         /// <summary>
         /// Manually call this function to update AABB and Bounding Sphere

@@ -260,6 +260,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             private set;get;
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [update octree] automatically.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [update octree]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AutoUpdateOctree { set; get; } = true;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderContext"/> class.
         /// </summary>

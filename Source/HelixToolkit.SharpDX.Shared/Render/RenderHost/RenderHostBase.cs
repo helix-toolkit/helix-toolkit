@@ -143,7 +143,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             get { return viewport; }
         }
 
-        private IRenderContext renderContext;
+        protected RenderContext renderContext;
         /// <summary>
         /// 
         /// </summary>
@@ -152,7 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             get { return renderContext; }
         }
 
-        private IRenderContext2D renderContext2D;
+        private RenderContext2D renderContext2D;
         /// <summary>
         /// Gets the render context2d.
         /// </summary>
@@ -526,15 +526,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 RenderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
                 lastRenderTime = t0;
                 UpdateRequested = false;
+                renderContext.AutoUpdateOctree = RenderConfiguration.AutoUpdateOctree;
+                renderContext.EnableBoundingFrustum = EnableRenderFrustum;
                 ++updateCounter;
                 if (RenderConfiguration.UpdatePerFrameData)
                 {
-                    viewport.Update(t0);
-                    RenderContext.EnableBoundingFrustum = EnableRenderFrustum;
-                    RenderContext.TimeStamp = t0;
-                    RenderContext.Camera = viewport.CameraCore;
-                    RenderContext.WorldMatrix = viewport.WorldMatrix;
-                    RenderStatistics.Camera = viewport.CameraCore;
+                    viewport.Update(t0);                    
+                    renderContext.TimeStamp = t0;
+                    renderContext.Camera = viewport.CameraCore;
+                    renderContext.WorldMatrix = viewport.WorldMatrix;
+                    renderContext.Camera = viewport.CameraCore;
                 }
                 PreRender();
                 try
@@ -774,7 +775,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected virtual IRenderContext CreateRenderContext(DeviceContext context)
+        protected virtual RenderContext CreateRenderContext(DeviceContext context)
         {
             return new RenderContext(this, context);
         }
@@ -783,7 +784,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected virtual IRenderContext2D CreateRenderContext2D(global::SharpDX.Direct2D1.DeviceContext context)
+        protected virtual RenderContext2D CreateRenderContext2D(global::SharpDX.Direct2D1.DeviceContext context)
         {
             return new RenderContext2D(context, this);
         }
