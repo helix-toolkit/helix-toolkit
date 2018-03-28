@@ -12,7 +12,7 @@ namespace HelixToolkit.UWP.Core
 namespace HelixToolkit.Wpf.SharpDX.Core
 #endif
 {
-    using Model;
+    using Model.Scene;
     using System;
     using BoundingSphere = global::SharpDX.BoundingSphere;
 
@@ -174,9 +174,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         public delegate bool OnCheckGeometryDelegate(Geometry3D geometry);
         public OnCheckGeometryDelegate OnCheckGeometry; 
 
-        private Element3DCore elementCore;
+        private IRenderable elementCore;
 
-        public GeometryBoundManager(Element3DCore core)
+        public GeometryBoundManager(IRenderable core)
         {
             this.elementCore = core;
             core.OnTransformChanged += OnTransformChanged;

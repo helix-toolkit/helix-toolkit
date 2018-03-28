@@ -21,6 +21,7 @@ namespace HelixToolkit.UWP
     /// </summary>
     public interface IRenderable : IAttachable, IBoundable, IGUID, ITransform
     {
+        event EventHandler<TransformArgs> OnTransformChanged;
         /// <summary>
         /// Gets a value indicating whether this instance is renderable. Test includes Visible and view frustum test.
         /// </summary>
