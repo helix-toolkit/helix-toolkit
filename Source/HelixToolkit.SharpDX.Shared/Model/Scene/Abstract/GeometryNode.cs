@@ -49,6 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 if(Set(ref instances, value))
                 {
                     BoundManager.Instances = value;
+                    InstanceBuffer.Elements = value;
                 }
             }
             get { return instances; }
