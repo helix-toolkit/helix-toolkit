@@ -125,9 +125,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (renderHostInternal != null)
                 {
-                    foreach (IRenderable item in Items)
+                    foreach (Element3D item in Items)
                     {
-                        yield return item;
+                        yield return item.SceneNode;
                     }
                 }
             }
