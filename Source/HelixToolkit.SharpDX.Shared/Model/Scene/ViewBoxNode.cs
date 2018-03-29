@@ -266,7 +266,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         protected override bool CanHitTest(IRenderContext context)
         {
-            return base.CanHitTest(context) && context != null;
+            return context != null;
         }
 
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
@@ -338,6 +338,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     {
                         Matrix transform = cornerInstances[index];
                         normal = -transform.TranslationVector;
+                    }
+                    else
+                    {
+                        return false;
                     }
                 }
                 else

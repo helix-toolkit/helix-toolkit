@@ -218,5 +218,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             mesh.Colors = colors;
         }
+
+        protected override bool CanHitTest(IRenderContext context)
+        {
+            return false;
+        }
     }
 }

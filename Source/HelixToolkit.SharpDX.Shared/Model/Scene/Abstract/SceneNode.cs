@@ -19,8 +19,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public abstract class SceneNode : DisposeObject, IRenderable
+    public abstract partial class SceneNode : DisposeObject, IRenderable
     {
+        #region Properties
         /// <summary>
         /// 
         /// </summary>
@@ -283,10 +284,26 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             InvalidateRender();
         }
+        #endregion        
+        /// <summary>
+        /// Gets or sets the hit test source. The wrapper must set this so the <see cref="HitTestResult.ModelHit"/> is the wrapper.
+        /// </summary>
+        /// <value>
+        /// The hit test source.
+        /// </value>
+        public object HitTestSource { internal set; get; }
         #endregion
         #region Events
         public event EventHandler<BoolArgs> OnVisibleChanged;
         #endregion
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SceneNode"/> class.
+        /// </summary>
+        public SceneNode()
+        {
+            HitTestSource = this;
+        }
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>

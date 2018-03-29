@@ -28,7 +28,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         /// <summary>
         /// 
         /// </summary>
-        public Guid GUID { get; } = Guid.NewGuid();
+        public Guid GUID
+        {
+            get { return SceneNode.GUID; }
+        }
 
         /// <summary>
         /// 
@@ -62,6 +65,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
                         {
                             sceneNode = OnCreateSceneNode();
                             AssignDefaultValuesToSceneNode(sceneNode);
+                            sceneNode.HitTestSource = this;
                         }
                     }
                 }

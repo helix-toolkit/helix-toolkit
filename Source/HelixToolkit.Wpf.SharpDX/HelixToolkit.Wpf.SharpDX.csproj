@@ -222,6 +222,7 @@
     <Compile Include="Model\Materials\Material.cs" />
     <Compile Include="Model\Materials\PhongMaterial.cs" />
     <Compile Include="Model\Materials\PhongMaterialFactory.cs" />
+    <Compile Include="Model\Scene\SceneNode.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

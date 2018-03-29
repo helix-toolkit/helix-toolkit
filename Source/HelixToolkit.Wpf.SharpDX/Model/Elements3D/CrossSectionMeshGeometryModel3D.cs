@@ -242,5 +242,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         #endregion
+
+        protected override SceneNode OnCreateSceneNode()
+        {
+            return new CrossSectionMeshNode();
+        }
     }
 }

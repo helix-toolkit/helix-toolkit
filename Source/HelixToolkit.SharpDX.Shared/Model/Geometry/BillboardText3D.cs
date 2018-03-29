@@ -238,7 +238,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public override bool HitTest(IRenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
-            IRenderable originalSource, bool fixedSize)
+            object originalSource, bool fixedSize)
         {
             var h = false;
             var result = new BillboardHitResult();

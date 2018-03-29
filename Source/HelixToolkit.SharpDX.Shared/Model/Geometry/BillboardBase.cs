@@ -106,7 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="fixedSize">if set to <c>true</c> [fixed size].</param>
         /// <returns></returns>
         public virtual bool HitTest(IRenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
-            IRenderable originalSource, bool fixedSize)
+            object originalSource, bool fixedSize)
         {
             var h = false;
             var result = new BillboardHitResult();

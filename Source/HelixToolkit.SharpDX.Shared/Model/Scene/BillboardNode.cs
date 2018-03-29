@@ -135,7 +135,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
-            return (Geometry as BillboardBase).HitTest(context, totalModelMatrix, ref ray, ref hits, this, FixedSize);
+            return (Geometry as BillboardBase).HitTest(context, totalModelMatrix, ref ray, ref hits, this.HitTestSource, FixedSize);
         }
     }
 }
