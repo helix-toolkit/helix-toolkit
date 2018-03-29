@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
-        private CullMode cullMode;
+        private CullMode cullMode = CullMode.None;
 
         public CullMode CullMode
         {

@@ -365,14 +365,19 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 if (RenderCore is IGeometryRenderCore r)
                 {
                     r.InstanceBuffer = InstanceBuffer;
-                }
-                OnRasterStateChanged();
+                }                
                 return true;
             }
             else
             {
                 return false;
             }
+        }
+
+        protected override void OnAttached()
+        {
+            OnRasterStateChanged();
+            base.OnAttached();
         }
 
         private void BufferModel_InvalidateRenderer(object sender, bool e)
