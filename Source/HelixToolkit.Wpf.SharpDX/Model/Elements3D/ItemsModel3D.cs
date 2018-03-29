@@ -108,6 +108,8 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (SceneNode as GroupNode).OctreeManager == null ? null : (SceneNode as GroupNode).OctreeManager.Octree; }
         }
 
+        private readonly Dictionary<object, Element3D> elementDict = new Dictionary<object, Element3D>();
+
         /// <summary>
         /// Handles changes in the ItemsSource property.
         /// </summary>
@@ -129,7 +131,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 item.DataContext = null;
             }
 
-            Children.Clear();
+            Clear();
 
             if (e.NewValue is INotifyCollectionChanged n)
             {
@@ -150,6 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (model != null)
                     {
                         this.Children.Add(model);
+                        elementDict.Add(item, model);
                     }
                     else
                     {
@@ -166,6 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         model.DataContext = item;
                         this.Children.Add(model);
+                        elementDict.Add(item, model);
                     }
                     else
                     {
@@ -190,16 +194,18 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         foreach (var item in e.OldItems)
                         {
-                            if(item is Element3D element)
+                            Element3D element;
+                            if(elementDict.TryGetValue(item, out element))
                             {
-                                this.Children.Remove(element);
+                                Children.Remove(element);
+                                elementDict.Remove(item);
                             }
                         }
                         InvalidateRender();
                     }
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    this.Children.Clear();
+                    Clear();
                     break;
             }
 
@@ -216,6 +222,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 if (model != null)
                                 {
                                     this.Children.Add(model);
+                                    elementDict.Add(item, model);
                                 }
                                 else
                                 {
@@ -232,6 +239,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 {
                                     model.DataContext = item;
                                     this.Children.Add(model);
+                                    elementDict.Add(item, model);
                                 }
                                 else
                                 {
@@ -255,6 +263,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 {                                    
                                     model.DataContext = item;
                                     this.Children.Add(model);
+                                    elementDict.Add(item, model);
                                 }
                                 else
                                 {
@@ -270,6 +279,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 if (model != null)
                                 {                                    
                                     this.Children.Add(model);
+                                    elementDict.Add(item, model);
                                 }
                                 else
                                 {
@@ -280,6 +290,18 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     break;
             }
+        }
+
+        public override void Clear()
+        {
+            elementDict.Clear();
+            base.Clear();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            elementDict.Clear();
+            base.Dispose(disposing);
         }
     }
 }

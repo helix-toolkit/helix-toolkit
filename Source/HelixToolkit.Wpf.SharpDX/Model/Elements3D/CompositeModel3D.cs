@@ -64,23 +64,24 @@ namespace HelixToolkit.Wpf.SharpDX
         private void ChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             var node = SceneNode as GroupNode;
-            if (e.OldItems != null)
+
+            switch (e.Action)
             {
-                switch (e.Action)
-                {
-                    case NotifyCollectionChangedAction.Reset:
-                    case NotifyCollectionChangedAction.Remove:
-                    case NotifyCollectionChangedAction.Replace:                        
+                case NotifyCollectionChangedAction.Reset:                  
+                case NotifyCollectionChangedAction.Remove:
+                case NotifyCollectionChangedAction.Replace:
+                    if (e.OldItems != null)
+                    {
                         foreach (Element3D item in e.OldItems)
-                        {                           
+                        {
                             if (item.Parent == this)
                             {
                                 this.RemoveLogicalChild(item);
                             }
                             node.RemoveChildNode(item);
-                        }
-                        break;
-                }
+                        }                
+                    }
+                    break;
             }
 
             if (e.NewItems != null)
@@ -110,6 +111,20 @@ namespace HelixToolkit.Wpf.SharpDX
                         break;
                 }
             }
+        }
+
+        public virtual void Clear()
+        {
+            foreach (Element3D item in Children)
+            {
+                if (item.Parent == this)
+                {
+                    this.RemoveLogicalChild(item);
+                }
+            }            
+            var node = SceneNode as GroupNode;
+            node.Clear();
+            Children.Clear();
         }
 
         protected override SceneNode OnCreateSceneNode()

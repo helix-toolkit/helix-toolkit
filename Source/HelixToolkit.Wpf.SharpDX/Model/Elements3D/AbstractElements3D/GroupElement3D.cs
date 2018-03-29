@@ -28,19 +28,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
-        public IList<Element3D> ItemsSource
+        public Element3DCollection ItemsSource
         {
-            get { return (IList<Element3D>)this.GetValue(ItemsSourceProperty); }
+            get { return (Element3DCollection)this.GetValue(ItemsSourceProperty); }
             set { this.SetValue(ItemsSourceProperty, value); }
         }
         /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(IList<Element3D>), typeof(GroupElement3D),
+            DependencyProperty.Register("ItemsSource", typeof(Element3DCollection), typeof(GroupElement3D),
                 new PropertyMetadata(null, 
                     (d, e) => {
-                        (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
+                        (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as Element3DCollection);
                     }));
 
         public ObservableCollection<Element3D> Children
@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private void OnItemsSourceChanged(IList<Element3D> itemsSource)
+        private void OnItemsSourceChanged(Element3DCollection itemsSource)
         {
             if (itemsSourceInternal != null)
             {
