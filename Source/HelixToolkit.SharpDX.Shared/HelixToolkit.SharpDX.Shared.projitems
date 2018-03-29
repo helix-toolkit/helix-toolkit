@@ -159,6 +159,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Lights\SpotLightNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\LineNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\MeshNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\MeshOutlineNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ParticleStormNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PatchMeshNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PointNode.cs" />

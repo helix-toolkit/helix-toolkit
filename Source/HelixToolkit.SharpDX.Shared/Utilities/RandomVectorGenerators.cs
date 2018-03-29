@@ -6,9 +6,9 @@ using SharpDX;
 using System;
 
 #if NETFX_CORE
-namespace HelixToolkit.UWP.Utility
+namespace HelixToolkit.UWP.Utilities
 #else
-namespace HelixToolkit.Wpf.SharpDX.Utility
+namespace HelixToolkit.Wpf.SharpDX.Utilities
 #endif
 {
     public class UniformRandomVectorGenerator : IRandomVector
