@@ -176,6 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             EdgeModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
             EdgeModel.RenderCore.RenderType = RenderType.ScreenSpaced;
             this.AddChildNode(EdgeModel);
+            UpdateModel(UpDirection);
         }
 
         protected override bool OnAttach(IRenderHost host)

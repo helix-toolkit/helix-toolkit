@@ -135,11 +135,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override SceneNode OnCreateSceneNode()
-        {
-            InitializeMover();
-            return new ScreenSpacedNode();
-        }
+        //protected override SceneNode OnCreateSceneNode()
+        //{
+            
+        //    return new ScreenSpacedNode();
+        //}
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
@@ -150,6 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 n.SizeScale = (float)this.SizeScale;
             }
             base.AssignDefaultValuesToSceneNode(node);
+            InitializeMover();
         }
 
         #region 2D stuffs
