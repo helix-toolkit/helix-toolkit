@@ -4,8 +4,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System;
 using System.Collections.Generic;
-using HelixToolkit.Wpf.SharpDX.Core;
-using HelixToolkit.Wpf.SharpDX.Render;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System.Linq;
@@ -16,6 +14,8 @@ namespace HelixToolkit.UWP.Model.Scene
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
+    using Core;
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -108,7 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public bool Visible
         {
-            protected set
+            internal set
             {
                 if (Set(ref visible, value))
                 {

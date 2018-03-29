@@ -29,6 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 {
                     node.Attach(RenderHost);
                 }
+                forceUpdateTransform = true;
                 return true;
             }
             else { return false; }

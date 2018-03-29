@@ -1,16 +1,19 @@
-﻿using HelixToolkit.Wpf.SharpDX.Core;
+﻿
 using SharpDX;
 using System.Collections.Generic;
 using System.Windows;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Model.Scene;
+
     public class BoneSkinMeshGeometryModel3D : MeshGeometryModel3D
     {
         public static DependencyProperty VertexBoneIdsProperty = DependencyProperty.Register("VertexBoneIds", typeof(IList<BoneIds>), typeof(BoneSkinMeshGeometryModel3D), 
             new PropertyMetadata(null, (d,e)=>
             {
-                (d as BoneSkinMeshGeometryModel3D).bonesBufferModel.Elements = e.NewValue as IList<BoneIds>;
+                ((d as Element3DCore).SceneNode as BoneSkinMeshNode).VertexBoneIds = e.NewValue as IList<BoneIds>;
             }));
 
         public IList<BoneIds> VertexBoneIds
@@ -29,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(new BoneMatricesStruct() { Bones = new Matrix[BoneMatricesStruct.NumberOfBones] }, 
                 (d, e) =>
                 {
-                    (d as BoneSkinMeshGeometryModel3D).boneSkinRenderCore.BoneMatrices = (BoneMatricesStruct)e.NewValue;
+                    ((d as Element3DCore).SceneNode as BoneSkinMeshNode).BoneMatrices = (BoneMatricesStruct)e.NewValue;
                 }));
 
         public BoneMatricesStruct BoneMatrices
@@ -44,56 +47,18 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected readonly IElementsBufferModel<BoneIds> bonesBufferModel = new VertexBoneIdBufferModel<BoneIds>(BoneIds.SizeInBytes);
-        private IBoneSkinRenderParams boneSkinRenderCore
+        protected override SceneNode OnCreateSceneNode()
         {
-            get { return (IBoneSkinRenderParams)RenderCore; }
+            return new BoneSkinMeshNode();
         }
 
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            return host.EffectsManager[DefaultRenderTechniqueNames.BoneSkinBlinn];
-        }
-
-        protected override RenderCore OnCreateRenderCore()
-        {         
-            return new BoneSkinRenderCore();
-        }
-
-        protected override void AssignDefaultValuesToCore(RenderCore core)
-        {
-            base.AssignDefaultValuesToCore(core);
-            boneSkinRenderCore.BoneMatrices = BoneMatrices;
-        }
-
-        protected override bool OnAttach(IRenderHost host)
-        {
-            if (base.OnAttach(host))
+            if(core is BoneSkinMeshNode n)
             {
-                bonesBufferModel.Initialize();
-                boneSkinRenderCore.VertexBoneIdBuffer = bonesBufferModel;
-                return true;
+                n.BoneMatrices = BoneMatrices;
             }
-            else
-            {
-                return false;
-            }
-        }
-
-        protected override void OnDetach()
-        {
-            bonesBufferModel.DisposeAndClear();
-            base.OnDetach();
-        }
-
-        protected override bool CheckBoundingFrustum(BoundingFrustum boundingFrustum)
-        {
-            return true;
-        }
-
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return false;//return base.CanHitTest(context) && !hasBoneParameter;
+            base.AssignDefaultValuesToSceneNode(core);
         }
     }
 }

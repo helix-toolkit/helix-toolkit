@@ -9,16 +9,13 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System.Windows;
-    using Core;
+    using HelixToolkit.Wpf.SharpDX.Model.Scene;
 
     public class PatchGeometryModel3D : MeshGeometryModel3D
     {
-
-
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new PatchMeshRenderCore() { EnableTessellation = true };
+            return new PatchMeshNode();
         }
     }
 }

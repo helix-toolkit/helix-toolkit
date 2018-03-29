@@ -1,10 +1,8 @@
 ﻿namespace HelixToolkit.Wpf.SharpDX
 {
-    using Core;
     using global::SharpDX;
-    using global::SharpDX.Direct3D11;
-    using System;
-    using System.Collections.Generic;
+    using Model;
+    using Model.Scene;
     using System.Windows;
     using Media = System.Windows.Media;
 
@@ -15,7 +13,7 @@
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(PointGeometryModel3D),
                 new PropertyMetadata(Media.Colors.Black, (d, e) =>
                 {
-                    ((d as IRenderable).RenderCore as IPointRenderParams).PointColor = ((Media.Color)e.NewValue).ToColor4();
+                    ((d as Element3DCore).SceneNode as PointNode).Color = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
         public static readonly DependencyProperty SizeProperty =
@@ -23,26 +21,28 @@
                 (d,e)=> 
                 {
                     var size = (Size)e.NewValue;
-                    ((d as IRenderable).RenderCore as IPointRenderParams).Width = (float)size.Width;
-                    ((d as IRenderable).RenderCore as IPointRenderParams).Height = (float)size.Height;
+                    ((d as Element3DCore).SceneNode as PointNode).Size = new Size2F((float)size.Width, (float)size.Height);
                 }));
 
         public static readonly DependencyProperty FigureProperty =
             DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new PropertyMetadata(PointFigure.Rect,
                 (d, e)=> 
                 {
-                    ((d as IRenderable).RenderCore as IPointRenderParams).Figure = (PointFigure)e.NewValue;
+                    ((d as Element3DCore).SceneNode as PointNode).Figure = (PointFigure)e.NewValue;
                 }));
 
         public static readonly DependencyProperty FigureRatioProperty =
             DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(0.25,
                 (d, e)=> 
                 {
-                    ((d as IRenderable).RenderCore as IPointRenderParams).FigureRatio = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as PointNode).FigureRatio = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
-            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(4.0));
+            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(4.0, (d, e)=> 
+                {
+                    ((d as Element3DCore).SceneNode as PointNode).HitTestThickness = (float)(double)e.NewValue;
+                }));
 
         public Media.Color Color
         {
@@ -78,126 +78,30 @@
         }
         #endregion
 
-        /// <summary>
-        /// Distances the ray to point.
-        /// </summary>
-        /// <param name="r">The r.</param>
-        /// <param name="p">The p.</param>
-        /// <returns></returns>
-        public static double DistanceRayToPoint(Ray r, Vector3 p)
-        {
-            Vector3 v = r.Direction;
-            Vector3 w = p - r.Position;
-
-            float c1 = Vector3.Dot(w, v);
-            float c2 = Vector3.Dot(v, v);
-            float b = c1 / c2;
-
-            Vector3 pb = r.Position + v * b;
-            return (p - pb).Length();
-        }
-
-        /// <summary>
-        /// Called when [create buffer model].
-        /// </summary>
-        /// <param name="modelGuid"></param>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
-        protected override IGeometryBufferProxy OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
-        {
-            return EffectsManager.GeometryBufferManager.Register<DefaultPointGeometryBufferModel>(modelGuid, geometry);
-        }
 
         /// <summary>
         /// Called when [create render core].
         /// </summary>
         /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new PointRenderCore();
+            return new PointNode();
         }
         /// <summary>
         /// Assigns the default values to core.
         /// </summary>
         /// <param name="core">The core.</param>
-        protected override void AssignDefaultValuesToCore(RenderCore core)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            base.AssignDefaultValuesToCore(core);
-            var c = core as IPointRenderParams;
-            c.Width = (float)Size.Width;
-            c.Height = (float)Size.Height;
-            c.Figure = Figure;
-            c.FigureRatio = (float)FigureRatio;
-            c.PointColor = Color.ToColor4();
-        }
-        /// <summary>
-        /// Create raster state description.
-        /// </summary>
-        /// <returns></returns>
-        protected override RasterizerStateDescription CreateRasterState()
-        {
-            return new RasterizerStateDescription()
+            if (core is PointNode n)
             {
-                FillMode = FillMode.Solid,
-                CullMode = CullMode.Back,
-                DepthBias = DepthBias,
-                DepthBiasClamp = -1000,
-                SlopeScaledDepthBias = (float)SlopeScaledDepthBias,
-                IsDepthClipEnabled = IsDepthClipEnabled,
-                IsFrontCounterClockwise = false,
-                IsMultisampleEnabled = false,
-                IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
-            };
-        }
-        /// <summary>
-        /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>
-        /// Return RenderTechnique
-        /// </returns>
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.Points];
-        }
+                n.Size = new Size2F((float)Size.Width, (float)Size.Height);
+                n.Figure = Figure;
+                n.FigureRatio = (float)FigureRatio;
+                n.Color = Color.ToColor4();
+            }
 
-        /// <summary>
-        /// <para>Determine if this can be rendered.</para>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected override bool CanRender(IRenderContext context)
-        {
-            if(base.CanRender(context))
-            {
-                return !RenderHost.IsDeferredLighting;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        /// <summary>
-        /// Called when [check geometry].
-        /// </summary>
-        /// <param name="geometry">The geometry.</param>
-        /// <returns></returns>
-        protected override bool OnCheckGeometry(Geometry3D geometry)
-        {
-            return base.OnCheckGeometry(geometry) && geometry is PointGeometry3D;
-        }
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="totalModelMatrix">The total model matrix.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return (Geometry as PointGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this, (float)HitTestThickness);
+            base.AssignDefaultValuesToSceneNode(core);
         }
     }
 

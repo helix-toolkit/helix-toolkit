@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using HelixToolkit.Wpf.SharpDX.Core;
-using SharpDX;
+﻿using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
@@ -24,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty EffectNameProperty =
             DependencyProperty.Register("EffectName", typeof(string), typeof(PostEffectMeshXRay), new PropertyMetadata(DefaultRenderTechniqueNames.PostEffectMeshXRay, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IPostEffect).EffectName = (string)e.NewValue;
+                ((d as Element3DCore).SceneNode as PostEffectXRayNode).EffectName = (string)e.NewValue;
             }));
 
         /// <summary>
@@ -47,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Colors.Blue,
             (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IPostEffectMeshXRay).Color = ((Color)e.NewValue).ToColor4();
+                ((d as Element3DCore).SceneNode as PostEffectXRayNode).Color = ((Color)e.NewValue).ToColor4();
             }));
 
         /// <summary>
@@ -73,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static DependencyProperty OutlineFadingFactorProperty = DependencyProperty.Register("OutlineFadingFactor", typeof(double), typeof(PostEffectMeshXRay),
             new PropertyMetadata(1.5, (d, e) => {
-                ((d as IRenderable).RenderCore as IPostEffectMeshXRay).OutlineFadingFactor = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as PostEffectXRayNode).OutlineFadingFactor = (float)(double)e.NewValue;
             }));
 
         /// <summary>
@@ -94,6 +89,15 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [double pass]. Double pass uses stencil buffer to reduce overlapping artifacts
+        /// </summary>
+        public static readonly DependencyProperty EnableDoublePassProperty =
+            DependencyProperty.Register("EnableDoublePass", typeof(bool), typeof(PostEffectMeshXRay), new PropertyMetadata(false, (d,e)=>
+            {
+                ((d as Element3DCore).SceneNode as PostEffectXRayNode).EnableDoublePass = (bool)e.NewValue;
+            }));
+
 
         /// <summary>
         /// Gets or sets a value indicating whether [double pass]. Double pass uses stencil buffer to reduce overlapping artifacts
@@ -103,45 +107,27 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(EnableDoublePassProperty); }
             set { SetValue(EnableDoublePassProperty, value); }
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [double pass]. Double pass uses stencil buffer to reduce overlapping artifacts
-        /// </summary>
-        public static readonly DependencyProperty EnableDoublePassProperty =
-            DependencyProperty.Register("EnableDoublePass", typeof(bool), typeof(PostEffectMeshXRay), new PropertyMetadata(false, (d,e)=>
-            {
-                ((d as IRenderable).RenderCore as IPostEffectMeshXRay).DoublePass = (bool)e.NewValue;
-            }));
         #endregion
 
-        /// <summary>
-        /// Called when [create render core].
-        /// </summary>
-        /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new PostEffectMeshXRayCore();
+            return new PostEffectXRayNode();
         }
+
         /// <summary>
         /// Assigns the default values to core.
         /// </summary>
         /// <param name="core">The core.</param>
-        protected override void AssignDefaultValuesToCore(RenderCore core)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            base.AssignDefaultValuesToCore(core);
-            (core as IPostEffectMeshXRay).EffectName = EffectName;
-            (core as IPostEffectMeshXRay).Color = OutlineColor.ToColor4();
-            (core as IPostEffectMeshXRay).OutlineFadingFactor = (float)OutlineFadingFactor;
-            (core as IPostEffectMeshXRay).DoublePass = EnableDoublePass;
-        }
-
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return false;
-        }
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return false;
+            base.AssignDefaultValuesToSceneNode(core);
+            if(core is PostEffectXRayNode c)
+            {
+                c.EffectName = EffectName;
+                c.Color = OutlineColor.ToColor4();
+                c.OutlineFadingFactor = (float)OutlineFadingFactor;
+                c.EnableDoublePass = EnableDoublePass;
+            }
         }
     }
 }

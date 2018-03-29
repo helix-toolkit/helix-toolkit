@@ -152,7 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
-        public MeshTopologyEnum MeshTopology
+        public MeshTopologyEnum MeshType
         {
             get
             {
@@ -247,7 +247,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </returns>
         protected override bool CanHitTest(IRenderContext context)
         {
-            return base.CanHitTest(context) && MeshTopology == MeshTopologyEnum.PNTriangles;
+            return base.CanHitTest(context) && MeshType == MeshTopologyEnum.PNTriangles;
         }
         /// <summary>
         /// Called when [hit test].

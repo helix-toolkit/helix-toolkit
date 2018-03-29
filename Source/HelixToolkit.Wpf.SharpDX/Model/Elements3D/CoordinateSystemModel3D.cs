@@ -204,12 +204,12 @@ namespace HelixToolkit.Wpf.SharpDX
             arrowMeshModel.Material = PhongMaterials.White;
             arrowMeshModel.Geometry = mesh;
             arrowMeshModel.CullMode = CullMode.Back;
-            arrowMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Colors]; };
+            arrowMeshModel.SceneNode.OnSetRenderTechnique += (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Colors]; };
             arrowMeshModel.IsHitTestVisible = false;
-            arrowMeshModel.RenderCore.RenderType = RenderType.ScreenSpaced;
+            arrowMeshModel.SceneNode.RenderCore.RenderType = RenderType.ScreenSpaced;
 
             axisBillboard.IsHitTestVisible = false;
-            axisBillboard.RenderCore.RenderType = RenderType.ScreenSpaced;
+            axisBillboard.SceneNode.RenderCore.RenderType = RenderType.ScreenSpaced;
             axisBillboard.EnableViewFrustumCheck = false;
             var axisLabel = new BillboardText3D();
             axisLabel.TextInfo.Add(new TextInfo());
@@ -301,11 +301,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 colors[i] = color;
             }
             mesh.Colors = colors;
-        }
-
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return false;
         }
     }
 }

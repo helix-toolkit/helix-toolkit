@@ -6,7 +6,8 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using Core;
+    using Model;
+    using Model.Scene;
     using global::SharpDX;
     using System.Windows;
     using Media = System.Windows.Media;
@@ -16,15 +17,6 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class CrossSectionMeshGeometryModel3D : MeshGeometryModel3D
     {
-        /// <summary>
-        /// The PlaneToVector
-        /// </summary>
-        /// <param name="p">The <see cref="Plane"/></param>
-        /// <returns>The <see cref="Vector4"/></returns>
-        private static Vector4 PlaneToVector(Plane p)
-        {
-            return new Vector4(p.Normal, p.D);
-        }
         #region Dependency Properties
         /// <summary>
         /// Defines the CrossSectionColorProperty
@@ -33,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(Media.Colors.Firebrick,
            (d, e) =>
            {
-               ((d as IRenderable).RenderCore as ICrossSectionRenderParams).SectionColor = ((Media.Color)e.NewValue).ToColor4();
+               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).CrossSectionColor = ((Media.Color)e.NewValue).ToColor4();
            }));
 
         /// <summary>
@@ -57,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(false,
            (d, e) =>
            {
-               ((d as IRenderable).RenderCore as ICrossSectionRenderParams).Plane1Enabled = (bool)e.NewValue;
+               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).EnablePlane1 = (bool)e.NewValue;
            }));
 
         /// <summary>
@@ -82,7 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(false,
            (d, e) =>
            {
-               ((d as IRenderable).RenderCore as ICrossSectionRenderParams).Plane2Enabled = (bool)e.NewValue;
+               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).EnablePlane2 = (bool)e.NewValue;
            }));
 
         /// <summary>
@@ -107,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(false,
            (d, e) =>
            {
-               ((d as IRenderable).RenderCore as ICrossSectionRenderParams).Plane3Enabled = (bool)e.NewValue;
+               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).EnablePlane3 = (bool)e.NewValue;
            }));
 
         /// <summary>
@@ -132,7 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(false,
            (d, e) =>
            {
-               ((d as IRenderable).RenderCore as ICrossSectionRenderParams).Plane4Enabled = (bool)e.NewValue;
+               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).EnablePlane4 = (bool)e.NewValue;
            }));
 
         /// <summary>
@@ -157,7 +149,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(new Plane(),
            (d, e) =>
            {
-               ((d as IRenderable).RenderCore as ICrossSectionRenderParams).Plane1Params = PlaneToVector((Plane)e.NewValue);
+               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).Plane1 = (Plane)e.NewValue;
            }));
 
         /// <summary>
@@ -182,7 +174,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(new Plane(),
            (d, e) =>
            {
-               ((d as IRenderable).RenderCore as ICrossSectionRenderParams).Plane2Params = PlaneToVector((Plane)e.NewValue);
+               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).Plane2 = (Plane)e.NewValue;
            }));
 
         /// <summary>
@@ -207,7 +199,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(new Plane(),
            (d, e) =>
            {
-               ((d as IRenderable).RenderCore as ICrossSectionRenderParams).Plane3Params = PlaneToVector((Plane)e.NewValue);
+               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).Plane3 = (Plane)e.NewValue;
            }));
 
         /// <summary>
@@ -232,7 +224,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(new Plane(),
            (d, e) =>
            {
-               ((d as IRenderable).RenderCore as ICrossSectionRenderParams).Plane4Params = PlaneToVector((Plane)e.NewValue);
+               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).Plane4 = (Plane)e.NewValue;
            }));
 
         /// <summary>
@@ -250,26 +242,5 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         #endregion
-
-        /// <summary>
-        /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>
-        /// Return RenderTechnique
-        /// </returns>
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.CrossSection];
-        }
-        /// <summary>
-        /// Called when [create render core].
-        /// </summary>
-        /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
-        {
-            return new CrossSectionMeshRenderCore();
-        }
     }
 }

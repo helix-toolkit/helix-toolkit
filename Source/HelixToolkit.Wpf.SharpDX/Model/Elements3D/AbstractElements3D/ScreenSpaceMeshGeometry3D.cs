@@ -8,7 +8,8 @@ using System.Windows;
 using Media3D = System.Windows.Media.Media3D;
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using Core;
+    using Model;
+    using Model.Scene;
     using Elements2D;
     using HelixToolkit.Wpf.SharpDX.Converters;
     using System;
@@ -26,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(-0.8,
                 (d, e) =>
                 {
-                   ((d as IRenderable).RenderCore as IScreenSpacedRenderParams).RelativeScreenLocationX = (float)(double)e.NewValue;
+                   ((d as Element3DCore).SceneNode as ScreenSpacedNode).RelativeScreenLocationX = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// <see cref="RelativeScreenLocationY"/>
@@ -35,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(-0.8,
                 (d, e) =>
                 {
-                    ((d as IRenderable).RenderCore as IScreenSpacedRenderParams).RelativeScreenLocationY = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ScreenSpacedNode).RelativeScreenLocationY = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// <see cref="SizeScale"/>
@@ -44,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(1.0,
                 (d, e) =>
                 {
-                    ((d as IRenderable).RenderCore as IScreenSpacedRenderParams).SizeScale = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ScreenSpacedNode).SizeScale = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// 
@@ -70,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(false,
             (d, e) =>
             {
-                (d as ScreenSpacedElement3D).screenSpaceCore.IsRightHand = !(bool)e.NewValue;
+                ((d as Element3DCore).SceneNode as ScreenSpacedNode).IsRightHand = !(bool)e.NewValue;
             }));
 
         /// <summary>
@@ -161,33 +162,24 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected bool NeedClearDepthBuffer { set; get; } = true;
-
-
-        protected IScreenSpacedRenderParams screenSpaceCore { get { return (IScreenSpacedRenderParams)RenderCore; } }
-
         protected abstract void UpdateModel(Vector3 upDirection);
 
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
             InitializeMover();
-            return new ScreenSpacedMeshRenderCore();
-        }      
-
-        protected override bool OnAttach(IRenderHost host)
-        {
-            RenderCore.Attach(renderTechnique);
-            screenSpaceCore.RelativeScreenLocationX = (float)this.RelativeScreenLocationX;
-            screenSpaceCore.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
-            screenSpaceCore.SizeScale = (float)this.SizeScale;
-            UpdateModel(UpDirection.ToVector3());
-            return base.OnAttach(host);
+            return new ScreenSpacedNode();
         }
 
-        protected override void OnDetach()
+        protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
-            RenderCore.Detach();
-            base.OnDetach();
+            if(node is ScreenSpacedNode n)
+            {
+                n.RelativeScreenLocationX = (float)this.RelativeScreenLocationX;
+                n.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
+                n.SizeScale = (float)this.SizeScale;
+            }
+            UpdateModel(UpDirection.ToVector3());
+            base.AssignDefaultValuesToSceneNode(node);
         }
 
         #region 2D stuffs
