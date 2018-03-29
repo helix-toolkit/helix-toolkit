@@ -19,6 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Linq;
     using System.Windows;
     using Model;
+    using Model.Scene;
 
     /// <summary>
     ///     Represents a model that can be used to present a collection of items. supports generating child items by a
@@ -63,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     d.AddLogicalChild(e.NewValue);
                 }
-                d.octreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
+                (d.SceneNode as GroupNode).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
             }));
 
         /// <summary>
@@ -102,14 +103,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private readonly Dictionary<object, Element3D> mDictionary = new Dictionary<object, Element3D>();
-
         private IOctree Octree
         {
-            get { return octreeManager == null ? null : octreeManager.Octree; }
+            get { return (SceneNode as GroupNode).OctreeManager == null ? null : (SceneNode as GroupNode).OctreeManager.Octree; }
         }
-
-        protected IOctreeManager octreeManager { private set; get; }
 
         /// <summary>
         /// Handles changes in the ItemsSource property.
@@ -132,8 +129,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 item.DataContext = null;
             }
 
-            octreeManager?.Clear();
-            mDictionary.Clear();
             Children.Clear();
 
             if (e.NewValue is INotifyCollectionChanged n)
@@ -146,19 +141,15 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
+
             if (this.ItemTemplate == null)
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    if (mDictionary.ContainsKey(item))
-                    {
-                        continue;
-                    }
                     var model = item as Element3D;
                     if (model != null)
                     {
                         this.Children.Add(model);
-                        mDictionary.Add(item, model);
                     }
                     else
                     {
@@ -170,16 +161,11 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    if (mDictionary.ContainsKey(item))
-                    {
-                        continue;
-                    }
                     var model = this.ItemTemplate.LoadContent() as Element3D;
                     if (model != null)
                     {
                         model.DataContext = item;
                         this.Children.Add(model);
-                        mDictionary.Add(item, model);
                     }
                     else
                     {
@@ -189,19 +175,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (Children.Count > 0)
             {
-                octreeManager?.RequestRebuild();
+                var groupNode = SceneNode as GroupNode;
+                groupNode.OctreeManager?.RequestRebuild();
             }
         }
 
         protected void ItemsModel3D_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Reset:
-                    octreeManager?.Clear();
-                    octreeManager?.RequestRebuild();
-                    break;
-            }
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Replace:
@@ -210,27 +190,16 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         foreach (var item in e.OldItems)
                         {
-                            if (mDictionary.ContainsKey(item))
+                            if(item is Element3D element)
                             {
-                                var model = mDictionary[item];
-                                if (model is GeometryModel3D m)
-                                    octreeManager?.RemoveItem(m);
-                                model.DataContext = null;
-                                this.Children.Remove(model);
-                                mDictionary.Remove(item);
+                                this.Children.Remove(element);
                             }
                         }
                         InvalidateRender();
                     }
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    var array = this.Children.ToArray();
-                    foreach (var item in array.Select(x => x as Element3D))
-                    {
-                        item.DataContext = null;
-                        this.Children.Remove(item);
-                    }
-                    mDictionary.Clear();
+                    this.Children.Clear();
                     break;
             }
 
@@ -247,7 +216,6 @@ namespace HelixToolkit.Wpf.SharpDX
                                 if (model != null)
                                 {
                                     this.Children.Add(model);
-                                    mDictionary.Add(item, model);
                                 }
                                 else
                                 {
@@ -264,7 +232,6 @@ namespace HelixToolkit.Wpf.SharpDX
                                 {
                                     model.DataContext = item;
                                     this.Children.Add(model);
-                                    mDictionary.Add(item, model);
                                 }
                                 else
                                 {
@@ -283,17 +250,11 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in e.NewItems)
                             {
-                                if (mDictionary.ContainsKey(item))
-                                {
-                                    continue;
-                                }
                                 var model = this.ItemTemplate.LoadContent() as Element3D;
                                 if (model != null)
                                 {                                    
                                     model.DataContext = item;
                                     this.Children.Add(model);
-                                    mDictionary.Add(item, model);
-                                    octreeManager?.AddPendingItem(model);
                                 }
                                 else
                                 {
@@ -305,16 +266,10 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             foreach (var item in e.NewItems)
                             {
-                                if (mDictionary.ContainsKey(item))
-                                {
-                                    continue;
-                                }
                                 var model = item as Element3D;
                                 if (model != null)
                                 {                                    
                                     this.Children.Add(model);
-                                    mDictionary.Add(item, model);
-                                    octreeManager?.AddPendingItem(model);
                                 }
                                 else
                                 {
@@ -325,39 +280,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                     break;
             }
-        }
-
-        public override void UpdateNotRender(IRenderContext context)
-        {
-            base.UpdateNotRender(context);
-            if (octreeManager != null)
-            {
-                octreeManager.ProcessPendingItems();
-                if (octreeManager.RequestUpdateOctree)
-                {
-                    octreeManager?.RebuildTree(this.Children);
-                }
-            }
-        }
-
-        protected override bool OnHitTest(IRenderContext context, global::SharpDX.Matrix totalModelMatrix, ref global::SharpDX.Ray ray, ref List<HitTestResult> hits)
-        {
-            bool isHit = false;
-            if (Octree != null)
-            {
-                isHit = Octree.HitTest(context, this, totalModelMatrix, ray, ref hits);
-#if DEBUG
-                if (isHit)
-                {
-                    Debug.WriteLine("Octree hit test, hit at " + hits[0].PointHit);
-                }
-#endif
-            }
-            else
-            {
-                isHit = base.OnHitTest(context, totalModelMatrix, ref ray, ref hits);
-            }
-            return isHit;
         }
     }
 }

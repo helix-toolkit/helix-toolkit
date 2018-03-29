@@ -155,10 +155,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <value>
         /// The items.
         /// </value>
-        public IList<IRenderable> Items
+        public virtual IList<IRenderable> Items
         {
             get;
-        } = new List<IRenderable>();
+        } = Constants.EmptyRenderable;
         /// <summary>
         /// Gets or sets a value indicating whether this instance is hit test visible.
         /// </summary>

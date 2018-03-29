@@ -13,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     using System.Collections.Generic;
     using Core;
 
-    public class ScreenSpacedNode : SceneNode
+    public class ScreenSpacedNode : GroupNode
     {
         public float RelativeScreenLocationX
         {

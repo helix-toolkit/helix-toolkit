@@ -70,8 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     case NotifyCollectionChangedAction.Reset:
                     case NotifyCollectionChangedAction.Remove:
-                    case NotifyCollectionChangedAction.Replace:
-                        
+                    case NotifyCollectionChangedAction.Replace:                        
                         foreach (Element3D item in e.OldItems)
                         {                           
                             if (item.Parent == this)
@@ -89,6 +88,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 switch (e.Action)
                 {
                     case NotifyCollectionChangedAction.Reset:
+                        foreach(Element3D item in Children)
+                        {
+                            if (item.Parent == null)
+                            {
+                                this.AddLogicalChild(item);
+                            }
+                            node.AddChildNode(item);
+                        }
+                        break;
                     case NotifyCollectionChangedAction.Add:
                     case NotifyCollectionChangedAction.Replace:
                         foreach (Element3D item in e.NewItems)

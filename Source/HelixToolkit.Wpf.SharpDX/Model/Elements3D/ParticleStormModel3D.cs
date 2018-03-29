@@ -17,7 +17,7 @@ using SharpDX.Direct3D11;
 using System.IO;
 using Media3D = System.Windows.Media.Media3D;
 using Media = System.Windows.Media;
-
+/*
 namespace HelixToolkit.Wpf.SharpDX
 {
     using Core;
@@ -633,3 +633,4 @@ namespace HelixToolkit.Wpf.SharpDX
         }
     }
 }
+*/

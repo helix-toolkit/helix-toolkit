@@ -145,6 +145,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Abstract\MaterialGeometryNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\BillboardNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\BoneSkinMeshNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\CoordinateSystemNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\CrossSectionMeshNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\EnvironmentMapNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\GroupNode.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Lights\SpotLightNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\LineNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\MeshNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ParticleStormNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PatchMeshNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PointNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Abstract\SceneNode.cs" />
@@ -165,7 +167,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\PostEffectBorderHighlightNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\PostEffectMeshOutlineBlurNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\PostEffectXRayNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ScreenDuplicationNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ScreenSpacedNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ViewBoxNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11RenderBufferBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11SwapChainRenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\Renderer\ImmediateContextRenderer.cs" />

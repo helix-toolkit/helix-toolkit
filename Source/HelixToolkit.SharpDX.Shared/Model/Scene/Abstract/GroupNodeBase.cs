@@ -6,6 +6,7 @@ using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
@@ -15,11 +16,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 {
     using Render;
 
+
     public abstract class GroupNodeBase : SceneNode
     {
-        private readonly Dictionary<Guid, SceneNode> itemHashSet = new Dictionary<Guid, SceneNode>();
+        protected readonly Dictionary<Guid, SceneNode> itemHashSet = new Dictionary<Guid, SceneNode>();
 
-        public bool AddChildNode(SceneNode node)
+        public override IList<IRenderable> Items { get; } = new ObservableCollection<IRenderable>();
+
+        public virtual bool AddChildNode(SceneNode node)
         {
             if (!itemHashSet.ContainsKey(node.GUID))
             {
@@ -35,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             else { return false; }
         }
 
-        public bool RemoveChildNode(SceneNode node)
+        public virtual bool RemoveChildNode(SceneNode node)
         {
             if (itemHashSet.Remove(node.GUID))
             {
@@ -52,6 +56,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public bool TryGetNode(Guid guid, out SceneNode node)
         {
             return itemHashSet.TryGetValue(guid, out node);
+        }
+
+        public virtual void Clear()
+        {
+            for(int i=0; i< Items.Count; ++i)
+            {
+                Items[i].Detach();
+            }
+            itemHashSet.Clear();
         }
 
         protected override bool OnAttach(IRenderHost host)

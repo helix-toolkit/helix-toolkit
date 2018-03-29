@@ -6,7 +6,7 @@
 //   The can rotate x property.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+/*
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Collections.Generic;
@@ -301,4 +301,4 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
     }
-}
+}*/

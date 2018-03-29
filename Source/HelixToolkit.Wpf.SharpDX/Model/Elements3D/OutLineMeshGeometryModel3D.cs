@@ -4,7 +4,7 @@ using SharpDX.Direct3D11;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using Media = System.Windows.Media;
-
+/*
 namespace HelixToolkit.Wpf.SharpDX
 {
     public class OutLineMeshGeometryModel3D : MeshGeometryModel3D
@@ -97,3 +97,4 @@ namespace HelixToolkit.Wpf.SharpDX
         }
     }
 }
+*/

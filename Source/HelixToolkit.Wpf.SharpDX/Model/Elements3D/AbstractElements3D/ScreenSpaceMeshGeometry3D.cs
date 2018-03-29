@@ -47,15 +47,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Element3DCore).SceneNode as ScreenSpacedNode).SizeScale = (float)(double)e.NewValue;
                 }));
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register("UpDirection", typeof(Media3D.Vector3D), typeof(ScreenSpacedElement3D),
-            new PropertyMetadata(new Media3D.Vector3D(0, 1, 0),
-            (d, e) =>
-            {
-                (d as ScreenSpacedElement3D).UpdateModel(((Media3D.Vector3D)e.NewValue).ToVector3());
-            }));
 
 
         /// <summary>
@@ -84,24 +75,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (bool)GetValue(EnableMoverProperty); }
             set { SetValue(EnableMoverProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets up direction.
-        /// </summary>
-        /// <value>
-        /// Up direction.
-        /// </value>
-        public Media3D.Vector3D UpDirection
-        {
-            set
-            {
-                SetValue(UpDirectionProperty, value);
-            }
-            get
-            {
-                return (Media3D.Vector3D)GetValue(UpDirectionProperty);
-            }
         }
 
 
@@ -162,8 +135,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected abstract void UpdateModel(Vector3 upDirection);
-
         protected override SceneNode OnCreateSceneNode()
         {
             InitializeMover();
@@ -178,7 +149,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 n.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
                 n.SizeScale = (float)this.SizeScale;
             }
-            UpdateModel(UpDirection.ToVector3());
             base.AssignDefaultValuesToSceneNode(node);
         }
 

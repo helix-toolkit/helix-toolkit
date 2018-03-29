@@ -26,6 +26,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 if(Set(ref geometry, value))
                 {
+                    if (IsAttached)
+                    {
+                        BoundManager.Geometry = value;
+                        BufferModelInternal = OnCreateBufferModel(this.GUID, value);
+                    }
+                    InvalidateRender();
                     OnGeometryChanged(value);
                 }
             }
@@ -104,35 +110,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
-        private Geometry3D geometryInternal;
-        /// <summary>
-        /// Gets or sets the geometry internal.
-        /// </summary>
-        /// <value>
-        /// The geometry internal.
-        /// </value>
-        protected Geometry3D GeometryInternal
-        {
-            set
-            {
-                if (geometryInternal == value)
-                {
-                    return;
-                }
-                geometryInternal = value;
-                if (IsAttached)
-                {
-                    BoundManager.Geometry = value;
-                    BufferModelInternal = OnCreateBufferModel(this.GUID, geometryInternal);
-                }
-                RaisePropertyChanged(nameof(Geometry));
-                InvalidateRender();
-            }
-            get
-            {
-                return geometryInternal;
-            }
-        }
         /// <summary>
         /// Gets a value indicating whether [geometry valid].
         /// </summary>
@@ -350,7 +327,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         protected virtual void OnRasterStateChanged()
         {
-            if (RenderCore is IGeometryRenderCore r)
+            if (IsAttached && RenderCore is IGeometryRenderCore r)
             {
                 r.RasterDescription = OnCreateRasterState != null ? OnCreateRasterState() : CreateRasterState();
             }
@@ -381,8 +358,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             if (base.OnAttach(host))
             {
-                BufferModelInternal = OnCreateBufferModel(this.GUID, geometryInternal);
-                BoundManager.Geometry = GeometryInternal;
+                BufferModelInternal = OnCreateBufferModel(this.GUID, geometry);
+                BoundManager.Geometry = Geometry;
                 InstanceBuffer.Initialize();
                 InstanceBuffer.Elements = this.Instances;
                 if (RenderCore is IGeometryRenderCore r)
@@ -497,9 +474,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public override void UpdateNotRender(IRenderContext context)
         {
             base.UpdateNotRender(context);
-            if (IsHitTestVisible && context.AutoUpdateOctree && geometryInternal != null && geometryInternal.OctreeDirty)
+            if (IsHitTestVisible && context.AutoUpdateOctree && geometry != null && geometry.OctreeDirty)
             {
-                geometryInternal?.UpdateOctree();
+                geometry?.UpdateOctree();
             }
         }
     }

@@ -18,52 +18,14 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Media3D;
     using Media = System.Windows.Media;
 
-    public abstract class Light3D : Element3DCore
+    public abstract class Light3D : Element3D
     {
-        /// <summary>
-        /// Indicates, if this element should be rendered,
-        /// default is true
-        /// </summary>
-        public static readonly DependencyProperty IsRenderingProperty =
-            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Light3D), new PropertyMetadata(true,
-                (d, e) =>
-                {
-                    (d as Light3D).SceneNode.Visible = (bool)e.NewValue;
-                }));
-
-        /// <summary>
-        /// Indicates, if this element should be rendered.
-        /// Use this also to make the model visible/unvisible
-        /// default is true
-        /// </summary>
-        public bool IsRendering
-        {
-            get { return (bool)GetValue(IsRenderingProperty); }
-            set { SetValue(IsRenderingProperty, value); }
-        }
-
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(Light3D), new PropertyMetadata(Media.Colors.Gray, (d,e)=>
             {
                 ((d as Element3DCore).SceneNode as LightNode).Color = ((Media.Color)e.NewValue).ToColor4();
             }));
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty TransformProperty =
-            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Light3D), new PropertyMetadata(Transform3D.Identity, (d, e) =>
-            {
-                ((d as Element3DCore).SceneNode).ModelMatrix = e.NewValue != null ? ((Transform3D)e.NewValue).Value.ToMatrix() : Matrix.Identity;
-            }));
-        /// <summary>
-        /// 
-        /// </summary>
-        public Transform3D Transform
-        {
-            get { return (Transform3D)this.GetValue(TransformProperty); }
-            set { this.SetValue(TransformProperty, value); }
-        }
         /// <summary>
         /// Color of the light.
         /// For simplicity, this color applies to the diffuse and specular properties of the light.

@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
-    public abstract class LightNode : SceneNode
+    public abstract class LightNode : SceneNode, ILight3D
     {
         public Color4 Color
         {

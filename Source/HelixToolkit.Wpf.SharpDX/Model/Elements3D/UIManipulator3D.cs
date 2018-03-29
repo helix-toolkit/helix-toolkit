@@ -6,7 +6,7 @@
 //   An abstract base class for manipulators.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+/*
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.ComponentModel;
@@ -310,3 +310,4 @@ namespace HelixToolkit.Wpf.SharpDX
         }
     }
 }
+*/

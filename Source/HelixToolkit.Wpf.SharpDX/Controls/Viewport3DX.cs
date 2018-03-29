@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Animation;
     using System.Windows.Media.Media3D;
     using MouseButtons = System.Windows.Forms.MouseButtons;
-
+    using Model;
     /// <summary>
     /// Provides a Viewport control.
     /// </summary>
@@ -203,9 +203,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (renderHostInternal != null)
                 {
-                    foreach (IRenderable item in Items)
+                    foreach (Element3DCore item in Items)
                     {
-                        yield return item;
+                        yield return item.SceneNode;
                     }
                     if (renderHostInternal.EnableSharingModelMode && renderHostInternal.SharedModelContainer != null)
                     {
@@ -214,8 +214,8 @@ namespace HelixToolkit.Wpf.SharpDX
                             yield return item;
                         }
                     }
-                    yield return viewCube;
-                    yield return coordinateView;
+                    yield return viewCube.SceneNode;
+                    yield return coordinateView.SceneNode;
                 }
             }
         }
@@ -226,12 +226,12 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (renderHostInternal != null)
                 {
-                    foreach (IRenderable item in Items)
+                    foreach (Element3DCore item in Items)
                     {
-                        yield return item;
+                        yield return item.SceneNode;
                     }
-                    yield return viewCube;
-                    yield return coordinateView;
+                    yield return viewCube.SceneNode;
+                    yield return coordinateView.SceneNode;
                 }
             }
         }
