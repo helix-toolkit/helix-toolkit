@@ -7,6 +7,31 @@
     using System.Windows.Controls;
     using System.Windows.Media.Media3D;
     using global::SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Cameras;
+    using HelixToolkit.Wpf.SharpDX.Render;
+
+    /// <summary>
+    /// Specifies the sorting method for the SortingVisual3D.
+    /// </summary>
+    public enum SortingMethod
+    {
+        /// <summary>
+        /// Sort on the distance from camera to bounding box center.
+        /// </summary>
+        BoundingBoxCenter,
+
+        /// <summary>
+        /// Sort on the minimum distance from camera to bounding box corners.
+        /// </summary>
+        BoundingBoxCorners,
+
+        /// <summary>
+        /// Sort on the minimum distance from camera to bounding sphere surface.
+        /// </summary>
+        BoundingSphereSurface
+    }
+
+
     /// <summary>
     /// Implements a GroupModel3D that sorts it's transparent items 
     /// by their distance from the camera so they can be properly rendered.
@@ -16,7 +41,8 @@
     /// </remarks>
     public class SortingGroupModel3D : GroupModel3D, ITransformable, IHitable, IVisible
     {
-        private List<Element3D> SortedItems;
+        private List<IRenderable> SortedItems;
+        private object Locker = new object();
         private TimeSpan LastSortTime = TimeSpan.MinValue;
 
         /// <summary>
@@ -58,7 +84,7 @@
         /// </summary>
         public bool SkipOpaque
         {
-            get => (bool)this.GetValue(SkipOpaqueProperty); 
+            get => (bool)this.GetValue(SkipOpaqueProperty);
             set => this.SetValue(SkipOpaqueProperty, value);
         }
 
@@ -68,65 +94,61 @@
         /// <value> The method. </value>
         public SortingMethod Method
         {
-           get => (SortingMethod)this.GetValue(MethodProperty); 
-           set => this.SetValue(MethodProperty, value);
+            get => (SortingMethod)this.GetValue(MethodProperty);
+            set => this.SetValue(MethodProperty, value);
         }
-         
-        /// <summary>
-        /// Renders sorted children
-        /// </summary>
-        /// <param name="renderContext"></param>
-        protected override void OnRender(RenderContext renderContext)
+
+
+
+
+        public override void Update(IRenderContext renderContext)
         {
             //sort children 
             if (SortedItems?.Count != Items.Count()
                 || (renderContext.TimeStamp - LastSortTime).TotalMilliseconds > SortingInterval)
             {
-                SortedItems = SortItems(renderContext.Camera);
+                var items = SortItems(renderContext.Camera);
+                Children.Clear();
+                foreach (var it in items)
+                    Children.Add(it);
+
+                lock (Locker)
+                    SortedItems = items;
                 LastSortTime = renderContext.TimeStamp;
                 //Children.Clear();
                 //ItemsSource.Clear();
                 //foreach (var it in sortedChildren)
                 //    ItemsSource.Add(it);
             }
-            //---
 
-            foreach (var c in SortedItems)
-            {
-                var model = c as ITransformable;
-                if (model != null)
-                {
-                    // push matrix                    
-                    model.PushMatrix(this.modelMatrix);
-                    // render model
-                    c.Render(renderContext);
-                    // pop matrix                   
-                    model.PopMatrix();
-                }
-                else
-                {
-                    c.Render(renderContext);
-                }
-            }
+            base.Update(renderContext);
         }
-         
+        protected override void OnRender(IRenderContext renderContext, DeviceContextProxy deviceContext)
+        {
+            lock (Locker)
+                foreach (var c in SortedItems)
+                {
+                    c.Render(renderContext, deviceContext);
+                }
+
+        }
 
         /// <summary>
         /// The sort children.
         /// </summary>
-        private List<Element3D> SortItems(Camera camera)
+        private List<IRenderable> SortItems(CameraCore camera)
         {
-            var cam = camera as ProjectionCamera;
+            var cam = camera;
             if (cam == null)
             {
-                return new List<Element3D>(0);
+                return new List<IRenderable>(0);
             }
 
-            var cameraPos = cam.Position.ToVector3();
+            var cameraPos = cam.Position;
             var transform = this.Transform;
 
             List<GeometryModel3D> transparentChildren = new List<GeometryModel3D>();
-            List<Element3D> opaqueChildren = new List<Element3D>();
+            List<IRenderable> opaqueChildren = new List<IRenderable>();
 
             foreach (var child in this.Items)
             {
