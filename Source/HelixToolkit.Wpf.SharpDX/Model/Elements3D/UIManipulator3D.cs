@@ -6,7 +6,7 @@
 //   An abstract base class for manipulators.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-/*
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.ComponentModel;
@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using Core;
+    using Model;
     /// <summary>
     ///   An abstract base class for manipulators.
     /// </summary>
@@ -254,16 +254,25 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public UIManipulator3D()
+        {
+            OnSceneNodeCreated += UIManipulator3D_OnSceneNodeCreated;
+        }
+
+        private void UIManipulator3D_OnSceneNodeCreated(object sender, Model.Scene.SceneNode e)
+        {
+            e.OnAttached += E_OnAttached;
+        }
+
+        private void E_OnAttached(object sender, System.EventArgs e)
+        {
+            OnModelChanged();
+        }
+
         /// <summary>
         /// 
         /// </summary>
         protected abstract void OnModelChanged();
-
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            OnModelChanged();
-        }
 
         /// <summary>
         /// 
@@ -310,4 +319,3 @@ namespace HelixToolkit.Wpf.SharpDX
         }
     }
 }
-*/

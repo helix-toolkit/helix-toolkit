@@ -17,6 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 {
     using Core;
     using Render;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     ///
@@ -328,6 +329,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         public event EventHandler<BoolArgs> OnVisibleChanged;
 
+        public event EventHandler OnAttached;
+
+        public event EventHandler OnDetached;
+
         #endregion Events
 
         /// <summary>
@@ -364,7 +369,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             IsAttached = OnAttach(host);
             if (IsAttached)
             {
-                OnAttached();
+                Attached();
+                OnAttached?.Invoke(this, EventArgs.Empty);
             }
             InvalidateRender();
         }
@@ -383,7 +389,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <summary>
         /// Called when [attached] and <see cref="IsAttached"/> = true.
         /// </summary>
-        protected virtual void OnAttached() { }
+        protected virtual void Attached() { }
 
         /// <summary>
         /// Detaches the element from the host. Override <see cref="OnDetach"/>
@@ -395,6 +401,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 IsAttached = false;
                 RenderCore.Detach();
                 OnDetach();
+                OnDetached?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -414,6 +421,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <summary>
         /// Tries to invalidate the current render.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void InvalidateRender()
         {
             renderHost?.InvalidateRender();

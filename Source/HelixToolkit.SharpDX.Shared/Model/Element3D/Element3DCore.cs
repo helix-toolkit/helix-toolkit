@@ -50,6 +50,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model
             get { return SceneNode.Visible; }
         }
 
+        public bool IsAttached
+        {
+            get { return SceneNode.IsAttached; }
+        }
+
         #region Scene Node
         private readonly object sceneNodeLock = new object();
         private SceneNode sceneNode;
@@ -66,6 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
                             sceneNode = OnCreateSceneNode();
                             AssignDefaultValuesToSceneNode(sceneNode);
                             sceneNode.HitTestSource = this;
+                            OnSceneNodeCreated?.Invoke(this, sceneNode);
                         }
                     }
                 }
@@ -80,21 +86,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 
         protected virtual void AssignDefaultValuesToSceneNode(SceneNode node) { }
         #endregion
-
-        #region Hit Test        
-        /// <summary>
-        /// Hits the test.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        public virtual bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
-        {
-            return SceneNode.HitTest(context, ray, ref hits);
-        }
+        #region Events
+        public event EventHandler<SceneNode> OnSceneNodeCreated;
         #endregion
-
         #region IBoundable        
         /// <summary>
         /// Gets the bounds.
@@ -135,6 +129,20 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         public BoundingSphere BoundsSphereWithTransform
         {
             get { return SceneNode.BoundsSphereWithTransform; }
+        }
+        #endregion
+
+        #region Hit Test        
+        /// <summary>
+        /// Hits the test.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="ray">The ray.</param>
+        /// <param name="hits">The hits.</param>
+        /// <returns></returns>
+        public virtual bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
+        {
+            return SceneNode.HitTest(context, ray, ref hits);
         }
         #endregion
 
@@ -222,7 +230,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         }
 #endregion
 
-#region IDisposable Support
+        #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls        
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.

@@ -6,7 +6,7 @@
 //   A translate manipulator.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-/*
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
@@ -110,6 +110,12 @@ namespace HelixToolkit.Wpf.SharpDX
         public UIRotateManipulator3D()
         {
             this.Transform = new System.Windows.Media.Media3D.RotateTransform3D();
+            OnSceneNodeCreated += UIRotateManipulator3D_OnSceneNodeCreated;
+        }
+
+        private void UIRotateManipulator3D_OnSceneNodeCreated(object sender, Model.Scene.SceneNode e)
+        {
+            e.OnSetRenderTechnique = OnCreateRenderTechnique;
         }
 
         /// <summary>
@@ -130,7 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Geometry = mb.ToMeshGeometry3D();
         }
 
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+        protected IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse];
         }
@@ -198,4 +204,3 @@ namespace HelixToolkit.Wpf.SharpDX
         }
     }
 }
-*/

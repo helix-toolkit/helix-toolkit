@@ -426,10 +426,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <summary>
         /// Called when [attached].
         /// </summary>
-        protected override void OnAttached()
+        protected override void Attached()
         {
             OnRasterStateChanged();
-            base.OnAttached();
+            base.Attached();
         }
 
         private void BufferModel_InvalidateRenderer(object sender, bool e)

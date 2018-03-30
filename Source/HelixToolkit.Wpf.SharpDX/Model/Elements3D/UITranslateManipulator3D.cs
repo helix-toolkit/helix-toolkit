@@ -6,7 +6,7 @@
 //   A translate manipulator.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-/*
+
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.ComponentModel;
@@ -150,4 +150,3 @@ namespace HelixToolkit.Wpf.SharpDX
         }
     }
 }
-*/
