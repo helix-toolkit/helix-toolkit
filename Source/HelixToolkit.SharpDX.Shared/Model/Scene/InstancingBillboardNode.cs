@@ -16,9 +16,17 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 {
     using Core;
 
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class InstancingBillboardNode : BillboardNode
     {
+        /// <summary>
+        /// Gets or sets the instance parameter array.
+        /// </summary>
+        /// <value>
+        /// The instance parameter array.
+        /// </value>
         public IList<BillboardInstanceParameter> InstanceParamArray
         {
             set { instanceParamBuffer.Elements = value; }

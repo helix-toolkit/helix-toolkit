@@ -15,9 +15,17 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class BillboardNode : GeometryNode
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether [fixed size].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [fixed size]; otherwise, <c>false</c>.
+        /// </value>
         public bool FixedSize
         {
             set

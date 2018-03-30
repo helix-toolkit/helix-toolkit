@@ -2,19 +2,30 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+
 using SharpDX;
-using System;
 using System.Collections.Generic;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
+
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
+    /// <summary>
+    /// 
+    /// </summary>
     public class PostEffectBloomNode : SceneNode
-    {        
+    {
+        #region Properties
+        /// <summary>
+        /// Gets or sets the name of the effect.
+        /// </summary>
+        /// <value>
+        /// The name of the effect.
+        /// </value>
         public string EffectName
         {
             set
@@ -26,7 +37,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IPostEffectBloom).EffectName;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the color of the threshold.
+        /// </summary>
+        /// <value>
+        /// The color of the threshold.
+        /// </value>
         public Color4 ThresholdColor
         {
             set
@@ -38,7 +54,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IPostEffectBloom).ThresholdColor;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the number of blur pass.
+        /// </summary>
+        /// <value>
+        /// The number of blur pass.
+        /// </value>
         public int NumberOfBlurPass
         {
             set
@@ -50,7 +71,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IPostEffectBloom).NumberOfBlurPass;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the maximum down sampling step.
+        /// </summary>
+        /// <value>
+        /// The maximum down sampling step.
+        /// </value>
         public int MaximumDownSamplingStep
         {
             set
@@ -62,7 +88,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IPostEffectBloom).MaximumDownSamplingStep;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the bloom extract intensity.
+        /// </summary>
+        /// <value>
+        /// The bloom extract intensity.
+        /// </value>
         public float BloomExtractIntensity
         {
             set
@@ -74,7 +105,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IPostEffectBloom).BloomExtractIntensity;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the bloom pass intensity.
+        /// </summary>
+        /// <value>
+        /// The bloom pass intensity.
+        /// </value>
         public float BloomPassIntensity
         {
             set
@@ -86,7 +122,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IPostEffectBloom).BloomPassIntensity;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the bloom combine intensity.
+        /// </summary>
+        /// <value>
+        /// The bloom combine intensity.
+        /// </value>
         public float BloomCombineIntensity
         {
             set
@@ -98,7 +139,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IPostEffectBloom).BloomCombineIntensity;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the bloom combine saturation.
+        /// </summary>
+        /// <value>
+        /// The bloom combine saturation.
+        /// </value>
         public float BloomCombineSaturation
         {
             set
@@ -109,8 +155,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 return (RenderCore as IPostEffectBloom).BloomCombineSaturation;
             }
-        }
-
+        } 
+        #endregion
 
         /// <summary>
         /// Called when [create render core].
@@ -145,6 +191,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return false;
         }
+
         /// <summary>
         /// Called when [hit test].
         /// </summary>

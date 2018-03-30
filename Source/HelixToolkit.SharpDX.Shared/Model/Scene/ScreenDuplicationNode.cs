@@ -2,20 +2,32 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+
 using SharpDX;
 using System.Collections.Generic;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
+
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
 #if !NETFX_CORE
-    using Core;
 
+    using Core;
+    /// <summary>
+    /// 
+    /// </summary>
     public class ScreenDuplicationNode : SceneNode
     {
+        #region Properties
+        /// <summary>
+        /// Gets or sets the capture rectangle.
+        /// </summary>
+        /// <value>
+        /// The capture rectangle.
+        /// </value>
         public Rectangle CaptureRectangle
         {
             set
@@ -27,7 +39,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IScreenClone).CloneRectangle;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the display index.
+        /// </summary>
+        /// <value>
+        /// The display index.
+        /// </value>
         public int DisplayIndex
         {
             set
@@ -39,7 +56,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IScreenClone).Output;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [stretch to fill].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [stretch to fill]; otherwise, <c>false</c>.
+        /// </value>
         public bool StretchToFill
         {
             set
@@ -51,7 +73,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IScreenClone).StretchToFill;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [show mouse cursor].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show mouse cursor]; otherwise, <c>false</c>.
+        /// </value>
         public bool ShowMouseCursor
         {
             set
@@ -62,7 +89,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 return (RenderCore as IScreenClone).ShowMouseCursor;
             }
-        }
+        } 
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenDuplicationModel"/> class.
@@ -71,6 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             IsHitTestVisible = false;
         }
+
         /// <summary>
         /// Called when [create render core].
         /// </summary>
@@ -92,6 +121,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication];
         }
+
         /// <summary>
         /// Called when [hit test].
         /// </summary>
@@ -105,5 +135,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             return false;
         }
     }
+
 #endif
 }

@@ -2,23 +2,31 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
+
+using global::SharpDX.Direct3D11;
 using SharpDX;
-using System.IO;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using global::SharpDX.Direct3D11;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
+
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
-    using Core;
+    #region Properties
+    /// <summary>
+    /// 
+    /// </summary>
     public class ViewBoxNode : ScreenSpacedNode
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public sealed class ViewBoxClickedEventArgs : EventArgs
         {
             /// <summary>
@@ -32,27 +40,46 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             /// </summary>
             /// <value>Up direction.</value>
             public Vector3 UpDirection { get; private set; }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ViewBoxClickedEventArgs"/> class.
+            /// </summary>
+            /// <param name="lookDir">The look dir.</param>
+            /// <param name="upDir">Up dir.</param>
             public ViewBoxClickedEventArgs(Vector3 lookDir, Vector3 upDir)
             {
                 LookDirection = lookDir;
                 UpDirection = upDir;
             }
         }
+        /// <summary>
+        /// Occurs when [on view box clicked].
+        /// </summary>
         public event EventHandler<ViewBoxClickedEventArgs> OnViewBoxClicked;
 
         private Stream viewboxTexture;
+        /// <summary>
+        /// Gets or sets the view box texture.
+        /// </summary>
+        /// <value>
+        /// The view box texture.
+        /// </value>
         public Stream ViewBoxTexture
         {
             set
             {
-                if(Set(ref viewboxTexture, value))
+                if (Set(ref viewboxTexture, value))
                 {
                     UpdateTexture(value);
                 }
             }
             get { return viewboxTexture; }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable edge click].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable edge click]; otherwise, <c>false</c>.
+        /// </value>
         public bool EnableEdgeClick
         {
             set
@@ -66,11 +93,17 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private Vector3 upDirection = new Vector3(0, 1, 0);
+        /// <summary>
+        /// Gets or sets up direction.
+        /// </summary>
+        /// <value>
+        /// Up direction.
+        /// </value>
         public Vector3 UpDirection
         {
             set
             {
-                if(Set(ref upDirection, value))
+                if (Set(ref upDirection, value))
                 {
                     UpdateModel(value);
                 }
@@ -79,8 +112,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 return upDirection;
             }
-        }
+        } 
+        #endregion
 
+        #region Fields
         private const float size = 5;
 
         private static readonly Vector3[] xAligned = { new Vector3(0, -1, -1), new Vector3(0, 1, -1), new Vector3(0, -1, 1), new Vector3(0, 1, 1) }; //x
@@ -98,7 +133,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         private readonly MeshNode ViewBoxMeshModel;
         private readonly InstancingMeshNode EdgeModel;
-        private readonly InstancingMeshNode CornerModel;
+        private readonly InstancingMeshNode CornerModel; 
+        #endregion
 
         static ViewBoxNode()
         {
@@ -217,7 +253,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
             var mesh = builder.ToMesh();
             CreateTextureCoordinates(mesh);
-
 
             var pts = new List<Vector3>();
 

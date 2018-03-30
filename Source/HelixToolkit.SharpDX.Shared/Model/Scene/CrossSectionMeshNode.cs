@@ -8,12 +8,22 @@ using SharpDX;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
+
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
+    /// <summary>
+    /// 
+    /// </summary>
     public class CrossSectionMeshNode : MeshNode
     {
+        /// <summary>
+        /// Gets or sets the color of the cross section.
+        /// </summary>
+        /// <value>
+        /// The color of the cross section.
+        /// </value>
         public Color4 CrossSectionColor
         {
             set
@@ -25,7 +35,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as ICrossSectionRenderParams).SectionColor;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable plane1].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable plane1]; otherwise, <c>false</c>.
+        /// </value>
         public bool EnablePlane1
         {
             set
@@ -37,7 +52,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as ICrossSectionRenderParams).Plane1Enabled;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable plane2].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable plane2]; otherwise, <c>false</c>.
+        /// </value>
         public bool EnablePlane2
         {
             set
@@ -49,6 +69,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as ICrossSectionRenderParams).Plane2Enabled;
             }
         }
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable plane3].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable plane3]; otherwise, <c>false</c>.
+        /// </value>
         public bool EnablePlane3
         {
             set
@@ -60,6 +86,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as ICrossSectionRenderParams).Plane3Enabled;
             }
         }
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable plane4].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable plane4]; otherwise, <c>false</c>.
+        /// </value>
         public bool EnablePlane4
         {
             set
@@ -71,7 +103,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as ICrossSectionRenderParams).Plane4Enabled;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the plane1.
+        /// </summary>
+        /// <value>
+        /// The plane1.
+        /// </value>
         public Plane Plane1
         {
             set
@@ -83,7 +120,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return VectorToPlane((RenderCore as ICrossSectionRenderParams).Plane1Params);
             }
         }
-
+        /// <summary>
+        /// Gets or sets the plane2.
+        /// </summary>
+        /// <value>
+        /// The plane2.
+        /// </value>
         public Plane Plane2
         {
             set
@@ -95,7 +137,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return VectorToPlane((RenderCore as ICrossSectionRenderParams).Plane2Params);
             }
         }
-
+        /// <summary>
+        /// Gets or sets the plane3.
+        /// </summary>
+        /// <value>
+        /// The plane3.
+        /// </value>
         public Plane Plane3
         {
             set
@@ -107,7 +154,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return VectorToPlane((RenderCore as ICrossSectionRenderParams).Plane3Params);
             }
         }
-
+        /// <summary>
+        /// Gets or sets the plane4.
+        /// </summary>
+        /// <value>
+        /// The plane4.
+        /// </value>
         public Plane Plane4
         {
             set
@@ -147,6 +199,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.CrossSection];
         }
+
         /// <summary>
         /// Called when [create render core].
         /// </summary>

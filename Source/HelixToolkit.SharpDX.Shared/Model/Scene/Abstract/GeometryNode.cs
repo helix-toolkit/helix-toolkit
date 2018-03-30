@@ -2,29 +2,32 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
-using System.Collections.Generic;
+
 using SharpDX;
 using SharpDX.Direct3D11;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
+
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
 
     public abstract class GeometryNode : SceneNode, IHitable, IThrowingShadow, IInstancing
-    { 
-        #region Properties   
+    {
+        #region Properties
+
         private Geometry3D geometry;
+
         public Geometry3D Geometry
         {
             set
             {
-                if(Set(ref geometry, value))
+                if (Set(ref geometry, value))
                 {
                     if (IsAttached)
                     {
@@ -42,11 +45,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private IList<Matrix> instances;
+
         public IList<Matrix> Instances
         {
             set
             {
-                if(Set(ref instances, value))
+                if (Set(ref instances, value))
                 {
                     BoundManager.Instances = value;
                     InstanceBuffer.Elements = value;
@@ -54,6 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             get { return instances; }
         }
+
         /// <summary>
         /// Gets a value indicating whether this instance has instances.
         /// </summary>
@@ -61,6 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         ///   <c>true</c> if this instance has instances; otherwise, <c>false</c>.
         /// </value>
         public bool HasInstances { get { return InstanceBuffer.HasElements; } }
+
         /// <summary>
         /// Gets the instance buffer.
         /// </summary>
@@ -68,17 +74,19 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// The instance buffer.
         /// </value>
         public IElementsBufferModel<Matrix> InstanceBuffer { get; } = new MatrixInstanceBufferModel();
+
         /// <summary>
         /// Instanceses the changed.
         /// </summary>
         protected virtual void InstancesChanged() { }
+
         /// <summary>
         /// The reuse vertex array buffer
         /// </summary>
         protected bool reuseVertexArrayBuffer = false;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public delegate RasterizerStateDescription CreateRasterStateFunc();
@@ -89,9 +97,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         public CreateRasterStateFunc OnCreateRasterState;
 
-    
-
         private IGeometryBufferProxy bufferModelInternal;
+
         /// <summary>
         /// The buffer model internal
         /// </summary>
@@ -126,6 +133,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// The bound manager.
         /// </value>
         public GeometryBoundManager BoundManager { private set; get; }
+
         /// <summary>
         /// Gets the bounds.
         /// </summary>
@@ -136,6 +144,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             get { return BoundManager.Bounds; }
         }
+
         /// <summary>
         /// Gets the bounds with transform.
         /// </summary>
@@ -146,6 +155,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             get { return BoundManager.BoundsWithTransform; }
         }
+
         /// <summary>
         /// Gets the bounds sphere.
         /// </summary>
@@ -154,11 +164,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public override BoundingSphere BoundsSphere
         {
-            get
-            {
-                return BoundManager.BoundsSphere;
-            }
+            get { return BoundManager.BoundsSphere; }
         }
+
         /// <summary>
         /// Gets the bounds sphere with transform.
         /// </summary>
@@ -167,20 +175,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public override BoundingSphere BoundsSphereWithTransform
         {
-            get
-            {
-                return BoundManager.BoundsSphereWithTransform;
-            }
+            get { return BoundManager.BoundsSphereWithTransform; }
         }
 
-
         #region Rasterizer parameters
+
         private int depthBias = 0;
+        /// <summary>
+        /// Gets or sets the depth bias.
+        /// </summary>
+        /// <value>
+        /// The depth bias.
+        /// </value>
         public int DepthBias
         {
             set
             {
-                if(Set(ref depthBias, value))
+                if (Set(ref depthBias, value))
                 {
                     OnRasterStateChanged();
                 }
@@ -189,7 +200,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private float slopScaledDepthBias = 0;
-
+        /// <summary>
+        /// Gets or sets the slope scaled depth bias.
+        /// </summary>
+        /// <value>
+        /// The slope scaled depth bias.
+        /// </value>
         public float SlopeScaledDepthBias
         {
             get { return slopScaledDepthBias; }
@@ -203,13 +219,18 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private bool isMSAAEnabled = true;
-
+        /// <summary>
+        /// Gets or sets a value indicating whether Multisampling Anti-Aliasing enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is msaa enabled; otherwise, <c>false</c>.
+        /// </value>
         public bool IsMSAAEnabled
         {
             get { return isMSAAEnabled = true; }
             set
             {
-                if(Set(ref isMSAAEnabled, value))
+                if (Set(ref isMSAAEnabled, value))
                 {
                     OnRasterStateChanged();
                 }
@@ -217,13 +238,18 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private bool isScissorEnabled = true;
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is scissor enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is scissor enabled; otherwise, <c>false</c>.
+        /// </value>
         public bool IsScissorEnabled
         {
             get { return isScissorEnabled; }
             set
             {
-                if(Set(ref isScissorEnabled, value))
+                if (Set(ref isScissorEnabled, value))
                 {
                     OnRasterStateChanged();
                 }
@@ -231,13 +257,18 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private FillMode fillMode = FillMode.Solid;
-
+        /// <summary>
+        /// Gets or sets the fill mode.
+        /// </summary>
+        /// <value>
+        /// The fill mode.
+        /// </value>
         public FillMode FillMode
         {
             get { return fillMode; }
             set
             {
-                if(Set(ref fillMode, value))
+                if (Set(ref fillMode, value))
                 {
                     OnRasterStateChanged();
                 }
@@ -245,32 +276,49 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private bool isDepthClipEnabled = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is depth clip enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is depth clip enabled; otherwise, <c>false</c>.
+        /// </value>
         public bool IsDepthClipEnabled
         {
             get { return isDepthClipEnabled; }
             set
             {
-                if(Set(ref isDepthClipEnabled, value))
+                if (Set(ref isDepthClipEnabled, value))
                 {
                     OnRasterStateChanged();
                 }
             }
         }
 
-        #endregion
+        #endregion Rasterizer parameters        
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable view frustum check].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable view frustum check]; otherwise, <c>false</c>.
+        /// </value>
         public bool EnableViewFrustumCheck
         {
             set; get;
         } = true;
 
         private string postEffects;
-
+        /// <summary>
+        /// Gets or sets the post effects.
+        /// </summary>
+        /// <value>
+        /// The post effects.
+        /// </value>
         public string PostEffects
         {
             get { return postEffects; }
             set
             {
-                if(Set(ref postEffects, value))
+                if (Set(ref postEffects, value))
                 {
                     var core = RenderCore;
                     core.ClearPostEffect();
@@ -288,7 +336,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
-        #endregion
+        #endregion Properties
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryNode"/> class.
@@ -333,14 +381,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 r.RasterDescription = OnCreateRasterState != null ? OnCreateRasterState() : CreateRasterState();
             }
         }
+
         /// <summary>
         /// Called when [geometry changed].
         /// </summary>
         /// <param name="geometry">The geometry.</param>
         protected virtual void OnGeometryChanged(Geometry3D geometry)
         {
-
         }
+
         /// <summary>
         /// Create raster state description.
         /// <para>If <see cref="OnCreateRasterState"/> is set, then <see cref="OnCreateRasterState"/> instead of <see cref="CreateRasterState"/> will be called.</para>
@@ -366,7 +415,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 if (RenderCore is IGeometryRenderCore r)
                 {
                     r.InstanceBuffer = InstanceBuffer;
-                }                
+                }
                 return true;
             }
             else
@@ -374,7 +423,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return false;
             }
         }
-
+        /// <summary>
+        /// Called when [attached].
+        /// </summary>
         protected override void OnAttached()
         {
             OnRasterStateChanged();
@@ -385,6 +436,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             this.InvalidateRender();
         }
+
         /// <summary>
         /// Used to override Detach
         /// </summary>
@@ -413,6 +465,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return false;
             }
         }
+
         /// <summary>
         /// Checks the bounding frustum.
         /// </summary>
@@ -430,8 +483,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         /// <summary>
-        /// 
-        /// </summary>        
+        ///
+        /// </summary>
         public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (CanHitTest(context))
@@ -465,6 +518,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return false;
             }
         }
+
         /// <summary>
         /// Determines whether this instance [can hit test] the specified context.
         /// </summary>
@@ -476,7 +530,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return base.CanHitTest(context) && GeometryValid;
         }
-
+        /// <summary>
+        /// Updates the not render.
+        /// </summary>
+        /// <param name="context">The context.</param>
         public override void UpdateNotRender(IRenderContext context)
         {
             base.UpdateNotRender(context);

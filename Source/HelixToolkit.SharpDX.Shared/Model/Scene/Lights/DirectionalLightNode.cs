@@ -14,15 +14,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class DirectionalLightNode : LightNode
     {
         public Vector3 Direction
         {
-            set
-            {
-                (RenderCore as DirectionalLightCore).Direction = value;
-            }
+            set { (RenderCore as DirectionalLightCore).Direction = value; }
             get { return (RenderCore as DirectionalLightCore).Direction; }
         }
 

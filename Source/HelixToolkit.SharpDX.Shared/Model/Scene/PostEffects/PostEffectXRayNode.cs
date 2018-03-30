@@ -13,10 +13,18 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class PostEffectXRayNode : SceneNode
     {
-
+        #region Properties
+        /// <summary>
+        /// Gets or sets the name of the effect.
+        /// </summary>
+        /// <value>
+        /// The name of the effect.
+        /// </value>
         public string EffectName
         {
             set
@@ -28,7 +36,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IPostEffectMeshXRay).EffectName;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the color.
+        /// </summary>
+        /// <value>
+        /// The color.
+        /// </value>
         public Color4 Color
         {
             set
@@ -40,7 +53,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IPostEffectMeshXRay).Color;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the outline fading factor.
+        /// </summary>
+        /// <value>
+        /// The outline fading factor.
+        /// </value>
         public float OutlineFadingFactor
         {
             set
@@ -52,7 +70,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IPostEffectMeshXRay).OutlineFadingFactor;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable double pass].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable double pass]; otherwise, <c>false</c>.
+        /// </value>
         public bool EnableDoublePass
         {
             set
@@ -63,7 +86,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 return (RenderCore as IPostEffectMeshXRay).DoublePass;
             }
-        }
+        } 
+        #endregion
 
         /// <summary>
         /// Called when [create render core].

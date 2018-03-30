@@ -15,22 +15,41 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class LineNode : GeometryNode
     {
+        #region Properties
+        /// <summary>
+        /// Gets or sets the color.
+        /// </summary>
+        /// <value>
+        /// The color.
+        /// </value>
         public Color4 Color
         {
             get { return (RenderCore as ILineRenderParams).LineColor; }
             set { (RenderCore as ILineRenderParams).LineColor = value; }
         }
-
+        /// <summary>
+        /// Gets or sets the thickness.
+        /// </summary>
+        /// <value>
+        /// The thickness.
+        /// </value>
         public float Thickness
         {
             get { return (RenderCore as ILineRenderParams).Thickness; }
             set { (RenderCore as ILineRenderParams).Thickness = value; }
         }
 
-
+        /// <summary>
+        /// Gets or sets the smoothness.
+        /// </summary>
+        /// <value>
+        /// The smoothness.
+        /// </value>
         public float Smoothness
         {
             get { return (RenderCore as ILineRenderParams).Smoothness; }
@@ -43,7 +62,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public double HitTestThickness
         {
             set; get;
-        } = 1.0;
+        } = 1.0; 
+        #endregion
 
         /// <summary>
         /// Called when [create buffer model].

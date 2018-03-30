@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+
 using SharpDX;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,15 @@ using System.Linq;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
+
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Cameras;
     using Core;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class ShadowMapNode : SceneNode
     {
         /// <summary>
@@ -30,21 +34,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public float Bias
         {
             get { return (RenderCore as ShadowMapCore).Bias; }
             set { (RenderCore as ShadowMapCore).Bias = value; }
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public float Intensity
         {
             get { return (RenderCore as ShadowMapCore).Intensity; }
             set { (RenderCore as ShadowMapCore).Intensity = value; }
         }
+
         /// <summary>
         /// Distance of the directional light from origin
         /// </summary>
@@ -67,6 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         private readonly OrthographicCameraCore orthoCamera = new OrthographicCameraCore() { NearPlaneDistance = 1, FarPlaneDistance = 500 };
         private readonly PerspectiveCameraCore persCamera = new PerspectiveCameraCore() { NearPlaneDistance = 1, FarPlaneDistance = 500 };
         private readonly Stack<IEnumerator<IRenderable>> stackCache = new Stack<IEnumerator<IRenderable>>();
+
         /// <summary>
         /// Assigns the default values to core.
         /// </summary>
@@ -81,6 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             c.Width = (int)(Resolution.Width);
             c.Height = (int)(Resolution.Height);
         }
+
         /// <summary>
         /// To override Attach routine, please override this.
         /// </summary>
@@ -150,6 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             else { return false; }
         }
+
         /// <summary>
         /// Determines whether this instance [can hit test] the specified context.
         /// </summary>
@@ -161,6 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return false;
         }
+
         /// <summary>
         /// Called when [hit test].
         /// </summary>

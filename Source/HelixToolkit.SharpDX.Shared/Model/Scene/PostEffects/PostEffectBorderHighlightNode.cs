@@ -13,8 +13,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
+    /// <summary>
+    /// 
+    /// </summary>
     public class PostEffectBorderHighlightNode : PostEffectMeshOutlineBlurNode
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostEffectBorderHighlightNode"/> class.
+        /// </summary>
         public PostEffectBorderHighlightNode()
         {
             EffectName = DefaultRenderTechniqueNames.PostEffectMeshBorderHighlight;

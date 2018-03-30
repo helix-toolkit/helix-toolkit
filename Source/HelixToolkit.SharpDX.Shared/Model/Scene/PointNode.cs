@@ -3,27 +3,42 @@ The MIT License(MIT)
 Copyright(c) 2018 Helix Toolkit contributors
 */
 
-using System;
-using System.Collections.Generic;
 using SharpDX;
 using SharpDX.Direct3D11;
+using System;
+using System.Collections.Generic;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
+
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class PointNode : GeometryNode
     {
+        #region Properties
+        /// <summary>
+        /// Gets or sets the color.
+        /// </summary>
+        /// <value>
+        /// The color.
+        /// </value>
         public Color4 Color
         {
             get { return (RenderCore as IPointRenderParams).PointColor; }
             set { (RenderCore as IPointRenderParams).PointColor = value; }
         }
-
+        /// <summary>
+        /// Gets or sets the size.
+        /// </summary>
+        /// <value>
+        /// The size.
+        /// </value>
         public Size2F Size
         {
             get { return new Size2F((RenderCore as IPointRenderParams).Width, (RenderCore as IPointRenderParams).Height); }
@@ -33,13 +48,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 (RenderCore as IPointRenderParams).Height = value.Height;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the figure.
+        /// </summary>
+        /// <value>
+        /// The figure.
+        /// </value>
         public PointFigure Figure
         {
             get { return (RenderCore as IPointRenderParams).Figure; }
             set { (RenderCore as IPointRenderParams).Figure = value; }
         }
-
+        /// <summary>
+        /// Gets or sets the figure ratio.
+        /// </summary>
+        /// <value>
+        /// The figure ratio.
+        /// </value>
         public float FigureRatio
         {
             get { return (RenderCore as IPointRenderParams).FigureRatio; }
@@ -52,7 +77,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public double HitTestThickness
         {
             set; get;
-        } = 4;
+        } = 4; 
+        #endregion
 
         /// <summary>
         /// Distances the ray to point.
@@ -112,6 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };
         }
+
         /// <summary>
         /// Override this function to set render technique during Attach Host.
         /// <para>If <see cref="SceneNode.OnSetRenderTechnique" /> is set, then <see cref="SceneNode.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
@@ -141,6 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return false;
             }
         }
+
         /// <summary>
         /// Called when [check geometry].
         /// </summary>
@@ -150,6 +178,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return base.OnCheckGeometry(geometry) && geometry is PointGeometry3D;
         }
+
         /// <summary>
         /// Called when [hit test].
         /// </summary>

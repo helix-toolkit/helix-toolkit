@@ -2,35 +2,39 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+
+using SharpDX;
 using System;
 using System.Collections.Generic;
-using SharpDX;
-using SharpDX.Direct3D11;
 using System.Linq;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
+
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
     using Render;
+
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public abstract partial class SceneNode : DisposeObject, IRenderable
     {
         #region Properties
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Guid GUID { get; } = Guid.NewGuid();
 
         private Matrix totalModelMatrix = Matrix.Identity;
         protected bool forceUpdateTransform = false;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Matrix TotalModelMatrix
         {
@@ -49,6 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return totalModelMatrix;
             }
         }
+
         /// <summary>
         /// Gets or sets a value indicating whether [need matrix update].
         /// </summary>
@@ -58,6 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         protected bool needMatrixUpdate { private set; get; } = true;
 
         private Matrix modelMatrix = Matrix.Identity;
+
         /// <summary>
         /// Gets or sets the model matrix.
         /// </summary>
@@ -77,8 +83,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             get { return modelMatrix; }
         }
 
-
         private Matrix parentMatrix = Matrix.Identity;
+
         /// <summary>
         /// Gets or sets the parent matrix.
         /// </summary>
@@ -101,6 +107,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private bool visible = true;
+
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Element3DCore"/> is visible.
         /// </summary>
@@ -119,6 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             get { return visible; }
         }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is renderable.
         /// </summary>
@@ -126,8 +134,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         ///   <c>true</c> if this instance is renderable; otherwise, <c>false</c>.
         /// </value>
         public bool IsRenderable { private set; get; } = true;
+
         /// <summary>
-        /// If this has been attached onto renderhost. 
+        /// If this has been attached onto renderhost.
         /// </summary>
         public bool IsAttached
         {
@@ -135,13 +144,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private IRenderHost renderHost;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IRenderHost RenderHost
         {
             get { return renderHost; }
         }
+
         /// <summary>
         /// Gets the effects manager.
         /// </summary>
@@ -160,6 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             get;
         } = Constants.EmptyRenderable;
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is hit test visible.
         /// </summary>
@@ -167,6 +179,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         ///   <c>true</c> if this instance is hit test visible; otherwise, <c>false</c>.
         /// </value>
         public bool IsHitTestVisible { set; get; } = true;
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is throwing shadow.
         /// </summary>
@@ -184,7 +197,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return RenderCore.IsThrowingShadow;
             }
         }
-        #region Handling Transforms        
+
+        #region Handling Transforms
+
         /// <summary>
         /// Transforms the changed.
         /// </summary>
@@ -199,13 +214,18 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
             }
         }
+
         /// <summary>
         /// Occurs when [on transform changed].
         /// </summary>
         public event EventHandler<TransformArgs> OnTransformChanged;
-        #endregion
+
+        #endregion Handling Transforms
+
         #region RenderCore
+
         private RenderCore renderCore = null;
+
         /// <summary>
         /// Gets or sets the render core.
         /// </summary>
@@ -239,6 +259,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return renderCore;
             }
         }
+
         /// <summary>
         /// Gets or sets the render technique.
         /// </summary>
@@ -246,19 +267,22 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// The render technique.
         /// </value>
         protected IRenderTechnique renderTechnique { private set; get; }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="host"></param>
         /// <returns></returns>
         public delegate IRenderTechnique SetRenderTechniqueFunc(IRenderHost host);
+
         /// <summary>
-        /// A delegate function to change render technique. 
+        /// A delegate function to change render technique.
         /// <para>There are two ways to set render technique, one is use this <see cref="OnSetRenderTechnique"/> delegate.
         /// The other one is to override the <see cref="OnCreateRenderTechnique"/> function.</para>
         /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
         /// </summary>
         public SetRenderTechniqueFunc OnSetRenderTechnique;
+
         /// <summary>
         /// Override this function to set render technique during Attach Host.
         /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
@@ -269,11 +293,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return host.RenderTechnique;
         }
+
         /// <summary>
         /// Called when [create render core].
         /// </summary>
         /// <returns></returns>
         protected virtual RenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
+
         /// <summary>
         /// Assigns the default values to core.
         /// </summary>
@@ -284,18 +310,25 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             InvalidateRender();
         }
-        #endregion        
+
+        #endregion RenderCore
+
         /// <summary>
+
         /// Gets or sets the hit test source. The wrapper must set this so the <see cref="HitTestResult.ModelHit"/> is the wrapper.
         /// </summary>
         /// <value>
         /// The hit test source.
         /// </value>
         public object HitTestSource { internal set; get; }
-        #endregion
+
+        #endregion Properties
+
         #region Events
+
         public event EventHandler<BoolArgs> OnVisibleChanged;
-        #endregion
+
+        #endregion Events
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SceneNode"/> class.
@@ -304,6 +337,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             HitTestSource = this;
         }
+
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
@@ -338,7 +372,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <summary>
         /// To override Attach routine, please override this.
         /// </summary>
-        /// <param name="host"></param>       
+        /// <param name="host"></param>
         /// <returns>Return true if attached</returns>
         protected virtual bool OnAttach(IRenderHost host)
         {
@@ -350,6 +384,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// Called when [attached] and <see cref="IsAttached"/> = true.
         /// </summary>
         protected virtual void OnAttached() { }
+
         /// <summary>
         /// Detaches the element from the host. Override <see cref="OnDetach"/>
         /// </summary>
@@ -397,16 +432,16 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             IsRenderable = CanRender(context);
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public virtual void UpdateNotRender(IRenderContext context) { }
 
         #region Rendering
 
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
@@ -414,6 +449,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return Visible && IsAttached;
         }
+
         /// <summary>
         /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
         /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
@@ -428,6 +464,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 OnRender(context, deviceContext);
             }
         }
+
         /// <summary>
         /// Called when [render].
         /// </summary>
@@ -437,9 +474,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             RenderCore.Render(context, deviceContext);
         }
-        #endregion
 
-        #region Hit Test        
+        #endregion Rendering
+
+        #region Hit Test
+
         /// <summary>
         /// Hits the test.
         /// </summary>
@@ -458,6 +497,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return false;
             }
         }
+
         /// <summary>
         /// Determines whether this instance [can hit test] the specified context.
         /// </summary>
@@ -469,6 +509,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return IsHitTestVisible && IsRenderable;
         }
+
         /// <summary>
         /// Called when [hit test].
         /// </summary>
@@ -478,17 +519,21 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
         protected abstract bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits);
-        #endregion
 
-        #region IBoundable        
+        #endregion Hit Test
+
+        #region IBoundable
+
         /// <summary>
         /// The maximum bound
         /// </summary>
         public static readonly BoundingBox MaxBound = new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MaxValue));
+
         /// <summary>
         /// The maximum bound sphere
         /// </summary>
         public static readonly BoundingSphere MaxBoundSphere = new BoundingSphere(Vector3.Zero, float.MaxValue);
+
         /// <summary>
         /// Gets the bounds.
         /// </summary>
@@ -499,6 +544,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             get { return MaxBound; }
         }
+
         /// <summary>
         /// Gets the bounds with transform.
         /// </summary>
@@ -509,6 +555,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             get { return MaxBound; }
         }
+
         /// <summary>
         /// Gets the bounds sphere.
         /// </summary>
@@ -519,6 +566,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             get { return MaxBoundSphere; }
         }
+
         /// <summary>
         /// Gets the bounds sphere with transform.
         /// </summary>
@@ -529,6 +577,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             get { return MaxBoundSphere; }
         }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance has bound.
         /// </summary>
@@ -536,22 +585,27 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         ///   <c>true</c> if this instance has bound; otherwise, <c>false</c>.
         /// </value>
         public bool HasBound { protected set; get; } = false;
+
         /// <summary>
         /// Occurs when [on bound changed].
         /// </summary>
         public event EventHandler<BoundChangeArgs<BoundingBox>> OnBoundChanged;
+
         /// <summary>
         /// Occurs when [on transform bound changed].
         /// </summary>
         public event EventHandler<BoundChangeArgs<BoundingBox>> OnTransformBoundChanged;
+
         /// <summary>
         /// Occurs when [on bound sphere changed].
         /// </summary>
         public event EventHandler<BoundChangeArgs<BoundingSphere>> OnBoundSphereChanged;
+
         /// <summary>
         /// Occurs when [on transform bound sphere changed].
         /// </summary>
         public event EventHandler<BoundChangeArgs<BoundingSphere>> OnTransformBoundSphereChanged;
+
         /// <summary>
         /// Raises the on transform bound changed.
         /// </summary>
@@ -560,6 +614,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             OnTransformBoundChanged?.Invoke(this, args);
         }
+
         /// <summary>
         /// Raises the on bound changed.
         /// </summary>
@@ -577,6 +632,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             OnTransformBoundSphereChanged?.Invoke(this, args);
         }
+
         /// <summary>
         /// Raises the on bound sphere changed.
         /// </summary>
@@ -585,7 +641,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             OnBoundSphereChanged?.Invoke(this, args);
         }
-        #endregion
+
+        #endregion IBoundable
 
         protected override void OnDispose(bool disposeManagedResources)
         {

@@ -2,19 +2,31 @@
 The MIT License(MIT)
 Copyright(c) 2018 Helix Toolkit contributors
 */
+
 using SharpDX;
-using System;
 using System.Collections.Generic;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
+
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
+
+    /// <summary>
+    ///
+    /// </summary>
     public class PostEffectMeshOutlineBlurNode : SceneNode
     {
+        #region Properties
+        /// <summary>
+        /// Gets or sets the name of the effect.
+        /// </summary>
+        /// <value>
+        /// The name of the effect.
+        /// </value>
         public string EffectName
         {
             set
@@ -27,6 +39,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
+        /// <summary>
+        /// Gets or sets the color.
+        /// </summary>
+        /// <value>
+        /// The color.
+        /// </value>
         public Color4 Color
         {
             set
@@ -39,6 +57,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
+        /// <summary>
+        /// Gets or sets the scale x.
+        /// </summary>
+        /// <value>
+        /// The scale x.
+        /// </value>
         public float ScaleX
         {
             set
@@ -51,6 +75,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
+        /// <summary>
+        /// Gets or sets the scale y.
+        /// </summary>
+        /// <value>
+        /// The scale y.
+        /// </value>
         public float ScaleY
         {
             set
@@ -63,6 +93,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
+        /// <summary>
+        /// Gets or sets the number of blur pass.
+        /// </summary>
+        /// <value>
+        /// The number of blur pass.
+        /// </value>
         public int NumberOfBlurPass
         {
             set
@@ -73,7 +109,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 return (RenderCore as IPostEffectOutlineBlur).NumberOfBlurPass;
             }
-        }
+        } 
+        #endregion
 
         /// <summary>
         /// Called when [create render core].
@@ -108,6 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return false;
         }
+
         /// <summary>
         /// Called when [hit test].
         /// </summary>

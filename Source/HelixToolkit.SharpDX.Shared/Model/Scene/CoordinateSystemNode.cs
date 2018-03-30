@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+
 using global::SharpDX.Direct3D11;
 using SharpDX;
 using System.Linq;
@@ -9,17 +10,28 @@ using System.Linq;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
+
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
+    /// <summary>
+    ///
+    /// </summary>
     public class CoordinateSystemNode : ScreenSpacedNode
     {
         private Color4 axisXColor = Color.Red;
+
+        /// <summary>
+        /// Gets or sets the color of the axis x.
+        /// </summary>
+        /// <value>
+        /// The color of the axis x.
+        /// </value>
         public Color4 AxisXColor
         {
             set
             {
-                if(Set(ref axisXColor, value))
+                if (Set(ref axisXColor, value))
                 {
                     UpdateAxisColor(0, value);
                 }
@@ -28,6 +40,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private Color4 axisYColor = Color.Green;
+        /// <summary>
+        /// Gets or sets the color of the axis y.
+        /// </summary>
+        /// <value>
+        /// The color of the axis y.
+        /// </value>
         public Color4 AxisYColor
         {
             set
@@ -41,6 +59,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private Color4 axisZColor = Color.Blue;
+        /// <summary>
+        /// Gets or sets the color of the axis z.
+        /// </summary>
+        /// <value>
+        /// The color of the axis z.
+        /// </value>
         public Color4 AxisZColor
         {
             set
@@ -54,6 +78,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private Color4 labelColor = Color.Gray;
+        /// <summary>
+        /// Gets or sets the color of the label.
+        /// </summary>
+        /// <value>
+        /// The color of the label.
+        /// </value>
         public Color4 LabelColor
         {
             set
@@ -67,11 +97,17 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private string labelX = "X";
+        /// <summary>
+        /// Gets or sets the label x.
+        /// </summary>
+        /// <value>
+        /// The label x.
+        /// </value>
         public string LabelX
         {
             set
             {
-                if(Set(ref labelX, value))
+                if (Set(ref labelX, value))
                 {
                     UpdateAxisLabel(0, value);
                 }
@@ -80,6 +116,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private string labelY = "Y";
+        /// <summary>
+        /// Gets or sets the label y.
+        /// </summary>
+        /// <value>
+        /// The label y.
+        /// </value>
         public string LabelY
         {
             set
@@ -93,6 +135,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private string labelZ = "Z";
+        /// <summary>
+        /// Gets or sets the label z.
+        /// </summary>
+        /// <value>
+        /// The label z.
+        /// </value>
         public string LabelZ
         {
             set
@@ -112,7 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         private static readonly float arrowHead = 1.7f;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public CoordinateSystemNode()
         {
@@ -153,9 +201,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 case 0:
                     label = LabelX;
                     break;
+
                 case 1:
                     label = LabelY;
                     break;
+
                 case 2:
                     label = LabelZ;
                     break;
@@ -171,9 +221,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 case 0:
                     color = AxisXColor;
                     break;
+
                 case 1:
                     color = AxisYColor;
                     break;
+
                 case 2:
                     color = AxisZColor;
                     break;
@@ -187,8 +239,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             UpdateAxisColor(arrowMeshModel.Geometry, 1, AxisYColor, LabelY, LabelColor);
             UpdateAxisColor(arrowMeshModel.Geometry, 2, AxisZColor, LabelZ, LabelColor);
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="mesh"></param>
         /// <param name="which"></param>
@@ -203,9 +256,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 case 0:
                     labelText.TextInfo[which] = new TextInfo(label, new Vector3(arrowSize + 1.5f, 0, 0)) { Foreground = labelColor, Scale = 0.5f };
                     break;
+
                 case 1:
                     labelText.TextInfo[which] = new TextInfo(label, new Vector3(0, arrowSize + 1.5f, 0)) { Foreground = labelColor, Scale = 0.5f };
                     break;
+
                 case 2:
                     labelText.TextInfo[which] = new TextInfo(label, new Vector3(0, 0, arrowSize + 1.5f)) { Foreground = labelColor, Scale = 0.5f };
                     break;
@@ -218,7 +273,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             mesh.Colors = colors;
         }
-
+        /// <summary>
+        /// Determines whether this instance [can hit test] the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
+        /// </returns>
         protected override bool CanHitTest(IRenderContext context)
         {
             return false;

@@ -3,31 +3,39 @@ The MIT License(MIT)
 Copyright(c) 2018 Helix Toolkit contributors
 */
 
-using System;
-using System.Collections.Generic;
 using SharpDX;
 using SharpDX.Direct3D11;
+using System;
+using System.Collections.Generic;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
+
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
+
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class MeshNode : MaterialGeometryNode
     {
+        #region Properties
         private bool frontCCW = true;
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [front CCW].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [front CCW]; otherwise, <c>false</c>.
+        /// </value>
         public bool FrontCCW
         {
             get { return frontCCW; }
             set
             {
-                if(Set(ref frontCCW, value))
+                if (Set(ref frontCCW, value))
                 {
                     OnRasterStateChanged();
                 }
@@ -35,19 +43,29 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private CullMode cullMode = CullMode.None;
-
+        /// <summary>
+        /// Gets or sets the cull mode.
+        /// </summary>
+        /// <value>
+        /// The cull mode.
+        /// </value>
         public CullMode CullMode
         {
             get { return cullMode; }
             set
             {
-                if(Set(ref cullMode, value))
+                if (Set(ref cullMode, value))
                 {
                     OnRasterStateChanged();
                 }
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [invert normal].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [invert normal]; otherwise, <c>false</c>.
+        /// </value>
         public bool InvertNormal
         {
             get { return (RenderCore as MeshRenderCore).InvertNormal; }
@@ -56,7 +74,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 (RenderCore as MeshRenderCore).InvertNormal = value;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable tessellation].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable tessellation]; otherwise, <c>false</c>.
+        /// </value>
         public bool EnableTessellation
         {
             get
@@ -69,18 +92,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             set
             {
-                if(RenderCore is IPatchRenderParams core)
+                if (RenderCore is IPatchRenderParams core)
                 {
                     core.EnableTessellation = value;
                 }
             }
         }
-
+        /// <summary>
+        /// Gets or sets the maximum tessellation factor.
+        /// </summary>
+        /// <value>
+        /// The maximum tessellation factor.
+        /// </value>
         public float MaxTessellationFactor
         {
             get
             {
-                if(RenderCore is IPatchRenderParams core)
+                if (RenderCore is IPatchRenderParams core)
                 {
                     return core.MaxTessellationFactor;
                 }
@@ -94,7 +122,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
             }
         }
-
+        /// <summary>
+        /// Gets or sets the minimum tessellation factor.
+        /// </summary>
+        /// <value>
+        /// The minimum tessellation factor.
+        /// </value>
         public float MinTessellationFactor
         {
             get
@@ -113,7 +146,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
             }
         }
-
+        /// <summary>
+        /// Gets or sets the maximum tessellation distance.
+        /// </summary>
+        /// <value>
+        /// The maximum tessellation distance.
+        /// </value>
         public float MaxTessellationDistance
         {
             get
@@ -132,7 +170,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
             }
         }
-
+        /// <summary>
+        /// Gets or sets the minimum tessellation distance.
+        /// </summary>
+        /// <value>
+        /// The minimum tessellation distance.
+        /// </value>
         public float MinTessellationDistance
         {
             get
@@ -151,7 +194,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
             }
         }
-
+        /// <summary>
+        /// Gets or sets the type of the mesh.
+        /// </summary>
+        /// <value>
+        /// The type of the mesh.
+        /// </value>
         public MeshTopologyEnum MeshType
         {
             get
@@ -170,7 +218,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
             }
         }
-
+        /// <summary>
+        /// Gets or sets the color of the wireframe.
+        /// </summary>
+        /// <value>
+        /// The color of the wireframe.
+        /// </value>
         public Color4 WireframeColor
         {
             get
@@ -182,12 +235,18 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 (RenderCore as IMeshRenderParams).WireframeColor = value;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [render wireframe].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render wireframe]; otherwise, <c>false</c>.
+        /// </value>
         public bool RenderWireframe
         {
             get { return (RenderCore as IMeshRenderParams).RenderWireframe; }
             set { (RenderCore as IMeshRenderParams).RenderWireframe = value; }
-        }
+        } 
+        #endregion
 
         /// <summary>
         /// Called when [create render core].
@@ -197,7 +256,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return new PatchMeshRenderCore();
         }
-
 
         /// <summary>
         /// Called when [create buffer model].
@@ -225,10 +283,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 SlopeScaledDepthBias = (float)SlopeScaledDepthBias,
                 IsDepthClipEnabled = IsDepthClipEnabled,
                 IsFrontCounterClockwise = FrontCCW,
-                IsMultisampleEnabled = IsMSAAEnabled,                
+                IsMultisampleEnabled = IsMSAAEnabled,
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled,
             };
         }
+
         /// <summary>
         /// Called when [check geometry].
         /// </summary>
@@ -238,6 +297,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return base.OnCheckGeometry(geometry) && geometry is MeshGeometry3D;
         }
+
         /// <summary>
         /// Determines whether this instance [can hit test] the specified context.
         /// </summary>
@@ -249,6 +309,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return base.CanHitTest(context) && MeshType == MeshTopologyEnum.PNTriangles;
         }
+
         /// <summary>
         /// Called when [hit test].
         /// </summary>
