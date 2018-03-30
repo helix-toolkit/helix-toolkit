@@ -86,7 +86,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 
         protected virtual void AssignDefaultValuesToSceneNode(SceneNode node) { }
         #endregion
-        #region Events
+        #region Events        
+        /// <summary>
+        /// Occurs when [on scene node created]. Make sure to hook up this event at the top of constructor of class, otherwise may miss the event.
+        /// </summary>
         public event EventHandler<SceneNode> OnSceneNodeCreated;
         #endregion
         #region IBoundable        
