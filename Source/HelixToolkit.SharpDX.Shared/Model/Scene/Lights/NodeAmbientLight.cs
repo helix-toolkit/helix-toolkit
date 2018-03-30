@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public sealed class AmbientLightNode : LightNode
+    public sealed class NodeAmbientLight : NodeLight
     {
         /// <summary>
         /// Called when [create render core].

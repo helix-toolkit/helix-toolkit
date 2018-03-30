@@ -28,46 +28,46 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The front counter clockwise property
         /// </summary>
         public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(MeshGeometryModel3D),
-            new PropertyMetadata(true, (d, e) => { ((d as Element3DCore).SceneNode as MeshNode).FrontCCW = (bool)e.NewValue; }));
+            new PropertyMetadata(true, (d, e) => { ((d as Element3DCore).SceneNode as NodeMesh).FrontCCW = (bool)e.NewValue; }));
         /// <summary>
         /// The cull mode property
         /// </summary>
         public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(MeshGeometryModel3D), 
-            new PropertyMetadata(CullMode.None, (d, e) => { ((d as Element3DCore).SceneNode as MeshNode).CullMode = (CullMode)e.NewValue; }));
+            new PropertyMetadata(CullMode.None, (d, e) => { ((d as Element3DCore).SceneNode as NodeMesh).CullMode = (CullMode)e.NewValue; }));
         /// <summary>
         /// The invert normal property
         /// </summary>
         public static readonly DependencyProperty InvertNormalProperty = DependencyProperty.Register("InvertNormal", typeof(bool), typeof(MeshGeometryModel3D),
-            new PropertyMetadata(false, (d,e)=> { ((d as Element3DCore).SceneNode as MeshNode).InvertNormal = (bool)e.NewValue; }));
+            new PropertyMetadata(false, (d,e)=> { ((d as Element3DCore).SceneNode as NodeMesh).InvertNormal = (bool)e.NewValue; }));
         /// <summary>
         /// The enable tessellation property
         /// </summary>
         public static readonly DependencyProperty EnableTessellationProperty = DependencyProperty.Register("EnableTessellation", typeof(bool), typeof(MeshGeometryModel3D),
-            new PropertyMetadata(false, (d, e) => { ((d as Element3DCore).SceneNode as MeshNode).EnableTessellation = (bool)e.NewValue; }));
+            new PropertyMetadata(false, (d, e) => { ((d as Element3DCore).SceneNode as NodeMesh).EnableTessellation = (bool)e.NewValue; }));
         /// <summary>
         /// The maximum tessellation factor property
         /// </summary>
         public static readonly DependencyProperty MaxTessellationFactorProperty =
             DependencyProperty.Register("MaxTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(1.0, (d, e) => 
-            { ((d as Element3DCore).SceneNode as MeshNode).MaxTessellationFactor = (float)(double)e.NewValue; }));
+            { ((d as Element3DCore).SceneNode as NodeMesh).MaxTessellationFactor = (float)(double)e.NewValue; }));
         /// <summary>
         /// The minimum tessellation factor property
         /// </summary>
         public static readonly DependencyProperty MinTessellationFactorProperty =
             DependencyProperty.Register("MinTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(2.0, (d, e) =>
-            { ((d as Element3DCore).SceneNode as MeshNode).MinTessellationFactor = (float)(double)e.NewValue; }));
+            { ((d as Element3DCore).SceneNode as NodeMesh).MinTessellationFactor = (float)(double)e.NewValue; }));
         /// <summary>
         /// The maximum tessellation distance property
         /// </summary>
         public static readonly DependencyProperty MaxTessellationDistanceProperty =
             DependencyProperty.Register("MaxTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(50.0, (d, e) =>
-            { ((d as Element3DCore).SceneNode as MeshNode).MaxTessellationDistance = (float)(double)e.NewValue; }));
+            { ((d as Element3DCore).SceneNode as NodeMesh).MaxTessellationDistance = (float)(double)e.NewValue; }));
         /// <summary>
         /// The minimum tessellation distance property
         /// </summary>
         public static readonly DependencyProperty MinTessellationDistanceProperty =
             DependencyProperty.Register("MinTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
-            { ((d as Element3DCore).SceneNode as MeshNode).MinTessellationDistance = (float)(double)e.NewValue; }));
+            { ((d as Element3DCore).SceneNode as NodeMesh).MinTessellationDistance = (float)(double)e.NewValue; }));
 
         /// <summary>
         /// The mesh topology property
@@ -75,21 +75,21 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty MeshTopologyProperty =
             DependencyProperty.Register("MeshTopology", typeof(MeshTopologyEnum), typeof(MeshGeometryModel3D), new PropertyMetadata(
                 MeshTopologyEnum.PNTriangles, (d, e) =>
-                { ((d as Element3DCore).SceneNode as MeshNode).MeshType = (MeshTopologyEnum)e.NewValue; }));
+                { ((d as Element3DCore).SceneNode as NodeMesh).MeshType = (MeshTopologyEnum)e.NewValue; }));
 
         /// <summary>
         /// The render wireframe property
         /// </summary>
         public static readonly DependencyProperty RenderWireframeProperty =
             DependencyProperty.Register("RenderWireframe", typeof(bool), typeof(MeshGeometryModel3D), new PropertyMetadata(false, (d, e) =>
-            { ((d as Element3DCore).SceneNode as MeshNode).RenderWireframe = (bool)e.NewValue; }));
+            { ((d as Element3DCore).SceneNode as NodeMesh).RenderWireframe = (bool)e.NewValue; }));
 
         /// <summary>
         /// The wireframe color property
         /// </summary>
         public static readonly DependencyProperty WireframeColorProperty =
             DependencyProperty.Register("WireframeColor", typeof(System.Windows.Media.Color), typeof(MeshGeometryModel3D), new PropertyMetadata(System.Windows.Media.Colors.SkyBlue, (d, e) =>
-            { ((d as Element3DCore).SceneNode as MeshNode).WireframeColor = ((System.Windows.Media.Color)e.NewValue).ToColor4(); }));
+            { ((d as Element3DCore).SceneNode as NodeMesh).WireframeColor = ((System.Windows.Media.Color)e.NewValue).ToColor4(); }));
 
         /// <summary>
         /// Gets or sets a value indicating whether [render overlapping wireframe].
@@ -240,7 +240,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new MeshNode();
+            return new NodeMesh();
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="node">The node.</param>
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
-            var c = node as MeshNode;
+            var c = node as NodeMesh;
             c.InvertNormal = this.InvertNormal;
             c.WireframeColor = this.WireframeColor.ToColor4();
             c.RenderWireframe = this.RenderWireframe;

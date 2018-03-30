@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 {
     using Core;
 
-    public abstract class MaterialGeometryNode : GeometryNode
+    public abstract class NodeMaterialGeometry : NodeGeometry
     {
         private bool isTransparent = false;
 

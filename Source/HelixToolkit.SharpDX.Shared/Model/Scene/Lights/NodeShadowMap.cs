@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class ShadowMapNode : SceneNode
+    public class NodeShadowMap : SceneNode
     {
         /// <summary>
         /// Gets or sets the resolution.

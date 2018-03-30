@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void ChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var node = SceneNode as GroupNode;
+            var node = SceneNode as NodeGroup;
 
             switch (e.Action)
             {
@@ -122,14 +122,14 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.RemoveLogicalChild(item);
                 }
             }            
-            var node = SceneNode as GroupNode;
+            var node = SceneNode as NodeGroup;
             node.Clear();
             Children.Clear();
         }
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new GroupNode();
+            return new NodeGroup();
         }
     }
 }

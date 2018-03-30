@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class ViewBoxNode : NodeScreenSpaced
+    public class NodeViewBox : NodeScreenSpaced
     {
         /// <summary>
         /// 
@@ -136,7 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         private readonly NodeInstancingMesh CornerModel; 
         #endregion
 
-        static ViewBoxNode()
+        static NodeViewBox()
         {
             var builder = new MeshBuilder(true, false);
             float cornerSize = size / 5;
@@ -171,7 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
-        public ViewBoxNode()
+        public NodeViewBox()
         {
             RelativeScreenLocationX = 0.8f;
             ViewBoxMeshModel = new NodeMesh() { EnableViewFrustumCheck = false };

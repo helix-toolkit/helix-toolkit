@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class PointLightNode : LightNode
+    public class NodePointLight : NodeLight
     {
         /// <summary>
         /// Gets or sets the position.

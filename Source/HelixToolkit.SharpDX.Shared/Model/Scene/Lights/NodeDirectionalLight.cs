@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public sealed class DirectionalLightNode : LightNode
+    public sealed class NodeDirectionalLight : NodeLight
     {
         public Vector3 Direction
         {

@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(new Media3D.Vector3D(0, 1, 0),
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ViewBoxNode).UpDirection = ((Media3D.Vector3D)e.NewValue).ToVector3();
+                ((d as Element3DCore).SceneNode as NodeViewBox).UpDirection = ((Media3D.Vector3D)e.NewValue).ToVector3();
             }));
 
 
@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ViewBoxTextureProperty = DependencyProperty.Register("ViewBoxTexture", typeof(Stream), typeof(ViewBoxModel3D),
             new PropertyMetadata(null, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ViewBoxNode).ViewBoxTexture = (Stream)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeViewBox).ViewBoxTexture = (Stream)e.NewValue;
             }));
 
         public Stream ViewBoxTexture
@@ -87,7 +87,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty EnableEdgeClickProperty =
             DependencyProperty.Register("EnableEdgeClick", typeof(bool), typeof(ViewBoxModel3D), new PropertyMetadata(false, (d,e)=> 
             {
-                ((d as Element3DCore).SceneNode as ViewBoxNode).EnableEdgeClick = (bool)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeViewBox).EnableEdgeClick = (bool)e.NewValue;
             }));
         
 
@@ -126,14 +126,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            var node = new ViewBoxNode();
+            var node = new NodeViewBox();
             node.OnViewBoxClicked += (s, e) => { RaiseEvent(new ViewBoxClickedEventArgs(this, e.LookDirection.ToVector3D(), e.UpDirection.ToVector3D())); };
             return node;
         }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
-            (node as ViewBoxNode).UpDirection = this.UpDirection.ToVector3();
+            (node as NodeViewBox).UpDirection = this.UpDirection.ToVector3();
             base.AssignDefaultValuesToSceneNode(node);
         }
     }

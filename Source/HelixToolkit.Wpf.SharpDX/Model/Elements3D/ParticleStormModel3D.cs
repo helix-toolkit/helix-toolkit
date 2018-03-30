@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(DefaultParticleCount,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).ParticleCount = Math.Max(8, (int)e.NewValue);
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).ParticleCount = Math.Max(8, (int)e.NewValue);
             }
             ));
 
@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(DefaultEmitterLocation.ToPoint3D(),
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).EmitterLocation = (((Media3D.Point3D)e.NewValue).ToVector3());
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).EmitterLocation = (((Media3D.Point3D)e.NewValue).ToVector3());
             }
             ));
 
@@ -72,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(0.0,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).EmitterRadius = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).EmitterRadius = (float)(double)e.NewValue;
             }
             ));
 
@@ -92,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(DefaultConsumerLocation.ToPoint3D(),
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).ConsumerLocation = (((Media3D.Point3D)e.NewValue).ToVector3());
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).ConsumerLocation = (((Media3D.Point3D)e.NewValue).ToVector3());
             }
             ));
 
@@ -112,7 +112,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(0.0,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).ConsumerGravity = ((float)(double)e.NewValue);
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).ConsumerGravity = ((float)(double)e.NewValue);
             }
             ));
 
@@ -132,7 +132,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(0.0,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).ConsumerRadius = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).ConsumerRadius = (float)(double)e.NewValue;
             }
             ));
 
@@ -152,7 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(5.0,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).InitialEnergy = System.Math.Max(1f, (float)(double)e.NewValue);
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).InitialEnergy = System.Math.Max(1f, (float)(double)e.NewValue);
             }
             ));
 
@@ -172,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(1.0,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).EnergyDissipationRate = System.Math.Max(1f, (float)(double)e.NewValue);
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).EnergyDissipationRate = System.Math.Max(1f, (float)(double)e.NewValue);
             }
             ));
 
@@ -192,7 +192,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(new UniformRandomVectorGenerator(),
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).RandomVectorGenerator = (IRandomVector)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).RandomVectorGenerator = (IRandomVector)e.NewValue;
             }
             ));
 
@@ -212,7 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(null,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).ParticleTexture = (Stream)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).ParticleTexture = (Stream)e.NewValue;
             }
             ));
 
@@ -232,7 +232,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(1,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).NumTextureColumn = (uint)System.Math.Max(1, (int)e.NewValue);
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).NumTextureColumn = (uint)System.Math.Max(1, (int)e.NewValue);
             }
             ));
 
@@ -252,7 +252,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(1,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).NumTextureRow = (uint)System.Math.Max(1, (int)e.NewValue);
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).NumTextureRow = (uint)System.Math.Max(1, (int)e.NewValue);
             }
             ));
 
@@ -273,7 +273,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d, e) =>
                 {
                     var size = (Size)e.NewValue;
-                    ((d as Element3DCore).SceneNode as ParticleStormNode).ParticleSize = new Vector2((float)size.Width, (float)size.Height);
+                    ((d as Element3DCore).SceneNode as NodeParticleStorm).ParticleSize = new Vector2((float)size.Width, (float)size.Height);
                 }));
 
         public Size ParticleSize
@@ -293,7 +293,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(1.0,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).InitialVelocity = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).InitialVelocity = (float)(double)e.NewValue;
             }
             ));
 
@@ -313,7 +313,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(DefaultAcceleration.ToVector3D(),
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).InitAcceleration = ((Media3D.Vector3D)e.NewValue).ToVector3();
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).InitAcceleration = ((Media3D.Vector3D)e.NewValue).ToVector3();
             }
             ));
 
@@ -334,8 +334,8 @@ namespace HelixToolkit.Wpf.SharpDX
             (d, e) =>
             {
                 var bound = (Media3D.Rect3D)e.NewValue;
-                ((d as Element3DCore).SceneNode as ParticleStormNode).DomainBoundMax = new Vector3((float)(bound.SizeX / 2 + bound.Location.X), (float)(bound.SizeY / 2 + bound.Location.Y), (float)(bound.SizeZ / 2 + bound.Location.Z));
-                ((d as Element3DCore).SceneNode as ParticleStormNode).DomainBoundMin = new Vector3((float)(bound.Location.X - bound.SizeX / 2), (float)(bound.Location.Y - bound.SizeY / 2), (float)(bound.Location.Z - bound.SizeZ / 2));
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).DomainBoundMax = new Vector3((float)(bound.SizeX / 2 + bound.Location.X), (float)(bound.SizeY / 2 + bound.Location.Y), (float)(bound.SizeZ / 2 + bound.Location.Z));
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).DomainBoundMin = new Vector3((float)(bound.Location.X - bound.SizeX / 2), (float)(bound.Location.Y - bound.SizeY / 2), (float)(bound.Location.Z - bound.SizeZ / 2));
             }));
 
         public Media3D.Rect3D ParticleBounds
@@ -354,7 +354,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as ParticleStormNode).CumulateAtBound = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodeParticleStorm).CumulateAtBound = (bool)e.NewValue;
                 }));
 
         public bool CumulateAtBound
@@ -373,7 +373,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Media.Colors.White,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as ParticleStormNode).BlendColor = ((Media.Color)e.NewValue).ToColor4();
+                    ((d as Element3DCore).SceneNode as NodeParticleStorm).BlendColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
         public Media.Color BlendColor
@@ -392,7 +392,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as ParticleStormNode).AnimateSpriteByEnergy = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodeParticleStorm).AnimateSpriteByEnergy = (bool)e.NewValue;
                 }));
 
         public bool AnimateSpriteByEnergy
@@ -419,7 +419,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty TurbulanceProperty =
             DependencyProperty.Register("Turbulance", typeof(double), typeof(ParticleStormModel3D), new PropertyMetadata(0.0, (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as ParticleStormNode).Turbulance = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodeParticleStorm).Turbulance = (float)(double)e.NewValue;
                 }));
 
 
@@ -427,7 +427,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static DependencyProperty BlendProperty = DependencyProperty.Register("Blend", typeof(BlendOperation), typeof(ParticleStormModel3D),
             new PropertyMetadata(BlendOperation.Add, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).Blend = (BlendOperation)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).Blend = (BlendOperation)e.NewValue;
             }));
 
         public BlendOperation Blend
@@ -445,7 +445,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static DependencyProperty AlphaBlendProperty = DependencyProperty.Register("AlphaBlend", typeof(BlendOperation), typeof(ParticleStormModel3D),
             new PropertyMetadata(BlendOperation.Add, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).AlphaBlend = (BlendOperation)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).AlphaBlend = (BlendOperation)e.NewValue;
             }));
 
         public BlendOperation AlphaBlend
@@ -463,7 +463,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static DependencyProperty SourceBlendProperty = DependencyProperty.Register("SourceBlend", typeof(BlendOption), typeof(ParticleStormModel3D),
             new PropertyMetadata(BlendOption.One, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).SourceBlend = (BlendOption)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).SourceBlend = (BlendOption)e.NewValue;
             }));
 
         public BlendOption SourceBlend
@@ -481,7 +481,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static DependencyProperty DestBlendProperty = DependencyProperty.Register("DestBlend", typeof(BlendOption), typeof(ParticleStormModel3D),
             new PropertyMetadata(BlendOption.One, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).DestBlend = (BlendOption)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).DestBlend = (BlendOption)e.NewValue;
             }));
 
         public BlendOption DestBlend
@@ -499,7 +499,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static DependencyProperty SourceAlphaBlendProperty = DependencyProperty.Register("SourceAlphaBlend", typeof(BlendOption), typeof(ParticleStormModel3D),
             new PropertyMetadata(BlendOption.One, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).SourceAlphaBlend = (BlendOption)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).SourceAlphaBlend = (BlendOption)e.NewValue;
             }));
 
         public BlendOption SourceAlphaBlend
@@ -517,7 +517,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static DependencyProperty DestAlphaBlendProperty = DependencyProperty.Register("DestAlphaBlend", typeof(BlendOption), typeof(ParticleStormModel3D),
             new PropertyMetadata(BlendOption.Zero, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).DestAlphaBlend = (BlendOption)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).DestAlphaBlend = (BlendOption)e.NewValue;
             }));
 
         public BlendOption DestAlphaBlend
@@ -547,20 +547,20 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty InstancesProperty =
             DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(ParticleStormModel3D), new PropertyMetadata(null, (d,e)=> 
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).Instances = e.NewValue as IList<Matrix>;
+                ((d as Element3DCore).SceneNode as NodeParticleStorm).Instances = e.NewValue as IList<Matrix>;
             }));
         #endregion
 
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new ParticleStormNode();
+            return new NodeParticleStorm();
         }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
             base.AssignDefaultValuesToSceneNode(node);
-            if(node is ParticleStormNode c)
+            if(node is NodeParticleStorm c)
             {
                 c.ParticleCount = ParticleCount;
                 c.EmitterLocation = EmitterLocation.ToVector3();

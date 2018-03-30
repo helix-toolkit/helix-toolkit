@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class PointNode : GeometryNode
+    public class NodePoint : NodeGeometry
     {
         #region Properties
         /// <summary>

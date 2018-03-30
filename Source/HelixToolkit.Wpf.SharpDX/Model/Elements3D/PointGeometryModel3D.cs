@@ -13,7 +13,7 @@
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(PointGeometryModel3D),
                 new PropertyMetadata(Media.Colors.Black, (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as PointNode).Color = ((Media.Color)e.NewValue).ToColor4();
+                    ((d as Element3DCore).SceneNode as NodePoint).Color = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
         public static readonly DependencyProperty SizeProperty =
@@ -21,27 +21,27 @@
                 (d,e)=> 
                 {
                     var size = (Size)e.NewValue;
-                    ((d as Element3DCore).SceneNode as PointNode).Size = new Size2F((float)size.Width, (float)size.Height);
+                    ((d as Element3DCore).SceneNode as NodePoint).Size = new Size2F((float)size.Width, (float)size.Height);
                 }));
 
         public static readonly DependencyProperty FigureProperty =
             DependencyProperty.Register("Figure", typeof(PointFigure), typeof(PointGeometryModel3D), new PropertyMetadata(PointFigure.Rect,
                 (d, e)=> 
                 {
-                    ((d as Element3DCore).SceneNode as PointNode).Figure = (PointFigure)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodePoint).Figure = (PointFigure)e.NewValue;
                 }));
 
         public static readonly DependencyProperty FigureRatioProperty =
             DependencyProperty.Register("FigureRatio", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(0.25,
                 (d, e)=> 
                 {
-                    ((d as Element3DCore).SceneNode as PointNode).FigureRatio = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodePoint).FigureRatio = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
             DependencyProperty.Register("HitTestThickness", typeof(double), typeof(PointGeometryModel3D), new PropertyMetadata(4.0, (d, e)=> 
                 {
-                    ((d as Element3DCore).SceneNode as PointNode).HitTestThickness = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodePoint).HitTestThickness = (float)(double)e.NewValue;
                 }));
 
         public Media.Color Color
@@ -85,7 +85,7 @@
         /// <returns></returns>
         protected override SceneNode OnCreateSceneNode()
         {
-            return new PointNode();
+            return new NodePoint();
         }
         /// <summary>
         /// Assigns the default values to core.
@@ -93,7 +93,7 @@
         /// <param name="core">The core.</param>
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            if (core is PointNode n)
+            if (core is NodePoint n)
             {
                 n.Size = new Size2F((float)Size.Width, (float)Size.Height);
                 n.Figure = Figure;

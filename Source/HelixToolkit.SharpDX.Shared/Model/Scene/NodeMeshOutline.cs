@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 {
     using Core;
 
-    public class MeshOutlineNode : MeshNode
+    public class NodeMeshOutline : NodeMesh
     {
         #region Properties
         /// <summary>

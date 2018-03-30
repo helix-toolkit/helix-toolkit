@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 {
     using Core;
 
-    public abstract class GeometryNode : SceneNode, IHitable, IThrowingShadow, IInstancing
+    public abstract class NodeGeometry : SceneNode, IHitable, IThrowingShadow, IInstancing
     {
         #region Properties
 
@@ -339,9 +339,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         #endregion Properties
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GeometryNode"/> class.
+        /// Initializes a new instance of the <see cref="NodeGeometry"/> class.
         /// </summary>
-        public GeometryNode()
+        public NodeGeometry()
         {
             BoundManager = new GeometryBoundManager(this);
             BoundManager.OnBoundChanged += (s, e) => { RaiseOnBoundChanged(e); };

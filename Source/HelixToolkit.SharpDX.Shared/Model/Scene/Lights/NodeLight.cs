@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public abstract class LightNode : SceneNode, ILight3D
+    public abstract class NodeLight : SceneNode, ILight3D
     {
         /// <summary>
         /// Gets or sets the color.

@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class InstancingMeshNode : MeshNode
+    public class NodeInstancingMesh : NodeMesh
     {
         #region Properties
         /// <summary>

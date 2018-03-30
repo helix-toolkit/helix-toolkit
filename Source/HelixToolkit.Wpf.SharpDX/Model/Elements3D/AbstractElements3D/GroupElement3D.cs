@@ -56,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new GroupNode();
+            return new NodeGroup();
         }
 
         private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -77,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected void AttachChildren(IEnumerable children)
         {
-            var node = SceneNode as GroupNode;
+            var node = SceneNode as NodeGroup;
             foreach (Element3D c in children)
             {
                 if (c.Parent == null)
@@ -90,7 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected void DetachChildren(IEnumerable children)
         {
-            var node = SceneNode as GroupNode;
+            var node = SceneNode as NodeGroup;
             foreach (Element3D c in children)
             {
                 node.RemoveChildNode(c);

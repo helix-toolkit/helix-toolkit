@@ -22,25 +22,25 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty DirectionProperty =
             DependencyProperty.Register("Direction", typeof(Vector3D), typeof(SpotLight3D), new PropertyMetadata(new Vector3D(),
                 (d, e) => {
-                    ((d as Element3DCore).SceneNode as SpotLightNode).Direction = ((Vector3D)e.NewValue).ToVector3();
+                    ((d as Element3DCore).SceneNode as NodeSpotLight).Direction = ((Vector3D)e.NewValue).ToVector3();
                 }));
 
         public static readonly DependencyProperty FalloffProperty =
             DependencyProperty.Register("Falloff", typeof(double), typeof(SpotLight3D), new PropertyMetadata(1.0,
                 (d,e)=> {
-                    ((d as Element3DCore).SceneNode as SpotLightNode).FallOff = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodeSpotLight).FallOff = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty InnerAngleProperty =
             DependencyProperty.Register("InnerAngle", typeof(double), typeof(SpotLight3D), new PropertyMetadata(5.0,
                 (d, e) => {
-                    ((d as Element3DCore).SceneNode as SpotLightNode).InnerAngle = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodeSpotLight).InnerAngle = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty OuterAngleProperty =
             DependencyProperty.Register("OuterAngle", typeof(double), typeof(SpotLight3D), new PropertyMetadata(45.0,
                 (d, e) => {
-                    ((d as Element3DCore).SceneNode as SpotLightNode).OuterAngle = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodeSpotLight).OuterAngle = (float)(double)e.NewValue;
                 }));
 
         /// <summary>
@@ -88,13 +88,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new SpotLightNode();
+            return new NodeSpotLight();
         }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
             base.AssignDefaultValuesToSceneNode(core);
-            if(core is SpotLightNode c)
+            if(core is NodeSpotLight c)
             {
                 c.Direction = Direction.ToVector3();
                 c.InnerAngle = (float)InnerAngle;

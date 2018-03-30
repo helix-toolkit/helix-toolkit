@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     ///
     /// </summary>
-    public class CoordinateSystemNode : ScreenSpacedNode
+    public class NodeCoordinateSystem : NodeScreenSpaced
     {
         private Color4 axisXColor = Color.Red;
 
@@ -153,8 +153,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             get { return labelZ; }
         }
 
-        private readonly BillboardNode axisBillboard = new BillboardNode();
-        private readonly MeshNode arrowMeshModel = new MeshNode() { EnableViewFrustumCheck = false };
+        private readonly NodeBillboard axisBillboard = new NodeBillboard();
+        private readonly NodeMesh arrowMeshModel = new NodeMesh() { EnableViewFrustumCheck = false };
         private static readonly float arrowSize = 5.5f;
         private static readonly float arrowWidth = 0.6f;
         private static readonly float arrowHead = 1.7f;
@@ -162,7 +162,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <summary>
         ///
         /// </summary>
-        public CoordinateSystemNode()
+        public NodeCoordinateSystem()
         {
             var builder = new MeshBuilder(true, false, false);
             builder.AddArrow(Vector3.Zero, new Vector3(arrowSize, 0, 0), arrowWidth, arrowHead, 8);

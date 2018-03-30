@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     ///
     /// </summary>
-    public class PostEffectMeshOutlineBlurNode : SceneNode
+    public class NodePostEffectMeshOutlineBlur : SceneNode
     {
         #region Properties
         /// <summary>

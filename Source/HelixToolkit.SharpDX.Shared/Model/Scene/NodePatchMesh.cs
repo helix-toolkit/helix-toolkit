@@ -7,12 +7,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class PatchMeshNode : MeshNode
+    public class NodePatchMesh : NodeMesh
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PatchMeshNode"/> class.
+        /// Initializes a new instance of the <see cref="NodePatchMesh"/> class.
         /// </summary>
-        public PatchMeshNode()
+        public NodePatchMesh()
         {
             EnableTessellation = true;
         }

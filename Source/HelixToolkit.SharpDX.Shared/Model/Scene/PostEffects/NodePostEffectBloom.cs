@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class PostEffectBloomNode : SceneNode
+    public class NodePostEffectBloom : SceneNode
     {
         #region Properties
         /// <summary>

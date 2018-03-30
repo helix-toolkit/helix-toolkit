@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty EffectNameProperty =
             DependencyProperty.Register("EffectName", typeof(string), typeof(PostEffectMeshXRay), new PropertyMetadata(DefaultRenderTechniqueNames.PostEffectMeshXRay, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as PostEffectXRayNode).EffectName = (string)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectXRay).EffectName = (string)e.NewValue;
             }));
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Colors.Blue,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as PostEffectXRayNode).Color = ((Color)e.NewValue).ToColor4();
+                ((d as Element3DCore).SceneNode as NodePostEffectXRay).Color = ((Color)e.NewValue).ToColor4();
             }));
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static DependencyProperty OutlineFadingFactorProperty = DependencyProperty.Register("OutlineFadingFactor", typeof(double), typeof(PostEffectMeshXRay),
             new PropertyMetadata(1.5, (d, e) => {
-                ((d as Element3DCore).SceneNode as PostEffectXRayNode).OutlineFadingFactor = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectXRay).OutlineFadingFactor = (float)(double)e.NewValue;
             }));
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty EnableDoublePassProperty =
             DependencyProperty.Register("EnableDoublePass", typeof(bool), typeof(PostEffectMeshXRay), new PropertyMetadata(false, (d,e)=>
             {
-                ((d as Element3DCore).SceneNode as PostEffectXRayNode).EnableDoublePass = (bool)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectXRay).EnableDoublePass = (bool)e.NewValue;
             }));
 
 
@@ -111,7 +111,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new PostEffectXRayNode();
+            return new NodePostEffectXRay();
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
             base.AssignDefaultValuesToSceneNode(core);
-            if(core is PostEffectXRayNode c)
+            if(core is NodePostEffectXRay c)
             {
                 c.EffectName = EffectName;
                 c.Color = OutlineColor.ToColor4();

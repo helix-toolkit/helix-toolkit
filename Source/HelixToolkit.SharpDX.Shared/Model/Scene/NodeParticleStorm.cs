@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class ParticleStormNode : SceneNode, IInstancing
+    public class NodeParticleStorm : SceneNode, IInstancing
     {
         #region Properties
         /// <summary>

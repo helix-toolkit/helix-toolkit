@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class SpotLightNode : PointLightNode
+    public class NodeSpotLight : NodePointLight
     {
         /// <summary>
         /// Gets or sets the direction.

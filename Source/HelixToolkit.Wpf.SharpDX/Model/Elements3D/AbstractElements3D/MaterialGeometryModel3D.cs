@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderDiffuseMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderDiffuseMap = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodeMaterialGeometry).RenderDiffuseMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// 
@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderDiffuseAlphaMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderDiffuseAlphaMap = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodeMaterialGeometry).RenderDiffuseAlphaMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// 
@@ -44,7 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderNormalMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderNormalMap = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodeMaterialGeometry).RenderNormalMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// 
@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderDisplacementMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderDisplacementMap = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodeMaterialGeometry).RenderDisplacementMap = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderShadowMap = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodeMaterialGeometry).RenderShadowMap = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderEnvironmentMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderEnvironmentMap = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodeMaterialGeometry).RenderEnvironmentMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// 
@@ -81,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty MaterialProperty =
             DependencyProperty.Register("Material", typeof(Material), typeof(MaterialGeometryModel3D), new PropertyMetadata(null, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as MaterialGeometryNode).Material = e.NewValue as Material;
+                ((d as Element3DCore).SceneNode as NodeMaterialGeometry).Material = e.NewValue as Material;
             }));
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsTransparentProperty =
             DependencyProperty.Register("IsTransparent", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as MaterialGeometryNode).IsTransparent = (bool)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodeMaterialGeometry).IsTransparent = (bool)e.NewValue;
             }));
 
 
@@ -174,7 +174,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
-            if(node is MaterialGeometryNode n)
+            if(node is NodeMaterialGeometry n)
             {
                 n.Material = this.Material;
                 n.RenderDiffuseMap = this.RenderDiffuseMap;

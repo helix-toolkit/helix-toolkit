@@ -9,7 +9,7 @@
     {
         protected override SceneNode OnCreateSceneNode()
         {
-            return new PostEffectMeshOutlineBlurNode();
+            return new NodePostEffectMeshOutlineBlur();
         }
     }
 }

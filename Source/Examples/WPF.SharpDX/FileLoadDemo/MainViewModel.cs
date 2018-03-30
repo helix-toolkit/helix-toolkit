@@ -103,7 +103,6 @@ namespace FileLoadDemo
                     Material = ob.Material,
                 };
                 this.ModelGeometry.Add(s);
-                s.Attach(modelView.RenderHost);
 
             }
             this.OnPropertyChanged("ModelGeometry");

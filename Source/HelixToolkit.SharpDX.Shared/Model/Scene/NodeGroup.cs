@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class GroupNode : GroupNodeBase, IHitable
+    public class NodeGroup : NodeGroupBase, IHitable
     {
         public IOctreeManager OctreeManager { set; get; }
         /// <summary>

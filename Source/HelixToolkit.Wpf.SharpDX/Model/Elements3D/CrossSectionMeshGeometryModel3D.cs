@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(Media.Colors.Firebrick,
            (d, e) =>
            {
-               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).CrossSectionColor = ((Media.Color)e.NewValue).ToColor4();
+               ((d as Element3DCore).SceneNode as NodeCrossSectionMesh).CrossSectionColor = ((Media.Color)e.NewValue).ToColor4();
            }));
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(false,
            (d, e) =>
            {
-               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).EnablePlane1 = (bool)e.NewValue;
+               ((d as Element3DCore).SceneNode as NodeCrossSectionMesh).EnablePlane1 = (bool)e.NewValue;
            }));
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(false,
            (d, e) =>
            {
-               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).EnablePlane2 = (bool)e.NewValue;
+               ((d as Element3DCore).SceneNode as NodeCrossSectionMesh).EnablePlane2 = (bool)e.NewValue;
            }));
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(false,
            (d, e) =>
            {
-               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).EnablePlane3 = (bool)e.NewValue;
+               ((d as Element3DCore).SceneNode as NodeCrossSectionMesh).EnablePlane3 = (bool)e.NewValue;
            }));
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(false,
            (d, e) =>
            {
-               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).EnablePlane4 = (bool)e.NewValue;
+               ((d as Element3DCore).SceneNode as NodeCrossSectionMesh).EnablePlane4 = (bool)e.NewValue;
            }));
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(new Plane(),
            (d, e) =>
            {
-               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).Plane1 = (Plane)e.NewValue;
+               ((d as Element3DCore).SceneNode as NodeCrossSectionMesh).Plane1 = (Plane)e.NewValue;
            }));
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(new Plane(),
            (d, e) =>
            {
-               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).Plane2 = (Plane)e.NewValue;
+               ((d as Element3DCore).SceneNode as NodeCrossSectionMesh).Plane2 = (Plane)e.NewValue;
            }));
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(new Plane(),
            (d, e) =>
            {
-               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).Plane3 = (Plane)e.NewValue;
+               ((d as Element3DCore).SceneNode as NodeCrossSectionMesh).Plane3 = (Plane)e.NewValue;
            }));
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace HelixToolkit.Wpf.SharpDX
            new PropertyMetadata(new Plane(),
            (d, e) =>
            {
-               ((d as Element3DCore).SceneNode as CrossSectionMeshNode).Plane4 = (Plane)e.NewValue;
+               ((d as Element3DCore).SceneNode as NodeCrossSectionMesh).Plane4 = (Plane)e.NewValue;
            }));
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new CrossSectionMeshNode();
+            return new NodeCrossSectionMesh();
         }
     }
 }

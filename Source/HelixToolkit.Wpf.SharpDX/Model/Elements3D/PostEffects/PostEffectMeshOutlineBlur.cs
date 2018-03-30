@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("EffectName", typeof(string), typeof(PostEffectMeshOutlineBlur), 
                 new PropertyMetadata(DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as PostEffectMeshOutlineBlurNode).EffectName = (string)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectMeshOutlineBlur).EffectName = (string)e.NewValue;
             }));
 
 
@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Color), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(Colors.Red, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as PostEffectMeshOutlineBlurNode).Color = ((Color)e.NewValue).ToColor4();
+                ((d as Element3DCore).SceneNode as NodePostEffectMeshOutlineBlur).Color = ((Color)e.NewValue).ToColor4();
             }));
 
 
@@ -75,7 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ScaleXProperty =
             DependencyProperty.Register("ScaleX", typeof(double), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(1.0, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as PostEffectMeshOutlineBlurNode).ScaleX = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectMeshOutlineBlur).ScaleX = (float)(double)e.NewValue;
             }));
         /// <summary>
         /// Gets or sets the scale y.
@@ -95,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ScaleYProperty =
             DependencyProperty.Register("ScaleY", typeof(double), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(1.0, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as PostEffectMeshOutlineBlurNode).ScaleY = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectMeshOutlineBlur).ScaleY = (float)(double)e.NewValue;
             }));
 
         /// <summary>
@@ -116,18 +116,18 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty NumberOfBlurPassProperty =
             DependencyProperty.Register("NumberOfBlurPass", typeof(int), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(1, (d,e)=> 
             {
-                ((d as Element3DCore).SceneNode as PostEffectMeshOutlineBlurNode).NumberOfBlurPass = (int)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectMeshOutlineBlur).NumberOfBlurPass = (int)e.NewValue;
             }));
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new PostEffectMeshOutlineBlurNode();
+            return new NodePostEffectMeshOutlineBlur();
         }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
             base.AssignDefaultValuesToSceneNode(core);
-            if(core is PostEffectMeshOutlineBlurNode c)
+            if(core is NodePostEffectMeshOutlineBlur c)
             {
                 c.EffectName = EffectName;
                 c.Color = Color.ToColor4();
