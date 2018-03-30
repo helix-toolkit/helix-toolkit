@@ -25,7 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 {
     using Core;
     using HelixToolkit.Logger;
-
+    using Model.Scene;
 
     /// <summary>
     /// 
@@ -33,15 +33,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     public class DefaultRenderHost : DX11RenderHostBase
     {
         #region Per frame render list
-        protected readonly List<IRenderable> viewportRenderables = new List<IRenderable>();
+        protected readonly List<SceneNode> viewportRenderables = new List<SceneNode>();
         /// <summary>
         /// The pending renderables
         /// </summary>
-        protected readonly List<IRenderable> perFrameRenderables = new List<IRenderable>();
+        protected readonly List<SceneNode> perFrameRenderables = new List<SceneNode>();
         /// <summary>
         /// The light renderables
         /// </summary>
-        protected readonly List<IRenderable> lightRenderables = new List<IRenderable>();
+        protected readonly List<SceneNode> lightRenderables = new List<SceneNode>();
         /// <summary>
         /// The pending render cores
         /// </summary>
@@ -74,16 +74,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame renderables.
         /// </value>
-        public override List<IRenderable> PerFrameRenderables { get { return perFrameRenderables; } }
+        public override List<SceneNode> PerFrameRenderables { get { return perFrameRenderables; } }
         /// <summary>
         /// Gets the per frame lights.
         /// </summary>
         /// <value>
         /// The per frame lights.
         /// </value>
-        public override IEnumerable<ILight3D> PerFrameLights
+        public override IEnumerable<NodeLight> PerFrameLights
         {
-            get { return lightRenderables.Select(x=>x as ILight3D); }
+            get { return lightRenderables.Select(x=>x as NodeLight); }
         }
         /// <summary>
         /// Gets the per frame render cores for normal rendering routine. <see cref="RenderType.Opaque"/>, <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>

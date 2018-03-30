@@ -18,13 +18,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 {
     using Core;
     using System;
+    using Model.Scene;
 
     /// <summary>
     /// 
     /// </summary>
     public class ImmediateContextRenderer : DisposeObject, IRenderer
     {
-        private readonly Stack<KeyValuePair<int, IList<IRenderable>>> stackCache1 = new Stack<KeyValuePair<int, IList<IRenderable>>>(20);
+        private readonly Stack<KeyValuePair<int, IList<SceneNode>>> stackCache1 = new Stack<KeyValuePair<int, IList<SceneNode>>>(20);
         private readonly Stack<KeyValuePair<int, IList<IRenderable2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<IRenderable2D>>>(20);
         protected readonly List<RenderCore> filters = new List<RenderCore>();
         /// <summary>
@@ -60,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables">The renderables.</param>
         /// <param name="results"></param>
         /// <returns></returns>
-        public virtual void UpdateSceneGraph(IRenderContext context, List<IRenderable> renderables, List<IRenderable> results)
+        public virtual void UpdateSceneGraph(IRenderContext context, List<SceneNode> renderables, List<SceneNode> results)
         {
             renderables.PreorderDFT(context, updateFunc, results, stackCache1);
         }
@@ -85,7 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void UpdateGlobalVariables(IRenderContext context, List<IRenderable> renderables, ref RenderParameter parameter)
+        public virtual void UpdateGlobalVariables(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
             if (parameter.RenderLight)
             {
@@ -140,12 +141,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
         /// <summary>
-        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IRenderContext, List{IRenderable})"/>
+        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IRenderContext, List{SceneNode})"/>
         /// </summary>
         /// <param name="renderables">The renderables.</param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public virtual void UpdateNotRenderParallel(IRenderContext context, List<IRenderable> renderables)
+        public virtual void UpdateNotRenderParallel(IRenderContext context, List<SceneNode> renderables)
         {
             int count = renderables.Count;
             for(int i = 0; i < count; ++i)

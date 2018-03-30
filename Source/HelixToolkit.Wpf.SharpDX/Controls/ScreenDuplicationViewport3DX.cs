@@ -8,6 +8,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using HelixToolkit.Wpf.SharpDX.Cameras;
 using HelixToolkit.Wpf.SharpDX.Controls;
+using HelixToolkit.Wpf.SharpDX.Model.Scene;
 using HelixToolkit.Wpf.SharpDX.Render;
 using HelixToolkit.Wpf.SharpDX.Utilities;
 
@@ -119,7 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public global::SharpDX.Matrix WorldMatrix { get; } = global::SharpDX.Matrix.Identity;
 
-        public IEnumerable<IRenderable> Renderables
+        public IEnumerable<SceneNode> Renderables
         {
             get
             {

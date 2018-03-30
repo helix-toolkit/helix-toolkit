@@ -154,7 +154,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="ray">The ray.</param>
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return false;

@@ -23,6 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using System.Linq;
     using HelixToolkit.Logger;
     using Core;
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
@@ -398,14 +399,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public abstract List<IRenderable> PerFrameRenderables { get; }
+        public abstract List<SceneNode> PerFrameRenderables { get; }
         /// <summary>
         /// Gets the per frame lights.
         /// </summary>
         /// <value>
         /// The per frame lights.
         /// </value>
-        public abstract IEnumerable<ILight3D> PerFrameLights { get; }
+        public abstract IEnumerable<NodeLight> PerFrameLights { get; }
         /// <summary>
         /// Gets the post effects render cores for this frame
         /// </summary>

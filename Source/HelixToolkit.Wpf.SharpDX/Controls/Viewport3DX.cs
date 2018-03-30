@@ -27,6 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Media3D;
     using MouseButtons = System.Windows.Forms.MouseButtons;
     using Model;
+    using Model.Scene;
     /// <summary>
     /// Provides a Viewport control.
     /// </summary>
@@ -197,7 +198,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>Return enumerable of all the rederable elements</para>
         /// <para>If enabled shared model mode, the returned rederables are current viewport renderable plus shared models</para>
         /// </summary>
-        public IEnumerable<IRenderable> Renderables
+        public IEnumerable<SceneNode> Renderables
         {
             get
             {
@@ -220,7 +221,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private IEnumerable<IRenderable> OwnedRenderables
+        private IEnumerable<SceneNode> OwnedRenderables
         {
             get
             {

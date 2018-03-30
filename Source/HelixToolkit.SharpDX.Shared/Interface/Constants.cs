@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Core;
     using Core2D;
+    using HelixToolkit.Wpf.SharpDX.Model.Scene;
     using System.Collections.Generic;
 
     /// <summary>
@@ -82,7 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly char[] Separators = { ';', ' ', ',' };
 
-        public static readonly List<IRenderable> EmptyRenderable = new List<IRenderable>();
+        public static readonly List<SceneNode> EmptyRenderable = new List<SceneNode>();
         public static readonly List<RenderCore> EmptyCore = new List<RenderCore>();
         public static readonly IList<IRenderable2D> EmptyRenderable2D = new List<IRenderable2D>();
         public static readonly IList<RenderCore2D> EmptyCore2D = new List<RenderCore2D>();

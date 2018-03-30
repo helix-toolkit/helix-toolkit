@@ -24,7 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     {
         protected readonly Dictionary<Guid, SceneNode> itemHashSet = new Dictionary<Guid, SceneNode>();
 
-        public override IList<IRenderable> Items { get; } = new ObservableCollection<IRenderable>();
+        public override IList<SceneNode> Items { get; } = new ObservableCollection<SceneNode>();
 
         public virtual bool AddChildNode(SceneNode node)
         {

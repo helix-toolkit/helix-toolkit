@@ -168,7 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <value>
         /// The items.
         /// </value>
-        public virtual IList<IRenderable> Items
+        public virtual IList<SceneNode> Items
         {
             get;
         } = Constants.EmptyRenderable;
@@ -315,7 +315,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         #endregion RenderCore
 
         /// <summary>
-
         /// Gets or sets the hit test source. The wrapper must set this so the <see cref="HitTestResult.ModelHit"/> is the wrapper.
         /// </summary>
         /// <value>

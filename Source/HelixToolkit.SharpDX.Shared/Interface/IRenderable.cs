@@ -16,6 +16,7 @@ namespace HelixToolkit.UWP
     using Core;
     using System;
     using Render;
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
@@ -38,7 +39,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Optional for scene graph traverse
         /// </summary>
-        IList<IRenderable> Items { get; }
+        IList<SceneNode> Items { get; }
 
         RenderCore RenderCore { get; }
         /// <summary>
@@ -127,7 +128,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The renderables.
         /// </value>
-        IEnumerable<IRenderable> Renderables { get; }
+        IEnumerable<SceneNode> Renderables { get; }
         /// <summary>
         /// Gets the d2 d renderables.
         /// </summary>
