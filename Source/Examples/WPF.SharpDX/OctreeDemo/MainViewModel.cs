@@ -13,7 +13,14 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Media3D = System.Windows.Media.Media3D;
+using Point3D = System.Windows.Media.Media3D.Point3D;
+using Vector3D = System.Windows.Media.Media3D.Vector3D;
+using Transform3D = System.Windows.Media.Media3D.Transform3D;
+using Color = System.Windows.Media.Color;
+using Plane = SharpDX.Plane;
+using Vector3 = SharpDX.Vector3;
+using Colors = System.Windows.Media.Colors;
+using Color4 = SharpDX.Color4;
 
 namespace OctreeDemo
 {
@@ -40,8 +47,8 @@ namespace OctreeDemo
     }
     public class MainViewModel : BaseViewModel
     {
-        private Vector3 light1Direction = new Vector3();
-        public Vector3 Light1Direction
+        private Vector3D light1Direction = new Vector3D();
+        public Vector3D Light1Direction
         {
             set
             {
@@ -105,16 +112,16 @@ namespace OctreeDemo
                 return visibility;
             }
         }
-        public Color4 Light1Color { get; set; }
+        public Color Light1Color { get; set; }
 
         //public MeshGeometry3D Other { get; private set; }
-        public Color4 AmbientLightColor { get; set; }
+        public Color AmbientLightColor { get; set; }
 
         public Color PointColor
-        { get { return Color.Green; } }
+        { get { return Colors.Green; } }
 
         public Color PointHitColor
-        { get { return Color.Red; } }
+        { get { return Colors.Red; } }
         public Color LineColor { set; get; }
 
         private PhongMaterial material;
@@ -144,11 +151,13 @@ namespace OctreeDemo
                 return pointsHitModel;
             }
         }
+
+        public LineGeometry3D LinesModel { private set; get; }
         public ObservableCollection<DataModel> Items { set; get; }
         public List<DataModel> LanderItems { private set; get; }
 
-        private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
-        public Media3D.Vector3D CamLookDir
+        private Vector3D camLookDir = new Vector3D(-10, -10, -10);
+        public Vector3D CamLookDir
         {
             set
             {
@@ -156,6 +165,7 @@ namespace OctreeDemo
                 {
                     camLookDir = value;
                     OnPropertyChanged();
+                    Light1Direction = value;
                 }
             }
             get
@@ -219,46 +229,31 @@ namespace OctreeDemo
 
         public ICommand MultiViewportCommand { private set; get; }
 
-        public Camera Camera1 { get; } = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
-            {
-                Position = new Media3D.Point3D(30, 30, 30),
-                LookDirection = new Media3D.Vector3D(-30, -30, -30),
-                UpDirection = new Media3D.Vector3D(0, 1, 0)
-            };
-
-        public Camera Camera2 { get; } = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
-            {
-                Position = new Media3D.Point3D(30, 30, 30),
-                LookDirection = new Media3D.Vector3D(-30, -30, -30),
-                UpDirection = new Media3D.Vector3D(0, 1, 0)
-            };
-
         public MainViewModel()
         {            // titles
             this.Title = "DynamicTexture Demo";
             this.SubTitle = "WPF & SharpDX";
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {
-                Position = new Media3D.Point3D(30, 30, 30),
-                LookDirection = new Media3D.Vector3D(-30, -30, -30),
-                UpDirection = new Media3D.Vector3D(0, 1, 0)
+                Position = new Point3D(30, 30, 30),
+                LookDirection = new Vector3D(-30, -30, -30),
+                UpDirection = new Vector3D(0, 1, 0)
             };
-            this.Light1Color = (Color4)Color.White;
-            this.Light1Direction = new Vector3(-10, -10, -10);
-            this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
+            this.Light1Color = Colors.White;
+            this.Light1Direction = new Vector3D(-10, -10, -10);
+            this.AmbientLightColor = Colors.DimGray;
             SetupCameraBindings(this.Camera);
-            this.PropertyChanged += MainViewModel_PropertyChanged;
-
-            LineColor = Color.Blue;
+            LineColor = Colors.Blue;
             Items = new ObservableCollection<DataModel>();
             var sw = Stopwatch.StartNew();
             CreateDefaultModels();
             sw.Stop();
             Console.WriteLine("Create Models total time =" + sw.ElapsedMilliseconds + " ms");
-
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(50);
+            timer.Tick += Timer_Tick;
             AddModelCommand = new RelayCommand(AddModel);
             RemoveModelCommand = new RelayCommand(RemoveModel);
             ClearModelCommand = new RelayCommand(ClearModel);
@@ -279,7 +274,6 @@ namespace OctreeDemo
             b2.AddTube(new Vector3[] { new Vector3(10f, 5f, 0f), new Vector3(10f, 7f, 0f) }, 2, 12, false, true, true);
             DefaultModel = b2.ToMeshGeometry3D();
             DefaultModel.OctreeParameter.RecordHitPathBoundingBoxes = true;
-            DefaultModel.UpdateOctree();
 
             PointsModel = new PointGeometry3D();
             var offset = new Vector3(1, 1, 1);
@@ -287,14 +281,27 @@ namespace OctreeDemo
             PointsModel.Positions = new Vector3Collection(DefaultModel.Positions.Select(x=>x+offset));
             PointsModel.Indices = new IntCollection(Enumerable.Range(0, PointsModel.Positions.Count));
             PointsModel.OctreeParameter.RecordHitPathBoundingBoxes = true;
-            PointsModel.UpdateOctree();
-            for (int i = 0; i < 10; ++i)
+            for (int i = 0; i < 50; ++i)
             {
                 for (int j = 0; j < 10; ++j)
                 {
-                    Items.Add(new SphereModel(new Vector3(-10f + i + (float)Math.Pow((float)j / 2, 2), -10f + (float)Math.Pow((float)i / 2, 2), -10f + (float)Math.Pow(j, ((float)i / 5))), rnd.NextDouble(1,3)));
+                    Items.Add(new SphereModel(new Vector3(i - 50, j - 25, i + j - 75), rnd.NextDouble(1,3)));
                 }
             }
+
+            var b3 = new LineBuilder();
+            for (int i = 0; i < 10; ++i)
+            {
+                for(int j =0; j< 5; ++j)
+                {
+                    for (int k = 0; k < 5; ++k)
+                    {
+                        b3.AddBox(new Vector3(-10 - i * 5, j * 5, k * 5), 5, 5, 5);
+                    }
+                }
+            }
+            LinesModel = b3.ToLineGeometry3D();
+            LinesModel.OctreeParameter.RecordHitPathBoundingBoxes = true;
             PointsHitModel = new PointGeometry3D() { Positions = new Vector3Collection(), Indices = new IntCollection() };
             //var landerItems = Load3ds("Car.3ds").Select(x => new DataModel() { Model = x.Geometry as MeshGeometry3D, Material = PhongMaterials.Copper }).ToList();
             //var scale = new Vector3(0.007f);
@@ -316,14 +323,6 @@ namespace OctreeDemo
             var reader = new StudioReader();
             var list = reader.Read(path);
             return list;
-        }
-
-        private void MainViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName.Equals(nameof(CamLookDir)))
-            {
-                Light1Direction = CamLookDir.ToVector3();
-            }
         }
 
         public void SetupCameraBindings(Camera camera)
@@ -360,13 +359,13 @@ namespace OctreeDemo
                 {
                     foreach (var hit in hitTests)
                     {
-                        if (hit.ModelHit.DataContext is DataModel)
+                        if ((hit.ModelHit as Element3D).DataContext is DataModel)
                         {
-                            var model = hit.ModelHit.DataContext as DataModel;
+                            var model = (hit.ModelHit as Element3D).DataContext as DataModel;
                             model.Highlight = true;
                             HighlightItems.Add(model);
                         }
-                        else if (hit.ModelHit.DataContext == this)
+                        else if ((hit.ModelHit as Element3D).DataContext == this)
                         {
                             if (hit.TriangleIndices != null)
                             {
@@ -375,7 +374,7 @@ namespace OctreeDemo
                             else
                             {
                                 var v = new Vector3Collection();
-                                v.Add(hit.PointHit.ToVector3());
+                                v.Add(hit.PointHit);
                                 PointsHitModel.Positions = v;
                                 var idx = new IntCollection();
                                 idx.Add(0);
@@ -387,13 +386,13 @@ namespace OctreeDemo
                 else
                 {
                     var hit = hitTests[0];
-                    if (hit.ModelHit.DataContext is DataModel)
+                    if ((hit.ModelHit as Element3D).DataContext is DataModel)
                     {
-                        var model = hit.ModelHit.DataContext as DataModel;
+                        var model = (hit.ModelHit as Element3D).DataContext as DataModel;
                         model.Highlight = true;
                         HighlightItems.Add(model);
                     }
-                    else if (hit.ModelHit.DataContext == this)
+                    else if ((hit.ModelHit as Element3D).DataContext == this)
                     {
                         if (hit.TriangleIndices != null)
                         {
@@ -402,7 +401,7 @@ namespace OctreeDemo
                         else
                         {
                             var v = new Vector3Collection();
-                            v.Add(hit.PointHit.ToVector3());
+                            v.Add(hit.PointHit);
                             PointsHitModel.Positions = v;
                             var idx = new IntCollection();
                             idx.Add(0);
@@ -473,18 +472,14 @@ namespace OctreeDemo
         private Random rnd = new Random();
         private void AutoTestAddRemove(object o)
         {
-            if (timer == null)
+            if (!timer.IsEnabled)
             {
-                AutoTesting = true;
-                timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(50);
-                timer.Tick += Timer_Tick;
+                AutoTesting = true;              
                 timer.Start();
             }
             else
             {
                 timer.Stop();
-                timer = null;
                 AutoTesting = false;
                 counter = 0;
             }
@@ -492,9 +487,9 @@ namespace OctreeDemo
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (counter > 99)
+            if (counter > 499)
             {
-                counter = -100;
+                counter = -500;
             }
             if (counter < 0)
             {
@@ -511,6 +506,17 @@ namespace OctreeDemo
                 (Items[k] as SphereModel).Radius = radius;
             }
             ++counter;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (timer != null)
+            {
+                timer.Stop();
+                timer.Tick -= Timer_Tick;
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

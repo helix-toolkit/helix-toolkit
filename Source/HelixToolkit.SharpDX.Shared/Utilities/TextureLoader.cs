@@ -1,13 +1,15 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TextureLoader.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
 using SharpDX.Direct3D11;
 using System.IO;
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     /// <summary>
     /// Utilities to load textures.
@@ -90,23 +92,97 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static Texture2D GenerateMipMaps(Device device, global::SharpDX.Toolkit.Graphics.Texture texture)
+        public static Resource GenerateMipMaps(Device device, global::SharpDX.Toolkit.Graphics.Texture texture)
         {
-            var desc = new Texture2DDescription()
+            Resource textMip = null;
+            //Check texture format support: https://msdn.microsoft.com/en-us/library/windows/desktop/ff476426(v=vs.85).aspx
+            switch (texture.Description.Format)
             {
-                Width = texture.Description.Width,
-                Height = texture.Description.Height,
-                MipLevels = 0,
-                ArraySize = 1,
-                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-                CpuAccessFlags = CpuAccessFlags.None,
-                Usage = ResourceUsage.Default,
-                SampleDescription = texture.Description.SampleDescription,
-                OptionFlags = ResourceOptionFlags.GenerateMipMaps,
-                Format = texture.Description.Format
-            };
-
-            var textMip = new Texture2D(device, desc);
+                case global::SharpDX.DXGI.Format.R8G8B8A8_UNorm:
+                case global::SharpDX.DXGI.Format.R8G8B8A8_UNorm_SRgb:
+                case global::SharpDX.DXGI.Format.B5G6R5_UNorm:
+                case global::SharpDX.DXGI.Format.B8G8R8A8_UNorm:
+                case global::SharpDX.DXGI.Format.B8G8R8A8_UNorm_SRgb:
+                case global::SharpDX.DXGI.Format.B8G8R8X8_UNorm:
+                case global::SharpDX.DXGI.Format.B8G8R8X8_UNorm_SRgb:
+                case global::SharpDX.DXGI.Format.R16G16B16A16_Float:
+                case global::SharpDX.DXGI.Format.R16G16B16A16_UNorm:
+                case global::SharpDX.DXGI.Format.R16G16_Float:
+                case global::SharpDX.DXGI.Format.R16G16_UNorm:
+                case global::SharpDX.DXGI.Format.R32_Float:
+                case global::SharpDX.DXGI.Format.R32G32B32A32_Float:
+                case global::SharpDX.DXGI.Format.B4G4R4A4_UNorm:
+                case global::SharpDX.DXGI.Format.R32G32B32_Float:
+                case global::SharpDX.DXGI.Format.R16G16B16A16_SNorm:
+                case global::SharpDX.DXGI.Format.R32G32_Float:
+                case global::SharpDX.DXGI.Format.R10G10B10A2_UNorm:
+                case global::SharpDX.DXGI.Format.R11G11B10_Float:
+                case global::SharpDX.DXGI.Format.R8G8B8A8_SNorm:
+                case global::SharpDX.DXGI.Format.R16G16_SNorm:
+                case global::SharpDX.DXGI.Format.R8G8_UNorm:
+                case global::SharpDX.DXGI.Format.R8G8_SNorm:
+                case global::SharpDX.DXGI.Format.R16_Float:
+                case global::SharpDX.DXGI.Format.R16_UNorm:
+                case global::SharpDX.DXGI.Format.R16_SNorm:
+                case global::SharpDX.DXGI.Format.R8_UNorm:
+                case global::SharpDX.DXGI.Format.R8_SNorm:
+                case global::SharpDX.DXGI.Format.A8_UNorm:
+                case global::SharpDX.DXGI.Format.B5G5R5A1_UNorm:
+                    break;
+                default:
+                    return texture;//Format not support, return the original texture.
+            }
+            switch (texture.Description.Dimension)
+            {
+                case global::SharpDX.Toolkit.Graphics.TextureDimension.Texture1D:
+                    var desc1D = new Texture1DDescription()
+                    {
+                        Width = texture.Description.Width,
+                        MipLevels = 0,
+                        ArraySize = 1,
+                        BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                        CpuAccessFlags = CpuAccessFlags.None,
+                        Usage = ResourceUsage.Default,
+                        OptionFlags = ResourceOptionFlags.GenerateMipMaps,
+                        Format = texture.Description.Format
+                    };
+                    textMip = new Texture1D(device, desc1D);
+                    break;
+                case global::SharpDX.Toolkit.Graphics.TextureDimension.Texture2D:
+                    var desc2D = new Texture2DDescription()
+                    {
+                        Width = texture.Description.Width,
+                        Height = texture.Description.Height,
+                        MipLevels = 0,
+                        ArraySize = 1,
+                        BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                        CpuAccessFlags = CpuAccessFlags.None,
+                        Usage = ResourceUsage.Default,
+                        SampleDescription = texture.Description.SampleDescription,
+                        OptionFlags = ResourceOptionFlags.GenerateMipMaps,
+                        Format = texture.Description.Format
+                    };
+                    textMip = new Texture2D(device, desc2D);
+                    break;
+                case global::SharpDX.Toolkit.Graphics.TextureDimension.Texture3D:
+                case global::SharpDX.Toolkit.Graphics.TextureDimension.TextureCube:
+                    var desc3D = new Texture3DDescription()
+                    {
+                        Width = texture.Description.Width,
+                        Height = texture.Description.Height,
+                        Depth = texture.Description.ArraySize,
+                        MipLevels = 0,
+                        BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                        CpuAccessFlags = CpuAccessFlags.None,
+                        Usage = ResourceUsage.Default,
+                        OptionFlags = ResourceOptionFlags.GenerateMipMaps,
+                        Format = texture.Description.Format
+                    };
+                    textMip = new Texture3D(device, desc3D);
+                    break;
+                default:
+                    throw new InvalidDataException("Input texture is invalid.");
+            }
 
             using (var shaderRes = new ShaderResourceView(device, textMip))
             {

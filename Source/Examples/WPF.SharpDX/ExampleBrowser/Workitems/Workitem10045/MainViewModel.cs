@@ -15,6 +15,8 @@
     using HelixToolkit.Wpf.SharpDX.Extensions;
 
     using SharpDX;
+    using Color = System.Windows.Media.Color;
+    using Colors = System.Windows.Media.Colors;
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
@@ -36,9 +38,8 @@
         public Media3D.Transform3D Model3Transform { get; private set; }
         public Media3D.Transform3D GridTransform { get; private set; }
 
-        public Vector3 DirectionalLightDirection { get; private set; }
-        public Color4 DirectionalLightColor { get; private set; }
-        public Color4 AmbientLightColor { get; private set; }
+        public Color DirectionalLightColor { get; private set; }
+        public Color AmbientLightColor { get; private set; }
 
 
         public MainViewModel()
@@ -50,16 +51,12 @@
             // camera setup
             this.Camera = new PerspectiveCamera { Position = new Point3D(3, 3, 5), LookDirection = new Vector3D(-3, -3, -5), UpDirection = new Vector3D(0, 1, 0) };
 
-            if (this.RenderTechniquesManager != null)
-            {
-                // default render technique
-                this.RenderTechnique = RenderTechniquesManager.RenderTechniques.Get(DefaultRenderTechniqueNames.Blinn);
-            }
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
 
             // setup lighting            
-            this.AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
-            this.DirectionalLightColor = Color.White;
-            this.DirectionalLightDirection = new Vector3(-2, -5, -2);
+            this.AmbientLightColor = Colors.Black;
+            this.DirectionalLightColor = Colors.White;
 
             // floor plane grid
             this.Grid = LineBuilder.GenerateGrid();

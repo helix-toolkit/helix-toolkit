@@ -120,7 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="model">
         /// The model.
         /// </param>
-        public void Export(Model3D model)
+        public void Export(Element3D model)
         {
             this.ExportHeader();
             model.Traverse<GeometryModel3D>(this.ExportModel);

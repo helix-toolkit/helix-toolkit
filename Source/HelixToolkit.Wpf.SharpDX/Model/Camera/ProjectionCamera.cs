@@ -9,6 +9,7 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using HelixToolkit.Wpf.SharpDX.Cameras;
     using System.Windows;
     using System.Windows.Media.Media3D;
 
@@ -22,27 +23,39 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty CreateLeftHandSystemProperty =
             DependencyProperty.Register(
-                "CreateLeftHandSystem", typeof(bool), typeof(ProjectionCamera), new PropertyMetadata(false, CameraChanged));
+                "CreateLeftHandSystem", typeof(bool), typeof(ProjectionCamera), new PropertyMetadata(false, (d,e)=>
+                {
+                    ((d as Camera).CameraInternal as ProjectionCameraCore).CreateLeftHandSystem = (bool)e.NewValue;
+                }));
 
         /// <summary>
         /// The far plane distance property.
         /// </summary>
         public static readonly DependencyProperty FarPlaneDistanceProperty =
             DependencyProperty.Register(
-                "FarPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(1e3, CameraChanged));
+                "FarPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(1e3, (d, e) =>
+                {
+                    ((d as Camera).CameraInternal as ProjectionCameraCore).FarPlaneDistance = (float)(double)e.NewValue;
+                }));
 
         /// <summary>
         /// The look direction property
         /// </summary>
         public static readonly DependencyProperty LookDirectionProperty = DependencyProperty.Register(
-            "LookDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(0, 0, -5), CameraChanged));
+            "LookDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(0, 0, -5), (d, e) =>
+            {
+                ((d as Camera).CameraInternal as ProjectionCameraCore).LookDirection = ((Vector3D)e.NewValue).ToVector3();
+            }));
 
         /// <summary>
         /// The near plane distance property
         /// </summary>
         public static readonly DependencyProperty NearPlaneDistanceProperty =
             DependencyProperty.Register(
-                "NearPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(1e-1, CameraChanged));
+                "NearPlaneDistance", typeof(double), typeof(ProjectionCamera), new PropertyMetadata(1e-1, (d, e) =>
+                {
+                    ((d as Camera).CameraInternal as ProjectionCameraCore).NearPlaneDistance = (float)(double)e.NewValue;
+                }));
 
         /// <summary>
         /// The position property
@@ -51,13 +64,19 @@ namespace HelixToolkit.Wpf.SharpDX
             "Position",
             typeof(Point3D),
             typeof(ProjectionCamera),
-            new PropertyMetadata(new Point3D(0, 0, +5), CameraChanged));
+            new PropertyMetadata(new Point3D(0, 0, +5), (d, e) =>
+            {
+                ((d as Camera).CameraInternal as ProjectionCameraCore).Position = ((Point3D)e.NewValue).ToVector3();
+            }));
 
         /// <summary>
         /// Up direction property
         /// </summary>
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
-            "UpDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(0, 1, 0), CameraChanged));
+            "UpDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(0, 1, 0), (d, e) =>
+            {
+                ((d as Camera).CameraInternal as ProjectionCameraCore).UpDirection = ((Vector3D)e.NewValue).ToVector3();
+            }));
 
         /// <summary>
         /// Gets or sets a value indicating whether to create a left hand system.
@@ -140,50 +159,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (Vector3D)this.GetValue(UpDirectionProperty); }
             set { this.SetValue(UpDirectionProperty, value); }
-        }
-
-        /// <summary>
-        /// Creates the view matrix.
-        /// </summary>
-        /// <returns>
-        /// A Matrix.
-        /// </returns>
-        public override global::SharpDX.Matrix CreateViewMatrix()
-        {
-            if (this.CreateLeftHandSystem)
-            {
-                return global::SharpDX.Matrix.LookAtLH(
-                    this.Position.ToVector3(),
-                    (this.Position + this.LookDirection).ToVector3(),
-                    this.UpDirection.ToVector3());
-            }
-
-            return global::SharpDX.Matrix.LookAtRH(
-                this.Position.ToVector3(),
-                (this.Position + this.LookDirection).ToVector3(),
-                this.UpDirection.ToVector3());
-        }
-
-        /// <summary>
-        /// Handles camera changes.
-        /// </summary>
-        /// <param name="obj">
-        /// The sender.
-        /// </param>
-        /// <param name="args">
-        /// The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.
-        /// </param>
-        protected static void CameraChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
-        {
-            ((ProjectionCamera)obj).CameraChanged(args);
-        }
-
-        /// <summary>
-        /// The camera changed.
-        /// </summary>
-        /// <param name="args">The <see cref="DependencyPropertyChangedEventArgs" /> instance containing the event data.</param>
-        protected void CameraChanged(DependencyPropertyChangedEventArgs args)
-        {
         }
     }
 }

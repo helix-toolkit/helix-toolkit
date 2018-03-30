@@ -6,18 +6,22 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using global::SharpDX;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Markup;
-    using System.Linq;
-    using System.Collections;
+    using Render;
+    using HelixToolkit.Wpf.SharpDX.Core;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement3DCollection 
     /// </summary>
     [ContentProperty("Children")]
-    public abstract class GroupElement3D : Element3D //, IElement3DCollection
+    public abstract class GroupElement3D : Element3D
     {
         private IList<Element3D> itemsSourceInternal;
         /// <summary>
@@ -33,23 +37,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IList<Element3D>), typeof(GroupElement3D),
-                new AffectsRenderPropertyMetadata(null, 
+                new PropertyMetadata(null, 
                     (d, e) => {
                         (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
                     }));
 
-        public IEnumerable<Element3D> Items
+        public override IList<IRenderable> Items
         {
             get
             {
-                return itemsSourceInternal == null ? Children : Children.Concat(itemsSourceInternal);
+                return Children;
             }
         }
 
-        public ObservableElement3DCollection Children
+        public ObservableCollection<IRenderable> Children
         {
             get;
-        } = new ObservableElement3DCollection();
+        } = new ObservableCollection<IRenderable>();
+
 
         public GroupElement3D()
         {
@@ -64,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (IsAttached)
             {               
-                if(e.Action== NotifyCollectionChangedAction.Reset)
+                if(e.Action == NotifyCollectionChangedAction.Reset)
                 {
                     AttachChildren(sender as IEnumerable);
                 }
@@ -73,24 +78,25 @@ namespace HelixToolkit.Wpf.SharpDX
                     AttachChildren(e.NewItems);
                 }
             }
+            forceUpdateTransform = true;
         }
 
         protected void AttachChildren(IEnumerable children)
         {
-            foreach (Element3D c in children)
+            foreach (Element3DCore c in children)
             {
                 if (c.Parent == null)
                 {
                     this.AddLogicalChild(c);
                 }
 
-                c.Attach(renderHost);
+                c.Attach(RenderHost);
             }
         }
 
         protected void DetachChildren(IEnumerable children)
         {
-            foreach (Element3D c in children)
+            foreach (Element3DCore c in children)
             {
                 c.Detach();
                 if (c.Parent == this)
@@ -104,23 +110,44 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (itemsSourceInternal != null)
             {
-                if (itemsSourceInternal is INotifyCollectionChanged)
+                if (itemsSourceInternal is INotifyCollectionChanged s)
                 {
-                    (itemsSourceInternal as INotifyCollectionChanged).CollectionChanged -= Items_CollectionChanged;
+                    s.CollectionChanged -= S_CollectionChanged;
                 }
-                DetachChildren(this.itemsSourceInternal);
+                foreach(var child in itemsSourceInternal)
+                {
+                    Children.Remove(child);
+                }
             }
             itemsSourceInternal = itemsSource;
             if (itemsSourceInternal != null)
             {
-                if (itemsSourceInternal is INotifyCollectionChanged)
+                if (itemsSourceInternal is INotifyCollectionChanged s)
                 {
-                    (itemsSourceInternal as INotifyCollectionChanged).CollectionChanged += Items_CollectionChanged;
+                    s.CollectionChanged += S_CollectionChanged;
                 }
-                if (IsAttached)
+                foreach(var child in itemsSourceInternal)
                 {
-                    AttachChildren(this.itemsSourceInternal); 
-                }            
+                    Children.Add(child);
+                }    
+            }
+        }
+
+        private void S_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach(Element3DCore item in e.OldItems)
+                {
+                    Children.Remove(item);
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach(Element3DCore item in e.NewItems)
+                {
+                    Children.Add(item);
+                }
             }
         }
 
@@ -136,17 +163,33 @@ namespace HelixToolkit.Wpf.SharpDX
             base.OnDetach();
         }        
 
-        protected override bool CanRender(RenderContext context)
-        {
-            return IsAttached && isRenderingInternal && visibleInternal;
-        }
-
-        protected override void OnRender(RenderContext context)
+        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             foreach (var c in this.Items)
             {
-                c.Render(context);
+                c.Render(context, deviceContext);
             }
+        }
+
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        {
+            bool hit = false;
+            foreach (var c in this.Items)
+            {
+                if (c is IHitable h)
+                {
+                    if (h.HitTest(context, ray, ref hits))
+                    {
+                        hit = true;
+                    }
+                }
+            }
+            if (hit)
+            {
+                var pos = ray.Position;
+                hits = hits.OrderBy(x => Vector3.DistanceSquared(pos, x.PointHit)).ToList();
+            }
+            return hit;
         }
     }
 }

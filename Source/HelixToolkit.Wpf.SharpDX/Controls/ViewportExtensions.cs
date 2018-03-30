@@ -25,6 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Ray = global::SharpDX.Ray;
     using Vector2 = global::SharpDX.Vector2;
     using Vector3 = global::SharpDX.Vector3;
+    using Cameras;
 
     /// <summary>
     /// Provides extension methods for <see cref="Viewport3DX" />.
@@ -39,15 +40,17 @@ namespace HelixToolkit.Wpf.SharpDX
         public static int GetTotalNumberOfTriangles(this Viewport3DX viewport)
         {
             int count = 0;
-            foreach (var item in viewport.Renderables)
+            var totalModel = viewport.Renderables.PreorderDFT((x) => 
             {
-                var model = item as MeshGeometryModel3D;
-                if (model != null && model.GeometryValid)
+                if(x is GeometryModel3D g)
                 {
-                    if (model.Visibility == Visibility.Visible)
-                        count += model.Geometry.Indices.Count / 3;
+                    if (g.Visible && g.Geometry != null && g.Geometry.Indices != null)
+                    {
+                        count += g.Geometry.Indices.Count / 3;
+                    }
                 }
-            }
+                return true;
+            }).Count();
             return count;
         }
 
@@ -102,14 +105,14 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Matrix GetViewProjectionMatrix(this Viewport3DX viewport)
         {
             return viewport.RenderContext != null ? viewport.RenderContext.ViewMatrix * viewport.RenderContext.ProjectionMatrix
-                : viewport.Camera.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
+                : viewport.CameraCore.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix GetProjectionMatrix(this Viewport3DX viewport)
         {
             return viewport.RenderContext != null ? viewport.RenderContext.ProjectionMatrix
-                : viewport.Camera.GetProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
+                : viewport.CameraCore.GetProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
         }
         /// <summary>
         /// Gets the total transform for a Viewport3DX. 
@@ -188,16 +191,46 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The bounding box.</returns>
         public static Rect3D FindBounds(this Viewport3DX viewport)
         {
-            var bounds = new global::SharpDX.BoundingBox();
-            foreach (var element in viewport.Renderables)
+            var maxVector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            var firstModel = viewport.Renderables.PreorderDFT((r) =>
             {
-                var model = element as GeometryModel3D;
-                if (model != null)
+                if (r.Visible && !(r is ScreenSpacedElement3D))
                 {
-                    if (model.Visibility != Visibility.Collapsed && model.GeometryValid)
+                    return true;
+                }
+                return false;
+            }).Where(x =>
+            {
+                if (x is IBoundable b)
+                {
+                    return b.HasBound && b.BoundsWithTransform.Maximum != b.BoundsWithTransform.Minimum 
+                    && b.BoundsWithTransform.Maximum != Vector3.Zero && b.BoundsWithTransform.Maximum != maxVector;
+                }
+                else
+                {
+                    return false;
+                }
+            }).FirstOrDefault();
+            if(firstModel == null)
+            {
+                return new Rect3D();
+            }
+            var bounds = firstModel.BoundsWithTransform;
+            
+            foreach(var renderable in viewport.Renderables.PreorderDFT((r) =>
+            {               
+                if (r.Visible && !(r is ScreenSpacedElement3D))
+                {
+                    return true;
+                }
+                return false;
+            }))
+            {
+                if(renderable is IBoundable r)
+                {
+                    if (r.HasBound && r.BoundsWithTransform.Maximum != maxVector)
                     {
-                        model.Geometry.UpdateBounds();
-                        bounds = global::SharpDX.BoundingBox.Merge(bounds, model.Bounds);
+                        bounds = global::SharpDX.BoundingBox.Merge(bounds, r.BoundsWithTransform);
                     }
                 }
             }
@@ -205,7 +238,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.
+        /// Traverses the Visual3D/Element3D tree and invokes the specified action on each Element3D of the specified type.
         /// </summary>
         /// <typeparam name="T">
         /// The type filter.
@@ -216,11 +249,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="action">
         /// The action.
         /// </param>
-        public static void Traverse<T>(this Viewport3DX viewport, Action<T, Transform3D> action) where T : Model3D
+        public static void Traverse<T>(this Viewport3DX viewport, Action<T, Transform3D> action) where T : Element3D
         {
             foreach (var element in viewport.Renderables)
             {
-                var model = element as Model3D; // ITraversable;
+                var model = element as Element3D; // ITraversable;
                 if (model != null)
                 {
                     Traverse(model, action);
@@ -229,7 +262,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.
+        /// Traverses the Visual3D/Element3D tree and invokes the specified action on each Element3D of the specified type.
         /// </summary>
         /// <typeparam name="T">
         /// The type filter.
@@ -240,7 +273,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="action">
         /// The action.
         /// </param>
-        public static void Traverse<T>(this Model3D element, Action<T, Transform3D> action) where T : Model3D
+        public static void Traverse<T>(this Element3D element, Action<T, Transform3D> action) where T : Element3D
         {
             Traverse(element, action);
         }
@@ -302,7 +335,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The find nearest.
         /// </returns>
         public static bool FindNearest(this Viewport3DX viewport, Point position,
-            out Point3D point, out Vector3D normal, out Model3D model)
+            out Point3D point, out Vector3D normal, out Element3D model)
         {
             point = new Point3D();
             normal = new Vector3D();
@@ -317,9 +350,9 @@ namespace HelixToolkit.Wpf.SharpDX
             var hits = FindHits(viewport, position);
             if (hits.Count > 0)
             {
-                point = hits[0].PointHit;
-                normal = hits[0].NormalAtHit;
-                model = hits[0].ModelHit;
+                point = hits[0].PointHit.ToPoint3D();
+                normal = hits[0].NormalAtHit.ToVector3D();
+                model = hits[0].ModelHit as Element3D;
                 return true;
             }
             else
@@ -340,7 +373,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Point3D p;
             Vector3D n;
-            Model3D obj;
+            Element3D obj;
             if (FindNearest(viewport, position, out p, out n, out obj))
             {
                 return p;
@@ -356,7 +389,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The ray.</returns>
         public static Ray UnProject(this Viewport3DX viewport, Vector2 point2d)//, out Vector3 pointNear, out Vector3 pointFar)
         {
-            var camera = viewport.Camera as ProjectionCamera;
+            var camera = viewport.CameraCore as ProjectionCameraCore;
             if (camera != null)
             {
                 var px = (float)point2d.X;
@@ -365,7 +398,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var viewMatrix = camera.GetViewMatrix();
                 Vector3 v = new Vector3();
                 
-                var matrix = CameraExtensions.InverseViewMatrix(ref viewMatrix);
+                var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
                 float w = (float)viewport.ActualWidth;
                 float h = (float)viewport.ActualHeight;
                 var aspectRatio = w / h;
@@ -377,9 +410,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Z = 1 / projMatrix.M33;
                 Vector3.TransformCoordinate(ref v, ref matrix, out zf);
 
-                if (camera is PerspectiveCamera)
+                if (camera is PerspectiveCameraCore)
                 {
-                    zn = camera.Position.ToVector3();
+                    zn = camera.Position;
                 }
                 else
                 {
@@ -389,7 +422,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Vector3 r = zf - zn;
                 r.Normalize();               
 
-                return new Ray(zn, r);
+                return new Ray(zn + r * camera.NearPlaneDistance, r);
             }
             throw new HelixToolkitException("Unproject camera error.");
         }
@@ -572,8 +605,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         pm.OffsetX = m - 1 - (i * 2);
                         pm.OffsetY = -(m - 1 - (j * 2));
                     }
-
-                    if (originalCamera is PerspectiveCamera)
+                    else if (originalCamera is PerspectiveCamera)
                     {
                         pm.M31 = -(m - 1 - (i * 2));
                         pm.M32 = m - 1 - (j * 2);

@@ -1,20 +1,22 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ListExtensions.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using System.Collections.Generic;
+using System.Reflection;
+using System.Linq;
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Extensions
+#else
 namespace HelixToolkit.Wpf.SharpDX.Extensions
+#endif
 {
 #if NETFX_CORE
-    using System.Collections.Generic;
-    using System.Reflection;
+
 #else
     using System;
-    using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
-    using System.Linq;
 #endif
 
     public static class CollectionExtensions
@@ -31,6 +33,24 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             return (T[])typeof(List<T>)
                 .GetField("_items", BindingFlags.NonPublic | BindingFlags.Instance)
                 .GetValue(list);
+        }
+
+        public static T[] GetArrayByType<T>(this IList<T> list)
+        {
+            T[] array;
+            if (list is List<T> l)
+            {
+                array = l.GetInternalArray();
+            }
+            else if (list is T[] t)
+            {
+                array = t;
+            }
+            else
+            {
+                array = list.ToArray();
+            }
+            return array;
         }
 #else
         static class ArrayAccessor<T>
@@ -72,13 +92,13 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
         public static T[] GetArrayByType<T>(this IList<T> list)
         {
             T[] array;
-            if (list is List<T>)
+            if (list is List<T> l)
             {
-                array = (list as List<T>).GetInternalArray();
+                array = l.GetInternalArray();
             }
-            else if (list is T[])
+            else if (list is T[] t)
             {
-                array = list as T[];
+                array = t;
             }
             else
             {

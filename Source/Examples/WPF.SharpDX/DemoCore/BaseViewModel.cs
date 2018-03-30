@@ -28,7 +28,7 @@ namespace DemoCore
 
         private Camera camera;
 
-        private RenderTechnique renderTechnique;
+        private IRenderTechnique renderTechnique;
 
         private string subTitle;
 
@@ -58,7 +58,7 @@ namespace DemoCore
             }
         }
 
-        public RenderTechnique RenderTechnique
+        public IRenderTechnique RenderTechnique
         {
             get
             {
@@ -107,7 +107,19 @@ namespace DemoCore
 
         public IEffectsManager EffectsManager { get; protected set; }
 
-        public IRenderTechniquesManager RenderTechniquesManager { get; protected set; }
+        private string renderTechniqueName = DefaultRenderTechniqueNames.Blinn;
+        public string RenderTechniqueName
+        {
+            set
+            {
+                renderTechniqueName = value;
+                RenderTechnique = EffectsManager[value];
+            }
+            get
+            {
+                return renderTechniqueName;
+            }
+        }
 
         protected OrthographicCamera defaultOrthographicCamera = new OrthographicCamera { Position = new System.Windows.Media.Media3D.Point3D(0, 0, 5), LookDirection = new System.Windows.Media.Media3D.Vector3D(-0, -0, -5), UpDirection = new System.Windows.Media.Media3D.Vector3D(0, 1, 0), NearPlaneDistance = 1, FarPlaneDistance = 100 };
 
@@ -129,34 +141,13 @@ namespace DemoCore
             {
                 if (cameraModel == Orthographic)
                 {
-                    //if (this.Camera != null)
-                    //{
-                    //    var newCamera = new OrthographicCamera();
-                    //    this.Camera.CopyTo(newCamera);
-                    //    newCamera.NearPlaneDistance = znear;
-                    //    newCamera.FarPlaneDistance = zfar;
-                    //    this.Camera = newCamera;
-
-                    //}
-                    //else
-                    {
+                    if(!(Camera is OrthographicCamera))
                         Camera = defaultOrthographicCamera;
-                    }
                 }
                 else if (cameraModel == Perspective)
                 {
-                    //if (this.Camera != null)
-                    //{
-                    //    var newCamera = new PerspectiveCamera();
-                    //    this.Camera.CopyTo(newCamera);
-                    //    newCamera.NearPlaneDistance = znear;
-                    //    newCamera.FarPlaneDistance = zfar;
-                    //    this.Camera = newCamera;
-                    //}
-                    //else
-                    {
+                    if(!(Camera is PerspectiveCamera))
                         Camera = defaultPerspectiveCamera;
-                    }
                 }
                 else
                 {

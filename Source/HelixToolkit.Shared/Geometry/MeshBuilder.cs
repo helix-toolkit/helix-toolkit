@@ -7,7 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 #if SHARPDX
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 #else
 namespace HelixToolkit.Wpf
 #endif
@@ -19,9 +23,12 @@ namespace HelixToolkit.Wpf
 
 #if SHARPDX
     using System.Linq;
-    using SharpDX;
     using global::SharpDX;
-    using HelixToolkit.Wpf.SharpDX.Core;
+#if NETFX_CORE
+    using HelixToolkit.UWP;
+    using HelixToolkit.Wpf;
+#else
+#endif
 
 #if !NETFX_CORE
     using Rect3D = System.Windows.Media.Media3D.Rect3D;
@@ -29,10 +36,10 @@ namespace HelixToolkit.Wpf
     using Point = global::SharpDX.Vector2;
     using Point3D = global::SharpDX.Vector3;
     using Vector3D = global::SharpDX.Vector3;
-    using Vector3DCollection = SharpDX.Core.Vector3Collection;
-    using Point3DCollection = SharpDX.Core.Vector3Collection;
-    using PointCollection = SharpDX.Core.Vector2Collection;
-    using Int32Collection = SharpDX.Core.IntCollection;
+    using Vector3DCollection = Core.Vector3Collection;
+    using Point3DCollection = Core.Vector3Collection;
+    using PointCollection = Core.Vector2Collection;
+    using Int32Collection = Core.IntCollection;
     using DoubleOrSingle = System.Single;
 #else
     using System.Linq;
@@ -2007,11 +2014,7 @@ namespace HelixToolkit.Wpf
         public void AddPolygonByCuttingEars(IList<int> vertexIndices)
         {
             var points = vertexIndices.Select(vi => this.positions[vi]).ToList();
-#if SHARPDX
-            var poly3D = new SharpDX.Polygon3D(points);
-#else
             var poly3D = new Polygon3D(points);
-#endif
             // Transform the polygon to 2D
             var poly2D = poly3D.Flatten();
 
@@ -2032,11 +2035,7 @@ namespace HelixToolkit.Wpf
         public void AddPolygonByTriangulation(IList<int> vertexIndices)
         {
             var points = vertexIndices.Select(vi => this.positions[vi]).ToList();
-#if SHARPDX
-            var poly3D = new SharpDX.Polygon3D(points);
-#else
             var poly3D = new Polygon3D(points);
-#endif
             // Transform the polygon to 2D
             var poly2D = poly3D.Flatten();
 

@@ -8,283 +8,214 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using System.ComponentModel;
     using System.Windows;
-
+    using System.Linq;
     using global::SharpDX;
 
-    using global::SharpDX.Direct3D;
-
-    using global::SharpDX.Direct3D11;
-
-    using global::SharpDX.DXGI;
-
-    using HelixToolkit.Wpf.SharpDX.Utilities;
-
+    using Utilities;
+    using Core;
+    using HelixToolkit.Wpf.SharpDX.Cameras;
+    using System.Collections.Generic;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="HelixToolkit.Wpf.SharpDX.Element3D" />
     public class ShadowMap3D : Element3D
     {
-        private Texture2D depthBufferSM;
-        //private Texture2D colorBufferSM;
-        private DepthStencilView depthViewSM;
-       // private RenderTargetView renderTargetSM;
-        private ShaderResourceView texShadowMapView;
-       // private ShaderResourceView texColorMapView;
-        private EffectShaderResourceVariable texShadowMapVariable;
-        private EffectVectorVariable vShadowMapInfoVariable;
-        private EffectVectorVariable vShadowMapSizeVariable;
-        private RenderContext shadowPassContext;
-        //private int faktor = 1;
-        //private int oneK = 1024;
-        private int width = 1024, height = 1024;
-
+        /// <summary>
+        /// The resolution property
+        /// </summary>
         public static readonly DependencyProperty ResolutionProperty =
-            DependencyProperty.Register("Resolution", typeof(Vector2), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(new Vector2(1024, 1024), ResolutionChanged));
-
-        private static void ResolutionChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
-        {            
-            var obj = (ShadowMap3D)d;
-            if (obj.IsAttached)
+            DependencyProperty.Register("Resolution", typeof(Size), typeof(ShadowMap3D), new PropertyMetadata(new Size(1024, 1024), (d, e) =>
             {
-                obj.Detach();
-                obj.Attach(obj.renderHost);
-            }
-        }
+                var resolution = (Size)e.NewValue;
+                ((d as IRenderable).RenderCore as ShadowMapCore).Width = (int)resolution.Width;
+                ((d as IRenderable).RenderCore as ShadowMapCore).Height = (int)resolution.Height;
+            }));
 
-        public static readonly DependencyProperty FactorPCFProperty =
-                DependencyProperty.Register("FactorPCF", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(1.5));
 
+        /// <summary>
+        /// The bias property
+        /// </summary>
         public static readonly DependencyProperty BiasProperty =
-                DependencyProperty.Register("Bias", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(0.0015));
-
+                DependencyProperty.Register("Bias", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(0.0015, (d, e)=>
+                {
+                    ((d as IRenderable).RenderCore as ShadowMapCore).Bias = (float)(double)e.NewValue;
+                }));
+        /// <summary>
+        /// The intensity property
+        /// </summary>
         public static readonly DependencyProperty IntensityProperty =
-                DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new AffectsRenderPropertyMetadata(0.5));
+                DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(0.5, (d, e)=>
+                {
+                    ((d as IRenderable).RenderCore as ShadowMapCore).Intensity = (float)(double)e.NewValue;
+                }));
+        /// <summary>
+        /// The light camera property
+        /// </summary>
+        public static readonly DependencyProperty LightCameraProperty =
+                DependencyProperty.Register("LightCamera", typeof(ProjectionCamera), typeof(ShadowMap3D), new PropertyMetadata(null, (d, e) =>
+                {
+                    (d as ShadowMap3D).lightCamera = (ProjectionCamera)e.NewValue;
+                }));
 
-
-        [TypeConverter(typeof(Vector2Converter))]
-        public Vector2 Resolution
+        /// <summary>
+        /// Gets or sets the resolution.
+        /// </summary>
+        /// <value>
+        /// The resolution.
+        /// </value>
+        public Size Resolution
         {
-            get { return (Vector2)this.GetValue(ResolutionProperty); }
+            get { return (Size)this.GetValue(ResolutionProperty); }
             set { this.SetValue(ResolutionProperty, value); }
         }
 
-        public double FactorPCF
-        {
-            get { return (double)this.GetValue(FactorPCFProperty); }
-            set { this.SetValue(FactorPCFProperty, value); }
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public double Bias
         {
             get { return (double)this.GetValue(BiasProperty); }
             set { this.SetValue(BiasProperty, value); }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public double Intensity
         {
             get { return (double)this.GetValue(IntensityProperty); }
             set { this.SetValue(IntensityProperty, value); }
         }
-
-        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+        /// <summary>
+        /// Distance of the directional light from origin
+        /// </summary>
+        public ProjectionCamera LightCamera
         {
-            return host.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Colors];
+            get { return (ProjectionCamera)this.GetValue(LightCameraProperty); }
+            set { this.SetValue(LightCameraProperty, value); }
+        }
+        /// <summary>
+        /// Called when [create render core].
+        /// </summary>
+        /// <returns></returns>
+        protected override RenderCore OnCreateRenderCore()
+        {
+            return new ShadowMapCore();
         }
 
+        private ShadowMapCore shadowCore;
+
+        private readonly OrthographicCameraCore orthoCamera = new OrthographicCameraCore() { NearPlaneDistance = 1, FarPlaneDistance = 500 };
+        private readonly PerspectiveCameraCore persCamera = new PerspectiveCameraCore() { NearPlaneDistance = 1, FarPlaneDistance = 500 };
+        private ProjectionCamera lightCamera;
+        private readonly Stack<IEnumerator<IRenderable>> stackCache = new Stack<IEnumerator<IRenderable>>();
+        /// <summary>
+        /// Assigns the default values to core.
+        /// </summary>
+        /// <param name="core">The core.</param>
+        protected override void AssignDefaultValuesToCore(RenderCore core)
+        {
+            base.AssignDefaultValuesToCore(core);
+            var c = core as ShadowMapCore;
+            //c.FactorPCF = (float)FactorPCF;
+            c.Intensity = (float)Intensity;
+            c.Bias = (float)Bias;
+            c.Width = (int)(Resolution.Width);
+            c.Height = (int)(Resolution.Height);
+        }
+        /// <summary>
+        /// To override Attach routine, please override this.
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns>
+        /// Return true if attached
+        /// </returns>
         protected override bool OnAttach(IRenderHost host)
         {
-            this.width = (int)(Resolution.X + 0.5f); //faktor* oneK;
-            this.height = (int)(this.Resolution.Y + 0.5f); // faktor* oneK;
-
-            if (!host.IsShadowMapEnabled)
-            {
-                return false;
-            }
-
-            // gen shadow map
-            this.depthBufferSM = new Texture2D(Device, new Texture2DDescription()
-            {
-                Format = Format.R32_Typeless, //!!!! because of depth and shader resource
-                //Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
-                ArraySize = 1,
-                MipLevels = 1,
-                Width = width,
-                Height = height,
-                SampleDescription = new SampleDescription(1, 0),
-                Usage = ResourceUsage.Default,
-                BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource, //!!!!
-                CpuAccessFlags = CpuAccessFlags.None,
-                OptionFlags = ResourceOptionFlags.None,
-            });
-
-            //this.colorBufferSM = new Texture2D(this.Device, new Texture2DDescription
-            //{
-            //    BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-            //    Format = Format.B8G8R8A8_UNorm,
-            //    Width = width,
-            //    Height = height,
-            //    MipLevels = 1,
-            //    SampleDescription = new SampleDescription(1, 0),
-            //    Usage = ResourceUsage.Default,
-            //    OptionFlags = ResourceOptionFlags.None,
-            //    CpuAccessFlags = CpuAccessFlags.None,
-            //    ArraySize = 1
-            //});
-
-            //this.renderTargetSM = new RenderTargetView(this.Device, colorBufferSM)
-            //{
-            //};
-
-            this.depthViewSM = new DepthStencilView(Device, depthBufferSM, new DepthStencilViewDescription()
-            {
-                Format = Format.D32_Float,
-                Dimension = DepthStencilViewDimension.Texture2D,
-                Texture2D = new DepthStencilViewDescription.Texture2DResource()
-                {
-                    MipSlice = 0
-                }
-            });
-
-            this.texShadowMapView = new ShaderResourceView(Device, depthBufferSM, new ShaderResourceViewDescription()
-            {
-                Format = Format.R32_Float,
-                Dimension = ShaderResourceViewDimension.Texture2D,
-                Texture2D = new ShaderResourceViewDescription.Texture2DResource()
-                {
-                    MipLevels = 1,
-                    MostDetailedMip = 0,
-                }
-            }); //!!!!
-
-            //this.texColorMapView = new ShaderResourceView(this.Device, colorBufferSM, new ShaderResourceViewDescription()
-            //{
-            //    Format = Format.B8G8R8A8_UNorm,
-            //    Dimension = ShaderResourceViewDimension.Texture2D,
-            //    Texture2D = new ShaderResourceViewDescription.Texture2DResource()
-            //    {
-            //        MipLevels = 1,
-            //        MostDetailedMip = 0,
-            //    }
-            //});
-
-            this.texShadowMapVariable = effect.GetVariableByName("texShadowMap").AsShaderResource();
-            this.vShadowMapInfoVariable = effect.GetVariableByName("vShadowMapInfo").AsVector();
-            this.vShadowMapSizeVariable = effect.GetVariableByName("vShadowMapSize").AsVector();
-            this.shadowPassContext = new RenderContext(host, this.effect, Device.ImmediateContext);
+            base.OnAttach(host);
+            shadowCore = RenderCore as ShadowMapCore;            
             return true;
         }
 
-        protected override void OnDetach()
+        /// <summary>
+        /// <para>Determine if this can be rendered.</para>
+        /// <para>Default returns <see cref="Element3DCore.IsAttached" /> &amp;&amp; <see cref="Visibility" /> == <see cref="Visibility.Visible" /></para>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        protected override bool CanRender(IRenderContext context)
         {
-            Disposer.RemoveAndDispose(ref this.depthBufferSM);
-            Disposer.RemoveAndDispose(ref this.depthViewSM);
-            //Disposer.RemoveAndDispose(ref this.colorBufferSM);
-            //Disposer.RemoveAndDispose(ref this.renderTargetSM);
-            //Disposer.RemoveAndDispose(ref this.texColorMapView);
-            Disposer.RemoveAndDispose(ref this.texShadowMapView);  
-
-            Disposer.RemoveAndDispose(ref this.texShadowMapVariable);
-            Disposer.RemoveAndDispose(ref this.vShadowMapInfoVariable);
-            Disposer.RemoveAndDispose(ref this.vShadowMapSizeVariable);
-
-            Disposer.RemoveAndDispose(ref this.shadowPassContext);
-            //this.renderHost.IsShadowMapEnabled = false;            
-            base.OnDetach();
-        }
-
-        protected override bool CanRender(RenderContext context)
-        {
-            if (base.CanRender(context))
+            if(base.CanRender(context) && RenderHost.IsShadowMapEnabled && !context.IsShadowPass)
             {
-                if (!this.renderHost.IsShadowMapEnabled)
+                CameraCore camera = lightCamera == null ? null : lightCamera;
+                if (lightCamera == null)
                 {
-                    return false;
+                    var root = context.RenderHost.Viewport.Renderables.Take(Constants.MaxLights)
+                        .PreorderDFT(x => x is ILight3D && x.IsRenderable 
+                        && (((ILight3D)x).LightType == LightType.Directional || ((ILight3D)x).LightType == LightType.Spot), stackCache)
+                        .Take(1).Select(x=>x as ILight3D);
+                    foreach (var light in root)
+                    {
+                        if (light.LightType == LightType.Directional)
+                        {
+                            var dlight = ((IRenderable)light).RenderCore as DirectionalLightCore;
+                            var dir = Vector4.Transform(dlight.Direction.ToVector4(0), dlight.ModelMatrix).Normalized();
+                            var pos = -100 * dir;
+                            orthoCamera.LookDirection = new Vector3(dir.X, dir.Y, dir.Z);
+                            orthoCamera.Position = new Vector3(pos.X, pos.Y, pos.Z);
+                            orthoCamera.UpDirection = Vector3.UnitZ;
+                            orthoCamera.Width = 50;
+                            camera = orthoCamera;
+                        }
+                        else if (light.LightType == LightType.Spot)
+                        {
+                            var splight = ((IRenderable)light).RenderCore as SpotLightCore;
+                            persCamera.Position = (splight.Position + splight.ModelMatrix.Row4.ToVector3());
+                            var look = Vector4.Transform(splight.Direction.ToVector4(0), splight.ModelMatrix);
+                            persCamera.LookDirection = new Vector3(look.X, look.Y, look.Z);
+                            persCamera.FarPlaneDistance = (float)splight.Range;
+                            persCamera.FieldOfView = (float)splight.OuterAngle;
+                            persCamera.UpDirection = Vector3.UnitZ;
+                            camera = persCamera;
+                        }
+                    }
+                }
+                if (camera == null)
+                {
+                    shadowCore.FoundLightSource = false;
+                }
+                else
+                {
+                    shadowCore.FoundLightSource = true;
+                    shadowCore.LightViewProjectMatrix = camera.GetViewMatrix() * camera.GetProjectionMatrix(shadowCore.Width / shadowCore.Height);                    
                 }
                 return true;
             }
+            else { return false; }
+        }
+        /// <summary>
+        /// Determines whether this instance [can hit test] the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
+        /// </returns>
+        protected override bool CanHitTest(IRenderContext context)
+        {
             return false;
         }
-        protected override void OnRender(RenderContext context)
+        /// <summary>
+        /// Called when [hit test].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="totalModelMatrix">The total model matrix.</param>
+        /// <param name="ray">The ray.</param>
+        /// <param name="hits">The hits.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
-            // --- set rasterizes state here with proper shadow-bias, as depth-bias and slope-bias in the rasterizer            
-            this.Device.ImmediateContext.Rasterizer.SetViewport(0, 0, width, height, 0.0f, 1.0f);
-            this.Device.ImmediateContext.OutputMerger.SetTargets(depthViewSM);            
-            this.Device.ImmediateContext.ClearDepthStencilView(depthViewSM, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
-            var root = context.Canvas.Renderable.Renderables;
-            foreach (var item in root)
-            {
-                var light = item as Light3D;
-                if (light != null)
-                {
-                    Camera lightCamera = null;
-                    //if (light is PointLightBase3D)
-                    //{
-                    //    var plight = (PointLightBase3D)light;
-                    //    lightCamera = new PerspectiveCamera()
-                    //    {
-                    //        Position = plight.Position,
-                    //        LookDirection = plight.Direction,
-                    //        UpDirection = Vector3.UnitY.ToVector3D(),
-                    //    };                        
-                    //}
-                    // else 
-                    if (light is DirectionalLight3D)
-                    {
-                        var dlight = (DirectionalLight3D)light;
-                        var dir = light.DirectionInternal.Normalized();
-                        var pos = -50 * light.DirectionInternal;
-                        
-                        //lightCamera = new PerspectiveCamera()
-                        //{
-                        //    LookDirection = dir.ToVector3D(),
-                        //    Position = (System.Windows.Media.Media3D.Point3D)(pos.ToVector3D()),
-                        //    UpDirection = Vector3.UnitZ.ToVector3D(),                            
-                        //    NearPlaneDistance = 1,
-                        //    FarPlaneDistance = 100,
-                        //    FieldOfView = 10,
-                        //};
-
-                        lightCamera = new OrthographicCamera()
-                        {
-                            LookDirection = dir.ToVector3D(),
-                            Position = (System.Windows.Media.Media3D.Point3D)(pos.ToVector3D()),                            
-                            UpDirection = Vector3.UnitZ.ToVector3D(),
-                            Width = 100,
-                            NearPlaneDistance = 1,
-                            FarPlaneDistance = 500,
-                        };
-                    }
-
-                    if (lightCamera != null)
-                    {
-                        var sceneCamera = context.Camera;
-                        
-                        light.LightViewMatrix = CameraExtensions.GetViewMatrix(lightCamera);
-                        light.LightProjectionMatrix = CameraExtensions.GetProjectionMatrix(lightCamera, context.Canvas.ActualWidth / context.Canvas.ActualHeight);
-
-                        this.shadowPassContext.IsShadowPass = true;
-                        this.shadowPassContext.Camera = lightCamera;
-                        foreach (var e in root)
-                        {
-                            var smodel = e as IThrowingShadow;
-                            if (smodel != null)
-                            {
-                                if (smodel.IsThrowingShadow)
-                                {
-                                    var model = smodel as IRenderable;
-                                    model.Render(this.shadowPassContext);
-                                }
-                            }
-                        }
-                        context.Camera = sceneCamera;
-                    }
-                }
-            }
-
-            this.texShadowMapVariable.SetResource(this.texShadowMapView);            
-            //this.texShadowMapVariable.SetResource(this.texColorMapView);            
-            this.vShadowMapInfoVariable.Set(new Vector4((float)this.Intensity, (float)this.FactorPCF, (float)this.Bias, 0));
-            this.vShadowMapSizeVariable.Set(new Vector2(width, height));
-
-            //System.Console.WriteLine("ShadowMap rendered!");
-            context.Canvas.SetDefaultRenderTargets(false);
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.Tests", "HelixToolkit.Wpf.Tests\HelixToolkit.Wpf.Tests.csproj", "{F8082D12-91E7-403F-9294-9A7C2040B049}"
 EndProject
@@ -14,6 +14,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Tests", "HelixToolkit.Tests\HelixToolkit.Tests.csproj", "{E86BB7C0-A453-4923-916C-1AA32FF068F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.SharpDX", "HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj", "{39740654-F5F1-4936-B4EA-9BC97D4CDE37}"
+	ProjectSection(ProjectDependencies) = postProject
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE} = {50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Wpf.SharpDX.Tests", "HelixToolkit.Wpf.SharpDX.Tests\HelixToolkit.Wpf.SharpDX.Tests.csproj", "{405C54C4-69F7-4F3D-A6BA-594346F42A2F}"
 EndProject
@@ -32,6 +35,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UWP", "UWP", "{82144FE3-9567-45F4-901C-E226CA316FDA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.UWP", "HelixToolkit.UWP\HelixToolkit.UWP.csproj", "{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.SharpDX.ShaderBuilder", "HelixToolkit.SharpDX.ShaderBuilder\HelixToolkit.SharpDX.ShaderBuilder.csproj", "{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -216,6 +221,26 @@ Global
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Release|x64.Build.0 = Release|x64
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Release|x86.ActiveCfg = Release|x86
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Release|x86.Build.0 = Release|x86
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|ARM.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x64.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x86.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|ARM.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|ARM.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x64.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x64.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x86.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -231,5 +256,6 @@ Global
 		{4EE18E80-7609-4FFF-BD4B-F02728EC0688} = {284C6885-B948-4F73-9C7D-0C1279706663}
 		{1EAF532E-D750-497B-BB8F-EE85359C78A2} = {5730542A-FBE8-4176-B8C4-7FF801B27E99}
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E} = {82144FE3-9567-45F4-901C-E226CA316FDA}
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE} = {5730542A-FBE8-4176-B8C4-7FF801B27E99}
 	EndGlobalSection
 EndGlobal

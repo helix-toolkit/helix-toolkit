@@ -9,7 +9,6 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using Helpers;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -20,7 +19,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
-
+    using Utilities;
+    using HelixToolkit.Wpf.SharpDX;
     /// <summary>
     /// Provides a control that manipulates the camera by mouse and keyboard gestures.
     /// </summary>
@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Identifies the <see cref="CameraMode"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CameraModeProperty = DependencyProperty.Register(
-            "CameraMode", typeof(CameraMode), typeof(CameraController), new UIPropertyMetadata(CameraMode.Inspect));
+            "CameraMode", typeof(CameraMode), typeof(CameraController), new PropertyMetadata(CameraMode.Inspect));
 
         /// <summary>
         /// Identifies the <see cref="Camera"/> dependency property.
@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "CameraRotationMode",
                 typeof(CameraRotationMode),
                 typeof(CameraController),
-                new UIPropertyMetadata(CameraRotationMode.Turntable));
+                new PropertyMetadata(CameraRotationMode.Turntable));
 
         /// <summary>
         /// Identifies the <see cref="ChangeFieldOfViewCursor"/> dependency property.
@@ -59,91 +59,91 @@ namespace HelixToolkit.Wpf.SharpDX
                 "ChangeFieldOfViewCursor",
                 typeof(Cursor),
                 typeof(CameraController),
-                new UIPropertyMetadata(Cursors.ScrollNS));
+                new PropertyMetadata(Cursors.ScrollNS));
 
         /// <summary>
         /// Identifies the <see cref="DefaultCamera"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty DefaultCameraProperty = DependencyProperty.Register(
-            "DefaultCamera", typeof(ProjectionCamera), typeof(CameraController), new UIPropertyMetadata(null));
+            "DefaultCamera", typeof(ProjectionCamera), typeof(CameraController), new PropertyMetadata(null));
 
         /// <summary>
         /// Identifies the <see cref="Enabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty EnabledProperty = DependencyProperty.Register(
-            "Enabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+            "Enabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="InertiaFactor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InertiaFactorProperty = DependencyProperty.Register(
-            "InertiaFactor", typeof(double), typeof(CameraController), new UIPropertyMetadata(0.9));
+            "InertiaFactor", typeof(double), typeof(CameraController), new PropertyMetadata(0.9));
 
         /// <summary>
         /// Identifies the <see cref="InfiniteSpin"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty InfiniteSpinProperty = DependencyProperty.Register(
-            "InfiniteSpin", typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
+            "InfiniteSpin", typeof(bool), typeof(CameraController), new PropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="IsChangeFieldOfViewEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsChangeFieldOfViewEnabledProperty =
             DependencyProperty.Register(
-                "IsChangeFieldOfViewEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+                "IsChangeFieldOfViewEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="IsInertiaEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsInertiaEnabledProperty =
             DependencyProperty.Register(
-                "IsInertiaEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+                "IsInertiaEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="IsMoveEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsMoveEnabledProperty = DependencyProperty.Register(
-            "IsMoveEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+            "IsMoveEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="IsPanEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsPanEnabledProperty = DependencyProperty.Register(
-            "IsPanEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+            "IsPanEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="IsRotationEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsRotationEnabledProperty =
             DependencyProperty.Register(
-                "IsRotationEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+                "IsRotationEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="IsTouchZoomEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsTouchZoomEnabledProperty =
             DependencyProperty.Register(
-                "IsTouchZoomEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+                "IsTouchZoomEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="IsZoomEnabled"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty IsZoomEnabledProperty = DependencyProperty.Register(
-            "IsZoomEnabled", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+            "IsZoomEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="LeftRightPanSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LeftRightPanSensitivityProperty =
             DependencyProperty.Register(
-                "LeftRightPanSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+                "LeftRightPanSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
 
         /// <summary>
         /// Identifies the <see cref="LeftRightRotationSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty LeftRightRotationSensitivityProperty =
             DependencyProperty.Register(
-                "LeftRightRotationSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+                "LeftRightRotationSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
 
         /// <summary>
         /// The look at (target) point changed event
@@ -156,14 +156,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty MaximumFieldOfViewProperty =
             DependencyProperty.Register(
-                "MaximumFieldOfView", typeof(double), typeof(CameraController), new UIPropertyMetadata(160.0));
+                "MaximumFieldOfView", typeof(double), typeof(CameraController), new PropertyMetadata(160.0));
 
         /// <summary>
         /// Identifies the <see cref="MinimumFieldOfView"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MinimumFieldOfViewProperty =
             DependencyProperty.Register(
-                "MinimumFieldOfView", typeof(double), typeof(CameraController), new UIPropertyMetadata(5.0));
+                "MinimumFieldOfView", typeof(double), typeof(CameraController), new PropertyMetadata(5.0));
 
         /// <summary>
         /// Identifies the <see cref="ModelUpDirection"/> dependency property.
@@ -173,75 +173,75 @@ namespace HelixToolkit.Wpf.SharpDX
                 "ModelUpDirection",
                 typeof(Vector3D),
                 typeof(CameraController),
-                new UIPropertyMetadata(new Vector3D(0, 0, 1)));
+                new PropertyMetadata(new Vector3D(0, 0, 1)));
 
         /// <summary>
         /// Identifies the <see cref="MoveSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty MoveSensitivityProperty =
             DependencyProperty.Register(
-                "MoveSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+                "MoveSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
 
         /// <summary>
         /// Identifies the <see cref="PageUpDownZoomSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PageUpDownZoomSensitivityProperty =
             DependencyProperty.Register(
-                "PageUpDownZoomSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+                "PageUpDownZoomSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
 
         /// <summary>
         /// Identifies the <see cref="PanCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty PanCursorProperty = DependencyProperty.Register(
-            "PanCursor", typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.Hand));
+            "PanCursor", typeof(Cursor), typeof(CameraController), new PropertyMetadata(Cursors.Hand));
 
         /// <summary>
         /// Identifies the <see cref="RotateAroundMouseDownPoint"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RotateAroundMouseDownPointProperty =
             DependencyProperty.Register(
-                "RotateAroundMouseDownPoint", typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
+                "RotateAroundMouseDownPoint", typeof(bool), typeof(CameraController), new PropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="RotateCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RotateCursorProperty = DependencyProperty.Register(
-            "RotateCursor", typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.SizeAll));
+            "RotateCursor", typeof(Cursor), typeof(CameraController), new PropertyMetadata(Cursors.SizeAll));
 
         /// <summary>
         /// Identifies the <see cref="RotationSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RotationSensitivityProperty =
             DependencyProperty.Register(
-                "RotationSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+                "RotationSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
 
         /// <summary>
         /// Identifies the <see cref="ShowCameraTarget"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ShowCameraTargetProperty =
             DependencyProperty.Register(
-                "ShowCameraTarget", typeof(bool), typeof(CameraController), new UIPropertyMetadata(true));
+                "ShowCameraTarget", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
 
         /// <summary>
         /// Identifies the <see cref="SpinReleaseTime"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SpinReleaseTimeProperty =
             DependencyProperty.Register(
-                "SpinReleaseTime", typeof(int), typeof(CameraController), new UIPropertyMetadata(200));
+                "SpinReleaseTime", typeof(int), typeof(CameraController), new PropertyMetadata(200));
 
         /// <summary>
         /// Identifies the <see cref="UpDownPanSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UpDownPanSensitivityProperty =
             DependencyProperty.Register(
-                "UpDownPanSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+                "UpDownPanSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
 
         /// <summary>
         /// Identifies the <see cref="UpDownRotationSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty UpDownRotationSensitivityProperty =
             DependencyProperty.Register(
-                "UpDownRotationSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+                "UpDownRotationSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
 
         /// <summary>
         /// Identifies the <see cref="Viewport"/> dependency property.
@@ -254,13 +254,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty ZoomAroundMouseDownPointProperty =
             DependencyProperty.Register(
-                "ZoomAroundMouseDownPoint", typeof(bool), typeof(CameraController), new UIPropertyMetadata(false));
+                "ZoomAroundMouseDownPoint", typeof(bool), typeof(CameraController), new PropertyMetadata(false));
 
         /// <summary>
         /// Identifies the <see cref="ZoomCursor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomCursorProperty = DependencyProperty.Register(
-            "ZoomCursor", typeof(Cursor), typeof(CameraController), new UIPropertyMetadata(Cursors.SizeNS));
+            "ZoomCursor", typeof(Cursor), typeof(CameraController), new PropertyMetadata(Cursors.SizeNS));
 
         /// <summary>
         /// Identifies the <see cref="ZoomRectangleCursor"/> dependency property.
@@ -270,14 +270,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 "ZoomRectangleCursor",
                 typeof(Cursor),
                 typeof(CameraController),
-                new UIPropertyMetadata(Cursors.ScrollSE));
+                new PropertyMetadata(Cursors.ScrollSE));
 
         /// <summary>
         /// Identifies the <see cref="ZoomSensitivity"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ZoomSensitivityProperty =
             DependencyProperty.Register(
-                "ZoomSensitivity", typeof(double), typeof(CameraController), new UIPropertyMetadata(1.0));
+                "ZoomSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
         
         /// <summary>
         /// The zoomed by rectangle event
@@ -291,12 +291,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <remarks>
         /// Implemented as a list since we want to remove items at the bottom of the stack.
         /// </remarks>
-        private readonly LinkedList<CameraSetting> cameraHistory = new LinkedList<CameraSetting>();
-
-        /// <summary>
-        /// The rendering event listener.
-        /// </summary>
-        private readonly RenderingEventListener renderingEventListener;
+        private readonly SimpleRingBuffer<CameraSetting> cameraHistory = new SimpleRingBuffer<CameraSetting>(100);
 
         /// <summary>
         /// The change field of view event handler.
@@ -408,7 +403,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private double zoomSpeed;
 
-        private readonly EventSkipper skipper = new EventSkipper();
+        private static readonly Point PointZero = new Point(0, 0);
+        private static readonly Vector VectorZero = new Vector();
+        private static readonly Vector3D Vector3DZero = new Vector3D();
+
         /// <summary>
         /// Initializes static members of the <see cref="CameraController" /> class.
         /// </summary>
@@ -447,7 +445,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.IsManipulationEnabled = true;
 
             this.InitializeBindings();
-            this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
+           // this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
         }
 
         /// <summary>
@@ -1420,7 +1418,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
             this.PushCameraSetting();
 
             if (this.IsInertiaEnabled)
@@ -1432,6 +1429,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.zoomHandler.Zoom(delta, zoomOrigin);
             }
+            Viewport.InvalidateRender();
         }
 
         /// <summary>
@@ -1538,8 +1536,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void PushCameraSetting()
         {
-            this.cameraHistory.AddLast(new CameraSetting(this.ActualCamera));
-            if (this.cameraHistory.Count > 100)
+            this.cameraHistory.Add(new CameraSetting(this.ActualCamera));
+            if (this.cameraHistory.IsFull())
             {
                 this.cameraHistory.RemoveFirst();
             }
@@ -1583,7 +1581,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.cameraHistory.Count > 0)
             {
-                var cs = this.cameraHistory.Last.Value;
+                var cs = this.cameraHistory.Last;
                 this.cameraHistory.RemoveLast();
                 cs.UpdateCamera(this.ActualCamera);
                 return true;
@@ -1744,13 +1742,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (this.manipulatorCount == 1)
             {
-                this.rotateHandler.Completed(new ManipulationEventArgs(p));
+                this.rotateHandler.Completed(p);
             }
 
             if (this.manipulatorCount == 2)
             {
-                this.panHandler.Completed(new ManipulationEventArgs(p));
-                this.zoomHandler.Completed(new ManipulationEventArgs(p));
+                this.panHandler.Completed(p);
+                this.zoomHandler.Completed(p);
             }            
         }
 
@@ -1779,23 +1777,23 @@ namespace HelixToolkit.Wpf.SharpDX
                 // the number of manipulators has changed
                 if (this.manipulatorCount == 1)
                 {
-                    this.rotateHandler.Completed(new ManipulationEventArgs(position));
+                    this.rotateHandler.Completed(position);
                 }
 
                 if (this.manipulatorCount == 2)
                 {
-                    this.panHandler.Completed(new ManipulationEventArgs(position));
-                    this.zoomHandler.Completed(new ManipulationEventArgs(position));
+                    this.panHandler.Completed(position);
+                    this.zoomHandler.Completed(position);
                 }
 
                 if (n == 2)
                 {
-                    this.panHandler.Started(new ManipulationEventArgs(position));
-                    this.zoomHandler.Started(new ManipulationEventArgs(e.ManipulationOrigin));
+                    this.panHandler.Started(position);
+                    this.zoomHandler.Started(e.ManipulationOrigin);
                 }
                 else
                 {
-                    this.rotateHandler.Started(new ManipulationEventArgs(position));
+                    this.rotateHandler.Started(position);
                 }
 
                 // skip this event, the origin may have changed
@@ -1807,13 +1805,13 @@ namespace HelixToolkit.Wpf.SharpDX
             if (n == 1)
             {
                 // one finger rotates
-                this.rotateHandler.Delta(new ManipulationEventArgs(position));
+                this.rotateHandler.Delta(position);
             }
 
             if (n == 2)
             {
                 // two fingers pans
-                this.panHandler.Delta(new ManipulationEventArgs(position));
+                this.panHandler.Delta(position);
             }
 
             if (this.IsTouchZoomEnabled && n == 2)
@@ -1875,8 +1873,8 @@ namespace HelixToolkit.Wpf.SharpDX
             if (e.SystemGesture == SystemGesture.HoldEnter)
             {
                 var p = e.GetPosition(this);
-                this.changeLookAtHandler.Started(new ManipulationEventArgs(p));
-                this.changeLookAtHandler.Completed(new ManipulationEventArgs(p));
+                this.changeLookAtHandler.Started(p);
+                this.changeLookAtHandler.Completed(p);
                 e.Handled = true;
             }
 
@@ -2095,31 +2093,13 @@ namespace HelixToolkit.Wpf.SharpDX
             this.PushCameraSetting();
         }
 
-        private TimeSpan _last;
         /// <summary>
-        /// The rendering event handler.
+        /// Called when [composition target rendering].
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private void OnCompositionTargetRendering(object sender, RenderingEventArgs e)
+        /// <param name="ticks">The ticks.</param>
+        public void OnCompositionTargetRendering(long ticks)
         {
-            RenderingEventArgs args = (RenderingEventArgs)e;
-            if (args.RenderingTime == _last)
-                return;
-            _last = args.RenderingTime;
-            var ticks = e.RenderingTime.Ticks;
-            var time = 100e-9 * (ticks - this.lastTick);
-
-            if (this.lastTick != 0)
-            {
-                this.OnTimeStep(time);
-            }
-
-            this.lastTick = ticks;
+            this.OnTimeStep(ticks);
         }
 
         /// <summary>
@@ -2240,13 +2220,12 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
             if (this.ZoomAroundMouseDownPoint)
             {
                 var point = e.GetPosition(this);
                 Point3D nearestPoint;
                 Vector3D normal;
-                Model3D visual;
+                Element3D visual;
                 if (this.Viewport.FindNearest(point, out nearestPoint, out normal, out visual))
                 {
                     this.AddZoomForce(-e.Delta * 0.001, nearestPoint);
@@ -2262,49 +2241,91 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The on time step.
         /// </summary>
-        /// <param name="time">
+        /// <param name="ticks">
         /// The time.
         /// </param>
-        private void OnTimeStep(double time)
+        private void OnTimeStep(long ticks)
         {
-            // should be independent of time
-            var factor = this.IsInertiaEnabled ? Math.Pow(this.InertiaFactor, time / 0.012) : 0;
-            factor = this.Clamp(factor, 0.2, 1);
-
-            if (this.isSpinning && this.spinningSpeed.LengthSquared > 0.1)
+            if (lastTick == 0)
             {
-                this.rotateHandler.Rotate(
-                    this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D);
-
-                if (!this.InfiniteSpin)
-                {
-                    this.spinningSpeed *= factor;
-                }
+                lastTick = ticks;
             }
+            var time = (double)(ticks - this.lastTick) / Stopwatch.Frequency;
+            // should be independent of time
+            var factor = this.IsInertiaEnabled ?  this.Clamp(Math.Pow(this.InertiaFactor, time / 0.02), 0.1, 1) : 0;
+            bool needUpdate = false;
 
             if (this.rotationSpeed.LengthSquared > 0.1)
             {
                 this.rotateHandler.Rotate(
                     this.rotationPosition, this.rotationPosition + (this.rotationSpeed * time), this.rotationPoint3D);
                 this.rotationSpeed *= factor;
+                needUpdate = true;
+                this.spinningSpeed = VectorZero;
+            }
+            else
+            {
+                this.rotationSpeed = VectorZero;
+                if (this.isSpinning && this.spinningSpeed.LengthSquared > 0.1)
+                {
+                    this.rotateHandler.Rotate(
+                        this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D);
+                    if (!this.InfiniteSpin)
+                    {
+                        this.spinningSpeed *= factor;
+                    }
+                    needUpdate = true;
+                }
+                else
+                {
+                    this.spinningSpeed = VectorZero;
+                }
             }
 
             if (this.panSpeed.LengthSquared > 0.0001)
             {
                 this.panHandler.Pan(this.panSpeed * time);
                 this.panSpeed *= factor;
+                needUpdate = true;
+            }
+            else
+            {
+                this.panSpeed = Vector3DZero;
             }
 
             if (this.moveSpeed.LengthSquared > 0.0001)
             {
                 this.zoomHandler.MoveCameraPosition(this.moveSpeed * time);
                 this.moveSpeed *= factor;
+                needUpdate = true;
+            }
+            else
+            {
+                this.moveSpeed = Vector3DZero;
             }
 
-            if (Math.Abs(this.zoomSpeed) > 0.1)
+            if (Math.Abs(this.zoomSpeed) > 0.001)
             {
                 this.zoomHandler.Zoom(this.zoomSpeed * time, this.zoomPoint3D);
                 this.zoomSpeed *= factor;
+                needUpdate = true;
+            }
+            else
+            {
+                zoomSpeed = 0;
+            }
+            if (needUpdate)
+            {
+                lastTick = ticks;
+                Viewport.InvalidateRender();              
+            }
+            else
+            {
+                lastTick = 0;
+            }
+            if (Viewport.EnableSwapChainRendering)
+            {
+                this.InvalidateVisual();  
             }
         }
 
@@ -2321,20 +2342,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void RefreshViewport()
         {
-            // todo: this is a hack, should be improved
-
-            // var mg = new ModelVisual3D { Content = new AmbientLight(Colors.White) };
-            // Viewport.Children.Add(mg);
-            // Viewport.Children.Remove(mg);
-            var c = this.Viewport.Camera;
-            this.Viewport.Camera = null;
-            this.Viewport.Camera = c;
-
-            // var w = Viewport.Width;
-            // Viewport.Width = w-1;
-            // Viewport.Width = w;
-
-            // Viewport.InvalidateVisual();
+            Viewport.InvalidateRender();
         }
 
         /// <summary>
@@ -2385,7 +2393,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void SubscribeEvents()
         {
             this.MouseWheel += this.OnMouseWheel;
-            RenderingEventManager.AddListener(this.renderingEventListener);
+            //RenderingEventManager.AddListener(this.renderingEventListener);
         }
 
         /// <summary>
@@ -2408,7 +2416,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private void UnSubscribeEvents()
         {
             this.MouseWheel -= this.OnMouseWheel;
-            RenderingEventManager.RemoveListener(this.renderingEventListener);
+            //RenderingEventManager.RemoveListener(this.renderingEventListener);
         }
 
         /// <summary>

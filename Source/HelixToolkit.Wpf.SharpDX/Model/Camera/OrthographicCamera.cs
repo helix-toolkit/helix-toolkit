@@ -10,9 +10,7 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Windows;
-
-    using global::SharpDX;
-    using System;
+    using HelixToolkit.Wpf.SharpDX.Cameras;
 
     /// <summary>
     /// Represents an orthographic projection camera.
@@ -23,7 +21,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The width property
         /// </summary>
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
-            "Width", typeof(double), typeof(OrthographicCamera), new PropertyMetadata(10.0));
+            "Width", typeof(double), typeof(OrthographicCamera), new PropertyMetadata(10.0, (d,e)=> 
+            {
+                ((d as Camera).CameraInternal as OrthographicCameraCore).Width = (float)(double)e.NewValue;
+            }));
 
         /// <summary>
         /// Gets or sets the width.
@@ -45,37 +46,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Creates the projection matrix.
-        /// </summary>
-        /// <param name="aspectRatio">
-        /// The aspect ratio.
-        /// </param>
-        /// <returns>
-        /// A <see cref="Matrix"/>.
-        /// </returns>
-        public override Matrix CreateProjectionMatrix(double aspectRatio)
-        {
-            Matrix projM;
-            if (this.CreateLeftHandSystem)
-            {
-                projM = Matrix.OrthoLH(
-                    (float)this.Width, 
-                    (float)(this.Width / aspectRatio), 
-                    (float)this.NearPlaneDistance,
-                    Math.Min(1e15f, (float)this.FarPlaneDistance));
-            }
-            else
-            {
-                projM = Matrix.OrthoRH(
-                    (float)this.Width, 
-                    (float)(this.Width / aspectRatio), 
-                    (float)this.NearPlaneDistance,
-                    Math.Min(1e15f, (float)this.FarPlaneDistance));
-            }
-            return projM;
-        }
-
-        /// <summary>
         /// When implemented in a derived class, creates a new instance of the <see cref="T:System.Windows.Freezable" /> derived class.
         /// </summary>
         /// <returns>
@@ -84,6 +54,20 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override Freezable CreateInstanceCore()
         {
             return new OrthographicCamera();
+        }
+
+        protected override CameraCore CreatePortableCameraCore()
+        {
+            return new OrthographicCameraCore()
+            {
+                CreateLeftHandSystem = this.CreateLeftHandSystem,
+                FarPlaneDistance = (float)this.FarPlaneDistance,
+                LookDirection = this.LookDirection.ToVector3(),
+                NearPlaneDistance = (float)this.NearPlaneDistance,
+                Position = this.Position.ToVector3(),
+                UpDirection = this.UpDirection.ToVector3(),
+                Width = (float)this.Width
+            };
         }
     }
 }

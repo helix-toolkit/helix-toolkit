@@ -6,29 +6,30 @@
 //   Base class for renderable elements.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using SharpDX;
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using SharpDX;
-    using System;
-    using System.Diagnostics;
     using System.Windows;
-    using System.Windows.Media;
+    using Media = System.Windows.Media;
+    using Core;
+    using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using System;
 
     /// <summary>
     /// Base class for renderable elements.
     /// </summary>    
-    public abstract class Element3D : FrameworkContentElement, IDisposable, IRenderable, IGUID
+    public abstract class Element3D : Element3DCore, IVisible
     {
+        #region Dependency Properties
         /// <summary>
         /// Indicates, if this element should be rendered,
         /// default is true
         /// </summary>
         public static readonly DependencyProperty IsRenderingProperty =
-            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new AffectsRenderPropertyMetadata(true,
+            DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    (d as Element3D).isRenderingInternal = (bool)e.NewValue;
+                    (d as Element3D).Visible = (bool)e.NewValue && (d as Element3D).Visibility == Visibility.Visible;
                 }));
 
         /// <summary>
@@ -42,32 +43,14 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(IsRenderingProperty, value); }
         }
 
-        public static readonly DependencyProperty IsHitTestVisibleProperty =
-            DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D), new PropertyMetadata(true, (d, e) =>
-            {
-                (d as Element3D).isHitTestVisibleInternal = (bool)e.NewValue;
-            }));
-
-        public bool IsHitTestVisible
-        {
-            set
-            {
-                SetValue(IsHitTestVisibleProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(IsHitTestVisibleProperty);
-            }
-        }
-
 
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty VisibilityProperty =
-            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element3D), new AffectsRenderPropertyMetadata(Visibility.Visible, (d, e) =>
+            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element3D), new PropertyMetadata(Visibility.Visible, (d, e) =>
             {
-                (d as Element3D).visibleInternal = (Visibility)e.NewValue == Visibility.Visible;
+                (d as Element3D).Visible = (Visibility)e.NewValue == Visibility.Visible && (d as Element3D).IsRendering;
             }));
 
         /// <summary>
@@ -85,175 +68,135 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected global::SharpDX.Direct3D11.Effect effect;
-
-        protected RenderTechnique renderTechnique;
-
-        protected IRenderHost renderHost;
-
-        private bool isAttached = false;
-
-        private readonly Guid guid = Guid.NewGuid();
-
-        public Guid GUID { get { return guid; } }
-
-        protected bool isRenderingInternal { private set; get; } = true;
-
-        protected bool visibleInternal { private set; get; } = true;
-
-        protected bool isHitTestVisibleInternal
-        {
-            private set; get;
-        } = true;
         /// <summary>
-        /// If this has been attached onto renderhost. 
+        /// 
         /// </summary>
-        public bool IsAttached
+        public static readonly DependencyProperty TransformProperty =
+            DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new PropertyMetadata(Transform3D.Identity,
+                (d,e)=>
+                {
+                    (d as IRenderable).ModelMatrix = e.NewValue != null ? (e.NewValue as Transform3D).Value.ToMatrix() : Matrix.Identity;
+                }));
+        /// <summary>
+        /// 
+        /// </summary>
+        public Transform3D Transform
         {
+            get { return (Transform3D)this.GetValue(TransformProperty); }
+            set { this.SetValue(TransformProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsThrowingShadowProperty =
+            DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(Element3D), new PropertyMetadata(false, (d, e) =>
+            {
+                if ((d as IRenderable).RenderCore is IThrowingShadow t)
+                {
+                    t.IsThrowingShadow = (bool)e.NewValue;
+                }
+            }));
+        /// <summary>
+        /// <see cref="IThrowingShadow.IsThrowingShadow"/>
+        /// </summary>
+        public bool IsThrowingShadow
+        {
+            set
+            {
+                SetValue(IsThrowingShadowProperty, value);
+            }
             get
             {
-                return isAttached && renderHost != null;
+                return (bool)GetValue(IsThrowingShadowProperty);
             }
-            protected set
+        }
+
+        /// <summary>
+        /// The is hit test visible property
+        /// </summary>
+        public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D),
+            new PropertyMetadata(true, (d, e) => {
+                (d as Element3DCore).IsHitTestVisibleInternal = (bool)e.NewValue;
+            }));
+
+        /// <summary>
+        /// Indicates, if this element should be hit-tested.
+        /// default is true
+        /// </summary>
+        public bool IsHitTestVisible
+        {
+            set
             {
-                isAttached = value;
+                SetValue(IsHitTestVisibleProperty, value);
             }
-        }
-
-        public IRenderHost RenderHost
-        {
-            get { return renderHost; }
-        }
-
-        protected global::SharpDX.Direct3D11.Device Device
-        {
-            get { return renderHost.Device; }
-        }
-
-        /// <summary>
-        /// Override this function to set render technique during Attach Host.
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>Return RenderTechnique</returns>
-        protected virtual RenderTechnique SetRenderTechnique(IRenderHost host)
-        {
-            return this.renderTechnique == null ? host.RenderTechnique : this.renderTechnique;           
-        }
-
-
-        /// <summary>
-        /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
-        /// <para>To set different render technique instead of using technique from host, override <see cref="SetRenderTechnique"/></para>
-        /// <para>Attach Flow: <see cref="SetRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttached"/> -> <see cref="InvalidateRender"/></para>
-        /// </summary>
-        /// <param name="host">The host.</param>
-        public void Attach(IRenderHost host)
-        {
-            if (IsAttached || host == null)
+            get
             {
-                return;
-            }
-            renderHost = host;
-            if (host.EffectsManager == null)
-            {
-                throw new ArgumentException("EffectManger does not exist. Please make sure the proper EffectManager has been bind from view model.");
-            }
-            this.renderTechnique = SetRenderTechnique(host);           
-            effect = renderHost.EffectsManager.GetEffect(renderTechnique);
-            IsAttached = OnAttach(host);
-            if (IsAttached)
-            {
-                OnAttached();
-            }
-            InvalidateRender();
-        }
-
-        /// <summary>
-        /// Called after <see cref="OnAttach(IRenderHost)"/>
-        /// </summary>
-        protected virtual void OnAttached()
-        {
-
-        }
-        /// <summary>
-        /// To override Attach routine, please override this.
-        /// </summary>
-        /// <param name="host"></param>       
-        /// <returns>Return true if attached</returns>
-        protected abstract bool OnAttach(IRenderHost host);
-        /// <summary>
-        /// Detaches the element from the host. Override <see cref="OnDetach"/>
-        /// </summary>
-        public void Detach()
-        {
-            OnDetach();
-        }
-        /// <summary>
-        /// Used to override Detach
-        /// </summary>
-        protected virtual void OnDetach()
-        {
-            IsAttached = false;
-            renderTechnique = null;            
-            effect = null;
-            renderHost = null;           
-        }
-
-        /// <summary>
-        /// Tries to invalidate the current render.
-        /// </summary>
-        public void InvalidateRender()
-        {
-            var rh = renderHost;
-            if (renderHost != null)
-            {
-                rh.InvalidateRender();
+                return (bool)GetValue(IsHitTestVisibleProperty);
             }
         }
+        #endregion
+
+        #region Events
+        public static readonly RoutedEvent MouseDown3DEvent =
+            EventManager.RegisterRoutedEvent("MouseDown3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element3D));
+
+        public static readonly RoutedEvent MouseUp3DEvent =
+            EventManager.RegisterRoutedEvent("MouseUp3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element3D));
+
+        public static readonly RoutedEvent MouseMove3DEvent =
+            EventManager.RegisterRoutedEvent("MouseMove3D", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Element3D));
 
         /// <summary>
-        /// Updates the element by the specified time span.
+        /// Provide CLR accessors for the event 
         /// </summary>
-        /// <param name="timeSpan">The time since last update.</param>
-        //public virtual void Update(TimeSpan timeSpan) { }
-
-        /// <summary>
-        /// <para>Determine if this can be rendered.</para>
-        /// <para>Default returns <see cref="IsAttached"/> &amp;&amp; <see cref="IsRendering"/> &amp;&amp; <see cref="Visibility"/> == <see cref="Visibility.Visible"/></para>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected virtual bool CanRender(RenderContext context)
+        public event RoutedEventHandler MouseDown3D
         {
-            return IsAttached && isRenderingInternal && visibleInternal;
-        }
-        /// <summary>
-        /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
-        /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public void Render(RenderContext context)
-        {
-            if (CanRender(context))
-            {
-                OnRender(context);
-            }
+            add { AddHandler(MouseDown3DEvent, value); }
+            remove { RemoveHandler(MouseDown3DEvent, value); }
         }
 
         /// <summary>
-        /// Used to overriding <see cref="Render"/> routine.
+        /// Provide CLR accessors for the event 
         /// </summary>
-        /// <param name="context"></param>
-        protected abstract void OnRender(RenderContext context);
-
-        /// <summary>
-        /// Disposes the Element3D. Frees all DX resources.
-        /// </summary>
-        public virtual void Dispose()
+        public event RoutedEventHandler MouseUp3D
         {
-            this.Detach();                        
+            add { AddHandler(MouseUp3DEvent, value); }
+            remove { RemoveHandler(MouseUp3DEvent, value); }
         }
 
+        /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event RoutedEventHandler MouseMove3D
+        {
+            add { AddHandler(MouseMove3DEvent, value); }
+            remove { RemoveHandler(MouseMove3DEvent, value); }
+        }
+
+        protected virtual void OnMouse3DDown(object sender, RoutedEventArgs e)
+        {
+            Mouse3DDown?.Invoke(this, e as MouseDown3DEventArgs);
+        }
+
+        protected virtual void OnMouse3DUp(object sender, RoutedEventArgs e)
+        {
+            Mouse3DUp?.Invoke(this, e as MouseUp3DEventArgs);
+        }
+
+        protected virtual void OnMouse3DMove(object sender, RoutedEventArgs e)
+        {
+            Mouse3DMove?.Invoke(this, e as MouseMove3DEventArgs);
+        }
+
+        public event EventHandler<MouseDown3DEventArgs> Mouse3DDown;
+        public event EventHandler<MouseUp3DEventArgs> Mouse3DUp;
+        public event EventHandler<MouseMove3DEventArgs> Mouse3DMove;
+        #endregion
+
+        public Element3D()
+        {
+            this.MouseDown3D += OnMouse3DDown;
+            this.MouseUp3D += OnMouse3DUp;
+            this.MouseMove3D += OnMouse3DMove;
+        }
         /// <summary>
         /// Looks for the first visual ancestor of type <typeparamref name="T"/>.
         /// </summary>
@@ -266,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (obj != null)
             {
-                var parent = VisualTreeHelper.GetParent(obj);
+                var parent = Media.VisualTreeHelper.GetParent(obj);
                 while (parent != null)
                 {
                     var typed = parent as T;
@@ -275,39 +218,60 @@ namespace HelixToolkit.Wpf.SharpDX
                         return typed;
                     }
 
-                    parent = VisualTreeHelper.GetParent(parent);
+                    parent = Media.VisualTreeHelper.GetParent(parent);
                 }
             }
 
             return null;
         }
 
-        /// <summary>
-        /// Invoked whenever the effective value of any dependency property on this <see cref="Element3D"/> has been updated.
-        /// </summary>
-        /// <param name="e">The event data that describes the property that changed, as well as old and new values.</param>
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        //protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        //{
+        //    var pm = e.Property.GetMetadata(this);
+        //    if (pm is FrameworkPropertyMetadata fm)
+        //    {
+        //        if (fm.AffectsRender)
+        //        {
+        //            InvalidateRender();
+        //        }
+        //    }
+        //    base.OnPropertyChanged(e);
+        //}
+    }
+
+    public abstract class Mouse3DEventArgs : RoutedEventArgs
+    {
+        public HitTestResult HitTestResult { get; private set; }
+        public Viewport3DX Viewport { get; private set; }
+        public Point Position { get; private set; }
+
+        public Mouse3DEventArgs(RoutedEvent routedEvent, object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+            : base(routedEvent, source)
         {
-            if (CheckAffectsRender(e))
-            {
-                this.InvalidateRender();
-            }
-            base.OnPropertyChanged(e);
+            this.HitTestResult = hitTestResult;
+            this.Position = position;
+            this.Viewport = viewport;
         }
-        /// <summary>
-        /// Check if dependency property changed event affects render
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        protected virtual bool CheckAffectsRender(DependencyPropertyChangedEventArgs e)
-        {            
-            // Possible improvement: Only invalidate if the property metadata has the flag "AffectsRender".
-            // => Need to change all relevant DP's metadata to FrameworkPropertyMetadata or to a new "AffectsRenderPropertyMetadata".
-            PropertyMetadata fmetadata = null;
-            return ((fmetadata = e.Property.GetMetadata(this)) != null
-                && (fmetadata is IAffectsRender
-                || (fmetadata is FrameworkPropertyMetadata && (fmetadata as FrameworkPropertyMetadata).AffectsRender)
-                ));
-        }
+    }
+
+    public class MouseDown3DEventArgs : Mouse3DEventArgs
+    {
+        public MouseDown3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+            : base(Element3D.MouseDown3DEvent, source, hitTestResult, position, viewport)
+        { }
+    }
+
+    public class MouseUp3DEventArgs : Mouse3DEventArgs
+    {
+        public MouseUp3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+            : base(Element3D.MouseUp3DEvent, source, hitTestResult, position, viewport)
+        { }
+    }
+
+    public class MouseMove3DEventArgs : Mouse3DEventArgs
+    {
+        public MouseMove3DEventArgs(object source, HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+            : base(Element3D.MouseMove3DEvent, source, hitTestResult, position, viewport)
+        { }
     }
 }

@@ -29,7 +29,8 @@ namespace DeferredShadingDemo
     using Transform3DGroup = System.Windows.Media.Media3D.Transform3DGroup;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
-
+    using Color = System.Windows.Media.Color;
+    using Colors = System.Windows.Media.Colors;
 
     public class MainViewModel : BaseViewModel
     {
@@ -48,21 +49,21 @@ namespace DeferredShadingDemo
         public Transform3D Model3Transform { get; private set; }
         public Transform3D PlaneTransform { get; private set; }
 
-        public Color4 AmbientLightColor { get; private set; }
-        public Color4 DirectionalLightColor { get; set; }
-        public Vector3 DirectionalLightDirection { get; set; }
+        public Color AmbientLightColor { get; private set; }
+        public Color DirectionalLightColor { get; set; }
+        public Vector3D DirectionalLightDirection { get; set; }
 
         public Transform3D PointLightTransform1 { get; private set; }
         public Transform3D PointLightTransform2 { get; private set; }
         public Transform3D PointLightTransform3 { get; private set; }
 
         public ObservableElement3DCollection PointLightCollection { get; set; }
-        public Color4 PointLightColor
+        public Color PointLightColor
         {
             get { return this.pointLightColor; }
             set { this.pointLightColor = value; this.UpdatePointLightCollection(); }
         }
-        public Vector3 PointLightAttenuation
+        public Vector3D PointLightAttenuation
         {
             get { return this.pointLightAttenuation; }
             set { this.pointLightAttenuation = value; this.UpdatePointLightCollection(); }
@@ -79,12 +80,12 @@ namespace DeferredShadingDemo
         }
 
         public ObservableElement3DCollection SpotLightCollection { get; set; }
-        public Color4 SpotLightColor
+        public Color SpotLightColor
         {
             get { return this.spotLightColor; }
             set { this.spotLightColor = value; this.UpdateSpotLightCollection(); }
         }
-        public Vector3 SpotLightAttenuation
+        public Vector3D SpotLightAttenuation
         {
             get { return this.spotLightAttenuation; }
             set { this.spotLightAttenuation = value; this.UpdateSpotLightCollection(); }
@@ -118,10 +119,9 @@ namespace DeferredShadingDemo
             this.Camera = new PerspectiveCamera { Position = new Point3D(18, 64, 30), LookDirection = new Vector3D(-18, -64, -30), UpDirection = new Vector3D(0, 1, 0) };
 
             // deferred render technique
-            RenderTechniquesManager = new DeferredTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred);
-            EffectsManager = new DeferredEffectsManager(RenderTechniquesManager);
-
+            
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DeferredRenderTechniqueNames.Deferred];
             //load model
             var reader = new ObjReader();
             var objModel = reader.Read(@"./Media/bunny.obj");
@@ -161,18 +161,18 @@ namespace DeferredShadingDemo
             this.PlaneMaterial.NormalMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
 
             // setup lighting            
-            this.AmbientLightColor = new Color4(0.3f, 0.3f, 0.3f, 1.0f);
-            this.DirectionalLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
-            this.DirectionalLightDirection = new Vector3(-2, -5, -2);
+            this.AmbientLightColor = Colors.DarkGray;
+            this.DirectionalLightColor = Colors.Gray;
+            this.DirectionalLightDirection = new Vector3D(-2, -5, -2);
 
-            this.PointLightColor = (Color4)Color.White;
-            this.PointLightAttenuation = new Vector3(0.0f, 0.0f, 0.18f); //1/0/0 ; 0.1, 0.2, 0.3
+            this.PointLightColor = Colors.White;
+            this.PointLightAttenuation = new Vector3D(0.0f, 0.0f, 0.18f); //1/0/0 ; 0.1, 0.2, 0.3
             this.PointLightTransform1 = new TranslateTransform3D(new Vector3D(0, 1, 0));
             this.PointLightTransform2 = new TranslateTransform3D(new Vector3D(6, 1, 3));
             this.PointLightTransform3 = new TranslateTransform3D(new Vector3D(-3, 1, -6));
 
-            this.SpotLightColor = (Color4)Color.AntiqueWhite;
-            this.SpotLightAttenuation = new Vector3(1.0f, 0.1f, 0.01f);
+            this.SpotLightColor = Colors.AntiqueWhite;
+            this.SpotLightAttenuation = new Vector3D(1.0, 0.1, 0.01);
 
             // light collection
             this.PointLightCollection = new ObservableElement3DCollection();
@@ -264,11 +264,11 @@ namespace DeferredShadingDemo
                 {
                     Color = this.SpotLightColor,
                     Attenuation = this.SpotLightAttenuation,
-                    Transform = new TranslateTransform3D(0, 20, 0),
                     //OuterAngle = 90,
                     //InnerAngle = 88,
-                    Direction = new Vector3(0, -1, 0),
-                    DirectionTransform = CreateAnimatedDirection(-new Vector3D(0, -1, 0), (2 * rndx.NextDouble() - 1) * new Vector3D(1, 0, 0) + (2 * rndz.NextDouble() - 1) * new Vector3D(0, 0, 1), rndx.Next(10) + 8),
+                    Position = new Point3D(0, 20, 0),
+                    Direction = new Vector3D(0, -1, 0),
+                    Transform = CreateAnimatedDirection(-new Vector3D(0, -1, 0), (2 * rndx.NextDouble() - 1) * new Vector3D(1, 0, 0) + (2 * rndz.NextDouble() - 1) * new Vector3D(0, 0, 1), rndx.Next(10) + 8),
                 };
                 this.SpotLightCollection.Add(spotLight);
             }
@@ -356,12 +356,12 @@ namespace DeferredShadingDemo
 
 
 
-        private Vector3 pointLightAttenuation;
-        private Color4 pointLightColor;
+        private Vector3D pointLightAttenuation;
+        private Color pointLightColor;
         private int pointLightSpread;
 
-        private Vector3 spotLightAttenuation;
-        private Color4 spotLightColor;
+        private Vector3D spotLightAttenuation;
+        private Color spotLightColor;
         private double spotLightSpread;
 
         private string meshTopology = MeshFaces.Default.ToString();

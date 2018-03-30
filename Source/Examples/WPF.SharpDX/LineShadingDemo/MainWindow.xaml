@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
     Title="Line Shading Demo (HelixToolkitDX)"
     Width="900"
     Height="600"
@@ -24,6 +23,7 @@
             Grid.Row="1"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
+            EffectsManager="{Binding EffectsManager}"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
@@ -67,7 +67,7 @@
                 Smoothness="{Binding LineSmoothness}"
                 Thickness="{Binding LineThickness}"
                 Transform="{Binding Model1Transform}"
-                Color="{x:Static sdxm:Color.Blue}" />
+                Color="Blue" />
             <hx:LineGeometryModel3D
                 x:Name="lines2"
                 Geometry="{Binding Lines}"
@@ -75,7 +75,7 @@
                 Smoothness="{Binding LineSmoothness}"
                 Thickness="{Binding LineThickness}"
                 Transform="{Binding Model2Transform}"
-                Color="{x:Static sdxm:Color.Yellow}" />
+                Color="Yellow" />
             <hx:LineGeometryModel3D
                 x:Name="lines3"
                 Geometry="{Binding Lines}"
@@ -83,7 +83,7 @@
                 Smoothness="{Binding LineSmoothness}"
                 Thickness="{Binding LineThickness}"
                 Transform="{Binding Model3Transform}"
-                Color="{x:Static sdxm:Color.White}" />
+                Color="White" />
 
             <hx:LineGeometryModel3D
                 x:Name="grid"
@@ -180,7 +180,7 @@
                 <TextBlock
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Text="{Binding FpsCounter.Value, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
+                    Text="{Binding FrameRate, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
             </StatusBarItem>
             <Separator />
             <StatusBarItem>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Media = System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -27,10 +28,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 }));
 
         public static readonly DependencyProperty LineColorProperty
-            = DependencyProperty.Register("LineColor", typeof(Color), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(Color.Green));
+            = DependencyProperty.Register("LineColor", typeof(Media.Color), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(Media.Colors.Green));
 
         public static readonly DependencyProperty HitLineColorProperty
-            = DependencyProperty.Register("HitLineColor", typeof(Color), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(Color.Red));
+            = DependencyProperty.Register("HitLineColor", typeof(Media.Color), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(Media.Colors.Red));
 
         public IOctree Octree
         {
@@ -44,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public Color LineColor
+        public Media.Color LineColor
         {
             set
             {
@@ -52,10 +53,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Color)GetValue(LineColorProperty);
+                return (Media.Color)GetValue(LineColorProperty);
             }
         }
-        public Color HitLineColor
+        public Media.Color HitLineColor
         {
             set
             {
@@ -63,16 +64,16 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Color)GetValue(HitLineColorProperty);
+                return (Media.Color)GetValue(HitLineColorProperty);
             }
         }
 
-        private readonly LineGeometryModel3D OctreeVisual = new LineGeometryModel3D() { ReuseVertexArrayBuffer = true };
-        private readonly LineGeometryModel3D HitVisual = new LineGeometryModel3D() { ReuseVertexArrayBuffer = true };
+        private readonly LineGeometryModel3D OctreeVisual = new LineGeometryModel3D();
+        private readonly LineGeometryModel3D HitVisual = new LineGeometryModel3D();
 
         public OctreeLineGeometryModel3D()
         {
-            IsHitTestVisible = false;
+            IsHitTestVisible = OctreeVisual.IsHitTestVisible = HitVisual.IsHitTestVisible = false;
             Children.Add(OctreeVisual);
             Children.Add(HitVisual);
             OctreeVisual.Color = LineColor;
@@ -80,6 +81,12 @@ namespace HelixToolkit.Wpf.SharpDX
             OctreeVisual.Thickness = 0;
             OctreeVisual.FillMode = global::SharpDX.Direct3D11.FillMode.Wireframe;
             HitVisual.Thickness = 1.5;
+            this.OnVisibleChanged += OctreeLineGeometryModel3D_OnVisibleChanged;
+        }
+
+        private void OctreeLineGeometryModel3D_OnVisibleChanged(object sender, BoolArgs e)
+        {
+            CreateOctreeLines();
         }
 
         private void CreateOctreeLines()
@@ -95,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private void OctreeLineGeometryModel3D_OnHit(object sender, OnHitEventArgs args)
+        private void OctreeLineGeometryModel3D_OnHit(object sender, EventArgs args)
         {
             var node = sender as IOctree;
             if (node.HitPathBoundingBoxes.Count > 0 && Visibility == Visibility.Visible && IsRendering)

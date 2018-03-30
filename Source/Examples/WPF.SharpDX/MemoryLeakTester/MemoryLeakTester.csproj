@@ -36,9 +36,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Expression.Interaction.3.0.40218.0\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="PropertyChanged, Version=2.1.3.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\PropertyChanged.Fody.2.1.3\lib\netstandard1.0\PropertyChanged.dll</HintPath>
       <Private>False</Private>
@@ -69,7 +72,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Expression.Interaction.3.0.40218.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -146,13 +151,13 @@
       <Project>{676675f0-18a4-4d08-aeb5-c561473af7ec}</Project>
       <Name>BoneSkinDemo</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CrossSectionDemo\CrossSectionDemo.csproj">
+      <Project>{7b612920-493c-448b-b21b-d5a453045aad}</Project>
+      <Name>CrossSectionDemo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CustomShaderDemo\CustomShaderDemo.csproj">
       <Project>{829730d4-b471-4d12-b8b8-4900761e0722}</Project>
       <Name>CustomShaderDemo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DeferredShadingDemo\DeferredShadingDemo.csproj">
-      <Project>{8e85b044-a3cd-4781-b65f-81b79dd0d2fe}</Project>
-      <Name>DeferredShadingDemo</Name>
     </ProjectReference>
     <ProjectReference Include="..\DemoCore\DemoCore.csproj">
       <Project>{b475c12b-80f9-4bc0-88e5-815c88593bee}</Project>
@@ -182,10 +187,6 @@
       <Project>{0045c5f8-76a9-420b-af44-47d1c1b60df4}</Project>
       <Name>ParticleSystemDemo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ScreenSpaceDemo\ScreenSpaceDemo.csproj">
-      <Project>{5ce2d1a0-d79d-4dae-98dd-15ba0dfb1d22}</Project>
-      <Name>ScreenSpaceDemo</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ShadowMapDemo\ShadowMapDemo.csproj">
       <Project>{d9c22065-b07a-432c-b319-87bce640600c}</Project>
       <Name>ShadowMapDemo</Name>
@@ -201,6 +202,10 @@
     <ProjectReference Include="..\TessellationDemo\TessellationDemo.csproj">
       <Project>{82bb6745-9d34-453a-851c-01c8fd7a0f20}</Project>
       <Name>TessellationDemo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XRayDemo\XRayDemo.csproj">
+      <Project>{c4f7ae1d-c03f-4060-a89b-c8ce47ad5eb0}</Project>
+      <Name>XRayDemo</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

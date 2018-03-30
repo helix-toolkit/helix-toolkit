@@ -1,21 +1,21 @@
 ﻿namespace CrossSectionDemo
 {
     using System;
-    using System.Windows.Media.Animation;
-    using System.Windows.Media.Imaging;
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
-    using SharpDX;
+   // using SharpDX;
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-    using HelixToolkit.Wpf;
-    using System.IO;
+    using Color = System.Windows.Media.Color;
+    using Plane = SharpDX.Plane;
+    using Vector3 = SharpDX.Vector3;
+    using Colors = System.Windows.Media.Colors;
+    using Color4 = SharpDX.Color4;
     using System.Collections.Generic;
     using System.Linq;
-    using SharpDX.Direct3D11;
     using System.Windows.Data;
     using System.Windows;
     using System.Windows.Threading;
@@ -43,25 +43,7 @@
 
         public PhongMaterial LightModelMaterial { get; set; }
 
-        public Vector3 Light1Direction { get; set; }
-        public Color4 Light1Color { get; set; }
-        private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
-        public Media3D.Vector3D CamLookDir
-        {
-            set
-            {
-                if (camLookDir != value)
-                {
-                    camLookDir = value;
-                    OnPropertyChanged();
-                    Light1Direction = camLookDir.ToVector3();
-                }
-            }
-            get
-            {
-                return camLookDir;
-            }
-        }
+        public Color Light1Color { get; set; }
 
         public bool EnablePlane1 { set; get; } = true;
         public Plane Plane1 { set; get; } = new Plane(new Vector3(0, -1, 0), -15);
@@ -76,10 +58,8 @@
         private DispatcherTimer timer;
         public MainViewModel()
         {
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
-
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // ----------------------------------------------
             // titles
             this.Title = "SwapChain Top Surface Rendering Demo";
@@ -90,16 +70,13 @@
             this.Camera = new PerspectiveCamera
             {
                 Position = new Point3D(20, 20, 20),
-                LookDirection = new Vector3D(-1, -1, -1),
+                LookDirection = new Vector3D(-20, -20, -20),
                 UpDirection = new Vector3D(0, 1, 0)
             };
-            // (Camera as ProjectionCamera).FarPlaneDistance = 10000;
-            this.Light1Direction = new Vector3(-100, -100, -100);
-            SetupCameraBindings(this.Camera);
             // ----------------------------------------------
             // setup scene
 
-            this.Light1Color = (Color4)Color.White;
+            this.Light1Color = Colors.White;
 
 
             var builder = new MeshBuilder(true, false, false);
@@ -120,7 +97,8 @@
 
             var landerItems = Load3ds("Car.3ds").Select(x => x.Geometry as MeshGeometry3D).ToArray();
             Model = MeshGeometry3D.Merge(landerItems);
-            ModelMaterial = PhongMaterials.Obsidian;
+            Model.UpdateOctree();
+            ModelMaterial = PhongMaterials.Bronze;
             var transGroup = new Media3D.Transform3DGroup();
             transGroup.Children.Add(new Media3D.ScaleTransform3D(0.01, 0.01, 0.01));
             transGroup.Children.Add(new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Media3D.Vector3D(1, 0, 0), -90)));
@@ -179,13 +157,7 @@
                 return new List<Object3D>();
             }
         }
-        public void SetupCameraBindings(Camera camera)
-        {
-            if (camera is ProjectionCamera)
-            {
-                SetBinding("CamLookDir", camera, ProjectionCamera.LookDirectionProperty, this);
-            }
-        }
+
 
         private static void SetBinding(string path, DependencyObject dobj, DependencyProperty property, object viewModel, BindingMode mode = BindingMode.TwoWay)
         {
