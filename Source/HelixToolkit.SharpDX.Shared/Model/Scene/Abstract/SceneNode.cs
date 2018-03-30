@@ -664,6 +664,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             OnTransformBoundChanged = null;
             OnBoundSphereChanged = null;
             OnTransformBoundSphereChanged = null;
+            OnAttached = null;
+            OnDetached = null;
             base.OnDispose(disposeManagedResources);
         }
     }
