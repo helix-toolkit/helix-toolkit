@@ -170,7 +170,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             builder.AddArrow(Vector3.Zero, new Vector3(0, 0, arrowSize), arrowWidth, arrowHead, 8);
             var mesh = builder.ToMesh();
 
-            arrowMeshModel.Material = PhongMaterials.White;
+            arrowMeshModel.Material = new PhongMaterialCore() { DiffuseColor = Color.White };
             arrowMeshModel.Geometry = mesh;
             arrowMeshModel.CullMode = CullMode.Back;
             arrowMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Colors]; };

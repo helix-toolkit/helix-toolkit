@@ -120,12 +120,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             SceneNode.InvalidateRender();
         }
 
-        public void InvalidateMeasure()
+        public new void InvalidateMeasure()
         {
             SceneNode.InvalidateMeasure();
         }
 
-        public void InvalidateArrange()
+        public new void InvalidateArrange()
         {
             SceneNode.InvalidateArrange();
         }

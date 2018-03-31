@@ -18,6 +18,8 @@ namespace HelixToolkit.UWP.Model.Scene
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
+    using Shaders;
+
     #region Properties
     /// <summary>
     /// 
@@ -176,14 +178,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             RelativeScreenLocationX = 0.8f;
             ViewBoxMeshModel = new NodeMesh() { EnableViewFrustumCheck = false };
             ViewBoxMeshModel.RenderCore.RenderType = RenderType.ScreenSpaced;
-            var sampler = (SamplerStateDescription)PhongMaterial.DiffuseAlphaMapSamplerProperty.DefaultMetadata.DefaultValue;
+            var sampler = DefaultSamplers.LinearSamplerWrapAni1;
             sampler.BorderColor = Color.Gray;
             sampler.AddressU = sampler.AddressV = sampler.AddressW = TextureAddressMode.Border;
 
             ViewBoxMeshModel.CullMode = CullMode.Back;
             ViewBoxMeshModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.ViewCube]; };
             this.AddChildNode(ViewBoxMeshModel);
-            ViewBoxMeshModel.Material = new PhongMaterial()
+            ViewBoxMeshModel.Material = new PhongMaterialCore()
             {
                 DiffuseColor = Color.White,
                 DiffuseMapSampler = sampler
@@ -192,7 +194,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             CornerModel = new NodeInstancingMesh()
             {
                 EnableViewFrustumCheck = false,
-                Material = PhongMaterials.Yellow,
+                Material = new PhongMaterialCore() { DiffuseColor = Color.Yellow },
                 Geometry = cornerGeometry,
                 Instances = cornerInstances,
                 Visible = false
@@ -204,7 +206,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             EdgeModel = new NodeInstancingMesh()
             {
                 EnableViewFrustumCheck = false,
-                Material = PhongMaterials.Silver,
+                Material = new PhongMaterialCore() { DiffuseColor = Color.Silver },
                 Geometry = edgeGeometry,
                 Instances = edgeInstances,
                 Visible = false

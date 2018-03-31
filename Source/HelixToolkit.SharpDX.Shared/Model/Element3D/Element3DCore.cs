@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP.Model
 #else
 using System.Windows;
@@ -20,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
     /// External Wrapper core to be used for different platform
     /// </summary>
 #if NETFX_CORE
-    public abstract class Element3DCore : IDisposable, ITransform
+    public abstract class Element3DCore : FrameworkElement, IDisposable
 #else
     public abstract class Element3DCore : FrameworkContentElement, IDisposable
 #endif

@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 {
     using Cameras;
     using Core;
-    using HelixToolkit.Wpf.SharpDX.Render;
+    using Render;
 
     /// <summary>
     /// 
@@ -158,7 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             else
             {
                 shadowCore.FoundLightSource = true;
-                shadowCore.LightViewProjectMatrix = camera.GetViewMatrix() * camera.GetProjectionMatrix(shadowCore.Width / shadowCore.Height);
+                shadowCore.LightViewProjectMatrix = camera.CreateViewMatrix() * camera.CreateProjectionMatrix(shadowCore.Width / shadowCore.Height);
             }
         }
 
