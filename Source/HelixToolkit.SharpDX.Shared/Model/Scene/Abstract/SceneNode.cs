@@ -315,12 +315,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         #endregion RenderCore
 
         /// <summary>
-        /// Gets or sets the hit test source. The wrapper must set this so the <see cref="HitTestResult.ModelHit"/> is the wrapper.
+        /// Gets or sets the wrapper source used for such as hit test model, etc. The wrapper must set this so the <see cref="HitTestResult.ModelHit"/> is the wrapper.
         /// </summary>
         /// <value>
         /// The hit test source.
         /// </value>
-        public object HitTestSource { internal set; get; }
+        public object WrapperSource { internal set; get; }
 
         #endregion Properties
 
@@ -339,7 +339,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         public SceneNode()
         {
-            HitTestSource = this;
+            WrapperSource = this;
         }
 
         /// <summary>
@@ -665,6 +665,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             OnTransformBoundSphereChanged = null;
             OnAttached = null;
             OnDetached = null;
+            WrapperSource = null;
             base.OnDispose(disposeManagedResources);
         }
     }

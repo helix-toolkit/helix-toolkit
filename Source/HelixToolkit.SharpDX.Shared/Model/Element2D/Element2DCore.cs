@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 {
     using Model.Scene2D;
     /// <summary>
-    /// 
+    /// External Wrapper core to be used for different platform
     /// </summary>
 #if NETFX_CORE
     public abstract partial class Element2DCore : FrameworkElement, IDisposable
@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                         {
                             sceneNode = OnCreateSceneNode();
                             AssignDefaultValuesToSceneNode(sceneNode);
-                            sceneNode.HitTestSource = this;
+                            sceneNode.WrapperSource = this;
                             sceneNode.OnAttached += SceneNode_OnAttached;
                             sceneNode.OnDetached += SceneNode_OnDetached;
                             sceneNode.OnUpdate += SceneNode_OnUpdate;

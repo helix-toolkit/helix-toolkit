@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
     {
         public static implicit operator Element2D(SceneNode2D s)
         {
-            return s.HitTestSource as Element2D;
+            return s.WrapperSource as Element2D;
         }
     }
 }

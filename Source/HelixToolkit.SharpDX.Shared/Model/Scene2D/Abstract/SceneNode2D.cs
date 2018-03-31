@@ -62,12 +62,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// </value>
         public bool IsHitTestVisible { set; get; } = true;
         /// <summary>
-        /// Gets or sets the hit test source.
+        /// Gets or sets the wrapper source used to link the external wrapper with the node.
         /// </summary>
         /// <value>
         /// The hit test source.
         /// </value>
-        public object HitTestSource { set; get; }
+        public object WrapperSource { set; get; }
         /// <summary>
         /// Gets or sets a value indicating whether this instance is attached.
         /// </summary>
@@ -243,6 +243,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         {
             set { RenderCore.IsMouseOver = value; }
             get { return RenderCore.IsMouseOver; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SceneNode2D"/> class.
+        /// </summary>
+        public SceneNode2D()
+        {
+            WrapperSource = this;
         }
         /// <summary>
         /// Creates the render core.

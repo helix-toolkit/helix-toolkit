@@ -24,7 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             hitResult = null;
             if (LayoutBoundWithTransform.Contains(mousePoint))
             {
-                hitResult = new HitTest2DResult(HitTestSource);
+                hitResult = new HitTest2DResult(WrapperSource);
                 return true;
             }
             else

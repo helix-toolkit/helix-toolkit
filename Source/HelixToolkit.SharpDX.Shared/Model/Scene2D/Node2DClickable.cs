@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             {
                 if (!base.OnHitTest(ref mousePoint, out hitResult))
                 {
-                    hitResult = new HitTest2DResult(HitTestSource);
+                    hitResult = new HitTest2DResult(WrapperSource);
                 }
                 return true;
             }

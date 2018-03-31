@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 {
     using Scene;
     /// <summary>
-    /// 
+    /// External Wrapper core to be used for different platform
     /// </summary>
 #if NETFX_CORE
     public abstract class Element3DCore : IDisposable, ITransform
@@ -70,7 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
                         {
                             sceneNode = OnCreateSceneNode();
                             AssignDefaultValuesToSceneNode(sceneNode);
-                            sceneNode.HitTestSource = this;
+                            sceneNode.WrapperSource = this;
                             OnSceneNodeCreated?.Invoke(this, sceneNode);
                         }
                     }

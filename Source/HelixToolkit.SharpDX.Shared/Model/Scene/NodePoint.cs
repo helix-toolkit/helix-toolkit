@@ -189,7 +189,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
-            return (Geometry as PointGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this.HitTestSource, (float)HitTestThickness);
+            return (Geometry as PointGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this.WrapperSource, (float)HitTestThickness);
         }
     }
 }
