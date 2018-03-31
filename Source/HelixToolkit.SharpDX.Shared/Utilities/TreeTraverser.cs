@@ -12,6 +12,8 @@ namespace HelixToolkit.UWP
     using Core;
     using Core2D;
     using Model.Scene;
+    using Model.Scene2D;
+
     public static class TreeTraverser
     {
         /// <summary>
@@ -130,10 +132,10 @@ namespace HelixToolkit.UWP
         /// <param name="nodes">The nodes.</param>
         /// <param name="condition">The condition.</param>
         /// <param name="stackCache">The stack cache.</param>
-        public static void PreorderDFTRun(this IList<IRenderable2D> nodes, Func<IRenderable2D, bool> condition, 
-            Stack<KeyValuePair<int, IList<IRenderable2D>>> stackCache = null)
+        public static void PreorderDFTRun(this IList<SceneNode2D> nodes, Func<SceneNode2D, bool> condition, 
+            Stack<KeyValuePair<int, IList<SceneNode2D>>> stackCache = null)
         {
-            var stack = stackCache == null ? new Stack<KeyValuePair<int, IList<IRenderable2D>>>(20) : stackCache;
+            var stack = stackCache == null ? new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20) : stackCache;
             int i = -1;
             while (true)
             {
@@ -145,7 +147,7 @@ namespace HelixToolkit.UWP
                     var elements = item.Items;
                     if (elements == null || elements.Count == 0)
                     { continue; }
-                    stack.Push(new KeyValuePair<int, IList<IRenderable2D>>(i, nodes));
+                    stack.Push(new KeyValuePair<int, IList<SceneNode2D>>(i, nodes));
                     i = -1;
                     nodes = elements;
                 }
@@ -164,10 +166,10 @@ namespace HelixToolkit.UWP
         /// <param name="condition"></param>
         /// <param name="stackCache"></param>
         /// <returns></returns>
-        public static IEnumerable<RenderCore2D> PreorderDFTGetCores(this IEnumerable<IRenderable2D> nodes, Func<IRenderable2D, bool> condition,
-            Stack<IEnumerator<IRenderable2D>> stackCache = null)
+        public static IEnumerable<RenderCore2D> PreorderDFTGetCores(this IEnumerable<SceneNode2D> nodes, Func<SceneNode2D, bool> condition,
+            Stack<IEnumerator<SceneNode2D>> stackCache = null)
         {
-            var stack = stackCache == null ? new Stack<IEnumerator<IRenderable2D>>(20) : stackCache;
+            var stack = stackCache == null ? new Stack<IEnumerator<SceneNode2D>>(20) : stackCache;
             var e = nodes.GetEnumerator();
 
             while (true)

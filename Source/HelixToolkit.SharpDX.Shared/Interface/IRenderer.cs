@@ -1,8 +1,6 @@
 ﻿using SharpDX;
 using SharpDX.Direct3D11;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
@@ -12,6 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 {
     using Core;
     using Model.Scene;
+    using Model.Scene2D;
     /// <summary>
     /// 
     /// </summary>
@@ -76,7 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <returns></returns>
-        void UpdateSceneGraph2D(IRenderContext2D context, List<IRenderable2D> renderables);
+        void UpdateSceneGraph2D(IRenderContext2D context, List<SceneNode2D> renderables);
         /// <summary>
         /// 
         /// </summary>
@@ -128,6 +127,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderScene2D(IRenderContext2D context, List<IRenderable2D> renderables, ref RenderParameter2D parameter);
+        void RenderScene2D(IRenderContext2D context, List<SceneNode2D> renderables, ref RenderParameter2D parameter);
     }
 }

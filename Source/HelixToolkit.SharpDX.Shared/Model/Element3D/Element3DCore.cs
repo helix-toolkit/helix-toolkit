@@ -20,9 +20,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model
     /// 
     /// </summary>
 #if NETFX_CORE
-    public abstract class Element3DCore : IDisposable, IRenderable, IGUID, ITransform, INotifyPropertyChanged
+    public abstract class Element3DCore : IDisposable, ITransform
 #else
-    public abstract class Element3DCore : FrameworkContentElement, IDisposable, INotifyPropertyChanged
+    public abstract class Element3DCore : FrameworkContentElement, IDisposable
 #endif
     {
         /// <summary>
@@ -153,85 +153,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         {
             SceneNode.InvalidateRender();
         }
-
-        #region INotifyPropertyChanged
-        /// <summary>
-        /// Occurs when [property changed].
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-        private bool disablePropertyChangedEvent = false;
-        /// <summary>
-        /// Gets or sets a value indicating whether [disable property changed event].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [disable property changed event]; otherwise, <c>false</c>.
-        /// </value>
-        public bool DisablePropertyChangedEvent
-        {
-            set
-            {
-                if (disablePropertyChangedEvent == value)
-                {
-                    return;
-                }
-                disablePropertyChangedEvent = value;
-                RaisePropertyChanged();
-            }
-            get
-            {
-                return disablePropertyChangedEvent;
-            }
-        }
-        /// <summary>
-        /// Raises the property changed.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            if (!DisablePropertyChangedEvent)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        /// <summary>
-        /// Sets the specified backing field.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="backingField">The backing field.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns></returns>
-        protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(backingField, value))
-            {
-                return false;
-            }
-
-            backingField = value;
-            this.RaisePropertyChanged(propertyName);
-            return true;
-        }
-        /// <summary>
-        /// Sets the specified backing field.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="backingField">The backing field.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="raisePropertyChanged">if set to <c>true</c> [raise property changed].</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns></returns>
-        protected bool Set<T>(ref T backingField, T value, bool raisePropertyChanged, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(backingField, value))
-            {
-                return false;
-            }
-
-            backingField = value;
-            if (raisePropertyChanged)
-            { this.RaisePropertyChanged(propertyName); }
-            return true;
-        }
-#endregion
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls        

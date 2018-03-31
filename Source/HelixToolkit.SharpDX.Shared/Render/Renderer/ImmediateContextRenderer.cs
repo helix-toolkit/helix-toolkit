@@ -19,14 +19,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using Core;
     using System;
     using Model.Scene;
-
+    using Model.Scene2D;
     /// <summary>
     /// 
     /// </summary>
     public class ImmediateContextRenderer : DisposeObject, IRenderer
     {
         private readonly Stack<KeyValuePair<int, IList<SceneNode>>> stackCache1 = new Stack<KeyValuePair<int, IList<SceneNode>>>(20);
-        private readonly Stack<KeyValuePair<int, IList<IRenderable2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<IRenderable2D>>>(20);
+        private readonly Stack<KeyValuePair<int, IList<SceneNode2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20);
         protected readonly List<RenderCore> filters = new List<RenderCore>();
         /// <summary>
         /// Gets or sets the immediate context.
@@ -72,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <returns></returns>
-        public void UpdateSceneGraph2D(IRenderContext2D context, List<IRenderable2D> renderables)
+        public void UpdateSceneGraph2D(IRenderContext2D context, List<SceneNode2D> renderables)
         {
             renderables.PreorderDFTRun((x) =>
             {
@@ -172,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderScene2D(IRenderContext2D context, List<IRenderable2D> renderables, ref RenderParameter2D parameter)
+        public virtual void RenderScene2D(IRenderContext2D context, List<SceneNode2D> renderables, ref RenderParameter2D parameter)
         {
             int count = renderables.Count;
             for (int i = 0; i < count; ++ i)

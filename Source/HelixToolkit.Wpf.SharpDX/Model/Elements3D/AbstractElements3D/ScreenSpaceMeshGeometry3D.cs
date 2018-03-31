@@ -222,6 +222,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
+    using Model.Scene2D;
+    using HorizontalAlignment = System.Windows.HorizontalAlignment;
+    using VerticalAlignment = System.Windows.VerticalAlignment;
+    using Thickness = System.Windows.Thickness;
+    using Visibility = System.Windows.Visibility;
     /// <summary>
     /// 
     /// </summary>
@@ -262,20 +267,13 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty EnableMoverProperty =
             DependencyProperty.Register("EnableMover", typeof(bool), typeof(ScreenSpacePositionMover), new PropertyMetadata(true, (d, e) =>
             {
-                (d as ScreenSpacePositionMover).enableMover = (bool)e.NewValue;
+                ((d as Element2D).SceneNode as Node2DMoverBase).EnableMover = (bool)e.NewValue;
             }));
 
         /// <summary>
         /// Occurs when [on move clicked].
         /// </summary>
         public event EventHandler<ScreenSpaceMoveDirArgs> OnMoveClicked;
-
-        protected bool enableMover { private set; get; } = true;
-
-        protected override bool CanRender(IRenderContext2D context)
-        {
-            return base.CanRender(context) && enableMover;
-        }
 
         /// <summary>
         /// Raises the on move click.
@@ -284,6 +282,15 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected void RaiseOnMoveClick(ScreenSpaceMoveDirection direction)
         {
             OnMoveClicked?.Invoke(this, new ScreenSpaceMoveDirArgs(direction));
+        }
+
+        public abstract class Node2DMoverBase : Node2DPanel
+        {
+            public bool EnableMover { set; get; } = true;
+            protected override bool CanRender(IRenderContext2D context)
+            {
+                return base.CanRender(context) && EnableMover;
+            }
         }
     }
 
@@ -354,35 +361,48 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             MoveLeftTop.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.LeftTop); };
             MoveLeftBottom.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.LeftBottom); };
             MoveRightTop.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.RightTop); };
-            MoveRightBottom.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.RightBottom); };
+            MoveRightBottom.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.RightBottom); };         
         }
 
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="mousePoint">The mouse point.</param>
-        /// <param name="hitResult">The hit result.</param>
-        /// <returns></returns>
-        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
+        protected override SceneNode2D OnCreateSceneNode()
         {
-            hitResult = null;
-            if (!enableMover)
-            { return false; }
-            if (LayoutBoundWithTransform.Contains(mousePoint))
+            return new Node2DMover() { Buttons = buttons };
+        }
+
+        public sealed class Node2DMover : Node2DMoverBase
+        {
+            public Button2D[] Buttons
             {
-                foreach (var b in buttons)
-                {
-                    b.Visibility = Visibility.Visible;
-                }
-                return base.OnHitTest(ref mousePoint, out hitResult);
+                set;
+                get;
             }
-            else
+            /// <summary>
+            /// Called when [hit test].
+            /// </summary>
+            /// <param name="mousePoint">The mouse point.</param>
+            /// <param name="hitResult">The hit result.</param>
+            /// <returns></returns>
+            protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
             {
-                foreach (var b in buttons)
+                hitResult = null;
+                if (!EnableMover)
+                { return false; }
+                if (LayoutBoundWithTransform.Contains(mousePoint))
                 {
-                    b.Visibility = Visibility.Hidden;
+                    foreach (var b in Buttons)
+                    {
+                        b.Visibility = System.Windows.Visibility.Visible;
+                    }
+                    return base.OnHitTest(ref mousePoint, out hitResult);
                 }
-                return false;
+                else
+                {
+                    foreach (var b in Buttons)
+                    {
+                        b.Visibility = System.Windows.Visibility.Hidden;
+                    }
+                    return false;
+                }
             }
         }
     }

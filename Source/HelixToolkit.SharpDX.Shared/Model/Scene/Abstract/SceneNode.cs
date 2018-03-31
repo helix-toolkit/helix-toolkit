@@ -171,7 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public virtual IList<SceneNode> Items
         {
             get;
-        } = Constants.EmptyRenderable;
+        } = Constants.EmptyRenderableArray;
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is hit test visible.

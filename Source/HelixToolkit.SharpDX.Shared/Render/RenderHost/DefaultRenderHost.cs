@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using Core;
     using HelixToolkit.Logger;
     using Model.Scene;
-
+    using Model.Scene2D;
     /// <summary>
     /// 
     /// </summary>
@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// The viewport renderable2D
         /// </summary>
-        protected readonly List<IRenderable2D> viewportRenderable2D = new List<IRenderable2D>();
+        protected readonly List<SceneNode2D> viewportRenderable2D = new List<SceneNode2D>();
 
         /// <summary>
         /// Gets the current frame renderables.

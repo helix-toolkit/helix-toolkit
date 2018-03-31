@@ -3,20 +3,21 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
-#if !NETFX_CORE
-#if DEBUG
-//#define DEBUGCACHECREATE
-#endif
 using SharpDX;
-using SharpDX.DXGI;
+using global::SharpDX.DXGI;
 
-namespace HelixToolkit.Wpf.SharpDX.Core2D
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Model.Scene2D
+#else
+
+namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
+#endif
 {
-    using System.Diagnostics;
+
     using Utilities;
-    public abstract partial class Element2DCore
+    public partial class SceneNode2D
     {
-#pragma warning disable 
+#pragma warning disable
         /// <summary>
         /// The minimum bitmap size by Bytes. Default 2048 * B8G8R8A8 format = 64kb. 
         /// <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd372260%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396">Here</see>
@@ -29,14 +30,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <value>
         ///   <c>true</c> if [enable bitmap cache]; otherwise, <c>false</c>.
         /// </value>
-        internal bool EnableBitmapCacheInternal { set; get; } = true;
+        public bool EnableBitmapCache { set; get; } = true;
         /// <summary>
         /// Gets or sets a value indicating whether this instance is bitmap cache valid.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is bitmap cache valid; otherwise, <c>false</c>.
         /// </value>
-        internal bool IsBitmapCacheValid { set; get; } = false;
+        public bool IsBitmapCacheValid { set; get; } = false;
 
         private BitmapProxy bitmapCache;
 
@@ -49,7 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         private void EnsureBitmapCache(IRenderContext2D context, Size2 size, int maxSize)
         {
             IsBitmapCacheValid = false;
-            if (size.Width == 0 || size.Height == 0 || !EnableBitmapCacheInternal || size.Width * size.Height < MinimumBitmapSize)
+            if (size.Width == 0 || size.Height == 0 || !EnableBitmapCache || size.Width * size.Height < MinimumBitmapSize)
             {
                 Disposer.RemoveAndDispose(ref bitmapCache);
             }
@@ -74,4 +75,3 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
     }
 }
-#endif

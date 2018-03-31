@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Core2D;
+    using Model.Scene2D;
 
     public interface IRenderable2D : ITransform2D, IGUID
     {
@@ -55,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Optional for scene graph traverse
         /// </summary>
-        IList<IRenderable2D> Items { get; }
+        IList<SceneNode2D> Items { get; }
 
         RenderCore2D RenderCore { get; }
         /// <summary>

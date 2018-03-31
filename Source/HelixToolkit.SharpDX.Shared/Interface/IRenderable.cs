@@ -17,6 +17,7 @@ namespace HelixToolkit.UWP
     using System;
     using Render;
     using Model.Scene;
+    using Model.Scene2D;
     /// <summary>
     /// 
     /// </summary>
@@ -135,7 +136,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The d2 d renderables.
         /// </value>
-        IEnumerable<IRenderable2D> D2DRenderables { get; }
+        IEnumerable<SceneNode2D> D2DRenderables { get; }
         /// <summary>
         /// Invalidates the render.
         /// </summary>

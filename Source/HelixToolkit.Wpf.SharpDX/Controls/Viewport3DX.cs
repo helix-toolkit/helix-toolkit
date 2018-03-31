@@ -28,6 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using MouseButtons = System.Windows.Forms.MouseButtons;
     using Model;
     using Model.Scene;
+    using Model.Scene2D;
     /// <summary>
     /// Provides a Viewport control.
     /// </summary>
@@ -237,12 +238,12 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public IEnumerable<IRenderable2D> D2DRenderables
+        public IEnumerable<SceneNode2D> D2DRenderables
         {
             get
             {
-                yield return overlay2D;
-                yield return frameStatisticModel;
+                yield return overlay2D.SceneNode;
+                yield return frameStatisticModel.SceneNode;
             }
         }
 
@@ -625,7 +626,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
                 this.renderHostInternal.Viewport = this;
                 this.renderHostInternal.EffectsManager = this.EffectsManager;
-                this.renderHostInternal.IsRendering = this.Visibility == Visibility.Visible;
+                this.renderHostInternal.IsRendering = this.Visibility == System.Windows.Visibility.Visible;
                 this.renderHostInternal.RenderConfiguration.RenderD2D = EnableD2DRendering;
                 this.renderHostInternal.RenderConfiguration.AutoUpdateOctree = EnableAutoOctreeUpdate;
                 if (ShowFrameRate)

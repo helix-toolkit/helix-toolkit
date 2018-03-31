@@ -1,21 +1,76 @@
 ﻿/*
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
-Reference from https://jeremiahmorrill.wordpress.com/2013/02/06/direct2d-gui-librarygraphucks/
 */
 
-#if !NETFX_CORE
 using SharpDX;
 using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Windows;
-namespace HelixToolkit.Wpf.SharpDX.Core2D
+
+#if NETFX_CORE
+namespace HelixToolkit.UWP.Model.Scene2D
+#else
+
+namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
+#endif
 {
-    public abstract partial class Element2DCore
+    public enum HorizontalAlignment
     {
-#region layout management        
-#region Properties
+        Left, Right, Center, Stretch
+    }
+
+    public enum VerticalAlignment
+    {
+        Top, Bottom, Center, Stretch
+    }
+    public enum Visibility
+    {
+        Visible, Collapsed, Hidden
+    }
+
+    public enum Orientation
+    {
+        Horizontal, Vertical
+    }
+
+    public struct Thickness : IEquatable<Thickness>
+    {
+        public float Left;
+        public float Right;
+        public float Top;
+        public float Bottom;
+
+        public Thickness(float size)
+        {
+            Left = size;
+            Right = size;
+            Top = size;
+            Bottom = size;
+        }
+
+        public Thickness(float left, float right, float top, float bottom)
+        {
+            Left = left;
+            Right = right;
+            Top = top;
+            Bottom = bottom;
+        }
+
+        public bool Equals(Thickness other)
+        {
+            return this.Left == other.Left && this.Right == other.Right && this.Top == other.Top && this.Bottom == other.Bottom;
+        }
+
+        public static implicit operator Vector4(Thickness t)
+        {
+            return new Vector4(t.Left, t.Top, t.Right, t.Bottom);
+        }
+    }
+
+    public partial class SceneNode2D
+    {
+        #region layout management        
+        #region Properties
         /// <summary>
         /// Gets or sets a value indicating whether this instance is measure dirty.
         /// </summary>
@@ -43,157 +98,157 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <value>
         ///   <c>true</c> if this instance is visual dirty; otherwise, <c>false</c>.
         /// </value>
-        internal bool IsVisualDirty { set; get; } = true;
+        public bool IsVisualDirty { set; get; } = true;
 
-        private Thickness marginInternal = new Thickness();
-        internal Thickness MarginInternal
+        private Thickness margin = new Thickness();
+        public Thickness Margin
         {
             set
             {
-                if (Set(ref marginInternal, value))
+                if (Set(ref margin, value))
                 {
-                    MarginWidthHeight = new Vector2((float)(value.Left + value.Right), (float)(value.Top + value.Bottom));
+                    MarginWidthHeight = new Vector2((value.Left + value.Right), (value.Top + value.Bottom));
                     InvalidateMeasure();
                 }
             }
             get
             {
-                return marginInternal;
+                return margin;
             }
         }
 
         protected Vector2 MarginWidthHeight { private set; get; }
 
-        private float widthInternal = float.PositiveInfinity;
-        internal float WidthInternal
+        private float width = float.PositiveInfinity;
+        public float Width
         {
             set
             {
-                if (Set(ref widthInternal, value))
+                if (Set(ref width, value))
                 {
                     InvalidateMeasure();
                 }
             }
             get
             {
-                return widthInternal;
+                return width;
             }
         }
 
 
-        private float heightInternal = float.PositiveInfinity;
-        internal float HeightInternal
+        private float height = float.PositiveInfinity;
+        public float Height
         {
             set
             {
-                if (Set(ref heightInternal, value))
+                if (Set(ref height, value))
                 {
                     InvalidateMeasure();
                 }
             }
             get
             {
-                return heightInternal;
+                return height;
             }
         }
 
-        private float minimumWidthInternal = 0;
-        internal float MinimumWidthInternal
+        private float minimumWidth = 0;
+        public float MinimumWidth
         {
             set
             {
-                if (Set(ref minimumWidthInternal, value) && value > widthInternal)
+                if (Set(ref minimumWidth, value) && value > width)
                 {
                     InvalidateMeasure();
                 }
             }
             get
             {
-                return minimumWidthInternal;
+                return minimumWidth;
             }
         }
 
 
-        private float minimumHeightInternal = 0;
-        internal float MinimumHeightInternal
+        private float minimumHeight = 0;
+        public float MinimumHeight
         {
             set
             {
-                if (Set(ref minimumHeightInternal, value) && value > heightInternal)
+                if (Set(ref minimumHeight, value) && value > height)
                 {
                     InvalidateMeasure();
                 }
             }
             get
             {
-                return minimumHeightInternal;
+                return minimumHeight;
             }
         }
 
-        private float maximumWidthInternal = float.PositiveInfinity;
-        internal float MaximumWidthInternal
+        private float maximumWidth = float.PositiveInfinity;
+        public float MaximumWidth
         {
             set
             {
-                if (Set(ref maximumWidthInternal, value) && value < widthInternal)
+                if (Set(ref maximumWidth, value) && value < width)
                 {
                     InvalidateMeasure();
                 }
             }
             get
             {
-                return maximumWidthInternal;
+                return maximumWidth;
             }
         }
 
 
-        private float maximumHeightInternal = float.PositiveInfinity;
-        internal float MaximumHeightInternal
+        private float maximumHeight = float.PositiveInfinity;
+        public float MaximumHeight
         {
             set
             {
-                if (Set(ref maximumHeightInternal, value) && value < heightInternal)
+                if (Set(ref maximumHeight, value) && value < height)
                 {
                     InvalidateMeasure();
                 }
             }
             get
             {
-                return maximumHeightInternal;
+                return maximumHeight;
             }
         }
 
 
-        private HorizontalAlignment horizontalAlignmentInternal = HorizontalAlignment.Stretch;
-        internal HorizontalAlignment HorizontalAlignmentInternal
+        private HorizontalAlignment horizontalAlignment = HorizontalAlignment.Stretch;
+        public HorizontalAlignment HorizontalAlignment
         {
             set
             {
-                if (Set(ref horizontalAlignmentInternal, value))
+                if (Set(ref horizontalAlignment, value))
                 {
                     InvalidateArrange();
                 }
             }
             get
             {
-                return horizontalAlignmentInternal;
+                return horizontalAlignment;
             }
         }
 
 
-        private VerticalAlignment verticalAlignmentInternal = VerticalAlignment.Stretch;
-        internal VerticalAlignment VerticalAlignmentInternal
+        private VerticalAlignment verticalAlignment = VerticalAlignment.Stretch;
+        public VerticalAlignment VerticalAlignment
         {
             set
             {
-                if (Set(ref verticalAlignmentInternal, value))
+                if (Set(ref verticalAlignment, value))
                 {
                     InvalidateArrange();
                 }
             }
             get
             {
-                return verticalAlignmentInternal;
+                return verticalAlignment;
             }
         }
         private Vector2 layoutOffset = Vector2.Zero;
@@ -228,17 +283,17 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
-        private Vector2 renderTransformOriginInternal = new Vector2(0.5f, 0.5f);
-        internal Vector2 RenderTransformOriginInternal
+        private Vector2 renderTransformOrigin = new Vector2(0.5f, 0.5f);
+        public Vector2 RenderTransformOrigin
         {
             set
             {
-                if (Set(ref renderTransformOriginInternal, value))
+                if (Set(ref renderTransformOrigin, value))
                 {
                     InvalidateRender();
                 }
             }
-            get { return renderTransformOriginInternal; }
+            get { return renderTransformOrigin; }
         }
         /// <summary>
         /// Gets the size of the desired size after measure.
@@ -255,7 +310,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// </value>
         public Vector2 UnclippedDesiredSize { get; private set; } = new Vector2(-1, -1);
 
-        private Vector2 Size { get { return new Vector2(widthInternal, heightInternal); } }
+        private Vector2 Size { get { return new Vector2(width, height); } }
 
         public bool ClipEnabled { private set; get; } = false;
 
@@ -289,8 +344,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         private Size2F? previousMeasureSize;
-        private RectangleF? previousArrange; 
-#endregion
+        private RectangleF? previousArrange;
+        #endregion
 
         public void InvalidateMeasure()
         {
@@ -298,7 +353,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             IsMeasureDirty = true;
             TraverseUp(this, (p) =>
             {
-                if(p.IsArrangeDirty && p.IsMeasureDirty)
+                if (p.IsArrangeDirty && p.IsMeasureDirty)
                 {
                     return false;
                 }
@@ -388,20 +443,20 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static void TraverseUp(Element2DCore core, Func<Element2DCore, bool> action)
+        protected static void TraverseUp(SceneNode2D core, Func<SceneNode2D, bool> action)
         {
-            var ancestor = core.Parent as Element2DCore;
+            var ancestor = core.Parent as SceneNode2D;
             while (ancestor != null)
             {
                 if (!action(ancestor))
                 { break; }
-                ancestor = ancestor.Parent as Element2DCore;
+                ancestor = ancestor.Parent as SceneNode2D;
             }
         }
 
         public void Measure(Size2F size)
         {
-            if (!IsAttached || VisibilityInternal == Visibility.Collapsed || (!IsMeasureDirty && previousMeasureSize == size))
+            if (!IsAttached || Visibility == Visibility.Collapsed || (!IsMeasureDirty && previousMeasureSize == size))
             {
                 return;
             }
@@ -469,7 +524,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         public void Arrange(RectangleF rect)
         {
-            if (!IsAttached || VisibilityInternal == Visibility.Collapsed)
+            if (!IsAttached || Visibility == Visibility.Collapsed)
             {
                 return;
             }
@@ -494,7 +549,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 return;
             previousArrange = rect;
             var arrangeSize = rectWidthHeight;
-            
+
 
             ClipEnabled = false;
             var desiredSize = DesiredSize;
@@ -523,12 +578,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 arrangeSize.Y = desiredSize.Y;
             }
 
-            if (HorizontalAlignmentInternal != HorizontalAlignment.Stretch)
+            if (HorizontalAlignment != HorizontalAlignment.Stretch)
             {
                 arrangeSize.X = desiredSize.X;
             }
 
-            if (VerticalAlignmentInternal != VerticalAlignment.Stretch)
+            if (VerticalAlignment != VerticalAlignment.Stretch)
             {
                 arrangeSize.Y = desiredSize.Y;
             }
@@ -552,7 +607,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
 
             var oldRenderSize = RenderSize;
-            var arrangeResultSize = ArrangeOverride(new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, arrangeSize.X - MarginWidthHeight.X, arrangeSize.Y - MarginWidthHeight.Y)).ToVector2();
+            var arrangeResultSize = ArrangeOverride(new RectangleF(Margin.Left, Margin.Top, arrangeSize.X - MarginWidthHeight.X, arrangeSize.Y - MarginWidthHeight.Y)).ToVector2();
 
             bool arrangeSizeChanged = arrangeResultSize != oldRenderSize;
             if (arrangeSizeChanged)
@@ -577,8 +632,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
             var layoutOffset = Vector2.Zero;
 
-            var tempHorizontalAlign = HorizontalAlignmentInternal;
-            var tempVerticalAlign = VerticalAlignmentInternal;
+            var tempHorizontalAlign = HorizontalAlignment;
+            var tempVerticalAlign = VerticalAlignment;
 
             if (tempHorizontalAlign == HorizontalAlignment.Stretch && clippedArrangeResultSize.X >= clientSize.X)
             {
@@ -630,10 +685,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         private void CalculateMinMax(ref Vector2 minSize, ref Vector2 maxSize)
         {
-            maxSize.Y = MaximumHeightInternal;
-            minSize.Y = MinimumHeightInternal;
+            maxSize.Y = MaximumHeight;
+            minSize.Y = MinimumHeight;
 
-            var dimensionLength = HeightInternal;
+            var dimensionLength = Height;
 
             float height = dimensionLength;
 
@@ -643,10 +698,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
             minSize.Y = Math.Max(Math.Min(maxSize.Y, height), minSize.Y);
 
-            maxSize.X = MaximumWidthInternal;
-            minSize.X = MinimumWidthInternal;
+            maxSize.X = MaximumWidth;
+            minSize.X = MinimumWidth;
 
-            dimensionLength = WidthInternal;
+            dimensionLength = Width;
 
             float width = dimensionLength;
 
@@ -659,14 +714,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         private void UpdateLayoutInternal()
         {
-            LayoutBound = new RectangleF((float)MarginInternal.Left, (float)MarginInternal.Top, RenderSize.X, RenderSize.Y);
+            LayoutBound = new RectangleF((float)Margin.Left, (float)Margin.Top, RenderSize.X, RenderSize.Y);
             LayoutClipBound = new RectangleF(0, 0, RenderSize.X + MarginWidthHeight.X, RenderSize.Y + MarginWidthHeight.Y);
             LayoutTranslate = Matrix3x2.Translation((float)Math.Round(LayoutOffsets.X), (float)Math.Round(LayoutOffsets.Y));
         }
 
         protected virtual RectangleF ArrangeOverride(RectangleF finalSize)
         {
-            for(int i = 0; i < Items.Count; ++i)
+            for (int i = 0; i < Items.Count; ++i)
             {
                 Items[i].Arrange(finalSize);
             }
@@ -681,7 +736,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
             return availableSize;
         }
-#endregion
+        #endregion
     }
 }
-#endif
