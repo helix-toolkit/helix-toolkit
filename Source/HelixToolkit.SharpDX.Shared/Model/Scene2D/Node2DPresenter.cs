@@ -22,8 +22,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             {
                 if (content != value)
                 {
-                    content.Detach();
-                    content.Parent = null;
+                    if(content != null)
+                    {
+                        content.Detach();
+                        content.Parent = null;
+                    }
                     content = value;
                     contentArray[0] = value;
                     if (content != null)

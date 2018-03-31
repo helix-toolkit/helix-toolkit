@@ -255,8 +255,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private Overlay overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
 
-        private bool useSwapChain = false;
-
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
@@ -606,12 +604,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     dpiXScale = 1.0 / source.CompositionTarget.TransformToDevice.M11;
                     dpiYScale = 1.0 / source.CompositionTarget.TransformToDevice.M22;
                 }
-                useSwapChain = true;
                 hostPresenter.Content = new DPFSurfaceSwapChain(EnableDeferredRendering) { DPIXScale = dpiXScale, DPIYScale = dpiYScale };
             }
             else
             {
-                useSwapChain = false;
                 hostPresenter.Content = new DPFCanvas(EnableDeferredRendering);
             }
             renderHostInternal = (hostPresenter.Content as IRenderCanvas).RenderHost;
