@@ -953,18 +953,6 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
         {            
             base.OnPreviewMouseDown(e);
-            if (useSwapChain) { return; }
-            if (this.touchDownDevice == null)
-            {
-                this.Focus();
-                this.MouseDownHitTest(e.GetPosition(this), e);
-            }
-        }
-
-        protected override void OnMouseDown(MouseButtonEventArgs e)
-        {
-            base.OnMouseDown(e);
-            if (!useSwapChain) { return; }
             if (this.touchDownDevice == null)
             {
                 this.Focus();
