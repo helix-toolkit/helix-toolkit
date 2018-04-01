@@ -3,11 +3,9 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
-using SharpDX;
-using System;
 using global::SharpDX.Direct2D1;
 using global::SharpDX.DirectWrite;
-
+using SharpDX;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene2D
@@ -18,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 {
     using Core2D;
 
-    public class Node2DText : SceneNode2D
+    public class TextNode2D : SceneNode2D
     {
         public string Text
         {
@@ -128,9 +126,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
         }
 
-
-
         private TextRenderCore2D textRenderable;
+
         protected override RenderCore2D CreateRenderCore()
         {
             textRenderable = new TextRenderCore2D();

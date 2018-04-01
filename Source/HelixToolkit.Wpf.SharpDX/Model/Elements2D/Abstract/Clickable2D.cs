@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected override SceneNode2D OnCreateSceneNode()
         {
-            return new Node2DClickable();
+            return new ClickableNode2D();
         }
 
         private void Clickable2D_MouseLeave2D(object sender, Mouse2DEventArgs e)

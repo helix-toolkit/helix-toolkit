@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
     using Core2D;
     using global::SharpDX.Direct2D1;
 
-    public class Node2DFrameStatistics : SceneNode2D
+    public class FrameStatisticsNode2D : SceneNode2D
     {
         public Brush Foreground
         {
@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
         }
 
-        public Node2DFrameStatistics()
+        public FrameStatisticsNode2D()
         {
             HorizontalAlignment = HorizontalAlignment.Right;
             VerticalAlignment = VerticalAlignment.Top;

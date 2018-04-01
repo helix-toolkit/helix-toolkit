@@ -3,11 +3,11 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
+using global::SharpDX.Direct2D1;
+using global::SharpDX.WIC;
 using SharpDX;
 using System;
 using System.IO;
-using global::SharpDX.Direct2D1;
-using global::SharpDX.WIC;
 using Bitmap = SharpDX.Direct2D1.Bitmap;
 
 #if NETFX_CORE
@@ -19,15 +19,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 {
     using Core2D;
 
-
-    public class Node2DImage : SceneNode2D
+    public class ImageNode2D : SceneNode2D
     {
         private Stream imageStream;
+
         public Stream ImageStream
         {
             set
             {
-                if(SetAffectsMeasure(ref imageStream, value))
+                if (SetAffectsMeasure(ref imageStream, value))
                 {
                     bitmapChanged = true;
                 }
@@ -110,7 +110,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 {
                     return new Size2F(Math.Min(availableSize.Width, imageSize.Width), Math.Min(availableSize.Height, imageSize.Height));
                 }
-                else if(imageSize.Width == 0 || imageSize.Height == 0)
+                else if (imageSize.Width == 0 || imageSize.Height == 0)
                 {
                     return availableSize;
                 }

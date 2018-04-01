@@ -32,13 +32,13 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             DependencyProperty.Register("Orientation", typeof(Orientation), typeof(StackPanel2D), new PropertyMetadata(Orientation.Horizontal, 
                 (d, e) => 
                 {
-                    ((d as Element2DCore).SceneNode as Node2DStackPanel).Orientation = ((Orientation)e.NewValue).ToD2DOrientation();
+                    ((d as Element2DCore).SceneNode as StackPanelNode2D).Orientation = ((Orientation)e.NewValue).ToD2DOrientation();
                 }));
 
 
         protected override SceneNode2D OnCreateSceneNode()
         {
-            return new Node2DStackPanel();
+            return new StackPanelNode2D();
         }
     }
 }

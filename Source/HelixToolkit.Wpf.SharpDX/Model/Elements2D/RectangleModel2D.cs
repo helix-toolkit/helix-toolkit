@@ -6,7 +6,7 @@
     {
         protected override SceneNode2D OnCreateSceneNode()
         {
-            return new Node2DRectangle();
+            return new RectangleNode2D();
         }
     }
 }

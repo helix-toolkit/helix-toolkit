@@ -14,63 +14,15 @@ namespace HelixToolkit.UWP.Model.Scene2D
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 #endif
 {
-    public enum HorizontalAlignment
-    {
-        Left, Right, Center, Stretch
-    }
-
-    public enum VerticalAlignment
-    {
-        Top, Bottom, Center, Stretch
-    }
-    public enum Visibility
-    {
-        Visible, Collapsed, Hidden
-    }
-
-    public enum Orientation
-    {
-        Horizontal, Vertical
-    }
-
-    public struct Thickness : IEquatable<Thickness>
-    {
-        public float Left;
-        public float Right;
-        public float Top;
-        public float Bottom;
-
-        public Thickness(float size)
-        {
-            Left = size;
-            Right = size;
-            Top = size;
-            Bottom = size;
-        }
-
-        public Thickness(float left, float right, float top, float bottom)
-        {
-            Left = left;
-            Right = right;
-            Top = top;
-            Bottom = bottom;
-        }
-
-        public bool Equals(Thickness other)
-        {
-            return this.Left == other.Left && this.Right == other.Right && this.Top == other.Top && this.Bottom == other.Bottom;
-        }
-
-        public static implicit operator Vector4(Thickness t)
-        {
-            return new Vector4(t.Left, t.Top, t.Right, t.Bottom);
-        }
-    }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class SceneNode2D
     {
-        #region layout management        
+        #region layout management
+
         #region Properties
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is measure dirty.
         /// </summary>
@@ -78,6 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         ///   <c>true</c> if this instance is measure dirty; otherwise, <c>false</c>.
         /// </value>
         public bool IsMeasureDirty { protected set; get; } = true;
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is arrange dirty.
         /// </summary>
@@ -85,6 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         ///   <c>true</c> if this instance is arrange dirty; otherwise, <c>false</c>.
         /// </value>
         public bool IsArrangeDirty { protected set; get; } = true;
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is transform dirty.
         /// </summary>
@@ -92,6 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         ///   <c>true</c> if this instance is transform dirty; otherwise, <c>false</c>.
         /// </value>
         public bool IsTransformDirty { private set; get; } = true;
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is visual dirty.
         /// </summary>
@@ -101,6 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         public bool IsVisualDirty { set; get; } = true;
 
         private Thickness margin = new Thickness();
+
         public Thickness Margin
         {
             set
@@ -120,6 +76,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         protected Vector2 MarginWidthHeight { private set; get; }
 
         private float width = float.PositiveInfinity;
+
         public float Width
         {
             set
@@ -135,8 +92,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
         }
 
-
         private float height = float.PositiveInfinity;
+
         public float Height
         {
             set
@@ -153,6 +110,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private float minimumWidth = 0;
+
         public float MinimumWidth
         {
             set
@@ -168,8 +126,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
         }
 
-
         private float minimumHeight = 0;
+
         public float MinimumHeight
         {
             set
@@ -186,6 +144,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private float maximumWidth = float.PositiveInfinity;
+
         public float MaximumWidth
         {
             set
@@ -201,8 +160,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
         }
 
-
         private float maximumHeight = float.PositiveInfinity;
+
         public float MaximumHeight
         {
             set
@@ -218,8 +177,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
         }
 
-
         private HorizontalAlignment horizontalAlignment = HorizontalAlignment.Stretch;
+
         public HorizontalAlignment HorizontalAlignment
         {
             set
@@ -235,8 +194,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
         }
 
-
         private VerticalAlignment verticalAlignment = VerticalAlignment.Stretch;
+
         public VerticalAlignment VerticalAlignment
         {
             set
@@ -251,7 +210,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 return verticalAlignment;
             }
         }
+
         private Vector2 layoutOffset = Vector2.Zero;
+
         public Vector2 LayoutOffsets
         {
             private set
@@ -265,6 +226,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private Vector2 renderSize = Vector2.Zero;
+
         /// <summary>
         /// Gets the render size. Same as the <see cref="LayoutBound"/> size
         /// </summary>
@@ -284,6 +246,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private Vector2 renderTransformOrigin = new Vector2(0.5f, 0.5f);
+
         public Vector2 RenderTransformOrigin
         {
             set
@@ -295,6 +258,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
             get { return renderTransformOrigin; }
         }
+
         /// <summary>
         /// Gets the size of the desired size after measure.
         /// </summary>
@@ -302,6 +266,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// The size of the desired.
         /// </value>
         public Vector2 DesiredSize { get; private set; }
+
         /// <summary>
         /// Gets the size of the unclipped desired size after measure.
         /// </summary>
@@ -345,7 +310,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 
         private Size2F? previousMeasureSize;
         private RectangleF? previousArrange;
-        #endregion
+
+        #endregion Properties
 
         public void InvalidateMeasure()
         {
@@ -406,7 +372,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         public void InvalidateTransform()
         {
             IsTransformDirty = true;
-            TraverseUp(this, (e) => {
+            TraverseUp(this, (e) =>
+            {
                 if (e.IsTransformDirty)
                 { return false; }
                 e.IsTransformDirty = true;
@@ -549,7 +516,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 return;
             previousArrange = rect;
             var arrangeSize = rectWidthHeight;
-
 
             ClipEnabled = false;
             var desiredSize = DesiredSize;
@@ -736,6 +702,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
             return availableSize;
         }
-        #endregion
+
+        #endregion layout management
     }
 }

@@ -12,7 +12,7 @@ namespace HelixToolkit.UWP.Model.Scene2D
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 #endif
 {
-    public class Node2DClickable : Node2DBorder
+    public class ClickableNode2D : BorderNode2D
     {
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {

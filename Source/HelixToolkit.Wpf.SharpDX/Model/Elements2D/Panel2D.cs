@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 {
                     this.RemoveLogicalChild(item.WrapperSource);
                 }
-                (SceneNode as Node2DPanel).Clear();
+                (SceneNode as PanelNode2D).Clear();
                 if (IsAttached)
                 {
                     AttachChildren(sender as IEnumerable);
@@ -59,7 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected void AttachChildren(IEnumerable children)
         {
-            var s = SceneNode as Node2DPanel;
+            var s = SceneNode as PanelNode2D;
             foreach (Element2D c in children)
             {
                 if (c.Parent == null)
@@ -72,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected void DetachChildren(IEnumerable children)
         {
-            var s = SceneNode as Node2DPanel;
+            var s = SceneNode as PanelNode2D;
             foreach (Element2D c in children)
             {
                 if (c.Parent == this)
@@ -97,7 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected override SceneNode2D OnCreateSceneNode()
         {
-            return new Node2DPanel();
+            return new PanelNode2D();
         }
     }
 }

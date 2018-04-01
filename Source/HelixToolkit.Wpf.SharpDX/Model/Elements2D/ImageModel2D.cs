@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             DependencyProperty.Register("ImageStream", typeof(Stream), typeof(ImageModel2D), new PropertyMetadata(null,
                 (d,e)=> 
                 {
-                    ((d as Element2DCore).SceneNode as Node2DImage).ImageStream = e.NewValue as Stream;
+                    ((d as Element2DCore).SceneNode as ImageNode2D).ImageStream = e.NewValue as Stream;
                 }));
 
 
@@ -52,13 +52,13 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty OpacityProperty =
             DependencyProperty.Register("Opacity", typeof(double), typeof(ImageModel2D), new PropertyMetadata(1.0, (d,e)=> 
             {
-                ((d as Element2DCore).SceneNode as Node2DImage).Opacity = (float)(double)e.NewValue;
+                ((d as Element2DCore).SceneNode as ImageNode2D).Opacity = (float)(double)e.NewValue;
             }));
 
 
         protected override SceneNode2D OnCreateSceneNode()
         {
-            return new Node2DImage();
+            return new ImageNode2D();
         }
     }
 }

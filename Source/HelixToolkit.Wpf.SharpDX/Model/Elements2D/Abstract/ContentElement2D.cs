@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             new PropertyMetadata(null, (d,e)=>
             {
                 var model = d as ContentElement2D;
-                var node = model.SceneNode as Node2DContent;
+                var node = model.SceneNode as ContentNode2D;
                 if(e.OldValue is Element2D old)
                 {
                     model.RemoveLogicalChild(old);                    
@@ -103,7 +103,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             DependencyProperty.Register("HorizontalContentAlignment", typeof(System.Windows.HorizontalAlignment), typeof(ContentElement2D), 
                 new PropertyMetadata(System.Windows.HorizontalAlignment.Center, (d,e)=>
                 {
-                    ((d as Element2DCore).SceneNode as Node2DContent).HorizontalContentAlignment = ((System.Windows.HorizontalAlignment)e.NewValue).ToD2DHorizontalAlignment();
+                    ((d as Element2DCore).SceneNode as ContentNode2D).HorizontalContentAlignment = ((System.Windows.HorizontalAlignment)e.NewValue).ToD2DHorizontalAlignment();
                 }));
 
 
@@ -117,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             DependencyProperty.Register("VerticalContentAlignment", typeof(System.Windows.VerticalAlignment), typeof(ContentElement2D), 
                 new PropertyMetadata(System.Windows.VerticalAlignment.Center, (d, e) => 
                 {
-                    ((d as Element2DCore).SceneNode as Node2DContent).VerticalContentAlignment = ((System.Windows.VerticalAlignment)e.NewValue).ToD2DVerticalAlignment();
+                    ((d as Element2DCore).SceneNode as ContentNode2D).VerticalContentAlignment = ((System.Windows.VerticalAlignment)e.NewValue).ToD2DVerticalAlignment();
                 }));
 
         private bool backgroundChanged = true;
@@ -127,7 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             base.OnUpdate(context);
             if (backgroundChanged)
             {
-                (SceneNode as Node2DContent).Background = Background.ToD2DBrush(context.DeviceContext);
+                (SceneNode as ContentNode2D).Background = Background.ToD2DBrush(context.DeviceContext);
                 backgroundChanged = false;
             }
         }

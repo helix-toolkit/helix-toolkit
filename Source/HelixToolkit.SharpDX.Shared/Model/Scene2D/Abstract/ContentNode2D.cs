@@ -6,7 +6,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using SharpDX.Direct2D1;
 using System;
-using System.Collections.Generic;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene2D
@@ -17,14 +16,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 {
     using Core2D;
 
-    public abstract class Node2DContent : Node2DPresenter
+    public abstract class ContentNode2D : PresenterNode2D
     {
         private HorizontalAlignment horizontalContentAlignment = HorizontalAlignment.Center;
+
         public HorizontalAlignment HorizontalContentAlignment
         {
             set
             {
-                if(Set(ref horizontalContentAlignment, value))
+                if (Set(ref horizontalContentAlignment, value))
                 {
                     InvalidateMeasure();
                 }
@@ -33,6 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private VerticalAlignment verticalContentAlignment = VerticalAlignment.Center;
+
         public VerticalAlignment VerticalContentAlignment
         {
             set

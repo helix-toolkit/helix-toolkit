@@ -19,18 +19,20 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
     using System.Runtime.CompilerServices;
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public abstract partial class SceneNode2D : DisposeObject, IHitable2D
-    {      
+    {
         public sealed class UpdateEventArgs : EventArgs
         {
             public IRenderContext2D Context { private set; get; }
+
             public UpdateEventArgs(IRenderContext2D context)
             {
                 Context = context;
             }
         }
+
         /// <summary>
         /// Gets the unique identifier.
         /// </summary>
@@ -38,6 +40,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// The unique identifier.
         /// </value>
         public Guid GUID { get; } = Guid.NewGuid();
+
         /// <summary>
         /// Gets or sets the parent.
         /// </summary>
@@ -47,6 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         public SceneNode2D Parent { set; get; }
 
         private Visibility visibility = Visibility.Visible;
+
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="SceneNode2D"/> is visible.
         /// </summary>
@@ -62,6 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
             get { return visibility; }
         }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is hit test visible.
         /// </summary>
@@ -69,6 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         ///   <c>true</c> if this instance is hit test visible; otherwise, <c>false</c>.
         /// </value>
         public bool IsHitTestVisible { set; get; } = true;
+
         /// <summary>
         /// Gets or sets the wrapper source used to link the external wrapper with the node.
         /// </summary>
@@ -76,6 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// The hit test source.
         /// </value>
         public object WrapperSource { set; get; }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is attached.
         /// </summary>
@@ -83,6 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         ///   <c>true</c> if this instance is attached; otherwise, <c>false</c>.
         /// </value>
         public bool IsAttached { private set; get; }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is renderable.
         /// </summary>
@@ -92,6 +100,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         public bool IsRenderable { private set; get; } = true;
 
         private RenderCore2D renderCore;
+
         /// <summary>
         /// Gets or sets the render core.
         /// </summary>
@@ -124,6 +133,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 return renderCore;
             }
         }
+
         /// <summary>
         /// Gets or sets the render host.
         /// </summary>
@@ -131,6 +141,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// The render host.
         /// </value>
         protected IRenderHost RenderHost { private set; get; }
+
         /// <summary>
         /// Gets the items.
         /// </summary>
@@ -140,6 +151,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         public virtual IList<SceneNode2D> Items { get; } = Constants.EmptyRenderable2D;
 
         private Matrix3x2 modelMatrix = Matrix3x2.Identity;
+
         /// <summary>
         /// Gets or sets the model matrix.
         /// </summary>
@@ -160,6 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private Matrix3x2 layoutTranslate = Matrix3x2.Identity;
+
         /// <summary>
         /// Gets or sets the layout translate.
         /// </summary>
@@ -179,6 +192,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private Matrix3x2 parentMatrix = Matrix3x2.Identity;
+
         /// <summary>
         /// Gets or sets the parent matrix.
         /// </summary>
@@ -198,6 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private Matrix3x2 totalTransform = Matrix3x2.Identity;
+
         /// <summary>
         /// Gets or sets the total model matrix.
         /// </summary>
@@ -223,6 +238,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 return totalTransform;
             }
         }
+
         /// <summary>
         /// Gets or sets the transform matrix relative to its parent
         /// </summary>
@@ -231,6 +247,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// </value>
         private Matrix3x2 RelativeMatrix
         { set; get; }
+
         /// <summary>
         /// Gets or sets the layout bound with transform.
         /// </summary>
@@ -241,6 +258,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         {
             private set; get;
         }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is mouse over.
         /// </summary>
@@ -260,11 +278,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         {
             WrapperSource = this;
         }
+
         /// <summary>
         /// Creates the render core.
         /// </summary>
         /// <returns></returns>
         protected virtual RenderCore2D CreateRenderCore() { return new EmptyRenderCore2D(); }
+
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>Attach Flow: Set RenderHost -> Get Effect ->
@@ -289,13 +309,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// <summary>
         /// To override Attach routine, please override this.
         /// </summary>
-        /// <param name="host"></param>       
+        /// <param name="host"></param>
         /// <returns>Return true if attached</returns>
         protected virtual bool OnAttach(IRenderHost host)
         {
             RenderCore.Attach(host);
             return true;
         }
+
         /// <summary>
         /// Detaches this instance.
         /// </summary>
@@ -310,6 +331,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 OnDetached?.Invoke(this, EventArgs.Empty);
             }
         }
+
         /// <summary>
         /// Called when [detach].
         /// </summary>
@@ -317,6 +339,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         {
             RenderHost = null;
         }
+
         /// <summary>
         /// Updates the specified context.
         /// </summary>
@@ -324,39 +347,44 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         public virtual void Update(IRenderContext2D context)
         {
             OnUpdate?.Invoke(this, new UpdateEventArgs(context));
-            IsRenderable = CanRender(context);           
+            IsRenderable = CanRender(context);
         }
 
-        #region Handling Transforms        
+        #region Handling Transforms
+
         /// <summary>
         /// Transforms the changed.
         /// </summary>
         /// <param name="totalTransform">The total transform.</param>
         protected virtual void TransformChanged(ref Matrix3x2 totalTransform)
         {
-
         }
+
         /// <summary>
         /// Occurs when [on transform changed].
         /// </summary>
         public event EventHandler<Transform2DArgs> OnTransformChanged;
 
-        #endregion
+        #endregion Handling Transforms
 
         #region Events;
+
         /// <summary>
         /// Occurs when [on attached].
         /// </summary>
         public event EventHandler OnAttached;
+
         /// <summary>
         /// Occurs when [on detached].
         /// </summary>
         public event EventHandler OnDetached;
+
         /// <summary>
         /// Occurs when [on update].
         /// </summary>
         public event EventHandler<UpdateEventArgs> OnUpdate;
-        #endregion;
+
+        #endregion Events;
 
         #region Rendering
 
@@ -369,6 +397,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         {
             return Visibility == Visibility.Visible && IsAttached;
         }
+
         /// <summary>
         /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
         /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
@@ -417,7 +446,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                     context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), LayoutClipBound,
                         InterpolationMode.Linear, global::SharpDX.Direct2D1.CompositeMode.SourceOver);
                 }
-
             }
             else if (context.HasTarget)
             {
@@ -446,6 +474,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 Render(context);
             }
         }
+
         /// <summary>
         /// Called when [render].
         /// </summary>
@@ -458,7 +487,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 Items[i].Render(context);
             }
         }
-        #endregion
+
+        #endregion Rendering
+
         /// <summary>
         /// Determines whether this instance [can hit test].
         /// </summary>
@@ -469,6 +500,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         {
             return IsAttached && IsHitTestVisible;
         }
+
         /// <summary>
         /// Called when [hit test].
         /// </summary>
@@ -476,6 +508,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// <param name="hitResult">The hit result.</param>
         /// <returns></returns>
         protected abstract bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult);
+
         /// <summary>
         /// Hits the test.
         /// </summary>
@@ -494,6 +527,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 return false;
             }
         }
+
         /// <summary>
         /// Use InvalidateVisual if render update required.
         /// </summary>
@@ -503,6 +537,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         {
             InvalidateVisual();
         }
+
         /// <summary>
         /// Invalidates the render.
         /// </summary>
@@ -519,7 +554,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="backingField"></param>
@@ -540,7 +575,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="backingField"></param>

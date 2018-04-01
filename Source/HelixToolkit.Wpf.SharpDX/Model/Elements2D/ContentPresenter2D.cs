@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             (d, e) =>
             {
                 var model = d as ContentPresenter2D;
-                var node = model.SceneNode as Node2DPresenter;
+                var node = model.SceneNode as PresenterNode2D;
                 if (e.OldValue is Element2D old)
                 {
                     model.RemoveLogicalChild(old);
@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected override SceneNode2D OnCreateSceneNode()
         {
-            return new Node2DPresenter();
+            return new PresenterNode2D();
         }
     }
 }

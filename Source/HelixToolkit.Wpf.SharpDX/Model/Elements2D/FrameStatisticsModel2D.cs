@@ -59,7 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected override SceneNode2D OnCreateSceneNode()
         {
-            return new Node2DFrameStatistics();
+            return new FrameStatisticsNode2D();
         }
 
         protected override void OnUpdate(IRenderContext2D context)
@@ -67,12 +67,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             base.OnUpdate(context);
             if (foregroundChanged)
             {
-                (SceneNode as Node2DFrameStatistics).Foreground = Foreground != null ? Foreground.ToD2DBrush(context.DeviceContext) : null;
+                (SceneNode as FrameStatisticsNode2D).Foreground = Foreground != null ? Foreground.ToD2DBrush(context.DeviceContext) : null;
                 foregroundChanged = false;
             }
             if (backgroundChanged)
             {
-                (SceneNode as Node2DFrameStatistics).Background = Background != null ? Background.ToD2DBrush(context.DeviceContext) : null;
+                (SceneNode as FrameStatisticsNode2D).Background = Background != null ? Background.ToD2DBrush(context.DeviceContext) : null;
                 backgroundChanged = false;
             }
         }

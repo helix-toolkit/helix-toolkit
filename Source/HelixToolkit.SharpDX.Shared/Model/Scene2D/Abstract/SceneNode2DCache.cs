@@ -3,8 +3,8 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
-using SharpDX;
 using global::SharpDX.DXGI;
+using SharpDX;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene2D
@@ -13,17 +13,20 @@ namespace HelixToolkit.UWP.Model.Scene2D
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 #endif
 {
-
     using Utilities;
+
     public partial class SceneNode2D
     {
 #pragma warning disable
+
         /// <summary>
-        /// The minimum bitmap size by Bytes. Default 2048 * B8G8R8A8 format = 64kb. 
+        /// The minimum bitmap size by Bytes. Default 2048 * B8G8R8A8 format = 64kb.
         /// <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd372260%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396">Here</see>
         /// </summary>
         private const int MinimumBitmapSize = 2048;
+
 #pragma warning restore
+
         /// <summary>
         /// Gets or sets a value indicating whether [enable bitmap cache].
         /// </summary>
@@ -31,6 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         ///   <c>true</c> if [enable bitmap cache]; otherwise, <c>false</c>.
         /// </value>
         public bool EnableBitmapCache { set; get; } = true;
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is bitmap cache valid.
         /// </summary>

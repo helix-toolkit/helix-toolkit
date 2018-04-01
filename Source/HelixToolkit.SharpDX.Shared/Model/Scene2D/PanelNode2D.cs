@@ -16,14 +16,14 @@ namespace HelixToolkit.UWP.Model.Scene2D
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 #endif
 {
-    public class Node2DPanel : SceneNode2D
+    public class PanelNode2D : SceneNode2D
     {
         protected readonly Dictionary<Guid, SceneNode2D> itemHashSet = new Dictionary<Guid, SceneNode2D>();
+
         public override IList<SceneNode2D> Items
         {
             get;
         } = new ObservableCollection<SceneNode2D>();
-
 
         public virtual bool AddChildNode(SceneNode2D node)
         {
@@ -40,6 +40,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
             else { return false; }
         }
+
         /// <summary>
         /// Clears this instance.
         /// </summary>
@@ -51,6 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
             itemHashSet.Clear();
         }
+
         /// <summary>
         /// Removes the child node.
         /// </summary>
@@ -70,6 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 return false;
             }
         }
+
         /// <summary>
         /// Tries the get node.
         /// </summary>
@@ -80,7 +83,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         {
             return itemHashSet.TryGetValue(guid, out node);
         }
-
 
         protected override bool OnAttach(IRenderHost host)
         {
@@ -99,7 +101,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
             base.OnDetach();
         }
-
 
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {

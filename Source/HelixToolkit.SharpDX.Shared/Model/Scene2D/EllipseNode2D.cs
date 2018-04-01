@@ -12,25 +12,17 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 #endif
 {
     using Core2D;
-    public class Node2DRectangle : Node2DShape
+    public class EllipseNode2D : ShapeNode2D
     {
         protected override ShapeRenderCore2DBase CreateShapeRenderCore()
         {
-            return new RectangleRenderCore2D();
+            return new EllipseRenderCore2D();
         }
 
         protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
         {
             hitResult = null;
-            if (LayoutBoundWithTransform.Contains(mousePoint))
-            {
-                hitResult = new HitTest2DResult(WrapperSource);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 }

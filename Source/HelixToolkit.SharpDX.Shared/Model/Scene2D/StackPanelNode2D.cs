@@ -13,9 +13,10 @@ namespace HelixToolkit.UWP.Model.Scene2D
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 #endif
 {
-    public class Node2DStackPanel : Node2DPanel
+    public class StackPanelNode2D : PanelNode2D
     {
         private Orientation orientation = Orientation.Horizontal;
+
         public Orientation Orientation
         {
             set
@@ -28,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
         }
 
-        public Node2DStackPanel()
+        public StackPanelNode2D()
         {
             EnableBitmapCache = true;
         }
@@ -43,6 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 case Orientation.Horizontal:
                     availableSize.Width = float.PositiveInfinity;
                     break;
+
                 case Orientation.Vertical:
                     availableSize.Height = float.PositiveInfinity;
                     break;
@@ -59,6 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                             size.Width += c.DesiredSize.X;
                             size.Height = Math.Max(size.Height, c.DesiredSize.Y);
                             break;
+
                         case Orientation.Vertical:
                             size.Width = Math.Max(c.DesiredSize.X, size.Width);
                             size.Height += c.DesiredSize.Y;
@@ -86,6 +89,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                             totalSize.Right = totalSize.Left + lastSize;
                             //totalSize.Bottom = totalSize.Top + Math.Min(finalSize.Height, c.DesiredSize.Y);
                             break;
+
                         case Orientation.Vertical:
                             totalSize.Top += lastSize;
                             lastSize = c.DesiredSize.Y;

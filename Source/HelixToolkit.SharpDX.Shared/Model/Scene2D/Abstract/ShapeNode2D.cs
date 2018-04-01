@@ -14,7 +14,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 #endif
 {
     using Core2D;
-    public abstract class Node2DShape : SceneNode2D
+
+    public abstract class ShapeNode2D : SceneNode2D
     {
         public Brush Fill
         {
@@ -27,6 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 return (RenderCore as ShapeRenderCore2DBase).FillBrush;
             }
         }
+
         public Brush Stroke
         {
             set { (RenderCore as ShapeRenderCore2DBase).StrokeBrush = value; }
@@ -34,6 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private CapStyle strokeDashCap = CapStyle.Flat;
+
         public CapStyle StrokeDashCap
         {
             set
@@ -47,6 +50,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private CapStyle strokeStartLineCap = CapStyle.Flat;
+
         public CapStyle StrokeStartLineCap
         {
             set
@@ -60,6 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private CapStyle strokeEndLineCap = CapStyle.Flat;
+
         public CapStyle StrokeEndLineCap
         {
             set
@@ -73,6 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private DashStyle strokeDashStyle = DashStyle.Solid;
+
         public DashStyle StrokeDashStyle
         {
             set
@@ -86,6 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private float strokeDashOffset = 0;
+
         public float StrokeDashOffset
         {
             set
@@ -99,6 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private LineJoin strokeLineJoin = LineJoin.Miter;
+
         public LineJoin StrokeLineJoin
         {
             set
@@ -115,6 +123,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private float strokeMiterLimit = 1;
+
         public float StrokeMiterLimit
         {
             set
@@ -140,11 +149,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private float[] strokeDashArray;
+
         public float[] StrokeDashArray
         {
             set
             {
-                if(SetAffectsRender(ref strokeDashArray, value))
+                if (SetAffectsRender(ref strokeDashArray, value))
                 {
                     strokeStyleChanged = true;
                 }
@@ -158,7 +168,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         private bool strokeStyleChanged = true;
 
         protected ShapeRenderCore2DBase shapeRenderable;
-
 
         protected override RenderCore2D CreateRenderCore()
         {
@@ -180,7 +189,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 return false;
             }
         }
-
 
         public override void Update(IRenderContext2D context)
         {

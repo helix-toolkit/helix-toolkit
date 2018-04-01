@@ -284,7 +284,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             OnMoveClicked?.Invoke(this, new ScreenSpaceMoveDirArgs(direction));
         }
 
-        public abstract class Node2DMoverBase : Node2DPanel
+        public abstract class Node2DMoverBase : PanelNode2D
         {
             public bool EnableMover { set; get; } = true;
             protected override bool CanRender(IRenderContext2D context)

@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("Text", typeof(string), typeof(TextModel2D), 
                 new PropertyMetadata("Text", (d,e)=>
                 {
-                    ((d as Element2DCore).SceneNode as Node2DText).Text = e.NewValue == null ? "" : (string)e.NewValue;
+                    ((d as Element2DCore).SceneNode as TextNode2D).Text = e.NewValue == null ? "" : (string)e.NewValue;
                 }));
 
         public string Text
@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("FontSize", typeof(int), typeof(TextModel2D),
                 new PropertyMetadata(12, (d, e) =>
                 {
-                    ((d as Element2DCore).SceneNode as Node2DText).FontSize = Math.Max(1, (int)e.NewValue);
+                    ((d as Element2DCore).SceneNode as TextNode2D).FontSize = Math.Max(1, (int)e.NewValue);
                 }));
 
         public int FontSize
@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(TextModel2D),
                 new PropertyMetadata(FontWeights.Normal, (d, e) =>
                 {
-                    ((d as Element2DCore).SceneNode as Node2DText).FontWeight = ((FontWeight)e.NewValue).ToDXFontWeight();
+                    ((d as Element2DCore).SceneNode as TextNode2D).FontWeight = ((FontWeight)e.NewValue).ToDXFontWeight();
                 }));
 
         public FontWeight FontWeight
@@ -120,7 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("FontStyle", typeof(FontStyle), typeof(TextModel2D),
                 new PropertyMetadata(FontStyles.Normal, (d, e) =>
                 {
-                    ((d as Element2DCore).SceneNode as Node2DText).FontStyle = ((FontStyle)e.NewValue).ToDXFontStyle();
+                    ((d as Element2DCore).SceneNode as TextNode2D).FontStyle = ((FontStyle)e.NewValue).ToDXFontStyle();
                 }));
 
         public FontStyle FontStyle
@@ -154,7 +154,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty TextAlignmentProperty =
             DependencyProperty.Register("TextAlignment", typeof(TextAlignment), typeof(TextModel2D), new PropertyMetadata(TextAlignment.Left, (d,e)=> 
             {
-                ((d as Element2DCore).SceneNode as Node2DText).TextAlignment = ((TextAlignment)e.NewValue).ToD2DTextAlignment();
+                ((d as Element2DCore).SceneNode as TextNode2D).TextAlignment = ((TextAlignment)e.NewValue).ToD2DTextAlignment();
             }));
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty FlowDirectionProperty =
             DependencyProperty.Register("FlowDirection", typeof(FlowDirection), typeof(TextModel2D), new PropertyMetadata(FlowDirection.LeftToRight, (d, e) =>
             {
-                ((d as Element2DCore).SceneNode as Node2DText).FlowDirection = ((FlowDirection)e.NewValue).ToD2DFlowDir();
+                ((d as Element2DCore).SceneNode as TextNode2D).FlowDirection = ((FlowDirection)e.NewValue).ToD2DFlowDir();
             }));
 
 
@@ -196,7 +196,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty FontFamilyProperty =
             DependencyProperty.Register("FontFamily", typeof(string), typeof(TextModel2D), new PropertyMetadata(DefaultFont, (d,e)=>
             {
-                ((d as Element2DCore).SceneNode as Node2DText).FontFamily = e.NewValue == null ? "Arial" : (string)e.NewValue;
+                ((d as Element2DCore).SceneNode as TextNode2D).FontFamily = e.NewValue == null ? "Arial" : (string)e.NewValue;
             }));
 
         private bool foregroundChanged = true;
@@ -204,7 +204,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected override SceneNode2D OnCreateSceneNode()
         {
-            return new Node2DText();
+            return new TextNode2D();
         }
 
         protected override void OnAttached()
@@ -219,19 +219,19 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             base.OnUpdate(context);
             if (foregroundChanged)
             {
-                (SceneNode as Node2DText).Foreground = Foreground != null ? Foreground.ToD2DBrush(context.DeviceContext) : null;
+                (SceneNode as TextNode2D).Foreground = Foreground != null ? Foreground.ToD2DBrush(context.DeviceContext) : null;
                 foregroundChanged = false;
             }
             if (backgroundChanged)
             {
-                (SceneNode as Node2DText).Background = Background != null ? Background.ToD2DBrush(context.DeviceContext) : null;
+                (SceneNode as TextNode2D).Background = Background != null ? Background.ToD2DBrush(context.DeviceContext) : null;
                 backgroundChanged = false;
             }
         }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode2D node)
         {
-            var t = node as Node2DText;
+            var t = node as TextNode2D;
             t.Text = Text == null ? "" : Text;
             t.FontFamily = FontFamily == null ? DefaultFont : FontFamily;
             t.FontWeight = FontWeight.ToDXFontWeight();

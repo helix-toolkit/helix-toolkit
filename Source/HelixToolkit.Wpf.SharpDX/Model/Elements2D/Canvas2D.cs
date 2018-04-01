@@ -116,7 +116,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             return new Node2DCanvas();
         }
 
-        protected class Node2DCanvas : Node2DPanel
+        protected class Node2DCanvas : PanelNode2D
         {
             /// <summary>
             /// Measures the override.

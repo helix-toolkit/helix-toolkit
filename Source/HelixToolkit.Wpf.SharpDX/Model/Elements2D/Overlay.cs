@@ -7,7 +7,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     {
         protected override SceneNode2D OnCreateSceneNode()
         {
-            return new Node2DOverlay();
+            return new OverlayNode2D();
         }
     }
 }

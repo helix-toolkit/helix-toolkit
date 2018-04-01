@@ -68,7 +68,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
 
-        protected class Node2DRelativePositionCanvas : Node2DPanel
+        protected class Node2DRelativePositionCanvas : PanelNode2D
         {
             /// <summary>
             /// Measures the override.

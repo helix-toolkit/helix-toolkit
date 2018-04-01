@@ -13,16 +13,17 @@ namespace HelixToolkit.UWP.Model.Scene2D
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 #endif
 {
-    public class Node2DPresenter : SceneNode2D
+    public class PresenterNode2D : SceneNode2D
     {
         private SceneNode2D content;
+
         public SceneNode2D Content
         {
             set
             {
                 if (content != value)
                 {
-                    if(content != null)
+                    if (content != null)
                     {
                         content.Detach();
                         content.Parent = null;
@@ -46,8 +47,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
         }
 
-
         private SceneNode2D[] contentArray = new SceneNode2D[1];
+
         public override IList<SceneNode2D> Items
         {
             get
@@ -112,7 +113,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 
         protected override RectangleF ArrangeOverride(RectangleF finalSize)
         {
-            if(content != null)
+            if (content != null)
             {
                 content.Arrange(finalSize);
                 return new RectangleF(0, 0, content.DesiredSize.X, content.DesiredSize.Y);

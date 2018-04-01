@@ -6,7 +6,7 @@
     {
         protected override SceneNode2D OnCreateSceneNode()
         {
-            return new Node2DEllipse();
+            return new EllipseNode2D();
         }
     }
 }

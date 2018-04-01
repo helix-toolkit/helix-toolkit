@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 {
     using Core2D;
 
-    public class Node2DBorder : Node2DContent
+    public class BorderNode2D : ContentNode2D
     {
         public float CornerRadius
         {
@@ -25,6 +25,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private Thickness padding = new Thickness(0);
+
         public Thickness Padding
         {
             set
@@ -41,11 +42,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private CapStyle strokeDashCap = CapStyle.Flat;
+
         public CapStyle StrokeDashCap
         {
             set
             {
-                if(SetAffectsRender(ref strokeDashCap, value))
+                if (SetAffectsRender(ref strokeDashCap, value))
                 {
                     strokeStyleChanged = true;
                 }
@@ -54,6 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private CapStyle strokeStartLineCap = CapStyle.Flat;
+
         public CapStyle StrokeStartLineCap
         {
             set
@@ -67,6 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private CapStyle strokeEndLineCap = CapStyle.Flat;
+
         public CapStyle StrokeEndLineCap
         {
             set
@@ -80,11 +84,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private DashStyle strokeDashStyle = DashStyle.Solid;
+
         public DashStyle StrokeDashStyle
         {
             set
             {
-                if(SetAffectsRender(ref strokeDashStyle, value))
+                if (SetAffectsRender(ref strokeDashStyle, value))
                 {
                     strokeStyleChanged = true;
                 }
@@ -93,11 +98,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private float strokeDashOffset = 0;
+
         public float StrokeDashOffset
         {
             set
             {
-                if(SetAffectsRender(ref strokeDashOffset, value))
+                if (SetAffectsRender(ref strokeDashOffset, value))
                 {
                     strokeStyleChanged = true;
                 }
@@ -106,11 +112,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private LineJoin strokeLineJoin = LineJoin.Miter;
+
         public LineJoin StrokeLineJoin
         {
             set
             {
-                if(SetAffectsRender(ref strokeLineJoin, value))
+                if (SetAffectsRender(ref strokeLineJoin, value))
                 {
                     strokeStyleChanged = true;
                 }
@@ -122,11 +129,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private float strokeMiterLimit = 1;
+
         public float StrokeMiterLimit
         {
             set
             {
-                if(SetAffectsRender(ref strokeMiterLimit, value))
+                if (SetAffectsRender(ref strokeMiterLimit, value))
                 {
                     strokeStyleChanged = true;
                 }
@@ -135,11 +143,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         }
 
         private Thickness borderThickness;
+
         public Thickness BorderThickness
         {
             set
             {
-                if(SetAffectsMeasure(ref borderThickness, value))
+                if (SetAffectsMeasure(ref borderThickness, value))
                 {
                     (RenderCore as BorderRenderCore2D).BorderThickness = value;
                 }
@@ -164,7 +173,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 return false;
             }
         }
-       
+
         public override void Update(IRenderContext2D context)
         {
             base.Update(context);
