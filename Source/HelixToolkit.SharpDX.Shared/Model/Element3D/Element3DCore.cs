@@ -26,6 +26,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model
     public abstract class Element3DCore : FrameworkContentElement, IDisposable
 #endif
     {
+        public sealed class SceneNodeCreatedEventArgs : EventArgs
+        {
+            public SceneNode Node { private set; get; }
+            public SceneNodeCreatedEventArgs(SceneNode node)
+            {
+                Node = node;
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -72,7 +80,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
                             sceneNode = OnCreateSceneNode();
                             AssignDefaultValuesToSceneNode(sceneNode);
                             sceneNode.WrapperSource = this;
-                            OnSceneNodeCreated?.Invoke(this, sceneNode);
+                            OnSceneNodeCreated?.Invoke(this, new SceneNodeCreatedEventArgs(sceneNode));
                         }
                     }
                 }
@@ -91,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         /// <summary>
         /// Occurs when [on scene node created]. Make sure to hook up this event at the top of constructor of class, otherwise may miss the event.
         /// </summary>
-        public event EventHandler<SceneNode> OnSceneNodeCreated;
+        public event EventHandler<SceneNodeCreatedEventArgs> OnSceneNodeCreated;
         #endregion
         #region IBoundable        
         /// <summary>

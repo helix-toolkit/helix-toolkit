@@ -117,12 +117,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             return base.CanRender(context) && RenderHost.IsShadowMapEnabled && !context.IsShadowPass;
         }
 
-        private void Core_OnUpdateLightSource(object sender, IRenderContext context)
+        private void Core_OnUpdateLightSource(object sender, ShadowMapCore.UpdateLightSourceEventArgs e)
         {
             CameraCore camera = LightCamera == null ? null : LightCamera;
             if (LightCamera == null)
             {
-                var lights = context.RenderHost.PerFrameLights.Take(Constants.MaxLights);
+                var lights = e.Context.RenderHost.PerFrameLights.Take(Constants.MaxLights);
                 foreach (var light in lights)
                 {
                     if (light.LightType == LightType.Directional)

@@ -27,6 +27,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     public abstract partial class Element2DCore : FrameworkContentElement, IDisposable
 #endif
     {
+        public sealed class SceneNode2DCreatedEventArgs : EventArgs
+        {
+            public SceneNode2D Node { private set; get; }
+            public SceneNode2DCreatedEventArgs(SceneNode2D node)
+            {
+                Node = node;
+            }
+        }
         /// <summary>
         /// Gets the unique identifier.
         /// </summary>
@@ -57,7 +65,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                             sceneNode.OnAttached += SceneNode_OnAttached;
                             sceneNode.OnDetached += SceneNode_OnDetached;
                             sceneNode.OnUpdate += SceneNode_OnUpdate;
-                            OnSceneNodeCreated?.Invoke(this, sceneNode);
+                            OnSceneNodeCreated?.Invoke(this, new SceneNode2DCreatedEventArgs(sceneNode));
                         }
                     }
                 }
@@ -65,9 +73,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
-        private void SceneNode_OnUpdate(object sender, IRenderContext2D e)
+        private void SceneNode_OnUpdate(object sender, SceneNode2D.UpdateEventArgs e)
         {
-            OnUpdate(e);
+            OnUpdate(e.Context);
         }
 
         private void SceneNode_OnDetached(object sender, EventArgs e)
@@ -107,7 +115,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <summary>
         /// Occurs when [on scene node created]. Make sure to hook up this event at the top of constructor of class, otherwise may miss the event.
         /// </summary>
-        public event EventHandler<SceneNode2D> OnSceneNodeCreated;
+        public event EventHandler<SceneNode2DCreatedEventArgs> OnSceneNodeCreated;
 #endregion
 
         public virtual bool HitTest(Vector2 mousePoint, out HitTest2DResult hitResult)

@@ -14,11 +14,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class NodeGroup : NodeGroupBase, IHitable
     {
         public IOctreeManager OctreeManager { set; get; }
+
         /// <summary>
         /// Gets the octree in OctreeManager.
         /// </summary>
@@ -32,55 +33,30 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return OctreeManager != null ? OctreeManager.Octree : null;
             }
         }
-        /// <summary>
-        /// Adds the child node.
-        /// </summary>
-        /// <param name="node">The node.</param>
-        /// <returns></returns>
-        public override bool AddChildNode(SceneNode node)
+
+        public NodeGroup()
         {
-            if (base.AddChildNode(node))
-            {
-                if (OctreeManager != null)
-                {
-                    OctreeManager.AddPendingItem(node);
-                }
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            OnAddChildNode += NodeGroup_OnAddChildNode;
+            OnRemoveChildNode += NodeGroup_OnRemoveChildNode;
+            OnClear += NodeGroup_OnClear;
         }
-        /// <summary>
-        /// Removes the child node.
-        /// </summary>
-        /// <param name="node">The node.</param>
-        /// <returns></returns>
-        public override bool RemoveChildNode(SceneNode node)
-        {
-            if (base.RemoveChildNode(node))
-            {
-                if (OctreeManager != null)
-                {
-                    OctreeManager.RemoveItem(node);
-                }
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        /// <summary>
-        /// Clears this instance.
-        /// </summary>
-        public override void Clear()
+
+        private void NodeGroup_OnClear(object sender, OnChildNodeChangedArgs e)
         {
             OctreeManager?.Clear();
             OctreeManager?.RequestRebuild();
-            base.Clear();
         }
+
+        private void NodeGroup_OnRemoveChildNode(object sender, OnChildNodeChangedArgs e)
+        {
+            OctreeManager?.RemoveItem(e);
+        }
+
+        private void NodeGroup_OnAddChildNode(object sender, OnChildNodeChangedArgs e)
+        {
+            OctreeManager?.AddPendingItem(e);
+        }
+
         /// <summary>
         /// Updates the not render.
         /// </summary>
@@ -97,6 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
             }
         }
+
         /// <summary>
         /// Called when [hit test].
         /// </summary>

@@ -24,6 +24,14 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class ShadowMapCore : RenderCoreBase<ShadowMapParamStruct>, IShadowMapRenderParams
     {
+        public sealed class UpdateLightSourceEventArgs : EventArgs
+        {
+            public IRenderContext Context { private set; get; }
+            public UpdateLightSourceEventArgs(IRenderContext context)
+            {
+                Context = context;
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -110,7 +118,7 @@ namespace HelixToolkit.UWP.Core
 
         private int currentFrame = 0;
 
-        public event EventHandler<IRenderContext> OnUpdateLightSource;
+        public event EventHandler<UpdateLightSourceEventArgs> OnUpdateLightSource;
         /// <summary>
         /// 
         /// </summary>
@@ -194,7 +202,7 @@ namespace HelixToolkit.UWP.Core
             if(base.CanRender(context) && !context.IsShadowPass)
 #endif
             {
-                OnUpdateLightSource?.Invoke(this, context);
+                OnUpdateLightSource?.Invoke(this, new UpdateLightSourceEventArgs(context));
                 ++currentFrame;
                 currentFrame %= Math.Max(1, UpdateFrequency);
                 return FoundLightSource && currentFrame == 0;

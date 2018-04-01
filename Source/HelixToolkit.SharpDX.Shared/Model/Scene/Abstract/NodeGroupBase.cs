@@ -22,11 +22,49 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// </summary>
     public abstract class NodeGroupBase : SceneNode
     {
+        public enum Operation
+        {
+            Add, Remove, Clear
+        }
+
+        public sealed class OnChildNodeChangedArgs : EventArgs
+        {
+            /// <summary>
+            /// Gets or sets the node.
+            /// </summary>
+            /// <value>
+            /// The node.
+            /// </value>
+            public SceneNode Node { private set; get; }
+            /// <summary>
+            /// Gets or sets a value indicating whether [add =true or remove = false].
+            /// </summary>
+            /// <value>
+            ///   <c>true</c> if [add or remove]; otherwise, <c>false</c>.
+            /// </value>
+            public Operation Operation { private set; get; }
+            /// <summary>
+            /// Initializes a new instance of the <see cref="OnChildNodeChangedArgs"/> class.
+            /// </summary>
+            /// <param name="node">The node.</param>
+            /// <param name="addOrRemove">if set to <c>true</c> [add or remove].</param>
+            public OnChildNodeChangedArgs(SceneNode node, Operation operation)
+            {
+                Node = node;
+                Operation = operation;
+            }
+
+            public static implicit operator SceneNode(OnChildNodeChangedArgs args) { return args.Node; }
+        }
         protected readonly Dictionary<Guid, SceneNode> itemHashSet = new Dictionary<Guid, SceneNode>();
 
         public override IList<SceneNode> Items { get; } = new ObservableCollection<SceneNode>();
 
-        public virtual bool AddChildNode(SceneNode node)
+        public event EventHandler<OnChildNodeChangedArgs> OnAddChildNode;
+        public event EventHandler<OnChildNodeChangedArgs> OnRemoveChildNode;
+        public event EventHandler<OnChildNodeChangedArgs> OnClear;
+
+        public bool AddChildNode(SceneNode node)
         {
             if (!itemHashSet.ContainsKey(node.GUID))
             {
@@ -37,6 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     node.Attach(RenderHost);
                 }
                 forceUpdateTransform = true;
+                OnAddChildNode?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Add));
                 return true;
             }
             else { return false; }
@@ -44,25 +83,27 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <summary>
         /// Clears this instance.
         /// </summary>
-        public virtual void Clear()
+        public void Clear()
         {
             for (int i = 0; i < Items.Count; ++i)
             {
                 Items[i].Detach();
             }
             itemHashSet.Clear();
+            OnClear?.Invoke(this, new OnChildNodeChangedArgs(null, Operation.Clear));
         }
         /// <summary>
         /// Removes the child node.
         /// </summary>
         /// <param name="node">The node.</param>
         /// <returns></returns>
-        public virtual bool RemoveChildNode(SceneNode node)
+        public bool RemoveChildNode(SceneNode node)
         {
             if (itemHashSet.Remove(node.GUID))
             {
                 node.Detach();
                 Items.Remove(node);
+                OnRemoveChildNode?.Invoke(this, new OnChildNodeChangedArgs(node, Operation.Remove));
                 return true;
             }
             else

@@ -23,6 +23,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
     /// </summary>
     public abstract partial class SceneNode2D : DisposeObject, IRenderable2D, IHitable2D
     {      
+        public sealed class UpdateEventArgs : EventArgs
+        {
+            public IRenderContext2D Context { private set; get; }
+            public UpdateEventArgs(IRenderContext2D context)
+            {
+                Context = context;
+            }
+        }
         /// <summary>
         /// Gets the unique identifier.
         /// </summary>
@@ -315,7 +323,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// <param name="context">The context.</param>
         public virtual void Update(IRenderContext2D context)
         {
-            OnUpdate?.Invoke(this, context);
+            OnUpdate?.Invoke(this, new UpdateEventArgs(context));
             IsRenderable = CanRender(context);           
         }
 
@@ -347,7 +355,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// <summary>
         /// Occurs when [on update].
         /// </summary>
-        public event EventHandler<IRenderContext2D> OnUpdate;
+        public event EventHandler<UpdateEventArgs> OnUpdate;
         #endregion;
 
         #region Rendering

@@ -259,9 +259,9 @@ namespace HelixToolkit.Wpf.SharpDX
             OnSceneNodeCreated += UIManipulator3D_OnSceneNodeCreated;
         }
 
-        private void UIManipulator3D_OnSceneNodeCreated(object sender, Model.Scene.SceneNode e)
+        private void UIManipulator3D_OnSceneNodeCreated(object sender, SceneNodeCreatedEventArgs e)
         {
-            e.OnAttached += E_OnAttached;
+            e.Node.OnAttached += E_OnAttached;
         }
 
         private void E_OnAttached(object sender, System.EventArgs e)

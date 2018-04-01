@@ -113,9 +113,9 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Transform = new System.Windows.Media.Media3D.RotateTransform3D();            
         }
 
-        private void UIRotateManipulator3D_OnSceneNodeCreated(object sender, Model.Scene.SceneNode e)
+        private void UIRotateManipulator3D_OnSceneNodeCreated(object sender, Element3D.SceneNodeCreatedEventArgs e)
         {
-            e.OnSetRenderTechnique = OnCreateRenderTechnique;
+            e.Node.OnSetRenderTechnique = OnCreateRenderTechnique;
         }
 
         /// <summary>
