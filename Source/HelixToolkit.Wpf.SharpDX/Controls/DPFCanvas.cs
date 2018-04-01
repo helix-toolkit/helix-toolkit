@@ -147,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (!HandleExceptionOccured(ex))
                 {
-                    MessageBox.Show(string.Format("DPFCanvas: Error starting rendering: {0}", ex.Message), "Error");
+                    MessageBox.Show($"DPFCanvas: Error while starting rendering: {ex.Message} \n StackTrace: {ex.StackTrace.ToString()}", "Error");
                 }
             }
         }
@@ -231,7 +231,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     if (!HandleExceptionOccured(ex))
                     {
-                        MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
+                        MessageBox.Show($"DPFCanvas: Error during rendering: {ex.Message} \n StackTrace: {ex.StackTrace.ToString()}", "Error");
                     }
                 }
             }
@@ -260,7 +260,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         if (!HandleExceptionOccured(ex))
                         {
-                            MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
+                            MessageBox.Show($"DPFCanvas: Error during rendering: {ex.Message} \n StackTrace: {ex.StackTrace.ToString()}", "Error");
                         }
                     }
                 }
