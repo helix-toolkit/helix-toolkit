@@ -120,9 +120,13 @@
     <Content Include="MiniCube_VS.fxo">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\arial.png" />
+    <Content Include="Resources\arial.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <PRIResource Include="Resources.resw" />
-    <None Include="Resources\arial.fnt" />
+    <Content Include="Resources\arial.fnt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonDX\DeviceManager.cs" />

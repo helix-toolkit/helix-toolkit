@@ -84,14 +84,14 @@ namespace HelixToolkit.Wpf.SharpDX
             var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png");
             TextureStatic = MemoryStream.Synchronized(texImageStream);
 #else
-            var packageFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
-            var sampleFile = packageFolder.GetFileAsync(@"Resources\arial.fnt").GetResults();
+            var packageFolder = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "HelixToolkit.UWP");
+            var sampleFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\Resources\arial.fnt");
             bmpFont = new BitmapFont();
-            var fileStream = sampleFile.OpenStreamForReadAsync();
-            bmpFont.Load(fileStream.Result);
+            var fileStream = new MemoryStream(sampleFile);
+            bmpFont.Load(fileStream);
 
-            var texFile = packageFolder.GetFileAsync(@"Resources\arial.png").GetResults();
-            TextureStatic = texFile.OpenStreamForReadAsync().Result;           
+            var texFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\Resources\arial.png");
+            TextureStatic = new MemoryStream(texFile);         
 #endif
         }
 
