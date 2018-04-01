@@ -79,7 +79,7 @@
                         Stroke="Red"
                         StrokeThickness="2" />
                     <hx2D:ImageModel2D VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       Width="100"
+                                       Width="100" Height="100"
                                        ImageStream="{Binding VM2D.ImageStream}"/>
                 </hx2D:Panel2D>
             </hx:Viewport3DX.Content2D>
