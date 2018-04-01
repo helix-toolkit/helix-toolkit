@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderable : IAttachable, IBoundable, IGUID, ITransform
+    public interface IRenderable : IAttachable, IGUID, ITransform
     {
         event EventHandler<TransformArgs> OnTransformChanged;
         /// <summary>

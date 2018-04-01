@@ -70,8 +70,34 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         #region Bounds
         public static readonly BoundingBox DefaultBound = new BoundingBox();
         public static readonly BoundingSphere DefaultBoundSphere = new BoundingSphere();
+        /// <summary>
+        /// Gets the original bound from the geometry. Same as <see cref="Geometry.Bound"/>
+        /// </summary>
+        /// <value>
+        /// The original bound.
+        /// </value>
+        public BoundingBox OriginalBounds
+        {
+            get { return Geometry == null ? DefaultBound : geometry.Bound; }
+        }
+        /// <summary>
+        /// Gets the original bound sphere from the geometry. Same as <see cref="Geometry.BoundingSphere"/> 
+        /// </summary>
+        /// <value>
+        /// The original bound sphere.
+        /// </value>
+        public BoundingSphere OriginalBoundsSphere
+        {
+            get { return Geometry == null ? DefaultBoundSphere : geometry.BoundingSphere; }
+        }
 
         private BoundingBox bounds = DefaultBound;
+        /// <summary>
+        /// Gets the bounds. Usually same as <see cref="OriginalBounds"/>. If have instances, the bound will enclose all instances.
+        /// </summary>
+        /// <value>
+        /// The bounds.
+        /// </value>
         public BoundingBox Bounds
         {
             get { return bounds; }
@@ -87,6 +113,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         }
 
         private BoundingBox boundsWithTransform = DefaultBound;
+        /// <summary>
+        /// Gets the bounds with transform. Usually same as <see cref="Bounds"/>. If have transform, the bound is the transformed <see cref="Bounds"/>
+        /// </summary>
+        /// <value>
+        /// The bounds with transform.
+        /// </value>
         public BoundingBox BoundsWithTransform
         {
             get { return boundsWithTransform; }
@@ -102,6 +134,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         }
 
         private BoundingSphere boundsSphere = DefaultBoundSphere;
+        /// <summary>
+        /// Gets the bounds sphere. Usually same as <see cref="OriginalBoundsSphere"/>. If have instances, the bound sphere will enclose all instances.
+        /// </summary>
+        /// <value>
+        /// The bounds sphere.
+        /// </value>
         public BoundingSphere BoundsSphere
         {
             protected set
@@ -120,6 +158,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         }
 
         private BoundingSphere boundsSphereWithTransform = DefaultBoundSphere;
+        /// <summary>
+        /// Gets the bounds sphere with transform. If have transform, the bound is the transformed <see cref="BoundsSphere"/>
+        /// </summary>
+        /// <value>
+        /// The bounds sphere with transform.
+        /// </value>
         public BoundingSphere BoundsSphereWithTransform
         {
             private set

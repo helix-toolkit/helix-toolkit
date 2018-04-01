@@ -542,7 +542,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public static readonly BoundingSphere MaxBoundSphere = new BoundingSphere(Vector3.Zero, float.MaxValue);
 
         /// <summary>
-        /// Gets the bounds.
+        /// <see cref="IBoundable.OriginalBounds"/>
+        /// </summary>
+        /// <value>
+        /// The original bounds.
+        /// </value>
+        public virtual BoundingBox OriginalBounds { get { return MaxBound; } }
+
+        /// <summary>
+        /// <see cref="IBoundable.OriginalBoundsSphere"/>
+        /// </summary>
+        /// <value>
+        /// The original bounds sphere.
+        /// </value>
+        public virtual BoundingSphere OriginalBoundsSphere { get { return MaxBoundSphere; } }
+
+        /// <summary>
+        /// <see cref="IBoundable.Bounds"/>
         /// </summary>
         /// <value>
         /// The bounds.
@@ -553,7 +569,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         /// <summary>
-        /// Gets the bounds with transform.
+        /// <see cref="IBoundable.BoundsWithTransform"/>
         /// </summary>
         /// <value>
         /// The bounds with transform.
@@ -564,7 +580,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         /// <summary>
-        /// Gets the bounds sphere.
+        /// <see cref="IBoundable.BoundsSphere"/>
         /// </summary>
         /// <value>
         /// The bounds sphere.
@@ -575,7 +591,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         /// <summary>
-        /// Gets the bounds sphere with transform.
+        /// <see cref="IBoundable.BoundsSphereWithTransform"/>
         /// </summary>
         /// <value>
         /// The bounds sphere with transform.

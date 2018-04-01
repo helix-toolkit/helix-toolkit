@@ -281,7 +281,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\MappingCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\NVOptimusEnabler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\Octree.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\OctreeGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\RenderableBoundingOctree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\OctreeManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RandomVectorGenerators.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RelayExceptionEventArgs.cs" />

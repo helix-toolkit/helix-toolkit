@@ -17,7 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 {
     using Core;
 
-    public abstract class NodeGeometry : SceneNode, IHitable, IThrowingShadow, IInstancing
+    public abstract class NodeGeometry : SceneNode, IHitable, IThrowingShadow, IInstancing, IBoundable
     {
         #region Properties
 
@@ -54,6 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 {
                     BoundManager.Instances = value;
                     InstanceBuffer.Elements = value;
+                    InstancesChanged();
                 }
             }
             get { return instances; }
@@ -133,9 +134,29 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// The bound manager.
         /// </value>
         public GeometryBoundManager BoundManager { private set; get; }
+        /// <summary>
+        /// Gets the original bound from the geometry. Same as <see cref="Geometry.Bound"/>
+        /// </summary>
+        /// <value>
+        /// The original bound.
+        /// </value>
+        public override BoundingBox OriginalBounds
+        {
+            get { return BoundManager.OriginalBounds; }
+        }
+        /// <summary>
+        /// Gets the original bound sphere from the geometry. Same as <see cref="Geometry.BoundingSphere"/> 
+        /// </summary>
+        /// <value>
+        /// The original bound sphere.
+        /// </value>
+        public override BoundingSphere OriginalBoundsSphere
+        {
+            get { return BoundManager.OriginalBoundsSphere; }
+        }
 
         /// <summary>
-        /// Gets the bounds.
+        /// Gets the bounds. Usually same as <see cref="OriginalBounds"/>. If have instances, the bound will enclose all instances.
         /// </summary>
         /// <value>
         /// The bounds.
@@ -146,7 +167,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         /// <summary>
-        /// Gets the bounds with transform.
+        /// Gets the bounds with transform. Usually same as <see cref="Bounds"/>. If have transform, the bound is the transformed <see cref="Bounds"/>
         /// </summary>
         /// <value>
         /// The bounds with transform.
@@ -156,8 +177,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             get { return BoundManager.BoundsWithTransform; }
         }
 
+
         /// <summary>
-        /// Gets the bounds sphere.
+        /// Gets the bounds sphere. Usually same as <see cref="OriginalBoundsSphere"/>. If have instances, the bound sphere will enclose all instances.
         /// </summary>
         /// <value>
         /// The bounds sphere.
@@ -168,7 +190,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         /// <summary>
-        /// Gets the bounds sphere with transform.
+        /// Gets the bounds sphere with transform. If have transform, the bound is the transformed <see cref="BoundsSphere"/>
         /// </summary>
         /// <value>
         /// The bounds sphere with transform.

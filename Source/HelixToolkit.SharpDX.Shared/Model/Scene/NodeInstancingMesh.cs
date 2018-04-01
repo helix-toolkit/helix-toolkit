@@ -43,6 +43,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             set { instanceParamBuffer.Elements = value; }
             get { return instanceParamBuffer.Elements; }
         }
+
+        private IOctreeManager octreeManager = null;
         /// <summary>
         /// Gets or sets the octree manager.
         /// </summary>
@@ -51,19 +53,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public IOctreeManager OctreeManager
         {
-            set; get;
-        } = null; 
+            set
+            {
+                if(Set(ref octreeManager, value))
+                {
+                    if (octreeManager != null)
+                    {
+                        octreeManager.Clear();
+                        isInstanceChanged = true;
+                    }
+                }
+            }
+            get { return octreeManager; }
+        }
         #endregion
 
         private bool isInstanceChanged = false;
 
-        /// <summary>
-        /// Gets or sets the octree manager.
-        /// </summary>
-        /// <value>
-        /// The octree manager.
-        /// </value>
-        protected IOctreeManager octreeManager { private set; get; }
         /// <summary>
         /// The instance parameter buffer
         /// </summary>
@@ -140,7 +146,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             if (IsRenderable && InstanceBuffer.HasElements)
             {
-                octreeManager?.RebuildTree(Enumerable.Repeat<IRenderable>(this, 1));
+                octreeManager?.RebuildTree(Enumerable.Repeat<SceneNode>(this, 1));
             }
             else
             {
