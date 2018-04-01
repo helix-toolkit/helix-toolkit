@@ -164,7 +164,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         break;
                 }
             }
-
+            //Get RenderCores with post effect specified.
             if(postProcRenderCores.Count > 0)
             {
                 if(generalRenderCores.Count > 50)
@@ -285,7 +285,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 getTriangleCountTask?.Wait();
                 RenderStatistics.NumModel3D = perFrameRenderables.Count;
-                RenderStatistics.NumCore3D = generalRenderCores.Count;
+                RenderStatistics.NumCore3D = preProcRenderCores.Count + generalRenderCores.Count + postProcRenderCores.Count + screenSpacedRenderCores.Count;
             }
             for (int i = 0; i < viewportRenderable2D.Count; ++i)
             {
