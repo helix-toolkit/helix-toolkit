@@ -22,11 +22,17 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         #region Properties
 
         private Geometry3D geometry;
-
+        /// <summary>
+        /// Gets or sets the geometry.
+        /// </summary>
+        /// <value>
+        /// The geometry.
+        /// </value>
         public Geometry3D Geometry
         {
             set
             {
+                var old = geometry;
                 if (Set(ref geometry, value))
                 {
                     if (IsAttached)
@@ -34,8 +40,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                         BoundManager.Geometry = value;
                         BufferModelInternal = OnCreateBufferModel(this.GUID, value);
                     }
-                    InvalidateRender();
-                    OnGeometryChanged(value);
+                    OnGeometryChanged(value, old);
+                    InvalidateRender();                   
                 }
             }
             get
@@ -45,7 +51,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private IList<Matrix> instances;
-
+        /// <summary>
+        /// Gets or sets the instances.
+        /// </summary>
+        /// <value>
+        /// The instances.
+        /// </value>
         public IList<Matrix> Instances
         {
             set
@@ -407,8 +418,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <summary>
         /// Called when [geometry changed].
         /// </summary>
-        /// <param name="geometry">The geometry.</param>
-        protected virtual void OnGeometryChanged(Geometry3D geometry)
+        /// <param name="newGeometry">The new geometry.</param>
+        /// <param name="oldGeometry">The old geometry.</param>
+        protected virtual void OnGeometryChanged(Geometry3D newGeometry, Geometry3D oldGeometry)
         {
         }
 
