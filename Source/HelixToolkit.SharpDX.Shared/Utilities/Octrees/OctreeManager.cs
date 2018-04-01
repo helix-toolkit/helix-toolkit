@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Utilities
@@ -18,8 +17,9 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 #endif
 {
     using Model;
-    using System.Collections.Concurrent;
     using Model.Scene;
+    using System.Diagnostics;
+
     /// <summary>
     /// 
     /// </summary>
@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <summary>
         /// The m octree
         /// </summary>
-        protected NodeGeometryBoundingOctree mOctree = null;
+        protected BoundableNodeOctree mOctree = null;
         /// <summary>
         /// Gets or sets the parameter.
         /// </summary>
@@ -128,7 +128,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
     {
         private object lockObj = new object();
 
-        private void UpdateOctree(NodeGeometryBoundingOctree tree)
+        private void UpdateOctree(BoundableNodeOctree tree)
         {
             Octree = tree;
             mOctree = tree;
@@ -205,12 +205,12 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     {
                         var tree = mOctree;
                         UpdateOctree(null);
-                        var geoNode = node as NodeGeometryBoundingOctree;
+                        var geoNode = node as BoundableNodeOctree;
                         if (geoNode.Bound.Contains(item.BoundsWithTransform) == ContainmentType.Contains)
                         {
                             if (geoNode.PushExistingToChild(index))
                             {
-                                tree = tree.Shrink() as NodeGeometryBoundingOctree;
+                                tree = tree.Shrink() as BoundableNodeOctree;
                             }
                             rootAdd = false;
                         }
@@ -233,14 +233,14 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
         }
 
-        private NodeGeometryBoundingOctree RebuildOctree(IEnumerable<SceneNode> items)
+        private BoundableNodeOctree RebuildOctree(IEnumerable<SceneNode> items)
         {
             Clear();
             if (items == null)
             {
                 return null;
             }
-            var tree = new NodeGeometryBoundingOctree(items.Select(x=>x as NodeGeometry).ToList(), Parameter);
+            var tree = new BoundableNodeOctree(items.ToList(), Parameter);
             tree.BuildTree();
             if (tree.TreeBuilt)
             {
@@ -305,7 +305,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     {
                         var direction = (item.Bounds.Minimum + item.Bounds.Maximum)
                             - (tree.Bound.Minimum + tree.Bound.Maximum);
-                        tree = tree.Expand(ref direction) as NodeGeometryBoundingOctree;
+                        tree = tree.Expand(ref direction) as BoundableNodeOctree;
                         ++counter;
                         if (counter > 10)
                         {
@@ -349,7 +349,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     }
                     else
                     {
-                        tree = tree.Shrink() as NodeGeometryBoundingOctree;
+                        tree = tree.Shrink() as BoundableNodeOctree;
                     }
                     UpdateOctree(tree);
                 }
