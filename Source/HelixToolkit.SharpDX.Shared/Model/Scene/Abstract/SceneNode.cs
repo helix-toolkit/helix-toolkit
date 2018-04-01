@@ -653,7 +653,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         protected override void OnDispose(bool disposeManagedResources)
         {
-            Items.Clear();
+            if (!Items.IsReadOnly)
+            {
+                Items.Clear();
+            }
             renderCore.Dispose();
             renderCore = null;
             OnVisibleChanged = null;
