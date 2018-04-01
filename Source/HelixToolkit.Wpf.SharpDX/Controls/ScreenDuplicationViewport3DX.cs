@@ -245,7 +245,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (!IsAttached)
             {
-                foreach (IRenderable e in this.Renderables)
+                foreach (var e in this.Renderables)
                 {
                     e.Attach(host);
                 }
@@ -258,7 +258,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (IsAttached)
             {
                 IsAttached = false;
-                foreach (IRenderable e in this.Renderables)
+                foreach (var e in this.Renderables)
                 {
                     e.Detach();
                 }

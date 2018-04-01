@@ -210,7 +210,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The per frame renderable.
         /// </value>
-        IEnumerable<NodeLight> PerFrameLights { get; }
+        IEnumerable<LightCoreBase> PerFrameLights { get; }
         /// <summary>
         /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameGeneralRenderCores"/>
         /// </summary>

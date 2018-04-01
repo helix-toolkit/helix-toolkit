@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
         }
 
-        private static readonly Func<IRenderable, IRenderContext, bool> updateFunc = (x, context) =>
+        private static readonly Func<SceneNode, IRenderContext, bool> updateFunc = (x, context) =>
         {
             x.Update(context);
             return x.IsRenderable;
@@ -84,17 +84,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Updates the global variables. Such as light buffer and global transformation buffer
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="renderables">The renderables.</param>
+        /// <param name="lights">The lights.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void UpdateGlobalVariables(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        public virtual void UpdateGlobalVariables(IRenderContext context, List<RenderCore> lights, ref RenderParameter parameter)
         {
             if (parameter.RenderLight)
             {
                 context.LightScene.LightModels.ResetLightCount();
-                int count = renderables.Count;
+                int count = lights.Count;
                 for (int i = 0; i < count && i < Constants.MaxLights; ++i)
                 {
-                    renderables[i].Render(context, ImmediateContext);
+                    lights[i].Render(context, ImmediateContext);
                 }
             }
             if (parameter.UpdatePerFrameData)

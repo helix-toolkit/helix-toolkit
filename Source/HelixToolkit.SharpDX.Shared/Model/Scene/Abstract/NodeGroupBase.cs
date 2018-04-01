@@ -174,18 +174,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             return hit;
         }
-        /// <summary>
-        /// Called when [render].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
-        {
-            foreach (var c in this.Items)
-            {
-                c.Render(context, deviceContext);
-            }
-        }
 
         /// <summary>
         /// Called when [dispose].

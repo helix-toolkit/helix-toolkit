@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void UpdateGlobalVariables(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
+        void UpdateGlobalVariables(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter);
 
         /// <summary>
         /// 

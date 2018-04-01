@@ -406,7 +406,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame lights.
         /// </value>
-        public abstract IEnumerable<NodeLight> PerFrameLights { get; }
+        public abstract IEnumerable<LightCoreBase> PerFrameLights { get; }
         /// <summary>
         /// Gets the post effects render cores for this frame
         /// </summary>

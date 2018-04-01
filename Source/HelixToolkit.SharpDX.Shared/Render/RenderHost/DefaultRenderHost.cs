@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// The light renderables
         /// </summary>
-        protected readonly List<SceneNode> lightRenderables = new List<SceneNode>();
+        protected readonly List<RenderCore> lightRenderables = new List<RenderCore>();
         /// <summary>
         /// The pending render cores
         /// </summary>
@@ -81,9 +81,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame lights.
         /// </value>
-        public override IEnumerable<NodeLight> PerFrameLights
+        public override IEnumerable<LightCoreBase> PerFrameLights
         {
-            get { return lightRenderables.Select(x=>x as NodeLight); }
+            get { return lightRenderables.Select(x=>x as LightCoreBase); }
         }
         /// <summary>
         /// Gets the per frame render cores for normal rendering routine. <see cref="RenderType.Opaque"/>, <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
@@ -142,7 +142,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 switch (renderable.RenderCore.RenderType)
                 {
                     case RenderType.Light:
-                        lightRenderables.Add(renderable);
+                        lightRenderables.Add(renderable.RenderCore);
                         break;
                     case RenderType.Opaque:
                     case RenderType.Transparent:

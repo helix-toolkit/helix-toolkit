@@ -879,12 +879,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (!IsAttached)
             {
-                foreach (IRenderable e in this.OwnedRenderables)
+                foreach (var e in this.OwnedRenderables)
                 {
                     e.Attach(host);
                 }
                 sharedModelContainerInternal?.Attach(host);
-                foreach(IRenderable2D e in this.D2DRenderables)
+                foreach(var e in this.D2DRenderables)
                 {
                     e.Attach(host);
                 }
@@ -900,12 +900,12 @@ namespace HelixToolkit.Wpf.SharpDX
             if (IsAttached)
             {
                 IsAttached = false;
-                foreach (IRenderable e in this.OwnedRenderables)
+                foreach (var e in this.OwnedRenderables)
                 {
                     e.Detach();
                 }
                 sharedModelContainerInternal?.Detach();
-                foreach(IRenderable2D e in this.D2DRenderables)
+                foreach(var e in this.D2DRenderables)
                 {
                     e.Detach();
                 }

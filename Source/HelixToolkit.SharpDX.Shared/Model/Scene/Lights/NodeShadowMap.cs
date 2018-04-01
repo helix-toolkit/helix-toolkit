@@ -76,7 +76,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         private readonly OrthographicCameraCore orthoCamera = new OrthographicCameraCore() { NearPlaneDistance = 1, FarPlaneDistance = 500 };
         private readonly PerspectiveCameraCore persCamera = new PerspectiveCameraCore() { NearPlaneDistance = 1, FarPlaneDistance = 500 };
-        private readonly Stack<IEnumerator<IRenderable>> stackCache = new Stack<IEnumerator<IRenderable>>();
 
         /// <summary>
         /// Assigns the default values to core.
@@ -127,7 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 {
                     if (light.LightType == LightType.Directional)
                     {
-                        var dlight = ((IRenderable)light).RenderCore as DirectionalLightCore;
+                        var dlight = light as DirectionalLightCore;
                         var dir = Vector4.Transform(dlight.Direction.ToVector4(0), dlight.ModelMatrix).Normalized();
                         var pos = -100 * dir;
                         orthoCamera.LookDirection = new Vector3(dir.X, dir.Y, dir.Z);
@@ -139,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     }
                     else if (light.LightType == LightType.Spot)
                     {
-                        var splight = ((IRenderable)light).RenderCore as SpotLightCore;
+                        var splight = light as SpotLightCore;
                         persCamera.Position = (splight.Position + splight.ModelMatrix.Row4.ToVector3());
                         var look = Vector4.Transform(splight.Direction.ToVector4(0), splight.ModelMatrix);
                         persCamera.LookDirection = new Vector3(look.X, look.Y, look.Z);

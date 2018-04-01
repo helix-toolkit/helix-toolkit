@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
     /// <summary>
     /// 
     /// </summary>
-    public abstract partial class SceneNode2D : DisposeObject, IRenderable2D, IHitable2D
+    public abstract partial class SceneNode2D : DisposeObject, IHitable2D
     {      
         public sealed class UpdateEventArgs : EventArgs
         {

@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     ///
     /// </summary>
-    public abstract partial class SceneNode : DisposeObject, IRenderable
+    public abstract partial class SceneNode : DisposeObject
     {
         #region Properties
 
@@ -225,40 +225,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         #region RenderCore
 
-        private RenderCore renderCore = null;
-
-        /// <summary>
-        /// Gets or sets the render core.
-        /// </summary>
-        /// <value>
-        /// The render core.
-        /// </value>
+        private Lazy<RenderCore> renderCore;
         public RenderCore RenderCore
         {
-            private set
-            {
-                if (renderCore != value)
-                {
-                    if (renderCore != null)
-                    {
-                        renderCore.OnInvalidateRenderer -= RenderCore_OnInvalidateRenderer;
-                    }
-                    renderCore = value;
-                    if (renderCore != null)
-                    {
-                        renderCore.OnInvalidateRenderer += RenderCore_OnInvalidateRenderer;
-                    }
-                }
-            }
-            get
-            {
-                if (renderCore == null)
-                {
-                    RenderCore = OnCreateRenderCore();
-                    AssignDefaultValuesToCore(RenderCore);
-                }
-                return renderCore;
-            }
+            get { return renderCore.Value; }
         }
 
         /// <summary>
@@ -340,6 +310,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public SceneNode()
         {
             WrapperSource = this;
+            renderCore = new Lazy<RenderCore>(() => 
+            {
+                var c = OnCreateRenderCore();
+                c.OnInvalidateRenderer += RenderCore_OnInvalidateRenderer;
+                return c;
+            }, true);
         }
 
         /// <summary>
@@ -382,6 +358,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         protected virtual bool OnAttach(IRenderHost host)
         {
             RenderCore.Attach(renderTechnique);
+            AssignDefaultValuesToCore(RenderCore);
             return RenderCore == null ? false : RenderCore.IsAttached;
         }
 
@@ -455,31 +432,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         protected virtual bool CanRender(IRenderContext context)
         {
             return Visible && IsAttached;
-        }
-
-        /// <summary>
-        /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
-        /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="deviceContext"></param>
-        public void Render(IRenderContext context, DeviceContextProxy deviceContext)
-        {
-            Update(context);
-            if (IsRenderable)
-            {
-                OnRender(context, deviceContext);
-            }
-        }
-
-        /// <summary>
-        /// Called when [render].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="deviceContext">The device context.</param>
-        protected virtual void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
-        {
-            RenderCore.Render(context, deviceContext);
         }
 
         #endregion Rendering
@@ -673,8 +625,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 Items.Clear();
             }
-            renderCore.Dispose();
-            renderCore = null;
+            RenderCore.Dispose();
             OnVisibleChanged = null;
             OnTransformChanged = null;
             OnSetRenderTechnique = null;
