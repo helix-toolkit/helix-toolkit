@@ -37,6 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                         Collect(value);
                         ImageSize = bitmap.Size;
                     }
+                    else { ImageSize = new Size2F(); }
                 }
             }
             get

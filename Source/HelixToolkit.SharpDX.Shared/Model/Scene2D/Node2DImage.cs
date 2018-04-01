@@ -110,9 +110,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 {
                     return new Size2F(Math.Min(availableSize.Width, imageSize.Width), Math.Min(availableSize.Height, imageSize.Height));
                 }
+                else if(imageSize.Width == 0 || imageSize.Height == 0)
+                {
+                    return availableSize;
+                }
                 else
                 {
-                    float aspectRatio = (RenderCore as ImageRenderCore2D).ImageSize.Width / (RenderCore as ImageRenderCore2D).ImageSize.Height;
+                    float aspectRatio = imageSize.Width / imageSize.Height;
                     if (Width == 0)
                     {
                         var height = Math.Min(availableSize.Height, Height);
