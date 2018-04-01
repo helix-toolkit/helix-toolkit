@@ -687,5 +687,26 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             WrapperSource = null;
             base.OnDispose(disposeManagedResources);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="backingField"></param>
+        /// <param name="value"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        protected bool SetAffectsRender<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            this.RaisePropertyChanged(propertyName);
+            InvalidateRender();
+            return true;
+        }
     }
 }
