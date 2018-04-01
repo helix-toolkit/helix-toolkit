@@ -323,6 +323,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (disposing)
                 {
                     compositionTarget.Dispose();
+                    this.Source = null;
                     // TODO: dispose managed state (managed objects).
                 }
 
