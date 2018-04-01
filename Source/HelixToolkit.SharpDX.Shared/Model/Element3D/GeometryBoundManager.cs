@@ -71,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         public static readonly BoundingBox DefaultBound = new BoundingBox();
         public static readonly BoundingSphere DefaultBoundSphere = new BoundingSphere();
         /// <summary>
-        /// Gets the original bound from the geometry. Same as <see cref="Geometry.Bound"/>
+        /// Gets the original bound from the geometry. Same as <see cref="Geometry3D.Bound"/>
         /// </summary>
         /// <value>
         /// The original bound.
@@ -81,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             get { return Geometry == null ? DefaultBound : geometry.Bound; }
         }
         /// <summary>
-        /// Gets the original bound sphere from the geometry. Same as <see cref="Geometry.BoundingSphere"/> 
+        /// Gets the original bound sphere from the geometry. Same as <see cref="Geometry3D.BoundingSphere"/> 
         /// </summary>
         /// <value>
         /// The original bound sphere.

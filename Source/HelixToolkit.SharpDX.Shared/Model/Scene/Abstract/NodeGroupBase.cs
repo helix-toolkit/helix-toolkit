@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             /// Initializes a new instance of the <see cref="OnChildNodeChangedArgs"/> class.
             /// </summary>
             /// <param name="node">The node.</param>
-            /// <param name="addOrRemove">if set to <c>true</c> [add or remove].</param>
+            /// <param name="operation">if set to <c>true</c> [add or remove].</param>
             public OnChildNodeChangedArgs(SceneNode node, Operation operation)
             {
                 Node = node;

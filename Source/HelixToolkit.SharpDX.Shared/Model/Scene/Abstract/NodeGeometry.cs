@@ -135,7 +135,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public GeometryBoundManager BoundManager { private set; get; }
         /// <summary>
-        /// Gets the original bound from the geometry. Same as <see cref="Geometry.Bound"/>
+        /// Gets the original bound from the geometry. Same as <see cref="Geometry3D.Bound"/>
         /// </summary>
         /// <value>
         /// The original bound.
@@ -145,7 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             get { return BoundManager.OriginalBounds; }
         }
         /// <summary>
-        /// Gets the original bound sphere from the geometry. Same as <see cref="Geometry.BoundingSphere"/> 
+        /// Gets the original bound sphere from the geometry. Same as <see cref="Geometry3D.BoundingSphere"/> 
         /// </summary>
         /// <value>
         /// The original bound sphere.

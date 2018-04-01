@@ -125,14 +125,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         bool HasBound { get; }
         /// <summary>
-        /// Gets the original bound from the geometry. Same as <see cref="Geometry.Bound"/>
+        /// Gets the original bound from the geometry. Same as <see cref="Geometry3D.Bound"/>
         /// </summary>
         /// <value>
         /// The original bound.
         /// </value>
         BoundingBox OriginalBounds { get; }
         /// <summary>
-        /// Gets the original bound sphere from the geometry. Same as <see cref="Geometry.BoundingSphere"/> 
+        /// Gets the original bound sphere from the geometry. Same as <see cref="Geometry3D.BoundingSphere"/> 
         /// </summary>
         /// <value>
         /// The original bound sphere.
