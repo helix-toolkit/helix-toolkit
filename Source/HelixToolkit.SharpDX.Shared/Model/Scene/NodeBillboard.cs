@@ -98,6 +98,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
         {
+            if (!HasBound)
+            {
+                return true;
+            }
             var sphere = this.BoundsSphereWithTransform;
             return viewFrustum.Intersects(ref sphere);
         }

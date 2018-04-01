@@ -86,7 +86,8 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("EnableViewFrustumCheck", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as NodeGeometry).EnableViewFrustumCheck = (bool)e.NewValue; }));
+                    ((d as Element3DCore).SceneNode as NodeGeometry).EnableViewFrustumCheck = (bool)e.NewValue;
+                }));
         /// <summary>
         /// The is depth clip enabled property
         /// </summary>

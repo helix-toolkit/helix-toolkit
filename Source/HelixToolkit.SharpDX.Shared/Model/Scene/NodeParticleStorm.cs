@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class NodeParticleStorm : SceneNode, IInstancing
+    public class NodeParticleStorm : SceneNode, IInstancing, IBoundable
     {
         #region Properties
         /// <summary>
@@ -222,6 +222,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             set { particleCore.InitialAcceleration = value; }
             get { return particleCore.InitialAcceleration; }
         }
+
+        private Vector3 domainBoundMax = ParticleRenderCore.DefaultBoundMaximum;
         /// <summary>
         /// Gets or sets the domain bound maximum.
         /// </summary>
@@ -230,9 +232,17 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public Vector3 DomainBoundMax
         {
-            set { particleCore.DomainBoundMax = value; }
-            get { return particleCore.DomainBoundMax; }
+            set {
+                if (Set(ref domainBoundMax, value))
+                {
+                    particleCore.DomainBoundMax = value;
+                    boundChanged = true;
+                }
+            }
+            get { return domainBoundMax; }
         }
+
+        private Vector3 domainBoundMin = ParticleRenderCore.DefaultBoundMinimum;
         /// <summary>
         /// Gets or sets the domain bound minimum.
         /// </summary>
@@ -241,8 +251,18 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public Vector3 DomainBoundMin
         {
-            set { particleCore.DomainBoundMin = value; }
-            get { return particleCore.DomainBoundMin; }
+            set
+            {
+                if(Set(ref domainBoundMin, value))
+                {
+                    particleCore.DomainBoundMin = value;
+                    boundChanged = true;
+                }              
+            }
+            get
+            {
+                return domainBoundMin;
+            }
         }
         /// <summary>
         /// Gets or sets a value indicating whether [cumulate at bound].
@@ -402,6 +422,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             get { return destAlphaBlend; }
         }
+
+        private IList<Matrix> instances;
         /// <summary>
         /// Gets or sets the instances.
         /// </summary>
@@ -412,11 +434,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             set
             {
-                InstanceBuffer.Elements = value;
+                if(Set(ref instances, value))
+                {
+                    InstanceBuffer.Elements = value;
+                    boundChanged = true;
+                }               
             }
             get
             {
-                return InstanceBuffer.Elements;
+                return instances;
             }
         }
         /// <summary>
@@ -425,8 +451,59 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <value>
         ///   <c>true</c> if this instance has instances; otherwise, <c>false</c>.
         /// </value>
-        public bool HasInstances { get { return InstanceBuffer.HasElements; } } 
+        public bool HasInstances { get { return InstanceBuffer.HasElements; } }
         #endregion
+
+        #region IBoundable
+        private BoundingBox originalBound = MaxBound;
+        public override BoundingBox OriginalBounds
+        {
+            get { return originalBound; }
+        }
+
+        private BoundingSphere originalBoundsSphere = MaxBoundSphere;
+        public override BoundingSphere OriginalBoundsSphere
+        {
+            get { return originalBoundsSphere; }
+        }
+
+        private BoundingBox bounds = MaxBound;
+        public override BoundingBox Bounds
+        {
+            get { return bounds; }
+        }
+
+        private BoundingBox boundsWithTransform = MaxBound;
+        public override BoundingBox BoundsWithTransform
+        {
+            get { return boundsWithTransform; }
+        }
+
+        private BoundingSphere boundsSphere;
+        public override BoundingSphere BoundsSphere
+        {
+            get { return boundsSphere; }
+        }
+
+        private BoundingSphere boundsSphereWithTransform;
+        public override BoundingSphere BoundsSphereWithTransform
+        {
+            get { return boundsSphereWithTransform; }
+        }
+
+        protected volatile bool boundChanged = true;
+        #endregion
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable view frustum check].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable view frustum check]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableViewFrustumCheck
+        {
+            set; get;
+        } = true;
 
         /// <summary>
         /// Gets the instance buffer.
@@ -445,6 +522,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private volatile bool blendChanged = true;
+
+        public NodeParticleStorm()
+        {
+            HasBound = true;
+        }
 
         private void OnBlendStateChanged()
         {
@@ -480,6 +562,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             particleCore.InstanceBuffer = InstanceBuffer;
             return true;
         }
+
         /// <summary>
         /// Updates the specified context.
         /// </summary>
@@ -504,6 +587,61 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 particleCore.BlendDescription = desc;
                 blendChanged = false;
             }
+            if (boundChanged)
+            {
+                UpdateBounds();
+                boundChanged = false;
+            }
+        }
+
+        private void UpdateBounds(bool transformOnly = false)
+        {
+            if (!transformOnly)
+            {
+                originalBound = new BoundingBox(DomainBoundMin, DomainBoundMax);
+                originalBoundsSphere = BoundingSphere.FromBox(originalBound);
+                BoundingBox newBound;
+                BoundingSphere newBoundSphere;
+                if (HasInstances)
+                {
+                    newBound = OriginalBounds.Transform(Instances[0]);
+                    newBoundSphere = OriginalBoundsSphere.TransformBoundingSphere(Instances[0]);
+                    foreach (var instance in Instances)
+                    {
+                        var b = OriginalBounds.Transform(instance);
+                        BoundingBox.Merge(ref newBound, ref b, out newBound);
+                        var bs = OriginalBoundsSphere.TransformBoundingSphere(instance);
+                        BoundingSphere.Merge(ref newBoundSphere, ref bs, out newBoundSphere);
+                    }
+                }
+                else
+                {
+                    newBound = OriginalBounds;
+                    newBoundSphere = OriginalBoundsSphere;
+                }
+
+                var old = bounds;
+                if (Set(ref bounds, newBound))
+                {
+                    RaiseOnBoundChanged(new BoundChangeArgs<BoundingBox>(ref bounds, ref old));
+                }
+                var oldS = boundsSphere;
+                if (Set(ref boundsSphere, newBoundSphere))
+                {
+                    RaiseOnBoundSphereChanged(new BoundChangeArgs<BoundingSphere>(ref boundsSphere, ref oldS));
+                }
+            }
+
+            var oldT = boundsWithTransform;
+            if (Set(ref boundsWithTransform, bounds.Transform(ModelMatrix)))
+            {
+                RaiseOnTransformBoundChanged(new BoundChangeArgs<BoundingBox>(ref boundsWithTransform, ref oldT));
+            }
+            var oldTS = boundsSphereWithTransform;
+            if (Set(ref boundsSphereWithTransform, boundsSphere.TransformBoundingSphere(ModelMatrix)))
+            {
+                RaiseOnTransformBoundSphereChanged(new BoundChangeArgs<BoundingSphere>(ref boundsSphereWithTransform, ref oldTS));
+            }
         }
         /// <summary>
         /// Called when [detach].
@@ -512,6 +650,40 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             InstanceBuffer.Dispose();
             base.OnDetach();
+        }
+
+        /// <summary>
+        /// <para>Determine if this can be rendered.</para>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        protected override bool CanRender(IRenderContext context)
+        {
+            if (base.CanRender(context) && (!(context.EnableBoundingFrustum && EnableViewFrustumCheck)
+                || CheckBoundingFrustum(context.BoundingFrustum)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Checks the bounding frustum.
+        /// </summary>
+        /// <param name="viewFrustum">The view frustum.</param>
+        /// <returns></returns>
+        private bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
+        {
+            if (!HasBound)
+            {
+                return true;
+            }
+            var bound = BoundsWithTransform;
+            var sphere = BoundsSphereWithTransform;
+            return viewFrustum.Intersects(ref bound) && viewFrustum.Intersects(ref sphere);
         }
         /// <summary>
         /// Determines whether this instance [can hit test] the specified context.

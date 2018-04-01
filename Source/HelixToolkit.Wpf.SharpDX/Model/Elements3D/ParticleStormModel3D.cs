@@ -549,6 +549,16 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 ((d as Element3DCore).SceneNode as NodeParticleStorm).Instances = e.NewValue as IList<Matrix>;
             }));
+
+        /// <summary>
+        /// The enable view frustum check property
+        /// </summary>
+        public static readonly DependencyProperty EnableViewFrustumCheckProperty =
+            DependencyProperty.Register("EnableViewFrustumCheck", typeof(bool), typeof(ParticleStormModel3D), new PropertyMetadata(true,
+                (d, e) =>
+                {
+                    ((d as Element3DCore).SceneNode as NodeParticleStorm).EnableViewFrustumCheck = (bool)e.NewValue;
+                }));
         #endregion
 
 
