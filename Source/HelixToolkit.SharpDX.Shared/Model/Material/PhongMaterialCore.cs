@@ -12,6 +12,8 @@ using HelixToolkit.UWP.Utilities;
 namespace HelixToolkit.UWP.Model
 #endif
 {
+    using Shaders;
+
     /// <summary>
     /// 
     /// </summary>
@@ -173,7 +175,7 @@ namespace HelixToolkit.UWP.Model
 
 
 
-        private SamplerStateDescription diffuseMapSampler;
+        private SamplerStateDescription diffuseMapSampler = DefaultSamplers.LinearSamplerWrapAni4;
         /// <summary>
         /// Gets or sets the DiffuseMapSampler.
         /// </summary>
@@ -187,7 +189,7 @@ namespace HelixToolkit.UWP.Model
         }
 
 
-        private SamplerStateDescription normalMapSampler;
+        private SamplerStateDescription normalMapSampler = DefaultSamplers.LinearSamplerWrapAni4;
         /// <summary>
         /// Gets or sets the NormalMapSampler.
         /// </summary>
@@ -201,7 +203,7 @@ namespace HelixToolkit.UWP.Model
         }
 
 
-        private SamplerStateDescription diffuseAlphaMapSampler;
+        private SamplerStateDescription diffuseAlphaMapSampler = DefaultSamplers.LinearSamplerWrapAni4;
         /// <summary>
         /// Gets or sets the DiffuseAlphaMapSampler.
         /// </summary>
@@ -215,7 +217,7 @@ namespace HelixToolkit.UWP.Model
         }
 
 
-        private SamplerStateDescription displacementMapSampler;
+        private SamplerStateDescription displacementMapSampler = DefaultSamplers.LinearSamplerWrapAni1;
         /// <summary>
         /// Gets or sets the DisplacementMapSampler.
         /// </summary>

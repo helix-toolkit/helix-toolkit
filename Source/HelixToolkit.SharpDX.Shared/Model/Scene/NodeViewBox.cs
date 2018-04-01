@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Shaders;
-
+    using Core;
     #region Properties
     /// <summary>
     /// 
@@ -317,7 +317,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 return false;
             }
-
+            var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
             float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale;
             var px = p.X - (float)(context.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
             var py = p.Y - (float)(context.ActualHeight / 2 * (1 - screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);

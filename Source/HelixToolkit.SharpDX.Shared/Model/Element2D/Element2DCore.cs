@@ -119,7 +119,17 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             SceneNode.InvalidateRender();
         }
+#if !NETFX_CORE
+        public void InvalidateMeasure()
+        {
+            SceneNode.InvalidateMeasure();
+        }
 
+        public void InvalidateArrange()
+        {
+            SceneNode.InvalidateArrange();
+        }
+#else
         public new void InvalidateMeasure()
         {
             SceneNode.InvalidateMeasure();
@@ -129,6 +139,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             SceneNode.InvalidateArrange();
         }
+#endif
+
 
         public static implicit operator SceneNode2D(Element2DCore e)
         {

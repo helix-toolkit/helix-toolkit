@@ -476,6 +476,7 @@ namespace HelixToolkit.UWP.Model
             TextureBindingMap = null;
             SamplerBindingMap = null;
             OnInvalidateRenderer = null;
+            currentPass = null;
             base.OnDispose(disposeManagedResources);
         }
     }

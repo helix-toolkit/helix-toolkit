@@ -93,13 +93,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         ///   <c>true</c> if [need clear depth buffer]; otherwise, <c>false</c>.
         /// </value>
         protected bool NeedClearDepthBuffer { set; get; } = true;
-        /// <summary>
-        /// Gets the screen space core.
-        /// </summary>
-        /// <value>
-        /// The screen space core.
-        /// </value>
-        protected IScreenSpacedRenderParams screenSpaceCore { get { return (IScreenSpacedRenderParams)RenderCore; } }
+
         /// <summary>
         /// Called when [create render core].
         /// </summary>
@@ -116,9 +110,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         protected override bool OnAttach(IRenderHost host)
         {
             RenderCore.Attach(renderTechnique);
-            screenSpaceCore.RelativeScreenLocationX = (float)this.RelativeScreenLocationX;
-            screenSpaceCore.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
-            screenSpaceCore.SizeScale = (float)this.SizeScale;
+            var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
+            screenSpaceCore.RelativeScreenLocationX = RelativeScreenLocationX;
+            screenSpaceCore.RelativeScreenLocationY = RelativeScreenLocationY;
+            screenSpaceCore.SizeScale = SizeScale;
             return base.OnAttach(host);
         }
         /// <summary>
