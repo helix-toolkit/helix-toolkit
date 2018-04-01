@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class NodeScreenDuplication : SceneNode
+    public class ScreenDuplicationNode : SceneNode
     {
         #region Properties
         /// <summary>
@@ -95,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <summary>
         /// Initializes a new instance of the <see cref="ScreenDuplicationModel"/> class.
         /// </summary>
-        public NodeScreenDuplication()
+        public ScreenDuplicationNode()
         {
             IsHitTestVisible = false;
         }

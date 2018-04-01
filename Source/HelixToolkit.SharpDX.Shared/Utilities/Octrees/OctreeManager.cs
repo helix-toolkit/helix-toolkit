@@ -199,7 +199,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                         continue;
                     }
                     int index;
-                    var node = mOctree.FindItemByGuid(item.GUID, item as NodeGeometry, out index);
+                    var node = mOctree.FindItemByGuid(item.GUID, item as GeometryNode, out index);
                     bool rootAdd = true;
                     if (node != null)
                     {
@@ -222,7 +222,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     }
                     else
                     {
-                        mOctree.RemoveByGuid(item.GUID, item as NodeGeometry, mOctree);
+                        mOctree.RemoveByGuid(item.GUID, item as GeometryNode, mOctree);
                     }
                     if (rootAdd)
                     {
@@ -301,7 +301,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 {
                     bool succeed = true;
                     int counter = 0;
-                    while (!tree.Add(item as NodeGeometry))
+                    while (!tree.Add(item as GeometryNode))
                     {
                         var direction = (item.Bounds.Minimum + item.Bounds.Maximum)
                             - (tree.Bound.Minimum + tree.Bound.Maximum);
@@ -343,7 +343,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     UpdateOctree(null);
                     item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
                     UnsubscribeBoundChangeEvent(item);
-                    if (!tree.RemoveByBound(item as NodeGeometry))
+                    if (!tree.RemoveByBound(item as GeometryNode))
                     {
                         //Console.WriteLine("Remove failed.");
                     }

@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodeAmbientLight();
+            return new AmbientLightNode();
         }
     }
 }

@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class NodeInstancingBillboard : NodeBillboard
+    public class InstancingBillboardNode : BillboardNode
     {
         /// <summary>
         /// Gets or sets the instance parameter array.

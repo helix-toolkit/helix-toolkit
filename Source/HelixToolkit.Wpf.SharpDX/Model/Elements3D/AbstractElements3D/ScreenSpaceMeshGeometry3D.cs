@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(-0.8,
                 (d, e) =>
                 {
-                   ((d as Element3DCore).SceneNode as NodeScreenSpaced).RelativeScreenLocationX = (float)(double)e.NewValue;
+                   ((d as Element3DCore).SceneNode as ScreenSpacedNode).RelativeScreenLocationX = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// <see cref="RelativeScreenLocationY"/>
@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(-0.8,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as NodeScreenSpaced).RelativeScreenLocationY = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ScreenSpacedNode).RelativeScreenLocationY = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// <see cref="SizeScale"/>
@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(1.0,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as NodeScreenSpaced).SizeScale = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ScreenSpacedNode).SizeScale = (float)(double)e.NewValue;
                 }));
 
 
@@ -62,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(false,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as NodeScreenSpaced).IsRightHand = !(bool)e.NewValue;
+                ((d as Element3DCore).SceneNode as ScreenSpacedNode).IsRightHand = !(bool)e.NewValue;
             }));
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
-            if(node is NodeScreenSpaced n)
+            if(node is ScreenSpacedNode n)
             {
                 n.RelativeScreenLocationX = (float)this.RelativeScreenLocationX;
                 n.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;

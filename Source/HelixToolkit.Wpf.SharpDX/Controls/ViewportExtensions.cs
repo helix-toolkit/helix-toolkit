@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
             int count = 0;
             var totalModel = viewport.Renderables.PreorderDFT((x) => 
             {
-                if(x is NodeGeometry g)
+                if(x is GeometryNode g)
                 {
                     if (g.Visible && g.Geometry != null && g.Geometry.Indices != null)
                     {
@@ -195,7 +195,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var maxVector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var firstModel = viewport.Renderables.PreorderDFT((r) =>
             {
-                if (r.Visible && !(r is NodeScreenSpaced))
+                if (r.Visible && !(r is ScreenSpacedNode))
                 {
                     return true;
                 }
@@ -220,7 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
             
             foreach(var renderable in viewport.Renderables.PreorderDFT((r) =>
             {               
-                if (r.Visible && !(r is NodeScreenSpaced))
+                if (r.Visible && !(r is ScreenSpacedNode))
                 {
                     return true;
                 }

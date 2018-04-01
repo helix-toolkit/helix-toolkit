@@ -24,7 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Media.Colors.Red,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as NodeCoordinateSystem).AxisXColor = ((Media.Color)e.NewValue).ToColor4();
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisXColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
         /// <summary>
         /// <see cref="AxisYColor"/>
@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Media.Colors.Green,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as NodeCoordinateSystem).AxisYColor = ((Media.Color)e.NewValue).ToColor4();
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisYColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
         /// <summary>
         /// <see cref="AxisZColor"/>
@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Media.Colors.Blue,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as NodeCoordinateSystem).AxisZColor = ((Media.Color)e.NewValue).ToColor4();
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisZColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
         /// <summary>
         /// 
@@ -51,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Media.Colors.Gray,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as NodeCoordinateSystem).LabelColor = ((Media.Color)e.NewValue).ToColor4();
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).LabelColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "CoordinateSystemLabelX", typeof(string), typeof(CoordinateSystemModel3D), new PropertyMetadata("X",
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as NodeCoordinateSystem).LabelX = e.NewValue as string;
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).LabelX = e.NewValue as string;
                 }));
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "CoordinateSystemLabelY", typeof(string), typeof(CoordinateSystemModel3D), new PropertyMetadata("Y",
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as NodeCoordinateSystem).LabelY = e.NewValue as string;
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).LabelY = e.NewValue as string;
                 }));
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "CoordinateSystemLabelZ", typeof(string), typeof(CoordinateSystemModel3D), new PropertyMetadata("Z",
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as NodeCoordinateSystem).LabelZ = e.NewValue as string;
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).LabelZ = e.NewValue as string;
                 }));
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodeCoordinateSystem();
+            return new CoordinateSystemNode();
         }
 
         public override bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)

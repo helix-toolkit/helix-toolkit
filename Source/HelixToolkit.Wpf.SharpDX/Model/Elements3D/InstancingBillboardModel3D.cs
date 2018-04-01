@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("InstanceParamArray", typeof(IList<BillboardInstanceParameter>), typeof(InstancingBillboardModel3D), 
                 new PropertyMetadata(null, (d,e)=> 
                 {
-                    ((d as Element3DCore).SceneNode as NodeInstancingBillboard).InstanceParamArray = e.NewValue as IList<BillboardInstanceParameter>;
+                    ((d as Element3DCore).SceneNode as InstancingBillboardNode).InstanceParamArray = e.NewValue as IList<BillboardInstanceParameter>;
                 }));
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodeInstancingBillboard();
+            return new InstancingBillboardNode();
         }
     }
 }

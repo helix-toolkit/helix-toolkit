@@ -3,9 +3,6 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
@@ -17,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public sealed class NodeDirectionalLight : NodeLight
+    public sealed class DirectionalLightNode : LightNode
     {
         public Vector3 Direction
         {

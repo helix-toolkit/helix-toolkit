@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class NodeBoneSkinMesh : NodeMesh
+    public class BoneSkinMeshNode : MeshNode
     {
         /// <summary>
         /// Gets or sets the vertex bone ids.

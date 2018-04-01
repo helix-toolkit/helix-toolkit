@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CustomShaderDemo
 {
-    public class NodeCustomMesh : NodeMesh
+    public class CustomMeshNode : MeshNode
     {
         public Color4Collection ColorGradients
         {

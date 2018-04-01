@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class NodeEnvironmentMap : SceneNode
+    public class EnvironmentMapNode : SceneNode
     {
         /// <summary>
         /// Gets or sets the environment texture. Must be 3D cube texture

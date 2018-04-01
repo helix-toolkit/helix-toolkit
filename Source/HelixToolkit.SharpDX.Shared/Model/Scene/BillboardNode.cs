@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class NodeBillboard : NodeGeometry
+    public class BillboardNode : GeometryNode
     {
         /// <summary>
         /// Gets or sets a value indicating whether [fixed size].
@@ -55,7 +55,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
-        public NodeBillboard()
+        public BillboardNode()
         {
             HasBound = false;
         }

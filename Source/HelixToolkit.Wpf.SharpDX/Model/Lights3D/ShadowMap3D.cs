@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("Resolution", typeof(Size), typeof(ShadowMap3D), new PropertyMetadata(new Size(1024, 1024), (d, e) =>
             {
                 var resolution = (Size)e.NewValue;
-                ((d as Element3DCore).SceneNode as NodeShadowMap).Resolution = new Size2((int)resolution.Width, (int)resolution.Height);
+                ((d as Element3DCore).SceneNode as ShadowMapNode).Resolution = new Size2((int)resolution.Width, (int)resolution.Height);
             }));
 
 
@@ -40,7 +40,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty BiasProperty =
                 DependencyProperty.Register("Bias", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(0.0015, (d, e)=>
                 {
-                    ((d as Element3DCore).SceneNode as NodeShadowMap).Bias = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ShadowMapNode).Bias = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// The intensity property
@@ -48,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IntensityProperty =
                 DependencyProperty.Register("Intensity", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(0.5, (d, e)=>
                 {
-                    ((d as Element3DCore).SceneNode as NodeShadowMap).Intensity = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ShadowMapNode).Intensity = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// The light camera property
@@ -56,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty LightCameraProperty =
                 DependencyProperty.Register("LightCamera", typeof(ProjectionCamera), typeof(ShadowMap3D), new PropertyMetadata(null, (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as NodeShadowMap).LightCamera = (e.NewValue as ProjectionCamera).CameraInternal as ProjectionCameraCore;
+                    ((d as Element3DCore).SceneNode as ShadowMapNode).LightCamera = (e.NewValue as ProjectionCamera).CameraInternal as ProjectionCameraCore;
                 }));
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodeShadowMap();
+            return new ShadowMapNode();
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="core">The core.</param>
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            if (core is NodeShadowMap n)
+            if (core is ShadowMapNode n)
             {
                 n.Intensity = (float)Intensity;
                 n.Bias = (float)Bias;

@@ -3,14 +3,15 @@ The MIT License(MIT)
 Copyright(c) 2018 Helix Toolkit contributors
 */
 
-using System;
-using System.Collections.Generic;
 using SharpDX;
 using SharpDX.Direct3D11;
+using System;
+using System.Collections.Generic;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
+
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
@@ -18,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class NodeLine : NodeGeometry
+    public class PointNode : GeometryNode
     {
         #region Properties
         /// <summary>
@@ -29,31 +30,45 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public Color4 Color
         {
-            get { return (RenderCore as ILineRenderParams).LineColor; }
-            set { (RenderCore as ILineRenderParams).LineColor = value; }
+            get { return (RenderCore as IPointRenderParams).PointColor; }
+            set { (RenderCore as IPointRenderParams).PointColor = value; }
         }
         /// <summary>
-        /// Gets or sets the thickness.
+        /// Gets or sets the size.
         /// </summary>
         /// <value>
-        /// The thickness.
+        /// The size.
         /// </value>
-        public float Thickness
+        public Size2F Size
         {
-            get { return (RenderCore as ILineRenderParams).Thickness; }
-            set { (RenderCore as ILineRenderParams).Thickness = value; }
+            get { return new Size2F((RenderCore as IPointRenderParams).Width, (RenderCore as IPointRenderParams).Height); }
+            set
+            {
+                (RenderCore as IPointRenderParams).Width = value.Width;
+                (RenderCore as IPointRenderParams).Height = value.Height;
+            }
         }
-
         /// <summary>
-        /// Gets or sets the smoothness.
+        /// Gets or sets the figure.
         /// </summary>
         /// <value>
-        /// The smoothness.
+        /// The figure.
         /// </value>
-        public float Smoothness
+        public PointFigure Figure
         {
-            get { return (RenderCore as ILineRenderParams).Smoothness; }
-            set { (RenderCore as ILineRenderParams).Smoothness = value; }
+            get { return (RenderCore as IPointRenderParams).Figure; }
+            set { (RenderCore as IPointRenderParams).Figure = value; }
+        }
+        /// <summary>
+        /// Gets or sets the figure ratio.
+        /// </summary>
+        /// <value>
+        /// The figure ratio.
+        /// </value>
+        public float FigureRatio
+        {
+            get { return (RenderCore as IPointRenderParams).FigureRatio; }
+            set { (RenderCore as IPointRenderParams).FigureRatio = value; }
         }
 
         /// <summary>
@@ -62,8 +77,27 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public double HitTestThickness
         {
             set; get;
-        } = 1.0; 
+        } = 4; 
         #endregion
+
+        /// <summary>
+        /// Distances the ray to point.
+        /// </summary>
+        /// <param name="r">The r.</param>
+        /// <param name="p">The p.</param>
+        /// <returns></returns>
+        public static double DistanceRayToPoint(Ray r, Vector3 p)
+        {
+            Vector3 v = r.Direction;
+            Vector3 w = p - r.Position;
+
+            float c1 = Vector3.Dot(w, v);
+            float c2 = Vector3.Dot(v, v);
+            float b = c1 / c2;
+
+            Vector3 pb = r.Position + v * b;
+            return (p - pb).Length();
+        }
 
         /// <summary>
         /// Called when [create buffer model].
@@ -73,7 +107,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override IGeometryBufferProxy OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
-            return EffectsManager.GeometryBufferManager.Register<DefaultLineGeometryBufferModel>(modelGuid, geometry);
+            return EffectsManager.GeometryBufferManager.Register<DefaultPointGeometryBufferModel>(modelGuid, geometry);
         }
 
         /// <summary>
@@ -82,7 +116,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override RenderCore OnCreateRenderCore()
         {
-            return new LineRenderCore();
+            return new PointRenderCore();
         }
 
         /// <summary>
@@ -93,22 +127,21 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return new RasterizerStateDescription()
             {
-                FillMode = FillMode,
-                CullMode = CullMode.None,
+                FillMode = FillMode.Solid,
+                CullMode = CullMode.Back,
                 DepthBias = DepthBias,
                 DepthBiasClamp = -1000,
                 SlopeScaledDepthBias = (float)SlopeScaledDepthBias,
                 IsDepthClipEnabled = IsDepthClipEnabled,
                 IsFrontCounterClockwise = false,
-
-                IsMultisampleEnabled = IsMSAAEnabled,
-                //IsAntialiasedLineEnabled = true, // Intel HD 3000 doesn't like this (#10051) and it's not needed
+                IsMultisampleEnabled = false,
                 IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
             };
         }
+
         /// <summary>
         /// Override this function to set render technique during Attach Host.
-        ///<para>If<see cref="SceneNode.OnSetRenderTechnique" /> is set, then<see cref="SceneNode.OnSetRenderTechnique" /> instead of<see cref="OnCreateRenderTechnique" /> function will be called.</para>
+        /// <para>If <see cref="SceneNode.OnSetRenderTechnique" /> is set, then <see cref="SceneNode.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
         /// </summary>
         /// <param name="host"></param>
         /// <returns>
@@ -116,8 +149,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </returns>
         protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
         {
-            return host.EffectsManager[DefaultRenderTechniqueNames.Lines];
+            return host.EffectsManager[DefaultRenderTechniqueNames.Points];
         }
+
         /// <summary>
         /// <para>Determine if this can be rendered.</para>
         /// </summary>
@@ -134,6 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return false;
             }
         }
+
         /// <summary>
         /// Called when [check geometry].
         /// </summary>
@@ -141,8 +176,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override bool OnCheckGeometry(Geometry3D geometry)
         {
-            return base.OnCheckGeometry(geometry) && geometry is LineGeometry3D;
+            return base.OnCheckGeometry(geometry) && geometry is PointGeometry3D;
         }
+
         /// <summary>
         /// Called when [hit test].
         /// </summary>
@@ -153,7 +189,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
-            return (Geometry as LineGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this.WrapperSource, (float)HitTestThickness);
+            return (Geometry as PointGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this.WrapperSource, (float)HitTestThickness);
         }
     }
 }

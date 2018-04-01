@@ -24,7 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as NodeBillboard).FixedSize = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as BillboardNode).FixedSize = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsTransparentProperty =
             DependencyProperty.Register("IsTransparent", typeof(bool), typeof(BillboardTextModel3D), new PropertyMetadata(false, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as NodeBillboard).IsTransparent = (bool)e.NewValue;
+                ((d as Element3DCore).SceneNode as BillboardNode).IsTransparent = (bool)e.NewValue;
             }));
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodeBillboard();
+            return new BillboardNode();
         }
         /// <summary>
         /// Assigns the default values to core.
@@ -81,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="core">The core.</param>
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            if (core is NodeBillboard n)
+            if (core is BillboardNode n)
             {
                 n.FixedSize = FixedSize;
             }

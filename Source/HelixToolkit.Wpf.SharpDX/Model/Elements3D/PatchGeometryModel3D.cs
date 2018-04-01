@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodePatchMesh();
+            return new PatchMeshNode();
         }
     }
 }

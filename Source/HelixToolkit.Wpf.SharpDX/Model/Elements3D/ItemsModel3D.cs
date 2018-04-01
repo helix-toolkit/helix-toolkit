@@ -64,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     d.AddLogicalChild(e.NewValue);
                 }
-                (d.SceneNode as NodeGroup).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
+                (d.SceneNode as GroupNode).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
             }));
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private IOctree Octree
         {
-            get { return (SceneNode as NodeGroup).OctreeManager == null ? null : (SceneNode as NodeGroup).OctreeManager.Octree; }
+            get { return (SceneNode as GroupNode).OctreeManager == null ? null : (SceneNode as GroupNode).OctreeManager.Octree; }
         }
 
         private readonly Dictionary<object, Element3D> elementDict = new Dictionary<object, Element3D>();
@@ -179,7 +179,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (Children.Count > 0)
             {
-                var groupNode = SceneNode as NodeGroup;
+                var groupNode = SceneNode as GroupNode;
                 groupNode.OctreeManager?.RequestRebuild();
             }
         }

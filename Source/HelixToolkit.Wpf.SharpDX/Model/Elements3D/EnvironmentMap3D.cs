@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty TextureProperty = DependencyProperty.Register("Texture", typeof(Stream), typeof(EnvironmentMap3D),
             new PropertyMetadata(null,(d,e)=> 
             {
-                ((d as Element3DCore).SceneNode as NodeEnvironmentMap).Texture = (Stream)e.NewValue;
+                ((d as Element3DCore).SceneNode as EnvironmentMapNode).Texture = (Stream)e.NewValue;
             }));
 
         public Stream Texture
@@ -29,13 +29,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodeEnvironmentMap();
+            return new EnvironmentMapNode();
         }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
             base.AssignDefaultValuesToSceneNode(core);
-            (SceneNode as NodeEnvironmentMap).Texture = Texture;
+            (SceneNode as EnvironmentMapNode).Texture = Texture;
         }
     }
 }

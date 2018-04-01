@@ -38,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d,e)=> 
                 {
                     var rect = (Rect)e.NewValue;
-                    ((d as Element3DCore).SceneNode as NodeScreenDuplication).CaptureRectangle = new Rectangle((int)rect.Left, (int)rect.Top, (int)rect.Width, (int)rect.Height);
+                    ((d as Element3DCore).SceneNode as ScreenDuplicationNode).CaptureRectangle = new Rectangle((int)rect.Left, (int)rect.Top, (int)rect.Width, (int)rect.Height);
                 }));
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("DisplayIndex", typeof(int), typeof(ScreenDuplicationModel), new PropertyMetadata(0, 
                 (d,e)=>
                 {
-                    ((d as Element3DCore).SceneNode as NodeScreenDuplication).DisplayIndex = (int)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ScreenDuplicationNode).DisplayIndex = (int)e.NewValue;
                 }));
 
 
@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("StretchToFill", typeof(bool), typeof(ScreenDuplicationModel), new PropertyMetadata(false,
                 (d,e)=> 
                 {
-                    ((d as Element3DCore).SceneNode as NodeScreenDuplication).StretchToFill = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ScreenDuplicationNode).StretchToFill = (bool)e.NewValue;
                 }));
 
 
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ShowMouseCursorProperty =
             DependencyProperty.Register("ShowMouseCursor", typeof(bool), typeof(ScreenDuplicationModel), new PropertyMetadata(true,
                 (d,e)=> {
-                    ((d as Element3DCore).SceneNode as NodeScreenDuplication).ShowMouseCursor = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ScreenDuplicationNode).ShowMouseCursor = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodeScreenDuplication();
+            return new ScreenDuplicationNode();
         }
         /// <summary>
         /// Assigns the default values to core.
@@ -126,7 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
             base.AssignDefaultValuesToSceneNode(core);
-            if(core is NodeScreenDuplication c)
+            if(core is ScreenDuplicationNode c)
             {
                 c.DisplayIndex = this.DisplayIndex;
                 c.CaptureRectangle = new Rectangle((int)CaptureRectangle.Left, (int)CaptureRectangle.Top, (int)CaptureRectangle.Width, (int)CaptureRectangle.Height);

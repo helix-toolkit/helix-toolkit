@@ -32,19 +32,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 if(e.OldValue != null)
                 {
                     model.RemoveLogicalChild(e.OldValue);
-                    (model.SceneNode as NodeGroup).RemoveChildNode(e.OldValue as Element3D);
+                    (model.SceneNode as GroupNode).RemoveChildNode(e.OldValue as Element3D);
                 }
                 if(e.NewValue != null)
                 {
                     model.AddLogicalChild(e.NewValue);
-                    (model.SceneNode as NodeGroup).AddChildNode(e.NewValue as Element3D);
+                    (model.SceneNode as GroupNode).AddChildNode(e.NewValue as Element3D);
                 }
             }));
 
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodeGroup();
+            return new GroupNode();
         }
     }
 }

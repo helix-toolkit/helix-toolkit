@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new PropertyMetadata(null, 
                 (d,e)=> 
                 {
-                    ((d as Element3DCore).SceneNode as NodeGeometry).Geometry = e.NewValue as Geometry3D;
+                    ((d as Element3DCore).SceneNode as GeometryNode).Geometry = e.NewValue as Geometry3D;
                 }));
         /// <summary>
         /// The depth bias property
@@ -40,7 +40,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty DepthBiasProperty =
             DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new PropertyMetadata(0, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as NodeGeometry).DepthBias = (int)e.NewValue;
+                ((d as Element3DCore).SceneNode as GeometryNode).DepthBias = (int)e.NewValue;
             }));
         /// <summary>
         /// The slope scaled depth bias property
@@ -48,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty SlopeScaledDepthBiasProperty =
             DependencyProperty.Register("SlopeScaledDepthBias", typeof(double), typeof(GeometryModel3D), new PropertyMetadata(0.0, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as NodeGeometry).SlopeScaledDepthBias = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as GeometryNode).SlopeScaledDepthBias = (float)(double)e.NewValue;
             }));
         /// <summary>
         /// The is selected property
@@ -61,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsMultisampleEnabledProperty =
             DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as NodeGeometry).IsMSAAEnabled = (bool)e.NewValue;
+                ((d as Element3DCore).SceneNode as GeometryNode).IsMSAAEnabled = (bool)e.NewValue;
             }));
         /// <summary>
         /// The fill mode property
@@ -69,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(GeometryModel3D),
             new PropertyMetadata(FillMode.Solid, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as NodeGeometry).FillMode = (FillMode)e.NewValue;
+                ((d as Element3DCore).SceneNode as GeometryNode).FillMode = (FillMode)e.NewValue;
             }));
         /// <summary>
         /// The is scissor enabled property
@@ -77,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsScissorEnabledProperty =
             DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as NodeGeometry).IsScissorEnabled = (bool)e.NewValue;
+                ((d as Element3DCore).SceneNode as GeometryNode).IsScissorEnabled = (bool)e.NewValue;
             }));
         /// <summary>
         /// The enable view frustum check property
@@ -86,7 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("EnableViewFrustumCheck", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as NodeGeometry).EnableViewFrustumCheck = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as GeometryNode).EnableViewFrustumCheck = (bool)e.NewValue;
                 }));
         /// <summary>
         /// The is depth clip enabled property
@@ -94,7 +94,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(GeometryModel3D),
             new PropertyMetadata(true, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as NodeGeometry).IsDepthClipEnabled = (bool)e.NewValue;
+                ((d as Element3DCore).SceneNode as GeometryNode).IsDepthClipEnabled = (bool)e.NewValue;
             }));
 
 
@@ -102,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty PostEffectsProperty =
             DependencyProperty.Register("PostEffects", typeof(string), typeof(GeometryModel3D), new PropertyMetadata("", (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as NodeGeometry).PostEffects = e.NewValue as string;
+                ((d as Element3DCore).SceneNode as GeometryNode).PostEffects = e.NewValue as string;
             }));
 
         public string PostEffects
@@ -135,7 +135,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty InstancesProperty =
             DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(GeometryModel3D), new PropertyMetadata(null, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as NodeGeometry).Instances = e.NewValue as IList<Matrix>;
+                ((d as Element3DCore).SceneNode as GeometryNode).Instances = e.NewValue as IList<Matrix>;
             }));
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
-            if(node is NodeGeometry n)
+            if(node is GeometryNode n)
             {
                 n.DepthBias = this.DepthBias;
                 n.IsDepthClipEnabled = this.IsDepthClipEnabled;

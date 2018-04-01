@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class NodeScreenSpaced : NodeGroup
+    public class ScreenSpacedNode : GroupNode
     {
         #region Properties
         /// <summary>

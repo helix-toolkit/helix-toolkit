@@ -11,7 +11,7 @@ namespace CustomShaderDemo
             typeof(CustomMeshGeometryModel3D),
             new PropertyMetadata(null, (d, e) =>
             {
-                ((d as Element3D).SceneNode as NodeCustomMesh).ColorGradients = (Color4Collection)e.NewValue;
+                ((d as Element3D).SceneNode as CustomMeshNode).ColorGradients = (Color4Collection)e.NewValue;
             }));
 
         public Color4Collection ColorGradient
@@ -29,7 +29,7 @@ namespace CustomShaderDemo
             typeof(CustomMeshGeometryModel3D),
             new PropertyMetadata(5.0, (d, e) =>
             {
-                ((d as Element3D).SceneNode as NodeCustomMesh).HeightScale = (float)(double)e.NewValue;
+                ((d as Element3D).SceneNode as CustomMeshNode).HeightScale = (float)(double)e.NewValue;
             }));
 
         public double HeightScale
@@ -46,14 +46,14 @@ namespace CustomShaderDemo
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodeCustomMesh();
+            return new CustomMeshNode();
         }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
             base.AssignDefaultValuesToSceneNode(core);
-            (core as NodeCustomMesh).ColorGradients = ColorGradient;
-            (core as NodeCustomMesh).HeightScale = (float)HeightScale;
+            (core as CustomMeshNode).ColorGradients = ColorGradient;
+            (core as CustomMeshNode).HeightScale = (float)HeightScale;
         }
     }
 }

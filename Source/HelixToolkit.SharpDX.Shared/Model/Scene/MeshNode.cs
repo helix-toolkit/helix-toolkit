@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     ///
     /// </summary>
-    public class NodeMesh : NodeMaterialGeometry
+    public class MeshNode : MaterialGeometryNode
     {
         #region Properties
         private bool frontCCW = true;

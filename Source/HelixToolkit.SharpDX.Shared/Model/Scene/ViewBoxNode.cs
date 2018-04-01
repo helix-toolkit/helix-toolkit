@@ -18,11 +18,13 @@ namespace HelixToolkit.UWP.Model.Scene
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
+    using Shaders;
+    using Core;
     #region Properties
     /// <summary>
     /// 
     /// </summary>
-    public class ViewBoxNode : NodeScreenSpaced
+    public class ViewBoxNode : ScreenSpacedNode
     {
         /// <summary>
         /// 
@@ -131,9 +133,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         private static readonly Geometry3D cornerGeometry;
         private static readonly Geometry3D edgeGeometry;
 
-        private readonly NodeMesh ViewBoxMeshModel;
-        private readonly NodeInstancingMesh EdgeModel;
-        private readonly NodeInstancingMesh CornerModel; 
+        private readonly MeshNode ViewBoxMeshModel;
+        private readonly InstancingMeshNode EdgeModel;
+        private readonly InstancingMeshNode CornerModel; 
         #endregion
 
         static ViewBoxNode()
@@ -174,25 +176,25 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public ViewBoxNode()
         {
             RelativeScreenLocationX = 0.8f;
-            ViewBoxMeshModel = new NodeMesh() { EnableViewFrustumCheck = false };
+            ViewBoxMeshModel = new MeshNode() { EnableViewFrustumCheck = false };
             ViewBoxMeshModel.RenderCore.RenderType = RenderType.ScreenSpaced;
-            var sampler = (SamplerStateDescription)PhongMaterial.DiffuseAlphaMapSamplerProperty.DefaultMetadata.DefaultValue;
+            var sampler = DefaultSamplers.LinearSamplerWrapAni1;
             sampler.BorderColor = Color.Gray;
             sampler.AddressU = sampler.AddressV = sampler.AddressW = TextureAddressMode.Border;
 
             ViewBoxMeshModel.CullMode = CullMode.Back;
             ViewBoxMeshModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.ViewCube]; };
             this.AddChildNode(ViewBoxMeshModel);
-            ViewBoxMeshModel.Material = new PhongMaterial()
+            ViewBoxMeshModel.Material = new PhongMaterialCore()
             {
                 DiffuseColor = Color.White,
                 DiffuseMapSampler = sampler
             };
 
-            CornerModel = new NodeInstancingMesh()
+            CornerModel = new InstancingMeshNode()
             {
                 EnableViewFrustumCheck = false,
-                Material = PhongMaterials.Yellow,
+                Material = new PhongMaterialCore() { DiffuseColor = Color.Yellow },
                 Geometry = cornerGeometry,
                 Instances = cornerInstances,
                 Visible = false
@@ -201,10 +203,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             CornerModel.RenderCore.RenderType = RenderType.ScreenSpaced;
             this.AddChildNode(CornerModel);
 
-            EdgeModel = new NodeInstancingMesh()
+            EdgeModel = new InstancingMeshNode()
             {
                 EnableViewFrustumCheck = false,
-                Material = PhongMaterials.Silver,
+                Material = new PhongMaterialCore() { DiffuseColor = Color.Silver },
                 Geometry = edgeGeometry,
                 Instances = edgeInstances,
                 Visible = false
@@ -315,7 +317,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 return false;
             }
-
+            var screenSpaceCore = RenderCore as ScreenSpacedMeshRenderCore;
             float viewportSize = screenSpaceCore.Size * screenSpaceCore.SizeScale;
             var px = p.X - (float)(context.ActualWidth / 2 * (1 + screenSpaceCore.RelativeScreenLocationX) - viewportSize / 2);
             var py = p.Y - (float)(context.ActualHeight / 2 * (1 - screenSpaceCore.RelativeScreenLocationY) - viewportSize / 2);

@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty InstanceIdentifiersProperty = DependencyProperty.Register("InstanceIdentifiers", typeof(IList<System.Guid>),
             typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null, (d,e)=>
-            { ((d as Element3DCore).SceneNode as NodeInstancingMesh).InstanceIdentifiers = e.NewValue as IList<System.Guid>; }));
+            { ((d as Element3DCore).SceneNode as InstancingMeshNode).InstanceIdentifiers = e.NewValue as IList<System.Guid>; }));
 
         /// <summary>
         /// Add octree manager to use octree hit test.
@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     d.AddLogicalChild(e.NewValue);
                 }
-                (d.SceneNode as NodeInstancingMesh).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
+                (d.SceneNode as InstancingMeshNode).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
             }));
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty InstanceAdvArrayProperty =
             DependencyProperty.Register("InstanceParamArray", typeof(IList<InstanceParameter>), typeof(InstancingMeshGeometryModel3D), 
                 new PropertyMetadata(null, (d, e) =>
-                { ((d as Element3DCore).SceneNode as NodeInstancingMesh).InstanceParamArray = e.NewValue as IList<InstanceParameter>; }));
+                { ((d as Element3DCore).SceneNode as InstancingMeshNode).InstanceParamArray = e.NewValue as IList<InstanceParameter>; }));
 
         /// <summary>
         /// If bind to identifiers, hit test returns identifier as Tag in HitTestResult.
@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodeInstancingMesh();
+            return new InstancingMeshNode();
         }
     }
 }

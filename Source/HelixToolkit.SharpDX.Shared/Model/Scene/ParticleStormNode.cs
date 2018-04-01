@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class NodeParticleStorm : SceneNode, IInstancing, IBoundable
+    public class ParticleStormNode : SceneNode, IInstancing, IBoundable
     {
         #region Properties
         /// <summary>
@@ -523,7 +523,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         private volatile bool blendChanged = true;
 
-        public NodeParticleStorm()
+        public ParticleStormNode()
         {
             HasBound = true;
         }

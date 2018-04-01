@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     ///
     /// </summary>
-    public class NodeGroup : NodeGroupBase, IHitable
+    public class GroupNode : GroupNodeBase, IHitable
     {
         public IOctreeManager OctreeManager { set; get; }
 
@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
-        public NodeGroup()
+        public GroupNode()
         {
             OnAddChildNode += NodeGroup_OnAddChildNode;
             OnRemoveChildNode += NodeGroup_OnRemoveChildNode;

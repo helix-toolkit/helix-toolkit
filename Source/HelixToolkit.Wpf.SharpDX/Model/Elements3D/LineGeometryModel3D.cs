@@ -24,25 +24,25 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(LineGeometryModel3D), new PropertyMetadata(Media.Colors.Black, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as NodeLine).Color = ((Media.Color)e.NewValue).ToColor4();
+                ((d as Element3DCore).SceneNode as LineNode).Color = ((Media.Color)e.NewValue).ToColor4();
             }));
 
         public static readonly DependencyProperty ThicknessProperty =
             DependencyProperty.Register("Thickness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as NodeLine).Thickness = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as LineNode).Thickness = (float)(double)e.NewValue;
             }));
 
         public static readonly DependencyProperty SmoothnessProperty =
             DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(0.0,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as NodeLine).Smoothness = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as LineNode).Smoothness = (float)(double)e.NewValue;
             }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
             DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(1.0, (d,e)=> 
-            { ((d as Element3DCore).SceneNode as NodeLine).HitTestThickness = (double)e.NewValue; }));
+            { ((d as Element3DCore).SceneNode as LineNode).HitTestThickness = (double)e.NewValue; }));
 
         public Media.Color Color
         {
@@ -75,7 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodeLine();
+            return new LineNode();
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="core">The core.</param>
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            if(core is NodeLine n)
+            if(core is LineNode n)
             {
                 n.Color = Color.ToColor4();
                 n.Thickness = (float)Thickness;

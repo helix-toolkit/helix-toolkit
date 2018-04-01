@@ -6,23 +6,20 @@ Copyright (c) 2018 Helix Toolkit contributors
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
-
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
-    using Core;
     /// <summary>
     /// 
     /// </summary>
-    public sealed class NodeAmbientLight : NodeLight
+    public class PatchMeshNode : MeshNode
     {
         /// <summary>
-        /// Called when [create render core].
+        /// Initializes a new instance of the <see cref="PatchMeshNode"/> class.
         /// </summary>
-        /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
+        public PatchMeshNode()
         {
-            return new AmbientLightCore();
+            EnableTessellation = true;
         }
     }
 }

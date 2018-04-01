@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public abstract class NodeGroupBase : SceneNode
+    public abstract class GroupNodeBase : SceneNode
     {
         public enum Operation
         {

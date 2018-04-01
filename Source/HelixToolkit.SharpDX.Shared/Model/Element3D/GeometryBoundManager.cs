@@ -218,9 +218,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         public delegate bool OnCheckGeometryDelegate(Geometry3D geometry);
         public OnCheckGeometryDelegate OnCheckGeometry; 
 
-        private NodeGeometry elementCore;
+        private GeometryNode elementCore;
 
-        public GeometryBoundManager(NodeGeometry core)
+        public GeometryBoundManager(GeometryNode core)
         {
             this.elementCore = core;
             core.OnTransformChanged += OnTransformChanged;

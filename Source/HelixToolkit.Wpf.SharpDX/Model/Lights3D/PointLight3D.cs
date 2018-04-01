@@ -16,19 +16,19 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty AttenuationProperty =
             DependencyProperty.Register("Attenuation", typeof(Vector3D), typeof(PointLight3D), new PropertyMetadata(new Vector3D(1.0f, 0.0f, 0.0f),
                 (d, e) => {
-                    ((d as Element3DCore).SceneNode as NodePointLight).Attenuation = ((Vector3D)e.NewValue).ToVector3();
+                    ((d as Element3DCore).SceneNode as PointLightNode).Attenuation = ((Vector3D)e.NewValue).ToVector3();
                 }));
 
         public static readonly DependencyProperty RangeProperty =
             DependencyProperty.Register("Range", typeof(double), typeof(PointLight3D), new PropertyMetadata(100.0,
                 (d, e) => {
-                    ((d as Element3DCore).SceneNode as NodePointLight).Range = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as PointLightNode).Range = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty PositionProperty =
             DependencyProperty.Register("Position", typeof(Point3D), typeof(PointLight3D), new PropertyMetadata(new Point3D(),
                 (d, e) => {
-                    ((d as Element3DCore).SceneNode as NodePointLight).Position = ((Point3D)e.NewValue).ToVector3();
+                    ((d as Element3DCore).SceneNode as PointLightNode).Position = ((Point3D)e.NewValue).ToVector3();
                 }));
 
         /// <summary>
@@ -66,13 +66,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodePointLight();
+            return new PointLightNode();
         }
 
         protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
             base.AssignDefaultValuesToSceneNode(core);
-            if(core is NodePointLight n)
+            if(core is PointLightNode n)
             {
                 n.Attenuation = Attenuation.ToVector3();
                 n.Range = (float)Range;

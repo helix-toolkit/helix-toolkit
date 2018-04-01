@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     /// 
     /// </summary>
-    public class NodeCrossSectionMesh : NodeMesh
+    public class CrossSectionMeshNode : MeshNode
     {
         /// <summary>
         /// Gets or sets the color of the cross section.
