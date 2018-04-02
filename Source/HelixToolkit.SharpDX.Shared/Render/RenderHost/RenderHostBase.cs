@@ -48,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The render buffer.
         /// </value>
-        protected IDX11RenderBufferProxy RenderBuffer { get { return renderBuffer; } }
+        public IDX11RenderBufferProxy RenderBuffer { get { return renderBuffer; } }
         /// <summary>
         /// Gets the device.
         /// </summary>
@@ -527,9 +527,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 RenderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
                 lastRenderTime = t0;
                 UpdateRequested = false;
-                renderContext.AutoUpdateOctree = RenderConfiguration.AutoUpdateOctree;
-                renderContext.EnableBoundingFrustum = EnableRenderFrustum;
                 ++updateCounter;
+                renderContext.AutoUpdateOctree = RenderConfiguration.AutoUpdateOctree;
+                renderContext.EnableBoundingFrustum = EnableRenderFrustum;               
                 if (RenderConfiguration.UpdatePerFrameData)
                 {
                     viewport.Update(t0);                    

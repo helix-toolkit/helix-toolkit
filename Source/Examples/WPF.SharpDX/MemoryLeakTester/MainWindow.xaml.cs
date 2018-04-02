@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HelixToolkit.Wpf.SharpDX.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;

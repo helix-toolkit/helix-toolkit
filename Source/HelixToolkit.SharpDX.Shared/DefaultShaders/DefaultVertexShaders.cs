@@ -10,6 +10,7 @@ using System;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
 #else
+using HelixToolkit.UWP.Helper;
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
@@ -29,7 +30,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsMeshDefault;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsMeshDefault");
 #endif
             }
         }
@@ -43,7 +44,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsMeshTessellation;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsMeshTessellation");
 #endif
             }
         }
@@ -57,7 +58,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsMeshShadow;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsMeshShadow");
 #endif
             }
         }
@@ -71,7 +72,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsMeshInstancing;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsMeshInstancing");
 #endif
             }
         }
@@ -86,7 +87,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsMeshInstancingTessellation;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsMeshInstancingTessellation");
 #endif
             }
         }
@@ -101,7 +102,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsBoneSkinning;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsBoneSkinning");
 #endif
             }
         }
@@ -116,7 +117,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsBoneSkinningShadow;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsBoneSkinningShadow");
 #endif
             }
         }
@@ -131,7 +132,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsBoneSkinningTessellation;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsBoneSkinningTessellation");
 #endif
             }
         }
@@ -146,7 +147,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsPoint;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsPoint");
 #endif
             }
         }
@@ -160,7 +161,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsPointShadow;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsPointShadow");
 #endif
             }
         }
@@ -174,7 +175,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsBillboard;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsBillboard");
 #endif
             }
         }
@@ -189,7 +190,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsBillboardInstancing;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsBillboardInstancing");
 #endif
             }
         }
@@ -203,7 +204,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsMeshClipPlane;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsMeshClipPlane");
 #endif
             }
         }
@@ -217,7 +218,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsMeshClipPlaneQuad;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsMeshClipPlaneQuad");
 #endif
             }
         }
@@ -232,7 +233,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsParticle;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsParticle");
 #endif
             }
         }
@@ -247,7 +248,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsSkybox;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsSkybox");
 #endif
             }
         }
@@ -262,7 +263,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsMeshWireframe;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsMeshWireframe");
 #endif
             }
         }
@@ -277,7 +278,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsBoneSkinningWireframe;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsBoneSkinningWireframe");
 #endif
             }
         }
@@ -292,7 +293,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsMeshOutlinePass1;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsMeshOutlinePass1");
 #endif
             }
         }
@@ -308,7 +309,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.vsMeshOutlineScreenQuad;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("vsMeshOutlineScreenQuad");
 #endif
             }
         }
