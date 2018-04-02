@@ -1,11 +1,11 @@
-﻿using System;
+﻿using SharpDX;
+using SharpDX.Direct3D11;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using SharpDX;
-using SharpDX.Direct3D11;
-using System.Threading;
-using System.Linq;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -13,11 +13,12 @@ using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using Model.Scene;
-    using Utilities;
+    using Core;
     using Core2D;
     using HelixToolkit.Logger;
-    using Core;
+    using Render;
+    using Model.Scene;
+    using Utilities;
 
     /// <summary>
     /// Use to contain shared models for multiple viewports. 
@@ -124,6 +125,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 return currentRenderHost;
             }
         }
+
+        
 
         /// <summary>
         /// Gets the current frame renderables for rendering.
@@ -445,6 +448,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The render configuration.
         /// </value>
         public DX11RenderHostConfiguration RenderConfiguration { set; get; }
+
+        public IDX11RenderBufferProxy RenderBuffer { get { return CurrentRenderHost != null ? CurrentRenderHost.RenderBuffer : null; } }
 
         public ModelContainer3DX()
         {

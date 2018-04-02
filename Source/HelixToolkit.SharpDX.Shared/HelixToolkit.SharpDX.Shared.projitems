@@ -70,6 +70,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultSamplers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultStates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultVertexShaders.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\UWPShaderReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BitmapExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingSphereExtensions.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ScreenSpacedNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ViewBoxNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11RenderBufferBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11SwapChainCompositionRenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11SwapChainRenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\Renderer\ImmediateContextRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\Renderer\DeferredContextRenderer.cs" />

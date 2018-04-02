@@ -9,6 +9,9 @@
     xmlns:helixModel="using:HelixToolkit.UWP.CommonDX"
     mc:Ignorable="d">
 
+    <Page.DataContext>
+        <local:MainPageViewModel/>
+    </Page.DataContext>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
@@ -17,8 +20,9 @@
 
         <TextBlock Text="HelixToolkit + SharpDX in Windows 10" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="64" FontStretch="Condensed"/>
 
-        <helix:Viewport3DX Grid.Row="1">
-            <helix:ExampleCube3D RotationSpeed="0.5" />
+        <helix:Viewport3DX Grid.Row="1" EffectsManager="{Binding EffectsManager}" Camera="{Binding Camera}">
+            <helix:DirectionalLight3D Direction="{Binding Camera.LookDirection}"/>
+            <helix:MeshGeometryModel3D Geometry="{Binding Geometry}" Material="{Binding Material}" Transform="{Binding Transform}"/>
             <!--<Win8:ExampleCube3D RotationSpeed="1.0"/>-->
             <!-- TODO: this didn't work - are these two instances sharing buffers? -->
         </helix:Viewport3DX>
