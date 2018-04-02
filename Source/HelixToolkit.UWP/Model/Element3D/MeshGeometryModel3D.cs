@@ -5,7 +5,8 @@
     using Model;
     using Model.Scene;
     using Windows.UI.Xaml;
-
+    using Color = Windows.UI.Color;
+    using Colors = Windows.UI.Colors;
 
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
@@ -74,8 +75,8 @@
         /// The wireframe color property
         /// </summary>
         public static readonly DependencyProperty WireframeColorProperty =
-            DependencyProperty.Register("WireframeColor", typeof(Color4), typeof(MeshGeometryModel3D), new PropertyMetadata(Color.SkyBlue, (d, e) =>
-            { ((d as Element3DCore).SceneNode as MeshNode).WireframeColor = ((Color)e.NewValue); }));
+            DependencyProperty.Register("WireframeColor", typeof(Color), typeof(MeshGeometryModel3D), new PropertyMetadata(Colors.SkyBlue, (d, e) =>
+            { ((d as Element3DCore).SceneNode as MeshNode).WireframeColor = ((Color)e.NewValue).ToColor4(); }));
 
         /// <summary>
         /// Gets or sets a value indicating whether [render overlapping wireframe].
@@ -237,7 +238,7 @@
         {
             var c = node as MeshNode;
             c.InvertNormal = this.InvertNormal;
-            c.WireframeColor = this.WireframeColor;
+            c.WireframeColor = this.WireframeColor.ToColor4();
             c.RenderWireframe = this.RenderWireframe;
             c.MaxTessellationFactor = (float)this.MaxTessellationFactor;
             c.MinTessellationFactor = (float)this.MinTessellationFactor;

@@ -16,6 +16,10 @@ namespace SimpleDemoW10
 
         public Geometry3D Geometry { private set; get; }
 
+        public Geometry3D LineGeometry { private set; get; }
+
+        public Geometry3D PointGeometry { private set; get; }
+
         public PhongMaterial Material { private set; get; }
 
         public IEffectsManager EffectsManager { private set; get; }
@@ -45,11 +49,18 @@ namespace SimpleDemoW10
 
             var builder = new MeshBuilder();
             builder.AddBox(new SharpDX.Vector3(0, 0, 0), 2, 2, 2);
+            builder.AddSphere(new Vector3(), 1.5);
             Geometry = builder.ToMesh();
-            Material = new PhongMaterial()
-            {
-                DiffuseColor = Color.Red,
-            };
+            Material = PhongMaterials.Blue;
+
+            var lineBuilder = new LineBuilder();
+            lineBuilder.AddGrid(BoxFaces.All, 10, 10, 10, 10);
+            LineGeometry = lineBuilder.ToLineGeometry3D();
+
+            builder = new MeshBuilder();
+            builder.AddSphere(new Vector3(), 3);
+            var mesh = builder.ToMesh();
+            PointGeometry = new PointGeometry3D() { Positions = mesh.Positions };
 
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;

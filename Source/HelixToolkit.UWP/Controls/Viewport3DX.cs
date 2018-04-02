@@ -196,7 +196,8 @@ namespace HelixToolkit.UWP
             renderHostInternal = (ItemsPanelRoot as SwapChainRenderHost).RenderHost;
             renderHostInternal.Viewport = this;
             renderHostInternal.EffectsManager = this.EffectsManager;
-            renderHostInternal.RenderTechnique = this.RenderTechnique;           
+            renderHostInternal.RenderTechnique = this.RenderTechnique;
+            renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();
         }
 
         /// <summary>

@@ -139,7 +139,10 @@
     <Compile Include="Model\Camera\Camera.cs" />
     <Compile Include="Model\Camera\PerspectiveCamera.cs" />
     <Compile Include="Model\Camera\ProjectionCamera.cs" />
+    <Compile Include="Model\Element3D\BillboardTextModel3D.cs" />
+    <Compile Include="Model\Element3D\LineGeometryModel3D.cs" />
     <Compile Include="Model\Element3D\MeshGeometryModel3D.cs" />
+    <Compile Include="Model\Element3D\PointGeometryModel3D.cs" />
     <Compile Include="Model\Lights\AmbientLight3D.cs" />
     <Compile Include="Model\Lights\DirectionalLight3D.cs" />
     <Compile Include="Model\Lights\Light3D.cs" />
@@ -148,6 +151,7 @@
     <Compile Include="Model\Lights\SpotLight3D.cs" />
     <Compile Include="Model\Material\Material.cs" />
     <Compile Include="Model\Material\PhongMaterial.cs" />
+    <Compile Include="Model\Material\PhongMaterialFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.rd.xml" />
   </ItemGroup>

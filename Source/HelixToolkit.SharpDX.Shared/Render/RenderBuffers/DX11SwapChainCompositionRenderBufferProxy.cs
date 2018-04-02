@@ -21,14 +21,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     /// </summary>
     public class DX11SwapChainCompositionRenderBufferProxy : DX11RenderBufferProxyBase
     {
-        private SwapChain1 swapChain;
+        private SwapChain2 swapChain;
         /// <summary>
         /// Gets the swap chain.
         /// </summary>
         /// <value>
         /// The swap chain.
         /// </value>
-        public SwapChain1 SwapChain { get { return swapChain; } }
+        public SwapChain2 SwapChain { get { return swapChain; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11SwapChainRenderBufferProxy"/> class.
@@ -94,7 +94,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             return colorBuffer;
         }
 
-        private SwapChain1 CreateSwapChain()
+        private SwapChain2 CreateSwapChain()
         {
             var desc = CreateSwapChainDescription();
             using (var dxgiDevice2 = Device.QueryInterface<global::SharpDX.DXGI.Device2>())
@@ -177,7 +177,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public override bool Present()
         {
-            var res = swapChain.Present(0, PresentFlags.None, presentParams);
+            var res = swapChain.Present(1, PresentFlags.None, presentParams);
             if (res.Success)
             {
                 return true;
@@ -191,7 +191,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
                 else
                 {
-                    swapChain.Present(0, PresentFlags.Restart, presentParams);
+                    swapChain.Present(1, PresentFlags.Restart, presentParams);
                 }
                 return false;
             }

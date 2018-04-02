@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using Windows.UI;
+using Windows.UI.Xaml;
 
 namespace HelixToolkit.UWP
 {
@@ -11,8 +12,9 @@ namespace HelixToolkit.UWP
             "IsShadowMappingEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false,
                 (s, e) =>
                 {
-                    if (((Viewport3DX)s).renderHostInternal != null)
-                        ((Viewport3DX)s).renderHostInternal.IsShadowMapEnabled = (bool)e.NewValue;
+                    var viewport = s as Viewport3DX;
+                    if (viewport.renderHostInternal != null)
+                        viewport.renderHostInternal.IsShadowMapEnabled = (bool)e.NewValue;
                 }));
 
 
@@ -35,8 +37,9 @@ namespace HelixToolkit.UWP
             "RenderTechnique", typeof(IRenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null,
                 (s, e) => 
                 {
-                    if (((Viewport3DX)s).renderHostInternal != null)
-                        ((Viewport3DX)s).renderHostInternal.RenderTechnique = e.NewValue as IRenderTechnique;
+                    var viewport = s as Viewport3DX;
+                    if (viewport.renderHostInternal != null)
+                        viewport.renderHostInternal.RenderTechnique = e.NewValue as IRenderTechnique;
                 }));
 
         public IRenderTechnique RenderTechnique
@@ -58,8 +61,9 @@ namespace HelixToolkit.UWP
             "EffectsManager", typeof(IEffectsManager), typeof(Viewport3DX), new PropertyMetadata(
                 null,
                 (s, e) => {
-                    if (((Viewport3DX)s).renderHostInternal != null)
-                        ((Viewport3DX)s).renderHostInternal.EffectsManager = e.NewValue as IEffectsManager;
+                    var viewport = s as Viewport3DX;
+                    if (viewport.renderHostInternal != null)
+                        viewport.renderHostInternal.EffectsManager = e.NewValue as IEffectsManager;
                 }));
 
 
@@ -94,6 +98,32 @@ namespace HelixToolkit.UWP
             get
             {
                 return (Camera)GetValue(CameraProperty);
+            }
+        }
+
+        /// <summary>
+        /// Background Color property.this.RenderHost
+        /// </summary>
+        public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register(
+            "BackgroundColor", typeof(Color), typeof(Viewport3DX),
+            new PropertyMetadata(Colors.White, (s, e) =>
+            {
+                var viewport = s as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.ClearColor = ((Color)e.NewValue).ToColor4();
+                }
+            }));
+
+        public Color BackgroundColor
+        {
+            set
+            {
+                SetValue(BackgroundColorProperty, value);
+            }
+            get
+            {
+                return (Color)GetValue(BackgroundColorProperty);
             }
         }
 

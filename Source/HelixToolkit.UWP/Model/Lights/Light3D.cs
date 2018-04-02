@@ -15,13 +15,15 @@ namespace HelixToolkit.UWP
     using Model;
     using Model.Scene;
     using Windows.UI.Xaml;
+    using Color = Windows.UI.Color;
+    using Colors = Windows.UI.Colors;
 
     public abstract class Light3D : Element3D
     {
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Color), typeof(Light3D), new PropertyMetadata(Color.Gray, (d,e)=>
+            DependencyProperty.Register("Color", typeof(Color), typeof(Light3D), new PropertyMetadata(Colors.Gray, (d,e)=>
             {
-                ((d as Element3DCore).SceneNode as LightNode).Color = ((Color)e.NewValue);
+                ((d as Element3DCore).SceneNode as LightNode).Color = ((Color)e.NewValue).ToColor4();
             }));
 
         /// <summary>
