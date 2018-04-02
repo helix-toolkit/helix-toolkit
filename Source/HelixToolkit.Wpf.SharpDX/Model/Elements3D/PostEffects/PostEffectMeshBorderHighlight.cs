@@ -1,29 +1,15 @@
-﻿using HelixToolkit.Wpf.SharpDX.Core;
-
-namespace HelixToolkit.Wpf.SharpDX
+﻿namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model.Scene;
     /// <summary>
     /// Highlight the border of meshes
     /// </summary>
     /// <seealso cref="HelixToolkit.Wpf.SharpDX.Element3D" />
     public class PostEffectMeshBorderHighlight : PostEffectMeshOutlineBlur
     {
-        public PostEffectMeshBorderHighlight()
+        protected override SceneNode OnCreateSceneNode()
         {
-            EffectName = DefaultRenderTechniqueNames.PostEffectMeshBorderHighlight;
-        }
-
-        /// <summary>
-        /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>
-        /// Return RenderTechnique
-        /// </returns>
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.PostEffectMeshBorderHighlight];
+            return new NodePostEffectMeshOutlineBlur();
         }
     }
 }

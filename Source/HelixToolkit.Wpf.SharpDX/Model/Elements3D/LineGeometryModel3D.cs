@@ -9,11 +9,9 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using Core;
     using global::SharpDX;
-    using global::SharpDX.Direct3D11;
-    using System;
-    using System.Collections.Generic;
+    using Model;
+    using Model.Scene;
     using System.Windows;
     using Media = System.Windows.Media;
     /// <summary>
@@ -26,24 +24,25 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Media.Color), typeof(LineGeometryModel3D), new PropertyMetadata(Media.Colors.Black, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as ILineRenderParams).LineColor = ((Media.Color)e.NewValue).ToColor4();
+                ((d as Element3DCore).SceneNode as LineNode).Color = ((Media.Color)e.NewValue).ToColor4();
             }));
 
         public static readonly DependencyProperty ThicknessProperty =
             DependencyProperty.Register("Thickness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as ILineRenderParams).Thickness = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as LineNode).Thickness = (float)(double)e.NewValue;
             }));
 
         public static readonly DependencyProperty SmoothnessProperty =
             DependencyProperty.Register("Smoothness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(0.0,
             (d, e) =>
             {
-                ((d as IRenderable).RenderCore as ILineRenderParams).Smoothness = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as LineNode).Smoothness = (float)(double)e.NewValue;
             }));
 
         public static readonly DependencyProperty HitTestThicknessProperty =
-            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(1.0));
+            DependencyProperty.Register("HitTestThickness", typeof(double), typeof(LineGeometryModel3D), new PropertyMetadata(1.0, (d,e)=> 
+            { ((d as Element3DCore).SceneNode as LineNode).HitTestThickness = (double)e.NewValue; }));
 
         public Media.Color Color
         {
@@ -74,107 +73,24 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
 
-
-        /// <summary>
-        /// Called when [create buffer model].
-        /// </summary>
-        /// <param name="modelGuid"></param>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
-        protected override IGeometryBufferProxy OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
+        protected override SceneNode OnCreateSceneNode()
         {
-            return EffectsManager.GeometryBufferManager.Register<DefaultLineGeometryBufferModel>(modelGuid, geometry);
+            return new LineNode();
         }
 
-        /// <summary>
-        /// Called when [create render core].
-        /// </summary>
-        /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
-        {
-            return new LineRenderCore();
-        }
         /// <summary>
         /// Assigns the default values to core.
         /// </summary>
         /// <param name="core">The core.</param>
-        protected override void AssignDefaultValuesToCore(RenderCore core)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            var c = core as ILineRenderParams;
-            c.LineColor = Color.ToColor4();
-            c.Thickness = (float)Thickness;
-            c.Smoothness = (float)Smoothness;
-            base.AssignDefaultValuesToCore(core);
-        }
-        /// <summary>
-        /// Create raster state description.
-        /// </summary>
-        /// <returns></returns>
-        protected override RasterizerStateDescription CreateRasterState()
-        {
-            return new RasterizerStateDescription()
+            if(core is LineNode n)
             {
-                FillMode = FillMode,
-                CullMode = CullMode.None,
-                DepthBias = DepthBias,
-                DepthBiasClamp = -1000,
-                SlopeScaledDepthBias = (float)SlopeScaledDepthBias,
-                IsDepthClipEnabled = IsDepthClipEnabled,
-                IsFrontCounterClockwise = false,
-
-                IsMultisampleEnabled = IsMultisampleEnabled,
-                //IsAntialiasedLineEnabled = true, // Intel HD 3000 doesn't like this (#10051) and it's not needed
-                IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled
-            };
-        }
-        /// <summary>
-        /// Override this function to set render technique during Attach Host.
-        ///<para>If<see cref="Element3DCore.OnSetRenderTechnique" /> is set, then<see cref="Element3DCore.OnSetRenderTechnique" /> instead of<see cref="OnCreateRenderTechnique" /> function will be called.</para>
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>
-        /// Return RenderTechnique
-        /// </returns>
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.Lines];
-        }
-        /// <summary>
-        /// <para>Determine if this can be rendered.</para>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected override bool CanRender(IRenderContext context)
-        {
-            if (base.CanRender(context))
-            {
-                return !RenderHost.IsDeferredLighting;
+                n.Color = Color.ToColor4();
+                n.Thickness = (float)Thickness;
+                n.Smoothness = (float)Smoothness;
             }
-            else
-            {
-                return false;
-            }
-        }
-        /// <summary>
-        /// Called when [check geometry].
-        /// </summary>
-        /// <param name="geometry">The geometry.</param>
-        /// <returns></returns>
-        protected override bool OnCheckGeometry(Geometry3D geometry)
-        {
-            return base.OnCheckGeometry(geometry) && geometry is LineGeometry3D;
-        }
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="totalModelMatrix">The total model matrix.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return (Geometry as LineGeometry3D).HitTest(context, totalModelMatrix, ref ray, ref hits, this, (float)HitTestThickness);
+            base.AssignDefaultValuesToSceneNode(core);
         }
     }
 }

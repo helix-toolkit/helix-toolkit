@@ -102,7 +102,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Random generator, used to generate particle for different direction, etc
         /// </summary>
-        public Utility.IRandomVector VectorGenerator { get; set; } = new Utility.UniformRandomVectorGenerator();
+        public IRandomVector VectorGenerator { get; set; } = new UniformRandomVectorGenerator();
 
         private bool isRestart = true;
 

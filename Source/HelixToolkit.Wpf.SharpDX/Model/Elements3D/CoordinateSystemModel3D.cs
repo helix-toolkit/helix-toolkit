@@ -4,14 +4,14 @@
 // </copyright>
 
 using SharpDX;
-using SharpDX.Direct3D11;
-using System.Linq;
 using System.Windows;
 using Media = System.Windows.Media;
-using System;
+using System.Collections.Generic;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
@@ -24,7 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Media.Colors.Red,
                 (d, e) =>
                 {
-                    (d as CoordinateSystemModel3D).UpdateAxisColor(0, ((Media.Color)e.NewValue).ToColor4());
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisXColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
         /// <summary>
         /// <see cref="AxisYColor"/>
@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Media.Colors.Green,
                 (d, e) =>
                 {
-                    (d as CoordinateSystemModel3D).UpdateAxisColor(1, ((Media.Color)e.NewValue).ToColor4());
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisYColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
         /// <summary>
         /// <see cref="AxisZColor"/>
@@ -42,7 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Media.Colors.Blue,
                 (d, e) =>
                 {
-                    (d as CoordinateSystemModel3D).UpdateAxisColor(2, ((Media.Color)e.NewValue).ToColor4());
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).AxisZColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
         /// <summary>
         /// 
@@ -51,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Media.Colors.Gray,
                 (d, e) =>
                 {
-                    (d as CoordinateSystemModel3D).UpdateLabelColor(((Media.Color)e.NewValue).ToColor4());
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).LabelColor = ((Media.Color)e.NewValue).ToColor4();
                 }));
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "CoordinateSystemLabelX", typeof(string), typeof(CoordinateSystemModel3D), new PropertyMetadata("X",
                 (d, e) =>
                 {
-                    (d as CoordinateSystemModel3D).UpdateAxisLabel(0, (string)e.NewValue);
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).LabelX = e.NewValue as string;
                 }));
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "CoordinateSystemLabelY", typeof(string), typeof(CoordinateSystemModel3D), new PropertyMetadata("Y",
                 (d, e) =>
                 {
-                    (d as CoordinateSystemModel3D).UpdateAxisLabel(1, (string)e.NewValue);
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).LabelY = e.NewValue as string;
                 }));
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "CoordinateSystemLabelZ", typeof(string), typeof(CoordinateSystemModel3D), new PropertyMetadata("Z",
                 (d, e) =>
                 {
-                    (d as CoordinateSystemModel3D).UpdateAxisLabel(2, (string)e.NewValue);
+                    ((d as Element3DCore).SceneNode as CoordinateSystemNode).LabelZ = e.NewValue as string;
                 }));
 
         /// <summary>
@@ -185,125 +185,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private readonly BillboardTextModel3D axisBillboard = new BillboardTextModel3D();
-        private readonly MeshGeometryModel3D arrowMeshModel = new MeshGeometryModel3D(){ EnableViewFrustumCheck = false };
-        private static readonly float arrowSize = 5.5f;
-        private static readonly float arrowWidth = 0.6f;
-        private static readonly float arrowHead = 1.7f;
-        /// <summary>
-        /// 
-        /// </summary>
-        public CoordinateSystemModel3D()
+
+        protected override SceneNode OnCreateSceneNode()
         {
-            var builder = new MeshBuilder(true, false, false);
-            builder.AddArrow(Vector3.Zero, new Vector3(arrowSize, 0, 0), arrowWidth, arrowHead, 8);
-            builder.AddArrow(Vector3.Zero, new Vector3(0, arrowSize, 0), arrowWidth, arrowHead, 8);
-            builder.AddArrow(Vector3.Zero, new Vector3(0, 0, arrowSize), arrowWidth, arrowHead, 8);
-            var mesh = builder.ToMesh();
-          
-            arrowMeshModel.Material = PhongMaterials.White;
-            arrowMeshModel.Geometry = mesh;
-            arrowMeshModel.CullMode = CullMode.Back;
-            arrowMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Colors]; };
-            arrowMeshModel.IsHitTestVisible = false;
-            arrowMeshModel.RenderCore.RenderType = RenderType.ScreenSpaced;
-
-            axisBillboard.IsHitTestVisible = false;
-            axisBillboard.RenderCore.RenderType = RenderType.ScreenSpaced;
-            axisBillboard.EnableViewFrustumCheck = false;
-            var axisLabel = new BillboardText3D();
-            axisLabel.TextInfo.Add(new TextInfo());
-            axisLabel.TextInfo.Add(new TextInfo());
-            axisLabel.TextInfo.Add(new TextInfo());
-            axisBillboard.Geometry = axisLabel;
-            UpdateAxisColor(mesh, 0, AxisXColor.ToColor4(), CoordinateSystemLabelX, LabelColor.ToColor4());
-            UpdateAxisColor(mesh, 1, AxisYColor.ToColor4(), CoordinateSystemLabelY, LabelColor.ToColor4());
-            UpdateAxisColor(mesh, 2, AxisZColor.ToColor4(), CoordinateSystemLabelZ, LabelColor.ToColor4());
-
-            Children.Add(arrowMeshModel);
-            Children.Add(axisBillboard);
+            return new CoordinateSystemNode();
         }
 
-        protected override void UpdateModel(Vector3 upDirection)
-        {
-            
-        }
-
-        private void UpdateAxisColor(int which, Color4 color)
-        {
-            string label = "";
-            switch (which)
-            {
-                case 0:
-                    label = CoordinateSystemLabelX;
-                    break;
-                case 1:
-                    label = CoordinateSystemLabelY;
-                    break;
-                case 2:
-                    label = CoordinateSystemLabelZ;
-                    break;
-            }
-            UpdateAxisColor(arrowMeshModel.Geometry, which, color, label, LabelColor.ToColor4());
-        }
-
-        private void UpdateAxisLabel(int which, string label)
-        {
-            Color4 color = Color.Red;
-            switch (which)
-            {
-                case 0:
-                    color = AxisXColor.ToColor4();
-                    break;
-                case 1:
-                    color = AxisYColor.ToColor4();
-                    break;
-                case 2:
-                    color = AxisZColor.ToColor4();
-                    break;
-            }
-            UpdateAxisColor(arrowMeshModel.Geometry, which, color, label, LabelColor.ToColor4());
-        }
-
-        private void UpdateLabelColor(Color4 color)
-        {
-            UpdateAxisColor(arrowMeshModel.Geometry, 0, AxisXColor.ToColor4(), CoordinateSystemLabelX, LabelColor.ToColor4());
-            UpdateAxisColor(arrowMeshModel.Geometry, 1, AxisYColor.ToColor4(), CoordinateSystemLabelY, LabelColor.ToColor4());
-            UpdateAxisColor(arrowMeshModel.Geometry, 2, AxisZColor.ToColor4(), CoordinateSystemLabelZ, LabelColor.ToColor4());
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="mesh"></param>
-        /// <param name="which"></param>
-        /// <param name="color"></param>
-        /// <param name="label"></param>
-        /// <param name="labelColor"></param>
-        protected void UpdateAxisColor(Geometry3D mesh, int which, Color4 color, string label, Color4 labelColor)
-        {
-            var labelText = axisBillboard.Geometry as BillboardText3D;
-            switch (which)
-            {
-                case 0:
-                    labelText.TextInfo[which] = new TextInfo(label, new Vector3(arrowSize + 1.5f, 0, 0)) { Foreground = labelColor, Scale = 0.5f };
-                    break;
-                case 1:
-                    labelText.TextInfo[which] = new TextInfo(label, new Vector3(0, arrowSize + 1.5f, 0)) { Foreground = labelColor, Scale = 0.5f };
-                    break;
-                case 2:
-                    labelText.TextInfo[which] = new TextInfo(label, new Vector3(0, 0, arrowSize + 1.5f)) { Foreground = labelColor, Scale = 0.5f };
-                    break;
-            }
-            int segment = mesh.Positions.Count / 3;
-            var colors = new Core.Color4Collection(mesh.Colors == null ? Enumerable.Repeat<Color4>(Color.Black, mesh.Positions.Count) : mesh.Colors);
-            for (int i = segment * which; i < segment * (which + 1); ++i)
-            {
-                colors[i] = color;
-            }
-            mesh.Colors = colors;
-        }
-
-        protected override bool CanHitTest(IRenderContext context)
+        public override bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }

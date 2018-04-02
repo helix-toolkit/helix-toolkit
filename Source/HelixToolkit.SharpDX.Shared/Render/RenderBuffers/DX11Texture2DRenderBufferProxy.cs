@@ -158,7 +158,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <returns></returns>
         public override bool Present()
-        {          
+        {
+            Device.ImmediateContext.Flush();
             return true;
         }
     }

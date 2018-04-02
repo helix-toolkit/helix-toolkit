@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using HelixToolkit.Wpf.SharpDX.Core;
-using SharpDX;
+﻿using System.Windows;
 using Color = System.Windows.Media.Color;
-using Colors = System.Windows.Media.Colors;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
     /// <seealso cref="HelixToolkit.Wpf.SharpDX.Element3D" />
-    public class PostEffectBoom : Element3D
+    public class PostEffectBloom : Element3D
     {
         #region Dependency Properties
         /// <summary>
@@ -34,10 +28,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The effect name property
         /// </summary>
         public static readonly DependencyProperty EffectNameProperty =
-            DependencyProperty.Register("EffectName", typeof(string), typeof(PostEffectBoom),
+            DependencyProperty.Register("EffectName", typeof(string), typeof(PostEffectBloom),
                 new PropertyMetadata(DefaultRenderTechniqueNames.PostEffectBloom, (d, e) =>
                 {
-                    ((d as IRenderable).RenderCore as IPostEffectBloom).EffectName = (string)e.NewValue;
+                    ((d as Element3DCore).SceneNode as NodePostEffectBloom).EffectName = (string)e.NewValue;
                 }));
 
         /// <summary>
@@ -56,10 +50,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The threshold color property
         /// </summary>
         public static readonly DependencyProperty ThresholdColorProperty =
-            DependencyProperty.Register("ThresholdColor", typeof(Color), typeof(PostEffectBoom), new PropertyMetadata(Color.FromArgb(0, 200, 200, 200), 
+            DependencyProperty.Register("ThresholdColor", typeof(Color), typeof(PostEffectBloom), new PropertyMetadata(Color.FromArgb(0, 200, 200, 200), 
                 (d, e) =>
                 {
-                    ((d as IRenderable).RenderCore as IPostEffectBloom).ThresholdColor = ((Color)e.NewValue).ToColor4();
+                    ((d as Element3DCore).SceneNode as NodePostEffectBloom).ThresholdColor = ((Color)e.NewValue).ToColor4();
                 }));
 
         /// <summary>
@@ -78,9 +72,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The number of blur pass property
         /// </summary>
         public static readonly DependencyProperty NumberOfBlurPassProperty =
-            DependencyProperty.Register("NumberOfBlurPass", typeof(int), typeof(PostEffectBoom), new PropertyMetadata(2, (d, e) =>
+            DependencyProperty.Register("NumberOfBlurPass", typeof(int), typeof(PostEffectBloom), new PropertyMetadata(2, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IPostEffectBloom).NumberOfBlurPass = (int)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectBloom).NumberOfBlurPass = (int)e.NewValue;
             }));
 
         /// <summary>
@@ -99,9 +93,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The maximum down sampling step property
         /// </summary>
         public static readonly DependencyProperty MaximumDownSamplingStepProperty =
-            DependencyProperty.Register("MaximumDownSamplingStep", typeof(int), typeof(PostEffectBoom), new PropertyMetadata(3, (d, e) =>
+            DependencyProperty.Register("MaximumDownSamplingStep", typeof(int), typeof(PostEffectBloom), new PropertyMetadata(3, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IPostEffectBloom).MaximumDownSamplingStep = (int)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectBloom).MaximumDownSamplingStep = (int)e.NewValue;
             }));
 
 
@@ -121,9 +115,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The bloom extract intensity property
         /// </summary>
         public static readonly DependencyProperty BloomExtractIntensityProperty =
-            DependencyProperty.Register("BloomExtractIntensity", typeof(double), typeof(PostEffectBoom), new PropertyMetadata(1.0, (d,e)=> 
+            DependencyProperty.Register("BloomExtractIntensity", typeof(double), typeof(PostEffectBloom), new PropertyMetadata(1.0, (d,e)=> 
             {
-                ((d as IRenderable).RenderCore as IPostEffectBloom).BloomExtractIntensity = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectBloom).BloomExtractIntensity = (float)(double)e.NewValue;
             }));
 
         /// <summary>
@@ -142,9 +136,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The bloom pass intensity property
         /// </summary>
         public static readonly DependencyProperty BloomPassIntensityProperty =
-            DependencyProperty.Register("BloomPassIntensity", typeof(double), typeof(PostEffectBoom), new PropertyMetadata(0.95, (d, e) =>
+            DependencyProperty.Register("BloomPassIntensity", typeof(double), typeof(PostEffectBloom), new PropertyMetadata(0.95, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IPostEffectBloom).BloomPassIntensity = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectBloom).BloomPassIntensity = (float)(double)e.NewValue;
             }));
 
         /// <summary>
@@ -163,9 +157,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The bloom combine intensity property
         /// </summary>
         public static readonly DependencyProperty BloomCombineIntensityProperty =
-            DependencyProperty.Register("BloomCombineIntensity", typeof(double), typeof(PostEffectBoom), new PropertyMetadata(0.7, (d, e) =>
+            DependencyProperty.Register("BloomCombineIntensity", typeof(double), typeof(PostEffectBloom), new PropertyMetadata(0.7, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IPostEffectBloom).BloomCombineIntensity = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectBloom).BloomCombineIntensity = (float)(double)e.NewValue;
             }));
 
         /// <summary>
@@ -184,73 +178,34 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The bloom combine saturation property
         /// </summary>
         public static readonly DependencyProperty BloomCombineSaturationProperty =
-            DependencyProperty.Register("BloomCombineSaturation", typeof(double), typeof(PostEffectBoom), new PropertyMetadata(0.7, (d, e) =>
+            DependencyProperty.Register("BloomCombineSaturation", typeof(double), typeof(PostEffectBloom), new PropertyMetadata(0.7, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IPostEffectBloom).BloomCombineSaturation = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectBloom).BloomCombineSaturation = (float)(double)e.NewValue;
             }));
         #endregion
 
-        /// <summary>
-        /// Called when [create render core].
-        /// </summary>
-        /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new PostEffectBloomCore();
+            return new NodePostEffectBloom();
         }
         /// <summary>
         /// Assigns the default values to core.
         /// </summary>
-        /// <param name="core">The core.</param>
-        protected override void AssignDefaultValuesToCore(RenderCore core)
+        /// <param name="node">The core.</param>
+        protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
-            base.AssignDefaultValuesToCore(core);
-            var c = core as IPostEffectBloom;
-            c.EffectName = EffectName;
-            c.BloomCombineIntensity = (float)BloomCombineIntensity;
-            c.BloomCombineSaturation = (float)BloomCombineSaturation;
-            c.BloomExtractIntensity = (float)BloomExtractIntensity;
-            c.BloomPassIntensity = (float)BloomPassIntensity;
-            c.MaximumDownSamplingStep = MaximumDownSamplingStep;
-            c.NumberOfBlurPass = NumberOfBlurPass;
-            c.ThresholdColor = ThresholdColor.ToColor4();
-        }
-        /// <summary>
-        /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="Element3DCore.OnCreateRenderTechnique" /> function will be called.</para>
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>
-        /// Return RenderTechnique
-        /// </returns>
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.PostEffectBloom];
-        }
-
-        /// <summary>
-        /// Determines whether this instance [can hit test] the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
-        /// </returns>
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return false;
-        }
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="totalModelMatrix">The total model matrix.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return false;
+            base.AssignDefaultValuesToSceneNode(node);
+            if(node is NodePostEffectBloom c)
+            {
+                c.EffectName = EffectName;
+                c.BloomCombineIntensity = (float)BloomCombineIntensity;
+                c.BloomCombineSaturation = (float)BloomCombineSaturation;
+                c.BloomExtractIntensity = (float)BloomExtractIntensity;
+                c.BloomPassIntensity = (float)BloomPassIntensity;
+                c.MaximumDownSamplingStep = MaximumDownSamplingStep;
+                c.NumberOfBlurPass = NumberOfBlurPass;
+                c.ThresholdColor = ThresholdColor.ToColor4();
+            }
         }
     }
 }

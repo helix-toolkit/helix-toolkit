@@ -1,19 +1,18 @@
-﻿using System.Collections.Generic;
-using SharpDX;
-using SharpDX.Direct3D11;
-using HelixToolkit.Wpf.SharpDX.Shaders;
-using HelixToolkit.Wpf.SharpDX.Core;
-using System.Windows;
+﻿using System.Windows;
 using System.IO;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Model.Scene;
+
     public class EnvironmentMap3D : Element3D
     {
+
         public static readonly DependencyProperty TextureProperty = DependencyProperty.Register("Texture", typeof(Stream), typeof(EnvironmentMap3D),
             new PropertyMetadata(null,(d,e)=> 
             {
-                ((d as IRenderable).RenderCore as ISkyboxRenderParams).CubeTexture = (Stream)e.NewValue;
+                ((d as Element3DCore).SceneNode as EnvironmentMapNode).Texture = (Stream)e.NewValue;
             }));
 
         public Stream Texture
@@ -28,30 +27,15 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new SkyBoxRenderCore();
+            return new EnvironmentMapNode();
         }
 
-        protected override void AssignDefaultValuesToCore(RenderCore core)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            base.AssignDefaultValuesToCore(core);
-            (RenderCore as ISkyboxRenderParams).CubeTexture = Texture;
-        }
-
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.Skybox];
-        }
-
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return false;
-        }
-
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return false;
+            base.AssignDefaultValuesToSceneNode(core);
+            (SceneNode as EnvironmentMapNode).Texture = Texture;
         }
     }
 }

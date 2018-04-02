@@ -9,8 +9,9 @@ using System.Linq;
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
-    using Utilities;    
+    using Utilities;
     using Extensions;
+    using HelixToolkit.Wpf.SharpDX.Model.Scene2D;
 
     [ContentProperty("Text")]
     public class TextModel2D : Element2D, ITextBlock
@@ -21,9 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("Text", typeof(string), typeof(TextModel2D), 
                 new PropertyMetadata("Text", (d,e)=>
                 {
-                    var model = (d as TextModel2D);
-                    if (model.textRenderable == null) { return; }
-                    model.textRenderable.Text = e.NewValue == null ? "" : (string)e.NewValue;
+                    ((d as Element2DCore).SceneNode as TextNode2D).Text = e.NewValue == null ? "" : (string)e.NewValue;
                 }));
 
         public string Text
@@ -83,9 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("FontSize", typeof(int), typeof(TextModel2D),
                 new PropertyMetadata(12, (d, e) =>
                 {
-                    var model = (d as TextModel2D);
-                    if (model.textRenderable == null) { return; }
-                    model.textRenderable.FontSize = Math.Max(1, (int)e.NewValue);
+                    ((d as Element2DCore).SceneNode as TextNode2D).FontSize = Math.Max(1, (int)e.NewValue);
                 }));
 
         public int FontSize
@@ -104,9 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(TextModel2D),
                 new PropertyMetadata(FontWeights.Normal, (d, e) =>
                 {
-                    var model = (d as TextModel2D);
-                    if (model.textRenderable == null) { return; }
-                    model.textRenderable.FontWeight = ((FontWeight)e.NewValue).ToDXFontWeight();
+                    ((d as Element2DCore).SceneNode as TextNode2D).FontWeight = ((FontWeight)e.NewValue).ToDXFontWeight();
                 }));
 
         public FontWeight FontWeight
@@ -125,9 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("FontStyle", typeof(FontStyle), typeof(TextModel2D),
                 new PropertyMetadata(FontStyles.Normal, (d, e) =>
                 {
-                    var model = (d as TextModel2D);
-                    if (model.textRenderable == null) { return; }
-                    model.textRenderable.FontStyle = ((FontStyle)e.NewValue).ToDXFontStyle();
+                    ((d as Element2DCore).SceneNode as TextNode2D).FontStyle = ((FontStyle)e.NewValue).ToDXFontStyle();
                 }));
 
         public FontStyle FontStyle
@@ -161,9 +154,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty TextAlignmentProperty =
             DependencyProperty.Register("TextAlignment", typeof(TextAlignment), typeof(TextModel2D), new PropertyMetadata(TextAlignment.Left, (d,e)=> 
             {
-                var model = (d as TextModel2D);
-                if (model.textRenderable == null) { return; }
-                model.textRenderable.TextAlignment = ((TextAlignment)e.NewValue).ToD2DTextAlignment();
+                ((d as Element2DCore).SceneNode as TextNode2D).TextAlignment = ((TextAlignment)e.NewValue).ToD2DTextAlignment();
             }));
 
         /// <summary>
@@ -184,9 +175,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty FlowDirectionProperty =
             DependencyProperty.Register("FlowDirection", typeof(FlowDirection), typeof(TextModel2D), new PropertyMetadata(FlowDirection.LeftToRight, (d, e) =>
             {
-                var model = (d as TextModel2D);
-                if (model.textRenderable == null) { return; }
-                model.textRenderable.FlowDirection = ((FlowDirection)e.NewValue).ToD2DFlowDir();
+                ((d as Element2DCore).SceneNode as TextNode2D).FlowDirection = ((FlowDirection)e.NewValue).ToD2DFlowDir();
             }));
 
 
@@ -207,94 +196,49 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty FontFamilyProperty =
             DependencyProperty.Register("FontFamily", typeof(string), typeof(TextModel2D), new PropertyMetadata(DefaultFont, (d,e)=>
             {
-                var model = (d as TextModel2D);
-                if (model.textRenderable == null) { return; }
-                model.textRenderable.FontFamily = e.NewValue == null ? "Arial" : (string)e.NewValue;
+                ((d as Element2DCore).SceneNode as TextNode2D).FontFamily = e.NewValue == null ? "Arial" : (string)e.NewValue;
             }));
 
-
-
-
-        private TextRenderCore2D textRenderable;
         private bool foregroundChanged = true;
         private bool backgroundChanged = true;
 
-        protected override RenderCore2D CreateRenderCore()
+        protected override SceneNode2D OnCreateSceneNode()
         {
-            textRenderable = new TextRenderCore2D();
-            AssignProperties();
-            return textRenderable;
+            return new TextNode2D();
         }
 
-        protected override bool OnAttach(IRenderHost host)
+        protected override void OnAttached()
         {
-            if (base.OnAttach(host))
-            {
-                foregroundChanged = true;
-                backgroundChanged = true;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            base.OnAttached();
+            foregroundChanged = true;
+            backgroundChanged = true;
         }
 
-        public override void Update(IRenderContext2D context)
+        protected override void OnUpdate(IRenderContext2D context)
         {
-            base.Update(context);
+            base.OnUpdate(context);
             if (foregroundChanged)
             {
-                textRenderable.Foreground = Foreground != null ? Foreground.ToD2DBrush(context.DeviceContext) : null;
+                (SceneNode as TextNode2D).Foreground = Foreground != null ? Foreground.ToD2DBrush(context.DeviceContext) : null;
                 foregroundChanged = false;
             }
             if (backgroundChanged)
             {
-                textRenderable.Background = Background != null ? Background.ToD2DBrush(context.DeviceContext) : null;
+                (SceneNode as TextNode2D).Background = Background != null ? Background.ToD2DBrush(context.DeviceContext) : null;
                 backgroundChanged = false;
             }
         }
 
-        protected virtual void AssignProperties()
+        protected override void AssignDefaultValuesToSceneNode(SceneNode2D node)
         {
-            if (textRenderable == null) { return; }
-            textRenderable.Text = Text == null ? "" : Text;
-            textRenderable.FontFamily = FontFamily == null ? DefaultFont : FontFamily;
-            textRenderable.FontWeight = FontWeight.ToDXFontWeight();
-            textRenderable.FontStyle = FontStyle.ToDXFontStyle();
-            textRenderable.FontSize = FontSize;
-            textRenderable.TextAlignment = TextAlignment.ToD2DTextAlignment();
-            textRenderable.FlowDirection = FlowDirection.ToD2DFlowDir();
-        }
-
-        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
-        {
-            hitResult = null;
-            if (LayoutBoundWithTransform.Contains(mousePoint))
-            {
-                hitResult = new HitTest2DResult(this);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        protected override Size2F MeasureOverride(Size2F availableSize)
-        {
-            textRenderable.MaxWidth = availableSize.Width;
-            textRenderable.MaxHeight = availableSize.Height;
-            var metrices = textRenderable.Metrices;
-            return new Size2F(metrices.WidthIncludingTrailingWhitespace, metrices.Height);
-        }
-
-        protected override RectangleF ArrangeOverride(RectangleF finalSize)
-        {
-            textRenderable.MaxWidth = finalSize.Width;
-            textRenderable.MaxHeight = finalSize.Height;
-            var metrices = textRenderable.Metrices;
-            return finalSize;
+            var t = node as TextNode2D;
+            t.Text = Text == null ? "" : Text;
+            t.FontFamily = FontFamily == null ? DefaultFont : FontFamily;
+            t.FontWeight = FontWeight.ToDXFontWeight();
+            t.FontStyle = FontStyle.ToDXFontStyle();
+            t.FontSize = FontSize;
+            t.TextAlignment = TextAlignment.ToD2DTextAlignment();
+            t.FlowDirection = FlowDirection.ToD2DFlowDir();
         }
     }
 }

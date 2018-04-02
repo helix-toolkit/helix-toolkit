@@ -1,17 +1,12 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using D2D = global::SharpDX.Direct2D1;
-using HelixToolkit.Wpf.SharpDX.Extensions;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
+    using Model.Scene2D;
+    using Extensions;
     public abstract class ShapeModel2D : Element2D
     {
         public static DependencyProperty FillProperty 
@@ -57,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         = DependencyProperty.Register("StrokeDashCap", typeof(PenLineCap), typeof(ShapeModel2D), new PropertyMetadata(PenLineCap.Flat,
             (d, e) =>
             {
-                (d as ShapeModel2D).strokeStyleChanged = true;
+                ((d as Element2DCore).SceneNode as ShapeNode2D).StrokeDashCap = ((PenLineCap)e.NewValue).ToD2DCapStyle();
             }));
 
         public PenLineCap StrokeDashCap
@@ -76,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("StrokeStartLineCap", typeof(PenLineCap), typeof(ShapeModel2D), new PropertyMetadata(PenLineCap.Flat,
                 (d, e) =>
                 {
-                    (d as ShapeModel2D).strokeStyleChanged = true;
+                    ((d as Element2DCore).SceneNode as ShapeNode2D).StrokeStartLineCap = ((PenLineCap)e.NewValue).ToD2DCapStyle();
                 }));
 
         public PenLineCap StrokeStartLineCap
@@ -95,7 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         = DependencyProperty.Register("StrokeEndLineCap", typeof(PenLineCap), typeof(ShapeModel2D), new PropertyMetadata(PenLineCap.Flat,
             (d, e) =>
             {
-                (d as ShapeModel2D).strokeStyleChanged = true;
+                ((d as Element2DCore).SceneNode as ShapeNode2D).StrokeEndLineCap = ((PenLineCap)e.NewValue).ToD2DCapStyle();
             }));
 
         public PenLineCap StrokeEndLineCap
@@ -114,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("StrokeDashArray", typeof(DoubleCollection), typeof(ShapeModel2D), new PropertyMetadata(null,
                 (d, e) =>
                 {
-                    (d as ShapeModel2D).strokeStyleChanged = true;
+                    ((d as Element2DCore).SceneNode as ShapeNode2D).StrokeDashArray = e.NewValue == null ? new float[0] : (e.NewValue as DoubleCollection).Select(x=>(float)x).ToArray();
                 }));
 
         public DoubleCollection StrokeDashArray
@@ -133,7 +128,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("StrokeDashOffset", typeof(double), typeof(ShapeModel2D), new PropertyMetadata(0.0,
                 (d, e) =>
                 {
-                    (d as ShapeModel2D).strokeStyleChanged = true;
+                    ((d as Element2DCore).SceneNode as ShapeNode2D).StrokeDashOffset = (float)(double)e.NewValue;
                 }));
 
         public double StrokeDashOffset
@@ -152,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         = DependencyProperty.Register("StrokeLineJoin", typeof(PenLineJoin), typeof(ShapeModel2D), new PropertyMetadata(PenLineJoin.Bevel,
             (d, e) =>
             {
-                (d as ShapeModel2D).strokeStyleChanged = true;
+                ((d as Element2DCore).SceneNode as ShapeNode2D).StrokeLineJoin = ((PenLineJoin)e.NewValue).ToD2DLineJoin();
             }));
 
 
@@ -172,7 +167,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("StrokeMiterLimit", typeof(double), typeof(ShapeModel2D), new PropertyMetadata(1.0,
                 (d, e) =>
                 {
-                    (d as ShapeModel2D).strokeStyleChanged = true;
+                    ((d as Element2DCore).SceneNode as ShapeNode2D).StrokeMiterLimit = (float)(double)e.NewValue;
                 }));
 
         public double StrokeMiterLimit
@@ -191,9 +186,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("StrokeThickness", typeof(double), typeof(ShapeModel2D), new PropertyMetadata(1.0,
                 (d, e) =>
                 {
-                    if((d as ShapeModel2D).shapeRenderable == null)
-                    { return; }   
-                    (d as ShapeModel2D).shapeRenderable.StrokeWidth = (float)Math.Max(0, (double)e.NewValue);
+                    ((d as Element2DCore).SceneNode as ShapeNode2D).StrokeThickness = (float)(double)e.NewValue;
                 }));
 
         public double StrokeThickness
@@ -218,7 +211,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty DashStyleProperty =
             DependencyProperty.Register("DashStyle", typeof(DashStyle), typeof(ShapeModel2D), new PropertyMetadata(DashStyles.Solid,
                 (d,e)=> {
-                    (d as ShapeModel2D).strokeStyleChanged = true;
+                    ((d as Element2DCore).SceneNode as ShapeNode2D).StrokeDashStyle = (e.NewValue as DashStyle).ToD2DDashStyle();
                 }));
 
 
@@ -226,69 +219,41 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         private bool fillChanged = true;
         private bool strokeChanged = true;
-        private bool strokeStyleChanged = true;
 
-        protected ShapeRenderCore2DBase shapeRenderable;
-
-
-        protected override RenderCore2D CreateRenderCore()
+        protected override void OnAttached()
         {
-            shapeRenderable = CreateShapeRenderCore();
-            AssignProperties();
-            return shapeRenderable;
+            fillChanged = true;
+            strokeChanged = true;
         }
 
-        protected abstract ShapeRenderCore2DBase CreateShapeRenderCore();
-
-        protected override bool OnAttach(IRenderHost host)
+        protected override void OnUpdate(IRenderContext2D context)
         {
-            if (base.OnAttach(host))
-            {
-                fillChanged = true;
-                strokeChanged = true;
-                strokeStyleChanged = true;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        protected virtual void AssignProperties()
-        {
-            shapeRenderable.StrokeWidth = (float)StrokeThickness;
-        }
-
-        public override void Update(IRenderContext2D context)
-        {
-            base.Update(context);
+            base.OnUpdate(context);
             if (fillChanged)
             {
-                shapeRenderable.FillBrush = Fill.ToD2DBrush(context.DeviceContext);
+                (SceneNode as ShapeNode2D).Fill = Fill.ToD2DBrush(context.DeviceContext);
                 fillChanged = false;
             }
             if (strokeChanged)
             {
-                shapeRenderable.StrokeBrush = Stroke.ToD2DBrush(context.DeviceContext);
+                (SceneNode as ShapeNode2D).Stroke = Stroke.ToD2DBrush(context.DeviceContext);
                 strokeChanged = false;
             }
-            if (strokeStyleChanged)
-            {
-                shapeRenderable.StrokeStyle = new D2D.StrokeStyle(context.DeviceContext.Factory,
-                    new D2D.StrokeStyleProperties()
-                    {
-                        DashCap = this.StrokeDashCap.ToD2DCapStyle(),
-                        StartCap = StrokeStartLineCap.ToD2DCapStyle(),
-                        EndCap = StrokeEndLineCap.ToD2DCapStyle(),
-                        DashOffset = (float)StrokeDashOffset,
-                        LineJoin = StrokeLineJoin.ToD2DLineJoin(),
-                        MiterLimit = Math.Max(1, (float)StrokeMiterLimit),
-                        DashStyle = DashStyle.ToD2DDashStyle()
-                    },
-                    StrokeDashArray == null ? new float[0] : StrokeDashArray.Select(x=>(float)x).ToArray());
-                strokeStyleChanged = false;
-            }
+        }
+
+        protected override void AssignDefaultValuesToSceneNode(SceneNode2D node)
+        {
+            base.AssignDefaultValuesToSceneNode(node);
+            var c = node as ShapeNode2D;
+            c.StrokeDashArray = StrokeDashArray == null ? new float[0] : StrokeDashArray.Select(x => (float)x).ToArray();
+            c.StrokeDashCap = StrokeDashCap.ToD2DCapStyle();
+            c.StrokeDashOffset = (float)StrokeDashOffset;
+            c.StrokeEndLineCap = StrokeEndLineCap.ToD2DCapStyle();
+            c.StrokeLineJoin = StrokeLineJoin.ToD2DLineJoin();
+            c.StrokeMiterLimit = (float)StrokeMiterLimit;
+            c.StrokeStartLineCap = StrokeStartLineCap.ToD2DCapStyle();
+            c.StrokeThickness = (float)StrokeThickness;
+            c.StrokeDashStyle = DashStyle.ToD2DDashStyle();
         }
     }
 }

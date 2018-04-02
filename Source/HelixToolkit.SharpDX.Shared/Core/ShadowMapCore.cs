@@ -24,6 +24,14 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class ShadowMapCore : RenderCoreBase<ShadowMapParamStruct>, IShadowMapRenderParams
     {
+        public sealed class UpdateLightSourceEventArgs : EventArgs
+        {
+            public IRenderContext Context { private set; get; }
+            public UpdateLightSourceEventArgs(IRenderContext context)
+            {
+                Context = context;
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -109,6 +117,8 @@ namespace HelixToolkit.UWP.Core
         public int UpdateFrequency { set; get; } = 1;
 
         private int currentFrame = 0;
+
+        public event EventHandler<UpdateLightSourceEventArgs> OnUpdateLightSource;
         /// <summary>
         /// 
         /// </summary>
@@ -192,9 +202,10 @@ namespace HelixToolkit.UWP.Core
             if(base.CanRender(context) && !context.IsShadowPass)
 #endif
             {
+                OnUpdateLightSource?.Invoke(this, new UpdateLightSourceEventArgs(context));
                 ++currentFrame;
                 currentFrame %= Math.Max(1, UpdateFrequency);
-                return currentFrame == 0;
+                return FoundLightSource && currentFrame == 0;
             }
             else
             {
@@ -214,10 +225,6 @@ namespace HelixToolkit.UWP.Core
             }
 
             deviceContext.DeviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
-            if (!FoundLightSource)
-            {
-                return;
-            }
             context.IsShadowPass = true;
             var orgFrustum = context.BoundingFrustum;
             context.BoundingFrustum = new BoundingFrustum(LightViewProjectMatrix);

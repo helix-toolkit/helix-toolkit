@@ -25,23 +25,23 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 {
     using Core;
     using HelixToolkit.Logger;
-
-
+    using Model.Scene;
+    using Model.Scene2D;
     /// <summary>
     /// 
     /// </summary>
     public class DefaultRenderHost : DX11RenderHostBase
     {
         #region Per frame render list
-        protected readonly List<IRenderable> viewportRenderables = new List<IRenderable>();
+        protected readonly List<SceneNode> viewportRenderables = new List<SceneNode>();
         /// <summary>
         /// The pending renderables
         /// </summary>
-        protected readonly List<IRenderable> perFrameRenderables = new List<IRenderable>();
+        protected readonly List<SceneNode> perFrameRenderables = new List<SceneNode>();
         /// <summary>
         /// The light renderables
         /// </summary>
-        protected readonly List<IRenderable> lightRenderables = new List<IRenderable>();
+        protected readonly List<RenderCore> lightRenderables = new List<RenderCore>();
         /// <summary>
         /// The pending render cores
         /// </summary>
@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// The viewport renderable2D
         /// </summary>
-        protected readonly List<IRenderable2D> viewportRenderable2D = new List<IRenderable2D>();
+        protected readonly List<SceneNode2D> viewportRenderable2D = new List<SceneNode2D>();
 
         /// <summary>
         /// Gets the current frame renderables.
@@ -74,16 +74,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame renderables.
         /// </value>
-        public override List<IRenderable> PerFrameRenderables { get { return perFrameRenderables; } }
+        public override List<SceneNode> PerFrameRenderables { get { return perFrameRenderables; } }
         /// <summary>
         /// Gets the per frame lights.
         /// </summary>
         /// <value>
         /// The per frame lights.
         /// </value>
-        public override IEnumerable<ILight3D> PerFrameLights
+        public override IEnumerable<LightCoreBase> PerFrameLights
         {
-            get { return lightRenderables.Select(x=>x as ILight3D); }
+            get { return lightRenderables.Select(x=>x as LightCoreBase); }
         }
         /// <summary>
         /// Gets the per frame render cores for normal rendering routine. <see cref="RenderType.Opaque"/>, <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
@@ -142,7 +142,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 switch (renderable.RenderCore.RenderType)
                 {
                     case RenderType.Light:
-                        lightRenderables.Add(renderable);
+                        lightRenderables.Add(renderable.RenderCore);
                         break;
                     case RenderType.Opaque:
                     case RenderType.Transparent:
@@ -164,7 +164,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         break;
                 }
             }
-
+            //Get RenderCores with post effect specified.
             if(postProcRenderCores.Count > 0)
             {
                 if(generalRenderCores.Count > 50)
@@ -285,7 +285,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 getTriangleCountTask?.Wait();
                 RenderStatistics.NumModel3D = perFrameRenderables.Count;
-                RenderStatistics.NumCore3D = generalRenderCores.Count;
+                RenderStatistics.NumCore3D = preProcRenderCores.Count + generalRenderCores.Count + postProcRenderCores.Count + screenSpacedRenderCores.Count;
             }
             for (int i = 0; i < viewportRenderable2D.Count; ++i)
             {

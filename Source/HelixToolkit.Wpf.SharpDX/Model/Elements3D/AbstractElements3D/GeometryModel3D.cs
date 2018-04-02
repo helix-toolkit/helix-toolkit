@@ -18,28 +18,38 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows;
     using System.Linq;
     using HelixToolkit.Wpf.SharpDX.Model;
-
+    using Model.Scene;
     /// <summary>
     /// Provides a base class for a scene model which contains geometry
     /// </summary>
-    public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, ISelectable, IMouse3D, IInstancing
+    public abstract class GeometryModel3D : Element3D, IHitable, IThrowingShadow, ISelectable, IMouse3D
     {
         #region DependencyProperties        
         /// <summary>
         /// The geometry property
         /// </summary>
         public static readonly DependencyProperty GeometryProperty =
-            DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new PropertyMetadata(null, GeometryChanged));
+            DependencyProperty.Register("Geometry", typeof(Geometry3D), typeof(GeometryModel3D), new PropertyMetadata(null, 
+                (d,e)=> 
+                {
+                    ((d as Element3DCore).SceneNode as GeometryNode).Geometry = e.NewValue as Geometry3D;
+                }));
         /// <summary>
         /// The depth bias property
         /// </summary>
         public static readonly DependencyProperty DepthBiasProperty =
-            DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new PropertyMetadata(0, RasterStateChanged));
+            DependencyProperty.Register("DepthBias", typeof(int), typeof(GeometryModel3D), new PropertyMetadata(0, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as GeometryNode).DepthBias = (int)e.NewValue;
+            }));
         /// <summary>
         /// The slope scaled depth bias property
         /// </summary>
         public static readonly DependencyProperty SlopeScaledDepthBiasProperty =
-            DependencyProperty.Register("SlopeScaledDepthBias", typeof(double), typeof(GeometryModel3D), new PropertyMetadata(0.0, RasterStateChanged));
+            DependencyProperty.Register("SlopeScaledDepthBias", typeof(double), typeof(GeometryModel3D), new PropertyMetadata(0.0, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as GeometryNode).SlopeScaledDepthBias = (float)(double)e.NewValue;
+            }));
         /// <summary>
         /// The is selected property
         /// </summary>
@@ -49,46 +59,50 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The is multisample enabled property
         /// </summary>
         public static readonly DependencyProperty IsMultisampleEnabledProperty =
-            DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true, RasterStateChanged));
+            DependencyProperty.Register("IsMultisampleEnabled", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as GeometryNode).IsMSAAEnabled = (bool)e.NewValue;
+            }));
         /// <summary>
         /// The fill mode property
         /// </summary>
         public static readonly DependencyProperty FillModeProperty = DependencyProperty.Register("FillMode", typeof(FillMode), typeof(GeometryModel3D),
-            new PropertyMetadata(FillMode.Solid, RasterStateChanged));
+            new PropertyMetadata(FillMode.Solid, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as GeometryNode).FillMode = (FillMode)e.NewValue;
+            }));
         /// <summary>
         /// The is scissor enabled property
         /// </summary>
         public static readonly DependencyProperty IsScissorEnabledProperty =
-            DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true, RasterStateChanged));
+            DependencyProperty.Register("IsScissorEnabled", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as GeometryNode).IsScissorEnabled = (bool)e.NewValue;
+            }));
         /// <summary>
         /// The enable view frustum check property
         /// </summary>
         public static readonly DependencyProperty EnableViewFrustumCheckProperty =
             DependencyProperty.Register("EnableViewFrustumCheck", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(true,
-                (d,e)=> { (d as GeometryModel3D).enableViewFrustumCheck = (bool)e.NewValue; }));
+                (d, e) =>
+                {
+                    ((d as Element3DCore).SceneNode as GeometryNode).EnableViewFrustumCheck = (bool)e.NewValue;
+                }));
         /// <summary>
         /// The is depth clip enabled property
         /// </summary>
         public static readonly DependencyProperty IsDepthClipEnabledProperty = DependencyProperty.Register("IsDepthClipEnabled", typeof(bool), typeof(GeometryModel3D),
-            new PropertyMetadata(true, RasterStateChanged));
+            new PropertyMetadata(true, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as GeometryNode).IsDepthClipEnabled = (bool)e.NewValue;
+            }));
 
 
         // Using a DependencyProperty as the backing store for PostEffects.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PostEffectsProperty =
-            DependencyProperty.Register("PostEffects", typeof(string), typeof(GeometryModel3D), new PropertyMetadata("", (d,e)=> 
+            DependencyProperty.Register("PostEffects", typeof(string), typeof(GeometryModel3D), new PropertyMetadata("", (d, e) =>
             {
-                var core = (d as IRenderable).RenderCore;
-                core.ClearPostEffect();
-                if (e.NewValue is string effects)
-                {
-                    if (!string.IsNullOrEmpty(effects))
-                    {
-                        foreach(var effect in EffectAttributes.Parse(effects))
-                        {
-                            core.AddPostEffect(effect);
-                        }
-                    }
-                }
+                ((d as Element3DCore).SceneNode as GeometryNode).PostEffects = e.NewValue as string;
             }));
 
         public string PostEffects
@@ -119,7 +133,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// List of instance matrix.
         /// </summary>
         public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(GeometryModel3D), new PropertyMetadata(null, InstancesChanged));
+            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(GeometryModel3D), new PropertyMetadata(null, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as GeometryNode).Instances = e.NewValue as IList<Matrix>;
+            }));
 
         /// <summary>
         /// List of instance matrix. 
@@ -264,383 +281,22 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(EnableViewFrustumCheckProperty);
             }
         }
+        #endregion     
 
-        /// <summary>
-        /// Gets or sets a value indicating whether [enable view frustum check].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable view frustum check]; otherwise, <c>false</c>.
-        /// </value>
-        protected bool enableViewFrustumCheck { private set; get; } = true;
-        #endregion
-
-        #region Static Methods        
-        /// <summary>
-        /// Rasters the state changed.
-        /// </summary>
-        /// <param name="d">The d.</param>
-        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
-        protected static void RasterStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
-            (d as GeometryModel3D).OnRasterStateChanged();
-        }
-        /// <summary>
-        /// Geometries the changed.
-        /// </summary>
-        /// <param name="d">The d.</param>
-        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
-        protected static void GeometryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var model = d as GeometryModel3D;
-            model.GeometryInternal = e.NewValue == null ? null : e.NewValue as Geometry3D;
-            model.OnGeometryChanged(e);
-        }
-
-        protected virtual void OnGeometryChanged(DependencyPropertyChangedEventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private static void InstancesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var model = (GeometryModel3D)d;
-            model.BoundManager.Instances = model.InstanceBuffer.Elements = e.NewValue == null ? null : e.NewValue as IList<Matrix>;            
-            model.InstancesChanged();
-        }
-        #endregion        
-        /// <summary>
-        /// Gets a value indicating whether this instance has instances.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance has instances; otherwise, <c>false</c>.
-        /// </value>
-        public bool HasInstances { get { return InstanceBuffer.HasElements; } }
-        /// <summary>
-        /// Gets the instance buffer.
-        /// </summary>
-        /// <value>
-        /// The instance buffer.
-        /// </value>
-        public IElementsBufferModel<Matrix> InstanceBuffer { get; } = new MatrixInstanceBufferModel();
-        /// <summary>
-        /// Instanceses the changed.
-        /// </summary>
-        protected virtual void InstancesChanged() { }
-        /// <summary>
-        /// The reuse vertex array buffer
-        /// </summary>
-        protected bool reuseVertexArrayBuffer = false;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public delegate RasterizerStateDescription CreateRasterStateFunc();
-
-        /// <summary>
-        /// Create raster state description delegate.
-        /// <para>If <see cref="OnCreateRasterState"/> is set, then <see cref="CreateRasterState"/> will not be called.</para>
-        /// </summary>
-        public CreateRasterStateFunc OnCreateRasterState;
-
-        #region Properties       
-
-        private IGeometryBufferProxy bufferModelInternal;
-        /// <summary>
-        /// The buffer model internal
-        /// </summary>
-        protected IGeometryBufferProxy BufferModelInternal
-        {
-            set
-            {                
-                if (bufferModelInternal == value)
-                { return; }
-                Disposer.RemoveAndDispose(ref bufferModelInternal);
-                bufferModelInternal = value;
-                ((IGeometryRenderCore)RenderCore).GeometryBuffer = bufferModelInternal == null ? null : bufferModelInternal.BufferModel;
-            }
-            get
+            if(node is GeometryNode n)
             {
-                return bufferModelInternal;
+                n.DepthBias = this.DepthBias;
+                n.IsDepthClipEnabled = this.IsDepthClipEnabled;
+                n.SlopeScaledDepthBias = (float)this.SlopeScaledDepthBias;
+                n.IsMSAAEnabled = this.IsMultisampleEnabled;
+                n.FillMode = this.FillMode;
+                n.IsScissorEnabled = this.IsScissorEnabled;
+                n.EnableViewFrustumCheck = this.EnableViewFrustumCheck;
+                n.PostEffects = this.PostEffects;
             }
-        }
-
-        private Geometry3D geometryInternal;
-        /// <summary>
-        /// Gets or sets the geometry internal.
-        /// </summary>
-        /// <value>
-        /// The geometry internal.
-        /// </value>
-        protected Geometry3D GeometryInternal
-        {
-            set
-            {
-                if(geometryInternal == value)
-                {
-                    return;
-                }
-                geometryInternal = value;
-                if (IsAttached)
-                {
-                    BoundManager.Geometry = value;
-                    BufferModelInternal = OnCreateBufferModel(this.GUID, geometryInternal);
-                }
-                RaisePropertyChanged(nameof(Geometry));
-                InvalidateRender();
-            }
-            get
-            {
-                return geometryInternal;
-            }
-        }
-        /// <summary>
-        /// Gets a value indicating whether [geometry valid].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [geometry valid]; otherwise, <c>false</c>.
-        /// </value>
-        public bool GeometryValid { get { return BoundManager.GeometryValid; } }
-
-        /// <summary>
-        /// Gets or sets the bound manager.
-        /// </summary>
-        /// <value>
-        /// The bound manager.
-        /// </value>
-        public GeometryBoundManager BoundManager { private set; get; }
-        /// <summary>
-        /// Gets the bounds.
-        /// </summary>
-        /// <value>
-        /// The bounds.
-        /// </value>
-        public override BoundingBox Bounds
-        {
-            get { return BoundManager.Bounds; }
-        }
-        /// <summary>
-        /// Gets the bounds with transform.
-        /// </summary>
-        /// <value>
-        /// The bounds with transform.
-        /// </value>
-        public override BoundingBox BoundsWithTransform
-        {
-            get { return BoundManager.BoundsWithTransform; }
-        }
-        /// <summary>
-        /// Gets the bounds sphere.
-        /// </summary>
-        /// <value>
-        /// The bounds sphere.
-        /// </value>
-        public override BoundingSphere BoundsSphere
-        {
-            get
-            {
-                return BoundManager.BoundsSphere;
-            }
-        }
-        /// <summary>
-        /// Gets the bounds sphere with transform.
-        /// </summary>
-        /// <value>
-        /// The bounds sphere with transform.
-        /// </value>
-        public override BoundingSphere BoundsSphereWithTransform
-        {
-            get
-            {
-                return BoundManager.BoundsSphereWithTransform;
-            }
-        }
-        #endregion        
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GeometryModel3D"/> class.
-        /// </summary>
-        public GeometryModel3D()
-        {
-            BoundManager = new GeometryBoundManager(this);
-            BoundManager.OnBoundChanged += (s, e) => { RaiseOnBoundChanged(e); };
-            BoundManager.OnTransformBoundChanged += (s, e) => { RaiseOnTransformBoundChanged(e); };
-            BoundManager.OnBoundSphereChanged += (s, e) => { RaiseOnBoundSphereChanged(e); };
-            BoundManager.OnTransformBoundSphereChanged += (s, e) => { RaiseOnTransformBoundSphereChanged(e); };
-            BoundManager.OnCheckGeometry = OnCheckGeometry;
-            HasBound = true;
-        }
-        /// <summary>
-        /// Called when [check geometry].
-        /// </summary>
-        /// <param name="geometry">The geometry.</param>
-        /// <returns></returns>
-        protected virtual bool OnCheckGeometry(Geometry3D geometry)
-        {
-            return !(geometry == null || geometry.Positions == null || geometry.Positions.Count == 0);
-        }
-
-        /// <summary>
-        /// Called when [create buffer model].
-        /// </summary>
-        /// <returns></returns>
-        protected virtual IGeometryBufferProxy OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
-        {
-            return GeometryBufferProxy<EmptyGeometryBufferModel>.Empty;
-        }
-
-        /// <summary>
-        /// Called when [raster state changed].
-        /// </summary>
-        protected virtual void OnRasterStateChanged()
-        {
-            if (RenderCore is IGeometryRenderCore r)
-            {
-                r.RasterDescription = OnCreateRasterState != null ? OnCreateRasterState() : CreateRasterState();
-            }
-        }
-
-        /// <summary>
-        /// Create raster state description.
-        /// <para>If <see cref="OnCreateRasterState"/> is set, then <see cref="OnCreateRasterState"/> instead of <see cref="CreateRasterState"/> will be called.</para>
-        /// </summary>
-        /// <returns></returns>
-        protected abstract RasterizerStateDescription CreateRasterState();
-
-        /// <summary>
-        /// This function initialize the Geometry Buffer and Instance Buffer
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>
-        /// Return true if attached
-        /// </returns>
-        protected override bool OnAttach(IRenderHost host)
-        {
-            if (base.OnAttach(host))
-            {
-                BufferModelInternal = OnCreateBufferModel(this.GUID, geometryInternal);
-                BoundManager.Geometry = GeometryInternal;
-                InstanceBuffer.Initialize();
-                InstanceBuffer.Elements = this.Instances;
-                if (RenderCore is IGeometryRenderCore r)
-                {                    
-                    r.InstanceBuffer = InstanceBuffer;
-                }
-                OnRasterStateChanged();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private void BufferModel_InvalidateRenderer(object sender, bool e)
-        {
-            this.InvalidateRender();
-        }
-        /// <summary>
-        /// Used to override Detach
-        /// </summary>
-        protected override void OnDetach()
-        {
-            BufferModelInternal = null;
-            InstanceBuffer.DisposeAndClear();
-            BoundManager.DisposeAndClear();
-            base.OnDetach();
-        }
-
-        /// <summary>
-        /// <para>Determine if this can be rendered.</para>
-        /// <para>Default returns <see cref="Element3DCore.IsAttached" /> &amp;&amp; <see cref="Visibility" /> == <see cref="Visibility.Visible" /></para>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected override bool CanRender(IRenderContext context)
-        {
-            if (base.CanRender(context) && GeometryValid && (!(context.EnableBoundingFrustum && enableViewFrustumCheck)
-                || CheckBoundingFrustum(context.BoundingFrustum)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        /// <summary>
-        /// Checks the bounding frustum.
-        /// </summary>
-        /// <param name="viewFrustum">The view frustum.</param>
-        /// <returns></returns>
-        protected virtual bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
-        {
-            if (!HasBound)
-            {
-                return true;
-            }
-            var bound = BoundsWithTransform;
-            var sphere = BoundsSphereWithTransform;
-            return viewFrustum.Intersects(ref bound) && viewFrustum.Intersects(ref sphere);
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>        
-        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
-        {
-            if (CanHitTest(context))
-            {
-                if (this.InstanceBuffer.HasElements)
-                {
-                    bool hit = false;
-                    int idx = 0;
-                    foreach (var modelMatrix in InstanceBuffer.Elements)
-                    {
-                        var b = this.Bounds;
-                        if (OnHitTest(context, TotalModelMatrix * modelMatrix, ref rayWS, ref hits))
-                        {
-                            hit = true;
-                            var lastHit = hits[hits.Count - 1];
-                            lastHit.Tag = idx;
-                            hits[hits.Count - 1] = lastHit;
-                        }
-                        ++idx;
-                    }
-
-                    return hit;
-                }
-                else
-                {
-                    return OnHitTest(context, TotalModelMatrix, ref rayWS, ref hits);
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-        /// <summary>
-        /// Determines whether this instance [can hit test] the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
-        /// </returns>
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return base.CanHitTest(context) && GeometryValid;
-        }
-
-        public override void UpdateNotRender(IRenderContext context)
-        {
-            base.UpdateNotRender(context);
-            if (IsHitTestVisibleInternal && context.AutoUpdateOctree && geometryInternal != null && geometryInternal.OctreeDirty)
-            {
-                geometryInternal?.UpdateOctree();
-            }
+            base.AssignDefaultValuesToSceneNode(node);
         }
     }
 

@@ -100,7 +100,7 @@
             <hx:UIRotateManipulator3D
                 x:Name="rotateX"
                 Axis="1,0,0"
-                InnerDiameter="{Binding BoundsDiameter, ElementName=model2}"
+                InnerDiameter="2"
                 Material="{x:Static hx:PhongMaterials.Red}"
                 TargetTransform="{Binding Transform, ElementName=model2}"
                 Transform="{Binding Transform, ElementName=model2}" />
@@ -108,7 +108,7 @@
             <hx:UIRotateManipulator3D
                 x:Name="rotateY"
                 Axis="0,1,0"
-                InnerDiameter="{Binding BoundsDiameter, ElementName=model2}"
+                InnerDiameter="2"
                 Material="{x:Static hx:PhongMaterials.Green}"
                 TargetTransform="{Binding Transform, ElementName=model2}"
                 Transform="{Binding Transform, ElementName=model2}" />
@@ -116,7 +116,7 @@
             <hx:UIRotateManipulator3D
                 x:Name="rotateZ"
                 Axis="0,0,1"
-                InnerDiameter="{Binding BoundsDiameter, ElementName=model2}"
+                InnerDiameter="2"
                 Material="{x:Static hx:PhongMaterials.Blue}"
                 TargetTransform="{Binding Transform, ElementName=model2}"
                 Transform="{Binding Transform, ElementName=model2}" />
@@ -130,7 +130,7 @@
                 CanTranslateX="true"
                 CanTranslateY="true"
                 CanTranslateZ="true"
-                Diameter="{Binding BoundsDiameter, ElementName=model1}"
+                Diameter="2"
                 TargetTransform="{Binding Transform, ElementName=model1}"
                 Transform="{Binding Transform, ElementName=model1}" />
 

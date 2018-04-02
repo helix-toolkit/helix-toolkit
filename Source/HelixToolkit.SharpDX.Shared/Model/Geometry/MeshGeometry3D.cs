@@ -146,7 +146,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new MeshGeometryOctree(this.Positions, this.Indices, parameter);
         }
 
-        public virtual bool HitTest(IRenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, IRenderable originalSource)
+        public virtual bool HitTest(IRenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource)
         {
             if(Positions == null || Positions.Count == 0
                 || Indices == null || Indices.Count == 0)

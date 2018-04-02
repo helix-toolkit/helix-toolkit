@@ -51,14 +51,14 @@ namespace HelixToolkit.Wpf.SharpDX
             var body = new MeshGeometryModel3D() { CullMode = CullMode.Back };
             body.Geometry = b1.ToMeshGeometry3D();
             body.Material = PhongMaterials.Gray;
-            body.OnSetRenderTechnique = (h) => { return h.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
+            body.SceneNode.OnSetRenderTechnique = (h) => { return h.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
             this.Children.Add(body);
             b1 = new MeshBuilder();
             b1.AddCone(new Vector3(0, 0, -1.2f), new Vector3(0, 0f, 0), 0.4f, true, 12);
             var lens = new MeshGeometryModel3D() { CullMode = CullMode.Back};
             lens.Geometry = b1.ToMeshGeometry3D();
             lens.Material = PhongMaterials.Yellow;
-            lens.OnSetRenderTechnique = (h) => { return h.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
+            lens.SceneNode.OnSetRenderTechnique = (h) => { return h.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
             this.Children.Add(lens);
 
             var builder = new LineBuilder();
@@ -88,9 +88,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             mesh.Colors = colors;
             this.Children.Add(arrowMeshModel);
+            SceneNode.OnTransformChanged += SceneNode_OnTransformChanged;
         }
-
-
 
         protected override void OnMouse3DDown(object sender, RoutedEventArgs e)
         {
@@ -145,12 +144,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override void TransformChanged(ref Matrix totalTransform)
+        private void SceneNode_OnTransformChanged(object sender, TransformArgs e)
         {
-            base.TransformChanged(ref totalTransform);
             if(camera != null)
             {
-                var m = totalTransform;
+                var m = e.Transform;
                 camera.Position = new Point3D(m.M41, m.M42, m.M43);
                 camera.LookDirection = new Vector3D(-m.M31, -m.M32, -m.M33);
                 camera.UpDirection = new Vector3D(m.M21, m.M22, m.M23);               

@@ -13,7 +13,7 @@ using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using Model;
+    using Model.Scene;
     using Utilities;
     using Core2D;
     using HelixToolkit.Logger;
@@ -131,14 +131,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public List<IRenderable> PerFrameRenderables { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameRenderables : Constants.EmptyRenderable; } }
+        public List<SceneNode> PerFrameRenderables { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameRenderables : Constants.EmptyRenderable; } }
         /// <summary>
         /// Gets the current frame Lights for rendering.
         /// </summary>
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public IEnumerable<ILight3D> PerFrameLights { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameLights : Enumerable.Empty<ILight3D>(); } }
+        public IEnumerable<LightCoreBase> PerFrameLights { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameLights : Enumerable.Empty<LightCoreBase>(); } }
         /// <summary>
         /// Gets the per frame post effect cores.
         /// </summary>
@@ -211,13 +211,13 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         /// <summary>
         /// </summary>
-        public IEnumerable<IRenderable> Renderables
+        public IEnumerable<SceneNode> Renderables
         {
             get
             {
-                foreach(IRenderable item in Items)
+                foreach(Element3D item in Items)
                 {
-                    yield return item;
+                    yield return item.SceneNode;
                 }
             }
         }

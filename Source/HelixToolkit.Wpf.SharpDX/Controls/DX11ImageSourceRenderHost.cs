@@ -65,5 +65,12 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             surfaceD3D.SetRenderTargetDX11(e);
             OnImageSourceChanged(this, new DX11ImageSourceArgs(surfaceD3D));
         }
+
+        protected override void OnDispose(bool disposeManagedResources)
+        {
+            OnImageSourceChanged = null;
+            surfaceD3D?.SetRenderTargetDX11(null);
+            base.OnDispose(disposeManagedResources);
+        }
     }
 }

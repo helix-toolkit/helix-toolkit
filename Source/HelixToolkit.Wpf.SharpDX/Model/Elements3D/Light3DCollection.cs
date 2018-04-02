@@ -9,6 +9,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Collections.Generic;
     using HelixToolkit.Wpf.SharpDX.Core;
+    using SharpDX;
 
     public class Light3DCollection : GroupElement3D, ILight3D
     {
@@ -20,12 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return false;
-        }
-
-        protected override bool OnHitTest(IRenderContext context, global::SharpDX.Matrix totalModelMatrix, ref global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        public override bool HitTest(IRenderContext context, global::SharpDX.Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }

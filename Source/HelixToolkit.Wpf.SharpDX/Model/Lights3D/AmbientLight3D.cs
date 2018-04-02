@@ -4,15 +4,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using HelixToolkit.Wpf.SharpDX.Core;
-
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model.Scene;
     public sealed class AmbientLight3D : Light3D
     {
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new AmbientLightCore();
+            return new AmbientLightNode();
         }
     }
 }

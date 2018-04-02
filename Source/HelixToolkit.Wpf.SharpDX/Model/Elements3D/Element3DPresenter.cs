@@ -1,4 +1,5 @@
-﻿using HelixToolkit.Wpf.SharpDX.Render;
+﻿using HelixToolkit.Wpf.SharpDX.Model.Scene;
+using HelixToolkit.Wpf.SharpDX.Render;
 using SharpDX;
 using System.Collections.Generic;
 using System.Windows;
@@ -28,70 +29,22 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("Content", typeof(Element3D), typeof(Element3DPresenter), new PropertyMetadata(null, (d,e)=> 
             {
                 var model = d as Element3DPresenter;               
-                model.contentArray[0] = model.contentInternal = e.NewValue as Element3D;
                 if(e.OldValue != null)
                 {
-                    (e.OldValue as Element3D).Detach();
                     model.RemoveLogicalChild(e.OldValue);
+                    (model.SceneNode as GroupNode).RemoveChildNode(e.OldValue as Element3D);
                 }
                 if(e.NewValue != null)
                 {
                     model.AddLogicalChild(e.NewValue);
-                    if (model.IsAttached)
-                    {
-                        (e.NewValue as Element3D).Attach(model.RenderHost);
-                    }
+                    (model.SceneNode as GroupNode).AddChildNode(e.NewValue as Element3D);
                 }
             }));
 
-        private Element3D contentInternal;
-        private readonly IList<IRenderable> contentArray = new IRenderable[1] { null };
 
-        public override IList<IRenderable> Items
+        protected override SceneNode OnCreateSceneNode()
         {
-            get
-            {
-                return contentInternal == null ? Constants.EmptyRenderable : contentArray;
-            }
-        }
-
-
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            if (Content != null && Content is IHitable h)
-            {
-                if (h.IsHitTestVisible)
-                {
-                    return h.HitTest(context, ray, ref hits);
-                }
-            }
-            return false;
-        }
-
-        protected override bool OnAttach(IRenderHost host)
-        {
-            if (base.OnAttach(host))
-            {
-                Content?.Attach(host);
-                return true;
-            }
-            else { return false; }
-        }
-
-        protected override void OnDetach()
-        {
-            Content?.Detach();
-            base.OnDetach();
-        }
-
-        protected override bool CanRender(IRenderContext context)
-        {
-            return base.CanRender(context) && contentInternal != null;
-        }
-
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
-        {
-            Content?.Render(context, deviceContext);
+            return new GroupNode();
         }
     }
 }

@@ -1,18 +1,17 @@
-﻿using HelixToolkit.Wpf.SharpDX.Core;
-using SharpDX;
-using SharpDX.Direct3D11;
-using System.Runtime.CompilerServices;
-using System.Windows;
+﻿using System.Windows;
 using Media = System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Model.Scene;
+
     public class OutLineMeshGeometryModel3D : MeshGeometryModel3D
     {
         public static readonly DependencyProperty EnableOutlineProperty = DependencyProperty.Register("EnableOutline", typeof(bool), typeof(OutLineMeshGeometryModel3D),
             new PropertyMetadata(true, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IMeshOutlineParams).OutlineEnabled = (bool)e.NewValue;
+                ((d as Element3DCore).SceneNode as MeshOutlineNode).EnableOutline = (bool)e.NewValue;
             }));
 
         public bool EnableOutline
@@ -31,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(Media.Colors.White,
             (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IMeshOutlineParams).Color = ((Media.Color)e.NewValue).ToColor4();
+                ((d as Element3DCore).SceneNode as MeshOutlineNode).OutlineColor = ((Media.Color)e.NewValue).ToColor4();
             }));
 
         public Media.Color OutlineColor
@@ -48,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static DependencyProperty IsDrawGeometryProperty = DependencyProperty.Register("IsDrawGeometry", typeof(bool), typeof(OutLineMeshGeometryModel3D),
             new PropertyMetadata(true, (d, e) => {
-                ((d as IRenderable).RenderCore as IMeshOutlineParams).DrawMesh = (bool)e.NewValue;
+                ((d as Element3DCore).SceneNode as MeshOutlineNode).IsDrawGeometry = (bool)e.NewValue;
             }));
 
         public bool IsDrawGeometry
@@ -66,7 +65,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static DependencyProperty OutlineFadingFactorProperty = DependencyProperty.Register("OutlineFadingFactor", typeof(double), typeof(OutLineMeshGeometryModel3D),
             new PropertyMetadata(1.5, (d, e) => {
-                ((d as IRenderable).RenderCore as IMeshOutlineParams).OutlineFadingFactor = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as MeshOutlineNode).OutlineFadingFactor = (float)(double)e.NewValue;
             }));
 
         public double OutlineFadingFactor
@@ -81,19 +80,22 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new MeshOutlineRenderCore();
+            return new MeshOutlineNode();
         }
 
-        protected override void AssignDefaultValuesToCore(RenderCore core)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            var c = core as IMeshOutlineParams;
-            c.Color = this.OutlineColor.ToColor4();
-            c.OutlineEnabled = this.EnableOutline;
-            c.OutlineFadingFactor = (float)this.OutlineFadingFactor;
-            c.DrawMesh = this.IsDrawGeometry;
-            base.AssignDefaultValuesToCore(core);
+            if(core is MeshOutlineNode c)
+            {
+                c.OutlineColor = this.OutlineColor.ToColor4();
+                c.EnableOutline = this.EnableOutline;
+                c.OutlineFadingFactor = (float)this.OutlineFadingFactor;
+                c.IsDrawGeometry = this.IsDrawGeometry;
+            }
+
+            base.AssignDefaultValuesToSceneNode(core);
         }
     }
 }

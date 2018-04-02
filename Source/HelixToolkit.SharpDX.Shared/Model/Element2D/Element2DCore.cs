@@ -7,522 +7,153 @@ Copyright (c) 2018 Helix Toolkit contributors
 //#define DISABLEBITMAPCACHE
 #endif
 
-#if !NETFX_CORE
 using SharpDX;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Linq;
-using SharpDX.Direct2D1;
-using System.Diagnostics;
-
+#if NETFX_CORE
+using Windows.UI.Xaml;
+namespace HelixToolkit.UWP.Core2D
+#else
 using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX.Core2D
+#endif
 {
+    using Model.Scene2D;
     /// <summary>
-    /// 
+    /// External Wrapper core to be used for different platform
     /// </summary>
-    public abstract partial class Element2DCore : FrameworkContentElement, IDisposable, IRenderable2D, INotifyPropertyChanged
+#if NETFX_CORE
+    public abstract partial class Element2DCore : FrameworkElement, IDisposable
+#else
+    public abstract partial class Element2DCore : FrameworkContentElement, IDisposable
+#endif
     {
+        public sealed class SceneNode2DCreatedEventArgs : EventArgs
+        {
+            public SceneNode2D Node { private set; get; }
+            public SceneNode2DCreatedEventArgs(SceneNode2D node)
+            {
+                Node = node;
+            }
+        }
         /// <summary>
         /// Gets the unique identifier.
         /// </summary>
         /// <value>
         /// The unique identifier.
         /// </value>
-        public Guid GUID { get; } = Guid.NewGuid();
+        public Guid GUID { get { return SceneNode.GUID; } }
 
-        private Visibility visibilityInternal = Visibility.Visible;
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Element2DCore"/> is visible.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if visible; otherwise, <c>false</c>.
-        /// </value>
-        internal Visibility VisibilityInternal
+
+        public bool IsAttached { get { return SceneNode.IsAttached; } }
+
+#region Scene Node
+        private readonly object sceneNodeLock = new object();
+        private SceneNode2D sceneNode;
+        public SceneNode2D SceneNode
         {
-            set
-            {
-                if (Set(ref visibilityInternal, value))
-                { InvalidateVisual(); }
-            }
-            get { return visibilityInternal; }
-        }
-
-        internal bool IsHitTestVisibleInternal { set; get; } = true;
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is attached.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is attached; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsAttached { private set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is renderable.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is renderable; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsRenderable { private set; get; } = true;
-
-        private RenderCore2D renderCore;
-        /// <summary>
-        /// Gets or sets the render core.
-        /// </summary>
-        /// <value>
-        /// The render core.
-        /// </value>
-        public RenderCore2D RenderCore
-        {
-            private set
-            {
-                if (renderCore != value)
-                {
-                    if(renderCore != null)
-                    {
-                        renderCore.OnInvalidateRenderer -= RenderCore_OnInvalidateRenderer;
-                    }
-                    renderCore = value;
-                    if(renderCore != null)
-                    {
-                        renderCore.OnInvalidateRenderer += RenderCore_OnInvalidateRenderer;
-                    }
-                }
-            }
             get
             {
-                if(renderCore == null)
+                if (sceneNode == null)
                 {
-                    RenderCore = CreateRenderCore();
-                }
-                return renderCore;
-            }
-        }
-        /// <summary>
-        /// Gets or sets the render host.
-        /// </summary>
-        /// <value>
-        /// The render host.
-        /// </value>
-        protected IRenderHost RenderHost { private set; get; }
-        /// <summary>
-        /// Gets the items.
-        /// </summary>
-        /// <value>
-        /// The items.
-        /// </value>
-        public virtual IList<IRenderable2D> Items { get; } = Constants.EmptyRenderable2D;
-
-        private Matrix3x2 modelMatrix = Matrix3x2.Identity;
-        /// <summary>
-        /// Gets or sets the model matrix.
-        /// </summary>
-        /// <value>
-        /// The model matrix.
-        /// </value>
-        public Matrix3x2 ModelMatrix
-        {
-            set
-            {
-                if(Set(ref modelMatrix, value))
-                {
-                    RenderCore.LocalTransform = value;
-                    InvalidateVisual();
-                }
-            }
-            get { return modelMatrix; }
-        }
-
-        private Matrix3x2 layoutTranslate = Matrix3x2.Identity;
-        /// <summary>
-        /// Gets or sets the layout translate.
-        /// </summary>
-        /// <value>
-        /// The layout translate.
-        /// </value>
-        public Matrix3x2 LayoutTranslate
-        {
-            set
-            {
-                if(Set(ref layoutTranslate, value))
-                {
-                    InvalidateRender();
-                }
-            }
-            get { return layoutTranslate; }
-        }
-
-        private Matrix3x2 parentMatrix = Matrix3x2.Identity;
-        /// <summary>
-        /// Gets or sets the parent matrix.
-        /// </summary>
-        /// <value>
-        /// The parent matrix.
-        /// </value>
-        public Matrix3x2 ParentMatrix
-        {
-            set
-            {
-                if(Set(ref parentMatrix, value))
-                {
-                    IsTransformDirty = true;
-                }
-            }
-            get { return parentMatrix; }
-        }
-
-        private Matrix3x2 totalTransform = Matrix3x2.Identity;
-        /// <summary>
-        /// Gets or sets the total model matrix.
-        /// </summary>
-        /// <value>
-        /// The total model matrix.
-        /// </value>
-        public Matrix3x2 TotalModelMatrix
-        {
-            private set
-            {
-                if(Set(ref totalTransform, value))
-                {
-                    for (int i = 0; i < Items.Count; ++i)
+                    lock (sceneNodeLock)
                     {
-                        Items[i].ParentMatrix = totalTransform;
+                        if (sceneNode == null)
+                        {
+                            sceneNode = OnCreateSceneNode();
+                            AssignDefaultValuesToSceneNode(sceneNode);
+                            sceneNode.WrapperSource = this;
+                            sceneNode.OnAttached += SceneNode_OnAttached;
+                            sceneNode.OnDetached += SceneNode_OnDetached;
+                            sceneNode.OnUpdate += SceneNode_OnUpdate;
+                            OnSceneNodeCreated?.Invoke(this, new SceneNode2DCreatedEventArgs(sceneNode));
+                        }
                     }
-                    TransformChanged(ref value);
-                    OnTransformChanged?.Invoke(this, new Transform2DArgs(ref value));
                 }
-            }
-            get
-            {
-                return totalTransform;
+                return sceneNode;
             }
         }
-        /// <summary>
-        /// Gets or sets the transform matrix relative to its parent
-        /// </summary>
-        /// <value>
-        /// The relative matrix.
-        /// </value>
-        private Matrix3x2 RelativeMatrix
-        { set; get; }
-        /// <summary>
-        /// Gets or sets the layout bound with transform.
-        /// </summary>
-        /// <value>
-        /// The layout bound with transform.
-        /// </value>
-        public RectangleF LayoutBoundWithTransform
+
+        private void SceneNode_OnUpdate(object sender, SceneNode2D.UpdateEventArgs e)
         {
-            private set;get;
+            OnUpdate(e.Context);
         }
+
+        private void SceneNode_OnDetached(object sender, EventArgs e)
+        {
+            OnDetached();
+        }
+
+        private void SceneNode_OnAttached(object sender, EventArgs e)
+        {
+            OnAttached();
+        }
+
+        protected virtual void OnAttached()
+        {
+
+        }
+
+        protected virtual void OnDetached()
+        {
+
+        }
+
+        protected virtual void OnUpdate(IRenderContext2D context)
+        {
+
+        }
+
         /// <summary>
-        /// Creates the render core.
+        /// Called when [create scene node].
         /// </summary>
         /// <returns></returns>
-        protected virtual RenderCore2D CreateRenderCore() { return new EmptyRenderCore2D(); }
-        /// <summary>
-        /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
-        /// <para>Attach Flow: Set RenderHost -> Get Effect ->
-        /// <see cref="OnAttach(IRenderHost)"/> -> <see cref="OnAttach"/> -> <see cref="InvalidateRender"/></para>
-        /// </summary>
-        /// <param name="host">The host.</param>
-        public void Attach(IRenderHost host)
-        {
-            if (IsAttached || host == null)
-            {
-                return;
-            }
-            RenderHost = host;
-            IsAttached = OnAttach(host);
-            InvalidateAll();
-        }
+        protected abstract SceneNode2D OnCreateSceneNode();
 
-        /// <summary>
-        /// To override Attach routine, please override this.
-        /// </summary>
-        /// <param name="host"></param>       
-        /// <returns>Return true if attached</returns>
-        protected virtual bool OnAttach(IRenderHost host)
-        {
-            RenderCore.Attach(host);
-            return true;
-        }
-        /// <summary>
-        /// Detaches this instance.
-        /// </summary>
-        public void Detach()
-        {
-            if (IsAttached)
-            {
-                IsAttached = false;
-                RenderCore.Detach();
-                Disposer.RemoveAndDispose(ref bitmapCache);
-                OnDetach();                
-            }
-        }
-        /// <summary>
-        /// Called when [detach].
-        /// </summary>
-        protected virtual void OnDetach()
-        {
-            RenderHost = null;
-        }
-        /// <summary>
-        /// Updates the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public virtual void Update(IRenderContext2D context)
-        {         
-            IsRenderable = CanRender(context);          
-        }
-
-#region Handling Transforms        
-        /// <summary>
-        /// Transforms the changed.
-        /// </summary>
-        /// <param name="totalTransform">The total transform.</param>
-        protected virtual void TransformChanged(ref Matrix3x2 totalTransform)
-        {
-
-        }
-        /// <summary>
-        /// Occurs when [on transform changed].
-        /// </summary>
-        public event EventHandler<Transform2DArgs> OnTransformChanged;
+        protected virtual void AssignDefaultValuesToSceneNode(SceneNode2D node) { }
 #endregion
-#region Rendering
-
+#region Events        
         /// <summary>
-        /// <para>Determine if this can be rendered.</para>
+        /// Occurs when [on scene node created]. Make sure to hook up this event at the top of constructor of class, otherwise may miss the event.
         /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected virtual bool CanRender(IRenderContext2D context)
-        {
-            return VisibilityInternal == Visibility.Visible && IsAttached;
-        }
-        /// <summary>
-        /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
-        /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public void Render(IRenderContext2D context)
-        {
-            if (!IsRenderable)
-            { return; }
-            if (IsTransformDirty)
-            {
-                RelativeMatrix = Matrix3x2.Translation(-RenderSize * RenderTransformOriginInternal)
-                    * ModelMatrix * Matrix3x2.Translation(RenderSize * RenderTransformOriginInternal)
-                    * LayoutTranslate;
-                TotalModelMatrix = RelativeMatrix * ParentMatrix;            
-                IsTransformDirty = false;
-                InvalidateVisual();
-            }
+        public event EventHandler<SceneNode2DCreatedEventArgs> OnSceneNodeCreated;
+#endregion
 
-            LayoutBoundWithTransform = LayoutBound.Translate(TotalModelMatrix.TranslationVector);
-
-#if DISABLEBITMAPCACHE
-            IsBitmapCacheValid = false;
-#else
-            EnsureBitmapCache(context, new Size2((int)Math.Ceiling(LayoutClipBound.Width), (int)Math.Ceiling(LayoutClipBound.Height)), context.DeviceContext.MaximumBitmapSize);
-#endif
-            if (EnableBitmapCacheInternal && IsBitmapCacheValid)
-            {
-                if (IsVisualDirty)
-                {                        
-#if DEBUGDRAWING
-                    Debug.WriteLine("Redraw bitmap cache");
-#endif
-                    context.PushRenderTarget(bitmapCache, true);
-                    context.DeviceContext.Transform = Matrix3x2.Identity;
-                    context.PushRelativeTransform(Matrix3x2.Identity);
-                    RenderCore.Transform = context.RelativeTransform;
-                    OnRender(context);
-                    context.PopRelativeTransform();
-                    context.PopRenderTarget();
-                    IsVisualDirty = false;
-                }
-                if (context.HasTarget)
-                {
-                    context.DeviceContext.Transform = context.RelativeTransform * RelativeMatrix;                                     
-                    context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), LayoutClipBound, 
-                        InterpolationMode.Linear, global::SharpDX.Direct2D1.CompositeMode.SourceOver);
-                }
-                    
-            }
-            else if(context.HasTarget)
-            {
-                context.PushRelativeTransform(context.RelativeTransform * RelativeMatrix);
-                RenderCore.Transform = context.RelativeTransform;
-                OnRender(context);
-                context.PopRelativeTransform();
-                IsVisualDirty = false;
-            }
+        public virtual bool HitTest(Vector2 mousePoint, out HitTest2DResult hitResult)
+        {
+            return SceneNode.HitTest(mousePoint, out hitResult);
         }
 
-        /// <summary>
-        /// Renders the bitmap cache to a render target only.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public void RenderBitmapCache(IRenderContext2D context)
-        {
-            if(IsRenderable && EnableBitmapCacheInternal && IsBitmapCacheValid && !IsVisualDirty && context.HasTarget)
-            {
-                context.DeviceContext.Transform = RelativeMatrix;
-                context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), new RectangleF(0, 0, RenderSize.X, RenderSize.Y),
-                    InterpolationMode.Linear, global::SharpDX.Direct2D1.CompositeMode.SourceOver);
-            }
-            else
-            {
-                Render(context);
-            }
-        }
-        /// <summary>
-        /// Called when [render].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        protected virtual void OnRender(IRenderContext2D context)
-        {
-            RenderCore.Render(context);
-            for (int i = 0; i < this.Items.Count; ++i)
-            {
-                Items[i].Render(context);
-            }
-        }
-        #endregion
-        /// <summary>
-        /// Determines whether this instance [can hit test].
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if this instance [can hit test]; otherwise, <c>false</c>.
-        /// </returns>
-        protected virtual bool CanHitTest()
-        {
-            return IsAttached && IsHitTestVisibleInternal;
-        }
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="mousePoint">The mouse point.</param>
-        /// <param name="hitResult">The hit result.</param>
-        /// <returns></returns>
-        protected abstract bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult);
-        /// <summary>
-        /// Hits the test.
-        /// </summary>
-        /// <param name="mousePoint">The mouse point.</param>
-        /// <param name="hitResult">The hit result.</param>
-        /// <returns></returns>
-        public bool HitTest(Vector2 mousePoint, out HitTest2DResult hitResult)
-        {
-            if (CanHitTest())
-            {
-                return OnHitTest(ref mousePoint, out hitResult);
-            }
-            else
-            {
-                hitResult = null;
-                return false;
-            }
-        }
-        /// <summary>
-        /// Use InvalidateVisual if render update required.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void RenderCore_OnInvalidateRenderer(object sender, EventArgs e)
-        {
-            InvalidateVisual();
-        }
-        /// <summary>
-        /// Invalidates the render.
-        /// </summary>
         public void InvalidateRender()
         {
-            RenderHost?.InvalidateRender();
+            SceneNode.InvalidateRender();
+        }
+#if !NETFX_CORE
+        public void InvalidateMeasure()
+        {
+            SceneNode.InvalidateMeasure();
         }
 
-#region INotifyPropertyChanged
-        /// <summary>
-        /// Occurs when [property changed].
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-        private bool disablePropertyChangedEvent = false;
-        /// <summary>
-        /// Gets or sets a value indicating whether [disable property changed event].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [disable property changed event]; otherwise, <c>false</c>.
-        /// </value>
-        public bool DisablePropertyChangedEvent
+        public void InvalidateArrange()
         {
-            set
-            {
-                if (disablePropertyChangedEvent == value)
-                {
-                    return;
-                }
-                disablePropertyChangedEvent = value;
-                RaisePropertyChanged();
-            }
-            get
-            {
-                return disablePropertyChangedEvent;
-            }
+            SceneNode.InvalidateArrange();
+        }
+#else
+        public new void InvalidateMeasure()
+        {
+            SceneNode.InvalidateMeasure();
         }
 
-        /// <summary>
-        /// Raises the property changed.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
+        public new void InvalidateArrange()
         {
-            if (!DisablePropertyChangedEvent)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            SceneNode.InvalidateArrange();
         }
-        /// <summary>
-        /// Sets the specified backing field.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="backingField">The backing field.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns></returns>
-        protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(backingField, value))
-            {
-                return false;
-            }
+#endif
 
-            backingField = value;
-            this.RaisePropertyChanged(propertyName);
-            return true;
-        }
-        /// <summary>
-        /// Sets the specified backing field.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="backingField">The backing field.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="raisePropertyChanged">if set to <c>true</c> [raise property changed].</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns></returns>
-        protected bool Set<T>(ref T backingField, T value, bool raisePropertyChanged, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(backingField, value))
-            {
-                return false;
-            }
 
-            backingField = value;
-            if (raisePropertyChanged)
-            { this.RaisePropertyChanged(propertyName); }
-            return true;
+        public static implicit operator SceneNode2D(Element2DCore e)
+        {
+            return e.SceneNode;
         }
-#endregion
 
 #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls        
@@ -566,5 +197,3 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endregion
     }
 }
-    
-#endif

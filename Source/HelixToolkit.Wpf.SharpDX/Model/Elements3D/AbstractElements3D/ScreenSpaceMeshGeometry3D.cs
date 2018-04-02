@@ -8,7 +8,8 @@ using System.Windows;
 using Media3D = System.Windows.Media.Media3D;
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using Core;
+    using Model;
+    using Model.Scene;
     using Elements2D;
     using HelixToolkit.Wpf.SharpDX.Converters;
     using System;
@@ -26,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(-0.8,
                 (d, e) =>
                 {
-                   ((d as IRenderable).RenderCore as IScreenSpacedRenderParams).RelativeScreenLocationX = (float)(double)e.NewValue;
+                   ((d as Element3DCore).SceneNode as ScreenSpacedNode).RelativeScreenLocationX = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// <see cref="RelativeScreenLocationY"/>
@@ -35,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(-0.8,
                 (d, e) =>
                 {
-                    ((d as IRenderable).RenderCore as IScreenSpacedRenderParams).RelativeScreenLocationY = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ScreenSpacedNode).RelativeScreenLocationY = (float)(double)e.NewValue;
                 }));
         /// <summary>
         /// <see cref="SizeScale"/>
@@ -44,17 +45,8 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(1.0,
                 (d, e) =>
                 {
-                    ((d as IRenderable).RenderCore as IScreenSpacedRenderParams).SizeScale = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ScreenSpacedNode).SizeScale = (float)(double)e.NewValue;
                 }));
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register("UpDirection", typeof(Media3D.Vector3D), typeof(ScreenSpacedElement3D),
-            new PropertyMetadata(new Media3D.Vector3D(0, 1, 0),
-            (d, e) =>
-            {
-                (d as ScreenSpacedElement3D).UpdateModel(((Media3D.Vector3D)e.NewValue).ToVector3());
-            }));
 
 
         /// <summary>
@@ -70,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(false,
             (d, e) =>
             {
-                (d as ScreenSpacedElement3D).screenSpaceCore.IsRightHand = !(bool)e.NewValue;
+                ((d as Element3DCore).SceneNode as ScreenSpacedNode).IsRightHand = !(bool)e.NewValue;
             }));
 
         /// <summary>
@@ -83,24 +75,6 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (bool)GetValue(EnableMoverProperty); }
             set { SetValue(EnableMoverProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets up direction.
-        /// </summary>
-        /// <value>
-        /// Up direction.
-        /// </value>
-        public Media3D.Vector3D UpDirection
-        {
-            set
-            {
-                SetValue(UpDirectionProperty, value);
-            }
-            get
-            {
-                return (Media3D.Vector3D)GetValue(UpDirectionProperty);
-            }
         }
 
 
@@ -161,33 +135,22 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected bool NeedClearDepthBuffer { set; get; } = true;
+        //protected override SceneNode OnCreateSceneNode()
+        //{
+            
+        //    return new ScreenSpacedNode();
+        //}
 
-
-        protected IScreenSpacedRenderParams screenSpaceCore { get { return (IScreenSpacedRenderParams)RenderCore; } }
-
-        protected abstract void UpdateModel(Vector3 upDirection);
-
-        protected override RenderCore OnCreateRenderCore()
+        protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
+            if(node is ScreenSpacedNode n)
+            {
+                n.RelativeScreenLocationX = (float)this.RelativeScreenLocationX;
+                n.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
+                n.SizeScale = (float)this.SizeScale;
+            }
+            base.AssignDefaultValuesToSceneNode(node);
             InitializeMover();
-            return new ScreenSpacedMeshRenderCore();
-        }      
-
-        protected override bool OnAttach(IRenderHost host)
-        {
-            RenderCore.Attach(renderTechnique);
-            screenSpaceCore.RelativeScreenLocationX = (float)this.RelativeScreenLocationX;
-            screenSpaceCore.RelativeScreenLocationY = (float)this.RelativeScreenLocationY;
-            screenSpaceCore.SizeScale = (float)this.SizeScale;
-            UpdateModel(UpDirection.ToVector3());
-            return base.OnAttach(host);
-        }
-
-        protected override void OnDetach()
-        {
-            RenderCore.Detach();
-            base.OnDetach();
         }
 
         #region 2D stuffs
@@ -259,6 +222,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
+    using Model.Scene2D;
+    using HorizontalAlignment = System.Windows.HorizontalAlignment;
+    using VerticalAlignment = System.Windows.VerticalAlignment;
+    using Thickness = System.Windows.Thickness;
+    using Visibility = System.Windows.Visibility;
     /// <summary>
     /// 
     /// </summary>
@@ -299,20 +267,13 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty EnableMoverProperty =
             DependencyProperty.Register("EnableMover", typeof(bool), typeof(ScreenSpacePositionMover), new PropertyMetadata(true, (d, e) =>
             {
-                (d as ScreenSpacePositionMover).enableMover = (bool)e.NewValue;
+                ((d as Element2D).SceneNode as Node2DMoverBase).EnableMover = (bool)e.NewValue;
             }));
 
         /// <summary>
         /// Occurs when [on move clicked].
         /// </summary>
         public event EventHandler<ScreenSpaceMoveDirArgs> OnMoveClicked;
-
-        protected bool enableMover { private set; get; } = true;
-
-        protected override bool CanRender(IRenderContext2D context)
-        {
-            return base.CanRender(context) && enableMover;
-        }
 
         /// <summary>
         /// Raises the on move click.
@@ -321,6 +282,15 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         protected void RaiseOnMoveClick(ScreenSpaceMoveDirection direction)
         {
             OnMoveClicked?.Invoke(this, new ScreenSpaceMoveDirArgs(direction));
+        }
+
+        public abstract class Node2DMoverBase : PanelNode2D
+        {
+            public bool EnableMover { set; get; } = true;
+            protected override bool CanRender(IRenderContext2D context)
+            {
+                return base.CanRender(context) && EnableMover;
+            }
         }
     }
 
@@ -391,35 +361,48 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             MoveLeftTop.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.LeftTop); };
             MoveLeftBottom.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.LeftBottom); };
             MoveRightTop.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.RightTop); };
-            MoveRightBottom.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.RightBottom); };
+            MoveRightBottom.Clicked2D += (s, e) => { RaiseOnMoveClick(ScreenSpaceMoveDirection.RightBottom); };         
         }
 
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="mousePoint">The mouse point.</param>
-        /// <param name="hitResult">The hit result.</param>
-        /// <returns></returns>
-        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
+        protected override SceneNode2D OnCreateSceneNode()
         {
-            hitResult = null;
-            if (!enableMover)
-            { return false; }
-            if (LayoutBoundWithTransform.Contains(mousePoint))
+            return new Node2DMover() { Buttons = buttons };
+        }
+
+        public sealed class Node2DMover : Node2DMoverBase
+        {
+            public Button2D[] Buttons
             {
-                foreach (var b in buttons)
-                {
-                    b.Visibility = Visibility.Visible;
-                }
-                return base.OnHitTest(ref mousePoint, out hitResult);
+                set;
+                get;
             }
-            else
+            /// <summary>
+            /// Called when [hit test].
+            /// </summary>
+            /// <param name="mousePoint">The mouse point.</param>
+            /// <param name="hitResult">The hit result.</param>
+            /// <returns></returns>
+            protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
             {
-                foreach (var b in buttons)
+                hitResult = null;
+                if (!EnableMover)
+                { return false; }
+                if (LayoutBoundWithTransform.Contains(mousePoint))
                 {
-                    b.Visibility = Visibility.Hidden;
+                    foreach (var b in Buttons)
+                    {
+                        b.Visibility = System.Windows.Visibility.Visible;
+                    }
+                    return base.OnHitTest(ref mousePoint, out hitResult);
                 }
-                return false;
+                else
+                {
+                    foreach (var b in Buttons)
+                    {
+                        b.Visibility = System.Windows.Visibility.Hidden;
+                    }
+                    return false;
+                }
             }
         }
     }
