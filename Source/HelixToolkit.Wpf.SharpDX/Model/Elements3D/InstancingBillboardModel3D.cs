@@ -1,16 +1,11 @@
-﻿using System.Windows;
-using System.Collections.Generic;
-using System.Linq;
-using SharpDX;
-using SharpDX.Direct3D;
-using SharpDX.Direct3D11;
-using HelixToolkit.Wpf.SharpDX.Utilities;
-using System;
-using HelixToolkit.Wpf.SharpDX.Core;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Windows;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Model.Scene;
+
     public class InstancingBillboardModel3D : BillboardTextModel3D
     {
         #region Dependency Properties
@@ -19,7 +14,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
             DependencyProperty.Register("InstanceParamArray", typeof(IList<BillboardInstanceParameter>), typeof(InstancingBillboardModel3D), 
-                new PropertyMetadata(null, InstancesParamChanged));
+                new PropertyMetadata(null, (d,e)=> 
+                {
+                    ((d as Element3DCore).SceneNode as InstancingBillboardNode).InstanceParamArray = e.NewValue as IList<BillboardInstanceParameter>;
+                }));
 
         /// <summary>
         /// List of instance parameters. 
@@ -31,86 +29,13 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
 
-        private static void InstancesParamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var model = (InstancingBillboardModel3D)d;
-            model.instanceParamBuffer.Elements = e.NewValue as IList<BillboardInstanceParameter>;
-        }
-
         /// <summary>
-        /// The instance parameter buffer
-        /// </summary>
-        protected IElementsBufferModel<BillboardInstanceParameter> instanceParamBuffer = new InstanceParamsBufferModel<BillboardInstanceParameter>(BillboardInstanceParameter.SizeInBytes);
-        #region Overridable Methods
-
-        /// <summary>
-        /// Called when [create render core].
+        /// Called when [create scene node].
         /// </summary>
         /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new InstancingBillboardRenderCore() { ParameterBuffer = this.instanceParamBuffer };
+            return new InstancingBillboardNode();
         }
-
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="totalModelMatrix">The total model matrix.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            if((Geometry as BillboardBase).HitTest(context, totalModelMatrix, ref ray, ref hits, this, FixedSize))
-            {
-                Debug.WriteLine("Billboard hit");
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>
-        /// Return RenderTechnique
-        /// </returns>
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.BillboardInstancing];
-        }
-        /// <summary>
-        /// To override Attach routine, please override this.
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>
-        /// Return true if attached
-        /// </returns>
-        protected override bool OnAttach(IRenderHost host)
-        {
-            // --- attach
-            if (!base.OnAttach(host))
-            {
-                return false;
-            }
-            instanceParamBuffer.Initialize();
-            return true;
-        }
-        /// <summary>
-        /// Used to override Detach
-        /// </summary>
-        protected override void OnDetach()
-        {
-            instanceParamBuffer.DisposeAndClear();
-            base.OnDetach();
-        }
-
-        #endregion
     }
 }

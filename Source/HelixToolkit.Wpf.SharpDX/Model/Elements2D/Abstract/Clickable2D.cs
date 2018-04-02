@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
+using HelixToolkit.Wpf.SharpDX.Model.Scene2D;
 using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
@@ -54,6 +55,11 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             MouseLeave2D += Clickable2D_MouseLeave2D;
         }
 
+        protected override SceneNode2D OnCreateSceneNode()
+        {
+            return new ClickableNode2D();
+        }
+
         private void Clickable2D_MouseLeave2D(object sender, Mouse2DEventArgs e)
         {
 
@@ -85,23 +91,6 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                     Command?.Execute(e);
                 }
                 lastClickedTime = time;
-            }
-        }
-
-        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
-        {
-            hitResult = null;
-            if (LayoutBoundWithTransform.Contains(mousePoint))
-            {
-                if(!base.OnHitTest(ref mousePoint, out hitResult))
-                {
-                    hitResult = new HitTest2DResult(this);
-                }
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
     }

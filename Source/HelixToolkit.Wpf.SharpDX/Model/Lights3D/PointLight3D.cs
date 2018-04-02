@@ -6,7 +6,8 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using HelixToolkit.Wpf.SharpDX.Core;
+    using Model;
+    using Model.Scene;
     using System.Windows;
     using System.Windows.Media.Media3D;
 
@@ -15,19 +16,19 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty AttenuationProperty =
             DependencyProperty.Register("Attenuation", typeof(Vector3D), typeof(PointLight3D), new PropertyMetadata(new Vector3D(1.0f, 0.0f, 0.0f),
                 (d, e) => {
-                    ((d as IRenderable).RenderCore as PointLightCore).Attenuation = ((Vector3D)e.NewValue).ToVector3();
+                    ((d as Element3DCore).SceneNode as PointLightNode).Attenuation = ((Vector3D)e.NewValue).ToVector3();
                 }));
 
         public static readonly DependencyProperty RangeProperty =
             DependencyProperty.Register("Range", typeof(double), typeof(PointLight3D), new PropertyMetadata(100.0,
                 (d, e) => {
-                    ((d as IRenderable).RenderCore as PointLightCore).Range = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as PointLightNode).Range = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty PositionProperty =
             DependencyProperty.Register("Position", typeof(Point3D), typeof(PointLight3D), new PropertyMetadata(new Point3D(),
                 (d, e) => {
-                    ((d as IRenderable).RenderCore as PointLightCore).Position = ((Point3D)e.NewValue).ToVector3();
+                    ((d as Element3DCore).SceneNode as PointLightNode).Position = ((Point3D)e.NewValue).ToVector3();
                 }));
 
         /// <summary>
@@ -63,17 +64,20 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(RangeProperty, value); }
         }
 
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new PointLightCore();
+            return new PointLightNode();
         }
 
-        protected override void AssignDefaultValuesToCore(RenderCore core)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            base.AssignDefaultValuesToCore(core);
-            (core as PointLightCore).Attenuation = Attenuation.ToVector3();
-            (core as PointLightCore).Range = (float)Range;
-            (core as PointLightCore).Position = Position.ToVector3();
+            base.AssignDefaultValuesToSceneNode(core);
+            if(core is PointLightNode n)
+            {
+                n.Attenuation = Attenuation.ToVector3();
+                n.Range = (float)Range;
+                n.Position = Position.ToVector3();
+            }
         }
     }
 }

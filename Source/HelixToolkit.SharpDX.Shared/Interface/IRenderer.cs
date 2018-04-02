@@ -1,8 +1,6 @@
 ﻿using SharpDX;
 using SharpDX.Direct3D11;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
@@ -11,6 +9,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
     using Core;
+    using Model.Scene;
+    using Model.Scene2D;
     /// <summary>
     /// 
     /// </summary>
@@ -67,7 +67,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables"></param>
         /// <param name="results"></param>
         /// <returns></returns>
-        void UpdateSceneGraph(IRenderContext context, List<IRenderable> renderables, List<IRenderable> results);
+        void UpdateSceneGraph(IRenderContext context, List<SceneNode> renderables, List<SceneNode> results);
 
         /// <summary>
         /// Update scene graph, return the 2D renderables which will be rendered in this frame
@@ -75,14 +75,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <returns></returns>
-        void UpdateSceneGraph2D(IRenderContext2D context, List<IRenderable2D> renderables);
+        void UpdateSceneGraph2D(IRenderContext2D context, List<SceneNode2D> renderables);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void UpdateGlobalVariables(IRenderContext context, List<IRenderable> renderables, ref RenderParameter parameter);
+        void UpdateGlobalVariables(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter);
 
         /// <summary>
         /// 
@@ -120,13 +120,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        void UpdateNotRenderParallel(IRenderContext context, List<IRenderable> renderables);
+        void UpdateNotRenderParallel(IRenderContext context, List<SceneNode> renderables);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderScene2D(IRenderContext2D context, List<IRenderable2D> renderables, ref RenderParameter2D parameter);
+        void RenderScene2D(IRenderContext2D context, List<SceneNode2D> renderables, ref RenderParameter2D parameter);
     }
 }

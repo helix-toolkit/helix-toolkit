@@ -7,7 +7,7 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <SwapChainPanel/>
+                    <controls:SwapChainRenderHost x:Name="PART_RenderTaget"/>
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>

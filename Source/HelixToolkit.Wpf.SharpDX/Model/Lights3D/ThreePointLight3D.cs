@@ -24,15 +24,5 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Lights3D
                 return LightType.ThreePoint;
             }
         }
-
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return false;
-        }
-
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return false;
-        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
 #else
-using System;
+using HelixToolkit.UWP.Helper;
 
 namespace HelixToolkit.UWP.Shaders
 #endif
@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.csParticleInsert;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("csParticleInsert");
 #endif
             }
         }
@@ -33,7 +33,7 @@ namespace HelixToolkit.UWP.Shaders
 #if !NETFX_CORE
                 return Properties.Resources.csParticleUpdate;
 #else
-                throw new NotImplementedException();
+                return UWPShaderBytePool.Read("csParticleUpdate");
 #endif
             }
         }

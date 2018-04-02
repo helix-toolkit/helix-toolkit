@@ -79,8 +79,7 @@
                                     LabelColor="{TemplateBinding CoordinateSystemLabelForeground}"
                                     RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}"
                                     RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"
-                                    SizeScale="{TemplateBinding CoordinateSystemSize}"
-                                    UpDirection="{TemplateBinding ModelUpDirection}" />
+                                    SizeScale="{TemplateBinding CoordinateSystemSize}" />
                                 <hx2D:FrameStatisticsModel2D
                                     x:Name="PART_FrameStatisticView"
                                     Background="{TemplateBinding InfoBackground}"

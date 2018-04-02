@@ -5,7 +5,9 @@ using System.Windows;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using Core;
+    using Model;
+    using Model.Scene;
+
     public class InstancingMeshGeometryModel3D : MeshGeometryModel3D
     {
         #region DependencyProperties
@@ -13,7 +15,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// If bind to identifiers, hit test returns identifier as Tag in HitTestResult.
         /// </summary>
         public static readonly DependencyProperty InstanceIdentifiersProperty = DependencyProperty.Register("InstanceIdentifiers", typeof(IList<System.Guid>),
-            typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null));
+            typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null, (d,e)=>
+            { ((d as Element3DCore).SceneNode as InstancingMeshNode).InstanceIdentifiers = e.NewValue as IList<System.Guid>; }));
 
         /// <summary>
         /// Add octree manager to use octree hit test.
@@ -31,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     d.AddLogicalChild(e.NewValue);
                 }
-                d.octreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
+                (d.SceneNode as InstancingMeshNode).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
             }));
 
         /// <summary>
@@ -39,7 +42,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
             DependencyProperty.Register("InstanceParamArray", typeof(IList<InstanceParameter>), typeof(InstancingMeshGeometryModel3D), 
-                new PropertyMetadata(null, InstancesParamChanged));
+                new PropertyMetadata(null, (d, e) =>
+                { ((d as Element3DCore).SceneNode as InstancingMeshNode).InstanceParamArray = e.NewValue as IList<InstanceParameter>; }));
 
         /// <summary>
         /// If bind to identifiers, hit test returns identifier as Tag in HitTestResult.
@@ -79,120 +83,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #endregion
 
-        private bool isInstanceChanged = false;
-        protected IOctreeManager octreeManager { private set; get; }
-
-        protected IElementsBufferModel<InstanceParameter> instanceParamBuffer = new InstanceParamsBufferModel<InstanceParameter>(InstanceParameter.SizeInBytes);
-
-        private static void InstancesParamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        protected override SceneNode OnCreateSceneNode()
         {
-            var model = (InstancingMeshGeometryModel3D)d;
-            model.instanceParamBuffer.Elements = e.NewValue as IList<InstanceParameter>;
-        }
-
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.InstancingBlinn];
-        }
-
-        protected override RenderCore OnCreateRenderCore()
-        {
-            return new InstancingMeshRenderCore() { ParameterBuffer = this.instanceParamBuffer };
-        }
-
-        protected override bool OnAttach(IRenderHost host)
-        {
-            if (base.OnAttach(host))
-            {
-                instanceParamBuffer.Initialize();
-                
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        protected override void OnDetach()
-        {
-            instanceParamBuffer.DisposeAndClear();
-            base.OnDetach();
-        }
-
-        public override void UpdateNotRender(IRenderContext context)
-        {
-            base.UpdateNotRender(context);
-            if (isInstanceChanged)
-            {
-                BuildOctree();
-                isInstanceChanged = false;
-            }
-        }
-
-        protected override void InstancesChanged()
-        {
-            base.InstancesChanged();
-            octreeManager?.Clear();
-            isInstanceChanged = true;
-        }
-
-        private void BuildOctree()
-        {
-            if (IsRenderable && InstanceBuffer.HasElements)
-            {
-                octreeManager?.RebuildTree(Enumerable.Repeat<IRenderable>(this, 1));
-            }
-            else
-            {
-                octreeManager?.Clear();
-            }
-        }
-
-        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
-        {
-            bool isHit = false;
-            if (CanHitTest(context))
-            {               
-                if (octreeManager != null && octreeManager.Octree != null)
-                {
-                    var boundHits = new List<HitTestResult>();             
-                    isHit = octreeManager.Octree.HitTest(context, this, TotalModelMatrix, rayWS, ref boundHits);
-                    if (isHit)
-                    {
-                        isHit = false;
-                        Matrix instanceMatrix;
-                        foreach (var hit in boundHits)
-                        {
-                            int instanceIdx = (int)hit.Tag;
-                            instanceMatrix = InstanceBuffer.Elements[instanceIdx];
-                            var h = base.OnHitTest(context, TotalModelMatrix * instanceMatrix, ref rayWS, ref hits);
-                            isHit |= h;
-                            if (h && hits.Count > 0)
-                            {
-                                var result = hits.Last();
-                                object tag = null;
-                                if (InstanceIdentifiers != null && InstanceIdentifiers.Count == InstanceBuffer.Elements.Count)
-                                {
-                                    tag = InstanceIdentifiers[instanceIdx];
-                                }
-                                else
-                                {
-                                    tag = instanceIdx;
-                                }
-                                result.Tag = tag;
-                                hits[hits.Count - 1] = result;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    isHit = base.HitTest(context, rayWS, ref hits);
-                }
-                
-            }
-            return isHit;
+            return new InstancingMeshNode();
         }
     }
 }

@@ -18,14 +18,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 {
     using Core;
     using System;
-
+    using Model.Scene;
+    using Model.Scene2D;
     /// <summary>
     /// 
     /// </summary>
     public class ImmediateContextRenderer : DisposeObject, IRenderer
     {
-        private readonly Stack<KeyValuePair<int, IList<IRenderable>>> stackCache1 = new Stack<KeyValuePair<int, IList<IRenderable>>>(20);
-        private readonly Stack<KeyValuePair<int, IList<IRenderable2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<IRenderable2D>>>(20);
+        private readonly Stack<KeyValuePair<int, IList<SceneNode>>> stackCache1 = new Stack<KeyValuePair<int, IList<SceneNode>>>(20);
+        private readonly Stack<KeyValuePair<int, IList<SceneNode2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20);
         protected readonly List<RenderCore> filters = new List<RenderCore>();
         /// <summary>
         /// Gets or sets the immediate context.
@@ -48,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
         }
 
-        private static readonly Func<IRenderable, IRenderContext, bool> updateFunc = (x, context) =>
+        private static readonly Func<SceneNode, IRenderContext, bool> updateFunc = (x, context) =>
         {
             x.Update(context);
             return x.IsRenderable;
@@ -60,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables">The renderables.</param>
         /// <param name="results"></param>
         /// <returns></returns>
-        public virtual void UpdateSceneGraph(IRenderContext context, List<IRenderable> renderables, List<IRenderable> results)
+        public virtual void UpdateSceneGraph(IRenderContext context, List<SceneNode> renderables, List<SceneNode> results)
         {
             renderables.PreorderDFT(context, updateFunc, results, stackCache1);
         }
@@ -71,7 +72,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <returns></returns>
-        public void UpdateSceneGraph2D(IRenderContext2D context, List<IRenderable2D> renderables)
+        public void UpdateSceneGraph2D(IRenderContext2D context, List<SceneNode2D> renderables)
         {
             renderables.PreorderDFTRun((x) =>
             {
@@ -83,17 +84,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Updates the global variables. Such as light buffer and global transformation buffer
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="renderables">The renderables.</param>
+        /// <param name="lights">The lights.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void UpdateGlobalVariables(IRenderContext context, List<IRenderable> renderables, ref RenderParameter parameter)
+        public virtual void UpdateGlobalVariables(IRenderContext context, List<RenderCore> lights, ref RenderParameter parameter)
         {
             if (parameter.RenderLight)
             {
                 context.LightScene.LightModels.ResetLightCount();
-                int count = renderables.Count;
+                int count = lights.Count;
                 for (int i = 0; i < count && i < Constants.MaxLights; ++i)
                 {
-                    renderables[i].Render(context, ImmediateContext);
+                    lights[i].Render(context, ImmediateContext);
                 }
             }
             if (parameter.UpdatePerFrameData)
@@ -140,12 +141,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
         /// <summary>
-        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IRenderContext, List{IRenderable})"/>
+        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IRenderContext, List{SceneNode})"/>
         /// </summary>
         /// <param name="renderables">The renderables.</param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public virtual void UpdateNotRenderParallel(IRenderContext context, List<IRenderable> renderables)
+        public virtual void UpdateNotRenderParallel(IRenderContext context, List<SceneNode> renderables)
         {
             int count = renderables.Count;
             for(int i = 0; i < count; ++i)
@@ -171,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderScene2D(IRenderContext2D context, List<IRenderable2D> renderables, ref RenderParameter2D parameter)
+        public virtual void RenderScene2D(IRenderContext2D context, List<SceneNode2D> renderables, ref RenderParameter2D parameter)
         {
             int count = renderables.Count;
             for (int i = 0; i < count; ++ i)

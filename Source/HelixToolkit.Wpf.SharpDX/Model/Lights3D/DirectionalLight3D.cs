@@ -3,18 +3,19 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using HelixToolkit.Wpf.SharpDX.Core;
 using System.Windows;
 using System.Windows.Media.Media3D;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Model.Scene;
     public sealed class DirectionalLight3D : Light3D
     {
         public static readonly DependencyProperty DirectionProperty =
             DependencyProperty.Register("Direction", typeof(Vector3D), typeof(Light3D), new PropertyMetadata(new Vector3D(),
                 (d, e) => {
-                    ((d as IRenderable).RenderCore as DirectionalLightCore).Direction = ((Vector3D)e.NewValue).ToVector3();
+                    ((d as Element3DCore).SceneNode as DirectionalLightNode).Direction = ((Vector3D)e.NewValue).ToVector3();
                 }));
 
         /// <summary>
@@ -28,15 +29,15 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(DirectionProperty, value); }
         }
 
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new DirectionalLightCore();
+            return new DirectionalLightNode();
         }
 
-        protected override void AssignDefaultValuesToCore(RenderCore core)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            base.AssignDefaultValuesToCore(core);
-            (core as DirectionalLightCore).Direction = Direction.ToVector3();
+            base.AssignDefaultValuesToSceneNode(core);
+            (core as DirectionalLightNode).Direction = Direction.ToVector3();
         }
     }
 }

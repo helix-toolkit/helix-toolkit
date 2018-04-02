@@ -9,16 +9,11 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Windows.Markup;
-    using System.Linq;
-    using global::SharpDX;
-    using System;
-    using System.Windows;
-    using Render;
-    using HelixToolkit.Wpf.SharpDX.Core;
+    using Model.Scene;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
+    using System.Windows;
+    using System.Windows.Markup;
 
     /// <summary>
     ///     Represents a composite Model3D.
@@ -41,14 +36,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override IList<IRenderable> Items { get { return Children; } }
         /// <summary>
         ///     Gets the children.
         /// </summary>
         /// <value>
         ///     The children.
         /// </value>
-        public ObservableCollection<IRenderable> Children { get; } = new ObservableCollection<IRenderable>();
+        public ObservableCollection<Element3D> Children { get; } = new ObservableCollection<Element3D>();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
@@ -56,56 +50,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public CompositeModel3D()
         {
             Children.CollectionChanged += this.ChildrenChanged;
-        }
-
-        /// <summary>
-        /// Attaches the specified host.
-        /// </summary>
-        /// <param name="host">
-        /// The host.
-        /// </param>
-        protected override bool OnAttach(IRenderHost host)
-        {
-            foreach (var model in this.Children)
-            {
-                if ((model as Element3DCore).Parent == null)
-                {
-                    this.AddLogicalChild(model);
-                }
-
-                model.Attach(host);
-            }
-            return true;
-        }
-
-        /// <summary>
-        ///     Detaches this instance.
-        /// </summary>
-        protected override void OnDetach()
-        {
-            foreach (var model in this.Children)
-            {
-                model.Detach();
-                if ((model as Element3DCore).Parent == this)
-                {
-                    this.RemoveLogicalChild(model);
-                }
-            }
-            base.OnDetach();
-        }
-
-        /// <summary>
-        /// Called when [render].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
-        {
-            // you mean like this?
-            foreach (var model in this.Children)
-            {
-                model.Render(context, deviceContext);
-            }
         }
 
         /// <summary>
@@ -119,25 +63,25 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void ChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.OldItems != null)
+            var node = SceneNode as GroupNode;
+
+            switch (e.Action)
             {
-                switch (e.Action)
-                {
-                    case NotifyCollectionChangedAction.Reset:
-                    case NotifyCollectionChangedAction.Remove:
-                    case NotifyCollectionChangedAction.Replace:
+                case NotifyCollectionChangedAction.Reset:                  
+                case NotifyCollectionChangedAction.Remove:
+                case NotifyCollectionChangedAction.Replace:
+                    if (e.OldItems != null)
+                    {
                         foreach (Element3D item in e.OldItems)
                         {
-                            // todo: detach?
-                            // yes, always
-                            item.Detach();
                             if (item.Parent == this)
                             {
                                 this.RemoveLogicalChild(item);
                             }
-                        }
-                        break;
-                }
+                            node.RemoveChildNode(item);
+                        }                
+                    }
+                    break;
             }
 
             if (e.NewItems != null)
@@ -145,51 +89,47 @@ namespace HelixToolkit.Wpf.SharpDX
                 switch (e.Action)
                 {
                     case NotifyCollectionChangedAction.Reset:
+                        foreach(Element3D item in Children)
+                        {
+                            if (item.Parent == null)
+                            {
+                                this.AddLogicalChild(item);
+                            }
+                            node.AddChildNode(item);
+                        }
+                        break;
                     case NotifyCollectionChangedAction.Add:
                     case NotifyCollectionChangedAction.Replace:
                         foreach (Element3D item in e.NewItems)
                         {
-                            if (this.IsAttached)
+                            if (item.Parent == null)
                             {
-                                // todo: attach?
-                                // yes, always  
-                                // where to get a refrence to renderHost?
-                                // store it as private memeber of the class?
-                                if (item.Parent == null)
-                                {
-                                    this.AddLogicalChild(item);
-                                }
-
-                                item.Attach(RenderHost);
+                                this.AddLogicalChild(item);
                             }
+                            node.AddChildNode(item); 
                         }
                         break;
                 }
             }
-            forceUpdateTransform = true;
         }
 
-        protected override bool CanHitTest(IRenderContext context)
+        public virtual void Clear()
         {
-            return base.CanHitTest(context) && Children.Count > 0;
-        }
-
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            bool hit = false;
-            foreach (var c in this.Children)
+            foreach (Element3D item in Children)
             {
-                if (c is IHitable h)
+                if (item.Parent == this)
                 {
-                    h.HitTest(context, ray, ref hits);
+                    this.RemoveLogicalChild(item);
                 }
-            }
-            if (hit)
-            {
-                var pos = ray.Position;
-                hits = hits.OrderBy(x => Vector3.DistanceSquared(pos, x.PointHit)).ToList();
-            }
-            return hit;
+            }            
+            var node = SceneNode as GroupNode;
+            node.Clear();
+            Children.Clear();
+        }
+
+        protected override SceneNode OnCreateSceneNode()
+        {
+            return new GroupNode();
         }
     }
 }

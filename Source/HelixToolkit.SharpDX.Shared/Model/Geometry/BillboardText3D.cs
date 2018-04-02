@@ -8,11 +8,11 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Reflection;
+using Cyotek.Drawing.BitmapFont;
 #if NETFX_CORE
-
+using Media = Windows.UI.Xaml.Media;
 #else
 using Media = System.Windows.Media;
-using Cyotek.Drawing.BitmapFont;
 #endif
 
 #if NETFX_CORE
@@ -59,9 +59,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public BoundingSphere BoundSphere { get; private set; }
     }
+
 #if !NETFX_CORE
     [Serializable]
-
+#endif
     public class BillboardText3D : BillboardBase
     {
         private readonly static BitmapFont bmpFont;
@@ -70,6 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         static BillboardText3D()
         {
+#if !NETFX_CORE
             var assembly = Assembly.GetExecutingAssembly();
 
             //Read the texture description           
@@ -81,6 +83,16 @@ namespace HelixToolkit.Wpf.SharpDX
             //Read the texture          
             var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png");
             TextureStatic = MemoryStream.Synchronized(texImageStream);
+#else
+            var packageFolder = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "HelixToolkit.UWP");
+            var sampleFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\Resources\arial.fnt");
+            bmpFont = new BitmapFont();
+            var fileStream = new MemoryStream(sampleFile);
+            bmpFont.Load(fileStream);
+
+            var texFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\Resources\arial.png");
+            TextureStatic = new MemoryStream(texFile);         
+#endif
         }
 
         public override BillboardType Type
@@ -137,7 +149,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 int y = 0;
                 var w = BitmapFont.TextureSize.Width;
                 var h = BitmapFont.TextureSize.Height;
-
                 char previousCharacter;
 
                 previousCharacter = ' ';
@@ -238,7 +249,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public override bool HitTest(IRenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
-            IRenderable originalSource, bool fixedSize)
+            object originalSource, bool fixedSize)
         {
             var h = false;
             var result = new BillboardHitResult();
@@ -301,5 +312,5 @@ namespace HelixToolkit.Wpf.SharpDX
             return h;
         }
     }
-#endif
+
 }

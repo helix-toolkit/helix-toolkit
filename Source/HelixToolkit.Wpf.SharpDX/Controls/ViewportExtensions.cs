@@ -26,6 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Vector2 = global::SharpDX.Vector2;
     using Vector3 = global::SharpDX.Vector3;
     using Cameras;
+    using HelixToolkit.Wpf.SharpDX.Model.Scene;
 
     /// <summary>
     /// Provides extension methods for <see cref="Viewport3DX" />.
@@ -42,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
             int count = 0;
             var totalModel = viewport.Renderables.PreorderDFT((x) => 
             {
-                if(x is GeometryModel3D g)
+                if(x is GeometryNode g)
                 {
                     if (g.Visible && g.Geometry != null && g.Geometry.Indices != null)
                     {
@@ -194,7 +195,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var maxVector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var firstModel = viewport.Renderables.PreorderDFT((r) =>
             {
-                if (r.Visible && !(r is ScreenSpacedElement3D))
+                if (r.Visible && !(r is ScreenSpacedNode))
                 {
                     return true;
                 }
@@ -219,7 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
             
             foreach(var renderable in viewport.Renderables.PreorderDFT((r) =>
             {               
-                if (r.Visible && !(r is ScreenSpacedElement3D))
+                if (r.Visible && !(r is ScreenSpacedNode))
                 {
                     return true;
                 }
@@ -253,7 +254,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             foreach (var element in viewport.Renderables)
             {
-                var model = element as Element3D; // ITraversable;
+                var model = (Element3D)element; // ITraversable;
                 if (model != null)
                 {
                     Traverse(model, action);

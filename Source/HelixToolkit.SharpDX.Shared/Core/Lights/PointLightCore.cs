@@ -2,18 +2,30 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+
 using SharpDX;
 
 #if !NETFX_CORE
+
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
     using Model;
+
+    /// <summary>
+    ///
+    /// </summary>
     public class PointLightCore : LightCoreBase
     {
         private Vector3 position;
+        /// <summary>
+        /// Gets or sets the position.
+        /// </summary>
+        /// <value>
+        /// The position.
+        /// </value>
         public Vector3 Position
         {
             set
@@ -24,6 +36,12 @@ namespace HelixToolkit.UWP.Core
         }
 
         private Vector3 attenuation = new Vector3(1, 0, 0);
+        /// <summary>
+        /// Gets or sets the attenuation.
+        /// </summary>
+        /// <value>
+        /// The attenuation.
+        /// </value>
         public Vector3 Attenuation
         {
             set { SetAffectsRender(ref attenuation, value); }
@@ -31,17 +49,29 @@ namespace HelixToolkit.UWP.Core
         }
 
         private float range = 1000;
+        /// <summary>
+        /// Gets or sets the range.
+        /// </summary>
+        /// <value>
+        /// The range.
+        /// </value>
         public float Range
         {
             set { SetAffectsRender(ref range, value); }
             get { return range; }
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointLightCore"/> class.
+        /// </summary>
         public PointLightCore()
         {
             LightType = LightType.Point;
         }
-
+        /// <summary>
+        /// Called when [render].
+        /// </summary>
+        /// <param name="lightScene">The light scene.</param>
+        /// <param name="index">The index.</param>
         protected override void OnRender(Light3DSceneShared lightScene, int index)
         {
             base.OnRender(lightScene, index);

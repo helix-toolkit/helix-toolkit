@@ -6,6 +6,7 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
@@ -14,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        IEnumerable<IRenderable> Renderables { get; }
+        IEnumerable<SceneNode> Renderables { get; }
         /// <summary>
         /// 
         /// </summary>

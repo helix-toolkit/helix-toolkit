@@ -180,7 +180,7 @@ namespace HelixToolkit.UWP.Core
 
         #endregion
 
-        private ClipPlaneStruct clipParameter = new ClipPlaneStruct() { EnableCrossPlane = new Bool4(false, false, false, false), CrossSectionColors = Color.DarkGray.ToVector4(), CrossPlaneParams = new Matrix() };
+        private ClipPlaneStruct clipParameter = new ClipPlaneStruct() { EnableCrossPlane = new Bool4(false, false, false, false), CrossSectionColors = Color.Blue.ToVector4(), CrossPlaneParams = new Matrix() };
 
         private IConstantBufferProxy clipParamCB;
 

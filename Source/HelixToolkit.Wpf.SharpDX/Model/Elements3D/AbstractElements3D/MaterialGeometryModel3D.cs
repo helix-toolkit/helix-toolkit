@@ -9,8 +9,9 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using Core;
     using System.Windows;
+    using Model;
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
@@ -25,10 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderDiffuseMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    if ((d as IRenderable).RenderCore is IMaterialRenderParams m)
-                    {
-                        m.RenderDiffuseMap = (bool)e.NewValue;
-                    }
+                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderDiffuseMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// 
@@ -37,10 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderDiffuseAlphaMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    if ((d as IRenderable).RenderCore is IMaterialRenderParams m)
-                    {
-                        m.RenderDiffuseAlphaMap = (bool)e.NewValue;
-                    }
+                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderDiffuseAlphaMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// 
@@ -49,10 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderNormalMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    if ((d as IRenderable).RenderCore is IMaterialRenderParams m)
-                    {
-                        m.RenderNormalMap = (bool)e.NewValue;
-                    }
+                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderNormalMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// 
@@ -61,10 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderDisplacementMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    if ((d as IRenderable).RenderCore is IMaterialRenderParams m)
-                    {
-                        m.RenderDisplacementMap = (bool)e.NewValue;
-                    }
+                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderDisplacementMap = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -74,10 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    if ((d as IRenderable).RenderCore is IMaterialRenderParams m)
-                    {
-                        m.RenderShadowMap = (bool)e.NewValue;
-                    }
+                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderShadowMap = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -87,16 +73,16 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("RenderEnvironmentMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false,
                 (d, e) =>
                 {
-                    if ((d as IRenderable).RenderCore is IMaterialRenderParams m)
-                    {
-                        m.RenderEnvironmentMap = (bool)e.NewValue;
-                    }
+                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderEnvironmentMap = (bool)e.NewValue;
                 }));
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty MaterialProperty =
-            DependencyProperty.Register("Material", typeof(Material), typeof(MaterialGeometryModel3D), new PropertyMetadata(null, MaterialChanged));
+            DependencyProperty.Register("Material", typeof(Material), typeof(MaterialGeometryModel3D), new PropertyMetadata(null, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as MaterialGeometryNode).Material = e.NewValue as Material;
+            }));
 
         /// <summary>
         /// Specifiy if model material is transparent. 
@@ -105,11 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsTransparentProperty =
             DependencyProperty.Register("IsTransparent", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false, (d, e) =>
             {
-                var model = d as Element3DCore;
-                if (model.RenderCore.RenderType == RenderType.Opaque || model.RenderCore.RenderType == RenderType.Transparent)
-                {
-                    model.RenderCore.RenderType = (bool)e.NewValue ? RenderType.Transparent : RenderType.Opaque;
-                }
+                ((d as Element3DCore).SceneNode as MaterialGeometryNode).IsTransparent = (bool)e.NewValue;
             }));
 
 
@@ -190,59 +172,19 @@ namespace HelixToolkit.Wpf.SharpDX
         }
         #endregion
 
-        #region Static Methods
-        /// <summary>
-        /// 
-        /// </summary>
-        protected static void MaterialChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
-            if (e.NewValue is PhongMaterial material)
+            if(node is MaterialGeometryNode n)
             {
-                var model = d as MaterialGeometryModel3D;
-                (model.RenderCore as IMaterialRenderParams).Material = material;
-                if (model.RenderHost != null)
-                {
-                    if (model.IsAttached)
-                    {
-                        model.AttachMaterial();
-                        model.InvalidateRender();
-                    }
-                    else
-                    {
-                        var host = model.RenderHost;
-                        model.Detach();
-                        model.Attach(host);
-                    }
-                }               
+                n.Material = this.Material;
+                n.RenderDiffuseMap = this.RenderDiffuseMap;
+                n.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
+                n.RenderNormalMap = this.RenderNormalMap;
+                n.RenderDisplacementMap = this.RenderDisplacementMap;
+                n.RenderEnvironmentMap = this.RenderEnvironmentMap;
+                n.RenderShadowMap = this.RenderShadowMap;
             }
-        }
-        #endregion
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected virtual void AttachMaterial()
-        {
-            var core = RenderCore as IMaterialRenderParams;
-            core.Material = this.Material;
-            core.RenderDiffuseMap = this.RenderDiffuseMap;
-            core.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
-            core.RenderNormalMap = this.RenderNormalMap;
-            core.RenderDisplacementMap = this.RenderDisplacementMap;
-            core.RenderEnvironmentMap = this.RenderEnvironmentMap;
-            core.RenderShadowMap = this.RenderShadowMap;
-        }
-
-        protected override bool OnAttach(IRenderHost host)
-        {
-            // --- attach
-            if (!base.OnAttach(host))
-            {
-                return false;
-            }
-            // --- material 
-            this.AttachMaterial();
-            return true;
+            base.AssignDefaultValuesToSceneNode(node);
         }
     }
 }

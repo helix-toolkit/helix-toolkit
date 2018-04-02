@@ -12,34 +12,35 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using HelixToolkit.Wpf.SharpDX.Core;
     using System.Windows;
     using System.Windows.Media.Media3D;
+    using Model;
+    using Model.Scene;
 
     public sealed class SpotLight3D : PointLight3D
     {
         public static readonly DependencyProperty DirectionProperty =
             DependencyProperty.Register("Direction", typeof(Vector3D), typeof(SpotLight3D), new PropertyMetadata(new Vector3D(),
                 (d, e) => {
-                    ((d as IRenderable).RenderCore as SpotLightCore).Direction = ((Vector3D)e.NewValue).ToVector3();
+                    ((d as Element3DCore).SceneNode as SpotLightNode).Direction = ((Vector3D)e.NewValue).ToVector3();
                 }));
 
         public static readonly DependencyProperty FalloffProperty =
             DependencyProperty.Register("Falloff", typeof(double), typeof(SpotLight3D), new PropertyMetadata(1.0,
                 (d,e)=> {
-                    ((d as IRenderable).RenderCore as SpotLightCore).FallOff = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as SpotLightNode).FallOff = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty InnerAngleProperty =
             DependencyProperty.Register("InnerAngle", typeof(double), typeof(SpotLight3D), new PropertyMetadata(5.0,
                 (d, e) => {
-                    ((d as IRenderable).RenderCore as SpotLightCore).InnerAngle = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as SpotLightNode).InnerAngle = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty OuterAngleProperty =
             DependencyProperty.Register("OuterAngle", typeof(double), typeof(SpotLight3D), new PropertyMetadata(45.0,
                 (d, e) => {
-                    ((d as IRenderable).RenderCore as SpotLightCore).OuterAngle = (float)(double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as SpotLightNode).OuterAngle = (float)(double)e.NewValue;
                 }));
 
         /// <summary>
@@ -85,18 +86,21 @@ namespace HelixToolkit.Wpf.SharpDX
         }   
 
 
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new SpotLightCore();
+            return new SpotLightNode();
         }
 
-        protected override void AssignDefaultValuesToCore(RenderCore core)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            base.AssignDefaultValuesToCore(core);
-            (core as SpotLightCore).Direction = Direction.ToVector3();
-            (core as SpotLightCore).InnerAngle = (float)InnerAngle;
-            (core as SpotLightCore).OuterAngle = (float)OuterAngle;
-            (core as SpotLightCore).FallOff = (float)Falloff;
+            base.AssignDefaultValuesToSceneNode(core);
+            if(core is SpotLightNode c)
+            {
+                c.Direction = Direction.ToVector3();
+                c.InnerAngle = (float)InnerAngle;
+                c.OuterAngle = (float)OuterAngle;
+                c.FallOff = (float)Falloff;
+            }
         }
     }
 }

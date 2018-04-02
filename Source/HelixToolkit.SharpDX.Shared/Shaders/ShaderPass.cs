@@ -134,23 +134,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <returns></returns>
         public ShaderBase GetShader(ShaderStage type)
         {
-            switch (type)
-            {
-                case ShaderStage.Pixel:
-                    return NullShader.PixelNull;
-                case ShaderStage.Vertex:
-                    return NullShader.VertexNull;
-                case ShaderStage.Geometry:
-                    return NullShader.GeometryNull;
-                case ShaderStage.Compute:
-                    return NullShader.ComputeNull;
-                case ShaderStage.Domain:
-                    return NullShader.DomainNull;
-                case ShaderStage.Hull:
-                    return NullShader.HullNull;
-                default:
-                    return new NullShader(type);
-            }            
+            return NullShader.GetNullShader(type);  
         }
         /// <summary>
         /// Sets the shader.

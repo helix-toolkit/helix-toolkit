@@ -1,5 +1,4 @@
-﻿using HelixToolkit.Wpf.SharpDX.Core;
-using SharpDX;
+﻿using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
@@ -7,6 +6,8 @@ using System.Windows;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
@@ -23,9 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX
             new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    var model = d as BillboardTextModel3D;
-                    (model.RenderCore as IBillboardRenderParams).FixedSize = (bool)e.NewValue;
-                    model.HasBound = !(bool)e.NewValue;//If fixed size, disable the bound. 
+                    ((d as Element3DCore).SceneNode as BillboardNode).FixedSize = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -52,11 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsTransparentProperty =
             DependencyProperty.Register("IsTransparent", typeof(bool), typeof(BillboardTextModel3D), new PropertyMetadata(false, (d, e) =>
             {
-                var model = d as Element3DCore;
-                if (model.RenderCore.RenderType == RenderType.Opaque || model.RenderCore.RenderType == RenderType.Transparent)
-                {
-                    model.RenderCore.RenderType = (bool)e.NewValue ? RenderType.Transparent : RenderType.Opaque;
-                }
+                ((d as Element3DCore).SceneNode as BillboardNode).IsTransparent = (bool)e.NewValue;
             }));
 
         /// <summary>
@@ -71,105 +66,27 @@ namespace HelixToolkit.Wpf.SharpDX
         #endregion
 
         #region Overridable Methods        
-        public BillboardTextModel3D()
-        {
-            HasBound = false;
-        }
+
         /// <summary>
-        /// Called when [create render core].
+        /// Called when [create scene node].
         /// </summary>
         /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new BillboardRenderCore();
+            return new BillboardNode();
         }
         /// <summary>
         /// Assigns the default values to core.
         /// </summary>
         /// <param name="core">The core.</param>
-        protected override void AssignDefaultValuesToCore(RenderCore core)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            base.AssignDefaultValuesToCore(core);
-            (core as IBillboardRenderParams).FixedSize = FixedSize;
-        }
-
-        /// <summary>
-        /// Called when [create buffer model].
-        /// </summary>
-        /// <param name="modelGuid"></param>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
-        protected override IGeometryBufferProxy OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
-        {
-            return EffectsManager.GeometryBufferManager.Register<DefaultBillboardBufferModel>(modelGuid, geometry);
-        }
-
-        /// <summary>
-        /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>
-        /// Return RenderTechnique
-        /// </returns>
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.BillboardText];
-        }
-        /// <summary>
-        /// Checks the bounding frustum.
-        /// </summary>
-        /// <param name="viewFrustum">The view frustum.</param>
-        /// <returns></returns>
-        protected override bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
-        {
-            var sphere = this.BoundsSphereWithTransform;
-            return  viewFrustum.Intersects(ref sphere);
-        }
-        /// <summary>
-        /// Called when [check geometry].
-        /// </summary>
-        /// <param name="geometry">The geometry.</param>
-        /// <returns></returns>
-        protected override bool OnCheckGeometry(Geometry3D geometry)
-        {
-            return geometry is IBillboardText;
-        }
-        /// <summary>
-        /// Create raster state description.
-        /// </summary>
-        /// <returns></returns>
-        protected override RasterizerStateDescription CreateRasterState()
-        {
-            return new RasterizerStateDescription()
+            if (core is BillboardNode n)
             {
-                FillMode = FillMode.Solid,
-                CullMode = CullMode.None,
-                DepthBias = DepthBias,
-                DepthBiasClamp = -1000,
-                SlopeScaledDepthBias = (float)SlopeScaledDepthBias,
-                IsDepthClipEnabled = true,
-                IsFrontCounterClockwise = false,
-
-                IsMultisampleEnabled = false,
-                //IsAntialiasedLineEnabled = true,                    
-                IsScissorEnabled = IsThrowingShadow ? false : IsScissorEnabled,
-            };
+                n.FixedSize = FixedSize;
+            }
+            base.AssignDefaultValuesToSceneNode(core);       
         }
-
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="totalModelMatrix">The total model matrix.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return (Geometry as BillboardBase).HitTest(context, totalModelMatrix, ref ray, ref hits, this, FixedSize);
-        }
-
         #endregion
     }
 }

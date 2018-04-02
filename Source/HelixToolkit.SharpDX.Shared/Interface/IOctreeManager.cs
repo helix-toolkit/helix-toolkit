@@ -11,6 +11,7 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
@@ -53,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns></returns>
-        bool AddPendingItem(IRenderable item);
+        bool AddPendingItem(SceneNode item);
         /// <summary>
         /// Processes the pending items.
         /// </summary>
@@ -66,12 +67,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Rebuilds the tree.
         /// </summary>
         /// <param name="items">The items.</param>
-        void RebuildTree(IEnumerable<IRenderable> items);
+        void RebuildTree(IEnumerable<SceneNode> items);
         /// <summary>
         /// Removes the item.
         /// </summary>
         /// <param name="item">The item.</param>
-        void RemoveItem(IRenderable item);
+        void RemoveItem(SceneNode item);
         /// <summary>
         /// Requests the rebuild.
         /// </summary>

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using HelixToolkit.Wpf.SharpDX.Core;
 using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Model.Scene;
+
     /// <summary>
     /// Limitation: Under switchable graphics card setup(Laptop with integrated graphics card and external graphics card), 
     /// only monitor outputs using integrated graphics card is fully supported.
@@ -36,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d,e)=> 
                 {
                     var rect = (Rect)e.NewValue;
-                    ((d as IRenderable).RenderCore as IScreenClone).CloneRectangle = new Rectangle((int)rect.Left, (int)rect.Top, (int)rect.Width, (int)rect.Height);
+                    ((d as Element3DCore).SceneNode as ScreenDuplicationNode).CaptureRectangle = new Rectangle((int)rect.Left, (int)rect.Top, (int)rect.Width, (int)rect.Height);
                 }));
 
         /// <summary>
@@ -57,7 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("DisplayIndex", typeof(int), typeof(ScreenDuplicationModel), new PropertyMetadata(0, 
                 (d,e)=>
                 {
-                    ((d as IRenderable).RenderCore as IScreenClone).Output = (int)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ScreenDuplicationNode).DisplayIndex = (int)e.NewValue;
                 }));
 
 
@@ -80,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("StretchToFill", typeof(bool), typeof(ScreenDuplicationModel), new PropertyMetadata(false,
                 (d,e)=> 
                 {
-                    ((d as IRenderable).RenderCore as IScreenClone).StretchToFill = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ScreenDuplicationNode).StretchToFill = (bool)e.NewValue;
                 }));
 
 
@@ -102,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ShowMouseCursorProperty =
             DependencyProperty.Register("ShowMouseCursor", typeof(bool), typeof(ScreenDuplicationModel), new PropertyMetadata(true,
                 (d,e)=> {
-                    ((d as IRenderable).RenderCore as IScreenClone).ShowMouseCursor = (bool)e.NewValue;
+                    ((d as Element3DCore).SceneNode as ScreenDuplicationNode).ShowMouseCursor = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -112,48 +114,26 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             IsHitTestVisible = false;
         }
-        /// <summary>
-        /// Called when [create render core].
-        /// </summary>
-        /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
+
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new ScreenCloneRenderCore();
+            return new ScreenDuplicationNode();
         }
         /// <summary>
         /// Assigns the default values to core.
         /// </summary>
         /// <param name="core">The core.</param>
-        protected override void AssignDefaultValuesToCore(RenderCore core)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            base.AssignDefaultValuesToCore(core);
-            (core as IScreenClone).Output = this.DisplayIndex;
-            (core as IScreenClone).CloneRectangle = new Rectangle((int)CaptureRectangle.Left, (int)CaptureRectangle.Top, (int)CaptureRectangle.Width, (int)CaptureRectangle.Height);
-            (core as IScreenClone).StretchToFill = StretchToFill;
+            base.AssignDefaultValuesToSceneNode(core);
+            if(core is ScreenDuplicationNode c)
+            {
+                c.DisplayIndex = this.DisplayIndex;
+                c.CaptureRectangle = new Rectangle((int)CaptureRectangle.Left, (int)CaptureRectangle.Top, (int)CaptureRectangle.Width, (int)CaptureRectangle.Height);
+                c.StretchToFill = StretchToFill;
+                c.ShowMouseCursor = ShowMouseCursor;
+            }
         }
-        /// <summary>
-        /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>
-        /// Return RenderTechnique
-        /// </returns>
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication];
-        }
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="totalModelMatrix">The total model matrix.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return false;
-        }
+
     }
 }
