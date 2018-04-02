@@ -114,12 +114,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Content Include="MiniCube_PS.fxo">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="MiniCube_VS.fxo">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\arial.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -154,9 +148,6 @@
     <Compile Include="Model\Material\PhongMaterialFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.rd.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="MiniCube.fx" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Themes\Generic.xaml">

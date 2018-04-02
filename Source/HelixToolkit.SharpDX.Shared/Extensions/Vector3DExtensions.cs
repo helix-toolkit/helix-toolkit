@@ -323,7 +323,7 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color4 ToColor4(this Media.Color color)
         {
-            return new global::SharpDX.Color4(color.R, color.G, color.B, color.A);
+            return new global::SharpDX.Color4((float)color.R / 255, (float)color.G / 255, (float)color.B / 255, (float)color.A / 255);
         }
 #endif
     }

@@ -4,6 +4,7 @@ using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,12 +48,19 @@ namespace SimpleDemoW10
 
             Camera = new PerspectiveCamera() { Position = new Vector3(0, 0, -10), LookDirection = new Vector3(0, 0, 10), UpDirection = new Vector3(0, 1, 0) };
 
-            var builder = new MeshBuilder();
+            var builder = new MeshBuilder(true, true, true);
             builder.AddBox(new SharpDX.Vector3(0, 0, 0), 2, 2, 2);
-            builder.AddSphere(new Vector3(), 1.5);
+            builder.AddSphere(new Vector3(0,2,0), 1.5);
             Geometry = builder.ToMesh();
-            Material = PhongMaterials.Blue;
-
+            Material = new PhongMaterial()
+            {
+                AmbientColor = Color.Gray,
+                DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
+                SpecularColor = Color.White,
+                SpecularShininess = 100f,
+            };
+            Material.DiffuseMap = LoadTexture("TextureCheckerboard2.jpg");
+            Material.NormalMap = LoadTexture("TextureCheckerboard2_dot3.jpg");
             var lineBuilder = new LineBuilder();
             lineBuilder.AddGrid(BoxFaces.All, 10, 10, 10, 10);
             LineGeometry = lineBuilder.ToLineGeometry3D();
@@ -73,6 +81,13 @@ namespace SimpleDemoW10
             var time = (float)Stopwatch.GetTimestamp() / Stopwatch.Frequency;
             Transform = global::SharpDX.Matrix.Scaling((float)this.scale) * global::SharpDX.Matrix.RotationX(rotationSpeed * time)
                     * global::SharpDX.Matrix.RotationY(rotationSpeed * time * 2.0f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time * .7f);
+        }
+
+        private Stream LoadTexture(string file)
+        {
+            var packageFolder = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "");
+            var bytecode = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\" + file);
+            return new MemoryStream(bytecode);
         }
     }
 }

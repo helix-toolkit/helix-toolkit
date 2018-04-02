@@ -204,3 +204,4 @@ FakesAssemblies/
 /Source/HelixToolkit.SharpDX.Shared/Shaders/_default.bfx
 /Source/HelixToolkit.Wpf.SharpDX/Resources/*.cso
 /Source/.vs/
+/Source/HelixToolkit.UWP/Resources/*.cso
