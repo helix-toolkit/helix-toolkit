@@ -1,14 +1,58 @@
 ﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:HelixToolkit.UWP.Themes"
-    xmlns:controls="using:HelixToolkit.UWP">
+    xmlns:controls="using:HelixToolkit.UWP"
+    xmlns:converters="using:HelixToolkit.UWP.Converters"
+    xmlns:local="using:HelixToolkit.UWP.Themes">
+    <converters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+    <converters:EmptyStringToVisibilityConverter x:Key="emptyStringToVisibilityConverter" />
+
     <Style TargetType="controls:Viewport3DX">
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <controls:SwapChainRenderHost x:Name="PART_RenderTaget"/>
+                    <controls:SwapChainRenderHost
+                        x:Name="PART_RenderTarget"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch" />
                 </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:Viewport3DX">
+                    <Border
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ItemsPresenter />
+                            <TextBox
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="Transparent"
+                                Foreground="Red"
+                                IsReadOnly="True"
+                                Text="{TemplateBinding MessageText}"
+                                Visibility="{Binding Text, RelativeSource={RelativeSource Mode=Self}, Mode=OneWay, Converter={StaticResource emptyStringToVisibilityConverter}}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="controls:GroupModel3D">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:GroupModel3D">
+                    <ItemsControl
+                        x:Name="PART_ItemsContainer"
+                        IsHitTestVisible="False"
+                        Visibility="Collapsed" />
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>

@@ -1,12 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LineGeometryModel3D.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// <summary>
-//
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
 namespace HelixToolkit.UWP
 {
     using global::SharpDX;

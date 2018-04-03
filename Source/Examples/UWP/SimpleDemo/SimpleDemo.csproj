@@ -141,6 +141,10 @@
       <Project>{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}</Project>
       <Name>HelixToolkit.UWP</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\HelixToolkit\HelixToolkit.csproj">
+      <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
+      <Name>HelixToolkit</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights">

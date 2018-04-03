@@ -1,4 +1,8 @@
-﻿namespace HelixToolkit.UWP
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+namespace HelixToolkit.UWP
 {
     using global::SharpDX;
     using System;

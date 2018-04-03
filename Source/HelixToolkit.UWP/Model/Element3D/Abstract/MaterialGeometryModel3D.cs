@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
 namespace HelixToolkit.UWP
 {
     using Model;
     using Model.Scene;
     using Windows.UI.Xaml;
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="HelixToolkit.UWP.GeometryModel3D" />
     public abstract class MaterialGeometryModel3D : GeometryModel3D
     {
         #region Dependency Properties
@@ -164,8 +165,11 @@ namespace HelixToolkit.UWP
             get { return (bool)GetValue(IsTransparentProperty); }
             set { SetValue(IsTransparentProperty, value); }
         }
-        #endregion
-
+        #endregion        
+        /// <summary>
+        /// Assigns the default values to scene node.
+        /// </summary>
+        /// <param name="node">The node.</param>
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
             if (node is MaterialGeometryNode n)

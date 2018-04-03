@@ -1,4 +1,8 @@
-﻿using Windows.UI;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using Windows.UI;
 using Windows.UI.Xaml;
 
 namespace HelixToolkit.UWP
@@ -127,6 +131,29 @@ namespace HelixToolkit.UWP
             }
         }
 
+
+        /// <summary>
+        /// The message text property.
+        /// </summary>
+        public static readonly DependencyProperty MessageTextProperty = DependencyProperty.Register(
+            "MessageText", typeof(string), typeof(Viewport3DX), new PropertyMetadata(null));
+        /// <summary>
+        /// Gets or sets the message text.
+        /// </summary>
+        /// <value>
+        /// The message text.
+        /// </value>
+        public string MessageText
+        {
+            set
+            {
+                SetValue(MessageTextProperty, value);
+            }
+            get
+            {
+                return (string)GetValue(MessageTextProperty);
+            }
+        }
         /// <summary>
         /// Gets or sets the render host internal.
         /// </summary>

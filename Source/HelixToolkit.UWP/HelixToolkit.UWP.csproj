@@ -124,16 +124,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonDX\CompositionTargetEx.cs" />
+    <Compile Include="CommonDX\SwapChainCompositionRenderHost.cs" />
     <Compile Include="CommonDX\SwapChainRenderHost.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Controls\Viewport3DXProperties.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
+    <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
+    <Compile Include="Model\Camera\OrthographicCamera.cs" />
     <Compile Include="Model\Element3D\Abstract\Element3D.cs" />
     <Compile Include="Model\Element3D\Abstract\GeometryModel3D.cs" />
+    <Compile Include="Model\Element3D\Abstract\GroupElement3D.cs" />
     <Compile Include="Model\Element3D\Abstract\MaterialGeometryModel3D.cs" />
     <Compile Include="Model\Camera\Camera.cs" />
     <Compile Include="Model\Camera\PerspectiveCamera.cs" />
     <Compile Include="Model\Camera\ProjectionCamera.cs" />
     <Compile Include="Model\Element3D\BillboardTextModel3D.cs" />
+    <Compile Include="Model\Element3D\GroupModel3D.cs" />
     <Compile Include="Model\Element3D\LineGeometryModel3D.cs" />
     <Compile Include="Model\Element3D\MeshGeometryModel3D.cs" />
     <Compile Include="Model\Element3D\PointGeometryModel3D.cs" />
@@ -179,9 +186,6 @@
       <Version>4.0.1</Version>
     </PackageReference>
     <PackageReference Include="SharpDX.Direct3D11">
-      <Version>4.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="SharpDX.Direct3D11.Effects">
       <Version>4.0.1</Version>
     </PackageReference>
     <PackageReference Include="SharpDX.DXGI">
@@ -381,6 +385,9 @@
     <Content Include="Resources\vsSkybox.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HelixToolkit.SharpDX.Shared.licenseheader" />
   </ItemGroup>
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />

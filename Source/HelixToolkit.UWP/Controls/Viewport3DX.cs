@@ -1,12 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Viewport3DX.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// <summary>
-//   Renders the contained 3-D content within the 2-D layout bounds of the Viewport3DX element.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
 namespace HelixToolkit.UWP
 {
     using System;
@@ -28,6 +23,7 @@ namespace HelixToolkit.UWP
     /// Renders the contained 3-D content within the 2-D layout bounds of the Viewport3DX element.
     /// </summary>
     [ContentProperty(Name = "Items")]
+    [TemplatePart(Name = "PART_RenderTarget")]
     public partial class Viewport3DX : ItemsControl, IViewport3DX
     {
 
@@ -150,6 +146,10 @@ namespace HelixToolkit.UWP
         //    // Callback on DpiChanged
         //    DisplayProperties.LogicalDpiChanged += this.DisplayPropertiesLogicalDpiChanged;
         //}
+
+        public const string PART_RENDERTARGET = "PART_RenderTarget";
+
+
         public IRenderHost RenderHost { get { return this.renderHostInternal; } }
 
         public CameraCore CameraCore { get { return this.Camera; } }
@@ -183,7 +183,11 @@ namespace HelixToolkit.UWP
             this.Loaded += Viewport3DXLoaded;
             this.Unloaded += Viewport3DX_Unloaded;
             Camera = new PerspectiveCamera() { Position = new Vector3(0, 0, -10), LookDirection = new Vector3(0, 0, 10), UpDirection = new Vector3(0, 1, 0) };
+        }
 
+        protected override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
         }
 
         private void Viewport3DX_Unloaded(object sender, RoutedEventArgs e)
@@ -194,10 +198,13 @@ namespace HelixToolkit.UWP
         private void Viewport3DXLoaded(object sender, RoutedEventArgs e)
         {
             renderHostInternal = (ItemsPanelRoot as SwapChainRenderHost).RenderHost;
-            renderHostInternal.Viewport = this;
-            renderHostInternal.EffectsManager = this.EffectsManager;
-            renderHostInternal.RenderTechnique = this.RenderTechnique;
-            renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();
+            if (renderHostInternal != null)
+            {
+                renderHostInternal.Viewport = this;
+                renderHostInternal.EffectsManager = this.EffectsManager;
+                renderHostInternal.RenderTechnique = this.RenderTechnique;
+                renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();
+            }
         }
 
         /// <summary>

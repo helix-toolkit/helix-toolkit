@@ -1,15 +1,17 @@
-﻿using HelixToolkit.UWP.Model;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using HelixToolkit.UWP.Model;
 using SharpDX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media.Media3D;
 
 namespace HelixToolkit.UWP
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="HelixToolkit.UWP.Model.Element3DCore" />
     public abstract class Element3D : Element3DCore
     {
         #region Dependency Properties

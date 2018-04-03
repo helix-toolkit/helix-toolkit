@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
