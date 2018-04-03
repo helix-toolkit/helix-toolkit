@@ -29,6 +29,25 @@
                         BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid Background="{TemplateBinding Background}">
                             <ItemsPresenter />
+                            <controls:ViewBoxModel3D
+                                x:Name="PART_ViewCube"
+                                EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"
+                                IsRendering="{TemplateBinding ShowViewCube}"
+                                RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}"
+                                RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
+                                SizeScale="{TemplateBinding ViewCubeSize}"
+                                UpDirection="{TemplateBinding ModelUpDirection}"
+                                ViewBoxTexture="{TemplateBinding ViewCubeTexture}" />
+                            <controls:CoordinateSystemModel3D
+                                x:Name="PART_CoordinateView"
+                                CoordinateSystemLabelX="{TemplateBinding CoordinateSystemLabelX}"
+                                CoordinateSystemLabelY="{TemplateBinding CoordinateSystemLabelY}"
+                                CoordinateSystemLabelZ="{TemplateBinding CoordinateSystemLabelZ}"
+                                IsRendering="{TemplateBinding ShowCoordinateSystem}"
+                                LabelColor="{TemplateBinding CoordinateSystemLabelForeground}"
+                                RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}"
+                                RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"
+                                SizeScale="{TemplateBinding CoordinateSystemSize}" />
                             <TextBox
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"

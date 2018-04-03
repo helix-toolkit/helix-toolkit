@@ -128,6 +128,7 @@
     <Compile Include="CommonDX\SwapChainRenderHost.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Controls\Viewport3DXProperties.cs" />
+    <Compile Include="Controls\ViewportExtensions.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
@@ -139,11 +140,14 @@
     <Compile Include="Model\Camera\Camera.cs" />
     <Compile Include="Model\Camera\PerspectiveCamera.cs" />
     <Compile Include="Model\Camera\ProjectionCamera.cs" />
+    <Compile Include="Model\Element3D\Abstract\ScreenSpaceMeshGeometry3D.cs" />
     <Compile Include="Model\Element3D\BillboardTextModel3D.cs" />
+    <Compile Include="Model\Element3D\CoordinateSystemModel3D.cs" />
     <Compile Include="Model\Element3D\GroupModel3D.cs" />
     <Compile Include="Model\Element3D\LineGeometryModel3D.cs" />
     <Compile Include="Model\Element3D\MeshGeometryModel3D.cs" />
     <Compile Include="Model\Element3D\PointGeometryModel3D.cs" />
+    <Compile Include="Model\Element3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Lights\AmbientLight3D.cs" />
     <Compile Include="Model\Lights\DirectionalLight3D.cs" />
     <Compile Include="Model\Lights\Light3D.cs" />
