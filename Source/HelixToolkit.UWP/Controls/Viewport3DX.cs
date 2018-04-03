@@ -231,7 +231,7 @@ namespace HelixToolkit.UWP
                 return false;
             }
 
-            var ray = this.UnProject(p.ToVector2());
+            var ray = this.UnProject(p);
             var hits = new List<HitTestResult>();
             if (viewCube.HitTest(RenderContext, ray, ref hits))
             {

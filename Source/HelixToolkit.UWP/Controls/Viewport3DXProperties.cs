@@ -2,9 +2,10 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using Vector3 = SharpDX.Vector3;
+
 using Windows.UI;
 using Windows.UI.Xaml;
+using Vector3 = SharpDX.Vector3;
 
 namespace HelixToolkit.UWP
 {
@@ -21,7 +22,6 @@ namespace HelixToolkit.UWP
                     if (viewport.renderHostInternal != null)
                         viewport.renderHostInternal.IsShadowMapEnabled = (bool)e.NewValue;
                 }));
-
 
         public bool IsShadowMappingEnabled
         {
@@ -40,7 +40,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public static readonly DependencyProperty RenderTechniqueProperty = DependencyProperty.Register(
             "RenderTechnique", typeof(IRenderTechnique), typeof(Viewport3DX), new PropertyMetadata(null,
-                (s, e) => 
+                (s, e) =>
                 {
                     var viewport = s as Viewport3DX;
                     if (viewport.renderHostInternal != null)
@@ -65,12 +65,12 @@ namespace HelixToolkit.UWP
         public static readonly DependencyProperty EffectsManagerProperty = DependencyProperty.Register(
             "EffectsManager", typeof(IEffectsManager), typeof(Viewport3DX), new PropertyMetadata(
                 null,
-                (s, e) => {
+                (s, e) =>
+                {
                     var viewport = s as Viewport3DX;
                     if (viewport.renderHostInternal != null)
                         viewport.renderHostInternal.EffectsManager = e.NewValue as IEffectsManager;
                 }));
-
 
         public IEffectsManager EffectsManager
         {
@@ -92,7 +92,6 @@ namespace HelixToolkit.UWP
             typeof(Camera),
             typeof(Viewport3DX),
             new PropertyMetadata(null));
-
 
         public Camera Camera
         {
@@ -156,11 +155,13 @@ namespace HelixToolkit.UWP
                 this.SetValue(ModelUpDirectionProperty, value);
             }
         }
+
         /// <summary>
         /// The message text property.
         /// </summary>
         public static readonly DependencyProperty MessageTextProperty = DependencyProperty.Register(
             "MessageText", typeof(string), typeof(Viewport3DX), new PropertyMetadata(null));
+
         /// <summary>
         /// Gets or sets the message text.
         /// </summary>
@@ -180,6 +181,7 @@ namespace HelixToolkit.UWP
         }
 
         #region Coordinate System
+
         /// <summary>
         /// The show coordinate system property.
         /// </summary>
@@ -238,7 +240,6 @@ namespace HelixToolkit.UWP
         /// </summary>
         public static readonly DependencyProperty CoordinateSystemSizeProperty = DependencyProperty.Register(
                 "CoordinateSystemSize", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0));
-
 
         /// <summary>
         /// Gets or sets the horizontal position of the coordinate system viewport. Relative to the viewport center.
@@ -393,9 +394,11 @@ namespace HelixToolkit.UWP
                 this.SetValue(ShowCoordinateSystemProperty, value);
             }
         }
-        #endregion
+
+        #endregion Coordinate System
 
         #region ViewCube
+
         /// <summary>
         /// The show view cube property.
         /// </summary>
@@ -549,6 +552,7 @@ namespace HelixToolkit.UWP
                 this.SetValue(ViewCubeSizeProperty, value);
             }
         }
-        #endregion
+
+        #endregion ViewCube
     }
 }
