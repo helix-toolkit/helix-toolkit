@@ -1,4 +1,8 @@
-﻿using System.ComponentModel;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+using System.ComponentModel;
 using System.Runtime.Serialization;
 using Windows.UI.Xaml;
 

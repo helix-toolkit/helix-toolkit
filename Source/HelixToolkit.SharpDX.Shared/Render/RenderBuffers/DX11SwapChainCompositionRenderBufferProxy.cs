@@ -33,7 +33,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11SwapChainRenderBufferProxy"/> class.
         /// </summary>
-        /// <param name="surfacePointer">The surface pointer.</param>
         /// <param name="deviceResource"></param>
         public DX11SwapChainCompositionRenderBufferProxy(IDeviceResources deviceResource) : base(deviceResource)
         {
@@ -42,7 +41,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11SwapChainRenderBufferProxy"/> class.
         /// </summary>
-        /// <param name="surfacePointer">The surface pointer.</param>
         /// <param name="deviceResource"></param>
         /// <param name="useDepthStencilBuffer"></param>
         public DX11SwapChainCompositionRenderBufferProxy(IDeviceResources deviceResource, bool useDepthStencilBuffer)

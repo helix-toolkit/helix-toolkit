@@ -2,27 +2,48 @@
     x:Class="SimpleDemoW10.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:SimpleDemoW10"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hx="using:HelixToolkit.UWP"
+    xmlns:hxModel="using:hxToolkit.UWP.CommonDX"
+    xmlns:local="using:SimpleDemoW10"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:helix="using:HelixToolkit.UWP"
-    xmlns:helixModel="using:HelixToolkit.UWP.CommonDX"
     mc:Ignorable="d">
 
     <Page.DataContext>
-        <local:MainPageViewModel/>
+        <local:MainPageViewModel />
     </Page.DataContext>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
-            <RowDefinition/>
+            <RowDefinition Height="80" />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <helix:Viewport3DX Grid.Row="0" Grid.RowSpan="2" EffectsManager="{Binding EffectsManager}" Camera="{Binding Camera}" Background="Black" BackgroundColor="Black">
-            <helix:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White"/>
-            <helix:MeshGeometryModel3D Geometry="{Binding Geometry}" Material="{Binding Material}" Transform="{Binding Transform}"/>
-            <helix:LineGeometryModel3D Geometry="{Binding LineGeometry}" Color="Yellow"/>
-            <helix:PointGeometryModel3D Geometry="{Binding PointGeometry}" Color="Blue"/>
-        </helix:Viewport3DX>
-        <TextBlock Text="HelixToolkit + SharpDX in Windows 10" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="64" FontStretch="Condensed" Foreground="Red"/>        
+        <hx:Viewport3DX
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Background="Black"
+            BackgroundColor="Black"
+            Camera="{Binding Camera}"
+            EffectsManager="{Binding EffectsManager}"
+            ShowCoordinateSystem="true">
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
+            <hx:GroupModel3D Transform3D="{Binding Transform}">
+                <hx:MeshGeometryModel3D
+                    Geometry="{Binding Geometry}"
+                    Material="{Binding Material}"/>
+                <hx:LineGeometryModel3D Geometry="{Binding LineGeometry}" Color="White" />
+                <hx:BillboardTextModel3D Geometry="{Binding AxisLabelGeometry}" />
+            </hx:GroupModel3D>
+
+            <hx:GroupModel3D Transform3D="{Binding Transform1}">
+                <hx:PointGeometryModel3D Geometry="{Binding PointGeometry}" Color="#FFE400" />
+            </hx:GroupModel3D>
+        </hx:Viewport3DX>
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="64"
+            FontStretch="Condensed"
+            Foreground="Red"
+            Text="hxToolkit + SharpDX in Windows 10" />
     </Grid>
 </Page>

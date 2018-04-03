@@ -1,11 +1,16 @@
-﻿
-
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
 namespace HelixToolkit.UWP
 {
     using Model;
     using Model.Scene;
     using Windows.UI.Xaml;
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="HelixToolkit.UWP.GeometryModel3D" />
     public class BillboardTextModel3D : GeometryModel3D
     {
         #region Dependency Properties

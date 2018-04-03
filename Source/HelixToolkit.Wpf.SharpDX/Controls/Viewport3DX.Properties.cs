@@ -665,7 +665,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The near zoom distance limit property.
         /// </summary>
         public static readonly DependencyProperty ZoomDistanceLimitNearProperty = DependencyProperty.Register(
-            "ZoomDistanceLimitNear", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(0.0));
+            "ZoomDistanceLimitNear", typeof(double), typeof(Viewport3DX), new UIPropertyMetadata(0.001));
 
         /// <summary>
         /// The zoom extents when loaded property.

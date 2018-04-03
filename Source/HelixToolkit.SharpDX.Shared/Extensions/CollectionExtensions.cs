@@ -30,9 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
         /// <returns>The internal array of the list.</returns>
         public static T[] GetInternalArray<T>(this List<T> list)
         {
-            return (T[])typeof(List<T>)
-                .GetField("_items", BindingFlags.NonPublic | BindingFlags.Instance)
-                .GetValue(list);
+            return list.ToArray();
         }
 
         public static T[] GetArrayByType<T>(this IList<T> list)

@@ -1,50 +1,20 @@
-﻿using HelixToolkit.Logger;
-using HelixToolkit.UWP.Render;
-using HelixToolkit.UWP.Utilities;
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
 using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
-namespace HelixToolkit.UWP.CommonDX
-{
-    /// <summary>
-    /// 
-    /// </summary>
-    public class SwapChainCompositionRenderHost : DefaultRenderHost
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SwapChainRenderHost"/> class.
-        /// </summary>
-        /// <param name="surface">The window PTR.</param>
-        public SwapChainCompositionRenderHost()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SwapChainRenderHost"/> class.
-        /// </summary>
-        /// <param name="surface">The surface.</param>
-        /// <param name="createRenderer">The create renderer.</param>
-        public SwapChainCompositionRenderHost(Func<Device, IRenderer> createRenderer) : base(createRenderer)
-        {
-        }
-        /// <summary>
-        /// Creates the render buffer.
-        /// </summary>
-        /// <returns></returns>
-        protected override IDX11RenderBufferProxy CreateRenderBuffer()
-        {
-            Logger.Log(LogLevel.Information, "DX11SwapChainCompositionRenderBufferProxy", nameof(SwapChainRenderHost));
-            return new DX11SwapChainCompositionRenderBufferProxy(EffectsManager);
-        }
-    }
-}
-
 namespace HelixToolkit.UWP
 {
     using CommonDX;
+    using Render;
+    using Utilities;
+    using Windows.Foundation;
+    using Windows.UI.Popups;
 
     public class SwapChainRenderHost : SwapChainPanel
     {
@@ -111,19 +81,32 @@ namespace HelixToolkit.UWP
             RenderHost.UpdateAndRender();
         }
 
+        IAsyncAction resizeAction;
         private void Target_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
         {
-            try
+            if (resizeAction != null)
             {
-                renderHost.Resize(ActualWidth, ActualHeight);
+                resizeAction.Cancel();
             }
-            catch (Exception ex)
+            resizeAction = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Low, async() =>
             {
-                if (!HandleExceptionOccured(ex))
+                try
                 {
-                    //MessageBox.Show($"DPFCanvas: Error during rendering: {ex.Message} \n StackTrace: {ex.StackTrace.ToString()}", "Error");
+                    renderHost.Resize(ActualWidth, ActualHeight);
                 }
-            }
+                catch (Exception ex)
+                {
+                    if (!HandleExceptionOccured(ex))
+                    {
+                        var dialog = new MessageDialog($"DPFCanvas: Error during rendering: {ex.Message} \n StackTrace: {ex.StackTrace.ToString()}", "Error");
+                        await dialog.ShowAsync();
+                    }
+                }
+                finally
+                {
+                    resizeAction = null;
+                }
+            });
         }
 
         /// <summary>

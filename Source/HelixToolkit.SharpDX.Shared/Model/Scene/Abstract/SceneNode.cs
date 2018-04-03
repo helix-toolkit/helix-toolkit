@@ -209,10 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             for (int i = 0; i < Items.Count; ++i)
             {
-                if (Items[i] is ITransform)
-                {
-                    Items[i].ParentMatrix = totalTransform;
-                }
+                Items[i].ParentMatrix = totalTransform;
             }
         }
 
