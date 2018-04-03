@@ -74,11 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The part title view
         /// </summary>
         private const string PartTitleView = "PART_TitleView";
-        /// <summary>
-        ///   The is move enabled property.
-        /// </summary>
-        public static readonly DependencyProperty IsMoveEnabledProperty = DependencyProperty.Register(
-            "IsMoveEnabled", typeof(bool), typeof(Viewport3DX), new UIPropertyMetadata(true));
+
 
         /// <summary>
         /// The change field of view handler
@@ -315,23 +311,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             };
             AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
-        }
-
-        /// <summary>
-        ///   Gets or sets a value indicating whether move is enabled.
-        /// </summary>
-        /// <value> <c>true</c> if move is enabled; otherwise, <c>false</c> . </value>
-        public bool IsMoveEnabled
-        {
-            get
-            {
-                return (bool)this.GetValue(IsMoveEnabledProperty);
-            }
-
-            set
-            {
-                this.SetValue(IsMoveEnabledProperty, value);
-            }
         }
 
         /// <summary>

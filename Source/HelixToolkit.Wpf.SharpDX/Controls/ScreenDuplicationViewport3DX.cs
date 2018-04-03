@@ -74,7 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The message text property.
         /// </summary>
         public static readonly DependencyProperty MessageTextProperty = DependencyProperty.Register(
-            "MessageText", typeof(string), typeof(ScreenDuplicationViewport3DX), new UIPropertyMetadata(null));
+            "MessageText", typeof(string), typeof(ScreenDuplicationViewport3DX), new PropertyMetadata(null));
         /// <summary>
         /// Gets or sets the message text.
         /// </summary>
@@ -99,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register(
             "BackgroundColor", typeof(Color), typeof(ScreenDuplicationViewport3DX),
-            new UIPropertyMetadata(Colors.White, (s, e) =>
+            new PropertyMetadata(Colors.White, (s, e) =>
             {
                 if (((ScreenDuplicationViewport3DX)s).renderHostInternal != null)
                 {
