@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Vector3 = SharpDX.Vector3;
 
@@ -554,5 +555,664 @@ namespace HelixToolkit.UWP
         }
 
         #endregion ViewCube
+        /// <summary>
+        /// The camera mode property
+        /// </summary>
+        public static readonly DependencyProperty CameraModeProperty = DependencyProperty.Register(
+            "CameraMode", typeof(CameraMode), typeof(Viewport3DX), new PropertyMetadata(CameraMode.Inspect));
+        /// <summary>
+        /// Gets or sets the camera mode.
+        /// </summary>
+        /// <value>
+        /// The camera mode.
+        /// </value>
+        public CameraMode CameraMode
+        {
+            get
+            {
+                return (CameraMode)this.GetValue(CameraModeProperty);
+            }
+
+            set
+            {
+                this.SetValue(CameraModeProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The camera rotation mode property
+        /// </summary>
+        public static readonly DependencyProperty CameraRotationModeProperty = DependencyProperty.Register(
+                "CameraRotationMode",
+                typeof(CameraRotationMode),
+                typeof(Viewport3DX),
+                new PropertyMetadata(CameraRotationMode.Turntable));
+
+        /// <summary>
+        /// Gets or sets the camera rotation mode.
+        /// </summary>
+        /// <value>
+        /// The camera rotation mode.
+        /// </value>
+        public CameraRotationMode CameraRotationMode
+        {
+            get
+            {
+                return (CameraRotationMode)this.GetValue(CameraRotationModeProperty);
+            }
+
+            set
+            {
+                this.SetValue(CameraRotationModeProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The left right rotation sensitivity property.
+        /// </summary>
+        public static readonly DependencyProperty LeftRightRotationSensitivityProperty = DependencyProperty.Register(
+            "LeftRightRotationSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0));
+
+        /// <summary>
+        /// Gets or sets the sensitivity for rotation by the left and right keys.
+        /// </summary>
+        /// <value>
+        /// The rotation sensitivity.
+        /// </value>
+        /// <remarks>
+        /// Use -1 to invert the rotation direction.
+        /// </remarks>
+        public double LeftRightRotationSensitivity
+        {
+            get
+            {
+                return (double)this.GetValue(LeftRightRotationSensitivityProperty);
+            }
+
+            set
+            {
+                this.SetValue(LeftRightRotationSensitivityProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The left right pan sensitivity property.
+        /// </summary>
+        public static readonly DependencyProperty LeftRightPanSensitivityProperty = DependencyProperty.Register(
+            "LeftRightPanSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0));
+
+        /// Gets or sets the sensitivity for pan by the left and right keys.
+        /// </summary>
+        /// <value>
+        /// The pan sensitivity.
+        /// </value>
+        /// <remarks>
+        /// Use -1 to invert the pan direction.
+        /// </remarks>
+        public double LeftRightPanSensitivity
+        {
+            get
+            {
+                return (double)this.GetValue(LeftRightPanSensitivityProperty);
+            }
+
+            set
+            {
+                this.SetValue(LeftRightPanSensitivityProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The rotation sensitivity property
+        /// </summary>
+        public static readonly DependencyProperty RotationSensitivityProperty = DependencyProperty.Register(
+            "RotationSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0));
+
+        /// <summary>
+        /// Gets or sets the rotation sensitivity.
+        /// </summary>
+        /// <value>
+        /// The rotation sensitivity.
+        /// </value>
+        public double RotationSensitivity
+        {
+            get
+            {
+                return (double)this.GetValue(RotationSensitivityProperty);
+            }
+
+            set
+            {
+                this.SetValue(RotationSensitivityProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The up down Pan sensitivity property.
+        /// </summary>
+        public static readonly DependencyProperty UpDownPanSensitivityProperty = DependencyProperty.Register(
+                "UpDownPanSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0));
+        /// <summary>
+        /// Gets or sets the sensitivity for pan by the up and down keys.
+        /// </summary>
+        /// <value>
+        /// The pan sensitivity.
+        /// </value>
+        /// <remarks>
+        /// Use -1 to invert the pan direction.
+        /// </remarks>
+        public double UpDownPanSensitivity
+        {
+            get
+            {
+                return (double)this.GetValue(UpDownPanSensitivityProperty);
+            }
+
+            set
+            {
+                this.SetValue(UpDownPanSensitivityProperty, value);
+            }
+        }
+
+
+        /// <summary>
+        /// The up down rotation sensitivity property.
+        /// </summary>
+        public static readonly DependencyProperty UpDownRotationSensitivityProperty = DependencyProperty.Register(
+                "UpDownRotationSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0));
+        /// <summary>
+        /// Gets or sets the sensitivity for rotation by the up and down keys.
+        /// </summary>
+        /// <value>
+        /// The rotation sensitivity.
+        /// </value>
+        /// <remarks>
+        /// Use -1 to invert the rotation direction.
+        /// </remarks>
+        public double UpDownRotationSensitivity
+        {
+            get
+            {
+                return (double)this.GetValue(UpDownRotationSensitivityProperty);
+            }
+
+            set
+            {
+                this.SetValue(UpDownRotationSensitivityProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The zoom sensitivity property
+        /// </summary>
+        public static readonly DependencyProperty ZoomSensitivityProperty = DependencyProperty.Register(
+            "ZoomSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0));
+
+        /// <summary>
+        /// Gets or sets the zoom sensitivity.
+        /// </summary>
+        /// <value>
+        /// The zoom sensitivity.
+        /// </value>
+        public double ZoomSensitivity
+        {
+            get
+            {
+                return (double)this.GetValue(ZoomSensitivityProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomSensitivityProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The spin release time property
+        /// </summary>
+        public static readonly DependencyProperty SpinReleaseTimeProperty = DependencyProperty.Register(
+            "SpinReleaseTime", typeof(int), typeof(Viewport3DX), new PropertyMetadata(200));
+
+        /// <summary>
+        /// Gets or sets the spin release time in milliseconds (maximum allowed time to start a spin).
+        /// </summary>
+        /// <value>
+        /// The spin release time (in milliseconds).
+        /// </value>
+        public int SpinReleaseTime
+        {
+            get
+            {
+                return (int)this.GetValue(SpinReleaseTimeProperty);
+            }
+
+            set
+            {
+                this.SetValue(SpinReleaseTimeProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Rotate around this fixed rotation point only.<see cref="FixedRotationPointEnabledProperty"/> 
+        /// </summary>
+        public static readonly DependencyProperty FixedRotationPointProperty = DependencyProperty.Register(
+            "FixedRotationPoint", typeof(Vector3), typeof(Viewport3DX), new PropertyMetadata(new Vector3()));
+
+
+        /// <summary>
+        /// Rotate around this fixed rotation point only.<see cref="FixedRotationPointEnabled"/> 
+        /// </summary>
+        public Vector3 FixedRotationPoint
+        {
+            set
+            {
+                SetValue(FixedRotationPointProperty, value);
+            }
+            get
+            {
+                return (Vector3)GetValue(FixedRotationPointProperty);
+            }
+        }
+
+        /// <summary>
+        /// Enable fixed rotation mode and use FixedRotationPoint for rotation. Only works under CameraMode = Inspect
+        /// </summary>
+        public static readonly DependencyProperty FixedRotationPointEnabledProperty = DependencyProperty.Register(
+            "FixedRotationPointEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+        /// <summary>
+        /// Enable fixed rotation mode and use <see cref="FixedRotationPoint"/>  for rotation. Only works under <see cref="CameraMode"/> = Inspect
+        /// </summary>
+        public bool FixedRotationPointEnabled
+        {
+            set
+            {
+                SetValue(FixedRotationPointEnabledProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(FixedRotationPointEnabledProperty);
+            }
+        }
+
+        /// <summary>
+        /// The is pan enabled property
+        /// </summary>
+        public static readonly DependencyProperty IsPanEnabledProperty = DependencyProperty.Register(
+            "IsPanEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+        /// <summary>
+        /// Gets or sets a value indicating whether pan is enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if pan is enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsPanEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsPanEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsPanEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="IsInertiaEnabled"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty IsInertiaEnabledProperty =
+            DependencyProperty.Register(
+                "IsInertiaEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+        /// <summary>
+        /// Gets or sets a value indicating whether inertia is enabled for the camera manipulations.
+        /// </summary>
+        /// <value><c>true</c> if inertia is enabled; otherwise, <c>false</c>.</value>
+        public bool IsInertiaEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsInertiaEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsInertiaEnabledProperty, value);
+            }
+        }
+        /// <summary>
+        /// The is rotation enabled property
+        /// </summary>
+        public static readonly DependencyProperty IsRotationEnabledProperty = DependencyProperty.Register(
+            "IsRotationEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+        /// <summary>
+        /// Gets or sets a value indicating whether rotation is enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if rotation is enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsRotationEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsRotationEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsRotationEnabledProperty, value);
+            }
+        }
+        /// <summary>
+        /// The IsTouchZoomEnabled property.
+        /// </summary>
+        public static readonly DependencyProperty IsTouchZoomEnabledProperty = DependencyProperty.Register(
+            "IsTouchZoomEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+        /// <summary>
+        /// Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if touch zoom is enabled; otherwise, <c>false</c> .
+        /// </value>
+        public bool IsTouchZoomEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsTouchZoomEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsTouchZoomEnabledProperty, value);
+            }
+        }
+        /// <summary>
+        /// The is zoom enabled property
+        /// </summary>
+        public static readonly DependencyProperty IsZoomEnabledProperty = DependencyProperty.Register(
+            "IsZoomEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+        /// <summary>
+        /// Gets or sets a value indicating whether zoom is enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if zoom is enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsZoomEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsZoomEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsZoomEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The pan cursor property
+        /// </summary>
+        public static readonly DependencyProperty PanCursorProperty = DependencyProperty.Register(
+            "PanCursor", typeof(CoreCursorType), typeof(Viewport3DX), new PropertyMetadata(CoreCursorType.Hand));
+        /// <summary>
+        /// Gets or sets the pan cursor.
+        /// </summary>
+        /// <value>
+        /// The pan cursor.
+        /// </value>
+        public CoreCursorType PanCursor
+        {
+            get
+            {
+                return (CoreCursorType)this.GetValue(PanCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(PanCursorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The rotate cursor property
+        /// </summary>
+        public static readonly DependencyProperty RotateCursorProperty = DependencyProperty.Register(
+            "RotateCursor", typeof(CoreCursorType), typeof(Viewport3DX), new PropertyMetadata(CoreCursorType.SizeAll));
+        /// <summary>
+        /// Gets or sets the rotate cursor.
+        /// </summary>
+        /// <value>
+        /// The rotate cursor.
+        /// </value>
+        public CoreCursorType RotateCursor
+        {
+            get
+            {
+                return (CoreCursorType)this.GetValue(RotateCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(RotateCursorProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The rotate around mouse down point property
+        /// </summary>
+        public static readonly DependencyProperty RotateAroundMouseDownPointProperty = DependencyProperty.Register(
+            "RotateAroundMouseDownPoint", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to rotate around the mouse down point.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if rotating around mouse down point; otherwise, <c>false</c>.
+        /// </value>
+        public bool RotateAroundMouseDownPoint
+        {
+            get
+            {
+                return (bool)this.GetValue(RotateAroundMouseDownPointProperty);
+            }
+
+            set
+            {
+                this.SetValue(RotateAroundMouseDownPointProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The zoom around mouse down point property
+        /// </summary>
+        public static readonly DependencyProperty ZoomAroundMouseDownPointProperty = DependencyProperty.Register(
+            "ZoomAroundMouseDownPoint", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to zoom around the mouse down point.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if zooming around the mouse down point; otherwise, <c>false</c>.
+        /// </value>
+        public bool ZoomAroundMouseDownPoint
+        {
+            get
+            {
+                return (bool)this.GetValue(ZoomAroundMouseDownPointProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomAroundMouseDownPointProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The is change field of view enabled property
+        /// </summary>
+        public static readonly DependencyProperty IsChangeFieldOfViewEnabledProperty = DependencyProperty.Register(
+            "IsChangeFieldOfViewEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether change field of view is enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if change field of view is enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsChangeFieldOfViewEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsChangeFieldOfViewEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsChangeFieldOfViewEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The maximum field of view property
+        /// </summary>
+        public static readonly DependencyProperty MaximumFieldOfViewProperty = DependencyProperty.Register(
+            "MaximumFieldOfView", typeof(double), typeof(Viewport3DX), new PropertyMetadata(120.0));
+
+
+        /// <summary>
+        /// Gets or sets the maximum field of view.
+        /// </summary>
+        /// <value>
+        /// The maximum field of view.
+        /// </value>
+        public double MaximumFieldOfView
+        {
+            get
+            {
+                return (double)this.GetValue(MaximumFieldOfViewProperty);
+            }
+
+            set
+            {
+                this.SetValue(MaximumFieldOfViewProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The minimum field of view property
+        /// </summary>
+        public static readonly DependencyProperty MinimumFieldOfViewProperty = DependencyProperty.Register(
+            "MinimumFieldOfView", typeof(double), typeof(Viewport3DX), new PropertyMetadata(10.0));
+        /// <summary>
+        /// Gets or sets the minimum field of view.
+        /// </summary>
+        /// <value>
+        /// The minimum field of view.
+        /// </value>
+        public double MinimumFieldOfView
+        {
+            get
+            {
+                return (double)this.GetValue(MinimumFieldOfViewProperty);
+            }
+
+            set
+            {
+                this.SetValue(MinimumFieldOfViewProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The zoom cursor property
+        /// </summary>
+        public static readonly DependencyProperty ZoomCursorProperty = DependencyProperty.Register(
+            "ZoomCursor", typeof(CoreCursorType), typeof(Viewport3DX), new PropertyMetadata(CoreCursorType.SizeNorthSouth));
+
+        /// <summary>
+        /// Gets or sets the zoom cursor.
+        /// </summary>
+        /// <value>
+        /// The zoom cursor.
+        /// </value>
+        public CoreCursorType ZoomCursor
+        {
+            get
+            {
+                return (CoreCursorType)this.GetValue(ZoomCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomCursorProperty, value);
+            }
+        }
+        /// The far zoom distance limit property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomDistanceLimitFarProperty = DependencyProperty.Register(
+            "ZoomDistanceLimitFar", typeof(double), typeof(Viewport3DX), new PropertyMetadata(double.PositiveInfinity));
+
+
+        /// <summary>
+        /// Gets or sets a value indicating the far distance limit for zoom.
+        /// </summary>
+        public double ZoomDistanceLimitFar
+        {
+            get
+            {
+                return (double)this.GetValue(ZoomDistanceLimitFarProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomDistanceLimitFarProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The near zoom distance limit property.
+        /// </summary>
+        public static readonly DependencyProperty ZoomDistanceLimitNearProperty = DependencyProperty.Register(
+            "ZoomDistanceLimitNear", typeof(double), typeof(Viewport3DX), new PropertyMetadata(0.001));
+        /// <summary>
+        /// Gets or sets a value indicating the near distance limit for zoom.
+        /// </summary>
+        public double ZoomDistanceLimitNear
+        {
+            get
+            {
+                return (double)this.GetValue(ZoomDistanceLimitNearProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomDistanceLimitNearProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The zoom rectangle cursor property
+        /// </summary>
+        public static readonly DependencyProperty ZoomRectangleCursorProperty = DependencyProperty.Register(
+            "ZoomRectangleCursor", typeof(CoreCursorType), typeof(Viewport3DX), new PropertyMetadata(CoreCursorType.SizeNorthwestSoutheast));
+
+        /// <summary>
+        /// Gets or sets the zoom rectangle cursor.
+        /// </summary>
+        /// <value>
+        /// The zoom rectangle cursor.
+        /// </value>
+        public CoreCursorType ZoomRectangleCursor
+        {
+            get
+            {
+                return (CoreCursorType)this.GetValue(ZoomRectangleCursorProperty);
+            }
+
+            set
+            {
+                this.SetValue(ZoomRectangleCursorProperty, value);
+            }
+        }
     }
 }

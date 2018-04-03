@@ -8,7 +8,7 @@ using Point = Windows.Foundation.Point;
 namespace HelixToolkit.UWP
 {
     using Cameras;
-
+    using Windows.Foundation;
 
     public static class ViewportExtensions
     {        
@@ -268,6 +268,74 @@ namespace HelixToolkit.UWP
                 // TODO!!
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Changes the field of view and tries to keep the scale fixed.
+        /// </summary>
+        /// <param name="viewport">
+        /// The viewport.
+        /// </param>
+        /// <param name="delta">
+        /// The relative change in fov.
+        /// </param>
+        public static void ZoomByChangingFieldOfView(this Viewport3DX viewport, double delta)
+        {
+            var pcamera = viewport.Camera as PerspectiveCamera;
+            if (pcamera == null || !viewport.IsChangeFieldOfViewEnabled)
+            {
+                return;
+            }
+
+            double fov = pcamera.FieldOfView;
+            double d = pcamera.LookDirection.Length();
+            double r = d * Math.Tan(0.5 * fov / 180 * Math.PI);
+
+            fov *= 1 + (delta * 0.5);
+            if (fov < viewport.MinimumFieldOfView)
+            {
+                fov = viewport.MinimumFieldOfView;
+            }
+
+            if (fov > viewport.MaximumFieldOfView)
+            {
+                fov = viewport.MaximumFieldOfView;
+            }
+
+            pcamera.FieldOfView = fov;
+            double d2 = r / Math.Tan(0.5 * fov / 180 * Math.PI);
+            var newLookDirection = pcamera.LookDirection;
+            newLookDirection.Normalize();
+            newLookDirection *= (float)d2;
+            var target = pcamera.Position + pcamera.LookDirection;
+            pcamera.Position = target - newLookDirection;
+            pcamera.LookDirection = newLookDirection;
+        }
+
+        /// <summary>
+        /// Zooms the viewport to the specified rectangle.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="rectangle">The rectangle.</param>
+        public static void ZoomToRectangle(this Viewport3DX viewport, Rect rectangle)
+        {
+            var pcam = viewport.Camera as ProjectionCamera;
+            if (pcam != null)
+            {
+                pcam.ZoomToRectangle(viewport, rectangle);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="viewport"></param>
+        /// <param name="point2d"></param>
+        /// <returns></returns>
+        public static Ray UnProjectToRay(this Viewport3DX viewport, Point point2d)
+        {
+            var r = viewport.UnProject(point2d);
+            return new Ray(r.Position, r.Direction);
         }
     }
 }

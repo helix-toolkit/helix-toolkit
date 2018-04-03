@@ -7,8 +7,9 @@ using Windows.UI.Xaml.Input;
 
 namespace HelixToolkit.UWP
 {
-    public static class ViewportCommands
+    public class ViewportMouseEventManager
     {
+
         //public static Windows.UI.Xaml.Input.ICommand Zoom { get { return zoom; } }
         //public static RoutedCommand ZoomExtents { get { return zoomExtents; } }
         //public static RoutedCommand ZoomRectangle { get { return zoomRectangle; } }

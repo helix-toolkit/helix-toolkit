@@ -128,7 +128,7 @@ namespace HelixToolkit.UWP
                 {
                     renderHostInternal.IsRendering = (Visibility)s.GetValue(e) == Visibility.Visible;
                 }
-            });
+            });            
         }
 
         protected override void OnApplyTemplate()
@@ -291,6 +291,117 @@ namespace HelixToolkit.UWP
         public void Update(TimeSpan timeStamp)
         {
             
+        }
+
+        /// <summary>
+        /// Adds the specified move force.
+        /// </summary>
+        /// <param name="dx">
+        /// The delta x. 
+        /// </param>
+        /// <param name="dy">
+        /// The delta y. 
+        /// </param>
+        /// <param name="dz">
+        /// The delta z. 
+        /// </param>
+        public void AddMoveForce(double dx, double dy, double dz)
+        {
+
+        }
+
+        /// <summary>
+        /// Adds the specified move force.
+        /// </summary>
+        /// <param name="delta">
+        /// The delta. 
+        /// </param>
+        public void AddMoveForce(Vector3 delta)
+        {
+
+        }
+
+        /// <summary>
+        /// Adds the specified pan force.
+        /// </summary>
+        /// <param name="dx">
+        /// The delta x. 
+        /// </param>
+        /// <param name="dy">
+        /// The delta y. 
+        /// </param>
+        public void AddPanForce(double dx, double dy)
+        {
+
+        }
+
+        /// <summary>
+        /// The add pan force.
+        /// </summary>
+        /// <param name="pan">
+        /// The pan. 
+        /// </param>
+        public void AddPanForce(Vector3 pan)
+        {
+
+        }
+
+        /// <summary>
+        /// The add rotate force.
+        /// </summary>
+        /// <param name="dx">
+        /// The delta x. 
+        /// </param>
+        /// <param name="dy">
+        /// The delta y. 
+        /// </param>
+        public void AddRotateForce(double dx, double dy)
+        {
+
+        }
+
+        /// <summary>
+        /// Adds the zoom force.
+        /// </summary>
+        /// <param name="dx">
+        /// The delta. 
+        /// </param>
+        public void AddZoomForce(double dx)
+        {
+
+        }
+
+        /// <summary>
+        /// Adds the zoom force.
+        /// </summary>
+        /// <param name="dx">
+        /// The delta. 
+        /// </param>
+        /// <param name="zoomOrigin">
+        /// The zoom origin. 
+        /// </param>
+        public void AddZoomForce(double dx, Vector3 zoomOrigin)
+        {
+
+        }
+
+        /// <summary>
+        ///   Stops the spinning.
+        /// </summary>
+        public void StopSpin()
+        {
+
+        }
+
+        /// <summary>
+        /// Starts spinning.
+        /// </summary>
+        /// <param name="speed">The speed.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="aroundPoint">The point to spin around.</param>
+        public void StartSpin(Vector2 speed, Point position, Vector3 aroundPoint)
+        {
+
         }
     }
 }
