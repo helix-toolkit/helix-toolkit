@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using HelixToolkit.UWP.Model;
 using SharpDX;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 {
@@ -95,6 +96,16 @@ namespace HelixToolkit.UWP
             {
                 SceneNode.IsHitTestVisible = (bool)s.GetValue(e);
             });
+        }
+        private static readonly Size oneSize = new Size(1, 1);
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            return oneSize;
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            return oneSize;
         }
     }
 }
