@@ -640,7 +640,8 @@ namespace HelixToolkit.UWP
         /// </summary>
         public static readonly DependencyProperty LeftRightPanSensitivityProperty = DependencyProperty.Register(
             "LeftRightPanSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0));
-
+        
+        /// <summary>
         /// Gets or sets the sensitivity for pan by the left and right keys.
         /// </summary>
         /// <value>
@@ -1147,6 +1148,8 @@ namespace HelixToolkit.UWP
                 this.SetValue(ZoomCursorProperty, value);
             }
         }
+
+        /// <summary>
         /// The far zoom distance limit property.
         /// </summary>
         public static readonly DependencyProperty ZoomDistanceLimitFarProperty = DependencyProperty.Register(

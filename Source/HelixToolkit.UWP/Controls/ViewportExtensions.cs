@@ -91,6 +91,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="normal">The normal.</param>
+        /// <param name="ray"></param>
         /// <returns>The intersection point.</returns>
         public static Vector3? PlaneIntersection(this Ray ray, Vector3 position, Vector3 normal)
         {

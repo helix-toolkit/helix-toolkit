@@ -310,7 +310,7 @@ namespace HelixToolkit.UWP
         /// The sender.
         /// </param>
         /// <param name="e">
-        /// The <see cref="System.Windows.Input.MouseEventArgs"/> instance containing the event data.
+        /// The <see cref="PointerRoutedEventArgs"/> instance containing the event data.
         /// </param>
         protected virtual void OnMouseDown(object sender, PointerRoutedEventArgs e)
         {

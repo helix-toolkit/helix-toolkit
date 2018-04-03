@@ -12,7 +12,7 @@ namespace HelixToolkit.UWP
     using System;
     using Windows.Foundation;
     using Windows.UI.Core;
-
+    using Point = Windows.Foundation.Point;
     /// <summary>
     /// Handles rectangle zooming.
     /// </summary>

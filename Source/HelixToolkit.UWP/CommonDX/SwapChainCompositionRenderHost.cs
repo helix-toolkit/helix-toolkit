@@ -17,7 +17,6 @@ namespace HelixToolkit.UWP.CommonDX
         /// <summary>
         /// Initializes a new instance of the <see cref="SwapChainRenderHost"/> class.
         /// </summary>
-        /// <param name="surface">The window PTR.</param>
         public SwapChainCompositionRenderHost()
         {
         }
@@ -25,7 +24,6 @@ namespace HelixToolkit.UWP.CommonDX
         /// <summary>
         /// Initializes a new instance of the <see cref="SwapChainRenderHost"/> class.
         /// </summary>
-        /// <param name="surface">The surface.</param>
         /// <param name="createRenderer">The create renderer.</param>
         public SwapChainCompositionRenderHost(Func<Device, IRenderer> createRenderer) : base(createRenderer)
         {

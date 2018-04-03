@@ -12,7 +12,7 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="HelixToolkit.Wpf.SharpDX.GeometryModel3D" />
+    /// <seealso cref="HelixToolkit.UWP.GeometryModel3D" />
     public class LineGeometryModel3D : GeometryModel3D
     {
         #region Dependency Properties
