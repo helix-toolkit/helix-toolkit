@@ -5,7 +5,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 using HelixToolkit.UWP.Model;
 using SharpDX;
 using Windows.UI.Xaml;
-
 namespace HelixToolkit.UWP
 {
     /// <summary>
@@ -15,30 +14,6 @@ namespace HelixToolkit.UWP
     public abstract class Element3D : Element3DCore
     {
         #region Dependency Properties
-        /// <summary>
-        /// 
-        /// </summary>
-        public new static readonly DependencyProperty VisibilityProperty =
-            DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element3D), new PropertyMetadata(Visibility.Visible, (d, e) =>
-            {
-                (d as Element3D).SceneNode.Visible = (Visibility)e.NewValue == Visibility.Visible && (d as Element3D).IsRendering;
-            }));
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public new Visibility Visibility
-        {
-            set
-            {
-                SetValue(VisibilityProperty, value);
-            }
-            get
-            {
-                return (Visibility)GetValue(VisibilityProperty);
-            }
-        }
-
         /// <summary>
         /// Indicates, if this element should be rendered,
         /// default is true
@@ -64,21 +39,24 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
-        public static readonly DependencyProperty TransformProperty =
-            DependencyProperty.Register("Transform", typeof(Matrix), typeof(Element3D), new PropertyMetadata(Matrix.Identity,
+        public new static readonly DependencyProperty Transform3DProperty =
+            DependencyProperty.Register("Transform3D", typeof(Matrix), typeof(Element3D), new PropertyMetadata(Matrix.Identity,
                 (d, e) =>
                 {
                     (d as Element3DCore).SceneNode.ModelMatrix = (Matrix)e.NewValue;
                 }));
+
         /// <summary>
         /// 
         /// </summary>
-        public Matrix Transform
+        public new Matrix Transform3D
         {
-            get { return (Matrix)this.GetValue(TransformProperty); }
-            set { this.SetValue(TransformProperty, value); }
+            get { return (Matrix)this.GetValue(Transform3DProperty); }
+            set { this.SetValue(Transform3DProperty, value); }
         }
-
+        /// <summary>
+        /// The is throwing shadow property
+        /// </summary>
         public static readonly DependencyProperty IsThrowingShadowProperty =
             DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(Element3D), new PropertyMetadata(false, (d, e) =>
             {
@@ -102,29 +80,21 @@ namespace HelixToolkit.UWP
             }
         }
 
+        #endregion        
         /// <summary>
-        /// The is hit test visible property
+        /// Initializes a new instance of the <see cref="Element3D"/> class.
         /// </summary>
-        public new static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D),
-            new PropertyMetadata(true, (d, e) => {
-                (d as Element3D).SceneNode.IsHitTestVisible = (bool)e.NewValue;
-            }));
-
-        /// <summary>
-        /// Indicates, if this element should be hit-tested.
-        /// default is true
-        /// </summary>
-        public new bool IsHitTestVisible
+        public Element3D()
         {
-            set
+            RegisterPropertyChangedCallback(VisibilityProperty, (s, e) =>
             {
-                SetValue(IsHitTestVisibleProperty, value);
-            }
-            get
+                SceneNode.Visible = (Visibility)s.GetValue(e) == Visibility.Visible && IsRendering;
+            });
+
+            RegisterPropertyChangedCallback(IsHitTestVisibleProperty, (s, e) =>
             {
-                return (bool)GetValue(IsHitTestVisibleProperty);
-            }
+                SceneNode.IsHitTestVisible = (bool)s.GetValue(e);
+            });
         }
-        #endregion
     }
 }

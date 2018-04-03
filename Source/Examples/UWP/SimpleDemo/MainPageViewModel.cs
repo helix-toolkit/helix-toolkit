@@ -100,8 +100,8 @@ namespace SimpleDemoW10
             var time = (float)Stopwatch.GetTimestamp() / Stopwatch.Frequency;
             Transform = global::SharpDX.Matrix.Scaling((float)this.scale) * global::SharpDX.Matrix.RotationX(rotationSpeed * time)
                     * global::SharpDX.Matrix.RotationY(rotationSpeed * time * 2.0f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time * .7f);
-            Transform1 = global::SharpDX.Matrix.Scaling((float)this.scale) * global::SharpDX.Matrix.RotationX(-rotationSpeed * time)
-                    * global::SharpDX.Matrix.RotationY(-rotationSpeed * time * 2.0f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time * .7f);
+            Transform1 = global::SharpDX.Matrix.Scaling((float)this.scale) * global::SharpDX.Matrix.RotationX(-rotationSpeed * time * .7f)
+                    * global::SharpDX.Matrix.RotationY(-rotationSpeed * time * 2.0f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time);
         }
 
         private Stream LoadTexture(string file)

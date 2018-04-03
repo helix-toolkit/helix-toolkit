@@ -26,14 +26,16 @@
             EffectsManager="{Binding EffectsManager}"
             ShowCoordinateSystem="true">
             <helix:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
-            <helix:MeshGeometryModel3D
-                Geometry="{Binding Geometry}"
-                Material="{Binding Material}"
-                Transform="{Binding Transform}" />
-            <helix:GroupModel3D Transform="{Binding Transform1}">
+            <helix:GroupModel3D Transform3D="{Binding Transform}">
+                <helix:MeshGeometryModel3D
+                    Geometry="{Binding Geometry}"
+                    Material="{Binding Material}"/>
                 <helix:LineGeometryModel3D Geometry="{Binding LineGeometry}" Color="White" />
-                <helix:PointGeometryModel3D Geometry="{Binding PointGeometry}" Color="Blue" />
                 <helix:BillboardTextModel3D Geometry="{Binding AxisLabelGeometry}" />
+            </helix:GroupModel3D>
+
+            <helix:GroupModel3D Transform3D="{Binding Transform1}">
+                <helix:PointGeometryModel3D Geometry="{Binding PointGeometry}" Color="#FFE400" />
             </helix:GroupModel3D>
         </helix:Viewport3DX>
         <TextBlock

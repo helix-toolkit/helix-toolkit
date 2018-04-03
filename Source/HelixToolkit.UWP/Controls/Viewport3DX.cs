@@ -2,26 +2,32 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using SharpDX;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Markup;
+using Point = Windows.Foundation.Point;
+
+
 namespace HelixToolkit.UWP
 {
-    using HelixToolkit.UWP.Cameras;
-    using HelixToolkit.UWP.Model.Scene;
-    using HelixToolkit.UWP.Model.Scene2D;
-    using SharpDX;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Controls;
-    using Windows.UI.Xaml.Markup;
-    using Point = Windows.Foundation.Point;
-
+    using Cameras;
+    using Model.Scene;
+    using Model.Scene2D;
+    using Visibility = Windows.UI.Xaml.Visibility;
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ViewportPartNames
     {
         public const string PART_RenderTarget = "PART_RenderTarget";
         public const string PART_ViewCube = "PART_ViewCube";
         public const string PART_CoordinateView = "PART_CoordinateView";
     }
+
     /// <summary>
     /// Renders the contained 3-D content within the 2-D layout bounds of the Viewport3DX element.
     /// </summary>
@@ -116,6 +122,13 @@ namespace HelixToolkit.UWP
             this.Loaded += Viewport3DXLoaded;
             this.Unloaded += Viewport3DX_Unloaded;
             Camera = new PerspectiveCamera() { Position = new Vector3(0, 0, -10), LookDirection = new Vector3(0, 0, 10), UpDirection = new Vector3(0, 1, 0) };
+            RegisterPropertyChangedCallback(VisibilityProperty, (s, e) => 
+            {
+                if(renderHostInternal != null)
+                {
+                    renderHostInternal.IsRendering = (Visibility)s.GetValue(e) == Visibility.Visible;
+                }
+            });
         }
 
         protected override void OnApplyTemplate()
@@ -162,9 +175,10 @@ namespace HelixToolkit.UWP
             if (renderHostInternal != null)
             {
                 renderHostInternal.Viewport = this;
+                renderHostInternal.IsRendering = Visibility == Visibility.Visible;
                 renderHostInternal.EffectsManager = this.EffectsManager;
                 renderHostInternal.RenderTechnique = this.RenderTechnique;
-                renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();
+                renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();               
             }
         }
 
