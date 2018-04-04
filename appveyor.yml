@@ -11,8 +11,8 @@ install:
 configuration: Release
 
 build:
-  project: Source/HelixToolkit.AppVeyor.sln
-  verbosity: normal
+  project: Source/HelixToolkit.AppVeyor.sln "/property:Platform=Any CPU"
+  verbosity: minimal
 
 before_build:
   - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
