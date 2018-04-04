@@ -29,8 +29,8 @@
   </metadata>
   <files>
   	<file src="bin\Release\HelixToolkit.UWP.???" target="lib\uap10.0" />
-	<file src="bin\Release\Resources\*.*" target="lib\uap10.0\Resources" />
-	<file src="bin\Release\Themes\*.*" target="lib\uap10.0\Themes" />
+	<file src="bin\Release\Resources\*.*" target="lib\uap10.0\HelixToolkit.UWP\Resources" />
+	<file src="bin\Release\Themes\*.*" target="lib\uap10.0\HelixToolkit.UWP\Themes" />
     <file src="..\..\LICENSE" />
     <file src="..\..\AUTHORS" />
     <file src="..\..\CONTRIBUTORS" />
