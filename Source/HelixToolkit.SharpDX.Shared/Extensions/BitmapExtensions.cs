@@ -138,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 RectangleF faceRect = new RectangleF(0, 0, faceSize, faceSize);
                 Color4[] faceColors = new Color4[] { frontFaceColor, backFaceColor, leftFaceColor, rightFaceColor, topFaceColor, bottomFaceColor };
                 Color4[] textColors = new Color4[] { frontTextColor, backTextColor, leftTextColor, rightTextColor, topTextColor, bottomTextColor };
-                string[] texts = new string[] { front, back, left, right, top, down };
+                string[] texts = new string[] { front, back, right, left, top, down };
                 for(int i=0; i<6; ++i)
                 {
                     using (var layout = GetTextLayoutMetrices(texts[i], deviceResources, fontSize, fontFamily, fontWeight, fontStyle, faceSize, faceSize))
