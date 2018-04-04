@@ -13,6 +13,7 @@ namespace HelixToolkit.UWP
     using global::SharpDX;
     using Cameras;
     using Windows.UI.Xaml;
+    using Windows.UI.Composition;
 
     /// <summary>
     /// Specifies what portion of the 3D scene is rendered by the Viewport3DX element.
@@ -43,6 +44,18 @@ namespace HelixToolkit.UWP
         /// </value>
         public abstract Vector3 UpDirection { get; set; }
 
+        private CameraCore core;
+        public CameraCore CameraInternal
+        {
+            get
+            {
+                if (core == null)
+                {
+                    core = CreatePortableCameraCore();
+                }
+                return core;
+            }
+        }
 
         /// <summary>
         /// Creates the view matrix.
@@ -56,19 +69,6 @@ namespace HelixToolkit.UWP
         /// <param name="aspectRatio">The aspect ratio.</param>
         /// <returns>A <see cref="Matrix" />.</returns>
         public Matrix CreateProjectionMatrix(double aspectRatio) { return CameraInternal.CreateProjectionMatrix((float)aspectRatio); }
-
-        private CameraCore core;
-        public CameraCore CameraInternal
-        {
-            get
-            {
-                if (core == null)
-                {
-                    core = CreatePortableCameraCore();
-                }
-                return core;
-            }
-        }
 
         protected abstract CameraCore CreatePortableCameraCore();
 

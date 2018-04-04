@@ -105,7 +105,30 @@ namespace HelixToolkit.UWP
                 return (Camera)GetValue(CameraProperty);
             }
         }
+        /// <summary>
+        /// The default camera property.
+        /// </summary>
+        public static readonly DependencyProperty DefaultCameraProperty = DependencyProperty.Register(
+            "DefaultCamera", typeof(ProjectionCamera), typeof(Viewport3DX), new PropertyMetadata(null));
 
+        /// <summary>
+        /// Gets or sets the default camera.
+        /// </summary>
+        /// <value>
+        /// The default camera.
+        /// </value>
+        public ProjectionCamera DefaultCamera
+        {
+            get
+            {
+                return (ProjectionCamera)this.GetValue(DefaultCameraProperty);
+            }
+
+            set
+            {
+                this.SetValue(DefaultCameraProperty, value);
+            }
+        }
         /// <summary>
         /// Background Color property.this.RenderHost
         /// </summary>
@@ -1215,6 +1238,77 @@ namespace HelixToolkit.UWP
             set
             {
                 this.SetValue(ZoomRectangleCursorProperty, value);
+            }
+        }
+
+        /// <summary>
+        ///   The is move enabled property.
+        /// </summary>
+        public static readonly DependencyProperty IsMoveEnabledProperty = DependencyProperty.Register(
+            "IsMoveEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+
+        /// <summary>
+        ///   Gets or sets a value indicating whether move is enabled.
+        /// </summary>
+        /// <value> <c>true</c> if move is enabled; otherwise, <c>false</c> . </value>
+        public bool IsMoveEnabled
+        {
+            get
+            {
+                return (bool)this.GetValue(IsMoveEnabledProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsMoveEnabledProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The camera inertia factor property.
+        /// </summary>
+        public static readonly DependencyProperty CameraInertiaFactorProperty = DependencyProperty.Register(
+            "CameraInertiaFactor", typeof(double), typeof(Viewport3DX), new PropertyMetadata(0.93));
+
+        /// <summary>
+        /// Gets or sets the camera inertia factor.
+        /// </summary>
+        /// <value>
+        /// The camera inertia factor.
+        /// </value>
+        public double CameraInertiaFactor
+        {
+            get
+            {
+                return (double)this.GetValue(CameraInertiaFactorProperty);
+            }
+
+            set
+            {
+                this.SetValue(CameraInertiaFactorProperty, value);
+            }
+        }
+        /// <summary>
+        /// The infinite spin property.
+        /// </summary>
+        public static readonly DependencyProperty InfiniteSpinProperty = DependencyProperty.Register(
+            "InfiniteSpin", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+        /// <summary>
+        /// Gets or sets a value indicating whether infinite spin is enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if infinite spin is enabled; otherwise, <c>false</c> .
+        /// </value>
+        public bool InfiniteSpin
+        {
+            get
+            {
+                return (bool)this.GetValue(InfiniteSpinProperty);
+            }
+
+            set
+            {
+                this.SetValue(InfiniteSpinProperty, value);
             }
         }
     }

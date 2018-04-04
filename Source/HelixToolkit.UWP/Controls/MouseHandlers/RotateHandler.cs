@@ -15,6 +15,7 @@ namespace HelixToolkit.UWP
     using Point = Windows.Foundation.Point;
     using Windows.UI.Core;
     using SharpDX;
+    using System.Diagnostics;
 
     /// <summary>
     /// Handles rotation.
@@ -132,7 +133,6 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-
             switch (this.Viewport.CameraRotationMode)
             {
                 case CameraRotationMode.Trackball:
@@ -199,8 +199,8 @@ namespace HelixToolkit.UWP
 
             d *= (float)this.RotationSensitivity;
 
-            var q1 = new Quaternion(this.rotationAxisX, d * delta.X);
-            var q2 = new Quaternion(this.rotationAxisY, d * delta.Y);
+            var q1 = Quaternion.RotationAxis(this.rotationAxisX, (float)(d * delta.X / 180 * Math.PI));
+            var q2 = Quaternion.RotationAxis(this.rotationAxisY, (float)(d * delta.Y / 180 * Math.PI));
             Quaternion q = q1 * q2;
 
             var m = Matrix.RotationQuaternion(q);
@@ -262,17 +262,15 @@ namespace HelixToolkit.UWP
 
             d *= (float)this.RotationSensitivity;
 
-            var q1 = new Quaternion(up, d * delta.X);
-            var q2 = new Quaternion(right, d * delta.Y);
+            var q1 = Quaternion.RotationAxis(up, (float)(d * delta.X / 180 * Math.PI));
+            var q2 = Quaternion.RotationAxis(right, (float)(d * delta.Y / 180 * Math.PI));
             Quaternion q = q1 * q2;
 
             var m = Matrix.RotationQuaternion(q);
 
             var newUpDirection = Vector3D.Transform(this.Camera.UpDirection, m).ToVector3();
-
             var newRelativeTarget = Vector3D.Transform(relativeTarget, m).ToVector3();
             var newRelativePosition = Vector3D.Transform(relativePosition, m).ToVector3();
-
             var newTarget = rotateAround - newRelativeTarget;
             var newPosition = rotateAround - newRelativePosition;
 
@@ -496,7 +494,7 @@ namespace HelixToolkit.UWP
             var angle = u1.AngleBetween(u2);
 
             // Create the transform
-            var delta = new Quaternion(axis, -(float)(angle * this.RotationSensitivity * 5));
+            var delta = Quaternion.RotationAxis(axis, -(float)(angle * this.RotationSensitivity * 5));
             var rotate = Matrix.RotationQuaternion(delta);
 
             // Find vectors relative to the rotate-around point
