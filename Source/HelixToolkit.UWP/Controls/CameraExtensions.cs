@@ -89,87 +89,79 @@ namespace HelixToolkit.UWP
             double animationTime)
         {
             Vector3 newPosition = target - newLookDirection;
-
-            if (camera is PerspectiveCamera persp)
-            {
-                AnimateTo(persp, newPosition, newLookDirection, newUpDirection, animationTime);
-            }
-            else if (camera is OrthographicCamera orth)
-            {
-                AnimateTo(orth, newPosition, newLookDirection, newUpDirection, animationTime);
-            }
+            camera.AnimateTo(newPosition, newLookDirection, newUpDirection, animationTime);
         }
 
-        /// <summary>
-        /// Animates the camera position and directions.
-        /// </summary>
-        /// <param name="camera">
-        /// The camera to animate.
-        /// </param>
-        /// <param name="newPosition">
-        /// The position to animate to.
-        /// </param>
-        /// <param name="newDirection">
-        /// The direction to animate to.
-        /// </param>
-        /// <param name="newUpDirection">
-        /// The up direction to animate to.
-        /// </param>
-        /// <param name="animationTime">
-        /// Animation time in milliseconds.
-        /// </param>
-        public static void AnimateTo(
-            this Camera camera,
-            Vector3 newPosition,
-            Vector3 newDirection,
-            Vector3 newUpDirection,
-            double animationTime)
-        {
-            var projectionCamera = camera as ProjectionCamera;
-            if (projectionCamera == null)
-            {
-                return;
-            }
+        ///// <summary>
+        ///// Animates the camera position and directions.
+        ///// </summary>
+        ///// <param name="camera">
+        ///// The camera to animate.
+        ///// </param>
+        ///// <param name="newPosition">
+        ///// The position to animate to.
+        ///// </param>
+        ///// <param name="newDirection">
+        ///// The direction to animate to.
+        ///// </param>
+        ///// <param name="newUpDirection">
+        ///// The up direction to animate to.
+        ///// </param>
+        ///// <param name="animationTime">
+        ///// Animation time in milliseconds.
+        ///// </param>
+        //public static void AnimateTo(
+        //    this Camera camera,
+        //    Vector3 newPosition,
+        //    Vector3 newDirection,
+        //    Vector3 newUpDirection,
+        //    double animationTime)
+        //{
+        //    var projectionCamera = camera as ProjectionCamera;
+        //    if (projectionCamera == null)
+        //    {
+        //        return;
+        //    }
 
 
-            projectionCamera.Position = newPosition;
-            projectionCamera.LookDirection = newDirection;
-            projectionCamera.UpDirection = newUpDirection;
+        //    projectionCamera.Position = newPosition;
+        //    projectionCamera.LookDirection = newDirection;
+        //    projectionCamera.UpDirection = newUpDirection;
 
-            //if (animationTime > 0)
-            //{
-            //    var a1 = new Point3DAnimation(
-            //        fromPosition, newPosition, new Duration(TimeSpan.FromMilliseconds(animationTime)))
-            //    {
-            //        AccelerationRatio = 0.3,
-            //        DecelerationRatio = 0.5,
-            //        FillBehavior = FillBehavior.Stop
-            //    };
+        //    //if (animationTime > 0)
+        //    //{
+        //    //    var a1 = new Point3DAnimation(
+        //    //        fromPosition, newPosition, new Duration(TimeSpan.FromMilliseconds(animationTime)))
+        //    //    {
+        //    //        AccelerationRatio = 0.3,
+        //    //        DecelerationRatio = 0.5,
+        //    //        FillBehavior = FillBehavior.Stop
+        //    //    };
 
-            //    a1.Completed += (s, a) => { camera.BeginAnimation(ProjectionCamera.PositionProperty, null); };
-            //    camera.BeginAnimation(ProjectionCamera.PositionProperty, a1);
+        //    //    a1.Completed += (s, a) => { camera.BeginAnimation(ProjectionCamera.PositionProperty, null); };
+        //    //    camera.BeginAnimation(ProjectionCamera.PositionProperty, a1);
 
-            //    var a2 = new Vector3DAnimation(
-            //        fromDirection, newDirection, new Duration(TimeSpan.FromMilliseconds(animationTime)))
-            //    {
-            //        AccelerationRatio = 0.3,
-            //        DecelerationRatio = 0.5,
-            //        FillBehavior = FillBehavior.Stop
-            //    };
-            //    a2.Completed += (s, a) => { camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, null); };
-            //    camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, a2);
+        //    //    var a2 = new Vector3DAnimation(
+        //    //        fromDirection, newDirection, new Duration(TimeSpan.FromMilliseconds(animationTime)))
+        //    //    {
+        //    //        AccelerationRatio = 0.3,
+        //    //        DecelerationRatio = 0.5,
+        //    //        FillBehavior = FillBehavior.Stop
+        //    //    };
+        //    //    a2.Completed += (s, a) => { camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, null); };
+        //    //    camera.BeginAnimation(ProjectionCamera.LookDirectionProperty, a2);
 
-            //    var a3 = new Vector3DAnimation(
-            //        fromUpDirection, newUpDirection, new Duration(TimeSpan.FromMilliseconds(animationTime)))
-            //    {
-            //        AccelerationRatio = 0.3,
-            //        DecelerationRatio = 0.5,
-            //        FillBehavior = FillBehavior.Stop
-            //    };
-            //    a3.Completed += (s, a) => { camera.BeginAnimation(ProjectionCamera.UpDirectionProperty, null); };
-            //    camera.BeginAnimation(ProjectionCamera.UpDirectionProperty, a3);
-            //}
-        }
+        //    //    var a3 = new Vector3DAnimation(
+        //    //        fromUpDirection, newUpDirection, new Duration(TimeSpan.FromMilliseconds(animationTime)))
+        //    //    {
+        //    //        AccelerationRatio = 0.3,
+        //    //        DecelerationRatio = 0.5,
+        //    //        FillBehavior = FillBehavior.Stop
+        //    //    };
+        //    //    a3.Completed += (s, a) => { camera.BeginAnimation(ProjectionCamera.UpDirectionProperty, null); };
+        //    //    camera.BeginAnimation(ProjectionCamera.UpDirectionProperty, a3);
+        //    //}
+        //}
 
         /// <summary>
         /// Zooms the camera to the specified rectangle.
