@@ -198,9 +198,9 @@ namespace HelixToolkit.UWP
         /// </summary>
         private Vector3D panSpeed;
 
-        /// <summary>
-        /// The rectangle adorner.
-        /// </summary>
+        ///// <summary>
+        ///// The rectangle adorner.
+        ///// </summary>
         //private RectangleAdorner rectangleAdorner;
 
         /// <summary>
@@ -238,9 +238,9 @@ namespace HelixToolkit.UWP
         /// </summary>
         private Vector2 spinningSpeed;
 
-        /// <summary>
-        /// The target adorner.
-        /// </summary>
+        ///// <summary>
+        ///// The target adorner.
+        ///// </summary>
         //private Adorner targetAdorner;
 
         /// <summary>
