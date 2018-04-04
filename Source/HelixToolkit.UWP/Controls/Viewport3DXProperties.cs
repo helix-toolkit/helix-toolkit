@@ -92,7 +92,18 @@ namespace HelixToolkit.UWP
             "Camera",
             typeof(Camera),
             typeof(Viewport3DX),
-            new PropertyMetadata(null));
+            new PropertyMetadata(null, (d,e)=> 
+            {
+                var m = d as Viewport3DX;
+                if (e.OldValue != null)
+                {
+                    (e.OldValue as Camera).CameraInternal.PropertyChanged -= m.CameraInternal_PropertyChanged;
+                }
+                if (e.NewValue != null)
+                {
+                    (e.NewValue as Camera).CameraInternal.PropertyChanged += m.CameraInternal_PropertyChanged;
+                }
+            }));
 
         public Camera Camera
         {
@@ -1309,6 +1320,81 @@ namespace HelixToolkit.UWP
             set
             {
                 this.SetValue(InfiniteSpinProperty, value);
+            }
+        }
+        /// <summary>
+        /// The mouse input controller property
+        /// </summary>
+        public static readonly DependencyProperty InputControllerProperty = DependencyProperty.Register(
+            "InputController", typeof(InputController), typeof(Viewport3DX), new PropertyMetadata(null, (d,e)=> 
+            {
+                (d as Viewport3DX).cameraController.InputController = e.NewValue == null ? new InputController() : e.NewValue as InputController;
+            }));
+        /// <summary>
+        /// Gets or sets the mouse input controller.
+        /// </summary>
+        /// <value>
+        /// The mouse input controller.
+        /// </value>
+        public InputController InputController
+        {
+            set
+            {
+                SetValue(InputControllerProperty, value);
+            }
+            get
+            {
+                return (InputController)GetValue(InputControllerProperty);
+            }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="PageUpDownZoomSensitivity"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty PageUpDownZoomSensitivityProperty =
+            DependencyProperty.Register(
+                "PageUpDownZoomSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0));
+
+        /// <summary>
+        /// Gets or sets the sensitivity for zoom by the page up and page down keys.
+        /// </summary>
+        /// <value> The zoom sensitivity. </value>
+        /// <remarks>
+        /// Use -1 to invert the zoom direction.
+        /// </remarks>
+        public double PageUpDownZoomSensitivity
+        {
+            get
+            {
+                return (double)this.GetValue(PageUpDownZoomSensitivityProperty);
+            }
+
+            set
+            {
+                this.SetValue(PageUpDownZoomSensitivityProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="MoveSensitivity"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty MoveSensitivityProperty =
+            DependencyProperty.Register(
+                "MoveSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0));
+        /// <summary>
+        /// Gets or sets the move sensitivity.
+        /// </summary>
+        /// <value> The move sensitivity. </value>
+        public double MoveSensitivity
+        {
+            get
+            {
+                return (double)this.GetValue(MoveSensitivityProperty);
+            }
+
+            set
+            {
+                this.SetValue(MoveSensitivityProperty, value);
             }
         }
     }

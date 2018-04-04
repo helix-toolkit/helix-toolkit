@@ -132,6 +132,7 @@
     <Compile Include="Controls\MouseHandlers\CameraMode.cs" />
     <Compile Include="Controls\MouseHandlers\CameraRotationMode.cs" />
     <Compile Include="Controls\MouseHandlers\CameraSetting.cs" />
+    <Compile Include="Controls\MouseHandlers\MouseInputController.cs" />
     <Compile Include="Controls\MouseHandlers\ManipulationEventArgs.cs" />
     <Compile Include="Controls\MouseHandlers\MouseGestureHandler.cs" />
     <Compile Include="Controls\MouseHandlers\PanHandler.cs" />

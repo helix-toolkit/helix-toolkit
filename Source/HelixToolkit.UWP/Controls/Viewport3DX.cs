@@ -17,6 +17,7 @@ namespace HelixToolkit.UWP
     using Cameras;
     using Model.Scene;
     using Model.Scene2D;
+    using System.Runtime.CompilerServices;
     using Windows.UI.Xaml.Input;
     using Visibility = Windows.UI.Xaml.Visibility;
     /// <summary>
@@ -125,6 +126,7 @@ namespace HelixToolkit.UWP
             this.Unloaded += Viewport3DX_Unloaded;
             cameraController = new CameraController(this);
             Camera = new PerspectiveCamera() { Position = new Vector3(0, 0, -10), LookDirection = new Vector3(0, 0, 10), UpDirection = new Vector3(0, 1, 0) };
+            InputController = new InputController();
             RegisterPropertyChangedCallback(VisibilityProperty, (s, e) => 
             {
                 if(renderHostInternal != null)
@@ -243,6 +245,12 @@ namespace HelixToolkit.UWP
             }
         }
 
+        protected override void OnKeyDown(KeyRoutedEventArgs e)
+        {
+            base.OnKeyDown(e);
+            cameraController.InputController.OnKeyPressed(e);
+        }
+
         /// <summary>
         /// Called before the ManipulationStarted event occurs.
         /// </summary>
@@ -307,6 +315,7 @@ namespace HelixToolkit.UWP
             pc.AnimateTo(newPosition, look, e.UpDirection, 500);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void InvalidateRender()
         {
             renderHostInternal?.InvalidateRender();
@@ -426,6 +435,11 @@ namespace HelixToolkit.UWP
         public void StartSpin(Vector2 speed, Point position, Vector3 aroundPoint)
         {
             cameraController.StartSpin(speed, position, aroundPoint);
+        }
+
+        private void CameraInternal_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            InvalidateRender();
         }
     }
 }
