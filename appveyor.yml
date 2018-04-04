@@ -24,7 +24,7 @@ after_build:
   - nuget pack Source\HelixToolkit\HelixToolkit.nuspec -version "%GitVersion_NuGetVersion%"
   - nuget pack Source\HelixToolkit.Wpf\HelixToolkit.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
   - nuget pack Source\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.Sharpdx.nuspec -version "%GitVersion_NuGetVersion%"
-
+  - nuget pack Source\HelixToolkit.UWP\HelixToolkit.UWP.nuspec -version "%GitVersion_NuGetVersion%"
 artifacts:
   - path: '*.nupkg'
     name: HelixToolkit-packages-$(GitVersion_SemVer)
