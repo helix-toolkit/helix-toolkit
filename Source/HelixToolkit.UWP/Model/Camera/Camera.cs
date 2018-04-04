@@ -100,18 +100,23 @@ namespace HelixToolkit.UWP
             Vector3 newUpDirection,
             double animationTime)
         {
-            var projectionCamera = this as ProjectionCamera;
-            if (projectionCamera == null || animationTime == 0)
-            {
-                Position = newPosition;
-                LookDirection = newDirection;
-                UpDirection = newUpDirection;
-                return;
-            }
+            Position = newPosition;
+            LookDirection = newDirection;
+            UpDirection = newUpDirection;
+            return;
 
-            var px = new DoubleAnimationUsingKeyFrames() { BeginTime = TimeSpan.FromMilliseconds(0), AutoReverse = false };
-            px.KeyFrames.Add(new EasingDoubleKeyFrame() { KeyTime = TimeSpan.FromMilliseconds(0), Value = Position.X });
-            px.KeyFrames.Add(new EasingDoubleKeyFrame() { KeyTime = TimeSpan.FromMilliseconds(animationTime), Value = newPosition.X, EasingFunction = new PowerEase() { EasingMode = EasingMode.EaseOut, Power = 1.5 } });
+            //var projectionCamera = this as ProjectionCamera;
+            //if (projectionCamera == null || animationTime == 0)
+            //{
+            //    Position = newPosition;
+            //    LookDirection = newDirection;
+            //    UpDirection = newUpDirection;
+            //    return;
+            //}
+
+            //var px = new DoubleAnimationUsingKeyFrames() { BeginTime = TimeSpan.FromMilliseconds(0), AutoReverse = false };
+            //px.KeyFrames.Add(new EasingDoubleKeyFrame() { KeyTime = TimeSpan.FromMilliseconds(0), Value = Position.X });
+            //px.KeyFrames.Add(new EasingDoubleKeyFrame() { KeyTime = TimeSpan.FromMilliseconds(animationTime), Value = newPosition.X, EasingFunction = new PowerEase() { EasingMode = EasingMode.EaseOut, Power = 1.5 } });
 
             //var py = new DoubleAnimationUsingKeyFrames()
             //{
@@ -179,9 +184,9 @@ namespace HelixToolkit.UWP
             //    FillBehavior = FillBehavior.Stop,
             //    EasingFunction = new PowerEase() { EasingMode = EasingMode.EaseOut }
             //};
-            Storyboard sb = new Storyboard();
-            sb.BeginTime = TimeSpan.FromMilliseconds(0);
-            Storyboard.SetTarget(px, PositionTransform);
+            //Storyboard sb = new Storyboard();
+            //sb.BeginTime = TimeSpan.FromMilliseconds(0);
+            //Storyboard.SetTarget(px, PositionTransform);
             //Storyboard.SetTarget(py, PositionTransform);
             //Storyboard.SetTarget(pz, PositionTransform);
             //Storyboard.SetTarget(lx, LookDirectionTransform);
@@ -190,7 +195,7 @@ namespace HelixToolkit.UWP
             //Storyboard.SetTarget(ux, UpDirectionTransform);
             //Storyboard.SetTarget(uy, UpDirectionTransform);
             //Storyboard.SetTarget(uz, UpDirectionTransform);
-            Storyboard.SetTargetProperty(px, "TranslateX");
+            //Storyboard.SetTargetProperty(px, "TranslateX");
             //Storyboard.SetTargetProperty(py, nameof(CompositeTransform3D.CenterY));
             //Storyboard.SetTargetProperty(pz, nameof(CompositeTransform3D.CenterZ));
             //Storyboard.SetTargetProperty(lx, nameof(CompositeTransform3D.CenterX));
@@ -200,7 +205,7 @@ namespace HelixToolkit.UWP
             //Storyboard.SetTargetProperty(uy, nameof(CompositeTransform3D.CenterY));
             //Storyboard.SetTargetProperty(uz, nameof(CompositeTransform3D.CenterZ));
 
-            sb.Children.Add(px);
+            //sb.Children.Add(px);
             //sb.Children.Add(py);
             //sb.Children.Add(pz);
             //sb.Children.Add(lx);
@@ -209,8 +214,8 @@ namespace HelixToolkit.UWP
             //sb.Children.Add(ux);
             //sb.Children.Add(uy);
             //sb.Children.Add(uz);
-            sb.Completed += Sb_Completed;
-            sb.Begin();
+            //sb.Completed += Sb_Completed;
+            //sb.Begin();
             //if (animationTime > 0)
             //{
             //    var a1 = new Point3DAnimation(

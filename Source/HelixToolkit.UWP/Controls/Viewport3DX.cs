@@ -245,6 +245,12 @@ namespace HelixToolkit.UWP
             }
         }
 
+        protected override void OnPointerReleased(PointerRoutedEventArgs e)
+        {
+            base.OnPointerReleased(e);
+            cameraController.OnMouseUp(e);
+        }
+
         protected override void OnKeyDown(KeyRoutedEventArgs e)
         {
             base.OnKeyDown(e);
@@ -258,20 +264,23 @@ namespace HelixToolkit.UWP
         protected override void OnManipulationStarted(ManipulationStartedRoutedEventArgs e)
         {
             base.OnManipulationStarted(e);
-            cameraController.OnManipulationStarted(e);
+            if(e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+                cameraController.OnManipulationStarted(e);
         }
 
         protected override void OnManipulationCompleted(ManipulationCompletedRoutedEventArgs e)
         {
             base.OnManipulationCompleted(e);
-            cameraController.OnManipulationCompleted(e);
+            if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+                cameraController.OnManipulationCompleted(e);
         }
 
 
         protected override void OnManipulationDelta(ManipulationDeltaRoutedEventArgs e)
         {
             base.OnManipulationDelta(e);
-            cameraController.OnManipulationDelta(e);
+            if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+                cameraController.OnManipulationDelta(e);
         }
 
         protected override void OnPointerWheelChanged(PointerRoutedEventArgs e)

@@ -142,7 +142,6 @@
     <Compile Include="Controls\MouseHandlers\ZoomRectangleHandler.cs" />
     <Compile Include="Controls\Viewport3DX.cs" />
     <Compile Include="Controls\Viewport3DXProperties.cs" />
-    <Compile Include="Controls\ViewportMouseEventManager.cs" />
     <Compile Include="Controls\ViewportExtensions.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />

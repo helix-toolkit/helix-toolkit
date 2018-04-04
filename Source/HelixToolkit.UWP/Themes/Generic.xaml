@@ -14,7 +14,8 @@
                     <controls:SwapChainRenderHost
                         x:Name="PART_RenderTarget"
                         HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch" />
+                        VerticalAlignment="Stretch" 
+                        ManipulationMode="All"/>
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
@@ -28,7 +29,6 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid Background="{TemplateBinding Background}">
-                            <ItemsPresenter />
                             <controls:ViewBoxModel3D
                                 x:Name="PART_ViewCube"
                                 EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"
@@ -37,7 +37,7 @@
                                 RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
                                 SizeScale="{TemplateBinding ViewCubeSize}"
                                 UpDirection="{TemplateBinding ModelUpDirection}"
-                                ViewBoxTexture="{TemplateBinding ViewCubeTexture}" />
+                                ViewBoxTexture="{TemplateBinding ViewCubeTexture}"/>
                             <controls:CoordinateSystemModel3D
                                 x:Name="PART_CoordinateView"
                                 CoordinateSystemLabelX="{TemplateBinding CoordinateSystemLabelX}"
@@ -48,6 +48,7 @@
                                 RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}"
                                 RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"
                                 SizeScale="{TemplateBinding CoordinateSystemSize}" />
+                            <ItemsPresenter />
                             <TextBox
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"

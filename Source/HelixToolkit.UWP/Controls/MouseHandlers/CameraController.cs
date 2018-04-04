@@ -685,6 +685,7 @@ namespace HelixToolkit.UWP
             }
         }
 
+
         /// <summary>
         /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
         /// </summary>
@@ -694,15 +695,16 @@ namespace HelixToolkit.UWP
         public void OnManipulationDelta(ManipulationDeltaRoutedEventArgs e)
         {
             // number of manipulators (fingers)
-            int n = e.Container.PointerCaptures.Count();
+            if (Viewport.PointerCaptures == null)
+            { return; }
+            int n = Viewport.PointerCaptures.Count();
             var position = new Point(touchPreviousPoint.X + e.Cumulative.Translation.X, touchPreviousPoint.Y + e.Cumulative.Translation.Y);
-            this.touchPreviousPoint = position;
 
             // http://msdn.microsoft.com/en-us/library/system.windows.uielement.manipulationdelta.aspx
 
             //// System.Diagnostics.Debug.WriteLine("OnManipulationDelta: T={0}, S={1}, R={2}, O={3}", e.DeltaManipulation.Translation, e.DeltaManipulation.Scale, e.DeltaManipulation.Rotation, e.ManipulationOrigin);
             //// System.Diagnostics.Debug.WriteLine(n + " Delta:" + e.DeltaManipulation.Translation + " Origin:" + e.ManipulationOrigin + " pos:" + position);
-
+            
             if (this.manipulatorCount != n)
             {
                 // the number of manipulators has changed
@@ -751,7 +753,9 @@ namespace HelixToolkit.UWP
                     e.Position, this.zoomHandler.Origin, this.CameraLookDirection);
                 if (zoomAroundPoint != null)
                 {
-                    this.zoomHandler.Zoom(1 - (e.Cumulative.Scale / Math.Sqrt(2)), zoomAroundPoint.Value);
+                    float s = e.Cumulative.Scale;
+                    Debug.WriteLine(s);
+                    this.zoomHandler.Zoom((1-s) * 0.1, zoomAroundPoint.Value);
                 }
             }
 
@@ -783,9 +787,21 @@ namespace HelixToolkit.UWP
             {
                 OnStylusSystemGesture(e);
             }
+            else if(e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            {
+                Viewport.CapturePointer(e.Pointer);
+            }
             else
             {
                 inputController.OnPointerPressed(e);
+            }
+        }
+
+        public void OnMouseUp(PointerRoutedEventArgs e)
+        {
+            if(e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+            {
+                Viewport.ReleasePointerCapture(e.Pointer);
             }
         }
 
