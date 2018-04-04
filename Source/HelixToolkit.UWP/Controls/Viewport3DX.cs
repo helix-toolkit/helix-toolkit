@@ -17,6 +17,8 @@ namespace HelixToolkit.UWP
     using Cameras;
     using Model.Scene;
     using Model.Scene2D;
+    using System.Runtime.CompilerServices;
+    using Windows.UI.Xaml.Input;
     using Visibility = Windows.UI.Xaml.Visibility;
     /// <summary>
     /// 
@@ -112,6 +114,7 @@ namespace HelixToolkit.UWP
         private bool IsAttached = false;
         private ViewBoxModel3D viewCube;
         private CoordinateSystemModel3D coordinateSystem;
+        private CameraController cameraController;
        
         /// <summary>
         /// Initializes a new instance of the <see cref="Viewport3DX"/> class.
@@ -121,7 +124,9 @@ namespace HelixToolkit.UWP
             this.DefaultStyleKey = typeof(Viewport3DX);
             this.Loaded += Viewport3DXLoaded;
             this.Unloaded += Viewport3DX_Unloaded;
+            cameraController = new CameraController(this);
             Camera = new PerspectiveCamera() { Position = new Vector3(0, 0, -10), LookDirection = new Vector3(0, 0, 10), UpDirection = new Vector3(0, 1, 0) };
+            InputController = new InputController();
             RegisterPropertyChangedCallback(VisibilityProperty, (s, e) => 
             {
                 if(renderHostInternal != null)
@@ -230,11 +235,58 @@ namespace HelixToolkit.UWP
         /// Called before the PointerPressed event occurs.
         /// </summary>
         /// <param name="e">Event data for the event.</param>
-        protected override void OnPointerPressed(Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        protected override void OnPointerPressed(PointerRoutedEventArgs e)
         {
             base.OnPointerPressed(e);
             var p = e.GetCurrentPoint(this).Position;
-            ViewBoxHitTest(p);
+            if (!ViewBoxHitTest(p))
+            {
+                cameraController.OnMouseDown(e);
+            }
+        }
+
+        protected override void OnPointerReleased(PointerRoutedEventArgs e)
+        {
+            base.OnPointerReleased(e);
+            cameraController.OnMouseUp(e);
+        }
+
+        protected override void OnKeyDown(KeyRoutedEventArgs e)
+        {
+            base.OnKeyDown(e);
+            cameraController.InputController.OnKeyPressed(e);
+        }
+
+        /// <summary>
+        /// Called before the ManipulationStarted event occurs.
+        /// </summary>
+        /// <param name="e">Event data for the event.</param>
+        protected override void OnManipulationStarted(ManipulationStartedRoutedEventArgs e)
+        {
+            base.OnManipulationStarted(e);
+            if(e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+                cameraController.OnManipulationStarted(e);
+        }
+
+        protected override void OnManipulationCompleted(ManipulationCompletedRoutedEventArgs e)
+        {
+            base.OnManipulationCompleted(e);
+            if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+                cameraController.OnManipulationCompleted(e);
+        }
+
+
+        protected override void OnManipulationDelta(ManipulationDeltaRoutedEventArgs e)
+        {
+            base.OnManipulationDelta(e);
+            if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
+                cameraController.OnManipulationDelta(e);
+        }
+
+        protected override void OnPointerWheelChanged(PointerRoutedEventArgs e)
+        {
+            base.OnPointerWheelChanged(e);
+            cameraController.OnMouseWheel(e);
         }
 
         private bool ViewBoxHitTest(Point p)
@@ -269,20 +321,10 @@ namespace HelixToolkit.UWP
             float distance = pc.LookDirection.Length();
             var look = e.LookDirection * distance;
             var newPosition = target - look;
-            pc.Position = newPosition;
-            pc.LookDirection = e.LookDirection;
-            pc.UpDirection = e.UpDirection;
+            pc.AnimateTo(newPosition, look, e.UpDirection, 500);
         }
 
-        /// <summary>
-        /// Called before the ManipulationStarted event occurs.
-        /// </summary>
-        /// <param name="e">Event data for the event.</param>
-        protected override void OnManipulationStarted(Windows.UI.Xaml.Input.ManipulationStartedRoutedEventArgs e)
-        {
-            base.OnManipulationStarted(e);
-        }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void InvalidateRender()
         {
             renderHostInternal?.InvalidateRender();
@@ -290,7 +332,7 @@ namespace HelixToolkit.UWP
 
         public void Update(TimeSpan timeStamp)
         {
-            
+            cameraController.OnTimeStep(timeStamp.Ticks);   
         }
 
         /// <summary>
@@ -307,7 +349,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddMoveForce(double dx, double dy, double dz)
         {
-
+            cameraController.AddMoveForce(new Vector3((float)dx, (float)dy, (float)dz));
         }
 
         /// <summary>
@@ -318,7 +360,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddMoveForce(Vector3 delta)
         {
-
+            cameraController.AddMoveForce(delta);
         }
 
         /// <summary>
@@ -332,7 +374,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddPanForce(double dx, double dy)
         {
-
+            cameraController.AddPanForce(dx, dy);
         }
 
         /// <summary>
@@ -343,7 +385,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddPanForce(Vector3 pan)
         {
-
+            cameraController.AddPanForce(pan);
         }
 
         /// <summary>
@@ -357,7 +399,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddRotateForce(double dx, double dy)
         {
-
+            cameraController.AddRotateForce(dx, dy);
         }
 
         /// <summary>
@@ -368,7 +410,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddZoomForce(double dx)
         {
-
+            cameraController.AddZoomForce(dx);
         }
 
         /// <summary>
@@ -382,7 +424,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddZoomForce(double dx, Vector3 zoomOrigin)
         {
-
+            cameraController.AddZoomForce(dx, zoomOrigin);
         }
 
         /// <summary>
@@ -390,7 +432,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public void StopSpin()
         {
-
+            cameraController.StopSpin();
         }
 
         /// <summary>
@@ -401,7 +443,12 @@ namespace HelixToolkit.UWP
         /// <param name="aroundPoint">The point to spin around.</param>
         public void StartSpin(Vector2 speed, Point position, Vector3 aroundPoint)
         {
+            cameraController.StartSpin(speed, position, aroundPoint);
+        }
 
+        private void CameraInternal_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            InvalidateRender();
         }
     }
 }

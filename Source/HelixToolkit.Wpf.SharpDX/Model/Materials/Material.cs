@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         public static readonly DependencyProperty NameProperty =
-            DependencyProperty.Register("Name", typeof(string), typeof(Material), new UIPropertyMetadata(null,
+            DependencyProperty.Register("Name", typeof(string), typeof(Material), new PropertyMetadata(null,
                 (d,e)=> { (d as Material).Core.Name = (string)e.NewValue; }));
 
         public string Name

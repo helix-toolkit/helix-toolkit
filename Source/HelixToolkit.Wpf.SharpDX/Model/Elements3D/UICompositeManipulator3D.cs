@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The can rotate x property.
         /// </summary>
         public static readonly DependencyProperty CanRotateXProperty = DependencyProperty.Register(
-            "CanRotateX", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, (d,e)=>
+            "CanRotateX", typeof(bool), typeof(UICompositeManipulator3D), new PropertyMetadata(true, (d,e)=>
             {
                 (d as UICompositeManipulator3D).rotateX.IsRendering = (bool)e.NewValue;
             }));
@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The can rotate y property.
         /// </summary>
         public static readonly DependencyProperty CanRotateYProperty = DependencyProperty.Register(
-            "CanRotateY", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, (d, e) =>
+            "CanRotateY", typeof(bool), typeof(UICompositeManipulator3D), new PropertyMetadata(true, (d, e) =>
             {
                 (d as UICompositeManipulator3D).rotateY.IsRendering = (bool)e.NewValue;
             }));
@@ -44,7 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The can rotate z property.
         /// </summary>
         public static readonly DependencyProperty CanRotateZProperty = DependencyProperty.Register(
-            "CanRotateZ", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, (d, e) =>
+            "CanRotateZ", typeof(bool), typeof(UICompositeManipulator3D), new PropertyMetadata(true, (d, e) =>
             {
                 (d as UICompositeManipulator3D).rotateZ.IsRendering = (bool)e.NewValue;
             }));
@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The can translate x property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateXProperty = DependencyProperty.Register(
-            "CanTranslateX", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, (d, e) =>
+            "CanTranslateX", typeof(bool), typeof(UICompositeManipulator3D), new PropertyMetadata(true, (d, e) =>
             {
                 (d as UICompositeManipulator3D).translateX.IsRendering = (bool)e.NewValue;
             }));
@@ -62,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The can translate y property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateYProperty = DependencyProperty.Register(
-            "CanTranslateY", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, (d, e) =>
+            "CanTranslateY", typeof(bool), typeof(UICompositeManipulator3D), new PropertyMetadata(true, (d, e) =>
             {
                 (d as UICompositeManipulator3D).translateY.IsRendering = (bool)e.NewValue;
             }));
@@ -71,7 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The can translate z property.
         /// </summary>
         public static readonly DependencyProperty CanTranslateZProperty = DependencyProperty.Register(
-            "CanTranslateZ", typeof(bool), typeof(UICompositeManipulator3D), new UIPropertyMetadata(true, (d, e) =>
+            "CanTranslateZ", typeof(bool), typeof(UICompositeManipulator3D), new PropertyMetadata(true, (d, e) =>
             {
                 (d as UICompositeManipulator3D).translateZ.IsRendering = (bool)e.NewValue;
             }));

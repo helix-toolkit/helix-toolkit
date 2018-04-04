@@ -8,6 +8,7 @@ using Point = Windows.Foundation.Point;
 namespace HelixToolkit.UWP
 {
     using Cameras;
+    using HelixToolkit.UWP.Model.Scene;
     using Windows.Foundation;
 
     public static class ViewportExtensions
@@ -337,6 +338,59 @@ namespace HelixToolkit.UWP
         {
             var r = viewport.UnProject(point2d);
             return new Ray(r.Position, r.Direction);
+        }
+
+        /// <summary>
+        /// Finds the bounding box of the viewport.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <returns>The bounding box.</returns>
+        public static BoundingBox FindBounds(this Viewport3DX viewport)
+        {
+            var maxVector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            var firstModel = viewport.Renderables.PreorderDFT((r) =>
+            {
+                if (r.Visible && !(r is ScreenSpacedNode))
+                {
+                    return true;
+                }
+                return false;
+            }).Where(x =>
+            {
+                if (x is IBoundable b)
+                {
+                    return b.HasBound && b.BoundsWithTransform.Maximum != b.BoundsWithTransform.Minimum
+                    && b.BoundsWithTransform.Maximum != Vector3.Zero && b.BoundsWithTransform.Maximum != maxVector;
+                }
+                else
+                {
+                    return false;
+                }
+            }).FirstOrDefault();
+            if (firstModel == null)
+            {
+                return new BoundingBox();
+            }
+            var bounds = firstModel.BoundsWithTransform;
+
+            foreach (var renderable in viewport.Renderables.PreorderDFT((r) =>
+            {
+                if (r.Visible && !(r is ScreenSpacedNode))
+                {
+                    return true;
+                }
+                return false;
+            }))
+            {
+                if (renderable is IBoundable r)
+                {
+                    if (r.HasBound && r.BoundsWithTransform.Maximum != maxVector)
+                    {
+                        bounds = global::SharpDX.BoundingBox.Merge(bounds, r.BoundsWithTransform);
+                    }
+                }
+            }
+            return bounds;
         }
     }
 }

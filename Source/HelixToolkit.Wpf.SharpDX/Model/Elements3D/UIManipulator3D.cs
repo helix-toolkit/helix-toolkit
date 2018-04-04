@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         //protected static readonly DependencyPropertyKey PositionPropertyKey =
-        //    DependencyProperty.RegisterReadOnly("Position", typeof(Point3D), typeof(UIManipulator3D), new UIPropertyMetadata(new Point3D()));
+        //    DependencyProperty.RegisterReadOnly("Position", typeof(Point3D), typeof(UIManipulator3D), new PropertyMetadata(new Point3D()));
 
         ////public static readonly DependencyProperty PositionProperty = PositionPropertyKey.DependencyProperty;
 
