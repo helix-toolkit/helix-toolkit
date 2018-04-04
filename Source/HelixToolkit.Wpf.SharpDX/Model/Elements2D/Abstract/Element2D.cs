@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     using Core2D;
     using System;
     using System.Diagnostics;
+    using Extensions;
 
     public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D
     {
@@ -22,7 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element2D), new PropertyMetadata(Visibility.Visible, 
                 (d, e) =>
                 {
-                    (d as Element2DCore).VisibilityInternal = (Visibility)e.NewValue;
+                    (d as Element2DCore).SceneNode.Visibility = ((Visibility)e.NewValue).ToD2DVisibility();
                 }));
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element2D), new PropertyMetadata(true,
                 (d,e)=> 
                 {
-                    (d as Element2DCore).IsHitTestVisibleInternal = (bool)e.NewValue;
+                    (d as Element2DCore).SceneNode.IsHitTestVisible = (bool)e.NewValue;
                 }));
 
         public bool IsHitTestVisible
@@ -66,7 +67,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
                 new PropertyMetadata(false, (d, e) =>
             {
                 var model = d as Element2D;
-                model.RenderCore.IsMouseOver = (bool)e.NewValue;
+                model.SceneNode.IsMouseOver = (bool)e.NewValue;
                 model.OnMouseOverChanged((bool)e.NewValue, (bool)e.OldValue);
                 model.InvalidateRender();
             }));
@@ -83,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(Element2D),
-            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).WidthInternal = (float)(double)e.NewValue; }));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).SceneNode.Width = (float)(double)e.NewValue; }));
 
         public double Width
         {
@@ -98,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty HeightProperty = DependencyProperty.Register("Height", typeof(double), typeof(Element2D),
-            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).HeightInternal = (float)(double)e.NewValue; }));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).SceneNode.Height = (float)(double)e.NewValue; }));
 
         public double Height
         {
@@ -113,7 +114,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty MinimumWidthProperty = DependencyProperty.Register("MinimumWidth", typeof(double), typeof(Element2D),
-            new PropertyMetadata(0.0, (d, e) => { (d as Element2DCore).MinimumWidthInternal = (float)(double)e.NewValue; }));
+            new PropertyMetadata(0.0, (d, e) => { (d as Element2DCore).SceneNode.MinimumWidth = (float)(double)e.NewValue; }));
 
         public double MinimumWidth
         {
@@ -128,7 +129,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty MinimumHeightProperty = DependencyProperty.Register("MinimumHeight", typeof(double), typeof(Element2D),
-            new PropertyMetadata(0.0, (d, e) => { (d as Element2DCore).MinimumHeightInternal = (float)(double)e.NewValue; }));
+            new PropertyMetadata(0.0, (d, e) => { (d as Element2DCore).SceneNode.MinimumHeight = (float)(double)e.NewValue; }));
 
         public double MinimumHeight
         {
@@ -143,7 +144,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty MaximumWidthProperty = DependencyProperty.Register("MaximumWidth", typeof(double), typeof(Element2D),
-            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).MaximumWidthInternal = (float)(double)e.NewValue; }));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).SceneNode.MaximumWidth = (float)(double)e.NewValue; }));
 
         public double MaximumWidth
         {
@@ -158,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
 
         public static readonly DependencyProperty MaximumHeightProperty = DependencyProperty.Register("MaximumHeight", typeof(double), typeof(Element2D),
-            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).MaximumHeightInternal = (float)(double)e.NewValue; }));
+            new PropertyMetadata(double.PositiveInfinity, (d, e) => { (d as Element2DCore).SceneNode.MaximumHeight = (float)(double)e.NewValue; }));
 
         public double MaximumHeight
         {
@@ -183,7 +184,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty HorizontalAlignmentProperty =
             DependencyProperty.Register("HorizontalAlignment", typeof(HorizontalAlignment), typeof(Element2D), 
-                new PropertyMetadata(HorizontalAlignment.Stretch, (d, e) => { (d as Element2DCore).HorizontalAlignmentInternal = (HorizontalAlignment)e.NewValue; }));
+                new PropertyMetadata(HorizontalAlignment.Stretch, (d, e) => { (d as Element2DCore).SceneNode.HorizontalAlignment = ((HorizontalAlignment)e.NewValue).ToD2DHorizontalAlignment(); }));
 
 
 
@@ -196,7 +197,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty VerticalAlignmentProperty =
             DependencyProperty.Register("VerticalAlignment", typeof(VerticalAlignment), typeof(Element2D), 
-                new PropertyMetadata(VerticalAlignment.Stretch, (d, e) => { (d as Element2DCore).VerticalAlignmentInternal = (VerticalAlignment)e.NewValue; }));
+                new PropertyMetadata(VerticalAlignment.Stretch, (d, e) => { (d as Element2DCore).SceneNode.VerticalAlignment = ((VerticalAlignment)e.NewValue).ToD2DVerticalAlignment(); }));
 
 
 
@@ -210,13 +211,13 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty MarginProperty =
             DependencyProperty.Register("Margin", typeof(Thickness), typeof(Element2D), new PropertyMetadata(new Thickness(), 
                 (d, e) => {
-                    (d as Element2DCore).MarginInternal = (Thickness)e.NewValue;
+                    (d as Element2DCore).SceneNode.Margin = ((Thickness)e.NewValue).ToD2DThickness();
                 }));
 
         public static readonly DependencyProperty TransformProperty =
             DependencyProperty.Register("Transform", typeof(Media.Transform), typeof(Element2D), new PropertyMetadata(Media.Transform.Identity, (d, e) =>
             {
-                (d as Element2DCore).ModelMatrix = e.NewValue == null ? Matrix3x2.Identity : ((Media.Transform)e.NewValue).Value.ToMatrix3x2();
+                (d as Element2DCore).SceneNode.ModelMatrix = e.NewValue == null ? Matrix3x2.Identity : ((Media.Transform)e.NewValue).Value.ToMatrix3x2();
             }));
 
         /// <summary>
@@ -246,7 +247,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty RenderTransformOriginProperty =
             DependencyProperty.Register("RenderTransformOrigin", typeof(System.Windows.Point), typeof(Element2D), new PropertyMetadata(new System.Windows.Point(0.5,0.5),
                 (d,e)=> {
-                    (d as Element2DCore).RenderTransformOriginInternal = ((System.Windows.Point)e.NewValue).ToVector2();
+                    (d as Element2DCore).SceneNode.RenderTransformOrigin = ((System.Windows.Point)e.NewValue).ToVector2();
                 }));
 
         public bool EnableBitmapCache
@@ -257,7 +258,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty EnableBitmapCacheProperty =
             DependencyProperty.Register("EnableBitmapCache", typeof(bool), typeof(Element2D),
-                new PropertyMetadata(false, (d,e)=> { (d as Element2DCore).EnableBitmapCacheInternal = (bool)e.NewValue; }));
+                new PropertyMetadata(false, (d,e)=> { (d as Element2DCore).SceneNode.EnableBitmapCache = (bool)e.NewValue; }));
 
 
         #endregion
@@ -311,21 +312,10 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         }
         #endregion
 
-
         public Element2D()
         {
-            VisibilityInternal = Visibility;
-            IsHitTestVisibleInternal = IsHitTestVisible;
-            WidthInternal = (float)Width;
-            HeightInternal = (float)Height;
-            MinimumWidthInternal = (float)MinimumWidth;
-            MaximumWidthInternal = MaximumWidth == double.PositiveInfinity ? float.PositiveInfinity : (float)MaximumWidth;
-            MaximumHeightInternal = MaximumHeight == double.PositiveInfinity ? float.PositiveInfinity : (float)MaximumHeight;
-            MinimumHeightInternal = (float)MinimumHeight;
-            HorizontalAlignmentInternal = HorizontalAlignment;
-            VerticalAlignmentInternal = VerticalAlignment;
-            MarginInternal = Margin;
-            EnableBitmapCacheInternal = EnableBitmapCache;
+            this.MouseEnter2D += Element2D_MouseEnter2D;
+            this.MouseLeave2D += Element2D_MouseLeave2D;
         }
 
 
@@ -347,52 +337,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 #endif
         }
 
-        protected override bool OnAttach(IRenderHost host)
-        {
-            if (base.OnAttach(host))
-            {
-                this.MouseEnter2D += Element2D_MouseEnter2D;
-                this.MouseLeave2D += Element2D_MouseLeave2D;
-                return true;
-            }
-            else { return false; }
-        }
-
-
-        protected override void OnDetach()
-        {
-            this.MouseEnter2D -= Element2D_MouseEnter2D;
-            this.MouseLeave2D -= Element2D_MouseLeave2D;
-            base.OnDetach();
-        }
-
         protected virtual void OnMouseOverChanged(bool newValue, bool oldValue)
         {
 #if DEBUGMOUSEEVENT
             Debug.WriteLine("OnMouseOverChanged:"+newValue);
 #endif
         }
-
-        //protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
-        //{
-        //    var pm = e.Property.GetMetadata(this);
-        //    if(pm is FrameworkPropertyMetadata fm)
-        //    {
-        //        if (fm.AffectsMeasure)
-        //        {
-        //            InvalidateMeasure();
-        //        }
-        //        else if (fm.AffectsArrange)
-        //        {
-        //            InvalidateArrange();
-        //        }
-        //        if (fm.AffectsRender)
-        //        {
-        //            InvalidateVisual();
-        //        }
-        //    }
-        //    base.OnPropertyChanged(e);
-        //}
     }
 
     public class Mouse2DEventArgs : RoutedEventArgs

@@ -89,7 +89,7 @@ namespace CustomShaderDemo
                             CustomVSShaderDescription.VSDataSampling,
                             DefaultPSShaderDescriptions.PSMeshWireframe
                         },
-                        BlendStateDescription = DefaultBlendStateDescriptions.AdditiveBlend,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
                     }
                 }

@@ -43,7 +43,7 @@ EnableD2DRendering = false;
 
 ## News
 
-We are currently working on HelixToolkit 2.0 under develop branch. Mainly focus on HelixToolkit.SharpDX.
+We are currently working on HelixToolkit 2.0 under develop branch. Mainly focus on HelixToolkit.SharpDX.WPF and HelixToolkit.UWP.
 
 All 1.x.x related pull requests, please use [1.1.0/Release](https://github.com/helix-toolkit/helix-toolkit/tree/release/1.1.0) branch.
 
@@ -57,7 +57,8 @@ All 1.x.x related pull requests, please use [1.1.0/Release](https://github.com/h
 7. Supports transparent meshes rendered after opaque meshes. IsTransparent property is added in MaterialGeometryModel3D.
 8. Rendering order by RenderType flag: 
     ##### Pre(such as shadow map)->Opaque->Particle->Transparent->Post(post effects)->ScreenSpaced(ViewBox/CoordinateSystem).
-9. Other on going changes.
+9. Core implementation are separated from platform dependent controls(Element3D) into its own Scene Node classes. Scene Node serves as complete Scene Graph for traversal inside render host. Element3D will only be used as a wrapper to manipulate scene node properties from XAML.
+10. Other on going changes.
 
 #### 2018-02-06
 

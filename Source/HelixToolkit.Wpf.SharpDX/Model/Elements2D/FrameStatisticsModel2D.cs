@@ -1,13 +1,12 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
-    using Core2D;
     using Extensions;
+    using Model.Scene2D;
 
-    public class FrameStatisticsModel2D : Element2DCore
+    public class FrameStatisticsModel2D : Element2D
     {
         public static readonly DependencyProperty ForegroundProperty
             = DependencyProperty.Register("Foreground", typeof(Brush), typeof(FrameStatisticsModel2D),
@@ -52,48 +51,30 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         private bool foregroundChanged = true;
         private bool backgroundChanged = true;
 
-        public FrameStatisticsModel2D()
+        protected override void OnAttached()
         {
-            HorizontalAlignmentInternal = HorizontalAlignment.Right;
-            VerticalAlignmentInternal = VerticalAlignment.Top;
-            EnableBitmapCacheInternal = false;
-        }
-
-        protected override bool OnAttach(IRenderHost host)
-        {
+            base.OnAttached();
             foregroundChanged = backgroundChanged = true;
-            return base.OnAttach(host);
         }
 
-        protected override RenderCore2D CreateRenderCore()
+        protected override SceneNode2D OnCreateSceneNode()
         {
-            return new FrameStatisticsRenderCore();
+            return new FrameStatisticsNode2D();
         }
 
-        public override void Update(IRenderContext2D context)
+        protected override void OnUpdate(IRenderContext2D context)
         {
-            base.Update(context);
+            base.OnUpdate(context);
             if (foregroundChanged)
             {
-                (RenderCore as FrameStatisticsRenderCore).Foreground = Foreground != null ? Foreground.ToD2DBrush(context.DeviceContext) : null;
+                (SceneNode as FrameStatisticsNode2D).Foreground = Foreground != null ? Foreground.ToD2DBrush(context.DeviceContext) : null;
                 foregroundChanged = false;
             }
             if (backgroundChanged)
             {
-                (RenderCore as FrameStatisticsRenderCore).Background = Background != null ? Background.ToD2DBrush(context.DeviceContext) : null;
+                (SceneNode as FrameStatisticsNode2D).Background = Background != null ? Background.ToD2DBrush(context.DeviceContext) : null;
                 backgroundChanged = false;
             }
-        }
-
-        protected override bool CanHitTest()
-        {
-            return false;
-        }
-
-        protected override bool OnHitTest(ref global::SharpDX.Vector2 mousePoint, out HitTest2DResult hitResult)
-        {
-            hitResult = null;
-            return false;
         }
     }
 }

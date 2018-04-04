@@ -2,10 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
-using System.Collections.Generic;
-using System.Text;
 using SharpDX.Direct3D11;
+using System.Collections.Generic;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
@@ -50,8 +48,29 @@ namespace HelixToolkit.UWP.Shaders
         /// Initializes a new instance of the <see cref="NullShader"/> class.
         /// </summary>
         /// <param name="type">The type.</param>
-        public NullShader(ShaderStage type) : base(NULL, type, true)
+        private NullShader(ShaderStage type) : base(NULL, type, true)
         {
+        }
+
+        public static NullShader GetNullShader(ShaderStage type)
+        {
+            switch (type)
+            {
+                case ShaderStage.Compute:
+                    return ComputeNull;
+                case ShaderStage.Domain:
+                    return DomainNull;
+                case ShaderStage.Geometry:
+                    return GeometryNull;
+                case ShaderStage.Hull:
+                    return HullNull;
+                case ShaderStage.Pixel:
+                    return PixelNull;
+                case ShaderStage.Vertex:
+                    return VertexNull;
+                default:
+                    return new NullShader(type);
+            }
         }
         /// <summary>
         /// Binds the specified context.

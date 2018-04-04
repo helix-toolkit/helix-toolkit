@@ -276,7 +276,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         protected override IOctreeManager OnCreateManager()
         {
-            return new GroupRenderableBoundOctreeManager();
+            return new GroupNodeGeometryBoundOctreeManager();
         }
     }
 

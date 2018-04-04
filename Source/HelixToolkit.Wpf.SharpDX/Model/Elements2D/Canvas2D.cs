@@ -9,6 +9,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
     using Core2D;
     using global::SharpDX;
     using System.Windows;
+    using Model.Scene2D;
 
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement2DCollection 
@@ -108,67 +109,76 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         {
             return (double)element.GetValue(BottomProperty);
         }
-        #endregion        
-        /// <summary>
-        /// Measures the override.
-        /// </summary>
-        /// <param name="availableSize">Size of the available.</param>
-        /// <returns></returns>
-        protected override Size2F MeasureOverride(Size2F availableSize)
-        {
-            var childConstraint = new Size2F(float.PositiveInfinity, float.PositiveInfinity);
-            foreach(var child in Items)
-            {
-                child.Measure(childConstraint);
-            }
-            return new Size2F();
-        }
-        /// <summary>
-        /// Arranges the override.
-        /// </summary>
-        /// <param name="finalSize">The final size.</param>
-        /// <returns></returns>
-        protected override RectangleF ArrangeOverride(RectangleF finalSize)
-        {
-            foreach(var child in Items)
-            {
-                if(child is Element2DCore c)
-                {
-                    float xPos = 0;
-                    float yPos = 0;
-                    var left = GetLeft(c);
-                    var desired = c.DesiredSize;
-                    if(left != double.PositiveInfinity)
-                    {
-                        xPos = (float)left;
-                    }
-                    else
-                    {
-                        var right = GetRight(c);
-                        if (right != double.PositiveInfinity)
-                        {
-                            xPos = finalSize.Width - desired.X - (float)right;
-                        }
-                    }
+        #endregion
 
-                    var top = GetTop(c);
-                    if (top != double.PositiveInfinity)
-                    {
-                        yPos = (float)top;
-                    }
-                    else
-                    {
-                        var bottom = GetBottom(c);
-                        if (bottom != double.PositiveInfinity)
-                        {
-                            yPos = finalSize.Height - desired.Y - (float)bottom;
-                        }
-                    }
-                    c.Arrange(new RectangleF(xPos, yPos, desired.X, desired.Y));
-                    //c.Arrange(new RectangleF(xPos, yPos, desired.X + xPos, desired.Y + yPos));
+        protected override SceneNode2D OnCreateSceneNode()
+        {
+            return new Node2DCanvas();
+        }
+
+        protected class Node2DCanvas : PanelNode2D
+        {
+            /// <summary>
+            /// Measures the override.
+            /// </summary>
+            /// <param name="availableSize">Size of the available.</param>
+            /// <returns></returns>
+            protected override Size2F MeasureOverride(Size2F availableSize)
+            {
+                var childConstraint = new Size2F(float.PositiveInfinity, float.PositiveInfinity);
+                foreach (var child in Items)
+                {
+                    child.Measure(childConstraint);
                 }
+                return new Size2F();
             }
-            return finalSize;
+            /// <summary>
+            /// Arranges the override.
+            /// </summary>
+            /// <param name="finalSize">The final size.</param>
+            /// <returns></returns>
+            protected override RectangleF ArrangeOverride(RectangleF finalSize)
+            {
+                foreach (var child in Items)
+                {
+                    if (child is SceneNode2D c)
+                    {
+                        float xPos = 0;
+                        float yPos = 0;
+                        var left = GetLeft(c);
+                        var desired = c.DesiredSize;
+                        if (left != double.PositiveInfinity)
+                        {
+                            xPos = (float)left;
+                        }
+                        else
+                        {
+                            var right = GetRight(c);
+                            if (right != double.PositiveInfinity)
+                            {
+                                xPos = finalSize.Width - desired.X - (float)right;
+                            }
+                        }
+
+                        var top = GetTop(c);
+                        if (top != double.PositiveInfinity)
+                        {
+                            yPos = (float)top;
+                        }
+                        else
+                        {
+                            var bottom = GetBottom(c);
+                            if (bottom != double.PositiveInfinity)
+                            {
+                                yPos = finalSize.Height - desired.Y - (float)bottom;
+                            }
+                        }
+                        c.Arrange(new RectangleF(xPos, yPos, desired.X, desired.Y));
+                        //c.Arrange(new RectangleF(xPos, yPos, desired.X + xPos, desired.Y + yPos));
+                    }
+                }
+                return finalSize;
+            }
         }
     }
 }

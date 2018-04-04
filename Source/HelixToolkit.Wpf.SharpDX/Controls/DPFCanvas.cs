@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// 
     /// </summary>
     /// <seealso cref="System.Windows.Controls.Image" />
-    public class DPFCanvas : Image, IRenderCanvas
+    public class DPFCanvas : Image, IRenderCanvas, IDisposable
     {
         /// <summary>
         /// Gets a value indicating whether the control is in design mode
@@ -147,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (!HandleExceptionOccured(ex))
                 {
-                    MessageBox.Show(string.Format("DPFCanvas: Error starting rendering: {0}", ex.Message), "Error");
+                    MessageBox.Show($"DPFCanvas: Error while starting rendering: {ex.Message} \n StackTrace: {ex.StackTrace.ToString()}", "Error");
                 }
             }
         }
@@ -231,7 +231,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     if (!HandleExceptionOccured(ex))
                     {
-                        MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
+                        MessageBox.Show($"DPFCanvas: Error during rendering: {ex.Message} \n StackTrace: {ex.StackTrace.ToString()}", "Error");
                     }
                 }
             }
@@ -260,7 +260,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         if (!HandleExceptionOccured(ex))
                         {
-                            MessageBox.Show(string.Format("DPFCanvas: Error while rendering: {0}", ex.Message), "Error");
+                            MessageBox.Show($"DPFCanvas: Error during rendering: {ex.Message} \n StackTrace: {ex.StackTrace.ToString()}", "Error");
                         }
                     }
                 }
@@ -312,5 +312,42 @@ namespace HelixToolkit.Wpf.SharpDX
 
             return null;
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    compositionTarget.Dispose();
+                    this.Source = null;
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~DPFCanvas() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

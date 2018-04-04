@@ -23,6 +23,10 @@
             <RowDefinition />
             <!--<RowDefinition Height="Auto"/>-->
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
         <Menu Grid.Row="0" VerticalAlignment="Top">
             <Menu.Background>
@@ -32,13 +36,13 @@
                 <MenuItem Command="hx:ViewportCommands.ZoomExtents" Header="Zoom extents" />
             </MenuItem>
         </Menu>
-
+        
         <hx:Viewport3DX
             x:Name="view1"
-            Title="{Binding Title}"
-            Grid.Row="1"
+            Title="{Binding Title}" Grid.Column="0"
+            Grid.Row="1" BackgroundColor="Black"
             Camera="{Binding Camera}"
-            CoordinateSystemLabelForeground="Black"
+            CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
             MSAA="Two"
             RenderTechnique="{Binding RenderTechnique}"
@@ -64,9 +68,9 @@
                 ColorGradient="{Binding ColorGradient}"
                 FillMode="{Binding FillMode}"
                 Geometry="{Binding Model}"
-                Material="{Binding ModelMaterial}" RenderWireframe="True" WireframeColor="#A0404040"/>
+                Material="{Binding ModelMaterial}" RenderWireframe="True" WireframeColor="#3F3B3B3B"/>
             <hx:LineGeometryModel3D Geometry="{Binding AxisModel}" Color="White" />
-            <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding AxisLabel}" />
+            <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding AxisLabel}" IsTransparent="True"/>
             <hx:MeshGeometryModel3D
                 CullMode="Back"
                 FillMode="{Binding FillMode}"
@@ -75,6 +79,7 @@
         </hx:Viewport3DX>
 
         <StackPanel
+            Grid.Column="1"
             Grid.Row="1"
             Margin="10"
             HorizontalAlignment="Right"
@@ -97,34 +102,5 @@
             <Label>Color Max:</Label>
             <pt:ColorPicker SelectedColor="{Binding EndColor}" />
         </StackPanel>
-
-        <StatusBar Grid.Row="1" VerticalAlignment="Bottom">
-            <StatusBar.Background>
-                <SolidColorBrush Opacity="0.5" Color="WhiteSmoke" />
-            </StatusBar.Background>
-            <StatusBarItem>
-                <TextBlock
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Text="{Binding FrameRate, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding Camera.Position, StringFormat=Position: \{0:0.0\}}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding Camera.LookDirection, StringFormat=LookDirection: \{0:0.0\}}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding Camera.UpDirection, StringFormat=UpDirection: \{0:0.0\}}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding Items.Count, ElementName=view1, StringFormat=Children: \{0\}}" />
-            </StatusBarItem>
-        </StatusBar>
-
     </Grid>
 </Window>

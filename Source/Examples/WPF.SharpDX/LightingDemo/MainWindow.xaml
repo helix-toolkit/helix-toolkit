@@ -32,7 +32,7 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            EnableSwapChainRendering="True"
+            EnableSwapChainRendering="False"
             IsShadowMappingEnabled="True"
             MSAA="{Binding MSAA}"
             RenderTechnique="{Binding RenderTechnique}"
@@ -181,7 +181,7 @@
                     RenderShadowMap="True"
                     Transform="{Binding FloorTransform}" />
             </hx:GroupModel3D>
-            <hx:PostEffectBoom x:Name="bloom"/>
+            <hx:PostEffectBloom x:Name="bloom"/>
             <!--<hx:LineGeometryModel3D Geometry="{Binding CubeEdges}" Color="{x:Static SharpDX:Color.Red}" Thickness="4"/>-->
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1">

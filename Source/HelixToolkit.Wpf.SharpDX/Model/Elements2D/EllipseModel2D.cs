@@ -1,19 +1,12 @@
 ﻿namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
-    using Core2D;
-    using SharpDX;
+    using Model.Scene2D;
 
     public class EllipseModel2D : ShapeModel2D
     {
-        protected override ShapeRenderCore2DBase CreateShapeRenderCore()
+        protected override SceneNode2D OnCreateSceneNode()
         {
-            return new EllipseRenderCore2D();
-        }
-
-        protected override bool OnHitTest(ref global::SharpDX.Vector2 mousePoint, out HitTest2DResult hitResult)
-        {
-            hitResult = null;
-            return false;
+            return new EllipseNode2D();
         }
     }
 }

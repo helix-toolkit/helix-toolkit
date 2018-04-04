@@ -252,7 +252,14 @@ xcopy /y /f /i $(TargetDir)PS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Reso
 xcopy /y /f /i $(TargetDir)GS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
 xcopy /y /f /i $(TargetDir)DS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
 xcopy /y /f /i $(TargetDir)HS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /f /i $(TargetDir)CS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"</PostBuildEvent>
+xcopy /y /f /i $(TargetDir)CS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+
+xcopy /y /f /i $(TargetDir)VS\*.cso "$(SolutionDir)HelixToolkit.UWP\Resources"
+xcopy /y /f /i $(TargetDir)PS\*.cso "$(SolutionDir)HelixToolkit.UWP\Resources"
+xcopy /y /f /i $(TargetDir)GS\*.cso "$(SolutionDir)HelixToolkit.UWP\Resources"
+xcopy /y /f /i $(TargetDir)DS\*.cso "$(SolutionDir)HelixToolkit.UWP\Resources"
+xcopy /y /f /i $(TargetDir)HS\*.cso "$(SolutionDir)HelixToolkit.UWP\Resources"
+xcopy /y /f /i $(TargetDir)CS\*.cso "$(SolutionDir)HelixToolkit.UWP\Resources"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

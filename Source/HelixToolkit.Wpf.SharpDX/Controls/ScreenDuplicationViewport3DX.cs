@@ -8,8 +8,10 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using HelixToolkit.Wpf.SharpDX.Cameras;
 using HelixToolkit.Wpf.SharpDX.Controls;
+using HelixToolkit.Wpf.SharpDX.Model.Scene;
 using HelixToolkit.Wpf.SharpDX.Render;
 using HelixToolkit.Wpf.SharpDX.Utilities;
+using HelixToolkit.Wpf.SharpDX.Model.Scene2D;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
@@ -119,23 +121,23 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public global::SharpDX.Matrix WorldMatrix { get; } = global::SharpDX.Matrix.Identity;
 
-        public IEnumerable<IRenderable> Renderables
+        public IEnumerable<SceneNode> Renderables
         {
             get
             {
                 if (renderHostInternal != null)
                 {
-                    foreach (IRenderable item in Items)
+                    foreach (Element3D item in Items)
                     {
-                        yield return item;
+                        yield return item.SceneNode;
                     }
                 }
             }
         }
 
-        public IEnumerable<IRenderable2D> D2DRenderables
+        public IEnumerable<SceneNode2D> D2DRenderables
         {
-            get { return Enumerable.Empty<IRenderable2D>(); }
+            get { return Enumerable.Empty<SceneNode2D>(); }
         }
 
         public IRenderHost RenderHost { private set { renderHostInternal = value; } get { return renderHostInternal; } }
@@ -243,7 +245,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (!IsAttached)
             {
-                foreach (IRenderable e in this.Renderables)
+                foreach (var e in this.Renderables)
                 {
                     e.Attach(host);
                 }
@@ -256,7 +258,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (IsAttached)
             {
                 IsAttached = false;
-                foreach (IRenderable e in this.Renderables)
+                foreach (var e in this.Renderables)
                 {
                     e.Detach();
                 }

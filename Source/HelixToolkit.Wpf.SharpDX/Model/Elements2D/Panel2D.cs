@@ -1,15 +1,14 @@
-﻿using SharpDX;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
+    using Model.Scene2D;
+
     [ContentProperty("Children")]
     public class Panel2D : Element2D
     {
@@ -22,19 +21,10 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty BackgroundProperty =
             DependencyProperty.Register("Background", typeof(Brush), typeof(Panel2D), new PropertyMetadata(new SolidColorBrush(Colors.Transparent)));
 
-
-        public override IList<IRenderable2D> Items
-        {
-            get
-            {
-                return Children;
-            }
-        }
-
-        public ObservableCollection<IRenderable2D> Children
+        public ObservableCollection<Element2D> Children
         {
             get;
-        } = new ObservableCollection<IRenderable2D>();
+        } = new ObservableCollection<Element2D>();
 
         public Panel2D()
         {
@@ -48,79 +38,66 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             {
                 DetachChildren(e.OldItems);
             }
-            if (IsAttached)
+
+            if (e.Action == NotifyCollectionChangedAction.Reset)
             {
-                if (e.Action == NotifyCollectionChangedAction.Reset)
+                foreach(var item in SceneNode.Items)
+                {
+                    this.RemoveLogicalChild(item.WrapperSource);
+                }
+                (SceneNode as PanelNode2D).Clear();
+                if (IsAttached)
                 {
                     AttachChildren(sender as IEnumerable);
                 }
-                else if (e.NewItems != null)
-                {
-                    AttachChildren(e.NewItems);
-                }
+            }
+            else if (e.NewItems != null && IsAttached)
+            {
+                AttachChildren(e.NewItems);
             }
         }
 
         protected void AttachChildren(IEnumerable children)
         {
+            var s = SceneNode as PanelNode2D;
             foreach (Element2D c in children)
             {
                 if (c.Parent == null)
                 {
                     this.AddLogicalChild(c);
                 }
-                c.Attach(RenderHost);
+                s.AddChildNode(c);
             }
         }
 
         protected void DetachChildren(IEnumerable children)
         {
+            var s = SceneNode as PanelNode2D;
             foreach (Element2D c in children)
             {
-                c.Detach();
                 if (c.Parent == this)
                 {
                     this.RemoveLogicalChild(c);
                 }
+                s.RemoveChildNode(c);
             }
         }
 
-        protected override bool OnAttach(IRenderHost host)
+        protected override void OnAttached()
         {
-            if (base.OnAttach(host))
-            {
-                AttachChildren(Items);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            base.OnAttached();
+            AttachChildren(Children);
         }
 
-        protected override void OnDetach()
+        protected override void OnDetached()
         {
-            DetachChildren(Items);
-            base.OnDetach();
+            DetachChildren(Children);
+            base.OnDetached();
         }
 
-
-        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
+        protected override SceneNode2D OnCreateSceneNode()
         {
-            hitResult = null;
-            if (!LayoutBoundWithTransform.Contains(mousePoint))
-            {
-                return false;
-            }
-            foreach (var item in Items.Reverse())
-            {
-                if (item is IHitable2D h)
-                {
-                    if (h.HitTest(mousePoint, out hitResult))
-                    { return true; }
-                }
-            }
-            return false;
+            return new PanelNode2D();
         }
     }
 }

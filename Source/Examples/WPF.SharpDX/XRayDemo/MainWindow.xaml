@@ -57,12 +57,14 @@
                 PostEffects="xray"
                 Transform="{Binding ModelTransform}" />
 
-            <hx:MeshGeometryModel3D
+            <hx:OutLineMeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding Model}"
                 Instances="{Binding OutlineInstances}"
                 Material="{Binding ModelMaterial}"
-                Transform="{Binding ModelTransform}" />
+                Transform="{Binding ModelTransform}" 
+                OutlineColor="Yellow"
+                OutlineFadingFactor="{Binding ElementName=xrayEffect, Path=OutlineFadingFactor}"/>
 
             <hx:PostEffectMeshXRay
                 x:Name="xrayEffect"

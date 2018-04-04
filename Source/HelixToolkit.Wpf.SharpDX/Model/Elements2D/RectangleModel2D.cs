@@ -1,32 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SharpDX;
-
-namespace HelixToolkit.Wpf.SharpDX.Elements2D
+﻿namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
-    using Core2D;
+    using Model.Scene2D;
+
     public class RectangleModel2D : ShapeModel2D
     {
-        protected override ShapeRenderCore2DBase CreateShapeRenderCore()
+        protected override SceneNode2D OnCreateSceneNode()
         {
-            return new RectangleRenderCore2D();
-        }
-
-        protected override bool OnHitTest(ref Vector2 mousePoint, out HitTest2DResult hitResult)
-        {
-            hitResult = null;
-            if (LayoutBoundWithTransform.Contains(mousePoint))
-            {
-                hitResult = new HitTest2DResult(this);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return new RectangleNode2D();
         }
     }
 }

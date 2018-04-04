@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return Positions != null && Positions.Count > 0 && Indices != null && Indices.Count > 0;
         }
 
-        public virtual bool HitTest(IRenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, IRenderable originalSource, float hitTestThickness)
+        public virtual bool HitTest(IRenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource, float hitTestThickness)
         {
             if (Positions == null || Positions.Count == 0
                 || Indices == null || Indices.Count == 0)

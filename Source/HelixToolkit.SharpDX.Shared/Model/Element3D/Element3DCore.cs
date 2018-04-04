@@ -7,406 +7,142 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Linq;
 
 #if NETFX_CORE
-namespace HelixToolkit.UWP.Core
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+namespace HelixToolkit.UWP.Model
 #else
 using System.Windows;
-namespace HelixToolkit.Wpf.SharpDX.Core
+namespace HelixToolkit.Wpf.SharpDX.Model
 #endif
 {
-    using Render;
+    using Scene;
+
     /// <summary>
-    /// 
+    /// External Wrapper core to be used for different platform
     /// </summary>
 #if NETFX_CORE
-    public abstract class Element3DCore : IDisposable, IRenderable, IGUID, ITransform, INotifyPropertyChanged
+    public abstract class Element3DCore : Control, IDisposable
 #else
-    public abstract class Element3DCore : FrameworkContentElement, IDisposable, IRenderable, INotifyPropertyChanged
+    public abstract class Element3DCore : FrameworkContentElement, IDisposable
 #endif
     {
+        public sealed class SceneNodeCreatedEventArgs : EventArgs
+        {
+            public SceneNode Node { private set; get; }
+            public SceneNodeCreatedEventArgs(SceneNode node)
+            {
+                Node = node;
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
-        public Guid GUID { get; } = Guid.NewGuid();
+        public Guid GUID
+        {
+            get { return SceneNode.GUID; }
+        }
 
-        private Matrix totalModelMatrix = Matrix.Identity;
-        protected bool forceUpdateTransform = false;
         /// <summary>
         /// 
         /// </summary>
         public Matrix TotalModelMatrix
         {
-            private set
-            {
-                if(Set(ref totalModelMatrix, value) || forceUpdateTransform)
-                {
-                    TransformChanged(ref value);
-                    OnTransformChanged?.Invoke(this, new TransformArgs(ref value));
-                    RenderCore.ModelMatrix = value;
-                    forceUpdateTransform = false;
-                }
-            }
             get
             {
-                return totalModelMatrix;
-            }
-        }
-        /// <summary>
-        /// Gets or sets a value indicating whether [need matrix update].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [need matrix update]; otherwise, <c>false</c>.
-        /// </value>
-        protected bool needMatrixUpdate { private set; get; } = true;
-
-        private Matrix modelMatrix = Matrix.Identity;
-        /// <summary>
-        /// Gets or sets the model matrix.
-        /// </summary>
-        /// <value>
-        /// The model matrix.
-        /// </value>
-        public Matrix ModelMatrix
-        {
-            set
-            {
-                if(Set(ref modelMatrix, value))
-                {
-                    needMatrixUpdate = true;
-                    InvalidateRender();
-                }
-            }
-            get { return modelMatrix; }
-        } 
-
-
-        private Matrix parentMatrix = Matrix.Identity;
-        /// <summary>
-        /// Gets or sets the parent matrix.
-        /// </summary>
-        /// <value>
-        /// The parent matrix.
-        /// </value>
-        public Matrix ParentMatrix
-        {
-            set
-            {
-                if(Set(ref parentMatrix, value))
-                {
-                    needMatrixUpdate = true;
-                }
-            }
-            get
-            {
-                return parentMatrix;
+                return SceneNode.TotalModelMatrix;
             }
         }
 
-        private bool visible = true;
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Element3DCore"/> is visible.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if visible; otherwise, <c>false</c>.
-        /// </value>
+
         public bool Visible
-        {
-            protected set
-            {
-                if(Set(ref visible, value))
-                {
-                    OnVisibleChanged?.Invoke(this, value ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
-                    InvalidateRender();
-                }
-            }
-            get { return visible; }
+        { 
+            get { return SceneNode.Visible; }
         }
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is renderable.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is renderable; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsRenderable { private set; get; } = true;
-        /// <summary>
-        /// If this has been attached onto renderhost. 
-        /// </summary>
+
         public bool IsAttached
         {
-            private set;get;
+            get { return SceneNode.IsAttached; }
         }
 
-        private IRenderHost renderHost;
-        /// <summary>
-        /// 
-        /// </summary>
-        public IRenderHost RenderHost
+        #region Scene Node
+        private readonly object sceneNodeLock = new object();
+        private SceneNode sceneNode;
+        public SceneNode SceneNode
         {
-            get { return renderHost; }
-        }
-        /// <summary>
-        /// Gets the effects manager.
-        /// </summary>
-        /// <value>
-        /// The effects manager.
-        /// </value>
-        protected IEffectsManager EffectsManager { get { return renderHost.EffectsManager; } }
-
-        /// <summary>
-        /// Gets the items.
-        /// </summary>
-        /// <value>
-        /// The items.
-        /// </value>
-        public virtual IList<IRenderable> Items
-        {
-            get;
-        } = Constants.EmptyRenderable;
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is hit test visible.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is hit test visible; otherwise, <c>false</c>.
-        /// </value>
-        internal bool IsHitTestVisibleInternal { set; get; } = true;
-        #region Handling Transforms        
-        /// <summary>
-        /// Transforms the changed.
-        /// </summary>
-        /// <param name="totalTransform">The total transform.</param>
-        protected virtual void TransformChanged(ref Matrix totalTransform)
-        {
-            for (int i = 0; i< Items.Count; ++i)
-            {
-                if (Items[i] is ITransform)
-                {
-                    Items[i].ParentMatrix = totalTransform;
-                }
-            }
-        }
-        /// <summary>
-        /// Occurs when [on transform changed].
-        /// </summary>
-        public event EventHandler<TransformArgs> OnTransformChanged;
-        #endregion
-        #region RenderCore
-        private RenderCore renderCore = null;
-        /// <summary>
-        /// Gets or sets the render core.
-        /// </summary>
-        /// <value>
-        /// The render core.
-        /// </value>
-        public RenderCore RenderCore
-        {
-            private set
-            {
-                if (renderCore != value)
-                {
-                    if (renderCore != null)
-                    {
-                        renderCore.OnInvalidateRenderer -= RenderCore_OnInvalidateRenderer;
-                    }
-                    renderCore = value;
-                    if (renderCore != null)
-                    {
-                        renderCore.OnInvalidateRenderer += RenderCore_OnInvalidateRenderer;
-                    }
-                }
-            }
             get
             {
-                if (renderCore == null)
+                if (sceneNode == null)
                 {
-                    RenderCore = OnCreateRenderCore();
-                    AssignDefaultValuesToCore(RenderCore);
+                    lock (sceneNodeLock)
+                    {
+                        if (sceneNode == null)
+                        {
+                            sceneNode = OnCreateSceneNode();
+                            AssignDefaultValuesToSceneNode(sceneNode);
+                            sceneNode.WrapperSource = this;
+                            OnSceneNodeCreated?.Invoke(this, new SceneNodeCreatedEventArgs(sceneNode));
+                        }
+                    }
                 }
-                return renderCore;
+                return sceneNode;
             }
         }
         /// <summary>
-        /// Gets or sets the render technique.
+        /// Called when [create scene node].
+        /// </summary>
+        /// <returns></returns>
+        protected abstract SceneNode OnCreateSceneNode();
+
+        protected virtual void AssignDefaultValuesToSceneNode(SceneNode node) { }
+        #endregion
+        #region Events        
+        /// <summary>
+        /// Occurs when [on scene node created]. Make sure to hook up this event at the top of constructor of class, otherwise may miss the event.
+        /// </summary>
+        public event EventHandler<SceneNodeCreatedEventArgs> OnSceneNodeCreated;
+        #endregion
+        #region IBoundable        
+        /// <summary>
+        /// Gets the bounds.
         /// </summary>
         /// <value>
-        /// The render technique.
+        /// The bounds.
         /// </value>
-        protected IRenderTechnique renderTechnique { private set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns></returns>
-        public delegate IRenderTechnique SetRenderTechniqueFunc(IRenderHost host);
-        /// <summary>
-        /// A delegate function to change render technique. 
-        /// <para>There are two ways to set render technique, one is use this <see cref="OnSetRenderTechnique"/> delegate.
-        /// The other one is to override the <see cref="OnCreateRenderTechnique"/> function.</para>
-        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
-        /// </summary>
-        public SetRenderTechniqueFunc OnSetRenderTechnique;
-        /// <summary>
-        /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="OnSetRenderTechnique"/> is set, then <see cref="OnSetRenderTechnique"/> instead of <see cref="OnCreateRenderTechnique"/> function will be called.</para>
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>Return RenderTechnique</returns>
-        protected virtual IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+        public BoundingBox Bounds
         {
-            return host.RenderTechnique;
+            get { return SceneNode.Bounds; }
         }
         /// <summary>
-        /// Called when [create render core].
+        /// Gets the bounds with transform.
         /// </summary>
-        /// <returns></returns>
-        protected virtual RenderCore OnCreateRenderCore() { return new EmptyRenderCore(); }
-        /// <summary>
-        /// Assigns the default values to core.
-        /// </summary>
-        /// <param name="core">The core.</param>
-        protected virtual void AssignDefaultValuesToCore(RenderCore core) { }
-
-        private void RenderCore_OnInvalidateRenderer(object sender, EventArgs e)
+        /// <value>
+        /// The bounds with transform.
+        /// </value>
+        public BoundingBox BoundsWithTransform
         {
-            InvalidateRender();
-        }
-        #endregion
-        #region Events
-        public event EventHandler<BoolArgs> OnVisibleChanged;
-        #endregion
-        /// <summary>
-        /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
-        /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
-        /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="InvalidateRender"/></para>
-        /// </summary>
-        /// <param name="host">The host.</param>
-        public void Attach(IRenderHost host)
-        {
-            if (IsAttached || host == null || host.EffectsManager == null)
-            {
-                return;
-            }
-            renderHost = host;
-            this.renderTechnique = OnSetRenderTechnique != null ? OnSetRenderTechnique(host) : OnCreateRenderTechnique(host);
-            if(renderTechnique == null)
-            {
-                var techniqueName = RenderHost.EffectsManager.RenderTechniques.FirstOrDefault();
-                if (string.IsNullOrEmpty(techniqueName))
-                {
-                    return;
-                }
-                renderTechnique = RenderHost.EffectsManager[techniqueName];
-            }
-            IsAttached = OnAttach(host);
-            if (IsAttached)
-            {
-                OnAttached();
-            }
-            InvalidateRender();
-        }
-
-        /// <summary>
-        /// To override Attach routine, please override this.
-        /// </summary>
-        /// <param name="host"></param>       
-        /// <returns>Return true if attached</returns>
-        protected virtual bool OnAttach(IRenderHost host)
-        {
-            RenderCore.Attach(renderTechnique);
-            return RenderCore == null ? false : RenderCore.IsAttached;
-        }
-
-        /// <summary>
-        /// Called when [attached] and <see cref="IsAttached"/> = true.
-        /// </summary>
-        protected virtual void OnAttached() { }
-        /// <summary>
-        /// Detaches the element from the host. Override <see cref="OnDetach"/>
-        /// </summary>
-        public void Detach()
-        {
-            if (IsAttached)
-            {
-                IsAttached = false;
-                RenderCore.Detach();
-                OnDetach();
-            }
-        }
-
-        /// <summary>
-        /// Used to override Detach
-        /// </summary>
-        protected virtual void OnDetach()
-        {
-            renderHost = null;
-        }
-
-        protected void InvalidateRenderEvent(object sender, EventArgs arg)
-        {
-            renderHost?.InvalidateRender();
-        }
-
-        /// <summary>
-        /// Tries to invalidate the current render.
-        /// </summary>
-        public void InvalidateRender()
-        {
-            renderHost?.InvalidateRender();
-        }
-
-        /// <summary>
-        /// Updates the element total transforms, determine renderability, etc. by the specified time span.
-        /// </summary>
-        /// <param name="context">The time since last update.</param>
-        public virtual void Update(IRenderContext context)
-        {
-            if (needMatrixUpdate || forceUpdateTransform)
-            {
-                TotalModelMatrix = modelMatrix * parentMatrix;
-                needMatrixUpdate = false;
-            }
-            IsRenderable = CanRender(context);
+            get { return SceneNode.BoundsWithTransform; }
         }
         /// <summary>
-        /// 
+        /// Gets the bounds sphere.
         /// </summary>
-        public virtual void UpdateNotRender(IRenderContext context) { }
-
-        #region Rendering
-
-        /// <summary>
-        /// <para>Determine if this can be rendered.</para>
-        /// <para>Default returns <see cref="IsAttached"/> &amp;&amp; <see cref="Visibility"/> == <see cref="Visibility.Visible"/></para>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected virtual bool CanRender(IRenderContext context)
+        /// <value>
+        /// The bounds sphere.
+        /// </value>
+        public BoundingSphere BoundsSphere
         {
-            return Visible && IsAttached;
+            get { return SceneNode.BoundsSphere; }
         }
         /// <summary>
-        /// <para>Renders the element in the specified context. To override Render, please override <see cref="OnRender"/></para>
-        /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
+        /// Gets the bounds sphere with transform.
         /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="deviceContext"></param>
-        public void Render(IRenderContext context, DeviceContextProxy deviceContext)
+        /// <value>
+        /// The bounds sphere with transform.
+        /// </value>
+        public BoundingSphere BoundsSphereWithTransform
         {
-            Update(context);
-            if (IsRenderable)
-            {
-                OnRender(context, deviceContext);
-            }
-        }
-        /// <summary>
-        /// Called when [render].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="deviceContext">The device context.</param>
-        protected virtual void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
-        {
-            RenderCore.Render(context, deviceContext);
+            get { return SceneNode.BoundsSphereWithTransform; }
         }
         #endregion
 
@@ -420,223 +156,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <returns></returns>
         public virtual bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
-            if (CanHitTest(context))
-            {
-                return OnHitTest(context, totalModelMatrix, ref ray, ref hits);
-            }
-            else
-            {
-                return false;
-            }
-        }
-        /// <summary>
-        /// Determines whether this instance [can hit test] the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
-        /// </returns>
-        protected virtual bool CanHitTest(IRenderContext context)
-        {
-            return IsHitTestVisibleInternal && IsRenderable;
-        }
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="totalModelMatrix">The total model matrix.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        protected abstract bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits);
-        #endregion
-
-        #region IBoundable        
-        /// <summary>
-        /// The maximum bound
-        /// </summary>
-        public static readonly BoundingBox MaxBound = new BoundingBox(new Vector3(float.MaxValue), new Vector3(float.MaxValue));
-        /// <summary>
-        /// The maximum bound sphere
-        /// </summary>
-        public static readonly global::SharpDX.BoundingSphere MaxBoundSphere = new global::SharpDX.BoundingSphere(Vector3.Zero, float.MaxValue);
-        /// <summary>
-        /// Gets the bounds.
-        /// </summary>
-        /// <value>
-        /// The bounds.
-        /// </value>
-        public virtual BoundingBox Bounds
-        {
-            get { return MaxBound; }
-        }
-        /// <summary>
-        /// Gets the bounds with transform.
-        /// </summary>
-        /// <value>
-        /// The bounds with transform.
-        /// </value>
-        public virtual BoundingBox BoundsWithTransform
-        {
-            get { return MaxBound; }
-        }
-        /// <summary>
-        /// Gets the bounds sphere.
-        /// </summary>
-        /// <value>
-        /// The bounds sphere.
-        /// </value>
-        public virtual global::SharpDX.BoundingSphere BoundsSphere
-        {
-            get { return MaxBoundSphere; }
-        }
-        /// <summary>
-        /// Gets the bounds sphere with transform.
-        /// </summary>
-        /// <value>
-        /// The bounds sphere with transform.
-        /// </value>
-        public virtual global::SharpDX.BoundingSphere BoundsSphereWithTransform
-        {
-            get { return MaxBoundSphere; }
-        }
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance has bound.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance has bound; otherwise, <c>false</c>.
-        /// </value>
-        public bool HasBound { protected set; get; } = false;
-        /// <summary>
-        /// Occurs when [property changed].
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-        /// <summary>
-        /// Occurs when [on bound changed].
-        /// </summary>
-        public event EventHandler<BoundChangeArgs<BoundingBox>> OnBoundChanged;
-        /// <summary>
-        /// Occurs when [on transform bound changed].
-        /// </summary>
-        public event EventHandler<BoundChangeArgs<BoundingBox>> OnTransformBoundChanged;
-        /// <summary>
-        /// Occurs when [on bound sphere changed].
-        /// </summary>
-        public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingSphere>> OnBoundSphereChanged;
-        /// <summary>
-        /// Occurs when [on transform bound sphere changed].
-        /// </summary>
-        public event EventHandler<BoundChangeArgs<global::SharpDX.BoundingSphere>> OnTransformBoundSphereChanged;
-        /// <summary>
-        /// Raises the on transform bound changed.
-        /// </summary>
-        /// <param name="args">The arguments.</param>
-        protected void RaiseOnTransformBoundChanged(BoundChangeArgs<BoundingBox> args)
-        {
-            OnTransformBoundChanged?.Invoke(this, args);
-        }
-        /// <summary>
-        /// Raises the on bound changed.
-        /// </summary>
-        /// <param name="args">The arguments.</param>
-        protected void RaiseOnBoundChanged(BoundChangeArgs<BoundingBox> args)
-        {
-            OnBoundChanged?.Invoke(this, args);
-        }
-
-        /// <summary>
-        /// Raises the on transform bound sphere changed.
-        /// </summary>
-        /// <param name="args">The arguments.</param>
-        protected void RaiseOnTransformBoundSphereChanged(BoundChangeArgs<global::SharpDX.BoundingSphere> args)
-        {
-            OnTransformBoundSphereChanged?.Invoke(this, args);
-        }
-        /// <summary>
-        /// Raises the on bound sphere changed.
-        /// </summary>
-        /// <param name="args">The arguments.</param>
-        protected void RaiseOnBoundSphereChanged(BoundChangeArgs<global::SharpDX.BoundingSphere> args)
-        {
-            OnBoundSphereChanged?.Invoke(this, args);
+            return SceneNode.HitTest(context, ray, ref hits);
         }
         #endregion
 
-
-        #region INotifyPropertyChanged
-        private bool disablePropertyChangedEvent = false;
-        /// <summary>
-        /// Gets or sets a value indicating whether [disable property changed event].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [disable property changed event]; otherwise, <c>false</c>.
-        /// </value>
-        public bool DisablePropertyChangedEvent
+        public void InvalidateRender()
         {
-            set
-            {
-                if (disablePropertyChangedEvent == value)
-                {
-                    return;
-                }
-                disablePropertyChangedEvent = value;
-                RaisePropertyChanged();
-            }
-            get
-            {
-                return disablePropertyChangedEvent;
-            }
+            SceneNode.InvalidateRender();
         }
-        /// <summary>
-        /// Raises the property changed.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            if (!DisablePropertyChangedEvent)
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        /// <summary>
-        /// Sets the specified backing field.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="backingField">The backing field.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns></returns>
-        protected bool Set<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(backingField, value))
-            {
-                return false;
-            }
-
-            backingField = value;
-            this.RaisePropertyChanged(propertyName);
-            return true;
-        }
-        /// <summary>
-        /// Sets the specified backing field.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="backingField">The backing field.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="raisePropertyChanged">if set to <c>true</c> [raise property changed].</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns></returns>
-        protected bool Set<T>(ref T backingField, T value, bool raisePropertyChanged, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(backingField, value))
-            {
-                return false;
-            }
-
-            backingField = value;
-            if (raisePropertyChanged)
-            { this.RaisePropertyChanged(propertyName); }
-            return true;
-        }
-#endregion
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls        
@@ -650,6 +177,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             {
                 if (disposing)
                 {
+                    Disposer.RemoveAndDispose(ref sceneNode);
                     // TODO: dispose managed state (managed objects).
                 }
 
@@ -678,5 +206,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             // GC.SuppressFinalize(this);
         }
         #endregion
+
+        public static implicit operator SceneNode(Element3DCore core)
+        {
+            return core.SceneNode;
+        }
     }
 }

@@ -54,7 +54,8 @@
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}">
                 <hx:InstancingMeshGeometryModel3D.OctreeManager>
-                    <hx:InstancingModel3DOctreeManager x:Name="manager" RecordHitPathBoundingBoxes="True" />
+                    <hx:InstancingModel3DOctreeManager x:Name="manager" RecordHitPathBoundingBoxes="True" 
+                                                       EnableOctreeOutput="True"/>
                 </hx:InstancingMeshGeometryModel3D.OctreeManager>
             </hx:InstancingMeshGeometryModel3D>
             <hx:OctreeLineGeometryModel3D

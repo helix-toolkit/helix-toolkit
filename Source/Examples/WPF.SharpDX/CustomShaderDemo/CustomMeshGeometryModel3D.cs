@@ -1,10 +1,6 @@
 using HelixToolkit.Wpf.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HelixToolkit.Wpf.SharpDX.Model.Scene;
 using System.Windows;
 
 namespace CustomShaderDemo
@@ -15,7 +11,7 @@ namespace CustomShaderDemo
             typeof(CustomMeshGeometryModel3D),
             new PropertyMetadata(null, (d, e) =>
             {
-                ((d as Element3D).RenderCore as CustomMeshCore).ColorGradients = (Color4Collection)e.NewValue;
+                ((d as Element3D).SceneNode as CustomMeshNode).ColorGradients = (Color4Collection)e.NewValue;
             }));
 
         public Color4Collection ColorGradient
@@ -33,7 +29,7 @@ namespace CustomShaderDemo
             typeof(CustomMeshGeometryModel3D),
             new PropertyMetadata(5.0, (d, e) =>
             {
-                ((d as Element3D).RenderCore as CustomMeshCore).DataHeightScale = (float)(double)e.NewValue;
+                ((d as Element3D).SceneNode as CustomMeshNode).HeightScale = (float)(double)e.NewValue;
             }));
 
         public double HeightScale
@@ -48,21 +44,16 @@ namespace CustomShaderDemo
             }
         }
 
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new CustomMeshCore();
+            return new CustomMeshNode();
         }
 
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            return host.EffectsManager[CustomShaderNames.DataSampling];
-        }
-
-        protected override void AssignDefaultValuesToCore(RenderCore core)
-        {
-            base.AssignDefaultValuesToCore(core);
-            (core as CustomMeshCore).ColorGradients = ColorGradient;
-            (core as CustomMeshCore).DataHeightScale = (float)HeightScale;
+            base.AssignDefaultValuesToSceneNode(core);
+            (core as CustomMeshNode).ColorGradients = ColorGradient;
+            (core as CustomMeshNode).HeightScale = (float)HeightScale;
         }
     }
 }

@@ -1,13 +1,11 @@
-﻿using HelixToolkit.Wpf.SharpDX.Core;
-using SharpDX;
-using System;
-using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Model.Scene;
     /// <summary>
     /// Highlight the border of meshes
     /// </summary>
@@ -33,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("EffectName", typeof(string), typeof(PostEffectMeshOutlineBlur), 
                 new PropertyMetadata(DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IPostEffectOutlineBlur).EffectName = (string)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectMeshOutlineBlur).EffectName = (string)e.NewValue;
             }));
 
 
@@ -55,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ColorProperty =
             DependencyProperty.Register("Color", typeof(Color), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(Colors.Red, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IPostEffectOutlineBlur).Color = ((Color)e.NewValue).ToColor4();
+                ((d as Element3DCore).SceneNode as NodePostEffectMeshOutlineBlur).Color = ((Color)e.NewValue).ToColor4();
             }));
 
 
@@ -77,7 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ScaleXProperty =
             DependencyProperty.Register("ScaleX", typeof(double), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(1.0, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IPostEffectOutlineBlur).ScaleX = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectMeshOutlineBlur).ScaleX = (float)(double)e.NewValue;
             }));
         /// <summary>
         /// Gets or sets the scale y.
@@ -97,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty ScaleYProperty =
             DependencyProperty.Register("ScaleY", typeof(double), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(1.0, (d, e) =>
             {
-                ((d as IRenderable).RenderCore as IPostEffectOutlineBlur).ScaleY = (float)(double)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectMeshOutlineBlur).ScaleY = (float)(double)e.NewValue;
             }));
 
         /// <summary>
@@ -118,64 +116,26 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty NumberOfBlurPassProperty =
             DependencyProperty.Register("NumberOfBlurPass", typeof(int), typeof(PostEffectMeshOutlineBlur), new PropertyMetadata(1, (d,e)=> 
             {
-                ((d as IRenderable).RenderCore as IPostEffectOutlineBlur).NumberOfBlurPass = (int)e.NewValue;
+                ((d as Element3DCore).SceneNode as NodePostEffectMeshOutlineBlur).NumberOfBlurPass = (int)e.NewValue;
             }));
 
-
-        /// <summary>
-        /// Called when [create render core].
-        /// </summary>
-        /// <returns></returns>
-        protected override RenderCore OnCreateRenderCore()
+        protected override SceneNode OnCreateSceneNode()
         {
-            return new PostEffectMeshOutlineBlurCore();
+            return new NodePostEffectMeshOutlineBlur();
         }
 
-        /// <summary>
-        /// Override this function to set render technique during Attach Host.
-        /// <para>If <see cref="Element3DCore.OnSetRenderTechnique" /> is set, then <see cref="Element3DCore.OnSetRenderTechnique" /> instead of <see cref="OnCreateRenderTechnique" /> function will be called.</para>
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns>
-        /// Return RenderTechnique
-        /// </returns>
-        protected override IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            return host.EffectsManager[DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur];
+            base.AssignDefaultValuesToSceneNode(core);
+            if(core is NodePostEffectMeshOutlineBlur c)
+            {
+                c.EffectName = EffectName;
+                c.Color = Color.ToColor4();
+                c.ScaleX = (float)ScaleX;
+                c.ScaleY = (float)ScaleY;
+                c.NumberOfBlurPass = (int)NumberOfBlurPass;
+            }
         }
 
-        protected override void AssignDefaultValuesToCore(RenderCore core)
-        {
-            base.AssignDefaultValuesToCore(core);
-            (core as IPostEffectOutlineBlur).EffectName = EffectName;
-            (core as IPostEffectOutlineBlur).Color = Color.ToColor4();
-            (core as IPostEffectOutlineBlur).ScaleX = (float)ScaleX;
-            (core as IPostEffectOutlineBlur).ScaleY = (float)ScaleY;
-            (core as IPostEffectOutlineBlur).NumberOfBlurPass = (int)NumberOfBlurPass;
-        }
-        /// <summary>
-        /// Determines whether this instance [can hit test] the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
-        /// </returns>
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return false;
-        }
-        /// <summary>
-        /// Called when [hit test].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="totalModelMatrix">The total model matrix.</param>
-        /// <param name="ray">The ray.</param>
-        /// <param name="hits">The hits.</param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return false;
-        }
     }
 }

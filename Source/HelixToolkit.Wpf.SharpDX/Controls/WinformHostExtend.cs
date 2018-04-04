@@ -71,6 +71,12 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             Capture();
             RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, wpfButton.Value)
             {
+                RoutedEvent = Mouse.PreviewMouseDownEvent,
+                Source = this,
+            });
+
+            RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, wpfButton.Value)
+            {
                 RoutedEvent = Mouse.MouseDownEvent,
                 Source = this,
             });

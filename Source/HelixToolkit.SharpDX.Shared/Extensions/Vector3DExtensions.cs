@@ -89,6 +89,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return new global::SharpDX.Vector2((float)p.X, (float)p.Y);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Windows.Foundation.Point ToPoint(this global::SharpDX.Vector2 p)
+        {
+            return new Windows.Foundation.Point(p.X, p.Y);
+        }
 #else
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector2 ToVector2(this Point vector)
@@ -136,6 +142,29 @@ namespace HelixToolkit.Wpf.SharpDX
             return new global::SharpDX.Vector4((float)vector.X, (float)vector.Y, (float)vector.Z, w);
         }
 
+        /// <summary>
+        /// Angles the between two vectors. Return Radians;
+        /// </summary>
+        /// <param name="vector1">The vector1.</param>
+        /// <param name="vector2">The vector2.</param>
+        /// <returns></returns>
+        public static float AngleBetween(this Vector3 vector1, Vector3 vector2)
+        {
+            vector1.Normalize();
+            vector2.Normalize();
+            var ratio = Vector3.Dot(vector1, vector2);
+            float theta;
+
+            if (ratio < 0)
+            {
+                theta = (float)(Math.PI - 2.0 * Math.Asin((-vector1 - vector2).Length() / 2.0));
+            }
+            else
+            {
+                theta = (float)(2.0 * Math.Asin((vector1 - vector2).Length() / 2.0));
+            }
+            return theta;
+        }
 #if !NETFX_CORE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector4 ToVector4(this Transform3D trafo)
@@ -323,7 +352,7 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color4 ToColor4(this Media.Color color)
         {
-            return new global::SharpDX.Color4(color.R, color.G, color.B, color.A);
+            return new global::SharpDX.Color4((float)color.R / 255, (float)color.G / 255, (float)color.B / 255, (float)color.A / 255);
         }
 #endif
     }

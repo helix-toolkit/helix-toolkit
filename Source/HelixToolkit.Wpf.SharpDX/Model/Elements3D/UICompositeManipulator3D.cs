@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Data;
 
     using global::SharpDX;
-    using Core;
+    using Model;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
 
     public class UICompositeManipulator3D : CompositeModel3D
@@ -174,6 +174,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public UICompositeManipulator3D()
         {
+            OnSceneNodeCreated += (s, e) =>
+            {
+                e.Node.OnAttached += SceneNode_OnAttached;
+            };
             this.translateX = new UITranslateManipulator3D { Direction = new Vector3(1, 0, 0), Material = PhongMaterials.Red };
             this.translateY = new UITranslateManipulator3D { Direction = new Vector3(0, 1, 0), Material = PhongMaterials.Green };
             this.translateZ = new UITranslateManipulator3D { Direction = new Vector3(0, 0, 1), Material = PhongMaterials.Blue };
@@ -210,6 +214,11 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Children.Add(this.rotateZ);
         }
 
+        private void SceneNode_OnAttached(object sender, System.EventArgs e)
+        {
+            OnChildrenChanged();
+        }
+
         /// <summary>
         /// Binds this manipulator to a given Model3D.
         /// </summary>
@@ -231,36 +240,30 @@ namespace HelixToolkit.Wpf.SharpDX
             BindingOperations.ClearBinding(this, TransformProperty);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="totalModelMatrix"></param>
-        /// <param name="ray"></param>
-        /// <param name="hits"></param>
-        /// <returns></returns>
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            bool hit = false;
-            foreach (var c in this.Children)
-            {
-                var hc = c as IHitable;
-                if (hc != null)
-                {
-                    if (hc.HitTest(context, ray, ref hits))
-                    {
-                        hit = true;
-                    }
-                }
-            }
-            return hit;
-        }
-
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            OnChildrenChanged();
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="context"></param>
+        ///// <param name="totalModelMatrix"></param>
+        ///// <param name="ray"></param>
+        ///// <param name="hits"></param>
+        ///// <returns></returns>
+        //protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        //{
+        //    bool hit = false;
+        //    foreach (var c in this.Children)
+        //    {
+        //        var hc = c as IHitable;
+        //        if (hc != null)
+        //        {
+        //            if (hc.HitTest(context, ray, ref hits))
+        //            {
+        //                hit = true;
+        //            }
+        //        }
+        //    }
+        //    return hit;
+        //}
 
         /// <summary>
         /// The on children changed.
@@ -295,9 +298,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private static void ChildrenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if ((d as UICompositeManipulator3D).IsAttached)
+            var model = d as UICompositeManipulator3D;
+            if (model.SceneNode.IsAttached)
             {
-                ((UICompositeManipulator3D)d).OnChildrenChanged();
+                model.OnChildrenChanged();
             }
         }
     }

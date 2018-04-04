@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets the Model3D intersected by the ray along which the hit test was performed.
         /// Model3D intersected by the ray.
         /// </summary>        
-        public IRenderable ModelHit { get; set; }
+        public object ModelHit { get; set; }
 
         /// <summary>
         /// Gets the Point at the intersection between the ray along which the hit
@@ -101,12 +101,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The model hit.
         /// </value>
-        public IRenderable2D ModelHit { private set; get; }
+        public object ModelHit { private set; get; }
         /// <summary>
         /// Initializes a new instance of the <see cref="HitTest2DResult"/> class.
         /// </summary>
         /// <param name="model">The model.</param>
-        public HitTest2DResult(IRenderable2D model)
+        public HitTest2DResult(object model)
         {
             ModelHit = model;
         }

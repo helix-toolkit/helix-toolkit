@@ -69,7 +69,7 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            
+            EnableRenderFrustum="True"
             EnableSwapChainRendering="True"
             IsShadowMappingEnabled="False"
             MSAA="Two"

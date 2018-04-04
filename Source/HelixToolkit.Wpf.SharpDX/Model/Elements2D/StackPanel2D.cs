@@ -7,6 +7,10 @@ using System.Linq;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
+    using Model.Scene2D;
+    using Extensions;
+    using Orientation = System.Windows.Controls.Orientation;
+
     public class StackPanel2D : Panel2D
     {
         /// <summary>
@@ -26,78 +30,15 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         /// </summary>
         public static readonly DependencyProperty OrientationProperty =
             DependencyProperty.Register("Orientation", typeof(Orientation), typeof(StackPanel2D), new PropertyMetadata(Orientation.Horizontal, 
-                (d, e) => { (d as Element2DCore).InvalidateMeasure(); }));
-
-        public StackPanel2D()
-        {
-            EnableBitmapCache = true;
-        }
-
-        protected override Size2F MeasureOverride(Size2F availableSize)
-        {
-            var constraint = availableSize;
-
-            var size = new Size2F();
-            switch (Orientation)
-            {
-                case Orientation.Horizontal:
-                    availableSize.Width = float.PositiveInfinity;
-                    break;
-                case Orientation.Vertical:
-                    availableSize.Height = float.PositiveInfinity;
-                    break;
-            }
-
-            foreach(var child in Items)
-            {
-                if(child is Element2DCore c)
+                (d, e) => 
                 {
-                    child.Measure(availableSize);
-                    switch (Orientation)
-                    {
-                        case Orientation.Horizontal:
-                            size.Width += c.DesiredSize.X;
-                            size.Height = Math.Max(size.Height, c.DesiredSize.Y);
-                            break;
-                        case Orientation.Vertical:
-                            size.Width = Math.Max(c.DesiredSize.X, size.Width);
-                            size.Height += c.DesiredSize.Y;
-                            break;
-                    }
-                }
-            }
+                    ((d as Element2DCore).SceneNode as StackPanelNode2D).Orientation = ((Orientation)e.NewValue).ToD2DOrientation();
+                }));
 
-            return size;
-        }
 
-        protected override RectangleF ArrangeOverride(RectangleF finalSize)
+        protected override SceneNode2D OnCreateSceneNode()
         {
-            float lastSize = 0;
-            var totalSize = finalSize;
-            foreach(var child in Items)
-            {
-                if(child is Element2DCore c)
-                {
-                    switch (Orientation)
-                    {
-                        case Orientation.Horizontal:
-                            totalSize.Left += lastSize;
-                            lastSize = c.DesiredSize.X;
-                            totalSize.Right = totalSize.Left + lastSize;
-                            //totalSize.Bottom = totalSize.Top + Math.Min(finalSize.Height, c.DesiredSize.Y);
-                            break;
-                        case Orientation.Vertical:
-                            totalSize.Top += lastSize;
-                            lastSize = c.DesiredSize.Y;
-                            //totalSize.Right = totalSize.Left + Math.Min(finalSize.Width, c.DesiredSize.X);
-                            totalSize.Bottom = totalSize.Top + lastSize;
-                            break;
-                    }
-                    c.Arrange(totalSize);
-                }
-            }
-            
-            return finalSize;
+            return new StackPanelNode2D();
         }
     }
 }

@@ -25,10 +25,11 @@ namespace HelixToolkit.UWP
 {
 
     using Utilities;
-    using Model;
+    using Model.Scene;
     using Core2D;
     using HelixToolkit.Logger;
     using Core;
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -203,14 +204,14 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The per frame renderable.
         /// </value>
-        List<IRenderable> PerFrameRenderables { get; }
+        List<SceneNode> PerFrameRenderables { get; }
         /// <summary>
         /// Gets the current frame renderables for rendering.
         /// </summary>
         /// <value>
         /// The per frame renderable.
         /// </value>
-        IEnumerable<ILight3D> PerFrameLights { get; }
+        IEnumerable<LightCoreBase> PerFrameLights { get; }
         /// <summary>
         /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameGeneralRenderCores"/>
         /// </summary>
@@ -268,6 +269,13 @@ namespace HelixToolkit.UWP
         /// The render configuration.
         /// </value>
         DX11RenderHostConfiguration RenderConfiguration { set; get; }
+        /// <summary>
+        /// Gets the render buffer.
+        /// </summary>
+        /// <value>
+        /// The render buffer.
+        /// </value>
+        IDX11RenderBufferProxy RenderBuffer { get; }
 
         /// <summary>
         /// Clears the render target.

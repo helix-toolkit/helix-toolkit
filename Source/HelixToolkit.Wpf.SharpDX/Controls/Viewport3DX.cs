@@ -26,7 +26,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Animation;
     using System.Windows.Media.Media3D;
     using MouseButtons = System.Windows.Forms.MouseButtons;
-
+    using Model;
+    using Model.Scene;
+    using Model.Scene2D;
     /// <summary>
     /// Provides a Viewport control.
     /// </summary>
@@ -197,15 +199,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <para>Return enumerable of all the rederable elements</para>
         /// <para>If enabled shared model mode, the returned rederables are current viewport renderable plus shared models</para>
         /// </summary>
-        public IEnumerable<IRenderable> Renderables
+        public IEnumerable<SceneNode> Renderables
         {
             get
             {
                 if (renderHostInternal != null)
                 {
-                    foreach (IRenderable item in Items)
+                    foreach (Element3DCore item in Items)
                     {
-                        yield return item;
+                        yield return item.SceneNode;
                     }
                     if (renderHostInternal.EnableSharingModelMode && renderHostInternal.SharedModelContainer != null)
                     {
@@ -214,34 +216,34 @@ namespace HelixToolkit.Wpf.SharpDX
                             yield return item;
                         }
                     }
-                    yield return viewCube;
-                    yield return coordinateView;
+                    yield return viewCube.SceneNode;
+                    yield return coordinateView.SceneNode;
                 }
             }
         }
 
-        private IEnumerable<IRenderable> OwnedRenderables
+        private IEnumerable<SceneNode> OwnedRenderables
         {
             get
             {
                 if (renderHostInternal != null)
                 {
-                    foreach (IRenderable item in Items)
+                    foreach (Element3DCore item in Items)
                     {
-                        yield return item;
+                        yield return item.SceneNode;
                     }
-                    yield return viewCube;
-                    yield return coordinateView;
+                    yield return viewCube.SceneNode;
+                    yield return coordinateView.SceneNode;
                 }
             }
         }
 
-        public IEnumerable<IRenderable2D> D2DRenderables
+        public IEnumerable<SceneNode2D> D2DRenderables
         {
             get
             {
-                yield return overlay2D;
-                yield return frameStatisticModel;
+                yield return overlay2D.SceneNode;
+                yield return frameStatisticModel.SceneNode;
             }
         }
 
@@ -252,8 +254,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private Window parentWindow;
 
         private Overlay overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
-
-        private bool useSwapChain = false;
 
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
@@ -604,12 +604,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     dpiXScale = 1.0 / source.CompositionTarget.TransformToDevice.M11;
                     dpiYScale = 1.0 / source.CompositionTarget.TransformToDevice.M22;
                 }
-                useSwapChain = true;
                 hostPresenter.Content = new DPFSurfaceSwapChain(EnableDeferredRendering) { DPIXScale = dpiXScale, DPIYScale = dpiYScale };
             }
             else
             {
-                useSwapChain = false;
                 hostPresenter.Content = new DPFCanvas(EnableDeferredRendering);
             }
             renderHostInternal = (hostPresenter.Content as IRenderCanvas).RenderHost;
@@ -624,7 +622,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
                 this.renderHostInternal.Viewport = this;
                 this.renderHostInternal.EffectsManager = this.EffectsManager;
-                this.renderHostInternal.IsRendering = this.Visibility == Visibility.Visible;
+                this.renderHostInternal.IsRendering = this.Visibility == System.Windows.Visibility.Visible;
                 this.renderHostInternal.RenderConfiguration.RenderD2D = EnableD2DRendering;
                 this.renderHostInternal.RenderConfiguration.AutoUpdateOctree = EnableAutoOctreeUpdate;
                 if (ShowFrameRate)
@@ -881,12 +879,12 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (!IsAttached)
             {
-                foreach (IRenderable e in this.OwnedRenderables)
+                foreach (var e in this.OwnedRenderables)
                 {
                     e.Attach(host);
                 }
                 sharedModelContainerInternal?.Attach(host);
-                foreach(IRenderable2D e in this.D2DRenderables)
+                foreach(var e in this.D2DRenderables)
                 {
                     e.Attach(host);
                 }
@@ -902,12 +900,12 @@ namespace HelixToolkit.Wpf.SharpDX
             if (IsAttached)
             {
                 IsAttached = false;
-                foreach (IRenderable e in this.OwnedRenderables)
+                foreach (var e in this.OwnedRenderables)
                 {
                     e.Detach();
                 }
                 sharedModelContainerInternal?.Detach();
-                foreach(IRenderable2D e in this.D2DRenderables)
+                foreach(var e in this.D2DRenderables)
                 {
                     e.Detach();
                 }
@@ -951,18 +949,6 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
         {            
             base.OnPreviewMouseDown(e);
-            if (useSwapChain) { return; }
-            if (this.touchDownDevice == null)
-            {
-                this.Focus();
-                this.MouseDownHitTest(e.GetPosition(this), e);
-            }
-        }
-
-        protected override void OnMouseDown(MouseButtonEventArgs e)
-        {
-            base.OnMouseDown(e);
-            if (!useSwapChain) { return; }
             if (this.touchDownDevice == null)
             {
                 this.Focus();

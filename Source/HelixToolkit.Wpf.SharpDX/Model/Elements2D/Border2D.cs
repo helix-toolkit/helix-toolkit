@@ -1,15 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
-using D2D = global::SharpDX.Direct2D1;
-using SharpDX;
 
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
-    using Extensions;
-    using SharpDX;
     using Core2D;
+    using Extensions;
+    using Model.Scene2D;
+    using SharpDX;
+    using Thickness = System.Windows.Thickness;
+
     public class Border2D : ContentElement2D
     {
         public double CornerRadius
@@ -21,11 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register("CornerRadius", typeof(double), typeof(Border2D), new PropertyMetadata(0.0,
                 (d,e)=> {
-                    if((d as Border2D).borderCore == null)
-                    {
-                        return;
-                    }
-                    (d as Border2D).borderCore.CornerRadius = (float)(double)e.NewValue;
+                    ((d as Element2DCore).SceneNode as BorderNode2D).CornerRadius = (float)(double)e.NewValue;
                 }));
 
         public Thickness Padding
@@ -36,7 +31,10 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         public static readonly DependencyProperty PaddingProperty =
             DependencyProperty.Register("Padding", typeof(Thickness), typeof(Border2D), new PropertyMetadata(new Thickness(0,0,0,0), 
-                (d, e) => { (d as Element2DCore).InvalidateMeasure(); }));
+                (d, e) => 
+                {
+                    ((d as Element2DCore).SceneNode as BorderNode2D).Padding = ((Thickness)e.NewValue).ToD2DThickness();
+                }));
 
         #region Stroke properties
         public static DependencyProperty BorderBrushProperty
@@ -62,7 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         = DependencyProperty.Register("StrokeDashCap", typeof(PenLineCap), typeof(Border2D), new PropertyMetadata(PenLineCap.Flat,
             (d, e) =>
             {
-                (d as Border2D).strokeStyleChanged = true;
+                ((d as Element2DCore).SceneNode as BorderNode2D).StrokeDashCap = ((PenLineCap)e.NewValue).ToD2DCapStyle();
             }));
 
         public PenLineCap StrokeDashCap
@@ -81,7 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("StrokeStartLineCap", typeof(PenLineCap), typeof(Border2D), new PropertyMetadata(PenLineCap.Flat,
                 (d, e) =>
                 {
-                    (d as Border2D).strokeStyleChanged = true;
+                    ((d as Element2DCore).SceneNode as BorderNode2D).StrokeStartLineCap = ((PenLineCap)e.NewValue).ToD2DCapStyle();
                 }));
 
         public PenLineCap StrokeStartLineCap
@@ -100,7 +98,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         = DependencyProperty.Register("StrokeEndLineCap", typeof(PenLineCap), typeof(Border2D), new PropertyMetadata(PenLineCap.Flat,
             (d, e) =>
             {
-                (d as Border2D).strokeStyleChanged = true;
+                ((d as Element2DCore).SceneNode as BorderNode2D).StrokeEndLineCap = ((PenLineCap)e.NewValue).ToD2DCapStyle();
             }));
 
         public PenLineCap StrokeEndLineCap
@@ -119,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("StrokeDashStyle", typeof(DashStyle), typeof(Border2D), new PropertyMetadata(DashStyles.Solid,
                 (d, e) =>
                 {
-                    (d as Border2D).strokeStyleChanged = true;
+                    ((d as Element2DCore).SceneNode as BorderNode2D).StrokeDashStyle = ((DashStyle)e.NewValue).ToD2DDashStyle();
                 }));
 
         public DashStyle StrokeDashStyle
@@ -138,7 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("StrokeDashOffset", typeof(double), typeof(Border2D), new PropertyMetadata(0.0,
                 (d, e) =>
                 {
-                    (d as Border2D).strokeStyleChanged = true;
+                    ((d as Element2DCore).SceneNode as BorderNode2D).StrokeDashOffset = (float)(double)e.NewValue;
                 }));
 
         public double StrokeDashOffset
@@ -157,7 +155,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         = DependencyProperty.Register("StrokeLineJoin", typeof(PenLineJoin), typeof(Border2D), new PropertyMetadata(PenLineJoin.Miter,
             (d, e) =>
             {
-                (d as Border2D).strokeStyleChanged = true;
+                ((d as Element2DCore).SceneNode as BorderNode2D).StrokeLineJoin = ((PenLineJoin)e.NewValue).ToD2DLineJoin();
             }));
 
 
@@ -177,7 +175,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("StrokeMiterLimit", typeof(double), typeof(Border2D), new PropertyMetadata(1.0,
                 (d, e) =>
                 {
-                    (d as Border2D).strokeStyleChanged = true;
+                    ((d as Element2DCore).SceneNode as BorderNode2D).StrokeMiterLimit = (float)(double)e.NewValue;
                 }));
 
         public double StrokeMiterLimit
@@ -196,12 +194,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             = DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Border2D), 
                 new PropertyMetadata(new Thickness(0,0,0,0), (d, e) =>
                 {
-                    var m = d as Border2D;
-                    if (m.borderCore == null)
-                    { return; }
-                    var thick = (Thickness)e.NewValue;
-                    m.borderCore.BorderThickness = new Vector4((float)thick.Left, (float)thick.Top, (float)thick.Right, (float)thick.Bottom);
-                    m.InvalidateMeasure();
+                    ((d as Element2DCore).SceneNode as BorderNode2D).BorderThickness = ((Thickness)e.NewValue).ToD2DThickness();
                 }));
 
         public Thickness BorderThickness
@@ -218,96 +211,42 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         #endregion
 
         private bool strokeChanged = true;
-        private bool strokeStyleChanged = true;
 
-        protected override bool OnAttach(IRenderHost host)
+        protected override SceneNode2D OnCreateSceneNode()
         {
-            if (base.OnAttach(host))
-            {
-                strokeChanged = true;
-                strokeStyleChanged = true;
-                OnAssignVariables();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return new BorderNode2D();
         }
 
-        protected virtual void OnAssignVariables()
+        protected override void OnAttached()
         {
-            borderCore.CornerRadius = (float)this.CornerRadius;
-            borderCore.BorderThickness = new Vector4((float)BorderThickness.Left, (float)BorderThickness.Top, (float)BorderThickness.Right, (float)BorderThickness.Bottom);
+            base.OnAttached();
+            strokeChanged = true;
         }
 
-        public override void Update(IRenderContext2D context)
+        protected override void OnUpdate(IRenderContext2D context)
         {
-            base.Update(context);
+            base.OnUpdate(context);
             if (strokeChanged)
             {
-                borderCore.StrokeBrush = BorderBrush.ToD2DBrush(context.DeviceContext);
+                (SceneNode as BorderNode2D).BorderBrush = BorderBrush.ToD2DBrush(context.DeviceContext);
                 strokeChanged = false;
             }
-            if (strokeStyleChanged)
-            {
-                borderCore.StrokeStyle = new D2D.StrokeStyle(context.DeviceResources.Factory2D,
-                    new D2D.StrokeStyleProperties()
-                    {
-                        DashCap = this.StrokeDashCap.ToD2DCapStyle(),
-                        StartCap = StrokeStartLineCap.ToD2DCapStyle(),
-                        EndCap = StrokeEndLineCap.ToD2DCapStyle(),
-                        DashOffset = (float)StrokeDashOffset,
-                        LineJoin = StrokeLineJoin.ToD2DLineJoin(),
-                        MiterLimit = Math.Max(1, (float)StrokeMiterLimit),
-                        DashStyle = StrokeDashStyle.ToD2DDashStyle()
-                    });
-                strokeStyleChanged = false;
-            }
         }
 
-        protected override Size2F MeasureOverride(Size2F availableSize)
+        protected override void AssignDefaultValuesToSceneNode(SceneNode2D node)
         {
-            if (contentInternal != null)
-            {
-                var margin = new Size2F((float)(BorderThickness.Left/2 + Padding.Left + BorderThickness.Right/2 + Padding.Right), 
-                    (float)(BorderThickness.Top/2 + Padding.Top + BorderThickness.Bottom/2 + Padding.Bottom));
-                var childAvail = new Size2F(Math.Max(0, availableSize.Width - margin.Width), Math.Max(0, availableSize.Height - margin.Height));
-                
-                var size = base.MeasureOverride(childAvail);
-                if(WidthInternal != float.PositiveInfinity && HeightInternal != float.PositiveInfinity)
-                {
-                    return availableSize;
-                }
-                else
-                {
-                    if(WidthInternal != float.PositiveInfinity)
-                    {
-                        size.Width = WidthInternal;
-                    }
-                    if(HeightInternal != float.PositiveInfinity)
-                    {
-                        size.Height = HeightInternal;
-                    }
-                    return size;
-                }
-            }
-            else
-            {
-                return new Size2F((float)(BorderThickness.Left/2 + Padding.Left + BorderThickness.Right/2 + Padding.Right + MarginWidthHeight.X + WidthInternal == float.PositiveInfinity ? 0 : WidthInternal),
-                    (float)(BorderThickness.Top/2 + Padding.Top + BorderThickness.Bottom/2 + Padding.Bottom + MarginWidthHeight.Y + HeightInternal == float.PositiveInfinity ? 0 : HeightInternal));
-            }
-        }
-
-        protected override RectangleF ArrangeOverride(RectangleF finalSize)
-        {
-            var contentRect = new RectangleF(finalSize.Left, finalSize.Top, finalSize.Width, finalSize.Height);
-            contentRect.Left += (float)(BorderThickness.Left/2 + Padding.Left);
-            contentRect.Right -= (float)(BorderThickness.Right/2 + Padding.Right);
-            contentRect.Top += (float)(BorderThickness.Top/2 + Padding.Top);
-            contentRect.Bottom -= (float)(BorderThickness.Bottom/2 + Padding.Bottom);
-            base.ArrangeOverride(contentRect);
-            return finalSize;
+            base.AssignDefaultValuesToSceneNode(node);
+            var c = node as BorderNode2D;
+            c.CornerRadius = (float)CornerRadius;
+            c.Padding = Padding.ToD2DThickness();
+            c.StrokeDashCap = StrokeDashCap.ToD2DCapStyle();
+            c.StrokeDashOffset = (float)StrokeDashOffset;
+            c.StrokeDashStyle = StrokeDashStyle.ToD2DDashStyle();
+            c.StrokeEndLineCap = StrokeEndLineCap.ToD2DCapStyle();
+            c.StrokeLineJoin = StrokeLineJoin.ToD2DLineJoin();
+            c.StrokeMiterLimit = (float)StrokeMiterLimit;
+            c.StrokeStartLineCap = StrokeStartLineCap.ToD2DCapStyle();
+            c.BorderThickness = BorderThickness.ToD2DThickness();
         }
     }
 }

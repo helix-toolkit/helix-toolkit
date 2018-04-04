@@ -11,10 +11,9 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Windows;
     using Media = System.Windows.Media;
-    using Core;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using System;
-
+    using Model;
     /// <summary>
     /// Base class for renderable elements.
     /// </summary>    
@@ -29,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("IsRendering", typeof(bool), typeof(Element3D), new PropertyMetadata(true,
                 (d, e) =>
                 {
-                    (d as Element3D).Visible = (bool)e.NewValue && (d as Element3D).Visibility == Visibility.Visible;
+                    (d as Element3D).SceneNode.Visible = (bool)e.NewValue && (d as Element3D).Visibility == Visibility.Visible;
                 }));
 
         /// <summary>
@@ -50,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty VisibilityProperty =
             DependencyProperty.Register("Visibility", typeof(Visibility), typeof(Element3D), new PropertyMetadata(Visibility.Visible, (d, e) =>
             {
-                (d as Element3D).Visible = (Visibility)e.NewValue == Visibility.Visible && (d as Element3D).IsRendering;
+                (d as Element3D).SceneNode.Visible = (Visibility)e.NewValue == Visibility.Visible && (d as Element3D).IsRendering;
             }));
 
         /// <summary>
@@ -75,7 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("Transform", typeof(Transform3D), typeof(Element3D), new PropertyMetadata(Transform3D.Identity,
                 (d,e)=>
                 {
-                    (d as IRenderable).ModelMatrix = e.NewValue != null ? (e.NewValue as Transform3D).Value.ToMatrix() : Matrix.Identity;
+                    (d as Element3DCore).SceneNode.ModelMatrix = e.NewValue != null ? (e.NewValue as Transform3D).Value.ToMatrix() : Matrix.Identity;
                 }));
         /// <summary>
         /// 
@@ -89,13 +88,13 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty IsThrowingShadowProperty =
             DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(Element3D), new PropertyMetadata(false, (d, e) =>
             {
-                if ((d as IRenderable).RenderCore is IThrowingShadow t)
+                if ((d as Element3DCore).SceneNode is Core.IThrowingShadow t)
                 {
                     t.IsThrowingShadow = (bool)e.NewValue;
                 }
             }));
         /// <summary>
-        /// <see cref="IThrowingShadow.IsThrowingShadow"/>
+        /// <see cref="Core.IThrowingShadow.IsThrowingShadow"/>
         /// </summary>
         public bool IsThrowingShadow
         {
@@ -114,7 +113,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register("IsHitTestVisible", typeof(bool), typeof(Element3D),
             new PropertyMetadata(true, (d, e) => {
-                (d as Element3DCore).IsHitTestVisibleInternal = (bool)e.NewValue;
+                (d as Element3D).SceneNode.IsHitTestVisible = (bool)e.NewValue;
             }));
 
         /// <summary>

@@ -102,7 +102,6 @@
                 Geometry="{Binding Grid}"
                 Transform="{Binding GridTransform}"
                 Color="{Binding GridColor}" />
-            <!--<hx:PointGeometryModel3D x:Name="points" Geometry="{Binding Points}" Color="{x:Static sdxm:Color.Black}" Size="10 10" Figure="Ellipse" HitTestThickness="5"/>-->
             <hx:BillboardTextModel3D
                 x:Name="text"
                 FixedSize="False"

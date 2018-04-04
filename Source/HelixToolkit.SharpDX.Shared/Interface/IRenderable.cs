@@ -10,53 +10,12 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
-    using global::SharpDX;
     using Cameras;
-    using System.Collections.Generic;
-    using Core;
+    using global::SharpDX;
+    using Model.Scene;
+    using Model.Scene2D;
     using System;
-    using Render;
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IRenderable : IAttachable, IBoundable, IGUID, ITransform
-    {
-        /// <summary>
-        /// Gets a value indicating whether this instance is renderable. Test includes Visible and view frustum test.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is renderable; otherwise, <c>false</c>.
-        /// </value>
-        bool IsRenderable { get; }
-
-        /// <summary>
-        /// Whether is visible, controlled by Visibility and IsRendering
-        /// </summary>
-        bool Visible { get; }
-
-        /// <summary>
-        /// Optional for scene graph traverse
-        /// </summary>
-        IList<IRenderable> Items { get; }
-
-        RenderCore RenderCore { get; }
-        /// <summary>
-        /// Update render related parameters such as model matrix by scene graph and bounding boxes
-        /// </summary>
-        /// <param name="context"></param>
-        void Update(IRenderContext context);
-        /// <summary>
-        /// Update things not related to rendering, such as OctreeManager etc. Called parallel with rendering process.
-        /// </summary>
-        /// <param name="context"></param>
-        void UpdateNotRender(IRenderContext context);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="deviceContext"></param>
-        void Render(IRenderContext context, DeviceContextProxy deviceContext);
-    }
+    using System.Collections.Generic;
 
     /// <summary>
     /// 
@@ -126,14 +85,14 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The renderables.
         /// </value>
-        IEnumerable<IRenderable> Renderables { get; }
+        IEnumerable<SceneNode> Renderables { get; }
         /// <summary>
         /// Gets the d2 d renderables.
         /// </summary>
         /// <value>
         /// The d2 d renderables.
         /// </value>
-        IEnumerable<IRenderable2D> D2DRenderables { get; }
+        IEnumerable<SceneNode2D> D2DRenderables { get; }
         /// <summary>
         /// Invalidates the render.
         /// </summary>

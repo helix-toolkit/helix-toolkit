@@ -23,6 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using System.Linq;
     using HelixToolkit.Logger;
     using Core;
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
@@ -47,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The render buffer.
         /// </value>
-        protected IDX11RenderBufferProxy RenderBuffer { get { return renderBuffer; } }
+        public IDX11RenderBufferProxy RenderBuffer { get { return renderBuffer; } }
         /// <summary>
         /// Gets the device.
         /// </summary>
@@ -398,14 +399,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public abstract List<IRenderable> PerFrameRenderables { get; }
+        public abstract List<SceneNode> PerFrameRenderables { get; }
         /// <summary>
         /// Gets the per frame lights.
         /// </summary>
         /// <value>
         /// The per frame lights.
         /// </value>
-        public abstract IEnumerable<ILight3D> PerFrameLights { get; }
+        public abstract IEnumerable<LightCoreBase> PerFrameLights { get; }
         /// <summary>
         /// Gets the post effects render cores for this frame
         /// </summary>
@@ -526,9 +527,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 RenderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
                 lastRenderTime = t0;
                 UpdateRequested = false;
-                renderContext.AutoUpdateOctree = RenderConfiguration.AutoUpdateOctree;
-                renderContext.EnableBoundingFrustum = EnableRenderFrustum;
                 ++updateCounter;
+                renderContext.AutoUpdateOctree = RenderConfiguration.AutoUpdateOctree;
+                renderContext.EnableBoundingFrustum = EnableRenderFrustum;               
                 if (RenderConfiguration.UpdatePerFrameData)
                 {
                     viewport.Update(t0);                    
