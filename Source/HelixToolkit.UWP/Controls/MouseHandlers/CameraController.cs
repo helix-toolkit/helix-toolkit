@@ -13,6 +13,69 @@ namespace HelixToolkit.UWP
 
     public class CameraController
     {
+        private InputController inputController;
+        public InputController InputController
+        {
+            set
+            {
+                if(inputController == value)
+                {
+                    return;
+                }
+                if(inputController != null)
+                {
+                    inputController.Viewport = null;
+                    inputController.OnStartPan -= InputController_OnStartPan;
+                    inputController.OnStartRotate -= InputController_OnStartRotate;
+                    inputController.OnStartZoom -= InputController_OnStartZoom;
+                    inputController.OnStartZoomExtends -= InputController_OnStartZoomExtends;
+                    inputController.OnStartZoomRectangle -= InputController_OnStartZoomRectangle;
+                    inputController.OnResetCamera -= InputController_OnResetCamera;
+                    inputController.OnChangeFieldOfView -= InputController_OnChangeFieldOfView;
+                    inputController.OnChangeLookAt -= InputController_OnChangeLookAt;
+                    inputController.OnTopView -= InputController_OnTopView;
+                    inputController.OnBottomView -= InputController_OnBottomView;
+                    inputController.OnLeftView -= InputController_OnLeftView;
+                    inputController.OnRightView -= InputController_OnRightView;
+                    inputController.OnFrontView -= InputController_OnFrontView;
+                    inputController.OnBackView -= InputController_OnBackView;
+                    inputController.OnAddMoveForce -= InputController_OnAddMoveForce;
+                    inputController.OnAddPanForce -= InputController_OnAddPanForce;
+                    inputController.OnAddRotationForce -= InputController_OnAddRotationForce;
+                    inputController.OnAddZoomForce -= InputController_OnAddZoomForce;
+                    inputController.OnRestoreCameraSettings -= InputController_OnRestoreCameraSettings;
+                }
+                inputController = value;
+                if(inputController != null)
+                {
+                    inputController.Viewport = this.Viewport;
+                    inputController.OnStartPan += InputController_OnStartPan;
+                    inputController.OnStartRotate += InputController_OnStartRotate;
+                    inputController.OnStartZoom += InputController_OnStartZoom;
+                    inputController.OnStartZoomExtends += InputController_OnStartZoomExtends;
+                    inputController.OnStartZoomRectangle += InputController_OnStartZoomRectangle;
+                    inputController.OnResetCamera += InputController_OnResetCamera;
+                    inputController.OnChangeFieldOfView += InputController_OnChangeFieldOfView;
+                    inputController.OnChangeLookAt += InputController_OnChangeLookAt;
+                    inputController.OnTopView += InputController_OnTopView;
+                    inputController.OnBottomView += InputController_OnBottomView;
+                    inputController.OnLeftView += InputController_OnLeftView;
+                    inputController.OnRightView += InputController_OnRightView;
+                    inputController.OnFrontView += InputController_OnFrontView;
+                    inputController.OnBackView += InputController_OnBackView;
+                    inputController.OnAddMoveForce += InputController_OnAddMoveForce;
+                    inputController.OnAddPanForce += InputController_OnAddPanForce;
+                    inputController.OnAddRotationForce += InputController_OnAddRotationForce;
+                    inputController.OnAddZoomForce += InputController_OnAddZoomForce;
+                    inputController.OnRestoreCameraSettings += InputController_OnRestoreCameraSettings;
+                }
+            }
+            get
+            {
+                return inputController;
+            }
+        }
+
         /// <summary>
         /// Gets ActualCamera.
         /// </summary>
@@ -227,7 +290,102 @@ namespace HelixToolkit.UWP
             this.Viewport.RegisterPropertyChangedCallback(Viewport3DX.CameraProperty, (d, e) => { ActualCamera = d.GetValue(e) as ProjectionCamera; });
             this.Viewport.RegisterPropertyChangedCallback(Viewport3DX.DefaultCameraProperty, (d, e) => { DefaultCamera = d.GetValue(e) as ProjectionCamera; });
         }
+        #region Input Events
+        private void InputController_OnBackView(object sender, EventArgs e)
+        {
+            ExecuteBackView();
+        }
 
+        private void InputController_OnFrontView(object sender, EventArgs e)
+        {
+            ExecuteFrontView();
+        }
+
+        private void InputController_OnRightView(object sender, EventArgs e)
+        {
+            ExecuteRightView();
+        }
+
+        private void InputController_OnLeftView(object sender, EventArgs e)
+        {
+            ExecuteLeftView();
+        }
+
+        private void InputController_OnBottomView(object sender, EventArgs e)
+        {
+            ExecuteBottomView();
+        }
+
+        private void InputController_OnTopView(object sender, EventArgs e)
+        {
+            ExecuteTopView();
+        }
+
+        private void InputController_OnChangeLookAt(object sender, PointerRoutedEventArgs e)
+        {
+            changeLookAtHandler.Execute(Viewport, e);
+        }
+
+        private void InputController_OnChangeFieldOfView(object sender, PointerRoutedEventArgs e)
+        {
+            changeFieldOfViewHandler.Execute(Viewport, e);
+        }
+
+        private void InputController_OnResetCamera(object sender, EventArgs e)
+        {
+            ExecuteResetCamera();
+        }
+
+        private void InputController_OnStartZoomRectangle(object sender, PointerRoutedEventArgs e)
+        {
+            zoomRectangleHandler.Execute(Viewport, e);
+        }
+
+        private void InputController_OnStartZoomExtends(object sender, PointerRoutedEventArgs e)
+        {
+            ExecuteZoomExtents();
+        }
+
+        private void InputController_OnStartZoom(object sender, PointerRoutedEventArgs e)
+        {
+            OnMouseWheel(e);
+        }
+
+        private void InputController_OnStartRotate(object sender, PointerRoutedEventArgs e)
+        {
+            rotateHandler.Execute(Viewport, e);
+        }
+
+        private void InputController_OnStartPan(object sender, PointerRoutedEventArgs e)
+        {
+            panHandler.Execute(Viewport, e);
+        }
+
+        private void InputController_OnAddZoomForce(object sender, InputController.AddForceEventArgs e)
+        {
+            AddZoomForce(e.Force.X);
+        }
+
+        private void InputController_OnAddRotationForce(object sender, InputController.AddForceEventArgs e)
+        {
+            AddRotateForce(e.Force.X, e.Force.Y);
+        }
+
+        private void InputController_OnAddPanForce(object sender, InputController.AddForceEventArgs e)
+        {
+            AddPanForce(e.Force.X, e.Force.Y);
+        }
+
+        private void InputController_OnAddMoveForce(object sender, InputController.AddForceEventArgs e)
+        {
+            AddMoveForce(e.Move);
+        }
+
+        private void InputController_OnRestoreCameraSettings(object sender, EventArgs e)
+        {
+            RestoreCameraSetting();
+        }
+        #endregion
         /// <summary>
         /// Adds the specified move force.
         /// </summary>
@@ -243,6 +401,7 @@ namespace HelixToolkit.UWP
 
             this.PushCameraSetting();
             this.moveSpeed += delta * 40;
+            Viewport.InvalidateRender();
         }
 
         /// <summary>
@@ -281,8 +440,17 @@ namespace HelixToolkit.UWP
             {
                 this.panHandler.Pan(pan);
             }
+            Viewport.InvalidateRender();
         }
 
+        /// <summary>
+        /// Adds the rotate force.
+        /// </summary>
+        /// <param name="force">The force.</param>
+        public void AddRotateForce(Vector2 force)
+        {
+            AddRotateForce(force.X, force.Y);
+        }
         /// <summary>
         /// The add rotate force.
         /// </summary>
@@ -313,6 +481,7 @@ namespace HelixToolkit.UWP
                 this.rotateHandler.Rotate(
                     this.rotationPosition, new Point(this.rotationPosition.X + dx, this.rotationPosition.Y + dy), this.CameraTarget);
             }
+            Viewport.InvalidateRender();
         }
 
         /// <summary>
@@ -614,14 +783,10 @@ namespace HelixToolkit.UWP
             {
                 OnStylusSystemGesture(e);
             }
-            else if(e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
+            else
             {
-                rotateHandler.Execute(this, e);
+                inputController.OnPointerPressed(e);
             }
-            //if (e.ChangedButton == MouseButton.XButton1)
-            //{
-            //    this.RestoreCameraSetting();
-            //}
         }
 
         /// <summary>
@@ -824,6 +989,104 @@ namespace HelixToolkit.UWP
             this.rotationSpeed = new Vector2();
             this.panSpeed = new Vector3D();
             this.zoomSpeed = 0;
+        }
+
+        private void ExecuteZoomExtents()
+        {
+            this.StopAnimations();
+            this.ZoomExtents();
+        }
+
+        /// <summary>
+        /// Determines whether the model up direction is (0,1,0).
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if the up direction is (0,1,0); otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsModelUpDirectionY()
+        {
+            return Viewport.ModelUpDirection.Y.Equals(1);
+        }
+
+        private void ExecuteTopView()
+        {
+            if (this.IsModelUpDirectionY())
+            {
+                this.ChangeDirection(new Vector3D(0, -1, 0), new Vector3D(0, 0, 1));
+            }
+            else
+            {
+                this.ChangeDirection(new Vector3D(0, 0, -1), new Vector3D(0, 1, 0));
+            }
+        }
+
+        private void ExecuteBottomView()
+        {
+            if (this.IsModelUpDirectionY())
+            {
+                this.ChangeDirection(new Vector3D(0, 1, 0), new Vector3D(0, 0, 1));
+            }
+            else
+            {
+                this.ChangeDirection(new Vector3D(0, 0, 1), new Vector3D(0, -1, 0));
+            }
+        }
+
+        private void ExecuteLeftView()
+        {
+            if (this.IsModelUpDirectionY())
+            {
+                this.ChangeDirection(new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+            }
+            else
+            {
+                this.ChangeDirection(new Vector3D(0, 1, 0), new Vector3D(0, 0, 1));
+            }
+        }
+
+        private void ExecuteRightView()
+        {
+            if (this.IsModelUpDirectionY())
+            {
+                this.ChangeDirection(new Vector3D(-1, 0, 0), new Vector3D(0, 1, 0));
+            }
+            else
+            {
+                this.ChangeDirection(new Vector3D(0, -1, 0), new Vector3D(0, 0, 1));
+            }
+        }
+
+        private void ExecuteFrontView()
+        {
+            if (this.IsModelUpDirectionY())
+            {
+                this.ChangeDirection(new Vector3D(0, 0, -1), new Vector3D(0, 1, 0));
+            }
+            else
+            {
+                this.ChangeDirection(new Vector3D(-1, 0, 0), new Vector3D(0, 0, 1));
+            }
+        }
+
+        private void ExecuteBackView()
+        {
+            if (this.IsModelUpDirectionY())
+            {
+                this.ChangeDirection(new Vector3D(0, 0, 1), new Vector3D(0, 1, 0));
+            }
+            else
+            {
+                this.ChangeDirection(new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
+            }
+        }
+
+        private void ExecuteResetCamera()
+        {
+            if (Viewport.IsPanEnabled && Viewport.IsZoomEnabled && Viewport.CameraMode != CameraMode.FixedPosition)
+            {
+                this.StopAnimations();
+                this.ResetCamera();
+            }
         }
     }
 }
