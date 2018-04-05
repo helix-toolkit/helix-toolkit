@@ -1,9 +1,5 @@
 ﻿using SharpDX;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Animation;
@@ -11,6 +7,9 @@ using Point = Windows.Foundation.Point;
 
 namespace HelixToolkit.UWP
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class CameraExtensions
     {
         /// <summary>
@@ -511,22 +510,13 @@ namespace HelixToolkit.UWP
         /// </param>
         public static void AnimateWidth(this OrthographicCamera camera, double newWidth, double animationTime)
         {
-            double fromWidth = camera.Width;
-
-            camera.Width = newWidth;
-
             if (animationTime > 0)
             {
-                var a1 = new DoubleAnimation()
-                {
-                    From = fromWidth, To = newWidth, Duration = new Duration(TimeSpan.FromMilliseconds(animationTime)),
-                    FillBehavior = FillBehavior.Stop, EasingFunction = new PowerEase() { EasingMode = EasingMode.EaseOut }
-                };
-                Storyboard sb = new Storyboard();
-                sb.Children.Add(a1);
-                Storyboard.SetTarget(a1, camera);
-                Storyboard.SetTargetProperty(a1, nameof(OrthographicCamera.Width));
-                sb.Begin();
+                camera.AnimateWidth(newWidth, animationTime);
+            }
+            else
+            {
+                camera.Width = newWidth;
             }
         }
     }

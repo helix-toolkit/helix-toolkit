@@ -961,6 +961,11 @@ namespace HelixToolkit.UWP
             {
                 zoomSpeed = 0;
             }
+
+            if (ActualCamera != null && ActualCamera.OnTimeStep())
+            {
+                needUpdate = true;
+            }
             if (needUpdate)
             {
                 lastTick = ticks;
