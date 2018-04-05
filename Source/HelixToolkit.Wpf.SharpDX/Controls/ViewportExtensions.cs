@@ -568,8 +568,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Renders the viewport to a bitmap.
         /// </summary>
         /// <param name="view">The viewport.</param>
-        /// <param name="background">The background.</param>
-        /// <param name="m">The oversampling multiplier.</param>
         /// <returns>A bitmap.</returns>
         public static BitmapSource RenderBitmap(this Viewport3DX view)
         {
