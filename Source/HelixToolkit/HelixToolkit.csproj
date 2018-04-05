@@ -10,6 +10,9 @@
         <RepositoryUrl>https://github.com/helix-toolkit/helix-toolkit</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <DocumentationFile>bin\Release\netstandard1.1\HelixToolkit.xml</DocumentationFile>
+    </PropertyGroup>
     <ItemGroup>
       <Folder Include="Properties\" />
     </ItemGroup>

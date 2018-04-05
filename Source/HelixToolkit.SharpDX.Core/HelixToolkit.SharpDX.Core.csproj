@@ -11,6 +11,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;RELEASE;NETFX_CORE;NETCOREAPP1_1;SHARPDX;DX11;MSAA;DX11_1;;RELEASE;NETCOREAPP1_1</DefineConstants>
+    <DocumentationFile>bin\Release\netcoreapp1.1\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
   </PropertyGroup>
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
