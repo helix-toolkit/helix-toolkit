@@ -7,6 +7,7 @@ using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
 {
     using Cameras;
+    using System;
 
     /// <summary>
     /// Represents an orthographic projection camera.
@@ -34,6 +35,11 @@ namespace HelixToolkit.UWP
             set { this.SetValue(WidthProperty, value); }
         }
 
+        private double oldWidth;
+        private double newWidth;
+        private double accumTime;
+        private double aniTime;
+
         public OrthographicCamera()
         {
             // default values for near-far must be different for ortho:
@@ -53,6 +59,44 @@ namespace HelixToolkit.UWP
                 UpDirection = this.UpDirection,
                 Width = (float)this.Width
             };
+        }
+
+        public void AnimateWidth(double newWidth, double animationTime)
+        {
+            if (animationTime == 0)
+            {
+                Width = newWidth;
+                animationTime = 0;
+            }
+            else
+            {
+                oldWidth = Width;
+                this.newWidth = newWidth;
+                accumTime = 1;
+                aniTime = animationTime;
+                OnUpdateAnimation(0);
+            }
+        }
+
+        protected override bool OnUpdateAnimation(float ellapsed)
+        {
+            bool res = base.OnUpdateAnimation(ellapsed);
+            if (aniTime == 0)
+            {
+                return res;
+            }
+            accumTime += ellapsed;
+            if(accumTime > aniTime)
+            {
+                Width = newWidth;
+                aniTime = 0;
+                return res;
+            }
+            else
+            {
+                Width = oldWidth + (newWidth - oldWidth) / (accumTime / aniTime);
+                return true;
+            }
         }
     }
 }

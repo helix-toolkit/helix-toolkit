@@ -1,16 +1,22 @@
 ﻿// <copyright file="CrossSectionMeshGeometryModel3D.cs" company="Helix Toolkit">
 //   Copyright (c) 2017 Helix Toolkit contributors
-//   Author: Lunci Hua
 // </copyright>
 
 
+#if NETFX_CORE
+using Windows.UI.Xaml;
+using Media = Windows.UI;
+namespace HelixToolkit.UWP
+#else
+using System.Windows;
+using Media = System.Windows.Media;
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Model;
     using Model.Scene;
     using global::SharpDX;
-    using System.Windows;
-    using Media = System.Windows.Media;
+
 
     /// <summary>
     /// Defines the <see cref="CrossSectionMeshGeometryModel3D" />

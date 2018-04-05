@@ -4,14 +4,21 @@
 // </copyright>
 
 using SharpDX;
-using System.Windows;
-using Media = System.Windows.Media;
 using System.Collections.Generic;
 
+#if NETFX_CORE
+using Media = Windows.UI;
+using Windows.UI.Xaml;
+namespace HelixToolkit.UWP
+#else
+using System.Windows;
+using Media = System.Windows.Media;
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Model;
     using Model.Scene;
+
     /// <summary>
     /// 
     /// </summary>

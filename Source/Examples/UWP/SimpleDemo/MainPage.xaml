@@ -29,14 +29,16 @@
             <hx:GroupModel3D Transform3D="{Binding Transform}">
                 <hx:MeshGeometryModel3D
                     Geometry="{Binding Geometry}"
-                    Material="{Binding Material}"/>
+                    Material="{Binding Material}"
+                    PostEffects="border[color:#FFA300]" />
                 <hx:LineGeometryModel3D Geometry="{Binding LineGeometry}" Color="White" />
                 <hx:BillboardTextModel3D Geometry="{Binding AxisLabelGeometry}" />
             </hx:GroupModel3D>
 
             <hx:GroupModel3D Transform3D="{Binding Transform1}">
-                <hx:PointGeometryModel3D Geometry="{Binding PointGeometry}" Color="#FFE400" />
+                <hx:PointGeometryModel3D Geometry="{Binding PointGeometry}" Color="#00D13E" />
             </hx:GroupModel3D>
+            <hx:PostEffectMeshBorderHighlight EffectName="border" />
         </hx:Viewport3DX>
         <TextBlock
             HorizontalAlignment="Center"

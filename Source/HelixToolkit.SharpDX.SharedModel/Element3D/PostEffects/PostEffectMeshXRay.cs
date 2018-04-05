@@ -1,8 +1,17 @@
-﻿using System.Windows;
+﻿#if NETFX_CORE
+using Windows.Foundation;
+using Windows.UI.Xaml;
+using Color = Windows.UI.Color;
+using Colors = Windows.UI.Colors;
+using Media = Windows.UI;
+namespace HelixToolkit.UWP
+#else
+using System.Windows;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
-
+using Media = System.Windows.Media;
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Model;
     using Model.Scene;

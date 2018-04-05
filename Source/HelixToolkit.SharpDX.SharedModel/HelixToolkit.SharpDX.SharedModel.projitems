@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>1aefcb64-e997-425a-8c84-dc93263cc4a7</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>HelixToolkit.SharpDX.SharedModel</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\BillboardTextModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\BoneSkinmeshGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\CoordinateSystemModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\CrossSectionMeshGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\EnvironmentMap3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\InstancingBillboardModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\LineGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\MeshGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PatchGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PointGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectBloom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshBorderHighlight.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshOutlineBlur.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRay.cs" />
+  </ItemGroup>
+</Project>

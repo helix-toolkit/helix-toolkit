@@ -92,7 +92,7 @@ namespace SimpleDemoW10
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
             timer.Interval = new TimeSpan(0, 0, 0, 0, 16);
-            timer.Start();
+            //timer.Start();
         }
 
         private void Timer_Tick(object sender, object e)

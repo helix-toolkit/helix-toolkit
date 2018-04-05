@@ -35,18 +35,21 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UWP", "UWP", "{82144FE3-9567-45F4-901C-E226CA316FDA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.UWP", "HelixToolkit.UWP\HelixToolkit.UWP.csproj", "{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE} = {50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.SharpDX.ShaderBuilder", "HelixToolkit.SharpDX.ShaderBuilder\HelixToolkit.SharpDX.ShaderBuilder.csproj", "{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
-		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
-		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{4ee18e80-7609-4fff-bd4b-f02728ec0688}*SharedItemsImports = 13
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{1eaf532e-d750-497b-bb8f-ee85359c78a2}*SharedItemsImports = 13
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{3f3b4548-a9db-4874-86f7-e7c4fec8a351}*SharedItemsImports = 4
+		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{4ee18e80-7609-4fff-bd4b-f02728ec0688}*SharedItemsImports = 13
+		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
+		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -201,8 +204,8 @@ Global
 		{405C54C4-69F7-4F3D-A6BA-594346F42A2F}.Release|x64.Build.0 = Release|Any CPU
 		{405C54C4-69F7-4F3D-A6BA-594346F42A2F}.Release|x86.ActiveCfg = Release|Any CPU
 		{405C54C4-69F7-4F3D-A6BA-594346F42A2F}.Release|x86.Build.0 = Release|Any CPU
-		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Debug|Any CPU.Build.0 = Debug|x86
+		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Debug|ARM.ActiveCfg = Debug|ARM
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Debug|ARM.Build.0 = Debug|ARM
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
@@ -211,8 +214,8 @@ Global
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Debug|x64.Build.0 = Debug|x64
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Debug|x86.ActiveCfg = Debug|x86
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Debug|x86.Build.0 = Debug|x86
-		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Release|Any CPU.ActiveCfg = Release|x86
-		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Release|Any CPU.Build.0 = Release|x86
+		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Release|ARM.ActiveCfg = Release|ARM
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Release|ARM.Build.0 = Release|ARM
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}.Release|Mixed Platforms.ActiveCfg = Release|x86
@@ -257,5 +260,8 @@ Global
 		{1EAF532E-D750-497B-BB8F-EE85359C78A2} = {5730542A-FBE8-4176-B8C4-7FF801B27E99}
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E} = {82144FE3-9567-45F4-901C-E226CA316FDA}
 		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE} = {5730542A-FBE8-4176-B8C4-7FF801B27E99}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FDED8F31-C7C8-41E4-ACAC-293F326BAE9F}
 	EndGlobalSection
 EndGlobal

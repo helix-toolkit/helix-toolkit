@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>HelixToolkit.UWP</id>
+    <version>$version$</version>
+    <title>HelixToolkit for UWP (based on SharpDX)</title>
+    <authors>objo, Lunci</authors>
+    <licenseUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/LICENSE</licenseUrl>
+    <projectUrl>http://helix-toolkit.github.io/</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/helix-toolkit/helix-toolkit/master/Images/helixtoolkit.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Provides custom 3D controls for UWP and a scene graph based on SharpDX.</description>
+    <tags>UWP SharpDX 3D</tags>
+    <dependencies>
+	  <group targetFramework="UAP10.0">
+		<dependency id="Microsoft.NETCore.UniversalWindowsPlatform" version="6.0.8" exclude="Build,Analyzers" />
+		<dependency id="Cyotek.Drawing.BitmapFont" version="1.3.4" />
+		<dependency id="HelixToolkit" version="[$version$]" />
+		<dependency id="SharpDX" version="4.0.1" />
+		<dependency id="SharpDX.D3DCompiler" version="4.0.1" />
+		<dependency id="SharpDX.Direct2D1" version="4.0.1" />
+		<dependency id="SharpDX.Direct3D11" version="4.0.1" />
+		<dependency id="SharpDX.DXGI" version="4.0.1" />
+		<dependency id="SharpDX.Mathematics" version="4.0.1" />
+		<dependency id="System.ComponentModel.TypeConverter" version="4.3.0"/>
+		<dependency id="System.Drawing.Primitives" version="4.3.0"/>		
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+  	<file src="bin\Release\HelixToolkit.UWP.???" target="lib\uap10.0" />
+	<file src="bin\Release\HelixToolkit.UWP.??.xml" target="lib\uap10.0\HelixToolkit.UWP" />
+	<file src="bin\Release\Resources\*.*" target="lib\uap10.0\HelixToolkit.UWP\Resources" />
+	<file src="bin\Release\Themes\*.*" target="lib\uap10.0\HelixToolkit.UWP\Themes" />
+    <file src="..\..\LICENSE" />
+    <file src="..\..\AUTHORS" />
+    <file src="..\..\CONTRIBUTORS" />
+    <file src="..\..\README.md" />
+  </files>
+</package>

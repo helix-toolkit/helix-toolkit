@@ -4,13 +4,14 @@
 // </copyright>
 using System;
 using System.IO;
+using SharpDX;
+using Windows.UI.Xaml;
 
 namespace HelixToolkit.UWP
 {
     using Model;
     using Model.Scene;
-    using SharpDX;
-    using Windows.UI.Xaml;
+    
 
     /// <summary>
     /// <para>Viewbox replacement for Viewport using swapchain rendering.</para>
