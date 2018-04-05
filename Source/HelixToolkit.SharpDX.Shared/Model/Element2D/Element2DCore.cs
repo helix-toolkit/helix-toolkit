@@ -6,7 +6,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 //#define DEBUGDRAWING
 //#define DISABLEBITMAPCACHE
 #endif
-
+#if !CORE
 using SharpDX;
 using System;
 #if NETFX_CORE
@@ -197,3 +197,4 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endregion
     }
 }
+#endif

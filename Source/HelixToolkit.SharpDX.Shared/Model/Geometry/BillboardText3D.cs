@@ -9,10 +9,14 @@ using System.Linq;
 using System.IO;
 using System.Reflection;
 using Cyotek.Drawing.BitmapFont;
+#if CORE
+
+#else
 #if NETFX_CORE
 using Media = Windows.UI.Xaml.Media;
 #else
 using Media = System.Windows.Media;
+#endif
 #endif
 
 #if NETFX_CORE
@@ -71,6 +75,14 @@ namespace HelixToolkit.Wpf.SharpDX
 
         static BillboardText3D()
         {
+#if CORE
+            var assembly = typeof(BillboardText3D).GetTypeInfo().Assembly;
+            Stream fontInfo = assembly.GetManifestResourceStream(@"HelixToolkit.SharpDX.Core.Resources.arial.fnt");
+            bmpFont = new BitmapFont();
+            bmpFont.Load(fontInfo);
+            Stream font = assembly.GetManifestResourceStream(@"HelixToolkit.SharpDX.Core.Resources.arial.png");
+            TextureStatic = font;
+#else
 #if !NETFX_CORE
             var assembly = Assembly.GetExecutingAssembly();
 
@@ -92,6 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var texFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\Resources\arial.png");
             TextureStatic = new MemoryStream(texFile);         
+#endif
 #endif
         }
 

@@ -16,11 +16,13 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.Shared", "Heli
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.SharpDX.Shared", "HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.shproj", "{1EAF532E-D750-497B-BB8F-EE85359C78A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.SharpDX.ShaderBuilder", "HelixToolkit.SharpDX.ShaderBuilder\HelixToolkit.SharpDX.ShaderBuilder.csproj", "{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.SharpDX.ShaderBuilder", "HelixToolkit.SharpDX.ShaderBuilder\HelixToolkit.SharpDX.ShaderBuilder.csproj", "{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.SharpDX.SharedModel", "HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.shproj", "{1AEFCB64-E997-425A-8C84-DC93263CC4A7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.SharpDX.Core", "HelixToolkit.SharpDX.Core\HelixToolkit.SharpDX.Core.csproj", "{C180CAD3-1B83-400B-A45D-571D4272C674}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -113,6 +115,22 @@ Global
 		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x64.Build.0 = Release|Any CPU
 		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x86.ActiveCfg = Release|Any CPU
 		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x86.Build.0 = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|x64.Build.0 = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|x86.Build.0 = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|ARM.ActiveCfg = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|ARM.Build.0 = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|x64.ActiveCfg = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|x64.Build.0 = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|x86.ActiveCfg = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

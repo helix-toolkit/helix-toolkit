@@ -68,7 +68,9 @@ namespace SharpDX.Toolkit
         /// Gets or sets the tag associated to this object.
         /// </summary>
         /// <value>The tag.</value>
+#if !CORE
         [Browsable(false)]
+#endif
         [DefaultValue(null)]
         public object Tag
         {

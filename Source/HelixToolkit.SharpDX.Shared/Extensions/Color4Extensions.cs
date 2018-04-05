@@ -6,6 +6,7 @@ using SharpDX;
 using SharpDX.DirectWrite;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -22,7 +23,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public static class Color4Extensions
     {
-        private static readonly Hashtable Colors = new Hashtable(StringComparer.OrdinalIgnoreCase);
+        private static readonly Dictionary<string, object> Colors = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Initializes the <see cref="Color4Extensions"/> class.
@@ -33,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 
-        private static void FillConstants(Hashtable hash, Type enumType)
+        private static void FillConstants(Dictionary<string, object> hash, Type enumType)
         {
             //MethodAttributes attrs = MethodAttributes.Public | MethodAttributes.Static;
             var fields = enumType.GetFields();
@@ -43,7 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var field = fields[i];
                 if (field.FieldType == typeof(Color))
                 {
-                    hash[field.Name] = field.GetValue(field);
+                    hash.Add(field.Name, field.GetValue(field));
                 }
             }
         }

@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+#if !CORE
 using SharpDX;
 using System;
 using System.Collections.Generic;
@@ -213,3 +214,4 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         }
     }
 }
+#endif
