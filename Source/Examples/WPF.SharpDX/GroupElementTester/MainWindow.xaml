@@ -83,6 +83,7 @@
                 <hx:LineGeometryModel3D Geometry="{Binding AxisModel}" Color="White" />
                 <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding AxisLabel}" />
             </hx:CompositeModel3D>
+            <hx:SortingGroupModel3D ItemsSource="{Binding TransparentGroupModelSource}"/>
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"
@@ -98,6 +99,8 @@
             <Button Command="{Binding ClearItemsModelCommand}">Clear Items Model</Button>
             <Button Command="{Binding AnimateItemsModelCommand}">Animate Items Model</Button>
             <Separator />
+            <Button Command="{Binding AddTransparentGroupModelCommand}">Add Transparent Model</Button>
+            <Button Command="{Binding RemoveTransparentGroupModelCommand}">Remove Transparent Model</Button>
         </StackPanel>
     </Grid>
 </Window>

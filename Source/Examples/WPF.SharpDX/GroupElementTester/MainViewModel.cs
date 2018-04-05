@@ -24,12 +24,15 @@ namespace GroupElementTester
 {
     public class MainViewModel : BaseViewModel
     {
+        private readonly Random rnd = new Random();
         public LineGeometry3D AxisModel { get; private set; }
         public BillboardText3D AxisLabel { private set; get; }
 
         public MeshGeometry3D SphereModel { private set; get; }
 
         public MeshGeometry3D BoxModel { private set; get; }
+
+        public MeshGeometry3D ConeModel { private set; get; }
 
         public PhongMaterial RedMaterial { get { return PhongMaterials.Red; } }
 
@@ -48,10 +51,18 @@ namespace GroupElementTester
         public Transform3D Transform4 { get; } = new Media3D.TranslateTransform3D(-6, 0, 0);
 
         public ObservableElement3DCollection GroupModelSource { get; } = new ObservableElement3DCollection();
+        public ObservableElement3DCollection TransparentGroupModelSource { get; } = new ObservableElement3DCollection();
         public ObservableCollection<MeshDataModel> ItemsSource { get; } = new ObservableCollection<MeshDataModel>();
+
+        private PhongMaterialCollection materialCollection = new PhongMaterialCollection();
+
         public ICommand AddGroupModelCommand { get; private set; }
 
         public ICommand RemoveGroupModelCommand { private set; get; }
+
+        public ICommand AddTransparentGroupModelCommand { get; private set; }
+
+        public ICommand RemoveTransparentGroupModelCommand { private set; get; }
 
         public ICommand ClearGroupModelCommand { private set; get; }
 
@@ -102,14 +113,22 @@ namespace GroupElementTester
             meshBuilder = new MeshBuilder(true);
             meshBuilder.AddBox(Vector3.Zero, 0.5, 0.5, 0.5);
             BoxModel = meshBuilder.ToMesh();
+            meshBuilder = new MeshBuilder(true);
+            meshBuilder.AddCone(Vector3.Zero, new Vector3(0, 2, 0), 1, true, 24);
+            ConeModel = meshBuilder.ToMesh();
+
             AddGroupModelCommand = new RelayCommand(AddGroupModel);
             RemoveGroupModelCommand = new RelayCommand(RemoveGroupModel);
+            AddTransparentGroupModelCommand = new RelayCommand(AddTransparentMesh);
+            RemoveTransparentGroupModelCommand = new RelayCommand(RemoveTransparentModel);
             ClearGroupModelCommand = new RelayCommand((o) => { GroupModelSource.Clear(); });
             AnimateGroupModelCommand = new RelayCommand(AnimateGroupModel);
             AddItemsModelCommand = new RelayCommand(AddItemsModel);
             RemoveItemsModelCommand = new RelayCommand(RemoveItemsModel);
             ClearItemsModelCommand = new RelayCommand((o) => { ItemsSource.Clear(); });
             AnimateItemsModelCommand = new RelayCommand(AnimateItemsModel);
+
+
         }
 
         private void AddGroupModel(object o)
@@ -175,6 +194,39 @@ namespace GroupElementTester
             transformGroup.Children.Add(new TranslateTransform3D(center));
 
             return transformGroup;
+        }
+
+        private void AddTransparentMesh(object o)
+        {
+            var model = new MeshGeometryModel3D();
+            int val = rnd.Next(0, 2);
+            switch (val)
+            {
+                case 0:
+                    model.Geometry = SphereModel;
+                    break;
+                case 1:
+                    model.Geometry = BoxModel;
+                    break;
+                case 2:
+                    model.Geometry = ConeModel;
+                    break;
+            }
+            val = rnd.Next(0, materialCollection.Count - 1);
+            var material = materialCollection[val];
+            var diffuse = material.DiffuseColor;
+            diffuse.Alpha = (float)rnd.Next(20, 60)/100f;
+            material.DiffuseColor = diffuse;
+            model.Material = material;
+            model.Transform = new Media3D.TranslateTransform3D((float)rnd.Next(10, 100)/10, (float)rnd.Next(10, 100) / 10, (float)rnd.Next(10, 100) / 10);
+            model.IsTransparent = true;
+            TransparentGroupModelSource.Add(model);
+        }
+
+        private void RemoveTransparentModel(object o)
+        {
+            if (TransparentGroupModelSource.Count > 0)
+            { TransparentGroupModelSource.RemoveAt(TransparentGroupModelSource.Count - 1); }
         }
     }
 
