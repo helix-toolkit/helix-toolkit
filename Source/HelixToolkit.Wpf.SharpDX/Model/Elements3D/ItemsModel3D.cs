@@ -11,15 +11,12 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
 
+    using Model.Scene;
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.Diagnostics;
-    using System.Linq;
     using System.Windows;
-    using Model;
-    using Model.Scene;
 
     /// <summary>
     ///     Represents a model that can be used to present a collection of items. supports generating child items by a

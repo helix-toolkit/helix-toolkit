@@ -58,7 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
         protected readonly Dictionary<Guid, SceneNode> itemHashSet = new Dictionary<Guid, SceneNode>();
 
-        public override IList<SceneNode> Items { get; } = new ObservableCollection<SceneNode>();
+        public override IList<SceneNode> Items { get; } = new List<SceneNode>();
 
         public event EventHandler<OnChildNodeChangedArgs> OnAddChildNode;
         public event EventHandler<OnChildNodeChangedArgs> OnRemoveChildNode;

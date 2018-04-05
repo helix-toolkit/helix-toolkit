@@ -207,6 +207,7 @@
     <Compile Include="Model\Elements3D\OutLineMeshGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\ParticleStormModel3D.cs" />
     <Compile Include="Model\Elements3D\ScreenDuplicationModel.cs" />
+    <Compile Include="Model\Elements3D\SortingGroupModel3D.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Materials\Material.cs" />
     <Compile Include="Model\Materials\PhongMaterial.cs" />
