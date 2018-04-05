@@ -31,10 +31,11 @@ namespace HelixToolkit.UWP.Shaders
             {
                 AlphaBlendOperation = BlendOperation.Add,
                 BlendOperation = BlendOperation.Add,
-                DestinationBlend = BlendOption.InverseSourceAlpha,
                 SourceBlend = BlendOption.SourceAlpha,
-                DestinationAlphaBlend = BlendOption.InverseSourceAlpha,
+                DestinationBlend = BlendOption.InverseSourceAlpha,
+
                 SourceAlphaBlend = BlendOption.SourceAlpha,
+                DestinationAlphaBlend = BlendOption.DestinationAlpha,
                 IsBlendEnabled = true,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All
             };
