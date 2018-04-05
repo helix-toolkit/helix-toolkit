@@ -2,7 +2,9 @@
 
 # Helix Toolkit
 
-Helix Toolkit is a collection of 3D components for .NET. Currently it contains one component that adds functionality to the WPF 3D model (Media3D namespace). WPF/UWP components and scene graphs are implemented based on SharpDX(DirectX 11) for advanced high performance usage.
+Helix Toolkit is a collection of 3D components for .NET. Currently it contains one component that adds functionality to the WPF 3D model (Media3D namespace). 
+
+WPF/UWP components and scene graphs are implemented based on SharpDX(DirectX 11) for advanced high performance usage.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/tmqafdk9p7o98gw7)](https://ci.appveyor.com/project/objorke/helix-toolkit)
 
