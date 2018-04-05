@@ -293,6 +293,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\SimpleRingBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\StateProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ShaderResourceViewProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ScreenCapture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TextureLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TokenizerHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\TreeTraverser.cs" />

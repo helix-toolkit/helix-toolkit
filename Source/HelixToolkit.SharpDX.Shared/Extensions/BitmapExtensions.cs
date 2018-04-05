@@ -15,7 +15,10 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX.Direct2D1;
     using global::SharpDX.WIC;
     using System;
-
+    public enum Direct2DImageFormat
+    {
+        Png, Gif, Ico, Jpeg, Wmp, Tiff, Bmp
+    }
     public static class BitmapExtensions
     {
         public static MemoryStream ToBitmapStream(this string text, int fontSize, Color4 foreground,
@@ -55,12 +58,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return new TextLayout(deviceResources.DirectWriteFactory, text, format, maxWidth, maxHeight);
             }
-        }
-
-
-        public enum Direct2DImageFormat
-        {
-            Png, Gif, Ico, Jpeg, Wmp, Tiff, Bmp
         }
 
         public static Guid ToWICImageFormat(this Direct2DImageFormat format)

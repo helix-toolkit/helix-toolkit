@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Vector2 = global::SharpDX.Vector2;
     using Vector3 = global::SharpDX.Vector3;
     using Cameras;
-    using HelixToolkit.Wpf.SharpDX.Model.Scene;
+    using Model.Scene;
 
     /// <summary>
     /// Provides extension methods for <see cref="Viewport3DX" />.
@@ -58,24 +58,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Copies the specified viewport to the clipboard.
         /// </summary>
-        /// <param name="view">The viewport.</param>
-        /// <param name="m">The oversampling multiplier.</param>
-        public static void Copy(this Viewport3DX view, int m = 1)
+        public static void Copy(this Viewport3DX view)
         {
-            Clipboard.SetImage(RenderBitmap(view, Brushes.White, m));
-        }
-
-        /// <summary>
-        /// Copies the specified viewport to the clipboard.
-        /// </summary>
-        /// <param name="view">The view.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="background">The background.</param>
-        /// <param name="m">The oversampling multiplier.</param>
-        public static void Copy(this Viewport3DX view, double width, double height, Brush background, int m = 1)
-        {
-            Clipboard.SetImage(RenderBitmap(view, width, height, background));
+            Clipboard.SetImage(RenderBitmap(view));
         }
 
         /// <summary>
@@ -586,62 +571,27 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="background">The background.</param>
         /// <param name="m">The oversampling multiplier.</param>
         /// <returns>A bitmap.</returns>
-        public static BitmapSource RenderBitmap(this Viewport3DX view, Brush background, int m = 1)
+        public static BitmapSource RenderBitmap(this Viewport3DX view)
         {
-            var target = new WriteableBitmap(
-                (int)view.ActualWidth * m, (int)view.ActualHeight * m, 96, 96, PixelFormats.Pbgra32, null);
-
-            var originalCamera = view.Camera;
-            var vm = originalCamera.GetViewMatrix3D();
-            double ar = view.ActualWidth / view.ActualHeight;
-
-            for (int i = 0; i < m; i++)
+            using (var memoryStream = new System.IO.MemoryStream())
             {
-                for (int j = 0; j < m; j++)
+                if (view.RenderHost != null && view.RenderHost.IsRendering)
                 {
-                    // change the camera viewport and scaling
-                    var pm = originalCamera.GetProjectionMatrix3D(ar);
-                    if (originalCamera is OrthographicCamera)
-                    {
-                        pm.OffsetX = m - 1 - (i * 2);
-                        pm.OffsetY = -(m - 1 - (j * 2));
-                    }
-                    else if (originalCamera is PerspectiveCamera)
-                    {
-                        pm.M31 = -(m - 1 - (i * 2));
-                        pm.M32 = m - 1 - (j * 2);
-                    }
-
-                    pm.M11 *= m;
-                    pm.M22 *= m;
-
-                    var mc = new MatrixCamera(vm, pm);
-                    view.Camera = mc;
-
-                    var partialBitmap = new RenderTargetBitmap(
-                        (int)view.ActualWidth, (int)view.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-
-                    // render background
-                    var backgroundRectangle = new Rectangle
-                        {
-                            Width = partialBitmap.Width,
-                            Height = partialBitmap.Height,
-                            Fill = background
-                        };
-                    backgroundRectangle.Arrange(new Rect(0, 0, backgroundRectangle.Width, backgroundRectangle.Height));
-                    partialBitmap.Render(backgroundRectangle);
-
-                    // render 3d
-                    partialBitmap.Render(view);
-
-                    // copy to the target bitmap
-                    CopyBitmap(partialBitmap, target, (int)(i * view.ActualWidth), (int)(j * view.ActualHeight));
+                    Utilities.ScreenCapture.SaveWICTextureToBitmapStream(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.ColorBuffer, memoryStream);
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    memoryStream.Position = 0;
+                    bitmap.StreamSource = memoryStream;
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.EndInit();
+                    bitmap.Freeze();
+                    return bitmap;
+                }
+                else
+                {
+                    return null;
                 }
             }
-
-            // restore the camera
-            view.Camera = originalCamera;
-            return target;
         }
 
         /// <summary>
@@ -650,16 +600,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="view">The viewport.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        /// <param name="background">The background.</param>
-        /// <param name="m">The oversampling multiplier.</param>
         /// <returns>A bitmap.</returns>
         public static BitmapSource RenderBitmap(
-            this Viewport3DX view, double width, double height, Brush background, int m = 1)
+            this Viewport3DX view, double width, double height)
         {
             double w = view.Width;
             double h = view.Height;
             ResizeAndArrange(view, width, height);
-            var rtb = RenderBitmap(view, background, m);
+            var rtb = RenderBitmap(view);
             ResizeAndArrange(view, w, h);
             return rtb;
         }
@@ -689,17 +637,53 @@ namespace HelixToolkit.Wpf.SharpDX
             view.Arrange(new Rect(0, 0, width, height));
         }
 
+
         /// <summary>
-        /// Saves the viewport to a file.
+        /// Saves the bitmap.
         /// </summary>
         /// <param name="view">The view.</param>
         /// <param name="fileName">Name of the file.</param>
-        /// <param name="background">The background brush.</param>
-        /// <param name="m">The oversampling multiplier.</param>
-        public static void SaveBitmap(this Viewport3DX view, string fileName, Brush background = null, int m = 1)
+        public static void SaveScreen(this Viewport3DX view, string fileName)
         {
-            // var exporter = new BitmapExporter(fileName) { Background = background, OversamplingMultiplier = m };
-            // exporter.Export(view);
+            var ext = System.IO.Path.GetExtension(fileName);
+            Direct2DImageFormat format = Direct2DImageFormat.Bmp;
+            switch (ext)
+            {
+                case "bmp":
+                    format = Direct2DImageFormat.Bmp;
+                    break;
+                case "jpeg":
+                case "jpg":
+                    format = Direct2DImageFormat.Jpeg;
+                    break;
+                case "png":
+                    format = Direct2DImageFormat.Png;
+                    break;
+                default:
+                    break;
+            }
+            SaveScreen(view, fileName, format);
+        }
+
+        /// <summary>
+        /// Saves the bitmap.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="format">The format.</param>
+        public static void SaveScreen(this Viewport3DX view, string fileName, Direct2DImageFormat format)
+        {
+            using (var file = System.IO.File.OpenWrite(fileName))
+            {
+                if (!file.CanWrite)
+                {
+                    throw new AccessViolationException($"File cannot be written. {fileName}");
+                }
+            }
+            if (view.RenderHost != null && view.RenderHost.IsRendering)
+            {
+                Utilities.ScreenCapture.SaveWICTextureToFile(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.ColorBuffer, fileName, format);
+            }
         }
 
         /// <summary>
