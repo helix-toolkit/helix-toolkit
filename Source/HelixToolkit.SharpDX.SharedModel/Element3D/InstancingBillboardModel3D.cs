@@ -1,7 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Windows;
 
+#if NETFX_CORE
+using Windows.UI.Xaml;
+namespace HelixToolkit.UWP
+#else
+using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Model;
     using Model.Scene;
@@ -13,8 +18,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// List of instance parameter. 
         /// </summary>
         public static readonly DependencyProperty InstanceAdvArrayProperty =
-            DependencyProperty.Register("InstanceParamArray", typeof(IList<BillboardInstanceParameter>), typeof(InstancingBillboardModel3D), 
-                new PropertyMetadata(null, (d,e)=> 
+            DependencyProperty.Register("InstanceParamArray", typeof(IList<BillboardInstanceParameter>), typeof(InstancingBillboardModel3D),
+                new PropertyMetadata(null, (d, e) =>
                 {
                     ((d as Element3DCore).SceneNode as InstancingBillboardNode).InstanceParamArray = e.NewValue as IList<BillboardInstanceParameter>;
                 }));

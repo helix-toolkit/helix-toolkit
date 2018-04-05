@@ -160,12 +160,7 @@
     <Compile Include="Model\Camera\PerspectiveCamera.cs" />
     <Compile Include="Model\Camera\ProjectionCamera.cs" />
     <Compile Include="Model\Element3D\Abstract\ScreenSpaceMeshGeometry3D.cs" />
-    <Compile Include="Model\Element3D\BillboardTextModel3D.cs" />
-    <Compile Include="Model\Element3D\CoordinateSystemModel3D.cs" />
     <Compile Include="Model\Element3D\GroupModel3D.cs" />
-    <Compile Include="Model\Element3D\LineGeometryModel3D.cs" />
-    <Compile Include="Model\Element3D\MeshGeometryModel3D.cs" />
-    <Compile Include="Model\Element3D\PointGeometryModel3D.cs" />
     <Compile Include="Model\Element3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Lights\AmbientLight3D.cs" />
     <Compile Include="Model\Lights\DirectionalLight3D.cs" />
@@ -414,6 +409,7 @@
   </ItemGroup>
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
+  <Import Project="..\HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

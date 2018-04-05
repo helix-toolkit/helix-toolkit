@@ -1,10 +1,13 @@
-﻿namespace HelixToolkit.Wpf.SharpDX
+﻿#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
+namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Model.Scene;
     /// <summary>
     /// Highlight the border of meshes
     /// </summary>
-    /// <seealso cref="HelixToolkit.Wpf.SharpDX.Element3D" />
     public class PostEffectMeshBorderHighlight : PostEffectMeshOutlineBlur
     {
         protected override SceneNode OnCreateSceneNode()

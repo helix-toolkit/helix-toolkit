@@ -2,15 +2,22 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using global::SharpDX;
+using global::SharpDX.Direct3D11;
+#if NETFX_CORE
+using Windows.UI.Xaml;
+using Color = Windows.UI.Color;
+using Colors = Windows.UI.Colors;
 namespace HelixToolkit.UWP
+#else
+using System.Windows;
+using Color = System.Windows.Media.Color;
+using Colors = System.Windows.Media.Colors;
+namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
-    using global::SharpDX;
-    using global::SharpDX.Direct3D11;
     using Model;
     using Model.Scene;
-    using Windows.UI.Xaml;
-    using Color = Windows.UI.Color;
-    using Colors = Windows.UI.Colors;
 
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
