@@ -12,26 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Windows.Threading;
     using Utilities;
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IOctreeManagerWrapper
-    {
-        /// <summary>
-        /// Gets the octree.
-        /// </summary>
-        /// <value>
-        /// The octree.
-        /// </value>
-        IOctree Octree { get; }
-        /// <summary>
-        /// Gets the manager.
-        /// </summary>
-        /// <value>
-        /// The manager.
-        /// </value>
-        IOctreeManager Manager { get; }
-    }
+
     /// <summary>
     /// 
     /// </summary>

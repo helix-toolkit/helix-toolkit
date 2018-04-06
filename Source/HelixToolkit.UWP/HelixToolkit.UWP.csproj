@@ -167,6 +167,7 @@
     <Compile Include="Model\Camera\ProjectionCamera.cs" />
     <Compile Include="Model\Element3D\Abstract\ScreenSpaceMeshGeometry3D.cs" />
     <Compile Include="Model\Element3D\GroupModel3D.cs" />
+    <Compile Include="Model\Element3D\SortingGroupModel3D.cs" />
     <Compile Include="Model\Element3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Lights\AmbientLight3D.cs" />
     <Compile Include="Model\Lights\DirectionalLight3D.cs" />

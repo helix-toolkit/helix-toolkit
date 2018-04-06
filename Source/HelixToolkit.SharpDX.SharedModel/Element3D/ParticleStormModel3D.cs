@@ -8,20 +8,28 @@
 //  References: https://github.com/spazzarama/Direct3D-Rendering-Cookbook
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using System;
 using SharpDX;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.IO;
+
+#if NETFX_CORE
+using Windows.UI.Xaml;
+using Media = Windows.UI;
+using Windows.Foundation;
+using Vector3D = SharpDX.Vector3;
+namespace HelixToolkit.UWP
+#else
 using System.Windows;
 using Media = System.Windows.Media;
 using Media3D = System.Windows.Media.Media3D;
-
+using Vector3D = System.Windows.Media.Media3D.Vector3D;
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Model;
     using Model.Scene;
-    using System;
     using Utilities;
     using static Core.ParticleRenderCore;
 
@@ -47,7 +55,68 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (int)GetValue(ParticleCountProperty);
             }
         }
+#if NETFX_CORE
+        public static DependencyProperty EmitterLocationProperty = DependencyProperty.Register("EmitterLocation", typeof(Vector3), typeof(ParticleStormModel3D),
+            new PropertyMetadata(DefaultEmitterLocation,
+            (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as ParticleStormNode).EmitterLocation = (Vector3)e.NewValue;
+            }
+            ));
 
+        public Vector3 EmitterLocation
+        {
+            set
+            {
+                SetValue(EmitterLocationProperty, value);
+            }
+            get
+            {
+                return (Vector3)GetValue(EmitterLocationProperty);
+            }
+        }
+
+        public static DependencyProperty ConsumerLocationProperty = DependencyProperty.Register("ConsumerLocation", typeof(Vector3), typeof(ParticleStormModel3D),
+            new PropertyMetadata(DefaultConsumerLocation,
+            (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as ParticleStormNode).ConsumerLocation = (Vector3)e.NewValue;
+            }
+            ));
+
+        public Vector3 ConsumerLocation
+        {
+            set
+            {
+                SetValue(ConsumerLocationProperty, value);
+            }
+            get
+            {
+                return (Vector3)GetValue(ConsumerLocationProperty);
+            }
+        }
+
+        public static DependencyProperty ParticleBoundsProperty = DependencyProperty.Register("ParticleBounds", typeof(BoundingBox), typeof(ParticleStormModel3D),
+            new PropertyMetadata(new BoundingBox(new Vector3D(-50, -50, -50), new Vector3D(50, 50, 50)),
+            (d, e) =>
+            {
+                var bound = (BoundingBox)e.NewValue;
+                ((d as Element3DCore).SceneNode as ParticleStormNode).DomainBoundMax = bound.Maximum;
+                ((d as Element3DCore).SceneNode as ParticleStormNode).DomainBoundMin = bound.Minimum;
+            }));
+
+        public BoundingBox ParticleBounds
+        {
+            set
+            {
+                SetValue(ParticleBoundsProperty, value);
+            }
+            get
+            {
+                return (BoundingBox)GetValue(ParticleBoundsProperty);
+            }
+        }
+#else
         public static DependencyProperty EmitterLocationProperty = DependencyProperty.Register("EmitterLocation", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
             new PropertyMetadata(DefaultEmitterLocation.ToPoint3D(),
             (d, e) =>
@@ -68,26 +137,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty EmitterRadiusProperty = DependencyProperty.Register("EmitterRadius", typeof(double), typeof(ParticleStormModel3D),
-            new PropertyMetadata(0.0,
-            (d, e) =>
-            {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).EmitterRadius = (float)(double)e.NewValue;
-            }
-            ));
-
-        public double EmitterRadius
-        {
-            set
-            {
-                SetValue(EmitterRadiusProperty, value);
-            }
-            get
-            {
-                return (double)GetValue(EmitterRadiusProperty);
-            }
-        }
-
         public static DependencyProperty ConsumerLocationProperty = DependencyProperty.Register("ConsumerLocation", typeof(Media3D.Point3D), typeof(ParticleStormModel3D),
             new PropertyMetadata(DefaultConsumerLocation.ToPoint3D(),
             (d, e) =>
@@ -105,6 +154,48 @@ namespace HelixToolkit.Wpf.SharpDX
             get
             {
                 return (Media3D.Point3D)GetValue(ConsumerLocationProperty);
+            }
+        }
+
+        public static DependencyProperty ParticleBoundsProperty = DependencyProperty.Register("ParticleBounds", typeof(Media3D.Rect3D), typeof(ParticleStormModel3D),
+            new PropertyMetadata(new Media3D.Rect3D(0, 0, 0, 100, 100, 100),
+            (d, e) =>
+            {
+                var bound = (Media3D.Rect3D)e.NewValue;
+                ((d as Element3DCore).SceneNode as ParticleStormNode).DomainBoundMax = new Vector3((float)(bound.SizeX / 2 + bound.Location.X), (float)(bound.SizeY / 2 + bound.Location.Y), (float)(bound.SizeZ / 2 + bound.Location.Z));
+                ((d as Element3DCore).SceneNode as ParticleStormNode).DomainBoundMin = new Vector3((float)(bound.Location.X - bound.SizeX / 2), (float)(bound.Location.Y - bound.SizeY / 2), (float)(bound.Location.Z - bound.SizeZ / 2));
+            }));
+
+        public Media3D.Rect3D ParticleBounds
+        {
+            set
+            {
+                SetValue(ParticleBoundsProperty, value);
+            }
+            get
+            {
+                return (Media3D.Rect3D)GetValue(ParticleBoundsProperty);
+            }
+        }
+#endif
+
+        public static DependencyProperty EmitterRadiusProperty = DependencyProperty.Register("EmitterRadius", typeof(double), typeof(ParticleStormModel3D),
+            new PropertyMetadata(0.0,
+            (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as ParticleStormNode).EmitterRadius = (float)(double)e.NewValue;
+            }
+            ));
+
+        public double EmitterRadius
+        {
+            set
+            {
+                SetValue(EmitterRadiusProperty, value);
+            }
+            get
+            {
+                return (double)GetValue(EmitterRadiusProperty);
             }
         }
 
@@ -309,15 +400,19 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty AccelerationProperty = DependencyProperty.Register("Acceleration", typeof(Media3D.Vector3D), typeof(ParticleStormModel3D),
+        public static DependencyProperty AccelerationProperty = DependencyProperty.Register("Acceleration", typeof(Vector3D), typeof(ParticleStormModel3D),
             new PropertyMetadata(DefaultAcceleration.ToVector3D(),
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as ParticleStormNode).InitAcceleration = ((Media3D.Vector3D)e.NewValue).ToVector3();
+#if NETFX_CORE
+                ((d as Element3DCore).SceneNode as ParticleStormNode).InitAcceleration = (Vector3D)e.NewValue;
+#else
+                ((d as Element3DCore).SceneNode as ParticleStormNode).InitAcceleration = ((Vector3D)e.NewValue).ToVector3();
+#endif
             }
             ));
 
-        public Media3D.Vector3D Acceleration
+        public Vector3D Acceleration
         {
             set
             {
@@ -325,28 +420,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Media3D.Vector3D)GetValue(AccelerationProperty);
-            }
-        }
-
-        public static DependencyProperty ParticleBoundsProperty = DependencyProperty.Register("ParticleBounds", typeof(Media3D.Rect3D), typeof(ParticleStormModel3D),
-            new PropertyMetadata(new Media3D.Rect3D(0, 0, 0, 100, 100, 100),
-            (d, e) =>
-            {
-                var bound = (Media3D.Rect3D)e.NewValue;
-                ((d as Element3DCore).SceneNode as ParticleStormNode).DomainBoundMax = new Vector3((float)(bound.SizeX / 2 + bound.Location.X), (float)(bound.SizeY / 2 + bound.Location.Y), (float)(bound.SizeZ / 2 + bound.Location.Z));
-                ((d as Element3DCore).SceneNode as ParticleStormNode).DomainBoundMin = new Vector3((float)(bound.Location.X - bound.SizeX / 2), (float)(bound.Location.Y - bound.SizeY / 2), (float)(bound.Location.Z - bound.SizeZ / 2));
-            }));
-
-        public Media3D.Rect3D ParticleBounds
-        {
-            set
-            {
-                SetValue(ParticleBoundsProperty, value);
-            }
-            get
-            {
-                return (Media3D.Rect3D)GetValue(ParticleBoundsProperty);
+                return (Vector3D)GetValue(AccelerationProperty);
             }
         }
 
@@ -418,9 +492,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public static readonly DependencyProperty TurbulanceProperty =
             DependencyProperty.Register("Turbulance", typeof(double), typeof(ParticleStormModel3D), new PropertyMetadata(0.0, (d, e) =>
-                {
-                    ((d as Element3DCore).SceneNode as ParticleStormNode).Turbulance = (float)(double)e.NewValue;
-                }));
+            {
+                ((d as Element3DCore).SceneNode as ParticleStormNode).Turbulance = (float)(double)e.NewValue;
+            }));
 
 
 
@@ -545,7 +619,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// List of instance matrix.
         /// </summary>
         public static readonly DependencyProperty InstancesProperty =
-            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(ParticleStormModel3D), new PropertyMetadata(null, (d,e)=> 
+            DependencyProperty.Register("Instances", typeof(IList<Matrix>), typeof(ParticleStormModel3D), new PropertyMetadata(null, (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as ParticleStormNode).Instances = e.NewValue as IList<Matrix>;
             }));
@@ -559,7 +633,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Element3DCore).SceneNode as ParticleStormNode).EnableViewFrustumCheck = (bool)e.NewValue;
                 }));
-        #endregion
+#endregion
 
 
         protected override SceneNode OnCreateSceneNode()
@@ -570,13 +644,13 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void AssignDefaultValuesToSceneNode(SceneNode node)
         {
             base.AssignDefaultValuesToSceneNode(node);
-            if(node is ParticleStormNode c)
+            if (node is ParticleStormNode c)
             {
                 c.ParticleCount = ParticleCount;
-                c.EmitterLocation = EmitterLocation.ToVector3();
+
                 c.EmitterRadius = (float)EmitterRadius;
                 c.ConsumerGravity = (float)ConsumerGravity;
-                c.ConsumerLocation = ConsumerLocation.ToVector3();
+
                 c.ConsumerRadius = (float)ConsumerRadius;
                 c.InitialEnergy = (float)InitialEnergy;
                 c.EnergyDissipationRate = (float)EnergyDissipationRate;
@@ -586,9 +660,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 c.NumTextureRow = (uint)NumTextureRow;
                 c.ParticleSize = new Vector2((float)ParticleSize.Width, (float)ParticleSize.Height);
                 c.InitialVelocity = (float)InitialVelocity;
-                c.InitAcceleration = Acceleration.ToVector3();
-                c.DomainBoundMax = new Vector3((float)(ParticleBounds.SizeX / 2 + ParticleBounds.Location.X), (float)(ParticleBounds.SizeY / 2 + ParticleBounds.Location.Y), (float)(ParticleBounds.SizeZ / 2 + ParticleBounds.Location.Z));
-                c.DomainBoundMin = new Vector3((float)(ParticleBounds.Location.X - ParticleBounds.SizeX / 2), (float)(ParticleBounds.Location.Y - ParticleBounds.SizeY / 2), (float)(ParticleBounds.Location.Z - ParticleBounds.SizeZ / 2));
+
+
                 c.CumulateAtBound = CumulateAtBound;
                 c.BlendColor = BlendColor.ToColor4();
                 c.AnimateSpriteByEnergy = AnimateSpriteByEnergy;
@@ -599,6 +672,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 c.DestBlend = DestBlend;
                 c.SourceAlphaBlend = SourceAlphaBlend;
                 c.DestAlphaBlend = DestAlphaBlend;
+#if NETFX_CORE
+                c.EmitterLocation = EmitterLocation;
+                c.ConsumerLocation = ConsumerLocation;
+                c.InitAcceleration = Acceleration;
+                c.DomainBoundMax = ParticleBounds.Maximum;
+                c.DomainBoundMin = ParticleBounds.Minimum;
+#else
+                c.EmitterLocation = EmitterLocation.ToVector3();
+                c.ConsumerLocation = ConsumerLocation.ToVector3();
+                c.InitAcceleration = Acceleration.ToVector3();
+                c.DomainBoundMax = new Vector3((float)(ParticleBounds.SizeX / 2 + ParticleBounds.Location.X), (float)(ParticleBounds.SizeY / 2 + ParticleBounds.Location.Y), (float)(ParticleBounds.SizeZ / 2 + ParticleBounds.Location.Z));
+                c.DomainBoundMin = new Vector3((float)(ParticleBounds.Location.X - ParticleBounds.SizeX / 2), (float)(ParticleBounds.Location.Y - ParticleBounds.SizeY / 2), (float)(ParticleBounds.Location.Z - ParticleBounds.SizeZ / 2));
+#endif
             }
         }
     }

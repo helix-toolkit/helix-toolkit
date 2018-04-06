@@ -6,12 +6,15 @@ using HelixToolkit.UWP.Model;
 using SharpDX;
 using Windows.Foundation;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+
 namespace HelixToolkit.UWP
 {
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="HelixToolkit.UWP.Model.Element3DCore" />
+    /// <seealso cref="Element3DCore" />
+    [TemplatePart(Name = "PART_ItemsContainer", Type = typeof(ItemsControl))]
     public abstract class Element3D : Element3DCore
     {
         #region Dependency Properties
@@ -81,12 +84,20 @@ namespace HelixToolkit.UWP
             }
         }
 
-        #endregion        
+        #endregion
+
+        /// <summary>
+        /// The items container
+        /// </summary>
+        protected ItemsControl itemsContainer { private set; get; }
+        private static readonly Size oneSize = new Size(1, 1);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Element3D"/> class.
         /// </summary>
         public Element3D()
         {
+            this.DefaultStyleKey = typeof(Element3D);
             RegisterPropertyChangedCallback(VisibilityProperty, (s, e) =>
             {
                 SceneNode.Visible = (Visibility)s.GetValue(e) == Visibility.Visible && IsRendering;
@@ -97,7 +108,7 @@ namespace HelixToolkit.UWP
                 SceneNode.IsHitTestVisible = (bool)s.GetValue(e);
             });
         }
-        private static readonly Size oneSize = new Size(1, 1);
+
         protected override Size ArrangeOverride(Size finalSize)
         {
             return oneSize;
@@ -106,6 +117,16 @@ namespace HelixToolkit.UWP
         protected override Size MeasureOverride(Size availableSize)
         {
             return oneSize;
+        }
+
+        /// <summary>
+        /// Invoked whenever application code or internal processes (such as a rebuilding layout pass) call ApplyTemplate. In simplest terms, this means the method is called just before a UI element displays in your app. Override this method to influence the default post-template logic of a class.
+        /// </summary>
+        protected override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            itemsContainer = GetTemplateChild("PART_ItemsContainer") as ItemsControl;
+            itemsContainer?.Items.Clear();
         }
     }
 }

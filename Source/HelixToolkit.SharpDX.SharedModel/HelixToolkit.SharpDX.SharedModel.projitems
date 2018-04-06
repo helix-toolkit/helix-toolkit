@@ -15,13 +15,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\CrossSectionMeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\EnvironmentMap3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\InstancingBillboardModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\InstancingMeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\LineGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\MeshGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\ParticleStormModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PatchGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PointGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectBloom.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshBorderHighlight.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshOutlineBlur.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRay.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\IOctreeManagerWrapper.cs" />
   </ItemGroup>
 </Project>
