@@ -1,16 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netstandard1.3</TargetFramework>
+      <Copyright>MIT</Copyright>
+      <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+      <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
+      <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
+      <RepositoryUrl>https://github.com/helix-toolkit/helix-toolkit</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;NETCOREAPP1_1</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;NETSTANDARD1_3</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE;RELEASE;NETFX_CORE;NETCOREAPP1_1;SHARPDX;DX11;MSAA;DX11_1;;RELEASE;NETCOREAPP1_1</DefineConstants>
+    <DefineConstants>TRACE;RELEASE;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;RELEASE;NETSTANDARD1_3</DefineConstants>
     <DocumentationFile>bin\Release\netcoreapp1.1\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
   </PropertyGroup>
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
@@ -154,7 +159,9 @@
     <PackageReference Include="SharpDX.Mathematics" Version="4.0.1" />
     <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
     <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />
     <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Threading.Tasks.Parallel" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
