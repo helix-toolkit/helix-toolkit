@@ -43,12 +43,11 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                if (this.MouseDownNearestPoint3D != null)
+                if (Viewport.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
                 {
                     return this.MouseDownNearestPoint3D.Value;
                 }
-
-                if (this.MouseDownPoint3D != null)
+                else if (this.MouseDownPoint3D != null)
                 {
                     return this.MouseDownPoint3D.Value;
                 }
