@@ -159,12 +159,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             bool hit = false;
             foreach (var c in this.Items)
             {
-                if (c is IHitable h)
+                if (c.HitTest(context, ray, ref hits))
                 {
-                    if (h.HitTest(context, ray, ref hits))
-                    {
-                        hit = true;
-                    }
+                    hit = true;
                 }
             }
             if (hit)

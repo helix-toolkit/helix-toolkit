@@ -22,11 +22,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             {
                 foreach (var item in Items.Reverse())
                 {
-                    if (item is IHitable2D h)
-                    {
-                        if (h.HitTest(mousePoint, out hitResult))
-                        { return true; }
-                    }
+                    if (item.HitTest(mousePoint, out hitResult))
+                    { return true; }
                 }
             }
             return false;
