@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return new InstancingMeshNode();
         }
-
+#if NETFX_CORE
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -110,5 +110,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 itemsContainer.Items.Add(OctreeManager);
             }
         }
+#endif
     }
 }
