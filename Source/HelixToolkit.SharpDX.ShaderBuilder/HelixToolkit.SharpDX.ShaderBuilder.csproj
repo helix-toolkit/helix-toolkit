@@ -211,9 +211,9 @@ xcopy /y /l /i $(TargetDir)DS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Reso
 xcopy /y /l /i $(TargetDir)HS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
 xcopy /y /l /i $(TargetDir)CS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
 
-xcopy /y /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.UWP\Resources"
+xcopy /y /l /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.UWP\Resources"
 
-xcopy /y /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.SharpDX.Core\Resources"</PostBuildEvent>
+xcopy /y /l /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.SharpDX.Core\Resources"</PostBuildEvent>
     <Version>0.0.0.1</Version>
     <Authors>HelixToolkit Contributors</Authors>
     <Company>HelixToolkit</Company>
