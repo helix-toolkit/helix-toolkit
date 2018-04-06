@@ -12,7 +12,9 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Model;
     using Model.Scene;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class BoneSkinMeshGeometryModel3D : MeshGeometryModel3D
     {
         public static DependencyProperty VertexBoneIdsProperty = DependencyProperty.Register("VertexBoneIds", typeof(IList<BoneIds>), typeof(BoneSkinMeshGeometryModel3D),

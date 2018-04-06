@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="HelixToolkit.Wpf.SharpDX.Element3D" />
+    /// <seealso cref="Element3D" />
     public class PostEffectBloom : Element3D
     {
         #region Dependency Properties

@@ -205,3 +205,4 @@ FakesAssemblies/
 /Source/HelixToolkit.Wpf.SharpDX/Resources/*.cso
 /Source/.vs/
 /Source/HelixToolkit.UWP/Resources/*.cso
+/Source/HelixToolkit.SharpDX.Core/Resources/*.cso

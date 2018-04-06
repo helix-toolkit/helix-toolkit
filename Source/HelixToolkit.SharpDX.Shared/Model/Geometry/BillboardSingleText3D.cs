@@ -4,14 +4,20 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
 using System.Collections.Generic;
-
-#if NETFX_CORE
-using Windows.UI.Xaml;
-using Media = Windows.UI.Xaml.Media;
-using Windows.UI.Text;
+#if CORE
+using SharpDX.DirectWrite;
+using FontWeight = SharpDX.DirectWrite.FontWeight;
+using FontWeights = SharpDX.DirectWrite.FontWeight;
+using Thickness = HelixToolkit.UWP.Model.Scene2D.Thickness;
 #else
-using System.Windows;
-using Media = System.Windows.Media;
+#if NETFX_CORE
+    using Windows.UI.Xaml;
+    using Media = Windows.UI.Xaml.Media;
+    using Windows.UI.Text;
+#else
+    using System.Windows;
+    using Media = System.Windows.Media;
+#endif
 #endif
 
 #if NETFX_CORE
@@ -243,8 +249,13 @@ using Core;
             {
                 var w = Width;
                 var h = Height;
+#if CORE
+                Texture = TextInfo.Text.ToBitmapStream(FontSize, Color.White, Color.Black, FontFamily, FontWeight, FontStyle,
+                    new Vector4((float)Padding.Left, (float)Padding.Top, (float)Padding.Right, (float)Padding.Bottom), ref w, ref h, predefinedSize, deviceResources);
+#else
                 Texture = TextInfo.Text.ToBitmapStream(FontSize, Color.White, Color.Black, FontFamily, FontWeight.ToDXFontWeight(), FontStyle.ToDXFontStyle(),
                     new Vector4((float)Padding.Left, (float)Padding.Top, (float)Padding.Right, (float)Padding.Bottom), ref w, ref h, predefinedSize, deviceResources);
+#endif
                 if (!predefinedSize)
                 {
                     Width = w;

@@ -18,7 +18,9 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Model;
     using Model.Scene;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class MeshGeometryModel3D : MaterialGeometryModel3D
     {
         #region Dependency Properties        
@@ -234,8 +236,11 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(MeshTopologyProperty, value); }
             get { return (MeshTopologyEnum)GetValue(MeshTopologyProperty); }
         }
-        #endregion
-
+        #endregion        
+        /// <summary>
+        /// Called when [create scene node].
+        /// </summary>
+        /// <returns></returns>
         protected override SceneNode OnCreateSceneNode()
         {
             return new MeshNode();

@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="HelixToolkit.UWP.GeometryModel3D" />
+    /// <seealso cref="GeometryModel3D" />
     public class BillboardTextModel3D : GeometryModel3D
     {
         #region Dependency Properties
