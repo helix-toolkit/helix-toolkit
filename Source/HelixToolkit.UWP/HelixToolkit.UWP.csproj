@@ -178,6 +178,7 @@
     <Compile Include="Model\Material\Material.cs" />
     <Compile Include="Model\Material\PhongMaterial.cs" />
     <Compile Include="Model\Material\PhongMaterialFactory.cs" />
+    <Compile Include="Model\Scene\SceneNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.rd.xml" />
   </ItemGroup>
@@ -415,6 +416,7 @@
     <None Include="HelixToolkit.SharpDX.Shared.licenseheader" />
     <None Include="HelixToolkit.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems" Label="Shared" />
