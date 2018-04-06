@@ -110,7 +110,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         private bool visible = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Element3DCore"/> is visible.
+        /// Gets or sets a value indicating whether this <see cref="SceneNode"/> is visible.
         /// </summary>
         /// <value>
         ///   <c>true</c> if visible; otherwise, <c>false</c>.

@@ -287,7 +287,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Find a <see cref="Vector3D"/> that is perpendicular to the given <see cref="Vector3D"/>.
+        /// Find a <see cref="Vector3"/> that is perpendicular to the given <see cref="Vector3"/>.
         /// </summary>
         /// <param name="n">
         /// The input vector.
