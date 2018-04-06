@@ -19,8 +19,10 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model;
-    using Model.Scene;      
-
+    using Model.Scene;
+    /// <summary>
+    /// 
+    /// </summary>
     public class PointGeometryModel3D : GeometryModel3D
     {
         #region Dependency Properties

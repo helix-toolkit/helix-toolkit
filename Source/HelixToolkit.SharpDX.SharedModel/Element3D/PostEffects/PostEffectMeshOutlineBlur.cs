@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Highlight the border of meshes
     /// </summary>
-    /// <seealso cref="HelixToolkit.Wpf.SharpDX.Element3D" />
+    /// <seealso cref="Element3D" />
     public class PostEffectMeshOutlineBlur : Element3D
     {
         /// <summary>

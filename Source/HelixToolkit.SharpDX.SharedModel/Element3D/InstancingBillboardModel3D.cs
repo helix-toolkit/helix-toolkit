@@ -10,7 +10,9 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Model;
     using Model.Scene;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class InstancingBillboardModel3D : BillboardTextModel3D
     {
         #region Dependency Properties
