@@ -309,7 +309,7 @@ namespace HelixToolkit.UWP
                     else if (this.changeLookAt && this.MouseDownNearestPoint3D != null)
                     {
                         this.LookAt(this.MouseDownNearestPoint3D.Value, 0);
-                        this.rotationPoint3D = this.Camera.Target;
+                        this.rotationPoint3D = this.Camera.Target;               
                     }
                     else if (this.Viewport.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
                     {
@@ -494,7 +494,7 @@ namespace HelixToolkit.UWP
             var angle = u1.AngleBetween(u2);
 
             // Create the transform
-            var delta = Quaternion.RotationAxis(axis, -(float)(angle * (this.RotationSensitivity * 5 / 180 * Math.PI)));
+            var delta = Quaternion.RotationAxis(axis, -(float)(angle * this.RotationSensitivity * 5));
             var rotate = Matrix.RotationQuaternion(delta);
 
             // Find vectors relative to the rotate-around point

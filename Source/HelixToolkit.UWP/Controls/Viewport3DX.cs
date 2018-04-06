@@ -236,19 +236,19 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="e">Event data for the event.</param>
         protected override void OnPointerPressed(PointerRoutedEventArgs e)
-        {
-            base.OnPointerPressed(e);
+        {           
             var p = e.GetCurrentPoint(this).Position;
             if (!ViewBoxHitTest(p))
             {
                 cameraController.OnMouseDown(e);
             }
+            base.OnPointerPressed(e);
         }
 
         protected override void OnPointerReleased(PointerRoutedEventArgs e)
         {
-            base.OnPointerReleased(e);
             cameraController.OnMouseUp(e);
+            base.OnPointerReleased(e);
         }
 
         protected override void OnKeyDown(KeyRoutedEventArgs e)
@@ -263,30 +263,30 @@ namespace HelixToolkit.UWP
         /// <param name="e">Event data for the event.</param>
         protected override void OnManipulationStarted(ManipulationStartedRoutedEventArgs e)
         {
-            base.OnManipulationStarted(e);
             if(e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
                 cameraController.OnManipulationStarted(e);
+            base.OnManipulationStarted(e);
         }
 
         protected override void OnManipulationCompleted(ManipulationCompletedRoutedEventArgs e)
         {
-            base.OnManipulationCompleted(e);
             if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
                 cameraController.OnManipulationCompleted(e);
+            base.OnManipulationCompleted(e);
         }
 
 
         protected override void OnManipulationDelta(ManipulationDeltaRoutedEventArgs e)
         {
-            base.OnManipulationDelta(e);
             if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
                 cameraController.OnManipulationDelta(e);
+            base.OnManipulationDelta(e);
         }
 
         protected override void OnPointerWheelChanged(PointerRoutedEventArgs e)
         {
-            base.OnPointerWheelChanged(e);
             cameraController.OnMouseWheel(e);
+            base.OnPointerWheelChanged(e);
         }
 
         private bool ViewBoxHitTest(Point p)

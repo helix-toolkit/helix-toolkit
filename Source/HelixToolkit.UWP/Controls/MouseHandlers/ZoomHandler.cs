@@ -115,7 +115,7 @@ namespace HelixToolkit.UWP
         /// <param name="zoomAround">
         /// The zoom around.
         /// </param>
-        public void Zoom(double delta, Point3D zoomAround)
+        public void Zoom(double delta, Point3D zoomAround, bool isTouch = false)
         {
             if (!this.Viewport.IsZoomEnabled)
             {
@@ -123,12 +123,16 @@ namespace HelixToolkit.UWP
             }
             if (this.Camera is PerspectiveCamera)
             {
-                if (delta < -0.5)
+                if (!isTouch)
                 {
-                    delta = -0.5;
+                    if (delta < -0.5)
+                    {
+                        delta = -0.5;
+                    }
+
+                    delta *= this.ZoomSensitivity;
                 }
 
-                delta *= this.ZoomSensitivity;
 
                 if (this.CameraMode == CameraMode.FixedPosition || this.changeFieldOfView)
                 {
@@ -187,11 +191,14 @@ namespace HelixToolkit.UWP
         /// <param name="zoomAround">
         /// The zoom around.
         /// </param>
-        public void ZoomByChangingCameraWidth(double delta, Point3D zoomAround)
+        public void ZoomByChangingCameraWidth(double delta, Point3D zoomAround, bool isTouch = false)
         {
-            if (delta < -0.5)
+            if (!isTouch)
             {
-                delta = -0.5;
+                if (delta < -0.5)
+                {
+                    delta = -0.5;
+                }
             }
 
             switch (this.CameraMode)

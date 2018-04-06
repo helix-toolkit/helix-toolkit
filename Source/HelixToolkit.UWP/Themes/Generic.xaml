@@ -13,33 +13,31 @@
                 <ItemsPanelTemplate>
                     <controls:SwapChainRenderHost
                         x:Name="PART_RenderTarget"
+                        IsHitTestVisible="False"
                         HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch" 
-                        ManipulationMode="All"/>
+                        VerticalAlignment="Stretch"
+                        ManipulationMode="None" />
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:Viewport3DX">
-                    <Border
-                        Padding="{TemplateBinding Padding}"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid Background="{TemplateBinding Background}">
-                            <controls:ViewBoxModel3D
-                                x:Name="PART_ViewCube"
+                    <Grid Background="{TemplateBinding Background}"
+                            ManipulationMode="All"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch" Style="{x:Null}">
+                        <controls:ViewBoxModel3D
+                                x:Name="PART_ViewCube" ManipulationMode="None"
                                 EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"
                                 IsRendering="{TemplateBinding ShowViewCube}"
                                 RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}"
                                 RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
                                 SizeScale="{TemplateBinding ViewCubeSize}"
                                 UpDirection="{TemplateBinding ModelUpDirection}"
-                                ViewBoxTexture="{TemplateBinding ViewCubeTexture}"/>
-                            <controls:CoordinateSystemModel3D
-                                x:Name="PART_CoordinateView"
+                                ViewBoxTexture="{TemplateBinding ViewCubeTexture}" />
+                        <controls:CoordinateSystemModel3D
+                                x:Name="PART_CoordinateView" ManipulationMode="None"
                                 CoordinateSystemLabelX="{TemplateBinding CoordinateSystemLabelX}"
                                 CoordinateSystemLabelY="{TemplateBinding CoordinateSystemLabelY}"
                                 CoordinateSystemLabelZ="{TemplateBinding CoordinateSystemLabelZ}"
@@ -48,8 +46,8 @@
                                 RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}"
                                 RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"
                                 SizeScale="{TemplateBinding CoordinateSystemSize}" />
-                            <ItemsPresenter />
-                            <TextBox
+                        <ItemsPresenter />
+                        <TextBox
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Background="Transparent"
@@ -57,8 +55,7 @@
                                 IsReadOnly="True"
                                 Text="{TemplateBinding MessageText}"
                                 Visibility="{Binding Text, RelativeSource={RelativeSource Mode=Self}, Mode=OneWay, Converter={StaticResource emptyStringToVisibilityConverter}}" />
-                        </Grid>
-                    </Border>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

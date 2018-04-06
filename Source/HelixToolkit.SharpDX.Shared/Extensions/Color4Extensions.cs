@@ -213,14 +213,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         internal static object GetNamedColor(string name)
         {
-            object color = null;
+            object color;
             // First, check to see if this is a standard name.
             //
-            color = Colors[name];
-            if (color != null)
-            {
-                return color;
-            }
+            Colors.TryGetValue(name, out color);
             return color;
         }
     }

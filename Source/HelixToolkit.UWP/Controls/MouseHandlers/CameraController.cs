@@ -685,7 +685,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-
+        private float prevScale = 1;
         /// <summary>
         /// Called when the <see cref="E:System.Windows.UIElement.ManipulationDelta"/> event occurs.
         /// </summary>
@@ -702,31 +702,36 @@ namespace HelixToolkit.UWP
 
             // http://msdn.microsoft.com/en-us/library/system.windows.uielement.manipulationdelta.aspx
 
-            //// System.Diagnostics.Debug.WriteLine("OnManipulationDelta: T={0}, S={1}, R={2}, O={3}", e.DeltaManipulation.Translation, e.DeltaManipulation.Scale, e.DeltaManipulation.Rotation, e.ManipulationOrigin);
+            //System.Diagnostics.Debug.WriteLine($"OnManipulationDelta: T={e.Cumulative.Translation}, S={e.Cumulative.Scale}, R={e.Cumulative.Rotation}, E={e.Cumulative.Expansion}");
             //// System.Diagnostics.Debug.WriteLine(n + " Delta:" + e.DeltaManipulation.Translation + " Origin:" + e.ManipulationOrigin + " pos:" + position);
             
             if (this.manipulatorCount != n)
             {
                 // the number of manipulators has changed
-                if (this.manipulatorCount == 1)
+                switch (this.manipulatorCount)
                 {
-                    this.rotateHandler.Completed(position);
+                    case 1:
+                        this.rotateHandler.Completed(position);
+                        break;
+                    case 2:
+                        this.zoomHandler.Completed(e.Position);
+                        break;
+                    case 3:
+                        this.panHandler.Completed(position);
+                        break;
                 }
 
-                if (this.manipulatorCount == 2)
+                switch (n)
                 {
-                    this.panHandler.Completed(position);
-                    this.zoomHandler.Completed(position);
-                }
-
-                if (n == 2)
-                {
-                    this.panHandler.Started(position);
-                    this.zoomHandler.Started(e.Position);
-                }
-                else
-                {
-                    this.rotateHandler.Started(position);
+                    case 1:
+                        this.rotateHandler.Started(position);
+                        break;
+                    case 2:
+                        this.zoomHandler.Started(e.Position);
+                        break;
+                    case 3:
+                        this.panHandler.Started(position);
+                        break;
                 }
 
                 // skip this event, the origin may have changed
@@ -734,32 +739,32 @@ namespace HelixToolkit.UWP
                 e.Handled = true;
                 return;
             }
-
-            if (n == 1)
+            else
             {
-                // one finger rotates
-                this.rotateHandler.Delta(position);
-            }
-
-            if (n == 2)
-            {
-                // two fingers pans
-                this.panHandler.Delta(position);
-            }
-
-            if (Viewport.IsTouchZoomEnabled && n == 2)
-            {
-                var zoomAroundPoint = this.zoomHandler.UnProject(
-                    e.Position, this.zoomHandler.Origin, this.CameraLookDirection);
-                if (zoomAroundPoint != null)
+                switch (n)
                 {
-                    float s = e.Cumulative.Scale;
-                    Debug.WriteLine(s);
-                    this.zoomHandler.Zoom((1-s) * 0.1, zoomAroundPoint.Value);
+                    case 1:
+                        this.rotateHandler.Delta(position);
+                        break;
+                    case 2:
+                        if (Viewport.IsTouchZoomEnabled)
+                        {
+                            var zoomAroundPoint = this.zoomHandler.UnProject(
+                                e.Position, this.zoomHandler.Origin, this.CameraLookDirection);
+                            if (zoomAroundPoint != null)
+                            {
+                                float s = e.Cumulative.Scale;
+                                this.zoomHandler.Zoom((prevScale - s), zoomAroundPoint.Value, true);
+                                prevScale = s;
+                            }
+                        }
+                        break;
+                    case 3:
+                        this.panHandler.Delta(position);
+                        break;
                 }
+                e.Handled = true;
             }
-
-            e.Handled = true;
         }
 
         /// <summary>
@@ -772,6 +777,7 @@ namespace HelixToolkit.UWP
         {
             this.touchPreviousPoint = e.Position;
             this.manipulatorCount = 0;
+            this.prevScale = 1;
             e.Handled = true;
         }
 
