@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
       <TargetFramework>netstandard1.1</TargetFramework>
-      <Copyright>MIT</Copyright>
+      <Copyright>Copyright (C) Helix Toolkit 2018.</Copyright>
       <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
       <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
       <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
@@ -201,9 +201,6 @@
     </VertexShader>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.HLSL.CSharpVB" Version="1.0.1" />
   </ItemGroup>
   <PropertyGroup>
@@ -217,6 +214,9 @@ xcopy /y /f /i $(TargetDir)CS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Reso
 xcopy /y /f /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.UWP\Resources"
 
 xcopy /y /f /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.SharpDX.Core\Resources"</PostBuildEvent>
+    <Version>0.0.0.1</Version>
+    <Authors>HelixToolkit Contributors</Authors>
+    <Company>HelixToolkit</Company>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
