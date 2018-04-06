@@ -204,16 +204,18 @@
     <PackageReference Include="Microsoft.HLSL.CSharpVB" Version="1.0.1" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y /l /i $(TargetDir)VS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /l /i $(TargetDir)PS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /l /i $(TargetDir)GS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /l /i $(TargetDir)DS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /l /i $(TargetDir)HS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
-xcopy /y /l /i $(TargetDir)CS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+      <PostBuildEvent>
+          xcopy /y /f /i $(TargetDir)VS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+          xcopy /y /f /i $(TargetDir)PS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+          xcopy /y /f /i $(TargetDir)GS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+          xcopy /y /f /i $(TargetDir)DS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+          xcopy /y /f /i $(TargetDir)HS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+          xcopy /y /f /i $(TargetDir)CS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
 
-xcopy /y /l /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.UWP\Resources"
+          xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.UWP\Resources"
 
-xcopy /y /l /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.SharpDX.Core\Resources"</PostBuildEvent>
+          xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.SharpDX.Core\Resources"
+      </PostBuildEvent>
     <Version>0.0.0.1</Version>
     <Authors>HelixToolkit Contributors</Authors>
     <Company>HelixToolkit</Company>
