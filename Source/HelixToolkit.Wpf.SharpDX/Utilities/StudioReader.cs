@@ -695,7 +695,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 string ext = Path.GetExtension(texture);
                 if (ext != null)
                 {
-                    ext.ToLower();
+                    ext = ext.ToLower();
                 }
                 // TGA not supported - convert textures to .png
                 if (ext == ".tga")
