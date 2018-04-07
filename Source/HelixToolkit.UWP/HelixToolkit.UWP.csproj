@@ -33,7 +33,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;SHARPDX;DX11;MSAA;DX11_1;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\HelixToolkit.UWP.XML</DocumentationFile>
@@ -44,7 +44,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;SHARPDX;DX11;MSAA;DX11_1;</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -55,7 +55,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <PlatformTarget>x86</PlatformTarget>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;SHARPDX;DX11;MSAA;DX11_1;</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>CS1591;</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -69,7 +69,7 @@
     <PlatformTarget>ARM</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\ARM\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;SHARPDX;DX11;MSAA;DX11_1;</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>ARM</PlatformTarget>
@@ -80,7 +80,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
     <PlatformTarget>ARM</PlatformTarget>
     <OutputPath>bin\ARM\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;SHARPDX;DX11;MSAA;DX11_1;</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>CS1591;</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -94,7 +94,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;SHARPDX;DX11;MSAA;DX11_1;</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -105,7 +105,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;SHARPDX;DX11;MSAA;DX11_1;</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>CS1591;</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -167,6 +167,7 @@
     <Compile Include="Model\Camera\ProjectionCamera.cs" />
     <Compile Include="Model\Element3D\Abstract\ScreenSpaceMeshGeometry3D.cs" />
     <Compile Include="Model\Element3D\GroupModel3D.cs" />
+    <Compile Include="Model\Element3D\SortingGroupModel3D.cs" />
     <Compile Include="Model\Element3D\ViewBoxModel3D.cs" />
     <Compile Include="Model\Lights\AmbientLight3D.cs" />
     <Compile Include="Model\Lights\DirectionalLight3D.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="Model\Material\Material.cs" />
     <Compile Include="Model\Material\PhongMaterial.cs" />
     <Compile Include="Model\Material\PhongMaterialFactory.cs" />
+    <Compile Include="Model\Scene\SceneNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\HelixToolkit.UWP.rd.xml" />
   </ItemGroup>
@@ -414,6 +416,7 @@
     <None Include="HelixToolkit.SharpDX.Shared.licenseheader" />
     <None Include="HelixToolkit.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems" Label="Shared" />

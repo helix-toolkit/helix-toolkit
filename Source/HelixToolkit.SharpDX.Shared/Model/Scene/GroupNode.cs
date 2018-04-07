@@ -87,7 +87,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             bool isHit = false;
             if (Octree != null)
             {
-                isHit = Octree.HitTest(context, this, totalModelMatrix, ray, ref hits);
+                isHit = Octree.HitTest(context, this.WrapperSource, totalModelMatrix, ray, ref hits);
 #if DEBUG
                 if (isHit)
                 {

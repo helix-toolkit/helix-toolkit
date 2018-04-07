@@ -1,9 +1,12 @@
-﻿using System.Linq;
-using global::SharpDX;
-using System.Collections.Generic;
-using System.Windows;
+﻿using System.Collections.Generic;
 
+#if NETFX_CORE
+using Windows.UI.Xaml;
+namespace HelixToolkit.UWP
+#else
+using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Model;
     using Model.Scene;
@@ -25,6 +28,16 @@ namespace HelixToolkit.Wpf.SharpDX
             typeof(IOctreeManagerWrapper), typeof(InstancingMeshGeometryModel3D), new PropertyMetadata(null, (s, e) =>
             {
                 var d = s as InstancingMeshGeometryModel3D;
+#if NETFX_CORE
+                if(e.OldValue != null && d.itemsContainer != null)
+                {
+                    d.itemsContainer.Items.Remove(e.OldValue);
+                }
+                if(e.NewValue != null && d.itemsContainer != null)
+                {
+                    d.itemsContainer.Items.Add(e.NewValue);
+                }
+#else
                 if (e.OldValue != null)
                 {
                     d.RemoveLogicalChild(e.OldValue);
@@ -34,6 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     d.AddLogicalChild(e.NewValue);
                 }
+#endif
                 (d.SceneNode as InstancingMeshNode).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
             }));
 
@@ -87,5 +101,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return new InstancingMeshNode();
         }
+#if NETFX_CORE
+        protected override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            if(OctreeManager != null && !itemsContainer.Items.Contains(OctreeManager))
+            {
+                itemsContainer.Items.Add(OctreeManager);
+            }
+        }
+#endif
     }
 }

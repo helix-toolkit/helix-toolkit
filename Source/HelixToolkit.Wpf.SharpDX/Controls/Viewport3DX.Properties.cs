@@ -733,7 +733,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Enable mouse button hit test
         /// </summary>
         public static readonly DependencyProperty EnableMouseButtonHitTestProperty = DependencyProperty.Register(
-            "EnableMouseButtonHitTest", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+            "EnableMouseButtonHitTest", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e)=> {
+                (d as Viewport3DX).enableMouseButtonHitTest = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// Manually move camera to look at a point in 3D space

@@ -212,11 +212,7 @@ namespace HelixToolkit.UWP
 
             foreach (var element in viewport.Renderables)
             {
-                var model = element as IHitable;
-                if (model != null)
-                {
-                    model.HitTest(viewport.RenderContext, ray, ref hits);
-                }
+                element.HitTest(viewport.RenderContext, ray, ref hits);
             }
 
             return hits.OrderBy(k => k.Distance).ToList();

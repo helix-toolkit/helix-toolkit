@@ -250,7 +250,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private Window parentWindow;
 
         private Overlay overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
-
+        private bool enableMouseButtonHitTest = true;
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
@@ -1617,7 +1617,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            if (!EnableMouseButtonHitTest)
+            if (!enableMouseButtonHitTest)
             {
                 return;
             }
@@ -1642,6 +1642,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
+                currentHit = null;
                 // Raise event from Viewport3DX if there's no hit
                 this.RaiseEvent(new MouseDown3DEventArgs(this, null, pt, this));
             }
@@ -1692,15 +1693,18 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 MouseOverModel2D = null;
             }
-            if (this.currentHit != null)
+            if (enableMouseButtonHitTest)
             {
-                (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
-                    new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
-            }
-            else
-            {
-                // Raise event from Viewport3DX if there's no hit
-                this.RaiseEvent(new MouseMove3DEventArgs(this, null, pt, this));
+                if (this.currentHit != null)
+                {
+                    (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
+                        new MouseMove3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                }
+                else
+                {
+                    // Raise event from Viewport3DX if there's no hit
+                    this.RaiseEvent(new MouseMove3DEventArgs(this, null, pt, this));
+                }
             }
         }
 
@@ -1712,8 +1716,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The original input event for future use (which mouse button pressed?)
         /// </param>
         private void MouseUpHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
-        {
-            
+        {            
             if (currentHit2D != null)
             {
                 if (currentHit2D.ModelHit is Element2D element)
@@ -1721,18 +1724,21 @@ namespace HelixToolkit.Wpf.SharpDX
                     element.RaiseEvent(new Mouse2DEventArgs(Element2D.MouseUp2DEvent, currentHit2D.ModelHit, currentHit2D, pt, this, originalInputEventArgs));
                 }
                 currentHit2D = null;
-            }           
-            if (this.currentHit != null)
-            {               
-                (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
-                    new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
-                this.currentHit = null;
-                Mouse.Capture(this, CaptureMode.None);
             }
-            else
+            if (enableMouseButtonHitTest)
             {
-                // Raise event from Viewport3DX if there's no hit
-                this.RaiseEvent(new MouseUp3DEventArgs(this, null, pt, this));
+                if (this.currentHit != null)
+                {               
+                    (this.currentHit.ModelHit as Element3D)?.RaiseEvent(
+                        new MouseUp3DEventArgs(this.currentHit.ModelHit, this.currentHit, pt, this));
+                    this.currentHit = null;
+                    Mouse.Capture(this, CaptureMode.None);
+                }
+                else
+                {
+                    // Raise event from Viewport3DX if there's no hit
+                    this.RaiseEvent(new MouseUp3DEventArgs(this, null, pt, this));
+                }
             }
         }
 
