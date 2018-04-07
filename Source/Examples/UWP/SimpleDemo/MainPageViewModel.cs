@@ -22,9 +22,13 @@ namespace SimpleDemoW10
 
         public Geometry3D PointGeometry { private set; get; }
 
+        public Geometry3D FloorModel { private set; get; }
+
         public BillboardText3D AxisLabelGeometry { private set; get; }
 
         public PhongMaterial Material { private set; get; }
+
+        public PhongMaterial FloorMaterial { private set; get; }
 
         public IEffectsManager EffectsManager { private set; get; }
 
@@ -69,7 +73,7 @@ namespace SimpleDemoW10
             get { return transform3; }
         }
 
-        private Matrix transform4 = Matrix.Translation(-3,-3, 3);
+        private Matrix transform4 = Matrix.Translation(-3, 4, 3);
         public Matrix Transform4
         {
             set
@@ -78,6 +82,8 @@ namespace SimpleDemoW10
             }
             get { return transform4; }
         }
+
+        public Vector3 DirectionalLightDirection { get; } = new Vector3(-0.5f, -1, 0);
         private DispatcherTimer timer;
 
         private float scale = 1;
@@ -91,7 +97,7 @@ namespace SimpleDemoW10
 
             var builder = new MeshBuilder(true, true, true);
             builder.AddBox(new SharpDX.Vector3(0, 0, 0), 2, 2, 2);
-            builder.AddSphere(new Vector3(0,2,0), 1.5);
+            builder.AddSphere(new Vector3(0, 2, 0), 1.5);
             Geometry = builder.ToMesh();
             Material = new PhongMaterial()
             {
@@ -118,6 +124,12 @@ namespace SimpleDemoW10
             AxisLabelGeometry.TextInfo.Add(new TextInfo("X", new Vector3(5.5f, 0, 0)) { Foreground = Color.Red });
             AxisLabelGeometry.TextInfo.Add(new TextInfo("Y", new Vector3(0, 5.5f, 0)) { Foreground = Color.Green });
             AxisLabelGeometry.TextInfo.Add(new TextInfo("Z", new Vector3(0, 0, 5.5f)) { Foreground = Color.Blue });
+
+            builder = new MeshBuilder();
+            builder.AddBox(new Vector3(0, -6, 0), 30, 0.5, 30);
+            FloorModel = builder.ToMesh();
+
+            FloorMaterial = PhongMaterials.LightGray;
 
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
@@ -155,7 +167,7 @@ namespace SimpleDemoW10
                     case LogLevel.Error:
                         Console.WriteLine($"Level:{logLevel}; Msg:{msg}");
                         break;
-                }              
+                }
             }
         }
     }

@@ -162,6 +162,7 @@ namespace HelixToolkit.UWP
                     renderHostInternal.RenderTechnique = this.RenderTechnique;
                     renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();
                     renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
+                    renderHostInternal.IsShadowMapEnabled = this.IsShadowMappingEnabled;
 #if MSAA
                     renderHostInternal.MSAA = this.MSAA;
 #endif

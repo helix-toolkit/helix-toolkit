@@ -28,31 +28,33 @@
             EnableDeferredRendering="True"
             MSAA="Two"
             OnMouse3DDown="Viewport3DX_OnMouse3DDown"
-            ShowCoordinateSystem="true">
-            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
-            <hx:GroupModel3D>
-                <hx:MeshGeometryModel3D Geometry="{Binding Geometry}" Material="{Binding Material}" />
-                <hx:LineGeometryModel3D Geometry="{Binding LineGeometry}" Color="White" />
-                <hx:BillboardTextModel3D Geometry="{Binding AxisLabelGeometry}" />
+            ShowCoordinateSystem="true" IsShadowMappingEnabled="True">
+            <hx:ShadowMap3D/>
+            <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="White" />
+            <hx:GroupModel3D IsThrowingShadow="True">
+                <hx:MeshGeometryModel3D Geometry="{Binding Geometry}" Material="{Binding Material}"  CullMode="Back" IsThrowingShadow="True"  RenderShadowMap="True"/>
+                <hx:LineGeometryModel3D Geometry="{Binding LineGeometry}" Color="White" IsThrowingShadow="True"/>
+                <hx:BillboardTextModel3D Geometry="{Binding AxisLabelGeometry}" IsTransparent="True"/>
             </hx:GroupModel3D>
-            <hx:GroupModel3D Transform3D="{Binding Transform}">
+            <hx:GroupModel3D Transform3D="{Binding Transform}" IsThrowingShadow="True">
                 <hx:MeshGeometryModel3D
                     Geometry="{Binding Geometry}"
-                    Material="{Binding Material}"
-                    Transform3D="{Binding Transform1}" />
+                    Material="{Binding Material}" CullMode="Back"
+                    Transform3D="{Binding Transform1}" IsThrowingShadow="True"  RenderShadowMap="True"/>
                 <hx:MeshGeometryModel3D
                     Geometry="{Binding Geometry}"
-                    Material="{Binding Material}"
-                    Transform3D="{Binding Transform2}" />
+                    Material="{Binding Material}" CullMode="Back"
+                    Transform3D="{Binding Transform2}" IsThrowingShadow="True"  RenderShadowMap="True"/>
                 <hx:MeshGeometryModel3D
                     Geometry="{Binding Geometry}"
-                    Material="{Binding Material}"
-                    Transform3D="{Binding Transform3}" />
+                    Material="{Binding Material}" CullMode="Back"
+                    Transform3D="{Binding Transform3}" IsThrowingShadow="True"  RenderShadowMap="True"/>
             </hx:GroupModel3D>
-            <hx:GroupModel3D Transform3D="{Binding Transform4}">
-                <hx:PointGeometryModel3D Geometry="{Binding PointGeometry}" Color="#00D13E" />
+            <hx:GroupModel3D Transform3D="{Binding Transform4}" IsThrowingShadow="True">
+                <hx:PointGeometryModel3D Geometry="{Binding PointGeometry}" Color="#00D13E" IsThrowingShadow="True"/>
             </hx:GroupModel3D>
-            <hx:PostEffectMeshBorderHighlight EffectName="border" />
+            <hx:MeshGeometryModel3D x:Name="floor" Geometry="{Binding FloorModel}" Material="{Binding FloorMaterial}"  CullMode="Back" RenderShadowMap="True"/>
+            <hx:PostEffectMeshBorderHighlight EffectName="border" NumberOfBlurPass="2"/>
         </hx:Viewport3DX>
         <TextBlock
             HorizontalAlignment="Center"

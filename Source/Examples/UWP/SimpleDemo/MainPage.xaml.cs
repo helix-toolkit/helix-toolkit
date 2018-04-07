@@ -31,11 +31,11 @@ namespace SimpleDemoW10
 
         private void Viewport3DX_OnMouse3DDown(object sender, HelixToolkit.UWP.MouseDown3DEventArgs e)
         {
-            if (e.HitTestResult != null)
+            if (e.HitTestResult != null && e.HitTestResult.ModelHit is GeometryModel3D element)
             {
-                if(e.HitTestResult.ModelHit is GeometryModel3D element)
+                if (element.Name != "floor")
                 {
-                    element.PostEffects = string.IsNullOrEmpty(element.PostEffects) ? "border[color:#FFA300]" : null;
+                    element.PostEffects = string.IsNullOrEmpty(element.PostEffects) ? "border[color:#00FFDE]" : null;
                 }
             }
         }
