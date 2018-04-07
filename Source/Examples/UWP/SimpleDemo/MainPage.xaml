@@ -24,18 +24,32 @@
             BackgroundColor="Black"
             Camera="{Binding Camera}"
             EffectsManager="{Binding EffectsManager}"
+            EnableAutoOctreeUpdate="True"
+            EnableDeferredRendering="True"
+            MSAA="Two"
+            OnMouse3DDown="Viewport3DX_OnMouse3DDown"
             ShowCoordinateSystem="true">
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
+            <hx:GroupModel3D>
+                <hx:MeshGeometryModel3D Geometry="{Binding Geometry}" Material="{Binding Material}" />
+                <hx:LineGeometryModel3D Geometry="{Binding LineGeometry}" Color="White" />
+                <hx:BillboardTextModel3D Geometry="{Binding AxisLabelGeometry}" />
+            </hx:GroupModel3D>
             <hx:GroupModel3D Transform3D="{Binding Transform}">
                 <hx:MeshGeometryModel3D
                     Geometry="{Binding Geometry}"
                     Material="{Binding Material}"
-                    PostEffects="border[color:#FFA300]" />
-                <hx:LineGeometryModel3D Geometry="{Binding LineGeometry}" Color="White" />
-                <hx:BillboardTextModel3D Geometry="{Binding AxisLabelGeometry}" />
+                    Transform3D="{Binding Transform1}" />
+                <hx:MeshGeometryModel3D
+                    Geometry="{Binding Geometry}"
+                    Material="{Binding Material}"
+                    Transform3D="{Binding Transform2}" />
+                <hx:MeshGeometryModel3D
+                    Geometry="{Binding Geometry}"
+                    Material="{Binding Material}"
+                    Transform3D="{Binding Transform3}" />
             </hx:GroupModel3D>
-
-            <hx:GroupModel3D Transform3D="{Binding Transform1}">
+            <hx:GroupModel3D Transform3D="{Binding Transform4}">
                 <hx:PointGeometryModel3D Geometry="{Binding PointGeometry}" Color="#00D13E" />
             </hx:GroupModel3D>
             <hx:PostEffectMeshBorderHighlight EffectName="border" />

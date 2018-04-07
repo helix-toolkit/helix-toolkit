@@ -12,21 +12,21 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Used for render ordering. Order is the same as render type defined.
     /// </summary>
-    public enum RenderType : ushort
+    public enum RenderType
     {
         None, Light, PreProc, Opaque, Particle, Transparent, PostProc, ScreenSpaced
     }
     /// <summary>
     /// 
     /// </summary>
-    public enum MSAALevel : ushort
+    public enum MSAALevel
     {
         Disable = 0, Maximum = 1, Two = 2, Four = 4, Eight = 8
     }
     /// <summary>
     /// 
     /// </summary>
-    public enum LightType : ushort
+    public enum LightType
     {
         Ambient = 0, Directional = 1, Point = 2, Spot = 3, ThreePoint = 4, None = 5
     }
@@ -34,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public enum PointFigure : ushort
+    public enum PointFigure
     {
         Rect,
         Ellipse,
@@ -44,7 +44,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public enum MeshTopologyEnum : ushort
+    public enum MeshTopologyEnum
     {
         PNTriangles,
         PNQuads
@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// 
     /// </summary>
     [Flags]
-    public enum ShaderStage : ushort
+    public enum ShaderStage
     {
         None = 0,
         Vertex = 1,
@@ -69,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// 
     /// </summary>
     [Flags]
-    public enum StateType : ushort
+    public enum StateType
     {
         None = 0,
         RasterState = 1,
@@ -78,7 +78,7 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     [Flags]
-    public enum RenderDetail : ushort
+    public enum RenderDetail
     {
         None = 0,
         FPS = 1,

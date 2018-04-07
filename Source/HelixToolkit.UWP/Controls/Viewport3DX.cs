@@ -118,6 +118,7 @@ namespace HelixToolkit.UWP
         private ViewBoxModel3D viewCube;
         private CoordinateSystemModel3D coordinateSystem;
         private CameraController cameraController;
+        private ContentPresenter hostPresenter;
         /// <summary>
         /// The nearest valid result during a hit test.
         /// </summary>
@@ -148,11 +149,11 @@ namespace HelixToolkit.UWP
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            var presenter = GetTemplateChild(ViewportPartNames.PART_HostPresenter) as ContentPresenter;
-            if (presenter != null)
+            hostPresenter = GetTemplateChild(ViewportPartNames.PART_HostPresenter) as ContentPresenter;
+            if (hostPresenter != null)
             {
-                presenter.Content = new SwapChainRenderHost(EnableDeferredRendering);
-                renderHostInternal = (presenter.Content as SwapChainRenderHost).RenderHost;
+                hostPresenter.Content = new SwapChainRenderHost(EnableDeferredRendering);
+                renderHostInternal = (hostPresenter.Content as SwapChainRenderHost).RenderHost;
                 if (renderHostInternal != null)
                 {
                     renderHostInternal.Viewport = this;
@@ -160,6 +161,10 @@ namespace HelixToolkit.UWP
                     renderHostInternal.EffectsManager = this.EffectsManager;
                     renderHostInternal.RenderTechnique = this.RenderTechnique;
                     renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();
+                    renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
+                    renderHostInternal.MSAA = this.MSAA;
+                    renderHostInternal.RenderConfiguration.AutoUpdateOctree = this.EnableAutoOctreeUpdate;
+                    renderHostInternal.ExceptionOccurred += RenderHostInternal_ExceptionOccurred;
                 }
             }
             if(viewCube == null)
@@ -195,6 +200,30 @@ namespace HelixToolkit.UWP
                 coordinateSystem.RelativeScreenLocationX = CoordinateSystemHorizontalPosition;
                 coordinateSystem.RelativeScreenLocationY = CoordinateSystemVerticalPosition;
             }
+        }
+
+        private void RenderHostInternal_ExceptionOccurred(object sender, Utilities.RelayExceptionEventArgs e)
+        {
+            var bindingExpression = this.GetBindingExpression(RenderExceptionProperty);
+            if (bindingExpression != null)
+            {
+                // If RenderExceptionProperty is bound, we assume the exception will be handled.
+                this.RenderException = e.Exception;
+                e.Handled = true;
+            }
+
+            // Fire RenderExceptionOccurred event
+            this.RenderExceptionOccurred?.Invoke(sender, e);
+
+            // If the Exception is still unhandled...
+            if (!e.Handled)
+            {
+                // ... prevent a MessageBox.Show().
+                this.MessageText = e.Exception.ToString();
+                e.Handled = true;
+            }
+            hostPresenter.Content = null;
+            Disposer.RemoveAndDispose(ref renderHostInternal);
         }
 
         private void Viewport3DXLoaded(object sender, RoutedEventArgs e)

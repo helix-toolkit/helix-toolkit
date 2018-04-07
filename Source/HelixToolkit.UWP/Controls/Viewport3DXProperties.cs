@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
+using HelixToolkit.UWP.Utilities;
 using System;
 using Windows.UI;
 using Windows.UI.Core;
@@ -19,6 +20,11 @@ namespace HelixToolkit.UWP
         public event EventHandler<MouseUp3DEventArgs> OnMouse3DUp;
 
         public event EventHandler<MouseMove3DEventArgs> OnMouse3DMove;
+
+        /// <summary>
+        /// Fired whenever an exception occurred at rendering subsystem.
+        /// </summary>
+        public event EventHandler<RelayExceptionEventArgs> RenderExceptionOccurred;
         #endregion
         /// <summary>
         /// The is deferred shading enabled propery
@@ -1533,6 +1539,45 @@ namespace HelixToolkit.UWP
             {
                 return (bool)GetValue(EnableDeferredRenderingProperty);
             }
+        }
+
+        /// <summary>
+        /// The enable automatic octree update property
+        /// </summary>
+        public static readonly DependencyProperty EnableAutoOctreeUpdateProperty =
+            DependencyProperty.Register("EnableAutoOctreeUpdate", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.AutoUpdateOctree = (bool)e.NewValue;
+                }
+            }));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable automatic update octree for geometry models].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable automatic octree update]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableAutoOctreeUpdate
+        {
+            get { return (bool)GetValue(EnableAutoOctreeUpdateProperty); }
+            set { SetValue(EnableAutoOctreeUpdateProperty, value); }
+        }
+
+        /// <summary>
+        /// The render exception property.
+        /// </summary>
+        public static DependencyProperty RenderExceptionProperty = DependencyProperty.Register(
+            "RenderException", typeof(Exception), typeof(Viewport3DX), new PropertyMetadata(null));
+        /// <summary>
+        /// Gets or sets the <see cref="Exception"/> that occured at rendering subsystem.
+        /// </summary>
+        public Exception RenderException
+        {
+            get { return (Exception)this.GetValue(RenderExceptionProperty); }
+            set { this.SetValue(RenderExceptionProperty, value); }
         }
     }
 }

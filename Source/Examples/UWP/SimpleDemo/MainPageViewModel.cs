@@ -48,6 +48,36 @@ namespace SimpleDemoW10
             }
             get { return transform1; }
         }
+
+        private Matrix transform2 = Matrix.Identity;
+        public Matrix Transform2
+        {
+            set
+            {
+                Set(ref transform2, value);
+            }
+            get { return transform2; }
+        }
+
+        private Matrix transform3 = Matrix.Identity;
+        public Matrix Transform3
+        {
+            set
+            {
+                Set(ref transform3, value);
+            }
+            get { return transform3; }
+        }
+
+        private Matrix transform4 = Matrix.Translation(-3,-3, 3);
+        public Matrix Transform4
+        {
+            set
+            {
+                Set(ref transform4, value);
+            }
+            get { return transform4; }
+        }
         private DispatcherTimer timer;
 
         private float scale = 1;
@@ -92,7 +122,7 @@ namespace SimpleDemoW10
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
             timer.Interval = new TimeSpan(0, 0, 0, 0, 16);
-            //timer.Start();
+            timer.Start();
         }
 
         private void Timer_Tick(object sender, object e)
@@ -101,7 +131,11 @@ namespace SimpleDemoW10
             Transform = global::SharpDX.Matrix.Scaling((float)this.scale) * global::SharpDX.Matrix.RotationX(rotationSpeed * time)
                     * global::SharpDX.Matrix.RotationY(rotationSpeed * time * 2.0f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time * .7f);
             Transform1 = global::SharpDX.Matrix.Scaling((float)this.scale) * global::SharpDX.Matrix.RotationX(-rotationSpeed * time * .7f)
-                    * global::SharpDX.Matrix.RotationY(-rotationSpeed * time * 2.0f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time);
+                * global::SharpDX.Matrix.RotationY(-rotationSpeed * time * 1.0f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time) * Matrix.Translation(3, -3, -3);
+            Transform2 = global::SharpDX.Matrix.Scaling((float)this.scale) * global::SharpDX.Matrix.RotationX(-rotationSpeed * time * -.7f)
+                    * global::SharpDX.Matrix.RotationY(-rotationSpeed * time * 1.0f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time) * Matrix.Translation(3, 3, 3);
+            Transform3 = global::SharpDX.Matrix.Scaling((float)this.scale) * global::SharpDX.Matrix.RotationX(-rotationSpeed * time * .7f)
+                    * global::SharpDX.Matrix.RotationY(-rotationSpeed * time * -0.5f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time) * Matrix.Translation(-5, -5, 5);
         }
 
         private Stream LoadTexture(string file)
