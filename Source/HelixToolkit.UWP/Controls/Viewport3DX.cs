@@ -162,7 +162,9 @@ namespace HelixToolkit.UWP
                     renderHostInternal.RenderTechnique = this.RenderTechnique;
                     renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();
                     renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
+#if MSAA
                     renderHostInternal.MSAA = this.MSAA;
+#endif
                     renderHostInternal.RenderConfiguration.AutoUpdateOctree = this.EnableAutoOctreeUpdate;
                     renderHostInternal.ExceptionOccurred += RenderHostInternal_ExceptionOccurred;
                 }

@@ -1411,7 +1411,7 @@ namespace HelixToolkit.UWP
                 this.SetValue(MoveSensitivityProperty, value);
             }
         }
-
+#if MSAA
         /// <summary>
         /// Set MSAA Level
         /// </summary>
@@ -1439,7 +1439,7 @@ namespace HelixToolkit.UWP
                 this.SetValue(MSAAProperty, value);
             }
         }
-
+#endif
         /// <summary>
         /// Enable mouse button hit test
         /// </summary>
