@@ -4,9 +4,11 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using HelixToolkit.UWP.Model;
 using SharpDX;
+using System;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Point = Windows.Foundation.Point;
 
 namespace HelixToolkit.UWP
 {
@@ -83,7 +85,6 @@ namespace HelixToolkit.UWP
                 return (bool)GetValue(IsThrowingShadowProperty);
             }
         }
-
         #endregion
 
         /// <summary>
@@ -106,7 +107,7 @@ namespace HelixToolkit.UWP
             RegisterPropertyChangedCallback(IsHitTestVisibleProperty, (s, e) =>
             {
                 SceneNode.IsHitTestVisible = (bool)s.GetValue(e);
-            });
+            });            
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -128,5 +129,63 @@ namespace HelixToolkit.UWP
             itemsContainer = GetTemplateChild("PART_ItemsContainer") as ItemsControl;
             itemsContainer?.Items.Clear();
         }
+
+        #region Events
+        public event EventHandler<MouseDown3DEventArgs> OnMouse3DDown;
+
+        public event EventHandler<MouseUp3DEventArgs> OnMouse3DUp;
+
+        public event EventHandler<MouseMove3DEventArgs> OnMouse3DMove;
+
+        internal void RaiseMouseDownEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null)
+        {
+            OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(hitTestResult, p, viewport));
+        }
+
+        internal void RaiseMouseUpEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null)
+        {
+            OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(hitTestResult, p, viewport));
+        }
+
+        internal void RaiseMouseMoveEvent(HitTestResult hitTestResult, Point p, Viewport3DX viewport = null)
+        {
+            OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(hitTestResult, p, viewport));
+        }
+        #endregion
+    }
+
+    public abstract class Mouse3DEventArgs
+    {
+        public HitTestResult HitTestResult { get; private set; }
+        public Viewport3DX Viewport { get; private set; }
+        public Point Position { get; private set; }
+
+        public Mouse3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+        {
+            this.HitTestResult = hitTestResult;
+            this.Position = position;
+            this.Viewport = viewport;
+        }
+    }
+
+    public sealed class MouseDown3DEventArgs : Mouse3DEventArgs
+    {
+        public MouseDown3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+            : base(hitTestResult, position, viewport)
+        { }
+    }
+
+    public sealed class MouseUp3DEventArgs : Mouse3DEventArgs
+    {
+        public MouseUp3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+            : base(hitTestResult, position, viewport)
+        { }
+    }
+
+    public sealed class MouseMove3DEventArgs : Mouse3DEventArgs
+    {
+        public MouseMove3DEventArgs(HitTestResult hitTestResult, Point position, Viewport3DX viewport = null)
+            : base(hitTestResult, position, viewport)
+        { }
     }
 }

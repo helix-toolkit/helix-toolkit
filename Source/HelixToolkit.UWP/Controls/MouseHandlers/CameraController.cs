@@ -725,18 +725,21 @@ namespace HelixToolkit.UWP
                 {
                     case 1:
                         this.rotateHandler.Started(position);
+                        e.Handled = true;
                         break;
                     case 2:
                         this.zoomHandler.Started(e.Position);
+                        e.Handled = true;
                         break;
                     case 3:
                         this.panHandler.Started(position);
+                        e.Handled = true;
                         break;
                 }
 
                 // skip this event, the origin may have changed
                 this.manipulatorCount = n;
-                e.Handled = true;
+                
                 return;
             }
             else
@@ -745,6 +748,7 @@ namespace HelixToolkit.UWP
                 {
                     case 1:
                         this.rotateHandler.Delta(position);
+                        e.Handled = true;
                         break;
                     case 2:
                         if (Viewport.IsTouchZoomEnabled)
@@ -758,12 +762,13 @@ namespace HelixToolkit.UWP
                                 prevScale = s;
                             }
                         }
+                        e.Handled = true;
                         break;
                     case 3:
                         this.panHandler.Delta(position);
+                        e.Handled = true;
                         break;
                 }
-                e.Handled = true;
             }
         }
 
@@ -778,7 +783,6 @@ namespace HelixToolkit.UWP
             this.touchPreviousPoint = e.Position;
             this.manipulatorCount = 0;
             this.prevScale = 1;
-            e.Handled = true;
         }
 
         /// <summary>

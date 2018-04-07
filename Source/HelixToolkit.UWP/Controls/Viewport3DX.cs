@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP
     using Model.Scene;
     using Model.Scene2D;
     using System.Runtime.CompilerServices;
+    using System.Runtime.InteropServices.WindowsRuntime;
     using Windows.UI.Xaml.Input;
     using Visibility = Windows.UI.Xaml.Visibility;
     /// <summary>
@@ -28,15 +29,17 @@ namespace HelixToolkit.UWP
         public const string PART_RenderTarget = "PART_RenderTarget";
         public const string PART_ViewCube = "PART_ViewCube";
         public const string PART_CoordinateView = "PART_CoordinateView";
+        public const string PART_HostPresenter = "PART_HostPresenter";
     }
 
     /// <summary>
     /// Renders the contained 3-D content within the 2-D layout bounds of the Viewport3DX element.
     /// </summary>
     [ContentProperty(Name = "Items")]
-    [TemplatePart(Name = "PART_RenderTarget", Type =typeof(SwapChainRenderHost))]
-    [TemplatePart(Name = "PART_ViewCube", Type = typeof(ViewBoxModel3D))]
-    [TemplatePart(Name = "PART_CoordinateView", Type =typeof(CoordinateSystemModel3D))]
+    [TemplatePart(Name = ViewportPartNames.PART_RenderTarget, Type =typeof(SwapChainRenderHost))]
+    [TemplatePart(Name = ViewportPartNames.PART_ViewCube, Type = typeof(ViewBoxModel3D))]
+    [TemplatePart(Name = ViewportPartNames.PART_CoordinateView, Type =typeof(CoordinateSystemModel3D))]
+    [TemplatePart(Name = ViewportPartNames.PART_HostPresenter, Type =typeof(ContentPresenter))]
     public partial class Viewport3DX : ItemsControl, IViewport3DX
     {
         ///// <summary>
@@ -115,7 +118,13 @@ namespace HelixToolkit.UWP
         private ViewBoxModel3D viewCube;
         private CoordinateSystemModel3D coordinateSystem;
         private CameraController cameraController;
-       
+        /// <summary>
+        /// The nearest valid result during a hit test.
+        /// </summary>
+        private HitTestResult currentHit;
+
+        private bool enableMouseButtonHitTest = true;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Viewport3DX"/> class.
         /// </summary>
@@ -139,6 +148,20 @@ namespace HelixToolkit.UWP
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+            var presenter = GetTemplateChild(ViewportPartNames.PART_HostPresenter) as ContentPresenter;
+            if (presenter != null)
+            {
+                presenter.Content = new SwapChainRenderHost(EnableDeferredRendering);
+                renderHostInternal = (presenter.Content as SwapChainRenderHost).RenderHost;
+                if (renderHostInternal != null)
+                {
+                    renderHostInternal.Viewport = this;
+                    renderHostInternal.IsRendering = Visibility == Visibility.Visible;
+                    renderHostInternal.EffectsManager = this.EffectsManager;
+                    renderHostInternal.RenderTechnique = this.RenderTechnique;
+                    renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();
+                }
+            }
             if(viewCube == null)
             {
                 viewCube = GetTemplateChild(ViewportPartNames.PART_ViewCube) as ViewBoxModel3D;
@@ -176,15 +199,6 @@ namespace HelixToolkit.UWP
 
         private void Viewport3DXLoaded(object sender, RoutedEventArgs e)
         {
-            renderHostInternal = (ItemsPanelRoot as SwapChainRenderHost).RenderHost;
-            if (renderHostInternal != null)
-            {
-                renderHostInternal.Viewport = this;
-                renderHostInternal.IsRendering = Visibility == Visibility.Visible;
-                renderHostInternal.EffectsManager = this.EffectsManager;
-                renderHostInternal.RenderTechnique = this.RenderTechnique;
-                renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();               
-            }
         }
 
         private void Viewport3DX_Unloaded(object sender, RoutedEventArgs e)
@@ -240,6 +254,7 @@ namespace HelixToolkit.UWP
             var p = e.GetCurrentPoint(this).Position;
             if (!ViewBoxHitTest(p))
             {
+                MouseDownHitTest(p, e);
                 cameraController.OnMouseDown(e);
             }
             base.OnPointerPressed(e);
@@ -248,7 +263,14 @@ namespace HelixToolkit.UWP
         protected override void OnPointerReleased(PointerRoutedEventArgs e)
         {
             cameraController.OnMouseUp(e);
+            MouseUpHitTest(e.GetCurrentPoint(this).Position, e);
             base.OnPointerReleased(e);
+        }
+
+        protected override void OnPointerMoved(PointerRoutedEventArgs e)
+        {
+            MouseMoveHitTest(e.GetCurrentPoint(this).Position, e);
+            base.OnPointerMoved(e);
         }
 
         protected override void OnKeyDown(KeyRoutedEventArgs e)
@@ -322,6 +344,75 @@ namespace HelixToolkit.UWP
             var look = e.LookDirection * distance;
             var newPosition = target - look;
             pc.AnimateTo(newPosition, look, e.UpDirection, 500);
+        }
+
+        /// <summary>
+        /// Handles hit testing on mouse down.
+        /// </summary>
+        /// <param name="pt">The hit point.</param>
+        /// <param name="originalInputEventArgs">
+        /// The original input event for future use (which mouse button pressed?)
+        /// </param>
+        private void MouseDownHitTest(Point pt, PointerRoutedEventArgs originalInputEventArgs = null)
+        {
+            if (!enableMouseButtonHitTest)
+            {
+                return;
+            }
+
+            var hits = this.FindHits(pt);
+            if (hits.Count > 0)
+            {
+                this.currentHit = hits.FirstOrDefault(x => x.IsValid);
+                if (this.currentHit != null)
+                {
+                    (this.currentHit.ModelHit as Element3D)?.RaiseMouseDownEvent(this.currentHit, pt, this);
+                }
+            }
+            else
+            {
+                currentHit = null;               
+            }
+            this.OnMouse3DDown?.Invoke(this, new MouseDown3DEventArgs(currentHit, pt, this));
+        }
+        /// <summary>
+        /// Handles hit testing on mouse move.
+        /// </summary>
+        /// <param name="pt">The hit point.</param>
+        /// <param name="originalInputEventArgs">
+        /// The original input event for future use (which mouse button pressed?)
+        /// </param>
+        private void MouseMoveHitTest(Point pt, PointerRoutedEventArgs originalInputEventArgs = null)
+        {
+            if (!enableMouseButtonHitTest)
+            {
+                return;
+            }
+            if (this.currentHit != null)
+            {
+                (this.currentHit.ModelHit as Element3D)?.RaiseMouseMoveEvent(this.currentHit, pt, this);
+            }
+            this.OnMouse3DMove?.Invoke(this, new MouseMove3DEventArgs(currentHit, pt, this));
+        }
+        /// <summary>
+        /// Handles hit testing on mouse up.
+        /// </summary>
+        /// <param name="pt">The hit point.</param>
+        /// <param name="originalInputEventArgs">
+        /// The original input event for future use (which mouse button pressed?)
+        /// </param>
+        private void MouseUpHitTest(Point pt, PointerRoutedEventArgs originalInputEventArgs = null)
+        {
+            if (!enableMouseButtonHitTest)
+            {
+                return;
+            }
+            if (currentHit != null)
+            {
+                (this.currentHit.ModelHit as Element3D)?.RaiseMouseUpEvent(this.currentHit, pt, this);               
+                currentHit = null;
+            }
+            this.OnMouse3DUp?.Invoke(this, new MouseUp3DEventArgs(currentHit, pt, this));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -449,6 +540,31 @@ namespace HelixToolkit.UWP
         private void CameraInternal_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             InvalidateRender();
+        }
+
+        /// <summary>
+        /// Change the camera to look at the specified point.
+        /// </summary>
+        /// <param name="p">
+        /// The point.
+        /// </param>
+        public void LookAt(Vector3 p)
+        {
+            this.cameraController?.ActualCamera?.LookAt(p, 0);
+        }
+
+        /// <summary>
+        /// Change the camera to look at the specified point.
+        /// </summary>
+        /// <param name="p">
+        /// The point.
+        /// </param>
+        /// <param name="animationTime">
+        /// The animation time.
+        /// </param>
+        public void LookAt(Vector3 p, double animationTime)
+        {
+            this.cameraController?.ActualCamera?.LookAt(p, animationTime);
         }
     }
 }

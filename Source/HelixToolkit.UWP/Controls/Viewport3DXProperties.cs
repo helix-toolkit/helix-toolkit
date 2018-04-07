@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
+using System;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -12,6 +13,13 @@ namespace HelixToolkit.UWP
 {
     public partial class Viewport3DX
     {
+        #region Events
+        public event EventHandler<MouseDown3DEventArgs> OnMouse3DDown;
+
+        public event EventHandler<MouseUp3DEventArgs> OnMouse3DUp;
+
+        public event EventHandler<MouseMove3DEventArgs> OnMouse3DMove;
+        #endregion
         /// <summary>
         /// The is deferred shading enabled propery
         /// </summary>
@@ -1395,6 +1403,135 @@ namespace HelixToolkit.UWP
             set
             {
                 this.SetValue(MoveSensitivityProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Set MSAA Level
+        /// </summary>
+        public static readonly DependencyProperty MSAAProperty = DependencyProperty.Register("MSAA", typeof(MSAALevel), typeof(Viewport3DX),
+            new PropertyMetadata(MSAALevel.Disable, (s, e) =>
+            {
+                var viewport = s as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.MSAA = (MSAALevel)e.NewValue;
+                }
+            }));
+
+        /// <summary>
+        /// Set MSAA level. If set to Two/Four/Eight, the actual level is set to minimum between Maximum and Two/Four/Eight
+        /// </summary>
+        public MSAALevel MSAA
+        {
+            get
+            {
+                return (MSAALevel)this.GetValue(MSAAProperty);
+            }
+            set
+            {
+                this.SetValue(MSAAProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Enable mouse button hit test
+        /// </summary>
+        public static readonly DependencyProperty EnableMouseButtonHitTestProperty = DependencyProperty.Register(
+            "EnableMouseButtonHitTest", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d,e)=> {
+                (d as Viewport3DX).enableMouseButtonHitTest = (bool)e.NewValue;
+            }));
+
+        /// <summary>
+        /// Enable mouse button hit test
+        /// </summary>
+        public bool EnableMouseButtonHitTest
+        {
+            set
+            {
+                SetValue(EnableMouseButtonHitTestProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableMouseButtonHitTestProperty);
+            }
+        }
+        /// <summary>
+        /// Manually move camera to look at a point in 3D space
+        /// </summary>
+        public static readonly DependencyProperty ManualLookAtPointProperty = DependencyProperty.Register(
+            "ManualLookAtPoint", typeof(Vector3), typeof(Viewport3DX), new PropertyMetadata(new Vector3(), (d, e) =>
+                {
+                    (d as Viewport3DX).LookAt((Vector3)e.NewValue);
+                }));
+
+
+        /// <summary>
+        /// Manually move camera to look at a point in 3D space. (Same as calling Viewport3DX.LookAt() function)
+        /// Since camera may have been moved by mouse, the value gets does not reflect the actual point camera currently looking at.
+        /// </summary>
+        public Vector3 ManualLookAtPoint
+        {
+            set
+            {
+                SetValue(ManualLookAtPointProperty, value);
+            }
+            get
+            {
+                return (Vector3)GetValue(ManualLookAtPointProperty);
+            }
+        }
+        /// <summary>
+        /// Enable render frustum to avoid rendering model if it is out of view frustum
+        /// </summary>
+        public static readonly DependencyProperty EnableRenderFrustumProperty
+            = DependencyProperty.Register("EnableRenderFrustumProperty", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false,
+                (s, e) =>
+                {
+                    var viewport = s as Viewport3DX;
+                    if (viewport.renderHostInternal != null)
+                    {
+                        viewport.EnableRenderFrustum = (bool)e.NewValue;
+                    }
+                }));
+        /// <summary>
+        /// Enable render frustum to skip rendering model if model is out of the camera bounding frustum
+        /// </summary>
+        public bool EnableRenderFrustum
+        {
+            set
+            {
+                SetValue(EnableRenderFrustumProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableRenderFrustumProperty);
+            }
+        }
+
+        /// <summary>
+        /// <para>Enable deferred rendering. Use multithreading to call rendering procedure using different Deferred Context.</para> 
+        /// <para>Deferred Rendering: https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx</para>
+        /// <para>https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/d3d11deferredcontextssample.htm</para>
+        /// <para>Note: Only if draw calls > 3000 to be benefit according to the online performance test.</para>
+        /// </summary>
+        public static readonly DependencyProperty EnableDeferredRenderingProperty
+            = DependencyProperty.Register("EnableDeferredRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+        /// <summary>
+        /// <para>Enable deferred rendering. Use multithreading to call rendering procedure using different Deferred Context.</para> 
+        /// <para>Deferred Rendering: https://msdn.microsoft.com/en-us/library/windows/desktop/ff476892.aspx</para>
+        /// <para>https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/d3d11deferredcontextssample.htm</para>
+        /// <para>Note: Only if draw calls > 3000 to be benefit according to the online performance test.</para>
+        /// </summary>
+        public bool EnableDeferredRendering
+        {
+            set
+            {
+                SetValue(EnableDeferredRenderingProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableDeferredRenderingProperty);
             }
         }
     }

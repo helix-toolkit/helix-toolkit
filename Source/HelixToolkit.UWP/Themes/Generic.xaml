@@ -8,18 +8,6 @@
     <converters:EmptyStringToVisibilityConverter x:Key="emptyStringToVisibilityConverter" />
 
     <Style TargetType="controls:Viewport3DX">
-        <Setter Property="ItemsPanel">
-            <Setter.Value>
-                <ItemsPanelTemplate>
-                    <controls:SwapChainRenderHost
-                        x:Name="PART_RenderTarget"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        IsHitTestVisible="False"
-                        ManipulationMode="None" />
-                </ItemsPanelTemplate>
-            </Setter.Value>
-        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:Viewport3DX">
@@ -29,28 +17,31 @@
                         Background="{TemplateBinding Background}"
                         ManipulationMode="All"
                         Style="{x:Null}">
-                        <controls:ViewBoxModel3D
-                            x:Name="PART_ViewCube"
-                            EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"
-                            IsRendering="{TemplateBinding ShowViewCube}"
-                            ManipulationMode="None"
-                            RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}"
-                            RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
-                            SizeScale="{TemplateBinding ViewCubeSize}"
-                            UpDirection="{TemplateBinding ModelUpDirection}"
-                            ViewBoxTexture="{TemplateBinding ViewCubeTexture}" />
-                        <controls:CoordinateSystemModel3D
-                            x:Name="PART_CoordinateView"
-                            CoordinateSystemLabelX="{TemplateBinding CoordinateSystemLabelX}"
-                            CoordinateSystemLabelY="{TemplateBinding CoordinateSystemLabelY}"
-                            CoordinateSystemLabelZ="{TemplateBinding CoordinateSystemLabelZ}"
-                            IsRendering="{TemplateBinding ShowCoordinateSystem}"
-                            LabelColor="{TemplateBinding CoordinateSystemLabelForeground}"
-                            ManipulationMode="None"
-                            RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}"
-                            RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"
-                            SizeScale="{TemplateBinding CoordinateSystemSize}" />
-                        <ItemsPresenter />
+                        <StackPanel IsHitTestVisible="False" Visibility="Collapsed">
+                            <controls:ViewBoxModel3D
+                                x:Name="PART_ViewCube"
+                                EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"
+                                IsRendering="{TemplateBinding ShowViewCube}"
+                                ManipulationMode="None"
+                                RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}"
+                                RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
+                                SizeScale="{TemplateBinding ViewCubeSize}"
+                                UpDirection="{TemplateBinding ModelUpDirection}"
+                                ViewBoxTexture="{TemplateBinding ViewCubeTexture}" />
+                            <controls:CoordinateSystemModel3D
+                                x:Name="PART_CoordinateView"
+                                CoordinateSystemLabelX="{TemplateBinding CoordinateSystemLabelX}"
+                                CoordinateSystemLabelY="{TemplateBinding CoordinateSystemLabelY}"
+                                CoordinateSystemLabelZ="{TemplateBinding CoordinateSystemLabelZ}"
+                                IsRendering="{TemplateBinding ShowCoordinateSystem}"
+                                LabelColor="{TemplateBinding CoordinateSystemLabelForeground}"
+                                ManipulationMode="None"
+                                RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}"
+                                RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"
+                                SizeScale="{TemplateBinding CoordinateSystemSize}" />
+                        </StackPanel>
+                        <ItemsPresenter IsHitTestVisible="False" />
+                        <ContentPresenter x:Name="PART_HostPresenter" IsHitTestVisible="False" />
                         <TextBox
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"

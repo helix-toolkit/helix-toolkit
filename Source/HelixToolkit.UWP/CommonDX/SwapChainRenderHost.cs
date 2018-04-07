@@ -15,9 +15,10 @@ namespace HelixToolkit.UWP
     using Utilities;
     using Windows.Foundation;
     using Windows.UI.Popups;
+    using Windows.UI.Xaml;
 
     public class SwapChainRenderHost : SwapChainPanel
-    {
+    {       
         /// <summary>
         /// Fired whenever an exception occurred on this object.
         /// </summary>
@@ -34,13 +35,20 @@ namespace HelixToolkit.UWP
 
         private readonly CompositionTargetEx compositionTarget = new CompositionTargetEx();
 
-        public SwapChainRenderHost()
-        {
-            renderHost = new SwapChainCompositionRenderHost();
+        public SwapChainRenderHost(bool enableDeferredRendering)
+        {   
+            if (enableDeferredRendering)
+            {
+                renderHost = new SwapChainCompositionRenderHost((device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); });
+            }
+            else
+            {
+                renderHost = new SwapChainCompositionRenderHost();
+            }
             renderHost.OnNewRenderTargetTexture += SwapChainRenderHost_OnNewRenderTargetTexture;
             renderHost.StartRenderLoop += SwapChainRenderHost_StartRenderLoop;
             renderHost.StopRenderLoop += SwapChainRenderHost_StopRenderLoop;
-            SizeChanged += Target_SizeChanged;
+            SizeChanged += Target_SizeChanged;            
             Loaded += SwapChainRenderHost_Loaded;
             Unloaded += SwapChainRenderHost_Unloaded;
         }
