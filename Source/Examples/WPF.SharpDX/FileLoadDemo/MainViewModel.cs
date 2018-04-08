@@ -102,6 +102,10 @@ namespace FileLoadDemo
                     Geometry = ob.Geometry,
                     Material = ob.Material,
                 };
+                if (ob.Transform != null && ob.Transform.Count > 0)
+                {
+                    s.Instances = ob.Transform;
+                }
                 this.ModelGeometry.Add(s);
 
             }

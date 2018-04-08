@@ -128,7 +128,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             modelGroup = new Object3DGroup();
             var g = this.CreateMeshGeometry3D(info);
-            var gm = new Object3D() { Geometry = g, Material = PhongMaterials.DefaultVRML, Transform =  Matrix.Identity, };            
+            var gm = new Object3D() { Geometry = g, Material = PhongMaterials.DefaultVRML, Transform =  new List<Matrix>() };            
             modelGroup.Add(gm);
             return modelGroup;
         }
