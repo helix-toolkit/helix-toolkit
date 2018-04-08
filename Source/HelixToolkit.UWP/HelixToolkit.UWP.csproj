@@ -159,9 +159,7 @@
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
     <Compile Include="Model\Camera\OrthographicCamera.cs" />
     <Compile Include="Model\Element3D\Abstract\Element3D.cs" />
-    <Compile Include="Model\Element3D\Abstract\GeometryModel3D.cs" />
     <Compile Include="Model\Element3D\Abstract\GroupElement3D.cs" />
-    <Compile Include="Model\Element3D\Abstract\MaterialGeometryModel3D.cs" />
     <Compile Include="Model\Camera\Camera.cs" />
     <Compile Include="Model\Camera\PerspectiveCamera.cs" />
     <Compile Include="Model\Camera\ProjectionCamera.cs" />

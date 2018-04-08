@@ -9,6 +9,8 @@
     <Import_RootNamespace>HelixToolkit.SharpDX.SharedModel</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\GeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\MaterialGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\BillboardTextModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\BoneSkinmeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\CoordinateSystemModel3D.cs" />
