@@ -3,16 +3,14 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
-using SharpDX.Direct3D;
-using System;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
 #else
-using HelixToolkit.UWP.Helper;
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    using Helper;
     public static class DefaultHullShaders
     {
         /// <summary>
@@ -22,11 +20,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.hsMeshTriTessellation;
-#else
                 return UWPShaderBytePool.Read("hsMeshTriTessellation");
-#endif
             }
         }
     }
