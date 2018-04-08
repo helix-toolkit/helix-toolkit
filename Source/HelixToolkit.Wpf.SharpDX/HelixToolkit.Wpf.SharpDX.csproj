@@ -203,7 +203,6 @@
     <Compile Include="Model\Elements3D\AbstractElements3D\ScreenSpaceMeshGeometry3D.cs" />
     <Compile Include="Model\Elements3D\Element3DPresenter.cs" />
     <Compile Include="Model\Elements3D\OctreeLineGeometryModel3D.cs" />
-    <Compile Include="Model\Elements3D\OutLineMeshGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\ScreenDuplicationModel.cs" />
     <Compile Include="Model\Elements3D\SortingGroupModel3D.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
