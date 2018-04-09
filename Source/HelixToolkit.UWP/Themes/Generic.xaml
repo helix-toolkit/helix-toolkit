@@ -40,7 +40,7 @@
                                 RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"
                                 SizeScale="{TemplateBinding CoordinateSystemSize}" />
                         </StackPanel>
-                        <ItemsPresenter IsHitTestVisible="False" />
+                        <ItemsControl x:Name="PART_ItemsContainer" IsHitTestVisible="False" />
                         <ContentPresenter x:Name="PART_HostPresenter" IsHitTestVisible="False" />
                         <TextBox
                             HorizontalAlignment="Center"
@@ -60,10 +60,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:Element3D">
-                    <ItemsControl
-                        x:Name="PART_ItemsContainer"
-                        IsHitTestVisible="False"
-                        Visibility="Collapsed" />
+                    <ItemsControl x:Name="PART_ItemsContainer" IsHitTestVisible="False" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

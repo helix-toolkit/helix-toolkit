@@ -30,6 +30,7 @@ namespace HelixToolkit.UWP
         public const string PART_ViewCube = "PART_ViewCube";
         public const string PART_CoordinateView = "PART_CoordinateView";
         public const string PART_HostPresenter = "PART_HostPresenter";
+        public const string PART_ItemsContainer = "PART_ItemsContainer";
     }
 
     /// <summary>
@@ -40,7 +41,8 @@ namespace HelixToolkit.UWP
     [TemplatePart(Name = ViewportPartNames.PART_ViewCube, Type = typeof(ViewBoxModel3D))]
     [TemplatePart(Name = ViewportPartNames.PART_CoordinateView, Type =typeof(CoordinateSystemModel3D))]
     [TemplatePart(Name = ViewportPartNames.PART_HostPresenter, Type =typeof(ContentPresenter))]
-    public partial class Viewport3DX : ItemsControl, IViewport3DX
+    [TemplatePart(Name = ViewportPartNames.PART_ItemsContainer, Type = typeof(ItemsControl))]
+    public partial class Viewport3DX : Control, IViewport3DX
     {
         ///// <summary>
         ///// Changes the dpi of the device manager when the DisplayProperties.LogicalDpi has changed.
@@ -71,6 +73,8 @@ namespace HelixToolkit.UWP
         /// The world matrix.
         /// </value>
         public Matrix WorldMatrix { get; } = Matrix.Identity;
+
+        public ObservableElement3DCollection Items { get; } = new ObservableElement3DCollection();
         /// <summary>
         /// Gets the renderables.
         /// </summary>
@@ -119,6 +123,7 @@ namespace HelixToolkit.UWP
         private CoordinateSystemModel3D coordinateSystem;
         private CameraController cameraController;
         private ContentPresenter hostPresenter;
+        private ItemsControl itemsContainer;
         /// <summary>
         /// The nearest valid result during a hit test.
         /// </summary>
@@ -126,11 +131,14 @@ namespace HelixToolkit.UWP
 
         private bool enableMouseButtonHitTest = true;
 
+        private bool IsLoaded = false;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Viewport3DX"/> class.
         /// </summary>
         public Viewport3DX()
         {
+            Items.CollectionChanged += Items_CollectionChanged;
             this.DefaultStyleKey = typeof(Viewport3DX);
             this.Loaded += Viewport3DXLoaded;
             this.Unloaded += Viewport3DX_Unloaded;
@@ -146,9 +154,55 @@ namespace HelixToolkit.UWP
             });            
         }
 
+        private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (var item in e.OldItems)
+                {
+                    if (itemsContainer != null)
+                    {
+                        itemsContainer.Items.Remove(item);
+                    }
+                    if (item is Element3D element)
+                    {
+                        element.SceneNode.Detach();
+                    }
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach (var item in e.NewItems)
+                {
+                    if (itemsContainer != null)
+                    {
+                        itemsContainer.Items.Add(item);
+                    }
+                    if (this.IsAttached && item is Element3D element)
+                    {
+                        element.SceneNode.Attach(renderHostInternal);
+                    }
+                }
+            }
+            InvalidateRender();
+        }
+
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+            itemsContainer = GetTemplateChild(ViewportPartNames.PART_ItemsContainer) as ItemsControl;
+            if (itemsContainer == null)
+            {
+                throw new HelixToolkitException("{0} is missing from the template.", ViewportPartNames.PART_ItemsContainer);
+            }
+            else
+            {
+                itemsContainer.Items.Clear();
+                foreach(var item in Items)
+                {
+                    itemsContainer.Items.Add(item);
+                }
+            }
             hostPresenter = GetTemplateChild(ViewportPartNames.PART_HostPresenter) as ContentPresenter;
             if (hostPresenter != null)
             {
@@ -184,7 +238,7 @@ namespace HelixToolkit.UWP
                 throw new HelixToolkitException("{0} is missing from the template.", ViewportPartNames.PART_ViewCube);
             }
             else
-            {
+            {             
                 viewCube.RelativeScreenLocationX = ViewCubeHorizontalPosition;
                 viewCube.RelativeScreenLocationY = ViewCubeVerticalPosition;
                 viewCube.UpDirection = ModelUpDirection;
@@ -231,11 +285,12 @@ namespace HelixToolkit.UWP
 
         private void Viewport3DXLoaded(object sender, RoutedEventArgs e)
         {
+            IsLoaded = true;
         }
 
         private void Viewport3DX_Unloaded(object sender, RoutedEventArgs e)
         {
-
+            IsLoaded = false;
         }
         /// <summary>
         /// Attaches the elements to the specified host.
