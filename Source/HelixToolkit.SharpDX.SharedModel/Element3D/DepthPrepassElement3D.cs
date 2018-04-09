@@ -2,17 +2,15 @@
 //   Copyright (c) 2018 Helix Toolkit contributors
 // </copyright>
 
-
+using System.Collections.Generic;
+using SharpDX;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
-using System.Collections.Generic;
-using HelixToolkit.Wpf.SharpDX.Model.Scene;
-using SharpDX;
-
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using Model.Scene;
     /// <summary>
     /// Do a depth prepass before rendering.
     /// <para>Must customize the DefaultEffectsManager and set DepthStencilState to DefaultDepthStencilDescriptions.DSSDepthEqualNoWrite in default ShaderPass from EffectsManager to achieve best performance.</para>

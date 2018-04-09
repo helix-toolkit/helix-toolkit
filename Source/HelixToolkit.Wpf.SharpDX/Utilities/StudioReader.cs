@@ -421,6 +421,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="tangents"></param>
         /// <param name="bitangents"></param>
         /// <param name="material"></param>
+        /// <param name="transforms"></param>
         private void CreateMesh(Vector3Collection positions, Vector2Collection textureCoordinates, IntCollection triangleIndices, List<Matrix> transforms, 
             out Vector3Collection normals, out Vector3Collection tangents, out Vector3Collection bitangents, Material material)
         {
