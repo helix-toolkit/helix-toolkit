@@ -342,10 +342,6 @@ namespace HelixToolkit.Wpf.SharpDX
             InvalidateRender();
         }
 
-        private void Items_CurrentChanged(object sender, EventArgs e)
-        {
-        }
-
         /// <summary>
         /// Adds the specified move force.
         /// </summary>
