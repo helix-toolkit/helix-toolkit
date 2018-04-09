@@ -43,7 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [TemplatePart(Name = "PART_FrameStatisticView", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_TitleView", Type = typeof(StackPanel2D))]
     [Localizability(LocalizationCategory.NeverLocalize)]
-    public partial class Viewport3DX : ItemsControl, IViewport3DX
+    public partial class Viewport3DX : Control, IViewport3DX
     {
         /// <summary>
         /// The adorner layer part name.
@@ -191,6 +191,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public IRenderContext RenderContext { get { return this.renderHostInternal?.RenderContext; } }
 
+        public ObservableElement3DCollection Items { get; } = new ObservableElement3DCollection();
         /// <summary>
         /// <para>Return enumerable of all the rederable elements</para>
         /// <para>If enabled shared model mode, the returned rederables are current viewport renderable plus shared models</para>
@@ -265,6 +266,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Viewport3DX()
         {
+            Items.CollectionChanged += Items_CollectionChanged;
             this.perspectiveCamera = new PerspectiveCamera();
             this.orthographicCamera = new OrthographicCamera();
             this.perspectiveCamera.Reset();
@@ -311,6 +313,37 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             };
             AddHandler(ViewBoxModel3D.ViewBoxClickedEvent, new EventHandler<ViewBoxModel3D.ViewBoxClickedEventArgs>(ViewCubeClicked));
+        }
+
+        private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach(var item in e.OldItems)
+                {
+                    this.RemoveLogicalChild(item);
+                    if(item is Element3D element)
+                    {
+                        element.SceneNode.Detach();
+                    }
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach(var item in e.NewItems)
+                {
+                    this.AddLogicalChild(item);
+                    if(this.IsAttached && item is Element3D element)
+                    {
+                        element.SceneNode.Attach(renderHostInternal);
+                    }
+                }
+            }
+            InvalidateRender();
+        }
+
+        private void Items_CurrentChanged(object sender, EventArgs e)
+        {
         }
 
         /// <summary>

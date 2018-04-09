@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void ClearItems()
         {
             CheckReentrancy();
-            var items = Items.ToList();
+            var items = Items.ToArray();
             base.ClearItems();
             OnPropertyChanged(new PropertyChangedEventArgs("Count"));
             OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
@@ -49,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void ClearItems()
         {
             CheckReentrancy();
-            var items = Items.ToList();
+            var items = Items.ToArray();
             base.ClearItems();
             OnPropertyChanged(new PropertyChangedEventArgs("Count"));
             OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
