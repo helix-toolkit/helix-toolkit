@@ -165,7 +165,7 @@ namespace ModelViewer
         private async void FileOpen()
         {
             this.CurrentModelPath = this.fileDialogService.OpenFileDialog("models", null, OpenFileFilter, ".3ds");
-            this.CurrentModel = await this.LoadAsync(this.CurrentModelPath, false);
+            this.CurrentModel = await this.LoadAsync(this.CurrentModelPath, true);
             this.ApplicationTitle = string.Format(TitleFormatString, this.CurrentModelPath);
             this.viewport.ZoomExtents(0);
         }
