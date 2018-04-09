@@ -10,7 +10,6 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using Model.Scene;
-    using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Windows;
     using System.Windows.Markup;
@@ -42,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///     The children.
         /// </value>
-        public ObservableCollection<Element3D> Children { get; } = new ObservableCollection<Element3D>();
+        public ObservableElement3DCollection Children { get; } = new ObservableElement3DCollection();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
