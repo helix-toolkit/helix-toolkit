@@ -235,7 +235,6 @@
     <Compile Include="Model\Elements3D\GroupModel3D.cs" />
     <Compile Include="Model\Elements3D\ItemsModel3D.cs" />
     <Compile Include="Model\Elements3D\Light3DCollection.cs" />
-    <Compile Include="Model\Elements3D\Element3DCollection.cs" />
     <Compile Include="Model\Elements3D\UICompositeManipulator3D.cs" />
     <Compile Include="Model\Elements3D\UIManipulator3D.cs" />
     <Compile Include="Model\Elements3D\UIResizeManipulator3D.cs" />
