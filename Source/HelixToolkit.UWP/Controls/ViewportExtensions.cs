@@ -388,5 +388,83 @@ namespace HelixToolkit.UWP
             }
             return bounds;
         }
+
+        /// <summary>
+        /// Traverses the Visual3D/Element3D tree and invokes the specified action on each Element3D of the specified type.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type filter.
+        /// </typeparam>
+        /// <param name="viewport">
+        /// The viewport.
+        /// </param>
+        /// <param name="action">
+        /// The action.
+        /// </param>
+        public static void Traverse<T>(this Viewport3DX viewport, Action<T> action) where T : Element3D
+        {
+            viewport.Renderables.PreorderDFT((node) =>
+            {
+                if (node.WrapperSource is T element)
+                {
+                    action(element);
+                }
+                return true;
+            });
+        }
+
+        /// <summary>
+        /// Traverses the specified action.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="function">The function. Return true to continue traverse, otherwise stop at current node</param>
+        public static void Traverse<T>(this Viewport3DX viewport, Func<T, bool> function) where T : Element3D
+        {
+            viewport.Renderables.PreorderDFT((node) =>
+            {
+                if (node.WrapperSource is T element)
+                {
+                    return function(element);
+                }
+                return true;
+            });
+        }
+
+        /// <summary>
+        /// Traverses the Visual3D/Element3D tree and invokes the specified action on each Element3D of the specified type.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type filter.
+        /// </typeparam>
+        /// <param name="element">
+        /// The element.
+        /// </param>
+        /// <param name="action">
+        /// The action.
+        /// </param>
+        public static void Traverse<T>(this Element3D element, Action<T> action) where T : Element3D
+        {
+            var sceneNode = new SceneNode[] { element.SceneNode };
+            Traverse(element, action);
+        }
+
+        /// <summary>
+        /// Traverses the Visual3D/Element3D tree and invokes the specified action on each Element3D of the specified type.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type filter.
+        /// </typeparam>
+        /// <param name="element">
+        /// The element.
+        /// </param>
+        /// <param name="function">
+        /// The action.
+        /// </param>
+        public static void Traverse<T>(this Element3D element, Func<T, bool> function) where T : Element3D
+        {
+            var sceneNode = new SceneNode[] { element.SceneNode };
+            Traverse(element, function);
+        }
     }
 }

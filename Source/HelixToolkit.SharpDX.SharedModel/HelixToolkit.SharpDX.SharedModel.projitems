@@ -9,15 +9,19 @@
     <Import_RootNamespace>HelixToolkit.SharpDX.SharedModel</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\GeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\MaterialGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\BillboardTextModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\BoneSkinmeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\CoordinateSystemModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\CrossSectionMeshGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\DepthPrepassElement3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\EnvironmentMap3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\InstancingBillboardModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\InstancingMeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\LineGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\MeshGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\OutLineMeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\ParticleStormModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PatchGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PointGeometryModel3D.cs" />

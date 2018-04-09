@@ -7,11 +7,11 @@ using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
-
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
@@ -75,7 +75,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public SortingMethod SortingMethod { set; get; } = SortingMethod.BoundingBoxCorners;
 
-        private readonly List<SortStruct> sortingCache = new List<SortStruct>();
+        private readonly List<SortStruct> sortingTransparentCache = new List<SortStruct>();
+        private readonly List<SortStruct> sortingOpaqueCache = new List<SortStruct>();
         private readonly List<SceneNode> notSorted = new List<SceneNode>();
 
         protected override bool OnAttach(IRenderHost host)
@@ -87,7 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public override void UpdateNotRender(IRenderContext context)
         {
             base.UpdateNotRender(context);
-            if(!EnableSorting || Items.Count == 0)
+            if (!EnableSorting || Items.Count == 0)
             { return; }
             long currTime = Stopwatch.GetTimestamp() * 1000 / Stopwatch.Frequency;
 
@@ -100,50 +101,76 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         protected virtual void Sort(IList<SceneNode> nodes, IRenderContext context)
         {
-            sortingCache.Clear();
+            sortingTransparentCache.Clear();
+            sortingOpaqueCache.Clear();
             notSorted.Clear();
 
             Vector3 cameraPosition = context.Camera.Position;
             if (SortTransparentOnly)
             {
-                for(int i=0; i<nodes.Count; ++i)
+                for (int i = 0; i < nodes.Count; ++i)
                 {
-                    if(nodes[i].RenderCore.RenderType == RenderType.Transparent)
+                    if (nodes[i].RenderCore.RenderType == RenderType.Transparent)
                     {
-                        sortingCache.Add(new SortStruct(GetDistance(nodes[i], ref cameraPosition), nodes[i]));
+                        sortingTransparentCache.Add(new SortStruct(GetDistance(nodes[i], ref cameraPosition), nodes[i]));
                     }
                     else
                     {
                         notSorted.Add(nodes[i]);
                     }
                 }
+                sortingTransparentCache.Sort(delegate (SortStruct a, SortStruct b) { return a.Key > b.Key ? -1 : a.Key < b.Key ? 1 : 0; });
             }
             else
             {
                 for (int i = 0; i < nodes.Count; ++i)
                 {
-                    if (nodes[i].RenderCore.RenderType == RenderType.Opaque || nodes[i].RenderCore.RenderType == RenderType.Transparent)
+                    if (nodes[i].RenderCore.RenderType == RenderType.Transparent)
                     {
-                        sortingCache.Add(new SortStruct(GetDistance(nodes[i], ref cameraPosition), nodes[i]));
+                        sortingTransparentCache.Add(new SortStruct(GetDistance(nodes[i], ref cameraPosition), nodes[i]));
+                    }
+                    else if (nodes[i].RenderCore.RenderType == RenderType.Opaque)
+                    {
+                        sortingOpaqueCache.Add(new SortStruct(GetDistance(nodes[i], ref cameraPosition), nodes[i]));
                     }
                     else
                     {
                         notSorted.Add(nodes[i]);
                     }
                 }
+                if (sortingTransparentCache.Count > 50 && sortingOpaqueCache.Count > 50)
+                {
+                    Parallel.Invoke(() =>
+                    {
+                        sortingTransparentCache.Sort(delegate (SortStruct a, SortStruct b) { return a.Key > b.Key ? -1 : a.Key < b.Key ? 1 : 0; });
+                    }, () =>
+                    {
+                        sortingOpaqueCache.Sort(delegate (SortStruct a, SortStruct b) { return a.Key > b.Key ? 1 : a.Key < b.Key ? -1 : 0; });
+                    });
+                }
+                else
+                {
+                    sortingTransparentCache.Sort(delegate (SortStruct a, SortStruct b) { return a.Key > b.Key ? -1 : a.Key < b.Key ? 1 : 0; });
+                    sortingOpaqueCache.Sort(delegate (SortStruct a, SortStruct b) { return a.Key > b.Key ? 1 : a.Key < b.Key ? -1 : 0; });
+                }
             }
-            sortingCache.Sort(delegate(SortStruct a, SortStruct b) { return a.Key > b.Key ? -1 : a.Key < b.Key ? 1 : 0; });
+
             Items.Clear();
             for (int i = 0; i < notSorted.Count; ++i)
             {
                 Items.Add(notSorted[i]);
             }
-            for(int i =0; i<sortingCache.Count; ++i)
+            for (int i = 0; i < sortingOpaqueCache.Count; ++i)
             {
-                Items.Add(sortingCache[i].Value);
+                Items.Add(sortingOpaqueCache[i].Value);
+            }
+            for (int i = 0; i < sortingTransparentCache.Count; ++i)
+            {
+                Items.Add(sortingTransparentCache[i].Value);
             }
 
-            sortingCache.Clear();
+            sortingTransparentCache.Clear();
+            sortingOpaqueCache.Clear();
             notSorted.Clear();
         }
 

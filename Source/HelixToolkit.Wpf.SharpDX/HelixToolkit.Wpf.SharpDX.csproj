@@ -203,7 +203,6 @@
     <Compile Include="Model\Elements3D\AbstractElements3D\ScreenSpaceMeshGeometry3D.cs" />
     <Compile Include="Model\Elements3D\Element3DPresenter.cs" />
     <Compile Include="Model\Elements3D\OctreeLineGeometryModel3D.cs" />
-    <Compile Include="Model\Elements3D\OutLineMeshGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\ScreenDuplicationModel.cs" />
     <Compile Include="Model\Elements3D\SortingGroupModel3D.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
@@ -237,7 +236,6 @@
     <Compile Include="Model\Elements3D\ItemsModel3D.cs" />
     <Compile Include="Model\Elements3D\Light3DCollection.cs" />
     <Compile Include="Model\Elements3D\Element3DCollection.cs" />
-    <Compile Include="Model\Elements3D\AbstractElements3D\MaterialGeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\UICompositeManipulator3D.cs" />
     <Compile Include="Model\Elements3D\UIManipulator3D.cs" />
     <Compile Include="Model\Elements3D\UIResizeManipulator3D.cs" />
@@ -246,7 +244,6 @@
     <Compile Include="Model\Lights3D\AmbientLight3D.cs" />
     <Compile Include="Model\Lights3D\DirectionalLight3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\Element3D.cs" />
-    <Compile Include="Model\Elements3D\AbstractElements3D\GeometryModel3D.cs" />
     <Compile Include="Model\Elements3D\AbstractElements3D\GroupElement3D.cs" />
     <Compile Include="Model\Lights3D\Light3D.cs" />
     <Compile Include="Model\Lights3D\PointLight3D.cs" />

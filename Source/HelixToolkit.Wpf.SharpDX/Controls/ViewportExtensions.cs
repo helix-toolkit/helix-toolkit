@@ -237,14 +237,32 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public static void Traverse<T>(this Viewport3DX viewport, Action<T, Transform3D> action) where T : Element3D
         {
-            foreach (var element in viewport.Renderables)
+            viewport.Renderables.PreorderDFT((node) => 
             {
-                var model = (Element3D)element; // ITraversable;
-                if (model != null)
+                if(node.WrapperSource is T element)
                 {
-                    Traverse(model, action);
+                    action(element, element.Transform);
                 }
-            }
+                return true;
+            });
+        }
+
+        /// <summary>
+        /// Traverses the specified action.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="function">The function. Return true to continue traverse, otherwise stop at current node</param>
+        public static void Traverse<T>(this Viewport3DX viewport, Func<T, bool> function) where T : Element3D
+        {
+            viewport.Renderables.PreorderDFT((node) =>
+            {
+                if (node.WrapperSource is T element)
+                {
+                    return function(element);
+                }
+                return true;
+            });
         }
 
         /// <summary>
@@ -261,6 +279,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public static void Traverse<T>(this Element3D element, Action<T, Transform3D> action) where T : Element3D
         {
+            var sceneNode = new SceneNode[] { element.SceneNode };
             Traverse(element, action);
         }
 

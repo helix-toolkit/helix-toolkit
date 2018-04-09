@@ -6,9 +6,14 @@ using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
-using Windows.UI.Xaml;
 
+#if NETFX_CORE
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
+#else
+using System.Windows;
+namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Core;
     using Model;

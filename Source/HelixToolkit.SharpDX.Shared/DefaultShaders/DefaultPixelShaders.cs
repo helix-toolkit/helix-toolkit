@@ -2,16 +2,14 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX.Direct3D;
-using System;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
 #else
-using HelixToolkit.UWP.Helper;
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    using Helper;
     /// <summary>
     /// 
     /// </summary>
@@ -24,11 +22,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psMeshBlinnPhong;
-#else
                 return UWPShaderBytePool.Read("psMeshBlinnPhong");
-#endif
 
             }
         }
@@ -39,12 +33,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psColor;
-#else
                 return UWPShaderBytePool.Read("psColor");
-#endif
-
             }
         }
         /// <summary>
@@ -54,11 +43,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psPositions;
-#else
                 return UWPShaderBytePool.Read("psPositions");
-#endif
 
             }
         }
@@ -69,11 +54,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psNormals;
-#else
                 return UWPShaderBytePool.Read("psNormals");
-#endif
 
             }
         }
@@ -82,11 +63,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psDiffuseMap;
-#else
                 return UWPShaderBytePool.Read("psDiffuseMap");
-#endif
 
             }
         }
@@ -95,11 +72,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psViewCube;
-#else
                 return UWPShaderBytePool.Read("psViewCube");
-#endif
 
             }
         }
@@ -110,11 +83,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psShadow;
-#else
                 return UWPShaderBytePool.Read("psShadow");
-#endif
             }
         }
 
@@ -125,11 +94,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psPoint;
-#else
                 return UWPShaderBytePool.Read("psPoint");
-#endif
 
             }
         }
@@ -140,12 +105,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psLine;
-#else
                 return UWPShaderBytePool.Read("psLine");
-#endif
-
             }
         }
 
@@ -156,11 +116,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psLineColor;
-#else
                 return UWPShaderBytePool.Read("psLineColor");
-#endif
 
             }
         }
@@ -172,12 +128,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psBillboardText;
-#else
                 return UWPShaderBytePool.Read("psBillboardText");
-#endif
-
             }
         }
         /// <summary>
@@ -187,11 +138,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psMeshXRay;
-#else
                 return UWPShaderBytePool.Read("psMeshXRay");
-#endif
             }
         }
 
@@ -202,11 +149,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psMeshClipPlaneBackface;
-#else
                 return UWPShaderBytePool.Read("psMeshClipPlaneBackface");
-#endif
             }
         }
         /// <summary>
@@ -216,11 +159,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psMeshClipPlaneQuad;
-#else
                 return UWPShaderBytePool.Read("psMeshClipPlaneQuad");
-#endif
             }
         }
         /// <summary>
@@ -230,11 +169,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psParticle;
-#else
                 return UWPShaderBytePool.Read("psParticle");
-#endif
             }
         }
 
@@ -245,11 +180,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psSkybox;
-#else
                 return UWPShaderBytePool.Read("psSkybox");
-#endif
             }
         }
 
@@ -260,11 +191,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psWireframe;
-#else
                 return UWPShaderBytePool.Read("psWireframe");
-#endif
             }
         }
 
@@ -275,11 +202,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psDepthStencilOnly;
-#else
                 return UWPShaderBytePool.Read("psDepthStencilOnly");
-#endif
             }
         }
         /// <summary>
@@ -292,11 +215,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psEffectOutlineQuad;
-#else
                 return UWPShaderBytePool.Read("psEffectOutlineQuad");
-#endif
             }
         }
         /// <summary>
@@ -309,11 +228,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psEffectGaussianBlurVertical;
-#else
                 return UWPShaderBytePool.Read("psEffectGaussianBlurVertical");
-#endif
             }
         }
 
@@ -327,11 +242,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psEffectGaussianBlurHorizontal;
-#else
                 return UWPShaderBytePool.Read("psEffectGaussianBlurHorizontal");
-#endif
             }
         }
 
@@ -345,11 +256,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psEffectMeshBorderHighlight;
-#else
                 return UWPShaderBytePool.Read("psEffectMeshBorderHighlight");
-#endif
             }
         }
         /// <summary>
@@ -362,11 +269,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psEffectOutlineQuadStencil;
-#else
                 return UWPShaderBytePool.Read("psEffectOutlineQuadStencil");
-#endif
             }
         }
         /// <summary>
@@ -379,11 +282,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psEffectOutlineQualFinal;
-#else
                 return UWPShaderBytePool.Read("psEffectOutlineQualFinal");
-#endif
             }
         }
         /// <summary>
@@ -396,11 +295,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psEffectMeshXRay;
-#else
                 return UWPShaderBytePool.Read("psEffectMeshXRay");
-#endif
             }
         }
         /// <summary>
@@ -413,11 +308,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psEffectBloomExtract;
-#else
                 return UWPShaderBytePool.Read("psEffectBloomExtract");
-#endif
             }
         }
         /// <summary>
@@ -430,11 +321,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psEffectBloomBlurVertical;
-#else
                 return UWPShaderBytePool.Read("psEffectBloomBlurVertical");
-#endif
             }
         }
         /// <summary>
@@ -447,11 +334,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psEffectBloomBlurHorizontal;
-#else
                 return UWPShaderBytePool.Read("psEffectBloomBlurHorizontal");
-#endif
             }
         }
         /// <summary>
@@ -464,11 +347,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.psEffectBloomCombine;
-#else
                 return UWPShaderBytePool.Read("psEffectBloomCombine");
-#endif
             }
         }
 #if !NETFX_CORE

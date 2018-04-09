@@ -2,15 +2,24 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+#if NETFX_CORE
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
+#else
+using System.Windows;
+namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Model;
     using Model.Scene;
-    using Windows.UI.Xaml;
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="HelixToolkit.UWP.GeometryModel3D" />
+    /// <seealso cref="GeometryModel3D" />
     public abstract class MaterialGeometryModel3D : GeometryModel3D
     {
         #region Dependency Properties

@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         public Geometry3D Geometry { get; set; }
         public Material Material { get; set; }
-        public Matrix Transform { get; set; }
+        public List<Matrix> Transform { get; set; }
         public string Name { get; set; }
     }
 
@@ -1060,8 +1060,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                         Geometry = this.meshBuilders[i].ToMeshGeometry3D(),
                         Material = this.materials[i],
-                        Transform = Matrix.Identity,
-                        //BackMaterial = this.materials[i]
+                        Transform = new List<Matrix>()
                     };
                 }
             }

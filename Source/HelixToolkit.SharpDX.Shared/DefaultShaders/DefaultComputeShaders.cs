@@ -1,11 +1,16 @@
-﻿#if !NETFX_CORE
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+
+
+#if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
 #else
-using HelixToolkit.UWP.Helper;
-
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    using Helper;
     public static class DefaultComputeShaders
     {
         /// <summary>
@@ -15,11 +20,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.csParticleInsert;
-#else
                 return UWPShaderBytePool.Read("csParticleInsert");
-#endif
             }
         }
 
@@ -30,11 +31,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.csParticleUpdate;
-#else
                 return UWPShaderBytePool.Read("csParticleUpdate");
-#endif
             }
         }
     }

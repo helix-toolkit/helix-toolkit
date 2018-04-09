@@ -1,7 +1,18 @@
-﻿using System.Windows;
-using Media = System.Windows.Media;
-
+﻿/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
+#if NETFX_CORE
+using Windows.UI.Xaml;
+using Color = Windows.UI.Color;
+using Colors = Windows.UI.Colors;
+namespace HelixToolkit.UWP
+#else
+using System.Windows;
+using Color = System.Windows.Media.Color;
+using Colors = System.Windows.Media.Colors;
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Model;
     using Model.Scene;
@@ -26,14 +37,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public static DependencyProperty OutlineColorProperty = DependencyProperty.Register("OutlineColor", typeof(Media.Color), typeof(OutLineMeshGeometryModel3D),
-            new PropertyMetadata(Media.Colors.White,
+        public static DependencyProperty OutlineColorProperty = DependencyProperty.Register("OutlineColor", typeof(Color), typeof(OutLineMeshGeometryModel3D),
+            new PropertyMetadata(Colors.White,
             (d, e) =>
             {
-                ((d as Element3DCore).SceneNode as MeshOutlineNode).OutlineColor = ((Media.Color)e.NewValue).ToColor4();
+                ((d as Element3DCore).SceneNode as MeshOutlineNode).OutlineColor = ((Color)e.NewValue).ToColor4();
             }));
 
-        public Media.Color OutlineColor
+        public Color OutlineColor
         {
             set
             {
@@ -41,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (Media.Color)GetValue(OutlineColorProperty);
+                return (Color)GetValue(OutlineColorProperty);
             }
         }
 

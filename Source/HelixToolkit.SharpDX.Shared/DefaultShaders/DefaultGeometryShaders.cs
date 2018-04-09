@@ -3,16 +3,14 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
-using SharpDX.Direct3D;
-using System;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
 #else
-using HelixToolkit.UWP.Helper;
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    using Helper;
     /// <summary>
     /// 
     /// </summary>
@@ -25,12 +23,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.gsPoint;
-#else
                 return UWPShaderBytePool.Read("gsPoint");
-#endif
-
             }
         }
         /// <summary>
@@ -40,12 +33,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.gsLine;
-#else
                 return UWPShaderBytePool.Read("gsLine");
-#endif
-
             }
         }
         /// <summary>
@@ -55,12 +43,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.gsBillboard;
-#else
                 return UWPShaderBytePool.Read("gsBillboard");
-#endif
-
             }
         }
 
@@ -71,12 +54,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.gsParticle;
-#else
                 return UWPShaderBytePool.Read("gsParticle");
-#endif
-
             }
         }
     }

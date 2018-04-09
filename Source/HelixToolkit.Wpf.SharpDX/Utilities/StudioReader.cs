@@ -8,10 +8,6 @@ using Object3DGroup = System.Collections.Generic.List<HelixToolkit.Wpf.SharpDX.O
 using SharpDX;
 using System.Diagnostics;
 using MediaColor = System.Windows.Media.Color;
-using MediaMatrix3D = System.Windows.Media.Media3D.Matrix3D;
-using MediaMatrixTransform = System.Windows.Media.Media3D.MatrixTransform3D;
-using MediaPoint3D = System.Windows.Media.Media3D.Point3D;
-using MediaVector3D = System.Windows.Media.Media3D.Vector3D;
 using System.Windows.Media.Imaging;
 using HelixToolkit.Wpf.SharpDX.Core;
 
@@ -354,9 +350,10 @@ namespace HelixToolkit.Wpf.SharpDX
             List<FaceSet> facesets = null;
             IntCollection triangleIndices = null;
             Vector3Collection normals = null;
-            MediaMatrix3D matrix = MediaMatrix3D.Identity;
+            //Matrix matrix = Matrix.Identity;
             Vector3Collection tangents = null;
             Vector3Collection bitangents = null;
+            List<Matrix> transforms = new List<Matrix>();
             while (bytesRead < chunkSize)
             {
                 ChunkID id = this.ReadChunkId(reader);
@@ -376,7 +373,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         textureCoordinates = ReadTexCoords(reader);
                         break;
                     case ChunkID.TRI_LOCAL:
-                        matrix = this.ReadTransformation(reader);
+                        transforms.Add(this.ReadTransformation(reader));
                         break;
                     default:
                         this.ReadData(reader, size - 6);
@@ -384,13 +381,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 }
             }
-            if (!matrix.IsIdentity)
-            {
-                for (int i = 0; i < positions.Count; i++)
-                {
-                    positions[i] = Transform(matrix, positions[i]);
-                }
-            }
+
             if (faces == null)
             {
                 //no faces defined?? return...
@@ -400,7 +391,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (facesets == null || facesets.Count == 0)
             {
                 triangleIndices = ConvertFaceIndices(faces, faces);
-                CreateMesh(positions, textureCoordinates, triangleIndices, out normals, out tangents, out bitangents, PhongMaterials.Gray);
+                CreateMesh(positions, textureCoordinates, triangleIndices, transforms, out normals, out tangents, out bitangents, PhongMaterials.Gray);
                 //Add default get and setter
             }
             else
@@ -413,7 +404,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         mat = this.materials[fm.Name];
                     }
-                    CreateMesh(positions, textureCoordinates, triangleIndices, out normals, out tangents, out bitangents, mat);
+                    CreateMesh(positions, textureCoordinates, triangleIndices, transforms, out normals, out tangents, out bitangents, mat);
 
                 }
             }
@@ -430,7 +421,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="tangents"></param>
         /// <param name="bitangents"></param>
         /// <param name="material"></param>
-        private void CreateMesh(Vector3Collection positions, Vector2Collection textureCoordinates, IntCollection triangleIndices, out Vector3Collection normals, out Vector3Collection tangents, out Vector3Collection bitangents, Material material)
+        /// <param name="transforms"></param>
+        private void CreateMesh(Vector3Collection positions, Vector2Collection textureCoordinates, IntCollection triangleIndices, List<Matrix> transforms, 
+            out Vector3Collection normals, out Vector3Collection tangents, out Vector3Collection bitangents, Material material)
         {
             ComputeNormals(positions, triangleIndices, out normals);
             if (textureCoordinates == null)
@@ -455,7 +448,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Object3D ob3d = new Object3D();
             ob3d.Geometry = mesh;
             ob3d.Material = material;
-            ob3d.Transform = Matrix.Identity;
+            ob3d.Transform = transforms;
             ob3d.Name = "Default";
             this.obGroup.Add(ob3d);
         }
@@ -605,9 +598,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// A vector.
         /// </returns>
-        private MediaVector3D ReadVector(BinaryReader reader)
+        private Vector3 ReadVector(BinaryReader reader)
         {
-            return new MediaVector3D(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+            return new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
         }
 
         /// <summary>
@@ -619,7 +612,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// A transformation.
         /// </returns>
-        private MediaMatrix3D ReadTransformation(BinaryReader reader)
+        private Matrix ReadTransformation(BinaryReader reader)
         {
 
             var localx = this.ReadVector(reader);
@@ -627,7 +620,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var localz = this.ReadVector(reader);
             var origin = this.ReadVector(reader);
 
-            var matrix = new MediaMatrix3D
+            var matrix = new Matrix
             {
                 M11 = localx.X,
                 M21 = localx.Y,
@@ -638,9 +631,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 M13 = localz.X,
                 M23 = localz.Y,
                 M33 = localz.Z,
-                OffsetX = origin.X,
-                OffsetY = origin.Y,
-                OffsetZ = origin.Z,
+                M41 = origin.X,
+                M42 = origin.Y,
+                M43 = origin.Z,
                 M14 = 0,
                 M24 = 0,
                 M34 = 0,
@@ -650,20 +643,6 @@ namespace HelixToolkit.Wpf.SharpDX
             return matrix;
         }
 
-        /// <summary>
-        /// Apply transform, doesn't work yet because datatypes(Matrix,Vector etc from .Media are use propably some float vs double offsets
-        /// </summary>
-        /// <param name="matrix"></param>
-        /// <param name="pos"></param>
-        /// <returns></returns>
-        private Vector3 Transform(MediaMatrix3D matrix, Vector3 pos)
-        {
-            MediaMatrixTransform transformer = new MediaMatrixTransform(matrix);
-            MediaPoint3D Point = new MediaPoint3D(pos.X, pos.Y, pos.Z);
-            MediaPoint3D tPoint = transformer.Transform(Point);
-            //return new Vector3() { X = (float)tPoint.X, Y = (float)tPoint.Y, Z = (float)tPoint.Z };
-            return pos;
-        }
         private Vector3Collection ReadVertexList(BinaryReader reader)
         {
             int size = reader.ReadUInt16();

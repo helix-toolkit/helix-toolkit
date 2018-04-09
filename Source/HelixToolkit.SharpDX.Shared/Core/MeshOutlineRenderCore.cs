@@ -154,7 +154,7 @@ namespace HelixToolkit.UWP.Core
             if (DrawOutlineBeforeMesh)
             {
                 outlineShaderPass.BindShader(deviceContext);
-                outlineShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                outlineShaderPass.BindStates(deviceContext, DefaultStateBinding);
                 OnDraw(deviceContext, InstanceBuffer);
             }
             if (DrawMesh)
@@ -164,7 +164,7 @@ namespace HelixToolkit.UWP.Core
             if (!DrawOutlineBeforeMesh)
             {
                 outlineShaderPass.BindShader(deviceContext);
-                outlineShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                outlineShaderPass.BindStates(deviceContext, DefaultStateBinding);
                 OnDraw(deviceContext, InstanceBuffer);
             }
         }

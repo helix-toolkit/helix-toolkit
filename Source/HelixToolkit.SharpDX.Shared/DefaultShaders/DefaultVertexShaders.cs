@@ -2,19 +2,16 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using System;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
 #else
-using HelixToolkit.UWP.Helper;
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
-
+    using Helper;
     /// <summary>
     /// 
     /// </summary>
@@ -27,11 +24,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsMeshDefault;
-#else
                 return UWPShaderBytePool.Read("vsMeshDefault");
-#endif
             }
         }
         /// <summary>
@@ -41,11 +34,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsMeshTessellation;
-#else
                 return UWPShaderBytePool.Read("vsMeshTessellation");
-#endif
             }
         }
         /// <summary>
@@ -55,11 +44,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsMeshShadow;
-#else
                 return UWPShaderBytePool.Read("vsMeshShadow");
-#endif
             }
         }
         /// <summary>
@@ -69,11 +54,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsMeshInstancing;
-#else
                 return UWPShaderBytePool.Read("vsMeshInstancing");
-#endif
             }
         }
 
@@ -84,11 +65,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsMeshInstancingTessellation;
-#else
                 return UWPShaderBytePool.Read("vsMeshInstancingTessellation");
-#endif
             }
         }
 
@@ -99,11 +76,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsBoneSkinning;
-#else
                 return UWPShaderBytePool.Read("vsBoneSkinning");
-#endif
             }
         }
 
@@ -114,11 +87,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsBoneSkinningShadow;
-#else
                 return UWPShaderBytePool.Read("vsBoneSkinningShadow");
-#endif
             }
         }
 
@@ -129,11 +98,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsBoneSkinningTessellation;
-#else
                 return UWPShaderBytePool.Read("vsBoneSkinningTessellation");
-#endif
             }
         }
 
@@ -144,11 +109,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsPoint;
-#else
                 return UWPShaderBytePool.Read("vsPoint");
-#endif
             }
         }
         /// <summary>
@@ -158,11 +119,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsPointShadow;
-#else
                 return UWPShaderBytePool.Read("vsPointShadow");
-#endif
             }
         }
         /// <summary>
@@ -172,11 +129,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsBillboard;
-#else
                 return UWPShaderBytePool.Read("vsBillboard");
-#endif
             }
         }
 
@@ -187,11 +140,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsBillboardInstancing;
-#else
                 return UWPShaderBytePool.Read("vsBillboardInstancing");
-#endif
             }
         }
         /// <summary>
@@ -201,11 +150,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsMeshClipPlane;
-#else
                 return UWPShaderBytePool.Read("vsMeshClipPlane");
-#endif
             }
         }
         /// <summary>
@@ -215,11 +160,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsMeshClipPlaneQuad;
-#else
                 return UWPShaderBytePool.Read("vsMeshClipPlaneQuad");
-#endif
             }
         }
 
@@ -230,11 +171,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsParticle;
-#else
                 return UWPShaderBytePool.Read("vsParticle");
-#endif
             }
         }
 
@@ -245,11 +182,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsSkybox;
-#else
                 return UWPShaderBytePool.Read("vsSkybox");
-#endif
             }
         }
 
@@ -260,11 +193,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsMeshWireframe;
-#else
                 return UWPShaderBytePool.Read("vsMeshWireframe");
-#endif
             }
         }
 
@@ -275,11 +204,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsBoneSkinningWireframe;
-#else
                 return UWPShaderBytePool.Read("vsBoneSkinningWireframe");
-#endif
             }
         }
 
@@ -290,11 +215,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsMeshOutlinePass1;
-#else
                 return UWPShaderBytePool.Read("vsMeshOutlinePass1");
-#endif
             }
         }
 
@@ -306,11 +227,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-#if !NETFX_CORE
-                return Properties.Resources.vsMeshOutlineScreenQuad;
-#else
                 return UWPShaderBytePool.Read("vsMeshOutlineScreenQuad");
-#endif
             }
         }
 

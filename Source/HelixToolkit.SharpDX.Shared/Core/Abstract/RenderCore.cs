@@ -66,7 +66,27 @@ namespace HelixToolkit.UWP.Core
             }
             get { return isThrowingShadow; }
         }
+        /// <summary>
+        /// Gets or sets the default state binding.
+        /// </summary>
+        /// <value>
+        /// The default state binding.
+        /// </value>
+        public StateType DefaultStateBinding
+        {
+            set; get;
+        } = StateType.BlendState | StateType.DepthStencilState;
 
+        /// <summary>
+        /// Gets or sets the default state binding.
+        /// </summary>
+        /// <value>
+        /// The default state binding.
+        /// </value>
+        public StateType ShadowStateBinding
+        {
+            set; get;
+        } = StateType.BlendState | StateType.DepthStencilState;
 
         /// <summary>
         /// Model matrix

@@ -145,6 +145,15 @@ namespace HelixToolkit.UWP.Shaders
             DepthComparison = Comparison.Greater
         };
         /// <summary>
+        /// The DSS equal no write
+        /// </summary>
+        public readonly static DepthStencilStateDescription DSSEqualNoWrite = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = true,
+            DepthWriteMask = DepthWriteMask.Zero,
+            DepthComparison = Comparison.Equal
+        };
+        /// <summary>
         /// The DSS clip plane backface
         /// </summary>
         public readonly static DepthStencilStateDescription DSSClipPlaneBackface = new DepthStencilStateDescription()

@@ -6,8 +6,6 @@
     Title="FileLoadDemo"
     Width="1000"
     Height="800">
-
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -18,7 +16,7 @@
             Grid.Row="1"
             Camera="{Binding Camera}"
             CameraMode="Inspect"
-            CameraRotationMode="Turnball"
+            CameraRotationMode="Turnball" BackgroundColor="#595959"
             EffectsManager="{Binding EffectsManager}"
             MSAA="Two">
             <hx:Viewport3DX.InputBindings>
@@ -45,12 +43,16 @@
                 <MenuItem Command="{Binding OpenFileCommand}" Header="Open File" />
             </MenuItem>
         </Menu>
-        <Button
-            Grid.Row="1"
+        <StackPanel
+            Grid.Row="1" 
+            Orientation="Vertical"
             HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Command="{Binding ResetCameraCommand}">
-            Reset Camera
-        </Button>
+            VerticalAlignment="Top">
+            <Button              
+                Command="{Binding ResetCameraCommand}">
+                Reset Camera
+            </Button>
+            <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+        </StackPanel>
     </Grid>
 </Window>
