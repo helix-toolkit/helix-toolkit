@@ -142,7 +142,7 @@ namespace HelixToolkit.UWP.Core
                 return defaultShadowPassName;
             }
         }
-        private IShaderPass defaultShaderPass = null;
+        private IShaderPass defaultShaderPass = NullShaderPass.NullPass;
         /// <summary>
         /// 
         /// </summary>
@@ -162,7 +162,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private IShaderPass shadowPass = null;
+        private IShaderPass shadowPass = NullShaderPass.NullPass;
         /// <summary>
         /// 
         /// </summary>
@@ -295,9 +295,10 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            if (!IsThrowingShadow) { return; }
+            if (!IsThrowingShadow || ShadowPass.IsNULL)
+            { return; }
             ShadowPass.BindShader(deviceContext);
-            ShadowPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            ShadowPass.BindStates(deviceContext, ShadowStateBinding);
             OnDraw(deviceContext, InstanceBuffer);
         }
 

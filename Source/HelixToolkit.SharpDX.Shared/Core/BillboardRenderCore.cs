@@ -94,7 +94,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             DefaultShaderPass.BindShader(deviceContext);
-            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            DefaultShaderPass.BindStates(deviceContext, DefaultStateBinding);
             BindBillboardTexture(deviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel));
             OnDraw(deviceContext, InstanceBuffer);
         }        

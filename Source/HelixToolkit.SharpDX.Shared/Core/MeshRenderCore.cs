@@ -119,7 +119,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             DefaultShaderPass.BindShader(deviceContext);
-            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            DefaultShaderPass.BindStates(deviceContext, DefaultStateBinding);
             if (!BindMaterialTextures(deviceContext, DefaultShaderPass))
             {
                 return;
@@ -132,7 +132,7 @@ namespace HelixToolkit.UWP.Core
             if (RenderWireframe && WireframePass != NullShaderPass.NullPass)
             {
                 WireframePass.BindShader(deviceContext, false);
-                WireframePass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+                WireframePass.BindStates(deviceContext, DefaultStateBinding);
                 deviceContext.SetRasterState(RasterStateWireframe);
                 OnDraw(deviceContext, InstanceBuffer);
             }

@@ -79,11 +79,7 @@ namespace HelixToolkit.UWP.Core
                         switch (context.IsCustomPass)
                         {
                             case true:
-                                var pass = EffectTechnique[context.CustomPassName];
-                                if (!pass.IsNULL)
-                                {
-                                    OnRenderCustom(context, deviceContext, pass);
-                                }
+                                OnRenderCustom(context, deviceContext, null);
                                 break;
                             default:
                                 OnRenderShadow(context, deviceContext);
@@ -94,11 +90,7 @@ namespace HelixToolkit.UWP.Core
                         switch (context.IsCustomPass)
                         {
                             case true:
-                                var pass = EffectTechnique[context.CustomPassName];
-                                if (!pass.IsNULL)
-                                {
-                                    OnRenderCustom(context, deviceContext, pass);
-                                }
+                                OnRenderCustom(context, deviceContext, null);
                                 break;
                             default:
                                 OnRender(context, deviceContext);

@@ -181,6 +181,10 @@ namespace HelixToolkit.UWP
         /// The wireframe
         /// </summary>
         public const string Wireframe = "Wireframe";
+        /// <summary>
+        /// The depth prepass
+        /// </summary>
+        public const string DepthPrepass = "DepthPrepass";
     }
     /// <summary>
     /// 
