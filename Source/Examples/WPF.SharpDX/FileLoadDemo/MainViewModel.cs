@@ -28,6 +28,24 @@ namespace FileLoadDemo
             set;
         }
 
+        private bool showWireframe = false;
+        public bool ShowWireframe
+        {
+            set
+            {
+                if(SetValue(ref showWireframe, value))
+                {
+                    foreach(var model in ModelGeometry)
+                    {
+                        (model as MeshGeometryModel3D).RenderWireframe = value;
+                    }
+                }
+            }
+            get
+            {
+                return showWireframe;
+            }
+        }
 
         public ICommand OpenFileCommand
         {
