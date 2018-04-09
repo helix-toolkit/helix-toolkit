@@ -52,6 +52,30 @@ namespace HelixToolkit.Wpf.SharpDX
         public GroupElement3D()
         {
             Children.CollectionChanged += Items_CollectionChanged;
+            Loaded += GroupElement3D_Loaded;
+            Unloaded += GroupElement3D_Unloaded;
+        }
+
+        private void GroupElement3D_Unloaded(object sender, RoutedEventArgs e)
+        {
+            foreach (Element3D c in Children)
+            {
+                if (c.Parent == this)
+                {
+                    this.RemoveLogicalChild(c);
+                }
+            }
+        }
+
+        private void GroupElement3D_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (Element3D c in Children)
+            {
+                if (c.Parent == null)
+                {
+                    this.AddLogicalChild(c);
+                }
+            }
         }
 
         protected override SceneNode OnCreateSceneNode()
@@ -80,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var node = SceneNode as GroupNode;
             foreach (Element3D c in children)
             {
-                if (c.Parent == null)
+                if (IsLoaded && c.Parent == null)
                 {
                     this.AddLogicalChild(c);
                 }
