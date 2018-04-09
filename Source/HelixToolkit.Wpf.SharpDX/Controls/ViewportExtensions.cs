@@ -252,7 +252,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="viewport">The viewport.</param>
-        /// <param name="action">The action.</param>
+        /// <param name="function">The function. Return true to continue traverse, otherwise stop at current node</param>
         public static void Traverse<T>(this Viewport3DX viewport, Func<T, bool> function) where T : Element3D
         {
             viewport.Renderables.PreorderDFT((node) =>
