@@ -887,7 +887,7 @@ namespace HelixToolkit.UWP
                             DefaultVSShaderDescriptions.VSSkybox,
                             DefaultPSShaderDescriptions.PSSkybox
                         },
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,    
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,    
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         RasterStateDescription = DefaultRasterDescriptions.RSSkybox                   
                     },                   
