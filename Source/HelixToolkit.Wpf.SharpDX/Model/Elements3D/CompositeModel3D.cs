@@ -50,10 +50,9 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Children.CollectionChanged += this.ChildrenChanged;
             Loaded += GroupElement3D_Loaded;
-            Unloaded += GroupElement3D_Unloaded;
         }
 
-        private void GroupElement3D_Unloaded(object sender, RoutedEventArgs e)
+        private void GroupElement3D_Loaded(object sender, RoutedEventArgs e)
         {
             foreach (Element3D c in Children)
             {
@@ -62,10 +61,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.RemoveLogicalChild(c);
                 }
             }
-        }
-
-        private void GroupElement3D_Loaded(object sender, RoutedEventArgs e)
-        {
             foreach (Element3D c in Children)
             {
                 if (c.Parent == null)
@@ -114,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     case NotifyCollectionChangedAction.Reset:
                         foreach (Element3D item in Children)
                         {
-                            if (IsLoaded && item.Parent == null)
+                            if (item.Parent == null)
                             {
                                 this.AddLogicalChild(item);
                             }
@@ -125,7 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     case NotifyCollectionChangedAction.Replace:
                         foreach (Element3D item in e.NewItems)
                         {
-                            if (IsLoaded && item.Parent == null)
+                            if (item.Parent == null)
                             {
                                 this.AddLogicalChild(item);
                             }
