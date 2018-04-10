@@ -6,17 +6,12 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using global::SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Model.Scene;
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.Linq;
     using System.Windows;
     using System.Windows.Markup;
-    using Render;
-    using HelixToolkit.Wpf.SharpDX.Core;
-    using System.Collections.ObjectModel;
-    using HelixToolkit.Wpf.SharpDX.Model.Scene;
 
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement3DCollection 
@@ -43,15 +38,34 @@ namespace HelixToolkit.Wpf.SharpDX
                         (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
                     }));
 
-        public ObservableCollection<Element3D> Children
+        public ObservableElement3DCollection Children
         {
             get;
-        } = new ObservableCollection<Element3D>();
+        } = new ObservableElement3DCollection();
 
 
         public GroupElement3D()
         {
             Children.CollectionChanged += Items_CollectionChanged;
+            Loaded += GroupElement3D_Loaded;
+        }
+
+        private void GroupElement3D_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (Element3D c in Children)
+            {
+                if (c.Parent == this)
+                {
+                    this.RemoveLogicalChild(c);
+                }
+            }
+            foreach (Element3D c in Children)
+            {
+                if (c.Parent == null)
+                {
+                    this.AddLogicalChild(c);
+                }
+            }
         }
 
         protected override SceneNode OnCreateSceneNode()

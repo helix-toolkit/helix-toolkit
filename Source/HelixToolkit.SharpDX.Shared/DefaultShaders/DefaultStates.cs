@@ -382,6 +382,7 @@ namespace HelixToolkit.UWP.Shaders
             IsFrontCounterClockwise = true,
             IsMultisampleEnabled = false,
             IsAntialiasedLineEnabled = false,
+            IsDepthClipEnabled = false
         };
 
         public readonly static RasterizerStateDescription RSOutline = new RasterizerStateDescription()

@@ -10,7 +10,6 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using Model.Scene;
-    using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.Windows;
     using System.Windows.Markup;
@@ -42,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///     The children.
         /// </value>
-        public ObservableCollection<Element3D> Children { get; } = new ObservableCollection<Element3D>();
+        public ObservableElement3DCollection Children { get; } = new ObservableElement3DCollection();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
@@ -50,6 +49,25 @@ namespace HelixToolkit.Wpf.SharpDX
         public CompositeModel3D()
         {
             Children.CollectionChanged += this.ChildrenChanged;
+            Loaded += GroupElement3D_Loaded;
+        }
+
+        private void GroupElement3D_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (Element3D c in Children)
+            {
+                if (c.Parent == this)
+                {
+                    this.RemoveLogicalChild(c);
+                }
+            }
+            foreach (Element3D c in Children)
+            {
+                if (c.Parent == null)
+                {
+                    this.AddLogicalChild(c);
+                }
+            }
         }
 
         /// <summary>
@@ -67,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             switch (e.Action)
             {
-                case NotifyCollectionChangedAction.Reset:                  
+                case NotifyCollectionChangedAction.Reset:
                 case NotifyCollectionChangedAction.Remove:
                 case NotifyCollectionChangedAction.Replace:
                     if (e.OldItems != null)
@@ -79,7 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 this.RemoveLogicalChild(item);
                             }
                             node.RemoveChildNode(item);
-                        }                
+                        }
                     }
                     break;
             }
@@ -89,7 +107,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 switch (e.Action)
                 {
                     case NotifyCollectionChangedAction.Reset:
-                        foreach(Element3D item in Children)
+                        foreach (Element3D item in Children)
                         {
                             if (item.Parent == null)
                             {
@@ -106,7 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             {
                                 this.AddLogicalChild(item);
                             }
-                            node.AddChildNode(item); 
+                            node.AddChildNode(item);
                         }
                         break;
                 }
@@ -121,7 +139,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     this.RemoveLogicalChild(item);
                 }
-            }            
+            }
             var node = SceneNode as GroupNode;
             node.Clear();
             Children.Clear();

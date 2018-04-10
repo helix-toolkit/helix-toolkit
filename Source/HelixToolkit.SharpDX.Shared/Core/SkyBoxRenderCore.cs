@@ -180,6 +180,11 @@ namespace HelixToolkit.UWP.Core
         {
 
         }
+
+        protected override void OnBindRasterState(DeviceContextProxy context)
+        {
+            
+        }
         /// <summary>
         /// Called when [default pass changed].
         /// </summary>
@@ -202,7 +207,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             DefaultShaderPass.BindShader(deviceContext);
-            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
             DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);
             DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, textureSamplerSlot, textureSampler);
             deviceContext.DeviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
