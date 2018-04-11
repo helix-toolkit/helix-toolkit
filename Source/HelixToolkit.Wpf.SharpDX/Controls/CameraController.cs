@@ -13,7 +13,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Diagnostics;
     using System.Linq;
     using System.Windows;
-    using System.Windows.Controls;
     using System.Windows.Documents;
     using System.Windows.Input;
     using System.Windows.Media;
@@ -22,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Provides a control that manipulates the camera by mouse and keyboard gestures.
     /// </summary>
-    public class CameraController : Grid
+    public class CameraController
     {        
         /// <summary>
         /// The camera history stack.
@@ -35,12 +34,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The change field of view event handler.
         /// </summary>
-        private ZoomHandler changeFieldOfViewHandler;
+        internal ZoomHandler changeFieldOfViewHandler;
 
         /// <summary>
         /// The change look at event handler.
         /// </summary>
-        private RotateHandler changeLookAtHandler;
+        internal RotateHandler changeLookAtHandler;
 
         /// <summary>
         /// The is spinning flag.
@@ -60,8 +59,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The pan event handler.
         /// </summary>
-        private PanHandler panHandler;
-
+        internal PanHandler panHandler;
+        /// <summary>
+        /// The set target handler
+        /// </summary>
+        internal RotateHandler setTargetHandler;
         /// <summary>
         /// The pan speed.
         /// </summary>
@@ -75,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The rotation event handler.
         /// </summary>
-        private RotateHandler rotateHandler;
+        internal RotateHandler rotateHandler;
 
         /// <summary>
         /// The 3D rotation point.
@@ -125,7 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The zoom event handler.
         /// </summary>
-        private ZoomHandler zoomHandler;
+        internal ZoomHandler zoomHandler;
 
         /// <summary>
         /// The point to zoom around.
@@ -135,7 +137,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The zoom rectangle event handler.
         /// </summary>
-        private ZoomRectangleHandler zoomRectangleHandler;
+        internal ZoomRectangleHandler zoomRectangleHandler;
 
         /// <summary>
         /// The zoom speed.
@@ -147,115 +149,13 @@ namespace HelixToolkit.Wpf.SharpDX
         private static readonly Vector3D Vector3DZero = new Vector3D();
 
         /// <summary>
-        /// Initializes static members of the <see cref="CameraController" /> class.
-        /// </summary>
-        static CameraController()
-        {
-            BackgroundProperty.OverrideMetadata(typeof(CameraController), new FrameworkPropertyMetadata(Brushes.Transparent));
-            FocusVisualStyleProperty.OverrideMetadata(typeof(CameraController), new FrameworkPropertyMetadata(null));
-            BackViewCommand = new RoutedCommand();
-            BottomViewCommand = new RoutedCommand();
-            ChangeFieldOfViewCommand = new RoutedCommand();
-            ChangeLookAtCommand = new RoutedCommand();
-            FrontViewCommand = new RoutedCommand();
-            LeftViewCommand = new RoutedCommand();
-            PanCommand = new RoutedCommand();
-            ResetCameraCommand = new RoutedCommand();
-            RightViewCommand = new RoutedCommand();
-            RotateCommand = new RoutedCommand();
-            TopViewCommand = new RoutedCommand();
-            ZoomCommand = new RoutedCommand();
-            ZoomExtentsCommand = new RoutedCommand();
-            ZoomRectangleCommand = new RoutedCommand();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="CameraController" /> class.
         /// </summary>
-        public CameraController()
+        public CameraController(Viewport3DX viewport)
         {
-            this.Loaded += this.CameraControllerLoaded;
-            this.Unloaded += this.CameraControllerUnloaded;
-
-            // Must be focusable to received key events
-            this.Focusable = true;
-            this.FocusVisualStyle = null;
-
-            this.IsManipulationEnabled = true;
-
             this.InitializeBindings();
-           // this.renderingEventListener = new RenderingEventListener(this.OnCompositionTargetRendering);
+            this.Viewport = viewport;
         }
-
-        /// <summary>
-        /// Gets the back view command.
-        /// </summary>
-        public static RoutedCommand BackViewCommand { get; private set; }
-
-        /// <summary>
-        /// Gets the bottom view command.
-        /// </summary>
-        public static RoutedCommand BottomViewCommand { get; private set; }
-
-        /// <summary>
-        /// Gets the change field of view command.
-        /// </summary>
-        public static RoutedCommand ChangeFieldOfViewCommand { get; private set; }
-
-        /// <summary>
-        /// Gets the change look at command.
-        /// </summary>
-        public static RoutedCommand ChangeLookAtCommand { get; private set; }
-
-        /// <summary>
-        /// Gets the front view command.
-        /// </summary>
-        public static RoutedCommand FrontViewCommand { get; private set; }
-
-        /// <summary>
-        /// Gets the left view command.
-        /// </summary>
-        public static RoutedCommand LeftViewCommand { get; private set; }
-
-        /// <summary>
-        /// Gets the pan command.
-        /// </summary>
-        public static RoutedCommand PanCommand { get; private set; }
-
-        /// <summary>
-        /// Gets the reset camera command.
-        /// </summary>
-        public static RoutedCommand ResetCameraCommand { get; private set; }
-
-        /// <summary>
-        /// Gets the right view command.
-        /// </summary>
-        public static RoutedCommand RightViewCommand { get; private set; }
-
-        /// <summary>
-        /// Gets the rotate command.
-        /// </summary>
-        public static RoutedCommand RotateCommand { get; private set; }
-
-        /// <summary>
-        /// Gets the top view command.
-        /// </summary>
-        public static RoutedCommand TopViewCommand { get; private set; }
-
-        /// <summary>
-        /// Gets the zoom command.
-        /// </summary>
-        public static RoutedCommand ZoomCommand { get; private set; }
-
-        /// <summary>
-        /// Gets the zoom extents command.
-        /// </summary>
-        public static RoutedCommand ZoomExtentsCommand { get; private set; }
-
-        /// <summary>
-        /// Gets the zoom rectangle command.
-        /// </summary>
-        public static RoutedCommand ZoomRectangleCommand { get; private set; }
       
         /// <summary>
         /// Gets ActualCamera.
@@ -588,22 +488,12 @@ namespace HelixToolkit.Wpf.SharpDX
             set; get;
         } = 1.0;
 
-        private Viewport3DX viewport;
         /// <summary>
         /// Gets or sets Viewport.
         /// </summary>
         public Viewport3DX Viewport
         {
-            set
-            {
-                viewport = value;
-                rotateHandler.Viewport = panHandler.Viewport = changeFieldOfViewHandler.Viewport 
-                    = zoomRectangleHandler.Viewport = zoomHandler.Viewport = changeLookAtHandler.Viewport = value;
-            }
-            get
-            {
-                return viewport;
-            }
+            private set;get;
         }
 
         /// <summary>
@@ -640,6 +530,20 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             set; get;
         } = 1.0;
+        /// <summary>
+        /// Gets or sets the zoom distance limit far.
+        /// </summary>
+        /// <value>
+        /// The zoom distance limit far.
+        /// </value>
+        public double ZoomDistanceLimitFar { set; get; } = double.PositiveInfinity;
+        /// <summary>
+        /// Gets or sets the zoom distance limit near.
+        /// </summary>
+        /// <value>
+        /// The zoom distance limit near.
+        /// </value>
+        public double ZoomDistanceLimitNear { set; get; } = 0.001;
 
         /// <summary>
         /// Gets a value indicating whether IsOrthographicCamera.
@@ -777,13 +681,13 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.IsInertiaEnabled)
             {
                 this.rotationPoint3D = this.CameraTarget;
-                this.rotationPosition = new Point(this.ActualWidth / 2, this.ActualHeight / 2);
+                this.rotationPosition = new Point(Viewport.ActualWidth / 2, Viewport.ActualHeight / 2);
                 this.rotationSpeed.X += dx * 40;
                 this.rotationSpeed.Y += dy * 40;
             }
             else
             {
-                this.rotationPosition = new Point(this.ActualWidth / 2, this.ActualHeight / 2);
+                this.rotationPosition = new Point(Viewport.ActualWidth / 2, Viewport.ActualHeight / 2);
                 this.rotateHandler.Rotate(
                     this.rotationPosition, this.rotationPosition + new Vector(dx, dy), this.CameraTarget);
             }
@@ -1114,9 +1018,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">
         /// The data for the event.
         /// </param>
-        protected override void OnManipulationCompleted(ManipulationCompletedEventArgs e)
+        public void OnManipulationCompleted(ManipulationCompletedEventArgs e)
         {
-            base.OnManipulationCompleted(e);
             var p = e.ManipulationOrigin + e.TotalManipulation.Translation;
 
             if (this.manipulatorCount == 1)
@@ -1137,10 +1040,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">
         /// The data for the event.
         /// </param>
-        protected override void OnManipulationDelta(ManipulationDeltaEventArgs e)
+        public void OnManipulationDelta(ManipulationDeltaEventArgs e)
         {
-            base.OnManipulationDelta(e);
-
             // number of manipulators (fingers)
             int n = e.Manipulators.Count();
             var position = this.touchPreviousPoint + e.DeltaManipulation.Translation;
@@ -1212,10 +1113,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">
         /// The data for the event.
         /// </param>
-        protected override void OnManipulationStarted(ManipulationStartedEventArgs e)
+        public void OnManipulationStarted(ManipulationStartedEventArgs e)
         {
-            base.OnManipulationStarted(e);
-            this.Focus();
             this.touchPreviousPoint = e.ManipulationOrigin;
             this.manipulatorCount = 0;
 
@@ -1228,10 +1127,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">
         /// The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.
         /// </param>
-        protected override void OnMouseDown(MouseButtonEventArgs e)
+        public void OnMouseDown(MouseButtonEventArgs e)
         {
-            base.OnMouseDown(e);
-            this.Focus();
             if (e.ChangedButton == MouseButton.XButton1)
             {
                 this.RestoreCameraSetting();
@@ -1244,14 +1141,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">
         /// The <see cref="T:System.Windows.Input.StylusSystemGestureEventArgs"/> that contains the event data.
         /// </param>
-        protected override void OnStylusSystemGesture(StylusSystemGestureEventArgs e)
+        public void OnStylusSystemGesture(StylusSystemGestureEventArgs e)
         {
-            base.OnStylusSystemGesture(e);
-
             // Debug.WriteLine("OnStylusSystemGesture: " + e.SystemGesture);
             if (e.SystemGesture == SystemGesture.HoldEnter)
             {
-                var p = e.GetPosition(this);
+                var p = e.GetPosition(Viewport);
                 this.changeLookAtHandler.Started(p);
                 this.changeLookAtHandler.Completed(p);
                 e.Handled = true;
@@ -1262,34 +1157,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.ZoomExtents();
                 e.Handled = true;
             }
-        }
-
-        /// <summary>
-        /// The camera changed.
-        /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private static void CameraChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((CameraController)d).OnCameraChanged();
-        }
-
-        /// <summary>
-        /// The viewport changed.
-        /// </summary>
-        /// <param name="d">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private static void ViewportChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((CameraController)d).OnViewportChanged();
         }
 
         /// <summary>
@@ -1318,34 +1185,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private void BottomViewHandler(object sender, ExecutedRoutedEventArgs e)
         {
             this.ChangeDirection(new Vector3D(0, 0, 1), new Vector3D(0, -1, 0));
-        }
-
-        /// <summary>
-        /// The camera controller_ loaded.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private void CameraControllerLoaded(object sender, RoutedEventArgs e)
-        {
-            this.SubscribeEvents();
-        }
-
-        /// <summary>
-        /// Called when the CameraController is unloaded.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The event arguments.
-        /// </param>
-        private void CameraControllerUnloaded(object sender, RoutedEventArgs e)
-        {
-            this.UnSubscribeEvents();
         }
 
         /// <summary>
@@ -1423,30 +1262,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void InitializeBindings()
         {
-            this.CommandBindings.Clear();
-            this.changeLookAtHandler = new RotateHandler(this.Viewport, true);
-            this.rotateHandler = new RotateHandler(this.Viewport);
-            this.zoomRectangleHandler = new ZoomRectangleHandler(this.Viewport);
-            this.zoomHandler = new ZoomHandler(this.Viewport);
-            this.panHandler = new PanHandler(this.Viewport);
-            this.changeFieldOfViewHandler = new ZoomHandler(this.Viewport, true);
-
-            this.CommandBindings.Add(new CommandBinding(ZoomRectangleCommand, this.zoomRectangleHandler.Execute));
-            this.CommandBindings.Add(new CommandBinding(ZoomExtentsCommand, this.ZoomExtentsHandler));
-            this.CommandBindings.Add(new CommandBinding(RotateCommand, this.rotateHandler.Execute));
-            this.CommandBindings.Add(new CommandBinding(ZoomCommand, this.zoomHandler.Execute));
-            this.CommandBindings.Add(new CommandBinding(PanCommand, this.panHandler.Execute));
-            this.CommandBindings.Add(new CommandBinding(ResetCameraCommand, this.ResetCameraHandler));
-            this.CommandBindings.Add(new CommandBinding(ChangeLookAtCommand, this.changeLookAtHandler.Execute));
-            this.CommandBindings.Add(
-                new CommandBinding(ChangeFieldOfViewCommand, this.changeFieldOfViewHandler.Execute));
-
-            this.CommandBindings.Add(new CommandBinding(TopViewCommand, this.TopViewHandler));
-            this.CommandBindings.Add(new CommandBinding(BottomViewCommand, this.BottomViewHandler));
-            this.CommandBindings.Add(new CommandBinding(LeftViewCommand, this.LeftViewHandler));
-            this.CommandBindings.Add(new CommandBinding(RightViewCommand, this.RightViewHandler));
-            this.CommandBindings.Add(new CommandBinding(FrontViewCommand, this.FrontViewHandler));
-            this.CommandBindings.Add(new CommandBinding(BackViewCommand, this.BackViewHandler));
+            this.changeLookAtHandler = new RotateHandler(this, true);
+            this.rotateHandler = new RotateHandler(this);
+            this.zoomRectangleHandler = new ZoomRectangleHandler(this);
+            this.zoomHandler = new ZoomHandler(this);
+            this.panHandler = new PanHandler(this);
+            this.changeFieldOfViewHandler = new ZoomHandler(this, true);
+            this.setTargetHandler = new RotateHandler(this, true);
         }
 
         /// <summary>
@@ -1490,9 +1312,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">
         /// The <see cref="System.Windows.Input.KeyEventArgs"/> instance containing the event data.
         /// </param>
-        public void OnKeyDown(object sender, KeyEventArgs e)
+        public void OnKeyDown(KeyEventArgs e)
         {
-            this.OnKeyDown(e);
             var shift = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
             var control = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
             var f = control ? 0.25 : 1;
@@ -1593,7 +1414,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e">
         /// The <see cref="System.Windows.Input.MouseWheelEventArgs"/> instance containing the event data.
         /// </param>
-        private void OnMouseWheel(object sender, MouseWheelEventArgs e)
+        public void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (!this.IsZoomEnabled)
             {
@@ -1601,7 +1422,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (this.ZoomAroundMouseDownPoint)
             {
-                var point = e.GetPosition(this);
+                var point = e.GetPosition(Viewport);
                 Point3D nearestPoint;
                 Vector3D normal;
                 Element3D visual;
@@ -1702,10 +1523,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 lastTick = 0;
             }
-            if (Viewport.EnableSwapChainRendering)
-            {
-                this.InvalidateVisual();  
-            }
         }
 
         /// <summary>
@@ -1767,15 +1584,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// The subscribe events.
-        /// </summary>
-        private void SubscribeEvents()
-        {
-            this.MouseWheel += this.OnMouseWheel;
-            //RenderingEventManager.AddListener(this.renderingEventListener);
-        }
-
-        /// <summary>
         /// The top view event handler.
         /// </summary>
         /// <param name="sender">
@@ -1787,15 +1595,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private void TopViewHandler(object sender, ExecutedRoutedEventArgs e)
         {
             this.ChangeDirection(new Vector3D(0, 0, -1), new Vector3D(0, 1, 0));
-        }
-
-        /// <summary>
-        /// The un subscribe events.
-        /// </summary>
-        private void UnSubscribeEvents()
-        {
-            this.MouseWheel -= this.OnMouseWheel;
-            //RenderingEventManager.RemoveListener(this.renderingEventListener);
         }
 
         /// <summary>

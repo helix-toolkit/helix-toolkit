@@ -846,13 +846,27 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The far zoom distance limit property.
         /// </summary>
         public static readonly DependencyProperty ZoomDistanceLimitFarProperty = DependencyProperty.Register(
-            "ZoomDistanceLimitFar", typeof(double), typeof(Viewport3DX), new PropertyMetadata(double.PositiveInfinity));
+            "ZoomDistanceLimitFar", typeof(double), typeof(Viewport3DX), new PropertyMetadata(double.PositiveInfinity, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.CameraController != null)
+                {
+                    viewport.CameraController.ZoomDistanceLimitFar = (double)e.NewValue;
+                }
+            }));
 
         /// <summary>
         /// The near zoom distance limit property.
         /// </summary>
         public static readonly DependencyProperty ZoomDistanceLimitNearProperty = DependencyProperty.Register(
-            "ZoomDistanceLimitNear", typeof(double), typeof(Viewport3DX), new PropertyMetadata(0.001));
+            "ZoomDistanceLimitNear", typeof(double), typeof(Viewport3DX), new PropertyMetadata(0.001, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.CameraController != null)
+                {
+                    viewport.CameraController.ZoomDistanceLimitNear = (double)e.NewValue;
+                }
+            }));
 
         /// <summary>
         /// The zoom extents when loaded property.
