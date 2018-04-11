@@ -32,8 +32,6 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Provides a Viewport control.
     /// </summary>
-    [DefaultEvent("OnChildrenChanged")]
-    //[DefaultProperty("Children")]
     [ContentProperty("Items")]
     [TemplatePart(Name = "PART_CameraController", Type = typeof(CameraController))]
     [TemplatePart(Name = "PART_Canvas", Type = typeof(ContentPresenter))]

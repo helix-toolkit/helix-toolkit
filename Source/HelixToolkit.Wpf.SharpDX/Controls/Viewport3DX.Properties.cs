@@ -133,12 +133,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 new PropertyMetadata(new MouseGesture(MouseAction.RightDoubleClick)));
 
         /// <summary>
-        /// The children property
-        /// </summary>
-        public static readonly DependencyProperty ChildrenProperty = DependencyProperty.Register(
-            "Children", typeof(Element3DCollection), typeof(Viewport3DX));
-
-        /// <summary>
         /// The coordinate system horizontal position property. Relative to viewport center
         /// <para>Default: -0.8</para>
         /// </summary>
