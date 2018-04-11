@@ -24,8 +24,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseGestureHandler"/> class.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
+        /// <param name="controller">
+        /// The camera controller.
         /// </param>
         protected MouseGestureHandler(CameraController controller)
         {

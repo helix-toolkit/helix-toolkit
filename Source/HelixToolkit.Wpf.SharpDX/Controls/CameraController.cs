@@ -1306,9 +1306,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Called when a key is pressed.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
         /// <param name="e">
         /// The <see cref="System.Windows.Input.KeyEventArgs"/> instance containing the event data.
         /// </param>
