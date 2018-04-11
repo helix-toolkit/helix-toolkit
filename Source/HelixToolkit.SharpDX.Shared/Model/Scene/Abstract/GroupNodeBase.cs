@@ -6,7 +6,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 #if NETFX_CORE
@@ -16,7 +15,6 @@ namespace HelixToolkit.UWP.Model.Scene
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
-    using Render;
     /// <summary>
     /// 
     /// </summary>
