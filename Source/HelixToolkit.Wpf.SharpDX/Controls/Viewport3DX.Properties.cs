@@ -82,10 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "CameraInertiaFactor", typeof(double), typeof(Viewport3DX), new PropertyMetadata(0.93, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if(viewport.CameraController != null)
-                {
-                    viewport.CameraController.InertiaFactor = (double)e.NewValue;
-                }              
+                viewport.CameraController.InertiaFactor = (double)e.NewValue;            
             }));
 
         /// <summary>
@@ -95,10 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "CameraMode", typeof(CameraMode), typeof(Viewport3DX), new PropertyMetadata(CameraMode.Inspect, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.CameraMode = (CameraMode)e.NewValue;
-                }
+                viewport.CameraController.CameraMode = (CameraMode)e.NewValue;
             }));
 
         /// <summary>
@@ -108,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "Camera",
             typeof(Camera),
             typeof(Viewport3DX),
-            new PropertyMetadata((s, e) => (s as Viewport3DX).CameraPropertyChanged(e.NewValue as Camera)));
+            new PropertyMetadata(null, (s, e) => (s as Viewport3DX).CameraPropertyChanged(e.NewValue as Camera)));
 
         /// <summary>
         /// The camera rotation mode property
@@ -120,10 +114,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 new PropertyMetadata(CameraRotationMode.Turntable, (d, e) =>
                 {
                     var viewport = d as Viewport3DX;
-                    if (viewport.CameraController != null)
-                    {
-                        viewport.CameraController.CameraRotationMode = (CameraRotationMode)e.NewValue;
-                    }
+                    viewport.CameraController.CameraRotationMode = (CameraRotationMode)e.NewValue;
                 }));
 
         /// <summary>
@@ -133,10 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "ChangeFieldOfViewCursor", typeof(Cursor), typeof(Viewport3DX), new PropertyMetadata(Cursors.ScrollNS, (d, e) =>
                 {
                     var viewport = d as Viewport3DX;
-                    if (viewport.CameraController != null)
-                    {
-                        viewport.CameraController.ChangeFieldOfViewCursor = (Cursor)e.NewValue;
-                    }
+                    viewport.CameraController.ChangeFieldOfViewCursor = (Cursor)e.NewValue;
                 }));
 
         /// <summary>
@@ -234,10 +222,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "DefaultCamera", typeof(ProjectionCamera), typeof(Viewport3DX), new PropertyMetadata(null, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.DefaultCamera = e.NewValue as ProjectionCamera;
-                }
+                viewport.CameraController.DefaultCamera = e.NewValue as ProjectionCamera;
             }));
 
         /// <summary>
@@ -288,10 +273,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "InfiniteSpin", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.InfiniteSpin = (bool)e.NewValue;
-                }
+                viewport.CameraController.InfiniteSpin = (bool)e.NewValue;
             }));
 
         /// <summary>
@@ -352,10 +334,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "IsChangeFieldOfViewEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.IsChangeFieldOfViewEnabled = (bool)e.NewValue;
-                }
+                viewport.CameraController.IsChangeFieldOfViewEnabled = (bool)e.NewValue;
             }));
 
         /// <summary>
@@ -366,10 +345,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "IsInertiaEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
                 {
                     var viewport = d as Viewport3DX;
-                    if (viewport.CameraController != null)
-                    {
-                        viewport.CameraController.IsInertiaEnabled = (bool)e.NewValue;
-                    }
+                    viewport.CameraController.IsInertiaEnabled = (bool)e.NewValue;
                 }));
 
         /// <summary>
@@ -379,10 +355,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "IsPanEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.IsPanEnabled = (bool)e.NewValue;
-                }
+                viewport.CameraController.IsPanEnabled = (bool)e.NewValue;
             }));
 
         /// <summary>
@@ -392,10 +365,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "IsRotationEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.IsRotationEnabled = (bool)e.NewValue;
-                }
+                viewport.CameraController.IsRotationEnabled = (bool)e.NewValue;
             }));
 
         /// <summary>
@@ -405,10 +375,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "IsTouchZoomEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.IsTouchZoomEnabled = (bool)e.NewValue;
-                }
+                viewport.CameraController.IsTouchZoomEnabled = (bool)e.NewValue;
             }));
 
         /// <summary>
@@ -418,10 +385,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "IsZoomEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.IsZoomEnabled = (bool)e.NewValue;
-                }
+                viewport.CameraController.IsZoomEnabled = (bool)e.NewValue;
             }));
 
         /// <summary>
@@ -431,10 +395,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "LeftRightPanSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.LeftRightPanSensitivity = (double)e.NewValue;
-                }
+                viewport.CameraController.LeftRightPanSensitivity = (double)e.NewValue;
             }));
 
         /// <summary>
@@ -444,10 +405,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "LeftRightRotationSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.LeftRightRotationSensitivity = (double)e.NewValue;
-                }
+                viewport.CameraController.LeftRightRotationSensitivity = (double)e.NewValue;
             }));
 
         /// <summary>
@@ -457,10 +415,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "MaximumFieldOfView", typeof(double), typeof(Viewport3DX), new PropertyMetadata(120.0, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.MaximumFieldOfView = (double)e.NewValue;
-                }
+                viewport.CameraController.MaximumFieldOfView = (double)e.NewValue;
             }));
 
         /// <summary>
@@ -470,10 +425,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "MinimumFieldOfView", typeof(double), typeof(Viewport3DX), new PropertyMetadata(10.0, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.MinimumFieldOfView = (double)e.NewValue;
-                }
+                viewport.CameraController.MinimumFieldOfView = (double)e.NewValue;
             }));
 
         /// <summary>
@@ -483,10 +435,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "ModelUpDirection", typeof(Vector3D), typeof(Viewport3DX), new PropertyMetadata(new Vector3D(0, 1, 0), (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.ModelUpDirection = (Vector3D)e.NewValue;
-                }
+                viewport.CameraController.ModelUpDirection = (Vector3D)e.NewValue;
             }));
 
         /// <summary>
@@ -514,10 +463,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "PageUpDownZoomSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.PageUpDownZoomSensitivity = (double)e.NewValue;
-                }
+                viewport.CameraController.PageUpDownZoomSensitivity = (double)e.NewValue;
             }));
 
         /// <summary>
@@ -527,10 +473,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "PanCursor", typeof(Cursor), typeof(Viewport3DX), new PropertyMetadata(Cursors.Hand, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.PanCursor = (Cursor)e.NewValue;
-                }
+                viewport.CameraController.PanCursor = (Cursor)e.NewValue;
             }));
 
         /// <summary>
@@ -540,10 +483,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "RotateAroundMouseDownPoint", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.RotateAroundMouseDownPoint = (bool)e.NewValue;
-                }
+                viewport.CameraController.RotateAroundMouseDownPoint = (bool)e.NewValue;
             }));
 
         /// <summary>
@@ -553,10 +493,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "RotateCursor", typeof(Cursor), typeof(Viewport3DX), new PropertyMetadata(Cursors.SizeAll, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.RotateCursor = (Cursor)e.NewValue;
-                }
+                viewport.CameraController.RotateCursor = (Cursor)e.NewValue;
             }));
 
         /// <summary>
@@ -566,10 +503,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "RotationSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.RotationSensitivity = (double)e.NewValue;
-                }
+                viewport.CameraController.RotationSensitivity = (double)e.NewValue;
             }));
 
         /// <summary>
@@ -601,10 +535,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "ShowCameraTarget", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.ShowCameraTarget = (bool)e.NewValue;
-                }
+                viewport.CameraController.ShowCameraTarget = (bool)e.NewValue;
             }));
 
         /// <summary>
@@ -683,10 +614,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "SpinReleaseTime", typeof(int), typeof(Viewport3DX), new PropertyMetadata(200, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.SpinReleaseTime = (int)e.NewValue;
-                }
+                viewport.CameraController.SpinReleaseTime = (int)e.NewValue;
             }));
 
         /// <summary>
@@ -744,10 +672,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "UpDownPanSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e) =>
                 {
                     var viewport = d as Viewport3DX;
-                    if (viewport.CameraController != null)
-                    {
-                        viewport.CameraController.UpDownPanSensitivity = (double)e.NewValue;
-                    }
+                    viewport.CameraController.UpDownPanSensitivity = (double)e.NewValue;
                 }));
 
         /// <summary>
@@ -757,10 +682,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 "UpDownRotationSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e) =>
                 {
                     var viewport = d as Viewport3DX;
-                    if (viewport.CameraController != null)
-                    {
-                        viewport.CameraController.UpDownRotationSensitivity = (double)e.NewValue;
-                    }
+                    viewport.CameraController.UpDownRotationSensitivity = (double)e.NewValue;
                 }));
 
         /// <summary>
@@ -823,10 +745,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "ZoomAroundMouseDownPoint", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.ZoomAroundMouseDownPoint = (bool)e.NewValue;
-                }
+                viewport.CameraController.ZoomAroundMouseDownPoint = (bool)e.NewValue;
             }));
 
         /// <summary>
@@ -836,10 +755,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "ZoomCursor", typeof(Cursor), typeof(Viewport3DX), new PropertyMetadata(Cursors.SizeNS, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.ZoomCursor = (Cursor)e.NewValue;
-                }
+                viewport.CameraController.ZoomCursor = (Cursor)e.NewValue;
             }));
 
         /// <summary>
@@ -849,10 +765,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "ZoomDistanceLimitFar", typeof(double), typeof(Viewport3DX), new PropertyMetadata(double.PositiveInfinity, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.ZoomDistanceLimitFar = (double)e.NewValue;
-                }
+                viewport.CameraController.ZoomDistanceLimitFar = (double)e.NewValue;
             }));
 
         /// <summary>
@@ -862,10 +775,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "ZoomDistanceLimitNear", typeof(double), typeof(Viewport3DX), new PropertyMetadata(0.001, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.ZoomDistanceLimitNear = (double)e.NewValue;
-                }
+                viewport.CameraController.ZoomDistanceLimitNear = (double)e.NewValue;
             }));
 
         /// <summary>
@@ -881,10 +791,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "ZoomRectangleCursor", typeof(Cursor), typeof(Viewport3DX), new PropertyMetadata(Cursors.SizeNWSE, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.ZoomRectangleCursor = (Cursor)e.NewValue;
-                }
+                viewport.CameraController.ZoomRectangleCursor = (Cursor)e.NewValue;
             }));
 
         /// <summary>
@@ -904,10 +811,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "ZoomSensitivity", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.ZoomSensitivity = (double)e.NewValue;
-                }
+                viewport.CameraController.ZoomSensitivity = (double)e.NewValue;
             }));
 
 #if MSAA
@@ -932,10 +836,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "IsMoveEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                if (viewport.CameraController != null)
-                {
-                    viewport.CameraController.IsMoveEnabled = (bool)e.NewValue;
-                }
+                viewport.CameraController.IsMoveEnabled = (bool)e.NewValue;
             }));
 
 

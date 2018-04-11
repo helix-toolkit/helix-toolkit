@@ -222,6 +222,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public Viewport3DX()
         {
+            this.cameraController = new CameraController(this);
             Items.CollectionChanged += Items_CollectionChanged;
             this.perspectiveCamera = new PerspectiveCamera();
             this.orthographicCamera = new OrthographicCamera();
@@ -229,8 +230,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.orthographicCamera.Reset();
 
             this.Camera = this.Orthographic ? (ProjectionCamera)this.orthographicCamera : this.perspectiveCamera;
-
-            this.cameraController = new CameraController(this);
+         
             InitCameraController();
             this.CommandBindings.Add(new CommandBinding(ViewportCommands.ZoomExtents, this.ZoomExtentsHandler));
             this.CommandBindings.Add(new CommandBinding(ViewportCommands.SetTarget, this.cameraController.setTargetHandler.Execute));
@@ -1199,10 +1199,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private void CameraPropertyChanged(Camera camera)
         {
-            if (CameraController != null)
-            {
-                CameraController.ActualCamera = camera as ProjectionCamera;
-            }
+            CameraController.ActualCamera = camera == null ? (Orthographic ? this.orthographicCamera as ProjectionCamera : this.perspectiveCamera) : camera as ProjectionCamera;
             // Raise notification
             this.RaiseCameraChangedEvent();
 
