@@ -70,11 +70,6 @@ namespace HelixToolkit.Wpf.SharpDX
         private Vector3D panSpeed;
 
         /// <summary>
-        /// The rectangle adorner.
-        /// </summary>
-        private RectangleAdorner rectangleAdorner;
-
-        /// <summary>
         /// The rotation event handler.
         /// </summary>
         internal RotateHandler rotateHandler;
@@ -109,10 +104,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private Vector spinningSpeed;
 
-        /// <summary>
-        /// The target adorner.
-        /// </summary>
-        private Adorner targetAdorner;
 
         /// <summary>
         /// The touch point in the last touch delta event
@@ -156,13 +147,22 @@ namespace HelixToolkit.Wpf.SharpDX
             this.InitializeBindings();
             this.Viewport = viewport;
         }
-      
+
+        private ProjectionCamera actualCamera;
         /// <summary>
         /// Gets ActualCamera.
         /// </summary>
         public ProjectionCamera ActualCamera
         {
-            set; get;
+            set
+            {
+                if(actualCamera != value)
+                {
+                    actualCamera = value;
+                    OnCameraChanged();
+                }
+            }
+            get { return actualCamera; }
         }
 
         /// <summary>
@@ -779,39 +779,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Hides the rectangle.
-        /// </summary>
-        public void HideRectangle()
-        {
-            var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
-            if (this.rectangleAdorner != null)
-            {
-                myAdornerLayer.Remove(this.rectangleAdorner);
-            }
-
-            this.rectangleAdorner = null;
-
-            this.Viewport.InvalidateVisual();
-        }
-
-        /// <summary>
-        /// Hides the target adorner.
-        /// </summary>
-        public void HideTargetAdorner()
-        {
-            var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
-            if (this.targetAdorner != null)
-            {
-                myAdornerLayer.Remove(this.targetAdorner);
-            }
-
-            this.targetAdorner = null;
-
-            // the adorner sometimes leaves some 'dust', so refresh the viewport
-            this.RefreshViewport();
-        }
-
-        /// <summary>
         /// Change the "look-at" point.
         /// </summary>
         /// <param name="target">
@@ -892,54 +859,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Shows the rectangle.
-        /// </summary>
-        /// <param name="rect">
-        /// The rectangle.
-        /// </param>
-        /// <param name="color1">
-        /// The color 1.
-        /// </param>
-        /// <param name="color2">
-        /// The color 2.
-        /// </param>
-        public void ShowRectangle(Rect rect, Color color1, Color color2)
-        {
-            if (this.rectangleAdorner != null)
-            {
-                return;
-            }
-
-            var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
-            this.rectangleAdorner = new RectangleAdorner(
-                this.Viewport, rect, color1, color2, 3, 1, 10, DashStyles.Solid);
-            myAdornerLayer.Add(this.rectangleAdorner);
-        }
-
-        /// <summary>
-        /// Shows the target adorner.
-        /// </summary>
-        /// <param name="position">
-        /// The position.
-        /// </param>
-        public void ShowTargetAdorner(Point position)
-        {
-            if (!this.ShowCameraTarget)
-            {
-                return;
-            }
-
-            if (this.targetAdorner != null)
-            {
-                return;
-            }
-
-            var myAdornerLayer = AdornerLayer.GetAdornerLayer(this.Viewport);
-            this.targetAdorner = new TargetSymbolAdorner(this.Viewport, position);
-            myAdornerLayer.Add(this.targetAdorner);
-        }
-
-        /// <summary>
         /// Starts the spin.
         /// </summary>
         /// <param name="speed">
@@ -965,23 +884,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public void StopSpin()
         {
             this.isSpinning = false;
-        }
-
-        /// <summary>
-        /// Updates the rectangle.
-        /// </summary>
-        /// <param name="rect">
-        /// The rectangle.
-        /// </param>
-        public void UpdateRectangle(Rect rect)
-        {
-            if (this.rectangleAdorner == null)
-            {
-                return;
-            }
-
-            this.rectangleAdorner.Rectangle = rect;
-            this.rectangleAdorner.InvalidateVisual();
         }
 
         /// <summary>

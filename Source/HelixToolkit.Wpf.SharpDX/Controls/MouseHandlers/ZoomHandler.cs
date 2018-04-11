@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Completed(Point e)
         {
             base.Completed(e);
-            this.Controller.HideTargetAdorner();
+            this.Viewport.HideTargetAdorner();
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (!this.changeFieldOfView)
             {
-                this.Controller.ShowTargetAdorner(this.zoomPoint);
+                this.Viewport.ShowTargetAdorner(this.zoomPoint);
             }
         }
 

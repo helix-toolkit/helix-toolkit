@@ -80,7 +80,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Completed(Point e)
         {
             base.Completed(e);
-            this.Controller.HideTargetAdorner();
+            this.Viewport.HideTargetAdorner();
         }
        
         /// <summary>
@@ -325,7 +325,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (this.CameraMode == CameraMode.Inspect)
             {
-                this.Controller.ShowTargetAdorner(this.rotationPoint);
+                this.Viewport.ShowTargetAdorner(this.rotationPoint);
             }
 
             switch (this.CameraRotationMode)
