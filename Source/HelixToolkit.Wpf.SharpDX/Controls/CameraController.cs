@@ -10,7 +10,6 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Windows;
@@ -20,271 +19,11 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
     using Utilities;
-    using HelixToolkit.Wpf.SharpDX;
     /// <summary>
     /// Provides a control that manipulates the camera by mouse and keyboard gestures.
     /// </summary>
     public class CameraController : Grid
-    {
-        /// <summary>
-        /// Identifies the <see cref="CameraMode"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CameraModeProperty = DependencyProperty.Register(
-            "CameraMode", typeof(CameraMode), typeof(CameraController), new PropertyMetadata(CameraMode.Inspect));
-
-        /// <summary>
-        /// Identifies the <see cref="Camera"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CameraProperty = DependencyProperty.Register(
-            "Camera",
-            typeof(ProjectionCamera),
-            typeof(CameraController),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, CameraChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="CameraRotationMode"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty CameraRotationModeProperty =
-            DependencyProperty.Register(
-                "CameraRotationMode",
-                typeof(CameraRotationMode),
-                typeof(CameraController),
-                new PropertyMetadata(CameraRotationMode.Turntable));
-
-        /// <summary>
-        /// Identifies the <see cref="ChangeFieldOfViewCursor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ChangeFieldOfViewCursorProperty =
-            DependencyProperty.Register(
-                "ChangeFieldOfViewCursor",
-                typeof(Cursor),
-                typeof(CameraController),
-                new PropertyMetadata(Cursors.ScrollNS));
-
-        /// <summary>
-        /// Identifies the <see cref="DefaultCamera"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty DefaultCameraProperty = DependencyProperty.Register(
-            "DefaultCamera", typeof(ProjectionCamera), typeof(CameraController), new PropertyMetadata(null));
-
-        /// <summary>
-        /// Identifies the <see cref="Enabled"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty EnabledProperty = DependencyProperty.Register(
-            "Enabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
-
-        /// <summary>
-        /// Identifies the <see cref="InertiaFactor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty InertiaFactorProperty = DependencyProperty.Register(
-            "InertiaFactor", typeof(double), typeof(CameraController), new PropertyMetadata(0.9));
-
-        /// <summary>
-        /// Identifies the <see cref="InfiniteSpin"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty InfiniteSpinProperty = DependencyProperty.Register(
-            "InfiniteSpin", typeof(bool), typeof(CameraController), new PropertyMetadata(false));
-
-        /// <summary>
-        /// Identifies the <see cref="IsChangeFieldOfViewEnabled"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsChangeFieldOfViewEnabledProperty =
-            DependencyProperty.Register(
-                "IsChangeFieldOfViewEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
-
-        /// <summary>
-        /// Identifies the <see cref="IsInertiaEnabled"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsInertiaEnabledProperty =
-            DependencyProperty.Register(
-                "IsInertiaEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
-
-        /// <summary>
-        /// Identifies the <see cref="IsMoveEnabled"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsMoveEnabledProperty = DependencyProperty.Register(
-            "IsMoveEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
-
-        /// <summary>
-        /// Identifies the <see cref="IsPanEnabled"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsPanEnabledProperty = DependencyProperty.Register(
-            "IsPanEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
-
-        /// <summary>
-        /// Identifies the <see cref="IsRotationEnabled"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsRotationEnabledProperty =
-            DependencyProperty.Register(
-                "IsRotationEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
-
-        /// <summary>
-        /// Identifies the <see cref="IsTouchZoomEnabled"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsTouchZoomEnabledProperty =
-            DependencyProperty.Register(
-                "IsTouchZoomEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
-
-        /// <summary>
-        /// Identifies the <see cref="IsZoomEnabled"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty IsZoomEnabledProperty = DependencyProperty.Register(
-            "IsZoomEnabled", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
-
-        /// <summary>
-        /// Identifies the <see cref="LeftRightPanSensitivity"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty LeftRightPanSensitivityProperty =
-            DependencyProperty.Register(
-                "LeftRightPanSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
-
-        /// <summary>
-        /// Identifies the <see cref="LeftRightRotationSensitivity"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty LeftRightRotationSensitivityProperty =
-            DependencyProperty.Register(
-                "LeftRightRotationSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
-
-        /// <summary>
-        /// The look at (target) point changed event
-        /// </summary>
-        public static readonly RoutedEvent LookAtChangedEvent = EventManager.RegisterRoutedEvent(
-            "LookAtChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CameraController));
-
-        /// <summary>
-        /// Identifies the <see cref="MaximumFieldOfView"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty MaximumFieldOfViewProperty =
-            DependencyProperty.Register(
-                "MaximumFieldOfView", typeof(double), typeof(CameraController), new PropertyMetadata(160.0));
-
-        /// <summary>
-        /// Identifies the <see cref="MinimumFieldOfView"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty MinimumFieldOfViewProperty =
-            DependencyProperty.Register(
-                "MinimumFieldOfView", typeof(double), typeof(CameraController), new PropertyMetadata(5.0));
-
-        /// <summary>
-        /// Identifies the <see cref="ModelUpDirection"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ModelUpDirectionProperty =
-            DependencyProperty.Register(
-                "ModelUpDirection",
-                typeof(Vector3D),
-                typeof(CameraController),
-                new PropertyMetadata(new Vector3D(0, 0, 1)));
-
-        /// <summary>
-        /// Identifies the <see cref="MoveSensitivity"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty MoveSensitivityProperty =
-            DependencyProperty.Register(
-                "MoveSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
-
-        /// <summary>
-        /// Identifies the <see cref="PageUpDownZoomSensitivity"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty PageUpDownZoomSensitivityProperty =
-            DependencyProperty.Register(
-                "PageUpDownZoomSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
-
-        /// <summary>
-        /// Identifies the <see cref="PanCursor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty PanCursorProperty = DependencyProperty.Register(
-            "PanCursor", typeof(Cursor), typeof(CameraController), new PropertyMetadata(Cursors.Hand));
-
-        /// <summary>
-        /// Identifies the <see cref="RotateAroundMouseDownPoint"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty RotateAroundMouseDownPointProperty =
-            DependencyProperty.Register(
-                "RotateAroundMouseDownPoint", typeof(bool), typeof(CameraController), new PropertyMetadata(false));
-
-        /// <summary>
-        /// Identifies the <see cref="RotateCursor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty RotateCursorProperty = DependencyProperty.Register(
-            "RotateCursor", typeof(Cursor), typeof(CameraController), new PropertyMetadata(Cursors.SizeAll));
-
-        /// <summary>
-        /// Identifies the <see cref="RotationSensitivity"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty RotationSensitivityProperty =
-            DependencyProperty.Register(
-                "RotationSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
-
-        /// <summary>
-        /// Identifies the <see cref="ShowCameraTarget"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ShowCameraTargetProperty =
-            DependencyProperty.Register(
-                "ShowCameraTarget", typeof(bool), typeof(CameraController), new PropertyMetadata(true));
-
-        /// <summary>
-        /// Identifies the <see cref="SpinReleaseTime"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SpinReleaseTimeProperty =
-            DependencyProperty.Register(
-                "SpinReleaseTime", typeof(int), typeof(CameraController), new PropertyMetadata(200));
-
-        /// <summary>
-        /// Identifies the <see cref="UpDownPanSensitivity"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty UpDownPanSensitivityProperty =
-            DependencyProperty.Register(
-                "UpDownPanSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
-
-        /// <summary>
-        /// Identifies the <see cref="UpDownRotationSensitivity"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty UpDownRotationSensitivityProperty =
-            DependencyProperty.Register(
-                "UpDownRotationSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
-
-        /// <summary>
-        /// Identifies the <see cref="Viewport"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ViewportProperty = DependencyProperty.Register(
-            "Viewport", typeof(Viewport3DX), typeof(CameraController), new PropertyMetadata(null, ViewportChanged));
-
-        /// <summary>
-        /// Identifies the <see cref="ZoomAroundMouseDownPoint"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ZoomAroundMouseDownPointProperty =
-            DependencyProperty.Register(
-                "ZoomAroundMouseDownPoint", typeof(bool), typeof(CameraController), new PropertyMetadata(false));
-
-        /// <summary>
-        /// Identifies the <see cref="ZoomCursor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ZoomCursorProperty = DependencyProperty.Register(
-            "ZoomCursor", typeof(Cursor), typeof(CameraController), new PropertyMetadata(Cursors.SizeNS));
-
-        /// <summary>
-        /// Identifies the <see cref="ZoomRectangleCursor"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ZoomRectangleCursorProperty =
-            DependencyProperty.Register(
-                "ZoomRectangleCursor",
-                typeof(Cursor),
-                typeof(CameraController),
-                new PropertyMetadata(Cursors.ScrollSE));
-
-        /// <summary>
-        /// Identifies the <see cref="ZoomSensitivity"/> dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ZoomSensitivityProperty =
-            DependencyProperty.Register(
-                "ZoomSensitivity", typeof(double), typeof(CameraController), new PropertyMetadata(1.0));
-        
-        /// <summary>
-        /// The zoomed by rectangle event
-        /// </summary>
-        public static readonly RoutedEvent ZoomedByRectangleEvent = EventManager.RegisterRoutedEvent(
-            "ZoomedByRectangle", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CameraController));
-
+    {        
         /// <summary>
         /// The camera history stack.
         /// </summary>
@@ -449,38 +188,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Occurs when the look at/target point changed.
-        /// </summary>
-        public event RoutedEventHandler LookAtChanged
-        {
-            add
-            {
-                this.AddHandler(LookAtChangedEvent, value);
-            }
-
-            remove
-            {
-                this.RemoveHandler(LookAtChangedEvent, value);
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the view is zoomed by rectangle.
-        /// </summary>
-        public event RoutedEventHandler ZoomedByRectangle
-        {
-            add
-            {
-                this.AddHandler(ZoomedByRectangleEvent, value);
-            }
-
-            remove
-            {
-                this.RemoveHandler(ZoomedByRectangleEvent, value);
-            }
-        }
-
-        /// <summary>
         /// Gets the back view command.
         /// </summary>
         public static RoutedCommand BackViewCommand { get; private set; }
@@ -555,36 +262,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public ProjectionCamera ActualCamera
         {
-            get
-            {
-                if (this.Camera != null)
-                {
-                    return this.Camera;
-                }
-
-                if (this.Viewport != null)
-                {
-                    return this.Viewport.Camera as ProjectionCamera;
-                }
-
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets Camera.
-        /// </summary>
-        public ProjectionCamera Camera
-        {
-            get
-            {
-                return (ProjectionCamera)this.GetValue(CameraProperty);
-            }
-
-            set
-            {
-                this.SetValue(CameraProperty, value);
-            }
+            set; get;
         }
 
         /// <summary>
@@ -608,16 +286,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public CameraMode CameraMode
         {
-            get
-            {
-                return (CameraMode)this.GetValue(CameraModeProperty);
-            }
-
-            set
-            {
-                this.SetValue(CameraModeProperty, value);
-            }
-        }
+            set; get;
+        } = CameraMode.Inspect;
 
         /// <summary>
         /// Gets or sets CameraPosition.
@@ -640,16 +310,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public CameraRotationMode CameraRotationMode
         {
-            get
-            {
-                return (CameraRotationMode)this.GetValue(CameraRotationModeProperty);
-            }
-
-            set
-            {
-                this.SetValue(CameraRotationModeProperty, value);
-            }
-        }
+            set; get;
+        } = CameraRotationMode.Turntable;
 
         /// <summary>
         /// Gets or sets CameraTarget.
@@ -689,16 +351,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The change field of view cursor. </value>
         public Cursor ChangeFieldOfViewCursor
         {
-            get
-            {
-                return (Cursor)this.GetValue(ChangeFieldOfViewCursorProperty);
-            }
-
-            set
-            {
-                this.SetValue(ChangeFieldOfViewCursorProperty, value);
-            }
-        }
+            set; get;
+        } = Cursors.ScrollNS;
 
         /// <summary>
         /// Gets or sets the default camera (used when resetting the view).
@@ -706,31 +360,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The default camera. </value>
         public ProjectionCamera DefaultCamera
         {
-            get
-            {
-                return (ProjectionCamera)this.GetValue(DefaultCameraProperty);
-            }
-
-            set
-            {
-                this.SetValue(DefaultCameraProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether Enabled.
-        /// </summary>
-        public bool Enabled
-        {
-            get
-            {
-                return (bool)this.GetValue(EnabledProperty);
-            }
-
-            set
-            {
-                this.SetValue(EnabledProperty, value);
-            }
+            set;get;
         }
 
         /// <summary>
@@ -738,59 +368,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public double InertiaFactor
         {
-            get
-            {
-                return (double)this.GetValue(InertiaFactorProperty);
-            }
-
-            set
-            {
-                this.SetValue(InertiaFactorProperty, value);
-            }
-        }
+            set; get;
+        } = 0.93;
 
         /// <summary>
         /// Gets or sets a value indicating whether InfiniteSpin.
         /// </summary>
         public bool InfiniteSpin
         {
-            get
-            {
-                return (bool)this.GetValue(InfiniteSpinProperty);
-            }
-
-            set
-            {
-                this.SetValue(InfiniteSpinProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether IsActive.
-        /// </summary>
-        public bool IsActive
-        {
-            get
-            {
-                return this.Enabled && this.Viewport != null && this.ActualCamera != null;
-            }
-        }
+            set; get;
+        } = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether field of view can be changed.
         /// </summary>
         public bool IsChangeFieldOfViewEnabled
         {
-            get
-            {
-                return (bool)this.GetValue(IsChangeFieldOfViewEnabledProperty);
-            }
-
-            set
-            {
-                this.SetValue(IsChangeFieldOfViewEnabledProperty, value);
-            }
-        }
+            set; get;
+        } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether inertia is enabled for the camera manipulations.
@@ -798,16 +393,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value><c>true</c> if inertia is enabled; otherwise, <c>false</c>.</value>
         public bool IsInertiaEnabled
         {
-            get
-            {
-                return (bool)this.GetValue(IsInertiaEnabledProperty);
-            }
-
-            set
-            {
-                this.SetValue(IsInertiaEnabledProperty, value);
-            }
-        }
+            set; get;
+        } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether move is enabled.
@@ -815,48 +402,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> <c>true</c> if move is enabled; otherwise, <c>false</c> . </value>
         public bool IsMoveEnabled
         {
-            get
-            {
-                return (bool)this.GetValue(IsMoveEnabledProperty);
-            }
-
-            set
-            {
-                this.SetValue(IsMoveEnabledProperty, value);
-            }
-        }
+            set; get;
+        } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether pan is enabled.
         /// </summary>
         public bool IsPanEnabled
         {
-            get
-            {
-                return (bool)this.GetValue(IsPanEnabledProperty);
-            }
-
-            set
-            {
-                this.SetValue(IsPanEnabledProperty, value);
-            }
-        }
+            set; get;
+        } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether IsRotationEnabled.
         /// </summary>
         public bool IsRotationEnabled
         {
-            get
-            {
-                return (bool)this.GetValue(IsRotationEnabledProperty);
-            }
-
-            set
-            {
-                this.SetValue(IsRotationEnabledProperty, value);
-            }
-        }
+            set; get;
+        } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
@@ -864,32 +427,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> <c>true</c> if touch zoom is enabled; otherwise, <c>false</c> . </value>
         public bool IsTouchZoomEnabled
         {
-            get
-            {
-                return (bool)this.GetValue(IsTouchZoomEnabledProperty);
-            }
-
-            set
-            {
-                this.SetValue(IsTouchZoomEnabledProperty, value);
-            }
-        }
+            set; get;
+        } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether IsZoomEnabled.
         /// </summary>
         public bool IsZoomEnabled
         {
-            get
-            {
-                return (bool)this.GetValue(IsZoomEnabledProperty);
-            }
-
-            set
-            {
-                this.SetValue(IsZoomEnabledProperty, value);
-            }
-        }
+            set; get;
+        } = true;
 
         /// <summary>
         /// Gets or sets the sensitivity for pan by the left and right keys.
@@ -900,16 +447,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </remarks>
         public double LeftRightPanSensitivity
         {
-            get
-            {
-                return (double)this.GetValue(LeftRightPanSensitivityProperty);
-            }
-
-            set
-            {
-                this.SetValue(LeftRightPanSensitivityProperty, value);
-            }
-        }
+            set; get;
+        } = 1.0;
 
         /// <summary>
         /// Gets or sets the sensitivity for rotation by the left and right keys.
@@ -920,16 +459,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </remarks>
         public double LeftRightRotationSensitivity
         {
-            get
-            {
-                return (double)this.GetValue(LeftRightRotationSensitivityProperty);
-            }
-
-            set
-            {
-                this.SetValue(LeftRightRotationSensitivityProperty, value);
-            }
-        }
+            set; get;
+        } = 1.0;
 
         /// <summary>
         /// Gets or sets the maximum field of view.
@@ -937,16 +468,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The maximum field of view. </value>
         public double MaximumFieldOfView
         {
-            get
-            {
-                return (double)this.GetValue(MaximumFieldOfViewProperty);
-            }
-
-            set
-            {
-                this.SetValue(MaximumFieldOfViewProperty, value);
-            }
-        }
+            set; get;
+        } = 120.0;
 
         /// <summary>
         /// Gets or sets the minimum field of view.
@@ -954,32 +477,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The minimum field of view. </value>
         public double MinimumFieldOfView
         {
-            get
-            {
-                return (double)this.GetValue(MinimumFieldOfViewProperty);
-            }
-
-            set
-            {
-                this.SetValue(MinimumFieldOfViewProperty, value);
-            }
-        }
+            set; get;
+        } = 10.0;
 
         /// <summary>
         /// Gets or sets the model up direction.
         /// </summary>
         public Vector3D ModelUpDirection
         {
-            get
-            {
-                return (Vector3D)this.GetValue(ModelUpDirectionProperty);
-            }
-
-            set
-            {
-                this.SetValue(ModelUpDirectionProperty, value);
-            }
-        }
+            set; get;
+        } = new Vector3D(0, 1, 0);
 
         /// <summary>
         /// Gets or sets the move sensitivity.
@@ -987,16 +494,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The move sensitivity. </value>
         public double MoveSensitivity
         {
-            get
-            {
-                return (double)this.GetValue(MoveSensitivityProperty);
-            }
-
-            set
-            {
-                this.SetValue(MoveSensitivityProperty, value);
-            }
-        }
+            set; get;
+        } = 1.0;
 
         /// <summary>
         /// Gets or sets the sensitivity for zoom by the page up and page down keys.
@@ -1007,16 +506,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </remarks>
         public double PageUpDownZoomSensitivity
         {
-            get
-            {
-                return (double)this.GetValue(PageUpDownZoomSensitivityProperty);
-            }
-
-            set
-            {
-                this.SetValue(PageUpDownZoomSensitivityProperty, value);
-            }
-        }
+            set; get;
+        } = 1.0;
 
         /// <summary>
         /// Gets or sets the pan cursor.
@@ -1024,16 +515,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The pan cursor. </value>
         public Cursor PanCursor
         {
-            get
-            {
-                return (Cursor)this.GetValue(PanCursorProperty);
-            }
-
-            set
-            {
-                this.SetValue(PanCursorProperty, value);
-            }
-        }
+            set; get;
+        } = Cursors.Hand;
 
         /// <summary>
         /// Gets or sets a value indicating whether to rotate around the mouse down point.
@@ -1041,16 +524,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> <c>true</c> if rotation around the mouse down point is enabled; otherwise, <c>false</c> . </value>
         public bool RotateAroundMouseDownPoint
         {
-            get
-            {
-                return (bool)this.GetValue(RotateAroundMouseDownPointProperty);
-            }
-
-            set
-            {
-                this.SetValue(RotateAroundMouseDownPointProperty, value);
-            }
-        }
+            set; get;
+        } = false;
 
         /// <summary>
         /// Gets or sets the rotate cursor.
@@ -1058,16 +533,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The rotate cursor. </value>
         public Cursor RotateCursor
         {
-            get
-            {
-                return (Cursor)this.GetValue(RotateCursorProperty);
-            }
-
-            set
-            {
-                this.SetValue(RotateCursorProperty, value);
-            }
-        }
+            set; get;
+        } = Cursors.SizeAll;
 
         /// <summary>
         /// Gets or sets the rotation sensitivity (degrees/pixel).
@@ -1075,32 +542,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The rotation sensitivity. </value>
         public double RotationSensitivity
         {
-            get
-            {
-                return (double)this.GetValue(RotationSensitivityProperty);
-            }
-
-            set
-            {
-                this.SetValue(RotationSensitivityProperty, value);
-            }
-        }
+            set; get;
+        } = 1.0;
 
         /// <summary>
         /// Gets or sets a value indicating whether to show a target adorner when manipulating the camera.
         /// </summary>
         public bool ShowCameraTarget
         {
-            get
-            {
-                return (bool)this.GetValue(ShowCameraTargetProperty);
-            }
-
-            set
-            {
-                this.SetValue(ShowCameraTargetProperty, value);
-            }
-        }
+            set; get;
+        } = true;
 
         /// <summary>
         /// Gets or sets the max duration of mouse drag to activate spin.
@@ -1110,16 +561,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </remarks>
         public int SpinReleaseTime
         {
-            get
-            {
-                return (int)this.GetValue(SpinReleaseTimeProperty);
-            }
-
-            set
-            {
-                this.SetValue(SpinReleaseTimeProperty, value);
-            }
-        }
+            set; get;
+        } = 200;
 
         /// <summary>
         /// Gets or sets the sensitivity for pan by the up and down keys.
@@ -1130,16 +573,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </remarks>
         public double UpDownPanSensitivity
         {
-            get
-            {
-                return (double)this.GetValue(UpDownPanSensitivityProperty);
-            }
-
-            set
-            {
-                this.SetValue(UpDownPanSensitivityProperty, value);
-            }
-        }
+            set; get;
+        } = 1.0;
 
         /// <summary>
         /// Gets or sets the sensitivity for rotation by the up and down keys.
@@ -1150,30 +585,24 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </remarks>
         public double UpDownRotationSensitivity
         {
-            get
-            {
-                return (double)this.GetValue(UpDownRotationSensitivityProperty);
-            }
+            set; get;
+        } = 1.0;
 
-            set
-            {
-                this.SetValue(UpDownRotationSensitivityProperty, value);
-            }
-        }
-
+        private Viewport3DX viewport;
         /// <summary>
         /// Gets or sets Viewport.
         /// </summary>
         public Viewport3DX Viewport
         {
-            get
-            {
-                return (Viewport3DX)this.GetValue(ViewportProperty);
-            }
-
             set
             {
-                this.SetValue(ViewportProperty, value);
+                viewport = value;
+                rotateHandler.Viewport = panHandler.Viewport = changeFieldOfViewHandler.Viewport 
+                    = zoomRectangleHandler.Viewport = zoomHandler.Viewport = changeLookAtHandler.Viewport = value;
+            }
+            get
+            {
+                return viewport;
             }
         }
 
@@ -1183,16 +612,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> <c>true</c> if zooming around the mouse down point is enabled; otherwise, <c>false</c> . </value>
         public bool ZoomAroundMouseDownPoint
         {
-            get
-            {
-                return (bool)this.GetValue(ZoomAroundMouseDownPointProperty);
-            }
-
-            set
-            {
-                this.SetValue(ZoomAroundMouseDownPointProperty, value);
-            }
-        }
+            set; get;
+        } = false;
 
         /// <summary>
         /// Gets or sets the zoom cursor.
@@ -1200,16 +621,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The zoom cursor. </value>
         public Cursor ZoomCursor
         {
-            get
-            {
-                return (Cursor)this.GetValue(ZoomCursorProperty);
-            }
-
-            set
-            {
-                this.SetValue(ZoomCursorProperty, value);
-            }
-        }
+            set; get;
+        } = Cursors.SizeNS;
 
         /// <summary>
         /// Gets or sets the zoom rectangle cursor.
@@ -1217,32 +630,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value> The zoom rectangle cursor. </value>
         public Cursor ZoomRectangleCursor
         {
-            get
-            {
-                return (Cursor)this.GetValue(ZoomRectangleCursorProperty);
-            }
-
-            set
-            {
-                this.SetValue(ZoomRectangleCursorProperty, value);
-            }
-        }
+            set; get;
+        } = Cursors.SizeNWSE;
 
         /// <summary>
         /// Gets or sets ZoomSensitivity.
         /// </summary>
         public double ZoomSensitivity
         {
-            get
-            {
-                return (double)this.GetValue(ZoomSensitivityProperty);
-            }
-
-            set
-            {
-                this.SetValue(ZoomSensitivityProperty, value);
-            }
-        }
+            set; get;
+        } = 1.0;
 
         /// <summary>
         /// Gets a value indicating whether IsOrthographicCamera.
@@ -1528,7 +925,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             this.PushCameraSetting();
-            this.Camera.LookAt(target, animationTime);
+            this.ActualCamera.LookAt(target, animationTime);
         }
 
         /// <summary>
@@ -1709,24 +1106,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.PushCameraSetting();
             this.ActualCamera.ZoomExtents(this.Viewport, animationTime);
-        }
-
-        /// <summary>
-        /// Raises the LookAtChanged event.
-        /// </summary>
-        protected internal virtual void OnLookAtChanged()
-        {
-            var args = new RoutedEventArgs(LookAtChangedEvent);
-            this.RaiseEvent(args);
-        }
-
-        /// <summary>
-        /// Raises the ZoomedByRectangle event.
-        /// </summary>
-        protected internal virtual void OnZoomedByRectangle()
-        {
-            var args = new RoutedEventArgs(ZoomedByRectangleEvent);
-            this.RaiseEvent(args);
         }
 
         /// <summary>

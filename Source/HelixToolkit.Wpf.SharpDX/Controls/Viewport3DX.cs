@@ -670,9 +670,40 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.cameraController = this.Template.FindName(PartCameraController, this) as CameraController;
                 if (this.cameraController != null)
                 {
+                    #region Assign Defaults
                     this.cameraController.Viewport = this;
-                    this.cameraController.LookAtChanged += (s, e) => this.OnCameraChanged();
-                    this.cameraController.ZoomedByRectangle += (s, e) => this.OnCameraChanged();
+                    this.cameraController.ActualCamera = this.Camera as ProjectionCamera;
+                    this.cameraController.DefaultCamera = this.DefaultCamera;
+                    this.cameraController.CameraMode = this.CameraMode;
+                    this.cameraController.CameraRotationMode = this.CameraRotationMode;
+                    this.cameraController.PageUpDownZoomSensitivity = this.PageUpDownZoomSensitivity;
+                    this.cameraController.PanCursor = this.PanCursor;
+                    this.cameraController.RotateAroundMouseDownPoint = this.RotateAroundMouseDownPoint;
+                    this.cameraController.RotateCursor = this.RotateCursor;
+                    this.cameraController.RotationSensitivity = this.RotationSensitivity;
+                    this.cameraController.ShowCameraTarget = this.ShowCameraTarget;
+                    this.cameraController.SpinReleaseTime = this.SpinReleaseTime;
+                    this.cameraController.UpDownPanSensitivity = this.UpDownPanSensitivity;
+                    this.cameraController.UpDownRotationSensitivity = this.UpDownRotationSensitivity;
+                    this.cameraController.ZoomAroundMouseDownPoint = this.ZoomAroundMouseDownPoint;
+                    this.cameraController.ZoomCursor = this.ZoomCursor;
+                    this.cameraController.ZoomRectangleCursor = this.ZoomRectangleCursor;
+                    this.cameraController.ZoomSensitivity = this.ZoomSensitivity;
+                    this.cameraController.ChangeFieldOfViewCursor = this.ChangeFieldOfViewCursor;
+                    this.cameraController.InertiaFactor = this.CameraInertiaFactor;
+                    this.cameraController.InfiniteSpin = this.InfiniteSpin;
+                    this.cameraController.IsChangeFieldOfViewEnabled = this.IsChangeFieldOfViewEnabled;
+                    this.cameraController.IsInertiaEnabled = this.IsInertiaEnabled;
+                    this.cameraController.IsMoveEnabled = this.IsMoveEnabled;
+                    this.cameraController.IsPanEnabled = this.IsPanEnabled;
+                    this.cameraController.IsRotationEnabled = this.IsRotationEnabled;
+                    this.cameraController.IsTouchZoomEnabled = this.IsTouchZoomEnabled;
+                    this.cameraController.LeftRightPanSensitivity = this.LeftRightPanSensitivity;
+                    this.cameraController.LeftRightRotationSensitivity = this.LeftRightRotationSensitivity;
+                    this.cameraController.MaximumFieldOfView = this.MaximumFieldOfView;
+                    this.cameraController.MinimumFieldOfView = this.MinimumFieldOfView;
+                    this.cameraController.ModelUpDirection = this.ModelUpDirection;
+                    #endregion
                 }
             }
 
@@ -726,8 +757,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 overlay2D.Children.Add(Content2D);
             }
-            // update the coordinateview camera
-            this.OnCameraChanged();
         }
 
         /// <summary>
@@ -921,16 +950,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Called when the camera is changed.
         /// </summary>
-        protected virtual void OnCameraChanged()
+        protected virtual void OnCameraChanged(Camera camera)
         {
-            var projectionCamera = this.Camera as ProjectionCamera;
-            if (projectionCamera == null)
-            {
-                return;
-            }
-            var lookdir = projectionCamera.LookDirection;
-            lookdir.Normalize();
-            this.InvalidateRender();
+            InvalidateRender();
         }
 
         /// <summary>
@@ -1197,13 +1219,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Handles changes in the camera properties.
         /// </summary>
-        private void CameraPropertyChanged()
+        private void CameraPropertyChanged(Camera camera)
         {
+            if (CameraController != null)
+            {
+                CameraController.ActualCamera = camera as ProjectionCamera;
+            }
             // Raise notification
             this.RaiseCameraChangedEvent();
 
             // Update the CoordinateView camera direction
-            this.OnCameraChanged();
+            this.OnCameraChanged(Camera);
         }
 
         /// <summary>

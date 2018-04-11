@@ -131,7 +131,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets the viewport.
         /// </summary>
         /// <value>The viewport.</value>
-        protected Viewport3DX Viewport { get; private set; }
+        public Viewport3DX Viewport { get; set; }
 
         /// <summary>
         /// Gets the zoom sensitivity.
