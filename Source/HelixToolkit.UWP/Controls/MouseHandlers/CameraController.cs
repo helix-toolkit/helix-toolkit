@@ -753,13 +753,20 @@ namespace HelixToolkit.UWP
                     case 2:
                         if (Viewport.IsTouchZoomEnabled)
                         {
-                            var zoomAroundPoint = this.zoomHandler.UnProject(
-                                e.Position, this.zoomHandler.Origin, this.CameraLookDirection);
-                            if (zoomAroundPoint != null)
+                            if(prevScale == 1)
                             {
-                                float s = e.Cumulative.Scale;
-                                this.zoomHandler.Zoom((prevScale - s), zoomAroundPoint.Value, true);
-                                prevScale = s;
+                                prevScale = e.Cumulative.Scale;
+                            }
+                            else
+                            {
+                                var zoomAroundPoint = this.zoomHandler.UnProject(
+                                    e.Position, this.zoomHandler.Origin, this.CameraLookDirection);
+                                if (zoomAroundPoint != null)
+                                {
+                                    float s = e.Cumulative.Scale;
+                                    this.zoomHandler.Zoom((prevScale - s), zoomAroundPoint.Value, true);
+                                    prevScale = s;
+                                }
                             }
                         }
                         e.Handled = true;
