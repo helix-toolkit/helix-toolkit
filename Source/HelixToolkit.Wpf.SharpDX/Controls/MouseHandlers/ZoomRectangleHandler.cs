@@ -26,11 +26,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoomRectangleHandler"/> class.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
+        /// <param name="controller">
+        /// The camera controller.
         /// </param>
-        public ZoomRectangleHandler(Viewport3DX viewport)
-            : base(viewport)
+        public ZoomRectangleHandler(CameraController controller)
+            : base(controller)
         {
         }
 

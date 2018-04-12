@@ -20,7 +20,7 @@ namespace FileLoadDemo
     {
         private const string OpenFileFilter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;";
 
-        public Element3DCollection ModelGeometry { get; private set; }
+        public ObservableElement3DCollection ModelGeometry { get; private set; }
 
         public Viewport3DX modelView
         {
@@ -61,7 +61,7 @@ namespace FileLoadDemo
         public MainViewModel()
         {
             this.OpenFileCommand = new DelegateCommand(this.OpenFile);
-            this.ModelGeometry = new Element3DCollection();
+            this.ModelGeometry = new ObservableElement3DCollection();
             EffectsManager = new DefaultEffectsManager();
             Camera = new OrthographicCamera() {
                 LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -10, -10),
@@ -112,7 +112,7 @@ namespace FileLoadDemo
         }
         public void AttachModelList(List<Object3D> objs)
         {
-            this.ModelGeometry = new Element3DCollection();
+            this.ModelGeometry = new ObservableElement3DCollection();
             foreach (var ob in objs)
             {
                 var s = new MeshGeometryModel3D

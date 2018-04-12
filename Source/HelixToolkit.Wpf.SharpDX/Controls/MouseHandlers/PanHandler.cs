@@ -28,11 +28,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Initializes a new instance of the <see cref="PanHandler"/> class.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
+        /// <param name="controller">
+        /// The camera controller.
         /// </param>
-        public PanHandler(Viewport3DX viewport)
-            : base(viewport)
+        public PanHandler(CameraController controller)
+            : base(controller)
         {
         }
 
@@ -65,7 +65,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void Pan(Vector3D delta)
         {
-            if (!this.Viewport.IsPanEnabled)
+            if (!this.Controller.IsPanEnabled)
             {
                 return;
             }
@@ -127,7 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         protected override bool CanExecute()
         {
-            return this.Viewport.IsPanEnabled && this.Viewport.CameraMode != CameraMode.FixedPosition;
+            return this.Controller.IsPanEnabled && this.Controller.CameraMode != CameraMode.FixedPosition;
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         protected override Cursor GetCursor()
         {
-            return this.Viewport.PanCursor;
+            return this.Controller.PanCursor;
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnInertiaStarting(double elapsedTime)
         {
             var speed = (this.LastPoint - this.MouseDownPoint) * (40.0 / elapsedTime);
-            this.Viewport.AddPanForce(speed.X, speed.Y);
+            this.Controller.AddPanForce(speed.X, speed.Y);
         }
     }
 }

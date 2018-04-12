@@ -24,13 +24,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Initializes a new instance of the <see cref="MouseGestureHandler"/> class.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
+        /// <param name="controller">
+        /// The camera controller.
         /// </param>
-        protected MouseGestureHandler(Viewport3DX viewport)
+        protected MouseGestureHandler(CameraController controller)
         {
-            this.Viewport = viewport;
-            //this.ManipulationWatch = new Stopwatch();
+            Controller = controller;
         }
 
         /// <summary>
@@ -62,7 +61,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return this.Viewport.Camera as ProjectionCamera;
+                return this.Controller.ActualCamera;
             }
         }
 
@@ -74,7 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return this.Viewport.CameraMode;
+                return this.Controller.CameraMode;
             }
         }
 
@@ -96,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return this.Viewport.ModelUpDirection;
+                return this.Controller.ModelUpDirection;
             }
         }
 
@@ -123,7 +122,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return this.Viewport.RotationSensitivity;
+                return this.Controller.RotationSensitivity;
             }
         }
 
@@ -131,7 +130,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets the viewport.
         /// </summary>
         /// <value>The viewport.</value>
-        protected Viewport3DX Viewport { get; private set; }
+        public Viewport3DX Viewport
+        {
+            get { return Controller.Viewport; }
+        }
+
+        public CameraController Controller { get; private set; }
 
         /// <summary>
         /// Gets the zoom sensitivity.
@@ -141,7 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return this.Viewport.ZoomSensitivity;
+                return this.Controller.ZoomSensitivity;
             }
         }
 
@@ -159,7 +163,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public virtual void Completed(Point e)
         {
             var elapsed = (double)(Stopwatch.GetTimestamp() - startTick) / Stopwatch.Frequency * 1000; //this.ManipulationWatch.ElapsedMilliseconds;
-            if (elapsed > 0 && elapsed < this.Viewport.SpinReleaseTime)
+            if (elapsed > 0 && elapsed < this.Controller.SpinReleaseTime)
             {
                 this.OnInertiaStarting(elapsed);
             }

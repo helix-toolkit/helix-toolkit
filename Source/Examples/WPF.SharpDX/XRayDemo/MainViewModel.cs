@@ -108,7 +108,7 @@ namespace XRayDemo
             // ----------------------------------------------
             // floor model3d
             var b2 = new MeshBuilder(true, true, true);
-            b2.AddBox(new Vector3(0.0f, 0, 0.0f), 150, 0.1, 150, BoxFaces.All);
+            b2.AddBox(new Vector3(0.0f, 0, 0.0f), 150, 1, 150, BoxFaces.All);
             b2.AddBox(new Vector3(0, 25, 70), 150, 50, 20);
             b2.AddBox(new Vector3(0, 25, -70), 150, 50, 20);
             this.Floor = b2.ToMeshGeometry3D();
