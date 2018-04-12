@@ -46,7 +46,7 @@ namespace HelixToolkit.UWP
         /// <param name="changeFieldOfView">
         /// if set to <c>true</c> [change field of view].
         /// </param>
-        public ZoomHandler(Viewport3DX viewport, bool changeFieldOfView = false)
+        public ZoomHandler(CameraController viewport, bool changeFieldOfView = false)
             : base(viewport)
         {
             this.changeFieldOfView = changeFieldOfView;
@@ -80,10 +80,10 @@ namespace HelixToolkit.UWP
         public override void Started(Point e)
         {
             base.Started(e);
-            this.zoomPoint = new Point(this.Viewport.ActualWidth / 2, this.Viewport.ActualHeight / 2);
+            this.zoomPoint = new Point(this.CameraController.Viewport.ActualWidth / 2, this.CameraController.Viewport.ActualHeight / 2);
             this.zoomPoint3D = this.Camera.Target;
 
-            if (this.Viewport.ZoomAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
+            if (this.CameraController.ZoomAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
             {
                 this.zoomPoint = this.MouseDownPoint;
                 this.zoomPoint3D = this.MouseDownNearestPoint3D.Value;
@@ -117,7 +117,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void Zoom(double delta, Point3D zoomAround, bool isTouch = false)
         {
-            if (!this.Viewport.IsZoomEnabled)
+            if (!this.CameraController.IsZoomEnabled)
             {
                 return;
             }
@@ -136,7 +136,7 @@ namespace HelixToolkit.UWP
 
                 if (this.CameraMode == CameraMode.FixedPosition || this.changeFieldOfView)
                 {
-                    this.Viewport.ZoomByChangingFieldOfView(delta);
+                    this.CameraController.Viewport.ZoomByChangingFieldOfView(delta);
                 }
                 else
                 {
@@ -229,10 +229,10 @@ namespace HelixToolkit.UWP
         {
             if (this.changeFieldOfView)
             {
-                return this.Viewport.IsChangeFieldOfViewEnabled && this.Camera is PerspectiveCamera;
+                return this.CameraController.IsChangeFieldOfViewEnabled && this.Camera is PerspectiveCamera;
             }
 
-            return this.Viewport.IsZoomEnabled;
+            return this.CameraController.IsZoomEnabled;
         }
 
         /// <summary>
@@ -243,7 +243,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected override CoreCursorType GetCursor()
         {
-            return this.Viewport.ZoomCursor;
+            return this.CameraController.ZoomCursor;
         }
 
         /// <summary>
@@ -279,12 +279,12 @@ namespace HelixToolkit.UWP
             var newDistance = (newPosition - zoomAround).Length();
             var oldDistance = (this.Camera.Position - zoomAround).Length();
 
-            if (newDistance > this.Viewport.ZoomDistanceLimitFar && (oldDistance < this.Viewport.ZoomDistanceLimitFar || newDistance > oldDistance))
+            if (newDistance > this.CameraController.ZoomDistanceLimitFar && (oldDistance < this.CameraController.ZoomDistanceLimitFar || newDistance > oldDistance))
             {
                 return;
             }
 
-            if (newDistance < this.Viewport.ZoomDistanceLimitNear && (oldDistance > this.Viewport.ZoomDistanceLimitNear || newDistance < oldDistance))
+            if (newDistance < this.CameraController.ZoomDistanceLimitNear && (oldDistance > this.CameraController.ZoomDistanceLimitNear || newDistance < oldDistance))
             {
                 return;
             }

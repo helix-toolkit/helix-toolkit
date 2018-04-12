@@ -121,7 +121,8 @@ namespace HelixToolkit.UWP
         private bool IsAttached = false;
         private ViewBoxModel3D viewCube;
         private CoordinateSystemModel3D coordinateSystem;
-        private CameraController cameraController;
+        private readonly CameraController cameraController;
+        internal CameraController CameraController { get { return cameraController; } }
         private ContentPresenter hostPresenter;
         private ItemsControl itemsContainer;
         /// <summary>
@@ -130,8 +131,6 @@ namespace HelixToolkit.UWP
         private HitTestResult currentHit;
 
         private bool enableMouseButtonHitTest = true;
-
-        private bool IsLoaded = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Viewport3DX"/> class.
@@ -143,6 +142,7 @@ namespace HelixToolkit.UWP
             this.Loaded += Viewport3DXLoaded;
             this.Unloaded += Viewport3DX_Unloaded;
             cameraController = new CameraController(this);
+            InitCameraController();
             Camera = new PerspectiveCamera() { Position = new Vector3(0, 0, -10), LookDirection = new Vector3(0, 0, 10), UpDirection = new Vector3(0, 1, 0) };
             InputController = new InputController();
             RegisterPropertyChangedCallback(VisibilityProperty, (s, e) => 
@@ -152,6 +152,43 @@ namespace HelixToolkit.UWP
                     renderHostInternal.IsRendering = (Visibility)s.GetValue(e) == Visibility.Visible;
                 }
             });            
+        }
+
+        private void InitCameraController()
+        {
+            #region Assign Defaults
+            this.cameraController.CameraMode = this.CameraMode;
+            this.cameraController.CameraRotationMode = this.CameraRotationMode;
+            this.cameraController.PageUpDownZoomSensitivity = this.PageUpDownZoomSensitivity;
+            this.cameraController.PanCursor = this.PanCursor;
+            this.cameraController.RotateAroundMouseDownPoint = this.RotateAroundMouseDownPoint;
+            this.cameraController.RotateCursor = this.RotateCursor;
+            this.cameraController.RotationSensitivity = this.RotationSensitivity;
+            this.cameraController.SpinReleaseTime = this.SpinReleaseTime;
+            this.cameraController.UpDownPanSensitivity = this.UpDownPanSensitivity;
+            this.cameraController.UpDownRotationSensitivity = this.UpDownRotationSensitivity;
+            this.cameraController.ZoomAroundMouseDownPoint = this.ZoomAroundMouseDownPoint;
+            this.cameraController.ZoomCursor = this.ZoomCursor;
+            this.cameraController.ZoomRectangleCursor = this.ZoomRectangleCursor;
+            this.cameraController.ZoomSensitivity = this.ZoomSensitivity;
+            this.cameraController.InertiaFactor = this.CameraInertiaFactor;
+            this.cameraController.InfiniteSpin = this.InfiniteSpin;
+            this.cameraController.IsChangeFieldOfViewEnabled = this.IsChangeFieldOfViewEnabled;
+            this.cameraController.IsInertiaEnabled = this.IsInertiaEnabled;
+            this.cameraController.IsMoveEnabled = this.IsMoveEnabled;
+            this.cameraController.IsPanEnabled = this.IsPanEnabled;
+            this.cameraController.IsRotationEnabled = this.IsRotationEnabled;
+            this.cameraController.EnableTouchRotate = this.IsTouchRotateEnabled;
+            this.cameraController.EnablePinchZoom = this.IsPinchZoomEnabled;
+            this.cameraController.EnableThreeFingerPan = this.IsThreeFingerPanningEnabled;
+            this.cameraController.LeftRightPanSensitivity = this.LeftRightPanSensitivity;
+            this.cameraController.LeftRightRotationSensitivity = this.LeftRightRotationSensitivity;
+            this.cameraController.MaximumFieldOfView = this.MaximumFieldOfView;
+            this.cameraController.MinimumFieldOfView = this.MinimumFieldOfView;
+            this.cameraController.ModelUpDirection = this.ModelUpDirection;
+            this.cameraController.ZoomDistanceLimitFar = this.ZoomDistanceLimitFar;
+            this.cameraController.ZoomDistanceLimitNear = this.ZoomDistanceLimitNear;
+            #endregion
         }
 
         private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -285,12 +322,11 @@ namespace HelixToolkit.UWP
 
         private void Viewport3DXLoaded(object sender, RoutedEventArgs e)
         {
-            IsLoaded = true;
         }
 
         private void Viewport3DX_Unloaded(object sender, RoutedEventArgs e)
         {
-            IsLoaded = false;
+
         }
         /// <summary>
         /// Attaches the elements to the specified host.
@@ -342,14 +378,14 @@ namespace HelixToolkit.UWP
             if (!ViewBoxHitTest(p))
             {
                 MouseDownHitTest(p, e);
-                cameraController.OnMouseDown(e);
+                CameraController.OnMouseDown(e);
             }
             base.OnPointerPressed(e);
         }
 
         protected override void OnPointerReleased(PointerRoutedEventArgs e)
         {
-            cameraController.OnMouseUp(e);
+            CameraController.OnMouseUp(e);
             MouseUpHitTest(e.GetCurrentPoint(this).Position, e);
             base.OnPointerReleased(e);
         }
@@ -363,7 +399,7 @@ namespace HelixToolkit.UWP
         protected override void OnKeyDown(KeyRoutedEventArgs e)
         {
             base.OnKeyDown(e);
-            cameraController.InputController.OnKeyPressed(e);
+            CameraController.InputController.OnKeyPressed(e);
         }
 
         /// <summary>
@@ -373,14 +409,14 @@ namespace HelixToolkit.UWP
         protected override void OnManipulationStarted(ManipulationStartedRoutedEventArgs e)
         {
             if(e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
-                cameraController.OnManipulationStarted(e);
+                CameraController.OnManipulationStarted(e);
             base.OnManipulationStarted(e);
         }
 
         protected override void OnManipulationCompleted(ManipulationCompletedRoutedEventArgs e)
         {
             if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
-                cameraController.OnManipulationCompleted(e);
+                CameraController.OnManipulationCompleted(e);
             base.OnManipulationCompleted(e);
         }
 
@@ -388,13 +424,13 @@ namespace HelixToolkit.UWP
         protected override void OnManipulationDelta(ManipulationDeltaRoutedEventArgs e)
         {
             if (e.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Touch)
-                cameraController.OnManipulationDelta(e);
+                CameraController.OnManipulationDelta(e);
             base.OnManipulationDelta(e);
         }
 
         protected override void OnPointerWheelChanged(PointerRoutedEventArgs e)
         {
-            cameraController.OnMouseWheel(e);
+            CameraController.OnMouseWheel(e);
             base.OnPointerWheelChanged(e);
         }
 
@@ -510,7 +546,7 @@ namespace HelixToolkit.UWP
 
         public void Update(TimeSpan timeStamp)
         {
-            cameraController.OnTimeStep(timeStamp.Ticks);   
+            CameraController.OnTimeStep(timeStamp.Ticks);   
         }
 
         /// <summary>
@@ -527,7 +563,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddMoveForce(double dx, double dy, double dz)
         {
-            cameraController.AddMoveForce(new Vector3((float)dx, (float)dy, (float)dz));
+            CameraController.AddMoveForce(new Vector3((float)dx, (float)dy, (float)dz));
         }
 
         /// <summary>
@@ -538,7 +574,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddMoveForce(Vector3 delta)
         {
-            cameraController.AddMoveForce(delta);
+            CameraController.AddMoveForce(delta);
         }
 
         /// <summary>
@@ -552,7 +588,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddPanForce(double dx, double dy)
         {
-            cameraController.AddPanForce(dx, dy);
+            CameraController.AddPanForce(dx, dy);
         }
 
         /// <summary>
@@ -563,7 +599,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddPanForce(Vector3 pan)
         {
-            cameraController.AddPanForce(pan);
+            CameraController.AddPanForce(pan);
         }
 
         /// <summary>
@@ -577,7 +613,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddRotateForce(double dx, double dy)
         {
-            cameraController.AddRotateForce(dx, dy);
+            CameraController.AddRotateForce(dx, dy);
         }
 
         /// <summary>
@@ -588,7 +624,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddZoomForce(double dx)
         {
-            cameraController.AddZoomForce(dx);
+            CameraController.AddZoomForce(dx);
         }
 
         /// <summary>
@@ -602,7 +638,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void AddZoomForce(double dx, Vector3 zoomOrigin)
         {
-            cameraController.AddZoomForce(dx, zoomOrigin);
+            CameraController.AddZoomForce(dx, zoomOrigin);
         }
 
         /// <summary>
@@ -610,7 +646,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         public void StopSpin()
         {
-            cameraController.StopSpin();
+            CameraController.StopSpin();
         }
 
         /// <summary>
@@ -621,7 +657,7 @@ namespace HelixToolkit.UWP
         /// <param name="aroundPoint">The point to spin around.</param>
         public void StartSpin(Vector2 speed, Point position, Vector3 aroundPoint)
         {
-            cameraController.StartSpin(speed, position, aroundPoint);
+            CameraController.StartSpin(speed, position, aroundPoint);
         }
 
         private void CameraInternal_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -637,7 +673,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void LookAt(Vector3 p)
         {
-            this.cameraController?.ActualCamera?.LookAt(p, 0);
+            this.CameraController?.ActualCamera?.LookAt(p, 0);
         }
 
         /// <summary>
@@ -651,7 +687,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void LookAt(Vector3 p, double animationTime)
         {
-            this.cameraController?.ActualCamera?.LookAt(p, animationTime);
+            this.CameraController?.ActualCamera?.LookAt(p, animationTime);
         }
     }
 }

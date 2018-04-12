@@ -113,7 +113,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="zoomAround">
         /// The zoom around.
         /// </param>
-        public void Zoom(double delta, Point3D zoomAround)
+        public void Zoom(double delta, Point3D zoomAround, bool isTouch = false)
         {
             if (!this.Controller.IsZoomEnabled)
             {
@@ -121,12 +121,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (this.Camera is PerspectiveCamera)
             {
-                if (delta < -0.5)
+                if (!isTouch)
                 {
-                    delta = -0.5;
+                    if (delta < -0.5)
+                    {
+                        delta = -0.5;
+                    }
+                    delta *= this.ZoomSensitivity;
                 }
-
-                delta *= this.ZoomSensitivity;
 
                 if (this.CameraMode == CameraMode.FixedPosition || this.changeFieldOfView)
                 {

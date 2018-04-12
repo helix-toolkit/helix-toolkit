@@ -31,7 +31,7 @@ namespace HelixToolkit.UWP
         /// <param name="viewport">
         /// The viewport.
         /// </param>
-        public PanHandler(Viewport3DX viewport)
+        public PanHandler(CameraController viewport)
             : base(viewport)
         {
         }
@@ -65,7 +65,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void Pan(Vector3D delta)
         {
-            if (!this.Viewport.IsPanEnabled)
+            if (!this.CameraController.IsPanEnabled)
             {
                 return;
             }
@@ -127,7 +127,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected override bool CanExecute()
         {
-            return this.Viewport.IsPanEnabled && this.Viewport.CameraMode != CameraMode.FixedPosition;
+            return this.CameraController.IsPanEnabled && this.CameraController.CameraMode != CameraMode.FixedPosition;
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected override CoreCursorType GetCursor()
         {
-            return this.Viewport.PanCursor;
+            return this.CameraController.PanCursor;
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace HelixToolkit.UWP
         protected override void OnInertiaStarting(double elapsedTime)
         {
             var speed = (this.LastPoint.ToVector2() - this.MouseDownPoint.ToVector2()) * (40.0f / (float)elapsedTime);
-            this.Viewport.AddPanForce(speed.X, speed.Y);
+            this.CameraController.AddPanForce(speed.X, speed.Y);
         }
     }
 }

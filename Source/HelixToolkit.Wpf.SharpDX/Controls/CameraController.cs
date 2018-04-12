@@ -125,6 +125,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private Point3D zoomPoint3D;
 
+        private double prevScale = 1;
         /// <summary>
         /// The zoom rectangle event handler.
         /// </summary>
@@ -317,15 +318,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets a value indicating whether IsRotationEnabled.
         /// </summary>
         public bool IsRotationEnabled
-        {
-            set; get;
-        } = true;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
-        /// </summary>
-        /// <value> <c>true</c> if touch zoom is enabled; otherwise, <c>false</c> . </value>
-        public bool IsTouchZoomEnabled
         {
             set; get;
         } = true;
@@ -588,6 +580,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return this.ActualCamera as PerspectiveCamera;
             }
         }
+
+        #region TouchGesture
+        public bool EnableTouchRotate { set; get; } = true;
+        public bool EnablePinchZoom { set; get; } = true;
+        public bool EnableThreeFingerPan { set; get; } = true;
+        #endregion
 
         /// <summary>
         /// Adds the specified move force.
@@ -944,8 +942,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void OnManipulationDelta(ManipulationDeltaEventArgs e)
         {
+            if(!EnablePinchZoom && !EnableThreeFingerPan && !EnableTouchRotate)
+            {
+                return;
+            }
             // number of manipulators (fingers)
             int n = e.Manipulators.Count();
+            var p = e.ManipulationOrigin;
             var position = this.touchPreviousPoint + e.DeltaManipulation.Translation;
             this.touchPreviousPoint = position;
 
@@ -957,56 +960,80 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.manipulatorCount != n)
             {
                 // the number of manipulators has changed
-                if (this.manipulatorCount == 1)
+                switch (this.manipulatorCount)
                 {
-                    this.rotateHandler.Completed(position);
+                    case 1:
+                        this.rotateHandler.Completed(position);
+                        break;
+                    case 2:
+                        this.zoomHandler.Completed(p);
+                        break;
+                    case 3:
+                        this.panHandler.Completed(position);
+                        break;
                 }
 
-                if (this.manipulatorCount == 2)
+                switch (n)
                 {
-                    this.panHandler.Completed(position);
-                    this.zoomHandler.Completed(position);
+                    case 1:
+                        this.rotateHandler.Started(position);
+                        e.Handled = true;
+                        break;
+                    case 2:
+                        this.zoomHandler.Started(p);
+                        e.Handled = true;
+                        break;
+                    case 3:
+                        this.panHandler.Started(position);
+                        e.Handled = true;
+                        break;
                 }
-
-                if (n == 2)
-                {
-                    this.panHandler.Started(position);
-                    this.zoomHandler.Started(e.ManipulationOrigin);
-                }
-                else
-                {
-                    this.rotateHandler.Started(position);
-                }
-
-                // skip this event, the origin may have changed
                 this.manipulatorCount = n;
-                e.Handled = true;
+                // skip this event, the origin may have changed
                 return;
             }
-
-            if (n == 1)
+            else
             {
-                // one finger rotates
-                this.rotateHandler.Delta(position);
-            }
-
-            if (n == 2)
-            {
-                // two fingers pans
-                this.panHandler.Delta(position);
-            }
-
-            if (this.IsTouchZoomEnabled && n == 2)
-            {
-                var zoomAroundPoint = this.zoomHandler.UnProject(
-                    e.ManipulationOrigin, this.zoomHandler.Origin, this.CameraLookDirection);
-                if (zoomAroundPoint != null)
+                switch (n)
                 {
-                    this.zoomHandler.Zoom(1 - (e.DeltaManipulation.Scale.Length / Math.Sqrt(2)), zoomAroundPoint.Value);
+                    case 1:
+                        if (EnableTouchRotate)
+                        {
+                            this.rotateHandler.Delta(position);
+                            e.Handled = true;
+                        }
+                        break;
+                    case 2:
+                        if (EnablePinchZoom)
+                        {
+                            if(prevScale == 1)
+                            {
+                                prevScale = e.CumulativeManipulation.Scale.Length;
+                            }
+                            else
+                            {
+                                var zoomAroundPoint = this.zoomHandler.UnProject(
+                                    p, this.zoomHandler.Origin, this.CameraLookDirection);
+                                if (zoomAroundPoint != null)
+                                {
+                                    var s = e.CumulativeManipulation.Scale.Length;
+                                    Debug.WriteLine(s);
+                                    this.zoomHandler.Zoom((prevScale - s), zoomAroundPoint.Value, true);
+                                    prevScale = s;
+                                }
+                            }
+                            e.Handled = true;
+                        }                        
+                        break;
+                    case 3:
+                        if (EnableThreeFingerPan)
+                        {
+                            this.panHandler.Delta(position);
+                            e.Handled = true;                            
+                        }
+                        break;
                 }
             }
-
-            e.Handled = true;
         }
 
         /// <summary>
@@ -1019,8 +1046,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.touchPreviousPoint = e.ManipulationOrigin;
             this.manipulatorCount = 0;
-
-            e.Handled = true;
+            this.prevScale = 1;
         }
 
         /// <summary>
