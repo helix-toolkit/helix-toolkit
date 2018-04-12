@@ -27,7 +27,7 @@ namespace SimpleDemoW10
         public BillboardText3D AxisLabelGeometry { private set; get; }
 
         public PhongMaterial Material { private set; get; }
-
+        public PhongMaterial Material1 { private set; get; }
         public PhongMaterial FloorMaterial { private set; get; }
 
         public IEffectsManager EffectsManager { private set; get; }
@@ -83,6 +83,8 @@ namespace SimpleDemoW10
             get { return transform4; }
         }
 
+        public Stream EnvironmentMap { private set; get; }
+
         public Vector3 DirectionalLightDirection { get; } = new Vector3(-0.5f, -1, 0);
         private DispatcherTimer timer;
 
@@ -104,10 +106,14 @@ namespace SimpleDemoW10
                 AmbientColor = Color.Gray,
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
                 SpecularColor = Color.White,
-                SpecularShininess = 100f,
+                SpecularShininess = 10f,
+                ReflectiveColor = new Color4(0.2f, 0.2f, 0.2f, 0.5f)
             };
             Material.DiffuseMap = LoadTexture("TextureCheckerboard2.jpg");
             Material.NormalMap = LoadTexture("TextureCheckerboard2_dot3.jpg");
+            Material1 = Material.Clone();
+            Material1.ReflectiveColor = Color.Silver;
+
             var lineBuilder = new LineBuilder();
             lineBuilder.AddLine(Vector3.Zero, new Vector3(5, 0, 0));
             lineBuilder.AddLine(Vector3.Zero, new Vector3(0, 5, 0));
@@ -129,7 +135,9 @@ namespace SimpleDemoW10
             builder.AddBox(new Vector3(0, -6, 0), 30, 0.5, 30);
             FloorModel = builder.ToMesh();
 
-            FloorMaterial = PhongMaterials.LightGray;
+            FloorMaterial = PhongMaterials.Obsidian;
+
+            EnvironmentMap = LoadTexture("Cubemap_Grandcanyon.dds");
 
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
