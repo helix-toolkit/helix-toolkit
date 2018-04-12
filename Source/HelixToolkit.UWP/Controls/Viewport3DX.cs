@@ -142,6 +142,7 @@ namespace HelixToolkit.UWP
             this.Loaded += Viewport3DXLoaded;
             this.Unloaded += Viewport3DX_Unloaded;
             cameraController = new CameraController(this);
+            InitCameraController();
             Camera = new PerspectiveCamera() { Position = new Vector3(0, 0, -10), LookDirection = new Vector3(0, 0, 10), UpDirection = new Vector3(0, 1, 0) };
             InputController = new InputController();
             RegisterPropertyChangedCallback(VisibilityProperty, (s, e) => 
