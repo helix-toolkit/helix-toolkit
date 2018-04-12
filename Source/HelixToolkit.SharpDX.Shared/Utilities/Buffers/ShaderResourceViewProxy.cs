@@ -94,12 +94,13 @@ namespace HelixToolkit.UWP.Utilities
         /// Creates the view.
         /// </summary>
         /// <param name="stream">The stream.</param>
-        public void CreateView(System.IO.Stream stream)
+        /// <param name="disableAutoGenMipMap">Disable auto mipmaps generation</param>
+        public void CreateView(System.IO.Stream stream, bool disableAutoGenMipMap = false)
         {
             this.DisposeAndClear();
             if (stream != null && device != null)
             {
-                textureView = Collect(TextureLoader.FromMemoryAsShaderResourceView(device, stream));
+                textureView = Collect(TextureLoader.FromMemoryAsShaderResourceView(device, stream, disableAutoGenMipMap));
             }
         }
         /// <summary>

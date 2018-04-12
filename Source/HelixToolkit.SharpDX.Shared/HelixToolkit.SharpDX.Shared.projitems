@@ -62,6 +62,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\ScreenSpacedMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ShadowMapCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\SkyBoxRenderCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\SkyDomeRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultBuffers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultComputeShaders.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\DefaultDomainShaders.cs" />

@@ -19,53 +19,17 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public class SkyBoxRenderCore : GeometryRenderCore<int>, ISkyboxRenderParams
+    public class SkyDomeRenderCore : GeometryRenderCore<int>, ISkyboxRenderParams
     {
         #region Default Mesh
-        private static readonly Vector3Collection BoxPositions = new Vector3Collection()
+        private static readonly MeshGeometry3D SphereMesh;
+
+        static SkyDomeRenderCore()
         {
-            new Vector3(-10.0f,  10.0f, -10.0f),
-            new Vector3( -10.0f, -10.0f, -10.0f),
-            new Vector3( 10.0f, -10.0f, -10.0f),
-            new Vector3(  10.0f, -10.0f, -10.0f),
-            new Vector3(  10.0f,  10.0f, -10.0f),
-            new Vector3( -10.0f,  10.0f, -10.0f),
-
-            new Vector3( -10.0f, -10.0f,  10.0f),
-            new Vector3(-10.0f, -10.0f, -10.0f),
-            new Vector3(  -10.0f,  10.0f, -10.0f),
-            new Vector3(  -10.0f,  10.0f, -10.0f),
-            new Vector3(  -10.0f,  10.0f,  10.0f),
-            new Vector3(  -10.0f, -10.0f,  10.0f),
-
-            new Vector3(   10.0f, -10.0f, -10.0f),
-            new Vector3(   10.0f, -10.0f,  10.0f),
-            new Vector3(   10.0f,  10.0f,  10.0f),
-            new Vector3(   10.0f,  10.0f,  10.0f),
-            new Vector3(   10.0f,  10.0f, -10.0f),
-            new Vector3(   10.0f, -10.0f, -10.0f),
-
-            new Vector3(  -10.0f, -10.0f,  10.0f),
-            new Vector3(  -10.0f,  10.0f,  10.0f),
-            new Vector3(   10.0f,  10.0f,  10.0f),
-            new Vector3(   10.0f,  10.0f,  10.0f),
-            new Vector3(   10.0f, -10.0f,  10.0f),
-            new Vector3(  -10.0f, -10.0f,  10.0f),
-
-            new Vector3(  -10.0f,  10.0f, -10.0f),
-            new Vector3(   10.0f,  10.0f, -10.0f),
-            new Vector3(   10.0f,  10.0f,  10.0f),
-            new Vector3(   10.0f,  10.0f,  10.0f),
-            new Vector3(  -10.0f,  10.0f,  10.0f),
-            new Vector3(  -10.0f,  10.0f, -10.0f),
-
-            new Vector3(  -10.0f, -10.0f, -10.0f),
-            new Vector3(  -10.0f, -10.0f,  10.0f),
-            new Vector3(   10.0f, -10.0f, -10.0f),
-            new Vector3(   10.0f, -10.0f, -10.0f),
-            new Vector3( -10.0f, -10.0f,  10.0f),
-            new Vector3(   10.0f, -10.0f,  10.0f)
-        };
+            var builder = new MeshBuilder(false, false);
+            builder.AddSphere(Vector3.Zero, 1);
+            SphereMesh = builder.ToMesh();
+        }
         #endregion
 
         private Stream cubeTexture = null;
@@ -79,7 +43,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(SetAffectsRender(ref cubeTexture, value) && IsAttached)
+                if (SetAffectsRender(ref cubeTexture, value) && IsAttached)
                 {
                     cubeTextureRes.CreateView(value, true);
                 }
@@ -101,7 +65,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(SetAffectsRender(ref samplerDescription, value) && IsAttached)
+                if (SetAffectsRender(ref samplerDescription, value) && IsAttached)
                 {
                     RemoveAndDispose(ref textureSampler);
                     textureSampler = Collect(EffectTechnique.EffectsManager.StateManager.Register(value));
@@ -134,9 +98,9 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="SkyBoxRenderCore"/> class.
         /// </summary>
-        public SkyBoxRenderCore()
+        public SkyDomeRenderCore()
         {
-            RasterDescription = DefaultRasterDescriptions.RSSkybox;
+            RasterDescription = DefaultRasterDescriptions.RSSkyDome;
         }
         /// <summary>
         /// Called when [attach].
@@ -147,9 +111,8 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(technique))
             {
-                var buffer = Collect(new SkyBoxBufferModel());
-                buffer.Geometry = new PointGeometry3D() { Positions = BoxPositions };
-                buffer.Topology = PrimitiveTopology.TriangleList;
+                var buffer = Collect(new SkyDomeBufferModel());
+                buffer.Geometry = SphereMesh;
                 GeometryBuffer = buffer;
                 cubeTextureRes = Collect(new ShaderResourceViewProxy(Device));
                 if (cubeTexture != null)
@@ -181,10 +144,6 @@ namespace HelixToolkit.UWP.Core
 
         }
 
-        protected override void OnBindRasterState(DeviceContextProxy context)
-        {
-            
-        }
         /// <summary>
         /// Called when [default pass changed].
         /// </summary>
@@ -207,10 +166,10 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             DefaultShaderPass.BindShader(deviceContext);
-            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
+            DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
             DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);
             DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, textureSamplerSlot, textureSampler);
-            deviceContext.DeviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
+            deviceContext.DeviceContext.DrawIndexed(GeometryBuffer.IndexBuffer.ElementCount, 0, 0);
         }
 
         /// <summary>
@@ -220,7 +179,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            
+
         }
         /// <summary>
         /// Called when [update per model structure].
@@ -235,14 +194,14 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        private sealed class SkyBoxBufferModel : PointGeometryBufferModel<Vector3>
+        private sealed class SkyDomeBufferModel : MeshGeometryBufferModel<Vector3>
         {
-            public SkyBoxBufferModel() : base(Vector3.SizeInBytes)
+            public SkyDomeBufferModel() : base(Vector3.SizeInBytes)
             {
                 Topology = PrimitiveTopology.TriangleList;
             }
 
-            protected override Vector3[] OnBuildVertexArray(PointGeometry3D geometry)
+            protected override Vector3[] BuildVertexArray(MeshGeometry3D geometry)
             {
                 return geometry.Positions.ToArray();
             }
