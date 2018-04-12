@@ -172,7 +172,6 @@
     <Compile Include="Controls\MouseHandlers\MouseGestureHandler.cs" />
     <Compile Include="Controls\MouseHandlers\PanHandler.cs" />
     <Compile Include="Controls\MouseHandlers\RotateHandler.cs" />
-    <Compile Include="Controls\MouseHandlers\TouchMode.cs" />
     <Compile Include="Controls\MouseHandlers\ZoomHandler.cs" />
     <Compile Include="Controls\MouseHandlers\ZoomRectangleHandler.cs" />
     <Compile Include="Controls\RenderUtil.cs" />

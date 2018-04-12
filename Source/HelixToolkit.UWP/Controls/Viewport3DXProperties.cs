@@ -953,28 +953,79 @@ namespace HelixToolkit.UWP
             }
         }
         /// <summary>
-        /// The IsTouchZoomEnabled property.
+        /// The enable touch rotate property
         /// </summary>
-        public static readonly DependencyProperty IsTouchZoomEnabledProperty = DependencyProperty.Register(
-            "IsTouchZoomEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsTouchRotateEnabledProperty =
+            DependencyProperty.Register("IsTouchRotateEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                viewport.CameraController.EnableTouchRotate = (bool)e.NewValue;
+            }));
+
+
         /// <summary>
-        /// Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
+        /// Gets or sets a value indicating whether [enable one finger touch rotate].
         /// </summary>
         /// <value>
-        /// <c>true</c> if touch zoom is enabled; otherwise, <c>false</c> .
+        ///   <c>true</c> if [enable touch rotate]; otherwise, <c>false</c>.
         /// </value>
-        public bool IsTouchZoomEnabled
+        public bool IsTouchRotateEnabled
+        {
+            get { return (bool)GetValue(IsTouchRotateEnabledProperty); }
+            set { SetValue(IsTouchRotateEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// The IsTouchZoomEnabled property.
+        /// </summary>
+        public static readonly DependencyProperty IsPinchZoomEnabledProperty = DependencyProperty.Register(
+            "IsPinchZoomEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                viewport.CameraController.EnablePinchZoom = (bool)e.NewValue;
+            }));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether two finger pinch zoom is enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if pinch zoom is enabled; otherwise, <c>false</c> .
+        /// </value>
+        public bool IsPinchZoomEnabled
         {
             get
             {
-                return (bool)this.GetValue(IsTouchZoomEnabledProperty);
+                return (bool)this.GetValue(IsPinchZoomEnabledProperty);
             }
 
             set
             {
-                this.SetValue(IsTouchZoomEnabledProperty, value);
+                this.SetValue(IsPinchZoomEnabledProperty, value);
             }
         }
+
+        /// <summary>
+        /// The enable touch rotate property
+        /// </summary>
+        public static readonly DependencyProperty IsThreeFingerPanningEnabledProperty =
+            DependencyProperty.Register("IsThreeFingerPanningEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                viewport.CameraController.EnableThreeFingerPan = (bool)e.NewValue;
+            }));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable three finger panning].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable three finger panning]; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsThreeFingerPanningEnabled
+        {
+            get { return (bool)GetValue(IsThreeFingerPanningEnabledProperty); }
+            set { SetValue(IsThreeFingerPanningEnabledProperty, value); }
+        }
+
         /// <summary>
         /// The is zoom enabled property
         /// </summary>
@@ -1342,7 +1393,7 @@ namespace HelixToolkit.UWP
         public static readonly DependencyProperty InputControllerProperty = DependencyProperty.Register(
             "InputController", typeof(InputController), typeof(Viewport3DX), new PropertyMetadata(null, (d,e)=> 
             {
-                (d as Viewport3DX).cameraController.InputController = e.NewValue == null ? new InputController() : e.NewValue as InputController;
+                (d as Viewport3DX).CameraController.InputController = e.NewValue == null ? new InputController() : e.NewValue as InputController;
             }));
         /// <summary>
         /// Gets or sets the mouse input controller.

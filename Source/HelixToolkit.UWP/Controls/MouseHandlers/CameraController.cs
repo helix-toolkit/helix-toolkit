@@ -9,6 +9,7 @@ namespace HelixToolkit.UWP
 {
     using System.Diagnostics;
     using Utilities;
+    using Windows.UI.Core;
     using Windows.UI.Xaml.Input;
 
     public class CameraController
@@ -155,6 +156,348 @@ namespace HelixToolkit.UWP
                 this.ActualCamera.UpDirection = value;
             }
         }
+
+        #region Properties
+        /// <summary>
+        /// Gets or sets CameraMode.
+        /// </summary>
+        public CameraMode CameraMode
+        {
+            set; get;
+        } = CameraMode.Inspect;
+
+        /// <summary>
+        /// Gets or sets CameraRotationMode.
+        /// </summary>
+        public CameraRotationMode CameraRotationMode
+        {
+            set; get;
+        } = CameraRotationMode.Turntable;
+
+        /// <summary>
+        /// Gets or sets the change field of view Cursor
+        /// </summary>
+        /// <value> The change field of view Cursor. </value>
+        public CoreCursorType ChangeFieldOfViewCursor
+        {
+            set; get;
+        } = CoreCursorType.SizeNorthSouth;
+
+        /// <summary>
+        /// Gets or sets InertiaFactor.
+        /// </summary>
+        public double InertiaFactor
+        {
+            set; get;
+        } = 0.93;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether InfiniteSpin.
+        /// </summary>
+        public bool InfiniteSpin
+        {
+            set; get;
+        } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether field of view can be changed.
+        /// </summary>
+        public bool IsChangeFieldOfViewEnabled
+        {
+            set; get;
+        } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether inertia is enabled for the camera manipulations.
+        /// </summary>
+        /// <value><c>true</c> if inertia is enabled; otherwise, <c>false</c>.</value>
+        public bool IsInertiaEnabled
+        {
+            set; get;
+        } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether move is enabled.
+        /// </summary>
+        /// <value> <c>true</c> if move is enabled; otherwise, <c>false</c> . </value>
+        public bool IsMoveEnabled
+        {
+            set; get;
+        } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether pan is enabled.
+        /// </summary>
+        public bool IsPanEnabled
+        {
+            set; get;
+        } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether IsRotationEnabled.
+        /// </summary>
+        public bool IsRotationEnabled
+        {
+            set; get;
+        } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether IsZoomEnabled.
+        /// </summary>
+        public bool IsZoomEnabled
+        {
+            set; get;
+        } = true;
+
+        /// <summary>
+        /// Gets or sets the sensitivity for pan by the left and right keys.
+        /// </summary>
+        /// <value> The pan sensitivity. </value>
+        /// <remarks>
+        /// Use -1 to invert the pan direction.
+        /// </remarks>
+        public double LeftRightPanSensitivity
+        {
+            set; get;
+        } = 1.0;
+
+        /// <summary>
+        /// Gets or sets the sensitivity for rotation by the left and right keys.
+        /// </summary>
+        /// <value> The rotation sensitivity. </value>
+        /// <remarks>
+        /// Use -1 to invert the rotation direction.
+        /// </remarks>
+        public double LeftRightRotationSensitivity
+        {
+            set; get;
+        } = 1.0;
+
+        /// <summary>
+        /// Gets or sets the maximum field of view.
+        /// </summary>
+        /// <value> The maximum field of view. </value>
+        public double MaximumFieldOfView
+        {
+            set; get;
+        } = 120.0;
+
+        /// <summary>
+        /// Gets or sets the minimum field of view.
+        /// </summary>
+        /// <value> The minimum field of view. </value>
+        public double MinimumFieldOfView
+        {
+            set; get;
+        } = 10.0;
+
+        /// <summary>
+        /// Gets or sets the model up direction.
+        /// </summary>
+        public Vector3D ModelUpDirection
+        {
+            set; get;
+        } = new Vector3D(0, 1, 0);
+
+        /// <summary>
+        /// Gets or sets the move sensitivity.
+        /// </summary>
+        /// <value> The move sensitivity. </value>
+        public double MoveSensitivity
+        {
+            set; get;
+        } = 1.0;
+
+        /// <summary>
+        /// Gets or sets the sensitivity for zoom by the page up and page down keys.
+        /// </summary>
+        /// <value> The zoom sensitivity. </value>
+        /// <remarks>
+        /// Use -1 to invert the zoom direction.
+        /// </remarks>
+        public double PageUpDownZoomSensitivity
+        {
+            set; get;
+        } = 1.0;
+
+        /// <summary>
+        /// Gets or sets the pan Cursor.
+        /// </summary>
+        /// <value> The pan Cursor. </value>
+        public CoreCursorType PanCursor
+        {
+            set; get;
+        } = CoreCursorType.Hand;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to rotate around the mouse down point.
+        /// </summary>
+        /// <value> <c>true</c> if rotation around the mouse down point is enabled; otherwise, <c>false</c> . </value>
+        public bool RotateAroundMouseDownPoint
+        {
+            set; get;
+        } = false;
+
+        /// <summary>
+        /// Gets or sets the rotate Cursor.
+        /// </summary>
+        /// <value> The rotate Cursor. </value>
+        public CoreCursorType RotateCursor
+        {
+            set; get;
+        } = CoreCursorType.SizeAll;
+
+        /// <summary>
+        /// Gets or sets the rotation sensitivity (degrees/pixel).
+        /// </summary>
+        /// <value> The rotation sensitivity. </value>
+        public double RotationSensitivity
+        {
+            set; get;
+        } = 1.0;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to show a target adorner when manipulating the camera.
+        /// </summary>
+        public bool ShowCameraTarget
+        {
+            set; get;
+        } = true;
+
+        /// <summary>
+        /// Gets or sets the max duration of mouse drag to activate spin.
+        /// </summary>
+        /// <remarks>
+        /// If the time between mouse down and mouse up is less than this value, spin is activated.
+        /// </remarks>
+        public int SpinReleaseTime
+        {
+            set; get;
+        } = 200;
+
+        /// <summary>
+        /// Gets or sets the sensitivity for pan by the up and down keys.
+        /// </summary>
+        /// <value> The pan sensitivity. </value>
+        /// <remarks>
+        /// Use -1 to invert the pan direction.
+        /// </remarks>
+        public double UpDownPanSensitivity
+        {
+            set; get;
+        } = 1.0;
+
+        /// <summary>
+        /// Gets or sets the sensitivity for rotation by the up and down keys.
+        /// </summary>
+        /// <value> The rotation sensitivity. </value>
+        /// <remarks>
+        /// Use -1 to invert the rotation direction.
+        /// </remarks>
+        public double UpDownRotationSensitivity
+        {
+            set; get;
+        } = 1.0;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to zoom around mouse down point.
+        /// </summary>
+        /// <value> <c>true</c> if zooming around the mouse down point is enabled; otherwise, <c>false</c> . </value>
+        public bool ZoomAroundMouseDownPoint
+        {
+            set; get;
+        } = false;
+
+        /// <summary>
+        /// Gets or sets the zoom Cursor.
+        /// </summary>
+        /// <value> The zoom CursorType. </value>
+        public CoreCursorType ZoomCursor
+        {
+            set; get;
+        } = CoreCursorType.SizeNorthSouth;
+
+        /// <summary>
+        /// Gets or sets the zoom rectangle Cursor.
+        /// </summary>
+        /// <value> The zoom rectangle Cursor. </value>
+        public CoreCursorType ZoomRectangleCursor
+        {
+            set; get;
+        } = CoreCursorType.SizeNorthwestSoutheast;
+
+        /// <summary>
+        /// Gets or sets ZoomSensitivity.
+        /// </summary>
+        public double ZoomSensitivity
+        {
+            set; get;
+        } = 1.0;
+        /// <summary>
+        /// Gets or sets the zoom distance limit far.
+        /// </summary>
+        /// <value>
+        /// The zoom distance limit far.
+        /// </value>
+        public double ZoomDistanceLimitFar { set; get; } = double.PositiveInfinity;
+        /// <summary>
+        /// Gets or sets the zoom distance limit near.
+        /// </summary>
+        /// <value>
+        /// The zoom distance limit near.
+        /// </value>
+        public double ZoomDistanceLimitNear { set; get; } = 0.001;
+
+        /// <summary>
+        /// Gets a value indicating whether IsOrthographicCamera.
+        /// </summary>
+        protected bool IsOrthographicCamera
+        {
+            get
+            {
+                return this.ActualCamera is OrthographicCamera;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether IsPerspectiveCamera.
+        /// </summary>
+        protected bool IsPerspectiveCamera
+        {
+            get
+            {
+                return this.ActualCamera is PerspectiveCamera;
+            }
+        }
+
+        /// <summary>
+        /// Gets OrthographicCamera.
+        /// </summary>
+        protected OrthographicCamera OrthographicCamera
+        {
+            get
+            {
+                return this.ActualCamera as OrthographicCamera;
+            }
+        }
+
+        /// <summary>
+        /// Gets PerspectiveCamera.
+        /// </summary>
+        protected PerspectiveCamera PerspectiveCamera
+        {
+            get
+            {
+                return this.ActualCamera as PerspectiveCamera;
+            }
+        }
+        #endregion
+
+        #region TouchGesture
+        public bool EnableTouchRotate { set; get; } = true;
+        public bool EnablePinchZoom { set; get; } = true;
+        public bool EnableThreeFingerPan { set; get; } = true;
+        #endregion
         /// <summary>
         /// The camera history stack.
         /// </summary>
@@ -276,17 +619,17 @@ namespace HelixToolkit.UWP
         private static readonly Point PointZero = new Point(0, 0);
         private static readonly Vector2 VectorZero = new Vector2();
         private static readonly Vector3D Vector3DZero = new Vector3D();
-        private readonly Viewport3DX Viewport;
+        public Viewport3DX Viewport { private set; get; }
 
         public CameraController(Viewport3DX viewport)
         {
             this.Viewport = viewport;
-            this.changeLookAtHandler = new RotateHandler(this.Viewport, true);
-            this.rotateHandler = new RotateHandler(this.Viewport);
-            this.zoomRectangleHandler = new ZoomRectangleHandler(this.Viewport);
-            this.zoomHandler = new ZoomHandler(this.Viewport);
-            this.panHandler = new PanHandler(this.Viewport);
-            this.changeFieldOfViewHandler = new ZoomHandler(this.Viewport, true);
+            this.changeLookAtHandler = new RotateHandler(this, true);
+            this.rotateHandler = new RotateHandler(this);
+            this.zoomRectangleHandler = new ZoomRectangleHandler(this);
+            this.zoomHandler = new ZoomHandler(this);
+            this.panHandler = new PanHandler(this);
+            this.changeFieldOfViewHandler = new ZoomHandler(this, true);
             this.Viewport.RegisterPropertyChangedCallback(Viewport3DX.CameraProperty, (d, e) => { ActualCamera = d.GetValue(e) as ProjectionCamera; });
             this.Viewport.RegisterPropertyChangedCallback(Viewport3DX.DefaultCameraProperty, (d, e) => { DefaultCamera = d.GetValue(e) as ProjectionCamera; });
         }
@@ -747,11 +1090,14 @@ namespace HelixToolkit.UWP
                 switch (n)
                 {
                     case 1:
-                        this.rotateHandler.Delta(position);
-                        e.Handled = true;
+                        if (EnableTouchRotate)
+                        {
+                            this.rotateHandler.Delta(position);
+                            e.Handled = true;
+                        }
                         break;
                     case 2:
-                        if (Viewport.IsTouchZoomEnabled)
+                        if (EnablePinchZoom)
                         {
                             if(prevScale == 1)
                             {
@@ -772,8 +1118,11 @@ namespace HelixToolkit.UWP
                         e.Handled = true;
                         break;
                     case 3:
-                        this.panHandler.Delta(position);
-                        e.Handled = true;
+                        if (EnableThreeFingerPan)
+                        {
+                            this.panHandler.Delta(position);
+                            e.Handled = true;
+                        }
                         break;
                 }
             }

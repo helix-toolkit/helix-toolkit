@@ -323,15 +323,6 @@ namespace HelixToolkit.Wpf.SharpDX
         } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
-        /// </summary>
-        /// <value> <c>true</c> if touch zoom is enabled; otherwise, <c>false</c> . </value>
-        public bool IsTouchZoomEnabled
-        {
-            set; get;
-        } = true;
-
-        /// <summary>
         /// Gets or sets a value indicating whether IsZoomEnabled.
         /// </summary>
         public bool IsZoomEnabled
@@ -589,6 +580,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 return this.ActualCamera as PerspectiveCamera;
             }
         }
+
+        #region TouchGesture
+        public bool EnableTouchRotate { set; get; } = true;
+        public bool EnablePinchZoom { set; get; } = true;
+        public bool EnableThreeFingerPan { set; get; } = true;
+        #endregion
 
         /// <summary>
         /// Adds the specified move force.
@@ -945,6 +942,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void OnManipulationDelta(ManipulationDeltaEventArgs e)
         {
+            if(!EnablePinchZoom && !EnableThreeFingerPan && !EnableTouchRotate)
+            {
+                return;
+            }
             // number of manipulators (fingers)
             int n = e.Manipulators.Count();
             var p = e.ManipulationOrigin;
@@ -987,9 +988,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         e.Handled = true;
                         break;
                 }
-
-                // skip this event, the origin may have changed
                 this.manipulatorCount = n;
+                // skip this event, the origin may have changed
                 return;
             }
             else
@@ -997,11 +997,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 switch (n)
                 {
                     case 1:
-                        this.rotateHandler.Delta(position);
-                        e.Handled = true;
+                        if (EnableTouchRotate)
+                        {
+                            this.rotateHandler.Delta(position);
+                            e.Handled = true;
+                        }
                         break;
                     case 2:
-                        if (Viewport.IsTouchZoomEnabled)
+                        if (EnablePinchZoom)
                         {
                             if(prevScale == 1)
                             {
@@ -1019,12 +1022,15 @@ namespace HelixToolkit.Wpf.SharpDX
                                     prevScale = s;
                                 }
                             }
-                        }
-                        e.Handled = true;
+                            e.Handled = true;
+                        }                        
                         break;
                     case 3:
-                        this.panHandler.Delta(position);
-                        e.Handled = true;
+                        if (EnableThreeFingerPan)
+                        {
+                            this.panHandler.Delta(position);
+                            e.Handled = true;                            
+                        }
                         break;
                 }
             }

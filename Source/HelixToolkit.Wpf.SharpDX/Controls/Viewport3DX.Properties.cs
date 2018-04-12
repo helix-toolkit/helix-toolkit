@@ -369,13 +369,33 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         /// <summary>
-        /// The IsTouchZoomEnabled property.
+        /// The enable touch rotate property
         /// </summary>
-        public static readonly DependencyProperty IsTouchZoomEnabledProperty = DependencyProperty.Register(
-            "IsTouchZoomEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+        public static readonly DependencyProperty IsTouchRotateEnabledProperty =
+            DependencyProperty.Register("IsTouchRotateEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                viewport.CameraController.IsTouchZoomEnabled = (bool)e.NewValue;
+                viewport.CameraController.EnableTouchRotate = (bool)e.NewValue;
+            }));
+
+        /// <summary>
+        /// The IsTouchZoomEnabled property.
+        /// </summary>
+        public static readonly DependencyProperty IsPinchZoomEnabledProperty = DependencyProperty.Register(
+            "IsPinchZoomEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                viewport.CameraController.EnablePinchZoom = (bool)e.NewValue;
+            }));
+
+        /// <summary>
+        /// The enable touch rotate property
+        /// </summary>
+        public static readonly DependencyProperty IsThreeFingerPanningEnabledProperty =
+            DependencyProperty.Register("IsThreeFingerPanningEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                viewport.CameraController.EnableThreeFingerPan = (bool)e.NewValue;
             }));
 
         /// <summary>
@@ -659,11 +679,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty TitleSizeProperty = DependencyProperty.Register(
             "TitleSize", typeof(double), typeof(Viewport3DX), new PropertyMetadata(12.0));
 
-        /// <summary>
-        /// The touch mode property.
-        /// </summary>
-        public static readonly DependencyProperty TouchModeProperty = DependencyProperty.Register(
-            "TouchMode", typeof(TouchMode), typeof(Viewport3DX), new PropertyMetadata(TouchMode.Panning));
+
 
         /// <summary>
         /// The up down Pan sensitivity property.
@@ -1033,7 +1049,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets the camera controller
         /// </summary>
-        public CameraController CameraController
+        internal CameraController CameraController
         {
             get
             {
@@ -1588,22 +1604,46 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether touch zoom (pinch gesture) is enabled.
+        /// Gets or sets a value indicating whether [enable one finger touch rotate].
         /// </summary>
         /// <value>
-        /// <c>true</c> if touch zoom is enabled; otherwise, <c>false</c> .
+        ///   <c>true</c> if [enable touch rotate]; otherwise, <c>false</c>.
         /// </value>
-        public bool IsTouchZoomEnabled
+        public bool IsTouchRotateEnabled
+        {
+            get { return (bool)GetValue(IsTouchRotateEnabledProperty); }
+            set { SetValue(IsTouchRotateEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether two finger pinch zoom is enabled.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if pinch zoom is enabled; otherwise, <c>false</c> .
+        /// </value>
+        public bool IsPinchZoomEnabled
         {
             get
             {
-                return (bool)this.GetValue(IsTouchZoomEnabledProperty);
+                return (bool)this.GetValue(IsPinchZoomEnabledProperty);
             }
 
             set
             {
-                this.SetValue(IsTouchZoomEnabledProperty, value);
+                this.SetValue(IsPinchZoomEnabledProperty, value);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable three finger panning].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable three finger panning]; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsThreeFingerPanningEnabled
+        {
+            get { return (bool)GetValue(IsThreeFingerPanningEnabledProperty); }
+            set { SetValue(IsThreeFingerPanningEnabledProperty, value); }
         }
 
         /// <summary>
@@ -2103,25 +2143,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set
             {
                 this.SetValue(TitleSizeProperty, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the touch mode.
-        /// </summary>
-        /// <value>
-        /// The touch mode.
-        /// </value>
-        public TouchMode TouchMode
-        {
-            get
-            {
-                return (TouchMode)this.GetValue(TouchModeProperty);
-            }
-
-            set
-            {
-                this.SetValue(TouchModeProperty, value);
             }
         }
 

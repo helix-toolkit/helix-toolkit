@@ -56,7 +56,7 @@ namespace HelixToolkit.UWP
         /// <param name="changeLookAt">
         /// The change look at.
         /// </param>
-        public RotateHandler(Viewport3DX controller, bool changeLookAt = false)
+        public RotateHandler(CameraController controller, bool changeLookAt = false)
             : base(controller)
         {
             this.changeLookAt = changeLookAt;
@@ -72,7 +72,7 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                return this.Viewport.CameraRotationMode;
+                return this.CameraController.CameraRotationMode;
             }
         }
         
@@ -107,7 +107,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void LookAt(Point3D target, double animationTime)
         {
-            if (!this.Viewport.IsPanEnabled)
+            if (!this.CameraController.IsPanEnabled)
             {
                 return;
             }
@@ -129,11 +129,11 @@ namespace HelixToolkit.UWP
         /// </param>
         public void Rotate(Point p0, Point p1, Point3D rotateAround)
         {
-            if (!this.Viewport.IsRotationEnabled)
+            if (!this.CameraController.IsRotationEnabled)
             {
                 return;
             }
-            switch (this.Viewport.CameraRotationMode)
+            switch (this.CameraController.CameraRotationMode)
             {
                 case CameraRotationMode.Trackball:
                     this.RotateTrackball(p0, p1, rotateAround);
@@ -292,7 +292,7 @@ namespace HelixToolkit.UWP
             base.Started(e);
 
             this.rotationPoint = new Point(
-                this.Viewport.ActualWidth / 2, this.Viewport.ActualHeight / 2);
+                this.CameraController.Viewport.ActualWidth / 2, this.CameraController.Viewport.ActualHeight / 2);
             this.rotationPoint3D = this.Camera.Target;
 
             switch (this.CameraMode)
@@ -302,16 +302,16 @@ namespace HelixToolkit.UWP
                     this.rotationPoint3D = this.Camera.Position;
                     break;
                 default:
-                    if (Viewport.FixedRotationPointEnabled)
+                    if (CameraController.Viewport.FixedRotationPointEnabled)
                     {
-                        this.rotationPoint3D = Viewport.FixedRotationPoint;
+                        this.rotationPoint3D = CameraController.Viewport.FixedRotationPoint;
                     }
                     else if (this.changeLookAt && this.MouseDownNearestPoint3D != null)
                     {
                         this.LookAt(this.MouseDownNearestPoint3D.Value, 0);
                         this.rotationPoint3D = this.Camera.Target;               
                     }
-                    else if (this.Viewport.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
+                    else if (this.CameraController.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
                     {
                         this.rotationPoint = this.MouseDownPoint;
                         this.rotationPoint3D = this.MouseDownNearestPoint3D.Value;
@@ -336,7 +336,7 @@ namespace HelixToolkit.UWP
                     break;
             }
 
-            this.Viewport.StopSpin();
+            this.CameraController.StopSpin();
         }
 
         /// <summary>
@@ -349,10 +349,10 @@ namespace HelixToolkit.UWP
         {
             if (this.changeLookAt)
             {
-                return this.CameraMode != CameraMode.FixedPosition && this.Viewport.IsPanEnabled;
+                return this.CameraMode != CameraMode.FixedPosition && this.CameraController.IsPanEnabled;
             }
 
-            return this.Viewport.IsRotationEnabled;
+            return this.CameraController.IsRotationEnabled;
         }
 
         /// <summary>
@@ -363,7 +363,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected override CoreCursorType GetCursor()
         {
-            return this.Viewport.RotateCursor;
+            return this.CameraController.RotateCursor;
         }
 
         /// <summary>
@@ -377,8 +377,8 @@ namespace HelixToolkit.UWP
             Vector2 delta = this.LastPoint.ToVector2() - this.MouseDownPoint.ToVector2();
 
             // Debug.WriteLine("SpinInertiaStarting: " + elapsedTime + "ms " + delta.Length + "px");
-            this.Viewport.StartSpin(
-                4 * delta * (float)(this.Viewport.SpinReleaseTime / elapsedTime),
+            this.CameraController.StartSpin(
+                4 * delta * (float)(this.CameraController.SpinReleaseTime / elapsedTime),
                 this.MouseDownPoint,
                 this.rotationPoint3D);
         }
@@ -418,8 +418,8 @@ namespace HelixToolkit.UWP
         /// </param>
         private void InitTurnballRotationAxes(Point p1)
         {
-            double fx = p1.X / this.Viewport.ActualWidth;
-            double fy = p1.Y / this.Viewport.ActualHeight;
+            double fx = p1.X / this.CameraController.Viewport.ActualWidth;
+            double fy = p1.Y / this.CameraController.Viewport.ActualHeight;
 
             var up = this.Camera.UpDirection;
             var dir = this.Camera.LookDirection;
@@ -464,8 +464,8 @@ namespace HelixToolkit.UWP
         {
             // http://viewport3d.com/trackball.htm
             // http://www.codeplex.com/3DTools/Thread/View.aspx?ThreadId=22310
-            var v1 = ProjectToTrackball(p1, this.Viewport.ActualWidth, this.Viewport.ActualHeight);
-            var v2 = ProjectToTrackball(p2, this.Viewport.ActualWidth, this.Viewport.ActualHeight);
+            var v1 = ProjectToTrackball(p1, this.CameraController.Viewport.ActualWidth, this.CameraController.Viewport.ActualHeight);
+            var v2 = ProjectToTrackball(p2, this.CameraController.Viewport.ActualWidth, this.CameraController.Viewport.ActualHeight);
 
             // transform the trackball coordinates to view space
             var viewZ = this.Camera.LookDirection;
