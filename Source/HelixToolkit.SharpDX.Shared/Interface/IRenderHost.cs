@@ -59,6 +59,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         event EventHandler<EventArgs> StopRenderLoop;
         /// <summary>
+        /// Occurs when each render frame finished rendering.
+        /// </summary>
+        event EventHandler OnRendered;
+        /// <summary>
         /// Gets the device.
         /// </summary>
         /// <value>

@@ -131,6 +131,11 @@ namespace HelixToolkit.UWP
         private HitTestResult currentHit;
 
         private bool enableMouseButtonHitTest = true;
+        /// <summary>
+        /// Occurs when each render frame finished rendering. Called directly from RenderHost after each frame. 
+        /// Use this event carefully. Unsubscrible this event when not used. Otherwise may cause performance issue.
+        /// </summary>
+        public event EventHandler OnRendered;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Viewport3DX"/> class.
@@ -258,6 +263,9 @@ namespace HelixToolkit.UWP
                     renderHostInternal.MSAA = this.MSAA;
 #endif
                     renderHostInternal.RenderConfiguration.AutoUpdateOctree = this.EnableAutoOctreeUpdate;
+                    renderHostInternal.OnRendered -= this.OnRendered;
+                    renderHostInternal.OnRendered += this.OnRendered;
+                    renderHostInternal.ExceptionOccurred -= RenderHostInternal_ExceptionOccurred;
                     renderHostInternal.ExceptionOccurred += RenderHostInternal_ExceptionOccurred;
                 }
             }

@@ -457,6 +457,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Occurs when [on new render target texture].
         /// </summary>
         public event EventHandler<Texture2DArgs> OnNewRenderTargetTexture;
+        /// <summary>
+        /// Occurs when each render frame finished rendering.
+        /// </summary>
+        public event EventHandler OnRendered;
 
         private readonly Func<Device, IRenderer> createRendererFunction;
         #endregion
@@ -579,7 +583,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     IsBusy = false;
                 }
                 lastRenderingDuration = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp() / Stopwatch.Frequency) - t0;
-                RenderStatistics.LatencyStatistics.Push(lastRenderingDuration.TotalMilliseconds);                
+                RenderStatistics.LatencyStatistics.Push(lastRenderingDuration.TotalMilliseconds);
+                OnRendered?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -898,6 +903,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             ExceptionOccurred = null;
             StartRenderLoop = null;
             StopRenderLoop = null;
+            OnRendered = null;
             base.OnDispose(disposeManagedResources);
         }
 

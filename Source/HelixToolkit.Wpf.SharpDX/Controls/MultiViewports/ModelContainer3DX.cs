@@ -89,7 +89,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Occurs when [stop render loop].
         /// </summary>
         public event EventHandler<EventArgs> StopRenderLoop;
-#pragma warning restore 0067        
+        /// <summary>
+        /// Occurs when each render frame finished rendering.
+        /// </summary>
+        public event EventHandler OnRendered;
+#pragma warning restore 0067
         /// <summary>
         /// Gets the unique identifier.
         /// </summary>
