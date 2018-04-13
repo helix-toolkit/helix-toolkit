@@ -208,6 +208,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private Overlay overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
         private bool enableMouseButtonHitTest = true;
+        private ContentPresenter hostPresenter;
+        /// <summary>
+        /// Occurs when each render frame finished rendering. Called directly from RenderHost after each frame. 
+        /// Use this event carefully. Unsubscrible this event when not used. Otherwise may cause performance issue.
+        /// </summary>
+        public event EventHandler OnRendered;
         /// <summary>
         /// Initializes static members of the <see cref="Viewport3DX" /> class.
         /// </summary>
@@ -578,7 +584,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.cameraController.ActualCamera?.LookAt(p, direction, animationTime);
         }
 
-        private ContentPresenter hostPresenter;
+
         /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
         /// </summary>
@@ -610,13 +616,16 @@ namespace HelixToolkit.Wpf.SharpDX
             renderHostInternal = (hostPresenter.Content as IRenderCanvas).RenderHost;
             if (this.renderHostInternal != null)
             {
+                this.renderHostInternal.OnRendered -= this.OnRendered;
+                this.renderHostInternal.OnRendered += this.OnRendered;
+                this.renderHostInternal.ExceptionOccurred -= this.HandleRenderException;
+                this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
                 this.renderHostInternal.ClearColor = BackgroundColor.ToColor4();
                 this.renderHostInternal.IsShadowMapEnabled = IsShadowMappingEnabled;
                 this.renderHostInternal.MSAA = this.MSAA;
                 this.renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
                 this.renderHostInternal.EnableSharingModelMode = this.EnableSharedModelMode;
                 this.renderHostInternal.SharedModelContainer = this.SharedModelContainer;
-                this.renderHostInternal.ExceptionOccurred += this.HandleRenderException;
                 this.renderHostInternal.Viewport = this;
                 this.renderHostInternal.EffectsManager = this.EffectsManager;
                 this.renderHostInternal.IsRendering = this.Visibility == System.Windows.Visibility.Visible;
