@@ -127,6 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             Texture2D staging;
             if (!CaptureTexture(deviceResource.Device.ImmediateContext, source, out staging))
             {
+                Disposer.RemoveAndDispose(ref staging);
                 return false;
             }
             var desc = staging.Description;
@@ -135,14 +136,22 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 
             if (pfGuid == Guid.Empty)
             {
-                staging.Dispose();
+                Disposer.RemoveAndDispose(ref staging);
                 throw new NotSupportedException($"Format: {desc.Format} does not support yet.");
             }
-
-            using (WICStream stream = new WICStream(deviceResource.WICImgFactory, bitmapStream))
+            bool succ = false;
+            try
             {
-                return CopyTextureToWICStream(deviceResource, staging, stream, pfGuid, BitmapExtensions.ToWICImageFormat(Direct2DImageFormat.Bmp));
+                using (WICStream stream = new WICStream(deviceResource.WICImgFactory, bitmapStream))
+                {
+                    succ = CopyTextureToWICStream(deviceResource, staging, stream, pfGuid, BitmapExtensions.ToWICImageFormat(Direct2DImageFormat.Bmp));
+                }
             }
+            finally
+            {
+                Disposer.RemoveAndDispose(ref staging);
+            }
+            return succ;
         }
 
         private static Guid GetPfGuid(global::SharpDX.DXGI.Format format, ref bool sRGB)
