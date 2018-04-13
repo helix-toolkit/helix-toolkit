@@ -267,6 +267,9 @@ namespace HelixToolkit.UWP.Core
                 blurCore.Resize(deviceContext.DeviceContext.Device,
                     renderTargetDesc.Width / downSamplingScale,
                     renderTargetDesc.Height / downSamplingScale);
+                //Skip this frame to avoid performance hit due to texture creation
+                InvalidateRenderer();
+                return;
             }
             #endregion
 
