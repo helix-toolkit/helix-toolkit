@@ -130,15 +130,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void SeparateRenderables()
+        private void SeparateRenderables(IRenderContext context)
         {
             Clear();
             viewportRenderables.AddRange(Viewport.Renderables);
             renderer.UpdateSceneGraph(RenderContext, viewportRenderables, perFrameRenderables);
-
+            var frustum = context.BoundingFrustum;
             for(int i = 0; i < perFrameRenderables.Count; ++i)
             {
                 var renderable = perFrameRenderables[i];
+
                 switch (renderable.RenderCore.RenderType)
                 {
                     case RenderType.Light:
@@ -147,6 +148,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     case RenderType.Opaque:
                     case RenderType.Transparent:
                     case RenderType.Particle:
+                        if (context.EnableBoundingFrustum && !renderable.TestViewFrustum(ref frustum))
+                        {
+                            break;
+                        }
                         generalRenderCores.Add(renderable.RenderCore);
                         if(renderable.RenderCore.NeedUpdate) // Run update function at the beginning of actual rendering.
                         {
@@ -200,7 +205,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             base.PreRender();
 
-            SeparateRenderables();
+            SeparateRenderables(RenderContext);
 
             asyncTask = Task.Factory.StartNew(() =>
             {

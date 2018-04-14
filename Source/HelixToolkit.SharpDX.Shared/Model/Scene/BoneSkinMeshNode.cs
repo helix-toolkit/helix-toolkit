@@ -109,12 +109,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             bonesBufferModel.DisposeAndClear();
             base.OnDetach();
         }
+
         /// <summary>
-        /// Checks the bounding frustum.
+        /// Views the frustum test.
         /// </summary>
-        /// <param name="boundingFrustum">The bounding frustum.</param>
+        /// <param name="viewFrustum">The view frustum.</param>
         /// <returns></returns>
-        protected override bool CheckBoundingFrustum(BoundingFrustum boundingFrustum)
+        public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
         {
             return true;
         }

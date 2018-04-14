@@ -489,8 +489,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override bool CanRender(IRenderContext context)
         {
-            if (base.CanRender(context) && GeometryValid && (!(context.EnableBoundingFrustum && EnableViewFrustumCheck)
-                || CheckBoundingFrustum(context.BoundingFrustum)))
+            if (base.CanRender(context) && GeometryValid)
             {
                 return true;
             }
@@ -501,19 +500,19 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         /// <summary>
-        /// Checks the bounding frustum.
+        /// Views the frustum test.
         /// </summary>
         /// <param name="viewFrustum">The view frustum.</param>
         /// <returns></returns>
-        protected virtual bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
+        public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
         {
-            if (!HasBound)
+            if (!HasBound || !EnableViewFrustumCheck)
             {
                 return true;
             }
             var bound = BoundsWithTransform;
             var sphere = BoundsSphereWithTransform;
-            return viewFrustum.Intersects(ref bound) && viewFrustum.Intersects(ref sphere);
+            return viewFrustum.Intersects(ref sphere) && viewFrustum.Intersects(ref bound);
         }
 
         /// <summary>

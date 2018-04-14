@@ -431,6 +431,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             return Visible && IsAttached;
         }
 
+        /// <summary>
+        /// View frustum test.
+        /// </summary>
+        /// <param name="frustum">The frustum.</param>
+        /// <returns></returns>
+        public virtual bool TestViewFrustum(ref BoundingFrustum viewFrustum)
+        {
+            return true;
+        }
         #endregion Rendering
 
         #region Hit Test
