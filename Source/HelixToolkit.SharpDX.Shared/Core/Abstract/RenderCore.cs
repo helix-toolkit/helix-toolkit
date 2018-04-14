@@ -66,6 +66,7 @@ namespace HelixToolkit.UWP.Core
             }
             get { return isThrowingShadow; }
         }
+
         /// <summary>
         /// Gets or sets the default state binding.
         /// </summary>
