@@ -2,31 +2,36 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+
 //#define TEST
-using System;
+using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
-using SharpDX;
-using System.Threading.Tasks;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 #if !NETFX_CORE
+
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Shaders;
     using Render;
+    using Shaders;
     using Utilities;
+
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class DynamicCubeMapCore : RenderCoreBase<GlobalTransformStruct>, IDynamicReflector
     {
         #region Properties
+
         public HashSet<Guid> IgnoredGuid { get; } = new HashSet<Guid>();
         private ShaderResourceViewProxy cubeMap;
+
         public ShaderResourceViewProxy CubeMap
         {
             get
@@ -36,12 +41,15 @@ namespace HelixToolkit.UWP.Core
         }
 
         private ShaderResourceViewProxy cubeDSV;
+
         // The RTVs, one for each face of cubemap
         private RenderTargetView[] cubeRTVs = new RenderTargetView[6];
+
         // The DSVs, one for each face of cubemap
         private DepthStencilView[] cubeDSVs = new DepthStencilView[6];
 
         private int faceSize = 256;
+
         public int FaceSize
         {
             set
@@ -60,6 +68,7 @@ namespace HelixToolkit.UWP.Core
         }
 
         private string defaultPassName = DefaultPassNames.Default;
+
         /// <summary>
         /// Name of the default pass inside a technique.
         /// <para>Default: <see cref="DefaultPassNames.Default"/></para>
@@ -80,8 +89,9 @@ namespace HelixToolkit.UWP.Core
         }
 
         private IShaderPass defaultShaderPass = NullShaderPass.NullPass;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected IShaderPass DefaultShaderPass
         {
@@ -101,6 +111,7 @@ namespace HelixToolkit.UWP.Core
         }
 
         private SamplerStateDescription samplerDescription = DefaultSamplers.CubeSampler;
+
         /// <summary>
         /// Gets or sets the sampler description.
         /// </summary>
@@ -124,6 +135,7 @@ namespace HelixToolkit.UWP.Core
         }
 
         private bool isleftHanded = false;
+
         /// <summary>
         /// Gets or sets a value indicating whether this coordinate system is left handed.
         /// </summary>
@@ -143,6 +155,7 @@ namespace HelixToolkit.UWP.Core
         }
 
         private float nearField = 0.1f;
+
         /// <summary>
         /// Gets or sets the near field of perspective.
         /// </summary>
@@ -162,6 +175,7 @@ namespace HelixToolkit.UWP.Core
         }
 
         private float farField = 100f;
+
         /// <summary>
         /// Gets or sets the far field of perspective.
         /// </summary>
@@ -179,6 +193,7 @@ namespace HelixToolkit.UWP.Core
                 return farField;
             }
         }
+
         /// <summary>
         /// Gets or sets the center.
         /// </summary>
@@ -197,14 +212,16 @@ namespace HelixToolkit.UWP.Core
         /// The name of the shader cube texture.
         /// </value>
         public string ShaderCubeTextureName { set; get; } = DefaultBufferNames.CubeMapTB;
+
         /// <summary>
         /// Gets or sets the name of the shader cube texture sampler.
         /// </summary>
         /// <value>
         /// The name of the shader cube texture sampler.
         /// </value>
-        public string ShaderCubeTextureSamplerName { set; get; } = DefaultSamplerStateNames.CubeMapSampler; 
-        #endregion
+        public string ShaderCubeTextureSamplerName { set; get; } = DefaultSamplerStateNames.CubeMapSampler;
+
+        #endregion Properties
 
         private int cubeTextureSlot;
         private int textureSamplerSlot;
@@ -245,7 +262,6 @@ namespace HelixToolkit.UWP.Core
         };
 
         private Viewport viewport;
-
 
         public DynamicCubeMapCore() : base(RenderType.PreProc)
         {
@@ -321,18 +337,17 @@ namespace HelixToolkit.UWP.Core
             {
                 cubeRTVs[i] = null;
                 cubeDSVs[i] = null;
-            }           
+            }
             base.OnDetach();
         }
 
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            
 #if TEST
             for (int index = 0; index < 6; ++index)
 #else
             Parallel.For(0, 6, (index) =>
-#endif            
+#endif
             {
                 var ctx = contextPool.Get();
                 ctx.DeviceContext.ClearRenderTargetView(cubeRTVs[index], Color.White);
@@ -397,8 +412,10 @@ namespace HelixToolkit.UWP.Core
         }
 
         #region IReflector
+
         private SamplerState[] currSampler;
         private ShaderResourceView[] currRes;
+
         /// <summary>
         /// Binds the cube map.
         /// </summary>
@@ -410,6 +427,7 @@ namespace HelixToolkit.UWP.Core
             deviceContext.DeviceContext.PixelShader.SetShaderResource(cubeTextureSlot, CubeMap);
             deviceContext.DeviceContext.PixelShader.SetSampler(textureSamplerSlot, textureSampler);
         }
+
         /// <summary>
         /// Uns the bind cube map.
         /// </summary>
@@ -418,7 +436,18 @@ namespace HelixToolkit.UWP.Core
         {
             deviceContext.DeviceContext.PixelShader.SetShaderResources(cubeTextureSlot, currRes);
             deviceContext.DeviceContext.PixelShader.SetSamplers(textureSamplerSlot, currSampler);
+            for (int i = 0; i < currSampler.Length; ++i)
+            {
+                Disposer.RemoveAndDispose(ref currSampler[i]);
+            }
+            for (int i = 0; i < currRes.Length; ++i)
+            {
+                Disposer.RemoveAndDispose(ref currRes[i]);
+            }
+            currSampler = null;
+            currRes = null;
         }
-        #endregion
+
+        #endregion IReflector
     }
 }
