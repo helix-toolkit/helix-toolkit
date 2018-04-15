@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Initializes a new instance of the <see cref="DeferredContextRenderer"/> class.
         /// </summary>
-        /// <param name="device">The device.</param>
+        /// <param name="deviceResources">The deviceResources.</param>
         /// <param name="scheduler"></param>
         public DeferredContextRenderer(IDevice3DResources deviceResources, IRenderTaskScheduler scheduler) : base(deviceResources)
         {

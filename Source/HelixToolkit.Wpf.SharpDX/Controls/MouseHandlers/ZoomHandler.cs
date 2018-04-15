@@ -113,6 +113,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="zoomAround">
         /// The zoom around.
         /// </param>
+        /// <param name="isTouch"></param>
         public void Zoom(double delta, Point3D zoomAround, bool isTouch = false)
         {
             if (!this.Controller.IsZoomEnabled)

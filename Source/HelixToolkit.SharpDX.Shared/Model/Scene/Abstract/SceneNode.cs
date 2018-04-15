@@ -480,7 +480,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <summary>
         /// View frustum test.
         /// </summary>
-        /// <param name="frustum">The frustum.</param>
+        /// <param name="viewFrustum">The frustum.</param>
         /// <returns></returns>
         public virtual bool TestViewFrustum(ref BoundingFrustum viewFrustum)
         {

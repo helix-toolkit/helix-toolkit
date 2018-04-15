@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Initializes a new instance of the <see cref="ImmediateContextRenderer"/> class.
         /// </summary>
-        /// <param name="device">The device.</param>
+        /// <param name="deviceResource">The deviceResource.</param>
         public ImmediateContextRenderer(IDevice3DResources deviceResource)
         {
 #if DX11_1
@@ -149,7 +149,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             return renderedCount;
         }
         /// <summary>
-        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IRenderContext, List{SceneNode})"/>
+        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IRenderContext, List{KeyValuePair{int, SceneNode}})"/>
         /// </summary>
         /// <param name="renderables">The renderables.</param>
         /// <param name="context"></param>
