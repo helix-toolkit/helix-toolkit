@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="surface">The surface.</param>
         /// <param name="createRenderer">The create renderer.</param>
-        public SwapChainRenderHost(IntPtr surface, Func<Device, IRenderer> createRenderer) : base(createRenderer)
+        public SwapChainRenderHost(IntPtr surface, Func<IDevice3DResources, IRenderer> createRenderer) : base(createRenderer)
         {
             this.surface = surface;
         }

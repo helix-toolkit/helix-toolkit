@@ -462,7 +462,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public event EventHandler OnRendered;
 
-        private readonly Func<Device, IRenderer> createRendererFunction;
+        private readonly Func<IDevice3DResources, IRenderer> createRendererFunction;
         #endregion
 
         #region Private variables
@@ -492,7 +492,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Initializes a new instance of the <see cref="DX11RenderHostBase"/> class.
         /// </summary>
         /// <param name="createRenderer">The create renderer.</param>
-        public DX11RenderHostBase(Func<Device, IRenderer> createRenderer)
+        public DX11RenderHostBase(Func<IDevice3DResources, IRenderer> createRenderer)
         {
             createRendererFunction = createRenderer;           
         }
@@ -741,11 +741,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             if (createRendererFunction != null)
             {
-                return createRendererFunction.Invoke(Device);
+                return createRendererFunction.Invoke(EffectsManager);
             }
             else
             {
-                return new ImmediateContextRenderer(Device);
+                return new ImmediateContextRenderer(EffectsManager);
             }
         }
 

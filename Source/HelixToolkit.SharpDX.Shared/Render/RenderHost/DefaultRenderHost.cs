@@ -117,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
         /// </summary>
         /// <param name="createRenderer">The create renderer.</param>
-        public DefaultRenderHost(Func<Device, IRenderer> createRenderer) : base(createRenderer)
+        public DefaultRenderHost(Func<IDevice3DResources, IRenderer> createRenderer) : base(createRenderer)
         {
 
         }

@@ -35,9 +35,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="device">The device.</param>
         /// <param name="scheduler"></param>
-        public DeferredContextRenderer(Device device, IRenderTaskScheduler scheduler) : base(device)
+        public DeferredContextRenderer(IDevice3DResources deviceResources, IRenderTaskScheduler scheduler) : base(deviceResources)
         {
-            deferredContextPool = Collect(new DeviceContextPool(device));
+            deferredContextPool = deviceResources.DeviceContextPool;
             this.scheduler = scheduler;
         }
 
@@ -126,6 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             commandList.Clear();
             renderOthersTask?.Wait();
+            deferredContextPool = null;
             base.OnDispose(disposeManagedResources);
         }
     }

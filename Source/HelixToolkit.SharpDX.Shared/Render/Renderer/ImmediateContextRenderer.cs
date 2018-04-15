@@ -40,12 +40,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Initializes a new instance of the <see cref="ImmediateContextRenderer"/> class.
         /// </summary>
         /// <param name="device">The device.</param>
-        public ImmediateContextRenderer(Device device)
+        public ImmediateContextRenderer(IDevice3DResources deviceResource)
         {
 #if DX11_1
-            ImmediateContext = Collect(new DeviceContextProxy(device.ImmediateContext1));
+            ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext1));
 #else
-            ImmediateContext = Collect(new DeviceContextProxy(device.ImmediateContext));
+            ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext));
 #endif
         }
 
