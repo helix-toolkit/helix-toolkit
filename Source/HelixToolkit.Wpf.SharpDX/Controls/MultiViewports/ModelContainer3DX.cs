@@ -138,28 +138,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public List<SceneNode> PerFrameRenderables { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameRenderables : Constants.EmptyRenderable; } }
+        public List<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameFlattenedScene : Constants.EmptyRenderablePair; } }
         /// <summary>
         /// Gets the current frame Lights for rendering.
         /// </summary>
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public IEnumerable<LightCoreBase> PerFrameLights { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameLights : Enumerable.Empty<LightCoreBase>(); } }
+        public IEnumerable<LightNode> PerFrameLights { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameLights : Enumerable.Empty<LightNode>(); } }
         /// <summary>
         /// Gets the per frame post effect cores.
         /// </summary>
         /// <value>
         /// The per frame post effect cores.
         /// </value>
-        public List<RenderCore> PerFrameGeneralCoresWithPostEffect { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralCoresWithPostEffect : Constants.EmptyCore; } }
+        public List<SceneNode> PerFrameNodesWithPostEffect { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameNodesWithPostEffect : Constants.EmptyRenderable; } }
         /// <summary>
         /// Gets the per frame general render cores.
         /// </summary>
         /// <value>
         /// The per frame general render cores.
         /// </value>
-        public List<RenderCore> PerFrameGeneralRenderCores { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralRenderCores : Constants.EmptyCore; } }
+        public List<SceneNode> PerFrameGeneralNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralNodes : Constants.EmptyRenderable; } }
 
         /// <summary>
         /// Handles the change of the effects manager.
@@ -206,6 +206,17 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach(var v in viewports)
             {
                 v.InvalidateRender();
+            }
+        }
+
+        /// <summary>
+        /// Invalidates the scene graph.
+        /// </summary>
+        public void InvalidateSceneGraph()
+        {
+            foreach (var v in viewports)
+            {
+                v.InvalidateSceneGraph();
             }
         }
         /// <summary>

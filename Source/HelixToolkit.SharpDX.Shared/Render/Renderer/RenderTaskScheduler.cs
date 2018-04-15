@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using global::SharpDX.Direct3D11;
     using System;
     using System.Collections.Concurrent;
-
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="outputCommands">The output commands.</param>
         /// <param name="filterType"></param>
         /// <returns></returns>
-        bool ScheduleAndRun(List<RenderCore> items, IDeviceContextPool pool,
+        bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
             IRenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands);
     }
     /// <summary>
@@ -109,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="filterType"></param>
         /// <param name="outputCommands"></param>
         /// <returns></returns>
-        public bool ScheduleAndRun(List<RenderCore> items, IDeviceContextPool pool,
+        public bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
             IRenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands)
         {
             outputCommands.Clear();
@@ -122,9 +122,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     SetRenderTargets(deferred, ref parameter);
                     for(int i=range.Item1; i<range.Item2; ++i)
                     {
-                        if (items[i].RenderType == filterType)
+                        if (items[i].RenderCore.RenderType == filterType)
                         {
-                            items[i].Render(context, deferred);
+                            items[i].RenderCore.Render(context, deferred);
                         }
                     }
                     var command = deferred.DeviceContext.FinishCommandList(true);

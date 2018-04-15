@@ -399,28 +399,28 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame renderable.
         /// </value>
-        public abstract List<SceneNode> PerFrameRenderables { get; }
+        public abstract List<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get; }
         /// <summary>
         /// Gets the per frame lights.
         /// </summary>
         /// <value>
         /// The per frame lights.
         /// </value>
-        public abstract IEnumerable<LightCoreBase> PerFrameLights { get; }
+        public abstract IEnumerable<LightNode> PerFrameLights { get; }
         /// <summary>
         /// Gets the post effects render cores for this frame
         /// </summary>
         /// <value>
         /// The post effects render cores.
         /// </value>
-        public abstract List<RenderCore> PerFrameGeneralCoresWithPostEffect { get; }
+        public abstract List<SceneNode> PerFrameNodesWithPostEffect { get; }
         /// <summary>
         /// Gets the per frame render cores.
         /// </summary>
         /// <value>
         /// The per frame render cores.
         /// </value>
-        public abstract List<RenderCore> PerFrameGeneralRenderCores { get; }
+        public abstract List<SceneNode> PerFrameGeneralNodes { get; }
 
         #region Configuration
         /// <summary>
@@ -480,6 +480,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private TimeSpan lastRenderTime = TimeSpan.Zero;
 
         private int updateCounter = 0; // Used to render at least twice. D3DImage sometimes not getting refresh if only render once.
+
+        protected volatile bool UpdateSceneGraphRequested = true;
         #endregion
 
         /// <summary>
@@ -504,10 +506,20 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Invalidates the render.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void InvalidateRender()
         {
             UpdateRequested = true;
             updateCounter = 0;
+        }
+        /// <summary>
+        /// Invalidates the scene graph, request a complete scene graph traverse during next frame.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void InvalidateSceneGraph()
+        {
+            UpdateSceneGraphRequested = true;
+            InvalidateRender();
         }
         /// <summary>
         /// Determines whether this instance can render.
@@ -543,6 +555,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     renderContext.Camera = viewport.CameraCore;
                 }
                 PreRender();
+                UpdateSceneGraphRequested = false;
                 try
                 {                    
                     if (renderBuffer.BeginDraw())
@@ -581,7 +594,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 {
                     PostRender();
                     IsBusy = false;
-                }
+                }                
                 lastRenderingDuration = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp() / Stopwatch.Frequency) - t0;
                 RenderStatistics.LatencyStatistics.Push(lastRenderingDuration.TotalMilliseconds);
                 OnRendered?.Invoke(this, EventArgs.Empty);
@@ -694,7 +707,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             RenderStatistics.Reset();
             lastRenderingDuration = TimeSpan.Zero;
             lastRenderTime = TimeSpan.Zero;
-            InvalidateRender();
+            InvalidateSceneGraph();
             StartRenderLoop?.Invoke(this, EventArgs.Empty);
         }
         /// <summary>

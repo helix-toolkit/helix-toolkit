@@ -14,6 +14,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using System.Collections.Generic;
     using Model;
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
@@ -112,7 +113,7 @@ namespace HelixToolkit.UWP.Core
             Color = global::SharpDX.Color.Blue;
         }
 
-        private readonly List<KeyValuePair<RenderCore, IEffectAttributes>> currentCores = new List<KeyValuePair<RenderCore, IEffectAttributes>>();
+        private readonly List<KeyValuePair<SceneNode, IEffectAttributes>> currentCores = new List<KeyValuePair<SceneNode, IEffectAttributes>>();
 
         /// <summary>
         /// Gets the model constant buffer description.
@@ -135,13 +136,13 @@ namespace HelixToolkit.UWP.Core
             {
                 deviceContext.DeviceContext.ClearDepthStencilView(context.RenderHost.DepthStencilBufferView, DepthStencilClearFlags.Stencil, 0, 0);
                 currentCores.Clear();
-                for (int i = 0; i < context.RenderHost.PerFrameGeneralCoresWithPostEffect.Count; ++i)
+                for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                 {
                     IEffectAttributes effect;
-                    var mesh = context.RenderHost.PerFrameGeneralCoresWithPostEffect[i];
+                    var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
                     if (mesh.TryGetPostEffect(EffectName, out effect))
                     {
-                        currentCores.Add(new KeyValuePair<RenderCore, IEffectAttributes>(mesh, effect));
+                        currentCores.Add(new KeyValuePair<SceneNode, IEffectAttributes>(mesh, effect));
                         context.CustomPassName = DefaultPassNames.EffectMeshXRayP1;
                         var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP1];
                         if (pass.IsNULL) { continue; }
@@ -179,10 +180,10 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                for (int i =0; i < context.RenderHost.PerFrameGeneralCoresWithPostEffect.Count; ++i)
+                for (int i =0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                 {
                     IEffectAttributes effect;
-                    var mesh = context.RenderHost.PerFrameGeneralCoresWithPostEffect[i];
+                    var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
                     if (mesh.TryGetPostEffect(EffectName, out effect))
                     {
                         object attribute;

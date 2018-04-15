@@ -335,7 +335,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
             }
-            InvalidateRender();
+            InvalidateSceneGraph();
         }
 
         /// <summary>
@@ -518,11 +518,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void InvalidateRender()
         {
-            var rh = this.renderHostInternal;
-            if (rh != null)
-            {
-                rh.InvalidateRender();
-            }
+            renderHostInternal?.InvalidateRender();
+        }
+        /// <summary>
+        /// Invalidates the scene graph.
+        /// </summary>
+        public void InvalidateSceneGraph()
+        {
+            renderHostInternal?.InvalidateSceneGraph();
         }
 
         /// <summary>

@@ -232,9 +232,9 @@ namespace HelixToolkit.UWP.Core
             deviceContext.DeviceContext.Rasterizer.SetViewport(0, 0, Width, Height);
 
             deviceContext.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
-            for (int i = 0; i < context.RenderHost.PerFrameGeneralRenderCores.Count; ++i)
+            for (int i = 0; i < context.RenderHost.PerFrameGeneralNodes.Count; ++i)
             {
-                var core = context.RenderHost.PerFrameGeneralRenderCores[i];
+                var core = context.RenderHost.PerFrameGeneralNodes[i];
                 if (core.IsThrowingShadow && core.RenderType == RenderType.Opaque)
                 {
                     core.Render(context, deviceContext);

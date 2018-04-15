@@ -60,11 +60,12 @@ namespace HelixToolkit.UWP
         /// <param name="results">The results.</param>
         /// <param name="stackCache">The stack cache.</param>
         public static void PreorderDFT(this List<SceneNode> nodes, IRenderContext context,
-            Func<SceneNode, IRenderContext, bool> condition, List<SceneNode> results,
+            Func<SceneNode, IRenderContext, bool> condition, List<KeyValuePair<int, SceneNode>> results,
             Stack<KeyValuePair<int, IList<SceneNode>>> stackCache = null)
         {
             var stack = stackCache == null ? new Stack<KeyValuePair<int, IList<SceneNode>>>(20) : stackCache;
             int i = -1;
+            int level = 0;
             IList<SceneNode> currNodes = nodes;
             while (true)
             {
@@ -74,12 +75,13 @@ namespace HelixToolkit.UWP
                     var item = currNodes[i];              
                     if (!condition(item, context))
                     { continue; }
-                    results.Add(item);
+                    results.Add(new KeyValuePair<int, SceneNode>(level, item));
                     var elements = item.Items;
                     if(elements == null || elements.Count == 0)
                     { continue; }
                     stack.Push(new KeyValuePair<int, IList<SceneNode>>(i, currNodes));
                     i = -1;
+                    ++level;
                     currNodes = elements;
                     length = currNodes.Count;
                 }
@@ -87,6 +89,7 @@ namespace HelixToolkit.UWP
                 { break; }
                 var prev = stack.Pop();
                 i = prev.Key;
+                --level;
                 currNodes = prev.Value;
             }
         }

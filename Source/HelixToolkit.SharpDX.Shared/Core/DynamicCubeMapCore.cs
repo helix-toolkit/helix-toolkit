@@ -162,7 +162,7 @@ namespace HelixToolkit.UWP.Core
         private Viewport viewport;
 
 
-        public DynamicCubeMapCore() : base(RenderType.PreProc)
+        public DynamicCubeMapCore() : base(RenderType.Opaque)
         {
         }
 
@@ -258,11 +258,11 @@ namespace HelixToolkit.UWP.Core
                 transforms.ViewProjection = transforms.View * transforms.ViewProjection;
                 ModelConstBuffer.UploadDataToBuffer(ctx, ref transforms);
 
-                for(int i =0; i< context.RenderHost.PerFrameGeneralRenderCores.Count; ++i)
+                for(int i =0; i< context.RenderHost.PerFrameGeneralNodes.Count; ++i)
                 {
-                    if (!IgnoredGuid.Contains(context.RenderHost.PerFrameGeneralRenderCores[i].GUID))
+                    if (!IgnoredGuid.Contains(context.RenderHost.PerFrameGeneralNodes[i].GUID))
                     {
-                        context.RenderHost.PerFrameGeneralRenderCores[i].Render(context, ctx);
+                        context.RenderHost.PerFrameGeneralNodes[i].Render(context, ctx);
                     }
                 }
                 commands[index] = ctx.DeviceContext.FinishCommandList(true);

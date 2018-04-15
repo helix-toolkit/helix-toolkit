@@ -203,31 +203,31 @@ namespace HelixToolkit.UWP
         /// </value>
         ID2DTargetProxy D2DTarget { get; }
         /// <summary>
-        /// Gets the current frame renderables for rendering.
+        /// Gets the current frame flattened scene graph
         /// </summary>
         /// <value>
         /// The per frame renderable.
         /// </value>
-        List<SceneNode> PerFrameRenderables { get; }
+        List<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get; }
         /// <summary>
-        /// Gets the current frame renderables for rendering.
+        /// Gets the current frame lights
         /// </summary>
         /// <value>
-        /// The per frame renderable.
+        /// The per frame lights.
         /// </value>
-        IEnumerable<LightCoreBase> PerFrameLights { get; }
+        IEnumerable<LightNode> PerFrameLights { get; }
         /// <summary>
-        /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameGeneralRenderCores"/>
+        /// Gets the per frame nodes with post effects. It is the subset of <see cref="PerFrameGeneralNodes"/>
         /// </summary>
         /// <value>
-        /// The per frame post effects cores.
+        /// Gets the per frame nodes with post effects.
         /// </value>
-        List<RenderCore> PerFrameGeneralCoresWithPostEffect { get; }
+        List<SceneNode> PerFrameNodesWithPostEffect { get; }
         /// <summary>
-        /// Gets the per frame render cores for normal rendering routine. <see cref="RenderType.Opaque"/>, <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
+        /// Gets the per frame nodes for normal rendering routine. <see cref="RenderType.Opaque"/>, <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
         /// <para>This does not include <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
-        List<RenderCore> PerFrameGeneralRenderCores { get; }
+        List<SceneNode> PerFrameGeneralNodes { get; }
         /// <summary>
         /// Starts the d3 d.
         /// </summary>
@@ -246,6 +246,10 @@ namespace HelixToolkit.UWP
         /// Invalidates the render.
         /// </summary>
         void InvalidateRender();
+        /// <summary>
+        /// Invalidates the scene graph.
+        /// </summary>
+        void InvalidateSceneGraph();
         /// <summary>
         /// Resizes
         /// </summary>

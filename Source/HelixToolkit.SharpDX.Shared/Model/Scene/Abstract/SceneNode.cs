@@ -198,7 +198,30 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return RenderCore.IsThrowingShadow;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the type of the render.
+        /// </summary>
+        /// <value>
+        /// The type of the render.
+        /// </value>
+        public RenderType RenderType
+        {
+            get
+            {
+                return RenderCore.RenderType;
+            }
+            set
+            {
+                RenderCore.RenderType = value;
+            }
+        }
+        /// <summary>
+        /// Gets the effects technique.
+        /// </summary>
+        /// <value>
+        /// The effects technique.
+        /// </value>
+        public IRenderTechnique EffectTechnique { get { return RenderCore.EffectTechnique; } }
         #region Handling Transforms
 
         /// <summary>
@@ -318,7 +341,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <summary>
         /// <para>Attaches the element to the specified host. To overide Attach, please override <see cref="OnAttach(IRenderHost)"/> function.</para>
         /// <para>To set different render technique instead of using technique from host, override <see cref="OnCreateRenderTechnique"/></para>
-        /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="InvalidateRender"/></para>
+        /// <para>Attach Flow: <see cref="OnCreateRenderTechnique(IRenderHost)"/> -> Set RenderHost -> Get Effect -> <see cref="OnAttach(IRenderHost)"/> -> <see cref="InvalidateSceneGraph"/></para>
         /// </summary>
         /// <param name="host">The host.</param>
         public void Attach(IRenderHost host)
@@ -344,7 +367,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 Attached();
                 OnAttached?.Invoke(this, EventArgs.Empty);
             }
-            InvalidateRender();
+            InvalidateSceneGraph();
         }
 
         /// <summary>
@@ -375,6 +398,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 RenderCore.Detach();
                 OnDetach();
                 OnDetached?.Invoke(this, EventArgs.Empty);
+                InvalidateSceneGraph();
             }
         }
 
@@ -392,12 +416,21 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         /// <summary>
-        /// Tries to invalidate the current render.
+        /// Tries to invalidate the current render, causes re-render
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void InvalidateRender()
         {
             renderHost?.InvalidateRender();
+        }
+
+        /// <summary>
+        /// Invalidates the scene graph. Use this if scene graph has been changed.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void InvalidateSceneGraph()
+        {
+            renderHost?.InvalidateSceneGraph();
         }
 
         /// <summary>
@@ -431,6 +464,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             return Visible && IsAttached;
         }
 
+        /// <summary>
+        /// Renders the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="deviceContext">The device context.</param>
+        public void Render(IRenderContext context, DeviceContextProxy deviceContext)
+        {
+            RenderCore.Render(context, deviceContext);
+        }
         /// <summary>
         /// View frustum test.
         /// </summary>
@@ -625,6 +667,87 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         #endregion IBoundable
 
+        #region POST EFFECT        
+        /// <summary>
+        /// Gets or sets the post effects.
+        /// </summary>
+        /// <value>
+        /// The post effects.
+        /// </value>
+        private readonly Dictionary<string, IEffectAttributes> postEffectNames = new Dictionary<string, IEffectAttributes>();
+
+        /// <summary>
+        /// Gets the post effect names.
+        /// </summary>
+        /// <value>
+        /// The post effect names.
+        /// </value>
+        public IEnumerable<string> PostEffectNames
+        {
+            get { return postEffectNames.Keys; }
+        }
+        /// <summary>
+        /// Gets a value indicating whether this instance has any post effect.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has any post effect; otherwise, <c>false</c>.
+        /// </value>
+        public bool HasAnyPostEffect { get { return postEffectNames.Count > 0; } }
+        /// <summary>
+        /// Adds the post effect.
+        /// </summary>
+        /// <param name="effect">The effect.</param>
+        public void AddPostEffect(IEffectAttributes effect)
+        {
+            if (postEffectNames.ContainsKey(effect.EffectName))
+            {
+                return;
+            }
+            postEffectNames.Add(effect.EffectName, effect);
+            InvalidateRender();
+        }
+        /// <summary>
+        /// Removes the post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        public void RemovePostEffect(string effectName)
+        {
+            if (postEffectNames.Remove(effectName))
+            {
+                InvalidateRender();
+            }
+        }
+        /// <summary>
+        /// Determines whether [has post effect] [the specified effect name].
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        /// <returns>
+        ///   <c>true</c> if [has post effect] [the specified effect name]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasPostEffect(string effectName)
+        {
+            return postEffectNames.ContainsKey(effectName);
+        }
+        /// <summary>
+        /// Tries the get post effect.
+        /// </summary>
+        /// <param name="effectName">Name of the effect.</param>
+        /// <param name="effect">The effect.</param>
+        /// <returns></returns>
+        public bool TryGetPostEffect(string effectName, out IEffectAttributes effect)
+        {
+            return postEffectNames.TryGetValue(effectName, out effect);
+        }
+        /// <summary>
+        /// Clears the post effect.
+        /// </summary>
+        public void ClearPostEffect()
+        {
+            postEffectNames.Clear();
+            InvalidateRender();
+        }
+        #endregion
+
         protected override void OnDispose(bool disposeManagedResources)
         {
             if (!Items.IsReadOnly)
@@ -663,6 +786,27 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             backingField = value;
             this.RaisePropertyChanged(propertyName);
             InvalidateRender();
+            return true;
+        }
+
+        /// <summary>
+        /// Sets the affects scene graph.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="backingField">The backing field.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
+        protected bool SetAffectsSceneGraph<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            this.RaisePropertyChanged(propertyName);
+            InvalidateSceneGraph();
             return true;
         }
     }

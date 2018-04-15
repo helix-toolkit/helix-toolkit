@@ -353,15 +353,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 if (Set(ref postEffects, value))
                 {
-                    var core = RenderCore;
-                    core.ClearPostEffect();
+                    ClearPostEffect();
                     if (value is string effects)
                     {
                         if (!string.IsNullOrEmpty(effects))
                         {
                             foreach (var effect in EffectAttributes.Parse(effects))
                             {
-                                core.AddPostEffect(effect);
+                                AddPostEffect(effect);
                             }
                         }
                     }
