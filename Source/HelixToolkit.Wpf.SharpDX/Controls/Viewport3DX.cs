@@ -29,6 +29,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model;
     using Model.Scene;
     using Model.Scene2D;
+    using System.Runtime.CompilerServices;
+
     /// <summary>
     /// Provides a Viewport control.
     /// </summary>
@@ -335,7 +337,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     }
                 }
             }
-            InvalidateSceneGraph();
         }
 
         /// <summary>
@@ -516,6 +517,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Tries to invalidate the current render.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void InvalidateRender()
         {
             renderHostInternal?.InvalidateRender();
@@ -523,6 +525,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Invalidates the scene graph.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void InvalidateSceneGraph()
         {
             renderHostInternal?.InvalidateSceneGraph();
