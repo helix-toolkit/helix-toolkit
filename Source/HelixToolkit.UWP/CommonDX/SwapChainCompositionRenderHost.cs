@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP.CommonDX
         /// Initializes a new instance of the <see cref="SwapChainRenderHost"/> class.
         /// </summary>
         /// <param name="createRenderer">The create renderer.</param>
-        public SwapChainCompositionRenderHost(Func<Device, IRenderer> createRenderer) : base(createRenderer)
+        public SwapChainCompositionRenderHost(Func<IDevice3DResources, IRenderer> createRenderer) : base(createRenderer)
         {
         }
         /// <summary>

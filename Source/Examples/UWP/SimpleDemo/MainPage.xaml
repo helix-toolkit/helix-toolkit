@@ -37,8 +37,9 @@
                 <hx:DynamicReflectionMap3D>
                     <hx:MeshGeometryModel3D
                     CullMode="Back"
-                    Geometry="{Binding Geometry}"
-                    IsThrowingShadow="True"
+                    Geometry="{Binding Sphere}"
+                    IsThrowingShadow="True" 
+                    RenderNormalMap="False"
                     Material="{Binding Material1}"
                     RenderEnvironmentMap="True"
                     RenderShadowMap="True" />
