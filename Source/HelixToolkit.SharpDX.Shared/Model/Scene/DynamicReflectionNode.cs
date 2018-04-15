@@ -52,6 +52,57 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IDynamicReflector).FaceSize;
             }
         }
+        /// <summary>
+        /// Gets or sets the near field.
+        /// </summary>
+        /// <value>
+        /// The near field.
+        /// </value>
+        public float NearField
+        {
+            set
+            {
+                (RenderCore as IDynamicReflector).NearField = value;
+            }
+            get
+            {
+                return (RenderCore as IDynamicReflector).NearField;
+            }
+        }
+        /// <summary>
+        /// Gets or sets the far field.
+        /// </summary>
+        /// <value>
+        /// The far field.
+        /// </value>
+        public float FarField
+        {
+            set
+            {
+                (RenderCore as IDynamicReflector).FarField = value;
+            }
+            get
+            {
+                return (RenderCore as IDynamicReflector).FarField;
+            }
+        }
+        /// <summary>
+        /// Gets or sets a value indicating whether this coordinate system is left handed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this coordinate system is left handed; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsLeftHanded
+        {
+            set
+            {
+                (RenderCore as IDynamicReflector).IsLeftHanded = value;
+            }
+            get
+            {
+                return (RenderCore as IDynamicReflector).IsLeftHanded;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicReflectionNode"/> class.

@@ -24,6 +24,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class DynamicCubeMapCore : RenderCoreBase<GlobalTransformStruct>, IDynamicReflector
     {
+        #region Properties
         public HashSet<Guid> IgnoredGuid { get; } = new HashSet<Guid>();
         private ShaderResourceViewProxy cubeMap;
         public ShaderResourceViewProxy CubeMap
@@ -45,7 +46,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(Set(ref faceSize, value) && IsAttached)
+                if (Set(ref faceSize, value) && IsAttached)
                 {
                     var effect = this.EffectTechnique;
                     Detach();
@@ -122,16 +123,22 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private bool leftHanded = false;
-        public bool LeftHanded
+        private bool isleftHanded = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether this coordinate system is left handed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this coordinate system is left handed; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsLeftHanded
         {
             set
             {
-                SetAffectsRender(ref leftHanded, value);
+                SetAffectsRender(ref isleftHanded, value);
             }
             get
             {
-                return leftHanded;
+                return isleftHanded;
             }
         }
 
@@ -196,7 +203,8 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The name of the shader cube texture sampler.
         /// </value>
-        public string ShaderCubeTextureSamplerName { set; get; } = DefaultSamplerStateNames.CubeMapSampler;
+        public string ShaderCubeTextureSamplerName { set; get; } = DefaultSamplerStateNames.CubeMapSampler; 
+        #endregion
 
         private int cubeTextureSlot;
         private int textureSamplerSlot;
@@ -379,8 +387,8 @@ namespace HelixToolkit.UWP.Core
 
             for (int i = 0; i < 6; ++i)
             {
-                cubeFaceCameras.Cameras[i].View = (LeftHanded ? Matrix.LookAtLH(camPos, targets[i], upVectors[i]) : Matrix.LookAtRH(camPos, targets[i], upVectors[i])) * Matrix.Scaling(-1, 1, 1);
-                cubeFaceCameras.Cameras[i].Projection = LeftHanded ? Matrix.PerspectiveFovLH((float)Math.PI * 0.5f, 1, NearField, FarField)
+                cubeFaceCameras.Cameras[i].View = (IsLeftHanded ? Matrix.LookAtLH(camPos, targets[i], upVectors[i]) : Matrix.LookAtRH(camPos, targets[i], upVectors[i])) * Matrix.Scaling(-1, 1, 1);
+                cubeFaceCameras.Cameras[i].Projection = IsLeftHanded ? Matrix.PerspectiveFovLH((float)Math.PI * 0.5f, 1, NearField, FarField)
                     : Matrix.PerspectiveFovRH((float)Math.PI * 0.5f, 1, NearField, FarField);
             }
         }
