@@ -68,6 +68,7 @@ namespace HelixToolkit.UWP.Render
         /// <param name="context">The context.</param>
         public void Put(DeviceContextProxy context)
         {
+            context.DeviceContext.OutputMerger.ResetTargets();
             contextPool.Add(context);
         }
         /// <summary>

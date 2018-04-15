@@ -359,8 +359,7 @@ namespace HelixToolkit.UWP.Core
                         context.RenderHost.PerFrameGeneralNodes[i].Render(context, ctx);
                     }
                 }
-                commands[index] = ctx.DeviceContext.FinishCommandList(true);
-                ctx.DeviceContext.OutputMerger.ResetTargets();
+                commands[index] = ctx.DeviceContext.FinishCommandList(false);
                 contextPool.Put(ctx);
             }
 #if !TEST
