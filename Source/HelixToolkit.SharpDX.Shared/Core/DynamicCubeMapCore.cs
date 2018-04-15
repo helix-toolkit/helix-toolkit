@@ -54,12 +54,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (Set(ref faceSize, value) && IsAttached)
-                {
-                    var effect = this.EffectTechnique;
-                    Detach();
-                    Attach(effect);
-                }
+                SetAffectsRender(ref faceSize, value);
             }
             get
             {
@@ -77,7 +72,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (Set(ref defaultPassName, value) && IsAttached)
+                if (SetAffectsRender(ref defaultPassName, value) && IsAttached)
                 {
                     DefaultShaderPass = EffectTechnique[value];
                 }
@@ -97,7 +92,7 @@ namespace HelixToolkit.UWP.Core
         {
             private set
             {
-                if (Set(ref defaultShaderPass, value))
+                if (SetAffectsRender(ref defaultShaderPass, value))
                 {
                     cubeTextureSlot = value.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
                     textureSamplerSlot = value.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
@@ -272,54 +267,67 @@ namespace HelixToolkit.UWP.Core
             return new ConstantBufferDescription(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
         }
 
+        private void CreateCubeMapResources()
+        {
+            if(textureDesc.Width == faceSize && cubeMap != null && !cubeMap.IsDisposed)
+            {
+                return;
+            }
+            textureDesc.Width = textureDesc.Height = dsvTextureDesc.Width = dsvTextureDesc.Height = FaceSize;
+
+            RemoveAndDispose(ref cubeMap);
+            cubeMap = Collect(new ShaderResourceViewProxy(Device, textureDesc));
+
+            var srvDesc = new ShaderResourceViewDescription()
+            {
+                Format = textureDesc.Format,
+                Dimension = global::SharpDX.Direct3D.ShaderResourceViewDimension.TextureCube,
+                TextureCube = new ShaderResourceViewDescription.TextureCubeResource() { MostDetailedMip = 0, MipLevels = -1 }
+            };
+            cubeMap.CreateView(srvDesc);
+
+            var rtsDesc = new RenderTargetViewDescription()
+            {
+                Format = textureDesc.Format,
+                Dimension = RenderTargetViewDimension.Texture2DArray,
+                Texture2DArray = new RenderTargetViewDescription.Texture2DArrayResource() { MipSlice = 0, FirstArraySlice = 0, ArraySize = 1 }
+            };
+
+            for (int i = 0; i < 6; ++i)
+            {
+                RemoveAndDispose(ref cubeRTVs[i]);
+                rtsDesc.Texture2DArray.FirstArraySlice = i;
+                cubeRTVs[i] = Collect(new RenderTargetView(Device, CubeMap.Resource, rtsDesc));
+            }
+
+            RemoveAndDispose(ref cubeDSV);
+            cubeDSV = Collect(new ShaderResourceViewProxy(Device, dsvTextureDesc));
+            var dsvDesc = new DepthStencilViewDescription()
+            {
+                Format = dsvTextureDesc.Format,
+                Dimension = DepthStencilViewDimension.Texture2DArray,
+                Flags = DepthStencilViewFlags.None,
+                Texture2DArray = new DepthStencilViewDescription.Texture2DArrayResource() { MipSlice = 0, FirstArraySlice = 0, ArraySize = 1 }
+            };
+
+            for (int i = 0; i < 6; ++i)
+            {
+                RemoveAndDispose(ref cubeDSVs[i]);
+                dsvDesc.Texture2DArray.FirstArraySlice = i;
+                cubeDSVs[i] = Collect(new DepthStencilView(Device, cubeDSV.Resource, dsvDesc));
+            }
+
+            viewport = new Viewport(0, 0, FaceSize, FaceSize);
+        }
+
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if (base.OnAttach(technique))
             {
                 DefaultShaderPass = technique[DefaultShaderPassName];
-                textureDesc.Width = textureDesc.Height = dsvTextureDesc.Width = dsvTextureDesc.Height = FaceSize;
-                cubeMap = Collect(new ShaderResourceViewProxy(Device, textureDesc));
-
-                var srvDesc = new ShaderResourceViewDescription()
-                {
-                    Format = textureDesc.Format,
-                    Dimension = global::SharpDX.Direct3D.ShaderResourceViewDimension.TextureCube,
-                    TextureCube = new ShaderResourceViewDescription.TextureCubeResource() { MostDetailedMip = 0, MipLevels = -1 }
-                };
-                cubeMap.CreateView(srvDesc);
-
-                var rtsDesc = new RenderTargetViewDescription()
-                {
-                    Format = textureDesc.Format,
-                    Dimension = RenderTargetViewDimension.Texture2DArray,
-                    Texture2DArray = new RenderTargetViewDescription.Texture2DArrayResource() { MipSlice = 0, FirstArraySlice = 0, ArraySize = 1 }
-                };
-
-                for (int i = 0; i < 6; ++i)
-                {
-                    rtsDesc.Texture2DArray.FirstArraySlice = i;
-                    cubeRTVs[i] = Collect(new RenderTargetView(Device, CubeMap.Resource, rtsDesc));
-                }
-
-                cubeDSV = Collect(new ShaderResourceViewProxy(Device, dsvTextureDesc));
-                var dsvDesc = new DepthStencilViewDescription()
-                {
-                    Format = dsvTextureDesc.Format,
-                    Dimension = DepthStencilViewDimension.Texture2DArray,
-                    Flags = DepthStencilViewFlags.None,
-                    Texture2DArray = new DepthStencilViewDescription.Texture2DArrayResource() { MipSlice = 0, FirstArraySlice = 0, ArraySize = 1 }
-                };
-
-                for (int i = 0; i < 6; ++i)
-                {
-                    dsvDesc.Texture2DArray.FirstArraySlice = i;
-                    cubeDSVs[i] = Collect(new DepthStencilView(Device, cubeDSV.Resource, dsvDesc));
-                }
-
-                viewport = new Viewport(0, 0, FaceSize, FaceSize);
-
                 contextPool = technique.EffectsManager.DeviceContextPool;
                 textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
+                CreateCubeMapResources();
                 return true;
             }
             else
@@ -333,6 +341,7 @@ namespace HelixToolkit.UWP.Core
             contextPool = null;
             cubeMap = null;
             cubeDSV = null;
+            textureDesc.Width = textureDesc.Height = dsvTextureDesc.Width = dsvTextureDesc.Height = 0;
             for (int i = 0; i < 6; ++i)
             {
                 cubeRTVs[i] = null;
@@ -343,6 +352,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
+            CreateCubeMapResources();
             context.IsInvertCullMode = true;
 #if TEST
             for (int index = 0; index < 6; ++index)
