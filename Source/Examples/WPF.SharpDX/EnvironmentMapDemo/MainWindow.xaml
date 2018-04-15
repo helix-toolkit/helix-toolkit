@@ -33,9 +33,10 @@
             Grid.Row="0"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
+            BackgroundColor="Black"
             EffectsManager="{Binding EffectsManager}"
             RenderTechnique="{Binding RenderTechnique}"
-            ShowCoordinateSystem="True"
+            ShowCoordinateSystem="True" EnableSwapChainRendering="True" EnableD2DRendering="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False">
@@ -51,15 +52,35 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
-            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="{Binding DirectionalLightColor}" />
+            <hx:AmbientLight3D Color="#A5A5A5" />
+            <hx:DirectionalLight3D Direction="0,-1, -0.5" Color="{Binding DirectionalLightColor}" />
+            <!--<hx:DirectionalLight3D Direction="1, -1, -1" Color="{Binding DirectionalLightColor}" />
+            <hx:DirectionalLight3D Direction="1,1,1" Color="{Binding DirectionalLightColor}" />-->
             <hx:EnvironmentMap3D x:Name="envMap" Texture="{Binding SkyboxTexture}" />
+            <hx:DynamicReflectionMap3D>
+                <hx:MeshGeometryModel3D
+                    x:Name="model"
+                    Geometry="{Binding Model}"
+                    Material="{Binding ModelMaterial}"
+                    RenderEnvironmentMap="True"
+                    Transform="{Binding ModelTransform}" />                
+            </hx:DynamicReflectionMap3D>
+
             <hx:MeshGeometryModel3D
-                x:Name="model"
-                Geometry="{Binding Model}"
-                Material="{Binding ModelMaterial}"
+                Geometry="{Binding Model1}" CullMode="Back"
+                Material="{Binding ModelMaterial1}"
                 RenderEnvironmentMap="True"
-                Transform="{Binding ModelTransform}" />
+                Instances="{Binding Instances1}"/>
+            <hx:MeshGeometryModel3D
+                Geometry="{Binding Model1}" CullMode="Back"
+                Material="{Binding ModelMaterial2}"
+                RenderEnvironmentMap="True"
+                Instances="{Binding Instances2}"/>
+            <hx:MeshGeometryModel3D
+                Geometry="{Binding Model1}" CullMode="Back"
+                Material="{Binding ModelMaterial3}"
+                RenderEnvironmentMap="True"
+                Instances="{Binding Instances3}"/>
         </hx:Viewport3DX>
 
         <StackPanel>

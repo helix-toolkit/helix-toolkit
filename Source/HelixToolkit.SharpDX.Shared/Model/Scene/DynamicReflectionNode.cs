@@ -17,6 +17,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
     public class DynamicReflectionNode : GroupNode, IDynamicReflector
     {
+        /// <summary>
+        /// Gets or sets the center.
+        /// </summary>
+        /// <value>
+        /// The center.
+        /// </value>
         public Vector3 Center
         {
             set
@@ -29,6 +35,27 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
+        /// <summary>
+        /// Gets or sets the size of the face.
+        /// </summary>
+        /// <value>
+        /// The size of the face.
+        /// </value>
+        public int FaceSize
+        {
+            set
+            {
+                (RenderCore as IDynamicReflector).FaceSize = value;
+            }
+            get
+            {
+                return (RenderCore as IDynamicReflector).FaceSize;
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicReflectionNode"/> class.
+        /// </summary>
         public DynamicReflectionNode()
         {
             this.OnAddChildNode += DynamicReflectionNode_OnAddChildNode;

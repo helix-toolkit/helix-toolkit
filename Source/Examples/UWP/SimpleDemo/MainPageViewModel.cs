@@ -136,6 +136,7 @@ namespace SimpleDemoW10
             FloorModel = builder.ToMesh();
 
             FloorMaterial = PhongMaterials.Obsidian;
+            FloorMaterial.ReflectiveColor = Color.Silver;
 
             EnvironmentMap = LoadTexture("Cubemap_Grandcanyon.dds");
 

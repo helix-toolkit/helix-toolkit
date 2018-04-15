@@ -40,10 +40,23 @@ namespace HelixToolkit.UWP.Core
         // The DSVs, one for each face of cubemap
         private DepthStencilView[] cubeDSVs = new DepthStencilView[6];
 
+        private int faceSize = 256;
         public int FaceSize
         {
-            set; get;
-        } = 256;
+            set
+            {
+                if(Set(ref faceSize, value) && IsAttached)
+                {
+                    var effect = this.EffectTechnique;
+                    Detach();
+                    Attach(effect);
+                }
+            }
+            get
+            {
+                return faceSize;
+            }
+        }
 
         private string defaultPassName = DefaultPassNames.Default;
         /// <summary>
@@ -169,6 +182,7 @@ namespace HelixToolkit.UWP.Core
         {
             set; get;
         }
+
         /// <summary>
         /// Gets or sets the name of the shader cube texture.
         /// </summary>
@@ -366,7 +380,7 @@ namespace HelixToolkit.UWP.Core
             for (int i = 0; i < 6; ++i)
             {
                 cubeFaceCameras.Cameras[i].View = (LeftHanded ? Matrix.LookAtLH(camPos, targets[i], upVectors[i]) : Matrix.LookAtRH(camPos, targets[i], upVectors[i])) * Matrix.Scaling(-1, 1, 1);
-                cubeFaceCameras.Cameras[i].Projection = LeftHanded ? Matrix.PerspectiveFovLH((float)Math.PI * 0.5f, 1, NearField, FarField) 
+                cubeFaceCameras.Cameras[i].Projection = LeftHanded ? Matrix.PerspectiveFovLH((float)Math.PI * 0.5f, 1, NearField, FarField)
                     : Matrix.PerspectiveFovRH((float)Math.PI * 0.5f, 1, NearField, FarField);
             }
         }

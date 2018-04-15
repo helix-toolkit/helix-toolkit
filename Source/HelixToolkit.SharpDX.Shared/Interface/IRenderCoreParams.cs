@@ -118,6 +118,7 @@ namespace HelixToolkit.UWP.Core
     public interface IDynamicReflector
     {
         Vector3 Center { set; get; }
+        int FaceSize { set; get; }
         void BindCubeMap(DeviceContextProxy deviceContext);
         void UnBindCubeMap(DeviceContextProxy deviceContext);
     }
