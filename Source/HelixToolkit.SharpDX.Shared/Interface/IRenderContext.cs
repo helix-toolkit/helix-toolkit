@@ -166,6 +166,13 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   <c>true</c> if [update octree]; otherwise, <c>false</c>.
         /// </value>
         bool AutoUpdateOctree { get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is invert cull mode.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is invert cull mode; otherwise, <c>false</c>.
+        /// </value>
+        bool IsInvertCullMode { set; get; }
     }
     /// <summary>
     /// Contains the shared resources across all renderables. 

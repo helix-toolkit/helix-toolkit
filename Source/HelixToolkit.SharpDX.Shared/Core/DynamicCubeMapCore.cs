@@ -343,6 +343,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
+            context.IsInvertCullMode = true;
 #if TEST
             for (int index = 0; index < 6; ++index)
 #else
@@ -380,6 +381,7 @@ namespace HelixToolkit.UWP.Core
 #if !TEST
             );
 #endif
+            context.IsInvertCullMode = false;
             for (int i = 0; i < commands.Length; ++i)
             {
                 Device.ImmediateContext.ExecuteCommandList(commands[i], true);
