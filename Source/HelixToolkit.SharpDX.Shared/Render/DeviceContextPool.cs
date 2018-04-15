@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 
 using System.Collections.Concurrent;
+using SharpDX.Direct3D11;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 #endif
