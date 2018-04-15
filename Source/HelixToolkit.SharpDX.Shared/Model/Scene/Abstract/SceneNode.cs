@@ -439,12 +439,16 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="context">The time since last update.</param>
         public virtual void Update(IRenderContext context)
         {
+            IsRenderable = CanRender(context);
+            if (!IsRenderable)
+            {
+                return;
+            }
             if (needMatrixUpdate || forceUpdateTransform)
             {
                 TotalModelMatrix = modelMatrix * parentMatrix;
                 needMatrixUpdate = false;
-            }
-            IsRenderable = CanRender(context);
+            }           
         }
 
         /// <summary>
