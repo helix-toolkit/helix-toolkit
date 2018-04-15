@@ -47,9 +47,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public override void RenderScene(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
-        {          
-            if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, RenderType.Opaque, commandList))
+        /// <returns>Number of node has been rendered</returns>
+        public override int RenderScene(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        {
+            int counter = 0;
+            if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, RenderType.Opaque, commandList, out counter))
             {
                 RenderParameter param = parameter;
                 renderOthersTask = Task.Run(() =>
@@ -75,10 +77,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         RemoveAndDispose(ref postCommandList[i]);
                     }
                 }
+                return counter;
             }
             else
             {
-                base.RenderScene(context, renderables, ref parameter);
+                return base.RenderScene(context, renderables, ref parameter);
             }
         }
 
@@ -86,7 +89,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         private void RenderOthers(List<SceneNode> list, RenderType filter, IRenderContext context, IDeviceContextPool deviceContextPool,
             ref RenderParameter parameter,
-            CommandList[] commandsArray,int idx)
+            CommandList[] commandsArray, int idx)
         {
             var deviceContext = deviceContextPool.Get();
             SetRenderTargets(deviceContext, ref parameter);

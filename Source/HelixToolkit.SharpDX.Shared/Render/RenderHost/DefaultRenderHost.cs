@@ -107,6 +107,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private Task asyncTask;
         private Task getTriangleCountTask;
         private Task getPostEffectCoreTask;
+
+        private int numRendered = 0;
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
         /// </summary>
@@ -143,7 +145,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 Debug.WriteLine("Flatten Scene Graph");
 #endif
             }
-            var frustum = context.BoundingFrustum;
+
             for(int i = 0; i < perFrameFlattenedScene.Count;)
             {
                 var renderable = perFrameFlattenedScene[i];
@@ -172,10 +174,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     case RenderType.Opaque:
                     case RenderType.Transparent:
                     case RenderType.Particle:
-                        if (context.EnableBoundingFrustum && !renderable.Value.TestViewFrustum(ref frustum))
-                        {
-                            break;
-                        }
                         generalNodes.Add(renderable.Value);
                         if(renderable.Value.RenderCore.NeedUpdate) // Run update function at the beginning of actual rendering.
                         {
@@ -272,11 +270,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             renderer.SetRenderTargets(ref renderParameter);
             renderer.UpdateGlobalVariables(RenderContext, lightNodes, ref renderParameter);
             renderer.RenderPreProc(RenderContext, preProcNodes, ref renderParameter);
-            renderer.RenderScene(RenderContext, generalNodes, ref renderParameter);
+            numRendered += renderer.RenderScene(RenderContext, generalNodes, ref renderParameter);
             getPostEffectCoreTask?.Wait();
             getPostEffectCoreTask = null;
             renderer.RenderPostProc(RenderContext, postProcNodes, ref renderParameter);
             renderer.RenderPostProc(RenderContext, screenSpacedNodes, ref renderParameter);
+            numRendered += preProcNodes.Count + postProcNodes.Count + screenSpacedNodes.Count;
         }
 
         /// <summary>
@@ -315,7 +314,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 getTriangleCountTask?.Wait();
                 RenderStatistics.NumModel3D = perFrameFlattenedScene.Count;
-                RenderStatistics.NumCore3D = preProcNodes.Count + generalNodes.Count + postProcNodes.Count + screenSpacedNodes.Count;
+                RenderStatistics.NumCore3D = numRendered;
             }
             for (int i = 0; i < viewportRenderable2D.Count; ++i)
             {
@@ -336,6 +335,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void Clear(bool clearFrameRenderables)
         {
+            numRendered = 0;
             viewportRenderables.Clear();
             if (clearFrameRenderables)
             {

@@ -112,7 +112,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderScene(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
+        /// <returns>Number of node has been rendered</returns>
+        int RenderScene(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
         /// <summary>
         /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderScene(IRenderContext, List{SceneNode}, ref RenderParameter)"/>
         /// <para>Warning: Dependency properties are thread affinity. Do not get/set any dependency property in this function.</para>

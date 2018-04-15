@@ -108,12 +108,19 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderScene(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        /// <returns>Number of node has been rendered</returns>
+        public virtual int RenderScene(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
+            int renderedCount = 0;
             int count = renderables.Count;
             filters.Clear();
+            var frustum = context.BoundingFrustum;
             for (int i = 0; i < count; ++i)
             {
+                if (context.EnableBoundingFrustum && !renderables[i].TestViewFrustum(ref frustum))
+                {
+                    continue;
+                }
                 if (renderables[i].RenderCore.RenderType == RenderType.Opaque)
                 {
                     renderables[i].RenderCore.Render(context, ImmediateContext);
@@ -122,6 +129,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 {
                     filters.Add(renderables[i]);
                 }
+                ++renderedCount;
             }
             count = filters.Count;
             for (int i = 0; i < count; ++i)
@@ -138,6 +146,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     filters[i].RenderCore.Render(context, ImmediateContext);
                 }
             }
+            return renderedCount;
         }
         /// <summary>
         /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IRenderContext, List{SceneNode})"/>
