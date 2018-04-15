@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <summary>
         ///
         /// </summary>
-        public Guid GUID { get; } = Guid.NewGuid();
+        public Guid GUID { get { return RenderCore.GUID; } }
 
         private Matrix totalModelMatrix = Matrix.Identity;
         protected bool forceUpdateTransform = false;
@@ -221,7 +221,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <value>
         /// The effects technique.
         /// </value>
-        public IRenderTechnique EffectTechnique { get { return RenderCore.EffectTechnique; } }
+        public IRenderTechnique EffectTechnique { get { return renderTechnique; } }
         #region Handling Transforms
 
         /// <summary>

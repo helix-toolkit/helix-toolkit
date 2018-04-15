@@ -297,16 +297,29 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void UpdatePerFrameData()
         {
-            if (matrixChanged)
+            UpdatePerFrameData(true, true);
+        }
+        /// <summary>
+        /// Call to update constant buffer for per frame
+        /// </summary>
+        public void UpdatePerFrameData(bool updateGlobalTransform, bool updateLights)
+        {
+            if (updateGlobalTransform)
             {
-                globalTransform.View = ViewMatrix;
-                globalTransform.Projection = ProjectionMatrix;
-                globalTransform.ViewProjection = globalTransform.View * globalTransform.Projection;
-                screenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;                        
-                matrixChanged = false;
+                if (matrixChanged)
+                {
+                    globalTransform.View = ViewMatrix;
+                    globalTransform.Projection = ProjectionMatrix;
+                    globalTransform.ViewProjection = globalTransform.View * globalTransform.Projection;
+                    screenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;                        
+                    matrixChanged = false;
+                }
+                cbuffer.UploadDataToBuffer(DeviceContext, ref globalTransform);
             }
-            cbuffer.UploadDataToBuffer(DeviceContext, ref globalTransform);
-            LightScene.UploadToBuffer(DeviceContext);
+            if (updateLights)
+            {
+                LightScene.UploadToBuffer(DeviceContext);
+            }
         }
     }
 }

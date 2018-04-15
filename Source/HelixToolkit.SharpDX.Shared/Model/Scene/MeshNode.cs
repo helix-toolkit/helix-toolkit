@@ -20,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// <summary>
     ///
     /// </summary>
-    public class MeshNode : MaterialGeometryNode
+    public class MeshNode : MaterialGeometryNode, IDynamicReflectable
     {
         #region Properties
         private bool frontCCW = true;
@@ -245,7 +245,25 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             get { return (RenderCore as IMeshRenderParams).RenderWireframe; }
             set { (RenderCore as IMeshRenderParams).RenderWireframe = value; }
-        } 
+        }
+
+        /// <summary>
+        /// Gets or sets the dynamic reflector.
+        /// </summary>
+        /// <value>
+        /// The dynamic reflector.
+        /// </value>
+        public IDynamicReflector DynamicReflector
+        {
+            set
+            {
+                (RenderCore as IDynamicReflectable).DynamicReflector = value;
+            }
+            get
+            {
+                return (RenderCore as IDynamicReflectable).DynamicReflector;
+            }
+        }
         #endregion
 
         /// <summary>

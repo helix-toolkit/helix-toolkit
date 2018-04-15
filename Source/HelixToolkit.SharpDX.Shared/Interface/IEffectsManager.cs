@@ -19,6 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using ShaderManager;
     using Shaders;
     using System;
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -99,6 +100,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         IConstantBufferPool ConstantBufferPool { get; }
+        /// <summary>
+        /// Gets the device context pool.
+        /// </summary>
+        /// <value>
+        /// The device context pool.
+        /// </value>
+        IDeviceContextPool DeviceContextPool { get; }
     }
 
     /// <summary>

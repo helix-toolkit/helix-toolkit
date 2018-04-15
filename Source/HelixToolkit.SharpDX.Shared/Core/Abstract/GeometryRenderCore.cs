@@ -25,6 +25,7 @@ namespace HelixToolkit.UWP.Core
         /// 
         /// </summary>
         public RasterizerStateProxy RasterState { get { return rasterState; } }
+
         /// <summary>
         /// 
         /// </summary>

@@ -105,6 +105,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         void UpdatePerFrameData();
         /// <summary>
+        /// Updates the per frame data.
+        /// </summary>
+        /// <param name="updateGlobalTransform">if set to <c>true</c> [update global transform].</param>
+        /// <param name="updateLights">if set to <c>true</c> [update lights].</param>
+        void UpdatePerFrameData(bool updateGlobalTransform, bool updateLights);
+        /// <summary>
         /// Gets or sets a value indicating whether this instance is shadow pass.
         /// </summary>
         /// <value>

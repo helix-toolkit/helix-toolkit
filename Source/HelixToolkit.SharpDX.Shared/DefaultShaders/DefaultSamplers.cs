@@ -98,9 +98,9 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static SamplerStateDescription CubeSampler = new SamplerStateDescription()
         {
-            AddressU = TextureAddressMode.Mirror,
-            AddressV = TextureAddressMode.Mirror,
-            AddressW = TextureAddressMode.Mirror,
+            AddressU = TextureAddressMode.Clamp,
+            AddressV = TextureAddressMode.Clamp,
+            AddressW = TextureAddressMode.Clamp,
             Filter = Filter.MinMagLinearMipPoint,
             MaximumAnisotropy = 2,
             MaximumLod = float.MaxValue
