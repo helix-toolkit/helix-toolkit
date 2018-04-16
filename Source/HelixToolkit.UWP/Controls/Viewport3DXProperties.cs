@@ -184,7 +184,11 @@ namespace HelixToolkit.UWP
         /// The model up direction property
         /// </summary>
         public static readonly DependencyProperty ModelUpDirectionProperty = DependencyProperty.Register(
-            "ModelUpDirection", typeof(Vector3), typeof(Viewport3DX), new PropertyMetadata(new Vector3(0, 1, 0)));
+            "ModelUpDirection", typeof(Vector3), typeof(Viewport3DX), new PropertyMetadata(new Vector3(0, 1, 0), (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                viewport.CameraController.ModelUpDirection = (Vector3)e.NewValue;
+            }));
 
         /// <summary>
         /// Gets or sets the model up direction.

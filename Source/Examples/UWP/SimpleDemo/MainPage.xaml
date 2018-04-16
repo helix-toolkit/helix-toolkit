@@ -14,12 +14,23 @@
     </Page.DataContext>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Width="100" Height="30" Content="Up Direction">
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="Up X" Command="{Binding UpDirXCommand}"/>
+                        <MenuFlyoutItem Text="Up Y" Command="{Binding UpDirYCommand}"/>
+                        <MenuFlyoutItem Text="Up Z" Command="{Binding UpDirZCommand}"/>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>            
+        </StackPanel>
+
         <hx:Viewport3DX
-            Grid.Row="0"
-            Grid.RowSpan="2"
+            Grid.Row="1"
             Background="Black"
             BackgroundColor="Black"
             Camera="{Binding Camera}"
@@ -27,7 +38,7 @@
             EnableAutoOctreeUpdate="True"
             EnableDeferredRendering="True"
             IsShadowMappingEnabled="True"
-            MSAA="Two"
+            MSAA="Two" ModelUpDirection="{Binding UpDirection}"
             OnMouse3DDown="Viewport3DX_OnMouse3DDown"
             ShowCoordinateSystem="true">
             <hx:ShadowMap3D />
@@ -91,11 +102,12 @@
             <hx:PostEffectMeshBorderHighlight EffectName="border" NumberOfBlurPass="2" />
         </hx:Viewport3DX>
         <TextBlock
+            Grid.Row="1"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
+            VerticalAlignment="Bottom"
             FontSize="64"
             FontStretch="Condensed"
             Foreground="Red"
-            Text="hxToolkit + SharpDX in Windows 10" />
+            Text="HelixToolkit + SharpDX in Windows 10" />
     </Grid>
 </Page>

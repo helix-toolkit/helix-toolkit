@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using HelixToolkit.Logger;
 using HelixToolkit.UWP;
 using SharpDX;
@@ -9,12 +10,24 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.UI.Xaml;
 
 namespace SimpleDemoW10
 {
     public class MainPageViewModel : ObservableObject
     {
+        private Vector3 upDirection = Vector3.UnitY;
+        public Vector3 UpDirection {
+            private set
+            {
+                if(Set(ref upDirection, value))
+                {
+                    ResetCamera();
+                }
+            }
+            get { return upDirection; }
+        }
         public Geometry3D Sphere { private set; get; }
         public Geometry3D Geometry { private set; get; }
 
@@ -91,11 +104,17 @@ namespace SimpleDemoW10
         private float scale = 1;
         private float rotationSpeed = 1;
 
+        #region Commands
+        public ICommand UpDirXCommand { private set; get; }
+        public ICommand UpDirYCommand { private set; get; }
+        public ICommand UpDirZCommand { private set; get; }
+        #endregion
+
         public MainPageViewModel()
         {
             EffectsManager = new DefaultEffectsManager(new Logger());
 
-            Camera = new PerspectiveCamera() { Position = new Vector3(0, 0, -15), LookDirection = new Vector3(0, 0, 15), UpDirection = new Vector3(0, 1, 0) };
+            Camera = new PerspectiveCamera() { Position = new Vector3(0, 0, -15), LookDirection = new Vector3(0, 0, 15), UpDirection = UpDirection };
 
             var builder = new MeshBuilder(true, true, true);
             builder.AddBox(new SharpDX.Vector3(0, 0, 0), 2, 2, 2);
@@ -144,6 +163,10 @@ namespace SimpleDemoW10
 
             EnvironmentMap = LoadTexture("Cubemap_Grandcanyon.dds");
 
+            UpDirXCommand = new RelayCommand(() => { UpDirection = Vector3.UnitX; }, ()=> { return UpDirection != Vector3.UnitX; });
+            UpDirYCommand = new RelayCommand(() => { UpDirection = Vector3.UnitY; }, () => { return UpDirection != Vector3.UnitY; });
+            UpDirZCommand = new RelayCommand(() => { UpDirection = Vector3.UnitZ; }, () => { return UpDirection != Vector3.UnitZ; });
+
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
             timer.Interval = new TimeSpan(0, 0, 0, 0, 16);
@@ -181,6 +204,21 @@ namespace SimpleDemoW10
                         Console.WriteLine($"Level:{logLevel}; Msg:{msg}");
                         break;
                 }
+            }
+        }
+
+        private void ResetCamera()
+        {
+            Camera.UpDirection = UpDirection;
+            if(UpDirection == Vector3.UnitY || UpDirection == Vector3.UnitX)
+            {
+                Camera.Position = new Vector3(0, 0, -15);
+                Camera.LookDirection = new Vector3(0, 0, 15);   
+            }
+            else
+            {
+                Camera.Position = new Vector3(0, -15, 0);
+                Camera.LookDirection = new Vector3(0, 15, 0);
             }
         }
     }

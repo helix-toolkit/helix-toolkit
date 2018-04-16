@@ -282,12 +282,6 @@ namespace HelixToolkit.UWP
             {
                 throw new HelixToolkitException("{0} is missing from the template.", ViewportPartNames.PART_ViewCube);
             }
-            else
-            {             
-                viewCube.RelativeScreenLocationX = ViewCubeHorizontalPosition;
-                viewCube.RelativeScreenLocationY = ViewCubeVerticalPosition;
-                viewCube.UpDirection = ModelUpDirection;
-            }
 
             if (coordinateSystem == null)
             {
@@ -296,11 +290,6 @@ namespace HelixToolkit.UWP
             if (coordinateSystem == null)
             {
                 throw new HelixToolkitException("{0} is missing from the template.", ViewportPartNames.PART_CoordinateView);
-            }
-            else
-            {
-                coordinateSystem.RelativeScreenLocationX = CoordinateSystemHorizontalPosition;
-                coordinateSystem.RelativeScreenLocationY = CoordinateSystemVerticalPosition;
             }
         }
 

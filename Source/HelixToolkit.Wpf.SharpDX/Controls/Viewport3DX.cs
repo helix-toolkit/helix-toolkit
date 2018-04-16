@@ -687,11 +687,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new HelixToolkitException("{0} is missing from the template.", PartViewCube);
             }
-            else
-            {
-                this.viewCube.RelativeScreenLocationX = this.ViewCubeHorizontalPosition;
-                this.viewCube.RelativeScreenLocationY = this.ViewCubeVerticalPosition;
-            }
             if(this.frameStatisticModel == null)
             {
                 this.frameStatisticModel = this.Template.FindName(PartFrameStatisticView, this) as FrameStatisticsModel2D;
