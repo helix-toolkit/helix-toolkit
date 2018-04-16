@@ -118,6 +118,18 @@
                     RenderNormalMap="{Binding RenderNormalMap}"
                     RenderShadowMap="True"
                     Transform="{Binding ModelTransform}" />
+                <hx:DynamicReflectionMap3D>
+                    <hx:MeshGeometryModel3D
+                        x:Name="model1"
+                        Geometry="{Binding Sphere}" 
+                        CullMode="Back"
+                        IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
+                        Material="{Binding ReflectMaterial}"
+                        RenderShadowMap="True"
+                        RenderEnvironmentMap="True"
+                        Transform="{Binding Model1Transform}" />                    
+                </hx:DynamicReflectionMap3D>
+
                 <hx:GroupModel3D IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}">
                     <hx:MeshGeometryModel3D
                         CullMode="Back"
