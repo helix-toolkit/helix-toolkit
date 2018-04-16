@@ -87,6 +87,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         public virtual void UpdateGlobalVariables(IRenderContext context, List<SceneNode> lights, ref RenderParameter parameter)
         {
+            ImmediateContext.Reset();
             if (parameter.RenderLight)
             {
                 context.LightScene.LightModels.ResetLightCount();

@@ -220,7 +220,7 @@ namespace HelixToolkit.UWP.Core
 
         private int cubeTextureSlot;
         private int textureSamplerSlot;
-        private SamplerState textureSampler;
+        private SamplerStateProxy textureSampler;
 
         private IDeviceContextPool contextPool;
 
@@ -361,7 +361,7 @@ namespace HelixToolkit.UWP.Core
 #endif
             {
                 var ctx = contextPool.Get();
-                ctx.DeviceContext.ClearRenderTargetView(cubeRTVs[index], Color.White);
+                ctx.DeviceContext.ClearRenderTargetView(cubeRTVs[index], context.RenderHost.ClearColor);
                 ctx.DeviceContext.ClearDepthStencilView(cubeDSVs[index], DepthStencilClearFlags.Depth, 1, 0);
                 ctx.DeviceContext.OutputMerger.SetRenderTargets(cubeDSVs[index], cubeRTVs[index]);
                 ctx.DeviceContext.Rasterizer.SetViewport(viewport);

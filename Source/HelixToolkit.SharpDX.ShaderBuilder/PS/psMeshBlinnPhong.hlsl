@@ -52,9 +52,12 @@ float4 calcBlinnPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, 
 //--------------------------------------------------------------------------------------
 float4 cubeMapReflection(PSInput input, float4 I)
 {
+    float a = I.a;
     float3 v = normalize((float3) input.wp - vEyePos);
     float3 r = reflect(v, input.n);
-    return (1.0f - vMaterialReflect) * I + vMaterialReflect * texCubeMap.Sample(samplerCube, r);
+    I = (1.0f - vMaterialReflect) * I + vMaterialReflect * texCubeMap.Sample(samplerCube, r);
+    I.a = a;
+    return I;
 }
 
 //--------------------------------------------------------------------------------------
