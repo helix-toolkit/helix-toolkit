@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using HelixToolkit.Logger;
 using HelixToolkit.UWP;
 using SharpDX;
@@ -9,12 +10,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.UI.Xaml;
 
 namespace SimpleDemoW10
 {
     public class MainPageViewModel : ObservableObject
     {
+        public Vector3 UpDirection { private set; get; } = new Vector3(0, 1, 0);
         public Geometry3D Sphere { private set; get; }
         public Geometry3D Geometry { private set; get; }
 
@@ -91,6 +94,12 @@ namespace SimpleDemoW10
         private float scale = 1;
         private float rotationSpeed = 1;
 
+        #region Commands
+        public ICommand UpDirXCommand { private set; get; }
+        public ICommand UpDirYCommand { private set; get; }
+        public ICommand UpDirZCommand { private set; get; }
+        #endregion
+
         public MainPageViewModel()
         {
             EffectsManager = new DefaultEffectsManager(new Logger());
@@ -143,6 +152,10 @@ namespace SimpleDemoW10
             FloorMaterial.ReflectiveColor = Color.Silver;
 
             EnvironmentMap = LoadTexture("Cubemap_Grandcanyon.dds");
+
+            UpDirXCommand = new RelayCommand(() => { UpDirection = Vector3.UnitX; RaisePropertyChanged(nameof(UpDirection)); }, ()=> { return UpDirection != Vector3.UnitX; });
+            UpDirYCommand = new RelayCommand(() => { UpDirection = Vector3.UnitY; RaisePropertyChanged(nameof(UpDirection)); }, () => { return UpDirection != Vector3.UnitY; });
+            UpDirZCommand = new RelayCommand(() => { UpDirection = Vector3.UnitZ; RaisePropertyChanged(nameof(UpDirection)); }, () => { return UpDirection != Vector3.UnitZ; });
 
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
