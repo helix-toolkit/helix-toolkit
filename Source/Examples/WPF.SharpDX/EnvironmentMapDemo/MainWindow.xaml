@@ -36,7 +36,7 @@
             BackgroundColor="Black"
             EffectsManager="{Binding EffectsManager}"
             RenderTechnique="{Binding RenderTechnique}"
-            ShowCoordinateSystem="True" EnableSwapChainRendering="True" EnableD2DRendering="False"
+            ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False">
@@ -57,7 +57,7 @@
             <!--<hx:DirectionalLight3D Direction="1, -1, -1" Color="{Binding DirectionalLightColor}" />
             <hx:DirectionalLight3D Direction="1,1,1" Color="{Binding DirectionalLightColor}" />-->
             <hx:EnvironmentMap3D x:Name="envMap" Texture="{Binding SkyboxTexture}" />
-            <hx:DynamicReflectionMap3D>
+            <hx:DynamicReflectionMap3D x:Name="dynReflector">
                 <hx:MeshGeometryModel3D
                     x:Name="model"
                     Geometry="{Binding Model}"
@@ -121,39 +121,28 @@
                 <Expander.Background>
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
                 </Expander.Background>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                <StackPanel Orientation="Vertical">
                     <CheckBox
-                        Grid.Row="0"
                         Margin="{StaticResource MarginSmall}"
                         IsChecked="{Binding RenderEnvironmentMap, ElementName=model}">
                         Reflect Environment Map
                     </CheckBox>
                     <CheckBox
-                        Grid.Row="1"
                         Margin="{StaticResource MarginSmall}"
                         IsChecked="{Binding IsRendering, ElementName=envMap}">
                         Render Environment Map
                     </CheckBox>
-                    <TextBlock Grid.Row="2" Margin="{StaticResource MarginSmall}">Material:</TextBlock>
+                    <CheckBox IsChecked="{Binding ElementName=dynReflector, Path=EnableReflector}">Render Dynamic CubeMap</CheckBox>                    
+                    <TextBlock Margin="{StaticResource MarginSmall}">Material:</TextBlock>
                     <ComboBox
-                        Grid.Row="3"
                         Margin="{StaticResource MarginSmall}"
                         DisplayMemberPath="Name"
                         ItemsSource="{Binding Source={StaticResource PhongMaterials}}"
                         SelectedItem="{Binding ModelMaterial}" />
                     <local:MaterialControl
-                        Grid.Row="4"
                         Margin="{StaticResource MarginSmall}"
                         DataContext="{Binding ModelMaterial}" />
-                </Grid>
+                </StackPanel>
             </Expander>
         </StackPanel>
 

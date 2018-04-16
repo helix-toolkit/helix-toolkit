@@ -40,13 +40,24 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private ShaderResourceViewProxy cubeDSV;
-
-        // The RTVs, one for each face of cubemap
-        private RenderTargetView[] cubeRTVs = new RenderTargetView[6];
-
-        // The DSVs, one for each face of cubemap
-        private DepthStencilView[] cubeDSVs = new DepthStencilView[6];
+        private bool enableReflector = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable reflector].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable reflector]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableReflector
+        {
+            set
+            {
+                SetAffectsRender(ref enableReflector, value);
+            }
+            get
+            {
+                return enableReflector;
+            }
+        }
 
         private int faceSize = 256;
 
@@ -217,7 +228,13 @@ namespace HelixToolkit.UWP.Core
         public string ShaderCubeTextureSamplerName { set; get; } = DefaultSamplerStateNames.CubeMapSampler;
 
         #endregion Properties
+        private ShaderResourceViewProxy cubeDSV;
 
+        // The RTVs, one for each face of cubemap
+        private RenderTargetView[] cubeRTVs = new RenderTargetView[6];
+
+        // The DSVs, one for each face of cubemap
+        private DepthStencilView[] cubeDSVs = new DepthStencilView[6];
         private int cubeTextureSlot;
         private int textureSamplerSlot;
         private SamplerStateProxy textureSampler;
@@ -350,6 +367,11 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
 
+        protected override bool CanRender(IRenderContext context)
+        {
+            return base.CanRender(context) && EnableReflector;
+        }
+
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             CreateCubeMapResources();
@@ -436,8 +458,11 @@ namespace HelixToolkit.UWP.Core
         {
             currSampler = deviceContext.DeviceContext.PixelShader.GetSamplers(cubeTextureSlot, 1);
             currRes = deviceContext.DeviceContext.PixelShader.GetShaderResources(cubeTextureSlot, 1);
-            deviceContext.DeviceContext.PixelShader.SetShaderResource(cubeTextureSlot, CubeMap);
-            deviceContext.DeviceContext.PixelShader.SetSampler(textureSamplerSlot, textureSampler);
+            if (EnableReflector)
+            {
+                deviceContext.DeviceContext.PixelShader.SetShaderResource(cubeTextureSlot, CubeMap);
+                deviceContext.DeviceContext.PixelShader.SetSampler(textureSamplerSlot, textureSampler);
+            }
         }
 
         /// <summary>

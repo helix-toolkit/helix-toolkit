@@ -17,6 +17,28 @@ namespace HelixToolkit.Wpf.SharpDX
     public class DynamicReflectionMap3D : GroupModel3D
     {
         /// <summary>
+        /// Gets or sets a value indicating whether [enable reflector].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable reflector]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableReflector
+        {
+            get { return (bool)GetValue(EnableReflectorProperty); }
+            set { SetValue(EnableReflectorProperty, value); }
+        }
+
+        /// <summary>
+        /// The enable reflector property
+        /// </summary>
+        public static readonly DependencyProperty EnableReflectorProperty =
+            DependencyProperty.Register("EnableReflector", typeof(bool), typeof(DynamicReflectionMap3D), new PropertyMetadata(true, (d, e) =>
+            {
+                ((d as Element3D).SceneNode as IDynamicReflector).EnableReflector = (bool)e.NewValue;
+            }));
+
+
+        /// <summary>
         /// Gets or sets the size.
         /// </summary>
         /// <value>

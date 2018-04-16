@@ -117,6 +117,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public interface IDynamicReflector
     {
+        bool EnableReflector { set; get; }
         Vector3 Center { set; get; }
         int FaceSize { set; get; }
         float NearField { set; get; }

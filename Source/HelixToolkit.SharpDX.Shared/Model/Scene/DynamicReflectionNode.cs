@@ -18,6 +18,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     public class DynamicReflectionNode : GroupNode, IDynamicReflector
     {
         /// <summary>
+        /// Gets or sets a value indicating whether [enable reflector].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable reflector]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableReflector
+        {
+            set
+            {
+                (RenderCore as IDynamicReflector).EnableReflector = value;
+            }
+            get
+            {
+                return (RenderCore as IDynamicReflector).EnableReflector;
+            }
+        }
+        /// <summary>
         /// Gets or sets the center.
         /// </summary>
         /// <value>
