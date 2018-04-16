@@ -72,7 +72,7 @@ namespace HelixToolkit.UWP.Core
                 int vertStartSlot = 0;
                 OnAttachBuffers(deviceContext, ref vertStartSlot);
                 OnUploadPerModelConstantBuffers(deviceContext);
-                OnBindRasterState(deviceContext);
+                OnBindRasterState(deviceContext, context.IsInvertCullMode);
                 switch (context.IsShadowPass)
                 {
                     case true:
@@ -131,7 +131,8 @@ namespace HelixToolkit.UWP.Core
         /// Set model default raster state
         /// </summary>
         /// <param name="context"></param>
-        protected virtual void OnBindRasterState(DeviceContextProxy context)
+        /// <param name="isInvertCullMode"></param>
+        protected virtual void OnBindRasterState(DeviceContextProxy context, bool isInvertCullMode)
         { }
 
         /// <summary>

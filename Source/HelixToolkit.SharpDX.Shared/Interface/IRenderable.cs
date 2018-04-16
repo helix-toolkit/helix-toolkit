@@ -97,5 +97,9 @@ namespace HelixToolkit.UWP
         /// Invalidates the render.
         /// </summary>
         void InvalidateRender();
+        /// <summary>
+        /// Invalidates the scene graph.
+        /// </summary>
+        void InvalidateSceneGraph();
     }
 }

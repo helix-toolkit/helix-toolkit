@@ -359,6 +359,22 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public const int SizeInBytes = 4 * (4 + 4 * 4);
     }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct CubeFaceCamera
+    {
+        public Matrix View;
+        public Matrix Projection;
+        public const int SizeInBytes = 4 * 4 * 4;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct CubeFaceCamerasStruct
+    {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
+        public CubeFaceCamera[] Cameras;
+        public const int SizeInBytes = CubeFaceCamera.SizeInBytes * 6;
+    }
 #if !NETFX_CORE
     /// <summary>
     /// 

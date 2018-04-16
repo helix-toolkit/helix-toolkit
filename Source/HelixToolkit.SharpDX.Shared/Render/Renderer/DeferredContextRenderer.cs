@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using Core;
     using System;
     using System.Threading.Tasks;
-
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
@@ -33,11 +33,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Initializes a new instance of the <see cref="DeferredContextRenderer"/> class.
         /// </summary>
-        /// <param name="device">The device.</param>
+        /// <param name="deviceResources">The deviceResources.</param>
         /// <param name="scheduler"></param>
-        public DeferredContextRenderer(Device device, IRenderTaskScheduler scheduler) : base(device)
+        public DeferredContextRenderer(IDevice3DResources deviceResources, IRenderTaskScheduler scheduler) : base(deviceResources)
         {
-            deferredContextPool = Collect(new DeviceContextPool(device));
+            deferredContextPool = deviceResources.DeviceContextPool;
             this.scheduler = scheduler;
         }
 
@@ -47,9 +47,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public override void RenderScene(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter)
-        {          
-            if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, RenderType.Opaque, commandList))
+        /// <returns>Number of node has been rendered</returns>
+        public override int RenderScene(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        {
+            int counter = 0;
+            if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, RenderType.Opaque, commandList, out counter))
             {
                 RenderParameter param = parameter;
                 renderOthersTask = Task.Run(() =>
@@ -75,27 +77,28 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         RemoveAndDispose(ref postCommandList[i]);
                     }
                 }
+                return counter;
             }
             else
             {
-                base.RenderScene(context, renderables, ref parameter);
+                return base.RenderScene(context, renderables, ref parameter);
             }
         }
 
 
 
-        private void RenderOthers(List<RenderCore> list, RenderType filter, IRenderContext context, IDeviceContextPool deviceContextPool,
+        private void RenderOthers(List<SceneNode> list, RenderType filter, IRenderContext context, IDeviceContextPool deviceContextPool,
             ref RenderParameter parameter,
-            CommandList[] commandsArray,int idx)
+            CommandList[] commandsArray, int idx)
         {
             var deviceContext = deviceContextPool.Get();
             SetRenderTargets(deviceContext, ref parameter);
             bool hasValue = false;
             for(int i = 0; i < list.Count; ++i)
             {
-                if(list[i].RenderType == filter)
+                if(list[i].RenderCore.RenderType == filter)
                 {
-                    list[i].Render(context, deviceContext);
+                    list[i].RenderCore.Render(context, deviceContext);
                     hasValue = true;
                 }
             }
@@ -123,6 +126,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             commandList.Clear();
             renderOthersTask?.Wait();
+            deferredContextPool = null;
             base.OnDispose(disposeManagedResources);
         }
     }

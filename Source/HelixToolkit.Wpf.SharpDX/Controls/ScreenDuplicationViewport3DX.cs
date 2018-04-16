@@ -270,6 +270,11 @@ namespace HelixToolkit.Wpf.SharpDX
             renderHostInternal?.InvalidateRender();
         }
 
+        public void InvalidateSceneGraph()
+        {
+            renderHostInternal?.InvalidateSceneGraph();
+        }
+
         public void Update(TimeSpan timeStamp)
         {
             

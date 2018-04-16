@@ -21,7 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
-
+    using Render;
     using Shaders;
     using ShaderManager;
     using Core;
@@ -114,6 +114,14 @@ namespace HelixToolkit.UWP
         /// </summary>
         public DriverType DriverType { private set; get; }
 
+        private IDeviceContextPool deviceContextPool;
+        /// <summary>
+        /// Gets the device context pool.
+        /// </summary>
+        /// <value>
+        /// The device context pool.
+        /// </value>
+        public IDeviceContextPool DeviceContextPool { get { return deviceContextPool; } }
         #endregion
         #region 2D Resources
         private global::SharpDX.Direct2D1.Device device2D;
@@ -290,6 +298,9 @@ namespace HelixToolkit.UWP
 
             RemoveAndDispose(ref materialTextureManager);
             materialTextureManager = Collect(new Model.TextureResourceManager(Device));
+
+            RemoveAndDispose(ref deviceContextPool);
+            deviceContextPool = Collect(new DeviceContextPool(Device));
             #endregion
             Log(LogLevel.Information, "Initializing Direct2D resources");
             factory2D = Collect(new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.MultiThreaded));

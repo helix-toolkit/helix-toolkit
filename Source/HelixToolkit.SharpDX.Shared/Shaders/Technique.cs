@@ -5,7 +5,9 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
-using System.Text;
+#if DX11_1
+using Device = SharpDX.Direct3D11.Device1;
+#endif
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders

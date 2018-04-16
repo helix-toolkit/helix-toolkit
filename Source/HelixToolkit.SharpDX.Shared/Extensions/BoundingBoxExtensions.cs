@@ -160,5 +160,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return new RectangleF(rect.Left + translation.X, rect.Top + translation.Y, rect.Width, rect.Height);
         }
+
+        public static Vector3 Center(this BoundingBox box)
+        {
+            return (box.Minimum + box.Maximum) * 0.5f;
+        }
     }
 }

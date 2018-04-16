@@ -15,7 +15,7 @@ namespace SimpleDemoW10
 {
     public class MainPageViewModel : ObservableObject
     {
-
+        public Geometry3D Sphere { private set; get; }
         public Geometry3D Geometry { private set; get; }
 
         public Geometry3D LineGeometry { private set; get; }
@@ -101,6 +101,10 @@ namespace SimpleDemoW10
             builder.AddBox(new SharpDX.Vector3(0, 0, 0), 2, 2, 2);
             builder.AddSphere(new Vector3(0, 2, 0), 1.5);
             Geometry = builder.ToMesh();
+            builder = new MeshBuilder();
+            builder.AddSphere(new Vector3(0, 2, 0), 2);
+            Sphere = builder.ToMesh();
+
             Material = new PhongMaterial()
             {
                 AmbientColor = Color.Gray,
@@ -136,6 +140,7 @@ namespace SimpleDemoW10
             FloorModel = builder.ToMesh();
 
             FloorMaterial = PhongMaterials.Obsidian;
+            FloorMaterial.ReflectiveColor = Color.Silver;
 
             EnvironmentMap = LoadTexture("Cubemap_Grandcanyon.dds");
 

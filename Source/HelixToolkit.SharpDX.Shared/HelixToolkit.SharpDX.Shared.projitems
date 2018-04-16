@@ -39,6 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\PointBufferModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\CrossSectionMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\DepthPrepassCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\DynamicCubeMapCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\EmptyRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\InstancingBillboardRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\InstancingMeshRenderCore.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\CoordinateSystemNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\CrossSectionMeshNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\DepthPrepassNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\DynamicReflectionNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\EnvironmentMapNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\GroupNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\InstancingBillboardNode.cs" />

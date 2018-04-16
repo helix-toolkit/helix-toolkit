@@ -25,7 +25,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
+#if DX11_1
+        Device1 Device { get; }
+#else
         Device Device { get; }
+#endif
         /// <summary>
         /// Input layout for all passes
         /// </summary>

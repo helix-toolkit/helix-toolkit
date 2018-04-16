@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     {
         private readonly Stack<KeyValuePair<int, IList<SceneNode>>> stackCache1 = new Stack<KeyValuePair<int, IList<SceneNode>>>(20);
         private readonly Stack<KeyValuePair<int, IList<SceneNode2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20);
-        protected readonly List<RenderCore> filters = new List<RenderCore>();
+        protected readonly List<SceneNode> filters = new List<SceneNode>();
         /// <summary>
         /// Gets or sets the immediate context.
         /// </summary>
@@ -39,29 +39,28 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Initializes a new instance of the <see cref="ImmediateContextRenderer"/> class.
         /// </summary>
-        /// <param name="device">The device.</param>
-        public ImmediateContextRenderer(Device device)
+        /// <param name="deviceResource">The deviceResource.</param>
+        public ImmediateContextRenderer(IDevice3DResources deviceResource)
         {
 #if DX11_1
-            ImmediateContext = Collect(new DeviceContextProxy(device.ImmediateContext1));
+            ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext1));
 #else
-            ImmediateContext = Collect(new DeviceContextProxy(device.ImmediateContext));
+            ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext));
 #endif
         }
 
         private static readonly Func<SceneNode, IRenderContext, bool> updateFunc = (x, context) =>
         {
-            x.Update(context);
-            return x.IsRenderable;
+            return true;
         };
         /// <summary>
         /// Updates the scene graph.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
-        /// <param name="results"></param>
+        /// <param name="results">Returns list of flattened scene graph with depth index as KeyValuePair.Key</param>
         /// <returns></returns>
-        public virtual void UpdateSceneGraph(IRenderContext context, List<SceneNode> renderables, List<SceneNode> results)
+        public virtual void UpdateSceneGraph(IRenderContext context, List<SceneNode> renderables, List<KeyValuePair<int, SceneNode>> results)
         {
             renderables.PreorderDFT(context, updateFunc, results, stackCache1);
         }
@@ -86,15 +85,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="lights">The lights.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void UpdateGlobalVariables(IRenderContext context, List<RenderCore> lights, ref RenderParameter parameter)
+        public virtual void UpdateGlobalVariables(IRenderContext context, List<SceneNode> lights, ref RenderParameter parameter)
         {
+            ImmediateContext.Reset();
             if (parameter.RenderLight)
             {
                 context.LightScene.LightModels.ResetLightCount();
                 int count = lights.Count;
                 for (int i = 0; i < count && i < Constants.MaxLights; ++i)
                 {
-                    lights[i].Render(context, ImmediateContext);
+                    lights[i].RenderCore.Render(context, ImmediateContext);
                 }
             }
             if (parameter.UpdatePerFrameData)
@@ -109,51 +109,61 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderScene(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter)
+        /// <returns>Number of node has been rendered</returns>
+        public virtual int RenderScene(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
+            int renderedCount = 0;
             int count = renderables.Count;
             filters.Clear();
+            var frustum = context.BoundingFrustum;
             for (int i = 0; i < count; ++i)
             {
-                if (renderables[i].RenderType == RenderType.Opaque)
+                if (context.EnableBoundingFrustum && !renderables[i].TestViewFrustum(ref frustum))
                 {
-                    renderables[i].Render(context, ImmediateContext);
+                    continue;
+                }
+                if (renderables[i].RenderCore.RenderType == RenderType.Opaque)
+                {
+                    renderables[i].RenderCore.Render(context, ImmediateContext);
                 }
                 else
                 {
                     filters.Add(renderables[i]);
                 }
+                ++renderedCount;
             }
             count = filters.Count;
             for (int i = 0; i < count; ++i)
             {
-                if (filters[i].RenderType == RenderType.Particle)
+                if (filters[i].RenderCore.RenderType == RenderType.Particle)
                 {
-                    filters[i].Render(context, ImmediateContext);
+                    filters[i].RenderCore.Render(context, ImmediateContext);
                 }
             }
             for (int i = 0; i < count; ++i)
             {
-                if (filters[i].RenderType == RenderType.Transparent)
+                if (filters[i].RenderCore.RenderType == RenderType.Transparent)
                 {
-                    filters[i].Render(context, ImmediateContext);
+                    filters[i].RenderCore.Render(context, ImmediateContext);
                 }
             }
+            return renderedCount;
         }
         /// <summary>
-        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IRenderContext, List{SceneNode})"/>
+        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IRenderContext, List{KeyValuePair{int, SceneNode}})"/>
         /// </summary>
         /// <param name="renderables">The renderables.</param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public virtual void UpdateNotRenderParallel(IRenderContext context, List<SceneNode> renderables)
+        public virtual void UpdateNotRenderParallel(IRenderContext context, List<KeyValuePair<int, SceneNode>> renderables)
         {
             int count = renderables.Count;
             for(int i = 0; i < count; ++i)
             {
-                renderables[i].UpdateNotRender(context);
+                renderables[i].Value.UpdateNotRender(context);
             }
         }
+
         /// <summary>
         /// Sets the render targets.
         /// </summary>
@@ -187,12 +197,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderPreProc(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter)
+        public virtual void RenderPreProc(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
             int count = renderables.Count;
             for (int i = 0; i < count; ++i)
             {
-                renderables[i].Render(context, ImmediateContext);
+                renderables[i].RenderCore.Render(context, ImmediateContext);
             }
         }
 
@@ -202,12 +212,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderPostProc(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter)
+        public virtual void RenderPostProc(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
             int count = renderables.Count;
             for (int i = 0; i < count; ++i)
             {
-                renderables[i].Render(context, ImmediateContext);
+                renderables[i].RenderCore.Render(context, ImmediateContext);
             }
         }
 

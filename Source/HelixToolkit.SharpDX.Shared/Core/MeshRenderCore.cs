@@ -13,7 +13,7 @@ namespace HelixToolkit.UWP.Core
     using global::SharpDX.Direct3D11;
     using global::SharpDX;
     using Utilities;
-    public class MeshRenderCore : MaterialGeometryRenderCore, IMeshRenderParams
+    public class MeshRenderCore : MaterialGeometryRenderCore, IMeshRenderParams, IDynamicReflectable
     {
         /// <summary>
         /// 
@@ -64,6 +64,17 @@ namespace HelixToolkit.UWP.Core
         }
 
         private RasterizerStateProxy rasterStateWireframe = null;
+
+        /// <summary>
+        /// Gets or sets the dynamic reflector.
+        /// </summary>
+        /// <value>
+        /// The dynamic reflector.
+        /// </value>
+        public IDynamicReflector DynamicReflector
+        {
+            set; get;
+        }
         /// <summary>
         /// Gets the raster state wireframe.
         /// </summary>
@@ -110,6 +121,12 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        protected override void OnDetach()
+        {
+            DynamicReflector = null;
+            base.OnDetach();
+        }
+
         protected override void OnDefaultPassChanged(IShaderPass pass)
         {
             base.OnDefaultPassChanged(pass);
@@ -128,7 +145,9 @@ namespace HelixToolkit.UWP.Core
             {
                 DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, shadowMapSlot, context.SharedResource.ShadowView);
             }
+            DynamicReflector?.BindCubeMap(deviceContext);
             OnDraw(deviceContext, InstanceBuffer);
+            DynamicReflector?.UnBindCubeMap(deviceContext);
             if (RenderWireframe && WireframePass != NullShaderPass.NullPass)
             {
                 WireframePass.BindShader(deviceContext, false);

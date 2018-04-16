@@ -148,5 +148,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             DeviceContext.OutputMerger.SetBlendState(blendState, blendFactor, sampleMask);
         }
+        /// <summary>
+        /// Resets this instance.
+        /// </summary>
+        public void Reset()
+        {
+            LastShaderPass = null;
+        }
     }
 }

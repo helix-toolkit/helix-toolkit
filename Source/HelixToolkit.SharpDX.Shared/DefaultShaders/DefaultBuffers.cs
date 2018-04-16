@@ -21,6 +21,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string BoneCB = "cbBoneSkinning";
         public static string ClipParamsCB = "cbClipping";
         public static string BorderEffectCB = "cbBorderEffect";
+        public static string DynamicCubeMapCB = "cbDynamicCubeMap";
 #if !NETFX_CORE
         public static string ScreenDuplicationCB = "cbScreenClone";
 #endif

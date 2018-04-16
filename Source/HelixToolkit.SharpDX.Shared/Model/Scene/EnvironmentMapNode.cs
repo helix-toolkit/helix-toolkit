@@ -35,13 +35,36 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as ISkyboxRenderParams).CubeTexture;
             }
         }
+
+        private readonly bool UseSkyDome = false;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnvironmentMapNode"/> class. Default is using SkyBox. To use SkyDome, pass true into the constructor
+        /// </summary>
+        public EnvironmentMapNode()
+        {
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnvironmentMapNode"/> class. Default is using SkyBox. To use SkyDome, pass true into the constructor
+        /// </summary>
+        /// <param name="useSkyDome">if set to <c>true</c> [use sky dome].</param>
+        public EnvironmentMapNode(bool useSkyDome)
+        {
+            UseSkyDome = useSkyDome;
+        }
         /// <summary>
         /// Called when [create render core].
         /// </summary>
         /// <returns></returns>
         protected override RenderCore OnCreateRenderCore()
         {
-            return new SkyBoxRenderCore();
+            if (UseSkyDome)
+            {
+                return new SkyDomeRenderCore();
+            }
+            else
+            {
+                return new SkyBoxRenderCore();
+            }
         }
         /// <summary>
         /// Called when [create render technique].

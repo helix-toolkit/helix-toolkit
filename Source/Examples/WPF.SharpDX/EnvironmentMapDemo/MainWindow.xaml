@@ -33,6 +33,7 @@
             Grid.Row="0"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
+            BackgroundColor="Black"
             EffectsManager="{Binding EffectsManager}"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
@@ -51,15 +52,35 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
-            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="{Binding DirectionalLightColor}" />
+            <hx:AmbientLight3D Color="#A5A5A5" />
+            <hx:DirectionalLight3D Direction="0,-1, -0.5" Color="{Binding DirectionalLightColor}" />
+            <!--<hx:DirectionalLight3D Direction="1, -1, -1" Color="{Binding DirectionalLightColor}" />
+            <hx:DirectionalLight3D Direction="1,1,1" Color="{Binding DirectionalLightColor}" />-->
             <hx:EnvironmentMap3D x:Name="envMap" Texture="{Binding SkyboxTexture}" />
+            <hx:DynamicReflectionMap3D x:Name="dynReflector">
+                <hx:MeshGeometryModel3D
+                    x:Name="model"
+                    Geometry="{Binding Model}"
+                    Material="{Binding ModelMaterial}"
+                    RenderEnvironmentMap="True"
+                    Transform="{Binding ModelTransform}" />                
+            </hx:DynamicReflectionMap3D>
+
             <hx:MeshGeometryModel3D
-                x:Name="model"
-                Geometry="{Binding Model}"
-                Material="{Binding ModelMaterial}"
+                Geometry="{Binding Model1}" CullMode="Back"
+                Material="{Binding ModelMaterial1}"
                 RenderEnvironmentMap="True"
-                Transform="{Binding ModelTransform}" />
+                Instances="{Binding Instances1}"/>
+            <hx:MeshGeometryModel3D
+                Geometry="{Binding Model1}" CullMode="Back"
+                Material="{Binding ModelMaterial2}"
+                RenderEnvironmentMap="True"
+                Instances="{Binding Instances2}"/>
+            <hx:MeshGeometryModel3D
+                Geometry="{Binding Model1}" CullMode="Back"
+                Material="{Binding ModelMaterial3}"
+                RenderEnvironmentMap="True"
+                Instances="{Binding Instances3}"/>
         </hx:Viewport3DX>
 
         <StackPanel>
@@ -100,39 +121,28 @@
                 <Expander.Background>
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
                 </Expander.Background>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                <StackPanel Orientation="Vertical">
                     <CheckBox
-                        Grid.Row="0"
                         Margin="{StaticResource MarginSmall}"
                         IsChecked="{Binding RenderEnvironmentMap, ElementName=model}">
                         Reflect Environment Map
                     </CheckBox>
                     <CheckBox
-                        Grid.Row="1"
                         Margin="{StaticResource MarginSmall}"
                         IsChecked="{Binding IsRendering, ElementName=envMap}">
                         Render Environment Map
                     </CheckBox>
-                    <TextBlock Grid.Row="2" Margin="{StaticResource MarginSmall}">Material:</TextBlock>
+                    <CheckBox IsChecked="{Binding ElementName=dynReflector, Path=EnableReflector}">Render Dynamic CubeMap</CheckBox>                    
+                    <TextBlock Margin="{StaticResource MarginSmall}">Material:</TextBlock>
                     <ComboBox
-                        Grid.Row="3"
                         Margin="{StaticResource MarginSmall}"
                         DisplayMemberPath="Name"
                         ItemsSource="{Binding Source={StaticResource PhongMaterials}}"
                         SelectedItem="{Binding ModelMaterial}" />
                     <local:MaterialControl
-                        Grid.Row="4"
                         Margin="{StaticResource MarginSmall}"
                         DataContext="{Binding ModelMaterial}" />
-                </Grid>
+                </StackPanel>
             </Expander>
         </StackPanel>
 

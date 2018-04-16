@@ -7,7 +7,9 @@ using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-
+#if DX11_1
+using Device = SharpDX.Direct3D11.Device1;
+#endif
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -66,6 +68,7 @@ namespace HelixToolkit.UWP.Core
             }
             get { return isThrowingShadow; }
         }
+
         /// <summary>
         /// Gets or sets the default state binding.
         /// </summary>
@@ -104,32 +107,6 @@ namespace HelixToolkit.UWP.Core
         /// Is render core has been attached
         /// </summary>
         public bool IsAttached { private set; get; } = false;
-
-        /// <summary>
-        /// Gets or sets the post effects.
-        /// </summary>
-        /// <value>
-        /// The post effects.
-        /// </value>
-        private readonly Dictionary<string, IEffectAttributes> postEffectNames = new Dictionary<string, IEffectAttributes>();
-
-        /// <summary>
-        /// Gets the post effect names.
-        /// </summary>
-        /// <value>
-        /// The post effect names.
-        /// </value>
-        public IEnumerable<string> PostEffectNames
-        {
-            get { return postEffectNames.Keys; }
-        }
-        /// <summary>
-        /// Gets a value indicating whether this instance has any post effect.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance has any post effect; otherwise, <c>false</c>.
-        /// </value>
-        public bool HasAnyPostEffect { get { return postEffectNames.Count > 0; } }
         #endregion
 
         /// <summary>
@@ -207,7 +184,6 @@ namespace HelixToolkit.UWP.Core
             OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
         }
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -228,62 +204,5 @@ namespace HelixToolkit.UWP.Core
             InvalidateRenderer();
             return true;
         }
-
-        #region POST EFFECT        
-
-        /// <summary>
-        /// Adds the post effect.
-        /// </summary>
-        /// <param name="effect">The effect.</param>
-        public void AddPostEffect(IEffectAttributes effect)
-        {
-            if (postEffectNames.ContainsKey(effect.EffectName))
-            {
-                return;
-            }
-            postEffectNames.Add(effect.EffectName, effect);
-            InvalidateRenderer();
-        }
-        /// <summary>
-        /// Removes the post effect.
-        /// </summary>
-        /// <param name="effectName">Name of the effect.</param>
-        public void RemovePostEffect(string effectName)
-        {
-            if (postEffectNames.Remove(effectName))
-            {
-                InvalidateRenderer();
-            }
-        }
-        /// <summary>
-        /// Determines whether [has post effect] [the specified effect name].
-        /// </summary>
-        /// <param name="effectName">Name of the effect.</param>
-        /// <returns>
-        ///   <c>true</c> if [has post effect] [the specified effect name]; otherwise, <c>false</c>.
-        /// </returns>
-        public bool HasPostEffect(string effectName)
-        {
-            return postEffectNames.ContainsKey(effectName);
-        }
-        /// <summary>
-        /// Tries the get post effect.
-        /// </summary>
-        /// <param name="effectName">Name of the effect.</param>
-        /// <param name="effect">The effect.</param>
-        /// <returns></returns>
-        public bool TryGetPostEffect(string effectName, out IEffectAttributes effect)
-        {
-            return postEffectNames.TryGetValue(effectName, out effect);
-        }
-        /// <summary>
-        /// Clears the post effect.
-        /// </summary>
-        public void ClearPostEffect()
-        {
-            postEffectNames.Clear();
-            InvalidateRenderer();
-        }
-        #endregion
     }
 }

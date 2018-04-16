@@ -552,6 +552,15 @@ namespace HelixToolkit.UWP
             renderHostInternal?.InvalidateRender();
         }
 
+        /// <summary>
+        /// Invalidates the scene graph.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void InvalidateSceneGraph()
+        {
+            renderHostInternal?.InvalidateSceneGraph();
+        }
+
         public void Update(TimeSpan timeStamp)
         {
             CameraController.OnTimeStep(timeStamp.Ticks);   

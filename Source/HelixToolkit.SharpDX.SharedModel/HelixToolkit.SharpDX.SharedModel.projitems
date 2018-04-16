@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\CoordinateSystemModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\CrossSectionMeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\DepthPrepassElement3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\DynamicReflectionMap3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\Element3DCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\EnvironmentMap3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\InstancingBillboardModel3D.cs" />

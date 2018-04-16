@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
 
         private DX11ImageSource surfaceD3D;
 
-        public DX11ImageSourceRenderHost(Func<Device, IRenderer> createRenderer) : base(createRenderer)
+        public DX11ImageSourceRenderHost(Func<IDevice3DResources, IRenderer> createRenderer) : base(createRenderer)
         {
             this.OnNewRenderTargetTexture += DX11ImageSourceRenderer_OnNewBufferCreated;
         }

@@ -41,9 +41,9 @@ namespace HelixToolkit.UWP.Core
         {
             context.IsCustomPass = true;
             context.CustomPassName = DefaultPassNames.DepthPrepass;
-            for (int i = 0; i < context.RenderHost.PerFrameGeneralRenderCores.Count; ++i)
+            for (int i = 0; i < context.RenderHost.PerFrameGeneralNodes.Count; ++i)
             {
-                var core = context.RenderHost.PerFrameGeneralRenderCores[i];
+                var core = context.RenderHost.PerFrameGeneralNodes[i];
                 if (core.RenderType == RenderType.Opaque)
                 {
                     var pass = core.EffectTechnique[DefaultPassNames.DepthPrepass];

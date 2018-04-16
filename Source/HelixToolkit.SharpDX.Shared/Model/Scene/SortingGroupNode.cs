@@ -172,6 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             sortingTransparentCache.Clear();
             sortingOpaqueCache.Clear();
             notSorted.Clear();
+            InvalidateSceneGraph();
         }
 
         protected float GetDistance(SceneNode node, ref Vector3 cameraPos)

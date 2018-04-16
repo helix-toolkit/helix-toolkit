@@ -67,7 +67,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables"></param>
         /// <param name="results"></param>
         /// <returns></returns>
-        void UpdateSceneGraph(IRenderContext context, List<SceneNode> renderables, List<SceneNode> results);
+        void UpdateSceneGraph(IRenderContext context, List<SceneNode> renderables, List<KeyValuePair<int, SceneNode>> results);
 
         /// <summary>
         /// Update scene graph, return the 2D renderables which will be rendered in this frame
@@ -82,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void UpdateGlobalVariables(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter);
+        void UpdateGlobalVariables(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
 
         /// <summary>
         /// 
@@ -96,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderPreProc(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter);
+        void RenderPreProc(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
 
         /// <summary>
         /// Render post processing, such as bloom effects etc.
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderPostProc(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter);
+        void RenderPostProc(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
 
         /// <summary>
         /// Run actual rendering for render cores.
@@ -112,15 +112,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
-        void RenderScene(IRenderContext context, List<RenderCore> renderables, ref RenderParameter parameter);
+        /// <returns>Number of node has been rendered</returns>
+        int RenderScene(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
         /// <summary>
-        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderScene(IRenderContext, List{RenderCore}, ref RenderParameter)"/>
+        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderScene(IRenderContext, List{SceneNode}, ref RenderParameter)"/>
         /// <para>Warning: Dependency properties are thread affinity. Do not get/set any dependency property in this function.</para>
         /// </summary>
         /// <param name="renderables"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        void UpdateNotRenderParallel(IRenderContext context, List<SceneNode> renderables);
+        void UpdateNotRenderParallel(IRenderContext context, List<KeyValuePair<int, SceneNode>> renderables);
         /// <summary>
         /// 
         /// </summary>

@@ -267,6 +267,9 @@ namespace HelixToolkit.UWP.Core
                 blurCore.Resize(deviceContext.DeviceContext.Device,
                     renderTargetDesc.Width / downSamplingScale,
                     renderTargetDesc.Height / downSamplingScale);
+                //Skip this frame to avoid performance hit due to texture creation
+                InvalidateRenderer();
+                return;
             }
             #endregion
 
@@ -276,10 +279,10 @@ namespace HelixToolkit.UWP.Core
 
             context.IsCustomPass = true;
             bool hasMesh = false;
-            for (int i = 0; i < context.RenderHost.PerFrameGeneralCoresWithPostEffect.Count; ++i)
+            for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
             {
                 IEffectAttributes effect;
-                var mesh = context.RenderHost.PerFrameGeneralCoresWithPostEffect[i];
+                var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
                 if (mesh.TryGetPostEffect(EffectName, out effect))
                 {
                     object attribute;

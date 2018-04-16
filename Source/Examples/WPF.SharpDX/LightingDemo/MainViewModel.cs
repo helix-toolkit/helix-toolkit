@@ -34,6 +34,7 @@ namespace LightingDemo
         public MeshGeometry3D FlyingObject { get; private set; }
         public LineGeometry3D CubeEdges { get; private set; }
         public Transform3D ModelTransform { get; private set; }
+        public Transform3D Model1Transform { get; private set; }
         public Transform3D FloorTransform { get; private set; }
         public Transform3D Light1Transform { get; private set; }
         public Transform3D Light2Transform { get; private set; }
@@ -53,6 +54,7 @@ namespace LightingDemo
         public Transform3D Object8Transform { get; private set; }
 
         public PhongMaterial ModelMaterial { get; set; }
+        public PhongMaterial ReflectMaterial { get; set; }
         public PhongMaterial FloorMaterial { get; set; }
         public PhongMaterial LightModelMaterial { get; set; }
         public PhongMaterial ObjectMaterial { set; get; } = PhongMaterials.Red;
@@ -206,6 +208,10 @@ namespace LightingDemo
             this.Light4Transform = CreateAnimatedTransform2(-Light4Direction * 2, new Vector3D(0,1,0), 24);
             this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction, new Vector3D(1, 0, 0), 12);
 
+            var transformGroup = new Media3D.Transform3DGroup();
+            transformGroup.Children.Add(new Media3D.ScaleTransform3D(10, 10, 10));
+            transformGroup.Children.Add(new Media3D.TranslateTransform3D(2, -4, 2));
+            Model1Transform = transformGroup;
             // ----------------------------------------------
             // light model3d
             var sphere = new MeshBuilder();
@@ -257,7 +263,9 @@ namespace LightingDemo
             };
             ModelMaterial.DiffuseMap = FloorMaterial.DiffuseMap;
 
-            
+            ReflectMaterial = PhongMaterials.PolishedSilver;
+            ReflectMaterial.ReflectiveColor = global::SharpDX.Color.Silver;
+
             InitialObjectTransforms();
         }
 

@@ -91,12 +91,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             return host.EffectsManager[DefaultRenderTechniqueNames.BillboardText];
         }
-        /// <summary>
-        /// Checks the bounding frustum.
-        /// </summary>
-        /// <param name="viewFrustum">The view frustum.</param>
-        /// <returns></returns>
-        protected override bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
+
+        public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
         {
             if (!HasBound)
             {

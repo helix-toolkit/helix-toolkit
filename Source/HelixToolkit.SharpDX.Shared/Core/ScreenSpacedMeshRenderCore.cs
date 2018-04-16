@@ -253,7 +253,8 @@ namespace HelixToolkit.UWP.Core
         /// Called when [bind raster state].
         /// </summary>
         /// <param name="context">The context.</param>
-        protected override void OnBindRasterState(DeviceContextProxy context)
+        /// <param name="isInvertCullMode"></param>
+        protected override void OnBindRasterState(DeviceContextProxy context, bool isInvertCullMode)
         {
             context.SetRasterState(rasterState);
         }

@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using global::SharpDX.Direct3D11;
     using System;
     using System.Collections.Concurrent;
-
+    using Model.Scene;
     /// <summary>
     /// 
     /// </summary>
@@ -32,9 +32,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         /// <param name="outputCommands">The output commands.</param>
         /// <param name="filterType"></param>
+        /// <param name="numRendered"></param>
         /// <returns></returns>
-        bool ScheduleAndRun(List<RenderCore> items, IDeviceContextPool pool,
-            IRenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands);
+        bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
+            IRenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered);
     }
     /// <summary>
     /// 
@@ -108,35 +109,50 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter"></param>
         /// <param name="filterType"></param>
         /// <param name="outputCommands"></param>
+        /// <param name="numRendered"></param>
         /// <returns></returns>
-        public bool ScheduleAndRun(List<RenderCore> items, IDeviceContextPool pool,
-            IRenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands)
+        public bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
+            IRenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered)
         {
             outputCommands.Clear();
-            if(items.Count > schedulerParams.MinimumDrawCalls)
+            int totalCount = 0;
+            numRendered = 0;
+            if (items.Count > schedulerParams.MinimumDrawCalls)
             {
+                var frustum = context.BoundingFrustum;
                 var partitionParams = Partitioner.Create(0, items.Count, items.Count/schedulerParams.MaxNumberOfTasks+1);
                 Parallel.ForEach(partitionParams, (range, state) =>
                 {
+                    int counter = 0;                    
                     var deferred = pool.Get();
                     SetRenderTargets(deferred, ref parameter);
                     for(int i=range.Item1; i<range.Item2; ++i)
                     {
-                        if (items[i].RenderType == filterType)
+                        if (context.EnableBoundingFrustum && !items[i].TestViewFrustum(ref frustum))
                         {
-                            items[i].Render(context, deferred);
+                            continue;
                         }
+                        if (items[i].RenderCore.RenderType == filterType)
+                        {
+                            items[i].RenderCore.Render(context, deferred);
+                        }
+                        ++counter;
                     }
                     var command = deferred.DeviceContext.FinishCommandList(true);
                     pool.Put(deferred);
                     lock (outputCommands)
                     {
                         outputCommands.Add(new KeyValuePair<int, CommandList>(range.Item1, command));
+                        totalCount += counter;
                     }
                 });
+                numRendered = totalCount;
                 return true;
             }
-            else { return false; }
+            else
+            {                
+                return false;
+            }
         }
 
         /// <summary>

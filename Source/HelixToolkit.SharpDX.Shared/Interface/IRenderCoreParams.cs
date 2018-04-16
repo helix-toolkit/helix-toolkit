@@ -14,6 +14,7 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Model;
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -109,6 +110,29 @@ namespace HelixToolkit.UWP.Core
     {
         bool RenderWireframe { set; get; }
         Color4 WireframeColor { set; get; }
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IDynamicReflector
+    {
+        bool EnableReflector { set; get; }
+        Vector3 Center { set; get; }
+        int FaceSize { set; get; }
+        float NearField { set; get; }
+        float FarField { set; get; }
+        bool IsLeftHanded { set; get; }
+        void BindCubeMap(DeviceContextProxy deviceContext);
+        void UnBindCubeMap(DeviceContextProxy deviceContext);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IDynamicReflectable
+    {
+        IDynamicReflector DynamicReflector { set; get; }
     }
 
     /// <summary>

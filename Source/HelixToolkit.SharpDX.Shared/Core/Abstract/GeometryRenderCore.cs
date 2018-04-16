@@ -25,6 +25,10 @@ namespace HelixToolkit.UWP.Core
         /// 
         /// </summary>
         public RasterizerStateProxy RasterState { get { return rasterState; } }
+
+        private RasterizerStateProxy invertCullModeState = null;
+        public RasterizerStateProxy InvertCullModeState { get { return invertCullModeState; } }
+
         /// <summary>
         /// 
         /// </summary>
@@ -199,10 +203,17 @@ namespace HelixToolkit.UWP.Core
         protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
         {
             RemoveAndDispose(ref rasterState);
+            RemoveAndDispose(ref invertCullModeState);
             rasterDescription = description;
             if (!IsAttached && !force)
             { return false; }
             rasterState = Collect(EffectTechnique.EffectsManager.StateManager.Register(description));
+            if(description.CullMode != CullMode.None)
+            {
+                var invCull = description;
+                invCull.CullMode = description.CullMode == CullMode.Back ? CullMode.Front : CullMode.Back;
+                invertCullModeState = Collect(EffectTechnique.EffectsManager.StateManager.Register(invCull));
+            }
             return true;
         }
         /// <summary>
@@ -223,6 +234,13 @@ namespace HelixToolkit.UWP.Core
             return false;
         }
 
+        protected override void OnDetach()
+        {
+            rasterState = null;
+            invertCullModeState = null;
+            base.OnDetach();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -237,9 +255,17 @@ namespace HelixToolkit.UWP.Core
         /// Set all necessary states and buffers
         /// </summary>
         /// <param name="context"></param>
-        protected override void OnBindRasterState(DeviceContextProxy context)
+        /// <param name="isInvertCullMode"></param>
+        protected override void OnBindRasterState(DeviceContextProxy context, bool isInvertCullMode)
         {
-            context.SetRasterState(rasterState);
+            if (isInvertCullMode && invertCullModeState != null)
+            {
+                context.SetRasterState(invertCullModeState);
+            }
+            else
+            {
+                context.SetRasterState(rasterState);
+            }
         }
         /// <summary>
         /// Attach vertex buffer routine

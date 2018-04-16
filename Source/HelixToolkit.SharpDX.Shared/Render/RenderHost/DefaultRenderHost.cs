@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
-using global::SharpDX.Direct3D11;
+using System.Diagnostics;
 
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
@@ -27,6 +27,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using HelixToolkit.Logger;
     using Model.Scene;
     using Model.Scene2D;
+    
+
     /// <summary>
     /// 
     /// </summary>
@@ -37,31 +39,31 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// The pending renderables
         /// </summary>
-        protected readonly List<SceneNode> perFrameRenderables = new List<SceneNode>();
+        protected readonly List<KeyValuePair<int, SceneNode>> perFrameFlattenedScene = new List<KeyValuePair<int, SceneNode>>();
         /// <summary>
         /// The light renderables
         /// </summary>
-        protected readonly List<RenderCore> lightRenderables = new List<RenderCore>();
+        protected readonly List<SceneNode> lightNodes = new List<SceneNode>();
         /// <summary>
-        /// The pending render cores
+        /// The pending render nodes
         /// </summary>
-        protected readonly List<RenderCore> generalRenderCores = new List<RenderCore>();
+        protected readonly List<SceneNode> generalNodes = new List<SceneNode>();
         /// <summary>
-        /// The pending render cores
+        /// The pending render nodes
         /// </summary>
-        protected readonly List<RenderCore> preProcRenderCores = new List<RenderCore>();
+        protected readonly List<SceneNode> preProcNodes = new List<SceneNode>();
         /// <summary>
-        /// The pending render cores
+        /// The pending render nodes
         /// </summary>
-        protected readonly List<RenderCore> postProcRenderCores = new List<RenderCore>();
+        protected readonly List<SceneNode> postProcNodes = new List<SceneNode>();
         /// <summary>
-        /// The render cores for post render
+        /// The render nodes for post render
         /// </summary>
-        protected readonly List<RenderCore> renderCoresForPostRender = new List<RenderCore>();
+        protected readonly List<SceneNode> nodesForPostRender = new List<SceneNode>();
         /// <summary>
-        /// The pending render cores
+        /// The pending render nodes
         /// </summary>
-        protected readonly List<RenderCore> screenSpacedRenderCores = new List<RenderCore>();
+        protected readonly List<SceneNode> screenSpacedNodes = new List<SceneNode>();
 
         /// <summary>
         /// The viewport renderable2D
@@ -69,42 +71,44 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected readonly List<SceneNode2D> viewportRenderable2D = new List<SceneNode2D>();
 
         /// <summary>
-        /// Gets the current frame renderables.
+        /// Gets the current frame flattened scene graph. KeyValuePair.Key is the depth of the node.
         /// </summary>
         /// <value>
-        /// The per frame renderables.
+        /// Gets the current frame flattened scene graph
         /// </value>
-        public override List<SceneNode> PerFrameRenderables { get { return perFrameRenderables; } }
+        public override List<KeyValuePair<int, SceneNode>> PerFrameFlattenedScene { get { return perFrameFlattenedScene; } }
         /// <summary>
         /// Gets the per frame lights.
         /// </summary>
         /// <value>
         /// The per frame lights.
         /// </value>
-        public override IEnumerable<LightCoreBase> PerFrameLights
+        public override IEnumerable<LightNode> PerFrameLights
         {
-            get { return lightRenderables.Select(x=>x as LightCoreBase); }
+            get { return lightNodes.Select(x=>x as LightNode); }
         }
         /// <summary>
         /// Gets the per frame render cores for normal rendering routine. <see cref="RenderType.Opaque"/>, <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
         /// <para>This does not include <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
-        public override List<RenderCore> PerFrameGeneralRenderCores { get { return generalRenderCores; } }
+        public override List<SceneNode> PerFrameGeneralNodes { get { return generalNodes; } }
         /// <summary>
-        /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameGeneralRenderCores"/>
+        /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameGeneralNodes"/>
         /// </summary>
         /// <value>
         /// The per frame post effects cores.
         /// </value>
-        public override List<RenderCore> PerFrameGeneralCoresWithPostEffect
+        public override List<SceneNode> PerFrameNodesWithPostEffect
         {
-            get { return renderCoresForPostRender; }
+            get { return nodesForPostRender; }
         }
         #endregion
 
         private Task asyncTask;
         private Task getTriangleCountTask;
         private Task getPostEffectCoreTask;
+
+        private int numRendered = 0;
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
         /// </summary>
@@ -113,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
         /// </summary>
         /// <param name="createRenderer">The create renderer.</param>
-        public DefaultRenderHost(Func<Device, IRenderer> createRenderer) : base(createRenderer)
+        public DefaultRenderHost(Func<IDevice3DResources, IRenderer> createRenderer) : base(createRenderer)
         {
 
         }
@@ -130,63 +134,87 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void SeparateRenderables()
+        private void SeparateRenderables(IRenderContext context)
         {
-            Clear();
-            viewportRenderables.AddRange(Viewport.Renderables);
-            renderer.UpdateSceneGraph(RenderContext, viewportRenderables, perFrameRenderables);
-
-            for(int i = 0; i < perFrameRenderables.Count; ++i)
+            Clear(UpdateSceneGraphRequested);
+            if (UpdateSceneGraphRequested)
             {
-                var renderable = perFrameRenderables[i];
-                switch (renderable.RenderCore.RenderType)
+                viewportRenderables.AddRange(Viewport.Renderables);
+                renderer.UpdateSceneGraph(RenderContext, viewportRenderables, perFrameFlattenedScene);
+#if DEBUG
+                Debug.WriteLine("Flatten Scene Graph");
+#endif
+            }
+
+            for(int i = 0; i < perFrameFlattenedScene.Count;)
+            {
+                var renderable = perFrameFlattenedScene[i];
+                renderable.Value.Update(context);
+
+                if (!renderable.Value.IsRenderable)//Skip scene graph depth larger than current node
+                {
+                    int depth = renderable.Key;
+                    ++i;
+                    for(; i <perFrameFlattenedScene.Count; ++i)
+                    {
+                        if(perFrameFlattenedScene[i].Key <= depth)
+                        {
+                            break;
+                        }
+                        i += perFrameFlattenedScene[i].Value.Items.Count;
+                    }
+                    continue;
+                }
+
+                switch (renderable.Value.RenderType)
                 {
                     case RenderType.Light:
-                        lightRenderables.Add(renderable.RenderCore);
+                        lightNodes.Add(renderable.Value);
                         break;
                     case RenderType.Opaque:
                     case RenderType.Transparent:
                     case RenderType.Particle:
-                        generalRenderCores.Add(renderable.RenderCore);
-                        if(renderable.RenderCore.NeedUpdate) // Run update function at the beginning of actual rendering.
+                        generalNodes.Add(renderable.Value);
+                        if(renderable.Value.RenderCore.NeedUpdate) // Run update function at the beginning of actual rendering.
                         {
-                            renderable.RenderCore.Update(RenderContext, renderer.ImmediateContext);
+                            renderable.Value.RenderCore.Update(RenderContext, renderer.ImmediateContext);
                         }
                         break;
                     case RenderType.PreProc:
-                        preProcRenderCores.Add(renderable.RenderCore);
+                        preProcNodes.Add(renderable.Value);
                         break;
                     case RenderType.PostProc:
-                        postProcRenderCores.Add(renderable.RenderCore);
+                        postProcNodes.Add(renderable.Value);
                         break;
                     case RenderType.ScreenSpaced:
-                        screenSpacedRenderCores.Add(renderable.RenderCore);
+                        screenSpacedNodes.Add(renderable.Value);
                         break;
                 }
+                ++i;
             }
             //Get RenderCores with post effect specified.
-            if(postProcRenderCores.Count > 0)
+            if(postProcNodes.Count > 0)
             {
-                if(generalRenderCores.Count > 50)
+                if(generalNodes.Count > 50)
                 {
                     getPostEffectCoreTask = Task.Run(() =>
                     {
-                        for(int i = 0; i < generalRenderCores.Count; ++i)
+                        for(int i = 0; i < generalNodes.Count; ++i)
                         {
-                            if (generalRenderCores[i].HasAnyPostEffect)
+                            if (generalNodes[i].HasAnyPostEffect)
                             {
-                                renderCoresForPostRender.Add(generalRenderCores[i]);
+                                nodesForPostRender.Add(generalNodes[i]);
                             }
                         }
                     });
                 }
                 else
                 {
-                    for (int i = 0; i < generalRenderCores.Count; ++i)
+                    for (int i = 0; i < generalNodes.Count; ++i)
                     {
-                        if (generalRenderCores[i].HasAnyPostEffect)
+                        if (generalNodes[i].HasAnyPostEffect)
                         {
-                            renderCoresForPostRender.Add(generalRenderCores[i]);
+                            nodesForPostRender.Add(generalNodes[i]);
                         }
                     }
                 }
@@ -200,18 +228,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             base.PreRender();
 
-            SeparateRenderables();
+            SeparateRenderables(RenderContext);
 
             asyncTask = Task.Factory.StartNew(() =>
             {
-                renderer?.UpdateNotRenderParallel(RenderContext, perFrameRenderables);
+                renderer?.UpdateNotRenderParallel(RenderContext, perFrameFlattenedScene);
             });
             if ((ShowRenderDetail & RenderDetail.TriangleInfo) == RenderDetail.TriangleInfo)
             {
                 getTriangleCountTask = Task.Factory.StartNew(() =>
                 {
                     int count = 0;
-                    foreach(var core in generalRenderCores)
+                    foreach(var core in generalNodes)
                     {
                         if (core is IGeometryRenderCore c)
                         {
@@ -240,13 +268,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 UpdatePerFrameData = RenderConfiguration.UpdatePerFrameData
             };
             renderer.SetRenderTargets(ref renderParameter);
-            renderer.UpdateGlobalVariables(RenderContext, lightRenderables, ref renderParameter);
-            renderer.RenderPreProc(RenderContext, preProcRenderCores, ref renderParameter);
-            renderer.RenderScene(RenderContext, generalRenderCores, ref renderParameter);
+            renderer.UpdateGlobalVariables(RenderContext, lightNodes, ref renderParameter);
+            renderer.RenderPreProc(RenderContext, preProcNodes, ref renderParameter);
+            numRendered += renderer.RenderScene(RenderContext, generalNodes, ref renderParameter);
             getPostEffectCoreTask?.Wait();
             getPostEffectCoreTask = null;
-            renderer.RenderPostProc(RenderContext, postProcRenderCores, ref renderParameter);
-            renderer.RenderPostProc(RenderContext, screenSpacedRenderCores, ref renderParameter);
+            renderer.RenderPostProc(RenderContext, postProcNodes, ref renderParameter);
+            renderer.RenderPostProc(RenderContext, screenSpacedNodes, ref renderParameter);
+            numRendered += preProcNodes.Count + postProcNodes.Count + screenSpacedNodes.Count;
         }
 
         /// <summary>
@@ -284,8 +313,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (ShowRenderDetail != RenderDetail.None)
             {
                 getTriangleCountTask?.Wait();
-                RenderStatistics.NumModel3D = perFrameRenderables.Count;
-                RenderStatistics.NumCore3D = preProcRenderCores.Count + generalRenderCores.Count + postProcRenderCores.Count + screenSpacedRenderCores.Count;
+                RenderStatistics.NumModel3D = perFrameFlattenedScene.Count;
+                RenderStatistics.NumCore3D = numRendered;
             }
             for (int i = 0; i < viewportRenderable2D.Count; ++i)
             {
@@ -304,16 +333,20 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void Clear()
+        private void Clear(bool clearFrameRenderables)
         {
+            numRendered = 0;
             viewportRenderables.Clear();
-            perFrameRenderables.Clear();
-            generalRenderCores.Clear();
-            lightRenderables.Clear();
-            postProcRenderCores.Clear();
-            preProcRenderCores.Clear();
-            screenSpacedRenderCores.Clear();
-            renderCoresForPostRender.Clear();
+            if (clearFrameRenderables)
+            {
+                perFrameFlattenedScene.Clear();
+            }
+            generalNodes.Clear();
+            lightNodes.Clear();
+            postProcNodes.Clear();
+            preProcNodes.Clear();
+            screenSpacedNodes.Clear();
+            nodesForPostRender.Clear();
         }
 
         /// <summary>
@@ -325,7 +358,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             asyncTask?.Wait();
             getTriangleCountTask?.Wait();
             getPostEffectCoreTask?.Wait();
-            Clear();
+            Clear(true);
             base.OnEndingD3D();
         }
     }

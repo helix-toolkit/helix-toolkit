@@ -107,6 +107,8 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        private volatile bool updateVBinding = false;
+
         #region Constructors        
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryBufferModel"/> class.
@@ -202,12 +204,11 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {
-            bool updateVBinding = false;
             for(int i=0; i < VertexChanged.Length; ++i)
             {
                 if (VertexChanged[i] && VertexBuffer[i] != null)
                 {
-                    lock (VertexBuffer[i])
+                    lock (VertexBuffer)
                     {
                         if (VertexChanged[i])
                         {
@@ -220,7 +221,14 @@ namespace HelixToolkit.UWP.Core
             }
             if (updateVBinding)
             {
-                vertexBufferBindings = VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray();
+                lock (VertexBuffer)
+                {
+                    if (updateVBinding)
+                    {
+                        vertexBufferBindings = VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray();
+                        updateVBinding = false;
+                    }
+                }
             }
             if (IndexChanged && IndexBuffer != null)
             {
