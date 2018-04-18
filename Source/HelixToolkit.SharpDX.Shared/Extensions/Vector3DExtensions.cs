@@ -15,8 +15,8 @@ namespace HelixToolkit.Wpf.SharpDX
     
 #else
 #if NETFX_CORE   
-    using Vector3D = System.Numerics.Vector3;
-    using Matrix3D = System.Numerics.Matrix4x4;
+//    using Vector3D = System.Numerics.Vector3;
+//    using Matrix3D = System.Numerics.Matrix4x4;
     using Media = Windows.UI;
 #else
     using System.Windows.Media.Media3D;
@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
     public static class VectorExtensions
     {
-#if !CORE
+#if !NETFX_CORE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3D ToVector3D(this Vector3 vector)
         {
@@ -56,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 #endif
-#if !CORE
+#if !NETFX_CORE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix3D ToMatrix3D(this Matrix m)
         {
@@ -119,7 +119,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new global::SharpDX.Vector4((float)point.X, (float)point.Y, (float)point.Z, w);
         }
 #endif
-#if !CORE
+#if !NETFX_CORE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector3 ToVector3(this Vector3D vector)
         {
@@ -138,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new global::SharpDX.Vector3(vector.X, vector.Y, vector.Z);
         }
 
-#if !CORE
+#if !NETFX_CORE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static global::SharpDX.Vector4 ToVector4(this Vector3D vector, float w = 1f)
         {

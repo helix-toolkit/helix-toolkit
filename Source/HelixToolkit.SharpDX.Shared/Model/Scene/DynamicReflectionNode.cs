@@ -207,15 +207,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             return host.EffectsManager[DefaultRenderTechniqueNames.Skybox];
         }
 
-        protected override bool CanHitTest(IRenderContext context)
-        {
-            return false;
-        }
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
-        {
-            return false;
-        }
-
         /// <summary>
         /// Binds the cube map.
         /// </summary>

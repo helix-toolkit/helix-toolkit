@@ -552,7 +552,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     renderContext.TimeStamp = t0;
                     renderContext.Camera = viewport.CameraCore;
                     renderContext.WorldMatrix = viewport.WorldMatrix;
-                    renderContext.Camera = viewport.CameraCore;
                 }
                 PreRender();
                 UpdateSceneGraphRequested = false;
@@ -563,7 +562,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         OnRender(t0);
                         renderBuffer.EndDraw();
                     }
-                    if (RenderConfiguration.RenderD2D)
+                    if (RenderConfiguration.RenderD2D && D2DTarget.D2DTarget != null)
                     { OnRender2D(t0); }
                     renderBuffer.Present();
                 }

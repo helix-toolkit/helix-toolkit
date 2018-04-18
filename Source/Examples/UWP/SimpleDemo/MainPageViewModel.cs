@@ -17,6 +17,8 @@ namespace SimpleDemoW10
 {
     public class MainPageViewModel : ObservableObject
     {
+        public ParticleViewModel ParticleVM { get; } = new ParticleViewModel();
+
         private Vector3 upDirection = Vector3.UnitY;
         public Vector3 UpDirection {
             private set

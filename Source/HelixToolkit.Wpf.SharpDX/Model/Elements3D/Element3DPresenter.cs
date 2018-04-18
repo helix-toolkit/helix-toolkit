@@ -41,10 +41,23 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }));
 
+        public Element3DPresenter()
+        {
+            Loaded += Element3DPresenter_Loaded;
+        }
 
         protected override SceneNode OnCreateSceneNode()
         {
             return new GroupNode();
+        }
+
+        private void Element3DPresenter_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Content != null)
+            {
+                RemoveLogicalChild(Content);
+                AddLogicalChild(Content);
+            }
         }
     }
 }
