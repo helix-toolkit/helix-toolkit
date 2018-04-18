@@ -192,6 +192,7 @@ namespace HelixToolkit.UWP
         /// <param name="zoomAround">
         /// The zoom around.
         /// </param>
+        /// <param name="isTouch"></param>
         public void ZoomByChangingCameraWidth(double delta, Point3D zoomAround, bool isTouch = false)
         {
             if (!isTouch)
