@@ -150,9 +150,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 var renderable = perFrameFlattenedScene[i];
                 renderable.Value.Update(context);
-
-                if (!renderable.Value.IsRenderable)//Skip scene graph depth larger than current node
+                var type = renderable.Value.RenderType;
+                if (!renderable.Value.IsRenderable)
                 {
+                    //Skip scene graph depth larger than current node
                     int depth = renderable.Key;
                     ++i;
                     for(; i <perFrameFlattenedScene.Count; ++i)
@@ -165,32 +166,35 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     }
                     continue;
                 }
-
-                switch (renderable.Value.RenderType)
-                {
-                    case RenderType.Light:
-                        lightNodes.Add(renderable.Value);
-                        break;
-                    case RenderType.Opaque:
-                    case RenderType.Transparent:
-                    case RenderType.Particle:
-                        generalNodes.Add(renderable.Value);
-                        if(renderable.Value.RenderCore.NeedUpdate) // Run update function at the beginning of actual rendering.
-                        {
-                            renderable.Value.RenderCore.Update(RenderContext, renderer.ImmediateContext);
-                        }
-                        break;
-                    case RenderType.PreProc:
-                        preProcNodes.Add(renderable.Value);
-                        break;
-                    case RenderType.PostProc:
-                        postProcNodes.Add(renderable.Value);
-                        break;
-                    case RenderType.ScreenSpaced:
-                        screenSpacedNodes.Add(renderable.Value);
-                        break;
-                }
                 ++i;
+                if (type == RenderType.Opaque || type == RenderType.Transparent || type == RenderType.Particle)
+                {
+                    generalNodes.Add(renderable.Value);
+                    if (renderable.Value.RenderCore.NeedUpdate) // Run update function at the beginning of actual rendering.
+                    {
+                        renderable.Value.RenderCore.Update(RenderContext, renderer.ImmediateContext);
+                    }
+                }
+                else if (type == RenderType.None)
+                {
+                    continue;
+                }
+                else if (type == RenderType.Light)
+                {
+                    lightNodes.Add(renderable.Value);
+                }
+                else if (type == RenderType.PreProc)
+                {
+                    preProcNodes.Add(renderable.Value);
+                }
+                else if (type == RenderType.PostProc)
+                {
+                    postProcNodes.Add(renderable.Value);
+                }
+                else if (type == RenderType.ScreenSpaced)
+                {
+                    screenSpacedNodes.Add(renderable.Value);
+                }               
             }
             //Get RenderCores with post effect specified.
             if(postProcNodes.Count > 0)
