@@ -35,9 +35,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 var old = geometry;
                 if (Set(ref geometry, value))
                 {
+                    BoundManager.Geometry = value;
                     if (IsAttached)
-                    {
-                        BoundManager.Geometry = value;
+                    {                       
                         BufferModelInternal = OnCreateBufferModel(this.GUID, value);
                     }
                     OnGeometryChanged(value, old);
