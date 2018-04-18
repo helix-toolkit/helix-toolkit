@@ -1634,5 +1634,23 @@ namespace HelixToolkit.UWP
             get { return (Exception)this.GetValue(RenderExceptionProperty); }
             set { this.SetValue(RenderExceptionProperty, value); }
         }
+
+
+        /// <summary>
+        /// Gets or sets the frame rate.
+        /// </summary>
+        /// <value>
+        /// The frame rate.
+        /// </value>
+        public double FrameRate
+        {
+            get { return (double)GetValue(FrameRateProperty); }
+            set { SetValue(FrameRateProperty, value); }
+        }
+        /// <summary>
+        /// The frame rate property
+        /// </summary>
+        public static readonly DependencyProperty FrameRateProperty =
+            DependencyProperty.Register("FrameRate", typeof(double), typeof(Viewport3DX), new PropertyMetadata(0));
     }
 }

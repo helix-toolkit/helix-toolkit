@@ -33,6 +33,7 @@
         </StackPanel>
 
         <hx:Viewport3DX
+            x:Name="viewport"
             Grid.Row="1"
             Background="Black"
             BackgroundColor="Black"
@@ -132,9 +133,17 @@
             Grid.Row="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
-            FontSize="64"
+            FontSize="32"
             FontStretch="Condensed"
             Foreground="Red"
             Text="HelixToolkit + SharpDX in Windows 10" />
+        <TextBlock
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            FontSize="24"
+            FontWeight="Bold"
+            Foreground="Blue"
+            Text="{Binding ElementName=viewport, Path=FrameRate}" />
     </Grid>
 </Page>

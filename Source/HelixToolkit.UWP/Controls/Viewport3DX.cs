@@ -18,7 +18,6 @@ namespace HelixToolkit.UWP
     using Model.Scene;
     using Model.Scene2D;
     using System.Runtime.CompilerServices;
-    using System.Runtime.InteropServices.WindowsRuntime;
     using Windows.UI.Xaml.Input;
     using Visibility = Windows.UI.Xaml.Visibility;
     /// <summary>
@@ -552,7 +551,8 @@ namespace HelixToolkit.UWP
 
         public void Update(TimeSpan timeStamp)
         {
-            CameraController.OnTimeStep(timeStamp.Ticks);   
+            CameraController.OnTimeStep(timeStamp.Ticks);
+            this.FrameRate = Math.Round(renderHostInternal.RenderStatistics.FPSStatistics.AverageFrequency, 2);
         }
 
         /// <summary>
