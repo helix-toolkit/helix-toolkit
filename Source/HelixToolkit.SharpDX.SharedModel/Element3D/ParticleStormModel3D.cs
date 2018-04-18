@@ -400,17 +400,24 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+#if NETFX_CORE
+        public static DependencyProperty AccelerationProperty = DependencyProperty.Register("Acceleration", typeof(Vector3D), typeof(ParticleStormModel3D),
+            new PropertyMetadata(DefaultAcceleration,
+            (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as ParticleStormNode).InitAcceleration = (Vector3D)e.NewValue;
+            }
+            ));
+#else
         public static DependencyProperty AccelerationProperty = DependencyProperty.Register("Acceleration", typeof(Vector3D), typeof(ParticleStormModel3D),
             new PropertyMetadata(DefaultAcceleration.ToVector3D(),
             (d, e) =>
             {
-#if NETFX_CORE
-                ((d as Element3DCore).SceneNode as ParticleStormNode).InitAcceleration = (Vector3D)e.NewValue;
-#else
-                ((d as Element3DCore).SceneNode as ParticleStormNode).InitAcceleration = ((Vector3D)e.NewValue).ToVector3();
-#endif
+                 ((d as Element3DCore).SceneNode as ParticleStormNode).InitAcceleration = ((Vector3D)e.NewValue).ToVector3();
+
             }
             ));
+#endif
 
         public Vector3D Acceleration
         {

@@ -130,7 +130,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private bool isTextureChanged = true;
         private Stream particleTexture;
 
         /// <summary>
@@ -140,9 +139,9 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(Set(ref particleTexture, value))
+                if(Set(ref particleTexture, value) && IsAttached)
                 {
-                    isTextureChanged = true;
+                    OnTextureChanged();
                 }
             }
             get
@@ -466,7 +465,7 @@ namespace HelixToolkit.UWP.Core
         protected UAVBufferViewProxy[] BufferProxies { private set; get; } = new UAVBufferViewProxy[2];
         private ParticleCountIndirectArgs drawArgument = new ParticleCountIndirectArgs();
         #endregion
-        private bool isBlendChanged = true;
+
         private BlendState blendState;
         private BlendStateDescription blendDesc = new BlendStateDescription() { IndependentBlendEnable = false, AlphaToCoverageEnable = false };
         /// <summary>
@@ -476,8 +475,10 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                blendDesc = value;
-                isBlendChanged = true;
+                if(Set(ref blendDesc, value) && IsAttached)
+                {
+                    OnBlendStateChanged();
+                }
             }
             get { return blendDesc; }
         }
@@ -535,6 +536,8 @@ namespace HelixToolkit.UWP.Core
         private int samplerSlot;
         #endregion
 
+        private readonly object lockObject = new object();
+
         public ParticleRenderCore() : base(RenderType.Particle) { NeedUpdate = true; }
         /// <summary>
         /// Gets the model constant buffer description.
@@ -591,13 +594,13 @@ namespace HelixToolkit.UWP.Core
                 #endregion
                 perFrameCB = technique.ConstantBufferPool.Register(DefaultBufferNames.ParticleFrameCB, ParticlePerFrame.SizeInBytes);
                 insertCB = technique.ConstantBufferPool.Register(DefaultBufferNames.ParticleCreateParameters, ParticleInsertParameters.SizeInBytes);
-
-                isBlendChanged = true;
                 if (isInitialParticleChanged)
                 {
                     OnInitialParticleChanged(ParticleCount);
                 }
                 textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
+                OnTextureChanged();
+                OnBlendStateChanged();
                 return true;
             }
             else
@@ -605,6 +608,7 @@ namespace HelixToolkit.UWP.Core
                 return false;
             }
         }
+
         /// <summary>
         /// Updates the insert throttle.
         /// </summary>
@@ -680,29 +684,17 @@ namespace HelixToolkit.UWP.Core
 
         private void OnTextureChanged()
         {
-            if (isTextureChanged)
+            RemoveAndDispose(ref textureView);
+            if (ParticleTexture != null)
             {
-                RemoveAndDispose(ref textureView);
-                if (!IsAttached)
-                {
-                    return;
-                }
-                if (ParticleTexture != null)
-                {
-                    textureView = Collect(TextureLoader.FromMemoryAsShaderResourceView(this.Device, ParticleTexture));
-                }
-                isTextureChanged = false;
+                textureView = Collect(TextureLoader.FromMemoryAsShaderResourceView(this.Device, ParticleTexture));
             }
         }
 
         private void OnBlendStateChanged()
         {
-            if (isBlendChanged)
-            {
-                RemoveAndDispose(ref blendState);
-                blendState = Collect(EffectTechnique.EffectsManager.StateManager.Register(blendDesc));
-                isBlendChanged = false;
-            }
+            RemoveAndDispose(ref blendState);
+            blendState = Collect(EffectTechnique.EffectsManager.StateManager.Register(blendDesc));
         }
 
         /// <summary>
@@ -791,9 +783,6 @@ namespace HelixToolkit.UWP.Core
             // Clear binding
             updatePass.GetShader(ShaderStage.Compute).BindUAV(deviceContext, currentStateSlot, null);
             updatePass.GetShader(ShaderStage.Compute).BindUAV(deviceContext, newStateSlot, null);
-
-            OnTextureChanged();
-            OnBlendStateChanged();
 
             // Render existing particles
             renderPass.BindShader(deviceContext);
