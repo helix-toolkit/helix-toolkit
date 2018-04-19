@@ -32,7 +32,7 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            EnableSwapChainRendering="False"
+            EnableSwapChainRendering="True"
             IsShadowMappingEnabled="True"
             MSAA="{Binding MSAA}"
             RenderTechnique="{Binding RenderTechnique}"
@@ -121,13 +121,13 @@
                 <hx:DynamicReflectionMap3D>
                     <hx:MeshGeometryModel3D
                         x:Name="model1"
-                        Geometry="{Binding Sphere}" 
                         CullMode="Back"
+                        Geometry="{Binding Sphere}"
                         IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
                         Material="{Binding ReflectMaterial}"
-                        RenderShadowMap="True"
                         RenderEnvironmentMap="True"
-                        Transform="{Binding Model1Transform}" />                    
+                        RenderShadowMap="True"
+                        Transform="{Binding Model1Transform}" />
                 </hx:DynamicReflectionMap3D>
 
                 <hx:GroupModel3D IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}">
@@ -193,7 +193,7 @@
                     RenderShadowMap="True"
                     Transform="{Binding FloorTransform}" />
             </hx:GroupModel3D>
-            <hx:PostEffectBloom x:Name="bloom"/>
+            <hx:PostEffectBloom x:Name="bloom" />
             <!--<hx:LineGeometryModel3D Geometry="{Binding CubeEdges}" Color="{x:Static SharpDX:Color.Red}" Thickness="4"/>-->
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1">
@@ -284,27 +284,51 @@
             <CheckBox IsChecked="{Binding ElementName=bloom, Path=IsRendering}">Enable Bloom</CheckBox>
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Num BlurPass:</TextBlock>
-                <Slider Width="80" Minimum="1" Maximum="4" Value="{Binding ElementName=bloom, Path=NumberOfBlurPass}"/>
+                <Slider
+                    Width="80"
+                    Maximum="4"
+                    Minimum="1"
+                    Value="{Binding ElementName=bloom, Path=NumberOfBlurPass}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Max DownSampling:</TextBlock>
-                <Slider Width="80" Minimum="1" Maximum="4" Value="{Binding ElementName=bloom, Path=MaximumDownSamplingStep}"/>
+                <Slider
+                    Width="80"
+                    Maximum="4"
+                    Minimum="1"
+                    Value="{Binding ElementName=bloom, Path=MaximumDownSamplingStep}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock>BloomCombineIntensity:</TextBlock>
-                <Slider Width="80" Minimum="0.1" Maximum="1" Value="{Binding ElementName=bloom, Path=BloomCombineIntensity}"/>
+                <Slider
+                    Width="80"
+                    Maximum="1"
+                    Minimum="0.1"
+                    Value="{Binding ElementName=bloom, Path=BloomCombineIntensity}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock>BloomCombineSaturation:</TextBlock>
-                <Slider Width="80" Minimum="0.1" Maximum="1" Value="{Binding ElementName=bloom, Path=BloomCombineSaturation}"/>
+                <Slider
+                    Width="80"
+                    Maximum="1"
+                    Minimum="0.1"
+                    Value="{Binding ElementName=bloom, Path=BloomCombineSaturation}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock>BloomExtractIntensity:</TextBlock>
-                <Slider Width="80" Minimum="0.1" Maximum="1" Value="{Binding ElementName=bloom, Path=BloomExtractIntensity}"/>
+                <Slider
+                    Width="80"
+                    Maximum="1"
+                    Minimum="0.1"
+                    Value="{Binding ElementName=bloom, Path=BloomExtractIntensity}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock>BloomPassIntensity:</TextBlock>
-                <Slider Width="80" Minimum="0.1" Maximum="1" Value="{Binding ElementName=bloom, Path=BloomPassIntensity}"/>
+                <Slider
+                    Width="80"
+                    Maximum="1"
+                    Minimum="0.1"
+                    Value="{Binding ElementName=bloom, Path=BloomPassIntensity}" />
             </StackPanel>
         </StackPanel>
         <StatusBar
