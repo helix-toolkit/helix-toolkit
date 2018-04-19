@@ -87,6 +87,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 Items[i].Detach();
             }
+            Items.Clear();
             itemHashSet.Clear();
             OnClear?.Invoke(this, new OnChildNodeChangedArgs(null, Operation.Clear));
         }
