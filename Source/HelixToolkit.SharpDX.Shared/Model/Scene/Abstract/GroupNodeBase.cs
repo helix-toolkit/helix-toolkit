@@ -177,7 +177,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="disposeManagedResources">if set to <c>true</c> [dispose managed resources].</param>
         protected override void OnDispose(bool disposeManagedResources)
         {
-            itemHashSet.Clear();
+            Clear();
+            OnClear = null;
             base.OnDispose(disposeManagedResources);
         }
     }
