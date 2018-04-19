@@ -47,7 +47,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// The pending render nodes
         /// </summary>
-        protected readonly List<SceneNode> generalNodes = new List<SceneNode>();
+        protected readonly List<SceneNode> opaqueNodes = new List<SceneNode>();
+        /// <summary>
+        /// The transparent nodes
+        /// </summary>
+        protected readonly List<SceneNode> transparentNodes = new List<SceneNode>();
+        /// <summary>
+        /// The particle nodes
+        /// </summary>
+        protected readonly List<SceneNode> particleNodes = new List<SceneNode>();
         /// <summary>
         /// The pending render nodes
         /// </summary>
@@ -88,12 +96,20 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             get { return lightNodes.Select(x=>x as LightNode); }
         }
         /// <summary>
-        /// Gets the per frame render cores for normal rendering routine. <see cref="RenderType.Opaque"/>, <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
-        /// <para>This does not include <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
+        /// Gets the per frame nodes for opaque rendering. <see cref="RenderType.Opaque"/>
+        /// <para>This does not include <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
-        public override List<SceneNode> PerFrameGeneralNodes { get { return generalNodes; } }
+        public override List<SceneNode> PerFrameOpaqueNodes { get { return opaqueNodes; } }
         /// <summary>
-        /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameGeneralNodes"/>
+        /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
+        /// <para>This does not include <see cref="RenderType.Opaque"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
+        /// </summary>
+        /// <value>
+        /// The per frame transparent nodes.
+        /// </value>
+        public override List<SceneNode> PerFrameTransparentNodes { get { return transparentNodes; } }
+        /// <summary>
+        /// Gets the per frame post effects cores. It is the subset of <see cref="PerFrameOpaqueNodes"/>
         /// </summary>
         /// <value>
         /// The per frame post effects cores.
@@ -166,14 +182,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     }
                     continue;
                 }
-                ++i;
-                if (type == RenderType.Opaque || type == RenderType.Transparent || type == RenderType.Particle)
+                if (renderable.Value.RenderCore.NeedUpdate) // Run update function at the beginning of actual rendering.
                 {
-                    generalNodes.Add(renderable.Value);
-                    if (renderable.Value.RenderCore.NeedUpdate) // Run update function at the beginning of actual rendering.
-                    {
-                        renderable.Value.RenderCore.Update(RenderContext, renderer.ImmediateContext);
-                    }
+                    renderable.Value.RenderCore.Update(RenderContext, renderer.ImmediateContext);
+                }
+                ++i;
+                if (type == RenderType.Opaque)
+                {
+                    opaqueNodes.Add(renderable.Value);
                 }
                 else if (type == RenderType.None)
                 {
@@ -182,6 +198,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 else if (type == RenderType.Light)
                 {
                     lightNodes.Add(renderable.Value);
+                }
+                else if (type == RenderType.Transparent || type == RenderType.Particle)
+                {
+                    transparentNodes.Add(renderable.Value);
                 }
                 else if (type == RenderType.PreProc)
                 {
@@ -199,26 +219,40 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             //Get RenderCores with post effect specified.
             if(postProcNodes.Count > 0)
             {
-                if(generalNodes.Count > 50)
+                if(opaqueNodes.Count + transparentNodes.Count > 50)
                 {
                     getPostEffectCoreTask = Task.Run(() =>
                     {
-                        for(int i = 0; i < generalNodes.Count; ++i)
+                        for(int i = 0; i < opaqueNodes.Count; ++i)
                         {
-                            if (generalNodes[i].HasAnyPostEffect)
+                            if (opaqueNodes[i].HasAnyPostEffect)
                             {
-                                nodesForPostRender.Add(generalNodes[i]);
+                                nodesForPostRender.Add(opaqueNodes[i]);
+                            }
+                        }
+                        for (int i = 0; i < transparentNodes.Count; ++i)
+                        {
+                            if (transparentNodes[i].HasAnyPostEffect)
+                            {
+                                nodesForPostRender.Add(transparentNodes[i]);
                             }
                         }
                     });
                 }
                 else
                 {
-                    for (int i = 0; i < generalNodes.Count; ++i)
+                    for (int i = 0; i < opaqueNodes.Count; ++i)
                     {
-                        if (generalNodes[i].HasAnyPostEffect)
+                        if (opaqueNodes[i].HasAnyPostEffect)
                         {
-                            nodesForPostRender.Add(generalNodes[i]);
+                            nodesForPostRender.Add(opaqueNodes[i]);
+                        }
+                    }
+                    for (int i = 0; i < transparentNodes.Count; ++i)
+                    {
+                        if (transparentNodes[i].HasAnyPostEffect)
+                        {
+                            nodesForPostRender.Add(transparentNodes[i]);
                         }
                     }
                 }
@@ -243,11 +277,19 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 getTriangleCountTask = Task.Factory.StartNew(() =>
                 {
                     int count = 0;
-                    foreach(var core in generalNodes)
+                    foreach(var core in opaqueNodes)
                     {
                         if (core is IGeometryRenderCore c)
                         {
                             if(c.GeometryBuffer != null && c.GeometryBuffer.Geometry != null && c.GeometryBuffer.Geometry.Indices != null)
+                                count += c.GeometryBuffer.Geometry.Indices.Count / 3;
+                        }
+                    }
+                    foreach (var core in transparentNodes)
+                    {
+                        if (core is IGeometryRenderCore c)
+                        {
+                            if (c.GeometryBuffer != null && c.GeometryBuffer.Geometry != null && c.GeometryBuffer.Geometry.Indices != null)
                                 count += c.GeometryBuffer.Geometry.Indices.Count / 3;
                         }
                     }
@@ -274,7 +316,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             renderer.SetRenderTargets(ref renderParameter);
             renderer.UpdateGlobalVariables(RenderContext, lightNodes, ref renderParameter);
             renderer.RenderPreProc(RenderContext, preProcNodes, ref renderParameter);
-            numRendered += renderer.RenderScene(RenderContext, generalNodes, ref renderParameter);
+            numRendered += renderer.RenderOpaque(RenderContext, opaqueNodes, ref renderParameter);
+            numRendered += renderer.RenderTransparent(RenderContext, transparentNodes, ref renderParameter);
             getPostEffectCoreTask?.Wait();
             getPostEffectCoreTask = null;
             renderer.RenderPostProc(RenderContext, postProcNodes, ref renderParameter);
@@ -345,7 +388,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 perFrameFlattenedScene.Clear();
             }
-            generalNodes.Clear();
+            opaqueNodes.Clear();
+            transparentNodes.Clear();
             lightNodes.Clear();
             postProcNodes.Clear();
             preProcNodes.Clear();

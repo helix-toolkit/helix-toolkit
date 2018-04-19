@@ -397,14 +397,23 @@ namespace HelixToolkit.UWP.Core
                 ModelConstBuffer.UploadDataToBuffer(ctx, ref transforms);
 
                 var frustum = new BoundingFrustum(transforms.ViewProjection);
-
-                for (int i = 0; i < context.RenderHost.PerFrameGeneralNodes.Count; ++i)
+                //Render opaque
+                for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
                 {
-                    var node = context.RenderHost.PerFrameGeneralNodes[i];
+                    var node = context.RenderHost.PerFrameOpaqueNodes[i];
+                    if (node.GUID != this.GUID && !IgnoredGuid.Contains(node.GUID) && node.TestViewFrustum(ref frustum))
+                    {
+                        context.RenderHost.PerFrameOpaqueNodes[i].Render(context, ctx);
+                    }
+                }
+                //Render particle
+                for (int i = 0; i < context.RenderHost.PerFrameTransparentNodes.Count; ++i)
+                {
+                    var node = context.RenderHost.PerFrameOpaqueNodes[i];
                     if (node.GUID != this.GUID && node.RenderType != RenderType.Transparent
                     && !IgnoredGuid.Contains(node.GUID) && node.TestViewFrustum(ref frustum))
                     {
-                        context.RenderHost.PerFrameGeneralNodes[i].Render(context, ctx);
+                        context.RenderHost.PerFrameOpaqueNodes[i].Render(context, ctx);
                     }
                 }
                 commands[index] = ctx.DeviceContext.FinishCommandList(false);

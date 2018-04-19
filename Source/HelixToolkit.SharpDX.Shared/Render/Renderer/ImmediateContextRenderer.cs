@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     {
         private readonly Stack<KeyValuePair<int, IList<SceneNode>>> stackCache1 = new Stack<KeyValuePair<int, IList<SceneNode>>>(20);
         private readonly Stack<KeyValuePair<int, IList<SceneNode2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20);
-        protected readonly List<SceneNode> filters = new List<SceneNode>();
+
         /// <summary>
         /// Gets or sets the immediate context.
         /// </summary>
@@ -110,11 +110,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
         /// <returns>Number of node has been rendered</returns>
-        public virtual int RenderScene(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        public virtual int RenderOpaque(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
             int renderedCount = 0;
             int count = renderables.Count;
-            filters.Clear();
             var frustum = context.BoundingFrustum;
             for (int i = 0; i < count; ++i)
             {
@@ -122,30 +121,32 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 {
                     continue;
                 }
-                if (renderables[i].RenderCore.RenderType == RenderType.Opaque)
-                {
-                    renderables[i].RenderCore.Render(context, ImmediateContext);
-                }
-                else
-                {
-                    filters.Add(renderables[i]);
-                }
+                renderables[i].RenderCore.Render(context, ImmediateContext);
                 ++renderedCount;
             }
-            count = filters.Count;
+            return renderedCount;
+        }
+
+        /// <summary>
+        /// Renders the transparent.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="renderables">The renderables.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <returns></returns>
+        public virtual int RenderTransparent(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        {
+            int renderedCount = 0;
+            var frustum = context.BoundingFrustum;
+            int count = renderables.Count;
             for (int i = 0; i < count; ++i)
             {
-                if (filters[i].RenderCore.RenderType == RenderType.Particle)
+                if (context.EnableBoundingFrustum && !renderables[i].TestViewFrustum(ref frustum))
                 {
-                    filters[i].RenderCore.Render(context, ImmediateContext);
+                    continue;
                 }
-            }
-            for (int i = 0; i < count; ++i)
-            {
-                if (filters[i].RenderCore.RenderType == RenderType.Transparent)
-                {
-                    filters[i].RenderCore.Render(context, ImmediateContext);
-                }
+                renderables[i].RenderCore.Render(context, ImmediateContext);
+                ++renderedCount;
             }
             return renderedCount;
         }
@@ -223,7 +224,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         protected override void OnDispose(bool disposeManagedResources)
         {
-            filters.Clear();
             stackCache1.Clear();
             stack2DCache1.Clear();
             base.OnDispose(disposeManagedResources);

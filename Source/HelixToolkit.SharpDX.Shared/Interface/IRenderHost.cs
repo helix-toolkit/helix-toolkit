@@ -217,17 +217,25 @@ namespace HelixToolkit.UWP
         /// </value>
         IEnumerable<LightNode> PerFrameLights { get; }
         /// <summary>
-        /// Gets the per frame nodes with post effects. It is the subset of <see cref="PerFrameGeneralNodes"/>
+        /// Gets the per frame nodes with post effects. It is the subset of <see cref="PerFrameOpaqueNodes"/>
         /// </summary>
         /// <value>
         /// Gets the per frame nodes with post effects.
         /// </value>
         List<SceneNode> PerFrameNodesWithPostEffect { get; }
         /// <summary>
-        /// Gets the per frame nodes for normal rendering routine. <see cref="RenderType.Opaque"/>, <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
-        /// <para>This does not include <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
+        /// Gets the per frame nodes for opaque rendering. <see cref="RenderType.Opaque"/>
+        /// <para>This does not include <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
         /// </summary>
-        List<SceneNode> PerFrameGeneralNodes { get; }
+        List<SceneNode> PerFrameOpaqueNodes { get; }
+        /// <summary>
+        /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>, <see cref="RenderType.Particle"/>
+        /// <para>This does not include <see cref="RenderType.Opaque"/>, <see cref="RenderType.PreProc"/>, <see cref="RenderType.PostProc"/>, <see cref="RenderType.Light"/>, <see cref="RenderType.ScreenSpaced"/></para>
+        /// </summary>
+        /// <value>
+        /// The per frame transparent nodes.
+        /// </value>
+        List<SceneNode> PerFrameTransparentNodes { get; }
         /// <summary>
         /// Starts the d3 d.
         /// </summary>

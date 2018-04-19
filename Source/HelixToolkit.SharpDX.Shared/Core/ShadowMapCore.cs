@@ -232,10 +232,11 @@ namespace HelixToolkit.UWP.Core
             deviceContext.DeviceContext.Rasterizer.SetViewport(0, 0, Width, Height);
 
             deviceContext.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
-            for (int i = 0; i < context.RenderHost.PerFrameGeneralNodes.Count; ++i)
+            for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
             {
-                var core = context.RenderHost.PerFrameGeneralNodes[i];
-                if (core.IsThrowingShadow && core.RenderType == RenderType.Opaque)
+                //Only support opaque object for throwing shadows.
+                var core = context.RenderHost.PerFrameOpaqueNodes[i];
+                if (core.IsThrowingShadow)
                 {
                     core.Render(context, deviceContext);
                 }

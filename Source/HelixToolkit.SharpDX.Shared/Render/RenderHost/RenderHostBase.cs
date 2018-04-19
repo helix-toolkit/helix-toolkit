@@ -392,7 +392,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The render statistics.
         /// </value>
         public IRenderStatistics RenderStatistics { get; } = new RenderStatistics();
-
+        #region Perframe renderables
         /// <summary>
         /// Gets the current frame renderables for rendering.
         /// </summary>
@@ -420,8 +420,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame render cores.
         /// </value>
-        public abstract List<SceneNode> PerFrameGeneralNodes { get; }
-
+        public abstract List<SceneNode> PerFrameOpaqueNodes { get; }
+        /// <summary>
+        /// Gets the per frame transparent nodes.
+        /// </summary>
+        /// <value>
+        /// The per frame transparent nodes.
+        /// </value>
+        public abstract List<SceneNode> PerFrameTransparentNodes { get; }
+        #endregion
         #region Configuration
         /// <summary>
         /// Gets or sets a value indicating whether [show render statistics].

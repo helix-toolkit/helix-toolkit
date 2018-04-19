@@ -48,7 +48,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
         /// <returns>Number of node has been rendered</returns>
-        public override int RenderScene(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        public override int RenderOpaque(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
             int counter = 0;
             if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, RenderType.Opaque, commandList, out counter))
@@ -81,7 +81,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
             else
             {
-                return base.RenderScene(context, renderables, ref parameter);
+                return base.RenderOpaque(context, renderables, ref parameter);
             }
         }
 
