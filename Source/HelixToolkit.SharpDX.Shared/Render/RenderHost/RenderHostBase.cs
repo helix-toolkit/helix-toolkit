@@ -427,6 +427,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame transparent nodes.
         /// </value>
+        public abstract List<SceneNode> PerFrameParticleNodes { get; }
+        /// <summary>
+        /// Gets the per frame transparent nodes.
+        /// </summary>
+        /// <value>
+        /// The per frame transparent nodes.
+        /// </value>
         public abstract List<SceneNode> PerFrameTransparentNodes { get; }
         #endregion
         #region Configuration
@@ -443,7 +450,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         public DX11RenderHostConfiguration RenderConfiguration { set; get; } 
-            = new DX11RenderHostConfiguration() { UpdatePerFrameData = true, RenderD2D = true, RenderLights = true, ClearEachFrame = true };
+            = new DX11RenderHostConfiguration() { UpdatePerFrameData = true, RenderD2D = true, RenderLights = true, ClearEachFrame = true, EnableOITRendering = true };
         #endregion
         #endregion
 

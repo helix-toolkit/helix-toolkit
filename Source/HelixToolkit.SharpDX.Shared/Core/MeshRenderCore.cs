@@ -76,7 +76,7 @@ namespace HelixToolkit.UWP.Core
             set; get;
         }
 
-        private string transparentPassName = DefaultPassNames.MeshTransparentPass;
+        private string transparentPassName = DefaultPassNames.OITPass;
         /// <summary>
         /// Gets or sets the name of the mesh transparent pass.
         /// </summary>
@@ -97,17 +97,6 @@ namespace HelixToolkit.UWP.Core
                 return transparentPassName;
             }
         }
-        /// <summary>
-        /// Gets or sets a value indicating whether [enable order independant transparent rendering].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableOITRendering
-        {
-            set; get;
-        } = true;
-
 
         /// <summary>
         /// Gets the raster state wireframe.
@@ -173,13 +162,13 @@ namespace HelixToolkit.UWP.Core
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
-            model.RenderOIT = EnableOITRendering ? 1 : 0;
+            model.RenderOIT = context.IsOITPass ? 1 : 0;
         }
 
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             IShaderPass pass = DefaultShaderPass;
-            if(RenderType == RenderType.Transparent && EnableOITRendering)
+            if (RenderType == RenderType.Transparent && context.IsOITPass)
             {
                 pass = TransparentPass;
             }

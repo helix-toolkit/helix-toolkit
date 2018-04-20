@@ -197,7 +197,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11RenderBufferBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11SwapChainCompositionRenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11SwapChainRenderBufferProxy.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\OrderIndependantTransparentBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\Renderer\ImmediateContextRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\Renderer\DeferredContextRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\RenderHostBase.cs" />

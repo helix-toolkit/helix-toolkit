@@ -134,11 +134,13 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// The mesh transparent
         /// </summary>
-        public const string MeshTransparentPass = "MeshTransparent";
+        public const string OITPass = "MeshOITPass";
         /// <summary>
         /// 
         /// </summary>
         public const string MeshTriTessellation = "MeshTriTessellation";
+
+        public const string MeshTriTessellationOIT = "MeshTriTessellationOIT";
         /// <summary>
         /// 
         /// </summary>

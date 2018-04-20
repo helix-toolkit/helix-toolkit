@@ -130,6 +130,23 @@ namespace HelixToolkit.UWP.Utilities
             RemoveAndDispose(ref renderTargetView);
             renderTargetView = Collect(new RenderTargetView(device, resource, desc));
         }
+        /// <summary>
+        /// Creates the view.
+        /// </summary>
+        public void CreateTextureView()
+        {
+            RemoveAndDispose(ref textureView);
+            textureView = Collect(new ShaderResourceView(device, resource));
+        }
+        /// <summary>
+        /// Creates the render target.
+        /// </summary>
+        public void CreateRenderTarget()
+        {
+            RemoveAndDispose(ref renderTargetView);
+            renderTargetView = Collect(new RenderTargetView(device, resource));
+        }
+
 
         /// <summary>
         /// Creates the view from data array.

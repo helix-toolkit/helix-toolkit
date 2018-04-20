@@ -160,6 +160,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         bool IsCustomPass { set; get; }
         /// <summary>
+        /// Whetheter is order independant transparent pass
+        /// </summary>
+        bool IsOITPass { set; get; }
+        /// <summary>
         /// Gets or sets a value indicating whether [update octree].
         /// </summary>
         /// <value>

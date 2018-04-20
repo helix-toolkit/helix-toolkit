@@ -407,11 +407,10 @@ namespace HelixToolkit.UWP.Core
                     }
                 }
                 //Render particle
-                for (int i = 0; i < context.RenderHost.PerFrameTransparentNodes.Count; ++i)
+                for (int i = 0; i < context.RenderHost.PerFrameParticleNodes.Count; ++i)
                 {
                     var node = context.RenderHost.PerFrameOpaqueNodes[i];
-                    if (node.GUID != this.GUID && node.RenderType != RenderType.Transparent
-                    && !IgnoredGuid.Contains(node.GUID) && node.TestViewFrustum(ref frustum))
+                    if (node.GUID != this.GUID && !IgnoredGuid.Contains(node.GUID) && node.TestViewFrustum(ref frustum))
                     {
                         context.RenderHost.PerFrameOpaqueNodes[i].Render(context, ctx);
                     }

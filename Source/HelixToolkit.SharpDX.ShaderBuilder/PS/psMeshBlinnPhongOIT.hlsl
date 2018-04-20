@@ -17,23 +17,23 @@ PSOITOutput meshBlinnPhongOIT(PSInput input)
 {
     PSOITOutput output = (PSOITOutput) 0;
     float4 color = main(input);
-    //if (bRenderOIT)
-    //{
+    if (bRenderOIT)
+    {
         // Insert your favorite weighting function here. The color-based factor
         // avoids color pollution from the edges of wispy clouds. The z-based
         // factor gives precedence to nearer surfaces.
-        float weight = max(min(1, (max(max(color.r, color.g), color.b) * color.a)), color.a) * clamp(0.03 / (1e-5 + pow(input.p.z / 200, 4.0)), 1e-2, 3e3);
+        float weight = max(min(1, (max(max(color.r, color.g), color.b) * color.a)), color.a) * clamp(0.03 / (1e-5 + pow(input.p.w / 200, 4.0)), 1e-2, 3e3);
         // Blend Func: GL_ONE, GL_ONE
         // Switch to premultiplied alpha and weight
         output.color = float4(color.rgb * color.a, color.a) * weight;
  
         // Blend Func: GL_ZERO, GL_ONE_MINUS_SRC_ALPHA
         output.alpha.a = color.a;
-    //}
-    //else
-    //{
-    //    output.color = color;
-    //}
+    }
+    else
+    {
+        output.color = color;
+    }
     return output;
 }
 #endif

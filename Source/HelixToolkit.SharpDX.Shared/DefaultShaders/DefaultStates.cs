@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP.Shaders
         public readonly static BlendStateDescription BSOverlayBlending;
         public readonly static BlendStateDescription AdditiveBlend;
         public readonly static BlendStateDescription BSScreenDupCursorBlend;
-        public readonly static BlendStateDescription BSMeshOITBlend;
+        public readonly static BlendStateDescription BSOITBlend = new BlendStateDescription() { IndependentBlendEnable = true };
         public readonly static BlendStateDescription BSMeshOITBlendQuad;
 
         static DefaultBlendStateDescriptions()
@@ -91,7 +91,7 @@ namespace HelixToolkit.UWP.Shaders
                 IsBlendEnabled = true
             };
 
-            BSMeshOITBlend.RenderTarget[0] = new RenderTargetBlendDescription()
+            BSOITBlend.RenderTarget[0] = new RenderTargetBlendDescription()
             {
                 IsBlendEnabled = true,
                 SourceBlend = BlendOption.One,
@@ -102,7 +102,7 @@ namespace HelixToolkit.UWP.Shaders
                 AlphaBlendOperation = BlendOperation.Add,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All
             };
-            BSMeshOITBlend.RenderTarget[1] = new RenderTargetBlendDescription()
+            BSOITBlend.RenderTarget[1] = new RenderTargetBlendDescription()
             {
                 IsBlendEnabled = true,
                 SourceBlend = BlendOption.Zero,
@@ -111,7 +111,7 @@ namespace HelixToolkit.UWP.Shaders
                 SourceAlphaBlend = BlendOption.Zero,
                 DestinationAlphaBlend = BlendOption.InverseSourceAlpha,
                 AlphaBlendOperation = BlendOperation.Add,
-                RenderTargetWriteMask = ColorWriteMaskFlags.All
+                RenderTargetWriteMask = ColorWriteMaskFlags.Alpha
             };
 
             BSMeshOITBlendQuad.RenderTarget[0] = new RenderTargetBlendDescription()
@@ -120,8 +120,8 @@ namespace HelixToolkit.UWP.Shaders
                 SourceBlend = BlendOption.InverseSourceAlpha,
                 DestinationBlend = BlendOption.SourceAlpha,
                 BlendOperation = BlendOperation.Add,
-                SourceAlphaBlend = BlendOption.InverseSourceAlpha,
-                DestinationAlphaBlend = BlendOption.SourceAlpha,
+                SourceAlphaBlend = BlendOption.Zero,
+                DestinationAlphaBlend = BlendOption.Zero,
                 AlphaBlendOperation = BlendOperation.Add,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All
             };

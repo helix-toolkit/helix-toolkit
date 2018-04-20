@@ -137,20 +137,27 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public virtual int RenderTransparent(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
-            //int renderedCount = 0;
-            //var frustum = context.BoundingFrustum;
-            //int count = renderables.Count;
-            //for (int i = 0; i < count; ++i)
-            //{
-            //    if (context.EnableBoundingFrustum && !renderables[i].TestViewFrustum(ref frustum))
-            //    {
-            //        continue;
-            //    }
-            //    renderables[i].RenderCore.Render(context, ImmediateContext);
-            //    ++renderedCount;
-            //}
-            transparentRenderCore.Render(context, ImmediateContext);
-            return transparentRenderCore.RenderCount;
+            if (context.RenderHost.RenderConfiguration.EnableOITRendering)
+            {
+                transparentRenderCore.Render(context, ImmediateContext);
+                return transparentRenderCore.RenderCount;
+            }
+            else
+            {
+                int renderedCount = 0;
+                var frustum = context.BoundingFrustum;
+                int count = renderables.Count;
+                for (int i = 0; i < count; ++i)
+                {
+                    if (context.EnableBoundingFrustum && !renderables[i].TestViewFrustum(ref frustum))
+                    {
+                        continue;
+                    }
+                    renderables[i].RenderCore.Render(context, ImmediateContext);
+                    ++renderedCount;
+                }
+                return renderedCount;
+            }
         }
         /// <summary>
         /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IRenderContext, List{KeyValuePair{int, SceneNode}})"/>

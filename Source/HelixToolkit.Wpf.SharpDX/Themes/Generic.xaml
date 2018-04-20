@@ -8,12 +8,15 @@
     <hx:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter" />
 
     <Style TargetType="{x:Type hx:Viewport3DX}">
-        <Setter Property="Background" Value="#00000000"/>
+        <Setter Property="Background" Value="#00000000" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type hx:Viewport3DX}">
-                    <Grid FocusVisualStyle="{x:Null}" Style="{x:Null}" IsManipulationEnabled="True" 
-                          Background="{TemplateBinding Background}">
+                    <Grid
+                        Background="{TemplateBinding Background}"
+                        FocusVisualStyle="{x:Null}"
+                        IsManipulationEnabled="True"
+                        Style="{x:Null}">
                         <ContentPresenter
                             x:Name="PART_Canvas"
                             HorizontalAlignment="Stretch"
