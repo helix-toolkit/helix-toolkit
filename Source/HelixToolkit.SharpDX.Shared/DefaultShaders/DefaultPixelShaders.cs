@@ -27,6 +27,34 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
+        /// Gets the ps mesh binn phong order independant transparent.
+        /// </summary>
+        /// <value>
+        /// The ps mesh binn phong order independant transparent.
+        /// </value>
+        public static byte[] PSMeshBinnPhongOIT
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psMeshBlinnPhongOIT");
+
+            }
+        }
+        /// <summary>
+        /// Gets the ps mesh binn phong oit quad.
+        /// </summary>
+        /// <value>
+        /// The ps mesh binn phong oit quad.
+        /// </value>
+        public static byte[] PSMeshBinnPhongOITQuad
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psMeshBlinnPhongOITQuad");
+
+            }
+        }
+        /// <summary>
         /// 
         /// </summary>
         public static byte[] PSMeshVertColor
@@ -376,6 +404,16 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSMeshBlinnPhong = new ShaderDescription(nameof(PSMeshBlinnPhong), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshBinnPhong);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription PSMeshBlinnPhongOIT = new ShaderDescription(nameof(PSMeshBlinnPhongOIT), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshBinnPhongOIT);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription PSMeshBlinnPhongOITQuad = new ShaderDescription(nameof(PSMeshBlinnPhongOITQuad), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshBinnPhongOITQuad);
         /// <summary>
         /// 
         /// </summary>

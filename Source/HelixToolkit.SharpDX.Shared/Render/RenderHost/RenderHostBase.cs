@@ -794,6 +794,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 
             renderContext2D = Collect(CreateRenderContext2D(deviceResources.DeviceContext2D));
+
+            renderer.Attach(this);
         }
         /// <summary>
         /// Creates the render context.
@@ -867,6 +869,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             RemoveAndDispose(ref renderContext);
             RemoveAndDispose(ref renderContext2D);
             Viewport?.Detach();
+            renderer?.Detach();
         }
         /// <summary>
         /// Resizes

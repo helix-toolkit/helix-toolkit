@@ -61,6 +61,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         DeviceContextProxy ImmediateContext { get; }
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="host"></param>
+        void Attach(IRenderHost host);
+        /// <summary>
+        /// 
+        /// </summary>
+        void Detach();
+        /// <summary>
         /// Update scene graph, return the renderables which will be rendered in this frame
         /// </summary>
         /// <param name="context"></param>

@@ -30,6 +30,7 @@
             EnableDeferredRendering="False"
             EnableRenderFrustum="False"
             EnableSwapChainRendering="True"
+            EnableD2DRendering="False"
             FixedRotationPoint="0,0,0"
             FixedRotationPointEnabled="True"
             RenderTechnique="{Binding RenderTechnique}"
@@ -83,7 +84,7 @@
                 <hx:LineGeometryModel3D Geometry="{Binding AxisModel}" Color="White" />
                 <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding AxisLabel}" />
             </hx:CompositeModel3D>
-            <hx:SortingGroupModel3D x:Name="sortingGroup1" ItemsSource="{Binding TransparentGroupModelSource}"/>
+            <hx:GroupModel3D x:Name="sortingGroup1" ItemsSource="{Binding TransparentGroupModelSource}"/>
         </hx:Viewport3DX>
         <StackPanel
             Grid.Column="1"

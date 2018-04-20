@@ -152,6 +152,13 @@
     <GeometryShader Include="GS\gsPoint.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </GeometryShader>
+    <PixelShader Include="PS\psMeshBlinnPhongOIT.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+      <EntryPointName>meshBlinnPhongOIT</EntryPointName>
+    </PixelShader>
+    <PixelShader Include="PS\psMeshBlinnPhongOITQuad.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>     
     <PixelShader Include="PS\psBillboardText.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>

@@ -308,6 +308,8 @@
     <None Include="Resources\psLine.cso" />
     <None Include="Resources\psLineColor.cso" />
     <None Include="Resources\psMeshBlinnPhong.cso" />
+    <None Include="Resources\psMeshBlinnPhongOIT.cso" />
+    <None Include="Resources\psMeshBlinnPhongOITQuad.cso" />
     <None Include="Resources\psMeshClipPlaneBackface.cso" />
     <None Include="Resources\psMeshClipPlaneQuad.cso" />
     <None Include="Resources\psMeshXRay.cso" />

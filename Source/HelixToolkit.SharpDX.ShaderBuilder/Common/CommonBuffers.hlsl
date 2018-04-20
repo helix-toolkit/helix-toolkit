@@ -53,7 +53,7 @@ cbuffer cbMeshModel : register(b1)
     bool bHasDisplacementMap = false;
     bool bHasCubeMap = false;
     bool bRenderShadowMap = false;
-    float paddingMaterial0;
+    bool bRenderOIT = false;
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
     float4 wireframeColor = float4(0,0,1,1);
 };
@@ -185,6 +185,9 @@ Texture2D texParticle : register(t0);
 StructuredBuffer<Particle> SimulationState : register(t0);
 Texture2D billboardTexture : register(t0);; // billboard text image
 
+Texture2D texOITColor : register(t10);
+Texture2D texOITAlpha : register(t11);
+
 ///------------------Samplers-------------------
 SamplerState samplerDiffuse : register(s0);
 
@@ -201,7 +204,6 @@ SamplerComparisonState samplerShadow : register(s5);
 SamplerState samplerParticle : register(s6);
 
 SamplerState samplerBillboard : register(s7);
-
 ///---------------------UAV-----------------------------
 
 ConsumeStructuredBuffer<Particle> CurrentSimulationState : register(u0);

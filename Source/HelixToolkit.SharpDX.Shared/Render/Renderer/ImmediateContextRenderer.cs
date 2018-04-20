@@ -20,6 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using System;
     using Model.Scene;
     using Model.Scene2D;
+
     /// <summary>
     /// 
     /// </summary>
@@ -27,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     {
         private readonly Stack<KeyValuePair<int, IList<SceneNode>>> stackCache1 = new Stack<KeyValuePair<int, IList<SceneNode>>>(20);
         private readonly Stack<KeyValuePair<int, IList<SceneNode2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20);
-
+        private readonly OrderIndependantTransparentRenderCore transparentRenderCore = new OrderIndependantTransparentRenderCore();
         /// <summary>
         /// Gets or sets the immediate context.
         /// </summary>
@@ -136,19 +137,20 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public virtual int RenderTransparent(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
-            int renderedCount = 0;
-            var frustum = context.BoundingFrustum;
-            int count = renderables.Count;
-            for (int i = 0; i < count; ++i)
-            {
-                if (context.EnableBoundingFrustum && !renderables[i].TestViewFrustum(ref frustum))
-                {
-                    continue;
-                }
-                renderables[i].RenderCore.Render(context, ImmediateContext);
-                ++renderedCount;
-            }
-            return renderedCount;
+            //int renderedCount = 0;
+            //var frustum = context.BoundingFrustum;
+            //int count = renderables.Count;
+            //for (int i = 0; i < count; ++i)
+            //{
+            //    if (context.EnableBoundingFrustum && !renderables[i].TestViewFrustum(ref frustum))
+            //    {
+            //        continue;
+            //    }
+            //    renderables[i].RenderCore.Render(context, ImmediateContext);
+            //    ++renderedCount;
+            //}
+            transparentRenderCore.Render(context, ImmediateContext);
+            return transparentRenderCore.RenderCount;
         }
         /// <summary>
         /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IRenderContext, List{KeyValuePair{int, SceneNode}})"/>
@@ -226,7 +228,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             stackCache1.Clear();
             stack2DCache1.Clear();
+            transparentRenderCore.Dispose();
             base.OnDispose(disposeManagedResources);
+        }
+
+        public void Attach(IRenderHost host)
+        {
+            transparentRenderCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.MeshOITQuad));
+        }
+
+        public void Detach()
+        {
+            transparentRenderCore.Detach();
         }
     }
 
