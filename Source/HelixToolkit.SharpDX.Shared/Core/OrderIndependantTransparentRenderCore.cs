@@ -2,7 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-//#define MSAASEPARATE
+#define MSAASEPARATE
 using SharpDX.Direct3D11;
 using SharpDX;
 using SharpDX.DXGI;
