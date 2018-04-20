@@ -123,9 +123,9 @@ namespace OrderIndependentTransparentRendering
                     diffuse.Red = (float)rnd.NextDouble();
                     diffuse.Green = (float)rnd.NextDouble();
                     diffuse.Blue = (float)rnd.NextDouble();
-                    diffuse.Alpha = (float)(Math.Max(0.5, rnd.NextDouble()));
+                    diffuse.Alpha = (float)(Math.Min(0.8, Math.Max(0.2, rnd.NextDouble())));
                     p.DiffuseColor = diffuse;
-                    if (p.DiffuseColor.Alpha < 0.99)
+                    if (p.DiffuseColor.Alpha < 0.9)
                     {
                         s.IsTransparent = true;
                     }
