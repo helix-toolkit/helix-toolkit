@@ -305,7 +305,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public bool EnableRenderFrustum
         {
             set; get;
-        }
+        } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether [enable sharing model mode].
@@ -392,7 +392,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The render statistics.
         /// </value>
         public IRenderStatistics RenderStatistics { get; } = new RenderStatistics();
-
+        #region Perframe renderables
         /// <summary>
         /// Gets the current frame renderables for rendering.
         /// </summary>
@@ -420,8 +420,22 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The per frame render cores.
         /// </value>
-        public abstract List<SceneNode> PerFrameGeneralNodes { get; }
-
+        public abstract List<SceneNode> PerFrameOpaqueNodes { get; }
+        /// <summary>
+        /// Gets the per frame transparent nodes.
+        /// </summary>
+        /// <value>
+        /// The per frame transparent nodes.
+        /// </value>
+        public abstract List<SceneNode> PerFrameParticleNodes { get; }
+        /// <summary>
+        /// Gets the per frame transparent nodes.
+        /// </summary>
+        /// <value>
+        /// The per frame transparent nodes.
+        /// </value>
+        public abstract List<SceneNode> PerFrameTransparentNodes { get; }
+        #endregion
         #region Configuration
         /// <summary>
         /// Gets or sets a value indicating whether [show render statistics].
@@ -436,7 +450,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         public DX11RenderHostConfiguration RenderConfiguration { set; get; } 
-            = new DX11RenderHostConfiguration() { UpdatePerFrameData = true, RenderD2D = true, RenderLights = true, ClearEachFrame = true };
+            = new DX11RenderHostConfiguration() { UpdatePerFrameData = true, RenderD2D = true, RenderLights = true, ClearEachFrame = true, EnableOITRendering = true };
         #endregion
         #endregion
 
@@ -787,6 +801,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 
             renderContext2D = Collect(CreateRenderContext2D(deviceResources.DeviceContext2D));
+
+            renderer.Attach(this);
         }
         /// <summary>
         /// Creates the render context.
@@ -860,6 +876,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             RemoveAndDispose(ref renderContext);
             RemoveAndDispose(ref renderContext2D);
             Viewport?.Detach();
+            renderer?.Detach();
         }
         /// <summary>
         /// Resizes

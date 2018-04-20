@@ -163,6 +163,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psBillboardTextOIT {
+            get {
+                object obj = ResourceManager.GetObject("psBillboardTextOIT", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psColor {
             get {
                 object obj = ResourceManager.GetObject("psColor", resourceCulture);
@@ -333,6 +343,26 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psMeshBlinnPhongOIT {
+            get {
+                object obj = ResourceManager.GetObject("psMeshBlinnPhongOIT", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psMeshBlinnPhongOITQuad {
+            get {
+                object obj = ResourceManager.GetObject("psMeshBlinnPhongOITQuad", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psMeshClipPlaneBackface {
             get {
                 object obj = ResourceManager.GetObject("psMeshClipPlaneBackface", resourceCulture);
@@ -376,6 +406,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         internal static byte[] psParticle {
             get {
                 object obj = ResourceManager.GetObject("psParticle", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psParticleOIT {
+            get {
+                object obj = ResourceManager.GetObject("psParticleOIT", resourceCulture);
                 return ((byte[])(obj));
             }
         }

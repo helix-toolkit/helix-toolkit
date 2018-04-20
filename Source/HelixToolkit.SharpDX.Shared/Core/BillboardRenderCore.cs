@@ -43,8 +43,6 @@ namespace HelixToolkit.UWP.Core
                 return samplerDescription;
             }
         }
-
-        private SamplerStateProxy textureSampler;
         /// <summary>
         /// Set texture variable name insider shader for binding
         /// </summary>
@@ -53,6 +51,34 @@ namespace HelixToolkit.UWP.Core
         /// Set texture sampler variable name inside shader for binding
         /// </summary>
         public string ShaderTextureSamplerName { set; get; } = DefaultSamplerStateNames.BillboardTextureSampler;
+
+
+        private string transparentPassName = DefaultPassNames.OITPass;
+        /// <summary>
+        /// Gets or sets the name of the mesh transparent pass.
+        /// </summary>
+        /// <value>
+        /// The name of the transparent pass.
+        /// </value>
+        public string TransparentPassName
+        {
+            set
+            {
+                if (SetAffectsRender(ref transparentPassName, value) && IsAttached)
+                {
+                    TransparentPass = EffectTechnique[value];
+                }
+            }
+            get
+            {
+                return transparentPassName;
+            }
+        }
+
+        protected IShaderPass TransparentPass { private set; get; } = NullShaderPass.NullPass;
+
+        private SamplerStateProxy textureSampler;
+
 
         private int shaderTextureSlot;
         private int textureSamplerSlot;
@@ -69,6 +95,7 @@ namespace HelixToolkit.UWP.Core
             if (base.OnAttach(technique))
             {
                 textureSampler = Collect(technique.EffectsManager.StateManager.Register(SamplerDescription));
+                TransparentPass = technique.GetPass(TransparentPassName);
                 return true;
             }
             else
@@ -93,9 +120,14 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            DefaultShaderPass.BindShader(deviceContext);
-            DefaultShaderPass.BindStates(deviceContext, DefaultStateBinding);
-            BindBillboardTexture(deviceContext, DefaultShaderPass.GetShader(ShaderStage.Pixel));
+            IShaderPass pass = DefaultShaderPass;
+            if (RenderType == RenderType.Transparent && context.IsOITPass)
+            {
+                pass = TransparentPass;
+            }
+            pass.BindShader(deviceContext);
+            pass.BindStates(deviceContext, DefaultStateBinding);
+            BindBillboardTexture(deviceContext, pass.GetShader(ShaderStage.Pixel));
             OnDraw(deviceContext, InstanceBuffer);
         }        
 

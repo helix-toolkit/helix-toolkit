@@ -109,6 +109,11 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string PostEffectBloom = "PostEffectBloom";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string MeshOITQuad = "MeshOITQuad";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -125,10 +130,17 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Default = "Default";
+
+        /// <summary>
+        /// The mesh transparent
+        /// </summary>
+        public const string OITPass = "MeshOITPass";
         /// <summary>
         /// 
         /// </summary>
         public const string MeshTriTessellation = "MeshTriTessellation";
+
+        public const string MeshTriTessellationOIT = "MeshTriTessellationOIT";
         /// <summary>
         /// 
         /// </summary>

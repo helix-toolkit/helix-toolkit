@@ -219,7 +219,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public bool IsShadowPass { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is deferred pass.
+        /// Gets or sets a value indicating whether is deferred pass.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is deferred pass; otherwise, <c>false</c>.
@@ -227,12 +227,19 @@ namespace HelixToolkit.Wpf.SharpDX
         public bool IsDeferredPass { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is custom pass.
+        /// Gets or sets a value indicating whether is custom pass.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is custom pass; otherwise, <c>false</c>.
         /// </value>
         public bool IsCustomPass { set; get; } = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether is order independent transparent pass.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is oit pass; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsOITPass { set; get; } = false;
 
         /// <summary>
         /// Gets or sets the name of the custom pass.

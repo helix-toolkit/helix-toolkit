@@ -28,8 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private IDeviceContextPool deferredContextPool;
         private readonly IRenderTaskScheduler scheduler;
         private readonly List<KeyValuePair<int, CommandList>> commandList = new List<KeyValuePair<int, CommandList>>();
-        private readonly CommandList[] postCommandList = new CommandList[2];
-        private Task renderOthersTask;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DeferredContextRenderer"/> class.
         /// </summary>
@@ -48,40 +47,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
         /// <returns>Number of node has been rendered</returns>
-        public override int RenderScene(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        public override int RenderOpaque(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
             int counter = 0;
             if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, RenderType.Opaque, commandList, out counter))
             {
                 RenderParameter param = parameter;
-                renderOthersTask = Task.Run(() =>
-                {
-                    RenderOthers(renderables, RenderType.Particle, context, deferredContextPool, ref param, postCommandList, 0);
-                    RenderOthers(renderables, RenderType.Transparent, context, deferredContextPool, ref param, postCommandList, 1);
-                });
 
                 foreach (var command in commandList.OrderBy(x=>x.Key))
                 {
                     ImmediateContext.DeviceContext.ExecuteCommandList(command.Value, true);
                     command.Value.Dispose();
                 }
-
                 commandList.Clear();
-                renderOthersTask.Wait();
-                renderOthersTask = null;
-                for (int i = 0; i < postCommandList.Length; ++i)
-                {
-                    if (postCommandList[i] != null)
-                    {
-                        ImmediateContext.DeviceContext.ExecuteCommandList(postCommandList[i], true);
-                        RemoveAndDispose(ref postCommandList[i]);
-                    }
-                }
                 return counter;
             }
             else
             {
-                return base.RenderScene(context, renderables, ref parameter);
+                return base.RenderOpaque(context, renderables, ref parameter);
             }
         }
 
@@ -125,7 +108,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected override void OnDispose(bool disposeManagedResources)
         {
             commandList.Clear();
-            renderOthersTask?.Wait();
             deferredContextPool = null;
             base.OnDispose(disposeManagedResources);
         }

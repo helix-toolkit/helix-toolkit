@@ -75,6 +75,29 @@ namespace HelixToolkit.UWP.Core
         {
             set; get;
         }
+
+        private string transparentPassName = DefaultPassNames.OITPass;
+        /// <summary>
+        /// Gets or sets the name of the mesh transparent pass.
+        /// </summary>
+        /// <value>
+        /// The name of the transparent pass.
+        /// </value>
+        public string TransparentPassName
+        {
+            set
+            {
+                if(SetAffectsRender(ref transparentPassName, value) && IsAttached)
+                {
+                    TransparentPass = EffectTechnique[value];
+                }
+            }
+            get
+            {
+                return transparentPassName;
+            }
+        }
+
         /// <summary>
         /// Gets the raster state wireframe.
         /// </summary>
@@ -83,7 +106,9 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         protected RasterizerStateProxy RasterStateWireframe { get { return rasterStateWireframe; } }
 
-        protected IShaderPass WireframePass { private set; get; }
+        protected IShaderPass WireframePass { private set; get; } = NullShaderPass.NullPass;
+
+        protected IShaderPass TransparentPass { private set; get; } = NullShaderPass.NullPass;
 
         public string ShaderShadowMapTextureName { set; get; } = DefaultBufferNames.ShadowMapTB;
 
@@ -113,6 +138,7 @@ namespace HelixToolkit.UWP.Core
             if (base.OnAttach(technique))
             {
                 WireframePass = technique.GetPass(DefaultPassNames.Wireframe);
+                TransparentPass = technique.GetPass(TransparentPassName);
                 return true;
             }
             else
@@ -133,17 +159,28 @@ namespace HelixToolkit.UWP.Core
             shadowMapSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowMapTextureName);
         }
 
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        {
+            base.OnUpdatePerModelStruct(ref model, context);
+            model.RenderOIT = context.IsOITPass ? 1 : 0;
+        }
+
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            DefaultShaderPass.BindShader(deviceContext);
-            DefaultShaderPass.BindStates(deviceContext, DefaultStateBinding);
-            if (!BindMaterialTextures(deviceContext, DefaultShaderPass))
+            IShaderPass pass = DefaultShaderPass;
+            if (RenderType == RenderType.Transparent && context.IsOITPass)
+            {
+                pass = TransparentPass;
+            }
+            pass.BindShader(deviceContext);
+            pass.BindStates(deviceContext, DefaultStateBinding);
+            if (!BindMaterialTextures(deviceContext, pass))
             {
                 return;
             }
             if (context.RenderHost.IsShadowMapEnabled)
             {
-                DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, shadowMapSlot, context.SharedResource.ShadowView);
+                pass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, shadowMapSlot, context.SharedResource.ShadowView);
             }
             DynamicReflector?.BindCubeMap(deviceContext);
             OnDraw(deviceContext, InstanceBuffer);

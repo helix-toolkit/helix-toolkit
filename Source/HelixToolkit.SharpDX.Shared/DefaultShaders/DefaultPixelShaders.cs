@@ -27,6 +27,34 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
+        /// Gets the ps mesh binn phong order independent transparent shader.
+        /// </summary>
+        /// <value>
+        /// The ps mesh binn phong order independent transparent shader.
+        /// </value>
+        public static byte[] PSMeshBinnPhongOIT
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psMeshBlinnPhongOIT");
+
+            }
+        }
+        /// <summary>
+        /// Gets the ps mesh binn phong oit quad.
+        /// </summary>
+        /// <value>
+        /// The ps mesh binn phong oit quad.
+        /// </value>
+        public static byte[] PSMeshBinnPhongOITQuad
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psMeshBlinnPhongOITQuad");
+
+            }
+        }
+        /// <summary>
         /// 
         /// </summary>
         public static byte[] PSMeshVertColor
@@ -132,6 +160,19 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
+        /// Gets the ps billboard text order independent transparent shader.
+        /// </summary>
+        /// <value>
+        /// The ps billboard text order independent transparent shader.
+        /// </value>
+        public static byte[] PSBillboardTextOIT
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psBillboardTextOIT");
+            }
+        }
+        /// <summary>
         /// 
         /// </summary>
         public static byte[] PSMeshXRay
@@ -172,7 +213,16 @@ namespace HelixToolkit.UWP.Shaders
                 return UWPShaderBytePool.Read("psParticle");
             }
         }
-
+        /// <summary>
+        /// Gets the ps particle order independent transparent shader.
+        /// </summary>
+        public static byte[] PSParticleOIT
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psParticleOIT");
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -379,6 +429,16 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
+        public static ShaderDescription PSMeshBlinnPhongOIT = new ShaderDescription(nameof(PSMeshBlinnPhongOIT), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshBinnPhongOIT);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription PSMeshBlinnPhongOITQuad = new ShaderDescription(nameof(PSMeshBlinnPhongOITQuad), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshBinnPhongOITQuad);
+        /// <summary>
+        /// 
+        /// </summary>
         public static ShaderDescription PSMeshVertColor = new ShaderDescription(nameof(PSMeshVertColor), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshVertColor);
         /// <summary>
@@ -422,6 +482,11 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription PSBillboardText = new ShaderDescription(nameof(PSBillboardText), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSBillboardText);
         /// <summary>
+        /// The ps billboard text oit
+        /// </summary>
+        public static ShaderDescription PSBillboardTextOIT = new ShaderDescription(nameof(PSBillboardTextOIT), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSBillboardTextOIT);
+        /// <summary>
         /// 
         /// </summary>
         public static ShaderDescription PSMeshXRay = new ShaderDescription(nameof(PSMeshXRay), ShaderStage.Pixel, new ShaderReflector(),
@@ -449,6 +514,11 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription PSParticle = new ShaderDescription(nameof(PSParticle), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSParticle);
 
+        /// <summary>
+        /// The ps particle oit
+        /// </summary>
+        public static ShaderDescription PSParticleOIT = new ShaderDescription(nameof(PSParticleOIT), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSParticleOIT);
         /// <summary>
         /// 
         /// </summary>

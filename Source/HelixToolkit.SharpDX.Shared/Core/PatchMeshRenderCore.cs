@@ -88,6 +88,7 @@ namespace HelixToolkit.UWP.Core
                         {
                             case MeshTopologyEnum.PNTriangles:
                                 DefaultShaderPassName = DefaultPassNames.MeshTriTessellation;
+                                TransparentPassName = DefaultPassNames.MeshTriTessellationOIT;
                                 break;
                             case MeshTopologyEnum.PNQuads:
                                 DefaultShaderPassName = DefaultPassNames.MeshQuadTessellation;
@@ -97,6 +98,7 @@ namespace HelixToolkit.UWP.Core
                     else
                     {
                         DefaultShaderPassName = DefaultPassNames.Default;
+                        TransparentPassName = DefaultPassNames.OITPass;
                     }
                 }
             }

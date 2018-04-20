@@ -291,6 +291,7 @@
     <None Include="Resources\gsPoint.cso" />
     <None Include="Resources\hsMeshTriTessellation.cso" />
     <None Include="Resources\psBillboardText.cso" />
+    <None Include="Resources\psBillboardTextOIT.cso" />
     <None Include="Resources\psColor.cso" />
     <None Include="Resources\psDepthStencilOnly.cso" />
     <None Include="Resources\psDiffuseMap.cso" />
@@ -308,11 +309,14 @@
     <None Include="Resources\psLine.cso" />
     <None Include="Resources\psLineColor.cso" />
     <None Include="Resources\psMeshBlinnPhong.cso" />
+    <None Include="Resources\psMeshBlinnPhongOIT.cso" />
+    <None Include="Resources\psMeshBlinnPhongOITQuad.cso" />
     <None Include="Resources\psMeshClipPlaneBackface.cso" />
     <None Include="Resources\psMeshClipPlaneQuad.cso" />
     <None Include="Resources\psMeshXRay.cso" />
     <None Include="Resources\psNormals.cso" />
     <None Include="Resources\psParticle.cso" />
+    <None Include="Resources\psParticleOIT.cso" />
     <None Include="Resources\psPoint.cso" />
     <None Include="Resources\psPositions.cso" />
     <None Include="Resources\psScreenDup.cso" />

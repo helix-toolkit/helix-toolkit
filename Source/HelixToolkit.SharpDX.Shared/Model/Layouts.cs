@@ -296,7 +296,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public int HasDisplacementMap;
         public int HasCubeMap;
         public int RenderShadowMap;
-        float Padding;
+        public int RenderOIT;
         public Vector4 DisplacementMapScaleMask; // Use to select which channel will be used after displacement map sampling, also scaling the value
         public Color4 WireframeColor;
         public const int SizeInBytes = 4 * (4 * 4 + 4 * 4 + 4) + 4 * (4 * 9);

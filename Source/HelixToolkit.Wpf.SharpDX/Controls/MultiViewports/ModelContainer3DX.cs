@@ -159,8 +159,22 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The per frame general render cores.
         /// </value>
-        public List<SceneNode> PerFrameGeneralNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameGeneralNodes : Constants.EmptyRenderable; } }
+        public List<SceneNode> PerFrameOpaqueNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameOpaqueNodes : Constants.EmptyRenderable; } }
 
+        /// <summary>
+        /// Gets the per frame transparent nodes. , <see cref="RenderType.Transparent"/>
+        /// </summary>
+        /// <value>
+        /// The per frame transparent nodes.
+        /// </value>
+        public List<SceneNode> PerFrameTransparentNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameTransparentNodes : Constants.EmptyRenderable; } }
+        /// <summary>
+        /// Gets the per frame particle nodes. <see cref="RenderType.Particle" />
+        /// </summary>
+        /// <value>
+        /// The per frame particle nodes.
+        /// </value>
+        public List<SceneNode> PerFrameParticleNodes { get { return CurrentRenderHost != null ? CurrentRenderHost.PerFrameParticleNodes : Constants.EmptyRenderable; } }
         /// <summary>
         /// Handles the change of the effects manager.
         /// </summary>

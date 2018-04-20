@@ -87,6 +87,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.SharpDX.Shared
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Viewport3DXCodeBehindTester", "Examples\WPF.SharpDX\Viewport3DXCodeBehindTester\Viewport3DXCodeBehindTester.csproj", "{812C2A21-CD7E-4344-A83C-99050A8843D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderIndependantTransparentRendering", "Examples\WPF.SharpDX\OrderIndependantTransparentRendering\OrderIndependantTransparentRendering.csproj", "{B54F7E0F-DF5E-4382-9515-F2A1186CB606}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{1aefcb64-e997-425a-8c84-dc93263cc4a7}*SharedItemsImports = 13
@@ -457,6 +459,18 @@ Global
 		{812C2A21-CD7E-4344-A83C-99050A8843D2}.Release|x64.Build.0 = Release|Any CPU
 		{812C2A21-CD7E-4344-A83C-99050A8843D2}.Release|x86.ActiveCfg = Release|Any CPU
 		{812C2A21-CD7E-4344-A83C-99050A8843D2}.Release|x86.Build.0 = Release|Any CPU
+		{B54F7E0F-DF5E-4382-9515-F2A1186CB606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B54F7E0F-DF5E-4382-9515-F2A1186CB606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B54F7E0F-DF5E-4382-9515-F2A1186CB606}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B54F7E0F-DF5E-4382-9515-F2A1186CB606}.Debug|x64.Build.0 = Debug|Any CPU
+		{B54F7E0F-DF5E-4382-9515-F2A1186CB606}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B54F7E0F-DF5E-4382-9515-F2A1186CB606}.Debug|x86.Build.0 = Debug|Any CPU
+		{B54F7E0F-DF5E-4382-9515-F2A1186CB606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B54F7E0F-DF5E-4382-9515-F2A1186CB606}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B54F7E0F-DF5E-4382-9515-F2A1186CB606}.Release|x64.ActiveCfg = Release|Any CPU
+		{B54F7E0F-DF5E-4382-9515-F2A1186CB606}.Release|x64.Build.0 = Release|Any CPU
+		{B54F7E0F-DF5E-4382-9515-F2A1186CB606}.Release|x86.ActiveCfg = Release|Any CPU
+		{B54F7E0F-DF5E-4382-9515-F2A1186CB606}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -492,6 +506,7 @@ Global
 		{931D2262-63B7-4551-8036-36923A04ACF0} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{9EF1B158-7CB8-4C29-AE1C-7A1C825F76EB} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 		{812C2A21-CD7E-4344-A83C-99050A8843D2} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
+		{B54F7E0F-DF5E-4382-9515-F2A1186CB606} = {93A5184E-0275-4A75-9C9A-9516AE9634DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {67B0DD22-D5CF-4D97-9E28-F8B59C583F78}

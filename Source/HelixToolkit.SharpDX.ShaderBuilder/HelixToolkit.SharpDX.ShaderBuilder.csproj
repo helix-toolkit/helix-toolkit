@@ -107,6 +107,10 @@
     <PixelShader Include="PS\psParticle.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
+      <PixelShader Include="PS\psParticleOIT.hlsl">
+          <ShaderModel>4_0</ShaderModel>
+          <EntryPointName>particleOIT</EntryPointName>
+      </PixelShader>
     <VertexShader Include="VS\vsParticle.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </VertexShader>
@@ -152,9 +156,20 @@
     <GeometryShader Include="GS\gsPoint.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </GeometryShader>
+    <PixelShader Include="PS\psMeshBlinnPhongOIT.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+      <EntryPointName>meshBlinnPhongOIT</EntryPointName>
+    </PixelShader>
+    <PixelShader Include="PS\psMeshBlinnPhongOITQuad.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>     
     <PixelShader Include="PS\psBillboardText.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
+      <PixelShader Include="PS\psBillboardTextOIT.hlsl">
+          <ShaderModel>4_0</ShaderModel>
+          <EntryPointName>billboardTextOIT</EntryPointName>
+      </PixelShader>
     <GeometryShader Include="GS\gsBillboard.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </GeometryShader>

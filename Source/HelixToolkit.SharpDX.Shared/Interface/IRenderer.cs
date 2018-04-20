@@ -61,6 +61,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         DeviceContextProxy ImmediateContext { get; }
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="host"></param>
+        void Attach(IRenderHost host);
+        /// <summary>
+        /// 
+        /// </summary>
+        void Detach();
+        /// <summary>
         /// Update scene graph, return the renderables which will be rendered in this frame
         /// </summary>
         /// <param name="context"></param>
@@ -113,9 +122,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables"></param>
         /// <param name="parameter"></param>
         /// <returns>Number of node has been rendered</returns>
-        int RenderScene(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
+        int RenderOpaque(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
+
         /// <summary>
-        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderScene(IRenderContext, List{SceneNode}, ref RenderParameter)"/>
+        /// Renders the transparent.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="renderables">The renderables.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <returns></returns>
+        int RenderTransparent(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
+        /// <summary>
+        /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderOpaque(IRenderContext, List{SceneNode}, ref RenderParameter)"/>
         /// <para>Warning: Dependency properties are thread affinity. Do not get/set any dependency property in this function.</para>
         /// </summary>
         /// <param name="renderables"></param>

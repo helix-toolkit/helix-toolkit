@@ -257,11 +257,12 @@ namespace HelixToolkit.UWP
                     renderHostInternal.RenderTechnique = this.RenderTechnique;
                     renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();
                     renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
-                    renderHostInternal.IsShadowMapEnabled = this.IsShadowMappingEnabled;
+                    renderHostInternal.IsShadowMapEnabled = this.IsShadowMappingEnabled;              
 #if MSAA
                     renderHostInternal.MSAA = this.MSAA;
 #endif
                     renderHostInternal.RenderConfiguration.AutoUpdateOctree = this.EnableAutoOctreeUpdate;
+                    renderHostInternal.RenderConfiguration.EnableOITRendering = EnableOITRendering;    
                     renderHostInternal.OnRendered -= this.OnRendered;
                     renderHostInternal.OnRendered += this.OnRendered;
                     renderHostInternal.ExceptionOccurred -= RenderHostInternal_ExceptionOccurred;
