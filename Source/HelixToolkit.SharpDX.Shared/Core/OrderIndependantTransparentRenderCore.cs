@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+//#define MSAASEPARATE
 using SharpDX.Direct3D11;
 using SharpDX;
 using SharpDX.DXGI;
@@ -49,7 +50,9 @@ namespace HelixToolkit.UWP.Core
 
         private int width = 0;
         private int height = 0;
+#if MSAASEPARATE
         private bool hasMSAA = false;
+#endif
 
         private IShaderPass screenQuadPass = NullShaderPass.NullPass;
         private int colorTexIndex, alphaTexIndex, samplerIndex;
@@ -64,8 +67,9 @@ namespace HelixToolkit.UWP.Core
         private void Bind(IRenderContext context, DeviceContextProxy deviceContext)
         {
             var currSampleDesc = context.RenderHost.RenderBuffer.ColorBuffer.Description.SampleDescription;
+#if MSAASEPARATE
             hasMSAA = currSampleDesc.Count > 1 || currSampleDesc.Quality > 0;
-
+#endif
             if ((width != (int)context.ActualWidth && height != (int)context.ActualHeight) 
                 || sampleDesc.Count != currSampleDesc.Count || sampleDesc.Quality != currSampleDesc.Quality)
             {
@@ -78,12 +82,13 @@ namespace HelixToolkit.UWP.Core
                 colorDesc.Width = alphaDesc.Width = width;
                 colorDesc.Height = alphaDesc.Height = height;
                 colorDesc.SampleDescription = alphaDesc.SampleDescription = sampleDesc;
-
+#if MSAASEPARATE
                 if (hasMSAA)
                 {
                     colorDesc.BindFlags = alphaDesc.BindFlags = BindFlags.RenderTarget;
                 }
                 else
+#endif
                 {
                     colorDesc.BindFlags = alphaDesc.BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource;
                 }
@@ -94,14 +99,16 @@ namespace HelixToolkit.UWP.Core
 
                 colorTarget.CreateRenderTarget();
                 alphaTarget.CreateRenderTarget();
-
+#if MSAASEPARATE
                 if (!hasMSAA)
+#endif
                 {
                     alphaTarget.CreateTextureView();
                     colorTarget.CreateTextureView();
                     colorTargetNoMSAA = colorTarget;
                     alphaTargetNoMSAA = alphaTarget;
                 }
+#if MSAASEPARATE
                 else
                 {
                     colorDesc.SampleDescription = alphaDesc.SampleDescription = new SampleDescription(1, 0);
@@ -111,6 +118,7 @@ namespace HelixToolkit.UWP.Core
                     colorTargetNoMSAA.CreateTextureView();
                     alphaTargetNoMSAA.CreateTextureView();
                 }
+#endif
             }
             targets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(2);
             deviceContext.DeviceContext.ClearRenderTargetView(colorTarget, Color.Zero);
@@ -127,11 +135,13 @@ namespace HelixToolkit.UWP.Core
             {
                 target?.Dispose();
             }
+#if MSAASEPARATE
             if (hasMSAA)
             {
                 deviceContext.DeviceContext.ResolveSubresource(colorTarget.Resource, 0, colorTargetNoMSAA.Resource, 0, colorDesc.Format);
                 deviceContext.DeviceContext.ResolveSubresource(alphaTarget.Resource, 0, alphaTargetNoMSAA.Resource, 0, alphaDesc.Format);
             }
+#endif
         }
 
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
