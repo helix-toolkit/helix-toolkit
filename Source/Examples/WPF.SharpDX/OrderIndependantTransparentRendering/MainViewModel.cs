@@ -6,16 +6,12 @@
 
 namespace OrderIndependantTransparentRendering
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-
-    using HelixToolkit.Wpf.SharpDX;
-    using Microsoft.Win32;
-    using System.Windows.Input;
-    using System.IO;
-    using System.ComponentModel;
     using DemoCore;
+    using HelixToolkit.Wpf.SharpDX;
     using System;
+    using System.Collections.Generic;
+    using System.Windows.Input;
+    using Media3D = System.Windows.Media.Media3D;
 
     public class MainViewModel : BaseViewModel
     {
@@ -23,11 +19,9 @@ namespace OrderIndependantTransparentRendering
 
         public ObservableElement3DCollection ModelGeometry { get; private set; }
 
-        public Viewport3DX modelView
-        {
-            get;
-            set;
-        }
+        public LineGeometry3D GridModel { private set; get; }
+
+        public Media3D.Transform3D GridTransform { private set; get; }
 
         private bool showWireframe = false;
         public bool ShowWireframe
@@ -64,6 +58,28 @@ namespace OrderIndependantTransparentRendering
                 FarPlaneDistance = 1000, NearPlaneDistance = 0.1, Width = 100 };
             ResetCameraCommand = new RelayCommand((o) => { Camera.Reset(); });
             Load3ds("NITRO_ENGINE.3ds");
+            BuildGrid();
+        }
+
+        private void BuildGrid()
+        {
+            var builder = new LineBuilder();
+            int zOff = -45;
+            for(int i =0; i< 10; ++i)
+            {
+                for(int j =0; j < 10; ++j)
+                {
+                    builder.AddLine(new SharpDX.Vector3(-i * 5, 0, j * 5), new SharpDX.Vector3(i * 5, 0, j * 5));
+                    builder.AddLine(new SharpDX.Vector3(-i * 5, 0, -j * 5), new SharpDX.Vector3(i * 5, 0, -j * 5));
+                    builder.AddLine(new SharpDX.Vector3(i * 5, 0, -j * 5), new SharpDX.Vector3(i * 5, 0, j * 5));
+                    builder.AddLine(new SharpDX.Vector3(-i * 5, 0, -j * 5), new SharpDX.Vector3(-i * 5, 0, j * 5));
+                    builder.AddLine(new SharpDX.Vector3(-i * 5, j * 5, zOff), new SharpDX.Vector3(i * 5, j * 5, zOff));
+                    builder.AddLine(new SharpDX.Vector3(i * 5, 0, zOff), new SharpDX.Vector3(i * 5, j * 5, zOff));
+                    builder.AddLine(new SharpDX.Vector3(-i * 5, 0, zOff), new SharpDX.Vector3(-i * 5, j * 5, zOff));
+                }
+            }
+            GridModel = builder.ToLineGeometry3D();
+            GridTransform = new Media3D.TranslateTransform3D(new Media3D.Vector3D(0, -10, 0));
         }
 
 
@@ -107,9 +123,9 @@ namespace OrderIndependantTransparentRendering
                     diffuse.Red = (float)rnd.NextDouble();
                     diffuse.Green = (float)rnd.NextDouble();
                     diffuse.Blue = (float)rnd.NextDouble();
-                    diffuse.Alpha = (float)(Math.Max(0.3, rnd.NextDouble()));
+                    diffuse.Alpha = (float)(Math.Max(0.5, rnd.NextDouble()));
                     p.DiffuseColor = diffuse;
-                    if (p.DiffuseColor.Alpha < 1)
+                    if (p.DiffuseColor.Alpha < 0.99)
                     {
                         s.IsTransparent = true;
                     }

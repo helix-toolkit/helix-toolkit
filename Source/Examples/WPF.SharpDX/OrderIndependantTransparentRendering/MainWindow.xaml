@@ -40,7 +40,8 @@
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D />
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" />
-            <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ModelGeometry}" />
+            <hx:LineGeometryModel3D Geometry="{Binding GridModel}" Color="#4F4E4E" Transform="{Binding GridTransform}" Thickness="0.5"/>
+            <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ModelGeometry}"/>
         </hx:Viewport3DX>
         <StackPanel
             Grid.Row="1" 
@@ -52,6 +53,7 @@
                 Reset Camera
             </Button>
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+            <CheckBox IsChecked="{Binding ElementName=view, Path=EnableOITRendering}">Enable OIT</CheckBox>
         </StackPanel>
     </Grid>
 </Window>
