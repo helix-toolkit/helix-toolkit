@@ -403,16 +403,16 @@ namespace HelixToolkit.UWP.Core
                     var node = context.RenderHost.PerFrameOpaqueNodes[i];
                     if (node.GUID != this.GUID && !IgnoredGuid.Contains(node.GUID) && node.TestViewFrustum(ref frustum))
                     {
-                        context.RenderHost.PerFrameOpaqueNodes[i].Render(context, ctx);
+                        node.Render(context, ctx);
                     }
                 }
                 //Render particle
                 for (int i = 0; i < context.RenderHost.PerFrameParticleNodes.Count; ++i)
                 {
-                    var node = context.RenderHost.PerFrameOpaqueNodes[i];
+                    var node = context.RenderHost.PerFrameParticleNodes[i];
                     if (node.GUID != this.GUID && !IgnoredGuid.Contains(node.GUID) && node.TestViewFrustum(ref frustum))
                     {
-                        context.RenderHost.PerFrameOpaqueNodes[i].Render(context, ctx);
+                        node.Render(context, ctx);
                     }
                 }
                 commands[index] = ctx.DeviceContext.FinishCommandList(false);

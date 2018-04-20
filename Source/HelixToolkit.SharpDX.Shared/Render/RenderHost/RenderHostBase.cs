@@ -305,7 +305,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public bool EnableRenderFrustum
         {
             set; get;
-        }
+        } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether [enable sharing model mode].

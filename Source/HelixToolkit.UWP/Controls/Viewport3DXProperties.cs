@@ -1546,13 +1546,13 @@ namespace HelixToolkit.UWP
         /// Enable render frustum to avoid rendering model if it is out of view frustum
         /// </summary>
         public static readonly DependencyProperty EnableRenderFrustumProperty
-            = DependencyProperty.Register("EnableRenderFrustumProperty", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false,
+            = DependencyProperty.Register("EnableRenderFrustumProperty", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true,
                 (s, e) =>
                 {
                     var viewport = s as Viewport3DX;
                     if (viewport.renderHostInternal != null)
                     {
-                        viewport.EnableRenderFrustum = (bool)e.NewValue;
+                        viewport.renderHostInternal.EnableRenderFrustum = (bool)e.NewValue;
                     }
                 }));
         /// <summary>
@@ -1652,5 +1652,35 @@ namespace HelixToolkit.UWP
         /// </summary>
         public static readonly DependencyProperty FrameRateProperty =
             DependencyProperty.Register("FrameRate", typeof(double), typeof(Viewport3DX), new PropertyMetadata(0));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable order independant transparent rendering] for Transparent objects.
+        /// <see cref="MaterialGeometryModel3D.IsTransparent"/>, <see cref="BillboardTextModel3D.IsTransparent"/>
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableOITRendering
+        {
+            get { return (bool)GetValue(EnableOITRenderingProperty); }
+            set { SetValue(EnableOITRenderingProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable order independant transparent rendering] for Transparent objects.
+        /// <see cref="MaterialGeometryModel3D.IsTransparent"/>, <see cref="BillboardTextModel3D.IsTransparent"/>
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
+        /// </value>
+        public static readonly DependencyProperty EnableOITRenderingProperty =
+            DependencyProperty.Register("EnableOITRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(true, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.EnableOITRendering = (bool)e.NewValue;
+                }
+            }));
     }
 }
