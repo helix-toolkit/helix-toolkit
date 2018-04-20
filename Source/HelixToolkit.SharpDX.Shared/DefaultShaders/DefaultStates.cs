@@ -120,10 +120,10 @@ namespace HelixToolkit.UWP.Shaders
                 SourceBlend = BlendOption.InverseSourceAlpha,
                 DestinationBlend = BlendOption.SourceAlpha,
                 BlendOperation = BlendOperation.Add,
-                SourceAlphaBlend = BlendOption.Zero,
-                DestinationAlphaBlend = BlendOption.Zero,
+                SourceAlphaBlend = BlendOption.InverseSourceAlpha,
+                DestinationAlphaBlend = BlendOption.DestinationAlpha,
                 AlphaBlendOperation = BlendOperation.Add,
-                RenderTargetWriteMask = ColorWriteMaskFlags.All
+                RenderTargetWriteMask = ColorWriteMaskFlags.Red | ColorWriteMaskFlags.Green | ColorWriteMaskFlags.Blue
             };
         }
     }

@@ -55,6 +55,8 @@ namespace HelixToolkit.UWP.Core
         private int colorTexIndex, alphaTexIndex, samplerIndex;
         private SamplerStateProxy targetSampler;
         public int RenderCount { private set; get; } = 0;
+
+        private RenderTargetView[] targets;
         public OrderIndependantTransparentRenderCore() : base(RenderType.Transparent)
         { }
 
@@ -110,6 +112,7 @@ namespace HelixToolkit.UWP.Core
                     alphaTargetNoMSAA.CreateTextureView();
                 }
             }
+            targets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(2);
             deviceContext.DeviceContext.ClearRenderTargetView(colorTarget, Color.Zero);
             deviceContext.DeviceContext.ClearRenderTargetView(alphaTarget, Color.White);       
             deviceContext.DeviceContext.OutputMerger.SetRenderTargets(context.RenderHost.DepthStencilBufferView, 
@@ -119,7 +122,11 @@ namespace HelixToolkit.UWP.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void UnBind(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            deviceContext.SetRenderTargets(context.RenderHost.RenderBuffer);
+            deviceContext.DeviceContext.OutputMerger.SetRenderTargets(context.RenderHost.DepthStencilBufferView, targets);
+            foreach(var target in targets)
+            {
+                target?.Dispose();
+            }
             if (hasMSAA)
             {
                 deviceContext.DeviceContext.ResolveSubresource(colorTarget.Resource, 0, colorTargetNoMSAA.Resource, 0, colorDesc.Format);
