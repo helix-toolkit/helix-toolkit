@@ -1606,6 +1606,7 @@ namespace HelixToolkit.UWP
                 if (viewport.renderHostInternal != null)
                 {
                     viewport.renderHostInternal.RenderConfiguration.AutoUpdateOctree = (bool)e.NewValue;
+                    viewport.InvalidateRender();
                 }
             }));
 
@@ -1680,6 +1681,7 @@ namespace HelixToolkit.UWP
                 if (viewport.renderHostInternal != null)
                 {
                     viewport.renderHostInternal.RenderConfiguration.EnableOITRendering = (bool)e.NewValue;
+                    viewport.InvalidateRender();
                 }
             }));
     }

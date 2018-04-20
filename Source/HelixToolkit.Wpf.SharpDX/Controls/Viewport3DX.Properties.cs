@@ -986,6 +986,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if(viewport.renderHostInternal != null)
                 {
                     viewport.renderHostInternal.RenderConfiguration.RenderD2D = (bool)e.NewValue;
+                    viewport.InvalidateRender();
                 }
             }));
 
@@ -1002,20 +1003,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }));
 
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [enable order independant transparent rendering] for Transparent objects.
-        /// <see cref="MaterialGeometryModel3D.IsTransparent"/>, <see cref="BillboardTextModel3D.IsTransparent"/>
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableOITRendering
-        {
-            get { return (bool)GetValue(EnableOITRenderingProperty); }
-            set { SetValue(EnableOITRenderingProperty, value); }
-        }
-
         /// <summary>
         /// Gets or sets a value indicating whether [enable order independant transparent rendering] for Transparent objects.
         /// <see cref="MaterialGeometryModel3D.IsTransparent"/>, <see cref="BillboardTextModel3D.IsTransparent"/>
@@ -1030,6 +1017,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (viewport.renderHostInternal != null)
                 {
                     viewport.renderHostInternal.RenderConfiguration.EnableOITRendering = (bool)e.NewValue;
+                    viewport.InvalidateRender();
                 }
             }));
 
@@ -2736,6 +2724,19 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.SetValue(IsMoveEnabledProperty, value);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable order independant transparent rendering] for Transparent objects.
+        /// <see cref="MaterialGeometryModel3D.IsTransparent"/>, <see cref="BillboardTextModel3D.IsTransparent"/>
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableOITRendering
+        {
+            get { return (bool)GetValue(EnableOITRenderingProperty); }
+            set { SetValue(EnableOITRenderingProperty, value); }
         }
     }
 }
