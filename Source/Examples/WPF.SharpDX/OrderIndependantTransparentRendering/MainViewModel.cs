@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace OrderIndependantTransparentRendering
+namespace OrderIndependentTransparentRendering
 {
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;

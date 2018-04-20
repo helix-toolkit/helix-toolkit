@@ -28,7 +28,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     {
         private readonly Stack<KeyValuePair<int, IList<SceneNode>>> stackCache1 = new Stack<KeyValuePair<int, IList<SceneNode>>>(20);
         private readonly Stack<KeyValuePair<int, IList<SceneNode2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20);
-        private readonly OrderIndependantTransparentRenderCore transparentRenderCore = new OrderIndependantTransparentRenderCore();
+        private readonly OrderIndependentTransparentRenderCore transparentRenderCore = new OrderIndependentTransparentRenderCore();
         /// <summary>
         /// Gets or sets the immediate context.
         /// </summary>

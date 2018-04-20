@@ -160,7 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         bool IsCustomPass { set; get; }
         /// <summary>
-        /// Whetheter is order independant transparent pass
+        /// Whetheter is order independent transparent pass
         /// </summary>
         bool IsOITPass { set; get; }
         /// <summary>

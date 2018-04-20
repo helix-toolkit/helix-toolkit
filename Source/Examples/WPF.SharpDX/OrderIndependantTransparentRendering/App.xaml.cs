@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace OrderIndependantTransparentRendering
+namespace OrderIndependentTransparentRendering
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1655,7 +1655,7 @@ namespace HelixToolkit.UWP
             DependencyProperty.Register("FrameRate", typeof(double), typeof(Viewport3DX), new PropertyMetadata(0));
 
         /// <summary>
-        /// Gets or sets a value indicating whether [enable order independant transparent rendering] for Transparent objects.
+        /// Gets or sets a value indicating whether [enable order independent transparent rendering] for Transparent objects.
         /// <see cref="MaterialGeometryModel3D.IsTransparent"/>, <see cref="BillboardTextModel3D.IsTransparent"/>
         /// </summary>
         /// <value>
@@ -1668,7 +1668,7 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [enable order independant transparent rendering] for Transparent objects.
+        /// Gets or sets a value indicating whether [enable order independent transparent rendering] for Transparent objects.
         /// <see cref="MaterialGeometryModel3D.IsTransparent"/>, <see cref="BillboardTextModel3D.IsTransparent"/>
         /// </summary>
         /// <value>

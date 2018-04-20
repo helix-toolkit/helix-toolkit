@@ -27,10 +27,10 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
-        /// Gets the ps mesh binn phong order independant transparent shader.
+        /// Gets the ps mesh binn phong order independent transparent shader.
         /// </summary>
         /// <value>
-        /// The ps mesh binn phong order independant transparent shader.
+        /// The ps mesh binn phong order independent transparent shader.
         /// </value>
         public static byte[] PSMeshBinnPhongOIT
         {
@@ -160,10 +160,10 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
-        /// Gets the ps billboard text order independant transparent shader.
+        /// Gets the ps billboard text order independent transparent shader.
         /// </summary>
         /// <value>
-        /// The ps billboard text order independant transparent shader.
+        /// The ps billboard text order independent transparent shader.
         /// </value>
         public static byte[] PSBillboardTextOIT
         {
@@ -214,7 +214,7 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
-        /// Gets the ps particle order independant transparent shader.
+        /// Gets the ps particle order independent transparent shader.
         /// </summary>
         public static byte[] PSParticleOIT
         {

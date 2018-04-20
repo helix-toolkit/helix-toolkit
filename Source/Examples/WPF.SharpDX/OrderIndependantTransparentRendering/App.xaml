@@ -1,7 +1,7 @@
-﻿<Application x:Class="OrderIndependantTransparentRendering.App"
+﻿<Application x:Class="OrderIndependentTransparentRendering.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:OrderIndependantTransparentRendering"
+             xmlns:local="clr-namespace:OrderIndependentTransparentRendering"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

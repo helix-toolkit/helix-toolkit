@@ -7,7 +7,7 @@
 #include"psParticle.hlsl"
 
 
-PSOITOutput particleOIT(in ParticlePS_INPUT input) : SV_Target
+PSOITOutput particleOIT(in ParticlePS_INPUT input)
 {
     PSOITOutput output = (PSOITOutput) 0;
     float4 color = main(input);

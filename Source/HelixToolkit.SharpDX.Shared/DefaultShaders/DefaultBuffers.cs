@@ -42,7 +42,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string SimulationStateTB = "SimulationState";
         //----------ShadowMap---------------
         public static string ShadowParamCB = "cbShadow";
-        //----------Order Independant Transparent-----------
+        //----------Order Independent Transparent-----------
         public static string OITColorTB = "texOITColor";
         public static string OITAlphaTB = "texOITAlpha";
     }

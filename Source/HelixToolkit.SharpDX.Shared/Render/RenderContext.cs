@@ -234,7 +234,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool IsCustomPass { set; get; } = false;
         /// <summary>
-        /// Gets or sets a value indicating whether is order independant transparent pass.
+        /// Gets or sets a value indicating whether is order independent transparent pass.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is oit pass; otherwise, <c>false</c>.

@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using System.Runtime.CompilerServices;
     using Utilities;
-    public class OrderIndependantTransparentRenderCore : RenderCoreBase<int>
+    public class OrderIndependentTransparentRenderCore : RenderCoreBase<int>
     {
         private ShaderResourceViewProxy colorTarget;
         private ShaderResourceViewProxy alphaTarget;
@@ -57,7 +57,7 @@ namespace HelixToolkit.UWP.Core
         public int RenderCount { private set; get; } = 0;
 
         private RenderTargetView[] targets;
-        public OrderIndependantTransparentRenderCore() : base(RenderType.Transparent)
+        public OrderIndependentTransparentRenderCore() : base(RenderType.Transparent)
         { }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
