@@ -42,7 +42,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D />
-            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" />
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White"/>
             <hx:LineGeometryModel3D
                 Geometry="{Binding GridModel}"
                 Thickness="0.5"
