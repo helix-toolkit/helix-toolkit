@@ -65,12 +65,14 @@
                 CullMode="Back"
                 Geometry="{Binding Plane1Model}"
                 IsRendering="{Binding EnablePlane1}"
+                IsTransparent="True"
                 Material="{Binding PlaneMaterial}"
                 Transform="{Binding Plane1Transform}" />
             <hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding Plane2Model}"
                 IsRendering="{Binding EnablePlane2}"
+                IsTransparent="True"
                 Material="{Binding PlaneMaterial}"
                 Transform="{Binding Plane2Transform}" />
         </hx:Viewport3DX>
