@@ -75,6 +75,8 @@ namespace HelixToolkit.UWP.Core
             {
                 RemoveAndDispose(ref colorTarget);
                 RemoveAndDispose(ref alphaTarget);
+                RemoveAndDispose(ref colorTargetNoMSAA);
+                RemoveAndDispose(ref alphaTargetNoMSAA);
                 sampleDesc = currSampleDesc;
 
                 width = (int)context.ActualWidth;
