@@ -194,6 +194,7 @@ struct PSInputBT
 	float4 p : SV_POSITION;
 	float4 foreground : COLOR;
     float4 background : COLOR1;
+    noperspective
 	float2 t : TEXCOORD;
 };
 
@@ -329,6 +330,7 @@ struct ParticlePS_INPUT
 struct ScreenDupVS_INPUT
 {
     float4 Pos : SV_POSITION;
+    noperspective
     float2 Tex : TEXCOORD0;
 };
 
