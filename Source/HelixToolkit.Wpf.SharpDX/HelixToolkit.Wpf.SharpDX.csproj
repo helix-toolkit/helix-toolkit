@@ -306,6 +306,7 @@
     <None Include="Resources\psEffectOutlineQuad.cso" />
     <None Include="Resources\psEffectOutlineQuadStencil.cso" />
     <None Include="Resources\psEffectOutlineQualFinal.cso" />
+    <None Include="Resources\psFXAA.cso" />
     <None Include="Resources\psLine.cso" />
     <None Include="Resources\psLineColor.cso" />
     <None Include="Resources\psMeshBlinnPhong.cso" />
