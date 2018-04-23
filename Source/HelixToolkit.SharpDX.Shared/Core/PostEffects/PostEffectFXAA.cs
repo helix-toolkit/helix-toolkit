@@ -67,6 +67,7 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
+                deviceContext.DeviceContext.ClearRenderTargetView(buffer.BackBuffer, new Color4(0, 0, 0, 1));
                 buffer.SetDefaultRenderTargets(deviceContext, false);
                 FXAAPass.BindShader(deviceContext);
                 FXAAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
@@ -85,19 +86,19 @@ namespace HelixToolkit.UWP.Core
             switch (FXAALevel)
             {
                 case FXAALevel.Low:
-                    model.Param.M11 = 0.50f; //fxaaQualitySubpix
+                    model.Param.M11 = 0.25f; //fxaaQualitySubpix
                     model.Param.M12 = 0.250f; // FxaaFloat fxaaQualityEdgeThreshold,
                     model.Param.M13 = 0.0833f; // FxaaFloat fxaaQualityEdgeThresholdMin,
                     break;
                 case FXAALevel.Medium:
-                    model.Param.M11 = 0.75f;
+                    model.Param.M11 = 0.50f;
                     model.Param.M12 = 0.166f;
                     model.Param.M13 = 0.0625f;
                     break;
                 case FXAALevel.High:
-                    model.Param.M11 = 1.00f;
+                    model.Param.M11 = 0.75f;
                     model.Param.M12 = 0.125f;
-                    model.Param.M13 = 0.0312f;
+                    model.Param.M13 = 0.0625f;
                     break;
                 case FXAALevel.Ultra:
                     model.Param.M11 = 1.00f;
