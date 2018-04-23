@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
     using Core2D;
+    using Utilities;
     /// <summary>
     /// 
     /// </summary>
@@ -59,9 +60,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        /// <param name="createDepthStencilBuffer"></param>
         /// <returns></returns>
-        protected override Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height, bool createDepthStencilBuffer)
+        protected override ShaderResourceViewProxy OnCreateBackBuffer(int width, int height)
         {
             if (swapChain == null || swapChain.IsDisposed)
             {
@@ -71,32 +71,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 swapChain.ResizeBuffers(swapChain.Description1.BufferCount, TargetWidth, TargetHeight, swapChain.Description.ModeDescription.Format, swapChain.Description.Flags);
             }
-            colorBuffer = Collect(Texture2D.FromSwapChain<Texture2D>(swapChain, 0));
+            var backBuffer = Collect(new ShaderResourceViewProxy(Device, Texture2D.FromSwapChain<Texture2D>(swapChain, 0)));
             var sampleDesc = swapChain.Description1.SampleDescription;
-            colorBufferView = Collect(new RenderTargetView(Device, colorBuffer));
-
-            if (createDepthStencilBuffer)
-            {
-                var depthdesc = new Texture2DDescription
-                {
-                    BindFlags = BindFlags.DepthStencil,
-                    //Format = Format.D24_UNorm_S8_UInt,
-                    Format = Format.D32_Float_S8X24_UInt,
-                    Width = width,
-                    Height = height,
-                    MipLevels = 1,
-                    SampleDescription = sampleDesc,
-                    Usage = ResourceUsage.Default,
-                    OptionFlags = ResourceOptionFlags.None,
-                    CpuAccessFlags = CpuAccessFlags.None,
-                    ArraySize = 1,
-                };
-                depthStencilBuffer = Collect(new Texture2D(Device, depthdesc));
-                depthStencilBufferView = Collect(new DepthStencilView(Device, depthStencilBuffer));
-            }
+            ColorBuffer.CreateRenderTargetView();
             d2dTarget = Collect(new D2DTargetProxy());
             d2dTarget.Initialize(swapChain, DeviceContext2D);
-            return colorBuffer;
+            return backBuffer;
         }
 
         private SwapChain1 CreateSwapChain(System.IntPtr surfacePointer)
@@ -124,27 +104,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             int sampleCount = 1;
             int sampleQuality = 0;
-            // SwapChain description
-#if MSAA
-            if (MSAA != MSAALevel.Disable)
-            {
-                do
-                {
-                    var newSampleCount = sampleCount * 2;
-                    var newSampleQuality = Device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, newSampleCount) - 1;
-
-                    if (newSampleQuality < 0)
-                        break;
-
-                    sampleCount = newSampleCount;
-                    sampleQuality = newSampleQuality;
-                    if (sampleCount == (int)MSAA)
-                    {
-                        break;
-                    }
-                } while (sampleCount < 32);
-            }
-#endif
             var desc = new SwapChainDescription1()
             {
                 Width = Math.Max(1, TargetWidth),
@@ -154,8 +113,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 Stereo = false,
                 SampleDescription = new SampleDescription(sampleCount, sampleQuality),
                 Usage = Usage.RenderTargetOutput,
-                BufferCount = 1,
-                SwapEffect = SwapEffect.Discard,
+                BufferCount = 2,
+                SwapEffect = SwapEffect.FlipSequential,
                 Scaling = Scaling.Stretch,
                 Flags = SwapChainFlags.AllowModeSwitch
             };
@@ -163,15 +122,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         private readonly PresentParameters presentParams = new PresentParameters();
-
-        /// <summary>
-        /// Ends the draw.
-        /// </summary>
-        /// <returns></returns>
-        public override bool EndDraw()
-        {
-            return true;
-        }
 
         /// <summary>
         /// Presents this instance.

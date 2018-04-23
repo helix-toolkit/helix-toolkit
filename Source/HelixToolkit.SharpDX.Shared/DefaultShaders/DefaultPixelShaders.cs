@@ -400,6 +400,19 @@ namespace HelixToolkit.UWP.Shaders
                 return UWPShaderBytePool.Read("psEffectBloomCombine");
             }
         }
+        /// <summary>
+        /// Gets the ps effect fxaa.
+        /// </summary>
+        /// <value>
+        /// The ps effect fxaa.
+        /// </value>
+        public static byte[] PSEffectFXAA
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psFXAA");
+            }
+        }
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -597,6 +610,12 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSEffectBloomCombine = new ShaderDescription(nameof(PSEffectBloomCombine), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSEffectBloomCombine);
+
+        /// <summary>
+        /// The ps effect FXAA
+        /// </summary>
+        public static ShaderDescription PSEffectFXAA = new ShaderDescription(nameof(PSEffectFXAA), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectFXAA);
 #if !NETFX_CORE
         /// <summary>
         /// The ps screen dup

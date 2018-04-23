@@ -50,7 +50,7 @@ namespace HelixToolkit.UWP.Shaders
                 SourceBlend = BlendOption.One,
                 DestinationAlphaBlend = BlendOption.Zero,
                 SourceAlphaBlend = BlendOption.One,
-                IsBlendEnabled = true,
+                IsBlendEnabled = false,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All
             };
 
@@ -440,7 +440,7 @@ namespace HelixToolkit.UWP.Shaders
             FillMode = FillMode.Solid,
             CullMode = CullMode.None,
             DepthBias = 0,
-            DepthBiasClamp = -10,
+            DepthBiasClamp = 0,
             SlopeScaledDepthBias = +0,
             IsFrontCounterClockwise = true,
             IsMultisampleEnabled = false,

@@ -62,7 +62,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
                 Debug.WriteLine("Create new D3DImageSource");
                 surfaceD3D = Collect(new DX11ImageSource(EffectsManager.AdapterIndex));
             }
-            surfaceD3D.SetRenderTargetDX11(e);
+            surfaceD3D.SetRenderTargetDX11(e.Texture.Resource as Texture2D);
             OnImageSourceChanged(this, new DX11ImageSourceArgs(surfaceD3D));
         }
 

@@ -22,7 +22,7 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            MSAA="Four"
+            FXAALevel="Low"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
@@ -62,9 +62,9 @@
                 Geometry="{Binding Model}"
                 Instances="{Binding OutlineInstances}"
                 Material="{Binding ModelMaterial}"
-                Transform="{Binding ModelTransform}" 
                 OutlineColor="Yellow"
-                OutlineFadingFactor="{Binding ElementName=xrayEffect, Path=OutlineFadingFactor}"/>
+                OutlineFadingFactor="{Binding ElementName=xrayEffect, Path=OutlineFadingFactor}"
+                Transform="{Binding ModelTransform}" />
 
             <hx:PostEffectMeshXRay
                 x:Name="xrayEffect"

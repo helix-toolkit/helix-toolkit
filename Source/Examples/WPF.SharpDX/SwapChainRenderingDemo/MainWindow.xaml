@@ -32,7 +32,7 @@
             EnableAutoOctreeUpdate="True"
             EnableDeferredRendering="False"
             EnableSwapChainRendering="True"
-            MSAA="Two"
+            FXAALevel="Low"
             RenderTechnique="{Binding RenderTechnique}"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"

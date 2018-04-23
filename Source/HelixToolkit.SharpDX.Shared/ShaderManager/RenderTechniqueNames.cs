@@ -114,6 +114,8 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string MeshOITQuad = "MeshOITQuad";
+
+        public const string PostEffectFXAA = "PostEffectFXAA";
 #if !NETFX_CORE
         /// <summary>
         /// 

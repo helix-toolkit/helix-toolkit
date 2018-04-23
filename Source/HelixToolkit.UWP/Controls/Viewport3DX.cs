@@ -262,7 +262,8 @@ namespace HelixToolkit.UWP
                     renderHostInternal.MSAA = this.MSAA;
 #endif
                     renderHostInternal.RenderConfiguration.AutoUpdateOctree = this.EnableAutoOctreeUpdate;
-                    renderHostInternal.RenderConfiguration.EnableOITRendering = EnableOITRendering;    
+                    renderHostInternal.RenderConfiguration.EnableOITRendering = EnableOITRendering;
+                    renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
                     renderHostInternal.OnRendered -= this.OnRendered;
                     renderHostInternal.OnRendered += this.OnRendered;
                     renderHostInternal.ExceptionOccurred -= RenderHostInternal_ExceptionOccurred;

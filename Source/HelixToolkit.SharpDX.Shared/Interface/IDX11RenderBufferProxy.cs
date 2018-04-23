@@ -19,6 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
     using Core2D;
+    using Utilities;
     /// <summary>
     /// 
     /// </summary>
@@ -40,33 +41,26 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         bool Initialized { get; }
         /// <summary>
-        /// Gets the color buffer view.
-        /// </summary>
-        /// <value>
-        /// The color buffer view.
-        /// </value>
-        RenderTargetView ColorBufferView { get; }
-        /// <summary>
-        /// Gets the depth stencil buffer view.
-        /// </summary>
-        /// <value>
-        /// The depth stencil buffer view.
-        /// </value>
-        DepthStencilView DepthStencilBufferView { get; }
-        /// <summary>
         /// Gets the color buffer.
         /// </summary>
         /// <value>
         /// The color buffer.
         /// </value>
-        Texture2D ColorBuffer { get; }
+        ShaderResourceViewProxy ColorBuffer { get; }
+        /// <summary>
+        /// Gets the back buffer.
+        /// </summary>
+        /// <value>
+        /// The back buffer.
+        /// </value>
+        ShaderResourceViewProxy BackBuffer { get; }
         /// <summary>
         /// Gets the depth stencil buffer.
         /// </summary>
         /// <value>
         /// The depth stencil buffer.
         /// </value>
-        Texture2D DepthStencilBuffer { get; }
+        ShaderResourceViewProxy DepthStencilBuffer { get; }
         /// <summary>
         /// Gets a value indicating whether [use depth stencil buffer].
         /// </summary>
@@ -80,6 +74,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         MSAALevel MSAA { get; }
 #endif        
+
+        SampleDescription ColorBufferSampleDesc { get; }
         /// <summary>
         /// Gets the height of the target.
         /// </summary>
@@ -114,12 +110,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <returns></returns>
-        Texture2D Resize(int width, int height);
+        ShaderResourceViewProxy Resize(int width, int height);
         /// <summary>
         /// Sets the default render targets.
         /// </summary>
         /// <param name="context">The context.</param>
-        void SetDefaultRenderTargets(DeviceContext context);
+        /// <param name="isColorBuffer"></param>
+        void SetDefaultRenderTargets(DeviceContext context, bool isColorBuffer = true);
         /// <summary>
         /// Initializes the specified width.
         /// </summary>
@@ -127,7 +124,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="height">The height.</param>
         /// <param name="msaa">The msaa.</param>
         /// <returns></returns>
-        Texture2D Initialize(int width, int height, MSAALevel msaa);
+        ShaderResourceViewProxy Initialize(int width, int height, MSAALevel msaa);
         /// <summary>
         /// Gets the d2 d controls.
         /// </summary>

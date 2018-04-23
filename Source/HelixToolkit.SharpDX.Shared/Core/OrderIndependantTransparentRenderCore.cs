@@ -66,7 +66,7 @@ namespace HelixToolkit.UWP.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void Bind(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            var currSampleDesc = context.RenderHost.RenderBuffer.ColorBuffer.Description.SampleDescription;
+            var currSampleDesc = context.RenderHost.RenderBuffer.ColorBufferSampleDesc;
 #if MSAASEPARATE
             hasMSAA = currSampleDesc.Count > 1 || currSampleDesc.Quality > 0;
 #endif
@@ -75,6 +75,8 @@ namespace HelixToolkit.UWP.Core
             {
                 RemoveAndDispose(ref colorTarget);
                 RemoveAndDispose(ref alphaTarget);
+                RemoveAndDispose(ref colorTargetNoMSAA);
+                RemoveAndDispose(ref alphaTargetNoMSAA);
                 sampleDesc = currSampleDesc;
 
                 width = (int)context.ActualWidth;
@@ -97,8 +99,8 @@ namespace HelixToolkit.UWP.Core
                 alphaTarget = Collect(new ShaderResourceViewProxy(Device, alphaDesc));
 
 
-                colorTarget.CreateRenderTarget();
-                alphaTarget.CreateRenderTarget();
+                colorTarget.CreateRenderTargetView();
+                alphaTarget.CreateRenderTargetView();
 #if MSAASEPARATE
                 if (!hasMSAA)
 #endif

@@ -357,7 +357,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             get
             {
-                return renderBuffer.ColorBufferView;
+                return renderBuffer.ColorBuffer;
             }
         }
         /// <summary>
@@ -370,7 +370,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             get
             {
-                return renderBuffer.DepthStencilBufferView;
+                return renderBuffer.DepthStencilBuffer;
             }
         }
 

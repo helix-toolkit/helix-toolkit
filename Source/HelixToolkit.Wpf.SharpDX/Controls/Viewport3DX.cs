@@ -638,6 +638,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.RenderConfiguration.RenderD2D = EnableD2DRendering;
                 this.renderHostInternal.RenderConfiguration.AutoUpdateOctree = EnableAutoOctreeUpdate;
                 this.renderHostInternal.RenderConfiguration.EnableOITRendering = EnableOITRendering;
+                this.renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
                 if (ShowFrameRate)
                 {
                     this.renderHostInternal.ShowRenderDetail |= RenderDetail.FPS;

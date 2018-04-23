@@ -214,6 +214,10 @@
     <VertexShader Include="VS\vsMeshDefault.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </VertexShader>
+      <PixelShader Include="PS\psFXAA.hlsl">
+          <ShaderModel>4_0</ShaderModel>
+          <EntryPointName>main</EntryPointName>
+      </PixelShader>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.HLSL.CSharpVB" Version="1.0.1" />

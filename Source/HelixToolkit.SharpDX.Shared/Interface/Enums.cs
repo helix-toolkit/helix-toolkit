@@ -26,6 +26,13 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
+    public enum FXAALevel
+    {
+        None = 0, Low = 1, Medium = 2, High = 3, Ultra = 4
+    }
+    /// <summary>
+    /// 
+    /// </summary>
     public enum LightType
     {
         Ambient = 0, Directional = 1, Point = 2, Spot = 3, ThreePoint = 4, None = 5

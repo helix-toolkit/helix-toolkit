@@ -133,6 +133,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         int RenderTransparent(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
         /// <summary>
+        /// Renders to back buffer.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="parameter">The parameter.</param>
+        void RenderToBackBuffer(IRenderContext context, ref RenderParameter parameter);
+        /// <summary>
         /// Update scene graph not related to rendering. Can be run parallel with the <see cref="RenderOpaque(IRenderContext, List{SceneNode}, ref RenderParameter)"/>
         /// <para>Warning: Dependency properties are thread affinity. Do not get/set any dependency property in this function.</para>
         /// </summary>
