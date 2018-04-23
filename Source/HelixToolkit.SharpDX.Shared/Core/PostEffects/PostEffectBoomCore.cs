@@ -234,7 +234,14 @@ namespace HelixToolkit.UWP.Core
             {
                 using (var resource2 = offScreenRenderTargets[0].CurrentRTV.Resource)
                 {
-                    deviceContext.DeviceContext.ResolveSubresource(resource1, 0, resource2, 0, global::SharpDX.DXGI.Format.B8G8R8A8_UNorm);
+                    if(context.RenderHost.RenderBuffer.ColorBufferSampleDesc.Count > 1)
+                    {
+                        deviceContext.DeviceContext.ResolveSubresource(resource1, 0, resource2, 0, global::SharpDX.DXGI.Format.B8G8R8A8_UNorm);
+                    }
+                    else
+                    {
+                        deviceContext.DeviceContext.CopyResource(resource1, resource2);
+                    }
                 }
             }
             //Decrement ref count. See OutputMerger.GetRenderTargets remarks

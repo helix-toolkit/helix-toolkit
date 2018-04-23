@@ -27,7 +27,7 @@
             CameraRotationMode="Turnball"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            MSAA="Two"
+            FXAALevel="Medium"
             ShowCoordinateSystem="True">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -42,7 +42,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D />
-            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White"/>
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
             <hx:LineGeometryModel3D
                 Geometry="{Binding GridModel}"
                 Thickness="0.5"

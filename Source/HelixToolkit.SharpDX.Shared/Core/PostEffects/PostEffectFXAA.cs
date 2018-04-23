@@ -60,8 +60,7 @@ namespace HelixToolkit.UWP.Core
             deviceContext.DeviceContext.Flush();
             var buffer = context.RenderHost.RenderBuffer;
             
-            if (buffer.ColorBufferSampleDesc.Count > 1 || buffer.ColorBufferSampleDesc.Quality > 0
-                || FXAALevel == FXAALevel.None)
+            if (buffer.ColorBufferSampleDesc.Count > 1 || FXAALevel == FXAALevel.None)
             {
                 Device.ImmediateContext.ResolveSubresource(buffer.ColorBuffer.Resource, 0, buffer.BackBuffer.Resource, 0, Format.B8G8R8A8_UNorm);
             }

@@ -33,6 +33,7 @@
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
             EnableSwapChainRendering="True"
+            FXAALevel="{Binding FXAA}"
             IsShadowMappingEnabled="True"
             MSAA="{Binding MSAA}"
             RenderTechnique="{Binding RenderTechnique}"
@@ -220,6 +221,11 @@
                         Margin="3"
                         ItemsSource="{Binding MSAAs}"
                         SelectedItem="{Binding MSAA}" />
+                    <TextBlock>FXAA</TextBlock>
+                    <ComboBox
+                        Margin="3"
+                        ItemsSource="{Binding FXAAs}"
+                        SelectedItem="{Binding FXAA}" />
                     <CheckBox x:Name="tessCheckBox" IsChecked="{Binding ElementName=model, Path=EnableTessellation}">Enable Tessellation</CheckBox>
                     <Slider
                         Grid.Row="9"

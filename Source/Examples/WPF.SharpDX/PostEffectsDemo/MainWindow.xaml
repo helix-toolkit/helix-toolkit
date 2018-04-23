@@ -21,7 +21,7 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
-            MSAA="Four"
+            FXAALevel="Low"
             ModelUpDirection="0,0,1"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
