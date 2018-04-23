@@ -29,6 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private readonly Stack<KeyValuePair<int, IList<SceneNode>>> stackCache1 = new Stack<KeyValuePair<int, IList<SceneNode>>>(20);
         private readonly Stack<KeyValuePair<int, IList<SceneNode2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20);
         private readonly OrderIndependentTransparentRenderCore transparentRenderCore = new OrderIndependentTransparentRenderCore();
+        private readonly PostEffectFXAA postFXAACore = new PostEffectFXAA();
         /// <summary>
         /// Gets or sets the immediate context.
         /// </summary>
@@ -223,12 +224,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
         public virtual void RenderPostProc(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
-        {
+        {            
             int count = renderables.Count;
             for (int i = 0; i < count; ++i)
             {
                 renderables[i].RenderCore.Render(context, ImmediateContext);
-            }
+            }            
+        }
+
+        public virtual void RenderToBackBuffer(IRenderContext context, ref RenderParameter parameter)
+        {
+            postFXAACore.FXAALevel = context.RenderHost.RenderConfiguration.FXAALevel;
+            postFXAACore.Render(context, ImmediateContext);
         }
 
         protected override void OnDispose(bool disposeManagedResources)
@@ -242,11 +249,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public void Attach(IRenderHost host)
         {
             transparentRenderCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.MeshOITQuad));
+            postFXAACore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.PostEffectFXAA));
         }
 
         public void Detach()
         {
             transparentRenderCore.Detach();
+            postFXAACore.Detach();
         }
     }
 

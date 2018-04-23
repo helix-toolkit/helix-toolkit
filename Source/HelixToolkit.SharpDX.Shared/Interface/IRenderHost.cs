@@ -344,5 +344,9 @@ namespace HelixToolkit.UWP
         ///   <c>true</c> if [enable oit rendering]; otherwise, <c>false</c>.
         /// </value>
         public bool EnableOITRendering { set; get; } = true;
+        /// <summary>
+        /// Enable FXAA. If MSAA used, FXAA will be disabled automatically
+        /// </summary>
+        public FXAALevel FXAALevel { set; get; } = FXAALevel.None;
     }
 }

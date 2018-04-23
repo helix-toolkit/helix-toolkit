@@ -1022,6 +1022,21 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         /// <summary>
+        /// The fxaa level property
+        /// </summary>
+        public static readonly DependencyProperty FXAALevelProperty =
+            DependencyProperty.Register("FXAALevel", typeof(FXAALevel), typeof(Viewport3DX), new PropertyMetadata(FXAALevel.None, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.FXAALevel = (FXAALevel)e.NewValue;
+                    viewport.InvalidateRender();
+                }
+            }));
+
+
+        /// <summary>
         /// Background Color
         /// </summary>
         public Color BackgroundColor
@@ -2738,5 +2753,19 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (bool)GetValue(EnableOITRenderingProperty); }
             set { SetValue(EnableOITRenderingProperty, value); }
         }
+
+
+        /// <summary>
+        /// Gets or sets the fxaa. If MSAA is set, FXAA will be disabled automatically
+        /// </summary>
+        /// <value>
+        /// The enable fxaa.
+        /// </value>
+        public FXAALevel FXAALevel
+        {
+            get { return (FXAALevel)GetValue(FXAALevelProperty); }
+            set { SetValue(FXAALevelProperty, value); }
+        }
+
     }
 }

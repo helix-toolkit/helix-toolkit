@@ -154,6 +154,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The sample description.
         /// </value>
         public SampleDescription ColorBufferSampleDesc { private set; get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11RenderBufferProxyBase"/> class.
         /// </summary>
@@ -177,6 +178,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             ColorBufferSampleDesc = GetMSAASampleDescription();
             OnCreateRenderTargetAndDepthBuffers(width, height, UseDepthStencilBuffer, out colorBuffer, out depthStencilBuffer);
             backBuffer = OnCreateBackBuffer(width, height);
+            backBuffer.CreateRenderTargetView();
             Initialized = true;
             OnNewBufferCreated?.Invoke(this, new Texture2DArgs(backBuffer));
             return backBuffer;
@@ -252,7 +254,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
             colorBuffer = Collect(new ShaderResourceViewProxy(Device, colordesc));
             colorBuffer.CreateRenderTargetView();
-
+            colorBuffer.CreateTextureView();
             if (createDepthStencilBuffer)
             {
                 var depthdesc = new Texture2DDescription
@@ -277,12 +279,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Sets the default render-targets
         /// </summary>
-        public void SetDefaultRenderTargets(DeviceContext context)
+        public void SetDefaultRenderTargets(DeviceContext context, bool isColorBuffer = true)
         {
-            context.OutputMerger.SetTargets(depthStencilBuffer, new RenderTargetView[] { colorBuffer });
+            context.OutputMerger.SetTargets(isColorBuffer ? depthStencilBuffer : null, new RenderTargetView[] { isColorBuffer ? colorBuffer : backBuffer});
+            //context.OutputMerger.SetTargets(depthStencilBuffer, new RenderTargetView[] { isColorBuffer ? colorBuffer : backBuffer });
             context.Rasterizer.SetViewport(0, 0, TargetWidth, TargetHeight, 0.0f, 1.0f);
             context.Rasterizer.SetScissorRectangle(0, 0, TargetWidth, TargetHeight);
         }
+
         /// <summary>
         /// Clears the render target binding.
         /// </summary>
@@ -362,10 +366,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public virtual bool EndDraw()
         {
-            Device.ImmediateContext.Flush();
-#if MSAA
-            Device.ImmediateContext.ResolveSubresource(ColorBuffer.Resource, 0, backBuffer.Resource, 0, Format.B8G8R8A8_UNorm);
-#endif  
+//            Device.ImmediateContext.Flush();
+//#if MSAA
+//            Device.ImmediateContext.ResolveSubresource(ColorBuffer.Resource, 0, backBuffer.Resource, 0, Format.B8G8R8A8_UNorm);
+//#endif  
             return true;
         }
         /// <summary>

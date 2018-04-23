@@ -328,6 +328,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             renderer.RenderPostProc(RenderContext, postProcNodes, ref renderParameter);
             renderer.RenderPostProc(RenderContext, screenSpacedNodes, ref renderParameter);
             numRendered += preProcNodes.Count + postProcNodes.Count + screenSpacedNodes.Count;
+            renderer.RenderToBackBuffer(RenderContext, ref renderParameter);
         }
 
         /// <summary>

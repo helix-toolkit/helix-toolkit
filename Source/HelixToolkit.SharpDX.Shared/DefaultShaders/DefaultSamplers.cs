@@ -70,6 +70,15 @@ namespace HelixToolkit.UWP.Shaders
             Filter = Filter.MinMagLinearMipPoint,
             MaximumLod = float.MaxValue
         };
+
+        public static SamplerStateDescription LinearSamplerClampAni1 = new SamplerStateDescription()
+        {
+            AddressU = TextureAddressMode.Clamp,
+            AddressV = TextureAddressMode.Clamp,
+            AddressW = TextureAddressMode.Clamp,
+            Filter = Filter.MinMagLinearMipPoint,
+            MaximumLod = float.MaxValue
+        };
         /// <summary>
         /// The point sampler wrap
         /// </summary>

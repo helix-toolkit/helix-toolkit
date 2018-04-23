@@ -115,7 +115,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Sets the default render targets.
         /// </summary>
         /// <param name="context">The context.</param>
-        void SetDefaultRenderTargets(DeviceContext context);
+        /// <param name="isColorBuffer"></param>
+        void SetDefaultRenderTargets(DeviceContext context, bool isColorBuffer = true);
         /// <summary>
         /// Initializes the specified width.
         /// </summary>

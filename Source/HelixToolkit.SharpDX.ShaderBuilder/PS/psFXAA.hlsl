@@ -2094,24 +2094,25 @@ Texture2D    InputTexture : register(t0);
 
 float4 main(MeshOutlinePS_INPUT Input) : SV_Target
 {
+    //return texDiffuseMap.Sample(samplerDiffuse, Input.Tex.xy);
     FxaaTex InputFXAATex = { samplerDiffuse, texDiffuseMap };
     return FxaaPixelShader(
-        Input.Tex.xy,							// FxaaFloat2 pos,
-        FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f),		// FxaaFloat4 fxaaConsolePosPos,
-        InputFXAATex,							// FxaaTex tex,
-        InputFXAATex,							// FxaaTex fxaaConsole360TexExpBiasNegOne,
-        InputFXAATex,							// FxaaTex fxaaConsole360TexExpBiasNegTwo,
-        Color.xy,							    // FxaaFloat2 fxaaQualityRcpFrame,
-        FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f),		// FxaaFloat4 fxaaConsoleRcpFrameOpt,
-        FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f),		// FxaaFloat4 fxaaConsoleRcpFrameOpt2,
-        FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f),		// FxaaFloat4 fxaaConsole360RcpFrameOpt2,
-        0.75f,									// FxaaFloat fxaaQualitySubpix,
-        0.166f,									// FxaaFloat fxaaQualityEdgeThreshold,
-        0.0833f,								// FxaaFloat fxaaQualityEdgeThresholdMin,
-        0.0f,									// FxaaFloat fxaaConsoleEdgeSharpness,
-        0.0f,									// FxaaFloat fxaaConsoleEdgeThreshold,
-        0.0f,									// FxaaFloat fxaaConsoleEdgeThresholdMin,
-        FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f)		// FxaaFloat fxaaConsole360ConstDir,
+        Input.Tex.xy, // FxaaFloat2 pos,
+        FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f), // FxaaFloat4 fxaaConsolePosPos,
+        InputFXAATex, // FxaaTex tex,
+        InputFXAATex, // FxaaTex fxaaConsole360TexExpBiasNegOne,
+        InputFXAATex, // FxaaTex fxaaConsole360TexExpBiasNegTwo,
+        Color.xy, // FxaaFloat2 fxaaQualityRcpFrame,
+        FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f), // FxaaFloat4 fxaaConsoleRcpFrameOpt,
+        FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f), // FxaaFloat4 fxaaConsoleRcpFrameOpt2,
+        FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f), // FxaaFloat4 fxaaConsole360RcpFrameOpt2,
+        Param._m00, // FxaaFloat fxaaQualitySubpix,
+        Param._m01, // FxaaFloat fxaaQualityEdgeThreshold,
+        Param._m02, // FxaaFloat fxaaQualityEdgeThresholdMin,
+        0.0f, // FxaaFloat fxaaConsoleEdgeSharpness,
+        0.0f, // FxaaFloat fxaaConsoleEdgeThreshold,
+        0.0f, // FxaaFloat fxaaConsoleEdgeThresholdMin,
+        FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f) // FxaaFloat fxaaConsole360ConstDir,
     );
 }
 
