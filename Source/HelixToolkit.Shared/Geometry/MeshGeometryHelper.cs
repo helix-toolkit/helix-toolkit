@@ -100,7 +100,9 @@ namespace HelixToolkit.Wpf
 
             for (int i = 0; i < normals.Count; i++)
             {
-                normals[i].Normalize();
+                var n = normals[i];
+                n.Normalize();
+                normals[i] = n;
             }
 
             return normals;

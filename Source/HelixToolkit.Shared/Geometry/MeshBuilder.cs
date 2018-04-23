@@ -4259,9 +4259,10 @@ namespace HelixToolkit.Wpf
             {
                 for (int i = 0; i < this.Normals.Count; i++)
                 {
-                    this.Normals[i] = new Vector3D(
+                    var v = new Vector3D(
                         this.Normals[i].X * (DoubleOrSingle)scaleX, this.Normals[i].Y * (DoubleOrSingle)scaleY, this.Normals[i].Z * (DoubleOrSingle)scaleZ);
-                    this.Normals[i].Normalize();
+                    v.Normalize();
+                    this.Normals[i] = v;
                 }
             }
         }
