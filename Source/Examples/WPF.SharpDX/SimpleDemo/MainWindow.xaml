@@ -45,7 +45,7 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="#434343"
             EffectsManager="{Binding EffectsManager}"
-            MSAA="Eight"
+            FXAALevel="Low"
             ModelUpDirection="{Binding UpDirection}"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"

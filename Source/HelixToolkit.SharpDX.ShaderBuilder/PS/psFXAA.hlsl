@@ -2097,7 +2097,7 @@ float4 main(MeshOutlinePS_INPUT Input) : SV_Target
 {
     //return texDiffuseMap.Sample(samplerDiffuse, Input.Tex.xy);
     FxaaTex InputFXAATex = { samplerDiffuse, texDiffuseMap };
-    return FxaaPixelShader(
+    float4 c = FxaaPixelShader(
         Input.Tex.xy, // FxaaFloat2 pos,
         FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f), // FxaaFloat4 fxaaConsolePosPos,
         InputFXAATex, // FxaaTex tex,
@@ -2115,5 +2115,7 @@ float4 main(MeshOutlinePS_INPUT Input) : SV_Target
         0.0f, // FxaaFloat fxaaConsoleEdgeThresholdMin,
         FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f) // FxaaFloat fxaaConsole360ConstDir,
     );
+    c.a = 1;
+    return c;
 }
 

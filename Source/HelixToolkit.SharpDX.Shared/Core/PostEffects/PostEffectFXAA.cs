@@ -66,7 +66,7 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                deviceContext.DeviceContext.ClearRenderTargetView(buffer.BackBuffer, new Color4(0, 0, 0, 1));
+                //deviceContext.DeviceContext.ClearRenderTargetView(buffer.BackBuffer, new Color4(0, 0, 0, 1));
                 buffer.SetDefaultRenderTargets(deviceContext, false);
                 FXAAPass.BindShader(deviceContext);
                 FXAAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);

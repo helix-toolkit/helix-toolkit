@@ -1191,7 +1191,7 @@ namespace HelixToolkit.UWP
                             DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
                             DefaultPSShaderDescriptions.PSEffectFXAA
                         },
-                        BlendStateDescription = DefaultBlendStateDescriptions.AdditiveBlend,
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
                         RasterStateDescription = DefaultRasterDescriptions.RSOutline
                     },
