@@ -215,7 +215,7 @@ namespace HelixToolkit.UWP.Core
                 while(w > 1 && h > 1 && count < Math.Max(0, MaximumDownSamplingStep) + 1)
                 {
                     var target = Collect(new PostEffectBlurCore(global::SharpDX.DXGI.Format.B8G8R8A8_UNorm, blurPassVertical, blurPassHorizontal, textureSlot, samplerSlot,
-                        DefaultSamplers.LinearSamplerClampAni4, EffectTechnique.EffectsManager));
+                        DefaultSamplers.LinearSamplerClampAni1, EffectTechnique.EffectsManager));
                     target.Resize(Device, w, h);
                     offScreenRenderTargets.Add(target);
                     w >>= 2;
