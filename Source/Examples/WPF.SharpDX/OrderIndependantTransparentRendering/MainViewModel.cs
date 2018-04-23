@@ -54,50 +54,18 @@ namespace OrderIndependentTransparentRendering
         {
             this.ModelGeometry = new ObservableElement3DCollection();
             EffectsManager = new DefaultEffectsManager();
-            Camera = new PerspectiveCamera()
+            Camera = new OrthographicCamera()
             {
                 LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -50, -50),
                 Position = new System.Windows.Media.Media3D.Point3D(0, 50, 50),
                 FarPlaneDistance = 1000,
                 NearPlaneDistance = 0.1,
+                Width = 100
             };
-            ResetCameraCommand = new RelayCommand((o) =>
-            {
-                // Camera.Reset();
-                GroupElement3D pFirst = PlaneGeometry[0] as GroupElement3D;
-                if (pFirst != null)
-                {
-                    PlaneGeometry.Remove(pFirst);
-                    PlaneGeometry.Add(pFirst);
-                }
-                pFirst = PlaneGeometry[0] as GroupElement3D;
-                if (pFirst != null)
-                {
-                    PlaneGeometry.Remove(pFirst);
-                    PlaneGeometry.Add(pFirst);
-                }
-                pFirst = PlaneGeometry[0] as GroupElement3D;
-                if (pFirst != null)
-                {
-                    PlaneGeometry.Remove(pFirst);
-                    PlaneGeometry.Add(pFirst);
-                }
-                pFirst = PlaneGeometry[0] as GroupElement3D;
-                if (pFirst != null)
-                {
-                    PlaneGeometry.Remove(pFirst);
-                    PlaneGeometry.Add(pFirst);
-                }
-            });
+            ResetCameraCommand = new RelayCommand((o) => { Camera.Reset(); });
             Load3ds("NITRO_ENGINE.3ds");
-            PlaneGeometry = new ObservableElement3DCollection();
             BuildGrid();
-            PlaneGeometry.Add(AddPlaneGroup(0));
-            PlaneGeometry.Add(AddPlaneGroup(10));
-            PlaneGeometry.Add(AddPlaneGroup(20));
-            PlaneGeometry.Add(AddPlaneGroup(30));
-            PlaneGeometry.Add(AddPlaneGroup(40));
-
+            BuildPlanes();
         }
 
         private void BuildGrid()
@@ -121,62 +89,11 @@ namespace OrderIndependentTransparentRendering
             GridTransform = new Media3D.TranslateTransform3D(new Media3D.Vector3D(0, -10, 0));
         }
 
-        private GroupElement3D AddPlaneGroup(double zOffset)
+        private void BuildPlanes()
         {
-            GroupElement3D group = new GroupModel3D();
+            PlaneGeometry = new ObservableElement3DCollection();
             var builder = new MeshBuilder(true);
-            builder.AddBox(new SharpDX.Vector3(0, 0, 0), 5, 5, 0.5);
-            var mesh = builder.ToMesh();
-
-            var material = new PhongMaterial();
-            material.DiffuseColor = new SharpDX.Color4(1, 0, 0, 0.5f);
-
-            var model = new MeshGeometryModel3D()
-            {
-                Geometry = mesh,
-                Material = material,
-                IsTransparent = true,
-                Transform = new Media3D.TranslateTransform3D(0, 0, 0 - zOffset),
-                CullMode = SharpDX.Direct3D11.CullMode.Back
-            };
-            group.Children.Add(model);
-
-            material = new PhongMaterial();
-            material.DiffuseColor = new SharpDX.Color4(0, 1, 0, 0.5f);
-
-            model = new MeshGeometryModel3D()
-            {
-                Geometry = mesh,
-                Material = material,
-                IsTransparent = true,
-                Transform = new Media3D.TranslateTransform3D(-5, -0, -zOffset),
-                CullMode = SharpDX.Direct3D11.CullMode.Back
-            };
-            group.Children.Add(model);
-
-            material = new PhongMaterial();
-            material.DiffuseColor = new SharpDX.Color4(0, 0, 1, 0.5f);
-
-            model = new MeshGeometryModel3D()
-            {
-                Geometry = mesh,
-                Material = material,
-                Transform = new Media3D.TranslateTransform3D(-0, -5, -zOffset),
-                IsTransparent = true,
-                CullMode = SharpDX.Direct3D11.CullMode.Back
-            };
-            group.Children.Add(model);
-
-            group.Transform = new Media3D.ScaleTransform3D(2, 2, 2);
-
-            return group;
-        }
-
-        private void BuildPlanes2()
-        {
-
-            var builder = new MeshBuilder(true);
-            builder.AddBox(new SharpDX.Vector3(0, 0, 0), 100, 100, 0.5);
+            builder.AddBox(new SharpDX.Vector3(0, 0, 0), 15, 15, 0.5);
             var mesh = builder.ToMesh();
 
             var material = new PhongMaterial();
@@ -192,10 +109,32 @@ namespace OrderIndependentTransparentRendering
             };
             PlaneGeometry.Add(model);
 
+            material = new PhongMaterial();
+            material.DiffuseColor = new SharpDX.Color4(0, 1, 0, 0.5f);
 
+            model = new MeshGeometryModel3D()
+            {
+                Geometry = mesh,
+                Material = material,
+                Transform = new Media3D.TranslateTransform3D(-20, 5, -4),
+                IsTransparent = true,
+                CullMode = SharpDX.Direct3D11.CullMode.Back
+            };
+            PlaneGeometry.Add(model);
+
+            material = new PhongMaterial();
+            material.DiffuseColor = new SharpDX.Color4(0, 0, 1, 0.5f);
+
+            model = new MeshGeometryModel3D()
+            {
+                Geometry = mesh,
+                Material = material,
+                Transform = new Media3D.TranslateTransform3D(-25, 10, -8),
+                IsTransparent = true,
+                CullMode = SharpDX.Direct3D11.CullMode.Back
+            };
+            PlaneGeometry.Add(model);
         }
-
-
 
         public void Load3ds(string path)
         {
