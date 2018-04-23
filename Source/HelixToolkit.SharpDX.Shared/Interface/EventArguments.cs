@@ -10,6 +10,7 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using Utilities;
     /// <summary>
     /// 
     /// </summary>
@@ -18,23 +19,23 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The texture
         /// </summary>
-        public readonly Texture2D Texture;
+        public readonly ShaderResourceViewProxy Texture;
         /// <summary>
         /// Initializes a new instance of the <see cref="Texture2DArgs"/> class.
         /// </summary>
         /// <param name="texture">The texture.</param>
-        public Texture2DArgs(Texture2D texture)
+        public Texture2DArgs(ShaderResourceViewProxy texture)
         {
             Texture = texture;
         }
         /// <summary>
-        /// Performs an implicit conversion from <see cref="Texture2DArgs"/> to <see cref="Texture2D"/>.
+        /// Performs an implicit conversion from <see cref="Texture2DArgs"/> to <see cref="ShaderResourceViewProxy"/>.
         /// </summary>
         /// <param name="args">The arguments.</param>
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static implicit operator Texture2D(Texture2DArgs args)
+        public static implicit operator ShaderResourceViewProxy(Texture2DArgs args)
         {
             return args.Texture;
         }

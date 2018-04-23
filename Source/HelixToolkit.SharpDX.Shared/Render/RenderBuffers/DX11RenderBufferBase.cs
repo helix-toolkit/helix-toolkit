@@ -22,6 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
     using Core2D;
+    using Utilities;
     /// <summary>
     /// 
     /// </summary>
@@ -38,19 +39,21 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// The color buffer
         /// </summary>
-        protected Texture2D colorBuffer;
+        private ShaderResourceViewProxy colorBuffer;
+        public ShaderResourceViewProxy ColorBuffer { get { return colorBuffer; } }
+        /// <summary>
+        /// The back buffer
+        /// </summary>
+        private ShaderResourceViewProxy backBuffer;
+        public ShaderResourceViewProxy BackBuffer { get { return backBuffer; } }
         /// <summary>
         /// The depth stencil buffer
         /// </summary>
-        protected Texture2D depthStencilBuffer;
+        private ShaderResourceViewProxy depthStencilBuffer;
         /// <summary>
-        /// The color buffer view
+        /// The depth stencil buffer
         /// </summary>
-        protected RenderTargetView colorBufferView;
-        /// <summary>
-        /// The depth stencil buffer view
-        /// </summary>
-        protected DepthStencilView depthStencilBufferView;
+        public ShaderResourceViewProxy DepthStencilBuffer { get { return depthStencilBuffer; } }
         /// <summary>
         /// The D2D controls
         /// </summary>
@@ -79,34 +82,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The height of the target.
         /// </value>
         public int TargetHeight { private set; get; }
-        /// <summary>
-        /// Gets the color buffer view.
-        /// </summary>
-        /// <value>
-        /// The color buffer view.
-        /// </value>
-        public RenderTargetView ColorBufferView { get { return colorBufferView; } }
-        /// <summary>
-        /// Gets the depth stencil buffer view.
-        /// </summary>
-        /// <value>
-        /// The depth stencil buffer view.
-        /// </value>
-        public DepthStencilView DepthStencilBufferView { get { return depthStencilBufferView; } }
-        /// <summary>
-        /// Gets the color buffer.
-        /// </summary>
-        /// <value>
-        /// The color buffer.
-        /// </value>
-        public Texture2D ColorBuffer { get { return colorBuffer; } }
-        /// <summary>
-        /// Gets the depth stencil buffer.
-        /// </summary>
-        /// <value>
-        /// The depth stencil buffer.
-        /// </value>
-        public Texture2D DepthStencilBuffer { get { return depthStencilBuffer; } }
 
         private IDeviceContextPool deviceContextPool;
         /// <summary>
@@ -171,6 +146,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///   <c>true</c> if [use depth stencil buffer]; otherwise, <c>false</c>.
         /// </value>
         public bool UseDepthStencilBuffer { private set; get; } = true;
+
+        /// <summary>
+        /// Gets or sets the sample description.
+        /// </summary>
+        /// <value>
+        /// The sample description.
+        /// </value>
+        public SampleDescription ColorBufferSampleDesc { private set; get; }
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11RenderBufferProxyBase"/> class.
         /// </summary>
@@ -183,7 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             this.UseDepthStencilBuffer = useDepthStencilBuffer;
         }
 
-        private Texture2D CreateRenderTarget(int width, int height, MSAALevel msaa)
+        private ShaderResourceViewProxy CreateRenderTarget(int width, int height, MSAALevel msaa)
         {
 #if MSAA
             MSAA = msaa;
@@ -191,10 +174,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             TargetWidth = width;
             TargetHeight = height;
             DisposeBuffers();
-            var texture = OnCreateRenderTargetAndDepthBuffers(width, height, UseDepthStencilBuffer);
+            ColorBufferSampleDesc = GetMSAASampleDescription();
+            OnCreateRenderTargetAndDepthBuffers(width, height, UseDepthStencilBuffer, out colorBuffer, out depthStencilBuffer);
+            backBuffer = OnCreateBackBuffer(width, height);
             Initialized = true;
-            OnNewBufferCreated?.Invoke(this, new Texture2DArgs(texture));
-            return texture;
+            OnNewBufferCreated?.Invoke(this, new Texture2DArgs(backBuffer));
+            return backBuffer;
         }
         /// <summary>
         /// Disposes the buffers.
@@ -203,27 +188,98 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             DeviceContext2D.Target = null;
             RemoveAndDispose(ref d2dTarget);
-            RemoveAndDispose(ref colorBufferView);
-            RemoveAndDispose(ref depthStencilBufferView);
             RemoveAndDispose(ref colorBuffer);
             RemoveAndDispose(ref depthStencilBuffer);
+            RemoveAndDispose(ref backBuffer);
         }
 
+        protected abstract ShaderResourceViewProxy OnCreateBackBuffer(int width, int height);
+
+        protected virtual SampleDescription GetMSAASampleDescription()
+        {
+            int sampleCount = 1;
+            int sampleQuality = 0;
+#if MSAA
+            if (MSAA != MSAALevel.Disable)
+            {
+                do
+                {
+                    var newSampleCount = sampleCount * 2;
+                    var newSampleQuality = Device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, newSampleCount) - 1;
+
+                    if (newSampleQuality < 0)
+                        break;
+
+                    sampleCount = newSampleCount;
+                    sampleQuality = newSampleQuality;
+                    if (sampleCount == (int)MSAA)
+                    {
+                        break;
+                    }
+                } while (sampleCount < 32);
+            }
+#endif
+            return new SampleDescription(sampleCount, sampleQuality);
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="createDepthStencilBuffer"></param>
+        /// <param name="colorBuffer"></param>
+        /// <param name="depthStencilBuffer"></param>
         /// <returns></returns>
-        protected abstract Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height, bool createDepthStencilBuffer);
+        protected virtual void OnCreateRenderTargetAndDepthBuffers(int width, int height, bool createDepthStencilBuffer,
+            out ShaderResourceViewProxy colorBuffer, out ShaderResourceViewProxy depthStencilBuffer)
+        {
+            var sampleDesc = ColorBufferSampleDesc;
+            var optionFlags = ResourceOptionFlags.None;
+
+            var colordesc = new Texture2DDescription
+            {
+                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+                Format = Format.B8G8R8A8_UNorm,
+                Width = width,
+                Height = height,
+                MipLevels = 1,
+                SampleDescription = sampleDesc,
+                Usage = ResourceUsage.Default,
+                OptionFlags = optionFlags,
+                CpuAccessFlags = CpuAccessFlags.None,
+                ArraySize = 1
+            };
+
+            colorBuffer = Collect(new ShaderResourceViewProxy(Device, colordesc));
+            colorBuffer.CreateRenderTargetView();
+
+            if (createDepthStencilBuffer)
+            {
+                var depthdesc = new Texture2DDescription
+                {
+                    BindFlags = BindFlags.DepthStencil,
+                    Format = Format.D32_Float_S8X24_UInt,
+                    Width = width,
+                    Height = height,
+                    MipLevels = 1,
+                    SampleDescription = sampleDesc,
+                    Usage = ResourceUsage.Default,
+                    OptionFlags = ResourceOptionFlags.None,
+                    CpuAccessFlags = CpuAccessFlags.None,
+                    ArraySize = 1,
+                };
+                depthStencilBuffer = Collect(new ShaderResourceViewProxy(Device, depthdesc));
+                depthStencilBuffer.CreateDepthStencilView();
+            }
+            else { depthStencilBuffer = null; }
+        }
 
         /// <summary>
         /// Sets the default render-targets
         /// </summary>
         public void SetDefaultRenderTargets(DeviceContext context)
         {
-            context.OutputMerger.SetTargets(depthStencilBufferView, colorBufferView);
+            context.OutputMerger.SetTargets(depthStencilBuffer, new RenderTargetView[] { colorBuffer });
             context.Rasterizer.SetViewport(0, 0, TargetWidth, TargetHeight, 0.0f, 1.0f);
             context.Rasterizer.SetScissorRectangle(0, 0, TargetWidth, TargetHeight);
         }
@@ -255,12 +311,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             if (clearBackBuffer)
             {
-                context.ClearRenderTargetView(colorBufferView, color);
+                context.ClearRenderTargetView(colorBuffer, color);
             }
 
             if (clearDepthStencilBuffer)
             {
-                context.ClearDepthStencilView(depthStencilBufferView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
+                context.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
             }
         }
         /// <summary>
@@ -270,7 +326,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="height">The height.</param>
         /// <param name="msaa">The msaa.</param>
         /// <returns></returns>
-        public Texture2D Initialize(int width, int height, MSAALevel msaa)
+        public ShaderResourceViewProxy Initialize(int width, int height, MSAALevel msaa)
         {
 #if MSAA
             return CreateRenderTarget(width, height, msaa);
@@ -284,7 +340,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        public virtual Texture2D Resize(int width, int height)
+        public virtual ShaderResourceViewProxy Resize(int width, int height)
         {
 #if MSAA
             return CreateRenderTarget(width, height, MSAA);
@@ -306,6 +362,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public virtual bool EndDraw()
         {
+            Device.ImmediateContext.Flush();
+#if MSAA
+            Device.ImmediateContext.ResolveSubresource(ColorBuffer.Resource, 0, backBuffer.Resource, 0, Format.B8G8R8A8_UNorm);
+#endif  
             return true;
         }
         /// <summary>

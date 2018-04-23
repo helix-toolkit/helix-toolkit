@@ -1178,6 +1178,25 @@ namespace HelixToolkit.UWP
                     },
                 }
             };
+
+            var fxaaPostEffect = new TechniqueDescription(DefaultRenderTechniqueNames.PostEffectFXAA)
+            {
+                InputLayoutDescription = InputLayoutDescription.EmptyInputLayout,
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
+                            DefaultPSShaderDescriptions.PSEffectFXAA
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                    },
+                }
+            };
             #endregion
 
 #if !NETFX_CORE
@@ -1229,6 +1248,7 @@ namespace HelixToolkit.UWP
             yield return meshOutlineBlurPostEffect;
             yield return meshBorderHighlightPostEffect;
             yield return bloomPostEffect;
+            yield return fxaaPostEffect;
             yield return meshOITQuad;
 #if !NETFX_CORE
             yield return renderScreenDup;

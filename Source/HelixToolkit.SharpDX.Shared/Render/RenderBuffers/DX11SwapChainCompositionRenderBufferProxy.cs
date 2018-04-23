@@ -16,13 +16,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
     using Core2D;
+    using Utilities;
     /// <summary>
     /// 
     /// </summary>
     public class DX11SwapChainCompositionRenderBufferProxy : DX11RenderBufferProxyBase
     {
         private SwapChain2 swapChain;
-        private Texture2D renderTargetNMS;
         /// <summary>
         /// Gets the swap chain.
         /// </summary>
@@ -50,23 +50,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// Disposes the buffers.
-        /// </summary>
-        protected override void DisposeBuffers()
-        {
-            base.DisposeBuffers();
-#if MSAA
-            RemoveAndDispose(ref renderTargetNMS);
-#endif
-        }
-        /// <summary>
         /// Called when [create render target and depth buffers].
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        /// <param name="createDepthStencilBuffer"></param>
         /// <returns></returns>
-        protected override Texture2D OnCreateRenderTargetAndDepthBuffers(int width, int height, bool createDepthStencilBuffer)
+        protected override ShaderResourceViewProxy OnCreateBackBuffer(int width, int height)
         {
             if (swapChain == null || swapChain.IsDisposed)
             {
@@ -77,61 +66,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 swapChain.ResizeBuffers(swapChain.Description1.BufferCount, TargetWidth, TargetHeight, swapChain.Description.ModeDescription.Format, swapChain.Description.Flags);
             }
 
-#if MSAA
-            int sampleCount = 1;
-            int sampleQuality = 0;
-            if (MSAA != MSAALevel.Disable)
-            {
-                do
-                {
-                    var newSampleCount = sampleCount * 2;
-                    var newSampleQuality = Device.CheckMultisampleQualityLevels(Format.B8G8R8A8_UNorm, newSampleCount) - 1;
-
-                    if (newSampleQuality < 0)
-                        break;
-
-                    sampleCount = newSampleCount;
-                    sampleQuality = newSampleQuality;
-                    if (sampleCount == (int)MSAA)
-                    {
-                        break;
-                    }
-                } while (sampleCount < 32);
-            }
-            renderTargetNMS = Collect(Texture2D.FromSwapChain<Texture2D>(swapChain, 0));
-            var colordesc = renderTargetNMS.Description;
-            colordesc.SampleDescription = new SampleDescription(sampleCount, sampleQuality);
-            colorBuffer = Collect(new Texture2D(Device, colordesc));
-            colorBufferView = Collect(new RenderTargetView(Device, colorBuffer));
-            var sampleDesc = colordesc.SampleDescription;
-#else
-            colorBuffer = Collect(Texture2D.FromSwapChain<Texture2D>(swapChain, 0));
-            var sampleDesc = swapChain.Description1.SampleDescription;
-            colorBufferView = Collect(new RenderTargetView(Device, colorBuffer));
-#endif
-
-            if (createDepthStencilBuffer)
-            {
-                var depthdesc = new Texture2DDescription
-                {
-                    BindFlags = BindFlags.DepthStencil,
-                    //Format = Format.D24_UNorm_S8_UInt,
-                    Format = Format.D32_Float_S8X24_UInt,
-                    Width = width,
-                    Height = height,
-                    MipLevels = 1,
-                    SampleDescription = sampleDesc,
-                    Usage = ResourceUsage.Default,
-                    OptionFlags = ResourceOptionFlags.None,
-                    CpuAccessFlags = CpuAccessFlags.None,
-                    ArraySize = 1,
-                };
-                depthStencilBuffer = Collect(new Texture2D(Device, depthdesc));
-                depthStencilBufferView = Collect(new DepthStencilView(Device, depthStencilBuffer));
-            }
+            var backBuffer = Collect(new ShaderResourceViewProxy(Device, Texture2D.FromSwapChain<Texture2D>(swapChain, 0)));
             d2dTarget = Collect(new D2DTargetProxy());
             d2dTarget.Initialize(swapChain, DeviceContext2D);
-            return colorBuffer;
+            return backBuffer;
         }
 
         private SwapChain2 CreateSwapChain()
@@ -182,19 +120,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         private readonly PresentParameters presentParams = new PresentParameters();
-
-        /// <summary>
-        /// Ends the draw.
-        /// </summary>
-        /// <returns></returns>
-        public override bool EndDraw()
-        {
-            Device.ImmediateContext.Flush();
-#if MSAA
-            Device.ImmediateContext.ResolveSubresource(ColorBuffer, 0, renderTargetNMS, 0, Format.B8G8R8A8_UNorm);
-#endif            
-            return true;
-        }
 
         /// <summary>
         /// Presents this instance.

@@ -27,6 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Vector3 = global::SharpDX.Vector3;
     using Cameras;
     using Model.Scene;
+    using global::SharpDX.Direct3D11;
 
     /// <summary>
     /// Provides extension methods for <see cref="Viewport3DX" />.
@@ -590,7 +591,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (view.RenderHost != null && view.RenderHost.IsRendering)
                 {
-                    Utilities.ScreenCapture.SaveWICTextureToBitmapStream(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.ColorBuffer, memoryStream);
+                    Utilities.ScreenCapture.SaveWICTextureToBitmapStream(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.BackBuffer.Resource as Texture2D, memoryStream);
                     var bitmap = new BitmapImage();
                     bitmap.BeginInit();
                     memoryStream.Position = 0;
@@ -695,7 +696,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (view.RenderHost != null && view.RenderHost.IsRendering)
             {
-                Utilities.ScreenCapture.SaveWICTextureToFile(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.ColorBuffer, fileName, format);
+                Utilities.ScreenCapture.SaveWICTextureToFile(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.BackBuffer.Resource as Texture2D, fileName, format);
             }
         }
 

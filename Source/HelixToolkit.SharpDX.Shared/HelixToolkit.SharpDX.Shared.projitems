@@ -58,6 +58,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\PointRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectBlurCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectBoomCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectFXAA.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectMeshOutlineBlurCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectMeshXRay.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ScreenCloneRenderCore.cs" />

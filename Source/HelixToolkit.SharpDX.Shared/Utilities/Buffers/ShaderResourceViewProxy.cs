@@ -141,10 +141,16 @@ namespace HelixToolkit.UWP.Utilities
         /// <summary>
         /// Creates the render target.
         /// </summary>
-        public void CreateRenderTarget()
+        public void CreateRenderTargetView()
         {
             RemoveAndDispose(ref renderTargetView);
             renderTargetView = Collect(new RenderTargetView(device, resource));
+        }
+
+        public void CreateDepthStencilView()
+        {
+            RemoveAndDispose(ref depthStencilView);
+            depthStencilView = Collect(new DepthStencilView(device, resource));
         }
 
 
