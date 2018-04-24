@@ -107,7 +107,7 @@ namespace HelixToolkit.UWP.Core
         protected RasterizerStateProxy RasterStateWireframe { get { return rasterStateWireframe; } }
 
         protected IShaderPass WireframePass { private set; get; } = NullShaderPass.NullPass;
-
+        protected IShaderPass WireframeOITPass { private set; get; } = NullShaderPass.NullPass;
         protected IShaderPass TransparentPass { private set; get; } = NullShaderPass.NullPass;
 
         public string ShaderShadowMapTextureName { set; get; } = DefaultBufferNames.ShadowMapTB;
@@ -138,6 +138,7 @@ namespace HelixToolkit.UWP.Core
             if (base.OnAttach(technique))
             {
                 WireframePass = technique.GetPass(DefaultPassNames.Wireframe);
+                WireframeOITPass = technique.GetPass(DefaultPassNames.WireframeOITPass);
                 TransparentPass = technique.GetPass(TransparentPassName);
                 return true;
             }
@@ -187,8 +188,16 @@ namespace HelixToolkit.UWP.Core
             DynamicReflector?.UnBindCubeMap(deviceContext);
             if (RenderWireframe && WireframePass != NullShaderPass.NullPass)
             {
-                WireframePass.BindShader(deviceContext, false);
-                WireframePass.BindStates(deviceContext, DefaultStateBinding);
+                if (RenderType == RenderType.Transparent && context.IsOITPass)
+                {
+                    pass = WireframeOITPass;
+                }
+                else
+                {
+                    pass = WireframePass;
+                }
+                pass.BindShader(deviceContext, false);
+                pass.BindStates(deviceContext, DefaultStateBinding);
                 deviceContext.SetRasterState(RasterStateWireframe);
                 OnDraw(deviceContext, InstanceBuffer);
             }

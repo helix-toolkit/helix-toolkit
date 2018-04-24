@@ -1,5 +1,5 @@
-#ifndef PSMESHDEFAULT_HLSL
-#define PSMESHDEFAULT_HLSL
+#ifndef PSWIREFRAME_HLSL
+#define PSWIREFRAME_HLSL
 
 #define MESH
 #include"..\Common\CommonBuffers.hlsl"

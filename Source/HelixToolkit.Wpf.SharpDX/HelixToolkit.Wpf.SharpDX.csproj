@@ -325,6 +325,7 @@
     <None Include="Resources\psSkybox.cso" />
     <None Include="Resources\psViewCube.cso" />
     <None Include="Resources\psWireframe.cso" />
+    <None Include="Resources\psWireframeOIT.cso" />
     <None Include="Resources\vsBillboard.cso" />
     <None Include="Resources\vsBillboardInstancing.cso" />
     <None Include="Resources\vsBoneSkinning.cso" />

@@ -140,6 +140,10 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
+        public const string WireframeOITPass = "WireframeOIT";
+        /// <summary>
+        /// 
+        /// </summary>
         public const string MeshTriTessellation = "MeshTriTessellation";
 
         public const string MeshTriTessellationOIT = "MeshTriTessellationOIT";

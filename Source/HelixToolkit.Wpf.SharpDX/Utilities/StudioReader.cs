@@ -66,6 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX
             MAT_MAP = 0xA200,
             MAT_MAPFILE = 0xA300,
             //  MAT_AMBIENT=
+            MAT_TRANSPARENCY = 0xA050,
 
             // sub defines of EDIT_OBJECT
             OBJ_TRIMESH = 0x4100,
@@ -242,6 +243,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var diffuse = Color.Transparent;
             var specular = Color.Transparent;
             var shininess = Color.Transparent;
+            double opacity = 0;
             string texture = null;
             while (total < chunkSize)
             {
@@ -252,6 +254,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     case ChunkID.MAT_NAME01:
                         name = this.ReadString(reader);
+                        break;
+                    case ChunkID.MAT_TRANSPARENCY:
+                        // skip the first 6 bytes
+                        this.ReadData(reader, 6);
+                        // read the percent value as 16Bit Uint
+                        byte[] data = this.ReadData(reader, 2);
+                        opacity = (100 - BitConverter.ToUInt16(data, 0)) / 100.0;
                         break;
                     case ChunkID.MAT_LUMINANCE:
                         luminance = this.ReadColor(reader);
@@ -280,7 +289,11 @@ namespace HelixToolkit.Wpf.SharpDX
             int specularPower = 100;//check if we can find this somewhere instead of just setting it to 100 
             BitmapSource image = ReadBitmapSoure(texture, diffuse);
 
-
+            if (Math.Abs(opacity) > 0.001)
+            {
+                diffuse.A = (byte)(opacity * 255);
+                luminance.A = (byte)(opacity * 255);
+            }
             var material = new PhongMaterial()
             {
                 DiffuseColor = diffuse,
@@ -422,7 +435,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="bitangents"></param>
         /// <param name="material"></param>
         /// <param name="transforms"></param>
-        private void CreateMesh(Vector3Collection positions, Vector2Collection textureCoordinates, IntCollection triangleIndices, List<Matrix> transforms, 
+        private void CreateMesh(Vector3Collection positions, Vector2Collection textureCoordinates, IntCollection triangleIndices, List<Matrix> transforms,
             out Vector3Collection normals, out Vector3Collection tangents, out Vector3Collection bitangents, Material material)
         {
             ComputeNormals(positions, triangleIndices, out normals);
