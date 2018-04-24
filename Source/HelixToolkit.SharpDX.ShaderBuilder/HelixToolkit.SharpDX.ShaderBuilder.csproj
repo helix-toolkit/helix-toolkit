@@ -35,6 +35,10 @@
     <PixelShader Include="PS\psWireframe.hlsl">
       <ShaderModel>4_0</ShaderModel>
     </PixelShader>
+      <PixelShader Include="PS\psWireframeOIT.hlsl">
+          <ShaderModel>4_0</ShaderModel>
+          <EntryPointName>wireframeOIT</EntryPointName>
+      </PixelShader>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Common\CommonBuffers.hlsl" />

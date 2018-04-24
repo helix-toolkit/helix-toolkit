@@ -244,7 +244,19 @@ namespace HelixToolkit.UWP.Shaders
                 return UWPShaderBytePool.Read("psWireframe");
             }
         }
-
+        /// <summary>
+        /// Gets the ps mesh wireframe oit.
+        /// </summary>
+        /// <value>
+        /// The ps mesh wireframe oit.
+        /// </value>
+        public static byte[] PSMeshWireframeOIT
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psWireframeOIT");
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -543,7 +555,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSMeshWireframe = new ShaderDescription(nameof(PSMeshWireframe), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshWireframe);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription PSMeshWireframeOIT = new ShaderDescription(nameof(PSMeshWireframeOIT), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshWireframeOIT);
         /// <summary>
         /// The ps depth stencil only
         /// </summary>
