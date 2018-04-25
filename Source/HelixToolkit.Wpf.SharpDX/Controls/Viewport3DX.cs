@@ -711,7 +711,17 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 throw new HelixToolkitException("{0} is missing from the template.", PartItems);
             }
-
+            else
+            {
+                foreach (var item in Items)
+                {
+                    partItemsControl.Items.Remove(item);
+                }
+                foreach (var item in Items)
+                {
+                    partItemsControl.Items.Add(item);
+                }
+            }
             overlay2D.Children.Clear();
             this.RemoveLogicalChild(overlay2D);
             this.AddLogicalChild(overlay2D);
@@ -1297,14 +1307,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.ZoomExtents();
             }
             FormMouseMove += Viewport3DX_FormMouseMove;
-            foreach (var item in Items)
-            {
-                partItemsControl.Items.Remove(item);
-            }
-            foreach (var item in Items)
-            {
-                partItemsControl.Items.Add(item);
-            }
         }
 
         private void ParentWindow_Closed(object sender, EventArgs e)
