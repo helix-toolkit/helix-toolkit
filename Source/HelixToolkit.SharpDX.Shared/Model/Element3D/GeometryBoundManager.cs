@@ -235,12 +235,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             else if (e.PropertyName.Equals(nameof(Geometry3D.Bound)))
             {
                 Bounds = Geometry.Bound;
-                BoundsWithTransform = Bounds.Transform(elementCore.ModelMatrix);
+                BoundsWithTransform = Bounds.Transform(elementCore.TotalModelMatrix);
             }
             else if (e.PropertyName.Equals(nameof(Geometry3D.BoundingSphere)))
             {
                 BoundsSphere = Geometry.BoundingSphere;
-                BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.ModelMatrix);
+                BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrix);
             }
             if (GeometryValid)
             {
@@ -284,8 +284,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 {
                     Bounds = Geometry.Bound;
                     BoundsSphere = Geometry.BoundingSphere;
-                    BoundsWithTransform = Bounds.Transform(elementCore.ModelMatrix);
-                    BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.ModelMatrix);
+                    BoundsWithTransform = Bounds.Transform(elementCore.TotalModelMatrix);
+                    BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrix);
                 }
                 else
                 {
@@ -322,8 +322,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     }
                     Bounds = bound;
                     BoundsSphere = boundSphere;
-                    BoundsWithTransform = Bounds.Transform(elementCore.ModelMatrix);
-                    BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.ModelMatrix);
+                    BoundsWithTransform = Bounds.Transform(elementCore.TotalModelMatrix);
+                    BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrix);
                 }
             }
         }
