@@ -26,7 +26,8 @@
                             Focusable="False"
                             IsHitTestVisible="False"
                             Style="{x:Null}"
-                            Visibility="Collapsed">
+                            Visibility="Collapsed"
+                            x:Name="PART_Items">
                             <hx:ViewBoxModel3D
                                 x:Name="PART_ViewCube"
                                 EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"

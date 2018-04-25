@@ -41,6 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX
     [TemplatePart(Name = "PART_ViewCube", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_FrameStatisticView", Type = typeof(Viewport3D))]
     [TemplatePart(Name = "PART_TitleView", Type = typeof(StackPanel2D))]
+    [TemplatePart(Name = "PART_Items", Type = typeof(ItemsControl))]
     [Localizability(LocalizationCategory.NeverLocalize)]
     public partial class Viewport3DX : Control, IViewport3DX
     {
@@ -68,6 +69,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The part title view
         /// </summary>
         private const string PartTitleView = "PART_TitleView";
+        /// <summary>
+        /// The part items used to inherit datacontext for children
+        /// </summary>
+        private const string PartItems = "PART_Items";
 
         /// <summary>
         /// The orthographic camera.
@@ -139,6 +144,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private FrameStatisticsModel2D frameStatisticModel;
 
+        private ItemsControl partItemsControl;
         /// <summary>
         /// Fired whenever an exception occurred at rendering subsystem.
         /// </summary>
@@ -319,7 +325,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 foreach(var item in e.OldItems)
                 {
-                    this.RemoveLogicalChild(item);
+                    partItemsControl?.Items.Remove(item);
                     if(item is Element3D element)
                     {
                         element.SceneNode.Detach();
@@ -330,7 +336,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 foreach(var item in e.NewItems)
                 {
-                    this.AddLogicalChild(item);
+                    partItemsControl?.Items.Add(item);
                     if(this.IsAttached && item is Element3D element)
                     {
                         element.SceneNode.Attach(renderHostInternal);
@@ -696,6 +702,14 @@ namespace HelixToolkit.Wpf.SharpDX
             if(this.frameStatisticModel == null)
             {
                 throw new HelixToolkitException("{0} is missing from the template.", PartFrameStatisticView);
+            }
+            if(this.partItemsControl == null)
+            {
+                this.partItemsControl = this.Template.FindName(PartItems, this) as ItemsControl;
+            }
+            if (this.partItemsControl == null)
+            {
+                throw new HelixToolkitException("{0} is missing from the template.", PartItems);
             }
 
             overlay2D.Children.Clear();
@@ -1283,6 +1297,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.ZoomExtents();
             }
             FormMouseMove += Viewport3DX_FormMouseMove;
+            foreach (var item in Items)
+            {
+                partItemsControl.Items.Remove(item);
+            }
+            foreach (var item in Items)
+            {
+                partItemsControl.Items.Add(item);
+            }
         }
 
         private void ParentWindow_Closed(object sender, EventArgs e)
