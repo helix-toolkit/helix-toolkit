@@ -41,8 +41,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.SharpDX.Shader
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.SharpDX.Core", "HelixToolkit.SharpDX.Core\HelixToolkit.SharpDX.Core.csproj", "{6F42EF68-A7E4-47CC-B7AA-2EB421902E75}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.SharpDX.SharedModel", "HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.shproj", "{1AEFCB64-E997-425A-8C84-DC93263CC4A7}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{1aefcb64-e997-425a-8c84-dc93263cc4a7}*SharedItemsImports = 13
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{1eaf532e-d750-497b-bb8f-ee85359c78a2}*SharedItemsImports = 13
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
 		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
@@ -283,6 +286,7 @@ Global
 		{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E} = {5730542A-FBE8-4176-B8C4-7FF801B27E99}
 		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE} = {5730542A-FBE8-4176-B8C4-7FF801B27E99}
 		{6F42EF68-A7E4-47CC-B7AA-2EB421902E75} = {5730542A-FBE8-4176-B8C4-7FF801B27E99}
+		{1AEFCB64-E997-425A-8C84-DC93263CC4A7} = {5730542A-FBE8-4176-B8C4-7FF801B27E99}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FDED8F31-C7C8-41E4-ACAC-293F326BAE9F}

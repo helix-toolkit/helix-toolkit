@@ -187,6 +187,7 @@ namespace HelixToolkit.UWP
                 1);
         }
 
+        public static readonly HitTestResult[] EmptyHits = new HitTestResult[0];
         /// <summary>
         /// Finds the hits for a given 2D viewport position.
         /// </summary>
@@ -204,7 +205,7 @@ namespace HelixToolkit.UWP
             var camera = viewport.Camera as ProjectionCamera;
             if (camera == null)
             {
-                return null;
+                return EmptyHits;
             }
 
             var ray = UnProject(viewport, position);
