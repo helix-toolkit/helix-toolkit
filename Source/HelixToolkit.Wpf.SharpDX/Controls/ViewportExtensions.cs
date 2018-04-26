@@ -284,6 +284,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Traverse(element, action);
         }
 
+        public static readonly HitTestResult[] EmptyHits = new HitTestResult[0];
         /// <summary>
         /// Finds the hits for a given 2D viewport position.
         /// </summary>
@@ -301,7 +302,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var camera = viewport.Camera as ProjectionCamera;
             if (camera == null)
             {
-                return null;
+                return EmptyHits;
             }
 
             var ray = UnProject(viewport, new Vector2((float)position.X, (float)position.Y));
