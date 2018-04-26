@@ -70,7 +70,7 @@ namespace HelixToolkit.UWP.Core
 #if MSAASEPARATE
             hasMSAA = currSampleDesc.Count > 1 || currSampleDesc.Quality > 0;
 #endif
-            if ((width != (int)context.ActualWidth && height != (int)context.ActualHeight) 
+            if (width != (int)context.ActualWidth || height != (int)context.ActualHeight
                 || sampleDesc.Count != currSampleDesc.Count || sampleDesc.Quality != currSampleDesc.Quality)
             {
                 RemoveAndDispose(ref colorTarget);
