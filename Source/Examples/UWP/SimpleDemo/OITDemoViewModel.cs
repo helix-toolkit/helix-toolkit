@@ -93,6 +93,7 @@ namespace SimpleDemoW10
 
             foreach (var ob in objs)
             {
+                ob.Geometry.UpdateOctree();
                 var s = new MeshGeometryModel3D
                 {
                     Geometry = ob.Geometry,
@@ -114,6 +115,8 @@ namespace SimpleDemoW10
                         s.IsTransparent = true;
                     }
                 }
+                s.Transform3D = Matrix.RotationY((float)(45.0 / 180.0 * Math.PI));
+                
                 this.ModelGeometry.Add(s);
             }
             this.RaisePropertyChanged("ModelGeometry");

@@ -216,8 +216,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\OctreeHelper.cs" />
-    <Compile Include="Utilities\OctreeManager.cs" />
     <Compile Include="Model\Camera\Camera.cs" />
     <Compile Include="Model\Camera\MatrixCamera.cs" />
     <Compile Include="Model\Camera\OrthographicCamera.cs" />

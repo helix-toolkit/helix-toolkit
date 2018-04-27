@@ -21,15 +21,6 @@ namespace HelixToolkit.UWP
     [ContentProperty(Name = "Children")]
     public abstract class GroupElement3D : Element3D
     {
-        private IList<Element3D> itemsSourceInternal;
-        /// <summary>
-        /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
-        /// </summary>
-        public IList<Element3D> ItemsSource
-        {
-            get { return (IList<Element3D>)this.GetValue(ItemsSourceProperty); }
-            set { this.SetValue(ItemsSourceProperty, value); }
-        }
         /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
@@ -39,6 +30,53 @@ namespace HelixToolkit.UWP
                     (d, e) => {
                         (d as GroupElement3D).OnItemsSourceChanged(e.NewValue as IList<Element3D>);
                     }));
+
+        /// <summary>
+        /// Add octree manager to use octree hit test.
+        /// </summary>
+        public static readonly DependencyProperty OctreeManagerProperty = DependencyProperty.Register("OctreeManager",
+            typeof(IOctreeManagerWrapper),
+            typeof(GroupElement3D), new PropertyMetadata(null, (s, e) =>
+            {
+                var d = s as GroupElement3D;
+                if (e.OldValue != null)
+                {
+                    d.itemsContainer?.Items.Remove(e.OldValue);
+                }
+
+                if (e.NewValue != null)
+                {
+                    d.itemsContainer?.Items.Add(e.NewValue);
+                }
+                (d.SceneNode as GroupNode).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
+            }));
+
+        /// <summary>
+        /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
+        /// </summary>
+        public IList<Element3D> ItemsSource
+        {
+            get { return (IList<Element3D>)this.GetValue(ItemsSourceProperty); }
+            set { this.SetValue(ItemsSourceProperty, value); }
+        }
+        public IOctreeManagerWrapper OctreeManager
+        {
+            set
+            {
+                SetValue(OctreeManagerProperty, value);
+            }
+            get
+            {
+                return (IOctreeManagerWrapper)GetValue(OctreeManagerProperty);
+            }
+        }
+
+        private IOctree Octree
+        {
+            get { return (SceneNode as GroupNode).OctreeManager == null ? null : (SceneNode as GroupNode).OctreeManager.Octree; }
+        }
+
+        private IList<Element3D> itemsSourceInternal;
         /// <summary>
         /// Gets the children.
         /// </summary>
@@ -71,6 +109,10 @@ namespace HelixToolkit.UWP
                         itemsContainer.Items.Add(item);
                     }
                 }
+                if(OctreeManager != null)
+                {
+                    itemsContainer.Items.Add(OctreeManager);
+                }
             }
         }
 
@@ -95,6 +137,10 @@ namespace HelixToolkit.UWP
                 var node = SceneNode as GroupNode;
                 node.Clear();
                 AttachChildren(sender as IList);
+                if (OctreeManager != null)
+                {
+                    itemsContainer?.Items.Add(OctreeManager);
+                }
             }
             else if (e.NewItems != null)
             {

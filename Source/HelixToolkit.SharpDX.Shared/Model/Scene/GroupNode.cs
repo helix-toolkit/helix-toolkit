@@ -18,7 +18,26 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// </summary>
     public class GroupNode : GroupNodeBase, IHitable
     {
-        public IOctreeManager OctreeManager { set; get; }
+        private IOctreeManager octreeManager;
+        public IOctreeManager OctreeManager
+        {
+            set
+            {
+                var old = octreeManager;
+                if(Set(ref octreeManager, value))
+                {
+                    old?.Clear();
+                    if (octreeManager != null)
+                    {
+                        foreach(var item in Items)
+                        {
+                            octreeManager.AddPendingItem(item);
+                        }
+                    }
+                }
+            }
+            get { return octreeManager; }
+        }
 
         /// <summary>
         /// Gets the octree in OctreeManager.

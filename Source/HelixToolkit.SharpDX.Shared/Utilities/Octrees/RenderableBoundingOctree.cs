@@ -52,7 +52,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 return false;
             }
             bool isHit = false;
-            var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            //var bound = Bound.Transform(modelMatrix);// BoundingBox.FromPoints(Bound.GetCorners().Select(x => Vector3.TransformCoordinate(x, modelMatrix)).ToArray());
+            var bound = Bound;
             var tempHits = new List<HitTestResult>();
             if (rayWS.Intersects(ref bound))
             {

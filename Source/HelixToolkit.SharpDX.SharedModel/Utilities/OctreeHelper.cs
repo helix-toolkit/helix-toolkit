@@ -7,7 +7,11 @@
 using SharpDX;
 using System.Collections.Generic;
 
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     public static class OctreeHelper
     {

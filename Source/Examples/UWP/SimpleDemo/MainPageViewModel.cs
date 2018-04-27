@@ -124,9 +124,11 @@ namespace SimpleDemoW10
             builder.AddBox(new SharpDX.Vector3(0, 0, 0), 2, 2, 2);
             builder.AddSphere(new Vector3(0, 2, 0), 1.5);
             Geometry = builder.ToMesh();
+            Geometry.UpdateOctree();
             builder = new MeshBuilder();
             builder.AddSphere(new Vector3(0, 2, 0), 2);
             Sphere = builder.ToMesh();
+            Sphere.UpdateOctree();
 
             Material = new PhongMaterial()
             {
@@ -151,6 +153,7 @@ namespace SimpleDemoW10
             builder = new MeshBuilder();
             builder.AddSphere(new Vector3(), 3);
             var mesh = builder.ToMesh();
+            mesh.UpdateOctree();
             PointGeometry = new PointGeometry3D() { Positions = mesh.Positions };
 
             AxisLabelGeometry = new BillboardText3D();

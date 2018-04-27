@@ -32,5 +32,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshOutlineBlur.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRay.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\IOctreeManagerWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeManager.cs" />
   </ItemGroup>
 </Project>
