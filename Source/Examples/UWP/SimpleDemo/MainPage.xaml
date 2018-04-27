@@ -127,6 +127,8 @@
                 SourceAlphaBlend="{Binding SourceAlphaBlendOption}"
                 SourceBlend="{Binding SourceBlendOption}"
                 Turbulance="20" />
+            <hx:GroupModel3D ItemsSource="{Binding OITVM.ModelGeometry}" Transform3D="{Binding OITVM.Transform}"/>
+            <hx:LineGeometryModel3D Geometry="{Binding OITVM.GridModel}" Transform3D="{Binding OITVM.GridTransform}" Color="#4F4E4E" Thickness="0.5"/>
             <hx:PostEffectMeshBorderHighlight EffectName="border" NumberOfBlurPass="2" />
         </hx:Viewport3DX>
         <TextBlock

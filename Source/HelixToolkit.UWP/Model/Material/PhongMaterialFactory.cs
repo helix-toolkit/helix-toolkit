@@ -27,6 +27,7 @@ namespace HelixToolkit.UWP
             Add(PhongMaterials.Green);
             Add(PhongMaterials.Indigo);
             Add(PhongMaterials.Jade);
+            Add(PhongMaterials.Gray);
             Add(PhongMaterials.LightGray);
             Add(PhongMaterials.MediumGray);
             Add(PhongMaterials.Obsidian);

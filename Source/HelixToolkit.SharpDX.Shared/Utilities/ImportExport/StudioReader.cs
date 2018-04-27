@@ -3,16 +3,26 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Object3DGroup = System.Collections.Generic.List<HelixToolkit.Wpf.SharpDX.Object3D>;
 using SharpDX;
 using System.Diagnostics;
-using MediaColor = System.Windows.Media.Color;
-using System.Windows.Media.Imaging;
-using HelixToolkit.Wpf.SharpDX.Core;
 
+#if !NETFX_CORE
+using System.Windows.Media.Imaging;
+using MediaColor = System.Windows.Media.Color;
 namespace HelixToolkit.Wpf.SharpDX
+#else
+namespace HelixToolkit.UWP
+#endif
 {
+    using Core;
+    using Object3DGroup = System.Collections.Generic.List<Object3D>;
+#if CORE
+    using Material = Model.MaterialCore;
+    using PhongMaterial = Model.PhongMaterialCore;
+#endif
+#if NETFX_CORE
+    using FileFormatException = Exception;
+#endif
     /// <summary>
     ///Ported from HelixToolkit.Wpf
     /// </summary>
@@ -287,7 +297,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
             int specularPower = 100;//check if we can find this somewhere instead of just setting it to 100 
-            BitmapSource image = ReadBitmapSoure(texture, diffuse);
+            var image = ReadBitmapSoure(texture, diffuse);
 
             if (Math.Abs(opacity) > 0.001)
             {
@@ -307,7 +317,7 @@ namespace HelixToolkit.Wpf.SharpDX
             };
             if (image != null)
             {
-                material.NormalMap = new MemoryStream(image.ToByteArray());
+                material.NormalMap = image;
             }
             if (name != null)
             {
@@ -404,7 +414,19 @@ namespace HelixToolkit.Wpf.SharpDX
             if (facesets == null || facesets.Count == 0)
             {
                 triangleIndices = ConvertFaceIndices(faces, faces);
+#if !CORE
                 CreateMesh(positions, textureCoordinates, triangleIndices, transforms, out normals, out tangents, out bitangents, PhongMaterials.Gray);
+#else
+                CreateMesh(positions, textureCoordinates, triangleIndices, transforms, out normals, out tangents, out bitangents, new PhongMaterial()
+                {
+                    Name = "Gray",
+                    AmbientColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f),
+                    DiffuseColor = new Color4(0.254902f, 0.254902f, 0.254902f, 1.0f),
+                    SpecularColor = new Color4(0.0225f, 0.0225f, 0.0225f, 1.0f),
+                    EmissiveColor = new Color4(0.0f, 0.0f, 0.0f, 1.0f),
+                    SpecularShininess = 12.8f,
+                });
+#endif
                 //Add default get and setter
             }
             else
@@ -678,7 +700,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="fallBackColor"></param>
         /// <returns></returns>
         /// 
-        private BitmapSource ReadBitmapSoure(string texture, Color fallBackColor)
+        private Stream ReadBitmapSoure(string texture, Color fallBackColor)
         {
             if (texture == null)
             {
@@ -700,30 +722,35 @@ namespace HelixToolkit.Wpf.SharpDX
                 string path = Path.Combine(actualTexturePath, texture);
                 if (File.Exists(path))
                 {
-                    return new BitmapImage(new Uri(path, UriKind.Relative));
+                    var stream = new MemoryStream();
+                    using (var fileStream = File.OpenRead(new Uri(path, UriKind.Relative).AbsolutePath))
+                    {
+                        fileStream.CopyTo(stream);
+                        return stream;
+                    }
                 }
                 else
                 {
-                    // return null;
+#if NETFX_CORE
+                    return null;
+#else
                     return BitMapSoureFromFallBack(fallBackColor);
+#endif
                 }
             }
-            catch (Exception) //Not really nice
+            catch (Exception ex) //Not really nice
             {
-                return BitMapSoureFromFallBack(fallBackColor);
-                //return new BitmapSource( );
+                throw new FileFormatException(ex.Message);
             }
-
-
         }
 
-
+#if !NETFX_CORE
         /// <summary>
         /// Creates FallBack Bitmapsource http://stackoverflow.com/questions/10637064/create-bitmapimage-and-apply-to-it-a-specific-color
         /// </summary>
         /// <param name="fallBackColor"></param>
         /// <returns></returns>
-        private static BitmapSource BitMapSoureFromFallBack(Color fallBackColor)
+        private static Stream BitMapSoureFromFallBack(Color fallBackColor)
         {
             //List<MediaColor> colors = new List<System.Windows.Media.Color>() { MediaColor.FromArgb(fallBackColor.A, fallBackColor.R, fallBackColor.G, fallBackColor.B) };
             MediaColor color = MediaColor.FromArgb(fallBackColor.A, fallBackColor.R, fallBackColor.G, fallBackColor.G);
@@ -735,9 +762,9 @@ namespace HelixToolkit.Wpf.SharpDX
             int stride = width / 8;
             byte[] pixels = new byte[height * stride];
             BitmapSource bitmap = BitmapSource.Create(10, 10, 96, 96, System.Windows.Media.PixelFormats.Indexed1, palette, pixels, stride);
-            return bitmap;
+            return bitmap.ToMemoryStream();
         }
-
+#endif
         /// <summary>
         /// Reads a material map.
         /// </summary>

@@ -6,18 +6,25 @@
 //   Class ModelReader.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using System;
+using System.IO;
+#if !NETFX_CORE
+using System.Windows.Threading;
 namespace HelixToolkit.Wpf.SharpDX
+#else
+namespace HelixToolkit.UWP
+#endif
 {
-    using System;
-    using System.IO;
-    using System.Windows.Threading;
     using Mesh3DGroup = System.Collections.Generic.List<Object3D>;
+#if CORE
+    using Material = HelixToolkit.UWP.Model.MaterialCore;
+#endif
     /// <summary>
     /// Class ModelReader.
     /// </summary>
     public abstract class ModelReader : IModelReader
     {
+#if !NETFX_CORE
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelReader"/> class.
         /// </summary>
@@ -27,7 +34,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.DefaultMaterial = PhongMaterials.Gold;
             this.Dispatcher = dispatcher;
         }
-
+#endif
         /// <summary>
         /// Gets or sets the default material.
         /// </summary>
@@ -36,12 +43,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public Material DefaultMaterial { get; set; }
 
+#if !NETFX_CORE
         /// <summary>
         /// Gets the dispatcher.
         /// </summary>
         /// <value>The dispatcher.</value>
         public Dispatcher Dispatcher { get; private set; }
-
+#endif
         /// <summary>
         /// Gets or sets the directory.
         /// </summary>
@@ -88,6 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The model.</returns>
         public abstract Mesh3DGroup Read(Stream s, ModelInfo info = default(ModelInfo));
 
+#if !NETFX_CORE
         /// <summary>
         /// Invokes the specified action on the dispatcher.
         /// </summary>
@@ -102,5 +111,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.Dispatcher.Invoke(action);
         }
+#endif
     }
 }

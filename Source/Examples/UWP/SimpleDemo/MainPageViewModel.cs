@@ -19,6 +19,8 @@ namespace SimpleDemoW10
     {
         public ParticleViewModel ParticleVM { get; } = new ParticleViewModel();
 
+        public OITDemoViewModel OITVM { get; } = new OITDemoViewModel();
+
         private Vector3 upDirection = Vector3.UnitY;
         public Vector3 UpDirection {
             private set
