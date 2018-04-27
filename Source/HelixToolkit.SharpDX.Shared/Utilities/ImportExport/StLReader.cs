@@ -59,10 +59,11 @@ namespace HelixToolkit.UWP
         /// The last color.
         /// </summary>
         private Color lastColor;
+
+#if !NETFX_CORE
         /// <summary>
         /// Initializes a new instance of the <see cref="StLReader" /> class.
         /// </summary>
-#if !NETFX_CORE
         /// <param name="dispatcher">The dispatcher.</param>
         public StLReader(Dispatcher dispatcher = null)
             : base(dispatcher)
@@ -71,6 +72,9 @@ namespace HelixToolkit.UWP
             this.Materials = new List<Material>();
         }
 #else
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StLReader" /> class.
+        /// </summary>
         public StLReader()
         {
             this.Meshes = new List<MeshBuilder>();
