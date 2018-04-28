@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         protected override bool OnHitTest(IRenderContext context, global::SharpDX.Matrix totalModelMatrix, ref global::SharpDX.Ray ray, ref List<HitTestResult> hits)
         {
             bool isHit = false;
-            if (Octree != null)
+            if (octreeManager != null)
             {
                 isHit = Octree.HitTest(context, this.WrapperSource, totalModelMatrix, ray, ref hits);
 #if DEBUG

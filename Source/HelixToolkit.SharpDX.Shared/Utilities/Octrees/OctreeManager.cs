@@ -119,6 +119,20 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// Processes the pending items.
         /// </summary>
         public abstract void ProcessPendingItems();
+
+        /// <summary>
+        /// Normal hit test from top to bottom
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="model"></param>
+        /// <param name="modelMatrix"></param>
+        /// <param name="rayWS"></param>
+        /// <param name="hits"></param>
+        /// <returns></returns>
+        public virtual bool HitTest(IRenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+        {
+            return Octree.HitTest(context, model, modelMatrix, rayWS, ref hits);
+        }
     }
 
     /// <summary>
@@ -127,6 +141,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
     public sealed class GroupNodeGeometryBoundOctreeManager : OctreeManagerBase
     {
         private object lockObj = new object();
+
+        private readonly HashSet<SceneNode> NonBoundableItems = new HashSet<SceneNode>();
 
         private void UpdateOctree(BoundableNodeOctree tree)
         {
@@ -144,10 +160,18 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 RequestUpdateOctree = false;
                 if (Enabled)
                 {
-                    UpdateOctree(RebuildOctree(items));
+                    UpdateOctree(RebuildOctree(items.Where(x => x.HasBound)));
+
                     if (Octree == null)
                     {
                         RequestRebuild();
+                    }
+                    else
+                    {
+                        foreach(var item in items.Where(x => !x.HasBound))
+                        {
+                            NonBoundableItems.Add(item);
+                        }
                     }
                 }
                 else
@@ -193,6 +217,11 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 foreach(var item in pendingItems)
                 {
+                    if (!item.HasBound)
+                    {
+                        NonBoundableItems.Add(item);
+                        continue;
+                    }
                     if (mOctree == null || !item.IsAttached)
                     {
                         UnsubscribeBoundChangeEvent(item);
@@ -291,41 +320,48 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         {
             if (Enabled && item != null)
             {
-                var tree = mOctree;
-                UpdateOctree(null);
-                if (tree == null)
+                if (item.HasBound)
                 {
-                    RequestRebuild();
-                }
-                else
-                {
-                    bool succeed = true;
-                    int counter = 0;
-                    while (!tree.Add(item as GeometryNode))
-                    {
-                        var direction = (item.Bounds.Minimum + item.Bounds.Maximum)
-                            - (tree.Bound.Minimum + tree.Bound.Maximum);
-                        tree = tree.Expand(ref direction) as BoundableNodeOctree;
-                        ++counter;
-                        if (counter > 10)
-                        {
-#if DEBUG
-                            throw new Exception("Expand tree failed");
-#else
-                            succeed = false;
-                            break;
-#endif
-                        }
-                    }
-                    if (succeed)
-                    {
-                        UpdateOctree(tree);
-                        SubscribeBoundChangeEvent(item);
-                    }
-                    else
+                    var tree = mOctree;
+                    UpdateOctree(null);
+                    if (tree == null)
                     {
                         RequestRebuild();
                     }
+                    else
+                    {
+                        bool succeed = true;
+                        int counter = 0;
+                        while (!tree.Add(item as GeometryNode))
+                        {
+                            var direction = (item.Bounds.Minimum + item.Bounds.Maximum)
+                                - (tree.Bound.Minimum + tree.Bound.Maximum);
+                            tree = tree.Expand(ref direction) as BoundableNodeOctree;
+                            ++counter;
+                            if (counter > 10)
+                            {
+    #if DEBUG
+                                throw new Exception("Expand tree failed");
+    #else
+                                succeed = false;
+                                break;
+    #endif
+                            }
+                        }
+                        if (succeed)
+                        {
+                            UpdateOctree(tree);
+                            SubscribeBoundChangeEvent(item);
+                        }
+                        else
+                        {
+                            RequestRebuild();
+                        }
+                    }
+                }
+                else
+                {
+                    NonBoundableItems.Add(item);
                 }
             }
         }
@@ -339,19 +375,26 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 lock (lockObj)
                 {
-                    var tree = mOctree;
-                    UpdateOctree(null);
-                    item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
-                    UnsubscribeBoundChangeEvent(item);
-                    if (!tree.RemoveByBound(item as GeometryNode))
+                    if (item.HasBound)
                     {
-                        //Console.WriteLine("Remove failed.");
+                        var tree = mOctree;
+                        UpdateOctree(null);
+                        item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                        UnsubscribeBoundChangeEvent(item);
+                        if (!tree.RemoveByBound(item as GeometryNode))
+                        {
+                            //Console.WriteLine("Remove failed.");
+                        }
+                        else
+                        {
+                            tree = tree.Shrink() as BoundableNodeOctree;
+                        }
+                        UpdateOctree(tree);
                     }
                     else
                     {
-                        tree = tree.Shrink() as BoundableNodeOctree;
+                        NonBoundableItems.Remove(item);
                     }
-                    UpdateOctree(tree);
                 }
             }
         }
@@ -364,6 +407,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 RequestUpdateOctree = false;
                 UpdateOctree(null);
+                NonBoundableItems.Clear();
             }
         }
         /// <summary>
@@ -377,7 +421,18 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 RequestUpdateOctree = true;
             }
         }
+        public override bool HitTest(IRenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+        {
+            var hit = Octree.HitTest(context, model, modelMatrix, rayWS, ref hits);
+            foreach(var item in NonBoundableItems)
+            {
+                hit |= item.HitTest(context, rayWS, ref hits);
+            }
+            return hit;
+        }
     }
+
+
     /// <summary>
     /// 
     /// </summary>
