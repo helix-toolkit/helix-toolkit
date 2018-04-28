@@ -6,19 +6,32 @@
 //   Provides an importer for StereoLithography .StL files.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Text.RegularExpressions;
+using SharpDX;
 
+#if !NETFX_CORE
+using System.Windows.Threading;
+using Color = System.Windows.Media.Color;
+using Vector3D = System.Windows.Media.Media3D.Vector3D;
 namespace HelixToolkit.Wpf.SharpDX
+#else
+using Vector3D = SharpDX.Vector3;
+namespace HelixToolkit.UWP
+#endif
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.Text.RegularExpressions;
-    using System.Windows.Threading;
-    using Color = System.Windows.Media.Color;
-    using Mesh3DGroup = System.Collections.Generic.List<Object3D>;
-    using Vector3D = System.Windows.Media.Media3D.Vector3D;
+    using Mesh3DGroup = System.Collections.Generic.List<Object3D>;    
     using Point3D = global::SharpDX.Vector3;
+#if CORE
+    using Material = Model.MaterialCore;
+    using PhongMaterial = Model.PhongMaterialCore;
+#endif
+#if NETFX_CORE
+    using FileFormatException = Exception;
+#endif
     /// <summary>
     /// Provides an importer for StereoLithography .StL files.
     /// </summary>
@@ -47,6 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         private Color lastColor;
 
+#if !NETFX_CORE
         /// <summary>
         /// Initializes a new instance of the <see cref="StLReader" /> class.
         /// </summary>
@@ -57,7 +71,16 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Meshes = new List<MeshBuilder>();
             this.Materials = new List<Material>();
         }
-
+#else
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StLReader" /> class.
+        /// </summary>
+        public StLReader()
+        {
+            this.Meshes = new List<MeshBuilder>();
+            this.Materials = new List<Material>();
+        }
+#endif
         /// <summary>
         /// Gets the file header.
         /// </summary>
@@ -112,9 +135,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public Mesh3DGroup ToModel3D()
         {
             Mesh3DGroup modelGroup = null;
+#if !NETFX_CORE
             this.Dispatch(
                 () =>
                 {
+#endif
                     modelGroup = new Mesh3DGroup();
                     int i = 0;
                     foreach (var mesh in this.Meshes)
@@ -127,7 +152,9 @@ namespace HelixToolkit.Wpf.SharpDX
                         modelGroup.Add(gm);
                         i++;
                     }
+#if !NETFX_CORE
                 });
+#endif
             return modelGroup;
         }
 
@@ -179,8 +206,11 @@ namespace HelixToolkit.Wpf.SharpDX
             double x = double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
             double y = double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
             double z = double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
-
+#if !NETFX_CORE
             return new Vector3D(x, y, z);
+#else
+            return new Vector3D((float)x, (float)y, (float)z);
+#endif
         }
 
         /// <summary>
@@ -394,9 +424,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 red = attrib[2].Equals('1') ? red + 8 : red;
                 red = attrib[1].Equals('1') ? red + 16 : red;
                 int r = red * 8;
-
+#if !NETFX_CORE
                 var currentColor = Color.FromRgb(Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
-
+#else
+                var currentColor = new Color(r/255f, g/255f, b/255f);
+#endif
                 if (!Color.Equals(this.lastColor, currentColor))
                 {
                     this.lastColor = currentColor;

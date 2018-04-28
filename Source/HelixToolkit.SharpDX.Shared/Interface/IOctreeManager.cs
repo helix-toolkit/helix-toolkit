@@ -5,6 +5,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using SharpDX;
+
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -12,6 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model.Scene;
+    
     /// <summary>
     /// 
     /// </summary>
@@ -77,5 +80,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Requests the rebuild.
         /// </summary>
         void RequestRebuild();
+
+        /// <summary>
+        /// Normal hit test from top to bottom
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="model"></param>
+        /// <param name="modelMatrix"></param>
+        /// <param name="rayWS"></param>
+        /// <param name="hits"></param>
+        /// <returns></returns>
+        bool HitTest(IRenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
     }
 }

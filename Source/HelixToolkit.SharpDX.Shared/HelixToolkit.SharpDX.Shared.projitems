@@ -288,6 +288,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ElementsBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\FrameStatistics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\HitTestResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\IModelReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\ModelReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\ObjReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\OffReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\StLReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\StudioReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\LineBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\MappingCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\NVOptimusEnabler.cs" />

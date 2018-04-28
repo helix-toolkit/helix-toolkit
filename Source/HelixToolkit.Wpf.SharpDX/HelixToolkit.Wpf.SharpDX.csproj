@@ -216,12 +216,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\ModelReader.cs" />
-    <Compile Include="Utilities\OctreeHelper.cs" />
-    <Compile Include="Utilities\OctreeManager.cs" />
-    <Compile Include="Utilities\OffReader.cs" />
-    <Compile Include="Utilities\StLReader.cs" />
-    <Compile Include="Utilities\StudioReader.cs" />
     <Compile Include="Model\Camera\Camera.cs" />
     <Compile Include="Model\Camera\MatrixCamera.cs" />
     <Compile Include="Model\Camera\OrthographicCamera.cs" />
@@ -251,9 +245,7 @@
     <Compile Include="Model\Lights3D\ThreePointLight3D.cs" />
     <Compile Include="Utilities\Exporter.cs" />
     <Compile Include="Utilities\IExporter.cs" />
-    <Compile Include="Utilities\IModelReader.cs" />
     <Compile Include="Utilities\ObjExporter.cs" />
-    <Compile Include="Utilities\ObjReader.cs" />
     <Compile Include="Utilities\TypeConverter.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -3,21 +3,27 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
+using System;
 using System.Collections.Generic;
+
+#if NETFX_CORE
+using Windows.UI.Xaml;
+using System.ServiceModel.Dispatcher;
+using FrameworkContentElement = Windows.UI.Xaml.FrameworkElement;    
+using Windows.Foundation;
+using Windows.UI.Core;
+namespace HelixToolkit.UWP
+#else
 using System.Windows;
-
+using System.Windows.Threading;
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
-    using System;
-    using System.Windows.Threading;
+    
     using Utilities;
-
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="System.Windows.FrameworkContentElement" />
-    /// <seealso cref="HelixToolkit.Wpf.SharpDX.IOctreeManagerWrapper" />
     public abstract class OctreeManagerBaseWrapper : FrameworkContentElement, IOctreeManagerWrapper
     {
         /// <summary>
@@ -25,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty OctreeProperty
             = DependencyProperty.Register("Octree", typeof(IOctree), typeof(OctreeManagerBaseWrapper),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+                new PropertyMetadata(null));
         /// <summary>
         /// The enable octree output property
         /// </summary>
@@ -168,8 +174,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (int)GetValue(MinObjectSizeToSplitProperty);
             }
         }
-
+#if NETFX_CORE
+        private IAsyncAction octreeOpt;
+#else
         private DispatcherOperation octreeOpt;
+#endif
         private bool enableOctreeOutput = false;
         private IOctreeManager manager;
 
@@ -188,6 +197,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     manager = OnCreateManager();
                     manager.OnOctreeCreated += (s, e) =>
                     {
+#if !NETFX_CORE
                         if (octreeOpt != null && octreeOpt.Status == DispatcherOperationStatus.Pending)
                         {
                             octreeOpt.Abort();
@@ -201,6 +211,19 @@ namespace HelixToolkit.Wpf.SharpDX
                                     this.Octree = e.Octree;
                                 }));
                         }
+#else
+                        if (octreeOpt != null && octreeOpt.Status != AsyncStatus.Completed)
+                        {
+                            octreeOpt?.Cancel();
+                        }
+                        if (enableOctreeOutput)
+                        {
+                            octreeOpt = Dispatcher.RunAsync(CoreDispatcherPriority.Low, ()=> {
+                                this.Octree = null;
+                                this.Octree = e.Octree;
+                            });
+                        }
+#endif
                     };
                 }
                 return manager;

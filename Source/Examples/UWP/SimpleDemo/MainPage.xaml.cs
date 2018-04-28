@@ -24,6 +24,8 @@ namespace SimpleDemoW10
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private GeometryModel3D selectedElement = null;      
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -33,9 +35,20 @@ namespace SimpleDemoW10
         {
             if (e.HitTestResult != null && e.HitTestResult.ModelHit is GeometryModel3D element)
             {
-                if (element.Name != "floor")
+                if(selectedElement == element)
                 {
-                    element.PostEffects = string.IsNullOrEmpty(element.PostEffects) ? "border[color:#00FFDE]" : null;
+                    selectedElement.PostEffects = null;
+                    selectedElement = null;
+                    return;
+                }
+                if(selectedElement != null)
+                {
+                    selectedElement.PostEffects = null;
+                }
+                selectedElement = element;
+                if (selectedElement.Name != "floor")
+                {
+                    selectedElement.PostEffects = string.IsNullOrEmpty(selectedElement.PostEffects) ? "border[color:#00FFDE]" : null;
                 }
             }
         }

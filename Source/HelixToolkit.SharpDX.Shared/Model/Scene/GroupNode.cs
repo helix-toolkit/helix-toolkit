@@ -18,7 +18,26 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     /// </summary>
     public class GroupNode : GroupNodeBase, IHitable
     {
-        public IOctreeManager OctreeManager { set; get; }
+        private IOctreeManager octreeManager;
+        public IOctreeManager OctreeManager
+        {
+            set
+            {
+                var old = octreeManager;
+                if(Set(ref octreeManager, value))
+                {
+                    old?.Clear();
+                    if (octreeManager != null)
+                    {
+                        foreach(var item in Items)
+                        {
+                            octreeManager.AddPendingItem(item);
+                        }
+                    }
+                }
+            }
+            get { return octreeManager; }
+        }
 
         /// <summary>
         /// Gets the octree in OctreeManager.
@@ -85,9 +104,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         protected override bool OnHitTest(IRenderContext context, global::SharpDX.Matrix totalModelMatrix, ref global::SharpDX.Ray ray, ref List<HitTestResult> hits)
         {
             bool isHit = false;
-            if (Octree != null)
+            if (octreeManager != null)
             {
-                isHit = Octree.HitTest(context, this.WrapperSource, totalModelMatrix, ray, ref hits);
+                isHit = octreeManager.HitTest(context, this.WrapperSource, totalModelMatrix, ray, ref hits);
 #if DEBUG
                 if (isHit)
                 {
