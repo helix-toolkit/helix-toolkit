@@ -423,6 +423,10 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         }
         public override bool HitTest(IRenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
         {
+            if(Octree == null)
+            {
+                return false;
+            }
             var hit = Octree.HitTest(context, model, modelMatrix, rayWS, ref hits);
             foreach(var item in NonBoundableItems)
             {
