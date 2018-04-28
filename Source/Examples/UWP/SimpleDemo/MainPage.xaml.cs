@@ -38,6 +38,7 @@ namespace SimpleDemoW10
                 if(selectedElement == element)
                 {
                     selectedElement.PostEffects = null;
+                    selectedElement = null;
                     return;
                 }
                 if(selectedElement != null)
