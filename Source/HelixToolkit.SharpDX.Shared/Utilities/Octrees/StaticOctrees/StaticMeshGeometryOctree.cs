@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="isIntersect"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        protected override bool HitTestCurrentNodeExcludeChild(Octant octant,
+        protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant,
             IRenderContext context, object model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits,
             ref bool isIntersect, float hitThickness)
         {
@@ -173,7 +173,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="result"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        protected override bool FindNearestPointBySphereExcludeChild(Octant octant, IRenderContext context,
+        protected override bool FindNearestPointBySphereExcludeChild(ref Octant octant, IRenderContext context,
             ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;

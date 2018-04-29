@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    public abstract class StaticOctree<T> : IOctreeBasic
+    public abstract class StaticOctree<T> : IOctreeBasic where T : struct
     {
         public const int OctantSize = 8;
 
@@ -112,12 +112,24 @@ namespace HelixToolkit.Wpf.SharpDX
                 array[0] = octant;
                 ++Count;
             }
-
+            /// <summary>
+            /// Adds the specified parent index.
+            /// </summary>
+            /// <param name="parentIndex">Index of the parent.</param>
+            /// <param name="childIndex">Index of the child.</param>
+            /// <param name="bound">The bound.</param>
+            /// <param name="newParent">The parent out.</param>
+            /// <returns></returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public Octant Add(int parentIndex, int childIndex, BoundingBox bound)
+            public bool Add(int parentIndex, int childIndex, BoundingBox bound, ref Octant newParent)
             {
                 if (array.Length < Count + OctantSize)
                 {
+                    var newSize = array.Length * 2;
+                    if(newSize > int.MaxValue / 4) //Size is too big
+                    {
+                        return false;
+                    }
                     var newArray = new Octant[array.Length * 2];
                     Array.Copy(array, newArray, Count);
                     array = newArray;
@@ -127,7 +139,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 array[Count] = new Octant(parent.Index, Count, ref bound);
                 parent[childIndex] = Count;
                 ++Count;
-                return parent;
+                newParent = parent;
+                return true;
             }
 
             public void Compact()
@@ -292,7 +305,11 @@ namespace HelixToolkit.Wpf.SharpDX
                         {
                             if (!hasChildOctant)//Add New Child Octant if not having one.
                             {
-                                octant = octants.Add(index, childOctantIdx, octantBounds[childOctantIdx]);
+                                if(!octants.Add(index, childOctantIdx, octantBounds[childOctantIdx], ref octant))
+                                {
+                                    Debug.WriteLine("Add child failed.");
+                                    break;
+                                }
                                 childIdx = octant[childOctantIdx];
                                 childOctant = octants[childIdx];
                                 hasChildOctant = true;
@@ -479,7 +496,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         var octant = octants[parentOctant[curr]];
                         bool isIntersect = false;
-                        bool nodeHit = HitTestCurrentNodeExcludeChild(octant,
+                        bool nodeHit = HitTestCurrentNodeExcludeChild(ref octant,
                             context, model, modelMatrix, ref rayWS, ref rayModel, ref modelHits, ref isIntersect, hitThickness);
                         isHit |= nodeHit;
                         if (isIntersect && octant.HasChildren)
@@ -556,7 +573,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         var octant = octants[parentOctant[curr]];
                         bool isIntersect = false;
-                        bool nodeHit = FindNearestPointBySphereExcludeChild(octant, context, ref sphere, ref points, ref isIntersect);
+                        bool nodeHit = FindNearestPointBySphereExcludeChild(ref octant, context, ref sphere, ref points, ref isIntersect);
                         isHit |= nodeHit;
                         if (octant.HasChildren && isIntersect)
                         {
@@ -613,7 +630,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         var octant = octants[parentOctant[curr]];
                         bool isIntersect = false;
-                        bool nodeHit = FindNearestPointBySphereExcludeChild(octant, context, ref sphere, ref results, ref isIntersect);
+                        bool nodeHit = FindNearestPointBySphereExcludeChild(ref octant, context, ref sphere, ref results, ref isIntersect);
                         isHit |= nodeHit;
                         if (isIntersect)
                         {
@@ -653,7 +670,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="points"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        protected abstract bool FindNearestPointBySphereExcludeChild(Octant octant, IRenderContext context,
+        protected abstract bool FindNearestPointBySphereExcludeChild(ref Octant octant, IRenderContext context,
             ref BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
 
         /// <summary>
@@ -669,7 +686,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="isIntersect"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        protected abstract bool HitTestCurrentNodeExcludeChild(Octant octant, IRenderContext context, object model,
+        protected abstract bool HitTestCurrentNodeExcludeChild(ref Octant octant, IRenderContext context, object model,
             Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
             ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness);
 
