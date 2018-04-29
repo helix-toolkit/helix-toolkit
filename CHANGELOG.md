@@ -6,6 +6,49 @@ All notable changes to this project will be documented in this file.
 ### Improvement and Changes
 ### Fixed.
 
+## [2.1.0]
+### Improvement and Changes
+1. New architecture for backend rendering and shader management. No more dependency from obsoleted Effects framework. EffectsManager is mandatory to be provided from ViewModel for resource live cycle management by user to avoid memory leak.
+2. Many performance improvements. Viewports binding with same EffectsManager will share common resources. Models binding with same geometry3D will share same geometry buffers. Materials binding with same texture will share same resources.
+3. Support basic direct2d rendering and layouts arrangement. (Still needs a lot of implementations)
+4. No more HelixToolkit.WPF project dependency.
+5. Unify dependency property types. All WPF.SharpDx model's dependency properties are using class under System.Windows.Media. Such as Vector3D and Color. More Xaml friendly.
+6. Post effect support.
+7. Supports transparent meshes rendered after opaque meshes. IsTransparent property is added in MaterialGeometryModel3D.
+8. Rendering order by RenderType flag: 
+    ##### Pre(such as shadow map)->Opaque->Particle->Transparent->Post(post effects)->ScreenSpaced(ViewBox/CoordinateSystem).
+9. Core implementation are separated from platform dependent controls(Element3D) into its own Scene Node classes. Scene Node serves as complete Scene Graph for traversal inside render host. Element3D will only be used as a wrapper to manipulate scene node properties from XAML.
+10. Supports [Order independent transparent(OIT)](https://developer.nvidia.com/content/transparency-or-translucency-rendering) rendering.
+11. Supports [FXAA](https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/fxaa311sample.htm). Prefer FXAA over MSAA if using OIT or post effects. Note: FXAA does not support transparent background for now.
+12. High performance static octree for Mesh/Point/Line/Instancing Models.
+
+### Fixed
+- 10000 GDI Object limit with BillboardTextSingle3D #607 (WPF.SharpDX)
+- How to turn off blurring for ImageMaterial? #581 (WPF.SharpDX)
+- ZoomExtents currently not work #623 (WPF.SharpDX)
+- PointGeometryModel3D not working #649 (WPF.SharpDX)
+- Create Image from Viewport #636 (WPF.SharpDX)
+- BillboardTextModel3D / ViewBoxModel3D text problem with Windows10 Display Scaling #652 (WPF.SharpDX)
+- Transform Update when GroupModel3D changed #656 (WPF.SharpDX)
+- RenderTechnique Property doesn't work for Viewport3DX #655 (WPF.SharpDX)
+- How to load STL file in Helixtoolkit.SharpDX? #509 (WPF.SharpDX)
+- LineShadingDemo Grid/Lines switching #671 (WPF.SharpDX)
+- OctreeDemo - Octree Wireframe is invisible #673 (WPF.SharpDX)
+- Add and Remove Transparent Models #679 (WPF.SharpDX)
+- Missing triangle using SweepLinePolygonTriangulator #664 (WPF.SharpDX)
+- ParticleSystemDemo screen output #665(WPF.SharpDX)
+- Render to bitmap image? #692 (WPF.SharpDX)
+- How to attach EnvironmentMap3D from code? #702 (WPF.SharpDX)
+- GetScreenViewProjectionMatrix3D returns all zero in HelixToolkit.Wpf.SharpDX #708 (WPF.SharpDX)
+- ModelUpDirection doesn't update in UWP #718 (UWP)
+- Change actions of touch gestures #716 (UWP, WPF.SharpDX)
+- Get bounds of model in MVVM #648 (WPF.SharpDX)
+- BUG: HelixToolkit.SharpDX MeshGeometryModel3D bounds #296 (WPF.SharpDX)
+- How do I control the frame rate? HelixToolkit UWP #334 (UWP)
+- SharpDX.DefaultEffectsManager: Not possible to set device / device selection #258  (WPF.SharpDX)
+- Reduce Sharp-DX version touch input lag #115 (WPF.SharpDX)
+- Bindings in content of Viewport3DX do not react on DataContextChanged #731 (WPF.SharpDX)
+- SortingGroupModel3D and Children #724 (WPF.SharpDX)
 
 ## [1.1.0] - 2018-2-6
 ### Added
