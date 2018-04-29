@@ -21,12 +21,8 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// General interface for octree
     /// </summary>
-    public interface IOctree
+    public interface IOctree : IStaticOctree
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        event EventHandler<EventArgs> OnHit;
         /// <summary>
         /// Gets the self as array.
         /// </summary>
@@ -63,18 +59,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Octant bounds
         /// </summary>
         BoundingBox[] Octants { get; }
-        /// <summary>
-        /// Output the hit path of the tree traverse. Only for debugging
-        /// </summary>
-        IList<BoundingBox> HitPathBoundingBoxes { get; }
-        /// <summary>
-        /// Octree parameter
-        /// </summary>
-        OctreeBuildParameter Parameter { get; }
-        /// <summary>
-        /// Whether the tree has been built.
-        /// </summary>
-        bool TreeBuilt { get; }
+
         /// <summary>
         /// Delete self if is empty;
         /// </summary>
@@ -84,28 +69,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Returns true if this node tree and all children have no content
         /// </summary>
         bool IsEmpty { get; }
-
-        /// <summary>
-        /// Normal hit test from top to bottom
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="model"></param>
-        /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
-        /// <param name="hits"></param>
-        /// <returns></returns>
-        bool HitTest(IRenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
-        /// <summary>
-        /// Normal hit test from top to bottom
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="model"></param>
-        /// <param name="modelMatrix"></param>
-        /// <param name="rayWS"></param>
-        /// <param name="hits"></param>
-        /// <param name="hitTestThickness"></param>
-        /// <returns></returns>
-        bool HitTest(IRenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitTestThickness);
 
         /// <summary>
         /// Hit test for only this node, not its child node
@@ -133,24 +96,6 @@ namespace HelixToolkit.Wpf.SharpDX
         bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect);
 
         /// <summary>
-        /// Search nearest point by a search sphere for whole octree
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="sphere"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        bool FindNearestPointBySphere(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result);
-
-        /// <summary>
-        /// Search nearest point from point on mesh
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="point"></param>
-        /// <param name="result"></param>
-        /// <param name="heuristicSearchFactor">Use huristic search, return proximated nearest point. Set to 1.0f to disable heuristic. Value must be 0.1f ~ 1.0f</param>
-        /// <returns></returns>
-        bool FindNearestPointFromPoint(IRenderContext context, ref Vector3 point, ref List<HitTestResult> result, float heuristicSearchFactor = 1f);
-        /// <summary>
         /// Search nearest point by a point and search radius
         /// </summary>
         /// <param name="context"></param>
@@ -159,10 +104,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="points"></param>
         /// <returns></returns>
         bool FindNearestPointByPointAndSearchRadius(IRenderContext context, ref Vector3 point, float radius, ref List<HitTestResult> points);
-        /// <summary>
-        /// Build the whole tree from top to bottom iteratively.
-        /// </summary>
-        void BuildTree();
 
         /// <summary>
         /// Build current node level only, this will only build current node and create children, but not build its children. 
@@ -1423,6 +1364,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         #endregion
+
+        public LineGeometry3D CreateOctreeLineModel()
+        {
+            return OctreeHelper.CreateOctreeLineModel(this);
+        }
     }
 
     /// <summary>

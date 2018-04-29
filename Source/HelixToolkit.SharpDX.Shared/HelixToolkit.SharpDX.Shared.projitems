@@ -300,6 +300,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\Octree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\RenderableBoundingOctree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\OctreeManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\StaticOctrees\StaticLineGeometryOctree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\StaticOctrees\StaticMeshGeometryOctree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\StaticOctrees\StaticOctree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\StaticOctrees\StaticPointGeometryOctree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RandomVectorGenerators.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RelayExceptionEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ResourceSharedObject.cs" />
@@ -319,6 +323,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)Model\Collection\" />
     <Folder Include="$(MSBuildThisFileDirectory)Model\Lights\" />
     <Folder Include="$(MSBuildThisFileDirectory)Render\Renderer\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Utilities\Octrees\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Utilities\Octrees\StaticOctrees\" />
   </ItemGroup>
 </Project>

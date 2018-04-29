@@ -141,9 +141,9 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
 
-        protected override IOctree CreateOctree(OctreeBuildParameter parameter)
+        protected override IStaticOctree CreateOctree(OctreeBuildParameter parameter)
         {
-            return new MeshGeometryOctree(this.Positions, this.Indices, parameter);
+            return new StaticMeshGeometryOctree(this.Positions, this.Indices, parameter);
         }
 
         public virtual bool HitTest(IRenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource)
