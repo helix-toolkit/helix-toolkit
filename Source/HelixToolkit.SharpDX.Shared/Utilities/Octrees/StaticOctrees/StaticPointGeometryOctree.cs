@@ -17,9 +17,9 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class StaticPointGeometryOctree : StaticOctree<int>
     {
-        private IList<Vector3> Positions;
         private static readonly Vector3 BoundOffset = new Vector3(0.001f);
-
+        protected readonly IList<Vector3> Positions;
+      
         /// <summary>
         /// 
         /// </summary>
@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parameter"></param>
         /// <param name="stackCache"></param>
         public StaticPointGeometryOctree(IList<Vector3> positions,
-            OctreeBuildParameter parameter, Stack<KeyValuePair<int, IOctree[]>> stackCache = null)
+            OctreeBuildParameter parameter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache = null)
                : base(parameter)
         {
             Positions = positions;

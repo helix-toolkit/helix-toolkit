@@ -22,11 +22,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
-        public IList<Vector3> Positions { private set; get; }
+        protected readonly IList<Vector3> Positions;
         /// <summary>
         /// 
         /// </summary>
-        public IList<int> Indices { private set; get; }
+        protected readonly IList<int> Indices;
 
         public StaticMeshGeometryOctree(IList<Vector3> positions, IList<int> indices, OctreeBuildParameter parameter)
             : base(parameter)

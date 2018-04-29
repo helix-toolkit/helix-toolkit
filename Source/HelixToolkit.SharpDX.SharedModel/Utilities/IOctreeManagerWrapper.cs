@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The octree.
         /// </value>
-        IOctree Octree { get; }
+        IOctreeBasic Octree { get; }
         /// <summary>
         /// Gets the manager.
         /// </summary>

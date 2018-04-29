@@ -129,7 +129,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// TO use Octree during hit test to improve hit performance, please call UpdateOctree after model created.
         /// </summary>
-        public IStaticOctree Octree { private set; get; }
+        public IOctreeBasic Octree { private set; get; }
         /// <summary>
         /// Gets or sets a value indicating whether [octree dirty], needs update.
         /// </summary>
@@ -212,7 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Override to create different octree in subclasses.
         /// </summary>
         /// <returns></returns>
-        protected virtual IStaticOctree CreateOctree(OctreeBuildParameter parameter)
+        protected virtual IOctreeBasic CreateOctree(OctreeBuildParameter parameter)
         {
             return null;
         }

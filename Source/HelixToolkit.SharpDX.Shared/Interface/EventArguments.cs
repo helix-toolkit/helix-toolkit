@@ -48,12 +48,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The octree
         /// </summary>
-        public readonly IOctree Octree;
+        public readonly IOctreeBasic Octree;
         /// <summary>
         /// Initializes a new instance of the <see cref="OctreeArgs"/> class.
         /// </summary>
         /// <param name="octree">The octree.</param>
-        public OctreeArgs(IOctree octree)
+        public OctreeArgs(IOctreeBasic octree)
         {
             Octree = octree;
         }

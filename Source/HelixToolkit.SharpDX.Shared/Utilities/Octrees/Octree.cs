@@ -19,9 +19,9 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Model;
     /// <summary>
-    /// General interface for octree
+    /// Interface for dynamic octree
     /// </summary>
-    public interface IOctree : IStaticOctree
+    public interface IDynamicOctree : IOctreeBasic
     {
         /// <summary>
         /// Gets the self as array.
@@ -29,7 +29,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The self array.
         /// </value>
-        IOctree[] SelfArray { get; }
+        IDynamicOctree[] SelfArray { get; }
         /// <summary>
         /// This is a bitmask indicating which child nodes are actively being used.
         /// It adds slightly more complexity, but is faster for performance since there is only one comparison instead of 8.
@@ -46,15 +46,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Parent node
         /// </summary>
-        IOctree Parent { get; set; }
-        /// <summary>
-        /// Node bound
-        /// </summary>
-        BoundingBox Bound { get; }
+        IDynamicOctree Parent { get; set; }
         /// <summary>
         /// Child octants
         /// </summary>
-        IOctree[] ChildNodes { get; }
+        IDynamicOctree[] ChildNodes { get; }
         /// <summary>
         /// Octant bounds
         /// </summary>
@@ -122,14 +118,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Remove child from ChildNodes
         /// </summary>
         /// <param name="child"></param>
-        void RemoveChild(IOctree child);
+        void RemoveChild(IDynamicOctree child);
     }
 
     /// <summary>
-    /// Base class template implementation for <see cref="IOctree"/>
+    /// Base class template implementation for <see cref="IDynamicOctree"/>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class OctreeBase<T> : IOctree
+    public abstract class DynamicOctreeBase<T> : IDynamicOctree
     {
         /// <summary>
         /// 
@@ -138,11 +134,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="objects"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        public delegate IOctree CreateNodeDelegate(ref BoundingBox bound, List<T> objects, IOctree parent);
+        public delegate IDynamicOctree CreateNodeDelegate(ref BoundingBox bound, List<T> objects, IDynamicOctree parent);
         /// <summary>
         /// internal stack for tree traversal
         /// </summary>
-        protected readonly Stack<KeyValuePair<int, IOctree[]>> stack;
+        protected readonly Stack<KeyValuePair<int, IDynamicOctree[]>> stack;
         /// <summary>
         /// 
         /// </summary>
@@ -152,7 +148,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public float MIN_SIZE { get { return Parameter.MinimumOctantSize; } }
         /// <summary>
-        /// <see cref="IOctree.TreeBuilt"/>
+        /// <see cref="IDynamicOctree.TreeBuilt"/>
         /// </summary>
         public bool TreeBuilt { get { return treeBuilt; } }
         /// <summary>
@@ -160,14 +156,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected bool treeBuilt = false;       //there is no pre-existing tree yet.
         /// <summary>
-        /// <see cref="IOctree.Parameter"/>
+        /// <see cref="IDynamicOctree.Parameter"/>
         /// </summary>
         public OctreeBuildParameter Parameter { private set; get; }
 
         private BoundingBox bound;
 
         /// <summary>
-        /// <see cref="IOctree.Bound"/>
+        /// <see cref="IDynamicOctree.Bound"/>
         /// </summary>
         public BoundingBox Bound
         {
@@ -186,35 +182,35 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         /// <summary>
-        /// <see cref="OctreeBase{T}.Objects"/>
+        /// <see cref="DynamicOctreeBase{T}.Objects"/>
         /// </summary>
         public List<T> Objects { protected set; get; }
 
         private readonly List<BoundingBox> hitPathBoundingBoxes = new List<BoundingBox>();
         /// <summary>
-        /// <see cref="IOctree.HitPathBoundingBoxes"/>
+        /// <see cref="IDynamicOctree.HitPathBoundingBoxes"/>
         /// </summary>
         public IList<BoundingBox> HitPathBoundingBoxes { get { return hitPathBoundingBoxes.AsReadOnly(); } }
         /// <summary>
         /// These are all of the possible child octants for this node in the tree.
         /// </summary>
-        private readonly IOctree[] childNodes = new IOctree[8];
+        private readonly IDynamicOctree[] childNodes = new IDynamicOctree[8];
         /// <summary>
-        /// <see cref="IOctree.ChildNodes"/>
+        /// <see cref="IDynamicOctree.ChildNodes"/>
         /// </summary>
-        public IOctree[] ChildNodes { get { return childNodes; } }
+        public IDynamicOctree[] ChildNodes { get { return childNodes; } }
         /// <summary>
-        /// <see cref="IOctree.ActiveNodes"/>
+        /// <see cref="IDynamicOctree.ActiveNodes"/>
         /// </summary>
         public byte ActiveNodes { set; get; }
         /// <summary>
-        /// <see cref="IOctree.Parent"/>
+        /// <see cref="IDynamicOctree.Parent"/>
         /// </summary>
-        public IOctree Parent { set; get; }
+        public IDynamicOctree Parent { set; get; }
 
         private BoundingBox[] octants = null;
         /// <summary>
-        /// <see cref="IOctree.Octants"/>
+        /// <see cref="IDynamicOctree.Octants"/>
         /// </summary>
         public BoundingBox[] Octants { get { return octants; } }
         /// <summary>
@@ -227,7 +223,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The self array.
         /// </value>
-        public IOctree[] SelfArray { get; private set; }
+        public IDynamicOctree[] SelfArray { get; private set; }
         /// <summary>
         /// Delete the octant if there is no object or child octant inside it.
         /// </summary>
@@ -243,10 +239,10 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private OctreeBase(OctreeBuildParameter parameter, Stack<KeyValuePair<int, IOctree[]>> stackCache)
+        private DynamicOctreeBase(OctreeBuildParameter parameter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache)
         {
-            SelfArray = new IOctree[] { this };
-            stack = stackCache ?? new Stack<KeyValuePair<int, IOctree[]>>(64);
+            SelfArray = new IDynamicOctree[] { this };
+            stack = stackCache ?? new Stack<KeyValuePair<int, IDynamicOctree[]>>(64);
 #if DEBUG
             if (stackCache == null)
             {
@@ -268,7 +264,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parent"></param>
         /// <param name="parameter"></param>
         /// <param name="stackCache"></param>
-        protected OctreeBase(ref BoundingBox bound, List<T> objList, IOctree parent, OctreeBuildParameter parameter, Stack<KeyValuePair<int, IOctree[]>> stackCache)
+        protected DynamicOctreeBase(ref BoundingBox bound, List<T> objList, IDynamicOctree parent, OctreeBuildParameter parameter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache)
             : this(parameter, stackCache)
         {
             Bound = bound;
@@ -282,7 +278,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parent"></param>
         /// <param name="parameter"></param>
         /// <param name="stackCache"></param>
-        protected OctreeBase(IOctree parent, OctreeBuildParameter parameter, Stack<KeyValuePair<int, IOctree[]>> stackCache)
+        protected DynamicOctreeBase(IDynamicOctree parent, OctreeBuildParameter parameter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache)
             : this(parameter, stackCache)
         {
             Objects = new List<T>();
@@ -298,13 +294,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parent"></param>
         /// <param name="parameter"></param>
         /// <param name="stackCache"></param>
-        protected OctreeBase(ref BoundingBox bound, IOctree parent, OctreeBuildParameter parameter, Stack<KeyValuePair<int, IOctree[]>> stackCache)
+        protected DynamicOctreeBase(ref BoundingBox bound, IDynamicOctree parent, OctreeBuildParameter parameter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache)
             : this(parent, parameter, stackCache)
         {
             Bound = bound;
         }
 
-        private IOctree CreateNode(ref BoundingBox bound, List<T> objList)
+        private IDynamicOctree CreateNode(ref BoundingBox bound, List<T> objList)
         {
             return CreateNodeWithParent(ref bound, objList, this);
         }
@@ -315,14 +311,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="objList"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected abstract IOctree CreateNodeWithParent(ref BoundingBox bound, List<T> objList, IOctree parent);
+        protected abstract IDynamicOctree CreateNodeWithParent(ref BoundingBox bound, List<T> objList, IDynamicOctree parent);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="bound"></param>
         /// <param name="Item"></param>
         /// <returns></returns>
-        protected IOctree CreateNode(ref BoundingBox bound, T Item)
+        protected IDynamicOctree CreateNode(ref BoundingBox bound, T Item)
         {
             return CreateNode(ref bound, new List<T> { Item });
         }
@@ -347,7 +343,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="root"></param>
         /// <param name="stack"></param>
-        public void BuildTree(IOctree root, Stack<KeyValuePair<int, IOctree[]>> stack)
+        public void BuildTree(IDynamicOctree root, Stack<KeyValuePair<int, IDynamicOctree[]>> stack)
         {
 #if DEBUG
             var sw = Stopwatch.StartNew();
@@ -369,7 +365,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="breakCriteria"></param>
         /// <param name="useParallel"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void TreeTraversal(IOctree root, Stack<KeyValuePair<int, IOctree[]>> stack, Func<IOctree, bool> criteria, Action<IOctree> process,
+        public static void TreeTraversal(IDynamicOctree root, Stack<KeyValuePair<int, IDynamicOctree[]>> stack, Func<IDynamicOctree, bool> criteria, Action<IDynamicOctree> process,
             Func<bool> breakCriteria = null, bool useParallel = false)
         {
             if (useParallel)
@@ -386,7 +382,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         Parallel.ForEach(root.ChildNodes, (subTree) =>
                         {
                             if (subTree == null) { return; }
-                            TreeTraversal(subTree, new Stack<KeyValuePair<int, IOctree[]>>(), criteria, process, breakCriteria, false);
+                            TreeTraversal(subTree, new Stack<KeyValuePair<int, IDynamicOctree[]>>(), criteria, process, breakCriteria, false);
                         });
                     }
                 }
@@ -394,7 +390,7 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 int i = -1;
-                IOctree[] treeArray = root.SelfArray;
+                IDynamicOctree[] treeArray = root.SelfArray;
                 while (true)
                 {
                     while (++i < treeArray.Length)
@@ -409,7 +405,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             }
                             if (tree.HasChildren)
                             {
-                                stack.Push(new KeyValuePair<int, IOctree[]>(i, treeArray));
+                                stack.Push(new KeyValuePair<int, IDynamicOctree[]>(i, treeArray));
                                 treeArray = tree.ChildNodes;
                                 i = -1;
                             }
@@ -592,7 +588,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         /// <summary>
-        /// <see cref="IOctree.Clear"/>
+        /// <see cref="IDynamicOctree.Clear"/>
         /// </summary>
         public virtual void Clear()
         {
@@ -604,7 +600,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Array.Clear(ChildNodes, 0, ChildNodes.Length);
         }
         /// <summary>
-        /// <see cref="IOctree.HitTest(IRenderContext, object, Matrix, Ray, ref List{HitTestResult})"/>
+        /// <see cref="IDynamicOctree.HitTest(IRenderContext, object, Matrix, Ray, ref List{HitTestResult})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -617,7 +613,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return HitTest(context, model, modelMatrix, rayWS, ref hits, 0);
         }
         /// <summary>
-        /// <see cref="IOctree.HitTest(IRenderContext, object, Matrix, Ray, ref List{HitTestResult}, float)"/>
+        /// <see cref="IDynamicOctree.HitTest(IRenderContext, object, Matrix, Ray, ref List{HitTestResult}, float)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -652,7 +648,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     isHit |= nodeHit;
                     if (isIntersect && node.HasChildren)
                     {
-                        hitStack.Push(new KeyValuePair<int, IOctree[]>(i, treeArray));
+                        hitStack.Push(new KeyValuePair<int, IDynamicOctree[]>(i, treeArray));
                         treeArray = node.ChildNodes;
                         i = -1;
                     }
@@ -729,7 +725,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     isHit |= nodeHit;
                     if (isIntersect && node.HasChildren)
                     {
-                        hitStack.Push(new KeyValuePair<int, IOctree[]>(i, treeArray));
+                        hitStack.Push(new KeyValuePair<int, IDynamicOctree[]>(i, treeArray));
                         treeArray = node.ChildNodes;
                         i = -1;
                     }
@@ -780,7 +776,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         if (node.HasChildren)
                         {
-                            hitStack.Push(new KeyValuePair<int, IOctree[]>(i, treeArray));
+                            hitStack.Push(new KeyValuePair<int, IDynamicOctree[]>(i, treeArray));
                             treeArray = node.ChildNodes;
                             i = -1;
                         }
@@ -803,22 +799,22 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         public abstract bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
         /// <summary>
-        /// <see cref="OctreeBase{T}.Add(T)"/>
+        /// <see cref="DynamicOctreeBase{T}.Add(T)"/>
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
         public bool Add(T item)
         {
-            IOctree octant;
+            IDynamicOctree octant;
             return Add(item, out octant);
         }
         /// <summary>
-        /// <see cref="OctreeBase{T}.Add(T, out IOctree)"/>
+        /// <see cref="DynamicOctreeBase{T}.Add(T, out IDynamicOctree)"/>
         /// </summary>
         /// <param name="item"></param>
         /// <param name="octant"></param>
         /// <returns></returns>
-        public virtual bool Add(T item, out IOctree octant)
+        public virtual bool Add(T item, out IDynamicOctree octant)
         {
             var bound = GetBoundingBoxFromItem(item);
             var node = FindSmallestNodeContainsBoundingBox(ref bound, item);
@@ -829,11 +825,11 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                var nodeBase = node as OctreeBase<T>;
+                var nodeBase = node as DynamicOctreeBase<T>;
                 nodeBase.Objects.Add(item);
                 if (nodeBase.Objects.Count > Parameter.MinObjectSizeToSplit)
                 {
-                    int index = (node as OctreeBase<T>).Objects.Count - 1;
+                    int index = (node as DynamicOctreeBase<T>).Objects.Count - 1;
                     PushExistingToChild(nodeBase, index, IsContains, CreateNodeWithParent, out octant);
                 }
                 return true;
@@ -846,7 +842,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         public bool PushExistingToChild(int index)
         {
-            IOctree octant;
+            IDynamicOctree octant;
             return PushExistingToChild(index, out octant);
         }
         /// <summary>
@@ -855,7 +851,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="index"></param>
         /// <param name="octant"></param>
         /// <returns></returns>
-        public virtual bool PushExistingToChild(int index, out IOctree octant)
+        public virtual bool PushExistingToChild(int index, out IDynamicOctree octant)
         {
             octant = this;
             if (this.Objects.Count > Parameter.MinObjectSizeToSplit)
@@ -877,8 +873,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="createNodeFunc"></param>
         /// <param name="octant"></param>
         /// <returns>True: Pushed into child. Otherwise false.</returns>
-        public static bool PushExistingToChild(OctreeBase<T> node, int index, Func<BoundingBox, T, bool> isContains,
-            CreateNodeDelegate createNodeFunc, out IOctree octant)
+        public static bool PushExistingToChild(DynamicOctreeBase<T> node, int index, Func<BoundingBox, T, bool> isContains,
+            CreateNodeDelegate createNodeFunc, out IDynamicOctree octant)
         {
             var item = node.Objects[index];
             octant = node;
@@ -890,7 +886,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     node.Objects.RemoveAt(index);
                     if (node.ChildNodes[i] != null)
                     {
-                        (node.ChildNodes[i] as OctreeBase<T>).Objects.Add(item);
+                        (node.ChildNodes[i] as DynamicOctreeBase<T>).Objects.Add(item);
                         octant = node.ChildNodes[i];
                     }
                     else
@@ -899,7 +895,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         node.ActiveNodes |= (byte)(1 << i);
                         node.ChildNodes[i].BuildTree();
                         int idx = -1;
-                        octant = (node.ChildNodes[i] as OctreeBase<T>).FindChildByItemBound(item, out idx);
+                        octant = (node.ChildNodes[i] as DynamicOctreeBase<T>).FindChildByItemBound(item, out idx);
                     }
                     pushToChild = true;
                     break;
@@ -934,7 +930,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="direction"></param>
         /// <returns></returns>
-        public virtual IOctree Expand(ref Vector3 direction)
+        public virtual IDynamicOctree Expand(ref Vector3 direction)
         {
             return Expand(this, ref direction, CreateNodeWithParent);
         }
@@ -970,7 +966,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="direction"></param>
         /// <param name="createNodeFunc"></param>
         /// <returns></returns>
-        public static IOctree Expand(IOctree oldRoot, ref Vector3 direction, CreateNodeDelegate createNodeFunc)
+        public static IDynamicOctree Expand(IDynamicOctree oldRoot, ref Vector3 direction, CreateNodeDelegate createNodeFunc)
         {
             if (oldRoot.Parent != null)
             {
@@ -1029,7 +1025,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Shrink the root bound to contains all items inside, return new root
         /// </summary>
         /// <returns></returns>
-        public virtual IOctree Shrink()
+        public virtual IDynamicOctree Shrink()
         {
             return Shrink(this);
         }
@@ -1038,7 +1034,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
-        public static IOctree Shrink(IOctree root)
+        public static IDynamicOctree Shrink(IDynamicOctree root)
         {
             if (root.Parent != null)
             { throw new ArgumentException("Input node is not a root node."); }
@@ -1046,7 +1042,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return root;
             }
-            else if ((root as OctreeBase<T>).Objects.Count == 0 && (root.ActiveNodes & (root.ActiveNodes - 1)) == 0)
+            else if ((root as DynamicOctreeBase<T>).Objects.Count == 0 && (root.ActiveNodes & (root.ActiveNodes - 1)) == 0)
             {
                 for (int i = 0; i < root.ChildNodes.Length; ++i)
                 {
@@ -1071,7 +1067,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="bound"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        public IOctree FindSmallestNodeContainsBoundingBox(ref BoundingBox bound, T item)
+        public IDynamicOctree FindSmallestNodeContainsBoundingBox(ref BoundingBox bound, T item)
         {
             return FindSmallestNodeContainsBoundingBox<T>(bound, item, IsContains, this, this.stack);
         }
@@ -1085,10 +1081,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="root"></param>
         /// <param name="stackCache"></param>
         /// <returns></returns>
-        private static IOctree FindSmallestNodeContainsBoundingBox<E>(BoundingBox bound, E item, Func<BoundingBox, E, bool> isContains, OctreeBase<E> root,
-            Stack<KeyValuePair<int, IOctree[]>> stackCache)
+        private static IDynamicOctree FindSmallestNodeContainsBoundingBox<E>(BoundingBox bound, E item, Func<BoundingBox, E, bool> isContains, DynamicOctreeBase<E> root,
+            Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache)
         {
-            IOctree result = null;
+            IDynamicOctree result = null;
             TreeTraversal(root, stackCache,
                 (node) => { return isContains(node.Bound, item); },
                 (node) => { result = node; });
@@ -1100,7 +1096,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="item"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public IOctree FindChildByItem(T item, out int index)
+        public IDynamicOctree FindChildByItem(T item, out int index)
         {
             return FindChildByItem<T>(item, this, this.stack, out index);
         }
@@ -1113,14 +1109,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="stackCache"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static IOctree FindChildByItem<E>(E item, OctreeBase<E> root, Stack<KeyValuePair<int, IOctree[]>> stackCache, out int index)
+        public static IDynamicOctree FindChildByItem<E>(E item, DynamicOctreeBase<E> root, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache, out int index)
         {
-            IOctree result = null;
+            IDynamicOctree result = null;
             int idx = -1;
             TreeTraversal(root, stackCache, null,
                 (node) =>
                 {
-                    idx = (node as OctreeBase<E>).Objects.IndexOf(item);
+                    idx = (node as DynamicOctreeBase<E>).Objects.IndexOf(item);
                     result = idx != -1 ? node : null;
                 },
                 () => { return idx != -1; });
@@ -1151,7 +1147,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             else
             {
-                var nodeBase = node as OctreeBase<T>;
+                var nodeBase = node as DynamicOctreeBase<T>;
                 nodeBase.Objects.RemoveAt(index);
                 if (nodeBase.IsEmpty && nodeBase.AutoDeleteIfEmpty)
                 {
@@ -1182,7 +1178,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var node = FindChildByItem(item, out index);
             if (node != null)
             {
-                (node as OctreeBase<T>).Objects.RemoveAt(index);
+                (node as DynamicOctreeBase<T>).Objects.RemoveAt(index);
                 if (node.IsEmpty && node.AutoDeleteIfEmpty)
                 {
                     node.RemoveSelf();
@@ -1225,7 +1221,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         /// <param name="child"></param>
-        public void RemoveChild(IOctree child)
+        public void RemoveChild(IDynamicOctree child)
         {
             for (int i = 0; i < ChildNodes.Length; ++i)
             {
@@ -1247,7 +1243,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="item"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public virtual IOctree FindChildByItemBound(T item, out int index)
+        public virtual IDynamicOctree FindChildByItemBound(T item, out int index)
         {
             return FindChildByItemBound(item, ref bound, out index);
         }
@@ -1258,7 +1254,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="bound"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public virtual IOctree FindChildByItemBound(T item, ref BoundingBox bound, out int index)
+        public virtual IDynamicOctree FindChildByItemBound(T item, ref BoundingBox bound, out int index)
         {
             return FindChildByItemBound<T>(item, bound, IsContains, this, this.stack, out index);
         }
@@ -1273,16 +1269,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="stackCache"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static IOctree FindChildByItemBound<E>(E item, BoundingBox bound, Func<BoundingBox, BoundingBox, E, bool> isContains, OctreeBase<E> root, Stack<KeyValuePair<int, IOctree[]>> stackCache, out int index)
+        public static IDynamicOctree FindChildByItemBound<E>(E item, BoundingBox bound, Func<BoundingBox, BoundingBox, E, bool> isContains, DynamicOctreeBase<E> root, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache, out int index)
         {
             int idx = -1;
-            IOctree result = null;
-            OctreeBase<E> lastNode = null;
+            IDynamicOctree result = null;
+            DynamicOctreeBase<E> lastNode = null;
             TreeTraversal(root, stackCache,
                 (node) => { return isContains(node.Bound, bound, item); },
                 (node) =>
                 {
-                    lastNode = node as OctreeBase<E>;
+                    lastNode = node as DynamicOctreeBase<E>;
                     idx = lastNode.Objects.IndexOf(item);
                     result = idx != -1 ? node : null;
                 },
@@ -1296,7 +1292,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     index = lastNode.Objects.IndexOf(item);
                     if (index == -1)
                     {
-                        lastNode = lastNode.Parent as OctreeBase<E>;
+                        lastNode = lastNode.Parent as DynamicOctreeBase<E>;
                     }
                     else
                     {
@@ -1312,7 +1308,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public static IOctree FindRoot(IOctree node)
+        public static IDynamicOctree FindRoot(IDynamicOctree node)
         {
             while (node.Parent != null)
             {
@@ -1336,7 +1332,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         #region Accessors
         /// <summary>
-        /// <see cref="IOctree.IsRoot"/>
+        /// <see cref="IDynamicOctree.IsRoot"/>
         /// </summary>
         public bool IsRoot
         {
@@ -1344,7 +1340,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return Parent == null; }
         }
         /// <summary>
-        /// <see cref="IOctree.HasChildren"/>
+        /// <see cref="IDynamicOctree.HasChildren"/>
         /// </summary>
         public bool HasChildren
         {
@@ -1354,7 +1350,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         /// <summary>
-        /// <see cref="IOctree.IsEmpty"/>
+        /// <see cref="IDynamicOctree.IsEmpty"/>
         /// </summary>
         public bool IsEmpty
         {
@@ -1464,8 +1460,9 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// MeshGeometryOctree slices mesh geometry by triangles into octree. Objects are KeyValuePair of each triangle index and its bounding box.
     /// </summary>
+    [Obsolete("Please use StaticMeshGeometryOctree for better performance")]
     public class MeshGeometryOctree
-        : OctreeBase<KeyValuePair<int, BoundingBox>>
+        : DynamicOctreeBase<KeyValuePair<int, BoundingBox>>
     {
         /// <summary>
         /// 
@@ -1481,7 +1478,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="positions"></param>
         /// <param name="indices"></param>
         /// <param name="stackCache"></param>
-        public MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, Stack<KeyValuePair<int, IOctree[]>> stackCache = null)
+        public MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache = null)
             : this(positions, indices, null, stackCache)
         {
         }
@@ -1493,7 +1490,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parameter"></param>
         /// <param name="stackCache"></param>
         public MeshGeometryOctree(IList<Vector3> positions, IList<int> indices,
-            OctreeBuildParameter parameter, Stack<KeyValuePair<int, IOctree[]>> stackCache = null)
+            OctreeBuildParameter parameter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache = null)
             : base(null, parameter, stackCache)
         {
             Positions = positions;
@@ -1517,7 +1514,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="paramter"></param>
         /// <param name="stackCache"></param>
         protected MeshGeometryOctree(IList<Vector3> positions, IList<int> indices, ref BoundingBox bound, List<KeyValuePair<int, BoundingBox>> triIndex,
-            IOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IOctree[]>> stackCache)
+            IDynamicOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache)
             : base(ref bound, triIndex, parent, paramter, stackCache)
         {
             Positions = positions;
@@ -1531,7 +1528,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parent"></param>
         /// <param name="paramter"></param>
         /// <param name="stackCache"></param>
-        protected MeshGeometryOctree(BoundingBox bound, List<KeyValuePair<int, BoundingBox>> list, IOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IOctree[]>> stackCache)
+        protected MeshGeometryOctree(BoundingBox bound, List<KeyValuePair<int, BoundingBox>> list, IDynamicOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache)
             : base(ref bound, list, parent, paramter, stackCache)
         { }
 
@@ -1567,12 +1564,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="objList"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected override IOctree CreateNodeWithParent(ref BoundingBox region, List<KeyValuePair<int, BoundingBox>> objList, IOctree parent)
+        protected override IDynamicOctree CreateNodeWithParent(ref BoundingBox region, List<KeyValuePair<int, BoundingBox>> objList, IDynamicOctree parent)
         {
             return new MeshGeometryOctree(Positions, Indices, ref region, objList, parent, parent.Parameter, this.stack);
         }
         /// <summary>
-        /// <see cref="OctreeBase{T}.HitTestCurrentNodeExcludeChild(IRenderContext, object, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
+        /// <see cref="DynamicOctreeBase{T}.HitTestCurrentNodeExcludeChild(IRenderContext, object, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -1661,7 +1658,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return isHit;
         }
         /// <summary>
-        /// <see cref="OctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
@@ -1737,7 +1734,8 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// 
     /// </summary>
-    public class LineGeometryOctree : OctreeBase<KeyValuePair<int, BoundingBox>>
+    [Obsolete("Please use StaticLineGeometryOctree for better performance")]
+    public class LineGeometryOctree : DynamicOctreeBase<KeyValuePair<int, BoundingBox>>
     {
         /// <summary>
         /// 
@@ -1753,7 +1751,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="positions"></param>
         /// <param name="indices"></param>
         /// <param name="stackCache"></param>
-        public LineGeometryOctree(IList<Vector3> positions, IList<int> indices, Stack<KeyValuePair<int, IOctree[]>> stackCache = null)
+        public LineGeometryOctree(IList<Vector3> positions, IList<int> indices, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache = null)
             : this(positions, indices, null, stackCache)
         {
         }
@@ -1765,7 +1763,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parameter"></param>
         /// <param name="stackCache"></param>
         public LineGeometryOctree(IList<Vector3> positions, IList<int> indices,
-            OctreeBuildParameter parameter, Stack<KeyValuePair<int, IOctree[]>> stackCache = null)
+            OctreeBuildParameter parameter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache = null)
             : base(null, parameter, stackCache)
         {
             Positions = positions;
@@ -1789,7 +1787,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="paramter"></param>
         /// <param name="stackCache"></param>
         protected LineGeometryOctree(IList<Vector3> positions, IList<int> indices, ref BoundingBox bound, List<KeyValuePair<int, BoundingBox>> triIndex,
-            IOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IOctree[]>> stackCache)
+            IDynamicOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache)
             : base(ref bound, triIndex, parent, paramter, stackCache)
         {
             Positions = positions;
@@ -1803,7 +1801,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parent"></param>
         /// <param name="paramter"></param>
         /// <param name="stackCache"></param>
-        protected LineGeometryOctree(BoundingBox bound, List<KeyValuePair<int, BoundingBox>> list, IOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IOctree[]>> stackCache)
+        protected LineGeometryOctree(BoundingBox bound, List<KeyValuePair<int, BoundingBox>> list, IDynamicOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache)
             : base(ref bound, list, parent, paramter, stackCache)
         { }
 
@@ -1838,12 +1836,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="objList"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected override IOctree CreateNodeWithParent(ref BoundingBox region, List<KeyValuePair<int, BoundingBox>> objList, IOctree parent)
+        protected override IDynamicOctree CreateNodeWithParent(ref BoundingBox region, List<KeyValuePair<int, BoundingBox>> objList, IDynamicOctree parent)
         {
             return new LineGeometryOctree(Positions, Indices, ref region, objList, parent, parent.Parameter, this.stack);
         }
         /// <summary>
-        /// <see cref="OctreeBase{T}.HitTestCurrentNodeExcludeChild(IRenderContext, object, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
+        /// <see cref="DynamicOctreeBase{T}.HitTestCurrentNodeExcludeChild(IRenderContext, object, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -1940,7 +1938,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// <see cref="OctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
@@ -2015,7 +2013,8 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Octree for points
     /// </summary>
-    public class PointGeometryOctree : OctreeBase<int>
+    [Obsolete("Please use StaticPointGeometryOctree for better performance")]
+    public class PointGeometryOctree : DynamicOctreeBase<int>
     {
         private IList<Vector3> Positions;
         private static readonly Vector3 BoundOffset = new Vector3(0.0001f);
@@ -2024,7 +2023,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="positions"></param>
         /// <param name="stackCache"></param>
-        public PointGeometryOctree(IList<Vector3> positions, Stack<KeyValuePair<int, IOctree[]>> stackCache = null)
+        public PointGeometryOctree(IList<Vector3> positions, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache = null)
             : this(positions, null, stackCache)
         {
         }
@@ -2035,7 +2034,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parameter"></param>
         /// <param name="stackCache"></param>
         public PointGeometryOctree(IList<Vector3> positions,
-            OctreeBuildParameter parameter, Stack<KeyValuePair<int, IOctree[]>> stackCache = null)
+            OctreeBuildParameter parameter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache = null)
                : base(null, parameter, stackCache)
         {
             Positions = positions;
@@ -2055,8 +2054,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parent"></param>
         /// <param name="paramter"></param>
         /// <param name="stackCache"></param>
-        protected PointGeometryOctree(BoundingBox bound, IList<Vector3> positions, List<int> list, IOctree parent, OctreeBuildParameter paramter,
-            Stack<KeyValuePair<int, IOctree[]>> stackCache)
+        protected PointGeometryOctree(BoundingBox bound, IList<Vector3> positions, List<int> list, IDynamicOctree parent, OctreeBuildParameter paramter,
+            Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache)
             : base(ref bound, list, parent, paramter, stackCache)
         {
             Positions = positions;
@@ -2180,7 +2179,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="objList"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected override IOctree CreateNodeWithParent(ref BoundingBox bound, List<int> objList, IOctree parent)
+        protected override IDynamicOctree CreateNodeWithParent(ref BoundingBox bound, List<int> objList, IDynamicOctree parent)
         {
             return new PointGeometryOctree(bound, Positions, objList, parent, Parameter, stack);
         }
@@ -2194,7 +2193,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return new BoundingBox(Positions[item] - BoundOffset, Positions[item] + BoundOffset);
         }
         /// <summary>
-        /// <see cref="OctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
@@ -2260,7 +2259,8 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Octree for instancing
     /// </summary>
-    public class InstancingModel3DOctree : OctreeBase<KeyValuePair<int, BoundingBox>>
+    [Obsolete("Please use StaticInstancingOctree for better performance")]
+    public class InstancingModel3DOctree : DynamicOctreeBase<KeyValuePair<int, BoundingBox>>
     {
         private IList<Matrix> InstanceMatrix;
 
@@ -2271,7 +2271,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="geometryBound"></param>
         /// <param name="parameter"></param>
         /// <param name="stackCache"></param>
-        public InstancingModel3DOctree(IList<Matrix> instanceMatrix, BoundingBox geometryBound, OctreeBuildParameter parameter, Stack<KeyValuePair<int, IOctree[]>> stackCache = null)
+        public InstancingModel3DOctree(IList<Matrix> instanceMatrix, BoundingBox geometryBound, OctreeBuildParameter parameter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache = null)
             : base(ref geometryBound, null, parameter, stackCache)
         {
             InstanceMatrix = instanceMatrix;
@@ -2295,13 +2295,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="parent"></param>
         /// <param name="parameter"></param>
         /// <param name="stackCache"></param>
-        protected InstancingModel3DOctree(ref BoundingBox bound, IList<Matrix> instanceMatrix, List<KeyValuePair<int, BoundingBox>> objects, IOctree parent, OctreeBuildParameter parameter, Stack<KeyValuePair<int, IOctree[]>> stackCache = null)
+        protected InstancingModel3DOctree(ref BoundingBox bound, IList<Matrix> instanceMatrix, List<KeyValuePair<int, BoundingBox>> objects, IDynamicOctree parent, OctreeBuildParameter parameter, Stack<KeyValuePair<int, IDynamicOctree[]>> stackCache = null)
             : base(ref bound, objects, parent, parameter, stackCache)
         {
             InstanceMatrix = instanceMatrix;
         }
         /// <summary>
-        /// <see cref="OctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(IRenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
@@ -2310,10 +2310,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         public override bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
         {
-            throw new NotImplementedException();
+            return false;
         }
         /// <summary>
-        /// <see cref="OctreeBase{T}.HitTestCurrentNodeExcludeChild(IRenderContext, object, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
+        /// <see cref="DynamicOctreeBase{T}.HitTestCurrentNodeExcludeChild(IRenderContext, object, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -2360,7 +2360,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="objList"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected override IOctree CreateNodeWithParent(ref BoundingBox bound, List<KeyValuePair<int, BoundingBox>> objList, IOctree parent)
+        protected override IDynamicOctree CreateNodeWithParent(ref BoundingBox bound, List<KeyValuePair<int, BoundingBox>> objList, IDynamicOctree parent)
         {
             return new InstancingModel3DOctree(ref bound, this.InstanceMatrix, objList, parent, this.Parameter, this.stack);
         }

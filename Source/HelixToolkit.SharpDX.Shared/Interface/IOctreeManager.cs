@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The octree.
         /// </value>
-        IOctree Octree { get; }
+        IOctreeBasic Octree { get; }
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="IOctreeManager"/> is enabled.
         /// </summary>

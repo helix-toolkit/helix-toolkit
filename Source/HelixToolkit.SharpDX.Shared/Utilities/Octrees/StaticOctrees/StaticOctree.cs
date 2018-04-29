@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+
 //#define DEBUG
 using SharpDX;
 using System;
@@ -12,33 +13,50 @@ using System.Runtime.CompilerServices;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
+
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    public interface IStaticOctree
+    /// <summary>
+    /// Interface for basic octree. Used to implement static octree and dynamic octree
+    /// </summary>
+    public interface IOctreeBasic
     {
         /// <summary>
         /// Whether the tree has been built.
         /// </summary>
         bool TreeBuilt { get; }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         event EventHandler<EventArgs> OnHit;
+
         /// <summary>
         /// Output the hit path of the tree traverse. Only for debugging
         /// </summary>
         IList<BoundingBox> HitPathBoundingBoxes { get; }
+
         /// <summary>
         /// Octree parameter
         /// </summary>
         OctreeBuildParameter Parameter { get; }
+
+        /// <summary>
+        /// Gets the bound.
+        /// </summary>
+        /// <value>
+        /// The bound.
+        /// </value>
+        BoundingBox Bound { get; }
+
         /// <summary>
         /// Build the static octree
         /// </summary>
         void BuildTree();
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -47,8 +65,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="hits"></param>
         /// <returns></returns>
         bool HitTest(IRenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -58,8 +77,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="hitThickness"></param>
         /// <returns></returns>
         bool HitTest(IRenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness);
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="point"></param>
@@ -67,14 +87,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="heuristicSearchFactor"></param>
         /// <returns></returns>
         bool FindNearestPointFromPoint(IRenderContext context, ref Vector3 point, ref List<HitTestResult> results, float heuristicSearchFactor = 1f);
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
         /// <param name="points"></param>
         /// <returns></returns>
         bool FindNearestPointBySphere(IRenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> points);
+
         /// <summary>
         /// Creates the octree line model for debugging or visualize the octree
         /// </summary>
@@ -82,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
         LineGeometry3D CreateOctreeLineModel();
     }
 
-    public abstract class StaticOctree<T> : IStaticOctree
+    public abstract class StaticOctree<T> : IOctreeBasic
     {
         public const int OctantSize = 8;
 
@@ -130,6 +152,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         return -1;
                 }
             }
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void SetChildIndex(int index, int value)
             {
@@ -219,20 +242,27 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        public event EventHandler<EventArgs> OnHit;
+
         private OctantArray octants;
 
         private readonly List<BoundingBox> hitPathBoundingBoxes = new List<BoundingBox>();
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IList<BoundingBox> HitPathBoundingBoxes { get { return hitPathBoundingBoxes.AsReadOnly(); } }
 
         private readonly Stack<KeyValuePair<int, int>> stack = new Stack<KeyValuePair<int, int>>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected List<HitTestResult> modelHits = new List<HitTestResult>();
+
         /// <summary>
         /// The minumum size for enclosing region is a 1x1x1 cube.
         /// </summary>
@@ -241,15 +271,22 @@ namespace HelixToolkit.Wpf.SharpDX
         public OctreeBuildParameter Parameter { private set; get; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public event EventHandler<EventArgs> OnHit;
-
         protected T[] Objects { private set; get; }
 
-        public bool TreeBuilt { private set; get; } = false;
         /// <summary>
-        /// 
+        ///
+        /// </summary>
+        public bool TreeBuilt { private set; get; } = false;
+
+        /// <summary>
+        ///
+        /// </summary>
+        public BoundingBox Bound { private set; get; }
+
+        /// <summary>
+        ///
         /// </summary>
         /// <param name="parameter"></param>
         public StaticOctree(OctreeBuildParameter parameter)
@@ -258,7 +295,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public void BuildTree()
         {
@@ -274,6 +311,7 @@ namespace HelixToolkit.Wpf.SharpDX
             TreeTraversal(stack, (index) => { BuildSubTree(index); }, null);
             octants.Compact();
             TreeBuilt = true;
+            Bound = octants[0].Bound;
 #if DEBUG
             tick = Stopwatch.GetTimestamp() - tick;
             Console.WriteLine($"Build static tree time ={(double)tick / Stopwatch.Frequency * 1000}; Total = {octants.Count}");
@@ -285,7 +323,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected abstract BoundingBox GetMaxBound();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -308,6 +346,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return true;
             }
         }
+
         /// <summary>
         /// Build sub tree nodes
         /// </summary>
@@ -350,7 +389,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             childOctant.Start = end - count;
                             var o = Objects[i];
                             Objects[i] = Objects[end - count]; //swap objects. Move object into parent octant start/end range
-                            Objects[end - count] = o; //Move object into child octant start/end range         
+                            Objects[end - count] = o; //Move object into child octant start/end range
                         }
                     }
 
@@ -367,7 +406,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
@@ -419,7 +458,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="source"></param>
         /// <param name="target"></param>
@@ -476,7 +515,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -490,7 +529,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -574,9 +613,8 @@ namespace HelixToolkit.Wpf.SharpDX
             return isHit;
         }
 
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
@@ -630,7 +668,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="point"></param>
@@ -703,6 +741,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         protected abstract bool FindNearestPointBySphereExcludeChild(Octant octant, IRenderContext context,
             ref BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
+
         /// <summary>
         /// Hit test for current node.
         /// </summary>
