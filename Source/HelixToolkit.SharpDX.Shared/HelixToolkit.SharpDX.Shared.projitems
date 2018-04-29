@@ -298,6 +298,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\MappingCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\NVOptimusEnabler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\Octree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\OctreeInterfaces.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\RenderableBoundingOctree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\OctreeManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\StaticOctrees\StaticInstancingOctree.cs" />
