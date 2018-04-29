@@ -180,13 +180,13 @@ namespace HelixToolkit.Wpf.SharpDX
             var tempResult = new HitTestResult();
             tempResult.Distance = float.MaxValue;
             var containment = octant.Bound.Contains(ref sphere);
-            if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
+            if (containment != ContainmentType.Disjoint)
             {
                 isIntersect = true;
                 for (int i = octant.Start; i < octant.End; ++i)
                 {
                     containment = Objects[i].Value.Contains(sphere);
-                    if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
+                    if (containment != ContainmentType.Disjoint)
                     {
                         Vector3 cloestPoint;
 
