@@ -17,7 +17,7 @@ namespace HelixToolkit.UWP.Model
     /// <summary>
     /// 
     /// </summary>
-    public class PhongMaterialCore : MaterialCore, IPhongMaterial
+    public partial class PhongMaterialCore : MaterialCore, IPhongMaterial
     {
         private Color4 ambientColor = Color.DarkGray;
         /// <summary>

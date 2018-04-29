@@ -139,7 +139,10 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 if (octant == null)
                 { throw new Exception("Output octant is null"); };
                 var root = FindRoot(this) as BoundableNodeOctree;
-                root.OctantDictionary.Add(item.GUID, octant);
+                if (!root.OctantDictionary.ContainsKey(item.GUID))
+                {
+                    root.OctantDictionary.Add(item.GUID, octant);
+                }
                 return true;
             }
             else

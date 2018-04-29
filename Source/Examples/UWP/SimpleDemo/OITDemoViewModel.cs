@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimpleDemoW10
@@ -38,12 +39,15 @@ namespace SimpleDemoW10
             }
         }
 
+        private SynchronizationContext syncContext = SynchronizationContext.Current;
+
         public OITDemoViewModel()
         {
             this.ModelGeometry = new ObservableElement3DCollection();
             var packageFolder = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "NITRO_ENGINE.3ds");
             BuildGrid();
-            Load3ds(packageFolder);
+            this.ModelGeometry = new ObservableElement3DCollection();
+            Task.Run(() => { Load3ds(packageFolder); });          
         }
         private void BuildGrid()
         {
@@ -88,38 +92,40 @@ namespace SimpleDemoW10
 
         public void AttachModelList(List<Object3D> objs)
         {
-            this.ModelGeometry = new ObservableElement3DCollection();
+            
             Random rnd = new Random();
 
             foreach (var ob in objs)
             {
                 ob.Geometry.UpdateOctree();
-                var s = new MeshGeometryModel3D
-                {
-                    Geometry = ob.Geometry,
-                    Material = ob.Material,
-                    DepthBias = -100,
-                    SlopeScaledDepthBias = 0,
-                    CullMode = SharpDX.Direct3D11.CullMode.Back
-                };
-                if (ob.Material is PhongMaterial p)
-                {
-                    var diffuse = p.DiffuseColor;
-                    diffuse.Red = (float)rnd.NextDouble();
-                    diffuse.Green = (float)rnd.NextDouble();
-                    diffuse.Blue = (float)rnd.NextDouble();
-                    diffuse.Alpha = 0.6f;//(float)(Math.Min(0.8, Math.Max(0.2, rnd.NextDouble())));
-                    p.DiffuseColor = diffuse;
-                    if (p.DiffuseColor.Alpha < 0.9)
-                    {
-                        s.IsTransparent = true;
-                    }
-                }
-                s.Transform3D = Matrix.RotationY((float)(45.0 / 180.0 * Math.PI));
-                
-                this.ModelGeometry.Add(s);
+                Task.Delay(100).Wait();
+                syncContext.Post(
+                    (o) => {
+                        var s = new MeshGeometryModel3D
+                        {
+                            Geometry = ob.Geometry,
+                            DepthBias = -100,
+                            SlopeScaledDepthBias = 0,
+                            CullMode = SharpDX.Direct3D11.CullMode.Back
+                        };
+                        if (ob.Material is HelixToolkit.UWP.Model.PhongMaterialCore p)
+                        {
+                            var diffuse = p.DiffuseColor;
+                            diffuse.Red = (float)rnd.NextDouble();
+                            diffuse.Green = (float)rnd.NextDouble();
+                            diffuse.Blue = (float)rnd.NextDouble();
+                            diffuse.Alpha = 0.6f;//(float)(Math.Min(0.8, Math.Max(0.2, rnd.NextDouble())));
+                            p.DiffuseColor = diffuse;
+                            if (p.DiffuseColor.Alpha < 0.9)
+                            {
+                                s.IsTransparent = true;
+                            }
+                            s.Material = p;
+                        }               
+                        s.Transform3D = Matrix.RotationY((float)(45.0 / 180.0 * Math.PI));
+                        this.ModelGeometry.Add(s);
+                    }, null);             
             }
-            this.RaisePropertyChanged("ModelGeometry");
         }
     }
 }

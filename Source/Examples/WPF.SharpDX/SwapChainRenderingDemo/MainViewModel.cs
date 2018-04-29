@@ -22,12 +22,15 @@
     using System.Linq;
     using SharpDX.Direct3D11;
     using System.Diagnostics;
+    using System.Threading.Tasks;
+    using System.Threading;
+    using HelixToolkit.Wpf.SharpDX.Model;
 
     public class MainViewModel : BaseViewModel
     {
         public string Name { get; set; }
         public MainViewModel ViewModel { get { return this; } }
-        public MeshGeometry3D Model { get; private set; }
+        public ObservableElement3DCollection LanderModels { get; private set; } = new ObservableElement3DCollection();
         public MeshGeometry3D Floor { get; private set; }
         public MeshGeometry3D Sphere { get; private set; }
         public LineGeometry3D CubeEdges { get; private set; }
@@ -145,6 +148,8 @@
             }
         }
         public LineGeometry3D LineGeo { set; get; }
+        private SynchronizationContext context = SynchronizationContext.Current;
+
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
@@ -196,22 +201,9 @@
                 EmissiveColor = Colors.Yellow.ToColor4(),
                 SpecularColor = Colors.Black.ToColor4(),
             };
-            var models = Load3ds("wall12.obj").Select(x => x.Geometry as MeshGeometry3D).ToArray();
-            Floor = models[0];
-            Floor.OctreeParameter.EnableParallelBuild = true;
-            this.FloorTransform = new Media3D.TranslateTransform3D(0, 0, 0);
-            this.FloorMaterial = new PhongMaterial
-            {
-                AmbientColor = Colors.Gray.ToColor4(),
-                DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
-                SpecularColor = Colors.White.ToColor4(),
-                SpecularShininess = 100f
-            };
+            Task.Run(() => { LoadFloor(); });
+            Task.Run(() => { LoadLander(); });
 
-            var landerItems = Load3ds("Car.3ds").Select(x => x.Geometry as MeshGeometry3D).ToArray();
-            Model = MeshGeometry3D.Merge(landerItems);
-            Model.OctreeParameter.EnableParallelBuild = true;
-            ModelMaterial = PhongMaterials.BlackRubber;
             var transGroup = new Media3D.Transform3DGroup();
             transGroup.Children.Add(new Media3D.ScaleTransform3D(0.04, 0.04, 0.04));
             var rotateAnimation = new Rotation3DAnimation
@@ -226,8 +218,48 @@
             rotateTransform.BeginAnimation(Media3D.RotateTransform3D.RotationProperty, rotateAnimation);
             transGroup.Children.Add(new Media3D.TranslateTransform3D(0, 60, 0));
             ModelTransform = transGroup;
-            NumberOfTriangles = Floor.Indices.Count / 3 + Model.Indices.Count/3;
-            NumberOfVertices = Floor.Positions.Count + Model.Positions.Count;
+            //NumberOfTriangles = Floor.Indices.Count / 3 + Model.Indices.Count/3;
+            //NumberOfVertices = Floor.Positions.Count + Model.Positions.Count;
+        }
+
+        private void LoadLander()
+        {
+            foreach(var obj in Load3ds("Car.3ds"))
+            {
+                obj.Geometry.UpdateOctree();
+                Task.Delay(10).Wait();
+                context.Post((o) => {
+                    var model = new MeshGeometryModel3D() { Geometry = obj.Geometry };
+                    if(obj.Material is PhongMaterialCore p)
+                    {
+                        model.Material = p;
+                    }
+                    LanderModels.Add(model);
+                }, null);
+            }
+        }
+
+        private void LoadFloor()
+        {
+            var models = Load3ds("wall12.obj").Select(x => x.Geometry as MeshGeometry3D).ToArray();
+            foreach(var model in models)
+            {
+                model.UpdateOctree();
+            }
+
+            context.Post((o) => {
+                Floor = models[0];
+                this.FloorTransform = new Media3D.TranslateTransform3D(0, 0, 0);
+                this.FloorMaterial = new PhongMaterial
+                {
+                    AmbientColor = Colors.Gray.ToColor4(),
+                    DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
+                    SpecularColor = Colors.White.ToColor4(),
+                    SpecularShininess = 100f
+                };
+                OnPropertyChanged(nameof(Floor));
+                OnPropertyChanged(nameof(FloorMaterial));
+            }, null);
         }
 
         public List<Object3D> Load3ds(string path)

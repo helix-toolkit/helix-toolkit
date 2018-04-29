@@ -15,6 +15,7 @@ namespace FileLoadDemo
     using System.IO;
     using System.ComponentModel;
     using DemoCore;
+    using HelixToolkit.Wpf.SharpDX.Model;
 
     public class MainViewModel : BaseViewModel
     {
@@ -118,8 +119,11 @@ namespace FileLoadDemo
                 var s = new MeshGeometryModel3D
                 {
                     Geometry = ob.Geometry,
-                    Material = ob.Material,
                 };
+                if(ob.Material is PhongMaterialCore p)
+                {
+                    s.Material = p;
+                }
                 if (ob.Transform != null && ob.Transform.Count > 0)
                 {
                     s.Instances = ob.Transform;

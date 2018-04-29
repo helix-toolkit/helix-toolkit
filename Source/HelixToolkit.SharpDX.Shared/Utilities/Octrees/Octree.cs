@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public float MIN_SIZE { get { return Parameter.MinimumOctantSize; } }
         /// <summary>
-        /// <see cref="IDynamicOctree.TreeBuilt"/>
+        /// <see cref="IOctreeBasic.TreeBuilt"/>
         /// </summary>
         public bool TreeBuilt { get { return treeBuilt; } }
         /// <summary>
@@ -53,14 +53,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         protected bool treeBuilt = false;       //there is no pre-existing tree yet.
         /// <summary>
-        /// <see cref="IDynamicOctree.Parameter"/>
+        /// <see cref="IOctreeBasic.Parameter"/>
         /// </summary>
         public OctreeBuildParameter Parameter { private set; get; }
 
         private BoundingBox bound;
 
         /// <summary>
-        /// <see cref="IDynamicOctree.Bound"/>
+        /// <see cref="IOctreeBasic.Bound"/>
         /// </summary>
         public BoundingBox Bound
         {
@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private readonly List<BoundingBox> hitPathBoundingBoxes = new List<BoundingBox>();
         /// <summary>
-        /// <see cref="IDynamicOctree.HitPathBoundingBoxes"/>
+        /// <see cref="IOctreeBasic.HitPathBoundingBoxes"/>
         /// </summary>
         public IList<BoundingBox> HitPathBoundingBoxes { get { return hitPathBoundingBoxes.AsReadOnly(); } }
         /// <summary>
@@ -497,7 +497,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Array.Clear(ChildNodes, 0, ChildNodes.Length);
         }
         /// <summary>
-        /// <see cref="IDynamicOctree.HitTest(IRenderContext, object, Matrix, Ray, ref List{HitTestResult})"/>
+        /// <see cref="IOctreeBasic.HitTest(IRenderContext, object, Matrix, Ray, ref List{HitTestResult})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -510,7 +510,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return HitTest(context, model, modelMatrix, rayWS, ref hits, 0);
         }
         /// <summary>
-        /// <see cref="IDynamicOctree.HitTest(IRenderContext, object, Matrix, Ray, ref List{HitTestResult}, float)"/>
+        /// <see cref="IOctreeBasic.HitTest(IRenderContext, object, Matrix, Ray, ref List{HitTestResult}, float)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>

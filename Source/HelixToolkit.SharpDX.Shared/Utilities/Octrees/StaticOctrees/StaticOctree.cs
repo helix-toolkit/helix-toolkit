@@ -647,6 +647,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Find nearest point by sphere on current node only.
         /// </summary>
+        /// <param name="octant"></param>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
         /// <param name="points"></param>
@@ -658,6 +659,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Hit test for current node.
         /// </summary>
+        /// <param name="octant"></param>
         /// <param name="context"></param>
         /// <param name="model"></param>
         /// <param name="modelMatrix"></param>

@@ -26,7 +26,6 @@ namespace HelixToolkit.UWP
     using FileFormatException = Exception;
 #endif
 #if CORE
-    using Material = Model.MaterialCore;
     using PhongMaterial = Model.PhongMaterialCore;
 #endif
     using Color = global::SharpDX.Color4;
@@ -39,11 +38,12 @@ namespace HelixToolkit.UWP
     using PointCollection = System.Collections.Generic.List<global::SharpDX.Vector2>;
     using Ray3D = global::SharpDX.Ray;
     using Vector3D = global::SharpDX.Vector3;
+    using Model;
 
     public class Object3D
     {
         public Geometry3D Geometry { get; set; }
-        public Material Material { get; set; }
+        public MaterialCore Material { get; set; }
         public List<Matrix> Transform { get; set; }
         public string Name { get; set; }
     }
@@ -812,17 +812,14 @@ namespace HelixToolkit.UWP
         /// <returns>
         /// The material.
         /// </returns>
-        private Material GetMaterial(string materialName)
+        private PhongMaterialCore GetMaterial(string materialName)
         {
             MaterialDefinition mat;
             if (!string.IsNullOrEmpty(materialName) && this.Materials.TryGetValue(materialName, out mat))
             {
                 return mat.GetMaterial(this.TexturePath);
             }
-#if !CORE
-            return PhongMaterials.DefaultVRML;// MaterialHelper.CreateMaterial(new SolidColorBrush(this.DefaultColor));
-#else
-            return new PhongMaterial()
+            return new PhongMaterialCore()
             {
                 Name = "DefaultVRML",
                 AmbientColor = new Color(0.2f, 0.2f, 0.2f, 1.0f),
@@ -831,7 +828,6 @@ namespace HelixToolkit.UWP
                 EmissiveColor = new Color(0.0f, 0.0f, 0.0f, 1.0f),
                 SpecularShininess = 25.6f,
             };
-#endif
         }
 
         /// <summary>
@@ -1005,7 +1001,7 @@ namespace HelixToolkit.UWP
             /// <summary>
             /// List of materials.
             /// </summary>
-            private readonly IList<Material> materials;
+            private readonly IList<PhongMaterialCore> materials;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Group"/> class.
@@ -1017,7 +1013,7 @@ namespace HelixToolkit.UWP
             {
                 this.Name = name;
                 this.meshBuilders = new List<MeshBuilder>();
-                this.materials = new List<Material>();
+                this.materials = new List<PhongMaterialCore>();
                 this.AddMesh();
             }
 
@@ -1025,7 +1021,7 @@ namespace HelixToolkit.UWP
             /// Sets the material.
             /// </summary>
             /// <value>The material.</value>
-            public Material Material
+            public PhongMaterialCore Material
             {
                 set
                 {
@@ -1058,11 +1054,7 @@ namespace HelixToolkit.UWP
             {
                 var meshBuilder = new MeshBuilder(true, true);
                 this.meshBuilders.Add(meshBuilder);
-#if !CORE
-                this.materials.Add(PhongMaterials.Green);
-#else
-                this.materials.Add(new PhongMaterial() { DiffuseColor = new Color(0, 1, 0, 1) });
-#endif
+                this.materials.Add(new PhongMaterialCore() { DiffuseColor = new Color(0, 1, 0, 1) });
             }
 
             /// <summary>
@@ -1174,7 +1166,7 @@ namespace HelixToolkit.UWP
             /// Gets or sets the material.
             /// </summary>
             /// <value>The material.</value>
-            public Material Material { get; set; }
+            public PhongMaterialCore Material { get; set; }
 
             /// <summary>
             /// Gets the material from the specified path.
@@ -1185,7 +1177,7 @@ namespace HelixToolkit.UWP
             /// <returns>
             /// The material.
             /// </returns>
-            public Material GetMaterial(string texturePath)
+            public PhongMaterialCore GetMaterial(string texturePath)
             {
                 if (this.Material == null)
                 {
@@ -1201,7 +1193,7 @@ namespace HelixToolkit.UWP
             /// </summary>
             /// <param name="texturePath">The texture path.</param>
             /// <returns>A WPF material.</returns>
-            private Material CreateMaterial(string texturePath)
+            private PhongMaterialCore CreateMaterial(string texturePath)
             {
                 MemoryStream diffuseMapMS = null;
                 if (DiffuseMap != null)
@@ -1230,7 +1222,7 @@ namespace HelixToolkit.UWP
                         fs.CopyTo(alphaMapMS);
                     }
                 }
-                var mat = new PhongMaterial()
+                var mat = new PhongMaterialCore()
                 {
                     AmbientColor = this.Ambient,
                     //AmbientMap = this.AmbientMap,
