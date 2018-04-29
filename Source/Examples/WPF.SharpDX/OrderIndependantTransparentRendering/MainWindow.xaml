@@ -45,11 +45,15 @@
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
             <hx:LineGeometryModel3D
                 Geometry="{Binding GridModel}"
+                IsHitTestVisible="False"
                 Thickness="0.5"
                 Transform="{Binding GridTransform}"
                 Color="#4F4E4E" />
             <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ModelGeometry}" />
-            <hx:GroupModel3D x:Name="plane" ItemsSource="{Binding PlaneGeometry}" />
+            <hx:GroupModel3D
+                x:Name="plane"
+                ItemsSource="{Binding PlaneGeometry}" />
+            <hx:PostEffectMeshBorderHighlight EffectName="highlight" />
         </hx:Viewport3DX>
         <StackPanel
             Grid.Row="1"
