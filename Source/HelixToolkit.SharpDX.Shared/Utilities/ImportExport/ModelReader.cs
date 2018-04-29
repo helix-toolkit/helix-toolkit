@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 using System;
 using System.IO;
+using SharpDX;
 #if !NETFX_CORE
 using System.Windows.Threading;
 namespace HelixToolkit.Wpf.SharpDX
@@ -16,40 +17,35 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Mesh3DGroup = System.Collections.Generic.List<Object3D>;
-#if CORE
-    using Material = HelixToolkit.UWP.Model.MaterialCore;
-#endif
+    using Model;
     /// <summary>
     /// Class ModelReader.
     /// </summary>
     public abstract class ModelReader : IModelReader
     {
-#if !NETFX_CORE
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelReader"/> class.
         /// </summary>
-        /// <param name="dispatcher">The dispatcher.</param>
-        protected ModelReader(Dispatcher dispatcher = null)
+        protected ModelReader()
         {
-            this.DefaultMaterial = PhongMaterials.Gold;
-            this.Dispatcher = dispatcher;
+            this.DefaultMaterial = new PhongMaterialCore
+                {
+                    Name = "Gold",
+                    AmbientColor = new Color4(0.24725f, 0.1995f, 0.0745f, 1.0f),
+                    DiffuseColor = new Color4(0.75164f, 0.60648f, 0.22648f, 1.0f),
+                    SpecularColor = new Color4(0.628281f, 0.555802f, 0.366065f, 1.0f),
+                    EmissiveColor = new Color4(0.0f, 0.0f, 0.0f, 0.0f),
+                    SpecularShininess = 51.2f,
+                };
         }
-#endif
         /// <summary>
         /// Gets or sets the default material.
         /// </summary>
         /// <value>
         /// The default material.
         /// </value>
-        public Material DefaultMaterial { get; set; }
+        public MaterialCore DefaultMaterial { get; set; }
 
-#if !NETFX_CORE
-        /// <summary>
-        /// Gets the dispatcher.
-        /// </summary>
-        /// <value>The dispatcher.</value>
-        public Dispatcher Dispatcher { get; private set; }
-#endif
         /// <summary>
         /// Gets or sets the directory.
         /// </summary>
@@ -95,22 +91,5 @@ namespace HelixToolkit.UWP
         /// <param name="info"></param>
         /// <returns>The model.</returns>
         public abstract Mesh3DGroup Read(Stream s, ModelInfo info = default(ModelInfo));
-
-#if !NETFX_CORE
-        /// <summary>
-        /// Invokes the specified action on the dispatcher.
-        /// </summary>
-        /// <param name="action">The action.</param>
-        protected void Dispatch(Action action)
-        {
-            if (this.Dispatcher == null)
-            {
-                action();
-                return;
-            }
-
-            this.Dispatcher.Invoke(action);
-        }
-#endif
     }
 }

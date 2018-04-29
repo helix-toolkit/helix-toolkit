@@ -15,14 +15,14 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     public static class OctreeHelper
     {
-        public static LineGeometry3D CreateOctreeLineModel(this IOctree tree)
+        public static LineGeometry3D CreateOctreeLineModel(this IDynamicOctree tree)
         {
             var builder = new LineBuilder();
             CreateOctreeLineModel(tree, builder);
             return builder.ToLineGeometry3D();
         }
 
-        public static void CreateOctreeLineModel(this IOctree tree, LineBuilder builder)
+        public static void CreateOctreeLineModel(this IDynamicOctree tree, LineBuilder builder)
         {
             if (tree == null) return;
             var box = tree.Bound;
@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (tree.HasChildren)
             {
-                foreach (IOctree child in tree.ChildNodes)
+                foreach (IDynamicOctree child in tree.ChildNodes)
                 {
                     if (child != null)
                     {

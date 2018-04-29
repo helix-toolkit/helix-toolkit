@@ -27,9 +27,9 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        protected override IOctree CreateOctree(OctreeBuildParameter parameter)
+        protected override IOctreeBasic CreateOctree(OctreeBuildParameter parameter)
         {
-            return new LineGeometryOctree(Positions, Indices, parameter);
+            return new StaticLineGeometryOctree(Positions, Indices, parameter);
         }
 
         protected override bool CanCreateOctree()

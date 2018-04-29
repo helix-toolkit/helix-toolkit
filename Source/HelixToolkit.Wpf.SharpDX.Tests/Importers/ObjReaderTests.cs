@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
+using HelixToolkit.Wpf.SharpDX.Model;
 using NUnit.Framework;
 using SharpDX;
 
@@ -307,7 +308,7 @@ map_bump " + prefix + Path.GetFileName(tempTexBump) + @"
                 }
 
                 var model = _objReader.Read(tempObj);
-                var material = (PhongMaterial)model[0].Material;
+                var material = (PhongMaterialCore)model[0].Material;
                 using(var fs = new FileStream(tempTexDiffuse, FileMode.Open))
                 {
                     Compare(fs, material.DiffuseMap);

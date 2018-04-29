@@ -12,17 +12,17 @@ namespace HelixToolkit.Wpf.SharpDX
     public class OctreeLineGeometryModel3D : CompositeModel3D
     {
         public static readonly DependencyProperty OctreeProperty
-            = DependencyProperty.Register("Octree", typeof(IOctree), typeof(OctreeLineGeometryModel3D),
+            = DependencyProperty.Register("Octree", typeof(IOctreeBasic), typeof(OctreeLineGeometryModel3D),
                 new PropertyMetadata(null, (s, e) =>
                 {
                     var d = (s as OctreeLineGeometryModel3D);
                     if (e.OldValue != null)
                     {
-                        ((IOctree)e.OldValue).OnHit -= d.OctreeLineGeometryModel3D_OnHit;
+                        (e.OldValue as IOctreeBasic).OnHit -= d.OctreeLineGeometryModel3D_OnHit;
                     }
                     if (e.NewValue != null)
                     {
-                        ((IOctree)e.NewValue).OnHit += d.OctreeLineGeometryModel3D_OnHit;
+                        (e.NewValue as IOctreeBasic).OnHit += d.OctreeLineGeometryModel3D_OnHit;
                     }
                     d.CreateOctreeLines();
                 }));
@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty HitLineColorProperty
             = DependencyProperty.Register("HitLineColor", typeof(Media.Color), typeof(OctreeLineGeometryModel3D), new PropertyMetadata(Media.Colors.Red));
 
-        public IOctree Octree
+        public IOctreeBasic Octree
         {
             set
             {
@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (IOctree)GetValue(OctreeProperty);
+                return (IOctreeBasic)GetValue(OctreeProperty);
             }
         }
 
@@ -104,7 +104,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void OctreeLineGeometryModel3D_OnHit(object sender, EventArgs args)
         {
-            var node = sender as IOctree;
+            var node = sender as IOctreeBasic;
             if (node.HitPathBoundingBoxes.Count > 0 && Visibility == Visibility.Visible && IsRendering)
             {
                 HitVisual.Geometry = node.HitPathBoundingBoxes.CreatePathLines();

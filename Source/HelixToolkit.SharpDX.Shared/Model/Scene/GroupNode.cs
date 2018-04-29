@@ -45,7 +45,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <value>
         /// The octree.
         /// </value>
-        public IOctree Octree
+        public IOctreeBasic Octree
         {
             get
             {

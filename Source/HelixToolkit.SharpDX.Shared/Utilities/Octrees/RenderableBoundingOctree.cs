@@ -11,19 +11,19 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
     using Model.Scene;
     using System.Runtime.CompilerServices;
 
-    public class BoundableNodeOctree : OctreeBase<SceneNode>
+    public class BoundableNodeOctree : DynamicOctreeBase<SceneNode>
     {
         /// <summary>
         /// Only root contains dictionary
         /// </summary>
-        private Dictionary<Guid, IOctree> OctantDictionary = null;
-        public BoundableNodeOctree(List<SceneNode> objList, Stack<KeyValuePair<int, IOctree[]>> queueCache = null)
+        private Dictionary<Guid, IDynamicOctree> OctantDictionary = null;
+        public BoundableNodeOctree(List<SceneNode> objList, Stack<KeyValuePair<int, IDynamicOctree[]>> queueCache = null)
             : this(objList, null, queueCache)
         {
 
         }
 
-        public BoundableNodeOctree(List<SceneNode> objList, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IOctree[]>> queueCache = null)
+        public BoundableNodeOctree(List<SceneNode> objList, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IDynamicOctree[]>> queueCache = null)
             : base(null, paramter, queueCache)
         {
             Objects = objList;
@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
         }
 
-        protected BoundableNodeOctree(BoundingBox bound, List<SceneNode> objList, IOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IOctree[]>> queueCache)
+        protected BoundableNodeOctree(BoundingBox bound, List<SceneNode> objList, IDynamicOctree parent, OctreeBuildParameter paramter, Stack<KeyValuePair<int, IDynamicOctree[]>> queueCache)
             : base(ref bound, objList, parent, paramter, queueCache)
         { }
 
@@ -73,7 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             return item.BoundsWithTransform;
         }
 
-        protected override IOctree CreateNodeWithParent(ref BoundingBox bound, List<SceneNode> objList, IOctree parent)
+        protected override IDynamicOctree CreateNodeWithParent(ref BoundingBox bound, List<SceneNode> objList, IDynamicOctree parent)
         {
             return new BoundableNodeOctree(bound, objList, parent, parent.Parameter, this.stack);
         }
@@ -82,14 +82,14 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         {
             if (IsRoot)
             {
-                OctantDictionary = new Dictionary<Guid, IOctree>(Objects.Count);
+                OctantDictionary = new Dictionary<Guid, IDynamicOctree>(Objects.Count);
             }
             base.BuildTree();
             if (IsRoot)
             {
                 TreeTraversal(this, stack, null, (node) =>
                 {
-                    foreach (var item in (node as OctreeBase<SceneNode>).Objects)
+                    foreach (var item in (node as DynamicOctreeBase<SceneNode>).Objects)
                     {
                         OctantDictionary.Add(item.GUID, node);
                     }
@@ -97,14 +97,14 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
         }
 
-        public IOctree FindItemByGuid(Guid guid, SceneNode item, out int index)
+        public IDynamicOctree FindItemByGuid(Guid guid, SceneNode item, out int index)
         {
             var root = FindRoot(this) as BoundableNodeOctree;
             index = -1;
             if (root.OctantDictionary.ContainsKey(guid))
             {
                 var node = root.OctantDictionary[guid];
-                index = (node as OctreeBase<SceneNode>).Objects.IndexOf(item);
+                index = (node as DynamicOctreeBase<SceneNode>).Objects.IndexOf(item);
                 return root.OctantDictionary[guid];
             }
             else
@@ -132,14 +132,17 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
         }
 
-        public override bool Add(SceneNode item, out IOctree octant)
+        public override bool Add(SceneNode item, out IDynamicOctree octant)
         {
             if (base.Add(item, out octant))
             {
                 if (octant == null)
                 { throw new Exception("Output octant is null"); };
                 var root = FindRoot(this) as BoundableNodeOctree;
-                root.OctantDictionary.Add(item.GUID, octant);
+                if (!root.OctantDictionary.ContainsKey(item.GUID))
+                {
+                    root.OctantDictionary.Add(item.GUID, octant);
+                }
                 return true;
             }
             else
@@ -148,7 +151,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
         }
 
-        public override bool PushExistingToChild(int index, out IOctree octant)
+        public override bool PushExistingToChild(int index, out IDynamicOctree octant)
         {
             var item = Objects[index];
             if (base.PushExistingToChild(index, out octant))
@@ -169,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             return RemoveSafe(item, root);
         }
 
-        public bool RemoveSafe(SceneNode item, IOctree root)
+        public bool RemoveSafe(SceneNode item, IDynamicOctree root)
         {
             if (base.RemoveSafe(item))
             {
@@ -188,7 +191,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             return RemoveAt(index, root);
         }
 
-        public bool RemoveAt(int index, IOctree root)
+        public bool RemoveAt(int index, IDynamicOctree root)
         {
             var id = this.Objects[index].GUID;
             if (base.RemoveAt(index))
@@ -208,7 +211,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             return RemoveByBound(item, ref bound, root);
         }
 
-        public bool RemoveByBound(SceneNode item, ref BoundingBox bound, IOctree root)
+        public bool RemoveByBound(SceneNode item, ref BoundingBox bound, IDynamicOctree root)
         {
             if (base.RemoveByBound(item, ref bound))
             {
@@ -221,7 +224,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
         }
 
-        public override IOctree Expand(ref Vector3 direction)
+        public override IDynamicOctree Expand(ref Vector3 direction)
         {
             //Debug.WriteLine("Expaned");
             var root = this;
@@ -234,7 +237,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             return newRoot;
         }
 
-        public override IOctree Shrink()
+        public override IDynamicOctree Shrink()
         {
             var root = this;
             if (!IsRoot)
@@ -246,7 +249,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             return newRoot;
         }
 
-        private void TransferOctantDictionary(IOctree source, ref Dictionary<Guid, IOctree> dictionary)
+        private void TransferOctantDictionary(IDynamicOctree source, ref Dictionary<Guid, IDynamicOctree> dictionary)
         {
             if (source == this)
             {
@@ -257,7 +260,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void RemoveFromRootDictionary(IOctree node, Guid guid)
+        private void RemoveFromRootDictionary(IDynamicOctree node, Guid guid)
         {
             node = FindRoot(node);
             var root = node as BoundableNodeOctree;

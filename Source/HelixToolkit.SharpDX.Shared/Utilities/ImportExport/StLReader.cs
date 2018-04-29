@@ -25,13 +25,10 @@ namespace HelixToolkit.UWP
 {
     using Mesh3DGroup = System.Collections.Generic.List<Object3D>;    
     using Point3D = global::SharpDX.Vector3;
-#if CORE
-    using Material = Model.MaterialCore;
-    using PhongMaterial = Model.PhongMaterialCore;
-#endif
 #if NETFX_CORE
     using FileFormatException = Exception;
 #endif
+    using Model;
     /// <summary>
     /// Provides an importer for StereoLithography .StL files.
     /// </summary>
@@ -60,27 +57,14 @@ namespace HelixToolkit.UWP
         /// </summary>
         private Color lastColor;
 
-#if !NETFX_CORE
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StLReader" /> class.
-        /// </summary>
-        /// <param name="dispatcher">The dispatcher.</param>
-        public StLReader(Dispatcher dispatcher = null)
-            : base(dispatcher)
-        {
-            this.Meshes = new List<MeshBuilder>();
-            this.Materials = new List<Material>();
-        }
-#else
         /// <summary>
         /// Initializes a new instance of the <see cref="StLReader" /> class.
         /// </summary>
         public StLReader()
         {
             this.Meshes = new List<MeshBuilder>();
-            this.Materials = new List<Material>();
+            this.Materials = new List<MaterialCore>();
         }
-#endif
         /// <summary>
         /// Gets the file header.
         /// </summary>
@@ -93,7 +77,7 @@ namespace HelixToolkit.UWP
         /// Gets the materials.
         /// </summary>
         /// <value> The materials. </value>
-        public IList<Material> Materials { get; private set; }
+        public IList<MaterialCore> Materials { get; private set; }
 
         /// <summary>
         /// Gets the meshes.
@@ -134,27 +118,18 @@ namespace HelixToolkit.UWP
         /// <returns>The model.</returns>
         public Mesh3DGroup ToModel3D()
         {
-            Mesh3DGroup modelGroup = null;
-#if !NETFX_CORE
-            this.Dispatch(
-                () =>
+            Mesh3DGroup modelGroup = new Mesh3DGroup();
+            int i = 0;
+            foreach (var mesh in this.Meshes)
+            {
+                var gm = new Object3D
                 {
-#endif
-                    modelGroup = new Mesh3DGroup();
-                    int i = 0;
-                    foreach (var mesh in this.Meshes)
-                    {
-                        var gm = new Object3D
-                        {
-                            Geometry = mesh.ToMesh(),
-                            Material = this.Materials[i]
-                        };
-                        modelGroup.Add(gm);
-                        i++;
-                    }
-#if !NETFX_CORE
-                });
-#endif
+                    Geometry = mesh.ToMesh(),
+                    Material = this.Materials[i]
+                };
+                modelGroup.Add(gm);
+                i++;
+            }
             return modelGroup;
         }
 
@@ -437,7 +412,7 @@ namespace HelixToolkit.UWP
 
                 if (this.Materials.Count < this.index + 1)
                 {
-                    this.Materials.Add(new PhongMaterial() { DiffuseColor = currentColor.ToColor4() });
+                    this.Materials.Add(new PhongMaterialCore() { DiffuseColor = currentColor.ToColor4() });
                 }
             }
             else

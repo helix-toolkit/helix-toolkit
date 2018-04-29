@@ -118,7 +118,7 @@ namespace SimpleDemoW10
         {
             EffectsManager = new DefaultEffectsManager(new Logger());
 
-            Camera = new PerspectiveCamera() { Position = new Vector3(0, 0, -15), LookDirection = new Vector3(0, 0, 15), UpDirection = UpDirection };
+            Camera = new PerspectiveCamera() { Position = new Vector3(40, 10, 100), LookDirection = new Vector3(0, -10, -100), UpDirection = UpDirection };
 
             var builder = new MeshBuilder(true, true, true);
             builder.AddBox(new SharpDX.Vector3(0, 0, 0), 2, 2, 2);

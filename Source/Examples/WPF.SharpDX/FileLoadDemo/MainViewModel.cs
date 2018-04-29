@@ -15,6 +15,9 @@ namespace FileLoadDemo
     using System.IO;
     using System.ComponentModel;
     using DemoCore;
+    using HelixToolkit.Wpf.SharpDX.Model;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     public class MainViewModel : BaseViewModel
     {
@@ -57,7 +60,7 @@ namespace FileLoadDemo
             set;get;
         }
 
-
+        private SynchronizationContext context = SynchronizationContext.Current;
         public MainViewModel()
         {
             this.OpenFileCommand = new DelegateCommand(this.OpenFile);
@@ -77,18 +80,22 @@ namespace FileLoadDemo
             {
                 return;
             }
-            if (Path.GetExtension(path).ToLower() == ".3ds")
-            {
-                Load3ds(path);
-            }
-            else if(Path.GetExtension(path).ToLower() == ".obj")
-            {
-                LoadObj(path);
-            }
-            else if(Path.GetExtension(path).ToLower() == ".stl")
-            {
-                LoadStl(path);
-            }
+            ModelGeometry.Clear();
+            Task.Run(() => {
+                if (Path.GetExtension(path).ToLower() == ".3ds")
+                {
+                    Load3ds(path);
+                }
+                else if(Path.GetExtension(path).ToLower() == ".obj")
+                {
+                    LoadObj(path);
+                }
+                else if(Path.GetExtension(path).ToLower() == ".stl")
+                {
+                    LoadStl(path);
+                }
+            });
+
         }
         public void Load3ds(string path)
         {
@@ -111,23 +118,26 @@ namespace FileLoadDemo
             AttachModelList(objCol);
         }
         public void AttachModelList(List<Object3D> objs)
-        {
-            this.ModelGeometry = new ObservableElement3DCollection();
+        {            
             foreach (var ob in objs)
             {
-                var s = new MeshGeometryModel3D
-                {
-                    Geometry = ob.Geometry,
-                    Material = ob.Material,
-                };
-                if (ob.Transform != null && ob.Transform.Count > 0)
-                {
-                    s.Instances = ob.Transform;
-                }
-                this.ModelGeometry.Add(s);
-
+                ob.Geometry.UpdateOctree();
+                context.Post((o) => {
+                    var s = new MeshGeometryModel3D
+                    {
+                        Geometry = ob.Geometry,
+                    };
+                    if(ob.Material is PhongMaterialCore p)
+                    {
+                        s.Material = p;
+                    }
+                    if (ob.Transform != null && ob.Transform.Count > 0)
+                    {
+                        s.Instances = ob.Transform;
+                    }
+                    this.ModelGeometry.Add(s);
+                }, null);
             }
-            this.OnPropertyChanged("ModelGeometry");
         }
         private string OpenFileDialog(string filter)
         {

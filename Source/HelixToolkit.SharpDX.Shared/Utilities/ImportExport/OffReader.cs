@@ -20,11 +20,8 @@ namespace HelixToolkit.UWP
     using Point = global::SharpDX.Vector2;
     using Point3D = global::SharpDX.Vector3;
     using global::SharpDX;
+    using Model;
 
-#if CORE
-    using Material = Model.MaterialCore;
-    using PhongMaterial = Model.PhongMaterialCore;
-#endif
     /// <summary>
     /// A Geomview Object File Format (OFF) reader.
     /// </summary>
@@ -134,10 +131,8 @@ namespace HelixToolkit.UWP
             modelGroup = new Object3DGroup();
             var g = this.CreateMeshGeometry3D(info);
             var gm = new Object3D() { Geometry = g, Transform =  new List<Matrix>() };
-#if !CORE
-            gm.Material = PhongMaterials.DefaultVRML;
-#else
-            gm.Material = new PhongMaterial()
+
+            gm.Material = new PhongMaterialCore()
             {
                 Name = "DefaultVRML",
                 AmbientColor = new Color(0.2f, 0.2f, 0.2f, 1.0f),
@@ -146,7 +141,6 @@ namespace HelixToolkit.UWP
                 EmissiveColor = new Color(0.0f, 0.0f, 0.0f, 1.0f),
                 SpecularShininess = 25.6f,
             };
-#endif
             modelGroup.Add(gm);
             return modelGroup;
         }

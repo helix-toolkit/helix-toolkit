@@ -23,12 +23,13 @@ namespace HelixToolkit.UWP
 #if NETFX_CORE
     using FileFormatException = Exception;
 #endif
+    using Model;
     /// <summary>
     ///Ported from HelixToolkit.Wpf
     /// </summary>
     public class StudioReader : IModelReader
     {
-        private readonly Dictionary<string, Material> materials = new Dictionary<string, Material>();
+        private readonly Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();
         private enum ChunkID
         {
             //// Primary chunk
@@ -304,7 +305,7 @@ namespace HelixToolkit.UWP
                 diffuse.A = (byte)(opacity * 255);
                 luminance.A = (byte)(opacity * 255);
             }
-            var material = new PhongMaterial()
+            var material = new PhongMaterialCore()
             {
                 DiffuseColor = diffuse,
                 AmbientColor = luminance, //not really sure about this, lib3ds uses 0xA010 as AmbientColor
@@ -414,9 +415,6 @@ namespace HelixToolkit.UWP
             if (facesets == null || facesets.Count == 0)
             {
                 triangleIndices = ConvertFaceIndices(faces, faces);
-#if !CORE
-                CreateMesh(positions, textureCoordinates, triangleIndices, transforms, out normals, out tangents, out bitangents, PhongMaterials.Gray);
-#else
                 CreateMesh(positions, textureCoordinates, triangleIndices, transforms, out normals, out tangents, out bitangents, new PhongMaterial()
                 {
                     Name = "Gray",
@@ -426,7 +424,6 @@ namespace HelixToolkit.UWP
                     EmissiveColor = new Color4(0.0f, 0.0f, 0.0f, 1.0f),
                     SpecularShininess = 12.8f,
                 });
-#endif
                 //Add default get and setter
             }
             else
@@ -434,7 +431,7 @@ namespace HelixToolkit.UWP
                 foreach (var fm in facesets)
                 {
                     triangleIndices = ConvertFaceIndices(fm.Faces, faces);
-                    Material mat = null;
+                    MaterialCore mat = null;
                     if (this.materials.ContainsKey(fm.Name))
                     {
                         mat = this.materials[fm.Name];
@@ -458,7 +455,7 @@ namespace HelixToolkit.UWP
         /// <param name="material"></param>
         /// <param name="transforms"></param>
         private void CreateMesh(Vector3Collection positions, Vector2Collection textureCoordinates, IntCollection triangleIndices, List<Matrix> transforms,
-            out Vector3Collection normals, out Vector3Collection tangents, out Vector3Collection bitangents, Material material)
+            out Vector3Collection normals, out Vector3Collection tangents, out Vector3Collection bitangents, MaterialCore material)
         {
             ComputeNormals(positions, triangleIndices, out normals);
             if (textureCoordinates == null)

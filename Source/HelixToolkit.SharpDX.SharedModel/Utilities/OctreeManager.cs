@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The octree property
         /// </summary>
         public static readonly DependencyProperty OctreeProperty
-            = DependencyProperty.Register("Octree", typeof(IOctree), typeof(OctreeManagerBaseWrapper),
+            = DependencyProperty.Register("Octree", typeof(IOctreeBasic), typeof(OctreeManagerBaseWrapper),
                 new PropertyMetadata(null));
         /// <summary>
         /// The enable octree output property
@@ -75,7 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The octree.
         /// </value>
-        public IOctree Octree
+        public IOctreeBasic Octree
         {
             set
             {
@@ -83,7 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (IOctree)GetValue(OctreeProperty);
+                return (IOctreeBasic)GetValue(OctreeProperty);
             }
         }
         /// <summary>

@@ -85,13 +85,12 @@
                 Geometry="{Binding Sphere}"
                 Material="{Binding LightModelMaterial}"
                 Transform="{Binding Light4Transform}" />
-            <hx:MeshGeometryModel3D
-                x:Name="carModel"
-                CullMode="Back"
-                FillMode="{Binding FillMode}"
-                Geometry="{Binding Model}"
-                Material="{Binding ModelMaterial}"
-                Transform="{Binding ModelTransform}" />
+            <hx:GroupModel3D ItemsSource="{Binding LanderModels}" Transform="{Binding ModelTransform}">
+                <hx:GroupModel3D.OctreeManager>
+                    <hx:GeometryModel3DOctreeManager />
+                </hx:GroupModel3D.OctreeManager>
+            </hx:GroupModel3D>
+
             <hx:MeshGeometryModel3D
                 x:Name="floor"
                 CullMode="Back"
@@ -112,7 +111,7 @@
             <CheckBox
                 Margin="4"
                 Foreground="White"
-                IsChecked="{Binding ElementName=carModel, Path=RenderWireframe}">
+                IsChecked="{Binding ElementName=floor, Path=RenderWireframe}">
                 Show Wireframe
             </CheckBox>
         </StackPanel>

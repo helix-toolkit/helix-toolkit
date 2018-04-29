@@ -23,11 +23,11 @@
                             VerticalAlignment="Stretch"
                             DataContext="{TemplateBinding DataContext}" />
                         <ItemsControl
+                            x:Name="PART_Items"
                             Focusable="False"
                             IsHitTestVisible="False"
                             Style="{x:Null}"
-                            Visibility="Collapsed"
-                            x:Name="PART_Items">
+                            Visibility="Collapsed">
                             <hx:ViewBoxModel3D
                                 x:Name="PART_ViewCube"
                                 EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"

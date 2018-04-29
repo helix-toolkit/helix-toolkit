@@ -71,7 +71,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-        private IOctree Octree
+        private IOctreeBasic Octree
         {
             get { return (SceneNode as GroupNode).OctreeManager == null ? null : (SceneNode as GroupNode).OctreeManager.Octree; }
         }
