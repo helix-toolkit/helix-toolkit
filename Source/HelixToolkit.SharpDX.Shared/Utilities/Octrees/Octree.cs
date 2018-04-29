@@ -1646,13 +1646,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
             var isHit = false;
-            var result = new HitTestResult();
-            result.Distance = double.MaxValue;
             var bound = Bound;
             //Hit test in local space.
             if (rayModel.Intersects(ref bound))
             {
                 isIntersect = true;
+                if (Objects.Count == 0)
+                {
+                    return false;
+                }
+                var result = new HitTestResult();
+                result.Distance = double.MaxValue;
                 for (int i = 0; i < Objects.Count; ++i)
                 {
                     var idx = Objects[i].Key * 3;
@@ -1721,12 +1725,16 @@ namespace HelixToolkit.Wpf.SharpDX
         public override bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
-            var tempResult = new HitTestResult();
-            tempResult.Distance = float.MaxValue;
             var containment = Bound.Contains(ref sphere);
             if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
             {
                 isIntersect = true;
+                if (Objects.Count == 0)
+                {
+                    return false;
+                }
+                var tempResult = new HitTestResult();
+                tempResult.Distance = float.MaxValue;
                 for (int i = 0; i < Objects.Count; ++i)
                 {
                     containment = Objects[i].Value.Contains(sphere);
@@ -1909,8 +1917,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
             var isHit = false;
-            var result = new LineHitTestResult { IsValid = false, Distance = double.MaxValue };
-            result.Distance = double.MaxValue;
+
             var bound = Bound;
             bound.Maximum += new Vector3(hitThickness);
             bound.Minimum -= new Vector3(hitThickness);
@@ -1919,6 +1926,12 @@ namespace HelixToolkit.Wpf.SharpDX
             if (rayModel.Intersects(ref bound))
             {
                 isIntersect = true;
+                if (Objects.Count == 0)
+                {
+                    return false;
+                }
+                var result = new LineHitTestResult { IsValid = false, Distance = double.MaxValue };
+                result.Distance = double.MaxValue;
                 for (int i = 0; i < Objects.Count; ++i)
                 {
                     var idx = Objects[i].Key * 2;
@@ -1991,12 +2004,16 @@ namespace HelixToolkit.Wpf.SharpDX
         public override bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
-            var tempResult = new LineHitTestResult();
-            tempResult.Distance = float.MaxValue;
             var containment = Bound.Contains(ref sphere);
             if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
             {
                 isIntersect = true;
+                if (Objects.Count == 0)
+                {
+                    return false;
+                }
+                var tempResult = new LineHitTestResult();
+                tempResult.Distance = float.MaxValue;
                 for (int i = 0; i < Objects.Count; ++i)
                 {
                     containment = Objects[i].Value.Contains(sphere);
@@ -2148,12 +2165,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 return false;
             }
             var isHit = false;
-            var result = new HitTestResult();
-            result.Distance = double.MaxValue;
+
             var bound = Bound;
 
             if (rayModel.Intersects(ref bound))
             {
+                isIntersect = true;
+                if(Objects.Count == 0)
+                {
+                    return false;
+                }
+                var result = new HitTestResult();
+                result.Distance = double.MaxValue;
                 var svpm = context.ScreenViewProjectionMatrix;
                 var smvpm = modelMatrix * svpm;
                 var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
@@ -2162,7 +2185,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Vector4.Transform(ref pos4, ref svpm, out pos4);
                 var clickPoint = clickPoint4.ToVector3();
 
-                isIntersect = true;
+                
                 var dist = hitThickness;
                 for (int i = 0; i < Objects.Count; ++i)
                 {
@@ -2235,12 +2258,16 @@ namespace HelixToolkit.Wpf.SharpDX
         public override bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
-            var resultTemp = new HitTestResult();
-            resultTemp.Distance = float.MaxValue;
             var containment = Bound.Contains(ref sphere);
             if (containment == ContainmentType.Contains || containment == ContainmentType.Intersects)
             {
                 isIntersect = true;
+                if (Objects.Count == 0)
+                {
+                    return false;
+                }
+                var resultTemp = new HitTestResult();
+                resultTemp.Distance = float.MaxValue;
                 for (int i = 0; i < Objects.Count; ++i)
                 {
                     var p = Positions[Objects[i]];
