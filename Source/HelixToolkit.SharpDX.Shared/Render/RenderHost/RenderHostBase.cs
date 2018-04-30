@@ -733,7 +733,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             renderBuffer = Collect(CreateRenderBuffer());
             renderBuffer.OnNewBufferCreated += RenderBuffer_OnNewBufferCreated;
             renderBuffer.OnDeviceLost += RenderBuffer_OnDeviceLost;
-
+            renderer?.Detach();
             RemoveAndDispose(ref renderer);
             renderer = Collect(CreateRenderer());
             renderer.Attach(this);
