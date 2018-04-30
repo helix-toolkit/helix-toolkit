@@ -48,6 +48,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 c0 = c1 = c2 = c3 = c4 = c5 = c6 = c7 = -1;
             }
 
+            public Octant(int parent, int index)
+            {
+                Parent = parent;
+                Index = index;
+                Bound = new BoundingBox();
+                Start = End = 0;
+                IsValid = true;
+                ActiveNode = 0;
+                IsBuilt = false;
+                c0 = c1 = c2 = c3 = c4 = c5 = c6 = c7 = -1;
+            }
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int GetChildIndex(int index)
             {
@@ -411,7 +423,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             int parent = -1;
             int curr = -1;
-            var dummy = new Octant();
+            var dummy = new Octant(-1, -1);
             dummy[0] = 0;
             var parentOctant = dummy;
             while (true)
@@ -485,7 +497,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             int parent = -1;
             int curr = -1;
-            var dummy = new Octant();
+            var dummy = new Octant(-1, -1);
             dummy[0] = 0;
             var parentOctant = dummy;
             while (true)
@@ -562,7 +574,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             int parent = -1;
             int curr = -1;
-            var dummy = new Octant();
+            var dummy = new Octant(-1, -1);
             dummy[0] = 0;
             var parentOctant = dummy;
             while (true)
@@ -619,7 +631,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             int parent = -1;
             int curr = -1;
-            var dummy = new Octant();
+            var dummy = new Octant(-1, -1);
             dummy[0] = 0;
             var parentOctant = dummy;
             while (true)
