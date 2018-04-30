@@ -26,8 +26,8 @@ VSInputBT main(VSInputBTInstancing input)
 
         if (pHasInstanceParams)
         {
-            output.t0 = input.t0 * input.tScale + input.tOffset;
-            output.t3 = input.t3 * input.tScale + input.tOffset;
+            output.t0 = mad(input.tScale, input.t0, input.tOffset);
+            output.t3 = mad(input.tScale, input.t3, input.tOffset);
             output.background = input.background * input.diffuseC;
         }
     }

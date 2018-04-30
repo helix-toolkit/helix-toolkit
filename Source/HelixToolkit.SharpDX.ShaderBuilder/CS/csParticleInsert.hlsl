@@ -44,7 +44,7 @@ void main(uint3 GroupThreadID : SV_GroupThreadID)
 
     float3 dir = direction[GroupThreadID.x];
 	// Initialize position to the current emitter location
-    p.position = EmitterLocation + dir * float3(f0 * EmitterRadius, f1 * EmitterRadius, f2 * EmitterRadius);
+    p.position = mad(dir, float3(f0 * EmitterRadius, f1 * EmitterRadius, f2 * EmitterRadius), EmitterLocation);
 
 	// Initialize direction to a randomly reflected vector
     p.velocity = normalize(reflect(dir, RandomVector)) * InitialVelocity;

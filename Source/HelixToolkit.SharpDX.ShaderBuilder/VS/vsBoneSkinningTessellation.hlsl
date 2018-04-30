@@ -55,7 +55,7 @@ HSInput main(VSBoneSkinInput input)
     output.t1 = inputt1;
     output.t2 = inputt2;
     output.c = input.c;
-    output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
+    output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
 	return output;
 }
 

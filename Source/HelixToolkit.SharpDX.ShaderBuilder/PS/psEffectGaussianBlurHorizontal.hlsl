@@ -16,14 +16,15 @@ float4 main(MeshOutlinePS_INPUT input) : SV_Target
 {
     float4 color = texDiffuseMap.Sample(samplerDiffuse, input.Tex);
     float a = color.a * weight[0];
+    float k = 1 / vViewport.x * Param._m00;
     [unroll]
     for (int i = 1; i < KSize; ++i)
     {
-        float offX = offset[i] / vViewport.x * Param._m00;
+        float offX = offset[i] * k;
         float4 c = texDiffuseMap.Sample(samplerDiffuse, input.Tex + float2(offX, 0));
         c += texDiffuseMap.Sample(samplerDiffuse, input.Tex - float2(offX, 0));
         color += c;
-        a += c.a * weight[i];
+        a = mad(weight[i], c.a, a);
     }
     color.a = a;
     return saturate(color);

@@ -15,12 +15,14 @@ float lookUp(in float4 loc, in float2 offset)
 float shadowStrength(float4 sp)
 {
     sp = sp / sp.w;
-    if (sp.x < -1.0f || sp.x > 1.0f || sp.y < -1.0f || sp.y > 1.0f || sp.z < 0.0f || sp.z > 1.0f)
+    float2 xy = abs(sp).xy - float2(1, 1);
+    
+    if (xy.x > 0 || xy.y > 0 || sp.z < 0 || sp.z > 1)
     {
         return 1;
     }
-    sp.x = sp.x / 2 + 0.5f;
-    sp.y = sp.y / -2 + 0.5f;
+    sp.x = mad(0.5, sp.x, 0.5f);
+    sp.y = mad(-0.5, sp.y, 0.5f);
 
 	//apply shadow map bias
     sp.z -= vShadowMapInfo.z;

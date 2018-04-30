@@ -44,9 +44,9 @@ HSInput main(VSInput input)
     output.t1 = inputt1;
     output.t2 = inputt2;
     output.c = input.c;
-    output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
+    output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
     float tess = saturate((minTessDistance - distance(output.p, vEyePos)) / (minTessDistance - maxTessDistance));
-    output.tessF = minTessFactor + tess * (maxTessFactor - minTessFactor);
+    output.tessF = mad(tess, (maxTessFactor - minTessFactor), minTessFactor);
     return output;
 }
 #endif

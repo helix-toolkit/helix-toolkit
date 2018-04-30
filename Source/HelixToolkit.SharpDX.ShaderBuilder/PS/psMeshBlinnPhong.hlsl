@@ -27,9 +27,9 @@ float3 calcNormal(PSInput input)
 		// Sample the texel in the bump map.
         float4 bumpMap = texNormalMap.Sample(samplerNormal, input.t);
 		// Expand the range of the normal value from (0, +1) to (-1, +1).
-        bumpMap = (bumpMap * 2.0f) - 1.0f;
+        bumpMap = mad(2.0f, bumpMap, -1.0f);
 		// Calculate the normal from the data in the bump map.
-        input.n = input.n + bumpMap.x * input.t1 + bumpMap.y * input.t2;
+        input.n += mad(bumpMap.x, input.t1, bumpMap.y * input.t2);
     }
     return normalize(input.n);
 }
@@ -41,8 +41,11 @@ float3 calcNormal(PSInput input)
 // Returns the sum of the diffuse and specular terms in the Blinn-Phong reflection model.
 float4 calcBlinnPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, float4 diffuse, float3 L, float3 H)
 {
-    float4 Id = vMaterialTexture * diffuse * saturate(dot(N, L));
-    float4 Is = vMaterialSpecular * pow(saturate(dot(N, H)), sMaterialShininess);
+    //float4 Id = vMaterialTexture * diffuse * saturate(dot(N, L));
+    //float4 Is = vMaterialSpecular * pow(saturate(dot(N, H)), sMaterialShininess);
+    float4 f = lit(dot(N, L), dot(N, H), sMaterialShininess);
+    float4 Id = f.y * vMaterialTexture * diffuse;
+    float4 Is = min(f.z, vMaterialTexture.w) * vMaterialSpecular;
     return (Id + Is) * LColor;
 }
 
@@ -118,7 +121,7 @@ float4 main(PSInput input) : SV_Target
             d = d / dl; // normalized light dir						
             float3 h = normalize(eye + d); // half direction for specular
             float att = 1.0f / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
-            DI += att * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
+            DI = mad(att, calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h), DI);
         }
         else if (Lights[i].iLightType == 3)  // spot
         {
@@ -144,7 +147,7 @@ float4 main(PSInput input) : SV_Target
             float rho = dot(-d, sd);
             float spot = pow(saturate((rho - Lights[i].vLightSpot.x) / (Lights[i].vLightSpot.y - Lights[i].vLightSpot.x)), Lights[i].vLightSpot.z);
             float att = spot / (Lights[i].vLightAtt.x + Lights[i].vLightAtt.y * dl + Lights[i].vLightAtt.z * dl * dl);
-            DI += att * calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h);
+            DI = mad(att, calcBlinnPhongLighting(Lights[i].vLightColor, vMaterialTexture, input.n, input.cDiffuse, d, h), DI);
         }
     }
     DI.rgb *= s;

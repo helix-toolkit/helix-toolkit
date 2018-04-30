@@ -64,7 +64,7 @@ PSInput main(VSInput input)
 	output.t = input.t;
 	output.c = input.c;
     output.cDiffuse = vMaterialDiffuse;
-	output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
+    output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
 
 
 	if (bHasNormalMap)
