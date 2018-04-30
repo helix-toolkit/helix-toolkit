@@ -15,7 +15,7 @@ static const float weight[KSize] =
 float4 main(MeshOutlinePS_INPUT input) : SV_Target
 {
     float4 color = texDiffuseMap.Sample(samplerDiffuse, input.Tex)* weight[0];
-    float k = 1 / vViewport.x;
+    float k = vViewport.z;
     [unroll]
     for (int i = 1; i < KSize; ++i)
     {

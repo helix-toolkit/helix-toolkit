@@ -23,8 +23,8 @@ float2 projToWindow(in float4 pos)
 //--------------------------------------------------------------------------------------
 float4 windowToProj(in float2 pos, in float z, in float w)
 {
-    return float4(((pos.x * 2.0 / vViewport.x) - 1.0) * w,
-                  ((pos.y * 2.0 / vViewport.y) - 1.0) * -w,
+    return float4(((pos.x * 2.0 * vViewport.z) - 1.0) * w,
+                  ((pos.y * 2.0 * vViewport.w) - 1.0) * -w,
                   z, w);
 }
 
@@ -33,7 +33,7 @@ float4 windowToProj(in float2 pos, in float z, in float w)
 //--------------------------------------------------------------------------------------
 float2 windowToNdc(in float2 pos)
 {
-    return float2((pos.x / vViewport.x) * 2.0, (pos.y / vViewport.y) * 2.0);
+    return float2((pos.x * vViewport.z) * 2.0, (pos.y * vViewport.w) * 2.0);
 }
 
 float whengt(float l, float cmp)
