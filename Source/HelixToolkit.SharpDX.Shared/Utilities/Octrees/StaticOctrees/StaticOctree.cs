@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP
@@ -20,16 +21,15 @@ namespace HelixToolkit.Wpf.SharpDX
     public abstract class StaticOctree<T> : IOctreeBasic where T : struct
     {
         public const int OctantSize = 8;
-
+        [StructLayout(LayoutKind.Sequential)]
         protected struct Octant
-        {
+        {           
             public BoundingBox Bound { private set; get; }
-            public int Parent { private set; get; }
-            public int Index { private set; get; }
             private int c0, c1, c2, c3, c4, c5, c6, c7;
+            public int Parent { private set; get; }
+            public int Index { private set; get; }           
             public int Start { set; get; }
             public int End { set; get; }
-            public bool IsValid { set; get; }
             public bool IsBuilt { set; get; }
             public byte ActiveNode { private set; get; }
             public bool HasChildren { get { return ActiveNode != 0; } }
@@ -42,7 +42,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 Index = index;
                 Bound = bound;
                 Start = End = 0;
-                IsValid = true;
                 ActiveNode = 0;
                 IsBuilt = false;
                 c0 = c1 = c2 = c3 = c4 = c5 = c6 = c7 = -1;
@@ -54,7 +53,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 Index = index;
                 Bound = new BoundingBox();
                 Start = End = 0;
-                IsValid = true;
                 ActiveNode = 0;
                 IsBuilt = false;
                 c0 = c1 = c2 = c3 = c4 = c5 = c6 = c7 = -1;
@@ -123,6 +121,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 octant.End = length;
                 array[0] = octant;
                 ++Count;
+                //var size = System.Runtime.InteropServices.Marshal.SizeOf(octant);
             }
             /// <summary>
             /// Adds the specified parent index.
@@ -164,8 +163,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     array = newArray;
                 }
             }
-
-            private Octant InvalidOctant = new Octant() { IsValid = false };
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public ref Octant Get(int i)
@@ -521,7 +518,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         if (Parameter.RecordHitPathBoundingBoxes && nodeHit)
                         {
                             var n = octant;
-                            while (n.IsValid)
+                            while (true)
                             {
                                 hitPathBoundingBoxes.Add(n.Bound);
                                 if (n.Parent >= 0)
