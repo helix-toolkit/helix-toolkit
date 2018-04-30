@@ -660,7 +660,19 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return isHit;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="point"></param>
+        /// <param name="radius"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public bool FindNearestPointByPointAndSearchRadius(IRenderContext context, ref Vector3 point, float radius, ref List<HitTestResult> result)
+        {
+            var sphere = new global::SharpDX.BoundingSphere(point, radius);
+            return FindNearestPointBySphere(context, ref sphere, ref result);
+        }
         /// <summary>
         /// Find nearest point by sphere on current node only.
         /// </summary>
