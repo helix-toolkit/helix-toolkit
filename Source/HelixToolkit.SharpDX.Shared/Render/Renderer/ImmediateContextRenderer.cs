@@ -4,9 +4,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 
 //#define OLD
-
-using SharpDX.Direct3D11;
 using System.Collections.Generic;
+using SharpDX.DXGI;
 #if DX11_1
 using Device = global::SharpDX.Direct3D11.Device1;
 #endif
@@ -234,8 +233,25 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         public virtual void RenderToBackBuffer(IRenderContext context, ref RenderParameter parameter)
         {
-            postFXAACore.FXAALevel = context.RenderHost.RenderConfiguration.FXAALevel;
-            postFXAACore.Render(context, ImmediateContext);
+            var buffer = context.RenderHost.RenderBuffer;
+            if (context.RenderHost.RenderConfiguration.FXAALevel == FXAALevel.None || buffer.ColorBufferSampleDesc.Count > 1)
+            {
+                ImmediateContext.DeviceContext.Flush();               
+                switch (buffer.ColorBufferSampleDesc.Count)
+                {
+                    case 1:
+                        ImmediateContext.DeviceContext.CopyResource(buffer.ColorBuffer.Resource, buffer.BackBuffer.Resource);
+                        break;
+                    default:
+                        ImmediateContext.DeviceContext.ResolveSubresource(buffer.ColorBuffer.Resource, 0, buffer.BackBuffer.Resource, 0, Format.B8G8R8A8_UNorm);
+                        break;
+                }
+            }
+            else
+            {
+                postFXAACore.FXAALevel = context.RenderHost.RenderConfiguration.FXAALevel;
+                postFXAACore.Render(context, ImmediateContext);
+            }
         }
 
         protected override void OnDispose(bool disposeManagedResources)

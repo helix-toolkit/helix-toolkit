@@ -736,6 +736,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
             RemoveAndDispose(ref renderer);
             renderer = Collect(CreateRenderer());
+            renderer.Attach(this);
             OnInitializeBuffers(renderBuffer, renderer);
         }
 
@@ -801,8 +802,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 
             renderContext2D = Collect(CreateRenderContext2D(deviceResources.DeviceContext2D));
-
-            renderer.Attach(this);
         }
         /// <summary>
         /// Creates the render context.
@@ -864,6 +863,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 renderBuffer.OnNewBufferCreated -= RenderBuffer_OnNewBufferCreated;
                 renderBuffer.OnDeviceLost -= RenderBuffer_OnDeviceLost;
             }
+            renderer?.Detach();
             RemoveAndDispose(ref renderer);
             RemoveAndDispose(ref renderBuffer);
         }
@@ -876,7 +876,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             RemoveAndDispose(ref renderContext);
             RemoveAndDispose(ref renderContext2D);
             Viewport?.Detach();
-            renderer?.Detach();
         }
         /// <summary>
         /// Resizes
