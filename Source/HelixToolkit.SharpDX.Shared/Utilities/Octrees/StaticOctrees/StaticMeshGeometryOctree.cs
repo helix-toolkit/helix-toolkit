@@ -27,14 +27,22 @@ namespace HelixToolkit.Wpf.SharpDX
         /// 
         /// </summary>
         protected readonly IList<int> Indices;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StaticMeshGeometryOctree"/> class.
+        /// </summary>
+        /// <param name="positions">The positions.</param>
+        /// <param name="indices">The indices.</param>
+        /// <param name="parameter">The parameter.</param>
         public StaticMeshGeometryOctree(IList<Vector3> positions, IList<int> indices, OctreeBuildParameter parameter)
             : base(parameter)
         {
             Positions = positions;
             Indices = indices;
         }
-
+        /// <summary>
+        /// Gets the objects.
+        /// </summary>
+        /// <returns></returns>
         protected override KeyValuePair<int, BoundingBox>[] GetObjects()
         {
             var objects = new KeyValuePair<int, BoundingBox>[Indices.Count / 3];

@@ -18,9 +18,16 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    /// <summary>
+    /// Base class for array based static octree.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class StaticOctree<T> : IOctreeBasic where T : struct
     {
         public const int OctantSize = 8;
+        /// <summary>
+        /// Octant structure, size = 80 bytes
+        /// </summary>
         [StructLayout(LayoutKind.Sequential)]
         protected struct Octant
         {           
@@ -35,7 +42,12 @@ namespace HelixToolkit.Wpf.SharpDX
             public bool HasChildren { get { return ActiveNode != 0; } }
             public bool IsEmpty { get { return Count == 0; } }
             public int Count { get { return End - Start; } }
-
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Octant"/> struct.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
+            /// <param name="index">The index.</param>
+            /// <param name="bound">The bound.</param>
             public Octant(int parent, int index, ref BoundingBox bound)
             {
                 Parent = parent;
@@ -46,7 +58,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 IsBuilt = false;
                 c0 = c1 = c2 = c3 = c4 = c5 = c6 = c7 = -1;
             }
-
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Octant"/> struct.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
+            /// <param name="index">The index.</param>
             public Octant(int parent, int index)
             {
                 Parent = parent;
@@ -57,7 +73,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 IsBuilt = false;
                 c0 = c1 = c2 = c3 = c4 = c5 = c6 = c7 = -1;
             }
-
+            /// <summary>
+            /// Gets the index of the child.
+            /// </summary>
+            /// <param name="index">The index.</param>
+            /// <returns></returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int GetChildIndex(int index)
             {
@@ -75,7 +95,11 @@ namespace HelixToolkit.Wpf.SharpDX
                         return -1;
                 }
             }
-
+            /// <summary>
+            /// Sets the index of the child.
+            /// </summary>
+            /// <param name="index">The index.</param>
+            /// <param name="value">The value.</param>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void SetChildIndex(int index, int value)
             {
@@ -95,25 +119,44 @@ namespace HelixToolkit.Wpf.SharpDX
                     ActiveNode |= (byte)(1 << index);
                 }
             }
-
+            /// <summary>
+            /// Gets or sets the <see cref="System.Int32"/> at the specified index.
+            /// </summary>
+            /// <value>
+            /// The <see cref="System.Int32"/>.
+            /// </value>
+            /// <param name="index">The index.</param>
+            /// <returns></returns>
             public int this[int index]
             {
                 get { return GetChildIndex(index); }
                 set { SetChildIndex(index, value); }
             }
-
+            /// <summary>
+            /// Determines whether [has child at index] [the specified index].
+            /// </summary>
+            /// <param name="index">The index.</param>
+            /// <returns>
+            ///   <c>true</c> if [has child at index] [the specified index]; otherwise, <c>false</c>.
+            /// </returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool HasChildAtIndex(int index)
             {
                 return (ActiveNode & (byte)(1 << index)) != 0;
             }
         }
-
+        /// <summary>
+        /// Octant array, used to manage a internal octant array, which is the storage for the entire octree
+        /// </summary>
         protected sealed class OctantArray
         {
             private Octant[] array = new Octant[128];
             public int Count { private set; get; }
-
+            /// <summary>
+            /// Initializes a new instance of the <see cref="OctantArray"/> class.
+            /// </summary>
+            /// <param name="bound">The bound.</param>
+            /// <param name="length">The length.</param>
             public OctantArray(BoundingBox bound, int length)
             {
                 var octant = new Octant(-1, 0, ref bound);
@@ -153,7 +196,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 newParent = parent;
                 return true;
             }
-
+            /// <summary>
+            /// Compacts the octree array, remove all unused storage space at the end of the array.
+            /// </summary>
             public void Compact()
             {
                 if (array.Length > Count)
@@ -163,13 +208,21 @@ namespace HelixToolkit.Wpf.SharpDX
                     array = newArray;
                 }
             }
-
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="i"></param>
+            /// <returns></returns>
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public ref Octant Get(int i)
             {
                 return ref array[i];
             }
-
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="index"></param>
+            /// <returns></returns>
             public Octant this[int index]
             {
                 get { return array[index]; }
@@ -230,7 +283,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        ///
+        /// Call to build the tree
         /// </summary>
         public void BuildTree()
         {
@@ -254,7 +307,10 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         protected abstract T[] GetObjects();
-
+        /// <summary>
+        /// Get the max bounding box of the octree
+        /// </summary>
+        /// <returns></returns>
         protected abstract BoundingBox GetMaxBound();
 
         /// <summary>
@@ -371,6 +427,12 @@ namespace HelixToolkit.Wpf.SharpDX
             return b;
         }
 
+        /// <summary>
+        /// Create child octant bounding boxes for current parent bounding box
+        /// </summary>
+        /// <param name="box"></param>
+        /// <param name="minSize"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BoundingBox[] CreateOctants(BoundingBox box, float minSize)
         {
@@ -710,7 +772,10 @@ namespace HelixToolkit.Wpf.SharpDX
         protected abstract bool HitTestCurrentNodeExcludeChild(ref Octant octant, IRenderContext context, object model,
             Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
             ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public LineGeometry3D CreateOctreeLineModel()
         {
             var builder = new LineBuilder();
