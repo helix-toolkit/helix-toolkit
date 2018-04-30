@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected sealed class OctantArray
         {
-            private volatile Octant[] array = new Octant[128];
+            private Octant[] array = new Octant[128];
             public int Count { private set; get; }
 
             public OctantArray(BoundingBox bound, int length)
