@@ -55,27 +55,22 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        protected override bool CanRender(IRenderContext context)
+        {
+            return base.CanRender(context) && FXAALevel != FXAALevel.None;
+        }
+
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            deviceContext.DeviceContext.Flush();
             var buffer = context.RenderHost.RenderBuffer;
-            
-            if (buffer.ColorBufferSampleDesc.Count > 1 || FXAALevel == FXAALevel.None)
-            {
-                Device.ImmediateContext.ResolveSubresource(buffer.ColorBuffer.Resource, 0, buffer.BackBuffer.Resource, 0, Format.B8G8R8A8_UNorm);
-            }
-            else
-            {
-                //deviceContext.DeviceContext.ClearRenderTargetView(buffer.BackBuffer, new Color4(0, 0, 0, 1));
-                buffer.SetDefaultRenderTargets(deviceContext, false);
-                FXAAPass.BindShader(deviceContext);
-                FXAAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
-                FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.ColorBuffer);
-                FXAAPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
-                deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-                deviceContext.DeviceContext.Draw(4, 0);
-                FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
-            }
+            buffer.SetDefaultRenderTargets(deviceContext, false);
+            FXAAPass.BindShader(deviceContext);
+            FXAAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
+            FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.ColorBuffer);
+            FXAAPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
+            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+            deviceContext.DeviceContext.Draw(4, 0);
+            FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
         }
 
         protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, IRenderContext context)

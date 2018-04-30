@@ -4,9 +4,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 
 //#define OLD
-
-using SharpDX.Direct3D11;
 using System.Collections.Generic;
+using SharpDX.DXGI;
 #if DX11_1
 using Device = global::SharpDX.Direct3D11.Device1;
 #endif
@@ -28,8 +27,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     {
         private readonly Stack<KeyValuePair<int, IList<SceneNode>>> stackCache1 = new Stack<KeyValuePair<int, IList<SceneNode>>>(20);
         private readonly Stack<KeyValuePair<int, IList<SceneNode2D>>> stack2DCache1 = new Stack<KeyValuePair<int, IList<SceneNode2D>>>(20);
-        private readonly OrderIndependentTransparentRenderCore transparentRenderCore = new OrderIndependentTransparentRenderCore();
-        private readonly PostEffectFXAA postFXAACore = new PostEffectFXAA();
+        private readonly OrderIndependentTransparentRenderCore transparentRenderCore;
+        private readonly PostEffectFXAA postFXAACore;
         /// <summary>
         /// Gets or sets the immediate context.
         /// </summary>
@@ -49,6 +48,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #else
             ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext));
 #endif
+            transparentRenderCore = Collect(new OrderIndependentTransparentRenderCore());
+            postFXAACore = Collect(new PostEffectFXAA());
         }
 
         private static readonly Func<SceneNode, IRenderContext, bool> updateFunc = (x, context) =>
@@ -234,15 +235,30 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         public virtual void RenderToBackBuffer(IRenderContext context, ref RenderParameter parameter)
         {
-            postFXAACore.FXAALevel = context.RenderHost.RenderConfiguration.FXAALevel;
-            postFXAACore.Render(context, ImmediateContext);
+            var buffer = context.RenderHost.RenderBuffer;
+            if (context.RenderHost.RenderConfiguration.FXAALevel == FXAALevel.None || buffer.ColorBufferSampleDesc.Count > 1)
+            {
+                ImmediateContext.DeviceContext.Flush();               
+                switch (buffer.ColorBufferSampleDesc.Count)
+                {
+                    case 1:
+                        ImmediateContext.DeviceContext.CopyResource(buffer.ColorBuffer.Resource, buffer.BackBuffer.Resource);
+                        break;
+                    default:
+                        ImmediateContext.DeviceContext.ResolveSubresource(buffer.ColorBuffer.Resource, 0, buffer.BackBuffer.Resource, 0, Format.B8G8R8A8_UNorm);
+                        break;
+                }
+            }
+            else
+            {
+                postFXAACore.FXAALevel = context.RenderHost.RenderConfiguration.FXAALevel;
+                postFXAACore.Render(context, ImmediateContext);
+            }
         }
 
         protected override void OnDispose(bool disposeManagedResources)
         {
-            stackCache1.Clear();
-            stack2DCache1.Clear();
-            transparentRenderCore.Dispose();
+            Detach();
             base.OnDispose(disposeManagedResources);
         }
 
@@ -254,6 +270,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         public void Detach()
         {
+            stackCache1.Clear();
+            stack2DCache1.Clear();
             transparentRenderCore.Detach();
             postFXAACore.Detach();
         }

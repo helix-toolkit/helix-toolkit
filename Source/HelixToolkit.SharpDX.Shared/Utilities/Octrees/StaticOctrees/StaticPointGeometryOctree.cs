@@ -32,12 +32,19 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Positions = positions;
         }
-
+        /// <summary>
+        /// Gets the bounding box from item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
         protected override BoundingBox GetBoundingBoxFromItem(int item)
         {
             return new BoundingBox(Positions[item] - BoundOffset, Positions[item] + BoundOffset);
         }
-
+        /// <summary>
+        /// Gets the maximum bound.
+        /// </summary>
+        /// <returns></returns>
         protected override BoundingBox GetMaxBound()
         {
             return BoundingBoxExtensions.FromPoints(Positions);
@@ -54,7 +61,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return source.Contains(Positions[obj]) != ContainmentType.Disjoint;
         }
-
+        /// <summary>
+        /// Gets the objects.
+        /// </summary>
+        /// <returns></returns>
         protected override int[] GetObjects()
         {
             var objects = new int[Positions.Count];
