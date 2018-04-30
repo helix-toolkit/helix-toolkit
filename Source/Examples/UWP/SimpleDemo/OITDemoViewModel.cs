@@ -3,6 +3,7 @@ using HelixToolkit.UWP;
 using SharpDX;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,39 @@ using System.Threading.Tasks;
 
 namespace SimpleDemoW10
 {
+    public class OITModel : ObservableObject
+    {
+        public Geometry3D Model { private set; get; }
+
+        public Material Material { private set; get; }
+
+        public bool IsTransparent { private set; get; }
+
+        private bool showWireframe = false;
+
+        public bool ShowWireframe
+        {
+            set
+            {
+                Set(ref showWireframe, value);
+            }
+            get
+            {
+                return showWireframe;
+            }
+        }
+
+        public OITModel(Geometry3D model, Material material, bool isTransparent)
+        {
+            Model = model;
+            Material = material;
+            IsTransparent = isTransparent;
+        }
+    }
+
     public class OITDemoViewModel : ObservableObject
     {
-        public ObservableElement3DCollection ModelGeometry { get; private set; }
+        public ObservableCollection<OITModel> ModelGeometry { get; private set; } = new ObservableCollection<OITModel>();
 
         public Matrix Transform { private set; get; } = Matrix.Translation(60, -10, 0);
         public LineGeometry3D GridModel { private set; get; }
@@ -25,11 +56,11 @@ namespace SimpleDemoW10
         {
             set
             {
-                if (Set(ref showWireframe, value))
+                if(Set(ref showWireframe, value))
                 {
-                    foreach (var model in ModelGeometry)
+                    foreach(var item in ModelGeometry)
                     {
-                        (model as MeshGeometryModel3D).RenderWireframe = value;
+                        item.ShowWireframe = value;
                     }
                 }
             }
@@ -43,10 +74,8 @@ namespace SimpleDemoW10
 
         public OITDemoViewModel()
         {
-            this.ModelGeometry = new ObservableElement3DCollection();
             var packageFolder = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "NITRO_ENGINE.3ds");
             BuildGrid();
-            this.ModelGeometry = new ObservableElement3DCollection();
             Task.Run(() => { Load3ds(packageFolder); });          
         }
         private void BuildGrid()
@@ -101,13 +130,6 @@ namespace SimpleDemoW10
                 Task.Delay(100).Wait();
                 syncContext.Post(
                     (o) => {
-                        var s = new MeshGeometryModel3D
-                        {
-                            Geometry = ob.Geometry,
-                            DepthBias = -100,
-                            SlopeScaledDepthBias = 0,
-                            CullMode = SharpDX.Direct3D11.CullMode.Back
-                        };
                         if (ob.Material is HelixToolkit.UWP.Model.PhongMaterialCore p)
                         {
                             var diffuse = p.DiffuseColor;
@@ -116,14 +138,8 @@ namespace SimpleDemoW10
                             diffuse.Blue = (float)rnd.NextDouble();
                             diffuse.Alpha = 0.6f;//(float)(Math.Min(0.8, Math.Max(0.2, rnd.NextDouble())));
                             p.DiffuseColor = diffuse;
-                            if (p.DiffuseColor.Alpha < 0.9)
-                            {
-                                s.IsTransparent = true;
-                            }
-                            s.Material = p;
+                            this.ModelGeometry.Add(new OITModel(ob.Geometry, p, p.DiffuseColor.Alpha < 0.9));
                         }               
-                        s.Transform3D = Matrix.RotationY((float)(45.0 / 180.0 * Math.PI));
-                        this.ModelGeometry.Add(s);
                     }, null);             
             }
         }
