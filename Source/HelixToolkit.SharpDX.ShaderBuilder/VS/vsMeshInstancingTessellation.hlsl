@@ -42,14 +42,14 @@ HSInput main(VSInstancingInput input)
     {
         output.t = input.t;
         output.c = vMaterialDiffuse;
-        output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
+        output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
     }
     else
     {
 		//set texture coords and color
         output.t = input.t + input.tOffset;
         output.c = input.diffuseC;
-        output.c2 = input.emissiveC + input.ambientC * vLightAmbient;
+        output.c2 = mad(input.ambientC, vLightAmbient, input.emissiveC);
     }
     output.p = mul(inputp, mWorld).xyz;
 	output.n = inputn;

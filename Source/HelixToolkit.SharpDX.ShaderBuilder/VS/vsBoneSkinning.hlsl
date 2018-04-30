@@ -80,7 +80,7 @@ PSInput main(VSBoneSkinInput input)
     output.c = input.c;
 
     output.cDiffuse = vMaterialDiffuse;
-    output.c2 = vMaterialEmissive + vMaterialAmbient * vLightAmbient;
+    output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
     if (bHasNormalMap)
     {
 		// transform the tangents by the world matrix and normalize

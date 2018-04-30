@@ -48,6 +48,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 c0 = c1 = c2 = c3 = c4 = c5 = c6 = c7 = -1;
             }
 
+            public Octant(int parent, int index)
+            {
+                Parent = parent;
+                Index = index;
+                Bound = new BoundingBox();
+                Start = End = 0;
+                IsValid = true;
+                ActiveNode = 0;
+                IsBuilt = false;
+                c0 = c1 = c2 = c3 = c4 = c5 = c6 = c7 = -1;
+            }
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public int GetChildIndex(int index)
             {
@@ -101,7 +113,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         protected sealed class OctantArray
         {
-            private volatile Octant[] array = new Octant[128];
+            private Octant[] array = new Octant[128];
             public int Count { private set; get; }
 
             public OctantArray(BoundingBox bound, int length)
@@ -411,7 +423,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             int parent = -1;
             int curr = -1;
-            var dummy = new Octant();
+            var dummy = new Octant(-1, -1);
             dummy[0] = 0;
             var parentOctant = dummy;
             while (true)
@@ -485,7 +497,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             int parent = -1;
             int curr = -1;
-            var dummy = new Octant();
+            var dummy = new Octant(-1, -1);
             dummy[0] = 0;
             var parentOctant = dummy;
             while (true)
@@ -562,7 +574,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             int parent = -1;
             int curr = -1;
-            var dummy = new Octant();
+            var dummy = new Octant(-1, -1);
             dummy[0] = 0;
             var parentOctant = dummy;
             while (true)
@@ -619,7 +631,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             int parent = -1;
             int curr = -1;
-            var dummy = new Octant();
+            var dummy = new Octant(-1, -1);
             dummy[0] = 0;
             var parentOctant = dummy;
             while (true)
@@ -660,7 +672,19 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             return isHit;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="point"></param>
+        /// <param name="radius"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public bool FindNearestPointByPointAndSearchRadius(IRenderContext context, ref Vector3 point, float radius, ref List<HitTestResult> result)
+        {
+            var sphere = new global::SharpDX.BoundingSphere(point, radius);
+            return FindNearestPointBySphere(context, ref sphere, ref result);
+        }
         /// <summary>
         /// Find nearest point by sphere on current node only.
         /// </summary>

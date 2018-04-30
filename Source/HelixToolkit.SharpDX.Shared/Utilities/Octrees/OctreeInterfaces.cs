@@ -90,7 +90,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="points"></param>
         /// <returns></returns>
         bool FindNearestPointBySphere(IRenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> points);
-
+        /// <summary>
+        /// Finds the nearest point by point and search radius.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="point">The point.</param>
+        /// <param name="radius">The radius.</param>
+        /// <param name="result">The result.</param>
+        /// <returns></returns>
+        bool FindNearestPointByPointAndSearchRadius(IRenderContext context, ref Vector3 point, float radius, ref List<HitTestResult> result);
         /// <summary>
         /// Creates the octree line model for debugging or visualize the octree
         /// </summary>
@@ -170,16 +178,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="isIntersect"></param>
         /// <returns></returns>
         bool FindNearestPointBySphereExcludeChild(IRenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect);
-
-        /// <summary>
-        /// Search nearest point by a point and search radius
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="point"></param>
-        /// <param name="radius"></param>
-        /// <param name="points"></param>
-        /// <returns></returns>
-        bool FindNearestPointByPointAndSearchRadius(IRenderContext context, ref Vector3 point, float radius, ref List<HitTestResult> points);
 
         /// <summary>
         /// Build current node level only, this will only build current node and create children, but not build its children. 

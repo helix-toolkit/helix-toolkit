@@ -383,7 +383,7 @@ namespace HelixToolkit.UWP.Core
             globalTrans.View = CreateViewMatrix(context, out globalTrans.EyePos);
             globalTrans.Projection = projectionMatrix;
             globalTrans.ViewProjection = globalTrans.View * globalTrans.Projection;
-            globalTrans.Viewport = new Vector4(viewportSize, viewportSize, 0, 0);
+            globalTrans.Viewport = new Vector4(viewportSize, viewportSize, 1f / viewportSize, 1f / viewportSize);
             globalTransformCB.UploadDataToBuffer(deviceContext, ref globalTrans);
             GlobalTransform = globalTrans;
             int offX = (int)(Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2);

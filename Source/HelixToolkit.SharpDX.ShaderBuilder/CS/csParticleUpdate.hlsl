@@ -62,7 +62,7 @@ void main(uint3 DispatchThreadID : SV_DispatchThreadID)
 
 		// Calculate the new position, accounting for the new velocity value
 		// over the current time step.
-        float3 pnew = p.position + p.velocity * TimeFactors;
+        float3 pnew = mad(TimeFactors, p.velocity, p.position);
         bool inBound = PointInBoundingBox(DomainBoundsMax, DomainBoundsMin, pnew);
 
         p.position = inBound ? pnew : p.position;

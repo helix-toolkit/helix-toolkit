@@ -17,7 +17,7 @@ cbuffer cbTransforms : register(b0)
 	// [fov,asepct-ratio,near,far]
     float4 vFrustum;
 	// viewport:
-	// [w,h,0,0]
+	// [w,h,1/w,1/h]
     float4 vViewport;
 	// camera position
     float3 vEyePos;

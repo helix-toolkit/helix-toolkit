@@ -490,9 +490,6 @@ namespace HelixToolkit.UWP
         /// <returns>
         /// True if the file was read successfully.
         /// </returns>
-        /// <exception cref="System.IO.FileFormatException">
-        /// Incomplete file
-        /// </exception>
         private bool TryReadBinary(Stream stream)
         {
             long length = stream.Length;

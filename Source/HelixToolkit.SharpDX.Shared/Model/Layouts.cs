@@ -247,16 +247,29 @@ namespace HelixToolkit.Wpf.SharpDX
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct GlobalTransformStruct
     {
+        /// <summary>
+        /// The view matrix
+        /// </summary>
         public Matrix View;
+        /// <summary>
+        /// The projection matrix
+        /// </summary>
         public Matrix Projection;
-        public Matrix ViewProjection;
-        // camera frustum: 
-        // [fov,asepct-ratio,near,far]
-        public Vector4 Frustum;
-        // viewport:
-        // [w,h,0,0]
+        /// <summary>
+        /// The view projection matrix
+        /// </summary>
+        public Matrix ViewProjection;   
+        /// <summary>
+        /// The frustum [fov,asepct-ratio,near,far]  
+        /// </summary>
+        public Vector4 Frustum;  
+        /// <summary>
+        /// The viewport [w,h,1/w,1/h]      
+        /// </summary>
         public Vector4 Viewport;
-        // camera position
+        /// <summary>
+        /// The eye position
+        /// </summary>
         public Vector3 EyePos;
         float padding0;
         public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 3);
@@ -346,7 +359,15 @@ namespace HelixToolkit.Wpf.SharpDX
         // M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin
         // M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin
         // M20M21M22 PlaneNormal3 M23 Plane3 Distance to origin
-        // M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin
+        // M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin        
+        /// <summary>
+        /// The cross plane parameters
+        /// Format:
+        /// <para>M00M01M02 PlaneNormal1 M03 Plane1 Distance to origin</para>
+        /// <para>M10M11M12 PlaneNormal2 M13 Plane2 Distance to origin</para>
+        /// <para>M20M21M22 PlaneNormal3 M23 Plane3 Distance to origin</para>
+        /// <para>M30M31M32 PlaneNormal4 M33 Plane4 Distance to origin</para>
+        /// </summary>
         public Matrix CrossPlaneParams;
         public const int SizeInBytes = 4 * (4 * 2 + 4 * 4);
     }

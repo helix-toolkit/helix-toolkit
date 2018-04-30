@@ -391,7 +391,7 @@ namespace HelixToolkit.UWP.Core
                 var transforms = new GlobalTransformStruct();
                 transforms.Projection = cubeFaceCameras.Cameras[index].Projection;
                 transforms.View = cubeFaceCameras.Cameras[index].View;
-                transforms.Viewport = new Vector4(0, 0, FaceSize, FaceSize);
+                transforms.Viewport = new Vector4(FaceSize, FaceSize, 1/FaceSize, 1/FaceSize);
                 transforms.ViewProjection = transforms.View * transforms.Projection;
 
                 ModelConstBuffer.UploadDataToBuffer(ctx, ref transforms);
