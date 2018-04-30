@@ -166,6 +166,7 @@
     <Compile Include="Model\Element3D\Abstract\ScreenSpaceMeshGeometry3D.cs" />
     <Compile Include="Model\Element3D\Element3DPresenter.cs" />
     <Compile Include="Model\Element3D\GroupModel3D.cs" />
+    <Compile Include="Model\Element3D\ItemsModel3D.cs" />
     <Compile Include="Model\Element3D\Light3DCollection.cs" />
     <Compile Include="Model\Element3D\SortingGroupModel3D.cs" />
     <Compile Include="Model\Element3D\ViewBoxModel3D.cs" />

@@ -83,10 +83,10 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The children.
         /// </value>
-        public ObservableCollection<Element3D> Children
+        public ObservableElement3DCollection Children
         {
             get;
-        } = new ObservableCollection<Element3D>();
+        } = new ObservableElement3DCollection();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GroupElement3D"/> class.

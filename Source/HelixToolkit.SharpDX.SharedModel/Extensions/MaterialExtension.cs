@@ -5,11 +5,13 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Model;
+    using System;
+
     public static class MaterialExtension
     {
         public static PhongMaterial ConvertToPhongMaterial(this PhongMaterialCore core)
         {
-            return new PhongMaterial()
+            return core == null ? null : new PhongMaterial()
             {
                 DiffuseColor = core.DiffuseColor,
                 AmbientColor = core.AmbientColor,
@@ -29,6 +31,18 @@ namespace HelixToolkit.UWP
                 DisplacementMapScaleMask = core.DisplacementMapScaleMask,
                 Name = core.Name,
             };
+        }
+
+        public static Material ConvertToMaterial(this MaterialCore core)
+        {
+            if(core is PhongMaterialCore p)
+            {
+                return p.ConvertToPhongMaterial();
+            }
+            else
+            {
+                throw new NotSupportedException($"Current material core to material conversion has not been supported yet.");
+            }
         }
     }
 }
