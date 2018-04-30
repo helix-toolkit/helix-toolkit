@@ -11,7 +11,7 @@ namespace HelixToolkit.UWP
     {
         public static PhongMaterial ConvertToPhongMaterial(this PhongMaterialCore core)
         {
-            return new PhongMaterial()
+            return core == null ? null : new PhongMaterial()
             {
                 DiffuseColor = core.DiffuseColor,
                 AmbientColor = core.AmbientColor,
