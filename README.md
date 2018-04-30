@@ -71,7 +71,7 @@ All 1.x.x related pull requests, please use [1.1.0/Release](https://github.com/h
 9. Core implementation are separated from platform dependent controls(Element3D) into its own Scene Node classes. Scene Node serves as complete Scene Graph for traversal inside render host. Element3D will only be used as a wrapper to manipulate scene node properties from XAML.
 10. Supports [Order independent transparent(OIT)](https://developer.nvidia.com/content/transparency-or-translucency-rendering) rendering.
 11. Supports [FXAA](https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/fxaa311sample.htm). Prefer FXAA over MSAA if using OIT or post effects. Note: FXAA does not support transparent background for now.
-12. Other on going changes.
+12. High performance static octree for Mesh/Point/Line/Instancing Models.
 
 #### 2018-02-06
 
