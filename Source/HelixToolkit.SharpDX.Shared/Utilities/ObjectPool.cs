@@ -2,9 +2,9 @@
 using System.Collections.Concurrent;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Utilities
 #else
-namespace HelixToolkit.UWP
+namespace HelixToolkit.UWP.Utilities
 #endif
 {
     public sealed class ObjectPool<T>

@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using global::SharpDX;
     using System;
     using System.Collections.Generic;
+    using Utilities;
 #if !NETFX_CORE
     [Serializable]
 #endif

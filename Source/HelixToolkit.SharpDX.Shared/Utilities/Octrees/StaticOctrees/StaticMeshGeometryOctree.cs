@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
-namespace HelixToolkit.UWP
+namespace HelixToolkit.UWP.Utilities
 #else
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Utilities
 #endif
 {
     /// <summary>
