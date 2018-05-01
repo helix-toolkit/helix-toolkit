@@ -55,19 +55,6 @@ namespace HelixToolkit.Wpf.SharpDX
     public class DPFCanvas : Image, IRenderCanvas, IDisposable
     {
         /// <summary>
-        /// Gets a value indicating whether the control is in design mode
-        /// (running in Blend or Visual Studio).
-        /// </summary>
-        public static bool IsInDesignMode
-        {
-            get
-            {
-                var prop = DesignerProperties.IsInDesignModeProperty;
-                return (bool)DependencyPropertyDescriptor.FromProperty(prop, typeof(FrameworkElement)).Metadata.DefaultValue;
-            }
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         static DPFCanvas()
@@ -124,10 +111,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (IsInDesignMode)
-            {
-                return;
-            }
             try
             {
                 parentWindow = FindVisualAncestor<Window>(this);
@@ -165,10 +148,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            if (IsInDesignMode)
-            {
-                return;
-            }
             if(parentWindow != null)
             {
                 parentWindow.Closed -= ParentWindow_Closed;

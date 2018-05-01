@@ -604,7 +604,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            if (IsInDesignMode)
+            if (IsInDesignMode && !EnableDesignModeRendering)
             { return; }
             Disposer.RemoveAndDispose(ref renderHostInternal);
             hostPresenter = this.GetTemplateChild("PART_Canvas") as ContentPresenter;

@@ -1710,5 +1710,24 @@ namespace HelixToolkit.UWP
                     viewport.InvalidateRender();
                 }
             }));
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable design mode rendering].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable design mode rendering]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableDesignModeRendering
+        {
+            get { return (bool)GetValue(EnableDesignModeRenderingProperty); }
+            set { SetValue(EnableDesignModeRenderingProperty, value); }
+        }
+
+        /// <summary>
+        /// The enable design mode rendering property
+        /// </summary>
+        public static readonly DependencyProperty EnableDesignModeRenderingProperty =
+            DependencyProperty.Register("EnableDesignModeRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
     }
 }
