@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf
                 }
                 else
                 {
-                    return new Int32Collection { 2, 1, 1 };
+                    return new Int32Collection { 0, 2, 1 };
                 }
             }
 

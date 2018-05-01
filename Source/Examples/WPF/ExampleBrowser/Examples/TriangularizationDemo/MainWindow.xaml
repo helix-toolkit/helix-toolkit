@@ -1,0 +1,25 @@
+﻿<Window x:Class="ExampleBrowser.Examples.TriangularizationDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:HelixToolkit="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+        xmlns:triangularizationDemo="clr-namespace:ExampleBrowser.Examples.TriangularizationDemo"
+        Title="SimpleDemo" Height="480" Width="640">
+    <Window.DataContext>
+        <triangularizationDemo:MainViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <!-- The HelixViewport3D supports camera manipulation, and can be used just like the Viewport3D -->
+        <HelixToolkit:HelixViewport3D ZoomExtentsWhenLoaded="True">
+
+            <!-- Remember to add light to the scene -->
+            <HelixToolkit:SunLight/>
+            
+            <!-- The content of this visual is defined in MainViewModel.cs -->
+            <ModelVisual3D Content="{Binding Model}"/>
+
+            <!-- You can also add elements here in the xaml -->
+            <HelixToolkit:GridLinesVisual3D Width="8" Length="8" MinorDistance="1" MajorDistance="1" Thickness="0.01"/>
+
+        </HelixToolkit:HelixViewport3D>
+    </Grid>
+</Window>
