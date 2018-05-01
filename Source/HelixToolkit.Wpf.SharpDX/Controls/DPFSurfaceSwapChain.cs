@@ -32,19 +32,6 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <seealso cref="System.Windows.Controls.Image" />
     public class DPFSurfaceSwapChain : WinformHostExtend, IRenderCanvas
     {
-        /// <summary>
-        /// Gets a value indicating whether the control is in design mode
-        /// (running in Blend or Visual Studio).
-        /// </summary>
-        public static bool IsInDesignMode
-        {
-            get
-            {
-                var prop = DesignerProperties.IsInDesignModeProperty;
-                return (bool)DependencyPropertyDescriptor.FromProperty(prop, typeof(FrameworkElement)).Metadata.DefaultValue;
-            }
-        }
-
         private IRenderHost renderHost;
         /// <summary>
         /// Gets or sets the render host.
@@ -104,10 +91,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (IsInDesignMode)
-            {
-                return;
-            }
             try
             {
                 parentWindow = FindVisualAncestor<Window>(this);
@@ -139,10 +122,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="e"></param>
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            if (IsInDesignMode)
-            {
-                return;
-            }
             if (parentWindow != null)
             {
                 parentWindow.Closed -= ParentWindow_Closed;

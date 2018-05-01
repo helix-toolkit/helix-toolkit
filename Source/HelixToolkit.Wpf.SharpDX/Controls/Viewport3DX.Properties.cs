@@ -1037,6 +1037,12 @@ namespace HelixToolkit.Wpf.SharpDX
 
 
         /// <summary>
+        /// The enable design time rendering property
+        /// </summary>
+        public static readonly DependencyProperty EnableDesignModeRenderingProperty =
+            DependencyProperty.Register("EnableDesignModeRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+
+        /// <summary>
         /// Background Color
         /// </summary>
         public Color BackgroundColor
@@ -2767,5 +2773,16 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(FXAALevelProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable design time rendering].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable design time rendering]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableDesignModeRendering
+        {
+            get { return (bool)GetValue(EnableDesignModeRenderingProperty); }
+            set { SetValue(EnableDesignModeRenderingProperty, value); }
+        }
     }
 }

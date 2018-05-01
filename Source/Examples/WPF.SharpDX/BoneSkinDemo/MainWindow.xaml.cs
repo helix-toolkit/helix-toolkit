@@ -23,7 +23,6 @@ namespace BoneSkinDemo
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
             Closed += (s, e) => {
                 if (DataContext is IDisposable)
                 {

@@ -555,6 +555,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 IsBusy = true;
                 var t0 = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp()/Stopwatch.Frequency);
                 RenderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
+                RenderStatistics.Camera = viewport.CameraCore;
                 lastRenderTime = t0;
                 UpdateRequested = false;
                 ++updateCounter;

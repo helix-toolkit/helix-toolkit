@@ -18,6 +18,7 @@ namespace HelixToolkit.UWP
     using Model.Scene;
     using Model.Scene2D;
     using System.Runtime.CompilerServices;
+    using Windows.ApplicationModel;
     using Windows.UI.Xaml.Input;
     using Visibility = Windows.UI.Xaml.Visibility;
     /// <summary>
@@ -43,6 +44,13 @@ namespace HelixToolkit.UWP
     [TemplatePart(Name = ViewportPartNames.PART_ItemsContainer, Type = typeof(ItemsControl))]
     public partial class Viewport3DX : Control, IViewport3DX
     {
+        public static bool IsInDesignMode
+        {
+            get
+            {
+                return DesignMode.DesignModeEnabled;
+            }
+        }
         ///// <summary>
         ///// Changes the dpi of the device manager when the DisplayProperties.LogicalDpi has changed.
         ///// </summary>
@@ -231,6 +239,10 @@ namespace HelixToolkit.UWP
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+            if(IsInDesignMode && !EnableDesignModeRendering)
+            {
+                return;
+            }
             itemsContainer = GetTemplateChild(ViewportPartNames.PART_ItemsContainer) as ItemsControl;
             if (itemsContainer == null)
             {
