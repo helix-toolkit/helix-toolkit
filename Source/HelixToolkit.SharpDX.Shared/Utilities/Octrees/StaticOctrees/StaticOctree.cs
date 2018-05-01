@@ -244,7 +244,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public IList<BoundingBox> HitPathBoundingBoxes { get { return hitPathBoundingBoxes.AsReadOnly(); } }
 
-        private readonly Stack<KeyValuePair<int, int>> stack = new Stack<KeyValuePair<int, int>>();
+        private static readonly ObjectPool<Stack<KeyValuePair<int, int>>> hitStackPool 
+            = new ObjectPool<Stack<KeyValuePair<int, int>>>(()=> { return new Stack<KeyValuePair<int, int>>(); }, 10);
 
         /// <summary>
         ///
@@ -296,7 +297,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
             Objects = GetObjects();
             octants = new OctantArray(GetMaxBound(), Objects.Length);
-            TreeTraversal(stack, (index) => { BuildSubTree(index); }, null);
+            TreeTraversal(new Stack<KeyValuePair<int, int>>(), (index) => { BuildSubTree(index); }, null);
             octants.Compact();
             TreeBuilt = true;
             Bound = octants[0].Bound;
@@ -546,7 +547,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 hits = new List<HitTestResult>();
             }
             hitPathBoundingBoxes.Clear();
-            var hitStack = stack;
+            var hitStack = hitStackPool.GetObject();
             hitStack.Clear();
             bool isHit = false;
             modelHits.Clear();
@@ -572,7 +573,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         isHit |= nodeHit;
                         if (isIntersect && octant.HasChildren)
                         {
-                            stack.Push(new KeyValuePair<int, int>(parent, curr));
+                            hitStack.Push(new KeyValuePair<int, int>(parent, curr));
                             parent = octant.Index;
                             curr = -1;
                             parentOctant = octants[parent];
@@ -592,8 +593,9 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                     }
                 }
-                if (stack.Count == 0) { break; }
-                var prev = stack.Pop();
+                if (hitStack.Count == 0)
+                { break; }
+                var prev = hitStack.Pop();
                 parent = prev.Key;
                 curr = prev.Value;
                 if (parent == -1)
@@ -602,6 +604,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 parentOctant = octants[parent];
             }
+            hitStackPool.PutObject(hitStack);
             if (!isHit)
             {
                 hitPathBoundingBoxes.Clear();
@@ -627,7 +630,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 points = new List<HitTestResult>();
             }
-            var hitStack = stack;
+            var hitStack = hitStackPool.GetObject();
             hitStack.Clear();
             bool isHit = false;
 
@@ -648,15 +651,15 @@ namespace HelixToolkit.Wpf.SharpDX
                         isHit |= nodeHit;
                         if (octant.HasChildren && isIntersect)
                         {
-                            stack.Push(new KeyValuePair<int, int>(parent, curr));
+                            hitStack.Push(new KeyValuePair<int, int>(parent, curr));
                             parent = octant.Index;
                             curr = -1;
                             parentOctant = octants[parent];
                         }
                     }
                 }
-                if (stack.Count == 0) { break; }
-                var prev = stack.Pop();
+                if (hitStack.Count == 0) { break; }
+                var prev = hitStack.Pop();
                 parent = prev.Key;
                 curr = prev.Value;
                 if (parent == -1)
@@ -665,6 +668,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 parentOctant = octants[parent];
             }
+            hitStackPool.PutObject(hitStack);
             return isHit;
         }
 
@@ -682,7 +686,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 results = new List<HitTestResult>();
             }
-            var hitStack = stack;
+            var hitStack = hitStackPool.GetObject();
             hitStack.Clear();
             var sphere = new BoundingSphere(point, float.MaxValue);
             bool isHit = false;
@@ -711,7 +715,7 @@ namespace HelixToolkit.Wpf.SharpDX
                             }
                             if (octant.HasChildren)
                             {
-                                stack.Push(new KeyValuePair<int, int>(parent, curr));
+                                hitStack.Push(new KeyValuePair<int, int>(parent, curr));
                                 parent = octant.Index;
                                 curr = -1;
                                 parentOctant = octants[parent];
@@ -719,8 +723,8 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                     }
                 }
-                if (stack.Count == 0) { break; }
-                var prev = stack.Pop();
+                if (hitStack.Count == 0) { break; }
+                var prev = hitStack.Pop();
                 parent = prev.Key;
                 curr = prev.Value;
                 if (parent == -1)
@@ -729,6 +733,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
                 parentOctant = octants[parent];
             }
+            hitStackPool.PutObject(hitStack);
             return isHit;
         }
         /// <summary>

@@ -297,6 +297,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\LineBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\MappingCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\NVOptimusEnabler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ObjectPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\Octree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\OctreeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\OctreeInterfaces.cs" />
