@@ -65,4 +65,14 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <local:PerspectiveCamera
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.UWP"
+        x:Key="perspectiveCamera" />
+
+    <local:OrthographicCamera
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.UWP"
+        x:Key="orthographicCamera" />
 </ResourceDictionary>
