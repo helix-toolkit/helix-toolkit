@@ -8,6 +8,7 @@
     <converters:EmptyStringToVisibilityConverter x:Key="emptyStringToVisibilityConverter" />
 
     <Style TargetType="controls:Viewport3DX">
+        <Setter Property="Background" Value="White" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:Viewport3DX">
