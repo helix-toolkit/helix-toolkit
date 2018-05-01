@@ -10,6 +10,9 @@
     Width="525"
     Height="350"
     mc:Ignorable="d">
+    <Window.DataContext>
+        <local:MainViewModel/>
+    </Window.DataContext>
     <Grid>
         <hx:Viewport3DX
             x:Name="view1"
@@ -21,7 +24,7 @@
             IsShadowMappingEnabled="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
-            ShowFrameRate="True"
+            ShowFrameRate="True" EnableDesignModeRendering="True"
             TextBrush="Black"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
