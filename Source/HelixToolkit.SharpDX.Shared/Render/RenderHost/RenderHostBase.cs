@@ -543,7 +543,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </returns>
         protected virtual bool CanRender()
         {
-            return IsInitialized && IsRendering && (UpdateRequested || updateCounter < 2) && viewport != null && ActualWidth > 10 && ActualHeight > 10;
+            return IsInitialized && IsRendering && (UpdateRequested || updateCounter < 2) && viewport != null && viewport.CameraCore != null && ActualWidth > 10 && ActualHeight > 10;
         }
         /// <summary>
         /// Updates the and render.
