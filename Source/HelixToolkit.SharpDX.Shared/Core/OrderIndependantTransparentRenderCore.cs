@@ -63,8 +63,7 @@ namespace HelixToolkit.UWP.Core
         public OrderIndependentTransparentRenderCore() : base(RenderType.Transparent)
         { }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void Bind(IRenderContext context, DeviceContextProxy deviceContext)
+        private bool CreateTextureResources(IRenderContext context, DeviceContextProxy deviceContext)
         {
             var currSampleDesc = context.RenderHost.RenderBuffer.ColorBufferSampleDesc;
 #if MSAASEPARATE
@@ -121,7 +120,15 @@ namespace HelixToolkit.UWP.Core
                     alphaTargetNoMSAA.CreateTextureView();
                 }
 #endif
+                InvalidateRenderer();
+                return true; // Skip this frame if texture resized to reduce latency.
             }
+            return false;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void Bind(IRenderContext context, DeviceContextProxy deviceContext)
+        {
             targets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(2);
             deviceContext.DeviceContext.ClearRenderTargetView(colorTarget, Color.Zero);
             deviceContext.DeviceContext.ClearRenderTargetView(alphaTarget, Color.White);       
@@ -185,6 +192,11 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
             RenderCount = 0;
+            if(CreateTextureResources(context, deviceContext))
+            {
+                InvalidateRenderer();
+                return; // Skip this frame if texture resized to reduce latency.
+            }
             Bind(context, deviceContext);
             var frustum = context.BoundingFrustum;
             int count = context.RenderHost.PerFrameTransparentNodes.Count;
