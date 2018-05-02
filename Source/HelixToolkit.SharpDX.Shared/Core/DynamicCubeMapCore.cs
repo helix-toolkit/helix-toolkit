@@ -284,11 +284,11 @@ namespace HelixToolkit.UWP.Core
             return new ConstantBufferDescription(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
         }
 
-        private void CreateCubeMapResources()
+        private bool CreateCubeMapResources()
         {
             if(textureDesc.Width == faceSize && cubeMap != null && !cubeMap.IsDisposed)
             {
-                return;
+                return false;
             }
             textureDesc.Width = textureDesc.Height = dsvTextureDesc.Width = dsvTextureDesc.Height = FaceSize;
 
@@ -335,6 +335,7 @@ namespace HelixToolkit.UWP.Core
             }
 
             viewport = new Viewport(0, 0, FaceSize, FaceSize);
+            return true;
         }
 
         protected override bool OnAttach(IRenderTechnique technique)
@@ -374,7 +375,11 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
         {
-            CreateCubeMapResources();
+            if (CreateCubeMapResources())
+            {
+                InvalidateRenderer();
+                return; // Skip this frame if texture resized to reduce latency.
+            }
             context.IsInvertCullMode = true;
 #if TEST
             for (int index = 0; index < 6; ++index)

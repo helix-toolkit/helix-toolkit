@@ -96,8 +96,31 @@ namespace HelixToolkit.UWP
                 {
                     yield return item.SceneNode;
                 }
+                if (renderHostInternal.EnableSharingModelMode && renderHostInternal.SharedModelContainer != null)
+                {
+                    foreach (var item in renderHostInternal.SharedModelContainer.Renderables)
+                    {
+                        yield return item;
+                    }
+                }
                 yield return viewCube;
                 yield return coordinateSystem;
+            }
+        }
+
+        private IEnumerable<SceneNode> OwnedRenderables
+        {
+            get
+            {
+                if (renderHostInternal != null)
+                {
+                    foreach (Element3D item in Items)
+                    {
+                        yield return item.SceneNode;
+                    }
+                    yield return viewCube.SceneNode;
+                    yield return coordinateSystem.SceneNode;
+                }
             }
         }
         /// <summary>
@@ -269,7 +292,9 @@ namespace HelixToolkit.UWP
                     renderHostInternal.RenderTechnique = this.RenderTechnique;
                     renderHostInternal.ClearColor = this.BackgroundColor.ToColor4();
                     renderHostInternal.EnableRenderFrustum = this.EnableRenderFrustum;
-                    renderHostInternal.IsShadowMapEnabled = this.IsShadowMappingEnabled;              
+                    renderHostInternal.IsShadowMapEnabled = this.IsShadowMappingEnabled;
+                    renderHostInternal.SharedModelContainer = this.SharedModelContainer;
+                    renderHostInternal.EnableSharingModelMode = this.EnableSharedModelMode;
 #if MSAA
                     renderHostInternal.MSAA = this.MSAA;
 #endif
@@ -346,11 +371,11 @@ namespace HelixToolkit.UWP
         {
             if (!IsAttached)
             {
-                foreach (var e in this.Renderables)
+                foreach (var e in this.OwnedRenderables)
                 {
                     e.Attach(host);
                 }
-
+                sharedModelContainerInternal?.Attach(host);
                 foreach (var e in this.D2DRenderables)
                 {
                     e.Attach(host);
@@ -367,10 +392,11 @@ namespace HelixToolkit.UWP
             if (IsAttached)
             {
                 IsAttached = false;
-                foreach (var e in this.Renderables)
+                foreach (var e in this.OwnedRenderables)
                 {
                     e.Detach();
                 }
+                sharedModelContainerInternal?.Detach();
                 foreach (var e in this.D2DRenderables)
                 {
                     e.Detach();

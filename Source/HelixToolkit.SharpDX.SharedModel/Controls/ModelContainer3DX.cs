@@ -4,34 +4,40 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
+
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 #endif
 
+#if NETFX_CORE
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+namespace HelixToolkit.UWP
+#else
+using System.Windows;
+using System.Windows.Controls;
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
-    using Core;
     using Core2D;
     using HelixToolkit.Logger;
     using Render;
     using Model.Scene;
     using Utilities;
+    using Controls;
 
     /// <summary>
     /// Use to contain shared models for multiple viewports. 
     /// <para>Suggest to bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak</para>
     /// </summary>
-    public class ModelContainer3DX : ItemsControl, IModelContainer
+    public class ModelContainer3DX : HelixItemsControl, IModelContainer
     {
         /// <summary>
         /// The EffectsManager property. Suggest to bind effects manager in viewmodel. Assign effect manager from code behind may cause memory leak
         /// </summary>
         public static readonly DependencyProperty EffectsManagerProperty = DependencyProperty.Register(
-            "EffectsManager", typeof(IEffectsManager), typeof(ModelContainer3DX), new FrameworkPropertyMetadata(
-                null, FrameworkPropertyMetadataOptions.AffectsRender,
+            "EffectsManager", typeof(IEffectsManager), typeof(ModelContainer3DX), new PropertyMetadata(null,
                 (s, e) => ((ModelContainer3DX)s).EffectsManagerPropertyChanged()));
         /// <summary>
         /// The Render Technique property
@@ -482,9 +488,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public ModelContainer3DX()
         {
-            this.Visibility = Visibility.Collapsed;
-            this.Focusable = false;
             this.IsHitTestVisible = false;
+#if !NETFX_CORE
+            Visibility = Visibility.Collapsed;
+#endif
         }
 
         /// <summary>
@@ -565,7 +572,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 CurrentRenderHost.ClearRenderTarget(context, clearBackBuffer, clearDepthStencilBuffer);
             }
         }
-
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
@@ -602,6 +608,6 @@ namespace HelixToolkit.Wpf.SharpDX
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
-        #endregion
+#endregion
     }
 }

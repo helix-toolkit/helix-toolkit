@@ -166,7 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (renderHostInternal != null)
                 {
-                    foreach (Element3DCore item in Items)
+                    foreach (Element3D item in Items)
                     {
                         yield return item.SceneNode;
                     }
@@ -189,7 +189,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (renderHostInternal != null)
                 {
-                    foreach (Element3DCore item in Items)
+                    foreach (Element3D item in Items)
                     {
                         yield return item.SceneNode;
                     }

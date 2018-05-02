@@ -2,7 +2,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:hx="clr-namespace:HelixToolkit.Wpf.SharpDX"
-    xmlns:hx2D="clr-namespace:HelixToolkit.Wpf.SharpDX.Elements2D">
+    xmlns:hx2D="clr-namespace:HelixToolkit.Wpf.SharpDX.Elements2D"
+    xmlns:hxControl="clr-namespace:HelixToolkit.Wpf.SharpDX.Controls">
 
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <hx:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter" />
@@ -22,12 +23,7 @@
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             DataContext="{TemplateBinding DataContext}" />
-                        <ItemsControl
-                            x:Name="PART_Items"
-                            Focusable="False"
-                            IsHitTestVisible="False"
-                            Style="{x:Null}"
-                            Visibility="Collapsed">
+                        <hxControl:HelixItemsControl x:Name="PART_Items">
                             <hx:ViewBoxModel3D
                                 x:Name="PART_ViewCube"
                                 EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"
@@ -78,7 +74,7 @@
                                     Visibility="{TemplateBinding SubTitle,
                                                                  Converter={StaticResource NotNullToVisibilityConverter}}" />
                             </hx2D:StackPanel2D>
-                        </ItemsControl>
+                        </hxControl:HelixItemsControl>
                         <!--  Message TextBox  -->
                         <TextBox
                             Margin="6"

@@ -49,7 +49,9 @@ namespace SimpleDemoW10
 
         public IEffectsManager EffectsManager { private set; get; }
 
-        public PerspectiveCamera Camera { private set; get; }
+        public Camera Camera { private set; get; }
+
+        public Camera Camera1 { private set; get; }
 
         private Matrix transform = Matrix.Identity;
         public Matrix Transform
@@ -119,7 +121,7 @@ namespace SimpleDemoW10
             EffectsManager = new DefaultEffectsManager(new Logger());
 
             Camera = new PerspectiveCamera() { Position = new Vector3(40, 10, 100), LookDirection = new Vector3(0, -10, -100), UpDirection = UpDirection };
-
+            Camera1 = new OrthographicCamera() { Position = new Vector3(60, 10, 100), LookDirection = new Vector3(0, -10, -100), UpDirection = upDirection, Width = 30, FarPlaneDistance = 500};
             var builder = new MeshBuilder(true, true, true);
             builder.AddBox(new SharpDX.Vector3(0, 0, 0), 2, 2, 2);
             builder.AddSphere(new Vector3(0, 2, 0), 1.5);
