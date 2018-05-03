@@ -16,35 +16,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
     using Utilities;
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface ID2DTargetProxy
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        BitmapProxy D2DTarget { get; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="swapChain"></param>
-        /// <param name="deviceContext"></param>
-        void Initialize(SwapChain1 swapChain, DeviceContext2D deviceContext);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="texture"></param>
-        /// <param name="deviceContext"></param>
-        void Initialize(Texture2D texture, DeviceContext2D deviceContext);
-    }
 
     /// <summary>
     /// 
     /// </summary>
-    public sealed class D2DTargetProxy : DisposeObject, ID2DTargetProxy 
+    public sealed class D2DTargetProxy : DisposeObject 
     {
         private BitmapProxy d2DTarget;
         /// <summary>

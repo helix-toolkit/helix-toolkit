@@ -226,7 +226,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             strokeChanged = true;
         }
 
-        protected override void OnUpdate(IRenderContext2D context)
+        protected override void OnUpdate(RenderContext2D context)
         {
             base.OnUpdate(context);
             if (fillChanged)

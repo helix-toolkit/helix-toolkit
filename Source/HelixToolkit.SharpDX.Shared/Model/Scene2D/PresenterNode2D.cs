@@ -76,7 +76,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             base.OnDetach();
         }
 
-        //protected override void OnRender(IRenderContext2D context)
+        //protected override void OnRender(RenderContext2D context)
         //{
         //    base.OnRender(context);
         //    if (content != null)

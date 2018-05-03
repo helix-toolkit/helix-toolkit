@@ -525,7 +525,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        public bool HitTest(IRenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+        public bool HitTest(RenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
         {
             return HitTest(context, model, modelMatrix, rayWS, ref hits, 0);
         }
@@ -540,7 +540,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="hits"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        public virtual bool HitTest(IRenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness)
+        public virtual bool HitTest(RenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness)
         {
             if (hits == null)
             {
@@ -624,7 +624,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="sphere"></param>
         /// <param name="points"></param>
         /// <returns></returns>
-        public virtual bool FindNearestPointBySphere(IRenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> points)
+        public virtual bool FindNearestPointBySphere(RenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> points)
         {
             if (points == null)
             {
@@ -680,7 +680,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="results"></param>
         /// <param name="heuristicSearchFactor"></param>
         /// <returns></returns>
-        public virtual bool FindNearestPointFromPoint(IRenderContext context, ref Vector3 point, ref List<HitTestResult> results, float heuristicSearchFactor = 1f)
+        public virtual bool FindNearestPointFromPoint(RenderContext context, ref Vector3 point, ref List<HitTestResult> results, float heuristicSearchFactor = 1f)
         {
             if (results == null)
             {
@@ -744,7 +744,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="radius"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        public bool FindNearestPointByPointAndSearchRadius(IRenderContext context, ref Vector3 point, float radius, ref List<HitTestResult> result)
+        public bool FindNearestPointByPointAndSearchRadius(RenderContext context, ref Vector3 point, float radius, ref List<HitTestResult> result)
         {
             var sphere = new global::SharpDX.BoundingSphere(point, radius);
             return FindNearestPointBySphere(context, ref sphere, ref result);
@@ -758,7 +758,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="points"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        protected abstract bool FindNearestPointBySphereExcludeChild(ref Octant octant, IRenderContext context,
+        protected abstract bool FindNearestPointBySphereExcludeChild(ref Octant octant, RenderContext context,
             ref BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
 
         /// <summary>
@@ -774,7 +774,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="isIntersect"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        protected abstract bool HitTestCurrentNodeExcludeChild(ref Octant octant, IRenderContext context, object model,
+        protected abstract bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model,
             Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
             ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness);
         /// <summary>

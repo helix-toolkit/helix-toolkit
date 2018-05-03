@@ -18,7 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// Called when [render].
         /// </summary>
         /// <param name="matrices">The matrices.</param>
-        protected override void OnRender(IRenderContext2D matrices)
+        protected override void OnRender(RenderContext2D matrices)
         {
             
         }

@@ -110,7 +110,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         void ResetLightCount();
         /// <summary>
-        /// Increments the light count. Increment during each light render (except Ambient light). <see cref="LightCoreBase.Render(IRenderContext, Render.DeviceContextProxy)"/>
+        /// Increments the light count. Increment during each light render (except Ambient light). <see cref="LightCoreBase.Render(RenderContext, Render.DeviceContextProxy)"/>
         /// </summary>
         void IncrementLightCount();
         /// <summary>

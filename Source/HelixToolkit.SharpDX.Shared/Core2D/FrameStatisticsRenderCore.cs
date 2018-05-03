@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     /// </summary>
     public class FrameStatisticsRenderCore : RenderCore2DBase
     {
-        private IRenderStatistics statistics;
+        private RenderStatistics statistics;
 
         private D2D.Brush foreground = null;
         /// <summary>
@@ -94,7 +94,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <returns>
         ///   <c>true</c> if this instance can render the specified context; otherwise, <c>false</c>.
         /// </returns>
-        protected override bool CanRender(IRenderContext2D context)
+        protected override bool CanRender(RenderContext2D context)
         {
             return base.CanRender(context) && statistics != null && statistics.FrameDetail != RenderDetail.None;
         }
@@ -102,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// Called when [render].
         /// </summary>
         /// <param name="context">The context.</param>
-        protected override void OnRender(IRenderContext2D context)
+        protected override void OnRender(RenderContext2D context)
         {
             var str = statistics.GetDetailString();
             if (str != previousStr)

@@ -85,7 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             return base.OnAttach(host);
         }
 
-        public override void UpdateNotRender(IRenderContext context)
+        public override void UpdateNotRender(RenderContext context)
         {
             base.UpdateNotRender(context);
             if (!EnableSorting || Items.Count == 0)
@@ -99,7 +99,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
-        protected virtual void Sort(IList<SceneNode> nodes, IRenderContext context)
+        protected virtual void Sort(IList<SceneNode> nodes, RenderContext context)
         {
             sortingTransparentCache.Clear();
             sortingOpaqueCache.Clear();

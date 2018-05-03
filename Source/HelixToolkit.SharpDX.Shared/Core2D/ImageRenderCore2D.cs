@@ -91,12 +91,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             }
         }
 
-        protected override bool CanRender(IRenderContext2D context)
+        protected override bool CanRender(RenderContext2D context)
         {
             return base.CanRender(context) && Bitmap != null;
         }
 
-        protected override void OnRender(IRenderContext2D context)
+        protected override void OnRender(RenderContext2D context)
         {
             context.DeviceContext.DrawBitmap(Bitmap, LayoutBound, Opacity, InterpolationMode);
         }

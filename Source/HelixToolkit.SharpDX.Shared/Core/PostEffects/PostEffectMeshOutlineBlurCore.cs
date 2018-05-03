@@ -132,13 +132,13 @@ namespace HelixToolkit.UWP.Core
             get { return numberOfBlurPass; }
         }
 
-        private IShaderPass screenQuadPass;
+        private ShaderPass screenQuadPass;
 
-        private IShaderPass blurPassVertical;
+        private ShaderPass blurPassVertical;
 
-        private IShaderPass blurPassHorizontal;
+        private ShaderPass blurPassHorizontal;
 
-        private IShaderPass screenOutlinePass;
+        private ShaderPass screenOutlinePass;
         #region Texture Resources
 
         private ShaderResourceViewProxy renderTargetFull;       
@@ -240,12 +240,12 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             return IsAttached && !string.IsNullOrEmpty(EffectName);
         }
 
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             #region Initialize textures
             if (renderTargetFull == null
@@ -365,7 +365,7 @@ namespace HelixToolkit.UWP.Core
             context.Rasterizer.SetScissorRectangle(0, 0, width, height);
         }
 
-        protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)
         {
             model.Param.M11 = scaleX;
             model.Param.M12 = ScaleY;

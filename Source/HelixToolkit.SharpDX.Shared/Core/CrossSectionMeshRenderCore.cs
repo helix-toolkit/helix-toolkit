@@ -182,10 +182,10 @@ namespace HelixToolkit.UWP.Core
 
         private ClipPlaneStruct clipParameter = new ClipPlaneStruct() { EnableCrossPlane = new Bool4(false, false, false, false), CrossSectionColors = Color.Blue.ToVector4(), CrossPlaneParams = new Matrix() };
 
-        private IConstantBufferProxy clipParamCB;
+        private ConstantBufferProxy clipParamCB;
 
-        private IShaderPass drawBackfacePass;
-        private IShaderPass drawScreenQuadPass;
+        private ShaderPass drawBackfacePass;
+        private ShaderPass drawScreenQuadPass;
 
         protected override bool OnAttach(IRenderTechnique technique)
         {
@@ -234,7 +234,7 @@ namespace HelixToolkit.UWP.Core
             clipParamCB.UploadDataToBuffer(context, ref clipParameter);
         }
 
-        protected override void OnRender(IRenderContext renderContext, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext renderContext, DeviceContextProxy deviceContext)
         {
             base.OnRender(renderContext, deviceContext);
             // Draw backface into stencil buffer

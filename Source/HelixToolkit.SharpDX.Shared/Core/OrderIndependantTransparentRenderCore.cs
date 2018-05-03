@@ -54,7 +54,7 @@ namespace HelixToolkit.UWP.Core
         private bool hasMSAA = false;
 #endif
 
-        private IShaderPass screenQuadPass = NullShaderPass.NullPass;
+        private ShaderPass screenQuadPass = ShaderPass.NullPass;
         private int colorTexIndex, alphaTexIndex, samplerIndex;
         private SamplerStateProxy targetSampler;
         public int RenderCount { private set; get; } = 0;
@@ -63,7 +63,7 @@ namespace HelixToolkit.UWP.Core
         public OrderIndependentTransparentRenderCore() : base(RenderType.Transparent)
         { }
 
-        private bool CreateTextureResources(IRenderContext context, DeviceContextProxy deviceContext)
+        private bool CreateTextureResources(RenderContext context, DeviceContextProxy deviceContext)
         {
             var currSampleDesc = context.RenderHost.RenderBuffer.ColorBufferSampleDesc;
 #if MSAASEPARATE
@@ -127,7 +127,7 @@ namespace HelixToolkit.UWP.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void Bind(IRenderContext context, DeviceContextProxy deviceContext)
+        private void Bind(RenderContext context, DeviceContextProxy deviceContext)
         {
             targets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(2);
             deviceContext.DeviceContext.ClearRenderTargetView(colorTarget, Color.Zero);
@@ -137,7 +137,7 @@ namespace HelixToolkit.UWP.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void UnBind(IRenderContext context, DeviceContextProxy deviceContext)
+        private void UnBind(RenderContext context, DeviceContextProxy deviceContext)
         {
             deviceContext.DeviceContext.OutputMerger.SetRenderTargets(context.RenderHost.DepthStencilBufferView, targets);
             foreach(var target in targets)
@@ -184,12 +184,12 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
 
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             return base.CanRender(context) && context.RenderHost.PerFrameTransparentNodes.Count > 0;
         }
 
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             RenderCount = 0;
             if(CreateTextureResources(context, deviceContext))
@@ -222,7 +222,7 @@ namespace HelixToolkit.UWP.Core
             deviceContext.DeviceContext.Draw(4, 0);
         }
 
-        protected override void OnUpdatePerModelStruct(ref int model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref int model, RenderContext context)
         {
         }
 

@@ -106,7 +106,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The render context.
         /// </value>
-        IRenderContext RenderContext { get; }
+        RenderContext RenderContext { get; }
         /// <summary>
         /// Sets the default render targets.
         /// </summary>
@@ -201,7 +201,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The d2d target.
         /// </value>
-        ID2DTargetProxy D2DTarget { get; }
+        D2DTargetProxy D2DTarget { get; }
         /// <summary>
         /// Gets the current frame flattened scene graph
         /// </summary>
@@ -283,7 +283,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The render statistics.
         /// </value>
-        IRenderStatistics RenderStatistics { get; }
+        RenderStatistics RenderStatistics { get; }
         /// <summary>
         /// Gets or sets the render configuration.
         /// </summary>
@@ -297,7 +297,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The render buffer.
         /// </value>
-        IDX11RenderBufferProxy RenderBuffer { get; }
+        DX11RenderBufferProxyBase RenderBuffer { get; }
 
         /// <summary>
         /// Clears the render target.

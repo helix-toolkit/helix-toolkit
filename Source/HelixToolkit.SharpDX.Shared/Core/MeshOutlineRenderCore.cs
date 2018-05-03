@@ -116,7 +116,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        protected IShaderPass outlineShaderPass { private set; get; }
+        protected ShaderPass outlineShaderPass { private set; get; }
         /// <summary>
         /// Initializes a new instance of the <see cref="MeshOutlineRenderCore"/> class.
         /// </summary>
@@ -139,7 +139,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
         {            
             base.OnUpdatePerModelStruct(ref model, context);
             model.Params.Y = OutlineFadingFactor;
@@ -149,7 +149,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (DrawOutlineBeforeMesh)
             {

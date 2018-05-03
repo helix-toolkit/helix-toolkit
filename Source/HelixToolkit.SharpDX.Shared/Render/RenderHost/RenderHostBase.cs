@@ -41,14 +41,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public Guid GUID { get; } = Guid.NewGuid();
 
-        private IDX11RenderBufferProxy renderBuffer;
+        private DX11RenderBufferProxyBase renderBuffer;
         /// <summary>
         /// Gets the render buffer.
         /// </summary>
         /// <value>
         /// The render buffer.
         /// </value>
-        public IDX11RenderBufferProxy RenderBuffer { get { return renderBuffer; } }
+        public DX11RenderBufferProxyBase RenderBuffer { get { return renderBuffer; } }
         /// <summary>
         /// Gets the device.
         /// </summary>
@@ -148,7 +148,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// 
         /// </summary>
-        public IRenderContext RenderContext
+        public RenderContext RenderContext
         {
             get { return renderContext; }
         }
@@ -160,7 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The render context2d.
         /// </value>
-        public IRenderContext2D RenderContext2D
+        public RenderContext2D RenderContext2D
         {
             get { return renderContext2D; }
         }
@@ -380,7 +380,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The d2 d controls.
         /// </value>
-        public ID2DTargetProxy D2DTarget
+        public D2DTargetProxy D2DTarget
         {
             get { return RenderBuffer.D2DTarget; }
         }
@@ -391,7 +391,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The render statistics.
         /// </value>
-        public IRenderStatistics RenderStatistics { get; } = new RenderStatistics();
+        public RenderStatistics RenderStatistics { get; } = new RenderStatistics();
         #region Perframe renderables
         /// <summary>
         /// Gets the current frame renderables for rendering.
@@ -515,7 +515,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Creates the render buffer.
         /// </summary>
         /// <returns></returns>
-        protected abstract IDX11RenderBufferProxy CreateRenderBuffer();
+        protected abstract DX11RenderBufferProxyBase CreateRenderBuffer();
 
         /// <summary>
         /// Invalidates the render.
@@ -773,7 +773,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="renderer">The renderer.</param>
-        protected virtual void OnInitializeBuffers(IDX11RenderBufferProxy buffer, IRenderer renderer)
+        protected virtual void OnInitializeBuffers(DX11RenderBufferProxyBase buffer, IRenderer renderer)
         {
             buffer.Initialize((int)ActualWidth, (int)ActualHeight, MSAA);
         }

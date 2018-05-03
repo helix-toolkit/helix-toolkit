@@ -59,8 +59,8 @@ namespace HelixToolkit.UWP
         /// <param name="condition">The condition.</param>
         /// <param name="results">The results.</param>
         /// <param name="stackCache">The stack cache.</param>
-        public static void PreorderDFT(this List<SceneNode> nodes, IRenderContext context,
-            Func<SceneNode, IRenderContext, bool> condition, List<KeyValuePair<int, SceneNode>> results,
+        public static void PreorderDFT(this List<SceneNode> nodes, RenderContext context,
+            Func<SceneNode, RenderContext, bool> condition, List<KeyValuePair<int, SceneNode>> results,
             Stack<KeyValuePair<int, IList<SceneNode>>> stackCache = null)
         {
             var stack = stackCache == null ? new Stack<KeyValuePair<int, IList<SceneNode>>>(20) : stackCache;

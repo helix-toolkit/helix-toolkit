@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             postFXAACore = Collect(new PostEffectFXAA());
         }
 
-        private static readonly Func<SceneNode, IRenderContext, bool> updateFunc = (x, context) =>
+        private static readonly Func<SceneNode, RenderContext, bool> updateFunc = (x, context) =>
         {
             return true;
         };
@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables">The renderables.</param>
         /// <param name="results">Returns list of flattened scene graph with depth index as KeyValuePair.Key</param>
         /// <returns></returns>
-        public virtual void UpdateSceneGraph(IRenderContext context, List<SceneNode> renderables, List<KeyValuePair<int, SceneNode>> results)
+        public virtual void UpdateSceneGraph(RenderContext context, List<SceneNode> renderables, List<KeyValuePair<int, SceneNode>> results)
         {
             renderables.PreorderDFT(context, updateFunc, results, stackCache1);
         }
@@ -74,7 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <returns></returns>
-        public void UpdateSceneGraph2D(IRenderContext2D context, List<SceneNode2D> renderables)
+        public void UpdateSceneGraph2D(RenderContext2D context, List<SceneNode2D> renderables)
         {
             renderables.PreorderDFTRun((x) =>
             {
@@ -88,7 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="lights">The lights.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void UpdateGlobalVariables(IRenderContext context, List<SceneNode> lights, ref RenderParameter parameter)
+        public virtual void UpdateGlobalVariables(RenderContext context, List<SceneNode> lights, ref RenderParameter parameter)
         {
             ImmediateContext.Reset();
             if (parameter.RenderLight)
@@ -113,7 +113,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
         /// <returns>Number of node has been rendered</returns>
-        public virtual int RenderOpaque(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        public virtual int RenderOpaque(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
             int renderedCount = 0;
             int count = renderables.Count;
@@ -137,7 +137,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
         /// <returns></returns>
-        public virtual int RenderTransparent(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        public virtual int RenderTransparent(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
             if (context.RenderHost.RenderConfiguration.EnableOITRendering)
             {
@@ -162,12 +162,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
         /// <summary>
-        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(IRenderContext, List{KeyValuePair{int, SceneNode}})"/>
+        /// Updates the no render parallel. <see cref="IRenderer.UpdateNotRenderParallel(RenderContext, List{KeyValuePair{int, SceneNode}})"/>
         /// </summary>
         /// <param name="renderables">The renderables.</param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public virtual void UpdateNotRenderParallel(IRenderContext context, List<KeyValuePair<int, SceneNode>> renderables)
+        public virtual void UpdateNotRenderParallel(RenderContext context, List<KeyValuePair<int, SceneNode>> renderables)
         {
             int count = renderables.Count;
             for(int i = 0; i < count; ++i)
@@ -194,7 +194,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderScene2D(IRenderContext2D context, List<SceneNode2D> renderables, ref RenderParameter2D parameter)
+        public virtual void RenderScene2D(RenderContext2D context, List<SceneNode2D> renderables, ref RenderParameter2D parameter)
         {
             int count = renderables.Count;
             for (int i = 0; i < count; ++ i)
@@ -209,7 +209,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderPreProc(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        public virtual void RenderPreProc(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
             int count = renderables.Count;
             for (int i = 0; i < count; ++i)
@@ -224,7 +224,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="renderables">The renderables.</param>
         /// <param name="parameter">The parameter.</param>
-        public virtual void RenderPostProc(IRenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        public virtual void RenderPostProc(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {            
             int count = renderables.Count;
             for (int i = 0; i < count; ++i)
@@ -233,7 +233,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }            
         }
 
-        public virtual void RenderToBackBuffer(IRenderContext context, ref RenderParameter parameter)
+        public virtual void RenderToBackBuffer(RenderContext context, ref RenderParameter parameter)
         {
             var buffer = context.RenderHost.RenderBuffer;
             if (context.RenderHost.RenderConfiguration.FXAALevel == FXAALevel.None || buffer.ColorBufferSampleDesc.Count > 1)

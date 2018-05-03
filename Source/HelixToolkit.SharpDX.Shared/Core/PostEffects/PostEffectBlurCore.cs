@@ -59,9 +59,9 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public RenderTargetView NextRTV { get { return renderTargetBlur[1].RenderTargetView; } }
 
-        private IShaderPass screenBlurPassVertical;
+        private ShaderPass screenBlurPassVertical;
 
-        private IShaderPass screenBlurPassHorizontal;
+        private ShaderPass screenBlurPassHorizontal;
 
         #region Texture Resources
 
@@ -108,7 +108,7 @@ namespace HelixToolkit.UWP.Core
         /// Initializes a new instance of the <see cref="PostEffectMeshOutlineBlurCore"/> class.
         /// </summary>
         public PostEffectBlurCore(global::SharpDX.DXGI.Format textureFormat,
-            IShaderPass blurVerticalPass, IShaderPass blurHorizontalPass, int textureSlot, int samplerSlot,
+            ShaderPass blurVerticalPass, ShaderPass blurHorizontalPass, int textureSlot, int samplerSlot,
             SamplerStateDescription sampler, IEffectsManager manager)
         {
             screenBlurPassVertical = blurVerticalPass;

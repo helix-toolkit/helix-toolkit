@@ -26,8 +26,8 @@ namespace HelixToolkit.UWP.Core
     {
         public sealed class UpdateLightSourceEventArgs : EventArgs
         {
-            public IRenderContext Context { private set; get; }
-            public UpdateLightSourceEventArgs(IRenderContext context)
+            public RenderContext Context { private set; get; }
+            public UpdateLightSourceEventArgs(RenderContext context)
             {
                 Context = context;
             }
@@ -194,7 +194,7 @@ namespace HelixToolkit.UWP.Core
             return new ConstantBufferDescription(DefaultBufferNames.ShadowParamCB, ShadowMapParamStruct.SizeInBytes);
         }
 
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
 #if TEST
             if (base.CanRender(context))
@@ -213,7 +213,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (resolutionChanged)
             {
@@ -250,7 +250,7 @@ namespace HelixToolkit.UWP.Core
 #endif
         }
 
-        protected override void OnUpdatePerModelStruct(ref ShadowMapParamStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref ShadowMapParamStruct model, RenderContext context)
         {
             model.HasShadowMap = context.RenderHost.IsShadowMapEnabled ? 1 : 0;
         }

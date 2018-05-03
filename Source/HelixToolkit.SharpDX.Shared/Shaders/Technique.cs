@@ -18,8 +18,8 @@ namespace HelixToolkit.UWP.Shaders
     using ShaderManager;
     public class Technique :  DisposeObject, IRenderTechnique
     {
-        private readonly Dictionary<string, Lazy<IShaderPass>> passDict = new Dictionary<string, Lazy<IShaderPass>>();
-        private readonly List<Lazy<IShaderPass>> passList = new List<Lazy<IShaderPass>>();
+        private readonly Dictionary<string, Lazy<ShaderPass>> passDict = new Dictionary<string, Lazy<ShaderPass>>();
+        private readonly List<Lazy<ShaderPass>> passList = new List<Lazy<ShaderPass>>();
 
         /// <summary>
         /// <see cref="IRenderTechnique.Layout"/>
@@ -62,7 +62,7 @@ namespace HelixToolkit.UWP.Shaders
             {
                 foreach(var desc in description.PassDescriptions)
                 {
-                    var pass = new Lazy<IShaderPass>(()=> { return Collect(new ShaderPass(desc, manager)); }, true);
+                    var pass = new Lazy<ShaderPass>(()=> { return Collect(new ShaderPass(desc, manager)); }, true);
                     passDict.Add(desc.Name, pass);
                     passList.Add(pass);
                 }
@@ -74,9 +74,9 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public IShaderPass GetPass(string name)
+        public ShaderPass GetPass(string name)
         {
-            return passDict.ContainsKey(name) ? passDict[name].Value : NullShaderPass.NullPass;
+            return passDict.ContainsKey(name) ? passDict[name].Value : ShaderPass.NullPass;
         }
 
         /// <summary>
@@ -84,9 +84,9 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public IShaderPass GetPass(int index)
+        public ShaderPass GetPass(int index)
         {
-            return passList.Count > index ? passList[index].Value : NullShaderPass.NullPass;
+            return passList.Count > index ? passList[index].Value : ShaderPass.NullPass;
         }
 
         /// <summary>
@@ -94,14 +94,14 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public IShaderPass this[int index] { get { return GetPass(index); } }
+        public ShaderPass this[int index] { get { return GetPass(index); } }
 
         /// <summary>
         /// <see cref="IRenderTechnique.GetPass(string)"/>
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public IShaderPass this[string name] { get { return GetPass(name); } }
+        public ShaderPass this[string name] { get { return GetPass(name); } }
 
         /// <summary>
         /// 

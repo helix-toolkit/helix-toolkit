@@ -172,7 +172,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
-        public override void UpdateNotRender(IRenderContext context)
+        public override void UpdateNotRender(RenderContext context)
         {
             base.UpdateNotRender(context);
             if(Octree != null)

@@ -174,7 +174,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
         }
 
-        public override void Update(IRenderContext2D context)
+        public override void Update(RenderContext2D context)
         {
             base.Update(context);
             if (strokeStyleChanged)

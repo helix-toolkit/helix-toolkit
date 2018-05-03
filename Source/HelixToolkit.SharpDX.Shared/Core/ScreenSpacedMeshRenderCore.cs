@@ -74,12 +74,12 @@ namespace HelixToolkit.UWP.Core
         ///// </summary>
         ///// <param name="context"></param>
         ///// <param name="clearDepthBuffer"></param>
-        //void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer);
+        //void SetScreenSpacedCoordinates(RenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer);
         ///// <summary>
         ///// 
         ///// </summary>
         ///// <param name="context"></param>
-        //void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext);
+        //void SetScreenSpacedCoordinates(RenderContext context, DeviceContextProxy deviceContext);
     }
     /// <summary>
     /// Used to change view matrix and projection matrix to screen spaced coordinate system.
@@ -87,7 +87,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class ScreenSpacedMeshRenderCore : RenderCoreBase<ModelStruct>, IScreenSpacedRenderParams
     {
-        private IConstantBufferProxy globalTransformCB;
+        private ConstantBufferProxy globalTransformCB;
         private Matrix projectionMatrix;
         public GlobalTransformStruct GlobalTransform { private set; get; }
         public float ScreenRatio { private set; get; } = 1f;
@@ -264,7 +264,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="renderContext">The render context.</param>
         /// <param name="eye">The eye.</param>
         /// <returns></returns>
-        protected Matrix CreateViewMatrix(IRenderContext renderContext, out Vector3 eye)
+        protected Matrix CreateViewMatrix(RenderContext renderContext, out Vector3 eye)
         {
             eye = -renderContext.Camera.LookDirection.Normalized() * CameraDistance;
             if (IsRightHand)
@@ -312,7 +312,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
         {
             model.World = Matrix.Identity;
             model.HasInstances = 0;
@@ -324,7 +324,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns>
         ///   <c>true</c> if this instance can render the specified context; otherwise, <c>false</c>.
         /// </returns>
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             return context.ActualWidth > Size && context.ActualHeight > Size;
         }
@@ -333,7 +333,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="renderContext">The render context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(IRenderContext renderContext, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext renderContext, DeviceContextProxy deviceContext)
         {
             SetScreenSpacedCoordinates(renderContext, deviceContext);
         }
@@ -341,7 +341,7 @@ namespace HelixToolkit.UWP.Core
         /// Posts the render.
         /// </summary>
         /// <param name="context">The context.</param>
-        protected override void PostRender(IRenderContext context)
+        protected override void PostRender(RenderContext context)
         {
         }
 
@@ -350,7 +350,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        public void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext)
+        public void SetScreenSpacedCoordinates(RenderContext context, DeviceContextProxy deviceContext)
         {
             SetScreenSpacedCoordinates(context, deviceContext, true);
         }
@@ -361,7 +361,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
         /// <param name="clearDepthBuffer">if set to <c>true</c> [clear depth buffer].</param>
-        protected virtual void SetScreenSpacedCoordinates(IRenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer)
+        protected virtual void SetScreenSpacedCoordinates(RenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer)
         {
             context.WorldMatrix = Matrix.Identity;
             DepthStencilView dsView;

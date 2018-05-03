@@ -94,12 +94,12 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private IShaderPass defaultShaderPass = NullShaderPass.NullPass;
+        private ShaderPass defaultShaderPass = ShaderPass.NullPass;
 
         /// <summary>
         ///
         /// </summary>
-        protected IShaderPass DefaultShaderPass
+        protected ShaderPass DefaultShaderPass
         {
             private set
             {
@@ -368,12 +368,12 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
 
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             return base.CanRender(context) && EnableReflector;
         }
 
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (CreateCubeMapResources())
             {
@@ -436,7 +436,7 @@ namespace HelixToolkit.UWP.Core
             context.UpdatePerFrameData(true, false);
         }
 
-        protected override void OnUpdatePerModelStruct(ref GlobalTransformStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref GlobalTransformStruct model, RenderContext context)
         {
             var camPos = Center;
             targets[0] = camPos + Vector3.UnitX;

@@ -36,7 +36,7 @@ namespace HelixToolkit.UWP.CommonDX
         /// Creates the render buffer.
         /// </summary>
         /// <returns></returns>
-        protected override IDX11RenderBufferProxy CreateRenderBuffer()
+        protected override DX11RenderBufferProxyBase CreateRenderBuffer()
         {
             Logger.Log(LogLevel.Information, "DX11SwapChainCompositionRenderBufferProxy", nameof(SwapChainRenderHost));
             return new DX11SwapChainCompositionRenderBufferProxy(EffectsManager);

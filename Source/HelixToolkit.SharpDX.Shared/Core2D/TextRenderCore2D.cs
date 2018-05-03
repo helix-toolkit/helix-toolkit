@@ -227,12 +227,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             textLayout.TextAlignment = TextAlignment;            
         }       
 
-        protected override bool CanRender(IRenderContext2D context)
+        protected override bool CanRender(RenderContext2D context)
         {
             return base.CanRender(context) && Foreground != null;
         }
 
-        protected override void OnRender(IRenderContext2D context)
+        protected override void OnRender(RenderContext2D context)
         {
             if (Background != null)
             {

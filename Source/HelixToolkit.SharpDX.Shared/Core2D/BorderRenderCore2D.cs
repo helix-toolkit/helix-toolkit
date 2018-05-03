@@ -168,7 +168,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// Called when [render].
         /// </summary>
         /// <param name="context">The context.</param>
-        protected override void OnRender(IRenderContext2D context)
+        protected override void OnRender(RenderContext2D context)
         {
             var roundRect = new D2D.RoundedRectangle() { Rect = LayoutBound, RadiusX = CornerRadius, RadiusY = CornerRadius };
             if (Background != null)

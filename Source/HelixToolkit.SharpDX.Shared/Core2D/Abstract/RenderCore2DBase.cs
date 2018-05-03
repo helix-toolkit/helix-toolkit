@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// Renders the specified context.
         /// </summary>
         /// <param name="context">The context.</param>
-        public override void Render(IRenderContext2D context)
+        public override void Render(RenderContext2D context)
         {
             if (CanRender(context))
             {
@@ -58,7 +58,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// Called when [render].
         /// </summary>
         /// <param name="context">The context.</param>
-        protected abstract void OnRender(IRenderContext2D context);
+        protected abstract void OnRender(RenderContext2D context);
         /// <summary>
         /// Determines whether this instance can render the specified context.
         /// </summary>
@@ -66,7 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <returns>
         ///   <c>true</c> if this instance can render the specified context; otherwise, <c>false</c>.
         /// </returns>
-        protected virtual bool CanRender(IRenderContext2D context)
+        protected virtual bool CanRender(RenderContext2D context)
         {
             return IsAttached && IsRendering;
         }

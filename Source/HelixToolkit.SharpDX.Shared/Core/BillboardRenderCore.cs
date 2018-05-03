@@ -75,7 +75,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected IShaderPass TransparentPass { private set; get; } = NullShaderPass.NullPass;
+        protected ShaderPass TransparentPass { private set; get; } = ShaderPass.NullPass;
 
         private SamplerStateProxy textureSampler;
 
@@ -83,7 +83,7 @@ namespace HelixToolkit.UWP.Core
         private int shaderTextureSlot;
         private int textureSamplerSlot;
 
-        protected override void OnDefaultPassChanged(IShaderPass pass)
+        protected override void OnDefaultPassChanged(ShaderPass pass)
         {
             base.OnDefaultPassChanged(pass);
             shaderTextureSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
@@ -104,7 +104,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
@@ -118,9 +118,9 @@ namespace HelixToolkit.UWP.Core
             return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
         }
 
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
-            IShaderPass pass = DefaultShaderPass;
+            ShaderPass pass = DefaultShaderPass;
             if (RenderType == RenderType.Transparent && context.IsOITPass)
             {
                 pass = TransparentPass;
@@ -152,7 +152,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
             
         }

@@ -146,11 +146,11 @@ namespace HelixToolkit.UWP.Core
                 return defaultShadowPassName;
             }
         }
-        private IShaderPass defaultShaderPass = NullShaderPass.NullPass;
+        private ShaderPass defaultShaderPass = ShaderPass.NullPass;
         /// <summary>
         /// 
         /// </summary>
-        protected IShaderPass DefaultShaderPass
+        protected ShaderPass DefaultShaderPass
         {
             private set
             {
@@ -166,11 +166,11 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private IShaderPass shadowPass = NullShaderPass.NullPass;
+        private ShaderPass shadowPass = ShaderPass.NullPass;
         /// <summary>
         /// 
         /// </summary>
-        protected IShaderPass ShadowPass
+        protected ShaderPass ShadowPass
         {
             private set
             {
@@ -245,12 +245,12 @@ namespace HelixToolkit.UWP.Core
         /// 
         /// </summary>
         /// <param name="pass"></param>
-        protected virtual void OnDefaultPassChanged(IShaderPass pass) { }
+        protected virtual void OnDefaultPassChanged(ShaderPass pass) { }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="pass"></param>
-        protected virtual void OnShadowPassChanged(IShaderPass pass) { }
+        protected virtual void OnShadowPassChanged(ShaderPass pass) { }
         /// <summary>
         /// Set all necessary states and buffers
         /// </summary>
@@ -282,7 +282,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             return base.CanRender(context) && GeometryBuffer != null;
         }
@@ -319,7 +319,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (!IsThrowingShadow || ShadowPass.IsNULL)
             { return; }
@@ -328,7 +328,7 @@ namespace HelixToolkit.UWP.Core
             OnDraw(deviceContext, InstanceBuffer);
         }
 
-        protected override void OnRenderCustom(IRenderContext context, DeviceContextProxy deviceContext, IShaderPass shaderPass)
+        protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
             OnDraw(deviceContext, InstanceBuffer);
         }

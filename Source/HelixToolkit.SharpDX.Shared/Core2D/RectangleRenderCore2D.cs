@@ -11,7 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 {
     public class RectangleRenderCore2D : ShapeRenderCore2DBase
     {
-        protected override void OnRender(IRenderContext2D context)
+        protected override void OnRender(RenderContext2D context)
         {
             if (FillBrush != null)
             {

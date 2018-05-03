@@ -105,7 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="originalSource">The original source.</param>
         /// <param name="fixedSize">if set to <c>true</c> [fixed size].</param>
         /// <returns></returns>
-        public virtual bool HitTest(IRenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
+        public virtual bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, 
             object originalSource, bool fixedSize)
         {
             var h = false;

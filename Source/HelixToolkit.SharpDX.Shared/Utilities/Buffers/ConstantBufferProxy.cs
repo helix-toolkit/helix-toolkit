@@ -2,87 +2,35 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SDX11 = SharpDX.Direct3D11;
+
+using SharpDX;
 using SharpDX.Direct3D11;
 using System;
-using System.Collections.Generic;
-using SharpDX;
+
+using SDX11 = SharpDX.Direct3D11;
 #if !NETFX_CORE
+
 namespace HelixToolkit.Wpf.SharpDX.Utilities
 #else
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
     using Shaders;
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IConstantBufferProxy : IBufferProxy
-    {
-        bool Initialized { get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="device"></param>
-        void CreateBuffer(Device device);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="context"></param>
-        /// <param name="data"></param>
-        /// <param name="offset"></param>
-        void UploadDataToBuffer<T>(DeviceContext context, ref T data, int offset) where T : struct;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="context"></param>
-        /// <param name="data"></param>
-        void UploadDataToBuffer<T>(DeviceContext context, ref T data) where T : struct;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="context"></param>
-        /// <param name="data"></param>
-        /// <param name="count"></param>
-        void UploadDataToBuffer<T>(DeviceContext context, T[] data, int count) where T : struct;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="context"></param>
-        /// <param name="data"></param>
-        /// <param name="count"></param>
-        /// <param name="offset"></param>
-        void UploadDataToBuffer<T>(DeviceContext context, T[] data, int count, int offset) where T : struct;
-        /// <summary>
-        /// Use external write function to upload data
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="writeFunc"></param>
-        void UploadDataToBuffer(DeviceContext context, Action<DataStream> writeFunc);
-        /// <summary>
-        /// Disposes the buffer. Reuse the object
-        /// </summary>
-        void DisposeAndClear();
-    }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public class ConstantBufferProxy : BufferProxyBase, IConstantBufferProxy
+    public class ConstantBufferProxy : BufferProxyBase
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool Initialized { get { return buffer != null; } }
+
         private BufferDescription bufferDesc;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="structSize"></param>
         /// <param name="bindFlags"></param>
@@ -108,8 +56,9 @@ namespace HelixToolkit.UWP.Utilities
                 StructureByteStride = strideSize
             };
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="description"></param>
         public ConstantBufferProxy(ConstantBufferDescription description)
@@ -131,7 +80,7 @@ namespace HelixToolkit.UWP.Utilities
         }
 
         /// <summary>
-        /// <see cref="IConstantBufferProxy.CreateBuffer(Device)"/>
+        /// <see cref="ConstantBufferProxy.CreateBuffer(Device)"/>
         /// </summary>
         /// <param name="device"></param>
         public void CreateBuffer(Device device)
@@ -140,7 +89,7 @@ namespace HelixToolkit.UWP.Utilities
         }
 
         /// <summary>
-        /// <see cref="IConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, ref T)"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, ref T)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context"></param>
@@ -149,8 +98,9 @@ namespace HelixToolkit.UWP.Utilities
         {
             UploadDataToBuffer<T>(context, ref data, 0);
         }
+
         /// <summary>
-        /// <see cref="IConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, ref T, int)"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, ref T, int)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context"></param>
@@ -173,8 +123,9 @@ namespace HelixToolkit.UWP.Utilities
                 context.UpdateSubresource(ref data, buffer);
             }
         }
+
         /// <summary>
-        /// <see cref="IConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, T[], int)"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, T[], int)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context"></param>
@@ -184,8 +135,9 @@ namespace HelixToolkit.UWP.Utilities
         {
             UploadDataToBuffer<T>(context, data, count, 0);
         }
+
         /// <summary>
-        /// <see cref="IConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, T[], int, int)"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, T[], int, int)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context"></param>
@@ -209,8 +161,9 @@ namespace HelixToolkit.UWP.Utilities
                 context.UpdateSubresource(data, buffer);
             }
         }
+
         /// <summary>
-        /// <see cref="IConstantBufferProxy.UploadDataToBuffer(DeviceContext, Action{DataStream})"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer(DeviceContext, Action{DataStream})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="writeFuc"></param>
@@ -232,7 +185,6 @@ namespace HelixToolkit.UWP.Utilities
             }
         }
 
-
         /// <summary>
         /// Special function to recreate existing constant buffer to new size.
         /// </summary>
@@ -245,7 +197,7 @@ namespace HelixToolkit.UWP.Utilities
                 throw new ArgumentException("Constant buffer struct size must be multiple of 16 bytes");
             }
             RemoveAndDispose(ref buffer);
-            bufferDesc.SizeInBytes = structSize;            
+            bufferDesc.SizeInBytes = structSize;
             buffer = Collect(new SDX11.Buffer(device, bufferDesc));
         }
 

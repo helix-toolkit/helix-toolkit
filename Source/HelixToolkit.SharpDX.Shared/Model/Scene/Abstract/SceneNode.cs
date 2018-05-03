@@ -437,7 +437,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// Updates the element total transforms, determine renderability, etc. by the specified time span.
         /// </summary>
         /// <param name="context">The time since last update.</param>
-        public virtual void Update(IRenderContext context)
+        public virtual void Update(RenderContext context)
         {
             IsRenderable = CanRender(context);
             if (!IsRenderable)
@@ -454,7 +454,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <summary>
         ///
         /// </summary>
-        public virtual void UpdateNotRender(IRenderContext context) { }
+        public virtual void UpdateNotRender(RenderContext context) { }
 
         #region Rendering
 
@@ -463,7 +463,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        protected virtual bool CanRender(IRenderContext context)
+        protected virtual bool CanRender(RenderContext context)
         {
             return Visible && IsAttached;
         }
@@ -473,7 +473,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        public void Render(IRenderContext context, DeviceContextProxy deviceContext)
+        public void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             RenderCore.Render(context, deviceContext);
         }
@@ -497,7 +497,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="ray">The ray.</param>
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
-        public virtual bool HitTest(IRenderContext context, Ray ray, ref List<HitTestResult> hits)
+        public virtual bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             if (CanHitTest(context))
             {
@@ -516,7 +516,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns>
         ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
         /// </returns>
-        protected virtual bool CanHitTest(IRenderContext context)
+        protected virtual bool CanHitTest(RenderContext context)
         {
             return IsHitTestVisible && IsRenderable;
         }
@@ -529,7 +529,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="ray">The ray.</param>
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
-        protected abstract bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits);
+        protected abstract bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits);
 
         #endregion Hit Test
 

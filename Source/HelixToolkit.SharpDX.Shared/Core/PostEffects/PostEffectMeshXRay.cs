@@ -129,7 +129,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             context.IsCustomPass = true;
             if (DoublePass)
@@ -210,7 +210,7 @@ namespace HelixToolkit.UWP.Core
             context.IsCustomPass = false;
         }
 
-        protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)
         {
             modelStruct.Color = color;
         }

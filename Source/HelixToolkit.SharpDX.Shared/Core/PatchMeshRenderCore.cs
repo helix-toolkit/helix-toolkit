@@ -117,7 +117,7 @@ namespace HelixToolkit.UWP.Core
             MaxTessellationFactor = 1;
         }
 
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (EnableTessellation)
             {
@@ -129,7 +129,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected virtual void OnRenderTessellation(IRenderContext context, DeviceContextProxy deviceContext)
+        protected virtual void OnRenderTessellation(RenderContext context, DeviceContextProxy deviceContext)
         {
             switch (meshType)
             {

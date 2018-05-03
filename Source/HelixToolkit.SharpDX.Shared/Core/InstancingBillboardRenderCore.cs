@@ -38,12 +38,12 @@ namespace HelixToolkit.UWP.Core
         {
             InvalidateRenderer();
         }
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             return base.CanRender(context) && InstanceBuffer != null && InstanceBuffer.HasElements;
         }
 
-        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
             model.HasInstanceParams = ParameterBuffer != null && ParameterBuffer.HasElements ? 1 : 0;

@@ -348,7 +348,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The render context.
         /// </value>
-        public IRenderContext RenderContext
+        public RenderContext RenderContext
         {
             get
             {
@@ -452,7 +452,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The d2d target.
         /// </value>
-        public ID2DTargetProxy D2DTarget
+        public D2DTargetProxy D2DTarget
         {
             get
             {
@@ -465,7 +465,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The render statistics.
         /// </value>
-        public IRenderStatistics RenderStatistics { get { return CurrentRenderHost != null ? CurrentRenderHost.RenderStatistics : null; } }
+        public RenderStatistics RenderStatistics { get { return CurrentRenderHost != null ? CurrentRenderHost.RenderStatistics : null; } }
         /// <summary>
         /// Gets or sets a value indicating whether [show statistics].
         /// </summary>
@@ -484,7 +484,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public DX11RenderHostConfiguration RenderConfiguration { set; get; }
 
-        public IDX11RenderBufferProxy RenderBuffer { get { return CurrentRenderHost != null ? CurrentRenderHost.RenderBuffer : null; } }
+        public DX11RenderBufferProxyBase RenderBuffer { get { return CurrentRenderHost != null ? CurrentRenderHost.RenderBuffer : null; } }
 
         public ModelContainer3DX()
         {

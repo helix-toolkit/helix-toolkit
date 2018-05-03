@@ -51,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// <param name="context">The context.</param>
         /// <param name="size">The size.</param>
         /// <param name="maxSize">The maximum size.</param>
-        private void EnsureBitmapCache(IRenderContext2D context, Size2 size, int maxSize)
+        private void EnsureBitmapCache(RenderContext2D context, Size2 size, int maxSize)
         {
             IsBitmapCacheValid = false;
             if (size.Width == 0 || size.Height == 0 || !EnableBitmapCache || size.Width * size.Height < MinimumBitmapSize)

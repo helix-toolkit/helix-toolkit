@@ -184,7 +184,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// Renders the specified context.
         /// </summary>
         /// <param name="context">The context.</param>
-        public abstract void Render(IRenderContext2D context);
+        public abstract void Render(RenderContext2D context);
 
         /// <summary>
         /// Invalidates the renderer.

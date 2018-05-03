@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using System;
+using System.Runtime.CompilerServices;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -98,16 +99,17 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public struct EnumHelper
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasFlag(ShaderStage option, ShaderStage flag)
         {
             return (option & flag) != 0;
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasFlag(StateType option, StateType flag)
         {
             return (option & flag) != 0;
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasFlag(RenderDetail option, RenderDetail flag)
         {
             return (option & flag) != 0;

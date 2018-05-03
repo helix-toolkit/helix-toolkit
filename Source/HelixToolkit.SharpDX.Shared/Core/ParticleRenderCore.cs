@@ -410,12 +410,12 @@ namespace HelixToolkit.UWP.Core
             InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4() };
 
         #region ShaderVariables
-        private IShaderPass updatePass;
-        private IShaderPass insertPass;
-        private IShaderPass renderPass;
+        private ShaderPass updatePass;
+        private ShaderPass insertPass;
+        private ShaderPass renderPass;
 
-        private IConstantBufferProxy perFrameCB;
-        private IConstantBufferProxy insertCB;
+        private ConstantBufferProxy perFrameCB;
+        private ConstantBufferProxy insertCB;
 
         private ShaderResourceView textureView;
         #endregion
@@ -554,7 +554,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
@@ -617,7 +617,7 @@ namespace HelixToolkit.UWP.Core
             InsertElapseThrottle = (8.0f * InsertVariables.InitialEnergy / InsertVariables.EnergyDissipationRate / System.Math.Max(0, (particleCount + 8)));
         }
 
-        private void UpdateTime(IRenderContext context, ref double totalElapsed)
+        private void UpdateTime(RenderContext context, ref double totalElapsed)
         {
             double timeElapsed = Math.Max(0, (context.TimeStamp.TotalMilliseconds - prevTimeMillis) / 1000);
             prevTimeMillis = context.TimeStamp.TotalMilliseconds;
@@ -704,7 +704,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns>
         ///   <c>true</c> if this instance can render the specified context; otherwise, <c>false</c>.
         /// </returns>
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             return base.CanRender(context) && BufferProxies != null && !isInitialParticleChanged;
         }
@@ -714,7 +714,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="deviceContext"></param>
-        protected override void OnUpdate(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnUpdate(RenderContext context, DeviceContextProxy deviceContext)
         {        
             UpdateTime(context, ref totalElapsed);
             //Set correct instance count from instance buffer
@@ -777,7 +777,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             perFrameCB.UploadDataToBuffer(deviceContext, ref FrameVariables);
             // Clear binding

@@ -35,7 +35,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="numRendered"></param>
         /// <returns></returns>
         bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
-            IRenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered);
+            RenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered);
     }
     /// <summary>
     /// 
@@ -112,7 +112,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="numRendered"></param>
         /// <returns></returns>
         public bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
-            IRenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered)
+            RenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered)
         {
             outputCommands.Clear();
             int totalCount = 0;

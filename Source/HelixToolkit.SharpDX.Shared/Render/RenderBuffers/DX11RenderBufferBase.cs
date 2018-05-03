@@ -26,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     /// <summary>
     /// 
     /// </summary>
-    public abstract class DX11RenderBufferProxyBase : DisposeObject, IDX11RenderBufferProxy
+    public abstract class DX11RenderBufferProxyBase : DisposeObject
     {
         /// <summary>
         /// Occurs when [on new buffer created].
@@ -64,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The d2 d controls.
         /// </value>
-        public ID2DTargetProxy D2DTarget
+        public D2DTargetProxy D2DTarget
         {
             get { return d2dTarget; }
         }
