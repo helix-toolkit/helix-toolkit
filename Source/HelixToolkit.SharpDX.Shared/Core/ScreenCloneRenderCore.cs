@@ -148,8 +148,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         private DuplicationResource duplicationResource;
         private FrameProcessing frameProcessor;
-        private IShaderPass DefaultShaderPass;
-        private IShaderPass CursorShaderPass;
+        private ShaderPass DefaultShaderPass;
+        private ShaderPass CursorShaderPass;
         private int textureBindSlot = 0;
         private int samplerBindSlot = 0;
         private SamplerStateProxy textureSampler;

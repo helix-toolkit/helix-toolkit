@@ -31,7 +31,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The model cb.
         /// </value>
-        protected IConstantBufferProxy ModelConstBuffer { private set; get; }
+        protected ConstantBufferProxy ModelConstBuffer { private set; get; }
         #endregion
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Render function for custom shader pass. Used to do special effects
         /// </summary>
-        protected virtual void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, IShaderPass shaderPass)
+        protected virtual void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
         { }
 
         /// <summary>

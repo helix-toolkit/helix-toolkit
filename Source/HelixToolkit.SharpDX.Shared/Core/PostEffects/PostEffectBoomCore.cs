@@ -129,15 +129,15 @@ namespace HelixToolkit.UWP.Core
             get { return maximumDownSamplingStep; }
         }
 
-        private IShaderPass screenQuadPass;
+        private ShaderPass screenQuadPass;
 
-        private IShaderPass screenQuadCopy;
+        private ShaderPass screenQuadCopy;
 
-        private IShaderPass blurPassVertical;
+        private ShaderPass blurPassVertical;
 
-        private IShaderPass blurPassHorizontal;
+        private ShaderPass blurPassHorizontal;
 
-        private IShaderPass screenOutlinePass;
+        private ShaderPass screenOutlinePass;
         #region Texture Resources
 
         private readonly List<PostEffectBlurCore> offScreenRenderTargets = new List<PostEffectBlurCore>();

@@ -185,7 +185,7 @@ namespace HelixToolkit.UWP.Core
         /// Called when [default pass changed].
         /// </summary>
         /// <param name="pass">The pass.</param>
-        protected override void OnDefaultPassChanged(IShaderPass pass)
+        protected override void OnDefaultPassChanged(ShaderPass pass)
         {
             cubeTextureSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
             textureSamplerSlot = pass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);

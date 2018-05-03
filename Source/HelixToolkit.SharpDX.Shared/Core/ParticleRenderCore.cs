@@ -410,12 +410,12 @@ namespace HelixToolkit.UWP.Core
             InitialVelocity = DefaultInitialVelocity, ParticleBlendColor = Color.White.ToColor4() };
 
         #region ShaderVariables
-        private IShaderPass updatePass;
-        private IShaderPass insertPass;
-        private IShaderPass renderPass;
+        private ShaderPass updatePass;
+        private ShaderPass insertPass;
+        private ShaderPass renderPass;
 
-        private IConstantBufferProxy perFrameCB;
-        private IConstantBufferProxy insertCB;
+        private ConstantBufferProxy perFrameCB;
+        private ConstantBufferProxy insertCB;
 
         private ShaderResourceView textureView;
         #endregion

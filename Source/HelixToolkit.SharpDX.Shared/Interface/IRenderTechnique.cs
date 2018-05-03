@@ -46,13 +46,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        IShaderPass GetPass(string name);
+        ShaderPass GetPass(string name);
         /// <summary>
         /// Get pass by index
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        IShaderPass GetPass(int index);
+        ShaderPass GetPass(int index);
 
         IEffectsManager EffectsManager { get; }
         /// <summary>
@@ -60,12 +60,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        IShaderPass this[int index] { get; }
+        ShaderPass this[int index] { get; }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        IShaderPass this[string name] { get; }
+        ShaderPass this[string name] { get; }
     }
 }

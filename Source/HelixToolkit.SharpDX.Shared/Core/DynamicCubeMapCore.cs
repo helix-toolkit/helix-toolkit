@@ -94,12 +94,12 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private IShaderPass defaultShaderPass = NullShaderPass.NullPass;
+        private ShaderPass defaultShaderPass = ShaderPass.NullPass;
 
         /// <summary>
         ///
         /// </summary>
-        protected IShaderPass DefaultShaderPass
+        protected ShaderPass DefaultShaderPass
         {
             private set
             {

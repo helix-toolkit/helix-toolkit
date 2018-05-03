@@ -87,7 +87,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class ScreenSpacedMeshRenderCore : RenderCoreBase<ModelStruct>, IScreenSpacedRenderParams
     {
-        private IConstantBufferProxy globalTransformCB;
+        private ConstantBufferProxy globalTransformCB;
         private Matrix projectionMatrix;
         public GlobalTransformStruct GlobalTransform { private set; get; }
         public float ScreenRatio { private set; get; } = 1f;

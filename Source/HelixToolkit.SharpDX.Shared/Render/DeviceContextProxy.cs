@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The last shader pass.
         /// </value>
-        public IShaderPass LastShaderPass { set; get; }
+        public ShaderPass LastShaderPass { set; get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceContextProxy"/> class.

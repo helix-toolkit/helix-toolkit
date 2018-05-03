@@ -154,6 +154,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context"></param>
         /// <param name="shaderPass"></param>
         /// <returns></returns>
-        bool BindMaterialTextures(DeviceContext context, IShaderPass shaderPass);
+        bool BindMaterialTextures(DeviceContext context, ShaderPass shaderPass);
     }
 }

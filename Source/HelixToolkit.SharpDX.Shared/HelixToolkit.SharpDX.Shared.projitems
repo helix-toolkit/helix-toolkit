@@ -108,7 +108,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderCoreParams.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderTechnique.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Interface\IShaderPass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IShaderReflector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ITextureResourceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ITransform.cs" />

@@ -106,9 +106,9 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         protected RasterizerStateProxy RasterStateWireframe { get { return rasterStateWireframe; } }
 
-        protected IShaderPass WireframePass { private set; get; } = NullShaderPass.NullPass;
-        protected IShaderPass WireframeOITPass { private set; get; } = NullShaderPass.NullPass;
-        protected IShaderPass TransparentPass { private set; get; } = NullShaderPass.NullPass;
+        protected ShaderPass WireframePass { private set; get; } = ShaderPass.NullPass;
+        protected ShaderPass WireframeOITPass { private set; get; } = ShaderPass.NullPass;
+        protected ShaderPass TransparentPass { private set; get; } = ShaderPass.NullPass;
 
         public string ShaderShadowMapTextureName { set; get; } = DefaultBufferNames.ShadowMapTB;
 
@@ -154,7 +154,7 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
 
-        protected override void OnDefaultPassChanged(IShaderPass pass)
+        protected override void OnDefaultPassChanged(ShaderPass pass)
         {
             base.OnDefaultPassChanged(pass);
             shadowMapSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowMapTextureName);
@@ -168,7 +168,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
-            IShaderPass pass = DefaultShaderPass;
+            ShaderPass pass = DefaultShaderPass;
             if (RenderType == RenderType.Transparent && context.IsOITPass)
             {
                 pass = TransparentPass;
@@ -186,7 +186,7 @@ namespace HelixToolkit.UWP.Core
             DynamicReflector?.BindCubeMap(deviceContext);
             OnDraw(deviceContext, InstanceBuffer);
             DynamicReflector?.UnBindCubeMap(deviceContext);
-            if (RenderWireframe && WireframePass != NullShaderPass.NullPass)
+            if (RenderWireframe && WireframePass != ShaderPass.NullPass)
             {
                 if (RenderType == RenderType.Transparent && context.IsOITPass)
                 {

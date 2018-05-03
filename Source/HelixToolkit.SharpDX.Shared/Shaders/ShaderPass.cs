@@ -13,143 +13,16 @@ namespace HelixToolkit.UWP.Shaders
 {
     using Utilities;
     using Render;
-    /// <summary>
-    /// 
-    /// </summary>
-    public sealed class NullShaderPass : IShaderPass
-    {
-        /// <summary>
-        /// The null pass
-        /// </summary>
-        public static readonly NullShaderPass NullPass = new NullShaderPass();
-        /// <summary>
-        /// Gets a value indicating whether this instance is null.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is null; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsNULL { get; } = true;
-        /// <summary>
-        /// Gets the state of the blend.
-        /// </summary>
-        /// <value>
-        /// The state of the blend.
-        /// </value>
-        public BlendStateProxy BlendState
-        {
-            get
-            {
-                return null;
-            }
-        }
-        /// <summary>
-        /// Gets the state of the depth stencil.
-        /// </summary>
-        /// <value>
-        /// The state of the depth stencil.
-        /// </value>
-        public DepthStencilStateProxy DepthStencilState
-        {
-            get
-            {
-                return null;
-            }
-        }
-        /// <summary>
-        /// Gets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        public string Name
-        {
-            get
-            {
-                return "NULL";
-            }
-        }
-        /// <summary>
-        /// Gets the state of the raster.
-        /// </summary>
-        /// <value>
-        /// The state of the raster.
-        /// </value>
-        public RasterizerStateProxy RasterState
-        {
-            get
-            {
-                return null;
-            }
-        }
-        /// <summary>
-        /// Gets the shaders.
-        /// </summary>
-        /// <value>
-        /// The shaders.
-        /// </value>
-        public IReadOnlyList<ShaderBase> Shaders
-        {
-            get
-            {
-                return new ShaderBase[0];
-            }
-        }
-        /// <summary>
-        /// Binds the shader.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public void BindShader(DeviceContextProxy context)
-        {
-            
-        }
-
-        /// <summary>
-        /// Binds the shader.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="bindConstantBuffer"></param>
-        public void BindShader(DeviceContextProxy context, bool bindConstantBuffer)
-        {
-
-        }
-        /// <summary>
-        /// Binds the states.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="type">The type.</param>
-        public void BindStates(DeviceContextProxy context, StateType type)
-        {
-
-        }
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        public void Dispose()
-        {
-        }
-        /// <summary>
-        /// Gets the shader.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns></returns>
-        public ShaderBase GetShader(ShaderStage type)
-        {
-            return NullShader.GetNullShader(type);  
-        }
-        /// <summary>
-        /// Sets the shader.
-        /// </summary>
-        /// <param name="shader">The shader.</param>
-        public void SetShader(ShaderBase shader) { }
-    }
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Shader Pass
     /// </summary>
-    public sealed class ShaderPass : DisposeObject, IShaderPass
+    public sealed class ShaderPass : DisposeObject
     {
+        public static readonly ShaderPass NullPass = new ShaderPass();
         /// <summary>
-        /// <see cref="IShaderPass.Name"/>
+        /// <see cref="ShaderPass.Name"/>
         /// </summary>
         public string Name { private set; get; }
         /// <summary>
@@ -159,19 +32,19 @@ namespace HelixToolkit.UWP.Shaders
 
         private readonly ShaderBase[] shaders = new ShaderBase[Constants.NumShaderStages];
         /// <summary>
-        /// <see cref="IShaderPass.Shaders"/>
+        /// <see cref="ShaderPass.Shaders"/>
         /// </summary>
         public IReadOnlyList<ShaderBase> Shaders { get { return shaders; } }
         /// <summary>
-        /// <see cref="IShaderPass.BlendState"/>
+        /// <see cref="ShaderPass.BlendState"/>
         /// </summary>
         public BlendStateProxy BlendState { private set; get; } = null;
         /// <summary>
-        /// <see cref="IShaderPass.DepthStencilState"/>
+        /// <see cref="ShaderPass.DepthStencilState"/>
         /// </summary>
         public DepthStencilStateProxy DepthStencilState { private set; get; } = null;
         /// <summary>
-        /// <see cref="IShaderPass.RasterState"/>
+        /// <see cref="ShaderPass.RasterState"/>
         /// </summary>
         public RasterizerStateProxy RasterState { private set; get; } = null;
 
@@ -231,9 +104,46 @@ namespace HelixToolkit.UWP.Shaders
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ShaderPass"/> class.
+        /// </summary>
+        private ShaderPass()
+        {
+            IsNULL = true;
+            for (int i = 0; i < shaders.Length; ++i)
+            {
+                if (shaders[i] == null)
+                {
+                    var type = i.ToShaderStage();
+                    switch (type)
+                    {
+                        case ShaderStage.Vertex:
+                            shaders[i] = NullShader.VertexNull;
+                            break;
+                        case ShaderStage.Hull:
+                            shaders[i] = NullShader.HullNull;
+                            break;
+                        case ShaderStage.Domain:
+                            shaders[i] = NullShader.DomainNull;
+                            break;
+                        case ShaderStage.Geometry:
+                            shaders[i] = NullShader.GeometryNull;
+                            break;
+                        case ShaderStage.Pixel:
+                            shaders[i] = NullShader.PixelNull;
+                            break;
+                        case ShaderStage.Compute:
+                            shaders[i] = NullShader.ComputeNull;
+                            break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Bind shaders and its constant buffer for this technique
         /// </summary>
         /// <param name="context"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void BindShader(DeviceContextProxy context)
         {
             BindShader(context, true);
@@ -244,9 +154,10 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context"></param>
         /// <param name="bindConstantBuffer"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void BindShader(DeviceContextProxy context, bool bindConstantBuffer)
         {
-            if (context.LastShaderPass == this)
+            if (context.LastShaderPass == this || IsNULL)
             {
                 return;
             }
@@ -261,10 +172,11 @@ namespace HelixToolkit.UWP.Shaders
             context.LastShaderPass = this;
         }
         /// <summary>
-        /// <see cref="IShaderPass.GetShader(ShaderStage)"/>
+        /// <see cref="ShaderPass.GetShader(ShaderStage)"/>
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ShaderBase GetShader(ShaderStage type)
         {
             return shaders[type.ToIndex()];
@@ -273,7 +185,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// Sets the shader.
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shader">The shader.</param>        
         public void SetShader(ShaderBase shader)
         {
             shaders[shader.ShaderType.ToIndex()] = shader;
@@ -284,9 +196,10 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="type">The type.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void BindStates(DeviceContextProxy context, StateType type)
         {
-            if (type == StateType.None)
+            if (type == StateType.None || IsNULL)
             {
                 return;
             }

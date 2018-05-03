@@ -116,7 +116,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// 
         /// </summary>
-        protected IShaderPass outlineShaderPass { private set; get; }
+        protected ShaderPass outlineShaderPass { private set; get; }
         /// <summary>
         /// Initializes a new instance of the <see cref="MeshOutlineRenderCore"/> class.
         /// </summary>

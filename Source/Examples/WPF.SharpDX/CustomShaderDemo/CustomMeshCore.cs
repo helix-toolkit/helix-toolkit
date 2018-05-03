@@ -53,7 +53,7 @@ namespace CustomShaderDemo
             get { return dataHeightScale; }
         }
 
-        protected override void OnDefaultPassChanged(IShaderPass pass)
+        protected override void OnDefaultPassChanged(ShaderPass pass)
         {
             base.OnDefaultPassChanged(pass);
             ColorTextureSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(CustomShaderNames.TexData);

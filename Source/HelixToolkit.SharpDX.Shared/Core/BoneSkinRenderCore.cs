@@ -26,7 +26,7 @@ namespace HelixToolkit.UWP.Core
             get { return boneMatrices; }
         }
 
-        private IConstantBufferProxy boneCB;
+        private ConstantBufferProxy boneCB;
 
         protected override bool OnAttach(IRenderTechnique technique)
         {

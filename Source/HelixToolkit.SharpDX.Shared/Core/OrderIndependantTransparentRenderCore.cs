@@ -54,7 +54,7 @@ namespace HelixToolkit.UWP.Core
         private bool hasMSAA = false;
 #endif
 
-        private IShaderPass screenQuadPass = NullShaderPass.NullPass;
+        private ShaderPass screenQuadPass = ShaderPass.NullPass;
         private int colorTexIndex, alphaTexIndex, samplerIndex;
         private SamplerStateProxy targetSampler;
         public int RenderCount { private set; get; } = 0;

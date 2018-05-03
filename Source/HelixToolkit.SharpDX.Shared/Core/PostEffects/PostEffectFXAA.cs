@@ -30,7 +30,7 @@ namespace HelixToolkit.UWP.Core
         private int textureSlot;
         private int samplerSlot;
         private SamplerStateProxy sampler;
-        private IShaderPass FXAAPass;
+        private ShaderPass FXAAPass;
 
         public PostEffectFXAA() : base(RenderType.PostProc) { }
 

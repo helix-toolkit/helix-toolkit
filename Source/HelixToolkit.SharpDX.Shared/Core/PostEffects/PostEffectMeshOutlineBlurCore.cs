@@ -132,13 +132,13 @@ namespace HelixToolkit.UWP.Core
             get { return numberOfBlurPass; }
         }
 
-        private IShaderPass screenQuadPass;
+        private ShaderPass screenQuadPass;
 
-        private IShaderPass blurPassVertical;
+        private ShaderPass blurPassVertical;
 
-        private IShaderPass blurPassHorizontal;
+        private ShaderPass blurPassHorizontal;
 
-        private IShaderPass screenOutlinePass;
+        private ShaderPass screenOutlinePass;
         #region Texture Resources
 
         private ShaderResourceViewProxy renderTargetFull;       

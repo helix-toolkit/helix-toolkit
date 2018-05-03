@@ -53,7 +53,7 @@ namespace HelixToolkit.UWP.Model
         private SamplerStateProxy[] SamplerResources = new SamplerStateProxy[NUMSAMPLERS];
         private int[][] SamplerBindingMap = new int[Constants.NumShaderStages][];
 
-        private IShaderPass currentPass;
+        private ShaderPass currentPass;
         /// <summary>
         /// 
         /// </summary>
@@ -382,12 +382,12 @@ namespace HelixToolkit.UWP.Model
         }
 
         /// <summary>
-        /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContext, IShaderPass)"/>
+        /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContext, ShaderPass)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="shaderPass"></param>
         /// <returns></returns>
-        public bool BindMaterialTextures(DeviceContext context, IShaderPass shaderPass)
+        public bool BindMaterialTextures(DeviceContext context, ShaderPass shaderPass)
         {
             if (material == null)
             {
@@ -413,7 +413,7 @@ namespace HelixToolkit.UWP.Model
             return true;
         }
 
-        private void UpdateMappings(IShaderPass shaderPass)
+        private void UpdateMappings(ShaderPass shaderPass)
         {
             if (currentPass == shaderPass)
             {
