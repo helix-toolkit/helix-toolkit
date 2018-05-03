@@ -154,7 +154,7 @@ namespace HelixToolkit.UWP.Core
             textureSamplerSlot = pass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
         }
 
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             return base.CanRender(context) && GeometryBuffer.VertexBuffer.Length > 0;
         }
@@ -163,7 +163,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
@@ -177,7 +177,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
 
         }
@@ -186,7 +186,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref int model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref int model, RenderContext context)
         {
 
         }

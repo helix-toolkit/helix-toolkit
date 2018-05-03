@@ -25,9 +25,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
     {
         public sealed class UpdateEventArgs : EventArgs
         {
-            public IRenderContext2D Context { private set; get; }
+            public RenderContext2D Context { private set; get; }
 
-            public UpdateEventArgs(IRenderContext2D context)
+            public UpdateEventArgs(RenderContext2D context)
             {
                 Context = context;
             }
@@ -344,7 +344,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// Updates the specified context.
         /// </summary>
         /// <param name="context">The context.</param>
-        public virtual void Update(IRenderContext2D context)
+        public virtual void Update(RenderContext2D context)
         {
             OnUpdate?.Invoke(this, new UpdateEventArgs(context));
             IsRenderable = CanRender(context);
@@ -393,7 +393,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        protected virtual bool CanRender(IRenderContext2D context)
+        protected virtual bool CanRender(RenderContext2D context)
         {
             return Visibility == Visibility.Visible && IsAttached;
         }
@@ -403,7 +403,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// <para>Uses <see cref="CanRender"/>  to call OnRender or not. </para>
         /// </summary>
         /// <param name="context">The context.</param>
-        public void Render(IRenderContext2D context)
+        public void Render(RenderContext2D context)
         {
             if (!IsRenderable)
             { return; }
@@ -461,7 +461,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// Renders the bitmap cache to a render target only.
         /// </summary>
         /// <param name="context">The context.</param>
-        public void RenderBitmapCache(IRenderContext2D context)
+        public void RenderBitmapCache(RenderContext2D context)
         {
             if (IsRenderable && EnableBitmapCache && IsBitmapCacheValid && !IsVisualDirty && context.HasTarget)
             {
@@ -479,7 +479,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         /// Called when [render].
         /// </summary>
         /// <param name="context">The context.</param>
-        protected virtual void OnRender(IRenderContext2D context)
+        protected virtual void OnRender(RenderContext2D context)
         {
             RenderCore.Render(context);
             for (int i = 0; i < this.Items.Count; ++i)

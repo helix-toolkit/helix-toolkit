@@ -50,9 +50,9 @@ namespace HelixToolkit.UWP.Core
         }
 
         /// <summary>
-        /// Indicate whether render host should call <see cref="Update(IRenderContext, DeviceContextProxy)"/> before <see cref="Render(IRenderContext, DeviceContextProxy)"/>
-        /// <para><see cref="Update(IRenderContext, DeviceContextProxy)"/> is used to run such as compute shader before rendering. </para>
-        /// <para>Compute shader can be run at the beginning of any other <see cref="Render(IRenderContext, DeviceContextProxy)"/> routine to avoid waiting.</para>
+        /// Indicate whether render host should call <see cref="Update(RenderContext, DeviceContextProxy)"/> before <see cref="Render(RenderContext, DeviceContextProxy)"/>
+        /// <para><see cref="Update(RenderContext, DeviceContextProxy)"/> is used to run such as compute shader before rendering. </para>
+        /// <para>Compute shader can be run at the beginning of any other <see cref="Render(RenderContext, DeviceContextProxy)"/> routine to avoid waiting.</para>
         /// </summary>
         public bool NeedUpdate { protected set; get; } = false;
 
@@ -158,15 +158,15 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="deviceContext"></param>
-        public abstract void Render(IRenderContext context, DeviceContextProxy deviceContext);
+        public abstract void Render(RenderContext context, DeviceContextProxy deviceContext);
 
         /// <summary>
         /// Update routine. Only used to run update computation such as compute shader in particle system. 
-        /// <para>Compute shader can be run at the beginning of any other <see cref="Render(IRenderContext, DeviceContextProxy)"/> routine to avoid waiting.</para>
+        /// <para>Compute shader can be run at the beginning of any other <see cref="Render(RenderContext, DeviceContextProxy)"/> routine to avoid waiting.</para>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="deviceContext"></param>
-        public virtual void Update(IRenderContext context, DeviceContextProxy deviceContext) { }
+        public virtual void Update(RenderContext context, DeviceContextProxy deviceContext) { }
 
         /// <summary>
         /// Resets the invalidate handler.

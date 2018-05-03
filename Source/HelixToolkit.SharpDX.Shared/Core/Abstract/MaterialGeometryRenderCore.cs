@@ -196,11 +196,11 @@ namespace HelixToolkit.UWP.Core
             return new TextureSharedPhongMaterialVariables(manager, this.GUID);//new PhongMaterialVariables(manager);
         }
         /// <summary>
-        /// <see cref="RenderCoreBase{TModelStruct}.OnUpdatePerModelStruct(ref TModelStruct, IRenderContext)"/>
+        /// <see cref="RenderCoreBase{TModelStruct}.OnUpdatePerModelStruct(ref TModelStruct, RenderContext)"/>
         /// </summary>
         /// <param name="model"></param>
         /// <param name="context"></param>
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;

@@ -323,7 +323,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns>
         ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
         /// </returns>
-        protected override bool CanHitTest(IRenderContext context)
+        protected override bool CanHitTest(RenderContext context)
         {
             return base.CanHitTest(context) && MeshType == MeshTopologyEnum.PNTriangles;
         }
@@ -336,7 +336,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="rayWS">The ray ws.</param>
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray rayWS, ref List<HitTestResult> hits)
         {
             return (Geometry as MeshGeometry3D).HitTest(context, totalModelMatrix, ref rayWS, ref hits, this.WrapperSource);
         }

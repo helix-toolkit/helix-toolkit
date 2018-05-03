@@ -70,12 +70,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
         }
 
-        private void LoadBitmap(IRenderContext2D context, Stream stream)
+        private void LoadBitmap(RenderContext2D context, Stream stream)
         {
             (RenderCore as ImageRenderCore2D).Bitmap = stream == null ? null : OnLoadImage(context, stream);
         }
 
-        protected virtual Bitmap OnLoadImage(IRenderContext2D context, Stream stream)
+        protected virtual Bitmap OnLoadImage(RenderContext2D context, Stream stream)
         {
             stream.Position = 0;
             using (var decoder = new BitmapDecoder(context.DeviceResources.WICImgFactory, stream, DecodeOptions.CacheOnLoad))
@@ -91,7 +91,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             }
         }
 
-        public override void Update(IRenderContext2D context)
+        public override void Update(RenderContext2D context)
         {
             base.Update(context);
             if (bitmapChanged)

@@ -103,7 +103,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
@@ -122,7 +122,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, DefaultStateBinding);

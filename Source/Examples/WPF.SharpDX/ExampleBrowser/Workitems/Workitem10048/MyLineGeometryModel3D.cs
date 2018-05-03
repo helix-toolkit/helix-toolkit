@@ -20,7 +20,7 @@ namespace Workitem10048
     {
         private Color? initialColor = null;
 
-        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (initialColor == null)
             {

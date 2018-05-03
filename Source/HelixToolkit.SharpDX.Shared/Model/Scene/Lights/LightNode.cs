@@ -45,12 +45,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="ray">The ray.</param>
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref System.Collections.Generic.List<HitTestResult> hits)
+        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref System.Collections.Generic.List<HitTestResult> hits)
         {
             return false;
         }
 
-        protected override bool CanHitTest(IRenderContext context)
+        protected override bool CanHitTest(RenderContext context)
         {
             return false;
         }

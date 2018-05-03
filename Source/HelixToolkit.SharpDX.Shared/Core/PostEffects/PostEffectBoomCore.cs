@@ -188,12 +188,12 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             return IsAttached && !string.IsNullOrEmpty(EffectName);
         }
 
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             #region Initialize textures
             if (offScreenRenderTargets.Count == 0
@@ -314,7 +314,7 @@ namespace HelixToolkit.UWP.Core
             context.Rasterizer.SetScissorRectangle(0, 0, width, height);
         }
 
-        protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)
         {
         }
     }

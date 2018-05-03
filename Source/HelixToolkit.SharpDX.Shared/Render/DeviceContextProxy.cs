@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// 
         /// </summary>
         /// <param name="buffer"></param>
-        public void SetRenderTargets(IDX11RenderBufferProxy buffer)
+        public void SetRenderTargets(DX11RenderBufferProxyBase buffer)
         {
             buffer.SetDefaultRenderTargets(deviceContext);
         }
@@ -63,7 +63,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="color">The color.</param>
-        public void ClearRenderTargets(IDX11RenderBufferProxy buffer, Color4 color)
+        public void ClearRenderTargets(DX11RenderBufferProxyBase buffer, Color4 color)
         {
             buffer.ClearRenderTarget(deviceContext, color);
         }

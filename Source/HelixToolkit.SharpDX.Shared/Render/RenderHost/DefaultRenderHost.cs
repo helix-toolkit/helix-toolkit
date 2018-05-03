@@ -149,7 +149,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Creates the render buffer.
         /// </summary>
         /// <returns></returns>
-        protected override IDX11RenderBufferProxy CreateRenderBuffer()
+        protected override DX11RenderBufferProxyBase CreateRenderBuffer()
         {
             Logger.Log(LogLevel.Information, "DX11Texture2DRenderBufferProxy", nameof(DefaultRenderHost));
             return new DX11Texture2DRenderBufferProxy(EffectsManager);
@@ -157,7 +157,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void SeparateRenderables(IRenderContext context)
+        private void SeparateRenderables(RenderContext context)
         {
             Clear(UpdateSceneGraphRequested);
             if (UpdateSceneGraphRequested)

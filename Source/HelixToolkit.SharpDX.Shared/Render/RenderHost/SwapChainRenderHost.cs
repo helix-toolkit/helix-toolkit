@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Creates the render buffer.
         /// </summary>
         /// <returns></returns>
-        protected override IDX11RenderBufferProxy CreateRenderBuffer()
+        protected override DX11RenderBufferProxyBase CreateRenderBuffer()
         {
             Logger.Log(LogLevel.Information, "DX11SwapChainRenderBufferProxy", nameof(SwapChainRenderHost));
             return new DX11SwapChainRenderBufferProxy(surface, EffectsManager);

@@ -206,7 +206,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <returns>
         ///   <c>true</c> if this instance can render the specified context; otherwise, <c>false</c>.
         /// </returns>
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             return base.CanRender(context) && duplicationResource != null;
         }
@@ -215,7 +215,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             bool succ = duplicationResource.Initialize();
             if (!succ)
@@ -317,7 +317,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref ScreenDuplicationModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref ScreenDuplicationModelStruct model, RenderContext context)
         {
             DuplicationInfo info;
             if (!duplicationResource.TryGetInfo(Output, out info))

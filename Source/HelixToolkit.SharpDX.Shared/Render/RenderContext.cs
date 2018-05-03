@@ -27,7 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// The render-context is currently generated per frame
     /// Optimizations might be possible
     /// </summary>
-    public class RenderContext : DisposeObject, IRenderContext
+    public class RenderContext : DisposeObject
     {
         private Matrix worldMatrix = Matrix.Identity;
         private Matrix viewMatrix;
@@ -283,7 +283,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The shared resource.
         /// </value>
-        public IContextSharedResource SharedResource
+        public ContextSharedResource SharedResource
         {
             private set; get;
         }

@@ -282,7 +282,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             return base.CanRender(context) && GeometryBuffer != null;
         }
@@ -319,7 +319,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (!IsThrowingShadow || ShadowPass.IsNULL)
             { return; }
@@ -328,7 +328,7 @@ namespace HelixToolkit.UWP.Core
             OnDraw(deviceContext, InstanceBuffer);
         }
 
-        protected override void OnRenderCustom(IRenderContext context, DeviceContextProxy deviceContext, IShaderPass shaderPass)
+        protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, IShaderPass shaderPass)
         {
             OnDraw(deviceContext, InstanceBuffer);
         }

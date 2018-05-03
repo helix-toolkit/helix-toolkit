@@ -64,7 +64,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="deviceContext"></param>
-        public override void Render(IRenderContext context, DeviceContextProxy deviceContext)
+        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (CanRender(context))
             {
@@ -102,7 +102,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        public override void Update(IRenderContext context, DeviceContextProxy deviceContext)
+        public override void Update(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (CanRender(context))
             {
@@ -115,7 +115,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext"></param>
-        protected virtual void OnRenderShadow(IRenderContext context, DeviceContextProxy deviceContext)
+        protected virtual void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         { }
 
         /// <summary>
@@ -138,19 +138,19 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Actual render function. Used to attach different render states and call the draw call.
         /// </summary>
-        protected abstract void OnRender(IRenderContext context, DeviceContextProxy deviceContext);
+        protected abstract void OnRender(RenderContext context, DeviceContextProxy deviceContext);
 
         /// <summary>
         /// Only used for running compute shader such as in particle system.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="deviceContext"></param>
-        protected virtual void OnUpdate(IRenderContext context, DeviceContextProxy deviceContext) { }
+        protected virtual void OnUpdate(RenderContext context, DeviceContextProxy deviceContext) { }
 
         /// <summary>
         /// Render function for custom shader pass. Used to do special effects
         /// </summary>
-        protected virtual void OnRenderCustom(IRenderContext context, DeviceContextProxy deviceContext, IShaderPass shaderPass)
+        protected virtual void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, IShaderPass shaderPass)
         { }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="context">The context.</param>
-        protected abstract void OnUpdatePerModelStruct(ref TModelStruct model, IRenderContext context);
+        protected abstract void OnUpdatePerModelStruct(ref TModelStruct model, RenderContext context);
 
         /// <summary>
         /// Called when [upload per model constant buffers].
@@ -173,14 +173,14 @@ namespace HelixToolkit.UWP.Core
         /// After calling OnRender. Restore some variables, such as HasInstance etc.
         /// </summary>
         /// <param name="context"></param>
-        protected virtual void PostRender(IRenderContext context)
+        protected virtual void PostRender(RenderContext context)
         { }
 
         /// <summary>
         /// Check if can render
         /// </summary>
         /// <returns></returns>
-        protected virtual bool CanRender(IRenderContext context)
+        protected virtual bool CanRender(RenderContext context)
         {
             return IsAttached;
         }

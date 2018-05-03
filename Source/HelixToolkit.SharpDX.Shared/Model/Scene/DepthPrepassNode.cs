@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns>
         ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
         /// </returns>
-        protected override bool CanHitTest(IRenderContext context)
+        protected override bool CanHitTest(RenderContext context)
         {
             return false;
         }
@@ -46,7 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
         /// <exception cref="System.NotImplementedException"></exception>
-        protected override bool OnHitTest(IRenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }

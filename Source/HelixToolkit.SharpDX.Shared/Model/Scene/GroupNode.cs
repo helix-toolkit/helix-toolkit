@@ -80,7 +80,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// Updates the not render.
         /// </summary>
         /// <param name="context">The context.</param>
-        public override void UpdateNotRender(IRenderContext context)
+        public override void UpdateNotRender(RenderContext context)
         {
             base.UpdateNotRender(context);
             if (OctreeManager != null)
@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="ray">The ray.</param>
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
-        protected override bool OnHitTest(IRenderContext context, global::SharpDX.Matrix totalModelMatrix, ref global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(RenderContext context, global::SharpDX.Matrix totalModelMatrix, ref global::SharpDX.Ray ray, ref List<HitTestResult> hits)
         {
             bool isHit = false;
             if (octreeManager != null)

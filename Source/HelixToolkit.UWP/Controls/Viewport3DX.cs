@@ -139,7 +139,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// Get current render context
         /// </summary>
-        public IRenderContext RenderContext { get { return this.renderHostInternal?.RenderContext; } }
+        public RenderContext RenderContext { get { return this.renderHostInternal?.RenderContext; } }
 
         /// <summary>
         /// Gets or sets the render host internal.

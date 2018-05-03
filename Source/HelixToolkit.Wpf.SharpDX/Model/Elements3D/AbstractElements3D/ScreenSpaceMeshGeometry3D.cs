@@ -287,7 +287,7 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
         public abstract class Node2DMoverBase : PanelNode2D
         {
             public bool EnableMover { set; get; } = true;
-            protected override bool CanRender(IRenderContext2D context)
+            protected override bool CanRender(RenderContext2D context)
             {
                 return base.CanRender(context) && EnableMover;
             }

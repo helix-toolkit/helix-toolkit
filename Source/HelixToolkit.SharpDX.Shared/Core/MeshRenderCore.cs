@@ -160,13 +160,13 @@ namespace HelixToolkit.UWP.Core
             shadowMapSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowMapTextureName);
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
             model.RenderOIT = context.IsOITPass ? 1 : 0;
         }
 
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             IShaderPass pass = DefaultShaderPass;
             if (RenderType == RenderType.Transparent && context.IsOITPass)

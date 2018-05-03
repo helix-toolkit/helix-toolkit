@@ -486,7 +486,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             if (base.CanRender(context) && GeometryValid)
             {
@@ -517,7 +517,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <summary>
         ///
         /// </summary>
-        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             if (CanHitTest(context))
             {
@@ -558,7 +558,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns>
         ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
         /// </returns>
-        protected override bool CanHitTest(IRenderContext context)
+        protected override bool CanHitTest(RenderContext context)
         {
             return base.CanHitTest(context) && GeometryValid;
         }
@@ -566,7 +566,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// Updates the not render.
         /// </summary>
         /// <param name="context">The context.</param>
-        public override void UpdateNotRender(IRenderContext context)
+        public override void UpdateNotRender(RenderContext context)
         {
             base.UpdateNotRender(context);
             if (IsHitTestVisible && context.AutoUpdateOctree && geometry != null && geometry.OctreeDirty)

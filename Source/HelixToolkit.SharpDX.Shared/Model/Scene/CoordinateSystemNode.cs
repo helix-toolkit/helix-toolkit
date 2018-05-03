@@ -280,7 +280,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns>
         ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
         /// </returns>
-        protected override bool CanHitTest(IRenderContext context)
+        protected override bool CanHitTest(RenderContext context)
         {
             return false;
         }

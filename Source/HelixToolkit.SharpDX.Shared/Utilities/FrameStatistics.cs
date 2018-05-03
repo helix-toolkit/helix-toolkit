@@ -126,77 +126,11 @@ namespace HelixToolkit.UWP.Utilities
             ringBuffer.Clear();
         }
     }
+
     /// <summary>
     /// 
     /// </summary>
-    public interface IRenderStatistics
-    {
-        /// <summary>
-        /// Gets the FPS statistics.
-        /// </summary>
-        /// <value>
-        /// The FPS statistics.
-        /// </value>
-        IFrameStatistics FPSStatistics { get; }
-        /// <summary>
-        /// Gets the render latency statistics.
-        /// </summary>
-        /// <value>
-        /// The latency statistics.
-        /// </value>
-        IFrameStatistics LatencyStatistics { get; }
-        /// <summary>
-        /// Gets or sets the number of model3d per frame.
-        /// </summary>
-        /// <value>
-        /// The number model3d.
-        /// </value>
-        int NumModel3D { set; get; }
-        /// <summary>
-        /// Gets or sets the number of render core3d per frame.
-        /// </summary>
-        /// <value>
-        /// The number core3 d.
-        /// </value>
-        int NumCore3D { set; get; }
-        /// <summary>
-        /// Gets or sets the number triangles rendered in geometry model
-        /// </summary>
-        /// <value>
-        /// The number triangles.
-        /// </value>
-        int NumTriangles { set; get; }
-        /// <summary>
-        /// Sets the camera
-        /// </summary>
-        ICamera Camera { set; get; }
-        /// <summary>
-        /// Gets or sets the frame detail for output.
-        /// </summary>
-        /// <value>
-        /// The frame detail.
-        /// </value>
-        RenderDetail FrameDetail { set; get; }
-        /// <summary>
-        /// Gets the detail string.
-        /// </summary>
-        /// <returns></returns>
-        string GetDetailString();
-        /// <summary>
-        /// Gets the detail string.
-        /// </summary>
-        /// <param name="detail">The detail.</param>
-        /// <returns></returns>
-        string GetDetailString(RenderDetail detail);
-        /// <summary>
-        /// Resets all statistics.
-        /// </summary>
-        void Reset();
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    public class RenderStatistics : IRenderStatistics
+    public class RenderStatistics
     {
         const string LineBreak = "\n---------\n";
         /// <summary>

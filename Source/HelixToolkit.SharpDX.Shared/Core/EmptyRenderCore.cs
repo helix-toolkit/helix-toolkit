@@ -36,7 +36,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
 
         }
@@ -46,7 +46,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="context">The context.</param>
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
         {
            
         }

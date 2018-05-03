@@ -121,7 +121,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// Updates the not render.
         /// </summary>
         /// <param name="context">The context.</param>
-        public override void UpdateNotRender(IRenderContext context)
+        public override void UpdateNotRender(RenderContext context)
         {
             base.UpdateNotRender(context);
             if (isInstanceChanged)
@@ -160,7 +160,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="rayWS">The ray ws.</param>
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
-        public override bool HitTest(IRenderContext context, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(RenderContext context, Ray rayWS, ref List<HitTestResult> hits)
         {
             bool isHit = false;
             if (CanHitTest(context))

@@ -98,7 +98,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
 
         }
 
-        protected virtual void OnUpdate(IRenderContext2D context)
+        protected virtual void OnUpdate(RenderContext2D context)
         {
 
         }

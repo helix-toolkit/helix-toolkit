@@ -234,7 +234,7 @@ namespace HelixToolkit.UWP.Core
             clipParamCB.UploadDataToBuffer(context, ref clipParameter);
         }
 
-        protected override void OnRender(IRenderContext renderContext, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext renderContext, DeviceContextProxy deviceContext)
         {
             base.OnRender(renderContext, deviceContext);
             // Draw backface into stencil buffer

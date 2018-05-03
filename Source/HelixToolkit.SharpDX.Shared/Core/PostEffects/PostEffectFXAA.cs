@@ -55,12 +55,12 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             return base.CanRender(context) && FXAALevel != FXAALevel.None;
         }
 
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             var buffer = context.RenderHost.RenderBuffer;
             buffer.SetDefaultRenderTargets(deviceContext, false);
@@ -73,7 +73,7 @@ namespace HelixToolkit.UWP.Core
             FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
         }
 
-        protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)
         {
             model.Color.Red = (float)(1 / context.ActualWidth);
             model.Color.Green = (float)(1 / context.ActualHeight);

@@ -9,77 +9,11 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using global::SharpDX;
     using Utilities;
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IRenderContext2D
-    {
-        /// <summary>
-        /// Gets the device context.
-        /// </summary>
-        /// <value>
-        /// The device context.
-        /// </value>
-        DeviceContext DeviceContext { get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        IDevice2DResources DeviceResources { get; }
-        /// <summary>
-        /// Gets the actual width.
-        /// </summary>
-        /// <value>
-        /// The actual width.
-        /// </value>
-        double ActualWidth { get; }
-        /// <summary>
-        /// Gets the actual height.
-        /// </summary>
-        /// <value>
-        /// The actual height.
-        /// </value>
-        double ActualHeight { get; }
 
-        /// <summary>
-        /// Pushes the render target.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="clear">if set to <c>true</c> [clear].</param>
-        void PushRenderTarget(BitmapProxy target, bool clear);
-        /// <summary>
-        /// Pops the render target.
-        /// </summary>
-        void PopRenderTarget();
-        /// <summary>
-        /// Gets the last bitmap transform. 
-        /// If some of controls did not enable the bitmap cache, 
-        /// it needs to propagate the relative transform into its children if some children use the bitmap cache to draw onto the parent bitmap cache.
-        /// </summary>
-        /// <value>
-        /// The last bitmap transform.
-        /// </value>
-        Matrix3x2 RelativeTransform { get; }
-        /// <summary>
-        /// Pushes the last bitmap transform.
-        /// </summary>
-        /// <param name="transform">The transform.</param>
-        void PushRelativeTransform(Matrix3x2 transform);
-        /// <summary>
-        /// Pops the last bitmap transform.
-        /// </summary>
-        void PopRelativeTransform();
-        /// <summary>
-        /// Gets a value indicating whether this context has render target.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this context has target; otherwise, <c>false</c>.
-        /// </value>
-        bool HasTarget { get; }
-    }
     /// <summary>
     /// 
     /// </summary>
-    public class RenderContext2D : DisposeObject, IRenderContext2D
+    public class RenderContext2D : DisposeObject
     {
         /// <summary>
         /// Gets the actual width.
@@ -113,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the last bitmap transform.
         /// </summary>
         /// <value>
-        /// The last bitmap transform.<see cref="IRenderContext2D.RelativeTransform"/>
+        /// The last bitmap transform.<see cref="RenderContext2D.RelativeTransform"/>
         /// </value>
         public Matrix3x2 RelativeTransform { private set; get; } = Matrix3x2.Identity;
 

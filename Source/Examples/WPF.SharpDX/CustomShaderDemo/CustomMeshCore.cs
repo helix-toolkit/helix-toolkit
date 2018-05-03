@@ -79,7 +79,7 @@ namespace CustomShaderDemo
             }
         }
 
-        protected override void OnUpdatePerModelStruct(ref ModelStruct model, IRenderContext context)
+        protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
         {
             base.OnUpdatePerModelStruct(ref model, context);
             model.Params.Y = dataHeightScale;
@@ -100,12 +100,12 @@ namespace CustomShaderDemo
             }
         }
 
-        protected override bool CanRender(IRenderContext context)
+        protected override bool CanRender(RenderContext context)
         {
             return base.CanRender(context) && ColorGradients != null;
         }
 
-        protected override void OnRender(IRenderContext context, DeviceContextProxy deviceContext)
+        protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, ColorTextureSamplerSlot, colorTextureSampler);
             DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, ColorTextureSlot, colorGradientResource);

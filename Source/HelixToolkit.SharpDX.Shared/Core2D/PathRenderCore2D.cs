@@ -84,7 +84,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// </summary>
         /// <param name="context">The context.</param>
         [SuppressMessage("Microsoft.Usage", "CA2202: Do not dispose objects multiple times", Justification = "False positive.")]
-        protected override void OnRender(IRenderContext2D context)
+        protected override void OnRender(RenderContext2D context)
         {
             if (isGeometryChanged)
             {               

@@ -129,7 +129,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        public virtual bool HitTest(IRenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+        public virtual bool HitTest(RenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
         {
             return Octree.HitTest(context, model, modelMatrix, rayWS, ref hits);
         }
@@ -421,7 +421,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 RequestUpdateOctree = true;
             }
         }
-        public override bool HitTest(IRenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+        public override bool HitTest(RenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
         {
             if(Octree == null)
             {

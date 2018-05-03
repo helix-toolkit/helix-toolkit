@@ -90,7 +90,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\Enums.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\EventArguments.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\ICamera.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Interface\IDX11RenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IEffectsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IGeometryBufferManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IGeometryBufferModel.cs" />
@@ -107,7 +106,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderable2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderCoreParams.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderTechnique.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IShaderPass.cs" />
