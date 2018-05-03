@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
     using ShaderManager;
     using Shaders;
     using System;
+    using System.Runtime.CompilerServices;
     using Utilities;
 
     /// <summary>
@@ -21,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
     /// </summary>
     public sealed class Light3DSceneShared : IDisposable
     {
-        public readonly ILightsBufferProxy<LightStruct> LightModels = new LightsBufferModel();
+        public readonly LightsBufferModel LightModels = new LightsBufferModel();
 
         private IBufferProxy buffer;
         /// <summary>
@@ -31,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         {
             buffer = pool.Register(DefaultBufferNames.LightCB, LightsBufferModel.SizeInBytes);
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UploadToBuffer(DeviceContext context)
         {
             LightModels.UploadToBuffer(buffer, context);

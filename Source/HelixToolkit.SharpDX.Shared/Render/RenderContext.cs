@@ -9,25 +9,24 @@
 // --------------------------------------------------------------------------------------------------------------------
 using SharpDX;
 using SharpDX.Direct3D11;
-
+using System;
+using System.Runtime.CompilerServices;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
-
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Cameras;
     using Model;
     using Shaders;
-    using System;
     using Utilities;
 
     /// <summary>
     /// The render-context is currently generated per frame
     /// Optimizations might be possible
     /// </summary>
-    public class RenderContext : DisposeObject
+    public sealed class RenderContext : DisposeObject
     {
         private Matrix worldMatrix = Matrix.Identity;
         private Matrix viewMatrix;
@@ -326,6 +325,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets the screen view projection matrix.
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Matrix GetScreenViewProjectionMatrix()
         {
             return screenViewProjectionMatrix;
@@ -334,6 +334,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Call to update constant buffer for per frame
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UpdatePerFrameData()
         {
             UpdatePerFrameData(true, true);
@@ -342,6 +343,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Call to update constant buffer for per frame
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UpdatePerFrameData(bool updateGlobalTransform, bool updateLights)
         {
             if (updateGlobalTransform)

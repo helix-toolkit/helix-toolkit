@@ -1,19 +1,19 @@
 ﻿using SharpDX.Direct2D1;
-using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using global::SharpDX;
+    using global::SharpDX;    
     using Utilities;
 
     /// <summary>
     /// 
     /// </summary>
-    public class RenderContext2D : DisposeObject
+    public sealed class RenderContext2D : DisposeObject
     {
         /// <summary>
         /// Gets the actual width.
@@ -71,6 +71,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Pops the last bitmap transform.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void PopRelativeTransform()
         {
             RelativeTransform = relativeTransformStack.Pop();
@@ -99,6 +100,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="target">The target.</param>
         /// <param name="clear">if set to <c>true</c> [clear].</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void PushRenderTarget(BitmapProxy target, bool clear)
         {
             if (targetStack.Count > 0)
@@ -117,6 +119,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Pops the render target.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void PopRenderTarget()
         {
             DeviceContext.EndDraw();
