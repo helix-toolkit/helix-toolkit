@@ -72,7 +72,7 @@ float4 main(PSInput input) : SV_Target
     input.n = calcNormal(input);
 
     // get per pixel vector to eye-position
-    float3 eye = normalize(vEyePos - input.wp.xyz);
+    float3 eye = input.vEye.xyz;
 
     // light emissive intensity and add ambient light
     float4 I = input.c2;

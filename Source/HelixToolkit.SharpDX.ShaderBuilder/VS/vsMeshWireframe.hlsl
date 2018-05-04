@@ -6,7 +6,7 @@
 #include"..\Common\DataStructs.hlsl"
 #pragma pack_matrix( row_major )
 
-float4 main(VSInput input) : SV_Position
+PSWireframeInput main(VSInput input)
 {
     float4 inputp = input.p;
     float3 inputn = input.n;
@@ -42,11 +42,11 @@ float4 main(VSInput input) : SV_Position
         float4 h = texDisplacementMap.SampleLevel(samplerDisplace, input.t, mipLevel);
         inputp.xyz += inputn * mul(h, displacementMapScaleMask);
     }
-
+    PSWireframeInput output = (PSWireframeInput)0;
 	//set position into clip space	
-    inputp = mul(inputp, mViewProjection);
-
-    return inputp;
+    output.p = mul(inputp, mViewProjection);
+    output.z = length(vEyePos - inputp.xyz);
+    return output;
 }
 
 #endif

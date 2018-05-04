@@ -59,19 +59,27 @@ float shadowStrength(float4 sp)
     return (fixTeil + nonTeil);
 }
 
+#define WeightModes_LinearA 0
+#define WeightModes_LinearB 1
+#define WeightModes_LinearC 2
+#define WeightModes_NonLinear 3
+
 //Ref http://jcgt.org/published/0002/02/09/
-PSOITOutput calculateOIT(in float4 color, in float4 pos)
+PSOITOutput calculateOIT(in float4 color, float z, float zw)
 {
     PSOITOutput output = (PSOITOutput) 0;
-    // Insert your favorite weighting function here. The color-based factor
-        // avoids color pollution from the edges of wispy clouds. The z-based
-        // factor gives precedence to nearer surfaces.
-    //float weight = max(min(1, max(max(color.r, color.g), color.b) * color.a), color.a) * clamp(0.03 / (1e-5 + pow(pos.z, 4.0)), 1e-2, 3e3);
-    float weight = color.a * clamp(0.03 / (1e-5 + pow(clamp(pos.z * max(OITSlope, 1), 0, 1), abs(OITPower))), 1e-2, 3e3);
-        // Blend Func: GL_ONE, GL_ONE
-        // Switch to premultiplied alpha and weight
-    //output.color = float4(float3(weight, weight, weight), color.a); //float4(float3(pow(pos.z, 8), pow(pos.z, 8), pow(pos.z, 8)), color.a);
-    output.color = float4(color.rgb * color.a, color.a) * weight;
+    float weight = 1;
+    z = z - vFrustum.z;
+    if (OITWeightMode == WeightModes_LinearA)
+        weight = max(0.01f, min(3000.0f, 100 / (0.00001f + pow(abs(z) / 5.0f, abs(OITPower)) + pow(abs(z) / 200.0f, abs(OITPower) * 2))));
+    else if (OITWeightMode == WeightModes_LinearB)
+        weight = max(0.01f, min(3000.0f, 100 / (0.00001f + pow(abs(z) / 10.0f, abs(OITPower)) + pow(abs(z) / 200.0f, abs(OITPower) * 2))));
+    else if (OITWeightMode == WeightModes_LinearC)
+        weight = max(0.01f, min(3000.0f, 0.3f / (0.00001f + pow(abs(z) / 200.0f, abs(OITPower)))));
+    else if (OITWeightMode == WeightModes_NonLinear)
+        weight = max(0.01f, 3e3 * pow(clamp(1.0f - zw * max(OITSlope, 1), 0, 1), abs(OITPower)));
+
+    output.color = float4(color.rgb * color.a, color.a) * (color.a * weight);
         // Blend Func: GL_ZERO, GL_ONE_MINUS_SRC_ALPHA
     output.alpha.a = color.a;
     return output;

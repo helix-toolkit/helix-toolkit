@@ -96,6 +96,12 @@ struct PSInput
     float4 cDiffuse : COLOR2; //vMaterialDiffuse
 };
 
+struct PSWireframeInput
+{
+    float4 p : SV_POSITION;
+    float z : POSITION0;
+};
+
 struct PSInputClip
 {
     float4 p : SV_POSITION;
@@ -196,6 +202,7 @@ struct PSInputBT
     float4 background : COLOR1;
     noperspective
 	float2 t : TEXCOORD;
+    float4 vEye : POSITION0;
 };
 
 //--------------------------------------------------------------------------------------
@@ -324,7 +331,7 @@ struct ParticlePS_INPUT
     noperspective
     float2 texcoords : TEXCOORD0;
     float opacity : OPACITY0;
-    float pad0 : PAD;
+    float z : Position0;
 };
 
 struct ScreenDupVS_INPUT

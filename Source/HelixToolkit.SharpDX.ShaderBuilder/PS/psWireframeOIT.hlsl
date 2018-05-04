@@ -5,8 +5,8 @@
 #include"..\Common\CommonBuffers.hlsl"
 #include"psCommon.hlsl"
 
-PSOITOutput wireframeOIT(float4 pos : SV_POSITION)
+PSOITOutput wireframeOIT(PSWireframeInput input)
 {
-    return calculateOIT(wireframeColor, pos);
+    return calculateOIT(wireframeColor, input.z, input.p.z);
 }
 #endif

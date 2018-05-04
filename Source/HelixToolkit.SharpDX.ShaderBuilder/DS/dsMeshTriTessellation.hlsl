@@ -62,7 +62,8 @@ PSInput main(HSConstantDataOutput input, float3 barycentricCoords : SV_DomainLoc
 	// --- Classical vertex-shader transforms: 
 	// --- output position in the clip-space	
     output.p = float4(position, 1); //mul(float4(position, 1.0f), mWorld);
-    output.vEye = float4(normalize(vEyePos - output.p.xyz), 1); //Use wp for camera->vertex direction
+    float3 vEye = vEyePos - output.p.xyz;
+    output.vEye = float4(normalize(vEye), length(vEye)); //Use wp for camera->vertex direction
     if (bHasDisplacementMap)
     {
         const float mipInterval = 20;

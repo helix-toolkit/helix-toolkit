@@ -361,6 +361,18 @@ namespace HelixToolkit.UWP
         /// </value>
         public float OITWeightDepthSlope { set; get; } = 1;
         /// <summary>
+        /// Gets or sets the oit weight mode.
+        /// <para>Please refer to http://jcgt.org/published/0002/02/09/ </para>
+        /// <para>Linear0: eq7; Linear1: eq8; Linear2: eq9; NonLinear: eq10</para>
+        /// </summary>
+        /// <value>
+        /// The oit weight mode.
+        /// </value>
+        public OITWeightMode OITWeightMode
+        {
+            set; get;
+        } = OITWeightMode.Linear1;
+        /// <summary>
         /// Enable FXAA. If MSAA used, FXAA will be disabled automatically
         /// </summary>
         public FXAALevel FXAALevel { set; get; } = FXAALevel.None;

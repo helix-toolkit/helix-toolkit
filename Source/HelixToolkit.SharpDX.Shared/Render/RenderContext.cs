@@ -341,6 +341,25 @@ namespace HelixToolkit.Wpf.SharpDX
                 return globalTransform.OITWeightDepthSlope;
             }
         }
+        /// <summary>
+        /// Gets or sets the oit weight mode.
+        /// <para>Please refer to http://jcgt.org/published/0002/02/09/ </para>
+        /// <para>Linear0: eq7; Linear1: eq8; Linear2: eq9; NonLinear: eq10</para>
+        /// </summary>
+        /// <value>
+        /// The oit weight mode.
+        /// </value>
+        public OITWeightMode OITWeightMode
+        {
+            set
+            {
+                globalTransform.OITWeightMode = (int)value;
+            }
+            get
+            {
+                return (OITWeightMode)globalTransform.OITWeightMode;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderContext"/> class.
@@ -358,6 +377,7 @@ namespace HelixToolkit.Wpf.SharpDX
             SharedResource = Collect(new ContextSharedResource());
             OITWeightPower = 3;
             OITWeightDepthSlope = 1;
+            OITWeightMode = OITWeightMode.Linear2;
         }
 
         /// <summary>

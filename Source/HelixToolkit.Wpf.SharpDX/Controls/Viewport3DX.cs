@@ -646,6 +646,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.RenderConfiguration.EnableOITRendering = EnableOITRendering;
                 this.renderHostInternal.RenderConfiguration.OITWeightPower = (float)OITWeightPower;
                 this.renderHostInternal.RenderConfiguration.OITWeightDepthSlope = (float)OITWeightDepthSlope;
+                this.renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;
                 this.renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
                 if (ShowFrameRate)
                 {

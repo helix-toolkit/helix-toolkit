@@ -196,8 +196,6 @@
             FXAALevel="Low"
             IsPanEnabled="False"
             ModelUpDirection="{Binding UpDirection}"
-            OITWeightDepthSlope="3"
-            OITWeightPower="4"
             OnMouse3DDown="Viewport3DX_OnMouse3DDown"
             SharedModelContainer="{Binding ElementName=sharedModel}"
             ShowCoordinateSystem="true">
@@ -224,7 +222,8 @@
             Grid.Row="1"
             Grid.Column="1"
             HorizontalAlignment="Right"
-            Orientation="Vertical">
+            Orientation="Vertical" Margin="8">
+            <ComboBox ItemsSource="{Binding OITVM.OITWeights}" SelectedItem="{Binding ElementName=viewport1, Path=OITWeightMode, Mode=TwoWay}"/>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Foreground="Black">OIT Weight Power:</TextBlock>
             </StackPanel>
