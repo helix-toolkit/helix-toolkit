@@ -122,7 +122,7 @@ namespace SimpleDemoW10
         public void AttachModelList(List<Object3D> objs)
         {
             
-            Random rnd = new Random();
+            Random rnd = new Random(DateTime.Now.Millisecond);
 
             foreach (var ob in objs)
             {

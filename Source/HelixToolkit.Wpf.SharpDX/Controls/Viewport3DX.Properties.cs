@@ -1022,6 +1022,20 @@ namespace HelixToolkit.Wpf.SharpDX
             }));
 
         /// <summary>
+        /// The Order independent transparent rendering color weight power property
+        /// </summary>
+        public static readonly DependencyProperty OITWeightPowerProperty =
+            DependencyProperty.Register("OITWeightPower", typeof(double), typeof(Viewport3DX), new PropertyMetadata(3.0, (d,e)=> 
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.OITWeightPower = (float)(double)e.NewValue;
+                    viewport.InvalidateRender();
+                }
+            }));
+
+        /// <summary>
         /// The fxaa level property
         /// </summary>
         public static readonly DependencyProperty FXAALevelProperty =
@@ -2760,6 +2774,19 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(EnableOITRenderingProperty, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the Order independent transparent rendering color weight power. 
+        /// Used for color weight calculation. 
+        /// <para>Different near field/far field settings may need different power value for z value based weight calculation.</para>
+        /// </summary>
+        /// <value>
+        /// The oit weight power.
+        /// </value>
+        public double OITWeightPower
+        {
+            get { return (double)GetValue(OITWeightPowerProperty); }
+            set { SetValue(OITWeightPowerProperty, value); }
+        }
 
         /// <summary>
         /// Gets or sets the fxaa. If MSAA is set, FXAA will be disabled automatically

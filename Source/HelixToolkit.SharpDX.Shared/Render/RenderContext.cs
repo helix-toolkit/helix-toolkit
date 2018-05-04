@@ -306,6 +306,24 @@ namespace HelixToolkit.Wpf.SharpDX
         public bool IsInvertCullMode { set; get; } = false;
 
         /// <summary>
+        /// Gets or sets the oit weight power used for color weight calculation. Default = 3;
+        /// </summary>
+        /// <value>
+        /// The oit weight power.
+        /// </value>
+        public float OITWeightPower
+        {
+            set
+            {
+                globalTransform.OITWeightPower = value;
+            }
+            get
+            {
+                return globalTransform.OITWeightPower;
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RenderContext"/> class.
         /// </summary>
         /// <param name="renderHost">The render host.</param>
@@ -319,6 +337,7 @@ namespace HelixToolkit.Wpf.SharpDX
             DeviceContext = renderContext;
             LightScene = Collect(new Light3DSceneShared(renderHost.EffectsManager.ConstantBufferPool));
             SharedResource = Collect(new ContextSharedResource());
+            OITWeightPower = 3;
         }
 
         /// <summary>
@@ -356,6 +375,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     screenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
                     matrixChanged = false;
                 }
+                globalTransform.OITWeightPower = OITWeightPower;
                 cbuffer.UploadDataToBuffer(DeviceContext, ref globalTransform);
             }
             if (updateLights)

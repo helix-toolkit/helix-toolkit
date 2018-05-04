@@ -271,7 +271,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The eye position
         /// </summary>
         public Vector3 EyePos;
-        float padding0;
+        public float OITWeightPower;
         public const int SizeInBytes = 4 * (4 * 4 * 3 + 4 * 3);
     }
 
