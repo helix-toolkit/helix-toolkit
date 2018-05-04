@@ -360,7 +360,7 @@ namespace HelixToolkit.UWP
         /// The oit weight depth slope.
         /// </value>
         public float OITWeightDepthSlope { set; get; } = 1;
-
+        /// <summary>
         /// Enable FXAA. If MSAA used, FXAA will be disabled automatically
         /// </summary>
         public FXAALevel FXAALevel { set; get; } = FXAALevel.None;
