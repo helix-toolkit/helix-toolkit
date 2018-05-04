@@ -62,7 +62,7 @@ namespace OrderIndependentTransparentRendering
             {
                 LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -50, -50),
                 Position = new System.Windows.Media.Media3D.Point3D(0, 50, 50),
-                FarPlaneDistance = 1000,
+                FarPlaneDistance = 500,
                 NearPlaneDistance = 0.1,
                 Width = 100
             };
@@ -121,7 +121,7 @@ namespace OrderIndependentTransparentRendering
             {
                 Geometry = mesh,
                 Material = material,
-                Transform = new Media3D.TranslateTransform3D(-20, 5, -4),
+                Transform = new Media3D.TranslateTransform3D(-20, 5, -10),
                 IsTransparent = true,
                 CullMode = SharpDX.Direct3D11.CullMode.Back
             };
@@ -134,7 +134,7 @@ namespace OrderIndependentTransparentRendering
             {
                 Geometry = mesh,
                 Material = material,
-                Transform = new Media3D.TranslateTransform3D(-25, 10, -8),
+                Transform = new Media3D.TranslateTransform3D(-25, 10, -20),
                 IsTransparent = true,
                 CullMode = SharpDX.Direct3D11.CullMode.Back
             };
@@ -185,7 +185,7 @@ namespace OrderIndependentTransparentRendering
                         diffuse.Red = (float)rnd.NextDouble();
                         diffuse.Green = (float)rnd.NextDouble();
                         diffuse.Blue = (float)rnd.NextDouble();
-                        diffuse.Alpha = 0.6f;//(float)(Math.Min(0.8, Math.Max(0.2, rnd.NextDouble())));
+                        diffuse.Alpha = 0.8f;//(float)(Math.Min(0.8, Math.Max(0.2, rnd.NextDouble())));
                         p.DiffuseColor = diffuse;
                         if (p.DiffuseColor.Alpha < 0.9)
                         {

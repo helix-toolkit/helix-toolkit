@@ -76,7 +76,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             return BoundingBoxExtensions.FromPoints(Positions);
         }
 
-        protected override BoundingBox GetBoundingBoxFromItem(KeyValuePair<int, BoundingBox> item)
+        protected override BoundingBox GetBoundingBoxFromItem(ref KeyValuePair<int, BoundingBox> item)
         {
             return item.Value;
         }
@@ -191,14 +191,12 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             bool isHit = false;
             var tempResult = new LineHitTestResult();
             tempResult.Distance = float.MaxValue;
-            var containment = octant.Bound.Contains(ref sphere);
-            if (containment != ContainmentType.Disjoint)
+            if (!BoxDisjointSphere(octant.Bound, ref sphere))
             {
                 isIntersect = true;
                 for (int i = octant.Start; i < octant.End; ++i)
                 {
-                    containment = Objects[i].Value.Contains(sphere);
-                    if (containment != ContainmentType.Disjoint)
+                    if (!BoxDisjointSphere(Objects[i].Value, ref sphere))
                     {
                         Vector3 cloestPoint;
 

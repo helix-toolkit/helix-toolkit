@@ -59,17 +59,19 @@ float shadowStrength(float4 sp)
     return (fixTeil + nonTeil);
 }
 
+//Ref http://jcgt.org/published/0002/02/09/
 PSOITOutput calculateOIT(in float4 color, in float4 pos)
 {
     PSOITOutput output = (PSOITOutput) 0;
     // Insert your favorite weighting function here. The color-based factor
         // avoids color pollution from the edges of wispy clouds. The z-based
         // factor gives precedence to nearer surfaces.
-    float weight = color.a * clamp(0.03 / (1e-5 + pow((pos.z / pos.w), 4.0)), 1e-2, 3e3);
+    //float weight = max(min(1, max(max(color.r, color.g), color.b) * color.a), color.a) * clamp(0.03 / (1e-5 + pow(pos.z, 4.0)), 1e-2, 3e3);
+    float weight = color.a * clamp(0.03 / (1e-5 + pow(abs(pos.z), abs(OITPower))), 1e-2, 3e3);
         // Blend Func: GL_ONE, GL_ONE
         // Switch to premultiplied alpha and weight
+    //output.color = float4(float3(weight, weight, weight), color.a); //float4(float3(pow(pos.z, 8), pow(pos.z, 8), pow(pos.z, 8)), color.a);
     output.color = float4(color.rgb * color.a, color.a) * weight;
- 
         // Blend Func: GL_ZERO, GL_ONE_MINUS_SRC_ALPHA
     output.alpha.a = color.a;
     return output;

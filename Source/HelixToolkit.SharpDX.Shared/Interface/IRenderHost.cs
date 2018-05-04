@@ -345,6 +345,13 @@ namespace HelixToolkit.UWP
         /// </value>
         public bool EnableOITRendering { set; get; } = true;
         /// <summary>
+        /// Gets or sets the OIT weight power used for color weight calculation. Default = 3.
+        /// </summary>
+        /// <value>
+        /// The OIT weight power.
+        /// </value>
+        public float OITWeightPower { set; get; } = 3;
+
         /// Enable FXAA. If MSAA used, FXAA will be disabled automatically
         /// </summary>
         public FXAALevel FXAALevel { set; get; } = FXAALevel.None;

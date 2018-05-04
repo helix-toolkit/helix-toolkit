@@ -30,11 +30,11 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// </summary>
         [StructLayout(LayoutKind.Sequential)]
         protected struct Octant
-        {           
-            public BoundingBox Bound { private set; get; }
+        {
+            public readonly BoundingBox Bound;
             private int c0, c1, c2, c3, c4, c5, c6, c7;
-            public int Parent { private set; get; }
-            public int Index { private set; get; }           
+            public readonly int Parent;
+            public readonly int Index;        
             public int Start { set; get; }
             public int End { set; get; }
             public bool IsBuilt { set; get; }
@@ -319,7 +319,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool CheckDimension(BoundingBox bound)
+        public bool CheckDimension(ref BoundingBox bound)
         {
             Vector3 dimensions = bound.Maximum - bound.Minimum;
 
@@ -349,11 +349,11 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 return;
             }
-
-            if (CheckDimension(octant.Bound) && !octant.IsEmpty
+            var b = octant.Bound;
+            if (CheckDimension(ref b) && !octant.IsEmpty
                 && octant.Count > this.Parameter.MinObjectSizeToSplit)
             {
-                var octantBounds = CreateOctants(octant.Bound, Parameter.MinimumOctantSize);
+                var octantBounds = CreateOctants(ref b, Parameter.MinimumOctantSize);
 
                 int start = octant.Start;
                 Octant childOctant = new Octant();
@@ -367,7 +367,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     for (int i = end - 1; i >= start; --i)
                     {
                         var obj = Objects[i];
-                        if (IsContains(octantBounds[childOctantIdx], GetBoundingBoxFromItem(obj), obj))
+                        if (IsContains(ref octantBounds[childOctantIdx], GetBoundingBoxFromItem(ref obj), ref obj))
                         {
                             if (!hasChildOctant)//Add New Child Octant if not having one.
                             {
@@ -382,10 +382,11 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                             }
                             ++count;
                             childOctant.End = end;
-                            childOctant.Start = end - count;
+                            int s = end - count;
+                            childOctant.Start = s;
                             var o = Objects[i];
-                            Objects[i] = Objects[end - count]; //swap objects. Move object into parent octant start/end range
-                            Objects[end - count] = o; //Move object into child octant start/end range
+                            Objects[i] = Objects[s]; //swap objects. Move object into parent octant start/end range
+                            Objects[s] = o; //Move object into child octant start/end range
                         }
                     }
 
@@ -406,7 +407,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        protected abstract BoundingBox GetBoundingBoxFromItem(T item);
+        protected abstract BoundingBox GetBoundingBoxFromItem(ref T item);
 
         /// <summary>
         /// This finds the dimensions of the bounding box necessary to tightly enclose all items in the object list.
@@ -419,10 +420,10 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 return new BoundingBox();
             }
-            var b = GetBoundingBoxFromItem(Objects[octant.Start]);
+            var b = GetBoundingBoxFromItem(ref Objects[octant.Start]);
             for (int i = octant.Start + 1; i < octant.End; ++i)
             {
-                var bound = GetBoundingBoxFromItem(Objects[i]);
+                var bound = GetBoundingBoxFromItem(ref Objects[i]);
                 BoundingBox.Merge(ref b, ref bound, out b);
             }
             return b;
@@ -435,7 +436,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="minSize"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BoundingBox[] CreateOctants(BoundingBox box, float minSize)
+        public static BoundingBox[] CreateOctants(ref BoundingBox box, float minSize)
         {
             Vector3 dimensions = box.Maximum - box.Minimum;
             if (dimensions == Vector3.Zero || (dimensions.X < minSize && dimensions.Y < minSize && dimensions.Z < minSize))
@@ -466,9 +467,9 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="target"></param>
         /// <param name="targetObj"></param>
         /// <returns></returns>
-        protected virtual bool IsContains(BoundingBox source, BoundingBox target, T targetObj)
+        protected virtual bool IsContains(ref BoundingBox source, BoundingBox target, ref T targetObj)
         {
-            return source.Contains(ref target) == ContainmentType.Contains;
+            return BoxContainsBox(ref source, ref target);
         }
 
         /// <summary>
@@ -813,5 +814,25 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
             return builder.ToLineGeometry3D();
         }
+        #region Special Tests
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected static bool BoxContainsBox(ref BoundingBox source, ref BoundingBox target)
+        {
+            //Source contains target
+            return source.Minimum.X <= target.Minimum.X && (target.Maximum.X <= source.Maximum.X &&
+                source.Minimum.Y <= target.Minimum.Y && target.Maximum.Y <= source.Maximum.Y) &&
+                source.Minimum.Z <= target.Minimum.Z && target.Maximum.Z <= source.Maximum.Z;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected static bool BoxDisjointSphere(BoundingBox box, ref BoundingSphere sphere)
+        {
+            Vector3 vector;
+            Vector3.Clamp(ref sphere.Center, ref box.Minimum, ref box.Maximum, out vector);
+            float distance = Vector3.DistanceSquared(sphere.Center, vector);
+
+            return distance > sphere.Radius * sphere.Radius;
+        }
+        #endregion
     }
 }
