@@ -73,6 +73,16 @@
                 Minimum="0.5"
                 SmallChange="0.1"
                 Value="{Binding ElementName=view, Path=OITWeightPower}" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Foreground="White">OIT Weight Slope:</TextBlock>
+                <TextBlock Foreground="#FFF400" Text="{Binding ElementName=view, Path=OITWeightDepthSlope, StringFormat={}{0:#,0.0}}" />
+            </StackPanel>
+            <Slider
+                LargeChange="1"
+                Maximum="5"
+                Minimum="1"
+                SmallChange="0.5"
+                Value="{Binding ElementName=view, Path=OITWeightDepthSlope}" />
         </StackPanel>
     </Grid>
 </Window>

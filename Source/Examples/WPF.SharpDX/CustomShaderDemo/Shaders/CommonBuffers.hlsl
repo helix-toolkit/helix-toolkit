@@ -22,6 +22,9 @@ cbuffer cbTransforms : register(b0)
 	// camera position
     float3 vEyePos;
     float padding0;
+    float OITPower;
+    float OITSlope;
+    float2 OITReserved;
 };
 
 #if defined(MESH)

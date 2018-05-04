@@ -324,6 +324,25 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
+        /// Gets or sets the oit weight depth slope. Used to increase resolution for particular range of depth values. 
+        /// <para>If value = 2, the depth range from 0-0.5 expands to 0-1 to increase resolution. However, values from 0.5 - 1 will be pushed to 1</para>
+        /// </summary>
+        /// <value>
+        /// The oit weight depth slope.
+        /// </value>
+        public float OITWeightDepthSlope
+        {
+            set
+            {
+                globalTransform.OITWeightDepthSlope = value;
+            }
+            get
+            {
+                return globalTransform.OITWeightDepthSlope;
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RenderContext"/> class.
         /// </summary>
         /// <param name="renderHost">The render host.</param>
@@ -338,6 +357,7 @@ namespace HelixToolkit.Wpf.SharpDX
             LightScene = Collect(new Light3DSceneShared(renderHost.EffectsManager.ConstantBufferPool));
             SharedResource = Collect(new ContextSharedResource());
             OITWeightPower = 3;
+            OITWeightDepthSlope = 1;
         }
 
         /// <summary>
@@ -375,7 +395,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     screenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
                     matrixChanged = false;
                 }
-                globalTransform.OITWeightPower = OITWeightPower;
                 cbuffer.UploadDataToBuffer(DeviceContext, ref globalTransform);
             }
             if (updateLights)

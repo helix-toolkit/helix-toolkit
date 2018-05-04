@@ -352,6 +352,15 @@ namespace HelixToolkit.UWP
         /// </value>
         public float OITWeightPower { set; get; } = 3;
 
+        /// <summary>
+        /// Gets or sets the oit weight depth slope. Used to increase resolution for particular range of depth values. 
+        /// <para>If value = 2, the depth range from 0-0.5 expands to 0-1 to increase resolution. However, values from 0.5 - 1 will be pushed to 1</para>
+        /// </summary>
+        /// <value>
+        /// The oit weight depth slope.
+        /// </value>
+        public float OITWeightDepthSlope { set; get; } = 1;
+
         /// Enable FXAA. If MSAA used, FXAA will be disabled automatically
         /// </summary>
         public FXAALevel FXAALevel { set; get; } = FXAALevel.None;

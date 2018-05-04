@@ -301,6 +301,7 @@ namespace HelixToolkit.UWP
                     renderHostInternal.RenderConfiguration.AutoUpdateOctree = this.EnableAutoOctreeUpdate;
                     renderHostInternal.RenderConfiguration.EnableOITRendering = EnableOITRendering;
                     renderHostInternal.RenderConfiguration.OITWeightPower = (float)OITWeightPower;
+                    renderHostInternal.RenderConfiguration.OITWeightDepthSlope = (float)OITWeightDepthSlope;
                     renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
                     renderHostInternal.OnRendered -= this.OnRendered;
                     renderHostInternal.OnRendered += this.OnRendered;

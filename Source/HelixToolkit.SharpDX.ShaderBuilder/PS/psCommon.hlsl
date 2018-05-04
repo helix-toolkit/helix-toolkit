@@ -67,7 +67,7 @@ PSOITOutput calculateOIT(in float4 color, in float4 pos)
         // avoids color pollution from the edges of wispy clouds. The z-based
         // factor gives precedence to nearer surfaces.
     //float weight = max(min(1, max(max(color.r, color.g), color.b) * color.a), color.a) * clamp(0.03 / (1e-5 + pow(pos.z, 4.0)), 1e-2, 3e3);
-    float weight = color.a * clamp(0.03 / (1e-5 + pow(abs(pos.z), abs(OITPower))), 1e-2, 3e3);
+    float weight = color.a * clamp(0.03 / (1e-5 + pow(clamp(pos.z * max(OITSlope, 1), 0, 1), abs(OITPower))), 1e-2, 3e3);
         // Blend Func: GL_ONE, GL_ONE
         // Switch to premultiplied alpha and weight
     //output.color = float4(float3(weight, weight, weight), color.a); //float4(float3(pow(pos.z, 8), pow(pos.z, 8), pow(pos.z, 8)), color.a);
