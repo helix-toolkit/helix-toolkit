@@ -5,6 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 //#define DEBUG
 using SharpDX;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Utilities
@@ -37,7 +38,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns></returns>
-        protected override BoundingBox GetBoundingBoxFromItem(int item)
+        protected override BoundingBox GetBoundingBoxFromItem(ref int item)
         {
             return new BoundingBox(Positions[item] - BoundOffset, Positions[item] + BoundOffset);
         }
@@ -57,10 +58,15 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="target"></param>
         /// <param name="obj"></param>
         /// <returns></returns>
-        protected override bool IsContains(BoundingBox source, BoundingBox target, int obj)
+        protected override bool IsContains(ref BoundingBox source, BoundingBox target, ref int obj)
         {
-            return source.Contains(Positions[obj]) != ContainmentType.Disjoint;
+            var point = Positions[obj];
+            //Bound contains point.
+            return source.Minimum.X <= point.X && source.Maximum.X >= point.X &&
+                source.Minimum.Y <= point.Y && source.Maximum.Y >= point.Y &&
+                source.Minimum.Z <= point.Z && source.Maximum.Z >= point.Z;
         }
+
         /// <summary>
         /// Gets the objects.
         /// </summary>
@@ -170,15 +176,13 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             bool isHit = false;
             var resultTemp = new HitTestResult();
             resultTemp.Distance = float.MaxValue;
-            var containment = octant.Bound.Contains(ref sphere);
-            if (containment != ContainmentType.Disjoint)
+            if (!BoxDisjointSphere(octant.Bound, ref sphere))
             {
                 isIntersect = true;
                 for (int i = octant.Start; i < octant.End; ++i)
                 {
                     var p = Positions[Objects[i]];
-                    containment = sphere.Contains(ref p);
-                    if (containment != ContainmentType.Disjoint)
+                    if (sphere.Contains(ref p) != ContainmentType.Disjoint)
                     {
                         var d = (p - sphere.Center).Length();
                         if (resultTemp.Distance > d)

@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns></returns>
-        protected override BoundingBox GetBoundingBoxFromItem(KeyValuePair<int, BoundingBox> item)
+        protected override BoundingBox GetBoundingBoxFromItem(ref KeyValuePair<int, BoundingBox> item)
         {
             return item.Value;
         }
