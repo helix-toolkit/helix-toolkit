@@ -6,14 +6,14 @@ All notable changes to this project will be documented in this file.
 ### Improvement and Changes
 ### Fixed.
 
-## [2.1.0]
+## [2.1.0] - 2018-5-4
 ### Improvement and Changes
 1. New architecture for backend rendering and shader management. No more dependency from obsoleted Effects framework. EffectsManager is mandatory to be provided from ViewModel for resource live cycle management by user to avoid memory leak.
 2. Many performance improvements. Viewports binding with same EffectsManager will share common resources. Models binding with same geometry3D will share same geometry buffers. Materials binding with same texture will share same resources.
 3. Support basic direct2d rendering and layouts arrangement. (Still needs a lot of implementations)
 4. No more HelixToolkit.WPF project dependency.
 5. Unify dependency property types. All WPF.SharpDx model's dependency properties are using class under System.Windows.Media. Such as Vector3D and Color. More Xaml friendly.
-6. Post effect support.
+6. Post effect support. Note: Post effect elements does not recommend to be used in ModelContainer3DX for model sharing between viewports.
 7. Supports transparent meshes rendered after opaque meshes. IsTransparent property is added in MaterialGeometryModel3D.
 8. Rendering order by RenderType flag: 
     ##### Pre(such as shadow map)->Opaque->Particle->Transparent->Post(post effects)->ScreenSpaced(ViewBox/CoordinateSystem).

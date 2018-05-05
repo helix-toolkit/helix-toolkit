@@ -52,19 +52,19 @@ EnableD2DRendering = false;
 
 ## News
 
-We are currently working on HelixToolkit 2.0 under develop branch. Mainly focus on HelixToolkit.SharpDX.WPF and HelixToolkit.UWP.
+#### 2018-05-04
+[V2.1.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.1.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.1.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.1.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.1.0)
 
-Unstable prereleased UWP nuget package is available in [MyGet Feed](https://www.myget.org/F/helix-toolkit).
-
-All 1.x.x related pull requests, please use [1.1.0/Release](https://github.com/helix-toolkit/helix-toolkit/tree/release/1.1.0) branch.
-
-#### Note: 2.0 Breaking changes from version 1.x.x. (HelixToolkit.SharpDX only)
+##### Note: 2.0 Breaking changes from version 1.x.x. (HelixToolkit.SharpDX only)
 1. New architecture for backend rendering and shader management. No more dependency from obsoleted Effects framework. EffectsManager is mandatory to be provided from ViewModel for resource live cycle management by user to avoid memory leak.
 2. Many performance improvements. Viewports binding with same EffectsManager will share common resources. Models binding with same geometry3D will share same geometry buffers. Materials binding with same texture will share same resources.
 3. Support basic direct2d rendering and layouts arrangement. (Still needs a lot of implementations)
 4. No more HelixToolkit.WPF project dependency.
 5. Unify dependency property types. All WPF.SharpDx model's dependency properties are using class under System.Windows.Media. Such as Vector3D and Color. More Xaml friendly.
-6. Post effect support.
+6. Post effect support.(Note: Post effect elements does not recommend to be used in ModelContainer3DX for model sharing between viewports)
 7. Supports transparent meshes rendered after opaque meshes. IsTransparent property is added in MaterialGeometryModel3D.
 8. Rendering order by RenderType flag: 
     ##### Pre(such as shadow map)->Opaque->Particle->Transparent->Post(post effects)->ScreenSpaced(ViewBox/CoordinateSystem).
@@ -75,10 +75,6 @@ All 1.x.x related pull requests, please use [1.1.0/Release](https://github.com/h
 
 #### 2018-02-06
 
-V1.1.0 release is available.
-
-https://www.nuget.org/packages/HelixToolkit.Wpf/1.1.0
-
-https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/1.1.0
-
-V1.1.0 Relase source code is under : https://github.com/helix-toolkit/helix-toolkit/tree/release/1.1.0
+[V1.1.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/1.1.0) releases are available.
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/1.1.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/1.1.0)

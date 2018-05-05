@@ -24,7 +24,8 @@ cbuffer cbTransforms : register(b0)
     float padding0;
     float OITPower;
     float OITSlope;
-    float2 OITReserved;
+    int OITWeightMode;
+    int OITReserved;
 };
 
 #if defined(MESH)
