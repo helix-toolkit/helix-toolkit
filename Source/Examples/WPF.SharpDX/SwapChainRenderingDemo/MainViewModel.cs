@@ -218,8 +218,6 @@
             rotateTransform.BeginAnimation(Media3D.RotateTransform3D.RotationProperty, rotateAnimation);
             transGroup.Children.Add(new Media3D.TranslateTransform3D(0, 60, 0));
             ModelTransform = transGroup;
-            //NumberOfTriangles = Floor.Indices.Count / 3 + Model.Indices.Count/3;
-            //NumberOfVertices = Floor.Positions.Count + Model.Positions.Count;
         }
 
         private void LoadLander()
@@ -235,6 +233,10 @@
                         model.Material = p;
                     }
                     LanderModels.Add(model);
+                    NumberOfTriangles += obj.Geometry.Indices.Count/3;
+                    NumberOfVertices += obj.Geometry.Positions.Count;
+                    OnPropertyChanged(nameof(NumberOfTriangles));
+                    OnPropertyChanged(nameof(NumberOfVertices));
                 }, null);
             }
         }
@@ -257,6 +259,10 @@
                     SpecularColor = Colors.White.ToColor4(),
                     SpecularShininess = 100f
                 };
+                NumberOfTriangles += Floor.Indices.Count / 3;
+                NumberOfVertices += Floor.Positions.Count;
+                OnPropertyChanged(nameof(NumberOfTriangles));
+                OnPropertyChanged(nameof(NumberOfVertices));
                 OnPropertyChanged(nameof(Floor));
                 OnPropertyChanged(nameof(FloorMaterial));
             }, null);

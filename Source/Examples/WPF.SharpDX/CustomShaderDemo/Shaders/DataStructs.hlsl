@@ -96,6 +96,28 @@ struct PSInput
     float4 cDiffuse : COLOR2; //vMaterialDiffuse
 };
 
+struct PSWireframeInput
+{
+    float4 p : SV_POSITION;
+    float z : POSITION0;
+};
+
+struct PSInputClip
+{
+    float4 p : SV_POSITION;
+    float4 vEye : POSITION0;
+    float3 n : NORMAL; // normal
+    float4 wp : POSITION1;
+    float4 sp : TEXCOORD1;
+    float2 t : TEXCOORD0; // tex coord	
+    float3 t1 : TANGENT; // tangent
+    float3 t2 : BINORMAL; // bi-tangent	
+    float4 c : COLOR; // solid color (for debug)
+    float4 c2 : COLOR1; //vMaterialEmissive + vMaterialAmbient * vLightAmbient
+    float4 cDiffuse : COLOR2; //vMaterialDiffuse
+    float4 clipPlane : SV_ClipDistance0;
+};
+
 struct PSInputXRay
 {
     float4 p : SV_POSITION;
@@ -108,6 +130,12 @@ struct PSShadow
     float4 p : SV_POSITION;
 };
 
+
+struct PSOITOutput
+{
+    float4 color : SV_Target0;
+    float4 alpha : SV_Target1;
+};
 //--------------------------------------------------------------------------------------
 // CUBE-MAP funcs
 //--------------------------------------------------------------------------------------
@@ -172,7 +200,9 @@ struct PSInputBT
     float4 p : SV_POSITION;
     float4 foreground : COLOR;
     float4 background : COLOR1;
-    float2 t : TEXCOORD;
+    noperspective
+	float2 t : TEXCOORD;
+    float4 vEye : POSITION0;
 };
 
 //--------------------------------------------------------------------------------------
@@ -301,12 +331,13 @@ struct ParticlePS_INPUT
     noperspective
     float2 texcoords : TEXCOORD0;
     float opacity : OPACITY0;
-    float pad0 : PAD;
+    float z : Position0;
 };
 
 struct ScreenDupVS_INPUT
 {
     float4 Pos : SV_POSITION;
+    noperspective
     float2 Tex : TEXCOORD0;
 };
 
