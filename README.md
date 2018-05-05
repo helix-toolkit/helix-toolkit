@@ -64,7 +64,7 @@ EnableD2DRendering = false;
 3. Support basic direct2d rendering and layouts arrangement. (Still needs a lot of implementations)
 4. No more HelixToolkit.WPF project dependency.
 5. Unify dependency property types. All WPF.SharpDx model's dependency properties are using class under System.Windows.Media. Such as Vector3D and Color. More Xaml friendly.
-6. Post effect support.
+6. Post effect support.(Note: Post effect elements does not recommend to be used in ModelContainer3DX for model sharing between viewports)
 7. Supports transparent meshes rendered after opaque meshes. IsTransparent property is added in MaterialGeometryModel3D.
 8. Rendering order by RenderType flag: 
     ##### Pre(such as shadow map)->Opaque->Particle->Transparent->Post(post effects)->ScreenSpaced(ViewBox/CoordinateSystem).
