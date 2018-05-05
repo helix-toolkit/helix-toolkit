@@ -218,5 +218,30 @@
             FontWeight="Bold"
             Foreground="Blue"
             Text="{Binding ElementName=viewport, Path=FrameRate}" />
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="1"
+            HorizontalAlignment="Right"
+            Orientation="Vertical" Margin="8">
+            <ComboBox ItemsSource="{Binding OITVM.OITWeights}" SelectedItem="{Binding ElementName=viewport1, Path=OITWeightMode, Mode=TwoWay}"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Foreground="Black">OIT Weight Power:</TextBlock>
+            </StackPanel>
+            <Slider
+                LargeChange="1"
+                Maximum="5"
+                Minimum="0.5"
+                SmallChange="0.1"
+                Value="{Binding ElementName=viewport1, Path=OITWeightPower, Mode=TwoWay}" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Foreground="Black">OIT Weight Slope:</TextBlock>
+            </StackPanel>
+            <Slider
+                LargeChange="1"
+                Maximum="5"
+                Minimum="1"
+                SmallChange="0.5"
+                Value="{Binding ElementName=viewport1, Path=OITWeightDepthSlope, Mode=TwoWay}" />
+        </StackPanel>
     </Grid>
 </Page>

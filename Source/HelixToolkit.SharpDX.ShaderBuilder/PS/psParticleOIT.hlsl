@@ -11,7 +11,7 @@
 PSOITOutput particleOIT(in ParticlePS_INPUT input)
 {
     float4 color = main(input);
-    return calculateOIT(color, input.position);
+    return calculateOIT(color, input.z, input.position.z);
 }
 
 #endif

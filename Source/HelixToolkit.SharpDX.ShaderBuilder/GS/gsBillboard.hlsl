@@ -42,29 +42,36 @@ void main(point VSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream
         ndcTranslated3.xy += windowToNdc(float2(input[0].offBR.x, input[0].offTL.y));
     }
 
+    float3 vEye = vEyePos - input[0].p.xyz;
+    float4 eye = float4(normalize(vEye), length(vEye)); //Use wp for camera->vertex direction
+
     PSInputBT output = (PSInputBT) 0;
     output.p = float4(ndcTranslated0.xyz, 1.0);
     output.background = input[0].background;
     output.foreground = input[0].foreground;
     output.t = float2(input[0].t0.x, input[0].t3.y);
+    output.vEye = eye;
     SpriteStream.Append(output);
 
     output.p = float4(ndcTranslated1.xyz, 1.0);
     output.background = input[0].background;
     output.foreground = input[0].foreground;
     output.t = input[0].t3;
+    output.vEye = eye;
     SpriteStream.Append(output);
 
     output.p = float4(ndcTranslated2.xyz, 1.0);
     output.background = input[0].background;
     output.foreground = input[0].foreground;
     output.t = input[0].t0;
+    output.vEye = eye;
     SpriteStream.Append(output);
 
     output.p = float4(ndcTranslated3.xyz, 1.0);
     output.background = input[0].background;
     output.foreground = input[0].foreground;
     output.t = float2(input[0].t3.x, input[0].t0.y);    
+    output.vEye = eye;
     SpriteStream.Append(output);
 
     SpriteStream.RestartStrip();

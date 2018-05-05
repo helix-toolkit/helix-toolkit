@@ -3,7 +3,7 @@
 #define MESH
 #include"..\Common\Common.hlsl"
 
-float4 main(VSBoneSkinInput input) : SV_Position
+PSWireframeInput main(VSBoneSkinInput input)
 {
     float4 inputp = input.p;
     if (bInvertNormal)
@@ -56,10 +56,11 @@ float4 main(VSBoneSkinInput input) : SV_Position
         inputp.xyz += inputn * mul(h, displacementMapScaleMask);
     }
 
+    PSWireframeInput output = (PSWireframeInput) 0;
 	//set position into clip space	
-    inputp = mul(inputp, mViewProjection);
-
-    return inputp;
+    output.p = mul(inputp, mViewProjection);
+    output.z = length(vEyePos - inputp.xyz);
+    return output;
 }
 
 #endif

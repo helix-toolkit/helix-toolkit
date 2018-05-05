@@ -1830,6 +1830,61 @@ namespace HelixToolkit.UWP
             }));
 
         /// <summary>
+        /// Gets or sets the oit weight depth slope. Used to increase resolution for particular range of depth values. 
+        /// <para>If value = 2, the depth range from 0-0.5 expands to 0-1 to increase resolution. However, values from 0.5 - 1 will be pushed to 1</para>
+        /// </summary>
+        /// <value>
+        /// The oit weight depth slope.
+        /// </value>
+        public double OITWeightDepthSlope
+        {
+            get { return (double)GetValue(OITWeightDepthSlopeProperty); }
+            set { SetValue(OITWeightDepthSlopeProperty, value); }
+        }
+        /// <summary>
+        /// The oit weight depth slope property
+        /// </summary>
+        public static readonly DependencyProperty OITWeightDepthSlopeProperty =
+            DependencyProperty.Register("OITWeightDepthSlope", typeof(double), typeof(Viewport3DX), new PropertyMetadata(1.0, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.OITWeightDepthSlope = (float)(double)e.NewValue;
+                    viewport.InvalidateRender();
+                }
+            }));
+
+        /// <summary>
+        /// Gets or sets the oit weight mode.
+        /// <para>Please refer to http://jcgt.org/published/0002/02/09/ </para>
+        /// <para>Linear0: eq7; Linear1: eq8; Linear2: eq9; NonLinear: eq10</para>
+        /// </summary>
+        /// <value>
+        /// The oit weight mode.
+        /// </value>
+        public OITWeightMode OITWeightMode
+        {
+            get { return (OITWeightMode)GetValue(OITWeightModeProperty); }
+            set { SetValue(OITWeightModeProperty, value); }
+        }
+
+        /// <summary>
+        /// The oit weight mode property
+        /// <para>Please refer to http://jcgt.org/published/0002/02/09/ </para>
+        /// <para>Linear0: eq7; Linear1: eq8; Linear2: eq9; NonLinear: eq10</para>
+        /// </summary>
+        public static readonly DependencyProperty OITWeightModeProperty =
+            DependencyProperty.Register("OITWeightMode", typeof(OITWeightMode), typeof(Viewport3DX), new PropertyMetadata(OITWeightMode.Linear1, (d, e) =>
+            {
+                var viewport = d as Viewport3DX;
+                if (viewport.renderHostInternal != null)
+                {
+                    viewport.renderHostInternal.RenderConfiguration.OITWeightMode = (OITWeightMode)e.NewValue;
+                    viewport.InvalidateRender();
+                }
+            }));
+        /// <summary>
         /// Gets or sets the fxaa. If MSAA is set, FXAA will be disabled automatically
         /// </summary>
         /// <value>

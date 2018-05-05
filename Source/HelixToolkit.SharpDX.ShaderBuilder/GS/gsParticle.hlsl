@@ -29,7 +29,8 @@ void main(point ParticleGS_INPUT input[1], inout TriangleStream<ParticlePS_INPUT
 {
 	ParticlePS_INPUT output;
 	float opacity = saturate(input[0].energy / input[0].initEnergy);
-
+    float3 vEye = vEyePos - input[0].position.xyz;
+    float z = length(vEye); //Use wp for camera->vertex direction
 	//// Transform to view space
 	float4 viewposition = mul(mul(float4(input[0].position, 1.0f), pWorld), mView);
 	float2 texScale = float2(1.0f / max(1, NumTexCol), 1.0f / max(1, NumTexRow));
@@ -48,7 +49,7 @@ void main(point ParticleGS_INPUT input[1], inout TriangleStream<ParticlePS_INPUT
 			output.texcoords = (g_texcoords[i] + float2(column, row)) * texScale;
 			output.opacity = opacity;
 			output.color = input[0].color;
-			output.pad0 = 0;
+			output.z = z;
 			SpriteStream.Append(output);
 		}
 	}
@@ -63,7 +64,7 @@ void main(point ParticleGS_INPUT input[1], inout TriangleStream<ParticlePS_INPUT
 			output.texcoords = (g_texcoords[i] + input[0].texColRow) * texScale;
 			output.opacity = opacity;
 			output.color = input[0].color;
-			output.pad0 = 0;
+			output.z = z;
 			SpriteStream.Append(output);
 		}
 	}

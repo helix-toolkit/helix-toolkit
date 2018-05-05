@@ -47,6 +47,8 @@ namespace OrderIndependentTransparentRendering
             }
         }
 
+        public OITWeightMode[] OITWeights { get; } = new OITWeightMode[] { OITWeightMode.Linear0, OITWeightMode.Linear1, OITWeightMode.Linear2, OITWeightMode.NonLinear };
+
         public ICommand ResetCameraCommand
         {
             set; get;

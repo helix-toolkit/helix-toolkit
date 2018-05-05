@@ -49,6 +49,7 @@ namespace SimpleDemoW10
         public Matrix Transform { private set; get; } = Matrix.Translation(60, -10, 0);
         public LineGeometry3D GridModel { private set; get; }
         public Matrix GridTransform { private set; get; } = Matrix.Translation(60, -10, 0);
+        public OITWeightMode[] OITWeights { get; } = new OITWeightMode[] { OITWeightMode.Linear0, OITWeightMode.Linear1, OITWeightMode.Linear2, OITWeightMode.NonLinear };
 
         private bool showWireframe = false;
 

@@ -9,7 +9,7 @@
 PSOITOutput billboardTextOIT(PSInputBT input)
 {
     float4 color = main(input);
-    return calculateOIT(color, input.p);
+    return calculateOIT(color, input.vEye.w, input.p.z);
 }
 
 #endif

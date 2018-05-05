@@ -18,7 +18,7 @@ PSOITOutput meshBlinnPhongOIT(PSInput input)
     float4 color = main(input);
     if (bRenderOIT)
     {
-        return calculateOIT(color, input.p);
+        return calculateOIT(color, input.vEye.w, input.p.z);
         //// Insert your favorite weighting function here. The color-based factor
         //// avoids color pollution from the edges of wispy clouds. The z-based
         //// factor gives precedence to nearer surfaces.
