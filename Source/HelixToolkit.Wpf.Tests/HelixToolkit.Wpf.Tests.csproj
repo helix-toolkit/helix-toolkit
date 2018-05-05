@@ -88,6 +88,7 @@
     <Compile Include="Geometry\CuttingEarsTriangulatorTests.cs" />
     <Compile Include="Geometry\LineSegmentTests.cs" />
     <Compile Include="Geometry\Polygon3DTests.cs" />
+    <Compile Include="Geometry\PolygonTriangulationTests.cs" />
     <Compile Include="Geometry\Ray3DTests.cs" />
     <Compile Include="Helpers\ContourHelperTests.cs" />
     <Compile Include="Helpers\Vector3DExtensionsTests.cs" />

@@ -1,15 +1,89 @@
 ﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:HelixToolkit.UWP.Themes"
-    xmlns:controls="using:HelixToolkit.UWP">
+    xmlns:controls="using:HelixToolkit.UWP"
+    xmlns:controls1="using:HelixToolkit.UWP.Controls"
+    xmlns:converters="using:HelixToolkit.UWP.Converters"
+    xmlns:local="using:HelixToolkit.UWP.Themes">
+    <converters:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+    <converters:EmptyStringToVisibilityConverter x:Key="emptyStringToVisibilityConverter" />
+    <local:HelixItemsControl
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.UWP.Controls"
+        x:Key="helixItemsControl" />
+
     <Style TargetType="controls:Viewport3DX">
-        <Setter Property="ItemsPanel">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Template">
             <Setter.Value>
-                <ItemsPanelTemplate>
-                    <SwapChainPanel/>
-                </ItemsPanelTemplate>
+                <ControlTemplate TargetType="controls:Viewport3DX">
+                    <Grid
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="{TemplateBinding Background}"
+                        ManipulationMode="All"
+                        Style="{x:Null}">
+                        <controls1:HelixItemsControl>
+                            <controls:ViewBoxModel3D
+                                x:Name="PART_ViewCube"
+                                EnableEdgeClick="{TemplateBinding IsViewCubeEdgeClicksEnabled}"
+                                IsRendering="{TemplateBinding ShowViewCube}"
+                                ManipulationMode="None"
+                                RelativeScreenLocationX="{TemplateBinding ViewCubeHorizontalPosition}"
+                                RelativeScreenLocationY="{TemplateBinding ViewCubeVerticalPosition}"
+                                SizeScale="{TemplateBinding ViewCubeSize}"
+                                UpDirection="{TemplateBinding ModelUpDirection}"
+                                ViewBoxTexture="{TemplateBinding ViewCubeTexture}" />
+                            <controls:CoordinateSystemModel3D
+                                x:Name="PART_CoordinateView"
+                                CoordinateSystemLabelX="{TemplateBinding CoordinateSystemLabelX}"
+                                CoordinateSystemLabelY="{TemplateBinding CoordinateSystemLabelY}"
+                                CoordinateSystemLabelZ="{TemplateBinding CoordinateSystemLabelZ}"
+                                IsRendering="{TemplateBinding ShowCoordinateSystem}"
+                                LabelColor="{TemplateBinding CoordinateSystemLabelForeground}"
+                                ManipulationMode="None"
+                                RelativeScreenLocationX="{TemplateBinding CoordinateSystemHorizontalPosition}"
+                                RelativeScreenLocationY="{TemplateBinding CoordinateSystemVerticalPosition}"
+                                SizeScale="{TemplateBinding CoordinateSystemSize}" />
+                        </controls1:HelixItemsControl>
+                        <controls1:HelixItemsControl x:Name="PART_ItemsContainer" IsHitTestVisible="False" />
+                        <ContentPresenter x:Name="PART_HostPresenter" IsHitTestVisible="False" />
+                        <TextBox
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="Transparent"
+                            Foreground="Red"
+                            IsReadOnly="True"
+                            Text="{TemplateBinding MessageText}"
+                            Visibility="{Binding Text, RelativeSource={RelativeSource Mode=Self}, Mode=OneWay, Converter={StaticResource emptyStringToVisibilityConverter}}" />
+                    </Grid>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="controls:Element3D">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:Element3D">
+                    <controls1:HelixItemsControl x:Name="PART_ItemsContainer" IsHitTestVisible="False" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <local:PerspectiveCamera
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.UWP"
+        x:Key="perspectiveCamera" />
+
+    <local:OrthographicCamera
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.UWP"
+        x:Key="orthographicCamera" />
+
+    <local:PhongMaterial
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:local="using:HelixToolkit.UWP"
+        x:Key="phongMaterial" />
 </ResourceDictionary>

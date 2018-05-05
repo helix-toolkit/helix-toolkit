@@ -10,6 +10,11 @@
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using Color = System.Windows.Media.Color;
+    using Plane = SharpDX.Plane;
+    using Vector3 = SharpDX.Vector3;
+    using Colors = System.Windows.Media.Colors;
+    using Color4 = SharpDX.Color4;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
     using HelixToolkit.Wpf;
     using System.IO;
@@ -17,12 +22,15 @@
     using System.Linq;
     using SharpDX.Direct3D11;
     using System.Diagnostics;
+    using System.Threading.Tasks;
+    using System.Threading;
+    using HelixToolkit.Wpf.SharpDX.Model;
 
     public class MainViewModel : BaseViewModel
     {
         public string Name { get; set; }
         public MainViewModel ViewModel { get { return this; } }
-        public MeshGeometry3D Model { get; private set; }
+        public ObservableElement3DCollection LanderModels { get; private set; } = new ObservableElement3DCollection();
         public MeshGeometry3D Floor { get; private set; }
         public MeshGeometry3D Sphere { get; private set; }
         public LineGeometry3D CubeEdges { get; private set; }
@@ -39,17 +47,17 @@
         public PhongMaterial FloorMaterial { get; set; }
         public PhongMaterial LightModelMaterial { get; set; }
 
-        public Vector3 Light1Direction { get; set; }
-        public Vector3 Light4Direction { get; set; }
+        public Vector3D Light1Direction { get; set; }
+        public Vector3D Light4Direction { get; set; }
         public Vector3D LightDirection4 { get; set; }
-        public Color4 Light1Color { get; set; }
-        public Color4 Light2Color { get; set; }
-        public Color4 Light3Color { get; set; }
-        public Color4 Light4Color { get; set; }
-        public Color4 AmbientLightColor { get; set; }
-        public Vector3 Light2Attenuation { get; set; }
-        public Vector3 Light3Attenuation { get; set; }
-        public Vector3 Light4Attenuation { get; set; }
+        public Color Light1Color { get; set; }
+        public Color Light2Color { get; set; }
+        public Color Light3Color { get; set; }
+        public Color Light4Color { get; set; }
+        public Color AmbientLightColor { get; set; }
+        public Vector3D Light2Attenuation { get; set; }
+        public Vector3D Light3Attenuation { get; set; }
+        public Vector3D Light4Attenuation { get; set; }
         public bool RenderLight1 { get; set; }
         public bool RenderLight2 { get; set; }
         public bool RenderLight3 { get; set; }
@@ -140,11 +148,13 @@
             }
         }
         public LineGeometry3D LineGeo { set; get; }
+        private SynchronizationContext context = SynchronizationContext.Current;
+
         public MainViewModel()
         {
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
+            
 
             // ----------------------------------------------
             // titles
@@ -157,27 +167,27 @@
 
             // ----------------------------------------------
             // setup scene
-            this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
+            this.AmbientLightColor = Colors.DimGray;
 
-            this.Light1Color = (Color4)Color.White;
-            this.Light2Color = (Color4)Color.Red;
-            this.Light3Color = (Color4)Color.LightYellow;
-            this.Light4Color = (Color4)Color.LightBlue;
+            this.Light1Color = Colors.White;
+            this.Light2Color = Colors.Red;
+            this.Light3Color = Colors.LightYellow;
+            this.Light4Color = Colors.LightBlue;
 
-            this.Light2Attenuation = new Vector3(0.1f, 0.05f, 0.010f);
-            this.Light3Attenuation = new Vector3(0.1f, 0.01f, 0.005f);
-            this.Light4Attenuation = new Vector3(0.1f, 0.02f, 0.0f);
+            this.Light2Attenuation = new Vector3D(0.1f, 0.05f, 0.010f);
+            this.Light3Attenuation = new Vector3D(0.1f, 0.01f, 0.005f);
+            this.Light4Attenuation = new Vector3D(0.1f, 0.02f, 0.0f);
 
-            this.Light1Direction = new Vector3(0, -10, -10);
-            this.Light1Transform = new TranslateTransform3D(-Light1Direction.ToVector3D());
-            this.Light1DirectionTransform = CreateAnimatedTransform2(-Light1Direction.ToVector3D(), new Vector3D(0, 1, -1), 36);
+            this.Light1Direction = new Vector3D(0, -10, -10);
+            this.Light1Transform = new TranslateTransform3D(-Light1Direction);
+            this.Light1DirectionTransform = CreateAnimatedTransform2(-Light1Direction, new Vector3D(0, 1, -1), 36);
 
             this.Light2Transform = CreateAnimatedTransform1(new Vector3D(-100, 50, 0), new Vector3D(0, 0, 1), 3);
             this.Light3Transform = CreateAnimatedTransform1(new Vector3D(0, 50, 100), new Vector3D(0, 1, 0), 5);
 
-            this.Light4Direction = new Vector3(0, -100, 0);
-            this.Light4Transform = new TranslateTransform3D(-Light4Direction.ToVector3D());
-            this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction.ToVector3D(), new Vector3D(1, 0, 0), 48);
+            this.Light4Direction = new Vector3D(0, -100, 0);
+            this.Light4Transform = new TranslateTransform3D(-Light4Direction);
+            this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction, new Vector3D(1, 0, 0), 48);
 
             // ----------------------------------------------
             // light model3d
@@ -186,27 +196,14 @@
             Sphere = sphere.ToMeshGeometry3D();
             this.LightModelMaterial = new PhongMaterial
             {
-                AmbientColor = Color.Gray,
-                DiffuseColor = Color.Gray,
-                EmissiveColor = Color.Yellow,
-                SpecularColor = Color.Black,
+                AmbientColor = Colors.Gray.ToColor4(),
+                DiffuseColor = Colors.Gray.ToColor4(),
+                EmissiveColor = Colors.Yellow.ToColor4(),
+                SpecularColor = Colors.Black.ToColor4(),
             };
-            var models = Load3ds("wall12.obj").Select(x => x.Geometry as MeshGeometry3D).ToArray();
-            Floor = models[0];
-            Floor.UpdateOctree();
-            this.FloorTransform = new Media3D.TranslateTransform3D(0, 0, 0);
-            this.FloorMaterial = new PhongMaterial
-            {
-                AmbientColor = Color.Gray,
-                DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
-                SpecularColor = Color.White,
-                SpecularShininess = 100f
-            };
+            Task.Run(() => { LoadFloor(); });
+            Task.Run(() => { LoadLander(); });
 
-            var landerItems = Load3ds("Car.3ds").Select(x => x.Geometry as MeshGeometry3D).ToArray();
-            Model = MeshGeometry3D.Merge(landerItems);
-            Model.UpdateOctree();
-            ModelMaterial = PhongMaterials.BlackRubber;
             var transGroup = new Media3D.Transform3DGroup();
             transGroup.Children.Add(new Media3D.ScaleTransform3D(0.04, 0.04, 0.04));
             var rotateAnimation = new Rotation3DAnimation
@@ -221,8 +218,54 @@
             rotateTransform.BeginAnimation(Media3D.RotateTransform3D.RotationProperty, rotateAnimation);
             transGroup.Children.Add(new Media3D.TranslateTransform3D(0, 60, 0));
             ModelTransform = transGroup;
-            NumberOfTriangles = Floor.Indices.Count / 3 + Model.Indices.Count/3;
-            NumberOfVertices = Floor.Positions.Count + Model.Positions.Count;
+        }
+
+        private void LoadLander()
+        {
+            foreach(var obj in Load3ds("Car.3ds"))
+            {
+                obj.Geometry.UpdateOctree();
+                Task.Delay(10).Wait();
+                context.Post((o) => {
+                    var model = new MeshGeometryModel3D() { Geometry = obj.Geometry };
+                    if(obj.Material is PhongMaterialCore p)
+                    {
+                        model.Material = p;
+                    }
+                    LanderModels.Add(model);
+                    NumberOfTriangles += obj.Geometry.Indices.Count/3;
+                    NumberOfVertices += obj.Geometry.Positions.Count;
+                    OnPropertyChanged(nameof(NumberOfTriangles));
+                    OnPropertyChanged(nameof(NumberOfVertices));
+                }, null);
+            }
+        }
+
+        private void LoadFloor()
+        {
+            var models = Load3ds("wall12.obj").Select(x => x.Geometry as MeshGeometry3D).ToArray();
+            foreach(var model in models)
+            {
+                model.UpdateOctree();
+            }
+
+            context.Post((o) => {
+                Floor = models[0];
+                this.FloorTransform = new Media3D.TranslateTransform3D(0, 0, 0);
+                this.FloorMaterial = new PhongMaterial
+                {
+                    AmbientColor = Colors.Gray.ToColor4(),
+                    DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
+                    SpecularColor = Colors.White.ToColor4(),
+                    SpecularShininess = 100f
+                };
+                NumberOfTriangles += Floor.Indices.Count / 3;
+                NumberOfVertices += Floor.Positions.Count;
+                OnPropertyChanged(nameof(NumberOfTriangles));
+                OnPropertyChanged(nameof(NumberOfVertices));
+                OnPropertyChanged(nameof(Floor));
+                OnPropertyChanged(nameof(FloorMaterial));
+            }, null);
         }
 
         public List<Object3D> Load3ds(string path)
@@ -301,7 +344,7 @@
                 var lineBuilder = new LineBuilder();
                 foreach(var hit in hitTests)
                 {
-                    lineBuilder.AddLine(hit.PointHit.ToVector3(), (hit.PointHit + hit.NormalAtHit * 10).ToVector3());
+                    lineBuilder.AddLine(hit.PointHit, (hit.PointHit + hit.NormalAtHit * 10));
                 }
                 LineGeo = lineBuilder.ToLineGeometry3D();
             }

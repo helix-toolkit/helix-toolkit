@@ -9,6 +9,7 @@
 
 namespace SimpleDemo
 {
+    using HelixToolkit.Wpf.SharpDX.Utilities;
     using System;
     using System.Windows;
 

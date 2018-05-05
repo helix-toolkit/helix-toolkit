@@ -25,6 +25,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using Ray = global::SharpDX.Ray;
     using Vector2 = global::SharpDX.Vector2;
     using Vector3 = global::SharpDX.Vector3;
+    using Cameras;
+    using Model.Scene;
+    using global::SharpDX.Direct3D11;
 
     /// <summary>
     /// Provides extension methods for <see cref="Viewport3DX" />.
@@ -39,39 +42,26 @@ namespace HelixToolkit.Wpf.SharpDX
         public static int GetTotalNumberOfTriangles(this Viewport3DX viewport)
         {
             int count = 0;
-            foreach (var item in viewport.Renderables)
+            var totalModel = viewport.Renderables.PreorderDFT((x) => 
             {
-                var model = item as MeshGeometryModel3D;
-                if (model != null && model.GeometryValid)
+                if(x is GeometryNode g)
                 {
-                    if (model.Visibility == Visibility.Visible)
-                        count += model.Geometry.Indices.Count / 3;
+                    if (g.Visible && g.Geometry != null && g.Geometry.Indices != null)
+                    {
+                        count += g.Geometry.Indices.Count / 3;
+                    }
                 }
-            }
+                return true;
+            }).Count();
             return count;
         }
 
         /// <summary>
         /// Copies the specified viewport to the clipboard.
         /// </summary>
-        /// <param name="view">The viewport.</param>
-        /// <param name="m">The oversampling multiplier.</param>
-        public static void Copy(this Viewport3DX view, int m = 1)
+        public static void Copy(this Viewport3DX view)
         {
-            Clipboard.SetImage(RenderBitmap(view, Brushes.White, m));
-        }
-
-        /// <summary>
-        /// Copies the specified viewport to the clipboard.
-        /// </summary>
-        /// <param name="view">The view.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="background">The background.</param>
-        /// <param name="m">The oversampling multiplier.</param>
-        public static void Copy(this Viewport3DX view, double width, double height, Brush background, int m = 1)
-        {
-            Clipboard.SetImage(RenderBitmap(view, width, height, background));
+            Clipboard.SetImage(RenderBitmap(view));
         }
 
         /// <summary>
@@ -102,14 +92,14 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Matrix GetViewProjectionMatrix(this Viewport3DX viewport)
         {
             return viewport.RenderContext != null ? viewport.RenderContext.ViewMatrix * viewport.RenderContext.ProjectionMatrix
-                : viewport.Camera.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
+                : viewport.CameraCore.GetViewProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix GetProjectionMatrix(this Viewport3DX viewport)
         {
             return viewport.RenderContext != null ? viewport.RenderContext.ProjectionMatrix
-                : viewport.Camera.GetProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
+                : viewport.CameraCore.GetProjectionMatrix(viewport.ActualWidth / viewport.ActualHeight);
         }
         /// <summary>
         /// Gets the total transform for a Viewport3DX. 
@@ -188,16 +178,46 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The bounding box.</returns>
         public static Rect3D FindBounds(this Viewport3DX viewport)
         {
-            var bounds = new global::SharpDX.BoundingBox();
-            foreach (var element in viewport.Renderables)
+            var maxVector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            var firstModel = viewport.Renderables.PreorderDFT((r) =>
             {
-                var model = element as GeometryModel3D;
-                if (model != null)
+                if (r.Visible && !(r is ScreenSpacedNode))
                 {
-                    if (model.Visibility != Visibility.Collapsed && model.GeometryValid)
+                    return true;
+                }
+                return false;
+            }).Where(x =>
+            {
+                if (x is IBoundable b)
+                {
+                    return b.HasBound && b.BoundsWithTransform.Maximum != b.BoundsWithTransform.Minimum 
+                    && b.BoundsWithTransform.Maximum != Vector3.Zero && b.BoundsWithTransform.Maximum != maxVector;
+                }
+                else
+                {
+                    return false;
+                }
+            }).FirstOrDefault();
+            if(firstModel == null)
+            {
+                return new Rect3D();
+            }
+            var bounds = firstModel.BoundsWithTransform;
+            
+            foreach(var renderable in viewport.Renderables.PreorderDFT((r) =>
+            {               
+                if (r.Visible && !(r is ScreenSpacedNode))
+                {
+                    return true;
+                }
+                return false;
+            }))
+            {
+                if(renderable is IBoundable r)
+                {
+                    if (r.HasBound && r.BoundsWithTransform.Maximum != maxVector)
                     {
-                        model.Geometry.UpdateBounds();
-                        bounds = global::SharpDX.BoundingBox.Merge(bounds, model.Bounds);
+                        bounds = global::SharpDX.BoundingBox.Merge(bounds, r.BoundsWithTransform);
                     }
                 }
             }
@@ -205,7 +225,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.
+        /// Traverses the Visual3D/Element3D tree and invokes the specified action on each Element3D of the specified type.
         /// </summary>
         /// <typeparam name="T">
         /// The type filter.
@@ -216,20 +236,38 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="action">
         /// The action.
         /// </param>
-        public static void Traverse<T>(this Viewport3DX viewport, Action<T, Transform3D> action) where T : Model3D
+        public static void Traverse<T>(this Viewport3DX viewport, Action<T, Transform3D> action) where T : Element3D
         {
-            foreach (var element in viewport.Renderables)
+            viewport.Renderables.PreorderDFT((node) => 
             {
-                var model = element as Model3D; // ITraversable;
-                if (model != null)
+                if(node.WrapperSource is T element)
                 {
-                    Traverse(model, action);
+                    action(element, element.Transform);
                 }
-            }
+                return true;
+            });
         }
 
         /// <summary>
-        /// Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.
+        /// Traverses the specified action.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="function">The function. Return true to continue traverse, otherwise stop at current node</param>
+        public static void Traverse<T>(this Viewport3DX viewport, Func<T, bool> function) where T : Element3D
+        {
+            viewport.Renderables.PreorderDFT((node) =>
+            {
+                if (node.WrapperSource is T element)
+                {
+                    return function(element);
+                }
+                return true;
+            });
+        }
+
+        /// <summary>
+        /// Traverses the Visual3D/Element3D tree and invokes the specified action on each Element3D of the specified type.
         /// </summary>
         /// <typeparam name="T">
         /// The type filter.
@@ -240,11 +278,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="action">
         /// The action.
         /// </param>
-        public static void Traverse<T>(this Model3D element, Action<T, Transform3D> action) where T : Model3D
+        public static void Traverse<T>(this Element3D element, Action<T, Transform3D> action) where T : Element3D
         {
+            var sceneNode = new SceneNode[] { element.SceneNode };
             Traverse(element, action);
         }
 
+        public static readonly HitTestResult[] EmptyHits = new HitTestResult[0];
         /// <summary>
         /// Finds the hits for a given 2D viewport position.
         /// </summary>
@@ -262,7 +302,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var camera = viewport.Camera as ProjectionCamera;
             if (camera == null)
             {
-                return null;
+                return EmptyHits;
             }
 
             var ray = UnProject(viewport, new Vector2((float)position.X, (float)position.Y));
@@ -270,11 +310,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         
             foreach (var element in viewport.Renderables)
             {
-                var model = element as IHitable;
-                if (model != null)
-                {
-                    model.HitTest(viewport.RenderContext, ray, ref hits);
-                }
+                element.HitTest(viewport.RenderContext, ray, ref hits);
             }
 
             return hits.OrderBy(k => k.Distance).ToList();
@@ -302,7 +338,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The find nearest.
         /// </returns>
         public static bool FindNearest(this Viewport3DX viewport, Point position,
-            out Point3D point, out Vector3D normal, out Model3D model)
+            out Point3D point, out Vector3D normal, out Element3D model)
         {
             point = new Point3D();
             normal = new Vector3D();
@@ -317,9 +353,9 @@ namespace HelixToolkit.Wpf.SharpDX
             var hits = FindHits(viewport, position);
             if (hits.Count > 0)
             {
-                point = hits[0].PointHit;
-                normal = hits[0].NormalAtHit;
-                model = hits[0].ModelHit;
+                point = hits[0].PointHit.ToPoint3D();
+                normal = hits[0].NormalAtHit.ToVector3D();
+                model = hits[0].ModelHit as Element3D;
                 return true;
             }
             else
@@ -340,7 +376,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             Point3D p;
             Vector3D n;
-            Model3D obj;
+            Element3D obj;
             if (FindNearest(viewport, position, out p, out n, out obj))
             {
                 return p;
@@ -356,7 +392,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The ray.</returns>
         public static Ray UnProject(this Viewport3DX viewport, Vector2 point2d)//, out Vector3 pointNear, out Vector3 pointFar)
         {
-            var camera = viewport.Camera as ProjectionCamera;
+            var camera = viewport.CameraCore as ProjectionCameraCore;
             if (camera != null)
             {
                 var px = (float)point2d.X;
@@ -365,7 +401,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var viewMatrix = camera.GetViewMatrix();
                 Vector3 v = new Vector3();
                 
-                var matrix = CameraExtensions.InverseViewMatrix(ref viewMatrix);
+                var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
                 float w = (float)viewport.ActualWidth;
                 float h = (float)viewport.ActualHeight;
                 var aspectRatio = w / h;
@@ -377,9 +413,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Z = 1 / projMatrix.M33;
                 Vector3.TransformCoordinate(ref v, ref matrix, out zf);
 
-                if (camera is PerspectiveCamera)
+                if (camera is PerspectiveCameraCore)
                 {
-                    zn = camera.Position.ToVector3();
+                    zn = camera.Position;
                 }
                 else
                 {
@@ -389,7 +425,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 Vector3 r = zf - zn;
                 r.Normalize();               
 
-                return new Ray(zn, r);
+                return new Ray(zn + r * camera.NearPlaneDistance, r);
             }
             throw new HelixToolkitException("Unproject camera error.");
         }
@@ -549,66 +585,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Renders the viewport to a bitmap.
         /// </summary>
         /// <param name="view">The viewport.</param>
-        /// <param name="background">The background.</param>
-        /// <param name="m">The oversampling multiplier.</param>
         /// <returns>A bitmap.</returns>
-        public static BitmapSource RenderBitmap(this Viewport3DX view, Brush background, int m = 1)
+        public static BitmapSource RenderBitmap(this Viewport3DX view)
         {
-            var target = new WriteableBitmap(
-                (int)view.ActualWidth * m, (int)view.ActualHeight * m, 96, 96, PixelFormats.Pbgra32, null);
-
-            var originalCamera = view.Camera;
-            var vm = originalCamera.GetViewMatrix3D();
-            double ar = view.ActualWidth / view.ActualHeight;
-
-            for (int i = 0; i < m; i++)
+            using (var memoryStream = new System.IO.MemoryStream())
             {
-                for (int j = 0; j < m; j++)
+                if (view.RenderHost != null && view.RenderHost.IsRendering)
                 {
-                    // change the camera viewport and scaling
-                    var pm = originalCamera.GetProjectionMatrix3D(ar);
-                    if (originalCamera is OrthographicCamera)
-                    {
-                        pm.OffsetX = m - 1 - (i * 2);
-                        pm.OffsetY = -(m - 1 - (j * 2));
-                    }
-
-                    if (originalCamera is PerspectiveCamera)
-                    {
-                        pm.M31 = -(m - 1 - (i * 2));
-                        pm.M32 = m - 1 - (j * 2);
-                    }
-
-                    pm.M11 *= m;
-                    pm.M22 *= m;
-
-                    var mc = new MatrixCamera(vm, pm);
-                    view.Camera = mc;
-
-                    var partialBitmap = new RenderTargetBitmap(
-                        (int)view.ActualWidth, (int)view.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-
-                    // render background
-                    var backgroundRectangle = new Rectangle
-                        {
-                            Width = partialBitmap.Width,
-                            Height = partialBitmap.Height,
-                            Fill = background
-                        };
-                    backgroundRectangle.Arrange(new Rect(0, 0, backgroundRectangle.Width, backgroundRectangle.Height));
-                    partialBitmap.Render(backgroundRectangle);
-
-                    // render 3d
-                    partialBitmap.Render(view);
-
-                    // copy to the target bitmap
-                    CopyBitmap(partialBitmap, target, (int)(i * view.ActualWidth), (int)(j * view.ActualHeight));
+                    Utilities.ScreenCapture.SaveWICTextureToBitmapStream(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.BackBuffer.Resource as Texture2D, memoryStream);
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    memoryStream.Position = 0;
+                    bitmap.StreamSource = memoryStream;
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.EndInit();
+                    bitmap.Freeze();
+                    return bitmap;
+                }
+                else
+                {
+                    return null;
                 }
             }
-
-            // restore the camera
-            view.Camera = originalCamera;
-            return target;
         }
 
         /// <summary>
@@ -617,16 +615,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="view">The viewport.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        /// <param name="background">The background.</param>
-        /// <param name="m">The oversampling multiplier.</param>
         /// <returns>A bitmap.</returns>
         public static BitmapSource RenderBitmap(
-            this Viewport3DX view, double width, double height, Brush background, int m = 1)
+            this Viewport3DX view, double width, double height)
         {
             double w = view.Width;
             double h = view.Height;
             ResizeAndArrange(view, width, height);
-            var rtb = RenderBitmap(view, background, m);
+            var rtb = RenderBitmap(view);
             ResizeAndArrange(view, w, h);
             return rtb;
         }
@@ -656,17 +652,53 @@ namespace HelixToolkit.Wpf.SharpDX
             view.Arrange(new Rect(0, 0, width, height));
         }
 
+
         /// <summary>
-        /// Saves the viewport to a file.
+        /// Saves the bitmap.
         /// </summary>
         /// <param name="view">The view.</param>
         /// <param name="fileName">Name of the file.</param>
-        /// <param name="background">The background brush.</param>
-        /// <param name="m">The oversampling multiplier.</param>
-        public static void SaveBitmap(this Viewport3DX view, string fileName, Brush background = null, int m = 1)
+        public static void SaveScreen(this Viewport3DX view, string fileName)
         {
-            // var exporter = new BitmapExporter(fileName) { Background = background, OversamplingMultiplier = m };
-            // exporter.Export(view);
+            var ext = System.IO.Path.GetExtension(fileName);
+            Direct2DImageFormat format = Direct2DImageFormat.Bmp;
+            switch (ext)
+            {
+                case "bmp":
+                    format = Direct2DImageFormat.Bmp;
+                    break;
+                case "jpeg":
+                case "jpg":
+                    format = Direct2DImageFormat.Jpeg;
+                    break;
+                case "png":
+                    format = Direct2DImageFormat.Png;
+                    break;
+                default:
+                    break;
+            }
+            SaveScreen(view, fileName, format);
+        }
+
+        /// <summary>
+        /// Saves the bitmap.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="format">The format.</param>
+        public static void SaveScreen(this Viewport3DX view, string fileName, Direct2DImageFormat format)
+        {
+            using (var file = System.IO.File.OpenWrite(fileName))
+            {
+                if (!file.CanWrite)
+                {
+                    throw new AccessViolationException($"File cannot be written. {fileName}");
+                }
+            }
+            if (view.RenderHost != null && view.RenderHost.IsRendering)
+            {
+                Utilities.ScreenCapture.SaveWICTextureToFile(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.BackBuffer.Resource as Texture2D, fileName, format);
+            }
         }
 
         /// <summary>

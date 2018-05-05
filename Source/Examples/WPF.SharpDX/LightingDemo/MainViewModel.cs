@@ -12,15 +12,17 @@ namespace LightingDemo
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
     using SharpDX;
+
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-    using HelixToolkit.Wpf;
-    using System.IO;
-    using System.Collections.Generic;
-    using System.Linq;
+    using Color = System.Windows.Media.Color;
+    using Plane = SharpDX.Plane;
+    using Vector3 = SharpDX.Vector3;
+    using Colors = System.Windows.Media.Colors;
+    using Color4 = SharpDX.Color4;
 
     public class MainViewModel : BaseViewModel
     {
@@ -29,8 +31,10 @@ namespace LightingDemo
         public MeshGeometry3D Model { get; private set; }
         public MeshGeometry3D Floor { get; private set; }
         public MeshGeometry3D Sphere { get; private set; }
+        public MeshGeometry3D FlyingObject { get; private set; }
         public LineGeometry3D CubeEdges { get; private set; }
         public Transform3D ModelTransform { get; private set; }
+        public Transform3D Model1Transform { get; private set; }
         public Transform3D FloorTransform { get; private set; }
         public Transform3D Light1Transform { get; private set; }
         public Transform3D Light2Transform { get; private set; }
@@ -39,21 +43,33 @@ namespace LightingDemo
         public Transform3D Light1DirectionTransform { get; private set; }
         public Transform3D Light4DirectionTransform { get; private set; }
 
+        public Transform3D Object1Transform { get; private set; }
+        public Transform3D Object2Transform { get; private set; }
+        public Transform3D Object3Transform { get; private set; }
+        public Transform3D Object4Transform { get; private set; }
+
+        public Transform3D Object5Transform { get; private set; }
+        public Transform3D Object6Transform { get; private set; }
+        public Transform3D Object7Transform { get; private set; }
+        public Transform3D Object8Transform { get; private set; }
+
         public PhongMaterial ModelMaterial { get; set; }
+        public PhongMaterial ReflectMaterial { get; set; }
         public PhongMaterial FloorMaterial { get; set; }
         public PhongMaterial LightModelMaterial { get; set; }
+        public PhongMaterial ObjectMaterial { set; get; } = PhongMaterials.Red;
 
-        public Vector3 Light1Direction { get; set; }
-        public Vector3 Light4Direction { get; set; }
+        public Vector3D Light1Direction { get; set; }
+        public Vector3D Light4Direction { get; set; }
         public Vector3D LightDirection4 { get; set; }
-        public Color4 Light1Color { get; set; }
-        public Color4 Light2Color { get; set; }
-        public Color4 Light3Color { get; set; }
-        public Color4 Light4Color { get; set; }
-        public Color4 AmbientLightColor { get; set; }
-        public Vector3 Light2Attenuation { get; set; }
-        public Vector3 Light3Attenuation { get; set; }
-        public Vector3 Light4Attenuation { get; set; }
+        public Color Light1Color { get; set; }
+        public Color Light2Color { get; set; }
+        public Color Light3Color { get; set; }
+        public Color Light4Color { get; set; }
+        public Color AmbientLightColor { get; set; }
+        public Vector3D Light2Attenuation { get; set; }
+        public Vector3D Light3Attenuation { get; set; }
+        public Vector3D Light4Attenuation { get; set; }
         public bool RenderLight1 { get; set; }
         public bool RenderLight2 { get; set; }
         public bool RenderLight3 { get; set; }
@@ -143,6 +159,13 @@ namespace LightingDemo
 
         public MSAALevel[] MSAAs { get; } = new MSAALevel[] { MSAALevel.Disable, MSAALevel.Two, MSAALevel.Four, MSAALevel.Eight, MSAALevel.Maximum };
 
+        public FXAALevel FXAA
+        {
+            set; get;
+        } = FXAALevel.None;
+
+        public FXAALevel[] FXAAs { get; } = new FXAALevel[] { FXAALevel.None, FXAALevel.Low, FXAALevel.Medium, FXAALevel.High, FXAALevel.Ultra };
+
         public Camera Camera2 { get; } = new PerspectiveCamera { Position = new Point3D(8, 9, 7), LookDirection = new Vector3D(-5, -12, -5), UpDirection = new Vector3D(0, 1, 0) };
 
         public Camera Camera3 { get; } = new PerspectiveCamera { Position = new Point3D(8, 9, 7), LookDirection = new Vector3D(-5, -12, -5), UpDirection = new Vector3D(0, 1, 0) };
@@ -151,10 +174,9 @@ namespace LightingDemo
 
         public MainViewModel()
         {
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
-
+            //    RenderTechniquesManager = new DefaultRenderTechniquesManager();           
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // ----------------------------------------------
             // titles
             this.Title = "Lighting Demo";
@@ -166,33 +188,37 @@ namespace LightingDemo
 
             // ----------------------------------------------
             // setup scene
-            this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
+            this.AmbientLightColor = Colors.DarkGray;
 
             this.RenderLight1 = true;
             this.RenderLight2 = true;
             this.RenderLight3 = true;
             this.RenderLight4 = true;
 
-            this.Light1Color = (Color4)Color.White;
-            this.Light2Color = (Color4)Color.Red;
-            this.Light3Color = (Color4)Color.LightYellow;
-            this.Light4Color = (Color4)Color.LightBlue;
+            this.Light1Color = Colors.White;
+            this.Light2Color = Colors.Red;
+            this.Light3Color = Colors.LightYellow;
+            this.Light4Color = Colors.LightBlue;
 
-            this.Light2Attenuation = new Vector3(1.0f, 0.5f, 0.10f);
-            this.Light3Attenuation = new Vector3(1.0f, 0.1f, 0.05f);
-            this.Light4Attenuation = new Vector3(1.0f, 0.2f, 0.0f);
+            this.Light2Attenuation = new Vector3D(1.0f, 0.5f, 0.10f);
+            this.Light3Attenuation = new Vector3D(1.0f, 0.1f, 0.05f);
+            this.Light4Attenuation = new Vector3D(0.1f, 0.1f, 0.0f);
 
-            this.Light1Direction = new Vector3(0, -10, -10);
-            this.Light1Transform = new TranslateTransform3D(-Light1Direction.ToVector3D());
-            this.Light1DirectionTransform = CreateAnimatedTransform2(-Light1Direction.ToVector3D(), new Vector3D(0, 1, -1), 24);
+            this.Light1Direction = new Vector3D(0, -10, 0);
+            this.Light1Transform = CreateAnimatedTransform1(-Light1Direction, new Vector3D(1, 0, 0), 24);
+            this.Light1DirectionTransform = CreateAnimatedTransform2(-Light1Direction, new Vector3D(0, 1, -1), 24);
 
             this.Light2Transform = CreateAnimatedTransform1(new Vector3D(-4, 0, 0), new Vector3D(0, 0, 1), 3);
             this.Light3Transform = CreateAnimatedTransform1(new Vector3D(0, 0, 4), new Vector3D(0, 1, 0), 5);
 
-            this.Light4Direction = new Vector3(0, -5, 0);
-            this.Light4Transform = new TranslateTransform3D(-Light4Direction.ToVector3D());
-            this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction.ToVector3D(), new Vector3D(1, 0, 0), 12);
+            this.Light4Direction = new Vector3D(0, -5, -1);
+            this.Light4Transform = CreateAnimatedTransform2(-Light4Direction * 2, new Vector3D(0,1,0), 24);
+            this.Light4DirectionTransform = CreateAnimatedTransform2(-Light4Direction, new Vector3D(1, 0, 0), 12);
 
+            var transformGroup = new Media3D.Transform3DGroup();
+            transformGroup.Children.Add(new Media3D.ScaleTransform3D(10, 10, 10));
+            transformGroup.Children.Add(new Media3D.TranslateTransform3D(2, -4, 2));
+            Model1Transform = transformGroup;
             // ----------------------------------------------
             // light model3d
             var sphere = new MeshBuilder();
@@ -200,21 +226,22 @@ namespace LightingDemo
             Sphere = sphere.ToMeshGeometry3D();
             this.LightModelMaterial = new PhongMaterial
             {
-                AmbientColor = Color.Gray,
-                DiffuseColor = Color.Gray,
-                EmissiveColor = Color.Yellow,
-                SpecularColor = Color.Black,
+                AmbientColor = Colors.Gray.ToColor4(),
+                DiffuseColor = Colors.Gray.ToColor4(),
+                EmissiveColor = Colors.Yellow.ToColor4(),
+                SpecularColor = Colors.Black.ToColor4(),
             };
 
             // ----------------------------------------------
             // scene model3d
             var b1 = new MeshBuilder(true, true, true);
-            b1.AddSphere(new Vector3(0.25f, 0.25f, 0.25f), 0.75, 64, 64);
+            b1.AddSphere(new Vector3(0.25f, 0.25f, 0.25f), 0.75, 24, 24);
             b1.AddBox(-new Vector3(0.25f, 0.25f, 0.25f), 1, 1, 1, BoxFaces.All);
             b1.AddBox(-new Vector3(5.0f, 0.0f, 0.0f), 1, 1, 1, BoxFaces.All);
-            b1.AddSphere(new Vector3(5f, 0f, 0f), 0.75, 64, 64);
-            b1.AddCylinder(new Vector3(0f, -3f, -5f), new Vector3(0f, 3f, -5f), 1.2, 64);
-
+            b1.AddSphere(new Vector3(5f, 0f, 0f), 0.75, 24, 24);
+            b1.AddCylinder(new Vector3(0f, -3f, -5f), new Vector3(0f, 3f, -5f), 1.2, 24);
+            b1.AddSphere(new Vector3(-5.0f, -5.0f, 5.0f), 4, 24, 64);
+            b1.AddCone(new Vector3(6f, -9f, -6f), new Vector3(6f, -1f, -6f), 4f, true, 64);
             this.Model = b1.ToMeshGeometry3D();
             this.ModelTransform = new Media3D.TranslateTransform3D(0, 0, 0);
             this.ModelMaterial = PhongMaterials.Chrome;
@@ -224,21 +251,54 @@ namespace LightingDemo
             // ----------------------------------------------
             // floor model3d
             var b2 = new MeshBuilder(true, true, true);
-            b2.AddBox(new Vector3(0.0f, -5.0f, 0.0f), 15, 0.1, 15, BoxFaces.All);
-            b2.AddSphere(new Vector3(-5.0f, -5.0f, 5.0f), 4, 64, 64);
-            b2.AddCone(new Vector3(6f, -9f, -6f), new Vector3(6f, -1f, -6f), 4f, true, 64);
+            //b2.AddRectangularMesh(BoxFaces.Left, 10, 10, 10, 10);
+            b2.AddBox(new Vector3(0.0f, -5.0f, 0.0f), 15, 1, 15, BoxFaces.All);
+            //b2.AddSphere(new Vector3(-5.0f, -5.0f, 5.0f), 4, 24, 64);
+            //b2.AddCone(new Vector3(6f, -9f, -6f), new Vector3(6f, -1f, -6f), 4f, true, 64);
             this.Floor = b2.ToMeshGeometry3D();
             this.FloorTransform = new Media3D.TranslateTransform3D(0, 0, 0);
             this.FloorMaterial = new PhongMaterial
             {
-                AmbientColor = Color.Gray,
+                AmbientColor = Colors.Gray.ToColor4(),
                 DiffuseColor = new Color4(0.75f, 0.75f, 0.75f, 1.0f),
-                SpecularColor = Color.White,
+                SpecularColor = Colors.White.ToColor4(),
                 SpecularShininess = 100f,
                 DiffuseMap = LoadFileToMemory(new System.Uri(SelectedDiffuseTexture, System.UriKind.RelativeOrAbsolute).ToString()),
-                NormalMap = ModelMaterial.NormalMap
+                NormalMap = ModelMaterial.NormalMap,
+                //DisplacementMap = LoadFileToMemory(new System.Uri("Particle.png", System.UriKind.RelativeOrAbsolute).ToString()),
+                //DisplacementMapScaleMask = new Vector4(-1f,0,0,-1f)
             };
             ModelMaterial.DiffuseMap = FloorMaterial.DiffuseMap;
+
+            ReflectMaterial = PhongMaterials.PolishedSilver;
+            ReflectMaterial.ReflectiveColor = global::SharpDX.Color.Silver;
+
+            InitialObjectTransforms();
+        }
+
+        private void InitialObjectTransforms()
+        {
+            var b = new MeshBuilder(true);
+            b.AddTorus(1, 0.5);
+            b.AddTetrahedron(new Vector3(), new Vector3(1, 0, 0), new Vector3(0, 1, 0), 1.1);
+            FlyingObject = b.ToMesh();
+            var random = new Random();
+            Object1Transform = CreateAnimatedTransform1(new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-5, 5), random.NextDouble(-5, 5)),
+                new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-5, 5), random.NextDouble(-5, 5)), random.NextDouble(2, 10));
+            Object2Transform = CreateAnimatedTransform1(new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-10, 10), random.NextDouble(-10, 10)),
+                new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-5, 5), random.NextDouble(-10, 10)), random.NextDouble(2, 10));
+            Object3Transform = CreateAnimatedTransform1(new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-10, 10), random.NextDouble(-10, 10)),
+                new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-5, 5), random.NextDouble(-10, 10)), random.NextDouble(2, 10));
+            Object4Transform = CreateAnimatedTransform1(new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-10, 10), random.NextDouble(-10, 10)),
+                new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-5, 5), random.NextDouble(-10, 10)), random.NextDouble(2, 10));
+            Object5Transform = CreateAnimatedTransform1(new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-10, 10), random.NextDouble(-10, 10)),
+                new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-5, 5), random.NextDouble(-10, 10)), random.NextDouble(2, 10));
+            Object6Transform = CreateAnimatedTransform1(new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-10, 10), random.NextDouble(-10, 10)),
+                new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-5, 5), random.NextDouble(-10, 10)), random.NextDouble(2, 10));
+            Object7Transform = CreateAnimatedTransform1(new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-10, 10), random.NextDouble(-10, 10)),
+                new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-5, 5), random.NextDouble(-10, 10)), random.NextDouble(2, 10));
+            Object8Transform = CreateAnimatedTransform1(new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-10, 10), random.NextDouble(-10, 10)),
+                new Vector3D(random.NextDouble(-5, 5), random.NextDouble(-5, 5), random.NextDouble(-10, 10)), random.NextDouble(2, 10));
         }
 
         private Media3D.Transform3D CreateAnimatedTransform1(Vector3D translate, Vector3D axis, double speed = 4)

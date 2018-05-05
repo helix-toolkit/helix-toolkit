@@ -9,7 +9,7 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("Helix Toolkit")]
 [assembly: AssemblyCompany("Helix Toolkit")]
-[assembly: AssemblyCopyright("Copyright (C) Helix Toolkit 2010-2017.")]
+[assembly: AssemblyCopyright("Copyright (C) Helix Toolkit 2018.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

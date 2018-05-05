@@ -15,7 +15,13 @@ namespace InstancingDemo
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
-    using HelixToolkit.Wpf;
+    using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
+    using Color = System.Windows.Media.Color;
+    using Plane = SharpDX.Plane;
+    using Vector3 = SharpDX.Vector3;
+    using Colors = System.Windows.Media.Colors;
+    using Color4 = SharpDX.Color4;
     using System;
     using System.IO;
     using System.Windows.Threading;
@@ -39,12 +45,12 @@ namespace InstancingDemo
         public BillboardInstanceParameter[] BillboardInstanceParams { private set; get; }
 
         public PhongMaterial ModelMaterial { get; private set; }
-        public Media3D.Transform3D ModelTransform { get; private set; }
+        public Transform3D ModelTransform { get; private set; }
 
-        public Vector3 DirectionalLightDirection { get; private set; }
-        public Color4 DirectionalLightColor { get; private set; }
-        public Color4 AmbientLightColor { get; private set; }
-
+        public Vector3D DirectionalLightDirection { get; private set; }
+        public Color DirectionalLightColor { get; private set; }
+        public Color AmbientLightColor { get; private set; }
+        public Stream Texture { private set; get; }
         public bool EnableAnimation { set; get; }
 
         private DispatcherTimer timer = new DispatcherTimer();
@@ -56,14 +62,15 @@ namespace InstancingDemo
         public MainViewModel()
         {
             Title = "Instancing Demo";
-
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // camera setup
             Camera = new PerspectiveCamera { Position = new Point3D(40, 40, 40), LookDirection = new Vector3D(-40, -40, -40), UpDirection = new Vector3D(0, 1, 0) };
 
             // setup lighting            
-            this.AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
-            this.DirectionalLightColor = (Color4)Color.White;
-            this.DirectionalLightDirection = new Vector3(-2, -5, -2);
+            this.AmbientLightColor = Colors.DarkGray;
+            this.DirectionalLightColor = Colors.White;
+            this.DirectionalLightDirection = new Vector3D(-2, -5, -2);
 
             // scene model3d
             var b1 = new MeshBuilder(true, true, true);
@@ -77,19 +84,17 @@ namespace InstancingDemo
             var l1 = new LineBuilder();
             l1.AddBox(new Vector3(0, 0, 0), 1.1, 1.1, 1.1);
             Lines = l1.ToLineGeometry3D();
-            Lines.Colors = new HelixToolkit.Wpf.SharpDX.Core.Color4Collection(Enumerable.Repeat(Color.White.ToColor4(), Lines.Positions.Count));
+            Lines.Colors = new HelixToolkit.Wpf.SharpDX.Core.Color4Collection(Enumerable.Repeat(Colors.White.ToColor4(), Lines.Positions.Count));
             // model trafo
             ModelTransform = Media3D.Transform3D.Identity;// new Media3D.RotateTransform3D(new Media3D.AxisAngleRotation3D(new Vector3D(0, 0, 1), 45));
 
             // model material
-            ModelMaterial = PhongMaterials.Glass;
-            ModelMaterial.DiffuseMap = new FileStream(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
-            ModelMaterial.NormalMap = new FileStream(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString(), FileMode.Open);
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
-            BillboardModel = new BillboardSingleImage3D(ModelMaterial.DiffuseMap, 20, 20);
+            ModelMaterial = PhongMaterials.White;
+            ModelMaterial.DiffuseMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2.jpg", System.UriKind.RelativeOrAbsolute).ToString());
+            ModelMaterial.NormalMap = LoadFileToMemory(new System.Uri(@"TextureCheckerboard2_dot3.jpg", System.UriKind.RelativeOrAbsolute).ToString());
 
+            BillboardModel = new BillboardSingleImage3D(ModelMaterial.DiffuseMap, 20, 20);
+            Texture = LoadFileToMemory("Cubemap_Grandcanyon.dds");
             CreateModels();
             timer.Interval = TimeSpan.FromMilliseconds(30);
             timer.Tick += Timer_Tick;
@@ -109,7 +114,7 @@ namespace InstancingDemo
 
         List<Matrix> billboardinstances = new List<Matrix>(num * 2);
         List<BillboardInstanceParameter> billboardParams = new List<BillboardInstanceParameter>(num * 2);
-        int counter = 0;
+
         private void CreateModels()
         {
             instances.Clear();
@@ -143,7 +148,7 @@ namespace InstancingDemo
                 {
                     var matrix = Matrix.RotationAxis(new Vector3(0, 1, 0), aniX * Math.Sign(j))
                         * Matrix.Translation(new Vector3(i * 1.2f + Math.Sign(i), j * 1.2f + Math.Sign(j), i * j / 2.0f));
-                    var color = new Color4((float)Math.Abs(i) / num, (float)Math.Abs(j) / num, (float)Math.Abs(i + j) / (2 * num), 1);
+                    var color = new Color4(1, 1, 1, 1);//new Color4((float)Math.Abs(i) / num, (float)Math.Abs(j) / num, (float)Math.Abs(i + j) / (2 * num), 1);
                     //  var emissiveColor = new Color4( rnd.NextFloat(0,1) , rnd.NextFloat(0, 1), rnd.NextFloat(0, 1), rnd.NextFloat(0, 0.2f));
                     var k = Math.Abs(i + j) % 4;
                     Vector2 offset;
@@ -207,18 +212,30 @@ namespace InstancingDemo
             var hitTests = viewport.FindHits(point);
             if (hitTests.Count > 0)
             {
-                var index = (int)hitTests[0].Tag;
-                if (hitTests[0].ModelHit is InstancingMeshGeometryModel3D)
-                {
-                    
-                    InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor == Color.Transparent? Color.Yellow : Color.Transparent;
-                    InstanceParam = (InstanceParameter[])InstanceParam.Clone();
-                }
-                else if(hitTests[0].ModelHit is LineGeometryModel3D)
-                {
-                    SelectedLineInstances = new Matrix[] { ModelInstances[index] };
+                foreach(var hit in hitTests)
+                {                  
+                    if (hit.ModelHit is InstancingMeshGeometryModel3D)
+                    {
+                        var index = (int)hit.Tag;
+                        InstanceParam[index].EmissiveColor = InstanceParam[index].EmissiveColor != Colors.Yellow.ToColor4()? Colors.Yellow.ToColor4() : Colors.Black.ToColor4();
+                        InstanceParam = (InstanceParameter[])InstanceParam.Clone();
+                        break;
+                    }
+                    else if(hit.ModelHit is LineGeometryModel3D)
+                    {
+                        var index = (int)hit.Tag;
+                        SelectedLineInstances = new Matrix[] { ModelInstances[index] };
+                        break;
+                    }
                 }
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            timer.Stop();
+            timer.Tick -= Timer_Tick;
+            base.Dispose(disposing);
         }
     }
 }

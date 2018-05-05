@@ -3,11 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-    xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
     xmlns:dx="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
+    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="{Binding Title}"
     Width="800"
     Height="500"
@@ -20,8 +20,8 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <hx:Viewport3DX
             x:Name="view1"
@@ -29,7 +29,8 @@
             Grid.Row="0"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
-            EnableRenderFrustum="True"
+            EffectsManager="{Binding EffectsManager}"
+            EnableRenderFrustum="false"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
@@ -40,37 +41,47 @@
                     <ie:CallMethodAction MethodName="OnMouseLeftButtonDownHandler" TargetObject="{Binding}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-            <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="{Binding DirectionalLightColor}" />
 
-            <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="{Binding DirectionalLightColor}" />
-
-            <hx:EnvironmentMap3D x:Name="envMap" Filename="Cubemap_Grandcanyon.dds" />
+            <hx:EnvironmentMap3D x:Name="envMap" Texture="{Binding Texture}" />
 
             <hx:InstancingMeshGeometryModel3D
-                x:Name="mesh" CullMode="Back"
+                x:Name="mesh"
+                CullMode="Back"
                 Geometry="{Binding Model}"
                 InstanceParamArray="{Binding InstanceParam}"
                 Instances="{Binding ModelInstances}"
                 Material="{Binding ModelMaterial}"
                 Transform="{Binding ModelTransform}">
                 <hx:InstancingMeshGeometryModel3D.OctreeManager>
-                    <hx:InstancingModel3DOctreeManager x:Name="manager" RecordHitPathBoundingBoxes="True" />
+                    <hx:InstancingModel3DOctreeManager x:Name="manager" RecordHitPathBoundingBoxes="True" 
+                                                       EnableOctreeOutput="True"/>
                 </hx:InstancingMeshGeometryModel3D.OctreeManager>
             </hx:InstancingMeshGeometryModel3D>
-            <hx:OctreeLineGeometryModel3D x:Name="octreelines" Octree="{Binding Octree, ElementName=manager}" />
+            <hx:OctreeLineGeometryModel3D
+                x:Name="octreelines"
+                IsRendering="False"
+                Octree="{Binding Octree, ElementName=manager}" />
             <hx:LineGeometryModel3D
                 x:Name="lines"
-                Geometry="{Binding Lines}" Thickness="0.4"
+                Geometry="{Binding Lines}"
                 Instances="{Binding ModelInstances}"
-                Transform="{Binding ModelTransform}" Color="{x:Static dx:Color.White}"/>
+                Thickness="0.4"
+                Transform="{Binding ModelTransform}"
+                Color="White" />
             <hx:LineGeometryModel3D
                 Geometry="{Binding Lines}"
                 Instances="{Binding SelectedLineInstances}"
-                Color="{x:Static dx:Color.Orange}"/>
-            <hx:InstancingBillboardModel3D x:Name="billboardModel3D" Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}" InstanceParamArray="{Binding BillboardInstanceParams}"/>
+                Color="Orange" />
+            <hx:InstancingBillboardModel3D
+                x:Name="billboardModel3D"
+                Geometry="{Binding BillboardModel}"
+                InstanceParamArray="{Binding BillboardInstanceParams}"
+                Instances="{Binding BillboardInstances}" />
+            <!--<hx:BillboardTextModel3D x:Name="billboardModel3D" Geometry="{Binding BillboardModel}" Instances="{Binding BillboardInstances}"/>-->
         </hx:Viewport3DX>
 
-        <StackPanel Grid.Column="1" Grid.Row="0">
+        <StackPanel Grid.Row="0" Grid.Column="1">
             <!--<Expander
                 x:Name="shadingPanel"
                 Width="150"
@@ -125,7 +136,7 @@
                         Render Octree
                     </CheckBox>
                     <CheckBox Margin="4" IsChecked="{Binding EnableAnimation}">Animation</CheckBox>
-                    <CheckBox Margin="4" IsChecked="{Binding ElementName= billboardModel3D, Path=FixedSize, FallbackValue=true}">Billboard Fixed Size</CheckBox>
+                    <CheckBox Margin="4" IsChecked="{Binding ElementName=billboardModel3D, Path=FixedSize, FallbackValue=true}">Billboard Fixed Size</CheckBox>
                 </StackPanel>
             </Expander>
         </StackPanel>
@@ -137,7 +148,7 @@
                 <TextBlock
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Text="{Binding FpsCounter.Value, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
+                    Text="{Binding FrameRate, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
             </StatusBarItem>
             <Separator />
             <StatusBarItem>

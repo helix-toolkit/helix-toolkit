@@ -6,26 +6,34 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using HelixToolkit.Wpf.SharpDX.Model;
     using System;
+    using System.ComponentModel;
     using System.Windows;
-
-    public class MaterialPropertyChanged: EventArgs
-    {
-        public readonly string PropertyName;
-        public MaterialPropertyChanged(string propertyName)
-        {
-            PropertyName = propertyName;
-        }
-    }
 
     [Serializable]
     public abstract class Material : DependencyObject
     {
-        public delegate void OnPropertyChangedHandler(object sender, MaterialPropertyChanged e);
-        public event OnPropertyChangedHandler OnMaterialPropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NonSerialized]
+        private MaterialCore core;
+        
+        public MaterialCore Core
+        {
+            get
+            {
+                if (core == null)
+                {
+                    core = OnCreateCore();
+                }
+                return core;
+            }
+        }
 
         public static readonly DependencyProperty NameProperty =
-            DependencyProperty.Register("Name", typeof(string), typeof(Material), new UIPropertyMetadata(null));
+            DependencyProperty.Register("Name", typeof(string), typeof(Material), new PropertyMetadata(null,
+                (d,e)=> { (d as Material).Core.Name = (string)e.NewValue; }));
 
         public string Name
         {
@@ -41,8 +49,14 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
-            OnMaterialPropertyChanged?.Invoke(this, new MaterialPropertyChanged(e.Property.Name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e.Property.Name));
+        }
+
+        protected abstract MaterialCore OnCreateCore();
+
+        public static implicit operator MaterialCore(Material m)
+        {
+            return m == null ? null : m.Core;
         }
     }
-
 }

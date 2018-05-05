@@ -1,29 +1,41 @@
-﻿<Window x:Class="CrossSectionDemo.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CrossSectionDemo"
-        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
-        mc:Ignorable="d"
-        Title="CrossSectionDemo" Height="600" Width="800">
+﻿<Window
+    x:Class="CrossSectionDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    xmlns:local="clr-namespace:CrossSectionDemo"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="CrossSectionDemo"
+    Width="800"
+    Height="600"
+    mc:Ignorable="d">
     <Grid Background="Black">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <hx:Viewport3DX x:Name="view1"
-            Grid.Row="0" Grid.Column="0" MSAA="Disable"
+        <hx:Viewport3DX
+            x:Name="view1"
+            Grid.Row="0"
+            Grid.Column="0"
+            Background="Black"
+            BackgroundColor="Gray"
             Camera="{Binding Camera}"
-            Background="Black" BackgroundColor="0.8,0.8,0.8,1"
+            CameraRotationMode="Trackball"
+            EffectsManager="{Binding EffectsManager}"
+            FixedRotationPoint="0,0,0"
+            FixedRotationPointEnabled="True"
+            MSAA="Disable"
+            RenderTechnique="{Binding RenderTechnique}"
+            RotateAroundMouseDownPoint="False"
             SubTitle="{Binding SubTitle}"
-            TextBrush="Black" CameraRotationMode="Trackball"
-            UseDefaultGestures="False" EnableSwapChainRendering="True"
-            RenderTechnique="{Binding RenderTechnique}" RotateAroundMouseDownPoint="False" FixedRotationPoint="0,0,0" FixedRotationPointEnabled="True">
+            TextBrush="Black"
+            UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -36,30 +48,58 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:DirectionalLight3D
-                Direction="{Binding Light1Direction}"
-                Color="{Binding Light1Color}" />
-            <hx:MeshGeometryModel3D Geometry="{Binding FloorModel}" Material="{Binding FloorMaterial}"/>
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
+            <hx:MeshGeometryModel3D Geometry="{Binding FloorModel}" Material="{Binding FloorMaterial}" />
             <hx:CrossSectionMeshGeometryModel3D
+                CrossSectionColor="GreenYellow"
                 CullMode="Back"
-                ReuseVertexArrayBuffer="True"
-                FillMode="Solid" CrossSectionColor="GreenYellow"
+                EnablePlane1="{Binding EnablePlane1}"
+                EnablePlane2="{Binding EnablePlane2}"
+                FillMode="Solid"
                 Geometry="{Binding Model}"
                 Material="{Binding ModelMaterial}"
-                Transform="{Binding ModelTransform}"
                 Plane1="{Binding Plane1}"
                 Plane2="{Binding Plane2}"
-                EnablePlane1="{Binding EnablePlane1}"
-                EnablePlane2="{Binding EnablePlane2}"/>
-            <hx:CoordinateSystemModel3D/>
-            <hx:MeshGeometryModel3D CullMode="Back" ReuseVertexArrayBuffer="True" Geometry="{Binding Plane1Model}" Material="{Binding PlaneMaterial}" Transform="{Binding Plane1Transform}" IsRendering="{Binding EnablePlane1}"/>
-            <hx:MeshGeometryModel3D CullMode="Back" ReuseVertexArrayBuffer="True" Geometry="{Binding Plane2Model}" Material="{Binding PlaneMaterial}" Transform="{Binding Plane2Transform}" IsRendering="{Binding EnablePlane2}"/>
-            <hx:ViewBoxModel3D RelativeScreenLocationX="0.8"/>
+                Transform="{Binding ModelTransform}" />
+            <hx:MeshGeometryModel3D
+                CullMode="Back"
+                Geometry="{Binding Plane1Model}"
+                IsRendering="{Binding EnablePlane1}"
+                IsTransparent="True"
+                Material="{Binding PlaneMaterial}"
+                Transform="{Binding Plane1Transform}" />
+            <hx:MeshGeometryModel3D
+                CullMode="Back"
+                Geometry="{Binding Plane2Model}"
+                IsRendering="{Binding EnablePlane2}"
+                IsTransparent="True"
+                Material="{Binding PlaneMaterial}"
+                Transform="{Binding Plane2Transform}" />
         </hx:Viewport3DX>
-        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" TextBlock.Foreground="White">
-            <CheckBox Margin="4" IsChecked="{Binding EnablePlane1}" Foreground="White">Cut Plane 1</CheckBox>
-            <CheckBox Margin="4" IsChecked="{Binding EnablePlane2}" Foreground="White">Cut Plane 2</CheckBox>
-            <CheckBox Margin="4" IsChecked="{Binding EnableAnimation}" Foreground="White">Animate</CheckBox>
+        <StackPanel
+            Grid.Column="1"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Orientation="Vertical"
+            TextBlock.Foreground="White">
+            <CheckBox
+                Margin="4"
+                Foreground="White"
+                IsChecked="{Binding EnablePlane1}">
+                Cut Plane 1
+            </CheckBox>
+            <CheckBox
+                Margin="4"
+                Foreground="White"
+                IsChecked="{Binding EnablePlane2}">
+                Cut Plane 2
+            </CheckBox>
+            <CheckBox
+                Margin="4"
+                Foreground="White"
+                IsChecked="{Binding EnableAnimation}">
+                Animate
+            </CheckBox>
         </StackPanel>
     </Grid>
 </Window>

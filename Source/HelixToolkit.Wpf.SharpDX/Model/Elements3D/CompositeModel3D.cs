@@ -9,32 +9,31 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System.Collections.Generic;
+    using Model.Scene;
     using System.Collections.Specialized;
+    using System.Windows;
     using System.Windows.Markup;
-    using System.Linq;
-    using global::SharpDX;
-    using System;
-    using global::SharpDX.Direct3D11;
 
     /// <summary>
     ///     Represents a composite Model3D.
     /// </summary>
     [ContentProperty("Children")]
-    public class CompositeModel3D : GeometryModel3D
+    public class CompositeModel3D : Element3D, IHitable, ISelectable, IMouse3D
     {
-        private readonly ObservableElement3DCollection children;
+        public static readonly DependencyProperty IsSelectedProperty =
+            DependencyProperty.Register("IsSelected", typeof(bool), typeof(CompositeModel3D), new PropertyMetadata(false));
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
-        /// </summary>
-        public CompositeModel3D()
+        public bool IsSelected
         {
-            this.children = new ObservableElement3DCollection();
-            this.children.CollectionChanged += this.ChildrenChanged;
+            get
+            {
+                return (bool)this.GetValue(IsSelectedProperty);
+            }
+            set
+            {
+                this.SetValue(IsSelectedProperty, value);
+            }
         }
-
-        protected override RasterizerState CreateRasterState() { return null; }
 
         /// <summary>
         ///     Gets the children.
@@ -42,72 +41,31 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///     The children.
         /// </value>
-        public ObservableElement3DCollection Children { get { return this.children; } }
+        public ObservableElement3DCollection Children { get; } = new ObservableElement3DCollection();
 
         /// <summary>
-        /// Attaches the specified host.
+        ///     Initializes a new instance of the <see cref="CompositeModel3D" /> class.
         /// </summary>
-        /// <param name="host">
-        /// The host.
-        /// </param>
-        protected override bool OnAttach(IRenderHost host)
+        public CompositeModel3D()
         {
-            foreach (var model in this.Children)
-            {
-                if (model.Parent == null)
-                {
-                    this.AddLogicalChild(model);
-                }
-
-                model.Attach(host);
-            }
-            return true;
+            Children.CollectionChanged += this.ChildrenChanged;
+            Loaded += GroupElement3D_Loaded;
         }
 
-        /// <summary>
-        ///     Detaches this instance.
-        /// </summary>
-        protected override void OnDetach()
+        private void GroupElement3D_Loaded(object sender, RoutedEventArgs e)
         {
-            foreach (var model in this.Children)
+            foreach (Element3D c in Children)
             {
-                model.Detach();
-                if (model.Parent == this)
+                if (c.Parent == this)
                 {
-                    this.RemoveLogicalChild(model);
+                    this.RemoveLogicalChild(c);
                 }
             }
-            base.OnDetach();
-        }
-
-        protected override bool CanRender(RenderContext context)
-        {
-            return IsAttached && isRenderingInternal && visibleInternal;
-        }
-        /// <summary>
-        /// Renders the specified context.
-        /// </summary>
-        /// <param name="context">
-        /// The context.
-        /// </param>
-        protected override void OnRender(RenderContext context)
-        {
-            // you mean like this?
-            foreach (var c in this.Children)
+            foreach (Element3D c in Children)
             {
-                var model = c as ITransformable;
-                if (model != null)
+                if (c.Parent == null)
                 {
-                    // push matrix                    
-                    model.PushMatrix(this.modelMatrix);
-                    // render model
-                    c.Render(context);
-                    // pop matrix                   
-                    model.PopMatrix();
-                }
-                else
-                {
-                    c.Render(context);
+                    this.AddLogicalChild(c);
                 }
             }
         }
@@ -123,25 +81,25 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void ChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.OldItems != null)
+            var node = SceneNode as GroupNode;
+
+            switch (e.Action)
             {
-                switch (e.Action)
-                {
-                    case NotifyCollectionChangedAction.Reset:
-                    case NotifyCollectionChangedAction.Remove:
-                    case NotifyCollectionChangedAction.Replace:
-                        foreach (Model3D item in e.OldItems)
+                case NotifyCollectionChangedAction.Reset:
+                case NotifyCollectionChangedAction.Remove:
+                case NotifyCollectionChangedAction.Replace:
+                    if (e.OldItems != null)
+                    {
+                        foreach (Element3D item in e.OldItems)
                         {
-                            // todo: detach?
-                            // yes, always
-                            item.Detach();
                             if (item.Parent == this)
                             {
                                 this.RemoveLogicalChild(item);
                             }
+                            node.RemoveChildNode(item);
                         }
-                        break;
-                }
+                    }
+                    break;
             }
 
             if (e.NewItems != null)
@@ -149,98 +107,47 @@ namespace HelixToolkit.Wpf.SharpDX
                 switch (e.Action)
                 {
                     case NotifyCollectionChangedAction.Reset:
+                        foreach (Element3D item in Children)
+                        {
+                            if (item.Parent == null)
+                            {
+                                this.AddLogicalChild(item);
+                            }
+                            node.AddChildNode(item);
+                        }
+                        break;
                     case NotifyCollectionChangedAction.Add:
                     case NotifyCollectionChangedAction.Replace:
-                        foreach (Model3D item in e.NewItems)
+                        foreach (Element3D item in e.NewItems)
                         {
-                            if (this.IsAttached)
+                            if (item.Parent == null)
                             {
-                                // todo: attach?
-                                // yes, always  
-                                // where to get a refrence to renderHost?
-                                // store it as private memeber of the class?
-                                if (item.Parent == null)
-                                {
-                                    this.AddLogicalChild(item);
-                                }
-
-                                item.Attach(this.renderHost);
+                                this.AddLogicalChild(item);
                             }
+                            node.AddChildNode(item);
                         }
                         break;
                 }
             }
-            UpdateBounds();
         }
 
-        /// <summary>
-        /// a Model3D does not have bounds, 
-        /// if you want to have a model with bounds, use GeometryModel3D instead:
-        /// but this prevents the CompositeModel3D containg lights, etc. (Lights3D are Models3D, which do not have bounds)
-        /// </summary>
-        protected void UpdateBounds()
+        public virtual void Clear()
         {
-            var bb = this.Bounds;
-            foreach (var item in this.Children)
+            foreach (Element3D item in Children)
             {
-                var model = item as IBoundable;
-                if (model != null)
+                if (item.Parent == this)
                 {
-                    bb = BoundingBox.Merge(bb, model.Bounds);
+                    this.RemoveLogicalChild(item);
                 }
             }
-            this.Bounds = bb;
+            var node = SceneNode as GroupNode;
+            node.Clear();
+            Children.Clear();
         }
 
-        protected override bool CanHitTest(IRenderMatrices context)
+        protected override SceneNode OnCreateSceneNode()
         {
-            return IsAttached && visibleInternal && isRenderingInternal && isHitTestVisibleInternal;
-        }
-
-        protected override bool CheckGeometry()
-        {
-            return true;
-        }
-        /// <summary>
-        /// Compute hit-testing for all children
-        /// </summary>
-        protected override bool OnHitTest(IRenderMatrices context, Ray ray, ref List<HitTestResult> hits)
-        {
-            bool hit = false;
-            foreach (var c in this.Children)
-            {
-                var hc = c as IHitable;
-                if (hc != null)
-                {
-                    var tc = c as ITransformable;
-                    if (tc != null)
-                    {
-                        tc.PushMatrix(this.modelMatrix);
-                        if (hc.HitTest(context, ray, ref hits))
-                        {
-                            hit = true;
-                        }
-                        tc.PopMatrix();
-                    }
-                    else
-                    {
-                        if (hc.HitTest(context, ray, ref hits))
-                        {
-                            hit = true;
-                        }
-                    }
-                }
-            }
-            if (hit)
-            {
-                hits = hits.OrderBy(x => Vector3.DistanceSquared(ray.Position, x.PointHit.ToVector3())).ToList();
-            }
-            return hit;
-        }
-
-        protected override void OnCreateGeometryBuffers()
-        {
-            
+            return new GroupNode();
         }
     }
 }

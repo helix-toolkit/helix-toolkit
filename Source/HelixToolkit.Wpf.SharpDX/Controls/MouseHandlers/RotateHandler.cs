@@ -53,7 +53,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="changeLookAt">
         /// The change look at.
         /// </param>
-        public RotateHandler(Viewport3DX controller, bool changeLookAt = false)
+        public RotateHandler(CameraController controller, bool changeLookAt = false)
             : base(controller)
         {
             this.changeLookAt = changeLookAt;
@@ -69,7 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                return this.Viewport.CameraRotationMode;
+                return this.Controller.CameraRotationMode;
             }
         }
         
@@ -77,21 +77,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Occurs when the manipulation is completed.
         /// </summary>
         /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Completed(ManipulationEventArgs e)
+        public override void Completed(Point e)
         {
             base.Completed(e);
             this.Viewport.HideTargetAdorner();
         }
-
+       
         /// <summary>
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
         /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Delta(ManipulationEventArgs e)
+        public override void Delta(Point e)
         {
             base.Delta(e);
-            this.Rotate(this.LastPoint, e.CurrentPosition, this.rotationPoint3D);
-            this.LastPoint = e.CurrentPosition;
+            this.Rotate(this.LastPoint, e, this.rotationPoint3D);
+            this.LastPoint = e;
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void LookAt(Point3D target, double animationTime)
         {
-            if (!this.Viewport.IsPanEnabled)
+            if (!this.Controller.IsPanEnabled)
             {
                 return;
             }
@@ -127,12 +127,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void Rotate(Point p0, Point p1, Point3D rotateAround)
         {
-            if (!this.Viewport.IsRotationEnabled)
+            if (!this.Controller.IsRotationEnabled)
             {
                 return;
             }
 
-            switch (this.Viewport.CameraRotationMode)
+            switch (this.Controller.CameraRotationMode)
             {
                 case CameraRotationMode.Trackball:
                     this.RotateTrackball(p0, p1, rotateAround);
@@ -290,7 +290,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Occurs when the manipulation is started.
         /// </summary>
         /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Started(ManipulationEventArgs e)
+        public override void Started(Point e)
         {
             base.Started(e);
 
@@ -314,7 +314,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         this.LookAt(this.MouseDownNearestPoint3D.Value, 0);
                         this.rotationPoint3D = this.Camera.Target;
                     }
-                    else if (this.Viewport.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
+                    else if (this.Controller.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
                     {
                         this.rotationPoint = this.MouseDownPoint;
                         this.rotationPoint3D = this.MouseDownNearestPoint3D.Value;
@@ -335,11 +335,11 @@ namespace HelixToolkit.Wpf.SharpDX
                 case CameraRotationMode.Turntable:
                     break;
                 case CameraRotationMode.Turnball:
-                    this.InitTurnballRotationAxes(e.CurrentPosition);
+                    this.InitTurnballRotationAxes(e);
                     break;
             }
 
-            this.Viewport.StopSpin();
+            this.Controller.StopSpin();
         }
 
         /// <summary>
@@ -352,10 +352,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.changeLookAt)
             {
-                return this.CameraMode != CameraMode.FixedPosition && this.Viewport.IsPanEnabled;
+                return this.CameraMode != CameraMode.FixedPosition && this.Controller.IsPanEnabled;
             }
 
-            return this.Viewport.IsRotationEnabled;
+            return this.Controller.IsRotationEnabled;
         }
 
         /// <summary>
@@ -366,7 +366,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         protected override Cursor GetCursor()
         {
-            return this.Viewport.RotateCursor;
+            return this.Controller.RotateCursor;
         }
 
         /// <summary>
@@ -375,13 +375,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="elapsedTime">
         /// The elapsed time.
         /// </param>
-        protected override void OnInertiaStarting(int elapsedTime)
+        protected override void OnInertiaStarting(double elapsedTime)
         {
             Vector delta = this.LastPoint - this.MouseDownPoint;
 
             // Debug.WriteLine("SpinInertiaStarting: " + elapsedTime + "ms " + delta.Length + "px");
-            this.Viewport.StartSpin(
-                4 * delta * ((double)this.Viewport.SpinReleaseTime / elapsedTime),
+            this.Controller.StartSpin(
+                4 * delta * ((double)this.Controller.SpinReleaseTime / elapsedTime),
                 this.MouseDownPoint,
                 this.rotationPoint3D);
         }

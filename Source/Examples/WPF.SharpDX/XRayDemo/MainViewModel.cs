@@ -16,7 +16,11 @@ namespace XRayDemo
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
+    using Color = System.Windows.Media.Color;
+    using Plane = SharpDX.Plane;
+    using Vector3 = SharpDX.Vector3;
+    using Colors = System.Windows.Media.Colors;
+    using Color4 = SharpDX.Color4;
     using HelixToolkit.Wpf;
     using System.IO;
     using System.Collections.Generic;
@@ -41,11 +45,11 @@ namespace XRayDemo
 
         public Transform3D ModelTransform { private set; get; }
 
-        public Vector3 Light1Direction { get; set; }
-        public Color4 Light1Color { get; set; }
-        public Color4 AmbientLightColor { get; set; }
-        private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-100, -100, -100);
-        public Media3D.Vector3D CamLookDir
+        public Vector3D Light1Direction { get; set; }
+        public Color Light1Color { get; set; }
+        public Color AmbientLightColor { get; set; }
+        private Vector3D camLookDir = new Vector3D(-100, -100, -100);
+        public Vector3D CamLookDir
         {
             set
             {
@@ -53,7 +57,7 @@ namespace XRayDemo
                 {
                     camLookDir = value;
                     OnPropertyChanged();
-                    Light1Direction = value.ToVector3();
+                    Light1Direction = value;
                 }
             }
             get
@@ -76,10 +80,10 @@ namespace XRayDemo
 
         public MainViewModel()
         {
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
-
+            //RenderTechniquesManager = new DefaultRenderTechniquesManager();
+            //RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             // ----------------------------------------------
             // titles
             this.Title = "Lighting Demo";
@@ -90,11 +94,11 @@ namespace XRayDemo
             this.Camera = new PerspectiveCamera { Position = new Point3D(100, 100, 100), LookDirection = new Vector3D(-100, -100, -100), UpDirection = new Vector3D(0, 1, 0) };
             // ----------------------------------------------
             // setup scene
-            this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
-            this.Light1Color = (Color4)Color.Gray;
+            this.AmbientLightColor = Colors.DimGray;
+            this.Light1Color = Colors.LightGray;
 
 
-            this.Light1Direction = new Vector3(-100, -100, -100);
+            this.Light1Direction = new Vector3D(-100, -100, -100);
             SetupCameraBindings(Camera);
             // ----------------------------------------------
             // ----------------------------------------------
@@ -104,7 +108,7 @@ namespace XRayDemo
             // ----------------------------------------------
             // floor model3d
             var b2 = new MeshBuilder(true, true, true);
-            b2.AddBox(new Vector3(0.0f, 0, 0.0f), 150, 0.1, 150, BoxFaces.All);
+            b2.AddBox(new Vector3(0.0f, 0, 0.0f), 150, 1, 150, BoxFaces.All);
             b2.AddBox(new Vector3(0, 25, 70), 150, 50, 20);
             b2.AddBox(new Vector3(0, 25, -70), 150, 50, 20);
             this.Floor = b2.ToMeshGeometry3D();

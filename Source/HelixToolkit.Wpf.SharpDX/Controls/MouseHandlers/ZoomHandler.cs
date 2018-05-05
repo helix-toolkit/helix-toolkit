@@ -38,14 +38,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoomHandler"/> class.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
+        /// <param name="controller">
+        /// The camera controller.
         /// </param>
         /// <param name="changeFieldOfView">
         /// if set to <c>true</c> [change field of view].
         /// </param>
-        public ZoomHandler(Viewport3DX viewport, bool changeFieldOfView = false)
-            : base(viewport)
+        public ZoomHandler(CameraController controller, bool changeFieldOfView = false)
+            : base(controller)
         {
             this.changeFieldOfView = changeFieldOfView;
         }
@@ -53,8 +53,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when the manipulation is completed.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Completed(ManipulationEventArgs e)
+        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+        public override void Completed(Point e)
         {
             base.Completed(e);
             this.Viewport.HideTargetAdorner();
@@ -63,25 +63,25 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Delta(ManipulationEventArgs e)
+        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+        public override void Delta(Point e)
         {
-            var delta = e.CurrentPosition - this.LastPoint;
-            this.LastPoint = e.CurrentPosition;
+            var delta = e - this.LastPoint;
+            this.LastPoint = e;
             this.Zoom(delta.Y * 0.01, this.zoomPoint3D);
         }
 
         /// <summary>
         /// Occurs when the manipulation is started.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Started(ManipulationEventArgs e)
+        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+        public override void Started(Point e)
         {
             base.Started(e);
             this.zoomPoint = new Point(this.Viewport.ActualWidth / 2, this.Viewport.ActualHeight / 2);
             this.zoomPoint3D = this.Camera.Target;
 
-            if (this.Viewport.ZoomAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
+            if (this.Controller.ZoomAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
             {
                 this.zoomPoint = this.MouseDownPoint;
                 this.zoomPoint3D = this.MouseDownNearestPoint3D.Value;
@@ -113,21 +113,23 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="zoomAround">
         /// The zoom around.
         /// </param>
-        public void Zoom(double delta, Point3D zoomAround)
+        /// <param name="isTouch"></param>
+        public void Zoom(double delta, Point3D zoomAround, bool isTouch = false)
         {
-            if (!this.Viewport.IsZoomEnabled)
+            if (!this.Controller.IsZoomEnabled)
             {
                 return;
             }
-
             if (this.Camera is PerspectiveCamera)
             {
-                if (delta < -0.5)
+                if (!isTouch)
                 {
-                    delta = -0.5;
+                    if (delta < -0.5)
+                    {
+                        delta = -0.5;
+                    }
+                    delta *= this.ZoomSensitivity;
                 }
-
-                delta *= this.ZoomSensitivity;
 
                 if (this.CameraMode == CameraMode.FixedPosition || this.changeFieldOfView)
                 {
@@ -148,8 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 return;
             }
-
-            if (this.Camera is OrthographicCamera)
+            else if (this.Camera is OrthographicCamera)
             {
                 this.ZoomByChangingCameraWidth(delta, zoomAround);
             }
@@ -222,10 +223,10 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.changeFieldOfView)
             {
-                return this.Viewport.IsChangeFieldOfViewEnabled && this.Camera is PerspectiveCamera;
+                return this.Controller.IsChangeFieldOfViewEnabled && this.Camera is PerspectiveCamera;
             }
 
-            return this.Viewport.IsZoomEnabled;
+            return this.Controller.IsZoomEnabled;
         }
 
         /// <summary>
@@ -236,7 +237,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         protected override Cursor GetCursor()
         {
-            return this.Viewport.ZoomCursor;
+            return this.Controller.ZoomCursor;
         }
 
         /// <summary>
@@ -272,12 +273,12 @@ namespace HelixToolkit.Wpf.SharpDX
             var newDistance = (newPosition - zoomAround).Length;
             var oldDistance = (this.Camera.Position - zoomAround).Length;
 
-            if (newDistance > this.Viewport.ZoomDistanceLimitFar && (oldDistance < this.Viewport.ZoomDistanceLimitFar || newDistance > oldDistance))
+            if (newDistance > this.Controller.ZoomDistanceLimitFar && (oldDistance < this.Controller.ZoomDistanceLimitFar || newDistance > oldDistance))
             {
                 return;
             }
 
-            if (newDistance < this.Viewport.ZoomDistanceLimitNear && (oldDistance > this.Viewport.ZoomDistanceLimitNear || newDistance < oldDistance))
+            if (newDistance < this.Controller.ZoomDistanceLimitNear && (oldDistance > this.Controller.ZoomDistanceLimitNear || newDistance < oldDistance))
             {
                 return;
             }

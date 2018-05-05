@@ -6,13 +6,11 @@
 
 namespace HelixToolkit.Wpf.Tests.Geometry
 {
-    using System.Diagnostics.CodeAnalysis;
+    using NUnit.Framework;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Windows;
     using System.Windows.Media.Media3D;
-
-    using HelixToolkit.Wpf;
-    using NUnit.Framework;
 
     // ReSharper disable InconsistentNaming
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]

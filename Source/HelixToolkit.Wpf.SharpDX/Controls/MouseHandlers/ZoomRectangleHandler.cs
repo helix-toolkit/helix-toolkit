@@ -26,19 +26,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoomRectangleHandler"/> class.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
+        /// <param name="controller">
+        /// The camera controller.
         /// </param>
-        public ZoomRectangleHandler(Viewport3DX viewport)
-            : base(viewport)
+        public ZoomRectangleHandler(CameraController controller)
+            : base(controller)
         {
         }
 
         /// <summary>
         /// Occurs when the manipulation is completed.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Completed(ManipulationEventArgs e)
+        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+        public override void Completed(Point e)
         {
             base.Completed(e);
             this.Viewport.HideZoomRectangle();
@@ -48,13 +48,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Delta(ManipulationEventArgs e)
+        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+        public override void Delta(Point e)
         {
             base.Delta(e);
 
             double ar = this.Viewport.ActualHeight / this.Viewport.ActualWidth;
-            var delta = this.MouseDownPoint - e.CurrentPosition;
+            var delta = this.MouseDownPoint - e;
 
             if (Math.Abs(delta.Y / delta.X) < ar)
             {
@@ -73,8 +73,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when the manipulation is started.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Started(ManipulationEventArgs e)
+        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+        public override void Started(Point e)
         {
             base.Started(e);
             this.zoomRectangle = new Rect(this.MouseDownPoint, this.MouseDownPoint);

@@ -6,14 +6,10 @@
 //   Represents a perspective projection camera.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Windows;
-
-    using global::SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Cameras;
 
     /// <summary>
     /// Represents a perspective projection camera.
@@ -24,7 +20,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The field of view property
         /// </summary>
         public static readonly DependencyProperty FieldOfViewProperty = DependencyProperty.Register(
-            "FieldOfView", typeof(double), typeof(PerspectiveCamera), new PropertyMetadata(45.0));
+            "FieldOfView", typeof(double), typeof(PerspectiveCamera), new PropertyMetadata(45.0, 
+                (d,e)=>
+                {
+                    ((d as Camera).CameraInternal as PerspectiveCameraCore).FieldOfView = (float)(double)e.NewValue;
+                }));
 
         /// <summary>
         /// Gets or sets the field of view.
@@ -39,59 +39,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Creates the projection matrix.
-        /// </summary>
-        /// <param name="aspectRatio">
-        /// The aspect ratio.
-        /// </param>
-        /// <returns>
-        /// The <see cref="Matrix"/>.
-        /// </returns>
-        public override Matrix CreateProjectionMatrix(double aspectRatio)
-        {
-            var fov = this.FieldOfView*Math.PI/180;
-            Matrix projM;
-            if (this.CreateLeftHandSystem)
-            {
-                projM = global::SharpDX.Matrix.PerspectiveFovLH(
-                    (float)fov,
-                    (float)aspectRatio,
-                    (float)this.NearPlaneDistance,
-                    (float)this.FarPlaneDistance);
-            }
-            else
-            {
-                projM = global::SharpDX.Matrix.PerspectiveFovRH(
-                    (float)fov, (float)aspectRatio, (float)this.NearPlaneDistance, (float)this.FarPlaneDistance);
-            }
-            if(float.IsNaN(projM.M33) || float.IsNaN(projM.M43))
-            {
-                projM.M33 = projM.M43 = -1;
-            }
-            return projM;
-        }
-
-        /// <summary>
-        /// Generates and returns the view frustum of the current camera.
-        /// </summary>
-        /// <returns>Frustum as Vector4</returns>
-        public FrustumCameraParams CreateFrustum(double aspectRatio)
-        {
-            var fov = this.FieldOfView * Math.PI / 180;
-
-            return new FrustumCameraParams()
-            {
-                AspectRatio = (float)aspectRatio,
-                FOV = (float)fov,
-                LookAtDir = this.Target.ToVector3(),
-                Position = this.Position.ToVector3(),
-                UpDir = this.UpDirection.ToVector3(),
-                ZFar = (float)this.FarPlaneDistance,
-                ZNear = (float)this.NearPlaneDistance,
-            };
-        }
-
-        /// <summary>
         /// When implemented in a derived class, creates a new instance of the <see cref="T:System.Windows.Freezable" /> derived class.
         /// </summary>
         /// <returns>
@@ -100,6 +47,20 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override Freezable CreateInstanceCore()
         {
             return new PerspectiveCamera();
+        }
+
+        protected override CameraCore CreatePortableCameraCore()
+        {
+            return new PerspectiveCameraCore()
+            {
+                CreateLeftHandSystem = this.CreateLeftHandSystem,
+                FarPlaneDistance = (float)this.FarPlaneDistance,
+                FieldOfView = (float)this.FieldOfView,
+                LookDirection = this.LookDirection.ToVector3(),
+                NearPlaneDistance = (float)this.NearPlaneDistance,
+                Position = this.Position.ToVector3(),
+                UpDirection = this.UpDirection.ToVector3()
+            };
         }
     }
 }

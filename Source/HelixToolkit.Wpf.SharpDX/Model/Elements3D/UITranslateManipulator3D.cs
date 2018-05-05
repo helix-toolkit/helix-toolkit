@@ -17,6 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using HelixToolkit.Wpf.SharpDX.Utilities;
 
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
+    using MatrixTransform3D = System.Windows.Media.Media3D.MatrixTransform3D;
 
     /// <summary>
     ///   A translate manipulator.
@@ -27,19 +28,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The diameter property.
         /// </summary>
         public static readonly DependencyProperty DiameterProperty =
-            DependencyProperty.Register("Diameter", typeof(double), typeof(UITranslateManipulator3D), new AffectsRenderPropertyMetadata(0.2, ModelChanged));
+            DependencyProperty.Register("Diameter", typeof(double), typeof(UITranslateManipulator3D), new PropertyMetadata(0.2, ModelChanged));
 
         /// <summary>
         /// The direction property.
         /// </summary>
         public static readonly DependencyProperty DirectionProperty =
-            DependencyProperty.Register("Direction", typeof(Vector3), typeof(UITranslateManipulator3D), new AffectsRenderPropertyMetadata(new Vector3(0, 0, 1), ModelChanged));
+            DependencyProperty.Register("Direction", typeof(Vector3), typeof(UITranslateManipulator3D), new PropertyMetadata(new Vector3(0, 0, 1), ModelChanged));
 
         /// <summary>
         /// The length property.
         /// </summary>
         public static readonly DependencyProperty LengthProperty =
-            DependencyProperty.Register("Length", typeof(double), typeof(UITranslateManipulator3D), new AffectsRenderPropertyMetadata(1.0, ModelChanged));
+            DependencyProperty.Register("Length", typeof(double), typeof(UITranslateManipulator3D), new PropertyMetadata(1.0, ModelChanged));
 
         /// <summary>
         /// Gets or sets the diameter of the manipulator arrow.
@@ -77,8 +78,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public UITranslateManipulator3D()
         {
-            OnModelChanged();
             this.Material = PhongMaterials.Red;
+            this.Transform = new TranslateTransform3D();
         }
 
         /// <summary>
@@ -130,11 +131,18 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (this.TargetTransform != null)
                 {                    
-                    this.TargetTransform = this.TargetTransform.AppendTransform(deltaTranslateTrafo);
+                    this.TargetTransform = new MatrixTransform3D(this.TargetTransform.AppendTransform(deltaTranslateTrafo).Value);
                 }
                 else
-                {                                        
-                    this.Transform = this.Transform.AppendTransform(deltaTranslateTrafo);
+                {
+                    if (this.Transform == null)
+                    {
+                        this.Transform = deltaTranslateTrafo;
+                    }
+                    else
+                    {
+                        this.Transform = new MatrixTransform3D(this.Transform.AppendTransform(deltaTranslateTrafo).Value);
+                    }
                 }
 
                 this.lastHitPosWS = newHit.Value;

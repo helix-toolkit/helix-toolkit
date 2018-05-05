@@ -23,16 +23,15 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Viewport3DX viewport;
         protected Camera camera;
         protected Point3D lastHitPos;
-        private MatrixTransform3D dragTransform;
 
         public static readonly DependencyProperty DragXProperty =
-            DependencyProperty.Register("DragX", typeof(bool), typeof(DraggableGeometryModel3D), new AffectsRenderPropertyMetadata(true));
+            DependencyProperty.Register("DragX", typeof(bool), typeof(DraggableGeometryModel3D), new PropertyMetadata(true));
 
         public static readonly DependencyProperty DragYProperty =
-            DependencyProperty.Register("DragY", typeof(bool), typeof(DraggableGeometryModel3D), new AffectsRenderPropertyMetadata(true));
+            DependencyProperty.Register("DragY", typeof(bool), typeof(DraggableGeometryModel3D), new PropertyMetadata(true));
 
         public static readonly DependencyProperty DragZProperty =
-            DependencyProperty.Register("DragZ", typeof(bool), typeof(DraggableGeometryModel3D), new AffectsRenderPropertyMetadata(true));
+            DependencyProperty.Register("DragZ", typeof(bool), typeof(DraggableGeometryModel3D), new PropertyMetadata(true));
 
 
         public bool DragX
@@ -53,23 +52,12 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(DragZProperty, value); }
         }
 
-        public MatrixTransform3D DragTransform
-        {
-            get { return this.dragTransform; }
-        }
-
         public Point3D LastHitPosition
         {
             get { return this.lastHitPos; }
         }
 
-        public DraggableGeometryModel3D()
-            : base()
-        {
-            this.dragTransform = new MatrixTransform3D(this.Transform.Value);
-        }
-
-        public override void OnMouse3DDown(object sender, RoutedEventArgs e)
+        protected override void OnMouse3DDown(object sender, RoutedEventArgs e)
         {
             base.OnMouse3DDown(sender, e);
 
@@ -80,10 +68,10 @@ namespace HelixToolkit.Wpf.SharpDX
             this.isCaptured = true;
             this.viewport = args.Viewport;
             this.camera = args.Viewport.Camera;
-            this.lastHitPos = args.HitTestResult.PointHit;
+            this.lastHitPos = args.HitTestResult.PointHit.ToPoint3D();
         }
 
-        public override void OnMouse3DUp(object sender, RoutedEventArgs e)
+        protected override void OnMouse3DUp(object sender, RoutedEventArgs e)
         {
             base.OnMouse3DUp(sender, e);
             if (this.isCaptured)
@@ -94,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override void OnMouse3DMove(object sender, RoutedEventArgs e)
+        protected override void OnMouse3DMove(object sender, RoutedEventArgs e)
         {
             base.OnMouse3DMove(sender, e);
             if (this.isCaptured)
@@ -109,21 +97,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (newHit.HasValue)
                 {
                     var offset = (newHit.Value - lastHitPos);
-                    var trafo = this.Transform.Value;
-
-                    if (this.DragX)
-                        trafo.OffsetX += offset.X;
-
-                    if (this.DragY)
-                        trafo.OffsetY += offset.Y;
-
-                    if (this.DragZ)
-                        trafo.OffsetZ += offset.Z;
-
-                    this.dragTransform.Matrix = trafo;
-
                     this.lastHitPos = newHit.Value;
-                    this.Transform = this.dragTransform;
+                    if (Transform == null)
+                    {
+                        Transform = new TranslateTransform3D(offset);
+                    }
+                    else
+                    {
+                        this.Transform = new MatrixTransform3D(Transform.AppendTransform(new TranslateTransform3D(offset)).Value);
+                    }
                 }
             }
         }

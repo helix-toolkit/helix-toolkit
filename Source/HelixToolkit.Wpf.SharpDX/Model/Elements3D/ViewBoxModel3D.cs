@@ -2,118 +2,139 @@
 //   Copyright (c) 2017 Helix Toolkit contributors
 //   Author: Lunci Hua
 // </copyright>
-
-using SharpDX;
-using SharpDX.Direct3D;
-using SharpDX.Direct3D11;
-using SharpDX.DXGI;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Windows;
-using Media = System.Windows.Media;
+using Media3D = System.Windows.Media.Media3D;
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model;
+    using Model.Scene;
+    using SharpDX;
+
     /// <summary>
     /// <para>Viewbox replacement for Viewport using swapchain rendering.</para>
     /// <para>To replace box texture (such as text, colors), bind to custom material with different diffuseMap. </para>
     /// <para>Create a image with 1 row and 6 evenly distributed columns. Each column occupies one box face. The face order is Front, Back, Down, Up, Left, Right</para>
     /// </summary>
-    public class ViewBoxModel3D : ScreenSpaceMeshGeometry3D
+    public class ViewBoxModel3D : ScreenSpacedElement3D
     {
-        private static readonly MeshGeometry3D defaultBoxModel;
-        static ViewBoxModel3D()
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register("UpDirection", typeof(Media3D.Vector3D), typeof(ViewBoxModel3D),
+            new PropertyMetadata(new Media3D.Vector3D(0, 1, 0),
+            (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as ViewBoxNode).UpDirection = ((Media3D.Vector3D)e.NewValue).ToVector3();
+            }));
+
+
+        /// <summary>
+        /// Gets or sets up direction.
+        /// </summary>
+        /// <value>
+        /// Up direction.
+        /// </value>
+        public Media3D.Vector3D UpDirection
         {
-            var builder = new MeshBuilder(true, true, false);
-            builder.AddBox(Vector3.Zero, 10, 10, 10);
-            var mesh = builder.ToMesh();
-            CreateTextureCoordinates(mesh);
-
-
-            var pts = new List<Vector3>();
-            var up = new Vector3(1, 0, 0);
-            var normal = new Vector3(0, 1, 0);
-            var right = Vector3.Cross(up, normal);
-            var center = new Vector3(0, -7, 0);
-            for (int i = 0; i < 20; i++)
+            set
             {
-                double angle = 0 + (360 * i / (20 - 1));
-                double angleRad = angle / 180 * Math.PI;
-                var dir = (right * (float)Math.Cos(angleRad)) + (up * (float)Math.Sin(angleRad));
-                pts.Add(center + (dir * 8));
-                pts.Add(center + (dir * 12));
-            }           
-            builder = new MeshBuilder(false, false, false);
-            builder.AddTriangleStrip(pts);
-            var pie = builder.ToMesh();
-            int count = pie.Indices.Count;
-            var newMesh = MeshGeometry3D.Merge(new MeshGeometry3D[] { pie, mesh});
-
-            for (int i = 0; i < count; i += 3)
-            {
-                newMesh.Indices.Add(pie.Indices[i + 2]);
-                newMesh.Indices.Add(pie.Indices[i + 1]);
-                newMesh.Indices.Add(pie.Indices[i]);
+                SetValue(UpDirectionProperty, value);
             }
-
-            newMesh.TextureCoordinates = new Core.Vector2Collection(Enumerable.Repeat(new Vector2(0, 0), pie.Positions.Count));
-            newMesh.TextureCoordinates.AddRange(mesh.TextureCoordinates);
-            newMesh.TextureCoordinates.AddRange(Enumerable.Repeat(new Vector2(0, 0), pie.Positions.Count));
-
-            newMesh.Normals = newMesh.CalculateNormals();
-
-            defaultBoxModel = newMesh;
-        }
-        public ViewBoxModel3D()
-        {
-            Geometry = defaultBoxModel;
-            var map = new MemoryStream();
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.DefaultViewboxTexture.jpg");
-            stream.CopyTo(map);
-            stream.Dispose();
-            Material = new PhongMaterial()
+            get
             {
-                DiffuseColor = Color.White,
-                DiffuseMap = map
-            };
-            CullMode = CullMode.Back;
+                return (Media3D.Vector3D)GetValue(UpDirectionProperty);
+            }
         }
 
-        protected override RenderTechnique SetRenderTechnique(IRenderHost host)
+
+        public static readonly DependencyProperty ViewBoxTextureProperty = DependencyProperty.Register("ViewBoxTexture", typeof(Stream), typeof(ViewBoxModel3D),
+            new PropertyMetadata(null, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as ViewBoxNode).ViewBoxTexture = (Stream)e.NewValue;
+            }));
+
+        public Stream ViewBoxTexture
         {
-            return host.EffectsManager.RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Diffuse];
-        }
-        protected override DepthStencilState CreateDepthStencilState(global::SharpDX.Direct3D11.Device device)
-        {
-            return new DepthStencilState(device, new DepthStencilStateDescription() { IsDepthEnabled = false, IsStencilEnabled = false });
+            set
+            {
+                SetValue(ViewBoxTextureProperty, value);
+            }
+            get
+            {
+                return (Stream)GetValue(ViewBoxTextureProperty);
+            }
         }
 
-        private static void CreateTextureCoordinates(MeshGeometry3D mesh)
-        {
-            int faces = 6;
-            int segment = 4;
-            float inc = 1f / faces;
-            for(int i=0; i<mesh.TextureCoordinates.Count; ++i)
-            {
-                mesh.TextureCoordinates[i] = new Vector2(mesh.TextureCoordinates[i].X * inc + inc * (int)(i/segment), mesh.TextureCoordinates[i].Y);
-            }
-            ///Correct texture orientation
-            var t = mesh.TextureCoordinates[3];
-            for(int i = 2; i >=0; --i)
-            {
-                mesh.TextureCoordinates[i+1] = mesh.TextureCoordinates[i];
-            }
-            mesh.TextureCoordinates[0] = t;
 
-            t = mesh.TextureCoordinates[4];
-            for(int i=4; i<7; ++i)
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable edge click].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable edge click]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableEdgeClick
+        {
+            get { return (bool)GetValue(EnableEdgeClickProperty); }
+            set { SetValue(EnableEdgeClickProperty, value); }
+        }
+
+        /// <summary>
+        /// The enable edge click property
+        /// </summary>
+        public static readonly DependencyProperty EnableEdgeClickProperty =
+            DependencyProperty.Register("EnableEdgeClick", typeof(bool), typeof(ViewBoxModel3D), new PropertyMetadata(false, (d,e)=> 
             {
-                mesh.TextureCoordinates[i] = mesh.TextureCoordinates[i + 1];
+                ((d as Element3DCore).SceneNode as ViewBoxNode).EnableEdgeClick = (bool)e.NewValue;
+            }));
+        
+
+        public static readonly RoutedEvent ViewBoxClickedEvent =
+            EventManager.RegisterRoutedEvent("ViewBoxClicked", RoutingStrategy.Bubble, typeof(EventHandler<ViewBoxClickedEventArgs>), typeof(ViewBoxModel3D));
+
+        public class ViewBoxClickedEventArgs : RoutedEventArgs
+        {
+            /// <summary>
+            /// Gets or sets the look direction.
+            /// </summary>
+            /// <value>The look direction.</value>
+            public Media3D.Vector3D LookDirection { get; set; }
+
+            /// <summary>
+            /// Gets or sets up direction.
+            /// </summary>
+            /// <value>Up direction.</value>
+            public Media3D.Vector3D UpDirection { get; set; }
+            public ViewBoxClickedEventArgs(object source, Media3D.Vector3D lookDir, Media3D.Vector3D upDir)
+                : base(ViewBoxClickedEvent, source)
+            {
+                LookDirection = lookDir;
+                UpDirection = upDir;
             }
-            mesh.TextureCoordinates[7] = t;
+        }
+
+        /// <summary>
+        /// Provide CLR accessors for the event 
+        /// </summary>
+        public event EventHandler<ViewBoxClickedEventArgs> ViewBoxClicked
+        {
+            add { AddHandler(ViewBoxClickedEvent, value); }
+            remove { RemoveHandler(ViewBoxClickedEvent, value); }
+        }
+
+        protected override SceneNode OnCreateSceneNode()
+        {
+            var node = new ViewBoxNode();
+            node.OnViewBoxClicked += (s, e) => { RaiseEvent(new ViewBoxClickedEventArgs(this, e.LookDirection.ToVector3D(), e.UpDirection.ToVector3D())); };
+            return node;
+        }
+
+        protected override void AssignDefaultValuesToSceneNode(SceneNode node)
+        {
+            (node as ViewBoxNode).UpDirection = this.UpDirection.ToVector3();
+            base.AssignDefaultValuesToSceneNode(node);
         }
     }
 }

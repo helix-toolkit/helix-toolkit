@@ -21,7 +21,7 @@
         <hx:ModelContainer3DX x:Name="sharedModels" EffectsManager="{Binding EffectsManager}"  RenderTechnique="{Binding RenderTechnique}">
             <hx:ShadowMap3D x:Name="shadowMap" Resolution="{Binding ShadowMapResolution}" />
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
-            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction="{Binding DirectionalLightDirection}"  DirectionTransform="{Binding LightDirectionTransform}"/>
+            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction="{Binding DirectionalLightDirection}"/>
 
             <hx:MeshGeometryModel3D x:Name="model1" Geometry="{Binding Model}" Transform="{Binding Model1Transform}" Material="{Binding RedMaterial}"  />
             <hx:MeshGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform="{Binding Model2Transform}" Material="{Binding GreenMaterial}" Instances="{Binding Instances}"/>

@@ -1,27 +1,33 @@
+image:
+- Visual Studio 2017
+
 pull_requests:
   do_not_increment_build_number: true
-
+  
+skip_commits:
+  files:
+    - '*.md'
+    
 install:
-  - cinst gitversion.portable --version=3.4.1 -y
-  - cinst gitlink --version=2.2.0 -y
+  - cinst gitversion.portable --version=3.6.4 -y
+  - cinst gitlink --version=2.4.0 -y
 
 configuration: Release
-
-build:
-  project: Source/HelixToolkit.AppVeyor.sln
-  verbosity: normal
 
 before_build:
   - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
   - nuget restore .\Source\HelixToolkit.AppVeyor.sln
   - gitversion /l console /output buildserver /updateAssemblyInfo
+  
+build_script:
+  - msbuild Source/HelixToolkit.AppVeyor.sln "/property:Platform=Any CPU" "/property:Version=%GitVersion_NuGetVersion%" /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 
 after_build:
-  - gitlink c:\projects\helix-toolkit -u https://github.com/helix-toolkit/helix-toolkit -b master -f Source/HelixToolkit.AppVeyor.sln
+  - gitlink %APPVEYOR_BUILD_FOLDER% -u https://github.com/%APPVEYOR_REPO_NAME% -b master -f Source/HelixToolkit.AppVeyor.sln
   - nuget pack Source\HelixToolkit\HelixToolkit.nuspec -version "%GitVersion_NuGetVersion%"
   - nuget pack Source\HelixToolkit.Wpf\HelixToolkit.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
   - nuget pack Source\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.Sharpdx.nuspec -version "%GitVersion_NuGetVersion%"
-
+  - nuget pack Source\HelixToolkit.UWP\HelixToolkit.UWP.nuspec -version "%GitVersion_NuGetVersion%"
 artifacts:
   - path: '*.nupkg'
     name: HelixToolkit-packages-$(GitVersion_SemVer)
@@ -35,3 +41,5 @@ deploy:
   skip_symbols: false
   symbol_server:           # remove to push symbols to SymbolSource.org
   artifact: /.*\.nupkg/
+  on:
+    APPVEYOR_REPO_NAME: helix-toolkit/helix-toolkit

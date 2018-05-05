@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -63,9 +63,9 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] _default {
+        internal static byte[] csParticleInsert {
             get {
-                object obj = ResourceManager.GetObject("_default", resourceCulture);
+                object obj = ResourceManager.GetObject("csParticleInsert", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -73,72 +73,10 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] _deferred {
+        internal static byte[] csParticleUpdate {
             get {
-                object obj = ResourceManager.GetObject("_deferred", resourceCulture);
+                object obj = ResourceManager.GetObject("csParticleUpdate", resourceCulture);
                 return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #ifndef BILLBOARDTEXT_FX
-        ///#define BILLBOARDTEXT_FX
-        ///#include &quot;Common.fx&quot;
-        ///#include &quot;DataStructs.fx&quot;
-        ///#include &quot;Material.fx&quot;
-        ///Texture2D billboardTexture; // billboard text image
-        ///Texture2D billboardAlphaTexture;
-        ///bool   bHasAlphaTexture = false;
-        ///bool   bHasTexture = false;
-        ///bool   bBillboardFixedSize = true;
-        ///
-        /////--------------------------------------------------------------------------------------
-        ///// GLOBAL FUNCTIONS
-        /////-------------------------------------------------------------------------------------- [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string BillboardText {
-            get {
-                return ResourceManager.GetString("BillboardText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #ifndef COMMON_FX
-        ///#define COMMON_FX
-        ///
-        /////--------------------------------------------------------------------------------------
-        ///// File: Header for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 11/11/12
-        ///// References &amp; Sources: 
-        /////--------------------------------------------------------------------------------------
-        ///
-        ///
-        /////--------------------------------------------------------------------------------------
-        /////  STATES DEFININITIONS 
-        /////------------------------------------------------------ [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string Common {
-            get {
-                return ResourceManager.GetString("Common", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #ifndef DEFAULT_FX
-        ///#define DEFAULT_FX
-        /////--------------------------------------------------------------------------------------
-        ///// File: Default Effect for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 11/11/12
-        ///// References &amp; Sources: 
-        ///// light equations from OpenGL Spec: http://www.opengl.org/documentation/specs/version1.2/OpenGL_spec_1.2.1.pdf
-        ///// spotlight equation from DX9: http://msdn.microsoft.com/en-us/library/windows/desktop/bb174697(v=vs.85).aspx
-        ///// parts of the code based on: htt [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string Default {
-            get {
-                return ResourceManager.GetString("Default", resourceCulture);
             }
         }
         
@@ -153,87 +91,422 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to //--------------------------------------------------------------------------------------
-        ///// File: Deferred G-Buffer Rendering for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 03/03/13
-        ///// References &amp; Sources: 
-        ///// code based on: http://hieroglyph3.codeplex.com/
-        /////--------------------------------------------------------------------------------------
-        ///
-        ///#include &quot;./Shaders/Common.fx&quot;
-        ///#include &quot;./Shaders/Material.fx&quot;
-        ///#include &quot;./Shaders/DeferredLighting.fx&quot;
-        ///
-        ///
-        /////---------------------------- [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string Deferred {
+        internal static byte[] dsMeshTriTessellation {
             get {
-                return ResourceManager.GetString("Deferred", resourceCulture);
+                object obj = ResourceManager.GetObject("dsMeshTriTessellation", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #ifndef DEFERREDLIGHTING
-        ///#define DEFERREDLIGHTING
-        /////--------------------------------------------------------------------------------------
-        ///// File: Deferred Lighting for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Created:  03/03/13
-        ///// Modified: 06/18/13
-        ///// References &amp; Sources: 
-        ///// code based on the shader from: http://hieroglyph3.codeplex.com/
-        /////--------------------------------------------------------------------------------------
-        ///
-        /// 
-        /////---------------------------------------------------- [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string DeferredLighting {
+        internal static byte[] gsBillboard {
             get {
-                return ResourceManager.GetString("DeferredLighting", resourceCulture);
+                object obj = ResourceManager.GetObject("gsBillboard", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #ifndef LINES_FX
-        ///#define LINES_FX
-        /////--------------------------------------------------------------------------------------
-        ///// File: Line Effects for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 11/11/12
-        ///// References &amp; Sources: 
-        ///// http://cgg-journal.com/2008-2/06/index.html
-        ///// http://developer.download.nvidia.com/SDK/10/direct3d/Source/SolidWireframe/Doc/SolidWireframe.pdf
-        /////-------------------------------------------------------------------------------------
-        ///
-        ///#include &quot;Common.fx&quot;
-        ///#i [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string Lines {
+        internal static byte[] gsLine {
             get {
-                return ResourceManager.GetString("Lines", resourceCulture);
+                object obj = ResourceManager.GetObject("gsLine", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #ifndef MATERIAL_FX
-        ///#define MATERIAL_FX
-        ///
-        /////--------------------------------------------------------------------------------------
-        ///// File: Materials header for HelixToolkit.Wpf.SharpDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 11/11/12
-        ///// References &amp; Sources: 
-        /////--------------------------------------------------------------------------------------
-        ///
-        /////--------------------------------------------------------------------------------------
-        ///// pre-processor defines
-        /////--------------------------------- [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string Material {
+        internal static byte[] gsParticle {
             get {
-                return ResourceManager.GetString("Material", resourceCulture);
+                object obj = ResourceManager.GetObject("gsParticle", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] gsPoint {
+            get {
+                object obj = ResourceManager.GetObject("gsPoint", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] hsMeshTriTessellation {
+            get {
+                object obj = ResourceManager.GetObject("hsMeshTriTessellation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psBillboardText {
+            get {
+                object obj = ResourceManager.GetObject("psBillboardText", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psBillboardTextOIT {
+            get {
+                object obj = ResourceManager.GetObject("psBillboardTextOIT", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psColor {
+            get {
+                object obj = ResourceManager.GetObject("psColor", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psDepthStencilOnly {
+            get {
+                object obj = ResourceManager.GetObject("psDepthStencilOnly", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psDiffuseMap {
+            get {
+                object obj = ResourceManager.GetObject("psDiffuseMap", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectBloomBlurHorizontal {
+            get {
+                object obj = ResourceManager.GetObject("psEffectBloomBlurHorizontal", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectBloomBlurVertical {
+            get {
+                object obj = ResourceManager.GetObject("psEffectBloomBlurVertical", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectBloomCombine {
+            get {
+                object obj = ResourceManager.GetObject("psEffectBloomCombine", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectBloomExtract {
+            get {
+                object obj = ResourceManager.GetObject("psEffectBloomExtract", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectGaussianBlurHorizontal {
+            get {
+                object obj = ResourceManager.GetObject("psEffectGaussianBlurHorizontal", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectGaussianBlurVertical {
+            get {
+                object obj = ResourceManager.GetObject("psEffectGaussianBlurVertical", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectMeshBorderHighlight {
+            get {
+                object obj = ResourceManager.GetObject("psEffectMeshBorderHighlight", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectMeshXRay {
+            get {
+                object obj = ResourceManager.GetObject("psEffectMeshXRay", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectOutlineQuad {
+            get {
+                object obj = ResourceManager.GetObject("psEffectOutlineQuad", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectOutlineQuadStencil {
+            get {
+                object obj = ResourceManager.GetObject("psEffectOutlineQuadStencil", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psEffectOutlineQualFinal {
+            get {
+                object obj = ResourceManager.GetObject("psEffectOutlineQualFinal", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psFXAA {
+            get {
+                object obj = ResourceManager.GetObject("psFXAA", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psLine {
+            get {
+                object obj = ResourceManager.GetObject("psLine", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psLineColor {
+            get {
+                object obj = ResourceManager.GetObject("psLineColor", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psMeshBlinnPhong {
+            get {
+                object obj = ResourceManager.GetObject("psMeshBlinnPhong", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psMeshBlinnPhongOIT {
+            get {
+                object obj = ResourceManager.GetObject("psMeshBlinnPhongOIT", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psMeshBlinnPhongOITQuad {
+            get {
+                object obj = ResourceManager.GetObject("psMeshBlinnPhongOITQuad", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psMeshClipPlaneBackface {
+            get {
+                object obj = ResourceManager.GetObject("psMeshClipPlaneBackface", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psMeshClipPlaneQuad {
+            get {
+                object obj = ResourceManager.GetObject("psMeshClipPlaneQuad", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psMeshXRay {
+            get {
+                object obj = ResourceManager.GetObject("psMeshXRay", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psNormals {
+            get {
+                object obj = ResourceManager.GetObject("psNormals", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psParticle {
+            get {
+                object obj = ResourceManager.GetObject("psParticle", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psParticleOIT {
+            get {
+                object obj = ResourceManager.GetObject("psParticleOIT", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psPoint {
+            get {
+                object obj = ResourceManager.GetObject("psPoint", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psPositions {
+            get {
+                object obj = ResourceManager.GetObject("psPositions", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psScreenDup {
+            get {
+                object obj = ResourceManager.GetObject("psScreenDup", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psShadow {
+            get {
+                object obj = ResourceManager.GetObject("psShadow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psSkybox {
+            get {
+                object obj = ResourceManager.GetObject("psSkybox", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psViewCube {
+            get {
+                object obj = ResourceManager.GetObject("psViewCube", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psWireframe {
+            get {
+                object obj = ResourceManager.GetObject("psWireframe", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] psWireframeOIT {
+            get {
+                object obj = ResourceManager.GetObject("psWireframeOIT", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
@@ -258,20 +531,232 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to //--------------------------------------------------------------------------------------
-        ///// File: Tessellation Functions for HelixToolkitDX
-        ///// Author: Przemyslaw Musialski
-        ///// Date: 03/21/13
-        ///// References &amp; Sources: Based on NVidia SDK 2011 
-        /////--------------------------------------------------------------------------------------
-        ///
-        /////--------------------------------------------------------------------------------------
-        ///// Work-around for an optimization rule problem in the June 2010 HLSL Compiler
-        ///// ( [rest of string was truncated]&quot;;.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static string Tessellation {
+        internal static byte[] vsBillboard {
             get {
-                return ResourceManager.GetString("Tessellation", resourceCulture);
+                object obj = ResourceManager.GetObject("vsBillboard", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsBillboardInstancing {
+            get {
+                object obj = ResourceManager.GetObject("vsBillboardInstancing", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsBoneSkinning {
+            get {
+                object obj = ResourceManager.GetObject("vsBoneSkinning", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsBoneSkinningShadow {
+            get {
+                object obj = ResourceManager.GetObject("vsBoneSkinningShadow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsBoneSkinningTessellation {
+            get {
+                object obj = ResourceManager.GetObject("vsBoneSkinningTessellation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsBoneSkinningWireframe {
+            get {
+                object obj = ResourceManager.GetObject("vsBoneSkinningWireframe", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsCubeMap {
+            get {
+                object obj = ResourceManager.GetObject("vsCubeMap", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshClipPlane {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshClipPlane", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshClipPlaneQuad {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshClipPlaneQuad", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshDefault {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshDefault", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshInstancing {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshInstancing", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshInstancingTessellation {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshInstancingTessellation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshOutlinePass1 {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshOutlinePass1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshOutlineScreenQuad {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshOutlineScreenQuad", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshShadow {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshShadow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshTessellation {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshTessellation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsMeshWireframe {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshWireframe", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsParticle {
+            get {
+                object obj = ResourceManager.GetObject("vsParticle", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsPoint {
+            get {
+                object obj = ResourceManager.GetObject("vsPoint", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsPointShadow {
+            get {
+                object obj = ResourceManager.GetObject("vsPointShadow", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsScreenDup {
+            get {
+                object obj = ResourceManager.GetObject("vsScreenDup", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsScreenDupCursor {
+            get {
+                object obj = ResourceManager.GetObject("vsScreenDupCursor", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] vsSkybox {
+            get {
+                object obj = ResourceManager.GetObject("vsSkybox", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

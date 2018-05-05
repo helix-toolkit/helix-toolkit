@@ -1,0 +1,178 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+      <Copyright>Copyright (C) Helix Toolkit 2018.</Copyright>
+      <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+      <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
+      <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
+      <RepositoryUrl>https://github.com/helix-toolkit/helix-toolkit</RepositoryUrl>
+      <SignAssembly>true</SignAssembly>
+      <AssemblyOriginatorKeyFile>HelixToolkit.snk</AssemblyOriginatorKeyFile>
+      <Company>HelixToolkit</Company>
+      <Authors>HelixToolkit Contributors</Authors>
+      <Version>0.0.0.1</Version>
+      <RepositoryType>git</RepositoryType>
+      <PackageTags>SharpDX; DirectX; 3D;</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;NETSTANDARD1_3</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;RELEASE;NETSTANDARD1_3</DefineConstants>
+    <DocumentationFile>bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>1701;1702;1705;CS1591</NoWarn>
+  </PropertyGroup>
+  <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
+  <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
+  <ItemGroup>
+    <None Remove="Resources\arial.fnt" />
+    <None Remove="Resources\arial.png" />
+    <None Remove="Resources\csParticleInsert.cso" />
+    <None Remove="Resources\csParticleUpdate.cso" />
+    <None Remove="Resources\dsMeshTriTessellation.cso" />
+    <None Remove="Resources\gsBillboard.cso" />
+    <None Remove="Resources\gsLine.cso" />
+    <None Remove="Resources\gsParticle.cso" />
+    <None Remove="Resources\gsPoint.cso" />
+    <None Remove="Resources\hsMeshTriTessellation.cso" />
+    <None Remove="Resources\psBillboardText.cso" />
+    <None Remove="Resources\psColor.cso" />
+    <None Remove="Resources\psDepthStencilOnly.cso" />
+    <None Remove="Resources\psDiffuseMap.cso" />
+    <None Remove="Resources\psEffectBloomBlurHorizontal.cso" />
+    <None Remove="Resources\psEffectBloomBlurVertical.cso" />
+    <None Remove="Resources\psEffectBloomCombine.cso" />
+    <None Remove="Resources\psEffectBloomExtract.cso" />
+    <None Remove="Resources\psEffectGaussianBlurHorizontal.cso" />
+    <None Remove="Resources\psEffectGaussianBlurVertical.cso" />
+    <None Remove="Resources\psEffectMeshBorderHighlight.cso" />
+    <None Remove="Resources\psEffectMeshXRay.cso" />
+    <None Remove="Resources\psEffectOutlineQuad.cso" />
+    <None Remove="Resources\psEffectOutlineQuadStencil.cso" />
+    <None Remove="Resources\psEffectOutlineQualFinal.cso" />
+    <None Remove="Resources\psLine.cso" />
+    <None Remove="Resources\psLineColor.cso" />
+    <None Remove="Resources\psMeshBlinnPhong.cso" />
+    <None Remove="Resources\psMeshClipPlaneBackface.cso" />
+    <None Remove="Resources\psMeshClipPlaneQuad.cso" />
+    <None Remove="Resources\psMeshXRay.cso" />
+    <None Remove="Resources\psNormals.cso" />
+    <None Remove="Resources\psParticle.cso" />
+    <None Remove="Resources\psPoint.cso" />
+    <None Remove="Resources\psPositions.cso" />
+    <None Remove="Resources\psScreenDup.cso" />
+    <None Remove="Resources\psShadow.cso" />
+    <None Remove="Resources\psSkybox.cso" />
+    <None Remove="Resources\psViewCube.cso" />
+    <None Remove="Resources\psWireframe.cso" />
+    <None Remove="Resources\vsBillboard.cso" />
+    <None Remove="Resources\vsBillboardInstancing.cso" />
+    <None Remove="Resources\vsBoneSkinning.cso" />
+    <None Remove="Resources\vsBoneSkinningShadow.cso" />
+    <None Remove="Resources\vsBoneSkinningTessellation.cso" />
+    <None Remove="Resources\vsBoneSkinningWireframe.cso" />
+    <None Remove="Resources\vsCubeMap.cso" />
+    <None Remove="Resources\vsMeshClipPlane.cso" />
+    <None Remove="Resources\vsMeshClipPlaneQuad.cso" />
+    <None Remove="Resources\vsMeshDefault.cso" />
+    <None Remove="Resources\vsMeshInstancing.cso" />
+    <None Remove="Resources\vsMeshInstancingTessellation.cso" />
+    <None Remove="Resources\vsMeshOutlinePass1.cso" />
+    <None Remove="Resources\vsMeshOutlineScreenQuad.cso" />
+    <None Remove="Resources\vsMeshShadow.cso" />
+    <None Remove="Resources\vsMeshTessellation.cso" />
+    <None Remove="Resources\vsMeshWireframe.cso" />
+    <None Remove="Resources\vsParticle.cso" />
+    <None Remove="Resources\vsPoint.cso" />
+    <None Remove="Resources\vsPointShadow.cso" />
+    <None Remove="Resources\vsScreenDup.cso" />
+    <None Remove="Resources\vsScreenDupCursor.cso" />
+    <None Remove="Resources\vsSkybox.cso" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\arial.fnt" />
+    <EmbeddedResource Include="Resources\arial.png" />
+    <EmbeddedResource Include="Resources\csParticleInsert.cso" />
+    <EmbeddedResource Include="Resources\csParticleUpdate.cso" />
+    <EmbeddedResource Include="Resources\dsMeshTriTessellation.cso" />
+    <EmbeddedResource Include="Resources\gsBillboard.cso" />
+    <EmbeddedResource Include="Resources\gsLine.cso" />
+    <EmbeddedResource Include="Resources\gsParticle.cso" />
+    <EmbeddedResource Include="Resources\gsPoint.cso" />
+    <EmbeddedResource Include="Resources\hsMeshTriTessellation.cso" />
+    <EmbeddedResource Include="Resources\psBillboardText.cso" />
+    <EmbeddedResource Include="Resources\psColor.cso" />
+    <EmbeddedResource Include="Resources\psDepthStencilOnly.cso" />
+    <EmbeddedResource Include="Resources\psDiffuseMap.cso" />
+    <EmbeddedResource Include="Resources\psEffectBloomBlurHorizontal.cso" />
+    <EmbeddedResource Include="Resources\psEffectBloomBlurVertical.cso" />
+    <EmbeddedResource Include="Resources\psEffectBloomCombine.cso" />
+    <EmbeddedResource Include="Resources\psEffectBloomExtract.cso" />
+    <EmbeddedResource Include="Resources\psEffectGaussianBlurHorizontal.cso" />
+    <EmbeddedResource Include="Resources\psEffectGaussianBlurVertical.cso" />
+    <EmbeddedResource Include="Resources\psEffectMeshBorderHighlight.cso" />
+    <EmbeddedResource Include="Resources\psEffectMeshXRay.cso" />
+    <EmbeddedResource Include="Resources\psEffectOutlineQuad.cso" />
+    <EmbeddedResource Include="Resources\psEffectOutlineQuadStencil.cso" />
+    <EmbeddedResource Include="Resources\psEffectOutlineQualFinal.cso" />
+    <EmbeddedResource Include="Resources\psLine.cso" />
+    <EmbeddedResource Include="Resources\psLineColor.cso" />
+    <EmbeddedResource Include="Resources\psMeshBlinnPhong.cso" />
+    <EmbeddedResource Include="Resources\psMeshClipPlaneBackface.cso" />
+    <EmbeddedResource Include="Resources\psMeshClipPlaneQuad.cso" />
+    <EmbeddedResource Include="Resources\psMeshXRay.cso" />
+    <EmbeddedResource Include="Resources\psNormals.cso" />
+    <EmbeddedResource Include="Resources\psParticle.cso" />
+    <EmbeddedResource Include="Resources\psPoint.cso" />
+    <EmbeddedResource Include="Resources\psPositions.cso" />
+    <EmbeddedResource Include="Resources\psScreenDup.cso" />
+    <EmbeddedResource Include="Resources\psShadow.cso" />
+    <EmbeddedResource Include="Resources\psSkybox.cso" />
+    <EmbeddedResource Include="Resources\psViewCube.cso" />
+    <EmbeddedResource Include="Resources\psWireframe.cso" />
+    <EmbeddedResource Include="Resources\vsBillboard.cso" />
+    <EmbeddedResource Include="Resources\vsBillboardInstancing.cso" />
+    <EmbeddedResource Include="Resources\vsBoneSkinning.cso" />
+    <EmbeddedResource Include="Resources\vsBoneSkinningShadow.cso" />
+    <EmbeddedResource Include="Resources\vsBoneSkinningTessellation.cso" />
+    <EmbeddedResource Include="Resources\vsBoneSkinningWireframe.cso" />
+    <EmbeddedResource Include="Resources\vsCubeMap.cso" />
+    <EmbeddedResource Include="Resources\vsMeshClipPlane.cso" />
+    <EmbeddedResource Include="Resources\vsMeshClipPlaneQuad.cso" />
+    <EmbeddedResource Include="Resources\vsMeshDefault.cso" />
+    <EmbeddedResource Include="Resources\vsMeshInstancing.cso" />
+    <EmbeddedResource Include="Resources\vsMeshInstancingTessellation.cso" />
+    <EmbeddedResource Include="Resources\vsMeshOutlinePass1.cso" />
+    <EmbeddedResource Include="Resources\vsMeshOutlineScreenQuad.cso" />
+    <EmbeddedResource Include="Resources\vsMeshShadow.cso" />
+    <EmbeddedResource Include="Resources\vsMeshTessellation.cso" />
+    <EmbeddedResource Include="Resources\vsMeshWireframe.cso" />
+    <EmbeddedResource Include="Resources\vsParticle.cso" />
+    <EmbeddedResource Include="Resources\vsPoint.cso" />
+    <EmbeddedResource Include="Resources\vsPointShadow.cso" />
+    <EmbeddedResource Include="Resources\vsScreenDup.cso" />
+    <EmbeddedResource Include="Resources\vsScreenDupCursor.cso" />
+    <EmbeddedResource Include="Resources\vsSkybox.cso" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Cyotek.Drawing.BitmapFont" Version="1.3.4" />
+    <PackageReference Include="SharpDX.D3DCompiler" Version="4.0.1" />
+    <PackageReference Include="SharpDX.Direct2D1" Version="4.0.1" />
+    <PackageReference Include="SharpDX.Direct3D11" Version="4.0.1" />
+    <PackageReference Include="SharpDX.DXGI" Version="4.0.1" />
+    <PackageReference Include="SharpDX.Mathematics" Version="4.0.1" />
+    <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
+    <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />
+    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Threading.Tasks.Parallel" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj" />
+  </ItemGroup>
+</Project>

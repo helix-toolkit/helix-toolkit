@@ -6,70 +6,78 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using global::SharpDX;
+    using Model;
+    using Model.Scene;
+    using System.Windows;
+    using System.Windows.Media.Media3D;
 
-    using HelixToolkit.Wpf.SharpDX.Extensions;
-
-    public sealed class PointLight3D : PointLightBase3D
+    public class PointLight3D : Light3D
     {
-        public PointLight3D()
+        public static readonly DependencyProperty AttenuationProperty =
+            DependencyProperty.Register("Attenuation", typeof(Vector3D), typeof(PointLight3D), new PropertyMetadata(new Vector3D(1.0f, 0.0f, 0.0f),
+                (d, e) => {
+                    ((d as Element3DCore).SceneNode as PointLightNode).Attenuation = ((Vector3D)e.NewValue).ToVector3();
+                }));
+
+        public static readonly DependencyProperty RangeProperty =
+            DependencyProperty.Register("Range", typeof(double), typeof(PointLight3D), new PropertyMetadata(100.0,
+                (d, e) => {
+                    ((d as Element3DCore).SceneNode as PointLightNode).Range = (float)(double)e.NewValue;
+                }));
+
+        public static readonly DependencyProperty PositionProperty =
+            DependencyProperty.Register("Position", typeof(Point3D), typeof(PointLight3D), new PropertyMetadata(new Point3D(),
+                (d, e) => {
+                    ((d as Element3DCore).SceneNode as PointLightNode).Position = ((Point3D)e.NewValue).ToVector3();
+                }));
+
+        /// <summary>
+        /// The position of the model in world space.
+        /// </summary>
+        public Point3D Position
         {
-            this.LightType = LightType.Point;
+            get { return (Point3D)this.GetValue(PositionProperty); }
+            set { this.SetValue(PositionProperty, value); }
         }
 
-        protected override bool OnAttach(IRenderHost host)
+        /// <summary>
+        /// Attenuation coefficients:
+        /// X = constant attenuation,
+        /// Y = linar attenuation,
+        /// Z = quadratic attenuation.
+        /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb172279(v=vs.85).aspx
+        /// </summary>
+        public Vector3D Attenuation
         {
-            // --- attach
-            if (base.OnAttach(host))
+            get { return (Vector3D)this.GetValue(AttenuationProperty); }
+            set { this.SetValue(AttenuationProperty, value); }
+        }
+
+        /// <summary>
+        /// Range of this light. This is the maximum distance 
+        /// of a pixel being lit by this light.
+        /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb172279(v=vs.85).aspx
+        /// </summary>
+        public double Range
+        {
+            get { return (double)this.GetValue(RangeProperty); }
+            set { this.SetValue(RangeProperty, value); }
+        }
+
+        protected override SceneNode OnCreateSceneNode()
+        {
+            return new PointLightNode();
+        }
+
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
+        {
+            base.AssignDefaultValuesToSceneNode(core);
+            if(core is PointLightNode n)
             {
-                // --- light constant params            
-                this.vLightPos = this.effect.GetVariableByName("vLightPos").AsVector();
-                this.vLightColor = this.effect.GetVariableByName("vLightColor").AsVector();
-                this.vLightAtt = this.effect.GetVariableByName("vLightAtt").AsVector();
-                this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
-
-                // --- Set light type
-                Light3DSceneShared.LightTypes[lightIndex] = (int)this.LightType;
-
-                // --- flush
-                //this.Device.ImmediateContext.Flush();
-                return true;
+                n.Attenuation = Attenuation.ToVector3();
+                n.Range = (float)Range;
+                n.Position = Position.ToVector3();
             }
-            else
-            {
-                return false;
-            }
-        }
-
-        protected override void OnDetach()
-        {
-            Disposer.RemoveAndDispose(ref this.vLightPos);
-            Disposer.RemoveAndDispose(ref this.vLightColor);
-            Disposer.RemoveAndDispose(ref this.vLightAtt);
-            Disposer.RemoveAndDispose(ref this.iLightType);
-            base.OnDetach();
-        }
-        protected override bool CanRender(RenderContext context)
-        {
-            if (base.CanRender(context))
-            {
-                return !renderHost.IsDeferredLighting;
-            }
-            return false;
-        }
-        protected override void OnRender(RenderContext context)
-        {
-            // --- turn-on the light            
-            Light3DSceneShared.LightColors[lightIndex] = this.ColorInternal;
-            // --- Set lighting parameters
-            Light3DSceneShared.LightPositions[lightIndex] = this.PositionInternal.ToVector4();
-            Light3DSceneShared.LightAtt[lightIndex] = new Vector4((float)this.AttenuationInternal.X, (float)this.AttenuationInternal.Y, (float)this.AttenuationInternal.Z, (float)this.RangeInternal);
-
-            // --- Update lighting variables    
-            this.vLightPos.Set(Light3DSceneShared.LightPositions);
-            this.vLightColor.Set(Light3DSceneShared.LightColors);
-            this.vLightAtt.Set(Light3DSceneShared.LightAtt);
-            this.iLightType.Set(Light3DSceneShared.LightTypes);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Media3D;
 
     using global::SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Cameras;
 
     /// <summary>
     /// Camera which specifies the view and projection transforms as Matrix3D objects
@@ -24,13 +25,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty ProjectionMatrixProperty =
             DependencyProperty.Register(
-                "ProjectionMatrix", typeof(Matrix3D), typeof(MatrixCamera), new PropertyMetadata(Matrix3D.Identity));
+                "ProjectionMatrix", typeof(Matrix3D), typeof(MatrixCamera), new PropertyMetadata(Matrix3D.Identity, 
+                    (d,e)=> 
+                    {
+                        ((d as Camera).CameraInternal as MatrixCameraCore).ProjectionMatrix = ((Matrix3D)e.NewValue).ToMatrix();
+                    }));
 
         /// <summary>
         /// The view matrix property
         /// </summary>
         public static readonly DependencyProperty ViewMatrixProperty = DependencyProperty.Register(
-            "ViewMatrix", typeof(Matrix3D), typeof(MatrixCamera), new PropertyMetadata(Matrix3D.Identity));
+            "ViewMatrix", typeof(Matrix3D), typeof(MatrixCamera), new PropertyMetadata(Matrix3D.Identity,
+                (d, e) =>
+                {
+                    ((d as Camera).CameraInternal as MatrixCameraCore).ViewMatrix = ((Matrix3D)e.NewValue).ToMatrix();
+                }));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MatrixCamera" /> class.
@@ -79,31 +88,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Creates the projection matrix.
-        /// </summary>
-        /// <param name="aspectRatio">
-        /// The aspect ratio.
-        /// </param>
-        /// <returns>
-        /// A <see cref="Matrix"/>.
-        /// </returns>
-        public override Matrix CreateProjectionMatrix(double aspectRatio)
-        {
-            return this.ProjectionMatrix.ToMatrix();
-        }
-
-        /// <summary>
-        /// Creates the view matrix.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="Matrix" />.
-        /// </returns>
-        public override Matrix CreateViewMatrix()
-        {
-            return this.ViewMatrix.ToMatrix();
-        }
-
-        /// <summary>
         /// When implemented in a derived class, creates a new instance of the <see cref="T:System.Windows.Freezable" /> derived class.
         /// </summary>
         /// <returns>
@@ -118,40 +102,25 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.OnChanged();
         }
+
+        protected override CameraCore CreatePortableCameraCore()
+        {
+            return new MatrixCameraCore() { ProjectionMatrix = this.ProjectionMatrix.ToMatrix(), ViewMatrix = this.ViewMatrix.ToMatrix() };
+        }
+
         public override Point3D Position
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-                throw new System.NotImplementedException();
-            }
+            set;get;
         }
 
         public override Vector3D UpDirection
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-                throw new System.NotImplementedException();
-            }
+            set;get;
         }
 
         public override Vector3D LookDirection
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-                throw new System.NotImplementedException();
-            }
+            set;get;
         }
     }
 }

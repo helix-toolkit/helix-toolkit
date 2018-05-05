@@ -8,67 +8,69 @@ namespace FileLoadDemo
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf.SharpDX;
     using Microsoft.Win32;
     using System.Windows.Input;
     using System.IO;
     using System.ComponentModel;
+    using DemoCore;
+    using HelixToolkit.Wpf.SharpDX.Model;
+    using System.Threading;
+    using System.Threading.Tasks;
 
-    public abstract class ObservableObject : INotifyPropertyChanged
+    public class MainViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        private const string OpenFileFilter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;";
 
-        protected void OnPropertyChanged(string info)
-        {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(info));
-            }
-        }
+        public ObservableElement3DCollection ModelGeometry { get; private set; }
 
-        protected bool SetValue<T>(ref T backingField, T value, string propertyName)
-        {
-            if (object.Equals(backingField, value))
-            {
-                return false;
-            }
-
-            backingField = value;
-            this.OnPropertyChanged(propertyName);
-            return true;
-        }
-    }
-
-    public class MainViewModel : ObservableObject
-    {
-        private const string OpenFileFilter = "3D model files (*.obj;*.3ds)|*.obj;*.3ds";
-
-        public Element3DCollection ModelGeometry { get; private set; }
-        public Transform3D ModelTransform { get; private set; }
         public Viewport3DX modelView
         {
             get;
             set;
         }
 
+        private bool showWireframe = false;
+        public bool ShowWireframe
+        {
+            set
+            {
+                if(SetValue(ref showWireframe, value))
+                {
+                    foreach(var model in ModelGeometry)
+                    {
+                        (model as MeshGeometryModel3D).RenderWireframe = value;
+                    }
+                }
+            }
+            get
+            {
+                return showWireframe;
+            }
+        }
 
         public ICommand OpenFileCommand
         {
             get; set;
         }
-        public DefaultEffectsManager EffectsManager { get; private set; }
 
-        public DefaultRenderTechniquesManager RenderTechniquesManager { get; private set; }
+        public ICommand ResetCameraCommand
+        {
+            set;get;
+        }
+
+        private SynchronizationContext context = SynchronizationContext.Current;
         public MainViewModel()
         {
             this.OpenFileCommand = new DelegateCommand(this.OpenFile);
-            this.ModelTransform = new TranslateTransform3D(0, 0, 0);
-
-            this.ModelGeometry = new Element3DCollection();
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            this.ModelGeometry = new ObservableElement3DCollection();
+            EffectsManager = new DefaultEffectsManager();
+            Camera = new OrthographicCamera() {
+                LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -10, -10),
+                Position = new System.Windows.Media.Media3D.Point3D(0, 10, 10),
+                FarPlaneDistance = 10000, NearPlaneDistance = 0.1 };
+            ResetCameraCommand = new DelegateCommand(() => { Camera.Reset(); });
         }
 
         private void OpenFile()
@@ -78,14 +80,22 @@ namespace FileLoadDemo
             {
                 return;
             }
-            if (Path.GetExtension(path).ToLower() == ".3ds")
-            {
-                Load3ds(path);
-            }
-            else
-            {
-                LoadObj(path);
-            }
+            ModelGeometry.Clear();
+            Task.Run(() => {
+                if (Path.GetExtension(path).ToLower() == ".3ds")
+                {
+                    Load3ds(path);
+                }
+                else if(Path.GetExtension(path).ToLower() == ".obj")
+                {
+                    LoadObj(path);
+                }
+                else if(Path.GetExtension(path).ToLower() == ".stl")
+                {
+                    LoadStl(path);
+                }
+            });
+
         }
         public void Load3ds(string path)
         {
@@ -100,22 +110,34 @@ namespace FileLoadDemo
             var objCol = reader.Read(path);
             AttachModelList(objCol);
         }
-        public void AttachModelList(List<Object3D> objs)
+
+        public void LoadStl(string path)
         {
-            this.ModelTransform = new TranslateTransform3D(0, 0, 0);
-            this.ModelGeometry = new Element3DCollection();
+            var reader = new StLReader();
+            var objCol = reader.Read(path);
+            AttachModelList(objCol);
+        }
+        public void AttachModelList(List<Object3D> objs)
+        {            
             foreach (var ob in objs)
             {
-                var s = new MeshGeometryModel3D
-                {
-                    Geometry = ob.Geometry,
-                    Material = ob.Material,
-                };
-                this.ModelGeometry.Add(s);
-                s.Attach(modelView.RenderHost);
-
+                ob.Geometry.UpdateOctree();
+                context.Post((o) => {
+                    var s = new MeshGeometryModel3D
+                    {
+                        Geometry = ob.Geometry,
+                    };
+                    if(ob.Material is PhongMaterialCore p)
+                    {
+                        s.Material = p;
+                    }
+                    if (ob.Transform != null && ob.Transform.Count > 0)
+                    {
+                        s.Instances = ob.Transform;
+                    }
+                    this.ModelGeometry.Add(s);
+                }, null);
             }
-            this.OnPropertyChanged("ModelGeometry");
         }
         private string OpenFileDialog(string filter)
         {

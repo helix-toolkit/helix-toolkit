@@ -15,35 +15,32 @@ namespace HelixToolkit.Wpf.SharpDX
 
     using global::SharpDX.Direct3D9;
     using System.Threading;
+    using System.Diagnostics.CodeAnalysis;
 
     // Copyright (c) 2010-2012 SharpDX - Alexandre Mutel
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+    // 
+    // Permission is hereby granted, free of charge, to any person obtaining a copy
+    // of this software and associated documentation files (the "Software"), to deal
+    // in the Software without restriction, including without limitation the rights
+    // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    // copies of the Software, and to permit persons to whom the Software is
+    // furnished to do so, subject to the following conditions:
+    // 
+    // The above copyright notice and this permission notice shall be included in
+    // all copies or substantial portions of the Software.
+    // 
+    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    // THE SOFTWARE.
 
-    internal class DX11ImageSource : D3DImage, IDisposable
+    public sealed class DX11ImageSource : D3DImage, IDisposable
     {
-        [DllImport("user32.dll", SetLastError = false)]
-        private static extern IntPtr GetDesktopWindow();
-
-        private static long activeClients;
-        private static Direct3DEx context;
-        private static DeviceEx device;
+        private Direct3DEx context;
+        private DeviceEx device;
 
         private readonly int adapterIndex;
         private Texture renderTarget;
@@ -52,15 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.adapterIndex = adapterIndex;        
             this.StartD3D();
-            Interlocked.Increment(ref activeClients);
             
-        }
-
-        public void Dispose()
-        {
-            this.SetRenderTargetDX11(null);
-            Interlocked.Decrement(ref activeClients);
-            this.EndD3D();
         }
 
         public void InvalidateD3DImage()
@@ -99,7 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX
                        
             try
             {
-                this.renderTarget = new Texture(DX11ImageSource.device, target.Description.Width, target.Description.Height, 1, Usage.RenderTarget, format, Pool.Default, ref handle);            
+                this.renderTarget = new Texture(device, target.Description.Width, target.Description.Height, 1, Usage.RenderTarget, format, Pool.Default, ref handle);            
                 using (Surface surface = this.renderTarget.GetSurfaceLevel(0))                
                 {
                     base.Lock();
@@ -121,16 +110,13 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void StartD3D()
         {
-            if (activeClients != 0)
-                return;
-
             context = new Direct3DEx();
             // Ref: https://docs.microsoft.com/en-us/dotnet/framework/wpf/advanced/wpf-and-direct3d9-interoperation
             var presentparams = new PresentParameters
             {
                 Windowed = true,
                 SwapEffect = SwapEffect.Discard,
-                DeviceWindowHandle = GetDesktopWindow(),
+                //DeviceWindowHandle = GetDesktopWindow(),
                 PresentationInterval = PresentInterval.Default,
                 BackBufferHeight = 1, BackBufferWidth = 1, BackBufferFormat = Format.Unknown
             };
@@ -140,12 +126,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void EndD3D()
         {
-            Disposer.RemoveAndDispose(ref this.renderTarget);
-            if (Interlocked.Read(ref activeClients) != 0)
-                return;
-
+            Disposer.RemoveAndDispose(ref renderTarget);                
             Disposer.RemoveAndDispose(ref device);
-            Disposer.RemoveAndDispose(ref context);
+            Disposer.RemoveAndDispose(ref context);               
         }
 
         private static IntPtr GetSharedHandle(Texture2D sharedTexture)
@@ -179,5 +162,48 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return (sharedTexture.Description.OptionFlags & ResourceOptionFlags.Shared) != 0;
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        [SuppressMessage("Microsoft.Usage", "CA2213: Disposable fields should be disposed", Justification = "False positive.")]
+        void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    EndD3D();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~DX11ImageSource() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
+
+    }
+
+    public static class NativeMethods
+    {
+        [DllImport("user32.dll", SetLastError = false)]
+        private static extern IntPtr GetDesktopWindow();
     }
 }

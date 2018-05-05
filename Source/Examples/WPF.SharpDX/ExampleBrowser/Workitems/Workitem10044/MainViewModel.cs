@@ -19,11 +19,8 @@
             this.Title = "Simple Demo (Workitem 10044)";
             this.SubTitle = "Please note that this scene is defined completely in XAML.";
 
-            if (this.RenderTechniquesManager != null)
-            {
-                // default render technique
-                this.RenderTechnique = RenderTechniquesManager.RenderTechniques.Get(DefaultRenderTechniqueNames.Blinn);
-            }
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
         }
     }
 }

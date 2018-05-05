@@ -1,21 +1,59 @@
-﻿<Window x:Class="FileLoadDemo.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
-        Title="FileLoadDemo" Height="350" Width="525">
-    
-  
+﻿<Window
+    x:Class="FileLoadDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    Title="FileLoadDemo"
+    Width="1000"
+    Height="800">
     <Grid>
-    
-        <hx:Viewport3DX x:Name="view">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <hx:Viewport3DX
+            x:Name="view"
+            Grid.Row="1"
+            BackgroundColor="#595959"
+            Camera="{Binding Camera}"
+            CameraMode="Inspect"
+            CameraRotationMode="Turnball"
+            EffectsManager="{Binding EffectsManager}"
+            FXAALevel="Low">
+            <hx:Viewport3DX.InputBindings>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
+            </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D />
-            <hx:DirectionalLight3D Direction = "-2,-5,-2"/>
-      <hx:GroupModel3D x:Name="group"   ItemsSource="{Binding ModelGeometry}"   Transform = "{Binding ModelTransform}" />
-    </hx:Viewport3DX>
-    <Menu Height="20" VerticalAlignment="Top">
-      <MenuItem Header="File"  >
-        <MenuItem Command="{Binding OpenFileCommand}" Header="Open File"></MenuItem>
-      </MenuItem>
-    </Menu>
-  </Grid>
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" />
+            <hx:GroupModel3D x:Name="group" ItemsSource="{Binding ModelGeometry}" />
+            <hx:PostEffectMeshBorderHighlight EffectName="highlight" />
+        </hx:Viewport3DX>
+        <Menu
+            Grid.Row="0"
+            Height="20"
+            VerticalAlignment="Top">
+            <MenuItem Header="File">
+                <MenuItem Command="{Binding OpenFileCommand}" Header="Open File" />
+            </MenuItem>
+        </Menu>
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Orientation="Vertical">
+            <Button Command="{Binding ResetCameraCommand}">
+                Reset Camera
+            </Button>
+            <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
+        </StackPanel>
+    </Grid>
 </Window>

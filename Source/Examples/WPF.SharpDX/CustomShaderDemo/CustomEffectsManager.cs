@@ -1,72 +1,118 @@
-﻿using HelixToolkit.Wpf.SharpDX;
-
+using System;
+using System.Collections.Generic;
+using System.IO;
+using HelixToolkit.Wpf.SharpDX;
+using HelixToolkit.Wpf.SharpDX.Shaders;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 
 namespace CustomShaderDemo
 {
+    public static class CustomShaderNames
+    {
+        public static readonly string DataSampling = "DataSampling";
+        public static readonly string NoiseMesh = "NoiseMesh";
+        public static readonly string TexData = "texData";
+        public static readonly string TexDataSampler = "texDataSampler";
+    }
+    public static class ShaderHelper
+    {
+        public static byte[] LoadShaderCode(string path)
+        {
+            if (File.Exists(path))
+            {
+                return File.ReadAllBytes(path);
+            }
+            else
+            {
+                throw new ArgumentException($"Shader File not found: {path}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Build using Nuget Micorsoft.HLSL.Microsoft.HLSL.CSharpVB automatically during project build
+    /// </summary>
+    public static class CustomVSShaderDescription
+    {
+        public static byte[] VSMeshDataSamplerByteCode
+        {
+            get
+            {
+                return ShaderHelper.LoadShaderCode(@"Shaders\vsMeshDataSampling.cso");
+            }
+        }
+        public static ShaderDescription VSDataSampling = new ShaderDescription(nameof(VSDataSampling), ShaderStage.Vertex,
+            new ShaderReflector(), VSMeshDataSamplerByteCode);
+    }
+    /// <summary>
+    /// Build using Nuget Micorsoft.HLSL.Microsoft.HLSL.CSharpVB automatically during project build
+    /// </summary>
+    public static class CustomPSShaderDescription
+    {
+        public static ShaderDescription PSDataSampling = new ShaderDescription(nameof(PSDataSampling), ShaderStage.Pixel,
+            new ShaderReflector(), ShaderHelper.LoadShaderCode(@"Shaders\psMeshDataSampling.cso"));
+
+        public static ShaderDescription PSNoiseMesh = new ShaderDescription(nameof(PSNoiseMesh), ShaderStage.Pixel,
+            new ShaderReflector(), ShaderHelper.LoadShaderCode(@"Shaders\psMeshNoiseBlinnPhong.cso"));
+    }
+
     public class CustomEffectsManager : DefaultEffectsManager
     {
-        public CustomEffectsManager(IRenderTechniquesManager renderTechniquesManager) : base(renderTechniquesManager) { }
-
-        protected override void InitEffects()
+        public CustomEffectsManager()
         {
-            var custom = renderTechniquesManager.RenderTechniques["RenderCustom"];
-            var lines = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Lines];
-            var points = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Points];
-            var text = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.BillboardText];
-            var blinn = renderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
+            LoadCustomTechniqueDescriptions();
+        }
 
-            RegisterEffect(Properties.Resources._custom, new[] { custom, lines, points, text, blinn});
 
-            var customInputLayout = new InputLayout(device, GetEffect(custom).GetTechniqueByName("RenderCustom").GetPassByIndex(0).Description.Signature, new[]
+        private void LoadCustomTechniqueDescriptions()
+        {
+            var dataSampling = new TechniqueDescription(CustomShaderNames.DataSampling)
             {
-                new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
-                new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
-                new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
-                new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
-                new InputElement("COLOR",    1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-
-                //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
-                new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-                new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-                new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-                new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            });
-
-            RegisterLayout(new[] { custom, lines, points, text, blinn}, customInputLayout);
-
-            var linesInputLayout = new InputLayout(device, GetEffect(lines).GetTechniqueByName(DefaultRenderTechniqueNames.Lines).GetPassByIndex(0).Description.Signature, new[]
+                InputLayoutDescription = new InputLayoutDescription(CustomVSShaderDescription.VSMeshDataSamplerByteCode, DefaultInputLayout.VSInput),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            CustomVSShaderDescription.VSDataSampling,
+                            CustomPSShaderDescription.PSDataSampling
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    },
+                    new ShaderPassDescription(DefaultPassNames.Wireframe)
+                    {
+                        ShaderList = new[]
+                        {
+                            CustomVSShaderDescription.VSDataSampling,
+                            DefaultPSShaderDescriptions.PSMeshWireframe
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    }
+                }
+            };
+            var noiseMesh = new TechniqueDescription(CustomShaderNames.NoiseMesh)
             {
-                new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                new InputElement("COLOR",    1, Format.R32G32B32A32_Float,    InputElement.AppendAligned, 0),
-
-                //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
-                new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-                new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-                new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-                new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            });
-            RegisterLayout(new[]{lines},linesInputLayout);
-
-            var pointsInputLayout = new InputLayout(device, GetEffect(points).GetTechniqueByName(DefaultRenderTechniqueNames.Points).GetPassByIndex(0).Description.Signature, new[]
-            {
-                new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-                new InputElement("COLOR",    1, Format.R32G32B32A32_Float,    InputElement.AppendAligned, 0),
-            });
-            RegisterLayout(new[] { points }, pointsInputLayout);
-
-            var textInputLayout = new InputLayout(device, GetEffect(text).GetTechniqueByName(DefaultRenderTechniqueNames.BillboardText).GetPassByIndex(0).Description.Signature, new[]
-            {
-                new InputElement("POSITION", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
-                new InputElement("COLOR",    0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
-                new InputElement("TEXCOORD", 0, Format.R32G32B32A32_Float,  InputElement.AppendAligned, 0),
-            });
-            RegisterLayout(new[] { text }, textInputLayout);
+                InputLayoutDescription = new InputLayoutDescription(DefaultVSShaderByteCodes.VSMeshDefault, DefaultInputLayout.VSInput),
+                PassDescriptions = new[]
+                {
+                    new ShaderPassDescription(DefaultPassNames.Default)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            CustomPSShaderDescription.PSNoiseMesh
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    }
+                }
+            };
+            AddTechnique(dataSampling);
+            AddTechnique(noiseMesh);
         }
     }
 }

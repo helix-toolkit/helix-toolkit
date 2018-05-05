@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CustomShaderDemo</RootNamespace>
     <AssemblyName>CustomShaderDemo</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -39,7 +39,17 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PropertyTools, Version=2.0.1.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2.0.1\lib\net45\PropertyTools.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyTools.Wpf, Version=2.0.1.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyTools.Wpf.2.0.1\lib\net45\PropertyTools.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
       <Private>True</Private>
@@ -90,18 +100,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SelectableLineGeometryModel3D.cs" />
-    <Compile Include="SelectablePointGeometryModel3D.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttachedProperties.cs" />
     <Compile Include="CustomEffectsManager.cs" />
-    <Compile Include="CustomGeometryModel3D.cs" />
-    <Compile Include="CustomRenderTechniquesManager.cs" />
+    <Compile Include="CustomMeshCore.cs" />
+    <Compile Include="CustomMeshGeometryModel3D.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomMeshNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -125,7 +133,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Resources\_custom.bfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -147,22 +154,31 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Shaders\Default.fx" />
+    <Content Include="Shaders\Common.hlsl" />
+    <Content Include="Shaders\CommonBuffers.hlsl" />
+    <Content Include="Shaders\DataStructs.hlsl" />
+    <Content Include="Shaders\PerlinNoise3D.hlsl" />
+    <PixelShader Include="Shaders\psMeshNoiseBlinnPhong.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="Shaders\vsMeshDataSampling.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="Shaders\psMeshDataSampling.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Shaders\Common.fx" />
+    <Folder Include="Resources\" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Shaders\Material.fx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Shaders\BillboardText.fx" />
-    <Content Include="Shaders\Custom.fx" />
-    <Content Include="Shaders\Lines.fx" />
-    <Content Include="Shaders\Points.fx" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\packages\Microsoft.HLSL.CSharpVB.1.0.1\build\Microsoft.HLSL.CSharpVB.targets" Condition="Exists('..\..\..\packages\Microsoft.HLSL.CSharpVB.1.0.1\build\Microsoft.HLSL.CSharpVB.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.HLSL.CSharpVB.1.0.1\build\Microsoft.HLSL.CSharpVB.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.HLSL.CSharpVB.1.0.1\build\Microsoft.HLSL.CSharpVB.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

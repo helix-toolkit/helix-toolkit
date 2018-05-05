@@ -1,25 +1,33 @@
-﻿<Window x:Class="XRayDemo.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
-        xmlns:local="clr-namespace:XRayDemo"
-        xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf" 
-        mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+﻿<Window
+    x:Class="XRayDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    xmlns:local="clr-namespace:XRayDemo"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pt="clr-namespace:PropertyTools.Wpf;assembly=PropertyTools.Wpf"
+    Title="MainWindow"
+    Width="800"
+    Height="600"
+    mc:Ignorable="d">
     <Grid>
         <hx:Viewport3DX
             x:Name="view1"
             Title="{Binding Title}"
-            Grid.Row="0" Grid.Column="0" MSAA="Four"
+            Grid.Row="0"
+            Grid.Column="0"
+            Background="Black"
+            BackgroundColor="Black"
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="White"
+            EffectsManager="{Binding EffectsManager}"
+            FXAALevel="Low"
+            RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
-            UseDefaultGestures="False"
-            RenderTechnique="{Binding RenderTechnique}" Background="Black" BackgroundColor="0,0,0,0">
+            UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
                 <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
@@ -33,31 +41,47 @@
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
-            <hx:DirectionalLight3D
-                Direction="{Binding Light1Direction}"
-                Color="{Binding Light1Color}" />
+            <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
 
             <hx:MeshGeometryModel3D
-                x:Name="floor" CullMode="Back"
+                x:Name="floor"
+                CullMode="Back"
                 Geometry="{Binding Floor}"
-                Material="{Binding FloorMaterial}"/>
-            <hx:XRayMeshGeometryModel3D
-                x:Name="model" CullMode="Back" Transform="{Binding ModelTransform}"
-                Geometry="{Binding Model}" EnableOutline="True" Instances="{Binding Instances}"
-                Material="{Binding ModelMaterial}" OutlineColor="Orange"/>
+                Material="{Binding FloorMaterial}" />
+            <hx:MeshGeometryModel3D
+                x:Name="model"
+                CullMode="Back"
+                Geometry="{Binding Model}"
+                Instances="{Binding Instances}"
+                Material="{Binding ModelMaterial}"
+                PostEffects="xray"
+                Transform="{Binding ModelTransform}" />
 
             <hx:OutLineMeshGeometryModel3D
-                CullMode="Back" Transform="{Binding ModelTransform}"
-                Geometry="{Binding Model}" EnableOutline="True"  Instances="{Binding OutlineInstances}"
-                
-                Material="{Binding ModelMaterial}" OutlineColor="{Binding ElementName=model, Path=OutlineColor}" 
-                IsDrawGeometry="{Binding ElementName=model, Path=IsDrawGeometry}" OutlineFadingFactor="{Binding ElementName=model, Path=OutlineFadingFactor}"/>
+                CullMode="Back"
+                Geometry="{Binding Model}"
+                Instances="{Binding OutlineInstances}"
+                Material="{Binding ModelMaterial}"
+                OutlineColor="Yellow"
+                OutlineFadingFactor="{Binding ElementName=xrayEffect, Path=OutlineFadingFactor}"
+                Transform="{Binding ModelTransform}" />
+
+            <hx:PostEffectMeshXRay
+                x:Name="xrayEffect"
+                EffectName="xray"
+                EnableDoublePass="True" />
         </hx:Viewport3DX>
-        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Vertical" TextBlock.Foreground="White">
+        <StackPanel
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Orientation="Vertical"
+            TextBlock.Foreground="White">
             <Label Foreground="White">X Ray Color:</Label>
-            <pt:ColorPicker SelectedColor="{Binding ElementName=model, Path=OutlineColor}" Margin="4"/>
-            <CheckBox IsChecked="{Binding ElementName=model, Path=IsDrawGeometry}" Foreground="White" Margin="4">Draw Geometry</CheckBox>
-            <Slider Value="{Binding ElementName=model, Path=OutlineFadingFactor}" Minimum="1" Maximum="4"></Slider>
+            <pt:ColorPicker Margin="4" SelectedColor="{Binding ElementName=xrayEffect, Path=OutlineColor}" />
+            <Slider
+                Maximum="4"
+                Minimum="1"
+                Value="{Binding ElementName=xrayEffect, Path=OutlineFadingFactor}" />
         </StackPanel>
     </Grid>
 </Window>

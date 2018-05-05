@@ -11,12 +11,13 @@
     <AssemblyName>SimpleDemoW10</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>SimpleDemoW10_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -92,7 +93,18 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="project.json" />
+    <Content Include="Cubemap_Grandcanyon.dds">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FXT_Sparks_01_Atlas_d.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TextureCheckerboard2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TextureCheckerboard2_dot3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -101,12 +113,18 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainPageViewModel.cs" />
+    <Compile Include="OITDemoViewModel.cs" />
+    <Compile Include="ParticleViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="NITRO_ENGINE.3ds">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="SimpleDemoW10_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +152,42 @@
       <Project>{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}</Project>
       <Name>HelixToolkit.UWP</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\HelixToolkit\HelixToolkit.csproj">
+      <Project>{7c0e987e-cc34-4b19-ba6b-b381aeabb530}</Project>
+      <Name>HelixToolkit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights">
+      <Version>2.5.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.ApplicationInsights.PersistenceChannel">
+      <Version>1.2.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.0.8</Version>
+    </PackageReference>
+    <PackageReference Include="MvvmLightLibs">
+      <Version>5.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="SharpDX">
+      <Version>4.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="SharpDX.D3DCompiler">
+      <Version>4.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="SharpDX.Direct2D1">
+      <Version>4.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="SharpDX.Direct3D11">
+      <Version>4.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="SharpDX.DXGI">
+      <Version>4.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="SharpDX.Mathematics">
+      <Version>4.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

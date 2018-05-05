@@ -7,7 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 #if SHARPDX
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 #else
 namespace HelixToolkit.Wpf
 #endif
@@ -20,11 +24,12 @@ namespace HelixToolkit.Wpf
     using Vector3D = global::SharpDX.Vector3;
     using Point3D = global::SharpDX.Vector3;
     using Point = global::SharpDX.Vector2;
-    using Int32Collection = SharpDX.Core.IntCollection;
-    using Vector3DCollection = SharpDX.Core.Vector3Collection;
-    using Point3DCollection = SharpDX.Core.Vector3Collection;
-    using PointCollection = SharpDX.Core.Vector2Collection;
+    using Int32Collection = Core.IntCollection;
+    using Vector3DCollection = Core.Vector3Collection;
+    using Point3DCollection = Core.Vector3Collection;
+    using PointCollection = Core.Vector2Collection;
     using DoubleOrSingle = System.Single;
+    using HelixToolkit.Wpf;
 #else
     using System.Windows;
     using System.Windows.Media;
@@ -95,7 +100,9 @@ namespace HelixToolkit.Wpf
 
             for (int i = 0; i < normals.Count; i++)
             {
-                normals[i].Normalize();
+                var n = normals[i];
+                n.Normalize();
+                normals[i] = n;
             }
 
             return normals;
@@ -304,7 +311,7 @@ namespace HelixToolkit.Wpf
             }
 
 #if SHARPDX
-            return new MeshGeometry3D { Positions = p, TriangleIndices = new SharpDX.Core.IntCollection(ti), Normals = n, TextureCoordinates = tc };
+            return new MeshGeometry3D { Positions = p, TriangleIndices = new Core.IntCollection(ti), Normals = n, TextureCoordinates = tc };
 #else
             return new MeshGeometry3D { Positions = p, TriangleIndices = ti, Normals = n, TextureCoordinates = tc };
 #endif
@@ -364,7 +371,7 @@ namespace HelixToolkit.Wpf
                 ti.Add(dict.TryGetValue(index, out j) ? newIndex[j] : newIndex[index]);
             }
 #if SHARPDX
-            var result = new MeshGeometry3D { Positions = p, TriangleIndices = new SharpDX.Core.IntCollection(ti), };
+            var result = new MeshGeometry3D { Positions = p, TriangleIndices = new Core.IntCollection(ti), };
 #else
             var result = new MeshGeometry3D { Positions = p, TriangleIndices = ti };
 #endif
@@ -779,6 +786,31 @@ namespace HelixToolkit.Wpf
                 }
             }
             Debug.WriteLine(string.Format("Remesh finished. Output NumVert:{0};", verticesOut.Count));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="triangles"></param>
+        /// <param name="numVerts"></param>
+        public static void RemoveOutOfRangeTriangles(this IList<int> triangles, int numVerts)
+        {
+            var removeOutOfRangeTriangles = new List<int>();
+            for (int i = 0; i < triangles.Count; i += 3)
+            {
+                if (triangles[i] >= numVerts || triangles[i + 1] >= numVerts || triangles[i + 2] >= numVerts)
+                {
+                    removeOutOfRangeTriangles.Add(i);
+                }
+            }
+            if (removeOutOfRangeTriangles.Count > 0)
+            {
+                removeOutOfRangeTriangles.Reverse();
+                foreach (var idx in removeOutOfRangeTriangles)
+                {
+                    removeOutOfRangeTriangles.RemoveRange(idx, 3);
+                }
+            }
         }
     }
 }

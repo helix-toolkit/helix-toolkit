@@ -1,26 +1,40 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{4655B7B0-5C0D-4224-BAE1-C5D81413AE94}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo", "Examples\UWP\SimpleDemo\SimpleDemo.csproj", "{94B07B3F-AE9A-428E-B420-CC05827FB6D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.UWP", "HelixToolkit.UWP\HelixToolkit.UWP.csproj", "{DFF2684C-87F4-4AD9-8BB6-F6827CA9176E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE} = {50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}
+	EndProjectSection
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.Shared", "HelixToolkit.Shared\HelixToolkit.Shared.shproj", "{4EE18E80-7609-4FFF-BD4B-F02728EC0688}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.SharpDX.Shared", "HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.shproj", "{1EAF532E-D750-497B-BB8F-EE85359C78A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit", "HelixToolkit\HelixToolkit.csproj", "{7C0E987E-CC34-4B19-BA6B-B381AEABB530}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.SharpDX.ShaderBuilder", "HelixToolkit.SharpDX.ShaderBuilder\HelixToolkit.SharpDX.ShaderBuilder.csproj", "{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HelixToolkit.SharpDX.SharedModel", "HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.shproj", "{1AEFCB64-E997-425A-8C84-DC93263CC4A7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelixToolkit.SharpDX.Core", "HelixToolkit.SharpDX.Core\HelixToolkit.SharpDX.Core.csproj", "{C180CAD3-1B83-400B-A45D-571D4272C674}"
+	ProjectSection(ProjectDependencies) = postProject
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE} = {50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
-		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
-		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{4ee18e80-7609-4fff-bd4b-f02728ec0688}*SharedItemsImports = 13
+		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{1aefcb64-e997-425a-8c84-dc93263cc4a7}*SharedItemsImports = 13
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{1eaf532e-d750-497b-bb8f-ee85359c78a2}*SharedItemsImports = 13
+		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{4ee18e80-7609-4fff-bd4b-f02728ec0688}*SharedItemsImports = 13
+		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
+		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
+		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{dff2684c-87f4-4ad9-8bb6-f6827ca9176e}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,7 +47,9 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|Any CPU.Build.0 = Debug|x64
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|Any CPU.Deploy.0 = Debug|x64
 		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|ARM.ActiveCfg = Debug|ARM
 		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|ARM.Build.0 = Debug|ARM
 		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -43,7 +59,8 @@ Global
 		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|x86.ActiveCfg = Debug|x86
 		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|x86.Build.0 = Debug|x86
 		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|x86.Deploy.0 = Debug|x86
-		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|Any CPU.ActiveCfg = Release|x86
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|Any CPU.ActiveCfg = Release|x64
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|Any CPU.Deploy.0 = Release|x64
 		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|ARM.ActiveCfg = Release|ARM
 		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|ARM.Build.0 = Release|ARM
 		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|ARM.Deploy.0 = Release|ARM
@@ -85,11 +102,46 @@ Global
 		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|x64.Build.0 = Release|Any CPU
 		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|x86.ActiveCfg = Release|Any CPU
 		{7C0E987E-CC34-4B19-BA6B-B381AEABB530}.Release|x86.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|ARM.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x64.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Debug|x86.Build.0 = Debug|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|ARM.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|ARM.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x64.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x64.Build.0 = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x86.ActiveCfg = Release|Any CPU
+		{50F189FE-8DF0-4DA6-BA04-20AF1E7853DE}.Release|x86.Build.0 = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|x64.Build.0 = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Debug|x86.Build.0 = Debug|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|ARM.ActiveCfg = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|ARM.Build.0 = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|x64.ActiveCfg = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|x64.Build.0 = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|x86.ActiveCfg = Release|Any CPU
+		{C180CAD3-1B83-400B-A45D-571D4272C674}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{94B07B3F-AE9A-428E-B420-CC05827FB6D0} = {4655B7B0-5C0D-4224-BAE1-C5D81413AE94}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E0E6D7CB-11E4-4BAE-979B-82609458761D}
 	EndGlobalSection
 EndGlobal

@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
         private Font fontForDesignMode;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RenderForm"/> class.
+        /// Initializes a new instance of the <see cref="RenderControl"/> class.
         /// </summary>
         public RenderControl()
         {

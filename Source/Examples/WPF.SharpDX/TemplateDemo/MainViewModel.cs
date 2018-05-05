@@ -9,39 +9,57 @@ namespace TemplateDemo
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Windows.Media.Media3D;
-
+    using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
 
-    public class MainViewModel
+    public class MainViewModel : BaseViewModel
     {
-        public IList<Shape> Items { get; set; }   
-        
-        public DefaultEffectsManager EffectsManager { get; private set; }      
+        public ObservableCollection<SelectionViewModel> ViewModels { get; } = new ObservableCollection<SelectionViewModel>();
+        private SelectionViewModel selectedViewModel = null;
+        public SelectionViewModel SelectedViewModel
+        {
+            set
+            {
+                SetValue(ref selectedViewModel, value);
+            }
+            get { return selectedViewModel; }
+        }
 
-        public DefaultRenderTechniquesManager RenderTechniquesManager { get; private set; }
+        private PhongMaterialCollection materials = new PhongMaterialCollection();
+
         public MainViewModel()
         {
-            this.Items = new ObservableCollection<Shape>
-                             {
-                                 new Sphere
-                                     {
-                                         Transform = new TranslateTransform3D(0, 0, 0),
-                                         Material = PhongMaterials.Red
-                                     },
-                                 new Cube
-                                     {
-                                         Transform = new TranslateTransform3D(1, 0, 0),
-                                         Material = PhongMaterials.Green
-                                     },
-                                 new Cube
-                                     {
-                                         Transform = new TranslateTransform3D(-1, 0, 0),
-                                         Material = PhongMaterials.Blue
-                                     }
-                             };
+            EffectsManager = new DefaultEffectsManager();
 
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            CreateViewModels();
+        }
+
+        private void CreateViewModels()
+        {
+            var vm = new SelectionViewModel(nameof(Sphere));
+            for(int i=0; i<10; ++i)
+            {
+                vm.Items.Add(new Sphere() { Transform = new TranslateTransform3D(0, i, 0), Material = materials[i] });
+            }
+            ViewModels.Add(vm);
+
+            vm = new SelectionViewModel(nameof(Cube));
+            for (int i = 0; i < 10; ++i)
+            {
+                vm.Items.Add(new Cube() { Transform = new TranslateTransform3D(i, i, 0), Material = materials[i] });
+            }
+            ViewModels.Add(vm);
+        }
+    }
+
+    public class SelectionViewModel
+    {
+        public string Name { private set; get; }
+        public ObservableCollection<Shape> Items { get; } = new ObservableCollection<Shape>();
+
+        public SelectionViewModel(string name)
+        {
+            Name = name;
         }
     }
 }

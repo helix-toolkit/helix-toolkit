@@ -1,129 +1,106 @@
-﻿<Window x:Class="CustomShaderDemo.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"      
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"         
-        xmlns:sys="clr-namespace:System;assembly=mscorlib" 
-        xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics" 
-        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
-        xmlns:local="clr-namespace:CustomShaderDemo"
-        mc:Ignorable="d"         
-        Title="SharpDX in WPF" Height="500" Width="800">
+<Window
+    x:Class="CustomShaderDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    xmlns:local="clr-namespace:CustomShaderDemo"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pt="http://propertytools.org/wpf"
+    Title="SharpDX in WPF"
+    Width="800"
+    Height="500"
+    mc:Ignorable="d">
     <Window.DataContext>
-        <local:MainViewModel/>
+        <local:MainViewModel />
     </Window.DataContext>
     <Window.Resources>
-        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter"/>
-    </Window.Resources>    
+        <hx:RenderTechniqueConverter x:Key="RenderTechniqueConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
             <!--<RowDefinition Height="Auto"/>-->
         </Grid.RowDefinitions>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
         <Menu Grid.Row="0" VerticalAlignment="Top">
             <Menu.Background>
-                <SolidColorBrush Opacity="0.5" Color="WhiteSmoke"/>
+                <SolidColorBrush Opacity="0.5" Color="WhiteSmoke" />
             </Menu.Background>
             <MenuItem Header="View">
-                <MenuItem Header="Zoom extents" Command="hx:ViewportCommands.ZoomExtents"/>
+                <MenuItem Command="hx:ViewportCommands.ZoomExtents" Header="Zoom extents" />
             </MenuItem>
         </Menu>
-
-        <hx:Viewport3DX 
-            Grid.Row="1" 
-            x:Name="view1" 
+        
+        <hx:Viewport3DX
+            x:Name="view1"
+            Title="{Binding Title}" Grid.Column="0"
+            Grid.Row="1" BackgroundColor="Black"
             Camera="{Binding Camera}"
-            Title="{Binding Title}"
-            SubTitle="{Binding SubTitle}"
-            TextBrush="Black"           
-            ShowCoordinateSystem="False"
             CoordinateSystemLabelForeground="White"
-            UseDefaultGestures="False"  
+            EffectsManager="{Binding EffectsManager}"
+            MSAA="Two"
             RenderTechnique="{Binding RenderTechnique}"
-            EffectsManager="{Binding EffectsManager}">
+            ShowCoordinateSystem="True"
+            SubTitle="{Binding SubTitle}"
+            TextBrush="Black"
+            UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
-                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView"/>
-                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView"/>
-                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView"/>
-                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView"/>
-                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView"/>
-                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView"/>
-                <KeyBinding Gesture="Control+E" Command="hx:ViewportCommands.ZoomExtents"/>
-                <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Rotate"/>
-                <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom"/>
-                <MouseBinding Gesture="Shift+RightClick" Command="hx:ViewportCommands.Pan"/>
+                <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
+                <KeyBinding Key="F" Command="hx:ViewportCommands.FrontView" />
+                <KeyBinding Key="U" Command="hx:ViewportCommands.TopView" />
+                <KeyBinding Key="D" Command="hx:ViewportCommands.BottomView" />
+                <KeyBinding Key="L" Command="hx:ViewportCommands.LeftView" />
+                <KeyBinding Key="R" Command="hx:ViewportCommands.RightView" />
+                <KeyBinding Command="hx:ViewportCommands.ZoomExtents" Gesture="Control+E" />
+                <MouseBinding Command="hx:ViewportCommands.Rotate" Gesture="RightClick" />
+                <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
+                <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>
-            <hx:DirectionalLight3D Color="{Binding DirectionalLightColor}" Direction = "{Binding DirectionalLightDirection}"/>
-            <local:CustomGeometryModel3D x:Name="model1" Geometry="{Binding Model}" Transform = "{Binding Model1Transform}" Material="{Binding RedMaterial}" local:AttachedProperties.ShowSelected="False" />
-            <local:CustomGeometryModel3D x:Name="model2" Geometry="{Binding Model}" Transform = "{Binding Model2Transform}" Material="{Binding GreenMaterial}" local:AttachedProperties.ShowSelected="False"/>
-            <local:CustomGeometryModel3D x:Name="model3" Geometry="{Binding Model}" Transform = "{Binding Model3Transform}" Material="{Binding BlueMaterial}" local:AttachedProperties.ShowSelected="False"/>
-            <local:SelectableLineGeometryModel3D x:Name="lines"  Geometry="{Binding Lines}" Transform = "{Binding Model1Transform}" Color="{x:Static sdxm:Color.Black}" Thickness="1.5" local:AttachedProperties.ShowSelected="True"/>
-            <hx:LineGeometryModel3D x:Name="grid"   Geometry="{Binding Grid}"  Transform = "{Binding GridTransform}"   Color="{Binding GridColor}" local:AttachedProperties.ShowSelected="False"/>
-            <local:SelectablePointGeometryModel3D x:Name="points" 
-                                                  Geometry="{Binding Points}" Transform="{Binding Model1Transform}" 
-                                                  Color="{x:Static sdxm:Color.Black}" 
-                                                  Size="10 10" 
-                                                  Figure="Ellipse" 
-                                                  HitTestThickness="5"
-                                                  local:AttachedProperties.ShowSelected="False"/>
-            <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding Text}" Transform ="{Binding Model1Transform}"/>
+            <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" Color="White" />
+            <local:CustomMeshGeometryModel3D
+                x:Name="dataVisual"
+                ColorGradient="{Binding ColorGradient}"
+                FillMode="{Binding FillMode}"
+                Geometry="{Binding Model}"
+                Material="{Binding ModelMaterial}" RenderWireframe="True" WireframeColor="#3F3B3B3B"/>
+            <hx:LineGeometryModel3D Geometry="{Binding AxisModel}" Color="White" />
+            <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding AxisLabel}" IsTransparent="True"/>
+            <hx:MeshGeometryModel3D
+                CullMode="Back"
+                FillMode="{Binding FillMode}"
+                Geometry="{Binding SphereModel}"
+                Material="{Binding SphereMaterial}" />
         </hx:Viewport3DX>
 
-        <Button Click="Button_Click" Content="Change Selection"/>
-
-        <StackPanel Grid.Row="1" >
-            <Expander Header="Render Technique" x:Name="shadingPanel" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" BorderBrush="LightGray" IsExpanded="True" Margin="10">
-                <Expander.Background>
-                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke"/>
-                </Expander.Background>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>                    
-                    <ComboBox  Grid.Row="0" 
-                               DisplayMemberPath="Key" 
-                               SelectedValuePath="Value"
-                               SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}" 
-                               ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}" 
-                               SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}, Mode=TwoWay}" 
-                               IsReadOnly="True" 
-                               Margin="3" 
-                               Grid.ColumnSpan="2"/>
-                </Grid>
-            </Expander>            
+        <StackPanel
+            Grid.Column="1"
+            Grid.Row="1"
+            Margin="10"
+            HorizontalAlignment="Right"
+            Orientation="Vertical">
+            <Button Margin="5" Command="{Binding GenerateNoiseCommand}">Update Data</Button>
+            <CheckBox Margin="5" IsChecked="{Binding ElementName=dataVisual, Path=RenderWireframe}">Show Wireframe</CheckBox>
+            <StackPanel Orientation="Horizontal">
+                <Label>Height Scale:</Label>
+                <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=dataVisual, Path=HeightScale, StringFormat=N2}" />
+            </StackPanel>
+            <Slider
+                Margin="0,0,0,5"
+                Maximum="10"
+                Minimum="-10"
+                Value="{Binding ElementName=dataVisual, Path=HeightScale}" />
+            <Label>Color Min:</Label>
+            <pt:ColorPicker SelectedColor="{Binding StartColor}" />
+            <Label>Color Middle:</Label>
+            <pt:ColorPicker SelectedColor="{Binding MidColor}" />
+            <Label>Color Max:</Label>
+            <pt:ColorPicker SelectedColor="{Binding EndColor}" />
         </StackPanel>
-        
-        <StatusBar Grid.Row="1" VerticalAlignment="Bottom">
-            <StatusBar.Background>
-                <SolidColorBrush Opacity="0.5" Color="WhiteSmoke"/>
-            </StatusBar.Background>
-            <StatusBarItem>
-                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding FpsCounter.Value, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}"/>
-            </StatusBarItem>
-            <Separator/>
-            <StatusBarItem>
-                <TextBlock Text="{Binding Camera.Position, StringFormat=Position: \{0:0.0\}}"/>
-            </StatusBarItem>
-            <Separator/>
-            <StatusBarItem>
-                <TextBlock Text="{Binding Camera.LookDirection, StringFormat=LookDirection: \{0:0.0\}}"/>
-            </StatusBarItem>
-            <Separator/>
-            <StatusBarItem>
-                <TextBlock Text="{Binding Camera.UpDirection, StringFormat=UpDirection: \{0:0.0\}}"/>
-            </StatusBarItem>
-            <Separator/>
-            <StatusBarItem>
-                <TextBlock Text="{Binding Items.Count, ElementName=view1, StringFormat=Children: \{0\}}"/>
-            </StatusBarItem>
-        </StatusBar>
-    
     </Grid>
 </Window>

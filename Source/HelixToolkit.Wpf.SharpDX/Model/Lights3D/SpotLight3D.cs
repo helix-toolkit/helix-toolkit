@@ -12,34 +12,47 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System;
     using System.Windows;
+    using System.Windows.Media.Media3D;
+    using Model;
+    using Model.Scene;
 
-    using global::SharpDX;
-
-    using HelixToolkit.Wpf.SharpDX.Extensions;
-
-    public sealed class SpotLight3D : PointLightBase3D
+    public sealed class SpotLight3D : PointLight3D
     {
+        public static readonly DependencyProperty DirectionProperty =
+            DependencyProperty.Register("Direction", typeof(Vector3D), typeof(SpotLight3D), new PropertyMetadata(new Vector3D(),
+                (d, e) => {
+                    ((d as Element3DCore).SceneNode as SpotLightNode).Direction = ((Vector3D)e.NewValue).ToVector3();
+                }));
+
         public static readonly DependencyProperty FalloffProperty =
-            DependencyProperty.Register("Falloff", typeof(double), typeof(SpotLight3D), new AffectsRenderPropertyMetadata(1.0,
+            DependencyProperty.Register("Falloff", typeof(double), typeof(SpotLight3D), new PropertyMetadata(1.0,
                 (d,e)=> {
-                    (d as SpotLight3D).FalloffInternal = (double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as SpotLightNode).FallOff = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty InnerAngleProperty =
-            DependencyProperty.Register("InnerAngle", typeof(double), typeof(SpotLight3D), new AffectsRenderPropertyMetadata(5.0,
+            DependencyProperty.Register("InnerAngle", typeof(double), typeof(SpotLight3D), new PropertyMetadata(5.0,
                 (d, e) => {
-                    (d as SpotLight3D).InnerAngleInternal = (double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as SpotLightNode).InnerAngle = (float)(double)e.NewValue;
                 }));
 
         public static readonly DependencyProperty OuterAngleProperty =
-            DependencyProperty.Register("OuterAngle", typeof(double), typeof(SpotLight3D), new AffectsRenderPropertyMetadata(45.0,
+            DependencyProperty.Register("OuterAngle", typeof(double), typeof(SpotLight3D), new PropertyMetadata(45.0,
                 (d, e) => {
-                    (d as SpotLight3D).OuterAngleInternal = (double)e.NewValue;
+                    ((d as Element3DCore).SceneNode as SpotLightNode).OuterAngle = (float)(double)e.NewValue;
                 }));
 
-
+        /// <summary>
+        /// Direction of the light.
+        /// It applies to Directional Light and to Spot Light,
+        /// for all other lights it is ignored.
+        /// </summary>
+        public Vector3D Direction
+        {
+            get { return (Vector3D)this.GetValue(DirectionProperty); }
+            set { this.SetValue(DirectionProperty, value); }
+        }
         /// <summary>
         /// Decay Exponent of the spotlight.
         /// The falloff the spotlight between inner and outer angle
@@ -51,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (double)this.GetValue(FalloffProperty); }
             set { this.SetValue(FalloffProperty, value); }
         }
-        internal double FalloffInternal { private set; get; } = 1.0;
+
         /// <summary>
         /// Full outer angle of the spot (Phi) in degrees
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb174697(v=vs.85).aspx
@@ -62,7 +75,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(OuterAngleProperty, value); }
         }
 
-        internal double OuterAngleInternal { private set; get; } = 45.0;
         /// <summary>
         /// Full inner angle of the spot (Theta) in degrees. 
         /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/bb174697(v=vs.85).aspx
@@ -71,85 +83,24 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (double)this.GetValue(InnerAngleProperty); }
             set { this.SetValue(InnerAngleProperty, value); }
+        }   
+
+
+        protected override SceneNode OnCreateSceneNode()
+        {
+            return new SpotLightNode();
         }
 
-        internal double InnerAngleInternal { private set; get; } = 5.0;
-
-
-        public SpotLight3D()
+        protected override void AssignDefaultValuesToSceneNode(SceneNode core)
         {
-            this.LightType = LightType.Spot;
-        }
-
-        protected override bool OnAttach(IRenderHost host)
-        {
-            // --- attach
-            if (base.OnAttach(host))
+            base.AssignDefaultValuesToSceneNode(core);
+            if(core is SpotLightNode c)
             {
-                // --- light constant params            
-                this.vLightPos = this.effect.GetVariableByName("vLightPos").AsVector();
-                this.vLightDir = this.effect.GetVariableByName("vLightDir").AsVector();
-                this.vLightSpot = this.effect.GetVariableByName("vLightSpot").AsVector();
-                this.vLightColor = this.effect.GetVariableByName("vLightColor").AsVector();
-                this.vLightAtt = this.effect.GetVariableByName("vLightAtt").AsVector();
-                this.iLightType = this.effect.GetVariableByName("iLightType").AsScalar();
-
-                // --- Set light type
-                Light3DSceneShared.LightTypes[lightIndex] = (int)this.LightType;
-
-                // --- flush
-                // this.Device.ImmediateContext.Flush();
-                return true;
+                c.Direction = Direction.ToVector3();
+                c.InnerAngle = (float)InnerAngle;
+                c.OuterAngle = (float)OuterAngle;
+                c.FallOff = (float)Falloff;
             }
-            else
-            {
-                return false;
-            }
-        }
-
-        protected override void OnDetach()
-        {
-            Disposer.RemoveAndDispose(ref this.vLightPos);
-            Disposer.RemoveAndDispose(ref this.vLightDir);
-            Disposer.RemoveAndDispose(ref this.vLightSpot);
-            Disposer.RemoveAndDispose(ref this.vLightColor);
-            Disposer.RemoveAndDispose(ref this.vLightAtt);
-            Disposer.RemoveAndDispose(ref this.iLightType);
-            base.OnDetach();
-        }
-
-        protected override bool CanRender(RenderContext context)
-        {
-            if (base.CanRender(context))
-            {
-                return !renderHost.IsDeferredLighting;
-                //if (renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.Deferred) ||
-                //    renderHost.RenderTechnique == renderHost.RenderTechniquesManager.RenderTechniques.Get(DeferredRenderTechniqueNames.GBuffer))
-                //{
-                //    return false;
-                //}
-                //return true;
-            }
-            return false;
-        }
-
-        protected override void OnRender(RenderContext context)
-        {
-            // --- turn-on the light            
-            Light3DSceneShared.LightColors[lightIndex] = this.ColorInternal;
-            // --- Set lighting parameters
-            Light3DSceneShared.LightPositions[lightIndex] = this.PositionInternal.ToVector4();
-            Light3DSceneShared.LightDirections[lightIndex] = this.DirectionInternal.ToVector4();
-            Light3DSceneShared.LightSpots[lightIndex] = new Vector4((float)Math.Cos(this.OuterAngleInternal / 360.0 * Math.PI), (float)Math.Cos(this.InnerAngleInternal / 360.0 * Math.PI), (float)this.FalloffInternal, 0);
-            Light3DSceneShared.LightAtt[lightIndex] = new Vector4((float)this.AttenuationInternal.X, (float)this.AttenuationInternal.Y, (float)this.AttenuationInternal.Z, (float)this.RangeInternal);
-
-            // --- Update lighting variables    
-            this.vLightPos.Set(Light3DSceneShared.LightPositions);
-            this.vLightDir.Set(Light3DSceneShared.LightDirections);
-            this.vLightSpot.Set(Light3DSceneShared.LightSpots);
-            this.vLightColor.Set(Light3DSceneShared.LightColors);
-            this.vLightAtt.Set(Light3DSceneShared.LightAtt);
-            this.iLightType.Set(Light3DSceneShared.LightTypes);
         }
     }
 }

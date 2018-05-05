@@ -28,6 +28,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="model">
         /// The model.
         /// </param>
-        void Export(Model3D model);
+        void Export(Element3D model);
     }
 }

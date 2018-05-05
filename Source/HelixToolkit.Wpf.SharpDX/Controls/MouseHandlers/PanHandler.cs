@@ -28,22 +28,22 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Initializes a new instance of the <see cref="PanHandler"/> class.
         /// </summary>
-        /// <param name="viewport">
-        /// The viewport.
+        /// <param name="controller">
+        /// The camera controller.
         /// </param>
-        public PanHandler(Viewport3DX viewport)
-            : base(viewport)
+        public PanHandler(CameraController controller)
+            : base(controller)
         {
         }
 
         /// <summary>
         /// Occurs when the position is changed during a manipulation.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Delta(ManipulationEventArgs e)
+        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+        public override void Delta(Point e)
         {
             base.Delta(e);
-            var thisPoint3D = this.UnProject(e.CurrentPosition, this.panPoint3D, this.Camera.LookDirection);
+            var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.LookDirection);
 
             if (this.LastPoint3D == null || thisPoint3D == null)
             {
@@ -53,8 +53,8 @@ namespace HelixToolkit.Wpf.SharpDX
             var delta3D = this.LastPoint3D.Value - thisPoint3D.Value;
             this.Pan(delta3D);
 
-            this.LastPoint = e.CurrentPosition;
-            this.LastPoint3D = this.UnProject(e.CurrentPosition, this.panPoint3D, this.Camera.LookDirection);
+            this.LastPoint = e;
+            this.LastPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.LookDirection);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void Pan(Vector3D delta)
         {
-            if (!this.Viewport.IsPanEnabled)
+            if (!this.Controller.IsPanEnabled)
             {
                 return;
             }
@@ -106,8 +106,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Occurs when the manipulation is started.
         /// </summary>
-        /// <param name="e">The <see cref="ManipulationEventArgs"/> instance containing the event data.</param>
-        public override void Started(ManipulationEventArgs e)
+        /// <param name="e">The <see cref="Point"/> instance containing the event data.</param>
+        public override void Started(Point e)
         {
             base.Started(e);
             this.panPoint3D = this.Camera.Target;
@@ -127,7 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         protected override bool CanExecute()
         {
-            return this.Viewport.IsPanEnabled && this.Viewport.CameraMode != CameraMode.FixedPosition;
+            return this.Controller.IsPanEnabled && this.Controller.CameraMode != CameraMode.FixedPosition;
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         protected override Cursor GetCursor()
         {
-            return this.Viewport.PanCursor;
+            return this.Controller.PanCursor;
         }
 
         /// <summary>
@@ -147,10 +147,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="elapsedTime">
         /// The elapsed time (milliseconds).
         /// </param>
-        protected override void OnInertiaStarting(int elapsedTime)
+        protected override void OnInertiaStarting(double elapsedTime)
         {
             var speed = (this.LastPoint - this.MouseDownPoint) * (40.0 / elapsedTime);
-            this.Viewport.AddPanForce(speed.X, speed.Y);
+            this.Controller.AddPanForce(speed.X, speed.Y);
         }
     }
 }

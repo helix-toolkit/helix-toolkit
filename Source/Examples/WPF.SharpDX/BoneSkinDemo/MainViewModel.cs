@@ -1,24 +1,25 @@
 ﻿using DemoCore;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
+//using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
 using Media3D = System.Windows.Media.Media3D;
+using System.Windows.Media;
+using Vector3 = global::SharpDX.Vector3;
+using Matrix = global::SharpDX.Matrix;
+using Vector4 = global::SharpDX.Vector4;
 
 namespace BoneSkinDemo
 {
     public class MainViewModel : BaseViewModel
     {
-        private Vector3 light1Direction = new Vector3();
-        public Vector3 Light1Direction
+        private Media3D.Vector3D light1Direction = new Media3D.Vector3D();
+        public Media3D.Vector3D Light1Direction
         {
             set
             {
@@ -34,8 +35,8 @@ namespace BoneSkinDemo
             }
         }
 
-        public Color4 Light1Color { get; set; }
-        public Color4 AmbientLightColor { get; set; }
+        public Color Light1Color { get; set; }
+        public Color AmbientLightColor { get; set; }
 
         private Media3D.Vector3D camLookDir = new Media3D.Vector3D(-10, -10, -10);
         public Media3D.Vector3D CamLookDir
@@ -46,7 +47,7 @@ namespace BoneSkinDemo
                 {
                     camLookDir = value;
                     OnPropertyChanged();
-                    Light1Direction = value.ToVector3();
+                    Light1Direction = value;
                 }
             }
             get
@@ -73,10 +74,19 @@ namespace BoneSkinDemo
         {
             private set;get;
         }
+        public MeshGeometry3D FloorModel
+        {
+            private set;get;
+        }
         public PhongMaterial Material
         {
             private set;get;
         }
+
+        public PhongMaterial FloorMaterial
+        {
+            get;
+        } = PhongMaterials.Indigo;
 
         private IList<BoneIds> vertexBoneParams;
         public IList<BoneIds> VertexBoneParams
@@ -160,24 +170,24 @@ namespace BoneSkinDemo
 
         private const int NumSegments = 100;
         private const int Theta = 24;
-        private IList<Vector3> path;
+        private IList<SharpDX.Vector3> path;
         private int numSegmentPerBone;
         public MainViewModel()
         {
             this.Title = "BoneSkin Demo";
             this.SubTitle = "WPF & SharpDX";
-            RenderTechniquesManager = new DefaultRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques[DefaultRenderTechniqueNames.Blinn];
-            EffectsManager = new DefaultEffectsManager(RenderTechniquesManager);
+            EffectsManager = new DefaultEffectsManager();
+            RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
+           
             this.Camera = new HelixToolkit.Wpf.SharpDX.PerspectiveCamera
             {
                 Position = new Media3D.Point3D(20, 20, 20),
                 LookDirection = new Media3D.Vector3D(-20, -20, -20),
                 UpDirection = new Media3D.Vector3D(0, 1, 0)
             };
-            this.Light1Color = (Color4)Color.White;
-            this.Light1Direction = new Vector3(-10, -10, -10);
-            this.AmbientLightColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f);
+            this.Light1Color = Colors.White;
+            this.Light1Direction = new Media3D.Vector3D(-10, -10, -10);
+            this.AmbientLightColor = Colors.DarkGray;
             SetupCameraBindings(this.Camera);
 
             var builder = new MeshBuilder(true, true, true);
@@ -195,7 +205,7 @@ namespace BoneSkinDemo
             }
             Material = new PhongMaterial()
             {
-                DiffuseColor = Color.MistyRose
+                DiffuseColor = Colors.SteelBlue.ToColor4()
             };
             for(int i=0; i< numBonesInModel; ++i)
             {
@@ -205,6 +215,10 @@ namespace BoneSkinDemo
             {
                 Bones = boneInternal.ToArray()
             };
+
+            builder = new MeshBuilder(true, true, false);
+            builder.AddBox(new Vector3(), 40, 0.5, 40, BoxFaces.All);
+            FloorModel = builder.ToMesh();
 
             int boneId = 0;
             numSegmentPerBone = (int)Math.Max(1, (double)Model.Positions.Count / Theta / (numBonesInModel - 1));
@@ -308,6 +322,13 @@ namespace BoneSkinDemo
             binding.Source = viewModel;
             binding.Mode = mode;
             BindingOperations.SetBinding(dobj, property, binding);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            timer.Stop();
+            timer.Tick -= this.Timer_Tick;
+            base.Dispose(disposing);
         }
     }
 }

@@ -1,0 +1,253 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+      <TargetFramework>netstandard1.1</TargetFramework>
+      <Copyright>Copyright (C) Helix Toolkit 2018.</Copyright>
+      <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+      <PackageProjectUrl>http://www.helix-toolkit.org/</PackageProjectUrl>
+      <PackageIconUrl>https://avatars3.githubusercontent.com/u/8432523?s=200&amp;v=4</PackageIconUrl>
+      <RepositoryUrl>https://github.com/helix-toolkit/helix-toolkit</RepositoryUrl>
+      <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <PixelShader Include="PS\psEffectGaussianBlurVertical.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psEffectMeshBorderHighlight.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psEffectOutlineQuadStencil.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psDepthStencilOnly.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsMeshOutlinePass1.hlsl">
+      <EntryPointName>VSMeshOutlineP1</EntryPointName>
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsBoneSkinningWireframe.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsMeshWireframe.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psWireframe.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+      <PixelShader Include="PS\psWireframeOIT.hlsl">
+          <ShaderModel>4_0</ShaderModel>
+          <EntryPointName>wireframeOIT</EntryPointName>
+      </PixelShader>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Common\CommonBuffers.hlsl" />
+    <Content Include="Common\Common.hlsl" />
+    <Content Include="Common\DataStructs.hlsl" />
+    <VertexShader Include="VS\vsMeshClipPlane.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsScreenDupCursor.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psEffectBloomCombine.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psEffectBloomBlurHorizontal.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psEffectBloomBlurVertical.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psEffectMeshXRay.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psEffectOutlineQualFinal.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psEffectGaussianBlurHorizontal.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsMeshOutlineScreenQuad.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psEffectOutlineQuad.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psScreenDup.hlsl" />
+    <VertexShader Include="VS\vsScreenDup.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psSkybox.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsSkybox.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsPointShadow.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psShadow.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsBoneSkinningShadow.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsMeshShadow.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psLineColor.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psViewCube.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psDiffuseMap.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <GeometryShader Include="GS\gsParticle.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </GeometryShader>
+    <PixelShader Include="PS\psParticle.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+      <PixelShader Include="PS\psParticleOIT.hlsl">
+          <ShaderModel>4_0</ShaderModel>
+          <EntryPointName>particleOIT</EntryPointName>
+      </PixelShader>
+    <VertexShader Include="VS\vsParticle.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsBoneSkinningTessellation.hlsl">
+      <ShaderModel>5_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsBillboardInstancing.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsMeshInstancingTessellation.hlsl">
+      <ShaderModel>5_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsMeshTessellation.hlsl">
+      <ShaderModel>5_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psMeshClipPlaneQuad.hlsl">
+      <EntryPointName>main</EntryPointName>
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsMeshClipPlaneQuad.hlsl">
+      <EntryPointName>main</EntryPointName>
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psMeshClipPlaneBackface.hlsl">
+      <EntryPointName>psClipPlaneBackFace</EntryPointName>
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsBillboard.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <GeometryShader Include="GS\gsLine.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </GeometryShader>
+    <PixelShader Include="PS\psLine.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psPoint.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsPoint.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <GeometryShader Include="GS\gsPoint.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </GeometryShader>
+    <PixelShader Include="PS\psMeshBlinnPhongOIT.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+      <EntryPointName>meshBlinnPhongOIT</EntryPointName>
+    </PixelShader>
+    <PixelShader Include="PS\psMeshBlinnPhongOITQuad.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>     
+    <PixelShader Include="PS\psBillboardText.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+      <PixelShader Include="PS\psBillboardTextOIT.hlsl">
+          <ShaderModel>4_0</ShaderModel>
+          <EntryPointName>billboardTextOIT</EntryPointName>
+      </PixelShader>
+    <GeometryShader Include="GS\gsBillboard.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </GeometryShader>
+    <HullShader Include="HS\hsMeshTriTessellation.hlsl" />
+    <DomainShader Include="DS\dsMeshTriTessellation.hlsl" />
+    <ComputeShader Include="CS\csParticleInsert.hlsl">
+      <ShaderModel>5_0</ShaderModel>
+    </ComputeShader>
+    <ComputeShader Include="CS\csParticleUpdate.hlsl">
+      <ShaderModel>5_0</ShaderModel>
+    </ComputeShader>
+    <Content Include="License.txt" />
+    <PixelShader Include="PS\psEffectBloomExtract.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+      <EntryPointName>psBloomExtract</EntryPointName>
+    </PixelShader>
+    <Content Include="PS\psCommon.hlsl" />
+    <PixelShader Include="PS\psMeshXRay.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsBoneSkinning.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <VertexShader Include="VS\vsCubeMap.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psColor.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psNormals.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <PixelShader Include="PS\psPositions.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsMeshInstancing.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+    <PixelShader Include="PS\psMeshBlinnPhong.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </PixelShader>
+    <VertexShader Include="VS\vsMeshDefault.hlsl">
+      <ShaderModel>4_0</ShaderModel>
+    </VertexShader>
+      <PixelShader Include="PS\psFXAA.hlsl">
+          <ShaderModel>4_0</ShaderModel>
+          <EntryPointName>main</EntryPointName>
+      </PixelShader>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.HLSL.CSharpVB" Version="1.0.1" />
+  </ItemGroup>
+  <PropertyGroup>
+      <PostBuildEvent>
+          xcopy /y /f /i $(TargetDir)VS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+          xcopy /y /f /i $(TargetDir)PS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+          xcopy /y /f /i $(TargetDir)GS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+          xcopy /y /f /i $(TargetDir)DS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+          xcopy /y /f /i $(TargetDir)HS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+          xcopy /y /f /i $(TargetDir)CS\*.cso "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources"
+
+          xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.UWP\Resources"
+
+          xcopy /y /q /i "$(SolutionDir)HelixToolkit.Wpf.SharpDX\Resources\*.cso" "$(SolutionDir)HelixToolkit.SharpDX.Core\Resources"
+      </PostBuildEvent>
+    <Version>0.0.0.1</Version>
+    <Authors>HelixToolkit Contributors</Authors>
+    <Company>HelixToolkit</Company>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

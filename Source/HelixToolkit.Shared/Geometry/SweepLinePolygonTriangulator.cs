@@ -7,7 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 #if SHARPDX
+#if NETFX_CORE
+namespace HelixToolkit.UWP
+#else
 namespace HelixToolkit.Wpf.SharpDX
+#endif
 #else
 namespace HelixToolkit.Wpf
 #endif
@@ -81,7 +85,7 @@ namespace HelixToolkit.Wpf
                 }
                 else
                 {
-                    return new Int32Collection { 2, 1, 1 };
+                    return new Int32Collection { 0, 2, 1 };
                 }
             }
 
@@ -328,7 +332,8 @@ namespace HelixToolkit.Wpf
                         {
                             // Search Edge left of the Event and set Event as it's Helper
                             she = statusAndHelper.SearchLeft(ev);
-                            she.Helper = ev;
+                            if (she != null)
+                                she.Helper = ev;
                         }
                         break;
                     case PolygonPointClass.Merge:
@@ -336,21 +341,25 @@ namespace HelixToolkit.Wpf
                         statusAndHelper.Remove(sweepDown ? ev.EdgeOne : ev.EdgeTwo);
                         // Search Edge left of the Event and set Event as it's Helper
                         she = statusAndHelper.SearchLeft(ev);
-                        she.Helper = ev;
+                        if (she != null)
+                            she.Helper = ev;
                         break;
                     case PolygonPointClass.Split:
                         // Search Edge left of the Event
                         she = statusAndHelper.SearchLeft(ev);
-                        // Chose diagonal from Helper of Edge to Event.
-                        var minP = Math.Min(she.Helper.Index, ev.Index);
-                        var maxP = Math.Max(she.Helper.Index, ev.Index);
-                        var diagonal = new Tuple<int, int>(minP, maxP);
-                        diagonals.Add(diagonal);
+                        if (she != null)
+                        {
+                            // Chose diagonal from Helper of Edge to Event.
+                            var minP = Math.Min(she.Helper.Index, ev.Index);
+                            var maxP = Math.Max(she.Helper.Index, ev.Index);
+                            var diagonal = new Tuple<int, int>(minP, maxP);
+                            diagonals.Add(diagonal);
 
-                        // Replace the Helper of the StatusHelperElement by Event
-                        she.Helper = ev;
-                        // Insert the right Edge from Event
-                        statusAndHelper.Add(new StatusHelperElement(sweepDown ? ev.EdgeTwo : ev.EdgeOne, ev));
+                            // Replace the Helper of the StatusHelperElement by Event
+                            she.Helper = ev;
+                            // Insert the right Edge from Event
+                            statusAndHelper.Add(new StatusHelperElement(sweepDown ? ev.EdgeTwo : ev.EdgeOne, ev));
+                        }
                         break;
                 }
             }

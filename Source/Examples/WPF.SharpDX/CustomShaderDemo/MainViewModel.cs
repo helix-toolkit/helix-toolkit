@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MainViewModel.cs" company="Helix Toolkit">
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
@@ -7,7 +7,7 @@
 namespace CustomShaderDemo
 {
     using System.Linq;
-
+    using System.Windows.Media;
     using DemoCore;
 
     using HelixToolkit.Wpf;
@@ -16,30 +16,117 @@ namespace CustomShaderDemo
 
     using SharpDX;
     using Media3D = System.Windows.Media.Media3D;
+    using Color = System.Windows.Media.Color;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
+    using System.Collections.Generic;
+    using System.Windows.Input;
+    using System;
+    using SharpDX.Direct3D11;
 
     public class MainViewModel : BaseViewModel
     {
         public MeshGeometry3D Model { get; private set; }
-        public LineGeometry3D Lines { get; private set; }
-        public LineGeometry3D Grid { get; private set; }
-        public PointGeometry3D Points { get; private set; }
-        public BillboardText3D Text { get; private set; }
+        public MeshGeometry3D SphereModel { get; private set; }
+        public LineGeometry3D AxisModel { get; private set; }
+        public BillboardText3D AxisLabel { private set; get; }
+        public PhongMaterial ModelMaterial { get; private set; } = PhongMaterials.White;
+        public PhongMaterial SphereMaterial { private set; get; } = PhongMaterials.Copper;
 
-        public PhongMaterial RedMaterial { get; private set; }
-        public PhongMaterial GreenMaterial { get; private set; }
-        public PhongMaterial BlueMaterial { get; private set; }
-        public SharpDX.Color GridColor { get; private set; }
+        private Color startColor;
+        /// <summary>
+        /// Gets or sets the StartColor.
+        /// </summary>
+        /// <value>
+        /// StartColor
+        /// </value>
+        public Color StartColor
+        {
+            set
+            {
+                if (SetValue(ref startColor, value))
+                {
+                    ColorGradient = new Color4Collection(GetGradients(startColor.ToColor4(), midColor.ToColor4(), endColor.ToColor4(), 100));
+                }
+            }
+            get { return startColor; }
+        }
 
-        public Media3D.Transform3D Model1Transform { get; private set; }
-        public Media3D.Transform3D Model2Transform { get; private set; }
-        public Media3D.Transform3D Model3Transform { get; private set; }
-        public Media3D.Transform3D GridTransform { get; private set; }
+        private Color midColor;
+        /// <summary>
+        /// Gets or sets the StartColor.
+        /// </summary>
+        /// <value>
+        /// StartColor
+        /// </value>
+        public Color MidColor
+        {
+            set
+            {
+                if (SetValue(ref midColor, value))
+                {
+                    ColorGradient = new Color4Collection(GetGradients(startColor.ToColor4(), midColor.ToColor4(), endColor.ToColor4(), 100));
+                }
+            }
+            get { return midColor; }
+        }
 
-        public Vector3 DirectionalLightDirection { get; private set; }
-        public Color4 DirectionalLightColor { get; private set; }
-        public Color4 AmbientLightColor { get; private set; }
+        private Color endColor;
+        /// <summary>
+        /// Gets or sets the StartColor.
+        /// </summary>
+        /// <value>
+        /// StartColor
+        /// </value>
+        public Color EndColor
+        {
+            set
+            {
+                if (SetValue(ref endColor, value))
+                {
+                    ColorGradient = new Color4Collection(GetGradients(startColor.ToColor4(), midColor.ToColor4(), endColor.ToColor4(), 100));
+                }
+            }
+            get { return endColor; }
+        }
+
+        private Color4Collection colorGradient;
+        public Color4Collection ColorGradient
+        {
+            private set
+            {
+                SetValue(ref colorGradient, value);
+            }
+            get { return colorGradient; }
+        }
+
+        private FillMode fillMode = FillMode.Solid;
+        public FillMode FillMode
+        {
+            set
+            {
+                SetValue(ref fillMode, value);
+            }
+            get { return fillMode; }
+        }
+
+        private bool showWireframe = false;
+        public bool ShowWireframe
+        {
+            set
+            {
+                if(SetValue(ref showWireframe, value))
+                {
+                    FillMode = value ? FillMode.Wireframe : FillMode.Solid;
+                }
+            }
+            get { return showWireframe; }
+        }
+
+        private int Width = 100;
+        private int Height = 100;
+
+        public ICommand GenerateNoiseCommand { private set; get; }
 
         public MainViewModel()
         {
@@ -49,70 +136,96 @@ namespace CustomShaderDemo
 
             // camera setup
             Camera = new PerspectiveCamera { 
-                Position = new Point3D(3, 3, 5), 
-                LookDirection = new Vector3D(-3, -3, -5), 
+                Position = new Point3D(-6, 8, 23), 
+                LookDirection = new Vector3D(11, -4, -23), 
                 UpDirection = new Vector3D(0, 1, 0),
-                FarPlaneDistance = 5000000
+                FarPlaneDistance = 5000
             };
 
-            // Create a custom render techniques manager that 
-            // only supports Phong and Blinn
-            RenderTechniquesManager = new CustomRenderTechniquesManager();
-            RenderTechnique = RenderTechniquesManager.RenderTechniques["RenderCustom"];
-            EffectsManager = new CustomEffectsManager(RenderTechniquesManager);
-
-            // setup lighting            
-            AmbientLightColor = new Color4(0.1f, 0.1f, 0.1f, 1.0f);
-            DirectionalLightColor = Color.White;
-            DirectionalLightDirection = new Vector3(-2, -5, -2);
-
-            // floor plane grid
-            Grid = LineBuilder.GenerateGrid();
-            GridColor = Color.Black;
-            GridTransform = new Media3D.TranslateTransform3D(-5, -1, -5);
-
-            // scene model3d
-            var b1 = new MeshBuilder();            
-            b1.AddSphere(new Vector3(0, 0, 0), 0.5);
-            b1.AddBox(new Vector3(0, 0, 0), 1, 0.5, 2, BoxFaces.All);
+            EffectsManager = new CustomEffectsManager();
+            RenderTechnique = EffectsManager[CustomShaderNames.NoiseMesh];
            
-            var meshGeometry = b1.ToMeshGeometry3D();
-            meshGeometry.Colors = new Color4Collection(meshGeometry.TextureCoordinates.Select(x => x.ToColor4()));
-            Model = meshGeometry;
 
-            // lines model3d
-            var e1 = new LineBuilder();
-            e1.AddBox(new Vector3(0, 0, 0), 1, 0.5, 2);
-            Lines = e1.ToLineGeometry3D();
-
-            // model transform
-            Model1Transform = new Media3D.TranslateTransform3D(0, 0, 0);
-            Model2Transform = new Media3D.TranslateTransform3D(-2, 0, 0);
-            Model3Transform = new Media3D.TranslateTransform3D(+2, 0, 0);
-
-            // model materials
-            RedMaterial = PhongMaterials.Red;
-            GreenMaterial = PhongMaterials.Green;
-            BlueMaterial = PhongMaterials.Blue;
-
-            Points = new PointGeometry3D();
-            var ptPos = new Vector3Collection();
-            var ptIdx = new IntCollection();
-
-            Text = new BillboardText3D();
-
-            for (int x = -5; x <= 5; x++)
+            var builder = new MeshBuilder(true);
+            Vector3[] points = new Vector3[Width*Height];
+            for(int i=0; i<Width; ++i)
             {
-                for (int y = -5; y <= 5; y++)
+                for(int j=0; j<Height; ++j)
                 {
-                    ptIdx.Add(ptPos.Count);
-                    ptPos.Add(new Vector3(x, -1, y));
-                    Text.TextInfo.Add(new TextInfo(string.Format("{0}:{1}", x, y), new Vector3(x, -1, y)));
+                    points[i * Width + j] = new Vector3(i / 10f, 0, j / 10f);
                 }
             }
+            builder.AddRectangularMesh(points, Width);
+            Model = builder.ToMesh();
+            for(int i=0; i<Model.Normals.Count; ++i)
+            {
+                Model.Normals[i] = new Vector3(0, Math.Abs(Model.Normals[i].Y), 0);
+            }
+            StartColor = Colors.Blue;
+            MidColor = Colors.Green;
+            EndColor = Colors.Red;
 
-            Points.Positions = ptPos;
-            Points.Indices = ptIdx;
+            var lineBuilder = new LineBuilder();
+            lineBuilder.AddLine(new Vector3(0, 0, 0), new Vector3(10, 0, 0));
+            lineBuilder.AddLine(new Vector3(0, 0, 0), new Vector3(0, 10, 0));
+            lineBuilder.AddLine(new Vector3(0, 0, 0), new Vector3(0, 0, 10));
+
+            AxisModel = lineBuilder.ToLineGeometry3D();
+            AxisModel.Colors = new Color4Collection(AxisModel.Positions.Count);
+            AxisModel.Colors.Add(Colors.Red.ToColor4());
+            AxisModel.Colors.Add(Colors.Red.ToColor4());
+            AxisModel.Colors.Add(Colors.Green.ToColor4());
+            AxisModel.Colors.Add(Colors.Green.ToColor4());
+            AxisModel.Colors.Add(Colors.Blue.ToColor4());
+            AxisModel.Colors.Add(Colors.Blue.ToColor4());
+
+            AxisLabel = new BillboardText3D();
+            AxisLabel.TextInfo.Add(new TextInfo() { Origin = new Vector3(11, 0, 0), Text = "X", Foreground = Colors.Red.ToColor4() });
+            AxisLabel.TextInfo.Add(new TextInfo() { Origin = new Vector3(0, 11, 0), Text = "Y", Foreground = Colors.Green.ToColor4() });
+            AxisLabel.TextInfo.Add(new TextInfo() { Origin = new Vector3(0, 0, 11), Text = "Z", Foreground = Colors.Blue.ToColor4() });
+
+            builder = new MeshBuilder(true);
+            builder.AddSphere(new Vector3(-15, 0, 0), 5);
+            SphereModel = builder.ToMesh();
+
+            GenerateNoiseCommand = new RelayCommand((o) => { CreatePerlinNoise(); });
+            CreatePerlinNoise();
+        }
+
+        public static IEnumerable<Color4> GetGradients(Color4 start, Color4 mid, Color4 end, int steps)
+        {
+            return GetGradients(start, mid, steps / 2).Concat(GetGradients(mid, end, steps / 2));
+        }
+
+        public static IEnumerable<Color4> GetGradients(Color4 start, Color4 end, int steps)
+        {
+            float stepA = ((end.Alpha - start.Alpha) / (steps - 1));
+            float stepR = ((end.Red - start.Red) / (steps - 1));
+            float stepG = ((end.Green - start.Green) / (steps - 1));
+            float stepB = ((end.Blue - start.Blue) / (steps - 1));
+
+            for (int i = 0; i < steps; i++)
+            {
+                yield return new Color4((start.Red + (stepR * i)),
+                                            (start.Green + (stepG * i)),
+                                            (start.Blue + (stepB * i)),
+                                            (start.Alpha + (stepA * i)));
+            }
+        }
+
+        private void CreatePerlinNoise()
+        {
+            float[] noise;
+            MathHelper.GenerateNoiseMap(Width, Height, 8, out noise);
+            Vector2Collection collection = new Vector2Collection(Width * Height);
+            for(int i=0; i<Width; ++i)
+            {
+                for(int j=0; j<Height; ++j)
+                {
+                    collection.Add(new Vector2(Math.Abs(noise[Width * i + j]), 0));
+                }
+            }
+            Model.TextureCoordinates = collection;
         }
     }
 }

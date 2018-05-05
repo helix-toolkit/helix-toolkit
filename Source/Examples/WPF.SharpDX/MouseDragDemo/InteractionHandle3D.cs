@@ -20,6 +20,7 @@ namespace MouseDragDemo
 
     using System.Windows.Input;
     using HelixToolkit.Wpf;
+    using HelixToolkit.Wpf.SharpDX.Cameras;
 
     public sealed class InteractionHandle3D : GroupModel3D, IHitable, ISelectable
     {
@@ -38,7 +39,7 @@ namespace MouseDragDemo
         private MeshGeometryModel3D[] edgeHandles = new MeshGeometryModel3D[4];
         private bool isCaptured;
         private Viewport3DX viewport;
-        private Camera camera;
+        private CameraCore camera;
         private System.Windows.Media.Media3D.Point3D lastHitPos;
         private MatrixTransform3D dragTransform;
         //private Material selectionMaterial;
@@ -179,7 +180,7 @@ namespace MouseDragDemo
             this.isCaptured = true;
             this.viewport = args.Viewport;
             this.camera = args.Viewport.Camera;
-            this.lastHitPos = args.HitTestResult.PointHit;
+            this.lastHitPos = args.HitTestResult.PointHit.ToPoint3D();
         }
 
         private void OnEdgeMouse3DUp(object sender, RoutedEventArgs e)
@@ -204,7 +205,7 @@ namespace MouseDragDemo
                 var normal = this.camera.LookDirection;
 
                 // hit position                        
-                var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos, normal);
+                var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos, normal.ToVector3D());
                 if (newHit.HasValue)
                 {
                     var offset = (newHit.Value - lastHitPos);
@@ -355,7 +356,7 @@ namespace MouseDragDemo
         {
             if (e.NewValue is PhongMaterial)
             {
-                foreach (var item in ((GroupModel3D)d).Items)
+                foreach (var item in ((GroupModel3D)d).Children)
                 {
                     var model = item as MaterialGeometryModel3D;
                     if (model != null)
