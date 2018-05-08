@@ -435,7 +435,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             get
             {
-                return UWPShaderBytePool.Read("psLUMA");
+                return UWPShaderBytePool.Read("psLuma");
             }
         }
 #if !NETFX_CORE

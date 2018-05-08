@@ -14,8 +14,8 @@ float4 main(PSInputBT input) : SV_Target
     float4 pixelColor = billboardTexture.Sample(samplerBillboard, input.t);
     float4 blend = input.foreground * pixelColor.x + input.background * (1 - pixelColor.x);
 
-    return blend * whengt((when_eq(BillboardMultiText, (uint) pfParams.x) + when_eq(BillboardSingleText, (uint) pfParams.x)), 0)
-    + pixelColor * any(when_neq(pixelColor, input.background)) * when_eq(BillboardImage, (uint) pfParams.x);
+    return blend * whengt((when_eq(BillboardMultiText, (int) pfParams.x) + when_eq(BillboardSingleText, (int) pfParams.x)), 0)
+    + pixelColor * any(when_neq(pixelColor, input.background)) * when_eq(BillboardImage, (int) pfParams.x);
 }
 
 #endif
