@@ -222,6 +222,10 @@
           <ShaderModel>4_0</ShaderModel>
           <EntryPointName>main</EntryPointName>
       </PixelShader>
+      <PixelShader Include="PS\psLuma.hlsl">
+          <ShaderModel>4_0</ShaderModel>
+          <EntryPointName>main</EntryPointName>
+      </PixelShader>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.HLSL.CSharpVB" Version="1.0.1" />

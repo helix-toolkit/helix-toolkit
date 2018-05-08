@@ -192,6 +192,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ScreenSpacedNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\SortingGroupNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ViewBoxNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\ColorBufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11RenderBufferBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11SwapChainCompositionRenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11SwapChainRenderBufferProxy.cs" />

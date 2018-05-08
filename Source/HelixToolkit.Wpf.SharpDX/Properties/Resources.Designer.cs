@@ -343,6 +343,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psLUMA {
+            get {
+                object obj = ResourceManager.GetObject("psLUMA", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psMeshBlinnPhong {
             get {
                 object obj = ResourceManager.GetObject("psMeshBlinnPhong", resourceCulture);

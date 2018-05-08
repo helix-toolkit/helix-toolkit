@@ -425,6 +425,19 @@ namespace HelixToolkit.UWP.Shaders
                 return UWPShaderBytePool.Read("psFXAA");
             }
         }
+        /// <summary>
+        /// Gets the ps effect luma.
+        /// </summary>
+        /// <value>
+        /// The ps effect luma.
+        /// </value>
+        public static byte[] PSEffectLUMA
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psLUMA");
+            }
+        }
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -632,6 +645,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSEffectFXAA = new ShaderDescription(nameof(PSEffectFXAA), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSEffectFXAA);
+        /// <summary>
+        /// The ps effect luma
+        /// </summary>
+        public static ShaderDescription PSEffectLUMA = new ShaderDescription(nameof(PSEffectLUMA), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectLUMA);
 #if !NETFX_CORE
         /// <summary>
         /// The ps screen dup

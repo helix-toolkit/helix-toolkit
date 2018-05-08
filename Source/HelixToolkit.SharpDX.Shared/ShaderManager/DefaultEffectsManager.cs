@@ -1224,7 +1224,18 @@ namespace HelixToolkit.UWP
                 InputLayoutDescription = InputLayoutDescription.EmptyInputLayout,
                 PassDescriptions = new[]
                 {
-                    new ShaderPassDescription(DefaultPassNames.Default)
+                    new ShaderPassDescription(DefaultPassNames.LumaPass)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshOutlineScreenQuad,
+                            DefaultPSShaderDescriptions.PSEffectLUMA
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                    },
+                    new ShaderPassDescription(DefaultPassNames.FXAAPass)
                     {
                         ShaderList = new[]
                         {

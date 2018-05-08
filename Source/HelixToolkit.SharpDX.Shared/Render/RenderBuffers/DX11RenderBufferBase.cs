@@ -6,7 +6,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using SharpDX.DXGI;
 using SharpDX.Direct3D11;
-using System.Linq;
 using System;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
@@ -91,6 +90,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The device context pool.
         /// </value>
         public IDeviceContextPool DeviceContextPool { get { return deviceContextPool; } }
+
+        private ColorBufferPool fullResolutionColorBufferPool;
+        /// <summary>
+        /// Gets the full resolution color buffer pool.
+        /// </summary>
+        /// <value>
+        /// The full resolution color buffer pool.
+        /// </value>
+        public ColorBufferPool FullResolutionColorBufferPool { get { return fullResolutionColorBufferPool; } }
 
         /// <summary>
         /// Gets or sets a value indicating whether this is initialized.
@@ -179,6 +187,20 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             OnCreateRenderTargetAndDepthBuffers(width, height, UseDepthStencilBuffer, out colorBuffer, out depthStencilBuffer);
             backBuffer = OnCreateBackBuffer(width, height);
             backBuffer.CreateRenderTargetView();
+            fullResolutionColorBufferPool = Collect(new ColorBufferPool(this.deviceResources,
+                new Texture2DDescription()
+                {
+                    BindFlags = BindFlags.ShaderResource | BindFlags.RenderTarget,
+                    Width = width,
+                    Height = height,
+                    Format = Format.R8G8B8A8_UNorm,
+                    CpuAccessFlags = CpuAccessFlags.None,
+                    OptionFlags = ResourceOptionFlags.None,
+                    MipLevels = 1,
+                    ArraySize = 1,
+                    SampleDescription = new SampleDescription(1, 0),
+                    Usage = ResourceUsage.Default
+                }));
             Initialized = true;
             OnNewBufferCreated?.Invoke(this, new Texture2DArgs(backBuffer));
             return backBuffer;
@@ -189,6 +211,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected virtual void DisposeBuffers()
         {
             DeviceContext2D.Target = null;
+            RemoveAndDispose(ref fullResolutionColorBufferPool);
             RemoveAndDispose(ref d2dTarget);
             RemoveAndDispose(ref colorBuffer);
             RemoveAndDispose(ref depthStencilBuffer);
