@@ -8,7 +8,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {    
     using Utilities;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class PingPongColorBuffers : DisposeObject
     {
         /// <summary>
@@ -99,8 +101,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private readonly IDevice3DResources deviceResources;
         public bool Initialized { private set; get; } = false;
         /// <summary>
-        /// Initializes a new instance of the <see cref="PostEffectMeshOutlineBlurCore"/> class.
+        /// Initializes a new instance of the <see cref="PingPongColorBuffers"/> class.
         /// </summary>
+        /// <param name="textureFormat">The texture format.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="deviceRes">The device resource.</param>
         public PingPongColorBuffers(global::SharpDX.DXGI.Format textureFormat, int width, int height, IDevice3DResources deviceRes)
         {
             texture2DDesc.Format = textureFormat;
