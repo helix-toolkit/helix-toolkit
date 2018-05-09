@@ -332,12 +332,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 renderer.RenderToPingPongBuffer(RenderContext, ref renderParameter);
                 renderParameter.IsMSAATexture = false;
-                
-                if (postProcNodes.Count > 0)
-                {
-                    RenderContext.UpdatePerFrameData();
-                    renderer.RenderPostProc(RenderContext, postProcNodes, ref renderParameter);
-                }
+                renderer.RenderPostProc(RenderContext, postProcNodes, ref renderParameter);
                 renderParameter.CurrentTargetTexture = RenderBuffer.FullResPPBuffer.CurrentTexture;
                 renderParameter.RenderTargetView = RenderBuffer.FullResPPBuffer.CurrentRTV;
             }
