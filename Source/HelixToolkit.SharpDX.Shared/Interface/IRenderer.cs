@@ -25,6 +25,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public DepthStencilView DepthStencilView;
         /// <summary>
+        /// Current rendered texture
+        /// </summary>
+        public Resource CurrentTargetTexture;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsMSAATexture;
+        /// <summary>
         /// The viewport region
         /// </summary>
         public ViewportF ViewportRegion;
@@ -132,6 +140,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         /// <returns></returns>
         int RenderTransparent(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
+        /// <summary>
+        /// Renders to intermediate ping pong buffer.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="parameter">The parameter.</param>
+        void RenderToPingPongBuffer(RenderContext context, ref RenderParameter parameter);
         /// <summary>
         /// Renders to back buffer.
         /// </summary>

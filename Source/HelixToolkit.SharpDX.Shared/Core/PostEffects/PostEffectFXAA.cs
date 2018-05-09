@@ -2,7 +2,6 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-#define LUMAPASS
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 
@@ -63,36 +62,22 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             var buffer = context.RenderHost.RenderBuffer;
-#if LUMAPASS
-            var resource = buffer.FullResolutionColorBufferPool.Get();
-            context.DeviceContext.OutputMerger.SetTargets(new RenderTargetView[] { resource });
+            context.DeviceContext.OutputMerger.SetTargets(null, new RenderTargetView[] { buffer.FullResPPBuffer.NextRTV });
             context.DeviceContext.Rasterizer.SetViewport(0, 0, buffer.TargetWidth, buffer.TargetHeight, 0.0f, 1.0f);
             context.DeviceContext.Rasterizer.SetScissorRectangle(0, 0, buffer.TargetWidth, buffer.TargetHeight);
 
             LUMAPass.BindShader(deviceContext);
             LUMAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
-            LUMAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.ColorBuffer);
+            LUMAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.CurrentSRV);
             LUMAPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
             deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             deviceContext.DeviceContext.Draw(4, 0);
-
-            buffer.SetDefaultRenderTargets(deviceContext, false);
+           
+            context.DeviceContext.OutputMerger.SetTargets(null, new RenderTargetView[] { buffer.FullResPPBuffer.CurrentRTV });
             FXAAPass.BindShader(deviceContext);
-            FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, resource);
+            FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
             deviceContext.DeviceContext.Draw(4, 0);
             FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
-
-            buffer.FullResolutionColorBufferPool.Put(resource);
-#else
-            buffer.SetDefaultRenderTargets(deviceContext, false);
-            FXAAPass.BindShader(deviceContext);
-            FXAAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
-            FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.ColorBuffer);
-            FXAAPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
-            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-            deviceContext.DeviceContext.Draw(4, 0);
-            FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
-#endif
         }
 
         protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)

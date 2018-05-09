@@ -91,14 +91,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public IDeviceContextPool DeviceContextPool { get { return deviceContextPool; } }
 
-        private ColorBufferPool fullResolutionColorBufferPool;
-        /// <summary>
-        /// Gets the full resolution color buffer pool.
-        /// </summary>
-        /// <value>
-        /// The full resolution color buffer pool.
-        /// </value>
-        public ColorBufferPool FullResolutionColorBufferPool { get { return fullResolutionColorBufferPool; } }
+        private PingPongColorBuffers fullResPPBuffer;
+        public PingPongColorBuffers FullResPPBuffer { get { return fullResPPBuffer; } }
 
         /// <summary>
         /// Gets or sets a value indicating whether this is initialized.
@@ -107,8 +101,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///   <c>true</c> if initialized; otherwise, <c>false</c>.
         /// </value>
         public bool Initialized { private set; get; } = false;
-
-
+        /// <summary>
+        /// Gets or sets the texture format.
+        /// </summary>
+        /// <value>
+        /// The format.
+        /// </value>
+        public Format Format { set; get; } = Format.B8G8R8A8_UNorm;
 #if MSAA
         /// <summary>
         /// Set MSAA level. If set to Two/Four/Eight, the actual level is set to minimum between Maximum and Two/Four/Eight
@@ -187,20 +186,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             OnCreateRenderTargetAndDepthBuffers(width, height, UseDepthStencilBuffer, out colorBuffer, out depthStencilBuffer);
             backBuffer = OnCreateBackBuffer(width, height);
             backBuffer.CreateRenderTargetView();
-            fullResolutionColorBufferPool = Collect(new ColorBufferPool(this.deviceResources,
-                new Texture2DDescription()
-                {
-                    BindFlags = BindFlags.ShaderResource | BindFlags.RenderTarget,
-                    Width = width,
-                    Height = height,
-                    Format = Format.R8G8B8A8_UNorm,
-                    CpuAccessFlags = CpuAccessFlags.None,
-                    OptionFlags = ResourceOptionFlags.None,
-                    MipLevels = 1,
-                    ArraySize = 1,
-                    SampleDescription = new SampleDescription(1, 0),
-                    Usage = ResourceUsage.Default
-                }));
+            fullResPPBuffer = Collect(new PingPongColorBuffers(Format, width, height, this.deviceResources));
             Initialized = true;
             OnNewBufferCreated?.Invoke(this, new Texture2DArgs(backBuffer));
             return backBuffer;
@@ -211,7 +197,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected virtual void DisposeBuffers()
         {
             DeviceContext2D.Target = null;
-            RemoveAndDispose(ref fullResolutionColorBufferPool);
             RemoveAndDispose(ref d2dTarget);
             RemoveAndDispose(ref colorBuffer);
             RemoveAndDispose(ref depthStencilBuffer);
@@ -264,7 +249,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             var colordesc = new Texture2DDescription
             {
                 BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-                Format = Format.B8G8R8A8_UNorm,
+                Format = Format,
                 Width = width,
                 Height = height,
                 MipLevels = 1,
@@ -389,10 +374,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public virtual bool EndDraw()
         {
-//            Device.ImmediateContext.Flush();
-//#if MSAA
-//            Device.ImmediateContext.ResolveSubresource(ColorBuffer.Resource, 0, backBuffer.Resource, 0, Format.B8G8R8A8_UNorm);
-//#endif  
             return true;
         }
         /// <summary>

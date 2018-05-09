@@ -233,26 +233,38 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }            
         }
 
-        public virtual void RenderToBackBuffer(RenderContext context, ref RenderParameter parameter)
+        public virtual void RenderToPingPongBuffer(RenderContext context, ref RenderParameter parameter)
         {
             var buffer = context.RenderHost.RenderBuffer;
-            if (context.RenderHost.RenderConfiguration.FXAALevel == FXAALevel.None || buffer.ColorBufferSampleDesc.Count > 1)
+            if (context.RenderHost.RenderConfiguration.FXAALevel == FXAALevel.None || parameter.IsMSAATexture)
             {
-                ImmediateContext.DeviceContext.Flush();               
-                switch (buffer.ColorBufferSampleDesc.Count)
+                if (parameter.IsMSAATexture)
                 {
-                    case 1:
-                        ImmediateContext.DeviceContext.CopyResource(buffer.ColorBuffer.Resource, buffer.BackBuffer.Resource);
-                        break;
-                    default:
-                        ImmediateContext.DeviceContext.ResolveSubresource(buffer.ColorBuffer.Resource, 0, buffer.BackBuffer.Resource, 0, Format.B8G8R8A8_UNorm);
-                        break;
+                    ImmediateContext.DeviceContext.ResolveSubresource(parameter.CurrentTargetTexture, 0, buffer.FullResPPBuffer.CurrentTexture, 0, buffer.Format);
+                }
+                else
+                {
+                    ImmediateContext.DeviceContext.CopyResource(parameter.CurrentTargetTexture, buffer.FullResPPBuffer.CurrentTexture);                    
                 }
             }
             else
             {
+                ImmediateContext.DeviceContext.CopyResource(parameter.CurrentTargetTexture, buffer.FullResPPBuffer.CurrentTexture);
                 postFXAACore.FXAALevel = context.RenderHost.RenderConfiguration.FXAALevel;
                 postFXAACore.Render(context, ImmediateContext);
+            }
+        }
+
+        public virtual void RenderToBackBuffer(RenderContext context, ref RenderParameter parameter)
+        {
+            var buffer = context.RenderHost.RenderBuffer;
+            if (parameter.IsMSAATexture)
+            {
+                ImmediateContext.DeviceContext.ResolveSubresource(parameter.CurrentTargetTexture, 0, buffer.BackBuffer.Resource, 0, buffer.Format);
+            }
+            else
+            {
+                ImmediateContext.DeviceContext.CopyResource(parameter.CurrentTargetTexture, buffer.BackBuffer.Resource);
             }
         }
 

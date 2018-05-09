@@ -312,6 +312,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 RenderTargetView = RenderTargetBufferView,
                 DepthStencilView = DepthStencilBufferView,
+                CurrentTargetTexture = RenderBuffer.ColorBuffer.Resource,
+                IsMSAATexture = RenderBuffer.ColorBufferSampleDesc.Count > 1,
                 ScissorRegion = new Rectangle(0, 0, RenderBuffer.TargetWidth, RenderBuffer.TargetHeight),
                 ViewportRegion = new ViewportF(0, 0, RenderBuffer.TargetWidth, RenderBuffer.TargetHeight),
                 RenderLight = RenderConfiguration.RenderLights,
@@ -323,10 +325,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             numRendered += renderer.RenderOpaque(RenderContext, opaqueNodes, ref renderParameter);
             numRendered += renderer.RenderOpaque(RenderContext, particleNodes, ref renderParameter);
             numRendered += renderer.RenderTransparent(RenderContext, transparentNodes, ref renderParameter);
+            renderer.RenderPostProc(RenderContext, screenSpacedNodes, ref renderParameter);          
             getPostEffectCoreTask?.Wait();
             getPostEffectCoreTask = null;
-            renderer.RenderPostProc(RenderContext, postProcNodes, ref renderParameter);
-            renderer.RenderPostProc(RenderContext, screenSpacedNodes, ref renderParameter);
+            if(RenderConfiguration.FXAALevel != FXAALevel.None || postProcNodes.Count > 0)
+            {
+                renderer.RenderToPingPongBuffer(RenderContext, ref renderParameter);
+                renderParameter.IsMSAATexture = false;
+                renderer.RenderPostProc(RenderContext, postProcNodes, ref renderParameter);
+                renderParameter.CurrentTargetTexture = RenderBuffer.FullResPPBuffer.CurrentTexture;                
+            }
             numRendered += preProcNodes.Count + postProcNodes.Count + screenSpacedNodes.Count;
             renderer.RenderToBackBuffer(RenderContext, ref renderParameter);
         }

@@ -73,7 +73,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
             var backBuffer = Collect(new ShaderResourceViewProxy(Device, Texture2D.FromSwapChain<Texture2D>(swapChain, 0)));
             var sampleDesc = swapChain.Description1.SampleDescription;
-            ColorBuffer.CreateRenderTargetView();
             d2dTarget = Collect(new D2DTargetProxy());
             d2dTarget.Initialize(swapChain, DeviceContext2D);
             return backBuffer;
