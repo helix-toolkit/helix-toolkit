@@ -21,10 +21,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             get
             {
-                if (!Initialized)
-                {
-                    Initialize();
-                }
                 return textures[0].TextureView;
             }
         }
@@ -39,10 +35,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             get
             {
-                if (!Initialized)
-                {
-                    Initialize();
-                }
                 return textures[1].TextureView;
             }
         }
@@ -61,10 +53,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             get
             {
-                if (!Initialized)
-                {
-                    Initialize();
-                }
                 return textures[0].RenderTargetView;
             }
         }
@@ -79,10 +67,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             get
             {
-                if (!Initialized)
-                {
-                    Initialize();
-                }
                 return textures[1].RenderTargetView;
             }
         }
@@ -91,10 +75,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             get
             {
-                if (!Initialized)
-                {
-                    Initialize();
-                }
                 return textures[0].Resource;
             }
         }
@@ -134,16 +114,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public void Initialize()
         {
-            if (!Initialized)
+            if (Initialized)
             {
-                for (int i = 0; i < NumPingPongBlurBuffer; ++i)
-                {
-                    textures[i] = Collect(new ShaderResourceViewProxy(deviceResources.Device, texture2DDesc));
-                    textures[i].CreateRenderTargetView();
-                    textures[i].CreateTextureView();
-                }
-                Initialized = true;
+                return;
             }
+            for (int i = 0; i < NumPingPongBlurBuffer; ++i)
+            {
+                textures[i] = Collect(new ShaderResourceViewProxy(deviceResources.Device, texture2DDesc));
+                textures[i].CreateRenderTargetView();
+                textures[i].CreateTextureView();
+            }
+            Initialized = true;
         }
 
         /// <summary>

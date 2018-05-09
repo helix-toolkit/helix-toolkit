@@ -232,10 +232,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 renderables[i].RenderCore.Render(context, ImmediateContext);
             }            
         }
-
+        /// <summary>
+        /// Renders to ping pong buffer.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="parameter">The parameter.</param>
         public virtual void RenderToPingPongBuffer(RenderContext context, ref RenderParameter parameter)
         {
             var buffer = context.RenderHost.RenderBuffer;
+            buffer.FullResPPBuffer.Initialize();
             if (context.RenderHost.RenderConfiguration.FXAALevel == FXAALevel.None || parameter.IsMSAATexture)
             {
                 if (parameter.IsMSAATexture)
@@ -254,7 +259,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 postFXAACore.Render(context, ImmediateContext);
             }
         }
-
+        /// <summary>
+        /// Renders to back buffer.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="parameter">The parameter.</param>
         public virtual void RenderToBackBuffer(RenderContext context, ref RenderParameter parameter)
         {
             var buffer = context.RenderHost.RenderBuffer;
