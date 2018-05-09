@@ -260,6 +260,33 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
         /// <summary>
+        /// Renders the screen spaced.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="renderables">The renderables.</param>
+        /// <param name="parameter">The parameter.</param>
+        public virtual void RenderScreenSpaced(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        {
+            int count = renderables.Count;
+            if(count > 0)
+            {
+                var buffer = context.RenderHost.RenderBuffer;
+                bool useDefault = parameter.RenderTargetView == buffer.ColorBuffer.RenderTargetView;
+
+                var depthStencilBuffer = useDefault ? buffer.DepthStencilBuffer : buffer.FullResDepthStencilPool.Get(Format.D32_Float_S8X24_UInt);
+                ImmediateContext.DeviceContext.OutputMerger.SetRenderTargets(depthStencilBuffer, parameter.RenderTargetView);
+
+                for (int i = 0; i < count; ++i)
+                {
+                    renderables[i].RenderCore.Render(context, ImmediateContext);
+                }
+                if (!useDefault)
+                {
+                    buffer.FullResDepthStencilPool.Put(Format.D32_Float_S8X24_UInt, depthStencilBuffer);
+                }
+            }
+        }
+        /// <summary>
         /// Renders to back buffer.
         /// </summary>
         /// <param name="context">The context.</param>

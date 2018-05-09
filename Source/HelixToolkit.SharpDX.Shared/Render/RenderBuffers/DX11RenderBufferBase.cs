@@ -94,6 +94,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private PingPongColorBuffers fullResPPBuffer;
         public PingPongColorBuffers FullResPPBuffer { get { return fullResPPBuffer; } }
 
+        private TexturePool fullResDepthStencilPool;
+        public TexturePool FullResDepthStencilPool { get { return fullResDepthStencilPool; } }
+
         /// <summary>
         /// Gets or sets a value indicating whether this is initialized.
         /// </summary>
@@ -187,6 +190,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             backBuffer = OnCreateBackBuffer(width, height);
             backBuffer.CreateRenderTargetView();
             fullResPPBuffer = Collect(new PingPongColorBuffers(Format, width, height, this.deviceResources));
+            fullResDepthStencilPool = Collect(new TexturePool(this.deviceResources, new Texture2DDescription()
+            {
+                Width = width,
+                Height = height,
+                ArraySize = 1,
+                BindFlags = BindFlags.DepthStencil,
+                CpuAccessFlags = CpuAccessFlags.None,
+                Usage = ResourceUsage.Default,
+                MipLevels = 1,
+                OptionFlags = ResourceOptionFlags.None,
+                SampleDescription = new SampleDescription(1, 0)
+            }));
             Initialized = true;
             OnNewBufferCreated?.Invoke(this, new Texture2DArgs(backBuffer));
             return backBuffer;
@@ -197,6 +212,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected virtual void DisposeBuffers()
         {
             DeviceContext2D.Target = null;
+            RemoveAndDispose(ref fullResPPBuffer);
+            RemoveAndDispose(ref fullResDepthStencilPool);
             RemoveAndDispose(ref d2dTarget);
             RemoveAndDispose(ref colorBuffer);
             RemoveAndDispose(ref depthStencilBuffer);
@@ -289,7 +306,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         public void SetDefaultRenderTargets(DeviceContext context, bool isColorBuffer = true)
         {
-            context.OutputMerger.SetTargets(isColorBuffer ? depthStencilBuffer : null, new RenderTargetView[] { isColorBuffer ? colorBuffer : backBuffer});
+            context.OutputMerger.SetTargets(isColorBuffer ? depthStencilBuffer : null, new RenderTargetView[] { isColorBuffer ? colorBuffer : backBuffer });
             //context.OutputMerger.SetTargets(depthStencilBuffer, new RenderTargetView[] { isColorBuffer ? colorBuffer : backBuffer });
             context.Rasterizer.SetViewport(0, 0, TargetWidth, TargetHeight, 0.0f, 1.0f);
             context.Rasterizer.SetScissorRectangle(0, 0, TargetWidth, TargetHeight);

@@ -147,6 +147,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         void RenderToPingPongBuffer(RenderContext context, ref RenderParameter parameter);
         /// <summary>
+        /// Renders the screen spaced.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="renderables">The renderables.</param>
+        /// <param name="parameter">The parameter.</param>
+        void RenderScreenSpaced(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter);
+        /// <summary>
         /// Renders to back buffer.
         /// </summary>
         /// <param name="context">The context.</param>

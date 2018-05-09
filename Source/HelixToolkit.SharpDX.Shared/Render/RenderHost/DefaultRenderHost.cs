@@ -325,19 +325,26 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             numRendered += renderer.RenderOpaque(RenderContext, opaqueNodes, ref renderParameter);
             numRendered += renderer.RenderOpaque(RenderContext, particleNodes, ref renderParameter);
             numRendered += renderer.RenderTransparent(RenderContext, transparentNodes, ref renderParameter);
-            renderer.RenderPostProc(RenderContext, screenSpacedNodes, ref renderParameter);          
+                 
             getPostEffectCoreTask?.Wait();
             getPostEffectCoreTask = null;
             if(RenderConfiguration.FXAALevel != FXAALevel.None || postProcNodes.Count > 0)
             {
                 renderer.RenderToPingPongBuffer(RenderContext, ref renderParameter);
                 renderParameter.IsMSAATexture = false;
-                RenderContext.UpdatePerFrameData();
-                renderer.RenderPostProc(RenderContext, postProcNodes, ref renderParameter);
-                renderParameter.CurrentTargetTexture = RenderBuffer.FullResPPBuffer.CurrentTexture;                
+                
+                if (postProcNodes.Count > 0)
+                {
+                    RenderContext.UpdatePerFrameData();
+                    renderer.RenderPostProc(RenderContext, postProcNodes, ref renderParameter);
+                }
+                renderParameter.CurrentTargetTexture = RenderBuffer.FullResPPBuffer.CurrentTexture;
+                renderParameter.RenderTargetView = RenderBuffer.FullResPPBuffer.CurrentRTV;
             }
-            numRendered += preProcNodes.Count + postProcNodes.Count + screenSpacedNodes.Count;
+           
+            renderer.RenderScreenSpaced(RenderContext, screenSpacedNodes, ref renderParameter);
             renderer.RenderToBackBuffer(RenderContext, ref renderParameter);
+            numRendered += preProcNodes.Count + postProcNodes.Count + screenSpacedNodes.Count;            
         }
 
         /// <summary>

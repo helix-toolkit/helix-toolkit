@@ -1,14 +1,14 @@
 ﻿using SharpDX.Direct3D11;
 using System.Collections.Concurrent;
-
+using Format = SharpDX.DXGI.Format;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
 #else
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
-{
-
+{    
     using Utilities;
+
     public sealed class PingPongColorBuffers : DisposeObject
     {
         /// <summary>
@@ -140,54 +140,71 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     }
 
 
-    public sealed class ColorBufferPool : DisposeObject
+    public sealed class TexturePool : DisposeObject
     {
-        private readonly ConcurrentBag<ShaderResourceViewProxy> pool = new ConcurrentBag<ShaderResourceViewProxy>();
+        private readonly ConcurrentDictionary<Format, ConcurrentBag<ShaderResourceViewProxy>> pool = new ConcurrentDictionary<Format, ConcurrentBag<ShaderResourceViewProxy>>();
         private readonly IDevice3DResources deviceResourse;
-        private readonly Texture2DDescription description;
+        private Texture2DDescription description;
 
-        public ColorBufferPool(IDevice3DResources deviceResourse, Texture2DDescription desc)
+        public TexturePool(IDevice3DResources deviceResourse, Texture2DDescription desc)
         {
             this.deviceResourse = deviceResourse;
             description = desc;
         }
 
-        public ShaderResourceViewProxy Get()
+        public ShaderResourceViewProxy Get(Format format)
         {
             if (IsDisposed)
             {
                 return null;
             }
+            ConcurrentBag<ShaderResourceViewProxy> bag;
             ShaderResourceViewProxy proxy;
-            if(pool.TryTake(out proxy))
+            if(pool.TryGetValue(format, out bag) && bag.TryTake(out proxy))
             {
                 return proxy;
             }
             else
             {
+                description.Format = format;
                 var texture = Collect(new ShaderResourceViewProxy(deviceResourse.Device, description));
-                texture.CreateRenderTargetView();
-                texture.CreateTextureView();
+                if((description.BindFlags & BindFlags.RenderTarget) != 0)
+                {
+                    texture.CreateRenderTargetView();
+                }
+                if((description.BindFlags & BindFlags.ShaderResource) != 0)
+                {
+                    texture.CreateTextureView();
+                }
+                if((description.BindFlags & BindFlags.DepthStencil) != 0)
+                {
+                    texture.CreateDepthStencilView();
+                }
                 return texture;
             }
         }
 
-        public void Put(ShaderResourceViewProxy proxy)
+        public void Put(Format format, ShaderResourceViewProxy proxy)
         {
             if (IsDisposed)
             {
                 return;
             }
-            pool.Add(proxy);
+            ConcurrentBag<ShaderResourceViewProxy> bag = pool.GetOrAdd(format, new System.Func<Format, ConcurrentBag<ShaderResourceViewProxy>>((d) => { return new ConcurrentBag<ShaderResourceViewProxy>(); }));
+            bag.Add(proxy);
         }
 
         protected override void OnDispose(bool disposeManagedResources)
         {
             ShaderResourceViewProxy proxy;
-            while (pool.TryTake(out proxy))
+            foreach(var bag in pool.Values)
             {
-                continue;
+                while(bag.TryTake(out proxy))
+                {
+                    continue;
+                }
             }
+            pool.Clear();
             base.OnDispose(disposeManagedResources);
         }
     }
