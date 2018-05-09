@@ -154,39 +154,13 @@ namespace HelixToolkit.UWP.Core
         private Texture2DDescription depthdesc = new Texture2DDescription
         {
             BindFlags = BindFlags.DepthStencil,
-            Format = global::SharpDX.DXGI.Format.D32_Float_S8X24_UInt,
+            Format = global::SharpDX.DXGI.Format.D24_UNorm_S8_UInt,
             MipLevels = 1,
             SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0),
             Usage = ResourceUsage.Default,
             OptionFlags = ResourceOptionFlags.None,
             CpuAccessFlags = CpuAccessFlags.None,
             ArraySize = 1,
-        };
-
-        private ShaderResourceViewDescription targetResourceViewDesc = new ShaderResourceViewDescription()
-        {
-            Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
-            Dimension = ShaderResourceViewDimension.Texture2D,
-            Texture2D = new ShaderResourceViewDescription.Texture2DResource()
-            {
-                MipLevels = 1,
-                MostDetailedMip = 0,
-            }
-        };
-
-        private RenderTargetViewDescription renderTargetViewDesc = new RenderTargetViewDescription()
-        {
-            Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
-            Dimension = RenderTargetViewDimension.Texture2D,
-            Texture2D = new RenderTargetViewDescription.Texture2DResource() { MipSlice = 0 }
-        };
-
-        private DepthStencilViewDescription depthStencilViewDesc = new DepthStencilViewDescription()
-        {
-            Format = global::SharpDX.DXGI.Format.D32_Float_S8X24_UInt,
-            Flags = DepthStencilViewFlags.None,
-            Dimension = DepthStencilViewDimension.Texture2D,
-            Texture2D = new DepthStencilViewDescription.Texture2DResource() { MipSlice = 0 }
         };
         #endregion
 
@@ -245,7 +219,7 @@ namespace HelixToolkit.UWP.Core
                 RemoveAndDispose(ref depthStencilBuffer);
 
                 depthStencilBuffer = Collect(new ShaderResourceViewProxy(deviceContext.DeviceContext.Device, depthdesc));
-                depthStencilBuffer.CreateView(depthStencilViewDesc);
+                depthStencilBuffer.CreateDepthStencilView();
 
                 blurCore.Resize(deviceContext.DeviceContext.Device,
                     depthdesc.Width / downSamplingScale,
