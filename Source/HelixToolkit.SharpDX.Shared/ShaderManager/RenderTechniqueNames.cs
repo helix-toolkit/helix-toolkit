@@ -203,6 +203,14 @@ namespace HelixToolkit.UWP
         /// The depth prepass
         /// </summary>
         public const string DepthPrepass = "DepthPrepass";
+        /// <summary>
+        /// Calculate luma and set luma as Alpha channel before FXAA pass.
+        /// </summary>
+        public const string LumaPass = "LumaPass";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string FXAAPass = "FXAAPass";
     }
     /// <summary>
     /// 

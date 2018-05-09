@@ -2,10 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+#define LUMAPASS
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-using System.Collections.Generic;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -13,10 +12,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Utilities;
     using Render;
     using Shaders;
-    using global::SharpDX.DXGI;
+    using Utilities;
 
     public sealed class PostEffectFXAA : RenderCoreBase<BorderEffectStruct>, IPostEffect
     {
@@ -31,6 +29,7 @@ namespace HelixToolkit.UWP.Core
         private int samplerSlot;
         private SamplerStateProxy sampler;
         private ShaderPass FXAAPass;
+        private ShaderPass LUMAPass;
 
         public PostEffectFXAA() : base(RenderType.PostProc) { }
 
@@ -43,7 +42,8 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(technique))
             {
-                FXAAPass = technique[DefaultPassNames.Default];
+                FXAAPass = technique[DefaultPassNames.FXAAPass];
+                LUMAPass = technique[DefaultPassNames.LumaPass];
                 textureSlot = FXAAPass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 samplerSlot = FXAAPass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
                 sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
@@ -63,6 +63,27 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             var buffer = context.RenderHost.RenderBuffer;
+#if LUMAPASS
+            var resource = buffer.FullResolutionColorBufferPool.Get();
+            context.DeviceContext.OutputMerger.SetTargets(new RenderTargetView[] { resource });
+            context.DeviceContext.Rasterizer.SetViewport(0, 0, buffer.TargetWidth, buffer.TargetHeight, 0.0f, 1.0f);
+            context.DeviceContext.Rasterizer.SetScissorRectangle(0, 0, buffer.TargetWidth, buffer.TargetHeight);
+
+            LUMAPass.BindShader(deviceContext);
+            LUMAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
+            LUMAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.ColorBuffer);
+            LUMAPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
+            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+            deviceContext.DeviceContext.Draw(4, 0);
+
+            buffer.SetDefaultRenderTargets(deviceContext, false);
+            FXAAPass.BindShader(deviceContext);
+            FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, resource);
+            deviceContext.DeviceContext.Draw(4, 0);
+            FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
+
+            buffer.FullResolutionColorBufferPool.Put(resource);
+#else
             buffer.SetDefaultRenderTargets(deviceContext, false);
             FXAAPass.BindShader(deviceContext);
             FXAAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
@@ -71,6 +92,7 @@ namespace HelixToolkit.UWP.Core
             deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             deviceContext.DeviceContext.Draw(4, 0);
             FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
+#endif
         }
 
         protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)
