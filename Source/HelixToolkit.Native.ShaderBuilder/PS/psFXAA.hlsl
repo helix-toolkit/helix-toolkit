@@ -2115,7 +2115,7 @@ float4 main(MeshOutlinePS_INPUT Input) : SV_Target
         0.0f, // FxaaFloat fxaaConsoleEdgeThresholdMin,
         FxaaFloat4(0.0f, 0.0f, 0.0f, 0.0f) // FxaaFloat fxaaConsole360ConstDir,
     );
-    //c.a = 1;
+    c.a = 1;
     return c;
 }
 
