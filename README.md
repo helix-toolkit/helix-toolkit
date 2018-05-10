@@ -37,6 +37,8 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
 **Visual Studio 2017. Windows 10 SDK (Min Ver.10.0.10586.0).**
 
+Windows 10 SDK Ver.10.0.10586.0 can be selected and installed using Visual Studio 2017 installer.
+
 ## Notes
 
 #### 1. Laptops with Nvidia Optimus (Dual graphics card)(HelixToolkit.SharpDX Only)
