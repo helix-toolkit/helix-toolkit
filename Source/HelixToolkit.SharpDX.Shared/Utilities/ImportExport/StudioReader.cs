@@ -132,6 +132,9 @@ namespace HelixToolkit.UWP
             BOGUS = 0x0011,
             // ReSharper restore UnusedMember.Local
             // ReSharper restore InconsistentNaming
+            PERCENTW = 0x0030,
+            PERCENTF = 0x0031,
+            PERCENTD = 0x0032
         }
 
 
@@ -256,11 +259,13 @@ namespace HelixToolkit.UWP
             var shininess = Color.Transparent;
             double opacity = 0;
             string texture = null;
+            float specularPower = 100;//check if we can find this somewhere instead of just setting it to 100 
             while (total < chunkSize)
             {
                 ChunkID id = this.ReadChunkId(reader);
                 int size = this.ReadChunkSize(reader);
                 total += size;
+                
                 switch (id)
                 {
                     case ChunkID.MAT_NAME01:
@@ -283,7 +288,8 @@ namespace HelixToolkit.UWP
                         specular = this.ReadColor(reader);
                         break;
                     case ChunkID.MAT_SHININESS:
-                        byte[] bytes = this.ReadData(reader, size - 6);
+                        //byte[] bytes = this.ReadData(reader, size - 6);
+                        specularPower = this.ReadPercent(reader, size - 6);
                         break;
                     case ChunkID.MAT_MAP:
                         texture = this.ReadMatMap(reader, size - 6);
@@ -297,7 +303,7 @@ namespace HelixToolkit.UWP
                         break;
                 }
             }
-            int specularPower = 100;//check if we can find this somewhere instead of just setting it to 100 
+            
             var image = ReadBitmapSoure(texture, diffuse);
 
             if (Math.Abs(opacity) > 0.001)
@@ -311,7 +317,7 @@ namespace HelixToolkit.UWP
                 AmbientColor = luminance, //not really sure about this, lib3ds uses 0xA010 as AmbientColor
                 SpecularColor = specular,
                 SpecularShininess = specularPower,
-
+                
 
 
 
@@ -829,6 +835,27 @@ namespace HelixToolkit.UWP
             }
 
             return Color.White;
+        }
+
+        private float ReadPercent(BinaryReader reader, int size)
+        {
+            var type = ReadChunkId(reader);
+            var cSize = ReadChunkSize(reader);
+            size -= 6;
+            float percent = 1;
+            switch (type)
+            {
+                case ChunkID.PERCENTW:
+                    percent = reader.ReadUInt16();
+                    break;
+                case ChunkID.PERCENTF:
+                    percent = reader.ReadSingle();
+                    break;
+                case ChunkID.PERCENTD:
+                    reader.ReadBytes(size);
+                    break;
+            }
+            return percent;
         }
         /// <summary>
         /// Read data.

@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             var colordescNMS = new Texture2DDescription
             {
                 BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-                Format = Format.B8G8R8A8_UNorm,
+                Format = Format,
                 Width = width,
                 Height = height,
                 MipLevels = 1,

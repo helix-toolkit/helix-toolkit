@@ -270,6 +270,7 @@ namespace HelixToolkit.UWP.Shaders
                 FailOperation = StencilOperation.Keep
             }
         };
+
         /// <summary>
         /// The DSS mesh outline pass1
         /// </summary>

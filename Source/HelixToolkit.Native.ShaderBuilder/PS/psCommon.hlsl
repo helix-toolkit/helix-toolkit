@@ -21,42 +21,45 @@ float shadowStrength(float4 sp)
     {
         return 1;
     }
-    sp.x = mad(0.5, sp.x, 0.5f);
-    sp.y = mad(-0.5, sp.y, 0.5f);
-
-	//apply shadow map bias
-    sp.z -= vShadowMapInfo.z;
-
-	//// --- not in shadow, hard cut
-    //float shadowMapDepth = texShadowMap.Sample(PointSampler, sp.xy+offsets[1]).r;
-    //return whengt(shadowMapDepth, sp.z);
-
-	//// --- basic hardware PCF - single texel
-    //float shadowFactor = texShadowMap.SampleCmpLevelZero(samplerShadow, sp.xy, sp.z).r;
-
-	//// --- PCF sampling for shadow map
-    float sum = 0;
-    float x = 0, y = 0;
-    const float range = 1.5;
-    float2 scale = 1 / vShadowMapSize;
-
-	//// ---perform PCF filtering on a 4 x 4 texel neighborhood
-	[unroll]
-    for (y = -range; y <= range; y += 1.0f)
+    else
     {
-        for (x = -range; x <= range; x += 1.0f)
+        sp.x = mad(0.5, sp.x, 0.5f);
+        sp.y = mad(-0.5, sp.y, 0.5f);
+
+	    //apply shadow map bias
+        sp.z -= vShadowMapInfo.z;
+
+	    //// --- not in shadow, hard cut
+        //float shadowMapDepth = texShadowMap.Sample(PointSampler, sp.xy+offsets[1]).r;
+        //return whengt(shadowMapDepth, sp.z);
+
+	    //// --- basic hardware PCF - single texel
+        //float shadowFactor = texShadowMap.SampleCmpLevelZero(samplerShadow, sp.xy, sp.z).r;
+
+	    //// --- PCF sampling for shadow map
+        float sum = 0;
+        float x = 0, y = 0;
+        const float range = 1.5;
+        float2 scale = 1 / vShadowMapSize;
+
+	    //// ---perform PCF filtering on a 4 x 4 texel neighborhood
+	    [unroll]
+        for (y = -range; y <= range; y += 1.0f)
         {
-            sum += lookUp(sp, float2(x, y) * scale);
+            for (x = -range; x <= range; x += 1.0f)
+            {
+                sum += lookUp(sp, float2(x, y) * scale);
+            }
         }
+
+        float shadowFactor = sum / 16;
+
+        float fixTeil = vShadowMapInfo.x;
+        float nonTeil = 1 - vShadowMapInfo.x;
+	    // now, put the shadow-strengh into the 0-nonTeil range
+        nonTeil = shadowFactor * nonTeil;
+        return (fixTeil + nonTeil);
     }
-
-    float shadowFactor = sum / 16;
-
-    float fixTeil = vShadowMapInfo.x;
-    float nonTeil = 1 - vShadowMapInfo.x;
-	// now, put the shadow-strengh into the 0-nonTeil range
-    nonTeil = shadowFactor * nonTeil;
-    return (fixTeil + nonTeil);
 }
 
 #define WeightModes_LinearA 0

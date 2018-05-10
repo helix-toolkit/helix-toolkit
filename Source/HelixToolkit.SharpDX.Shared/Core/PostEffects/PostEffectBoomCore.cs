@@ -16,6 +16,7 @@ namespace HelixToolkit.UWP.Core
     using Render;
     using Shaders;
     using System;
+    using Utilities;
 
     public interface IPostEffectBloom : IPostEffect
     {
@@ -146,7 +147,7 @@ namespace HelixToolkit.UWP.Core
 
         private int samplerSlot;
 
-        private SamplerState sampler;
+        private SamplerStateProxy sampler;
 
         private int width, height;
         #endregion
@@ -179,7 +180,7 @@ namespace HelixToolkit.UWP.Core
                 screenOutlinePass = technique.GetPass(DefaultPassNames.MeshOutline);
                 textureSlot = screenOutlinePass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 samplerSlot = screenOutlinePass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
-                sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni4));
+                sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
                 return true;
             }
             else
@@ -195,6 +196,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
+            var buffer = context.RenderHost.RenderBuffer;
             #region Initialize textures
             if (offScreenRenderTargets.Count == 0
                 || width != (int)(context.ActualWidth)
@@ -229,24 +231,11 @@ namespace HelixToolkit.UWP.Core
             #endregion
 
             #region Render objects onto offscreen texture    
-            var renderTargets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1);
-            using (var resource1 = renderTargets[0].Resource)
-            {
-                using (var resource2 = offScreenRenderTargets[0].CurrentRTV.Resource)
-                {
-                    if(context.RenderHost.RenderBuffer.ColorBufferSampleDesc.Count > 1)
-                    {
-                        deviceContext.DeviceContext.ResolveSubresource(resource1, 0, resource2, 0, global::SharpDX.DXGI.Format.B8G8R8A8_UNorm);
-                    }
-                    else
-                    {
-                        deviceContext.DeviceContext.CopyResource(resource1, resource2);
-                    }
-                }
+
+            using (var resource2 = offScreenRenderTargets[0].CurrentRTV.Resource)
+            {                   
+                deviceContext.DeviceContext.CopyResource(buffer.FullResPPBuffer.CurrentTexture, resource2);
             }
-            //Decrement ref count. See OutputMerger.GetRenderTargets remarks
-            foreach (var t in renderTargets)
-            { t.Dispose(); }
             #endregion
 
             deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
@@ -287,7 +276,7 @@ namespace HelixToolkit.UWP.Core
             #endregion
 
             #region Draw outline onto original target
-            context.RenderHost.SetDefaultRenderTargets(false);
+            BindTarget(null, buffer.FullResPPBuffer.CurrentRTV, deviceContext, buffer.TargetWidth, buffer.TargetHeight, false);
             screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, offScreenRenderTargets[0].CurrentSRV);
             screenOutlinePass.BindShader(deviceContext);
             screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);

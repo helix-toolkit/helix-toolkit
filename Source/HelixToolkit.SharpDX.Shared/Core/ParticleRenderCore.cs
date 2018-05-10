@@ -150,7 +150,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerWrapAni2;
+        private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerWrapAni1;
         /// <summary>
         /// Particle texture sampler description.
         /// </summary>

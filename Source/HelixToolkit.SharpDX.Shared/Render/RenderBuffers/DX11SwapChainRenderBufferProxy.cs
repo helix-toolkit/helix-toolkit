@@ -73,7 +73,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
             var backBuffer = Collect(new ShaderResourceViewProxy(Device, Texture2D.FromSwapChain<Texture2D>(swapChain, 0)));
             var sampleDesc = swapChain.Description1.SampleDescription;
-            ColorBuffer.CreateRenderTargetView();
             d2dTarget = Collect(new D2DTargetProxy());
             d2dTarget.Initialize(swapChain, DeviceContext2D);
             return backBuffer;
@@ -109,7 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 Width = Math.Max(1, TargetWidth),
                 Height = Math.Max(1, TargetHeight),
                 // B8G8R8A8_UNorm gives us better performance 
-                Format = Format.B8G8R8A8_UNorm,
+                Format = Format,
                 Stereo = false,
                 SampleDescription = new SampleDescription(sampleCount, sampleQuality),
                 Usage = Usage.RenderTargetOutput,
