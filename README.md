@@ -35,7 +35,7 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
 ## Project Build
 
-**Visual Studio 2017. Windows 10 SDK.**
+**Visual Studio 2017. Windows 10 SDK (Min Ver.10.0.10586.0).**
 
 Missing **fxc.exe** issue with newest Windows 10 SDK:
 
