@@ -166,7 +166,7 @@ namespace HelixToolkit.UWP.Core
                 colorTexIndex = screenQuadPass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.OITColorTB);
                 alphaTexIndex = screenQuadPass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.OITAlphaTB);
                 samplerIndex = screenQuadPass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
-                targetSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerWrapAni2));
+                targetSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerWrapAni1));
                 RenderCount = 0;
                 return true;
             }

@@ -73,7 +73,7 @@ namespace HelixToolkit.UWP.Core
 
         private int samplerSlot;
 
-        private SamplerState sampler;
+        private SamplerStateProxy sampler;
 
         private Texture2DDescription texture2DDesc = new Texture2DDescription()
         {

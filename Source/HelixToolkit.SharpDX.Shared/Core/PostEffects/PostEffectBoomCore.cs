@@ -16,6 +16,7 @@ namespace HelixToolkit.UWP.Core
     using Render;
     using Shaders;
     using System;
+    using Utilities;
 
     public interface IPostEffectBloom : IPostEffect
     {
@@ -146,7 +147,7 @@ namespace HelixToolkit.UWP.Core
 
         private int samplerSlot;
 
-        private SamplerState sampler;
+        private SamplerStateProxy sampler;
 
         private int width, height;
         #endregion
@@ -179,7 +180,7 @@ namespace HelixToolkit.UWP.Core
                 screenOutlinePass = technique.GetPass(DefaultPassNames.MeshOutline);
                 textureSlot = screenOutlinePass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
                 samplerSlot = screenOutlinePass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
-                sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni4));
+                sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
                 return true;
             }
             else
