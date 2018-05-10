@@ -37,10 +37,6 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
 **Visual Studio 2017. Windows 10 SDK (Min Ver.10.0.10586.0).**
 
-Missing **fxc.exe** issue with newest Windows 10 SDK:
-
-Copy **fxc.exe** in **C:\Program Files (x86)\Windows Kits\10\Bin\10.0.xxx\x86** to **C:\Program Files (x86)\Windows Kits\10\bin\x86** to fix this issue. Because the HLSL compile tool hard coded the path.
-
 ## Notes
 
 #### 1. Laptops with Nvidia Optimus (Dual graphics card)(HelixToolkit.SharpDX Only)
