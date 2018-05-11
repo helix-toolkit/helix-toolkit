@@ -285,10 +285,10 @@ namespace HelixToolkit.UWP
 #region Initial Internal Pools
             Log(LogLevel.Information, "Initializing resource pools");
             RemoveAndDispose(ref constantBufferPool);
-            constantBufferPool = Collect(new ConstantBufferPool(Device));
+            constantBufferPool = Collect(new ConstantBufferPool(Device, Logger));
 
             RemoveAndDispose(ref shaderPoolManager);
-            shaderPoolManager = Collect(new ShaderPoolManager(Device, constantBufferPool));
+            shaderPoolManager = Collect(new ShaderPoolManager(Device, constantBufferPool, Logger));
 
             RemoveAndDispose(ref statePoolManager);
             statePoolManager = Collect(new StatePoolManager(Device));

@@ -11,6 +11,7 @@ namespace HelixToolkit.UWP.ShaderManager
 #endif
 {
     using global::SharpDX.Direct3D11;
+    using HelixToolkit.Logger;
     using Shaders;
     using System;
     using Utilities;
@@ -53,8 +54,9 @@ namespace HelixToolkit.UWP.ShaderManager
         /// Initializes a new instance of the <see cref="ConstantBufferPool"/> class.
         /// </summary>
         /// <param name="device">The device.</param>
-        public ConstantBufferPool(Device device)
-            : base(device)
+        /// <param name="logger"></param>
+        public ConstantBufferPool(Device device, LogWrapper logger)
+            : base(device, logger)
         {
         }
 

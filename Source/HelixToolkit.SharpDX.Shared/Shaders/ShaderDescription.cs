@@ -14,6 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    using HelixToolkit.Logger;
     using ShaderManager;
     using System.Collections.Generic;
 
@@ -136,7 +137,7 @@ namespace HelixToolkit.UWP.Shaders
 
         /// <summary>
         /// Create shader using reflector to get buffer mapping directly from shader codes.
-        /// <para>Actual creation happened when calling <see cref="CreateShader(Device, IConstantBufferPool)"/></para>
+        /// <para>Actual creation happened when calling <see cref="CreateShader(Device, IConstantBufferPool, LogWrapper)"/></para>
         /// </summary>
         /// <param name="name"></param>
         /// <param name="type"></param>
@@ -154,8 +155,9 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="device"></param>
         /// <param name="pool"></param>
+        /// <param name="logger"></param>
         /// <returns></returns>
-        public ShaderBase CreateShader(Device device, IConstantBufferPool pool)
+        public ShaderBase CreateShader(Device device, IConstantBufferPool pool, LogWrapper logger)
         {
             if (ByteCode == null)
             {
@@ -167,7 +169,9 @@ namespace HelixToolkit.UWP.Shaders
                 Level = shaderReflector.FeatureLevel;
                 if (Level > device.FeatureLevel)
                 {
-                    throw new Exception($"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
+                    logger?.Log(LogLevel.Warning, $"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
+                    return null;
+                    //throw new Exception($"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
                 }
                 this.ConstantBufferMappings = shaderReflector.ConstantBufferMappings.Values.ToArray();
                 this.TextureMappings = shaderReflector.TextureMappings.Values.ToArray();
