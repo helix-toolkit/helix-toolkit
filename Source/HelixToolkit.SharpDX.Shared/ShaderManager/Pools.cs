@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
 namespace HelixToolkit.UWP.ShaderManager
 #endif
 {
+    using HelixToolkit.Logger;
     using Utilities;
     /// <summary>
     /// Use to store resources for <see cref="ComObject"/>. Each register will increase the reference counter for ComObject by calling <see cref="ComObject.QueryInterface{T}()"/>
@@ -126,14 +127,16 @@ namespace HelixToolkit.UWP.ShaderManager
         /// 
         /// </summary>
         public Device Device { private set; get; }
-
+        protected readonly LogWrapper logger;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="device"></param>
-        public ResourcePoolBase(Device device)
+        /// <param name="logger"></param>
+        public ResourcePoolBase(Device device, LogWrapper logger)
         {
             this.Device = device;
+            this.logger = logger;
         }
         /// <summary>
         /// 

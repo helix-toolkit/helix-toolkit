@@ -13,6 +13,7 @@ namespace HelixToolkit.UWP.ShaderManager
 #endif
 {
     using global::SharpDX.Direct3D11;
+    using HelixToolkit.Logger;
     using Shaders;
     /// <summary>
     /// Pool to store and share shaders. Do not dispose shader object externally.
@@ -26,8 +27,14 @@ namespace HelixToolkit.UWP.ShaderManager
         /// The constant buffer pool.
         /// </value>
         public IConstantBufferPool ConstantBufferPool { private set; get; }
-        public ShaderPool(Device device, IConstantBufferPool cbPool)
-            :base(device)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShaderPool"/> class.
+        /// </summary>
+        /// <param name="device">The device.</param>
+        /// <param name="cbPool">The cb pool.</param>
+        /// <param name="logger">The logger.</param>
+        public ShaderPool(Device device, IConstantBufferPool cbPool, LogWrapper logger)
+            :base(device, logger)
         {
             ConstantBufferPool = cbPool;
         }
@@ -48,7 +55,7 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <returns></returns>
         protected override ShaderBase Create(Device device, ref ShaderDescription description)
         {
-            return description.ByteCode == null ? NullShader.GetNullShader(description.ShaderType) : description.CreateShader(device, ConstantBufferPool);
+            return description.ByteCode == null ? NullShader.GetNullShader(description.ShaderType) : description.CreateShader(device, ConstantBufferPool, logger);
         }
     }
     /// <summary>
@@ -60,8 +67,9 @@ namespace HelixToolkit.UWP.ShaderManager
         /// Initializes a new instance of the <see cref="LayoutPool"/> class.
         /// </summary>
         /// <param name="device">The device.</param>
-        public LayoutPool(Device device)
-            :base(device)
+        /// <param name="logger"></param>
+        public LayoutPool(Device device, LogWrapper logger)
+            :base(device, logger)
         { }
         /// <summary>
         /// Creates the specified device.
@@ -95,15 +103,16 @@ namespace HelixToolkit.UWP.ShaderManager
         /// </summary>
         /// <param name="device">The device.</param>
         /// <param name="cbPool">The cb pool.</param>
-        public ShaderPoolManager(Device device, IConstantBufferPool cbPool)
+        /// <param name="logger"></param>
+        public ShaderPoolManager(Device device, IConstantBufferPool cbPool, LogWrapper logger)
         {
-            shaderPools[ShaderStage.Vertex.ToIndex()] = Collect(new ShaderPool(device, cbPool));
-            shaderPools[ShaderStage.Domain.ToIndex()] = Collect(new ShaderPool(device, cbPool));
-            shaderPools[ShaderStage.Hull.ToIndex()] = Collect(new ShaderPool(device, cbPool));
-            shaderPools[ShaderStage.Geometry.ToIndex()] = Collect(new ShaderPool(device, cbPool));
-            shaderPools[ShaderStage.Pixel.ToIndex()] = Collect(new ShaderPool(device, cbPool));
-            shaderPools[ShaderStage.Compute.ToIndex()] = Collect(new ShaderPool(device, cbPool));
-            layoutPool = Collect(new LayoutPool(device));
+            shaderPools[ShaderStage.Vertex.ToIndex()] = Collect(new ShaderPool(device, cbPool, logger));
+            shaderPools[ShaderStage.Domain.ToIndex()] = Collect(new ShaderPool(device, cbPool, logger));
+            shaderPools[ShaderStage.Hull.ToIndex()] = Collect(new ShaderPool(device, cbPool, logger));
+            shaderPools[ShaderStage.Geometry.ToIndex()] = Collect(new ShaderPool(device, cbPool, logger));
+            shaderPools[ShaderStage.Pixel.ToIndex()] = Collect(new ShaderPool(device, cbPool, logger));
+            shaderPools[ShaderStage.Compute.ToIndex()] = Collect(new ShaderPool(device, cbPool, logger));
+            layoutPool = Collect(new LayoutPool(device, logger));
         }
         /// <summary>
         /// Registers the shader.
