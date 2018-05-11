@@ -53,6 +53,9 @@ EnableD2DRendering = false;
 
 #### 3. Improve WPF Render Performance using [WPF BitmapCache](https://docs.microsoft.com/en-us/dotnet/framework/wpf/graphics-multimedia/how-to-improve-rendering-performance-by-caching-an-element) on overlay controls above viewport.
 
+#### 4. Following features are not supported currently on FeatureLevel 10 graphics card:
+FXAA, Particle system, Tessellation.
+
 ## News
 
 #### 2018-05-04
