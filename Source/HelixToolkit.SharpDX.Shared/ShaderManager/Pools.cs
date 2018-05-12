@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <typeparam name="TKEY"></typeparam>
     /// <typeparam name="TVALUE"></typeparam>
     /// <typeparam name="TDescription"></typeparam>
-    public abstract class ComPoolBase<TKEY, TVALUE, TDescription> : DisposeObject where TVALUE : ComObject
+    public abstract class ComPoolBase<TKEY, TVALUE, TDescription> : DisposeObject where TVALUE : ComObject where TKEY : struct
     {
         private readonly Dictionary<TKEY, TVALUE> pool = new Dictionary<TKEY, TVALUE>();
         /// <summary>
