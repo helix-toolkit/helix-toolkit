@@ -58,12 +58,15 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Orientation="Vertical">
+            <StackPanel.CacheMode>
+                <BitmapCache />
+            </StackPanel.CacheMode>
             <Button Command="{Binding ResetCameraCommand}">
                 Reset Camera
             </Button>
             <CheckBox IsChecked="{Binding ShowWireframe}">Show Wireframe</CheckBox>
             <CheckBox IsChecked="{Binding ElementName=view, Path=EnableOITRendering}">Enable OIT</CheckBox>
-            <ComboBox ItemsSource="{Binding OITWeights}" SelectedItem="{Binding ElementName=view, Path=OITWeightMode}"/>
+            <ComboBox ItemsSource="{Binding OITWeights}" SelectedItem="{Binding ElementName=view, Path=OITWeightMode}" />
             <StackPanel Orientation="Horizontal">
                 <TextBlock Foreground="White">OIT Weight Power:</TextBlock>
                 <TextBlock Foreground="#FFF400" Text="{Binding ElementName=view, Path=OITWeightPower, StringFormat={}{0:#,0.0}}" />

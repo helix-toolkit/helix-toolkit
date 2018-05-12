@@ -76,6 +76,9 @@
             VerticalAlignment="Top"
             Orientation="Vertical"
             TextBlock.Foreground="White">
+            <StackPanel.CacheMode>
+                <BitmapCache />
+            </StackPanel.CacheMode>
             <Label Foreground="White">X Ray Color:</Label>
             <pt:ColorPicker Margin="4" SelectedColor="{Binding ElementName=xrayEffect, Path=OutlineColor}" />
             <Slider
