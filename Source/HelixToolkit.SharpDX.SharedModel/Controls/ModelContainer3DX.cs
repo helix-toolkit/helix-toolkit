@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using SharpDX.Direct3D;
 
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
@@ -26,6 +27,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model.Scene;
     using Utilities;
     using Controls;
+
 
     /// <summary>
     /// Use to contain shared models for multiple viewports. 
@@ -331,6 +333,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public MSAALevel MSAA
         {
             set;get;
+        }
+
+        public FeatureLevel FeatureLevel
+        {
+            get { return currentRenderHost != null ? currentRenderHost.FeatureLevel : FeatureLevel.Level_11_0; }
         }
         /// <summary>
         /// Gets or sets the viewport.

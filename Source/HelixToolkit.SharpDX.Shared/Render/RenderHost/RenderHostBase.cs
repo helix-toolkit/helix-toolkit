@@ -188,6 +188,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     {
                         effectsManager.OnDisposeResources += OnManagerDisposed;
                         RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
+                        FeatureLevel = effectsManager.Device.FeatureLevel;
                         if (IsInitialized)
                         {
                             Restart(false);
@@ -451,6 +452,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         public DX11RenderHostConfiguration RenderConfiguration { set; get; } 
             = new DX11RenderHostConfiguration() { UpdatePerFrameData = true, RenderD2D = true, RenderLights = true, ClearEachFrame = true, EnableOITRendering = true };
+        /// <summary>
+        /// Gets the feature level.
+        /// </summary>
+        /// <value>
+        /// The feature level.
+        /// </value>
+        public global::SharpDX.Direct3D.FeatureLevel FeatureLevel { get; private set; } = global::SharpDX.Direct3D.FeatureLevel.Level_11_0;
         #endregion
         #endregion
 

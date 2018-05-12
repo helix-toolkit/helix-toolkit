@@ -29,6 +29,10 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <returns></returns>
         protected override BlendState Create(Device device, ref BlendStateDescription description)
         {
+            if(device.FeatureLevel < global::SharpDX.Direct3D.FeatureLevel.Level_11_0 && description.IndependentBlendEnable)
+            {
+                description.IndependentBlendEnable = false;
+            }
             return new BlendState(device, description);
         }
 

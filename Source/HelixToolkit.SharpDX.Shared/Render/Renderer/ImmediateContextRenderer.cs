@@ -139,7 +139,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public virtual int RenderTransparent(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
-            if (context.RenderHost.RenderConfiguration.EnableOITRendering)
+            if (context.RenderHost.RenderConfiguration.EnableOITRendering
+                && context.RenderHost.FeatureLevel >= global::SharpDX.Direct3D.FeatureLevel.Level_11_0)
             {
                 transparentRenderCore.Render(context, ImmediateContext);
                 return transparentRenderCore.RenderCount;
@@ -241,7 +242,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             var buffer = context.RenderHost.RenderBuffer;
             buffer.FullResPPBuffer.Initialize();
-            if (context.RenderHost.RenderConfiguration.FXAALevel == FXAALevel.None || parameter.IsMSAATexture)
+            if (context.RenderHost.FeatureLevel < global::SharpDX.Direct3D.FeatureLevel.Level_11_0 
+                || context.RenderHost.RenderConfiguration.FXAALevel == FXAALevel.None || parameter.IsMSAATexture)
             {
                 if (parameter.IsMSAATexture)
                 {
