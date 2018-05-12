@@ -15,10 +15,9 @@ namespace HelixToolkit.UWP
 #endif
 {
     /// <summary>
-    /// Modified version of DisposeBase from SharpDX. Add null check in RemoveAndDispose(ref object)
-    /// <para>Base class for a <see cref="IDisposable"/></para>
+    /// Modified version of DisposeCollector from SharpDX. Add null check in RemoveAndDispose(ref object)
     /// </summary>
-    public abstract class DisposeBase : IDisposable
+    public abstract class DisposeObject : IDisposable, INotifyPropertyChanged
     {
         /// <summary>
         /// Occurs when this instance is starting to be disposed.
@@ -31,67 +30,6 @@ namespace HelixToolkit.UWP
         public event EventHandler<BoolArgs> Disposed;
 
 
-        /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="DisposeBase"/> is reclaimed by garbage collection.
-        /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
-        ~DisposeBase()
-        {
-            // Finalizer calls Dispose(false)
-            Dispose(false);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is disposed.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this instance is disposed; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsDisposed { get; private set; }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        private void Dispose(bool disposing)
-        {
-            // TODO Should we throw an exception if this method is called more than once?
-            if (!IsDisposed)
-            {
-                Disposing?.Invoke(this, disposing ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
-
-                OnDispose(disposing);
-                GC.SuppressFinalize(this);
-
-                IsDisposed = true;
-
-                Disposed?.Invoke(this, disposing ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
-                Disposing = null;
-                Disposed = null;
-            }
-        }
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected abstract void OnDispose(bool disposing);
-    }
-
-
-    /// <summary>
-    /// Modified version of DisposeCollector from SharpDX. Add null check in RemoveAndDispose(ref object)
-    /// </summary>
-    public abstract class DisposeObject : DisposeBase, INotifyPropertyChanged
-    {
         private readonly HashSet<IDisposable> disposables = new HashSet<IDisposable>();
 
         /// <summary>
@@ -123,7 +61,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="disposeManagedResources">If true, managed resources should be
         /// disposed of in addition to unmanaged resources.</param>
-        protected override void OnDispose(bool disposeManagedResources)
+        protected virtual void OnDispose(bool disposeManagedResources)
         {
             DisposeAndClear();
         }
@@ -178,6 +116,58 @@ namespace HelixToolkit.UWP
                 disposables.Remove(disposible);
             }
         }
+
+        #region IDisposible
+
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="DisposeObject"/> is reclaimed by garbage collection.
+        /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
+        ~DisposeObject()
+        {
+            // Finalizer calls Dispose(false)
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is disposed.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is disposed; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsDisposed { get; private set; }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Justification = "False positive.")]
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        private void Dispose(bool disposing)
+        {
+            // TODO Should we throw an exception if this method is called more than once?
+            if (!IsDisposed)
+            {
+                Disposing?.Invoke(this, disposing ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
+
+                OnDispose(disposing);
+                GC.SuppressFinalize(this);
+
+                IsDisposed = true;
+
+                Disposed?.Invoke(this, disposing ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
+                Disposing = null;
+                Disposed = null;
+            }
+        }
+
+        #endregion
 
         #region INotifyPropertyChanged
         private bool disablePropertyChangedEvent = false;

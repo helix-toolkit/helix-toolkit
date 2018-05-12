@@ -127,6 +127,13 @@ namespace HelixToolkit.UWP
         /// </summary>
         IRenderTechnique RenderTechnique { set; get; }
         /// <summary>
+        /// Gets the feature level.
+        /// </summary>
+        /// <value>
+        /// The feature level.
+        /// </value>
+        global::SharpDX.Direct3D.FeatureLevel FeatureLevel { get; }
+        /// <summary>
         /// Gets a value indicating whether this instance is deferred lighting.
         /// </summary>
         /// <value>
