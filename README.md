@@ -37,7 +37,7 @@ Twitter             | https://twitter.com/hashtag/Helix3DToolkit
 
 **Visual Studio 2017. Windows 10 SDK (Min Ver.10.0.10586.0).**
 
-Windows 10 SDK Ver.10.0.10586.0 can be selected and installed using Visual Studio 2017 installer.If you installed the higher version only, please change the target version in HelixToolkit.Native.ShaderBuilder property to the proper version installed on your machine.
+Windows 10 SDK **Ver.10.0.10586.0** can be selected and installed using Visual Studio 2017 installer.If you installed the higher version only, please change the target version in **HelixToolkit.Native.ShaderBuilder** property to the proper version installed on your machine.
 
 ## Notes
 
