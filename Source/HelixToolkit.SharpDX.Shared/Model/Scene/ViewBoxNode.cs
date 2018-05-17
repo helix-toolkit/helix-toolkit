@@ -378,9 +378,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 Debug.WriteLine("View box hit.");
                 var hit = viewBoxHit[0];
                 Vector3 normal = Vector3.Zero;
+                int inv = isRightHanded ? 1 : -1;
                 if (hit.ModelHit == ViewBoxMeshModel)
                 {
-                    normal = -hit.NormalAtHit;
+                    normal = -hit.NormalAtHit * inv;
                 }
                 else if (hit.Tag is int)
                 {
