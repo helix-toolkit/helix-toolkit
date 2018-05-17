@@ -39,6 +39,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         Vector3 UpDirection { get; set; }
         /// <summary>
+        /// Gets or sets a value indicating whether [create left hand system].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [create left hand system]; otherwise, <c>false</c>.
+        /// </value>
+        bool CreateLeftHandSystem { set; get; }
+        /// <summary>
         /// Creates the view matrix.
         /// </summary>
         /// <returns>A <see cref="Matrix" />.</returns>

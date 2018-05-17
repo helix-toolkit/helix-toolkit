@@ -1243,6 +1243,7 @@ namespace HelixToolkit.UWP
             var axis2 = Vector3D.Cross(axis1, this.CameraLookDirection);
             axis1.Normalize();
             axis2.Normalize();
+            axis1 *= (ActualCamera.CreateLeftHandSystem ? -1 : 1);
             var l = this.CameraLookDirection.Length();
             var f = l * 0.001f;
             var move = (-axis1 * f * (float)dx) + (axis2 * f * (float)dy);

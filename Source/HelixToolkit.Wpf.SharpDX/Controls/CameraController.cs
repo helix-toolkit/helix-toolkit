@@ -1163,10 +1163,10 @@ namespace HelixToolkit.Wpf.SharpDX
             var axis2 = Vector3D.CrossProduct(axis1, this.CameraLookDirection);
             axis1.Normalize();
             axis2.Normalize();
+            axis1 *= (ActualCamera.CreateLeftHandSystem ? -1 : 1);
             var l = this.CameraLookDirection.Length;
             var f = l * 0.001;
             var move = (-axis1 * f * dx) + (axis2 * f * dy);
-
             // this should be dependent on distance to target?
             return move;
         }

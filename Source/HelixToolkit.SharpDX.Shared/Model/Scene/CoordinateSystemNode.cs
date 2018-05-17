@@ -164,14 +164,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         public CoordinateSystemNode()
         {
-            var builder = new MeshBuilder(true, false, false);
-            builder.AddArrow(Vector3.Zero, new Vector3(arrowSize, 0, 0), arrowWidth, arrowHead, 8);
-            builder.AddArrow(Vector3.Zero, new Vector3(0, arrowSize, 0), arrowWidth, arrowHead, 8);
-            builder.AddArrow(Vector3.Zero, new Vector3(0, 0, arrowSize), arrowWidth, arrowHead, 8);
-            var mesh = builder.ToMesh();
-
-            arrowMeshModel.Material = new PhongMaterialCore() { DiffuseColor = Color.White };
-            arrowMeshModel.Geometry = mesh;
+            
+            arrowMeshModel.Material = new PhongMaterialCore() { DiffuseColor = Color.White };           
             arrowMeshModel.CullMode = CullMode.Back;
             arrowMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Colors]; };
             arrowMeshModel.IsHitTestVisible = false;
@@ -185,12 +179,24 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             axisLabel.TextInfo.Add(new TextInfo());
             axisLabel.TextInfo.Add(new TextInfo());
             axisBillboard.Geometry = axisLabel;
-            UpdateAxisColor(mesh, 0, AxisXColor, LabelX, LabelColor);
-            UpdateAxisColor(mesh, 1, AxisYColor, LabelY, LabelColor);
-            UpdateAxisColor(mesh, 2, AxisZColor, LabelZ, LabelColor);
-
             this.AddChildNode(arrowMeshModel);
             this.AddChildNode(axisBillboard);
+            UpdateModel();
+        }
+
+        private void UpdateModel()
+        {
+            var builder = new MeshBuilder(true, false, false);
+
+            builder.AddArrow(Vector3.Zero, new Vector3(arrowSize, 0, 0), arrowWidth, arrowHead, 8);
+            builder.AddArrow(Vector3.Zero, new Vector3(0, arrowSize, 0), arrowWidth, arrowHead, 8);
+            builder.AddArrow(Vector3.Zero, new Vector3(0, 0, arrowSize), arrowWidth, arrowHead, 8);
+
+            var mesh = builder.ToMesh();
+            arrowMeshModel.Geometry = mesh;
+            UpdateAxisColor(arrowMeshModel.Geometry, 0, AxisXColor, LabelX, LabelColor);
+            UpdateAxisColor(arrowMeshModel.Geometry, 1, AxisYColor, LabelY, LabelColor);
+            UpdateAxisColor(arrowMeshModel.Geometry, 2, AxisZColor, LabelZ, LabelColor);
         }
 
         private void UpdateAxisColor(int which, Color4 color)
@@ -254,7 +260,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             switch (which)
             {
                 case 0:
-                    labelText.TextInfo[which] = new TextInfo(label, new Vector3(arrowSize + 1.5f, 0, 0)) { Foreground = labelColor, Scale = 0.5f };
+                    labelText.TextInfo[which] = new TextInfo(label, new Vector3(arrowSize + 1.5f, 0, 0)) { Foreground = labelColor, Scale = 0.5f };               
                     break;
 
                 case 1:

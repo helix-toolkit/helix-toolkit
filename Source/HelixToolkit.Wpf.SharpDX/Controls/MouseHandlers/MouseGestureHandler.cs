@@ -86,6 +86,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets or sets the last point (in 3D world coordinates).
         /// </summary>
         protected Point3D? LastPoint3D { get; set; }
+        /// <summary>
+        /// Use to invert the left handed system
+        /// </summary>
+        /// <value>
+        /// The inv.
+        /// </value>
+        protected int inv { private set; get; } = 1;
 
         /// <summary>
         /// Gets the model up direction.
@@ -219,6 +226,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.LastPoint3D = this.MouseDownPoint3D;
             //this.ManipulationWatch.Restart();
             startTick = Stopwatch.GetTimestamp();
+            inv = Camera.CreateLeftHandSystem ? -1 : 1;
         }
 
         /// <summary>
