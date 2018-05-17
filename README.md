@@ -41,7 +41,8 @@ Windows 10 SDK **Ver.10.0.10586.0** can be selected and installed using Visual S
 
 ## Notes
 
-#### 1. HelixToolkit default is using right handed Cartesian coordinate system, including Meshbuilder etc. To use left handed Cartesian coordinate system, user must manually correct the triangle winding order or IsFrontCounterClockwise in raster state description if using SharpDX.
+#### 1. Right-handed Cartesian coordinate system by default
+HelixToolkit default is using right-handed Cartesian coordinate system, including Meshbuilder etc. To use left-handed Cartesian coordinate system (Camera.CreateLeftHandedSystem = true), user must manually correct the triangle winding order or IsFrontCounterClockwise in raster state description if using SharpDX.
 
 #### 2. Laptops with Nvidia Optimus (Dual graphics card)(HelixToolkit.SharpDX Only)
 Auto adapter selection in EffectsManager does not guarantee to use external Nvidia graphic card for rendering. To make sure using the Nvidia graphic card, add *`static NVOptimusEnabler nvEnabler = new NVOptimusEnabler();`* in *`MainWindow.xaml.cs`*.
