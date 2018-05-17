@@ -41,19 +41,21 @@ Windows 10 SDK **Ver.10.0.10586.0** can be selected and installed using Visual S
 
 ## Notes
 
-#### 1. Laptops with Nvidia Optimus (Dual graphics card)(HelixToolkit.SharpDX Only)
+#### 1. HelixToolkit default is using right handed Cartesian coordinate system, including Meshbuilder etc. To use left handed Cartesian coordinate system, user must manually correct the triangle winding order or IsFrontCounterClockwise in raster state description if using SharpDX.
+
+#### 2. Laptops with Nvidia Optimus (Dual graphics card)(HelixToolkit.SharpDX Only)
 Auto adapter selection in EffectsManager does not guarantee to use external Nvidia graphic card for rendering. To make sure using the Nvidia graphic card, add *`static NVOptimusEnabler nvEnabler = new NVOptimusEnabler();`* in *`MainWindow.xaml.cs`*.
 
-#### 2. Using [RenderDoc](https://github.com/baldurk/renderdoc) for SharpDX render profiling
+#### 3. Using [RenderDoc](https://github.com/baldurk/renderdoc) for SharpDX render profiling
 To use RenderDoc, following settings must be set on Viewport3DX. 
 ```
 EnableSwapChainRendering = true;
 EnableD2DRendering = false;
 ```
 
-#### 3. Improve WPF Render Performance using [WPF BitmapCache](https://docs.microsoft.com/en-us/dotnet/framework/wpf/graphics-multimedia/how-to-improve-rendering-performance-by-caching-an-element) on overlay controls above viewport.
+#### 4. Improve WPF Render Performance using [WPF BitmapCache](https://docs.microsoft.com/en-us/dotnet/framework/wpf/graphics-multimedia/how-to-improve-rendering-performance-by-caching-an-element) on overlay controls above viewport.
 
-#### 4. Following features are not supported currently on FeatureLevel 10 graphics card:
+#### 5. Following features are not supported currently on FeatureLevel 10 graphics card:
 FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 ## News
