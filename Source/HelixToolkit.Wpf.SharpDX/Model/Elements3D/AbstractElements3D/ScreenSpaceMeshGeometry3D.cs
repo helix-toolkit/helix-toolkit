@@ -56,16 +56,6 @@ namespace HelixToolkit.Wpf.SharpDX
             DependencyProperty.Register("EnableMover", typeof(bool), typeof(ScreenSpacedElement3D), new PropertyMetadata(true));
 
         /// <summary>
-        /// The left handed property
-        /// </summary>
-        public static readonly DependencyProperty LeftHandedProperty = DependencyProperty.Register("LeftHanded", typeof(bool), typeof(ScreenSpacedElement3D),
-            new PropertyMetadata(false,
-            (d, e) =>
-            {
-                ((d as Element3DCore).SceneNode as ScreenSpacedNode).IsRightHand = !(bool)e.NewValue;
-            }));
-
-        /// <summary>
         /// Gets or sets a value indicating whether [enable mover].
         /// </summary>
         /// <value>
@@ -77,19 +67,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set { SetValue(EnableMoverProperty, value); }
         }
 
-
-
-        public bool LeftHanded
-        {
-            set
-            {
-                SetValue(LeftHandedProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(LeftHandedProperty);
-            }
-        }
         /// <summary>
         /// Relative Location X on screen. Range from -1~1
         /// </summary>

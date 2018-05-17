@@ -20,12 +20,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 {
     using Shaders;
     using Core;
-    #region Properties
+
     /// <summary>
     /// 
     /// </summary>
     public class ViewBoxNode : ScreenSpacedNode
     {
+        #region Properties
         /// <summary>
         /// 
         /// </summary>
@@ -135,7 +136,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         private readonly MeshNode ViewBoxMeshModel;
         private readonly InstancingMeshNode EdgeModel;
-        private readonly InstancingMeshNode CornerModel; 
+        private readonly InstancingMeshNode CornerModel;
+
+        private bool isRightHanded = true;
         #endregion
 
         static ViewBoxNode()
@@ -182,7 +185,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             sampler.BorderColor = Color.Gray;
             sampler.AddressU = sampler.AddressV = sampler.AddressW = TextureAddressMode.Border;
 
-            ViewBoxMeshModel.CullMode = CullMode.Back;
             ViewBoxMeshModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.ViewCube]; };
             this.AddChildNode(ViewBoxMeshModel);
             ViewBoxMeshModel.Material = new PhongMaterialCore()
@@ -236,6 +238,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
+        protected override void OnCoordinateSystemChanged(bool e)
+        {
+            if (isRightHanded != e)
+            {
+                isRightHanded = e;
+                UpdateModel(UpDirection);
+            }          
+        }
+
         private void UpdateTexture(Stream texture)
         {
             (ViewBoxMeshModel.Material as PhongMaterialCore).DiffuseMap = texture;
@@ -245,6 +256,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             var left = new Vector3(up.Y, up.Z, up.X);
             var front = Vector3.Cross(left, up);
+            if (!isRightHanded)
+            {
+                front *= -1;
+                left *= -1;
+            }
             var builder = new MeshBuilder(true, true, false);
             builder.AddCubeFace(new Vector3(0, 0, 0), front, up, size, size, size);
             builder.AddCubeFace(new Vector3(0, 0, 0), -front, up, size, size, size);
@@ -272,21 +288,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             builder.AddTriangleStrip(pts);
             var pie = builder.ToMesh();
             int count = pie.Indices.Count;
-            for (int i = 0; i < count; i += 3)
-            {
-                pie.Indices.Add(pie.Indices[i + 2]);
-                pie.Indices.Add(pie.Indices[i + 1]);
-                pie.Indices.Add(pie.Indices[i]);
-            }
 
             var newMesh = MeshGeometry3D.Merge(new MeshGeometry3D[] { pie, mesh });
 
-            newMesh.TextureCoordinates = new Core.Vector2Collection(Enumerable.Repeat(new Vector2(-1, -1), pie.Positions.Count));
-            newMesh.Colors = new Core.Color4Collection(Enumerable.Repeat(new Color4(1f, 1f, 1f, 1f), pie.Positions.Count));
+            if (!isRightHanded)
+            {
+                for (int i = 0; i < newMesh.Positions.Count; ++i)
+                {
+                    var p = newMesh.Positions[i];
+                    p.Z *= -1;
+                    newMesh.Positions[i] = p;
+                }
+            }
+
+            newMesh.TextureCoordinates = new Vector2Collection(Enumerable.Repeat(new Vector2(-1, -1), pie.Positions.Count));
+            newMesh.Colors = new Color4Collection(Enumerable.Repeat(new Color4(1f, 1f, 1f, 1f), pie.Positions.Count));
             newMesh.TextureCoordinates.AddRange(mesh.TextureCoordinates);
             newMesh.Colors.AddRange(Enumerable.Repeat(new Color4(1, 1, 1, 1), mesh.Positions.Count));
-            newMesh.Normals = newMesh.CalculateNormals();
-
             ViewBoxMeshModel.Geometry = newMesh;
         }
 
@@ -295,10 +313,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             int faces = 6;
             int segment = 4;
             float inc = 1f / faces;
+       
             for (int i = 0; i < mesh.TextureCoordinates.Count; ++i)
             {
                 mesh.TextureCoordinates[i] = new Vector2(mesh.TextureCoordinates[i].X * inc + inc * (int)(i / segment), mesh.TextureCoordinates[i].Y);
-            }
+            }           
         }
 
         protected override bool CanHitTest(RenderContext context)

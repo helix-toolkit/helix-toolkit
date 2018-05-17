@@ -21,6 +21,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public interface IScreenSpacedRenderParams
     {
+        event EventHandler<BoolArgs> OnCoordinateSystemChanged;
         /// <summary>
         /// Relative position X of the center of viewport
         /// </summary>
@@ -37,10 +38,6 @@ namespace HelixToolkit.UWP.Core
         /// 
         /// </summary>
         bool IsPerspective { set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        bool IsRightHand { set; get; }
         /// <summary>
         /// 
         /// </summary>
@@ -87,6 +84,8 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class ScreenSpacedMeshRenderCore : RenderCoreBase<ModelStruct>, IScreenSpacedRenderParams
     {
+        public event EventHandler<BoolArgs> OnCoordinateSystemChanged;
+
         private ConstantBufferProxy globalTransformCB;
         private Matrix projectionMatrix;
         public GlobalTransformStruct GlobalTransform { private set; get; }
@@ -155,8 +154,14 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public bool IsRightHand
         {
-            set { SetAffectsRender(ref isRightHand, value); }
             get { return isRightHand; }
+            private set
+            {
+                if(Set(ref isRightHand, value))
+                {
+                    OnCoordinateSystemChanged?.Invoke(this, value ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
+                }
+            }
         }
         /// <summary>
         /// Viewport Width
@@ -185,7 +190,7 @@ namespace HelixToolkit.UWP.Core
         private RasterizerStateDescription rasterDescription = new RasterizerStateDescription()
         {
             FillMode = FillMode.Solid,
-            CullMode = CullMode.Back,
+            CullMode = CullMode.None,
         };
         public RasterizerStateDescription RasterDescription
         {
@@ -376,7 +381,7 @@ namespace HelixToolkit.UWP.Core
                 deviceContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
                 dsView.Dispose();
             }
-
+            IsRightHand = !context.Camera.CreateLeftHandSystem;
             float viewportSize = Size * SizeScale;
             var globalTrans = context.GlobalTransform;
             UpdateProjectionMatrix((float)context.ActualWidth, (float)context.ActualHeight);

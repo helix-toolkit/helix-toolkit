@@ -42,6 +42,25 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
             get { return upDirection; }
         }
 
+        private bool createLeftHandSystem = false;
+        /// <summary>
+        /// Gets or sets a value indicating whether to create a left hand system.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if creating a left hand system; otherwise, <c>false</c>.
+        /// </value>
+        public bool CreateLeftHandSystem
+        {
+            set
+            {
+                Set(ref createLeftHandSystem, value);
+            }
+            get
+            {
+                return createLeftHandSystem;
+            }
+        }
+
         public abstract Matrix CreateProjectionMatrix(float aspectRatio);
 
         public abstract Matrix CreateViewMatrix();
@@ -92,25 +111,6 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
 
     public abstract class ProjectionCameraCore : CameraCore
     {
-        private bool createLeftHandSystem = false;
-        /// <summary>
-        /// Gets or sets a value indicating whether to create a left hand system.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if creating a left hand system; otherwise, <c>false</c>.
-        /// </value>
-        public bool CreateLeftHandSystem
-        {
-            set
-            {
-                Set(ref createLeftHandSystem, value);
-            }
-            get
-            {
-                return createLeftHandSystem;
-            }
-        }
-
         private float farPlane = 100;
         /// <summary>
         /// Gets or sets the far plane distance.
