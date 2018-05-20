@@ -306,8 +306,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
             CursorShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureBindSlot, frameProcessor.PointerResource);
             CursorShaderPass.BindShader(deviceContext);
-            CursorShaderPass.BindStates(deviceContext, StateType.DepthStencilState | StateType.RasterState);
-            deviceContext.DeviceContext.OutputMerger.SetBlendState(CursorShaderPass.BlendState, new RawColor4(0, 0, 0, 0)); //Set special blend factor
+            CursorShaderPass.BindStates(deviceContext, StateType.DepthStencilState | StateType.RasterState | StateType.BlendState);
+            //deviceContext.DeviceContext.OutputMerger.SetBlendState(CursorShaderPass.BlendState, new RawColor4(0, 0, 0, 0)); //Set special blend factor
             deviceContext.DeviceContext.Draw(4, 0);
         }
 

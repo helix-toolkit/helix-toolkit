@@ -14,6 +14,7 @@ namespace HelixToolkit.UWP.Shaders
     using Utilities;
     using Render;
     using System.Runtime.CompilerServices;
+    using global::SharpDX;
 
     /// <summary>
     /// Shader Pass
@@ -39,6 +40,10 @@ namespace HelixToolkit.UWP.Shaders
         /// <see cref="ShaderPass.BlendState"/>
         /// </summary>
         public BlendStateProxy BlendState { private set; get; } = null;
+
+        public Color4 BlendFactor { private set; get; } = Color4.White;
+
+        public int SampleMask { private set; get; } = -1;
         /// <summary>
         /// <see cref="ShaderPass.DepthStencilState"/>
         /// </summary>
@@ -101,6 +106,8 @@ namespace HelixToolkit.UWP.Shaders
 
             RasterState = passDescription.RasterStateDescription != null ?
                 Collect(manager.StateManager.Register((RasterizerStateDescription)passDescription.RasterStateDescription)) : RasterizerStateProxy.Empty;
+
+            BlendFactor = passDescription.BlendFactor;
         }
 
         /// <summary>
@@ -205,7 +212,7 @@ namespace HelixToolkit.UWP.Shaders
             }
             if (EnumHelper.HasFlag(type, StateType.BlendState))
             {
-                context.SetBlendState(BlendState);
+                context.SetBlendState(BlendState, BlendFactor, SampleMask);
             }
             if (EnumHelper.HasFlag(type, StateType.DepthStencilState))
             {

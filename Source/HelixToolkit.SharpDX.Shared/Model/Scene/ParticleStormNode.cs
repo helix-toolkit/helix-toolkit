@@ -422,6 +422,31 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             get { return destAlphaBlend; }
         }
+        /// <summary>
+        /// Gets or sets the blend factor for blending
+        /// </summary>
+        /// <value>
+        /// The blend factor.
+        /// </value>
+        public Color4 BlendFactor
+        {
+            set
+            {
+                particleCore.BlendFactor = value;
+            }
+            get { return particleCore.BlendFactor; }
+        }
+        /// <summary>
+        /// Gets or sets the sample mask for blending
+        /// </summary>
+        /// <value>
+        /// The sample mask.
+        /// </value>
+        public int SampleMask
+        {
+            set { particleCore.SampleMask = value; }
+            get { return particleCore.SampleMask; }
+        }
 
         private IList<Matrix> instances;
         /// <summary>
