@@ -612,6 +612,49 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (BlendOption)GetValue(DestAlphaBlendProperty);
             }
         }
+        /// <summary>
+        /// Gets or sets the blend factor for blending
+        /// </summary>
+        /// <value>
+        /// The blend factor.
+        /// </value>
+        public Media.Color BlendFactor
+        {
+            get { return (Media.Color)GetValue(BlendFactorProperty); }
+            set { SetValue(BlendFactorProperty, value); }
+        }
+
+        /// <summary>
+        /// The blend factor property
+        /// </summary>
+        public static readonly DependencyProperty BlendFactorProperty =
+            DependencyProperty.Register("BlendFactor", typeof(Media.Color), typeof(ParticleStormModel3D), new PropertyMetadata(Media.Colors.White, (d,e)=>
+            {
+                ((d as Element3DCore).SceneNode as ParticleStormNode).BlendFactor = ((Media.Color)e.NewValue).ToColor4();
+            }));
+
+
+        /// <summary>
+        /// Gets or sets the sample mask used during blending
+        /// </summary>
+        /// <value>
+        /// The sample mask.
+        /// </value>
+        public int SampleMask
+        {
+            get { return (int)GetValue(SampleMaskProperty); }
+            set { SetValue(SampleMaskProperty, value); }
+        }
+
+        /// <summary>
+        /// The sample mask property
+        /// </summary>
+        public static readonly DependencyProperty SampleMaskProperty =
+            DependencyProperty.Register("SampleMask", typeof(int), typeof(ParticleStormModel3D), new PropertyMetadata(-1, (d, e)=>
+            {
+                ((d as Element3DCore).SceneNode as ParticleStormNode).SampleMask = (int)e.NewValue;
+            }));
+
 
         /// <summary>
         /// List of instance matrix. 
@@ -679,6 +722,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 c.DestBlend = DestBlend;
                 c.SourceAlphaBlend = SourceAlphaBlend;
                 c.DestAlphaBlend = DestAlphaBlend;
+                c.SampleMask = SampleMask;
+                c.BlendColor = BlendColor.ToColor4();
 #if NETFX_CORE
                 c.EmitterLocation = EmitterLocation;
                 c.ConsumerLocation = ConsumerLocation;

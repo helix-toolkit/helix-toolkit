@@ -425,6 +425,83 @@ namespace ParticleSystemDemo
             }
         }
 
+        private Media.Color blendFactorColor = Media.Colors.White;
+        public Media.Color BlendFactorColor
+        {
+            set
+            {
+                if (SetValue(ref blendFactorColor, value))
+                {
+                    BlendFactorColorBrush = new Media.SolidColorBrush(value);
+                }
+            }
+            get
+            {
+                return blendFactorColor;
+            }
+        }
+
+        private int redFactorValue = 255;
+        public int RedFactorValue
+        {
+            set
+            {
+                if (SetValue(ref redFactorValue, value))
+                {
+                    BlendFactorColor = Media.Color.FromRgb((byte)RedFactorValue, (byte)GreenFactorValue, (byte)BlueFactorValue);
+                }
+            }
+            get
+            {
+                return redFactorValue;
+            }
+        }
+
+        private int greenFactorValue = 255;
+        public int GreenFactorValue
+        {
+            set
+            {
+                if (SetValue(ref greenFactorValue, value))
+                {
+                    BlendFactorColor = Media.Color.FromRgb((byte)RedFactorValue, (byte)GreenFactorValue, (byte)BlueFactorValue);
+                }
+            }
+            get
+            {
+                return greenFactorValue;
+            }
+        }
+
+        private int blueFactorValue = 255;
+        public int BlueFactorValue
+        {
+            set
+            {
+                if (SetValue(ref blueFactorValue, value))
+                {
+                    BlendFactorColor = Media.Color.FromRgb((byte)RedFactorValue, (byte)GreenFactorValue, (byte)BlueFactorValue);
+                }
+            }
+            get
+            {
+                return blueFactorValue;
+            }
+        }
+
+        private Media.SolidColorBrush blendFactorColorBrush = new Media.SolidColorBrush(Media.Colors.White);
+        public Media.SolidColorBrush BlendFactorColorBrush
+        {
+            set
+            {
+                SetValue(ref blendFactorColorBrush, value);
+            }
+            get
+            {
+                return blendFactorColorBrush;
+            }
+        }
+
         public IList<Matrix> Instances { private set; get; }
 
         public readonly Tuple<int, int>[] TextureColumnsRows = new Tuple<int, int>[] { new Tuple<int, int>(1, 1), new Tuple<int, int>(4, 4), new Tuple<int, int>(4, 4), new Tuple<int, int>(6, 5) };
@@ -465,7 +542,7 @@ namespace ParticleSystemDemo
                 case 3:
                     SourceBlendOption = BlendOption.SourceAlpha;
                     SourceAlphaBlendOption = BlendOption.Zero;
-                    DestBlendOption = BlendOption.InverseSourceAlpha;
+                    DestBlendOption = BlendOption.BlendFactor;
                     DestAlphaBlendOption = BlendOption.Zero;
                     break;
                 default:

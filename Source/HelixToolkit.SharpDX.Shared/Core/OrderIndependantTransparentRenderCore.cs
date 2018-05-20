@@ -58,7 +58,7 @@ namespace HelixToolkit.UWP.Core
         private int colorTexIndex, alphaTexIndex, samplerIndex;
         private SamplerStateProxy targetSampler;
         public int RenderCount { private set; get; } = 0;
-
+        public RenderParameter ExternRenderParameter { set; get; }
         private RenderTargetView[] targets;
         public OrderIndependentTransparentRenderCore() : base(RenderType.Transparent)
         { }
@@ -198,18 +198,28 @@ namespace HelixToolkit.UWP.Core
                 return; // Skip this frame if texture resized to reduce latency.
             }
             Bind(context, deviceContext);
-            var frustum = context.BoundingFrustum;
-            int count = context.RenderHost.PerFrameTransparentNodes.Count;
+
             context.IsOITPass = true;
-            for (int i = 0; i < count; ++i)
+            var parameter = ExternRenderParameter;
+            if (!parameter.ScissorRegion.IsEmpty)
             {
-                var renderable = context.RenderHost.PerFrameTransparentNodes[i];
-                if (context.EnableBoundingFrustum && !renderable.TestViewFrustum(ref frustum))
+                parameter.RenderTargetView = new RenderTargetView[] { colorTarget, alphaTarget };
+                RenderCount = context.RenderHost.Renderer.RenderOpaque(context, context.RenderHost.PerFrameTransparentNodes, ref parameter);
+            }
+            else
+            {
+                var frustum = context.BoundingFrustum;
+                int count = context.RenderHost.PerFrameTransparentNodes.Count;
+                for (int i = 0; i < count; ++i)
                 {
-                    continue;
+                    var renderable = context.RenderHost.PerFrameTransparentNodes[i];
+                    if (context.EnableBoundingFrustum && !renderable.TestViewFrustum(ref frustum))
+                    {
+                        continue;
+                    }
+                    renderable.RenderCore.Render(context, deviceContext);
+                    ++RenderCount;
                 }
-                renderable.RenderCore.Render(context, deviceContext);
-                ++RenderCount;
             }
             context.IsOITPass = false;
             UnBind(context, deviceContext);

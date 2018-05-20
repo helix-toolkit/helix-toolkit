@@ -138,7 +138,13 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        
+        public IRenderer Renderer
+        {
+            get
+            {
+                return CurrentRenderHost != null ? CurrentRenderHost.Renderer : null;
+            }
+        }
 
         /// <summary>
         /// Gets the current frame renderables for rendering.

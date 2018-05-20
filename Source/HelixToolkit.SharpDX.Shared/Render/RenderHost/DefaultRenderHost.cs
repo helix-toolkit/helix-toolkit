@@ -77,6 +77,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The viewport renderable2D
         /// </summary>
         protected readonly List<SceneNode2D> viewportRenderable2D = new List<SceneNode2D>();
+        /// <summary>
+        /// The need update cores
+        /// </summary>
+        private readonly List<RenderCore> needUpdateCores = new List<RenderCore>();
 
         /// <summary>
         /// Gets the current frame flattened scene graph. KeyValuePair.Key is the depth of the node.
@@ -191,7 +195,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
                 if (renderable.Value.RenderCore.NeedUpdate) // Run update function at the beginning of actual rendering.
                 {
-                    renderable.Value.RenderCore.Update(RenderContext, renderer.ImmediateContext);
+                    needUpdateCores.Add(renderable.Value.RenderCore);
                 }
                 ++i;
                 switch (type)
@@ -310,7 +314,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             var renderParameter = new RenderParameter()
             {
-                RenderTargetView = RenderTargetBufferView,
+                RenderTargetView = new global::SharpDX.Direct3D11.RenderTargetView[] { RenderTargetBufferView },
                 DepthStencilView = DepthStencilBufferView,
                 CurrentTargetTexture = RenderBuffer.ColorBuffer.Resource,
                 IsMSAATexture = RenderBuffer.ColorBufferSampleDesc.Count > 1,
@@ -321,6 +325,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             };
             renderer.SetRenderTargets(ref renderParameter);
             renderer.UpdateGlobalVariables(RenderContext, lightNodes, ref renderParameter);
+            for(int i=0; i < needUpdateCores.Count; ++i)
+            {
+                needUpdateCores[i].Update(RenderContext, renderer.ImmediateContext);
+            }
             renderer.RenderPreProc(RenderContext, preProcNodes, ref renderParameter);
             numRendered += renderer.RenderOpaque(RenderContext, opaqueNodes, ref renderParameter);
             numRendered += renderer.RenderOpaque(RenderContext, particleNodes, ref renderParameter);
@@ -334,7 +342,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 renderParameter.IsMSAATexture = false;
                 renderer.RenderPostProc(RenderContext, postProcNodes, ref renderParameter);
                 renderParameter.CurrentTargetTexture = RenderBuffer.FullResPPBuffer.CurrentTexture;
-                renderParameter.RenderTargetView = RenderBuffer.FullResPPBuffer.CurrentRTV;
+                renderParameter.RenderTargetView = new global::SharpDX.Direct3D11.RenderTargetView[] { RenderBuffer.FullResPPBuffer.CurrentRTV };
             }
            
             renderer.RenderScreenSpaced(RenderContext, screenSpacedNodes, ref renderParameter);
@@ -405,6 +413,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 perFrameFlattenedScene.Clear();
             }
+            needUpdateCores.Clear();
             opaqueNodes.Clear();
             transparentNodes.Clear();
             particleNodes.Clear();

@@ -108,6 +108,10 @@ namespace HelixToolkit.UWP
         /// </value>
         RenderContext RenderContext { get; }
         /// <summary>
+        /// Renderer
+        /// </summary>
+        IRenderer Renderer { get; }
+        /// <summary>
         /// Sets the default render targets.
         /// </summary>
         /// <param name="clear">if set to <c>true</c> [clear].</param>

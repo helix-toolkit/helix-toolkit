@@ -142,6 +142,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if (context.RenderHost.RenderConfiguration.EnableOITRendering
                 && context.RenderHost.FeatureLevel >= global::SharpDX.Direct3D.FeatureLevel.Level_11_0)
             {
+                transparentRenderCore.ExternRenderParameter = parameter;
                 transparentRenderCore.Render(context, ImmediateContext);
                 return transparentRenderCore.RenderCount;
             }
@@ -273,7 +274,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             if(count > 0)
             {
                 var buffer = context.RenderHost.RenderBuffer;
-                bool useDefault = parameter.RenderTargetView == buffer.ColorBuffer.RenderTargetView;
+                bool useDefault = parameter.RenderTargetView[0] == buffer.ColorBuffer.RenderTargetView;
 
                 var depthStencilBuffer = useDefault ? buffer.DepthStencilBuffer : buffer.FullResDepthStencilPool.Get(Format.D32_Float_S8X24_UInt);
                 ImmediateContext.DeviceContext.OutputMerger.SetRenderTargets(depthStencilBuffer, parameter.RenderTargetView);

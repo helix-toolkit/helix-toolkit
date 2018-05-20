@@ -110,6 +110,7 @@
                 x:Name="particleModel"
                 Acceleration="{Binding Acceleration}"
                 BlendColor="{Binding BlendColor}"
+                BlendFactor="{Binding BlendFactorColor}"
                 ConsumerLocation="{Binding ConsumerLocation}"
                 ConsumerRadius="{Binding ConsumerRadius}"
                 DestAlphaBlend="{Binding DestAlphaBlendOption}"
@@ -270,50 +271,65 @@
                         Value="{Binding EmitterRadius}" />
                 </StackPanel>
                 <Separator />
-                <StackPanel Orientation="Horizontal">
-                    <Label>Initial Energy:</Label>
-                    <TextBlock Text="{Binding ElementName=particleModel, Path=InitialEnergy}" />
-                    <Slider
-                        LargeChange="10"
-                        Maximum="30"
-                        Minimum="1"
-                        SmallChange="1"
-                        Value="{Binding ElementName=particleModel, Path=InitialEnergy}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label>Dissipation Rate(/s):</Label>
-                    <TextBlock Text="{Binding ElementName=particleModel, Path=EnergyDissipationRate}" />
-                    <Slider
-                        LargeChange="10"
-                        Maximum="30"
-                        Minimum="1"
-                        SmallChange="1"
-                        Value="{Binding ElementName=particleModel, Path=EnergyDissipationRate}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label>Cumulate at bound:</Label>
-                    <CheckBox IsChecked="{Binding ElementName=particleModel, Path=CumulateAtBound}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label>Bound:</Label>
-                    <Slider
-                        LargeChange="10"
-                        Maximum="40"
-                        Minimum="1"
-                        SmallChange="1"
-                        Value="{Binding BoundScale}" />
-                </StackPanel>
-                <StackPanel Orientation="Vertical">
-
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Blend Color:</Label>
-                        <Rectangle
-                            Width="30"
-                            Height="20"
-                            Margin="10,0,0,0"
-                            Fill="{Binding BlendColorBrush}" />
-                    </StackPanel>
+                <Expander
+                    ExpandDirection="Down"
+                    Foreground="White"
+                    Header="Energy Rate">
                     <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Initial Energy:</Label>
+                            <TextBlock Text="{Binding ElementName=particleModel, Path=InitialEnergy}" />
+                            <Slider
+                                LargeChange="10"
+                                Maximum="30"
+                                Minimum="1"
+                                SmallChange="1"
+                                Value="{Binding ElementName=particleModel, Path=InitialEnergy}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Dissipation Rate(/s):</Label>
+                            <TextBlock Text="{Binding ElementName=particleModel, Path=EnergyDissipationRate}" />
+                            <Slider
+                                LargeChange="10"
+                                Maximum="30"
+                                Minimum="1"
+                                SmallChange="1"
+                                Value="{Binding ElementName=particleModel, Path=EnergyDissipationRate}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Cumulate at bound:</Label>
+                            <CheckBox IsChecked="{Binding ElementName=particleModel, Path=CumulateAtBound}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Bound:</Label>
+                            <Slider
+                                LargeChange="10"
+                                Maximum="40"
+                                Minimum="1"
+                                SmallChange="1"
+                                Value="{Binding BoundScale}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Animate by energy level:</Label>
+                                <CheckBox IsChecked="{Binding ElementName=particleModel, Path=AnimateSpriteByEnergy}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Expander>
+
+                <Separator />
+                <Expander Foreground="White" Header="Color and Blending">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Blend Color:</Label>
+                            <Rectangle
+                                Width="30"
+                                Height="20"
+                                Margin="10,0,0,0"
+                                Fill="{Binding BlendColorBrush}" />
+                        </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label Foreground="Red">R:</Label>
                             <TextBlock Text="{Binding RedValue}" />
@@ -344,51 +360,85 @@
                                 SmallChange="1"
                                 Value="{Binding BlueValue}" />
                         </StackPanel>
+                        <Separator />
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Style.Setters>
+                                        <Setter Property="MinWidth" Value="80" />
+                                        <Setter Property="Foreground" Value="Black" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                        <Setter Property="Margin" Value="2" />
+                                    </Style.Setters>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Label>Blend State</Label>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Blend Operation:</Label>
+                                <ComboBox ItemsSource="{Binding BlendOperationArray}" SelectedItem="{Binding ElementName=particleModel, Path=Blend}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Alpha Blend Operation:</Label>
+                                <ComboBox ItemsSource="{Binding BlendOperationArray}" SelectedItem="{Binding ElementName=particleModel, Path=AlphaBlend}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Source Blend:</Label>
+                                <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=SourceBlend}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Dest Blend:</Label>
+                                <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=DestBlend}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Source Alpha Blend:</Label>
+                                <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=SourceAlphaBlend}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Dest Alpha Blend:</Label>
+                                <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=DestAlphaBlend}" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Blend Factor:</Label>
+                            <Rectangle
+                                Width="30"
+                                Height="20"
+                                Margin="10,0,0,0"
+                                Fill="{Binding BlendFactorColorBrush}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Foreground="Red">R:</Label>
+                            <TextBlock Text="{Binding RedFactorValue}" />
+                            <Slider
+                                LargeChange="10"
+                                Maximum="255"
+                                Minimum="0"
+                                SmallChange="1"
+                                Value="{Binding RedFactorValue}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Foreground="Green">G:</Label>
+                            <TextBlock Text="{Binding GreenFactorValue}" />
+                            <Slider
+                                LargeChange="10"
+                                Maximum="255"
+                                Minimum="0"
+                                SmallChange="1"
+                                Value="{Binding GreenFactorValue}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Foreground="Blue">B:</Label>
+                            <TextBlock Text="{Binding BlueFactorValue}" />
+                            <Slider
+                                LargeChange="10"
+                                Maximum="255"
+                                Minimum="0"
+                                SmallChange="1"
+                                Value="{Binding BlueFactorValue}" />
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-                <Separator />
-                <StackPanel Orientation="Horizontal">
-                    <Label>Animate by energy level:</Label>
-                    <CheckBox IsChecked="{Binding ElementName=particleModel, Path=AnimateSpriteByEnergy}" />
-                </StackPanel>
-                <Separator />
-                <StackPanel Orientation="Vertical">
-                    <StackPanel.Resources>
-                        <Style TargetType="TextBlock">
-                            <Style.Setters>
-                                <Setter Property="MinWidth" Value="80" />
-                                <Setter Property="Foreground" Value="Black" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
-                                <Setter Property="Margin" Value="2" />
-                            </Style.Setters>
-                        </Style>
-                    </StackPanel.Resources>
-                    <Label>Blend State</Label>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Blend Operation:</Label>
-                        <ComboBox ItemsSource="{Binding BlendOperationArray}" SelectedItem="{Binding ElementName=particleModel, Path=Blend}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Alpha Blend Operation:</Label>
-                        <ComboBox ItemsSource="{Binding BlendOperationArray}" SelectedItem="{Binding ElementName=particleModel, Path=AlphaBlend}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Source Blend:</Label>
-                        <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=SourceBlend}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Dest Blend:</Label>
-                        <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=DestBlend}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Source Alpha Blend:</Label>
-                        <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=SourceAlphaBlend}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Dest Alpha Blend:</Label>
-                        <ComboBox ItemsSource="{Binding BlendOptionArray}" SelectedItem="{Binding ElementName=particleModel, Path=DestAlphaBlend}" />
-                    </StackPanel>
-                </StackPanel>
+
+                </Expander>
             </StackPanel>
         </ScrollViewer>
     </Grid>
