@@ -228,7 +228,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                         continue;
                     }
                     int index;
-                    var node = mOctree.FindItemByGuid(item.GUID, item as GeometryNode, out index);
+                    var node = mOctree.FindItemByGuid(item.GUID, item, out index);
                     bool rootAdd = true;
                     if (node != null)
                     {
@@ -251,7 +251,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     }
                     else
                     {
-                        mOctree.RemoveByGuid(item.GUID, item as GeometryNode, mOctree);
+                        mOctree.RemoveByGuid(item.GUID, item, mOctree);
                     }
                     if (rootAdd)
                     {
@@ -294,12 +294,20 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 if (Enabled && item != null)
                 {
-                    item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
-                    item.OnTransformBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
-                    if (item.Bounds != ZeroBound)
+                    if (item.HasBound)
                     {
-                        AddItem(item);
+                        item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
+                        item.OnTransformBoundChanged += GeometryModel3DOctreeManager_OnBoundInitialized;
+                        pendingItems.Add(item);
                     }
+                    else
+                    {
+                        NonBoundableItems.Add(item);
+                    }
+                    //if (item.Bounds != ZeroBound)
+                    //{
+                    //    AddItem(item);
+                    //}
                     return true;
                 }
                 else
@@ -332,7 +340,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     {
                         bool succeed = true;
                         int counter = 0;
-                        while (!tree.Add(item as GeometryNode))
+                        while (!tree.Add(item))
                         {
                             var direction = (item.Bounds.Minimum + item.Bounds.Maximum)
                                 - (tree.Bound.Minimum + tree.Bound.Maximum);
@@ -381,7 +389,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                         UpdateOctree(null);
                         item.OnTransformBoundChanged -= GeometryModel3DOctreeManager_OnBoundInitialized;
                         UnsubscribeBoundChangeEvent(item);
-                        if (!tree.RemoveByBound(item as GeometryNode))
+                        if (!tree.RemoveByBound(item))
                         {
                             //Console.WriteLine("Remove failed.");
                         }
