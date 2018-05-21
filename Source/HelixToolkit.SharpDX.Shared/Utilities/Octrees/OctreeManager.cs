@@ -281,8 +281,6 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             return tree.TreeBuilt ? tree : null;
         }
 
-        private static readonly BoundingBox ZeroBound = new BoundingBox();
-
         /// <summary>
         /// Adds the pending item.
         /// </summary>
