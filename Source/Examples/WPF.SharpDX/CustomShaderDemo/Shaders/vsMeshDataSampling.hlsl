@@ -48,7 +48,7 @@ PSInput main(VSInput input)
     output.wp = output.p;
     //set position into clip space	
     output.p = mul(output.p, mViewProjection);
-
+    output.vEye = output.wp - float4(vEyePos, 1);
     //set texture coords and color
     output.t = input.t;
     output.c = input.c;
