@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// The render target view
         /// </summary>
-        public RenderTargetView RenderTargetView;
+        public RenderTargetView[] RenderTargetView;
         /// <summary>
         /// The depth stencil view
         /// </summary>

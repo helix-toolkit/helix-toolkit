@@ -466,7 +466,7 @@ namespace HelixToolkit.UWP.Core
         private ParticleCountIndirectArgs drawArgument = new ParticleCountIndirectArgs();
         #endregion
 
-        private BlendState blendState;
+        private BlendStateProxy blendState;
         private BlendStateDescription blendDesc = new BlendStateDescription() { IndependentBlendEnable = false, AlphaToCoverageEnable = false };
         /// <summary>
         /// Particle blend state description
@@ -481,6 +481,38 @@ namespace HelixToolkit.UWP.Core
                 }
             }
             get { return blendDesc; }
+        }
+
+        private Color4 blendFactor = Color4.White;
+        /// <summary>
+        /// Gets or sets the blend factor used for blending.
+        /// </summary>
+        /// <value>
+        /// The blend factor.
+        /// </value>
+        public Color4 BlendFactor
+        {
+            set
+            {
+                SetAffectsRender(ref blendFactor, value);
+            }
+            get { return blendFactor; }
+        }
+
+        private int sampleMask = -1;
+        /// <summary>
+        /// Gets or sets the sample mask used for blending.
+        /// </summary>
+        /// <value>
+        /// The sample mask.
+        /// </value>
+        public int SampleMask
+        {
+            set
+            {
+                SetAffectsRender(ref sampleMask, value);
+            }
+            get { return sampleMask; }
         }
         /// <summary>
         /// Gets or sets the vertex layout.
@@ -795,7 +827,7 @@ namespace HelixToolkit.UWP.Core
             deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
             int firstSlot = 0;
             InstanceBuffer?.AttachBuffer(deviceContext, ref firstSlot);
-            deviceContext.DeviceContext.OutputMerger.SetBlendState(blendState, null, 0xFFFFFFFF);
+            deviceContext.DeviceContext.OutputMerger.SetBlendState(blendState, blendFactor, sampleMask);
             deviceContext.DeviceContext.DrawInstancedIndirect(particleCountGSIABuffer.Buffer, 0);
             InvalidateRenderer();//Since particle is running all the time. Invalidate once finished rendering
         }

@@ -495,10 +495,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         #endregion
 
         #region Private variables
+
+        protected IRenderer renderer;
         /// <summary>
         /// The renderer
         /// </summary>
-        protected IRenderer renderer;
+        public IRenderer Renderer { get { return renderer; } }
         /// <summary>
         /// The update requested
         /// </summary>

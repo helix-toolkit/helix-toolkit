@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace HelixToolkit.UWP.Shaders
     /// <summary>
     /// 
     /// </summary>
-    public class TechniqueDescription
+    public sealed class TechniqueDescription
     {
         /// <summary>
         /// Technique Name
@@ -73,7 +74,7 @@ namespace HelixToolkit.UWP.Shaders
     /// <summary>
     /// 
     /// </summary>
-    public class ShaderPassDescription
+    public sealed class ShaderPassDescription
     {        
         /// <summary>
         /// Pass Name
@@ -88,7 +89,20 @@ namespace HelixToolkit.UWP.Shaders
         /// 
         /// </summary>
         public BlendStateDescription? BlendStateDescription { set; get; } = null;
-
+        /// <summary>
+        /// Gets or sets the color of the blend.
+        /// </summary>
+        /// <value>
+        /// The color of the blend.
+        /// </value>
+        public Color4 BlendFactor { set; get; } = Color4.White;
+        /// <summary>
+        /// Gets or sets the sample factor.
+        /// </summary>
+        /// <value>
+        /// The sample factor.
+        /// </value>
+        public int SampleFactor { set; get; } = -1;
         /// <summary>
         /// 
         /// </summary>

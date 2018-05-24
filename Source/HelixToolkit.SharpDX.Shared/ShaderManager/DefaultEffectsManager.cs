@@ -10,6 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
+    using global::SharpDX;
     using HelixToolkit.Logger;
     using Shaders;
     /// <summary>
@@ -1276,6 +1277,7 @@ namespace HelixToolkit.UWP
                         },
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
                         BlendStateDescription = DefaultBlendStateDescriptions.BSScreenDupCursorBlend,
+                        BlendFactor = new Color4(0,0,0,0),
                         RasterStateDescription = DefaultRasterDescriptions.RSScreenDuplication
                     }
                 }

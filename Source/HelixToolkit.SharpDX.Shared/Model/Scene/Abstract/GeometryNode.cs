@@ -328,6 +328,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         #endregion Rasterizer parameters        
+        private bool enableViewFrustumCheck = true;
         /// <summary>
         /// Gets or sets a value indicating whether [enable view frustum check].
         /// </summary>
@@ -336,8 +337,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public bool EnableViewFrustumCheck
         {
-            set; get;
-        } = true;
+            set { enableViewFrustumCheck = value; }
+            get { return enableViewFrustumCheck && HasBound; }
+        }
 
         private string postEffects;
         /// <summary>
@@ -505,7 +507,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
         {
-            if (!HasBound || !EnableViewFrustumCheck)
+            if (!EnableViewFrustumCheck)
             {
                 return true;
             }

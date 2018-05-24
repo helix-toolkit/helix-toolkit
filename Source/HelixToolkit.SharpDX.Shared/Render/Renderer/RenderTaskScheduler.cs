@@ -31,11 +31,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="parameter">The parameter.</param>
         /// <param name="outputCommands">The output commands.</param>
-        /// <param name="filterType"></param>
         /// <param name="numRendered"></param>
         /// <returns></returns>
         bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
-            RenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered);
+            RenderContext context, RenderParameter parameter, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered);
     }
     /// <summary>
     /// 
@@ -107,12 +106,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="pool"></param>
         /// <param name="context"></param>
         /// <param name="parameter"></param>
-        /// <param name="filterType"></param>
         /// <param name="outputCommands"></param>
         /// <param name="numRendered"></param>
         /// <returns></returns>
         public bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
-            RenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered)
+            RenderContext context, RenderParameter parameter, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered)
         {
             outputCommands.Clear();
             int totalCount = 0;
@@ -132,11 +130,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         {
                             continue;
                         }
-                        if (items[i].RenderCore.RenderType == filterType)
-                        {
-                            items[i].RenderCore.Render(context, deferred);
-                        }
-                        ++counter;
+                        items[i].RenderCore.Render(context, deferred);
+                        ++counter;         
                     }
                     var command = deferred.DeviceContext.FinishCommandList(true);
                     pool.Put(deferred);
