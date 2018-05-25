@@ -15,14 +15,13 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public class HitTestResult : IComparable<HitTestResult>
     {
+
         /// <summary>
-        /// Gets the distance between the hit intersection and the inner coordinate space
-        /// of the System.Windows.Media.Media3D.Visual3D which initiated the hit test.
-        /// 
-        /// Double that indicates the distance between the hit intersection and the inner
-        /// coordinate space of the System.Windows.Media.Media3D.Visual3D which initiated
-        /// the hit test.
+        /// Gets or sets the distance from the hit ray origin to the <see cref="PointHit"/>
         /// </summary>
+        /// <value>
+        /// The distance.
+        /// </value>
         public double Distance { get; set; }
 
         /// <summary>
