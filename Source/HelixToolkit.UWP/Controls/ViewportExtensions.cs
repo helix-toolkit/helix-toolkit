@@ -217,7 +217,7 @@ namespace HelixToolkit.UWP
             }
             hits.Sort();
 
-            return hits.OrderBy(k => k.Distance).ToList();
+            return hits;
         }
 
         /// <summary>
