@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
+using System;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -12,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// Provides a hit test result.
     /// </summary>
-    public class HitTestResult
+    public class HitTestResult : IComparable<HitTestResult>
     {
         /// <summary>
         /// Gets the distance between the hit intersection and the inner coordinate space
@@ -56,6 +57,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The hitted triangle vertex indices.
         /// </summary>
         public System.Tuple<int, int, int> TriangleIndices { set; get; }
+
+        public int CompareTo(HitTestResult other)
+        {
+            if (other == null) { return 1; }
+            else
+            {
+                return this.Distance.CompareTo(other.Distance);
+            }
+        }
     }
 
     /// <summary>

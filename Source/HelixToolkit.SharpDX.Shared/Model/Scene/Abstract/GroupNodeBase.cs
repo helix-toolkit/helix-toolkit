@@ -165,8 +165,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             if (hit)
             {
-                var pos = ray.Position;
-                hits = hits.OrderBy(x => Vector3.DistanceSquared(pos, x.PointHit)).ToList();
+                hits.Sort();
             }
             return hit;
         }
