@@ -163,11 +163,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     hit = true;
                 }
             }
-            if (hit)
-            {
-                var pos = ray.Position;
-                hits = hits.OrderBy(x => Vector3.DistanceSquared(pos, x.PointHit)).ToList();
-            }
+            //if (hit)
+            //{
+            //    hits.Sort();
+            //}
             return hit;
         }
 

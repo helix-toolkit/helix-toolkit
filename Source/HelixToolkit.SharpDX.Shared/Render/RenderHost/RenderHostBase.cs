@@ -446,7 +446,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public RenderDetail ShowRenderDetail
         {
-            set { RenderStatistics.FrameDetail = value; }
+            set
+            {
+                if (RenderStatistics.FrameDetail != value)
+                {
+                    RenderStatistics.FrameDetail = value;
+                    InvalidateRender();
+                }
+            }
             get { return RenderStatistics.FrameDetail; }
         }
 

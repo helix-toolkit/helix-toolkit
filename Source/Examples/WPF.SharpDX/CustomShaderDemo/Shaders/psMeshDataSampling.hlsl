@@ -18,11 +18,14 @@ float4 calcBlinnPhongLighting(float4 LColor, float4 vMaterialTexture, float3 N, 
 float4 main(PSInput input) : SV_Target
 {    
     float4 vMaterialTexture = texData.Sample(texDataSampler, input.t.x);
+    float3 ddxPos = ddx(input.vEye.xyz);
+    float3 ddyPos = ddy(input.vEye.xyz);
+    float3 n = cross(ddxPos, ddyPos);
     // renormalize interpolated vectors
-    input.n = normalize(input.n);
+    input.n = normalize(n);
 
     // get per pixel vector to eye-position
-    float3 eye = normalize(vEyePos - input.wp.xyz);
+    float3 eye = input.vEye;
     float4 DI = float4(0, 0, 0, 0);
     // compute lighting
     for (int i = 0; i < NumLights; ++i)

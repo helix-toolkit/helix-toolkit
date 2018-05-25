@@ -55,10 +55,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
-        public BillboardNode()
-        {
-            HasBound = false;
-        }
         /// <summary>
         /// Called when [create render core].
         /// </summary>
@@ -94,7 +90,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
         {
-            if (!HasBound)
+            if (!EnableViewFrustumCheck)
             {
                 return true;
             }
