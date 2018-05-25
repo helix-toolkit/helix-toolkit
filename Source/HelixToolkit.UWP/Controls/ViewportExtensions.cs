@@ -211,23 +211,9 @@ namespace HelixToolkit.UWP
             var ray = UnProject(viewport, position);
             var hits = new List<HitTestResult>();
 
-            if (viewport.RenderHost != null)
+            foreach (var element in viewport.Renderables)
             {
-                foreach (var node in viewport.RenderHost.PerFrameOpaqueNodes)
-                {
-                    node.HitTest(viewport.RenderContext, ray, ref hits);
-                }
-                foreach (var node in viewport.RenderHost.PerFrameTransparentNodes)
-                {
-                    node.HitTest(viewport.RenderContext, ray, ref hits);
-                }
-            }
-            else
-            {
-                foreach (var element in viewport.Renderables)
-                {
-                    element.HitTest(viewport.RenderContext, ray, ref hits);
-                }
+                element.HitTest(viewport.RenderContext, ray, ref hits);
             }
             hits.Sort();
 

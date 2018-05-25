@@ -163,10 +163,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     hit = true;
                 }
             }
-            if (hit)
-            {
-                hits.Sort();
-            }
+            //if (hit)
+            //{
+            //    hits.Sort();
+            //}
             return hit;
         }
 

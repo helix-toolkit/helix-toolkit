@@ -307,23 +307,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var ray = UnProject(viewport, new Vector2((float)position.X, (float)position.Y));
             var hits = new List<HitTestResult>();
-            if(viewport.RenderHost != null)
+
+            foreach (var element in viewport.Renderables)
             {
-                foreach(var node in viewport.RenderHost.PerFrameOpaqueNodes)
-                {
-                    node.HitTest(viewport.RenderContext, ray, ref hits);
-                }
-                foreach(var node in viewport.RenderHost.PerFrameTransparentNodes)
-                {
-                    node.HitTest(viewport.RenderContext, ray, ref hits);
-                }
-            }
-            else
-            {
-                foreach (var element in viewport.Renderables)
-                {
-                    element.HitTest(viewport.RenderContext, ray, ref hits);
-                }
+                element.HitTest(viewport.RenderContext, ray, ref hits);
             }
             hits.Sort();
             return hits;
