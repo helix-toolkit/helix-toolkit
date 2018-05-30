@@ -144,7 +144,7 @@ namespace HelixToolkit.UWP
                     switch (this.CameraMode)
                     {
                         case CameraMode.Inspect:
-                            this.ChangeCameraDistance(delta, zoomAround);
+                            this.ChangeCameraDistance(ref delta, zoomAround);
                             break;
                         case CameraMode.WalkAround:
                             this.Camera.Position -= this.Camera.LookDirection * (float)delta;
@@ -208,15 +208,14 @@ namespace HelixToolkit.UWP
                 case CameraMode.WalkAround:
                 case CameraMode.Inspect:
                 case CameraMode.FixedPosition:
-                    this.ChangeCameraDistance(delta, zoomAround);
-
-                    // Modify the camera width
-                    var ocamera = this.Camera as OrthographicCamera;
-                    if (ocamera != null)
+                    if(ChangeCameraDistance(ref delta, zoomAround))
                     {
-                        ocamera.Width *= Math.Pow(2.5, delta);
+                        // Modify the camera width
+                        if (this.Camera is OrthographicCamera ocamera)
+                        {
+                            ocamera.Width *= Math.Pow(2.5, delta);
+                        }
                     }
-
                     break;
             }
         }
@@ -253,7 +252,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="delta">The delta.</param>
         /// <param name="zoomAround">The zoom around point.</param>
-        private void ChangeCameraDistance(double delta, Point3D zoomAround)
+        private bool ChangeCameraDistance(ref double delta, Point3D zoomAround)
         {
             // Handle the 'zoomAround' point
             var target = this.Camera.Position + this.Camera.LookDirection;
@@ -268,12 +267,12 @@ namespace HelixToolkit.UWP
                 }
                 else//If Zoom in too close, stop it.
                 {
-                    return;
+                    return false;
                 }
             }
-            var f = (float)Math.Pow(2.5, delta);
-            var newRelativePosition = relativePosition * f;
-            var newRelativeTarget = relativeTarget * f;
+            var f = Math.Pow(2.5, delta);
+            var newRelativePosition = relativePosition * (float)f;
+            var newRelativeTarget = relativeTarget * (float)f;
            
             var newTarget = zoomAround - newRelativeTarget;
             var newPosition = zoomAround - newRelativePosition;
@@ -283,17 +282,32 @@ namespace HelixToolkit.UWP
 
             if (newDistance > this.CameraController.ZoomDistanceLimitFar && (oldDistance < this.CameraController.ZoomDistanceLimitFar || newDistance > oldDistance))
             {
-                return;
+                var ratio = (newDistance - this.CameraController.ZoomDistanceLimitFar) / newDistance;
+                f *= 1 - ratio;
+                newRelativePosition = relativePosition * (float)f;
+                newRelativeTarget = relativeTarget * (float)f;
+
+                newTarget = zoomAround - newRelativeTarget;
+                newPosition = zoomAround - newRelativePosition;
+                delta = Math.Log(f) / Math.Log(2.5);
             }
 
             if (newDistance < this.CameraController.ZoomDistanceLimitNear && (oldDistance > this.CameraController.ZoomDistanceLimitNear || newDistance < oldDistance))
             {
-                return;
+                var ratio = (this.CameraController.ZoomDistanceLimitNear - newDistance) / newDistance;
+                f *= (1 + ratio);
+                newRelativePosition = relativePosition * (float)f;
+                newRelativeTarget = relativeTarget * (float)f;
+
+                newTarget = zoomAround - newRelativeTarget;
+                newPosition = zoomAround - newRelativePosition;
+                delta = Math.Log(f) / Math.Log(2.5);
             }
 
             var newLookDirection = newTarget - newPosition;
             this.Camera.LookDirection = newLookDirection;
             this.Camera.Position = newPosition;
+            return true;
         }
     }
 }
