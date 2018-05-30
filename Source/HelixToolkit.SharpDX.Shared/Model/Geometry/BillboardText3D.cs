@@ -143,6 +143,11 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return textInfo; }
         }
 
+        public BillboardText3D()
+        {
+            textInfo.CollectionChanged += CollectionChanged;
+        }
+
         private void CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             IsInitialized = false;

@@ -360,6 +360,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void AddMoveForce(double dx, double dy, double dz)
         {
             this.cameraController.AddMoveForce(new Vector3D(dx, dy, dz));
+            InvalidateRender();
         }
 
         /// <summary>
@@ -371,6 +372,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void AddMoveForce(Vector3D delta)
         {
             this.cameraController.AddMoveForce(delta);
+            InvalidateRender();
         }
 
         /// <summary>
@@ -385,6 +387,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void AddPanForce(double dx, double dy)
         {
             this.cameraController.AddPanForce(dx, dy);
+            InvalidateRender();
         }
 
         /// <summary>
@@ -396,6 +399,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void AddPanForce(Vector3D pan)
         {
             this.cameraController.AddPanForce(pan);
+            InvalidateRender();
         }
 
         /// <summary>
@@ -410,6 +414,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void AddRotateForce(double dx, double dy)
         {
             this.cameraController.AddRotateForce(dx, dy);
+            InvalidateRender();
         }
 
         /// <summary>
@@ -421,6 +426,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void AddZoomForce(double dx)
         {
             this.cameraController.AddZoomForce(dx);
+            InvalidateRender();
         }
 
         /// <summary>
@@ -435,6 +441,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public void AddZoomForce(double dx, Point3D zoomOrigin)
         {
             this.cameraController.AddZoomForce(dx, zoomOrigin);
+            InvalidateRender();
         }
 
         /// <summary>
