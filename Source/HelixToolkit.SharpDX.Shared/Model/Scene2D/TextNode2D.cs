@@ -18,15 +18,19 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 
     public class TextNode2D : SceneNode2D
     {
+        private string text = "";
         public string Text
         {
             set
             {
-                (RenderCore as TextRenderCore2D).Text = value;
+                if(SetAffectsMeasure(ref text, value))
+                {
+                    (RenderCore as TextRenderCore2D).Text = value;
+                }
             }
             get
             {
-                return (RenderCore as TextRenderCore2D).Text;
+                return text;
             }
         }
 
