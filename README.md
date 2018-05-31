@@ -49,6 +49,8 @@ HelixToolkit default is using right-handed Cartesian coordinate system, includin
 #### 3. Following features are not supported currently on FeatureLevel 10 graphics card:
 FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
+#### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki)
+
 ## News
 
 #### 2018-05-04
