@@ -12,10 +12,15 @@ float4 main(PSInputBT input) : SV_Target
 {
 	// Take the color off the texture, and use its red component as alpha.
     float4 pixelColor = billboardTexture.Sample(samplerBillboard, input.t);
-    float4 blend = input.foreground * pixelColor.x + input.background * (1 - pixelColor.x);
+    float4 blend = input.foreground * pixelColor.r + input.background * (1 - pixelColor.r);
 
-    return blend * whengt((when_eq(BillboardMultiText, (int) pfParams.x) + when_eq(BillboardSingleText, (int) pfParams.x)), 0)
+    float4 color = blend * whengt((when_eq(BillboardMultiText, (int) pfParams.x) + when_eq(BillboardSingleText, (int) pfParams.x)), 0)
     + pixelColor * any(when_neq(pixelColor, input.background)) * when_eq(BillboardImage, (int) pfParams.x);
+    if (color.a == 0)
+    {
+        discard;
+    }
+    return color;
 }
 
 #endif
