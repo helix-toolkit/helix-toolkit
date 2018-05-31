@@ -882,8 +882,15 @@ namespace HelixToolkit.Wpf.SharpDX
         public void StopSpin()
         {
             this.isSpinning = false;
+            this.spinningSpeed = new Vector();
         }
-
+        /// <summary>
+        /// Stops the zooming inertia.
+        /// </summary>
+        public void StopZooming()
+        {
+            this.zoomSpeed = 0;
+        }
         /// <summary>
         /// Zooms by the specified delta value.
         /// </summary>

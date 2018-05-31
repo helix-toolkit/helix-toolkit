@@ -976,6 +976,14 @@ namespace HelixToolkit.UWP
         public void StopSpin()
         {
             this.isSpinning = false;
+            this.spinningSpeed = new Vector2();
+        }
+        /// <summary>
+        /// Stops the zooming inertia
+        /// </summary>
+        public void StopZooming()
+        {
+            this.zoomSpeed = 0;
         }
 
         /// <summary>
