@@ -54,7 +54,7 @@ EnableSwapChainRendering = true;
 EnableD2DRendering = false;
 ```
 
-#### 4. Improve WPF Render Performance using [WPF BitmapCache](https://docs.microsoft.com/en-us/dotnet/framework/wpf/graphics-multimedia/how-to-improve-rendering-performance-by-caching-an-element) on overlay controls above viewport.
+#### 4. Performance [Topics](https://github.com/helix-toolkit/helix-toolkit/wiki/Tips-on-performance-optimization-(WPF.SharpDX-and-UWP))
 
 #### 5. Following features are not supported currently on FeatureLevel 10 graphics card:
 FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
