@@ -238,7 +238,10 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         private OctantArray octants;
 
         private readonly List<BoundingBox> hitPathBoundingBoxes = new List<BoundingBox>();
-
+        /// <summary>
+        /// Internal octant array size.
+        /// </summary>
+        public int OctantArraySize { get { return octants != null ? octants.Count : 0; } }
         /// <summary>
         ///
         /// </summary>
