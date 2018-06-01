@@ -357,47 +357,49 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 && octant.Count > this.Parameter.MinObjectSizeToSplit)
             {
                 var octantBounds = CreateOctants(ref b, Parameter.MinimumOctantSize);
-
-                int start = octant.Start;
-                Octant childOctant = new Octant();
-                for (int childOctantIdx = 0; childOctantIdx < OctantSize; ++childOctantIdx)
+                if (octantBounds.Length == OctantSize)
                 {
-                    int count = 0;
-                    int end = octant.End;
-                    bool hasChildOctant = false;
-                    int childIdx = -1;
-
-                    for (int i = end - 1; i >= start; --i)
+                    int start = octant.Start;
+                    Octant childOctant = new Octant();
+                    for (int childOctantIdx = 0; childOctantIdx < OctantSize; ++childOctantIdx)
                     {
-                        var obj = Objects[i];
-                        if (IsContains(ref octantBounds[childOctantIdx], GetBoundingBoxFromItem(ref obj), ref obj))
+                        int count = 0;
+                        int end = octant.End;
+                        bool hasChildOctant = false;
+                        int childIdx = -1;
+
+                        for (int i = end - 1; i >= start; --i)
                         {
-                            if (!hasChildOctant)//Add New Child Octant if not having one.
+                            var obj = Objects[i];
+                            if (IsContains(ref octantBounds[childOctantIdx], GetBoundingBoxFromItem(ref obj), ref obj))
                             {
-                                if(!octants.Add(index, childOctantIdx, octantBounds[childOctantIdx], ref octant))
+                                if (!hasChildOctant)//Add New Child Octant if not having one.
                                 {
-                                    Debug.WriteLine("Add child failed.");
-                                    break;
+                                    if(!octants.Add(index, childOctantIdx, octantBounds[childOctantIdx], ref octant))
+                                    {
+                                        Debug.WriteLine("Add child failed.");
+                                        break;
+                                    }
+                                    childIdx = octant[childOctantIdx];
+                                    childOctant = octants[childIdx];
+                                    hasChildOctant = true;
                                 }
-                                childIdx = octant[childOctantIdx];
-                                childOctant = octants[childIdx];
-                                hasChildOctant = true;
+                                ++count;
+                                childOctant.End = end;
+                                int s = end - count;
+                                childOctant.Start = s;
+                                var o = Objects[i];
+                                Objects[i] = Objects[s]; //swap objects. Move object into parent octant start/end range
+                                Objects[s] = o; //Move object into child octant start/end range
                             }
-                            ++count;
-                            childOctant.End = end;
-                            int s = end - count;
-                            childOctant.Start = s;
-                            var o = Objects[i];
-                            Objects[i] = Objects[s]; //swap objects. Move object into parent octant start/end range
-                            Objects[s] = o; //Move object into child octant start/end range
                         }
-                    }
 
-                    if (hasChildOctant)
-                    {
-                        octants[childIdx] = childOctant;
+                        if (hasChildOctant)
+                        {
+                            octants[childIdx] = childOctant;
+                        }
+                        octant.End = end - count;
                     }
-                    octant.End = end - count;
                 }
             }
 
