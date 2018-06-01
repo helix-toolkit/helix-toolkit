@@ -74,7 +74,8 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
+            this.Controller.StopSpin();
+            this.Controller.StopZooming();
             this.Camera.Position += delta;
         }
 
