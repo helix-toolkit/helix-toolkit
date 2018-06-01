@@ -442,7 +442,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         public static BoundingBox[] CreateOctants(ref BoundingBox box, float minSize)
         {
             Vector3 dimensions = box.Maximum - box.Minimum;
-            if (dimensions == Vector3.Zero || (dimensions.X < minSize && dimensions.Y < minSize && dimensions.Z < minSize))
+            if (dimensions == Vector3.Zero || (dimensions.X < minSize || dimensions.Y < minSize || dimensions.Z < minSize))
             {
                 return new BoundingBox[0];
             }
