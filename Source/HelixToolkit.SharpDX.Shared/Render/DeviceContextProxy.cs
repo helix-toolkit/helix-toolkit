@@ -25,10 +25,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     {
         private readonly DeviceContext deviceContext;
         private readonly Device device;
-        /// <summary>
-        /// 
-        /// </summary>
-        //private DeviceContext DeviceContext { get { return deviceContext; } }
 
         /// <summary>
         /// Gets or sets the last shader pass.
@@ -92,6 +88,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// Initializes a new instance of the <see cref="DeviceContextProxy"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
+        /// <param name="device">device</param>
         public DeviceContextProxy(DeviceContext context, Device device)
         {
             deviceContext = context;
@@ -923,7 +920,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     texture into a region (10,20),(90,140) in a destination texture. D3D11_BOX sourceRegion;
         ///     sourceRegion.left = 120; sourceRegion.right = 200; sourceRegion.top = 100; sourceRegion.bottom
         ///     = 220; sourceRegion.front = 0; sourceRegion.back = 1; pd3dDeviceContext->CopySubresourceRegion(
-        ///     pDestTexture, 0, 10, 20, 0, pSourceTexture, 0, &sourceRegion ); Notice, that
+        ///     pDestTexture, 0, 10, 20, 0, pSourceTexture, 0, sourceRegion ); Notice, that
         ///     for a 2D texture, front and back are set to 0 and 1 respectively.     
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

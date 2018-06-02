@@ -294,7 +294,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The render statistics.
         /// </value>
-        RenderStatistics RenderStatistics { get; }
+        IRenderStatistics RenderStatistics { get; }
         /// <summary>
         /// Gets or sets the render configuration.
         /// </summary>

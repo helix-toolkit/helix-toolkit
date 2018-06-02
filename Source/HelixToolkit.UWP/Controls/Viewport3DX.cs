@@ -286,6 +286,7 @@ namespace HelixToolkit.UWP
                 renderHostInternal = (hostPresenter.Content as SwapChainRenderHost).RenderHost;
                 if (renderHostInternal != null)
                 {
+                    renderHostInternal.RenderConfiguration.RenderD2D = false;
                     renderHostInternal.Viewport = this;
                     renderHostInternal.IsRendering = Visibility == Visibility.Visible;
                     renderHostInternal.EffectsManager = this.EffectsManager;
@@ -308,6 +309,39 @@ namespace HelixToolkit.UWP
                     renderHostInternal.OnRendered += this.OnRendered;
                     renderHostInternal.ExceptionOccurred -= RenderHostInternal_ExceptionOccurred;
                     renderHostInternal.ExceptionOccurred += RenderHostInternal_ExceptionOccurred;
+
+                    if (ShowFrameRate)
+                    {
+                        this.renderHostInternal.ShowRenderDetail |= RenderDetail.FPS;
+                    }
+                    else
+                    {
+                        this.renderHostInternal.ShowRenderDetail &= ~RenderDetail.FPS;
+                    }
+                    if (ShowFrameDetails)
+                    {
+                        this.renderHostInternal.ShowRenderDetail |= RenderDetail.Statistics;
+                    }
+                    else
+                    {
+                        this.renderHostInternal.ShowRenderDetail &= ~RenderDetail.Statistics;
+                    }
+                    if (ShowTriangleCountInfo)
+                    {
+                        this.renderHostInternal.ShowRenderDetail |= RenderDetail.TriangleInfo;
+                    }
+                    else
+                    {
+                        this.renderHostInternal.ShowRenderDetail &= ~RenderDetail.TriangleInfo;
+                    }
+                    if (ShowCameraInfo)
+                    {
+                        this.renderHostInternal.ShowRenderDetail |= RenderDetail.Camera;
+                    }
+                    else
+                    {
+                        this.renderHostInternal.ShowRenderDetail &= ~RenderDetail.Camera;
+                    }
                 }
             }
             if(viewCube == null)
@@ -596,6 +630,7 @@ namespace HelixToolkit.UWP
         {
             CameraController.OnTimeStep(timeStamp.Ticks);
             this.FrameRate = Math.Round(renderHostInternal.RenderStatistics.FPSStatistics.AverageFrequency, 2);
+            this.RenderDetailOutput = renderHostInternal.RenderStatistics.GetDetailString();
         }
 
         /// <summary>

@@ -92,7 +92,9 @@
             ModelUpDirection="{Binding UpDirection}"
             OnMouse3DDown="Viewport3DX_OnMouse3DDown"
             SharedModelContainer="{Binding ElementName=sharedModel}"
-            ShowCoordinateSystem="true">
+            ShowCoordinateSystem="true"
+            ShowFrameDetails="True"
+            ShowFrameRate="True">
             <hx:ShadowMap3D />
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="White" />
             <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
@@ -212,18 +214,19 @@
             Text="HelixToolkit + SharpDX in Windows 10" />
         <TextBlock
             Grid.Row="1"
-            HorizontalAlignment="Right"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            FontSize="24"
-            FontWeight="Bold"
+            FontSize="12"
             Foreground="Blue"
-            Text="{Binding ElementName=viewport, Path=FrameRate}" />
+            IsHitTestVisible="False"
+            Text="{Binding ElementName=viewport, Path=RenderDetailOutput}" />
         <StackPanel
             Grid.Row="1"
             Grid.Column="1"
+            Margin="8"
             HorizontalAlignment="Right"
-            Orientation="Vertical" Margin="8">
-            <ComboBox ItemsSource="{Binding OITVM.OITWeights}" SelectedItem="{Binding ElementName=viewport1, Path=OITWeightMode, Mode=TwoWay}"/>
+            Orientation="Vertical">
+            <ComboBox ItemsSource="{Binding OITVM.OITWeights}" SelectedItem="{Binding ElementName=viewport1, Path=OITWeightMode, Mode=TwoWay}" />
             <StackPanel Orientation="Horizontal">
                 <TextBlock Foreground="Black">OIT Weight Power:</TextBlock>
             </StackPanel>

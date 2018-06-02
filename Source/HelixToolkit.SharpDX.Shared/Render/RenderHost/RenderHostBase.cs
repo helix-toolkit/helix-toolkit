@@ -392,7 +392,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The render statistics.
         /// </value>
-        public RenderStatistics RenderStatistics { get; } = new RenderStatistics();
+        public IRenderStatistics RenderStatistics { get { return renderStatistics; } }
+        protected readonly RenderStatistics renderStatistics = new RenderStatistics();
         #region Perframe renderables
         /// <summary>
         /// Gets the current frame renderables for rendering.
@@ -571,8 +572,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 IsBusy = true;
                 var t0 = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp()/Stopwatch.Frequency);
-                RenderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
-                RenderStatistics.Camera = viewport.CameraCore;
+                renderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
+                renderStatistics.Camera = viewport.CameraCore;
                 lastRenderTime = t0;
                 UpdateRequested = false;
                 ++updateCounter;
@@ -596,6 +597,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     {
                         OnRender(t0);
                         renderBuffer.EndDraw();
+                        renderStatistics.NumDrawCalls = renderer.ImmediateContext.ResetDrawCalls() + EffectsManager.DeviceContextPool.ResetDrawCalls();
                     }
                     if (RenderConfiguration.RenderD2D && D2DTarget.D2DTarget != null)
                     { OnRender2D(t0); }
@@ -738,7 +740,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected virtual void StartRendering()
         {
             Log(LogLevel.Information, "");
-            RenderStatistics.Reset();
+            renderStatistics.Reset();
             lastRenderingDuration = TimeSpan.Zero;
             lastRenderTime = TimeSpan.Zero;
             InvalidateSceneGraph();

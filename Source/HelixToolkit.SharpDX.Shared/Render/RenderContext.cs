@@ -358,7 +358,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Initializes a new instance of the <see cref="RenderContext"/> class.
         /// </summary>
         /// <param name="renderHost">The render host.</param>
-        /// <param name="renderContext">The render context.</param>
         public RenderContext(IRenderHost renderHost)
         {
             this.RenderHost = renderHost;

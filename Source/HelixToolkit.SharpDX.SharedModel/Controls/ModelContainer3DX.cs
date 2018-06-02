@@ -478,7 +478,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The render statistics.
         /// </value>
-        public RenderStatistics RenderStatistics { get { return CurrentRenderHost != null ? CurrentRenderHost.RenderStatistics : null; } }
+        public IRenderStatistics RenderStatistics { get { return CurrentRenderHost != null ? CurrentRenderHost.RenderStatistics : null; } }
         /// <summary>
         /// Gets or sets a value indicating whether [show statistics].
         /// </summary>
