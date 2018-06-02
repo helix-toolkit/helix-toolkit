@@ -983,16 +983,25 @@ namespace HelixToolkit.Wpf.SharpDX
                 switch (n)
                 {
                     case 1:
-                        this.rotateHandler.Started(position);
-                        e.Handled = true;
+                        if (EnableTouchRotate)
+                        {
+                            this.rotateHandler.Started(position);
+                            e.Handled = true;
+                        }
                         break;
                     case 2:
-                        this.zoomHandler.Started(p);
-                        e.Handled = true;
+                        if (EnablePinchZoom)
+                        {
+                            this.zoomHandler.Started(p);
+                            e.Handled = true;
+                        }
                         break;
                     case 3:
-                        this.panHandler.Started(position);
-                        e.Handled = true;
+                        if (EnableThreeFingerPan)
+                        {
+                            this.panHandler.Started(position);
+                            e.Handled = true;
+                        }
                         break;
                 }
                 this.manipulatorCount = n;
@@ -1024,7 +1033,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 if (zoomAroundPoint != null)
                                 {
                                     var s = e.CumulativeManipulation.Scale.Length;
-                                    Debug.WriteLine(s);
+                                    //Debug.WriteLine(s);
                                     this.zoomHandler.Zoom((prevScale - s), zoomAroundPoint.Value, true);
                                     prevScale = s;
                                 }

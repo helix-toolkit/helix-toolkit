@@ -1075,16 +1075,25 @@ namespace HelixToolkit.UWP
                 switch (n)
                 {
                     case 1:
-                        this.rotateHandler.Started(position);
-                        e.Handled = true;
+                        if (EnableTouchRotate)
+                        {
+                            this.rotateHandler.Started(position);
+                            e.Handled = true;
+                        }
                         break;
                     case 2:
-                        this.zoomHandler.Started(e.Position);
-                        e.Handled = true;
+                        if (EnablePinchZoom)
+                        {
+                            this.zoomHandler.Started(e.Position);
+                            e.Handled = true;
+                        }
                         break;
                     case 3:
-                        this.panHandler.Started(position);
-                        e.Handled = true;
+                        if (EnableThreeFingerPan)
+                        {
+                            this.panHandler.Started(position);
+                            e.Handled = true;
+                        }
                         break;
                 }
 
