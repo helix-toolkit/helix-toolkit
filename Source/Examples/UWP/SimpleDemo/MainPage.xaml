@@ -211,7 +211,11 @@
             FontSize="32"
             FontStretch="Condensed"
             Foreground="Red"
-            Text="HelixToolkit + SharpDX in Windows 10" />
+            Text="HelixToolkit + SharpDX in Windows 10">
+            <TextBlock.CacheMode>
+                <BitmapCache />
+            </TextBlock.CacheMode>
+        </TextBlock>
         <TextBlock
             Grid.Row="1"
             HorizontalAlignment="Left"
@@ -226,6 +230,9 @@
             Margin="8"
             HorizontalAlignment="Right"
             Orientation="Vertical">
+            <StackPanel.CacheMode>
+                <BitmapCache />
+            </StackPanel.CacheMode>
             <ComboBox ItemsSource="{Binding OITVM.OITWeights}" SelectedItem="{Binding ElementName=viewport1, Path=OITWeightMode, Mode=TwoWay}" />
             <StackPanel Orientation="Horizontal">
                 <TextBlock Foreground="Black">OIT Weight Power:</TextBlock>
