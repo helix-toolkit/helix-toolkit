@@ -195,7 +195,7 @@
             EnableDeferredRendering="True"
             EnableDesignModeRendering="True"
             EnableSharedModelMode="True"
-            FXAALevel="Low"
+            FXAALevel="High"
             IsPanEnabled="False"
             ModelUpDirection="{Binding UpDirection}"
             OnMouse3DDown="Viewport3DX_OnMouse3DDown"
