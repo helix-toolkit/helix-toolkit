@@ -49,8 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns>Number of node has been rendered</returns>
         public override int RenderOpaque(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
-            int counter = 0;
-            if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, commandList, out counter))
+            if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, commandList, out int counter))
             {
                 RenderParameter param = parameter;
 

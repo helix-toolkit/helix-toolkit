@@ -139,7 +139,7 @@ namespace HelixToolkit.UWP.Core
         /// Called when [upload per model constant buffers].
         /// </summary>
         /// <param name="context">The context.</param>
-        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
+        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
 
         }

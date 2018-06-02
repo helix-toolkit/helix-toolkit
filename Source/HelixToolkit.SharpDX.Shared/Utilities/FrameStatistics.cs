@@ -170,6 +170,13 @@ namespace HelixToolkit.UWP.Utilities
         /// </value>
         public int NumTriangles { set; get; } = 0;
         /// <summary>
+        /// Gets or sets the number draw calls per frame
+        /// </summary>
+        /// <value>
+        /// The number draw calls.
+        /// </value>
+        public int NumDrawCalls { set; get; } = 0;
+        /// <summary>
         /// Gets or sets the camera.
         /// </summary>
         /// <value>
@@ -225,7 +232,9 @@ namespace HelixToolkit.UWP.Utilities
         {
             return $"Render(ms): {Math.Round(LatencyStatistics.AverageValue, 4)}\n" +
                 $"NumModel3D: {NumModel3D}\n" +
-                $"NumCore3D: {NumCore3D}" + LineBreak;
+                $"NumCore3D: {NumCore3D}\n" +
+                $"NumDrawCalls: {NumDrawCalls}"
+                + LineBreak;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private string GetTriangleCount()

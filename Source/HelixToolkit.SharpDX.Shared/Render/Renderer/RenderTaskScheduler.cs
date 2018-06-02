@@ -115,6 +115,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             outputCommands.Clear();
             int totalCount = 0;
             numRendered = 0;
+            
             if (items.Count > schedulerParams.MinimumDrawCalls)
             {
                 var frustum = context.BoundingFrustum;

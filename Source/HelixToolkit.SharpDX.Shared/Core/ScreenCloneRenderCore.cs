@@ -338,7 +338,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             model.TexBottomRight = new Vector2(texBound.Y, texBound.W);           
         }
 
-        protected override void OnUploadPerModelConstantBuffers(global::SharpDX.Direct3D11.DeviceContext context)
+        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
         }
         /// <summary>

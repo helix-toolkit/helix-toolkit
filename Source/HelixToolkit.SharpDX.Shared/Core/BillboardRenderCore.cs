@@ -131,14 +131,14 @@ namespace HelixToolkit.UWP.Core
             OnDraw(deviceContext, InstanceBuffer);
         }        
 
-        protected virtual void BindBillboardTexture(DeviceContext context, ShaderBase shader)
+        protected virtual void BindBillboardTexture(DeviceContextProxy context, ShaderBase shader)
         {
             var buffer = GeometryBuffer as IBillboardBufferModel;
             shader.BindTexture(context, shaderTextureSlot, buffer.TextureView);
             shader.BindSampler(context, textureSamplerSlot, textureSampler);
         }
 
-        protected override void OnDraw(DeviceContext context, IElementsBufferModel instanceModel)
+        protected override void OnDraw(DeviceContextProxy context, IElementsBufferModel instanceModel)
         {
             var billboardGeometry = GeometryBuffer.Geometry as IBillboardText;
             var vertexCount = billboardGeometry.BillboardVertices.Count;

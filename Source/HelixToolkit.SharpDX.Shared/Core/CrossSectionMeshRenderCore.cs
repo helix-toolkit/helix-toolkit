@@ -228,7 +228,7 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
-        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
+        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
             base.OnUploadPerModelConstantBuffers(context);
             clipParamCB.UploadDataToBuffer(context, ref clipParameter);

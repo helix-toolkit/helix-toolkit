@@ -2,7 +2,6 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX.Direct3D11;
 using System;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -10,6 +9,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Render;
+
     public class InstancingMeshRenderCore : PatchMeshRenderCore
     {
         private IElementsBufferModel parameterBufferModel;
@@ -54,7 +55,7 @@ namespace HelixToolkit.UWP.Core
             model.HasInstanceParams = ParameterBuffer != null && ParameterBuffer.HasElements ? 1 : 0;
         }
 
-        protected override void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
+        protected override void OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
         {
             base.OnAttachBuffers(context, ref vertStartSlot);
             ParameterBuffer?.AttachBuffer(context, ref vertStartSlot);

@@ -454,7 +454,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
+        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
         }
 

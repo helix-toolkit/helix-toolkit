@@ -969,6 +969,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Dispatch(int threadGroupCountX, int threadGroupCountY, int threadGroupCountZ)
         {
+            ++NumberOfDrawCalls;
             deviceContext.Dispatch(threadGroupCountX, threadGroupCountY, threadGroupCountZ);
         }
 
@@ -992,6 +993,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DispatchIndirect(Buffer bufferForArgsRef, int alignedByteOffsetForArgs)
         {
+            ++NumberOfDrawCalls;
             deviceContext.DispatchIndirect(bufferForArgsRef, alignedByteOffsetForArgs);
         }
         #endregion
@@ -1402,7 +1404,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public void Reset()
         {
             LastShaderPass = null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int ResetDrawCalls()
+        {
+            int total = NumberOfDrawCalls;
             NumberOfDrawCalls = 0;
+            return total;
         }
 
         /// <summary>

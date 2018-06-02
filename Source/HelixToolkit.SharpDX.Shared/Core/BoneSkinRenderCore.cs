@@ -2,16 +2,16 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
-using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Render;
     using Shaders;
     using Utilities;
+
     public class BoneSkinRenderCore : PatchMeshRenderCore, IBoneSkinRenderParams
     {
         public IElementsBufferModel VertexBoneIdBuffer { set; get; }
@@ -46,7 +46,7 @@ namespace HelixToolkit.UWP.Core
             return base.CanRender(context) && VertexBoneIdBuffer != null && VertexBoneIdBuffer.HasElements;
         }
 
-        protected override void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
+        protected override void OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
         {
             base.OnAttachBuffers(context, ref vertStartSlot);         
             VertexBoneIdBuffer?.AttachBuffer(context, ref vertStartSlot);
@@ -58,7 +58,7 @@ namespace HelixToolkit.UWP.Core
             model.HasBones = BoneMatrices.Bones != null ? 1 : 0;                 
         }
 
-        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
+        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
             base.OnUploadPerModelConstantBuffers(context);
             if (BoneMatrices.Bones != null)

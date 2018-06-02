@@ -136,6 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private Task getPostEffectCoreTask;
 
         private int numRendered = 0;
+        private int numDrawCalls = 0;
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
         /// </summary>
@@ -347,7 +348,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
            
             renderer.RenderScreenSpaced(RenderContext, screenSpacedNodes, ref renderParameter);
             renderer.RenderToBackBuffer(RenderContext, ref renderParameter);
-            numRendered += preProcNodes.Count + postProcNodes.Count + screenSpacedNodes.Count;            
+            numRendered += preProcNodes.Count + postProcNodes.Count + screenSpacedNodes.Count;
+            numDrawCalls = renderer.ImmediateContext.ResetDrawCalls() + EffectsManager.DeviceContextPool.ResetDrawCalls();
         }
 
         /// <summary>
@@ -387,6 +389,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 getTriangleCountTask?.Wait();
                 RenderStatistics.NumModel3D = perFrameFlattenedScene.Count;
                 RenderStatistics.NumCore3D = numRendered;
+                RenderStatistics.NumDrawCalls = numDrawCalls;
             }
             for (int i = 0; i < viewportRenderable2D.Count; ++i)
             {

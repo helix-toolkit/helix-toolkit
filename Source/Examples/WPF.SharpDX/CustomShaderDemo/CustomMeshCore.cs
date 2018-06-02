@@ -85,7 +85,7 @@ namespace CustomShaderDemo
             model.Params.Y = dataHeightScale;
         }
 
-        protected override void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
+        protected override void OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
         {
             base.OnAttachBuffers(context, ref vertStartSlot);
             if (colorChanged)
