@@ -372,13 +372,13 @@ namespace HelixToolkit.UWP.Core
             DepthStencilView dsView;
             if (clearDepthBuffer)
             {
-                deviceContext.DeviceContext.OutputMerger.GetRenderTargets(out dsView);
+                deviceContext.GetDepthStencilView(out dsView);
                 if (dsView == null)
                 {
                     return;
                 }
 
-                deviceContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
+                deviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
                 dsView.Dispose();
             }
             IsRightHand = !context.Camera.CreateLeftHandSystem;
@@ -393,8 +393,8 @@ namespace HelixToolkit.UWP.Core
             GlobalTransform = globalTrans;
             int offX = (int)(Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2);
             int offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
-            deviceContext.DeviceContext.Rasterizer.SetViewport(offX, offY, viewportSize, viewportSize);
-            deviceContext.DeviceContext.Rasterizer.SetScissorRectangle(offX, offY, (int)viewportSize + offX, (int)viewportSize + offY);
+            deviceContext.SetViewport(offX, offY, viewportSize, viewportSize);
+            deviceContext.SetScissorRectangle(offX, offY, (int)viewportSize + offX, (int)viewportSize + offY);
         }
     }
 }

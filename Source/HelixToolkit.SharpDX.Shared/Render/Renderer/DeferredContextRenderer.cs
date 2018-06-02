@@ -56,7 +56,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
                 foreach (var command in commandList.OrderBy(x=>x.Key))
                 {
-                    ImmediateContext.DeviceContext.ExecuteCommandList(command.Value, true);
+                    ImmediateContext.ExecuteCommandList(command.Value, true);
                     command.Value.Dispose();
                 }
                 commandList.Clear();

@@ -763,7 +763,7 @@ namespace HelixToolkit.UWP.Core
                 FrameVariables.NumParticles = 0;
                 perFrameCB.UploadDataToBuffer(deviceContext, ref FrameVariables);
                 // Call ComputeShader to add initial particles
-                deviceContext.DeviceContext.Dispatch(1, 1, 1);
+                deviceContext.Dispatch(1, 1, 1);
                 isRestart = false;
             }
             else
@@ -776,7 +776,7 @@ namespace HelixToolkit.UWP.Core
                 perFrameCB.UploadDataToBuffer(deviceContext, ref FrameVariables);
                 #endregion
 
-                deviceContext.DeviceContext.Dispatch(Math.Max(1, (int)Math.Ceiling((double)FrameVariables.NumParticles / 512)), 1, 1);
+                deviceContext.Dispatch(Math.Max(1, (int)Math.Ceiling((double)FrameVariables.NumParticles / 512)), 1, 1);
                 // Get append buffer count
                 BufferProxies[1].CopyCount(deviceContext, particleCountGSIABuffer.Buffer, 0);
             }
@@ -792,7 +792,7 @@ namespace HelixToolkit.UWP.Core
                 // Add more particles 
                 insertPass.BindShader(deviceContext);
                 insertPass.GetShader(ShaderStage.Compute).BindUAV(deviceContext, newStateSlot, BufferProxies[1].UAV);
-                deviceContext.DeviceContext.Dispatch(1, 1, 1);
+                deviceContext.Dispatch(1, 1, 1);
                 totalElapsed = 0;
 #if OUTPUTDEBUGGING
                 ReadCount("UAV 1", deviceContext, BufferProxies[1].UAV);
@@ -823,12 +823,12 @@ namespace HelixToolkit.UWP.Core
             renderPass.GetShader(ShaderStage.Vertex).BindTexture(deviceContext, renderStateSlot, BufferProxies[0].SRV);
             renderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, textureView);
             renderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, textureSampler);
-            deviceContext.DeviceContext.InputAssembler.InputLayout = VertexLayout;
-            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PointList;
+            deviceContext.InputLayout = VertexLayout;
+            deviceContext.PrimitiveTopology = PrimitiveTopology.PointList;
             int firstSlot = 0;
             InstanceBuffer?.AttachBuffer(deviceContext, ref firstSlot);
-            deviceContext.DeviceContext.OutputMerger.SetBlendState(blendState, blendFactor, sampleMask);
-            deviceContext.DeviceContext.DrawInstancedIndirect(particleCountGSIABuffer.Buffer, 0);
+            deviceContext.SetBlendState(blendState, blendFactor, sampleMask);
+            deviceContext.DrawInstancedIndirect(particleCountGSIABuffer.Buffer, 0);
             InvalidateRenderer();//Since particle is running all the time. Invalidate once finished rendering
         }
 

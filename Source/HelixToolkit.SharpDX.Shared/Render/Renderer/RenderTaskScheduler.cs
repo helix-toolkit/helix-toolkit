@@ -133,7 +133,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         items[i].RenderCore.Render(context, deferred);
                         ++counter;         
                     }
-                    var command = deferred.DeviceContext.FinishCommandList(true);
+                    var command = deferred.FinishCommandList(true);
                     pool.Put(deferred);
                     lock (outputCommands)
                     {

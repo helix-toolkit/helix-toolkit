@@ -234,20 +234,19 @@ namespace HelixToolkit.UWP.Core
 
             using (var resource2 = offScreenRenderTargets[0].CurrentRTV.Resource)
             {                   
-                deviceContext.DeviceContext.CopyResource(buffer.FullResPPBuffer.CurrentTexture, resource2);
+                deviceContext.CopyResource(buffer.FullResPPBuffer.CurrentTexture, resource2);
             }
             #endregion
 
-            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+            deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             #region Do Bloom Pass
-            deviceContext.DeviceContext.PixelShader.SetSampler(samplerSlot, sampler);
-
             //Extract bloom samples
             BindTarget(null, offScreenRenderTargets[0].NextRTV, deviceContext, offScreenRenderTargets[0].Width, offScreenRenderTargets[0].Height, false);
             screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, offScreenRenderTargets[0].CurrentSRV);
+            screenQuadPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
             screenQuadPass.BindShader(deviceContext);
             screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-            deviceContext.DeviceContext.Draw(4, 0);
+            deviceContext.Draw(4, 0);
             offScreenRenderTargets[0].SwapTargets();
 
             // Down sampling
@@ -257,7 +256,7 @@ namespace HelixToolkit.UWP.Core
             {
                 BindTarget(null, offScreenRenderTargets[i].CurrentRTV, deviceContext, offScreenRenderTargets[i].Width, offScreenRenderTargets[i].Height, false);
                 screenQuadCopy.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, offScreenRenderTargets[i - 1].CurrentSRV);
-                deviceContext.DeviceContext.Draw(4, 0);
+                deviceContext.Draw(4, 0);
             }
 
             for (int i = offScreenRenderTargets.Count - 1; i >= 1; --i)
@@ -270,7 +269,7 @@ namespace HelixToolkit.UWP.Core
                 screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
                 BindTarget(null, offScreenRenderTargets[i - 1].CurrentRTV, deviceContext, offScreenRenderTargets[i - 1].Width, offScreenRenderTargets[i - 1].Height, false);
                 screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, offScreenRenderTargets[i].CurrentSRV);
-                deviceContext.DeviceContext.Draw(4, 0);
+                deviceContext.Draw(4, 0);
             }
             offScreenRenderTargets[0].Run(deviceContext, NumberOfBlurPass);
             #endregion
@@ -280,7 +279,7 @@ namespace HelixToolkit.UWP.Core
             screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, offScreenRenderTargets[0].CurrentSRV);
             screenOutlinePass.BindShader(deviceContext);
             screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-            deviceContext.DeviceContext.Draw(4, 0);
+            deviceContext.Draw(4, 0);
             screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
             #endregion
         }

@@ -262,15 +262,15 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     ModelConstBuffer.UploadDataToBuffer(deviceContext, ref modelStruct);
                     DefaultShaderPass.BindShader(deviceContext);
                     DefaultShaderPass.BindStates(deviceContext,StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);                  
-                    deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
+                    deviceContext.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
                     DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerBindSlot, textureSampler);
                     int left = (int)(context.ActualWidth * Math.Abs(modelStruct.TopLeft.X + 1) / 2);
                     int top = (int)(context.ActualHeight * Math.Abs(modelStruct.TopLeft.Y - 1) / 2);
-                    deviceContext.DeviceContext.Rasterizer.SetScissorRectangle(left, top, (int)context.ActualWidth - left, (int)context.ActualHeight - top);
-                    using (var textureView = new global::SharpDX.Direct3D11.ShaderResourceView(deviceContext.DeviceContext.Device, frameProcessor.SharedTexture))
+                    deviceContext.SetScissorRectangle(left, top, (int)context.ActualWidth - left, (int)context.ActualHeight - top);
+                    using (var textureView = new global::SharpDX.Direct3D11.ShaderResourceView(deviceContext, frameProcessor.SharedTexture))
                     {
                         DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureBindSlot, textureView);
-                        deviceContext.DeviceContext.Draw(4, 0);
+                        deviceContext.Draw(4, 0);
                     }
                     if (ShowMouseCursor && cursorValid)
                     {                    
@@ -308,7 +308,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             CursorShaderPass.BindShader(deviceContext);
             CursorShaderPass.BindStates(deviceContext, StateType.DepthStencilState | StateType.RasterState | StateType.BlendState);
             //deviceContext.DeviceContext.OutputMerger.SetBlendState(CursorShaderPass.BlendState, new RawColor4(0, 0, 0, 0)); //Set special blend factor
-            deviceContext.DeviceContext.Draw(4, 0);
+            deviceContext.Draw(4, 0);
         }
 
         #endregion
@@ -503,9 +503,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                         CpuAccessFlags = CpuAccessFlags.None, Format = data.Frame.Description.Format, Width = data.Frame.Description.Width, Height = data.Frame.Description.Height,
                         MipLevels = 1, Usage = ResourceUsage.Default, SampleDescription = new SampleDescription(1, 0), OptionFlags = ResourceOptionFlags.None, ArraySize=1
                     };
-                    sharedTexture = Collect(new Texture2D(context.DeviceContext.Device, sharedDescription));
+                    sharedTexture = Collect(new Texture2D(context, sharedDescription));
                 }
-                context.DeviceContext.CopyResource(data.Frame, sharedTexture);
+                context.CopyResource(data.Frame, sharedTexture);
             }
 
             private const int BPP = 4;
@@ -587,8 +587,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     
                     global::SharpDX.Utilities.Pin(pointer.ShapeInfo.Type == (int)OutputDuplicatePointerShapeType.Color ? pointer.PtrShapeBuffer : initBuffer, ptr =>
                     {
-                        pointerResource = Collect(new ShaderResourceViewProxy(context.DeviceContext.Device,
-                            new Texture2D(context.DeviceContext.Device, pointerTexDesc, new[] { new DataBox(ptr, rowPitch, slicePitch) })));
+                        pointerResource = Collect(new ShaderResourceViewProxy(context,
+                            new Texture2D(context, pointerTexDesc, new[] { new DataBox(ptr, rowPitch, slicePitch) })));
                     });
                     pointerResource.CreateView(pointerSRVDesc);
 #if OUTPUTDETAIL
@@ -597,7 +597,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 }
                 else
                 {
-                    var dataBox = context.DeviceContext.MapSubresource(pointerResource.Resource, 0, global::SharpDX.Direct3D11.MapMode.WriteDiscard, 
+                    var dataBox = context.MapSubresource(pointerResource.Resource, 0, global::SharpDX.Direct3D11.MapMode.WriteDiscard, 
                         global::SharpDX.Direct3D11.MapFlags.None);
                     if (pointer.ShapeInfo.Type == (int)OutputDuplicatePointerShapeType.Color)
                     {
@@ -633,7 +633,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                             }
                         }
                     }
-                    context.DeviceContext.UnmapSubresource(pointerResource.Resource, 0);
+                    context.UnmapSubresource(pointerResource.Resource, 0);
                 }
                 return true;
             }           
@@ -693,13 +693,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 if(copyBuffer == null || stageTextureDesc.Width != width || stageTextureDesc.Height != height)
                 {
                     RemoveAndDispose(ref copyBuffer);
-                    copyBuffer = Collect(new Texture2D(context.DeviceContext.Device, stageTextureDesc));
+                    copyBuffer = Collect(new Texture2D(context, stageTextureDesc));
                 }
 
-                context.DeviceContext.CopySubresourceRegion(SharedTexture, 0,
+                context.CopySubresourceRegion(SharedTexture, 0,
                     new global::SharpDX.Direct3D11.ResourceRegion(left, top, 0, left + width, top + height, 1), copyBuffer, 0);
 
-                var dataBox = context.DeviceContext.MapSubresource(copyBuffer, 0, global::SharpDX.Direct3D11.MapMode.Read, global::SharpDX.Direct3D11.MapFlags.None);
+                var dataBox = context.MapSubresource(copyBuffer, 0, global::SharpDX.Direct3D11.MapMode.Read, global::SharpDX.Direct3D11.MapFlags.None);
 #region process
                 unsafe // Call unmanaged code
                 {
@@ -773,7 +773,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     }
                 }
 #endregion
-                context.DeviceContext.UnmapSubresource(copyBuffer, 0);
+                context.UnmapSubresource(copyBuffer, 0);
             }
         }
 

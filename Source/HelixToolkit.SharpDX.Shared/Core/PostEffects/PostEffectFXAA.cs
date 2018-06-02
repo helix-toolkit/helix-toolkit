@@ -62,21 +62,21 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             var buffer = context.RenderHost.RenderBuffer;
-            context.DeviceContext.OutputMerger.SetTargets(null, new RenderTargetView[] { buffer.FullResPPBuffer.NextRTV });
-            context.DeviceContext.Rasterizer.SetViewport(0, 0, buffer.TargetWidth, buffer.TargetHeight, 0.0f, 1.0f);
-            context.DeviceContext.Rasterizer.SetScissorRectangle(0, 0, buffer.TargetWidth, buffer.TargetHeight);
+            deviceContext.SetRenderTargets(null, new RenderTargetView[] { buffer.FullResPPBuffer.NextRTV });
+            deviceContext.SetViewport(0, 0, buffer.TargetWidth, buffer.TargetHeight, 0.0f, 1.0f);
+            deviceContext.SetScissorRectangle(0, 0, buffer.TargetWidth, buffer.TargetHeight);
 
             LUMAPass.BindShader(deviceContext);
             LUMAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
             LUMAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.CurrentSRV);
             LUMAPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
-            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-            deviceContext.DeviceContext.Draw(4, 0);
+            deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+            deviceContext.Draw(4, 0);
            
-            context.DeviceContext.OutputMerger.SetTargets(null, new RenderTargetView[] { buffer.FullResPPBuffer.CurrentRTV });
+            deviceContext.SetRenderTargets(null, new RenderTargetView[] { buffer.FullResPPBuffer.CurrentRTV });
             FXAAPass.BindShader(deviceContext);
             FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
-            deviceContext.DeviceContext.Draw(4, 0);
+            deviceContext.Draw(4, 0);
             FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
         }
 

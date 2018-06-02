@@ -170,10 +170,10 @@ namespace HelixToolkit.UWP.Shaders
             }
             for (int i = 0; i < shaders.Length; ++i)
             {
-                shaders[i].Bind(context.DeviceContext);
+                shaders[i].Bind(context);
                 if (bindConstantBuffer)
                 {
-                    shaders[i].BindConstantBuffers(context.DeviceContext);
+                    shaders[i].BindConstantBuffers(context);
                 }
             }
             context.LastShaderPass = this;

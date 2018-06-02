@@ -831,7 +831,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         protected virtual RenderContext CreateRenderContext(DeviceContext context)
         {
-            return new RenderContext(this, context);
+            return new RenderContext(this);
         }
         /// <summary>
         /// Creates the render context2 d.

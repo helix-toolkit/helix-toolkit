@@ -149,8 +149,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="initHorizontalIter">The initialize horizontal iter.</param>
         public virtual void Run(DeviceContextProxy deviceContext, int iteration, int initVerticalIter = 0, int initHorizontalIter = 0)
         {
-            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-            deviceContext.DeviceContext.PixelShader.SetSampler(samplerSlot, sampler);
+            deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+            deviceContext.SetSamplerStateSingleStage(ShaderStage.Pixel, samplerSlot, sampler);
             if (!screenBlurPassVertical.IsNULL)
             {
                 screenBlurPassVertical.BindShader(deviceContext);
@@ -160,7 +160,7 @@ namespace HelixToolkit.UWP.Core
                     SwapTargets();
                     BindTarget(null, renderTargetBlur[0], deviceContext, texture2DDesc.Width, texture2DDesc.Height);
                     screenBlurPassVertical.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetBlur[1].TextureView);
-                    deviceContext.DeviceContext.Draw(4, 0);
+                    deviceContext.Draw(4, 0);
                 }
             }
 
@@ -173,10 +173,10 @@ namespace HelixToolkit.UWP.Core
                     SwapTargets();
                     BindTarget(null, renderTargetBlur[0], deviceContext, texture2DDesc.Width, texture2DDesc.Height);
                     screenBlurPassHorizontal.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetBlur[1].TextureView);
-                    deviceContext.DeviceContext.Draw(4, 0);
+                    deviceContext.Draw(4, 0);
                 }
             }
-            deviceContext.DeviceContext.PixelShader.SetShaderResource(textureSlot, null);
+            deviceContext.SetShaderResourceSingleStage(ShaderStage.Pixel, textureSlot, null);
         }
         /// <summary>
         /// Swaps the targets.

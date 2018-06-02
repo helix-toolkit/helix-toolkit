@@ -129,17 +129,17 @@ namespace HelixToolkit.UWP.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void Bind(RenderContext context, DeviceContextProxy deviceContext)
         {
-            targets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(2);
-            deviceContext.DeviceContext.ClearRenderTargetView(colorTarget, Color.Zero);
-            deviceContext.DeviceContext.ClearRenderTargetView(alphaTarget, Color.White);       
-            deviceContext.DeviceContext.OutputMerger.SetRenderTargets(context.RenderHost.DepthStencilBufferView, 
+            targets = deviceContext.GetRenderTargets(2);
+            deviceContext.ClearRenderTargetView(colorTarget, Color.Zero);
+            deviceContext.ClearRenderTargetView(alphaTarget, Color.White);       
+            deviceContext.SetRenderTargets(context.RenderHost.DepthStencilBufferView, 
                 new RenderTargetView[] { colorTarget, alphaTarget });  
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void UnBind(RenderContext context, DeviceContextProxy deviceContext)
         {
-            deviceContext.DeviceContext.OutputMerger.SetRenderTargets(context.RenderHost.DepthStencilBufferView, targets);
+            deviceContext.SetRenderTargets(context.RenderHost.DepthStencilBufferView, targets);
             foreach(var target in targets)
             {
                 target?.Dispose();
@@ -147,8 +147,8 @@ namespace HelixToolkit.UWP.Core
 #if MSAASEPARATE
             if (hasMSAA)
             {
-                deviceContext.DeviceContext.ResolveSubresource(colorTarget.Resource, 0, colorTargetNoMSAA.Resource, 0, colorDesc.Format);
-                deviceContext.DeviceContext.ResolveSubresource(alphaTarget.Resource, 0, alphaTargetNoMSAA.Resource, 0, alphaDesc.Format);
+                deviceContext.ResolveSubresource(colorTarget.Resource, 0, colorTargetNoMSAA.Resource, 0, colorDesc.Format);
+                deviceContext.ResolveSubresource(alphaTarget.Resource, 0, alphaTargetNoMSAA.Resource, 0, alphaDesc.Format);
             }
 #endif
         }
@@ -228,8 +228,8 @@ namespace HelixToolkit.UWP.Core
             screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, colorTexIndex, colorTargetNoMSAA);
             screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, alphaTexIndex, alphaTargetNoMSAA);
             screenQuadPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerIndex, targetSampler);
-            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-            deviceContext.DeviceContext.Draw(4, 0);
+            deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+            deviceContext.Draw(4, 0);
         }
 
         protected override void OnUpdatePerModelStruct(ref int model, RenderContext context)

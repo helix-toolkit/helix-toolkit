@@ -216,7 +216,7 @@ namespace HelixToolkit.UWP.Core
                 depthdesc.Width = buffer.TargetWidth;
                 depthdesc.Height = buffer.TargetHeight;
 
-                blurCore.Resize(deviceContext.DeviceContext.Device,
+                blurCore.Resize(deviceContext,
                     depthdesc.Width / downSamplingScale,
                     depthdesc.Height / downSamplingScale);
                 //Skip this frame to avoid performance hit due to texture creation
@@ -230,7 +230,7 @@ namespace HelixToolkit.UWP.Core
             #region Render objects onto offscreen texture
             var renderTargetFull = buffer.FullResPPBuffer.NextRTV;
 
-            deviceContext.DeviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
+            deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
             BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
 
             context.IsCustomPass = true;
@@ -266,14 +266,14 @@ namespace HelixToolkit.UWP.Core
             #endregion
             if (hasMesh)
             {
-                deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-                deviceContext.DeviceContext.PixelShader.SetSampler(samplerSlot, sampler);
+                deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
                 #region Do Blur Pass
                 BindTarget(null, blurCore.CurrentRTV, deviceContext, blurCore.Width, blurCore.Height, true);
+                blurPassVertical.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
                 blurPassVertical.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
                 blurPassVertical.BindShader(deviceContext);
                 blurPassVertical.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-                deviceContext.DeviceContext.Draw(4, 0);
+                deviceContext.Draw(4, 0);
 
                 blurCore.Run(deviceContext, NumberOfBlurPass, 1, 0);//Already blur once on vertical, pass 1 as initial index.            
                 #endregion
@@ -284,7 +284,7 @@ namespace HelixToolkit.UWP.Core
                 screenQuadPass.BindShader(deviceContext);
                 deviceContext.SetDepthStencilState(screenQuadPass.DepthStencilState, 0);
                 screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState);
-                deviceContext.DeviceContext.Draw(4, 0);
+                deviceContext.Draw(4, 0);
                 #endregion
 
                 #region Draw outline onto original target
@@ -292,7 +292,7 @@ namespace HelixToolkit.UWP.Core
                 screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
                 screenOutlinePass.BindShader(deviceContext);
                 screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-                deviceContext.DeviceContext.Draw(4, 0);
+                deviceContext.Draw(4, 0);
                 screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
                 #endregion
             }

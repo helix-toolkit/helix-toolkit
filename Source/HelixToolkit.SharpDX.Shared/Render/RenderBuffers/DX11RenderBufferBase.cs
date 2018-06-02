@@ -318,7 +318,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         public void ClearRenderTargetBinding(DeviceContext context)
         {
-            context.OutputMerger.SetTargets(null, new RenderTargetView[0]);
+            context.OutputMerger.ResetTargets();
         }
         /// <summary>
         /// Clears the render target.
