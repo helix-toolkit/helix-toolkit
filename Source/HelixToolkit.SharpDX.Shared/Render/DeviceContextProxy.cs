@@ -27,6 +27,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private readonly DeviceContext deviceContext;
         private readonly Device device;
 
+        public static bool AutoSkipRedundantStateSetting = false;
+        private System.IntPtr currRasterState = System.IntPtr.Zero;
+        private System.IntPtr currDepthStencilState = System.IntPtr.Zero;
+        private int currStencilRef;
+        private System.IntPtr currBlendState = System.IntPtr.Zero;
+        private Color4? currBlendFactor = null;
+        private uint currSampleMask = uint.MaxValue;
         /// <summary>
         /// Gets or sets the last shader pass.
         /// </summary>
@@ -95,8 +102,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             deviceContext = context;
             this.device = device;
         }
-
-
 
         #region Clear Targets
         /// <summary>
@@ -193,6 +198,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             buffer.SetDefaultRenderTargets(deviceContext);
         }
 
+
         /// <summary>
         /// Sets the state of the raster. 
         /// </summary>
@@ -200,26 +206,30 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetRasterState(RasterizerStateProxy rasterState)
         {
+            if (AutoSkipRedundantStateSetting && currRasterState == rasterState.State.NativePointer)
+            {
+                return;
+            }
             deviceContext.Rasterizer.State = rasterState;
+            currRasterState = rasterState.State.NativePointer;
         }
-        /// <summary>
-        /// Sets the state of the depth stencil. 
-        /// </summary>
-        /// <param name="depthStencilState">State of the depth stencil.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetDepthStencilState(DepthStencilStateProxy depthStencilState)
-        {
-            deviceContext.OutputMerger.SetDepthStencilState(depthStencilState);
-        }
+
+
         /// <summary>
         /// Sets the state of the depth stencil.
         /// </summary>
         /// <param name="depthStencilState">State of the depth stencil.</param>
         /// <param name="stencilRef">The stencil reference.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetDepthStencilState(DepthStencilStateProxy depthStencilState, int stencilRef)
+        public void SetDepthStencilState(DepthStencilStateProxy depthStencilState, int stencilRef = 0)
         {
+            if (AutoSkipRedundantStateSetting && currDepthStencilState == depthStencilState.State.NativePointer && currStencilRef == stencilRef)
+            {
+                return;
+            }
             deviceContext.OutputMerger.SetDepthStencilState(depthStencilState, stencilRef);
+            currDepthStencilState = depthStencilState.State.NativePointer;
+            currStencilRef = stencilRef;
         }
         /// <summary>
         /// Sets the render target.
@@ -252,15 +262,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             deviceContext.OutputMerger.SetRenderTargets(dsv, ZeroRenderTargetArray);
         }
-        /// <summary>
-        /// Sets the state of the blend. 
-        /// </summary>
-        /// <param name="blendState">State of the blend.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetBlendState(BlendStateProxy blendState)
-        {
-            deviceContext.OutputMerger.SetBlendState(blendState);
-        }
+
 
         /// <summary>
         /// Sets the state of the blend.
@@ -271,8 +273,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetBlendState(BlendStateProxy blendState, Color4? blendFactor = null, int sampleMask = -1)
         {
+            if (AutoSkipRedundantStateSetting && currBlendState == blendState.State.NativePointer && blendFactor == currBlendFactor && currSampleMask == sampleMask)
+            {
+                return;
+            }
             deviceContext.OutputMerger.SetBlendState(blendState, blendFactor, sampleMask);
+            currBlendState = blendState.State.NativePointer;
+            currBlendFactor = blendFactor;
+            currSampleMask = sampleMask == -1 ? int.MaxValue : (uint)sampleMask;
         }
+
         /// <summary>
         /// Sets the state of the blend.
         /// </summary>
@@ -280,9 +290,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="blendFactor">The blend factor.</param>
         /// <param name="sampleMask">The sample mask.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetBlendState(BlendStateProxy blendState, Color4? blendFactor, uint sampleMask)
+        public void SetBlendState(BlendStateProxy blendState, Color4? blendFactor = null, uint sampleMask = uint.MaxValue)
         {
+            if (AutoSkipRedundantStateSetting && currBlendState == blendState.State.NativePointer && blendFactor == currBlendFactor && currSampleMask == sampleMask)
+            {
+                return;
+            }
             deviceContext.OutputMerger.SetBlendState(blendState, blendFactor, sampleMask);
+            currBlendState = blendState.State.NativePointer;
+            currBlendFactor = blendFactor;
+            currSampleMask = sampleMask;
         }
 
         /// <summary>
@@ -1760,6 +1777,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public void Reset()
         {
             LastShaderPass = null;
+            currRasterState = System.IntPtr.Zero;
+            currBlendState = System.IntPtr.Zero;
+            currDepthStencilState = System.IntPtr.Zero;
+            currBlendFactor = null;
+            currSampleMask = uint.MaxValue;
+            currStencilRef = 0;
         }
 
         /// <summary>
