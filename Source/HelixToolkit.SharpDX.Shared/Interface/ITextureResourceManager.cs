@@ -11,7 +11,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface ITextureResourceManager
     {
-        SharedTextureResourceProxy Register(Guid modelGuid, Stream textureStream);
-        void Unregister(Guid modelGuid, Stream textureStream);
+        ShaderResourceViewProxy Register(Stream textureStream);
     }
 }

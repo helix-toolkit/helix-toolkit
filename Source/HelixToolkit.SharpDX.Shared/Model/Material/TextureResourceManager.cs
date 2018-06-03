@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP.Model
     /// </summary>
     public class TextureResourceManager : DisposeObject, ITextureResourceManager
     {
-        private readonly Dictionary<Stream, SharedTextureResourceProxy> resourceDictionary = new Dictionary<Stream, SharedTextureResourceProxy>();
+        private readonly Dictionary<Stream, ShaderResourceView> resourceDictionary = new Dictionary<Stream, ShaderResourceView>();
         private readonly Device device;
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureResourceManager"/> class.
@@ -35,24 +35,23 @@ namespace HelixToolkit.UWP.Model
         /// <param name="modelGuid">The material unique identifier.</param>
         /// <param name="textureStream">The texture steam.</param>
         /// <returns></returns>
-        public SharedTextureResourceProxy Register(Guid modelGuid, Stream textureStream)
+        public ShaderResourceViewProxy Register(Stream textureStream)
         {
             if (textureStream == null)
             {
                 return null;
             }
-            SharedTextureResourceProxy proxy;
             lock (resourceDictionary)
             {
-                if (resourceDictionary.TryGetValue(textureStream, out proxy))
+                if (resourceDictionary.TryGetValue(textureStream, out ShaderResourceView view))
                 {
-                    proxy.Attach(modelGuid);
+                    return new ShaderResourceViewProxy(view.QueryInterface<ShaderResourceView>());
                 }
                 else
                 {
-                    proxy = new SharedTextureResourceProxy(device, textureStream);
-                    proxy.Attach(modelGuid);
-                    proxy.Disposed += (s, e) =>
+                    var proxy = new ShaderResourceViewProxy(device);
+                    proxy.CreateView(textureStream);
+                    proxy.TextureView.Disposed += (s, e) =>
                     {
                         lock (resourceDictionary)
                         {
@@ -60,23 +59,7 @@ namespace HelixToolkit.UWP.Model
                         }
                     };
                     resourceDictionary.Add(textureStream, proxy);
-                }
-            }
-            return proxy;
-        }
-        /// <summary>
-        /// Unregisters the specified material unique identifier.
-        /// </summary>
-        /// <param name="modelGuid">The material unique identifier.</param>
-        /// <param name="textureStream">The texture stream.</param>
-        public void Unregister(Guid modelGuid, Stream textureStream)
-        {
-            SharedTextureResourceProxy proxy;
-            lock (resourceDictionary)
-            {
-                if (resourceDictionary.TryGetValue(textureStream, out proxy))
-                {
-                    proxy.Detach(modelGuid);
+                    return proxy;
                 }
             }
         }

@@ -35,7 +35,7 @@ namespace HelixToolkit.UWP.Model
         private const int NUMSAMPLERS = 5;
         private const int DiffuseIdx = 0, AlphaIdx = 1, NormalIdx = 2, DisplaceIdx = 3, ShadowIdx = 4;
 
-        private SharedTextureResourceProxy[] TextureResources = new SharedTextureResourceProxy[NUMTEXTURES];
+        private readonly ShaderResourceViewProxy[] TextureResources = new ShaderResourceViewProxy[NUMTEXTURES];
         private bool HasTextures
         {
             get
@@ -310,11 +310,11 @@ namespace HelixToolkit.UWP.Model
             }
             OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CreateTextureView(System.IO.Stream stream, int index)
         {
-            TextureResources[index]?.Detach(ModelGuid);
-            TextureResources[index] = stream == null ? null : textureManager.Register(ModelGuid, stream);
+            RemoveAndDispose(ref TextureResources[index]);
+            TextureResources[index] = stream == null ? null : Collect(textureManager.Register(stream));
         }
 
         private void CreateTextureViews()
@@ -330,8 +330,7 @@ namespace HelixToolkit.UWP.Model
             {
                 for (int i = 0; i < NUMTEXTURES; ++i)
                 {
-                    TextureResources[i]?.Detach(ModelGuid);
-                    TextureResources[i] = null;
+                    RemoveAndDispose(ref TextureResources[i]);
                 }
             }
         }
@@ -496,7 +495,6 @@ namespace HelixToolkit.UWP.Model
             this.Material = null;
             for(int i=0; i< NUMTEXTURES; ++i)
             {
-                TextureResources[i]?.Detach(ModelGuid);
                 TextureResources[i] = null;
             }
             SamplerResources = null;

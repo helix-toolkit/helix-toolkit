@@ -279,7 +279,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\BitmapProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\BufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ConstantBufferProxy.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\SharedTextureResourceProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\DisposeObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Disposer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ElementsBufferProxy.cs" />

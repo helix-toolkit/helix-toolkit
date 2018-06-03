@@ -32,14 +32,14 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Use the shared texture resource proxy
         /// </summary>
-        private SharedTextureResourceProxy textureView;
+        private ShaderResourceViewProxy textureView;
         /// <summary>
         /// Gets the texture view.
         /// </summary>
         /// <value>
         /// The texture view.
         /// </value>
-        public ShaderResourceViewProxy TextureView { get { return textureView.TextureView; } }
+        public ShaderResourceViewProxy TextureView { get { return textureView; } }
         /// <summary>
         /// Gets or sets the type.
         /// </summary>
@@ -75,9 +75,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceResources">The device resources.</param>
         /// <param name="bufferIndex"></param>
         protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
-        {
-            textureView?.Detach(this.GUID);
-            textureView = null;
+        {           
             var billboardGeometry = geometry as IBillboardText;
             billboardGeometry.DrawTexture(deviceResources);
             if (billboardGeometry != null && billboardGeometry.BillboardVertices != null && billboardGeometry.BillboardVertices.Count > 0)
@@ -85,10 +83,10 @@ namespace HelixToolkit.UWP.Core
                 Type = billboardGeometry.Type;              
                 var data = OnBuildVertexArray(billboardGeometry, deviceResources);
                 buffer.UploadDataToBuffer(context, data, billboardGeometry.BillboardVertices.Count);
-              
+                RemoveAndDispose(ref textureView);
                 if (billboardGeometry.Texture != null)
                 {
-                    textureView = deviceResources.MaterialTextureManager.Register(this.GUID, billboardGeometry.Texture);
+                    textureView = Collect(deviceResources.MaterialTextureManager.Register(billboardGeometry.Texture));
                 }
             }
             else
@@ -97,16 +95,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void OnDispose(bool disposeManagedResources)
-        {
-            textureView?.Detach(this.GUID);
-            textureView = null;
-            base.OnDispose(disposeManagedResources);
-        }
         /// <summary>
         /// Called when [attach buffer].
         /// </summary>
