@@ -3,6 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX.Direct3D11;
+using System.Runtime.CompilerServices;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
@@ -10,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -32,6 +34,17 @@ namespace HelixToolkit.UWP.Shaders
             :base(name, ShaderStage.Geometry, true)
         {
 
+        }
+
+        /// <summary>
+        /// Binds shader to pipeline
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="bindConstantBuffer"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Bind(DeviceContextProxy context, bool bindConstantBuffer = true)
+        {
+            context.SetShader(this);
         }
     }
 }
