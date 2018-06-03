@@ -1,4 +1,5 @@
 using SharpDX.Direct3D11;
+using System.Threading;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Utilities
@@ -234,5 +235,24 @@ namespace HelixToolkit.UWP.Utilities
         {
             return proxy == null ? null : proxy.renderTargetView;
         }
+
+        #region Ref Counter
+
+
+        private int refCounter = 1;
+
+        internal int IncRef()
+        {
+            return Interlocked.Increment(ref refCounter);
+        }
+
+        protected override void OnDispose(bool disposeManagedResources)
+        {
+            if(Interlocked.Decrement(ref refCounter) == 0)
+            {
+                base.OnDispose(disposeManagedResources);
+            }          
+        }
+        #endregion
     }
 }

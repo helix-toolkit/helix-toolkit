@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP.Model
     /// </summary>
     public class TextureResourceManager : DisposeObject, ITextureResourceManager
     {
-        private readonly Dictionary<Stream, ShaderResourceView> resourceDictionary = new Dictionary<Stream, ShaderResourceView>();
+        private readonly Dictionary<Stream, ShaderResourceViewProxy> resourceDictionary = new Dictionary<Stream, ShaderResourceViewProxy>();
         private readonly Device device;
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureResourceManager"/> class.
@@ -43,15 +43,16 @@ namespace HelixToolkit.UWP.Model
             }
             lock (resourceDictionary)
             {
-                if (resourceDictionary.TryGetValue(textureStream, out ShaderResourceView view))
+                if (resourceDictionary.TryGetValue(textureStream, out ShaderResourceViewProxy view))
                 {
-                    return new ShaderResourceViewProxy(view.QueryInterface<ShaderResourceView>());
+                    view.IncRef();
+                    return view;
                 }
                 else
                 {
                     var proxy = new ShaderResourceViewProxy(device);
                     proxy.CreateView(textureStream);
-                    proxy.TextureView.Disposed += (s, e) =>
+                    proxy.Disposed += (s, e) =>
                     {
                         lock (resourceDictionary)
                         {

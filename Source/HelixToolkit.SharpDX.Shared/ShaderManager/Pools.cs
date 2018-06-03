@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <typeparam name="TDescription"></typeparam>
     public abstract class ComPoolBase<TKEY, TVALUE, TDescription> : DisposeObject where TVALUE : ComObject where TKEY : struct
     {
-        private readonly Dictionary<TKEY, TVALUE> pool = new Dictionary<TKEY, TVALUE>();
+        private readonly Dictionary<TKEY, StateProxy<TVALUE>> pool = new Dictionary<TKEY, StateProxy<TVALUE>>();
         /// <summary>
         /// 
         /// </summary>
@@ -47,26 +47,26 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <returns></returns>
         public StateProxy<TVALUE> Register(TDescription description)
         {
-            TVALUE value;
             TKEY key = GetKey(ref description);
             lock (pool)
             {
-                if (pool.TryGetValue(key, out value))
+                if (pool.TryGetValue(key, out StateProxy<TVALUE> value))
                 {
-                    return CreateProxy(value.QueryInterface<TVALUE>());
+                    value.IncRef();
+                    return value;
                 }
                 else
                 {
-                    value = Collect(Create(Device, ref description));
-                    pool.Add(key, value);
-                    value.Disposed += (s, e) => 
+                    var newValue = Collect(CreateProxy(Create(Device, ref description)));
+                    pool.Add(key, newValue);
+                    newValue.Disposed += (s, e) => 
                     {
                         lock (pool)
                         {
                             pool.Remove(key);
                         }
                     };
-                    return CreateProxy(value);
+                    return newValue;
                 }
             }
         }

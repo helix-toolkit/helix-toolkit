@@ -14,7 +14,8 @@ namespace HelixToolkit.UWP.Utilities
     /// </summary>
     /// <typeparam name="StateType">The type of the tate type.</typeparam>
     public abstract class StateProxy<StateType> : IDisposable where StateType : ComObject
-    {       
+    {
+        public event EventHandler Disposed;
         /// <summary>
         /// Gets the state.
         /// </summary>
@@ -29,6 +30,12 @@ namespace HelixToolkit.UWP.Utilities
             this.state = state;
         }
 
+        private int refCounter = 1;
+
+        internal int IncRef()
+        {
+            return Interlocked.Increment(ref refCounter);
+        }
         /// <summary>
         /// Performs an implicit conversion
         /// </summary>
@@ -46,11 +53,12 @@ namespace HelixToolkit.UWP.Utilities
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (Interlocked.Decrement(ref refCounter) == 0 && !disposedValue)
             {
                 if (disposing)
                 {
                     Disposer.RemoveAndDispose(ref state);
+                    Disposed?.Invoke(this, EventArgs.Empty);
                     // TODO: dispose managed state (managed objects).
                 }
 
