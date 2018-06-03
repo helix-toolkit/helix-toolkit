@@ -34,12 +34,19 @@ namespace HelixToolkit.UWP.Shaders
         public MappingProxy<SamplerMapping> SamplerMapping { get; } = new MappingProxy<SamplerMapping>();
 
         /// <summary>
-        /// Gets or sets the type of the shader.
+        /// Gets the type of the shader.
         /// </summary>
         /// <value>
         /// The type of the shader.
         /// </value>
         public ShaderStage ShaderType { private set; get; }
+        /// <summary>
+        /// Gets the index of the shader stage.
+        /// </summary>
+        /// <value>
+        /// The index of the shader stage.
+        /// </value>
+        public int ShaderStageIndex { private set; get; }
         /// <summary>
         /// If is null shader
         /// </summary>
@@ -57,6 +64,7 @@ namespace HelixToolkit.UWP.Shaders
         public ShaderBase(string name, ShaderStage type, bool isNull = false)
         {
             ShaderType = type;
+            ShaderStageIndex = type.ToIndex();
             Name = name;
             IsNULL = isNull;
         }

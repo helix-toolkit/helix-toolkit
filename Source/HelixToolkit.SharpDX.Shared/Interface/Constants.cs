@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model.Scene2D;
     using System.Collections.Generic;
     using Shaders;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// 
@@ -41,6 +42,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int ToIndex(this ShaderStage type)
         {
             switch (type)
@@ -61,7 +63,12 @@ namespace HelixToolkit.Wpf.SharpDX
                     return -1;
             }
         }
-
+        /// <summary>
+        /// To the shader stage.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ShaderStage ToShaderStage(this int index)
         {
             switch (index)
@@ -82,7 +89,12 @@ namespace HelixToolkit.Wpf.SharpDX
                     return ShaderStage.None;
             }
         }
-
+        /// <summary>
+        /// Gets the null shader.
+        /// </summary>
+        /// <param name="stage">The stage.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ShaderBase GetNullShader(ShaderStage stage)
         {
             switch (stage)
