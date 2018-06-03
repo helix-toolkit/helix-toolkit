@@ -570,6 +570,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             if (CanRender())
             {
+                if (EnableSharingModelMode && SharedModelContainer != null)
+                {
+                    SharedModelContainer.CurrentRenderHost = this;
+                }
                 IsBusy = true;
                 var t0 = TimeSpan.FromSeconds((double)Stopwatch.GetTimestamp()/Stopwatch.Frequency);
                 renderStatistics.FPSStatistics.Push((t0 - lastRenderTime).TotalMilliseconds);
