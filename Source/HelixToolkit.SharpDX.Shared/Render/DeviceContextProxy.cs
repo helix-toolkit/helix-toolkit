@@ -1,6 +1,6 @@
+using global::SharpDX.Direct3D;
 using SharpDX;
 using SharpDX.Direct3D11;
-using global::SharpDX.Direct3D;
 
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
@@ -13,10 +13,9 @@ namespace HelixToolkit.UWP.Render
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
-    using Utilities;
     using Shaders;
     using System.Runtime.CompilerServices;
-    using System.Collections.Generic;
+    using Utilities;
 
 
     /// <summary>
@@ -28,10 +27,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private readonly Device device;
 
         public static bool AutoSkipRedundantStateSetting = false;
-        private System.IntPtr currRasterState = System.IntPtr.Zero;
-        private System.IntPtr currDepthStencilState = System.IntPtr.Zero;
+        private RasterizerStateProxy currRasterState = null;
+        private DepthStencilStateProxy currDepthStencilState = null;
         private int currStencilRef;
-        private System.IntPtr currBlendState = System.IntPtr.Zero;
+        private BlendStateProxy currBlendState = null;
         private Color4? currBlendFactor = null;
         private uint currSampleMask = uint.MaxValue;
         /// <summary>
@@ -206,12 +205,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetRasterState(RasterizerStateProxy rasterState)
         {
-            if (AutoSkipRedundantStateSetting && currRasterState == rasterState.State.NativePointer)
+            if (AutoSkipRedundantStateSetting && currRasterState == rasterState)
             {
                 return;
             }
             deviceContext.Rasterizer.State = rasterState;
-            currRasterState = rasterState.State.NativePointer;
+            currRasterState = rasterState;
         }
 
 
@@ -223,12 +222,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetDepthStencilState(DepthStencilStateProxy depthStencilState, int stencilRef = 0)
         {
-            if (AutoSkipRedundantStateSetting && currDepthStencilState == depthStencilState.State.NativePointer && currStencilRef == stencilRef)
+            if (AutoSkipRedundantStateSetting && currDepthStencilState == depthStencilState && currStencilRef == stencilRef)
             {
                 return;
             }
             deviceContext.OutputMerger.SetDepthStencilState(depthStencilState, stencilRef);
-            currDepthStencilState = depthStencilState.State.NativePointer;
+            currDepthStencilState = depthStencilState;
             currStencilRef = stencilRef;
         }
         /// <summary>
@@ -273,12 +272,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetBlendState(BlendStateProxy blendState, Color4? blendFactor = null, int sampleMask = -1)
         {
-            if (AutoSkipRedundantStateSetting && currBlendState == blendState.State.NativePointer && blendFactor == currBlendFactor && currSampleMask == sampleMask)
+            if (AutoSkipRedundantStateSetting && currBlendState == blendState && blendFactor == currBlendFactor && currSampleMask == sampleMask)
             {
                 return;
             }
             deviceContext.OutputMerger.SetBlendState(blendState, blendFactor, sampleMask);
-            currBlendState = blendState.State.NativePointer;
+            currBlendState = blendState;
             currBlendFactor = blendFactor;
             currSampleMask = sampleMask == -1 ? int.MaxValue : (uint)sampleMask;
         }
@@ -292,12 +291,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetBlendState(BlendStateProxy blendState, Color4? blendFactor = null, uint sampleMask = uint.MaxValue)
         {
-            if (AutoSkipRedundantStateSetting && currBlendState == blendState.State.NativePointer && blendFactor == currBlendFactor && currSampleMask == sampleMask)
+            if (AutoSkipRedundantStateSetting && currBlendState == blendState && blendFactor == currBlendFactor && currSampleMask == sampleMask)
             {
                 return;
             }
             deviceContext.OutputMerger.SetBlendState(blendState, blendFactor, sampleMask);
-            currBlendState = blendState.State.NativePointer;
+            currBlendState = blendState;
             currBlendFactor = blendFactor;
             currSampleMask = sampleMask;
         }
@@ -1777,9 +1776,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public void Reset()
         {
             LastShaderPass = null;
-            currRasterState = System.IntPtr.Zero;
-            currBlendState = System.IntPtr.Zero;
-            currDepthStencilState = System.IntPtr.Zero;
+            currRasterState = null;
+            currBlendState = null;
+            currDepthStencilState = null;
             currBlendFactor = null;
             currSampleMask = uint.MaxValue;
             currStencilRef = 0;
