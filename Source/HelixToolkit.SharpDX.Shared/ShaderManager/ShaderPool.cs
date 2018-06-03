@@ -55,7 +55,7 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <returns></returns>
         protected override ShaderBase Create(Device device, ref ShaderDescription description)
         {
-            return description.ByteCode == null ? NullShader.GetNullShader(description.ShaderType) : description.CreateShader(device, ConstantBufferPool, logger);
+            return description.ByteCode == null ? Constants.GetNullShader(description.ShaderType) : description.CreateShader(device, ConstantBufferPool, logger);
         }
     }
     /// <summary>

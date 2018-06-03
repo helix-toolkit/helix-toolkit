@@ -30,12 +30,12 @@ namespace HelixToolkit.UWP.Shaders
         /// 
         /// </summary>
         public bool IsNULL { get; } = false;
-
-        private readonly ShaderBase[] shaders = new ShaderBase[Constants.NumShaderStages];
-        /// <summary>
-        /// <see cref="ShaderPass.Shaders"/>
-        /// </summary>
-        public IReadOnlyList<ShaderBase> Shaders { get { return shaders; } }
+        public VertexShader VertexShader { private set; get; } = VertexShader.NullVertexShader;
+        public DomainShader DomainShader { private set; get; } = DomainShader.NullDomainShader;
+        public HullShader HullShader { private set; get; } = HullShader.NullHullShader;
+        public PixelShader PixelShader { private set; get; } = PixelShader.NullPixelShader;
+        public GeometryShader GeometryShader { private set; get; } = GeometryShader.NullGeometryShader;
+        public ComputeShader ComputeShader { private set; get; } = ComputeShader.NullComputeShader;
         /// <summary>
         /// <see cref="ShaderPass.BlendState"/>
         /// </summary>
@@ -66,34 +66,27 @@ namespace HelixToolkit.UWP.Shaders
             {
                 foreach (var shader in passDescription.ShaderList)
                 {
-                    shaders[shader.ShaderType.ToIndex()] = manager.ShaderManager.RegisterShader(shader);
-                }
-            }
-            for(int i=0; i<shaders.Length; ++i)
-            {
-                if (shaders[i] == null)
-                {
-                    var type = i.ToShaderStage();
-                    switch (type)
+                    var s = manager.ShaderManager.RegisterShader(shader);
+                    switch (shader.ShaderType)
                     {
                         case ShaderStage.Vertex:
-                            shaders[i] = NullShader.VertexNull;
-                            break;
-                        case ShaderStage.Hull:
-                            shaders[i] = NullShader.HullNull;
+                            VertexShader = s as VertexShader;
                             break;
                         case ShaderStage.Domain:
-                            shaders[i] = NullShader.DomainNull;
+                            DomainShader = s as DomainShader;
+                            break;
+                        case ShaderStage.Hull:
+                            HullShader = s as HullShader;
                             break;
                         case ShaderStage.Geometry:
-                            shaders[i] = NullShader.GeometryNull;
+                            GeometryShader = s as GeometryShader;
                             break;
                         case ShaderStage.Pixel:
-                            shaders[i] = NullShader.PixelNull;
+                            PixelShader = s as PixelShader;
                             break;
                         case ShaderStage.Compute:
-                            shaders[i] = NullShader.ComputeNull;
-                            break;
+                            ComputeShader = s as ComputeShader;
+                            break;                            
                     }
                 }
             }
@@ -116,44 +109,6 @@ namespace HelixToolkit.UWP.Shaders
         private ShaderPass()
         {
             IsNULL = true;
-            for (int i = 0; i < shaders.Length; ++i)
-            {
-                if (shaders[i] == null)
-                {
-                    var type = i.ToShaderStage();
-                    switch (type)
-                    {
-                        case ShaderStage.Vertex:
-                            shaders[i] = NullShader.VertexNull;
-                            break;
-                        case ShaderStage.Hull:
-                            shaders[i] = NullShader.HullNull;
-                            break;
-                        case ShaderStage.Domain:
-                            shaders[i] = NullShader.DomainNull;
-                            break;
-                        case ShaderStage.Geometry:
-                            shaders[i] = NullShader.GeometryNull;
-                            break;
-                        case ShaderStage.Pixel:
-                            shaders[i] = NullShader.PixelNull;
-                            break;
-                        case ShaderStage.Compute:
-                            shaders[i] = NullShader.ComputeNull;
-                            break;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Bind shaders and its constant buffer for this technique
-        /// </summary>
-        /// <param name="context"></param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindShader(DeviceContextProxy context)
-        {
-            BindShader(context, true);
         }
 
         /// <summary>
@@ -162,20 +117,18 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="context"></param>
         /// <param name="bindConstantBuffer"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindShader(DeviceContextProxy context, bool bindConstantBuffer)
+        public void BindShader(DeviceContextProxy context, bool bindConstantBuffer = true)
         {
             if (context.LastShaderPass == this || IsNULL)
             {
                 return;
             }
-            for (int i = 0; i < shaders.Length; ++i)
-            {
-                shaders[i].Bind(context);
-                if (bindConstantBuffer)
-                {
-                    shaders[i].BindConstantBuffers(context);
-                }
-            }
+            VertexShader.Bind(context, bindConstantBuffer);
+            PixelShader.Bind(context);
+            ComputeShader.Bind(context);
+            HullShader.Bind(context);
+            DomainShader.Bind(context);
+            GeometryShader.Bind(context);
             context.LastShaderPass = this;
         }
         /// <summary>
@@ -186,7 +139,23 @@ namespace HelixToolkit.UWP.Shaders
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ShaderBase GetShader(ShaderStage type)
         {
-            return shaders[type.ToIndex()];
+            switch (type)
+            {
+                case ShaderStage.Vertex:
+                    return VertexShader;
+                case ShaderStage.Pixel:
+                    return PixelShader;
+                case ShaderStage.Compute:
+                    return ComputeShader;
+                case ShaderStage.Hull:
+                    return HullShader;
+                case ShaderStage.Domain:
+                    return DomainShader;
+                case ShaderStage.Geometry:
+                    return GeometryShader;
+                default:
+                    return null;
+            }
         }
 
         /// <summary>
@@ -195,7 +164,27 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="shader">The shader.</param>        
         public void SetShader(ShaderBase shader)
         {
-            shaders[shader.ShaderType.ToIndex()] = shader;
+            switch (shader.ShaderType)
+            {
+                case ShaderStage.Vertex:
+                    VertexShader = shader as VertexShader;
+                    break;
+                case ShaderStage.Pixel:
+                    PixelShader = shader as PixelShader;
+                    break;
+                case ShaderStage.Compute:
+                    ComputeShader = shader as ComputeShader;
+                    break;
+                case ShaderStage.Hull:
+                    HullShader = shader as HullShader;
+                    break;
+                case ShaderStage.Domain:
+                    DomainShader = shader as DomainShader;
+                    break;
+                case ShaderStage.Geometry:
+                    GeometryShader = shader as GeometryShader;
+                    break;
+            }
         }
 
         /// <summary>

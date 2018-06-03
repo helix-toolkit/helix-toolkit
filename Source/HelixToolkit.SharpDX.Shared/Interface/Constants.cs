@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model.Scene;
     using Model.Scene2D;
     using System.Collections.Generic;
+    using Shaders;
 
     /// <summary>
     /// 
@@ -79,6 +80,27 @@ namespace HelixToolkit.Wpf.SharpDX
                     return ShaderStage.Compute;
                 default:
                     return ShaderStage.None;
+            }
+        }
+
+        public static ShaderBase GetNullShader(ShaderStage stage)
+        {
+            switch (stage)
+            {
+                case ShaderStage.Vertex:
+                    return VertexShader.NullVertexShader;
+                case ShaderStage.Domain:
+                    return DomainShader.NullDomainShader;
+                case ShaderStage.Hull:
+                    return HullShader.NullHullShader;
+                case ShaderStage.Geometry:
+                    return GeometryShader.NullGeometryShader;
+                case ShaderStage.Pixel:
+                    return PixelShader.NullPixelShader;
+                case ShaderStage.Compute:
+                    return ComputeShader.NullComputeShader;
+                default:
+                    return null;
             }
         }
 

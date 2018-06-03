@@ -25,7 +25,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public IEnumerable<KeyValuePair<int, MappingType>> Mappings { get { return mappingCollection.MappingArray; } }
+        public KeyValuePair<int, MappingType>[] Mappings { get { return mappingCollection.MappingArray; } }
         /// <summary>
         /// 
         /// </summary>

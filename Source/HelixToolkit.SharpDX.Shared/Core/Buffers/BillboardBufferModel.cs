@@ -39,7 +39,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The texture view.
         /// </value>
-        public ShaderResourceView TextureView { get { return textureView; } }
+        public ShaderResourceViewProxy TextureView { get { return textureView.TextureView; } }
         /// <summary>
         /// Gets or sets the type.
         /// </summary>

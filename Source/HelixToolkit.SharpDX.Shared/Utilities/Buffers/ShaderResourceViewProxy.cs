@@ -89,7 +89,15 @@ namespace HelixToolkit.UWP.Utilities
         {
             this.resource = Collect(resource);
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        public ShaderResourceViewProxy(ShaderResourceView view) : this(view.Device)
+        {
+            textureView = Collect(view);
+            this.resource = view.Resource;
+        }
         /// <summary>
         /// Creates the view.
         /// </summary>

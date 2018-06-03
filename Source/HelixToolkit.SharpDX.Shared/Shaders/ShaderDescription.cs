@@ -200,7 +200,6 @@ namespace HelixToolkit.UWP.Shaders
                     shader = new GeometryShader(device, Name, ByteCode);
                     break;
                 default:
-                    shader = NullShader.GetNullShader(ShaderType);
                     break;
             }
             if (ConstantBufferMappings != null)

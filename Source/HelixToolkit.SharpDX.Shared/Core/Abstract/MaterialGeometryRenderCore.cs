@@ -2,7 +2,6 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX.Direct3D11;
 
 
 #if !NETFX_CORE
@@ -12,6 +11,7 @@ namespace HelixToolkit.UWP.Core
 #endif
 {
     using Model;
+    using Render;
     using Shaders;
     /// <summary>
     /// 
@@ -212,7 +212,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context"></param>
         /// <param name="shader"></param>
         /// <returns></returns>
-        public bool BindMaterialTextures(DeviceContext context, ShaderPass shader)
+        public bool BindMaterialTextures(DeviceContextProxy context, ShaderPass shader)
         {
             return MaterialVariables.BindMaterialTextures(context, shader);
         }

@@ -2,9 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
 using SharpDX.Direct3D11;
-using System.Collections.Generic;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
@@ -17,7 +15,8 @@ namespace HelixToolkit.UWP.Shaders
     /// </summary>
     public sealed class GeometryShader : ShaderBase
     {
-        private global::SharpDX.Direct3D11.GeometryShader shader;
+        internal global::SharpDX.Direct3D11.GeometryShader Shader { private set; get; }
+        public static readonly GeometryShader NullGeometryShader = new GeometryShader("NULL");
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryShader"/> class.
         /// </summary>
@@ -26,55 +25,13 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="byteCode">The byte code.</param>
         public GeometryShader(Device device, string name, byte[] byteCode) : base(name, ShaderStage.Geometry)
         {
-            shader = Collect(new global::SharpDX.Direct3D11.GeometryShader(device, byteCode));
+            Shader = Collect(new global::SharpDX.Direct3D11.GeometryShader(device, byteCode));
         }
-        /// <summary>
-        /// Binds the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public override void Bind(DeviceContext context)
+
+        private GeometryShader(string name)
+            :base(name, ShaderStage.Geometry, true)
         {
-            context.GeometryShader.Set(shader);
-        }
-        /// <summary>
-        /// Binds the constant buffers.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        public override void BindConstantBuffers(DeviceContext context)
-        {
-            foreach (var buff in this.ConstantBufferMapping.Mappings)
-            {
-                context.GeometryShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
-            }
-        }
-        /// <summary>
-        /// Binds the texture.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="index">The index.</param>
-        /// <param name="texture">The texture.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void BindTexture(DeviceContext context, int index, ShaderResourceView texture)
-        {
-        }
-        /// <summary>
-        /// Binds the texture.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="texture">The texture.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
-        {
-        }
-        /// <summary>
-        /// Binds the textures.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="textures">The textures.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures)
-        {
+
         }
     }
 }

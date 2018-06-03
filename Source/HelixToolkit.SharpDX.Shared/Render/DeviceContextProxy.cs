@@ -16,6 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using Utilities;
     using Shaders;
     using System.Runtime.CompilerServices;
+    using System.Collections.Generic;
 
 
     /// <summary>
@@ -535,6 +536,364 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
             else { return EmptyShaderResourceViewArray; }
         }
+        #endregion
+
+        #region Set Shaders and Constant Buffers               
+        /// <summary>
+        /// Sets the vertex shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="bindConstantBuffer"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetShader(VertexShader shader, bool bindConstantBuffer = true)
+        {
+            deviceContext.VertexShader.Set(shader.Shader);
+            if (bindConstantBuffer)
+            {
+                foreach (var buff in shader.ConstantBufferMapping.Mappings)
+                {
+                    deviceContext.VertexShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                }
+            }
+        }
+        /// <summary>
+        /// Sets the hull shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="bindConstantBuffer"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetShader(HullShader shader, bool bindConstantBuffer = true)
+        {
+            deviceContext.HullShader.Set(shader.Shader);
+            if (bindConstantBuffer)
+            {
+                foreach (var buff in shader.ConstantBufferMapping.Mappings)
+                {
+                    deviceContext.HullShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                }
+            }
+        }
+        /// <summary>
+        /// Sets the domain shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="bindConstantBuffer"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetShader(DomainShader shader, bool bindConstantBuffer = true)
+        {
+            deviceContext.DomainShader.Set(shader.Shader);
+            if (bindConstantBuffer)
+            {
+                foreach (var buff in shader.ConstantBufferMapping.Mappings)
+                {
+                    deviceContext.DomainShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                }
+            }
+        }
+        /// <summary>
+        /// Sets the geometry shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="bindConstantBuffer"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetShader(GeometryShader shader, bool bindConstantBuffer = true)
+        {
+            deviceContext.GeometryShader.Set(shader.Shader);
+            if (bindConstantBuffer)
+            {
+                foreach (var buff in shader.ConstantBufferMapping.Mappings)
+                {
+                    deviceContext.GeometryShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                }
+            }
+        }
+        /// <summary>
+        /// Sets the pixel shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="bindConstantBuffer"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetShader(PixelShader shader, bool bindConstantBuffer = true)
+        {
+            deviceContext.PixelShader.Set(shader.Shader);
+            if (bindConstantBuffer)
+            {
+                foreach (var buff in shader.ConstantBufferMapping.Mappings)
+                {
+                    deviceContext.PixelShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                }
+            }
+        }
+        /// <summary>
+        /// Sets the compute shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="bindConstantBuffer"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetShader(ComputeShader shader, bool bindConstantBuffer = true)
+        {
+            deviceContext.ComputeShader.Set(shader.Shader);
+            if (bindConstantBuffer)
+            {
+                foreach (var buff in shader.ConstantBufferMapping.Mappings)
+                {
+                    deviceContext.ComputeShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
+                }
+            }
+        }
+        #endregion
+
+        #region Set ShaderResources
+        #region Vertex Shader
+        /// <summary>
+        /// Binds the texture.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindTexture(VertexShader shader, int slot, ShaderResourceView texture)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.VertexShader.SetShaderResource(slot, texture);
+        }
+        /// <summary>
+        /// Binds the texture.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindTexture(VertexShader shader, int slot, ShaderResourceView[] texture)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.VertexShader.SetShaderResources(slot, texture);
+        }
+        /// <summary>
+        /// Binds the sampler.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="sampler">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindSampler(VertexShader shader, int slot, SamplerState sampler)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.VertexShader.SetSampler(slot, sampler);
+        }
+        /// <summary>
+        /// Binds the sampler.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="samplers">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindSampler(VertexShader shader, int slot, SamplerState[] samplers)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.VertexShader.SetSamplers(slot, samplers);
+        }
+
+        #endregion
+
+        #region Domain Shader
+
+        /// <summary>
+        /// Binds the texture.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindTexture(DomainShader shader, int slot, ShaderResourceView texture)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.DomainShader.SetShaderResource(slot, texture);
+        }
+        /// <summary>
+        /// Binds the texture.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindTexture(DomainShader shader, int slot, ShaderResourceView[] texture)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.DomainShader.SetShaderResources(slot, texture);
+        }
+        /// <summary>
+        /// Binds the sampler.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="sampler">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindSampler(DomainShader shader, int slot, SamplerState sampler)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.DomainShader.SetSampler(slot, sampler);
+        }
+        /// <summary>
+        /// Binds the sampler.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="samplers">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindSampler(DomainShader shader, int slot, SamplerState[] samplers)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.DomainShader.SetSamplers(slot, samplers);
+        }
+        #endregion
+
+        #region Pixel Shader
+
+        /// <summary>
+        /// Binds the texture.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindTexture(PixelShader shader, int slot, ShaderResourceView texture)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.PixelShader.SetShaderResource(slot, texture);
+        }
+        /// <summary>
+        /// Binds the texture.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindTexture(PixelShader shader, int slot, ShaderResourceView[] texture)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.PixelShader.SetShaderResources(slot, texture);
+        }
+        /// <summary>
+        /// Binds the sampler.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="sampler">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindSampler(PixelShader shader, int slot, SamplerState sampler)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.PixelShader.SetSampler(slot, sampler);
+        }
+        /// <summary>
+        /// Binds the sampler.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="samplers">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindSampler(PixelShader shader, int slot, SamplerState[] samplers)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.PixelShader.SetSamplers(slot, samplers);
+        }
+        #endregion
+
+        #region Compute Shader
+        /// <summary>
+        /// Binds the texture.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindTexture(ComputeShader shader, int slot, ShaderResourceView texture)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.ComputeShader.SetShaderResource(slot, texture);
+        }
+        /// <summary>
+        /// Binds the texture.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindTexture(ComputeShader shader, int slot, ShaderResourceView[] texture)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.ComputeShader.SetShaderResources(slot, texture);
+        }
+
+        /// <summary>
+        /// Binds the unordered access view.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="uav">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindUnorderedAccessView(ComputeShader shader, int slot, UnorderedAccessView uav)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.ComputeShader.SetUnorderedAccessView(slot, uav);
+        }
+        /// <summary>
+        /// Binds the unordered access views.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="UAVs">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindUnorderedAccessView(ComputeShader shader, int slot, UnorderedAccessView[] UAVs)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.ComputeShader.SetUnorderedAccessViews(slot, UAVs);
+        }
+
+        /// <summary>
+        /// Binds the sampler.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="sampler">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindSampler(ComputeShader shader, int slot, SamplerState sampler)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.ComputeShader.SetSampler(slot, sampler);
+        }
+        /// <summary>
+        /// Binds the sampler.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="samplers">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindSampler(ComputeShader shader, int slot, SamplerState[] samplers)
+        {
+            if (slot < 0)
+            { return; }
+            deviceContext.ComputeShader.SetSamplers(slot, samplers);
+        }
+        #endregion
         #endregion
 
         #region Get targets    

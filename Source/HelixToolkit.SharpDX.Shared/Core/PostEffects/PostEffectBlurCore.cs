@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The current SRV.
         /// </value>
-        public ShaderResourceView CurrentSRV { get { return renderTargetBlur[0].TextureView; } }
+        public ShaderResourceViewProxy CurrentSRV { get { return renderTargetBlur[0]; } }
 
         /// <summary>
         /// Gets the next SRV.
@@ -37,7 +37,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The next SRV.
         /// </value>
-        public ShaderResourceView NextSRV { get { return renderTargetBlur[1].TextureView; } }
+        public ShaderResourceViewProxy NextSRV { get { return renderTargetBlur[1]; } }
 
         public int Width { get { return texture2DDesc.Width; } }
 
@@ -159,7 +159,7 @@ namespace HelixToolkit.UWP.Core
                 {
                     SwapTargets();
                     BindTarget(null, renderTargetBlur[0], deviceContext, texture2DDesc.Width, texture2DDesc.Height);
-                    screenBlurPassVertical.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetBlur[1].TextureView);
+                    screenBlurPassVertical.PixelShader.BindTexture(deviceContext, textureSlot, renderTargetBlur[1]);
                     deviceContext.Draw(4, 0);
                 }
             }
@@ -172,7 +172,7 @@ namespace HelixToolkit.UWP.Core
                 {
                     SwapTargets();
                     BindTarget(null, renderTargetBlur[0], deviceContext, texture2DDesc.Width, texture2DDesc.Height);
-                    screenBlurPassHorizontal.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetBlur[1].TextureView);
+                    screenBlurPassHorizontal.PixelShader.BindTexture(deviceContext, textureSlot, renderTargetBlur[1]);
                     deviceContext.Draw(4, 0);
                 }
             }

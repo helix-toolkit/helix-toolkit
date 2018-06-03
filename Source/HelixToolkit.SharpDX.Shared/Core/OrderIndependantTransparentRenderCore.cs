@@ -163,9 +163,9 @@ namespace HelixToolkit.UWP.Core
             if (base.OnAttach(technique))
             {
                 screenQuadPass = technique[DefaultPassNames.Default];
-                colorTexIndex = screenQuadPass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.OITColorTB);
-                alphaTexIndex = screenQuadPass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.OITAlphaTB);
-                samplerIndex = screenQuadPass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
+                colorTexIndex = screenQuadPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.OITColorTB);
+                alphaTexIndex = screenQuadPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.OITAlphaTB);
+                samplerIndex = screenQuadPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
                 targetSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerWrapAni1));
                 RenderCount = 0;
                 return true;
@@ -225,9 +225,9 @@ namespace HelixToolkit.UWP.Core
             UnBind(context, deviceContext);
             screenQuadPass.BindShader(deviceContext);
             screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
-            screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, colorTexIndex, colorTargetNoMSAA);
-            screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, alphaTexIndex, alphaTargetNoMSAA);
-            screenQuadPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerIndex, targetSampler);
+            screenQuadPass.PixelShader.BindTexture(deviceContext, colorTexIndex, colorTargetNoMSAA);
+            screenQuadPass.PixelShader.BindTexture(deviceContext, alphaTexIndex, alphaTargetNoMSAA);
+            screenQuadPass.PixelShader.BindSampler(deviceContext, samplerIndex, targetSampler);
             deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             deviceContext.Draw(4, 0);
         }

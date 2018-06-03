@@ -181,8 +181,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             {
                 DefaultShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.Default];
                 CursorShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.ScreenQuad];
-                textureBindSlot = DefaultShaderPass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
-                samplerBindSlot = DefaultShaderPass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
+                textureBindSlot = DefaultShaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
+                samplerBindSlot = DefaultShaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
                 textureSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.ScreenDupSampler));
                 return Initialize(technique.EffectsManager);
             }
@@ -263,13 +263,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     DefaultShaderPass.BindShader(deviceContext);
                     DefaultShaderPass.BindStates(deviceContext,StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);                  
                     deviceContext.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
-                    DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerBindSlot, textureSampler);
+                    DefaultShaderPass.PixelShader.BindSampler(deviceContext, samplerBindSlot, textureSampler);
                     int left = (int)(context.ActualWidth * Math.Abs(modelStruct.TopLeft.X + 1) / 2);
                     int top = (int)(context.ActualHeight * Math.Abs(modelStruct.TopLeft.Y - 1) / 2);
                     deviceContext.SetScissorRectangle(left, top, (int)context.ActualWidth - left, (int)context.ActualHeight - top);
                     using (var textureView = new global::SharpDX.Direct3D11.ShaderResourceView(deviceContext, frameProcessor.SharedTexture))
                     {
-                        DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureBindSlot, textureView);
+                        deviceContext.BindTexture(DefaultShaderPass.PixelShader, textureBindSlot, textureView);                       
                         deviceContext.Draw(4, 0);
                     }
                     if (ShowMouseCursor && cursorValid)
@@ -304,7 +304,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             {
                 return;
             }
-            CursorShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureBindSlot, frameProcessor.PointerResource);
+            CursorShaderPass.PixelShader.BindTexture(deviceContext, textureBindSlot, frameProcessor.PointerResource);
             CursorShaderPass.BindShader(deviceContext);
             CursorShaderPass.BindStates(deviceContext, StateType.DepthStencilState | StateType.RasterState | StateType.BlendState);
             //deviceContext.DeviceContext.OutputMerger.SetBlendState(CursorShaderPass.BlendState, new RawColor4(0, 0, 0, 0)); //Set special blend factor

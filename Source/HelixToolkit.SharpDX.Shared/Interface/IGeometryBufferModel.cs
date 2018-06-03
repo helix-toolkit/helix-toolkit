@@ -91,7 +91,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The texture view.
         /// </value>
-        ShaderResourceView TextureView { get; }
+        ShaderResourceViewProxy TextureView { get; }
         /// <summary>
         /// Gets the billboard type.
         /// </summary>

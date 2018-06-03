@@ -105,8 +105,8 @@ namespace HelixToolkit.UWP.Core
             {
                 if (SetAffectsRender(ref defaultShaderPass, value))
                 {
-                    cubeTextureSlot = value.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
-                    textureSamplerSlot = value.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
+                    cubeTextureSlot = value.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
+                    textureSamplerSlot = value.PixelShader.SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
                     InvalidateRenderer();
                 }
             }

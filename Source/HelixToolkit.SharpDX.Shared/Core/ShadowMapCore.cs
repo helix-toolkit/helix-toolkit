@@ -246,7 +246,7 @@ namespace HelixToolkit.UWP.Core
             context.IsShadowPass = false;
             context.BoundingFrustum = orgFrustum;
             context.RenderHost.SetDefaultRenderTargets(false);
-            context.SharedResource.ShadowView = viewResource.TextureView;
+            context.SharedResource.ShadowView = viewResource;
 #endif
         }
 

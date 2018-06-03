@@ -129,7 +129,7 @@ namespace HelixToolkit.UWP.Core
 
         private ShaderResourceViewProxy cubeTextureRes;
         private int cubeTextureSlot;
-        private SamplerState textureSampler;
+        private SamplerStateProxy textureSampler;
         private int textureSamplerSlot;
         /// <summary>
         /// Initializes a new instance of the <see cref="SkyBoxRenderCore"/> class.
@@ -187,8 +187,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="pass">The pass.</param>
         protected override void OnDefaultPassChanged(ShaderPass pass)
         {
-            cubeTextureSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
-            textureSamplerSlot = pass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
+            cubeTextureSlot = pass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
+            textureSamplerSlot = pass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
         }
 
         protected override bool CanRender(RenderContext context)
@@ -204,8 +204,8 @@ namespace HelixToolkit.UWP.Core
         {
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
-            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);
-            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, textureSamplerSlot, textureSampler);
+            DefaultShaderPass.PixelShader.BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);
+            DefaultShaderPass.PixelShader.BindSampler(deviceContext, textureSamplerSlot, textureSampler);
             deviceContext.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
         }
 

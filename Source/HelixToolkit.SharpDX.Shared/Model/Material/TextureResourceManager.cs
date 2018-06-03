@@ -112,7 +112,7 @@ namespace HelixToolkit.UWP.Model
         /// <value>
         /// The texture view.
         /// </value>
-        public ShaderResourceView TextureView { get { return resource.TextureView; } }
+        public ShaderResourceViewProxy TextureView { get { return resource; } }
         /// <summary>
         /// Initializes a new instance of the <see cref="SharedTextureResourceProxy"/> class.
         /// </summary>
