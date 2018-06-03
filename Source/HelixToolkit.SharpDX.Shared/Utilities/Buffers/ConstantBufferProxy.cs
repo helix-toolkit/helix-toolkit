@@ -41,7 +41,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="strideSize"></param>
         public ConstantBufferProxy(int structSize, BindFlags bindFlags = BindFlags.ConstantBuffer,
             CpuAccessFlags cpuAccessFlags = CpuAccessFlags.None, ResourceOptionFlags optionFlags = ResourceOptionFlags.None,
-            ResourceUsage usage = ResourceUsage.Dynamic, int strideSize = 0)
+            ResourceUsage usage = ResourceUsage.Default, int strideSize = 0)
             : base(structSize, bindFlags)
         {
             if (structSize % 16 != 0)
