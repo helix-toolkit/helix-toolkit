@@ -96,7 +96,6 @@ namespace HelixToolkit.UWP.Utilities
         public ShaderResourceViewProxy(ShaderResourceView view) : this(view.Device)
         {
             textureView = Collect(view);
-            this.resource = view.Resource;
         }
         /// <summary>
         /// Creates the view.
@@ -118,6 +117,10 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateView(ShaderResourceViewDescription desc)
         {
             RemoveAndDispose(ref textureView);
+            if (resource == null)
+            {
+                return;
+            }
             textureView = Collect(new ShaderResourceView(device, resource, desc));
         }
         /// <summary>
@@ -127,6 +130,10 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateView(DepthStencilViewDescription desc)
         {
             RemoveAndDispose(ref depthStencilView);
+            if (resource == null)
+            {
+                return;
+            }
             depthStencilView = Collect(new DepthStencilView(device, resource, desc));
         }
         /// <summary>
@@ -136,6 +143,10 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateView(RenderTargetViewDescription desc)
         {
             RemoveAndDispose(ref renderTargetView);
+            if (resource == null)
+            {
+                return;
+            }
             renderTargetView = Collect(new RenderTargetView(device, resource, desc));
         }
         /// <summary>
@@ -144,6 +155,10 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateTextureView()
         {
             RemoveAndDispose(ref textureView);
+            if (resource == null)
+            {
+                return;
+            }
             textureView = Collect(new ShaderResourceView(device, resource));
         }
         /// <summary>
@@ -152,12 +167,20 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateRenderTargetView()
         {
             RemoveAndDispose(ref renderTargetView);
+            if (resource == null)
+            {
+                return;
+            }
             renderTargetView = Collect(new RenderTargetView(device, resource));
         }
 
         public void CreateDepthStencilView()
         {
             RemoveAndDispose(ref depthStencilView);
+            if (resource == null)
+            {
+                return;
+            }
             depthStencilView = Collect(new DepthStencilView(device, resource));
         }
 

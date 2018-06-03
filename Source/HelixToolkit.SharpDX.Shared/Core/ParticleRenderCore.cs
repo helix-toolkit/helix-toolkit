@@ -417,7 +417,7 @@ namespace HelixToolkit.UWP.Core
         private ConstantBufferProxy perFrameCB;
         private ConstantBufferProxy insertCB;
 
-        private ShaderResourceViewProxy textureView;
+        private SharedTextureResourceProxy textureView;
         #endregion
         #region Buffers        
         /// <summary>
@@ -697,6 +697,8 @@ namespace HelixToolkit.UWP.Core
         protected override void OnDetach()
         {
             DisposeBuffers();
+            textureView.Detach(GUID);
+            textureView = null;
             base.OnDetach();
         }
 
@@ -716,11 +718,8 @@ namespace HelixToolkit.UWP.Core
 
         private void OnTextureChanged()
         {
-            RemoveAndDispose(ref textureView);
-            if (ParticleTexture != null)
-            {
-                textureView = Collect(new ShaderResourceViewProxy(TextureLoader.FromMemoryAsShaderResourceView(Device, ParticleTexture)));
-            }
+            textureView?.Detach(GUID);
+            textureView = this.EffectTechnique.EffectsManager.MaterialTextureManager.Register(GUID, ParticleTexture);
         }
 
         private void OnBlendStateChanged()

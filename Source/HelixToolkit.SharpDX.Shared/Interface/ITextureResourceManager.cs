@@ -7,7 +7,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using System.IO;
-    using Model;
+    using Utilities;
 
     public interface ITextureResourceManager
     {
