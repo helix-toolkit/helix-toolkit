@@ -80,6 +80,7 @@ namespace HelixToolkit.UWP.Core
                 {
                     geometryBuffer.OnInvalidateRender += InvalidateRenderEvent;
                 }
+                OnGeometryBufferChanged(value);
             }
             get { return geometryBuffer; }
         }
@@ -250,6 +251,11 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="pass"></param>
         protected virtual void OnShadowPassChanged(ShaderPass pass) { }
+        /// <summary>
+        /// Called when [geometry buffer changed].
+        /// </summary>
+        /// <param name="buffer">The buffer.</param>
+        protected virtual void OnGeometryBufferChanged(IGeometryBufferModel buffer) { }
         /// <summary>
         /// Set all necessary states and buffers
         /// </summary>
