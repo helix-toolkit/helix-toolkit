@@ -16,10 +16,7 @@ float4 main(PSInputBT input) : SV_Target
 
     float4 color = blend * whengt((when_eq(BillboardMultiText, (int) pfParams.x) + when_eq(BillboardSingleText, (int) pfParams.x)), 0)
     + pixelColor * any(when_neq(pixelColor, input.background)) * when_eq(BillboardImage, (int) pfParams.x);
-    if (color.a == 0)
-    {
-        discard;
-    }
+    clip(color.a - 0.1);
     return color;
 }
 
