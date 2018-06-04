@@ -15,15 +15,18 @@ namespace HelixToolkit.UWP.Shaders
     {
         Texture, Structured, TextureBuffer
     }
+    /// <summary>
+    /// 
+    /// </summary>
     [DataContract]
     public sealed class TextureDescription
     {
         [DataMember]
         public string Name { set; get; }
         [DataMember]
-        public ShaderStage ShaderType;
+        public ShaderStage ShaderType { set; get; }
         [DataMember]
-        public TextureType Type;
+        public TextureType Type { set; get; }
 
         public TextureDescription() { }
 
@@ -44,7 +47,9 @@ namespace HelixToolkit.UWP.Shaders
             return new TextureDescription(this.Name, this.ShaderType, this.Type);
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [DataContract]
     public sealed class TextureMapping 
     {

@@ -3,9 +3,8 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX.Direct3D11;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Runtime.Serialization;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
@@ -16,14 +15,31 @@ namespace HelixToolkit.UWP.Shaders
     /// <summary>
     /// 
     /// </summary>
+    [DataContract]
     public sealed class InputLayoutDescription
     {
         /// <summary>
         /// The empty input layout
         /// </summary>
         public static readonly InputLayoutDescription EmptyInputLayout = new InputLayoutDescription();
+        /// <summary>
+        /// Gets or sets the shader byte code.
+        /// </summary>
+        /// <value>
+        /// The shader byte code.
+        /// </value>
+        [DataMember]
+        public byte[] ShaderByteCode { set; get; } = null;
+        /// <summary>
+        /// Gets or sets the input elements.
+        /// </summary>
+        /// <value>
+        /// The input elements.
+        /// </value>
+        [DataMember]
+        public InputElement[] InputElements { set; get; } = new InputElement[0];
 
-        public readonly KeyValuePair<byte[], InputElement[]> Description;
+        public KeyValuePair<byte[], InputElement[]> Description { get { return new KeyValuePair<byte[], InputElement[]>(ShaderByteCode, InputElements); } }
         /// <summary>
         /// Initializes a new instance of the <see cref="InputLayoutDescription"/> class.
         /// </summary>
@@ -31,14 +47,14 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="elements">The elements.</param>
         public InputLayoutDescription(byte[] byteCode, InputElement[] elements)
         {
-            Description = new KeyValuePair<byte[], InputElement[]>(byteCode, elements);
+            ShaderByteCode = byteCode;
+            InputElements = elements;
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="InputLayoutDescription"/> class.
         /// </summary>
         public InputLayoutDescription()
         {
-            Description = new KeyValuePair<byte[], InputElement[]>(null, new InputElement[0]);
         }
     }
 }
