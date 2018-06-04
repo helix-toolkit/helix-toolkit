@@ -98,7 +98,7 @@
             <hx:ShadowMap3D />
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="White" />
             <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
-            <hx:GroupModel3D IsThrowingShadow="True">
+            <hx:GroupModel3D>
                 <hx:DynamicReflectionMap3D>
                     <hx:MeshGeometryModel3D
                         CullMode="Back"
@@ -115,7 +115,7 @@
                     Color="White" />
                 <hx:BillboardTextModel3D Geometry="{Binding AxisLabelGeometry}" IsTransparent="True" />
             </hx:GroupModel3D>
-            <hx:GroupModel3D IsThrowingShadow="True" Transform3D="{Binding Transform}">
+            <hx:GroupModel3D Transform3D="{Binding Transform}">
                 <hx:GroupModel3D.OctreeManager>
                     <hx:GeometryModel3DOctreeManager />
                 </hx:GroupModel3D.OctreeManager>
@@ -144,7 +144,7 @@
                     RenderShadowMap="True"
                     Transform3D="{Binding Transform3}" />
             </hx:GroupModel3D>
-            <hx:GroupModel3D IsThrowingShadow="True" Transform3D="{Binding Transform4}">
+            <hx:GroupModel3D Transform3D="{Binding Transform4}">
                 <hx:PointGeometryModel3D
                     Geometry="{Binding PointGeometry}"
                     IsThrowingShadow="True"

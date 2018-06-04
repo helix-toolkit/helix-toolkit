@@ -182,23 +182,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public bool IsHitTestVisible { set; get; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is throwing shadow.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is throwing shadow; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsThrowingShadow
-        {
-            set
-            {
-                RenderCore.IsThrowingShadow = value;
-            }
-            get
-            {
-                return RenderCore.IsThrowingShadow;
-            }
-        }
-        /// <summary>
         /// Gets or sets the type of the render.
         /// </summary>
         /// <value>

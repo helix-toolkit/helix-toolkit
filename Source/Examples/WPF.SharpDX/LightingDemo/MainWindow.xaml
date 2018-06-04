@@ -79,7 +79,7 @@
                 Range="100"
                 Transform="{Binding Light4Transform}"
                 Color="{Binding Light1Color}" />
-            <hx:GroupModel3D IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}">
+            <hx:GroupModel3D>
                 <hx:MeshGeometryModel3D
                     CullMode="Back"
                     Geometry="{Binding Sphere}"
@@ -109,7 +109,7 @@
                     Material="{Binding LightModelMaterial}"
                     Transform="{Binding Light4Transform}" />
             </hx:GroupModel3D>
-            <hx:GroupModel3D IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}">
+            <hx:GroupModel3D>
                 <hx:MeshGeometryModel3D
                     x:Name="model"
                     Geometry="{Binding Model}"
@@ -131,7 +131,7 @@
                         Transform="{Binding Model1Transform}" />
                 </hx:DynamicReflectionMap3D>
 
-                <hx:GroupModel3D IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}">
+                <hx:GroupModel3D>
                     <hx:MeshGeometryModel3D
                         CullMode="Back"
                         Geometry="{Binding FlyingObject}"

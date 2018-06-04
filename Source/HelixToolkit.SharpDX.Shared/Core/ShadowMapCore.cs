@@ -237,7 +237,7 @@ namespace HelixToolkit.UWP.Core
             {
                 //Only support opaque object for throwing shadows.
                 var core = context.RenderHost.PerFrameOpaqueNodes[i];
-                if (core.IsThrowingShadow && core.TestViewFrustum(ref frustum))
+                if (core.RenderCore.IsThrowingShadow && core.TestViewFrustum(ref frustum))
                 {
                     core.Render(context, deviceContext);
                 }
