@@ -131,7 +131,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
+            
             switch (this.Controller.CameraRotationMode)
             {
                 case CameraRotationMode.Trackball:
@@ -305,9 +305,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.rotationPoint3D = this.Camera.Position;
                     break;
                 default:
-                    if (Viewport.FixedRotationPointEnabled)
+                    if (Controller.FixedRotationPointEnabled)
                     {
-                        this.rotationPoint3D = Viewport.FixedRotationPoint;
+                        this.rotationPoint3D = Controller.FixedRotationPoint;
                     }
                     else if (this.changeLookAt && this.MouseDownNearestPoint3D != null)
                     {

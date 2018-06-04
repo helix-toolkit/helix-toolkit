@@ -223,6 +223,8 @@ namespace HelixToolkit.UWP
             this.cameraController.ModelUpDirection = this.ModelUpDirection;
             this.cameraController.ZoomDistanceLimitFar = this.ZoomDistanceLimitFar;
             this.cameraController.ZoomDistanceLimitNear = this.ZoomDistanceLimitNear;
+            this.cameraController.FixedRotationPoint = this.FixedRotationPoint;
+            this.cameraController.FixedRotationPointEnabled = this.FixedRotationPointEnabled;
             #endregion
         }
 
@@ -412,7 +414,7 @@ namespace HelixToolkit.UWP
                 {
                     e.Attach(host);
                 }
-                sharedModelContainerInternal?.Attach(host);
+                SharedModelContainerInternal?.Attach(host);
                 foreach (var e in this.D2DRenderables)
                 {
                     e.Attach(host);
@@ -433,7 +435,7 @@ namespace HelixToolkit.UWP
                 {
                     e.Detach();
                 }
-                sharedModelContainerInternal?.Detach();
+                SharedModelContainerInternal?.Detach();
                 foreach (var e in this.D2DRenderables)
                 {
                     e.Detach();
@@ -509,8 +511,7 @@ namespace HelixToolkit.UWP
 
         private bool ViewBoxHitTest(Point p)
         {
-            var camera = Camera as ProjectionCamera;
-            if (camera == null)
+            if (!(Camera is ProjectionCamera camera))
             {
                 return false;
             }
@@ -529,8 +530,7 @@ namespace HelixToolkit.UWP
 
         private void ViewCube_ViewBoxClickedEvent(object sender, ViewBoxNode.ViewBoxClickedEventArgs e)
         {
-            var pc = this.Camera as ProjectionCamera;
-            if (pc == null)
+            if (!(this.Camera is ProjectionCamera pc))
             {
                 return;
             }
