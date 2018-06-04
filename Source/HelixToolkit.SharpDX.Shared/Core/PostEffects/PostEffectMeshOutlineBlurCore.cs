@@ -306,15 +306,15 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContext context, int width, int height, bool clear = true)
+        private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height, bool clear = true)
         {
             if (clear)
             {
                 context.ClearRenderTargetView(targetView, global::SharpDX.Color.Transparent);
             }
-            context.OutputMerger.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
-            context.Rasterizer.SetViewport(0, 0, width, height);
-            context.Rasterizer.SetScissorRectangle(0, 0, width, height);
+            context.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
+            context.SetViewport(0, 0, width, height);
+            context.SetScissorRectangle(0, 0, width, height);
         }
 
         protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)

@@ -21,6 +21,7 @@ namespace HelixToolkit.UWP.Shaders
     {
         internal global::SharpDX.Direct3D11.HullShader Shader { private set; get; }
         public static readonly HullShader NullHullShader = new HullShader("NULL");
+        public static readonly HullShaderType Type;
         /// <summary>
         /// Vertex Shader
         /// </summary>
@@ -48,6 +49,12 @@ namespace HelixToolkit.UWP.Shaders
         public void Bind(DeviceContextProxy context, bool bindConstantBuffer = true)
         {
             context.SetShader(this);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator HullShaderType(HullShader s)
+        {
+            return Type;
         }
     }
 }

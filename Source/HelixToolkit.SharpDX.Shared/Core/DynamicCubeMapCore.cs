@@ -469,12 +469,12 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         public void BindCubeMap(DeviceContextProxy deviceContext)
         {
-            currSampler = deviceContext.GetSamplerStatesSingleStage(ShaderStage.Pixel, cubeTextureSlot, 1);
-            currRes = deviceContext.GetShaderResourcesSingleStage(ShaderStage.Pixel, cubeTextureSlot, 1);
+            currSampler = deviceContext.GetSampler(PixelShader.Type, cubeTextureSlot, 1);
+            currRes = deviceContext.GetShaderResources(PixelShader.Type, cubeTextureSlot, 1);
             if (EnableReflector)
             {
-                deviceContext.SetShaderResourceSingleStage(ShaderStage.Pixel, cubeTextureSlot, CubeMap);
-                deviceContext.SetSamplerStateSingleStage(ShaderStage.Pixel, textureSamplerSlot, textureSampler);
+                deviceContext.SetShaderResource(PixelShader.Type, cubeTextureSlot, CubeMap);
+                deviceContext.SetSampler(PixelShader.Type, textureSamplerSlot, textureSampler);
             }
         }
 
@@ -484,8 +484,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         public void UnBindCubeMap(DeviceContextProxy deviceContext)
         {
-            deviceContext.SetShaderResourcesSingleStage(ShaderStage.Pixel, cubeTextureSlot, currRes);
-            deviceContext.SetSamplerStatesSingleStage(ShaderStage.Pixel, textureSamplerSlot, currSampler);
+            deviceContext.SetShaderResources(PixelShader.Type, cubeTextureSlot, currRes);
+            deviceContext.SetSamplers(PixelShader.Type, textureSamplerSlot, currSampler);
             for (int i = 0; i < currSampler.Length; ++i)
             {
                 Disposer.RemoveAndDispose(ref currSampler[i]);

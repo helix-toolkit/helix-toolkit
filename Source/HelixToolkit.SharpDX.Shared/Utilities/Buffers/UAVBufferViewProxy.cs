@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -56,7 +57,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="device">The device.</param>
         /// <param name="destBuffer">The dest buffer.</param>
         /// <param name="offset">The offset.</param>
-        public void CopyCount(DeviceContext device, SDX11.Buffer destBuffer, int offset)
+        public void CopyCount(DeviceContextProxy device, SDX11.Buffer destBuffer, int offset)
         {
             device.CopyStructureCount(destBuffer, offset, UAV);
         }

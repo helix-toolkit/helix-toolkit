@@ -21,6 +21,7 @@ namespace HelixToolkit.UWP.Shaders
     {
         internal global::SharpDX.Direct3D11.ComputeShader Shader { private set; get; }
         public static readonly ComputeShader NullComputeShader = new ComputeShader("NULL");
+        public static readonly ComputeShaderType Type;
         /// <summary>
         /// Vertex Shader
         /// </summary>
@@ -59,7 +60,7 @@ namespace HelixToolkit.UWP.Shaders
         public void BindTexture(DeviceContextProxy context, string name, ShaderResourceViewProxy texture)
         {
             int slot = this.ShaderResourceViewMapping.TryGetBindSlot(name);
-            context.BindTexture(this, slot, texture);
+            context.SetShaderResource(Type, slot, texture);
         }
         /// <summary>
         /// Binds the texture.
@@ -70,7 +71,7 @@ namespace HelixToolkit.UWP.Shaders
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void BindTexture(DeviceContextProxy context, int slot, ShaderResourceViewProxy texture)
         {
-            context.BindTexture(this, slot, texture);
+            context.SetShaderResource(Type, slot, texture);
         }
         /// <summary>
         /// Binds the textures.
@@ -82,7 +83,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             foreach (var texture in textures)
             {
-                context.BindTexture(this, texture.Key, texture.Value);
+                context.SetShaderResource(Type, texture.Key, texture.Value);
             }
         }
         /// <summary>
@@ -94,7 +95,7 @@ namespace HelixToolkit.UWP.Shaders
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void BindSampler(DeviceContextProxy context, int slot, SamplerStateProxy sampler)
         {
-            context.BindSampler(this, slot, sampler);
+            context.SetSampler(Type, slot, sampler);
         }
         /// <summary>
         /// Binds the sampler.
@@ -106,7 +107,7 @@ namespace HelixToolkit.UWP.Shaders
         public void BindSampler(DeviceContextProxy context, string name, SamplerStateProxy sampler)
         {
             int slot = this.SamplerMapping.TryGetBindSlot(name);
-            context.BindSampler(this, slot, sampler);
+            context.SetSampler(Type, slot, sampler);
         }
 
         /// <summary>
@@ -119,7 +120,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             foreach (var sampler in samplers)
             {
-                context.BindSampler(this, sampler.Key, sampler.Value);
+                context.SetSampler(Type, sampler.Key, sampler.Value);
             }
         }
         /// <summary>
@@ -131,7 +132,7 @@ namespace HelixToolkit.UWP.Shaders
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void BindUAV(DeviceContextProxy context, int slot, UAVBufferViewProxy uav)
         {
-            context.BindUnorderedAccessView(this, slot, uav);
+            context.SetUnorderedAccessView(Type, slot, uav);
         }
         /// <summary>
         /// Binds the UnorderedAccessView.
@@ -143,7 +144,7 @@ namespace HelixToolkit.UWP.Shaders
         public void BindUAV(DeviceContextProxy context, string name, UAVBufferViewProxy uav)
         {
             int slot = this.UnorderedAccessViewMapping.TryGetBindSlot(name);
-            context.BindUnorderedAccessView(this, slot, uav);
+            context.SetUnorderedAccessView(Type, slot, uav);
         }
         /// <summary>
         /// Binds the UnorderedAccessViews.
@@ -155,8 +156,14 @@ namespace HelixToolkit.UWP.Shaders
         {
             foreach (var uav in uavs)
             {
-                context.BindUnorderedAccessView(this, uav.Key, uav.Value);
+                context.SetUnorderedAccessView(Type, uav.Key, uav.Value);
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator ComputeShaderType(ComputeShader s)
+        {
+            return Type;
         }
     }
 }

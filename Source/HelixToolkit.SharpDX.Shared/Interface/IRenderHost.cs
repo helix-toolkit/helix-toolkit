@@ -316,7 +316,7 @@ namespace HelixToolkit.UWP
         /// <param name="context">The context.</param>
         /// <param name="clearBackBuffer">if set to <c>true</c> [clear back buffer].</param>
         /// <param name="clearDepthStencilBuffer">if set to <c>true</c> [clear depth stencil buffer].</param>
-        void ClearRenderTarget(DeviceContext context, bool clearBackBuffer, bool clearDepthStencilBuffer);
+        void ClearRenderTarget(DeviceContextProxy context, bool clearBackBuffer, bool clearDepthStencilBuffer);
     }
 
     public sealed class DX11RenderHostConfiguration

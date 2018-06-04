@@ -17,6 +17,7 @@ namespace HelixToolkit.UWP.Utilities
 {
     using Shaders;
     using System.Runtime.CompilerServices;
+    using Render;
 
     /// <summary>
     ///
@@ -92,26 +93,26 @@ namespace HelixToolkit.UWP.Utilities
         }
 
         /// <summary>
-        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, ref T)"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, ref T)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context"></param>
         /// <param name="data"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UploadDataToBuffer<T>(DeviceContext context, ref T data) where T : struct
+        public void UploadDataToBuffer<T>(DeviceContextProxy context, ref T data) where T : struct
         {
             UploadDataToBuffer<T>(context, ref data, 0);
         }
 
         /// <summary>
-        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, ref T, int)"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, ref T, int)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context"></param>
         /// <param name="data"></param>
         /// <param name="offset"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UploadDataToBuffer<T>(DeviceContext context, ref T data, int offset) where T : struct
+        public void UploadDataToBuffer<T>(DeviceContextProxy context, ref T data, int offset) where T : struct
         {
             if (bufferDesc.Usage == ResourceUsage.Dynamic)
             {
@@ -130,20 +131,20 @@ namespace HelixToolkit.UWP.Utilities
         }
 
         /// <summary>
-        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, T[], int)"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, T[], int)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context"></param>
         /// <param name="data"></param>
         /// <param name="count"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UploadDataToBuffer<T>(DeviceContext context, T[] data, int count) where T : struct
+        public void UploadDataToBuffer<T>(DeviceContextProxy context, T[] data, int count) where T : struct
         {
             UploadDataToBuffer<T>(context, data, count, 0);
         }
 
         /// <summary>
-        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, T[], int, int)"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, T[], int, int)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context"></param>
@@ -151,7 +152,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="count"></param>
         /// <param name="offset"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UploadDataToBuffer<T>(DeviceContext context, T[] data, int count, int offset) where T : struct
+        public void UploadDataToBuffer<T>(DeviceContextProxy context, T[] data, int count, int offset) where T : struct
         {
             if (bufferDesc.Usage == ResourceUsage.Dynamic)
             {
@@ -170,12 +171,12 @@ namespace HelixToolkit.UWP.Utilities
         }
 
         /// <summary>
-        /// <see cref="ConstantBufferProxy.UploadDataToBuffer(DeviceContext, Action{DataStream})"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer(DeviceContextProxy, Action{DataStream})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="writeFuc"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UploadDataToBuffer(DeviceContext context, Action<DataStream> writeFuc)
+        public void UploadDataToBuffer(DeviceContextProxy context, Action<DataStream> writeFuc)
         {
             if (bufferDesc.Usage == ResourceUsage.Dynamic)
             {

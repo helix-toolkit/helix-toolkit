@@ -150,7 +150,7 @@ namespace HelixToolkit.UWP.Core
         public virtual void Run(DeviceContextProxy deviceContext, int iteration, int initVerticalIter = 0, int initHorizontalIter = 0)
         {
             deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-            deviceContext.SetSamplerStateSingleStage(ShaderStage.Pixel, samplerSlot, sampler);
+            deviceContext.SetSampler(PixelShader.Type, samplerSlot, sampler);
             if (!screenBlurPassVertical.IsNULL)
             {
                 screenBlurPassVertical.BindShader(deviceContext);
@@ -176,7 +176,7 @@ namespace HelixToolkit.UWP.Core
                     deviceContext.Draw(4, 0);
                 }
             }
-            deviceContext.SetShaderResourceSingleStage(ShaderStage.Pixel, textureSlot, null);
+            deviceContext.SetShaderResource(PixelShader.Type, textureSlot, null);
         }
         /// <summary>
         /// Swaps the targets.
@@ -189,19 +189,19 @@ namespace HelixToolkit.UWP.Core
             renderTargetBlur[1] = current;
         }
 
-        private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContext context, int width, int height)
+        private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height)
         {
             //context.ClearRenderTargetView(targetView, Color.White);
-            context.OutputMerger.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
-            context.Rasterizer.SetViewport(0, 0, width, height);
-            context.Rasterizer.SetScissorRectangle(0, 0, width, height);
+            context.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
+            context.SetViewport(0, 0, width, height);
+            context.SetScissorRectangle(0, 0, width, height);
         }
         /// <summary>
         /// Clears the targets.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="c">The c.</param>
-        public void ClearTargets(DeviceContext context, Color c)
+        public void ClearTargets(DeviceContextProxy context, Color c)
         {
             foreach (var target in renderTargetBlur)
             {

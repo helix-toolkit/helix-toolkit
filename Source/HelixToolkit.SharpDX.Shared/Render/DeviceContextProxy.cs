@@ -1,4 +1,4 @@
-using global::SharpDX.Direct3D;
+using SharpDX.Direct3D;
 using SharpDX;
 using SharpDX.Direct3D11;
 
@@ -17,22 +17,25 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using System.Runtime.CompilerServices;
     using Utilities;
 
-
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public sealed class DeviceContextProxy : DisposeObject
     {
+        public static bool AutoSkipRedundantStateSetting = false;
         private readonly DeviceContext deviceContext;
         private readonly Device device;
-
-        public static bool AutoSkipRedundantStateSetting = false;
         private RasterizerStateProxy currRasterState = null;
         private DepthStencilStateProxy currDepthStencilState = null;
         private int currStencilRef;
         private BlendStateProxy currBlendState = null;
         private Color4? currBlendFactor = null;
         private uint currSampleMask = uint.MaxValue;
+
+        public readonly bool IsDeferred = false;
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the last shader pass.
         /// </summary>
@@ -48,6 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The number of draw calls.
         /// </value>
         public int NumberOfDrawCalls { private set; get; } = 0;
+
         /// <summary>
         /// Gets or sets the primitive topology.
         /// </summary>
@@ -65,6 +69,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 return deviceContext.InputAssembler.PrimitiveTopology;
             }
         }
+
         /// <summary>
         /// Gets or sets the input layout.
         /// </summary>
@@ -82,17 +87,22 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 return deviceContext.InputAssembler.InputLayout;
             }
         }
+
+        #endregion Properties
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeviceContextProxy"/> class.
+        /// Initializes a new deferred context
         /// </summary>
         /// <param name="device">The device.</param>
         public DeviceContextProxy(Device device)
         {
             deviceContext = Collect(new DeviceContext(device));
             this.device = device;
+            IsDeferred = true;
         }
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeviceContextProxy"/> class.
+        /// Muse pass immediate context for this constructor
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="device">device</param>
@@ -100,9 +110,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             deviceContext = context;
             this.device = device;
+            IsDeferred = false;
         }
 
         #region Clear Targets
+
         /// <summary>
         /// Clears the render targets.
         /// </summary>
@@ -111,8 +123,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ClearRenderTargets(DX11RenderBufferProxyBase buffer, Color4 color)
         {
-            buffer.ClearRenderTarget(deviceContext, color);
+            buffer.ClearRenderTarget(this, color);
         }
+
         /// <summary>
         /// Clears the depth stencil view.
         /// </summary>
@@ -141,24 +154,27 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     ?When using D3D_FEATURE_LEVEL_9_x, ClearRenderTargetView only clears the first
         ///     array slice in the render target view. This can impact (for example) cube map
         ///     rendering scenarios. Applications should create a render target view for each
-        ///     face or array slice, then clear each view individually.    
+        ///     face or array slice, then clear each view individually.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ClearRenderTargetView(RenderTargetView renderTargetViewRef, Color4 colorRGBA)
         {
             deviceContext.ClearRenderTargetView(renderTargetViewRef, colorRGBA);
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ClearRenderTagetBindings()
         {
             deviceContext.OutputMerger.ResetTargets();
         }
-        #endregion
+
+        #endregion Clear Targets
 
         #region Implicit cast
+
         /// <summary>
         /// Performs an implicit conversion from <see cref="DeviceContextProxy"/> to <see cref="DeviceContext"/>.
         /// </summary>
@@ -167,7 +183,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The result of the conversion.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator DeviceContext(DeviceContextProxy proxy)
+        public static explicit operator DeviceContext(DeviceContextProxy proxy)
         {
             return proxy.deviceContext;
         }
@@ -184,22 +200,23 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             return proxy.device;
         }
-        #endregion
+
+        #endregion Implicit cast
 
         #region Set states and targets
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="buffer"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetRenderTargets(DX11RenderBufferProxyBase buffer)
         {
-            buffer.SetDefaultRenderTargets(deviceContext);
+            buffer.SetDefaultRenderTargets(this);
         }
 
-
         /// <summary>
-        /// Sets the state of the raster. 
+        /// Sets the state of the raster.
         /// </summary>
         /// <param name="rasterState">State of the raster.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -212,7 +229,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             deviceContext.Rasterizer.State = rasterState;
             currRasterState = rasterState;
         }
-
 
         /// <summary>
         /// Sets the state of the depth stencil.
@@ -230,6 +246,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             currDepthStencilState = depthStencilState;
             currStencilRef = stencilRef;
         }
+
         /// <summary>
         /// Sets the render target.
         /// </summary>
@@ -240,6 +257,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             deviceContext.OutputMerger.SetRenderTargets(dsv, renderTarget);
         }
+
         /// <summary>
         /// Sets the render targets.
         /// </summary>
@@ -252,6 +270,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         private static readonly RenderTargetView[] ZeroRenderTargetArray = new RenderTargetView[0];
+
         /// <summary>
         /// Sets the depth stencil only. This will clear all render target bindings and only binds depth stencil view to output merger.
         /// </summary>
@@ -261,7 +280,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             deviceContext.OutputMerger.SetRenderTargets(dsv, ZeroRenderTargetArray);
         }
-
 
         /// <summary>
         /// Sets the state of the blend.
@@ -300,261 +318,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             currBlendFactor = blendFactor;
             currSampleMask = sampleMask;
         }
+        #endregion Set states and targets
 
-        /// <summary>
-        /// Sets the state of the sampler on multiple stage.
-        /// </summary>
-        /// <param name="shaderStages">The shader stages.</param>
-        /// <param name="slot">The slot.</param>
-        /// <param name="sampler">The sampler.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetSamplerStateMultiStages(ShaderStage shaderStages, int slot, SamplerState sampler)
-        {
-            if (EnumHelper.HasFlag(shaderStages, ShaderStage.Vertex))
-            {
-                deviceContext.VertexShader.SetSampler(slot, sampler);
-            }
-            if (EnumHelper.HasFlag(shaderStages, ShaderStage.Pixel))
-            {
-                deviceContext.PixelShader.SetSampler(slot, sampler);
-            }
-            if (EnumHelper.HasFlag(shaderStages, ShaderStage.Compute))
-            {
-                deviceContext.ComputeShader.SetSampler(slot, sampler);
-            }
-            if (EnumHelper.HasFlag(shaderStages, ShaderStage.Hull))
-            {
-                deviceContext.HullShader.SetSampler(slot, sampler);
-            }
-            if (EnumHelper.HasFlag(shaderStages, ShaderStage.Geometry))
-            {
-                deviceContext.GeometryShader.SetSampler(slot, sampler);
-            }
-            if (EnumHelper.HasFlag(shaderStages, ShaderStage.Domain))
-            {
-                deviceContext.DomainShader.SetSampler(slot, sampler);
-            }
-        }
+        #region Set Shaders and Constant Buffers
 
-        /// <summary>
-        /// Sets the sampler state on single stage.
-        /// </summary>
-        /// <param name="singleShaderStage">The single stage.</param>
-        /// <param name="slot">The slot.</param>
-        /// <param name="sampler">The sampler.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetSamplerStateSingleStage(ShaderStage singleShaderStage, int slot, SamplerStateProxy sampler)
-        {
-            if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Pixel))
-            {
-                deviceContext.PixelShader.SetSampler(slot, sampler);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Vertex))
-            {
-                deviceContext.VertexShader.SetSampler(slot, sampler);
-            }            
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Compute))
-            {
-                deviceContext.ComputeShader.SetSampler(slot, sampler);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Hull))
-            {
-                deviceContext.HullShader.SetSampler(slot, sampler);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Geometry))
-            {
-                deviceContext.GeometryShader.SetSampler(slot, sampler);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Domain))
-            {
-                deviceContext.DomainShader.SetSampler(slot, sampler);
-            }
-        }
-        /// <summary>
-        /// Sets the sampler states single stage.
-        /// </summary>
-        /// <param name="singleShaderStage">The single shader stage.</param>
-        /// <param name="startSlot">The start slot.</param>
-        /// <param name="sampler">The sampler.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetSamplerStatesSingleStage(ShaderStage singleShaderStage, int startSlot, SamplerState[] sampler)
-        {
-            if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Pixel))
-            {
-                deviceContext.PixelShader.SetSamplers(startSlot, sampler);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Vertex))
-            {
-                deviceContext.VertexShader.SetSamplers(startSlot, sampler);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Compute))
-            {
-                deviceContext.ComputeShader.SetSamplers(startSlot, sampler);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Hull))
-            {
-                deviceContext.HullShader.SetSamplers(startSlot, sampler);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Geometry))
-            {
-                deviceContext.GeometryShader.SetSamplers(startSlot, sampler);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Domain))
-            {
-                deviceContext.DomainShader.SetSamplers(startSlot, sampler);
-            }
-        }
-
-        private static readonly SamplerState[] EmptySamplerStateArray = new SamplerState[0];
-        /// <summary>
-        /// Gets the sampler states on single shader stage.
-        /// </summary>
-        /// <param name="singleShaderStage">The single shader stage.</param>
-        /// <param name="startSlot">The start slot.</param>
-        /// <param name="count">The count.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SamplerState[] GetSamplerStatesSingleStage(ShaderStage singleShaderStage, int startSlot, int count)
-        {
-            if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Pixel))
-            {
-                return deviceContext.PixelShader.GetSamplers(startSlot, count);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Vertex))
-            {
-                return deviceContext.VertexShader.GetSamplers(startSlot, count);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Compute))
-            {
-                return deviceContext.ComputeShader.GetSamplers(startSlot, count);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Hull))
-            {
-                return deviceContext.HullShader.GetSamplers(startSlot, count);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Geometry))
-            {
-                return deviceContext.GeometryShader.GetSamplers(startSlot, count);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Domain))
-            {
-                return deviceContext.DomainShader.GetSamplers(startSlot, count);
-            }
-            else
-            {
-                return EmptySamplerStateArray;
-            }
-        }
-
-        /// <summary>
-        /// Sets the shader resource single.
-        /// </summary>
-        /// <param name="singleShaderStage">The single shader stage.</param>
-        /// <param name="slot">The slot.</param>
-        /// <param name="resource">The resource.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetShaderResourceSingleStage(ShaderStage singleShaderStage, int slot, ShaderResourceViewProxy resource)
-        {
-            if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Pixel))
-            {
-                deviceContext.PixelShader.SetShaderResource(slot, resource);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Vertex))
-            {
-                deviceContext.VertexShader.SetShaderResource(slot, resource);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Compute))
-            {
-                deviceContext.ComputeShader.SetShaderResource(slot, resource);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Hull))
-            {
-                deviceContext.HullShader.SetShaderResource(slot, resource);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Geometry))
-            {
-                deviceContext.GeometryShader.SetShaderResource(slot, resource);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Domain))
-            {
-                deviceContext.DomainShader.SetShaderResource(slot, resource);
-            }
-        }
-        /// <summary>
-        /// Sets the shader resources single stage.
-        /// </summary>
-        /// <param name="singleShaderStage">The single shader stage.</param>
-        /// <param name="startSlot">The slot.</param>
-        /// <param name="resources">The resource.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetShaderResourcesSingleStage(ShaderStage singleShaderStage, int startSlot, ShaderResourceView[] resources)
-        {
-            if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Pixel))
-            {
-                deviceContext.PixelShader.SetShaderResources(startSlot, resources);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Vertex))
-            {
-                deviceContext.VertexShader.SetShaderResources(startSlot, resources);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Compute))
-            {
-                deviceContext.ComputeShader.SetShaderResources(startSlot, resources);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Hull))
-            {
-                deviceContext.HullShader.SetShaderResources(startSlot, resources);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Geometry))
-            {
-                deviceContext.GeometryShader.SetShaderResources(startSlot, resources);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Domain))
-            {
-                deviceContext.DomainShader.SetShaderResources(startSlot, resources);
-            }
-        }
-
-        private static readonly ShaderResourceView[] EmptyShaderResourceViewArray = new ShaderResourceView[0];
-        /// <summary>
-        /// Gets the shader resources single stage.
-        /// </summary>
-        /// <param name="singleShaderStage">The single shader stage.</param>
-        /// <param name="startSlot">The start slot.</param>
-        /// <param name="count">The count.</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ShaderResourceView[] GetShaderResourcesSingleStage(ShaderStage singleShaderStage, int startSlot, int count)
-        {
-            if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Pixel))
-            {
-                return deviceContext.PixelShader.GetShaderResources(startSlot, count);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Vertex))
-            {
-                return deviceContext.VertexShader.GetShaderResources(startSlot, count);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Compute))
-            {
-                return deviceContext.ComputeShader.GetShaderResources(startSlot, count);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Hull))
-            {
-                return deviceContext.HullShader.GetShaderResources(startSlot, count);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Geometry))
-            {
-                return deviceContext.GeometryShader.GetShaderResources(startSlot, count);
-            }
-            else if (EnumHelper.HasFlag(singleShaderStage, ShaderStage.Domain))
-            {
-                return deviceContext.DomainShader.GetShaderResources(startSlot, count);
-            }
-            else { return EmptyShaderResourceViewArray; }
-        }
-        #endregion
-
-        #region Set Shaders and Constant Buffers               
         /// <summary>
         /// Sets the vertex shader.
         /// </summary>
@@ -572,6 +339,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
             }
         }
+
         /// <summary>
         /// Sets the hull shader.
         /// </summary>
@@ -589,6 +357,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
             }
         }
+
         /// <summary>
         /// Sets the domain shader.
         /// </summary>
@@ -606,6 +375,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
             }
         }
+
         /// <summary>
         /// Sets the geometry shader.
         /// </summary>
@@ -623,6 +393,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
             }
         }
+
         /// <summary>
         /// Sets the pixel shader.
         /// </summary>
@@ -640,6 +411,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
             }
         }
+
         /// <summary>
         /// Sets the compute shader.
         /// </summary>
@@ -657,10 +429,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
             }
         }
-        #endregion
 
-        #region Set ShaderResources
+        #endregion Set Shaders and Constant Buffers
+
+        #region Set Get ShaderResources
+
         #region Vertex Shader
+
         /// <summary>
         /// Binds the texture.
         /// </summary>
@@ -668,12 +443,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindTexture(VertexShader shader, int slot, ShaderResourceView texture)
+        public void SetShaderResource(VertexShaderType shader, int slot, ShaderResourceView texture)
         {
             if (slot < 0)
             { return; }
             deviceContext.VertexShader.SetShaderResource(slot, texture);
         }
+
         /// <summary>
         /// Binds the texture.
         /// </summary>
@@ -681,11 +457,23 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindTexture(VertexShader shader, int slot, ShaderResourceView[] texture)
+        public void SetShaderResources(VertexShaderType shader, int slot, ShaderResourceView[] texture)
         {
             if (slot < 0)
             { return; }
             deviceContext.VertexShader.SetShaderResources(slot, texture);
+        }
+        /// <summary>
+        /// Gets the texture.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="startSlot">The start slot.</param>
+        /// <param name="num">The number.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceView[] GetShaderResources(VertexShaderType shader, int startSlot, int num)
+        {
+            return deviceContext.VertexShader.GetShaderResources(startSlot, num);
         }
         /// <summary>
         /// Binds the sampler.
@@ -694,12 +482,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="sampler">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindSampler(VertexShader shader, int slot, SamplerState sampler)
+        public void SetSampler(VertexShaderType shader, int slot, SamplerState sampler)
         {
             if (slot < 0)
             { return; }
             deviceContext.VertexShader.SetSampler(slot, sampler);
         }
+
         /// <summary>
         /// Binds the sampler.
         /// </summary>
@@ -707,14 +496,25 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="samplers">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindSampler(VertexShader shader, int slot, SamplerState[] samplers)
+        public void SetSamplers(VertexShaderType shader, int slot, SamplerState[] samplers)
         {
             if (slot < 0)
             { return; }
             deviceContext.VertexShader.SetSamplers(slot, samplers);
         }
-
-        #endregion
+        /// <summary>
+        /// Gets the sampler.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="startSlot">The start slot.</param>
+        /// <param name="num">The number.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public SamplerState[] GetSampler(VertexShaderType shader, int startSlot, int num)
+        {
+            return deviceContext.VertexShader.GetSamplers(startSlot, num);
+        }
+        #endregion Vertex Shader
 
         #region Domain Shader
 
@@ -725,12 +525,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindTexture(DomainShader shader, int slot, ShaderResourceView texture)
+        public void SetShaderResource(DomainShaderType shader, int slot, ShaderResourceView texture)
         {
             if (slot < 0)
             { return; }
             deviceContext.DomainShader.SetShaderResource(slot, texture);
         }
+
         /// <summary>
         /// Binds the texture.
         /// </summary>
@@ -738,11 +539,23 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindTexture(DomainShader shader, int slot, ShaderResourceView[] texture)
+        public void SetShaderResources(DomainShaderType shader, int slot, ShaderResourceView[] texture)
         {
             if (slot < 0)
             { return; }
             deviceContext.DomainShader.SetShaderResources(slot, texture);
+        }
+        /// <summary>
+        /// Gets the texture.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="startSlot">The start slot.</param>
+        /// <param name="num">The number.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceView[] GetShaderResources(DomainShaderType shader, int startSlot, int num)
+        {
+            return deviceContext.DomainShader.GetShaderResources(startSlot, num);
         }
         /// <summary>
         /// Binds the sampler.
@@ -751,12 +564,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="sampler">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindSampler(DomainShader shader, int slot, SamplerState sampler)
+        public void SetSampler(DomainShaderType shader, int slot, SamplerState sampler)
         {
             if (slot < 0)
             { return; }
             deviceContext.DomainShader.SetSampler(slot, sampler);
         }
+
         /// <summary>
         /// Binds the sampler.
         /// </summary>
@@ -764,13 +578,25 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="samplers">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindSampler(DomainShader shader, int slot, SamplerState[] samplers)
+        public void SetSamplers(DomainShaderType shader, int slot, SamplerState[] samplers)
         {
             if (slot < 0)
             { return; }
             deviceContext.DomainShader.SetSamplers(slot, samplers);
         }
-        #endregion
+        /// <summary>
+        /// Gets the sampler.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="startSlot">The start slot.</param>
+        /// <param name="num">The number.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public SamplerState[] GetSampler(DomainShaderType shader, int startSlot, int num)
+        {
+            return deviceContext.DomainShader.GetSamplers(startSlot, num);
+        }
+        #endregion Domain Shader
 
         #region Pixel Shader
 
@@ -781,12 +607,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindTexture(PixelShader shader, int slot, ShaderResourceView texture)
+        public void SetShaderResource(PixelShaderType shader, int slot, ShaderResourceView texture)
         {
             if (slot < 0)
             { return; }
             deviceContext.PixelShader.SetShaderResource(slot, texture);
         }
+
         /// <summary>
         /// Binds the texture.
         /// </summary>
@@ -794,11 +621,23 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindTexture(PixelShader shader, int slot, ShaderResourceView[] texture)
+        public void SetShaderResources(PixelShaderType shader, int slot, ShaderResourceView[] texture)
         {
             if (slot < 0)
             { return; }
             deviceContext.PixelShader.SetShaderResources(slot, texture);
+        }
+        /// <summary>
+        /// Gets the texture.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="startSlot">The start slot.</param>
+        /// <param name="num">The number.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceView[] GetShaderResources(PixelShaderType shader, int startSlot, int num)
+        {
+            return deviceContext.PixelShader.GetShaderResources(startSlot, num);
         }
         /// <summary>
         /// Binds the sampler.
@@ -807,12 +646,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="sampler">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindSampler(PixelShader shader, int slot, SamplerState sampler)
+        public void SetSampler(PixelShaderType shader, int slot, SamplerState sampler)
         {
             if (slot < 0)
             { return; }
             deviceContext.PixelShader.SetSampler(slot, sampler);
         }
+
         /// <summary>
         /// Binds the sampler.
         /// </summary>
@@ -820,15 +660,28 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="samplers">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindSampler(PixelShader shader, int slot, SamplerState[] samplers)
+        public void SetSamplers(PixelShaderType shader, int slot, SamplerState[] samplers)
         {
             if (slot < 0)
             { return; }
             deviceContext.PixelShader.SetSamplers(slot, samplers);
         }
-        #endregion
+        /// <summary>
+        /// Gets the sampler.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="startSlot">The start slot.</param>
+        /// <param name="num">The number.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public SamplerState[] GetSampler(PixelShaderType shader, int startSlot, int num)
+        {
+            return deviceContext.PixelShader.GetSamplers(startSlot, num);
+        }
+        #endregion Pixel Shader
 
         #region Compute Shader
+
         /// <summary>
         /// Binds the texture.
         /// </summary>
@@ -836,12 +689,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindTexture(ComputeShader shader, int slot, ShaderResourceView texture)
+        public void SetShaderResource(ComputeShaderType shader, int slot, ShaderResourceView texture)
         {
             if (slot < 0)
             { return; }
             deviceContext.ComputeShader.SetShaderResource(slot, texture);
         }
+
         /// <summary>
         /// Binds the texture.
         /// </summary>
@@ -849,13 +703,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindTexture(ComputeShader shader, int slot, ShaderResourceView[] texture)
+        public void SetShaderResources(ComputeShaderType shader, int slot, ShaderResourceView[] texture)
         {
             if (slot < 0)
             { return; }
             deviceContext.ComputeShader.SetShaderResources(slot, texture);
         }
-
+        /// <summary>
+        /// Gets the texture.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="startSlot">The start slot.</param>
+        /// <param name="num">The number.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ShaderResourceView[] GetShaderResources(ComputeShaderType shader, int startSlot, int num)
+        {
+            return deviceContext.ComputeShader.GetShaderResources(startSlot, num);
+        }
         /// <summary>
         /// Binds the unordered access view.
         /// </summary>
@@ -863,12 +728,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="uav">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindUnorderedAccessView(ComputeShader shader, int slot, UnorderedAccessView uav)
+        public void SetUnorderedAccessView(ComputeShaderType shader, int slot, UnorderedAccessView uav)
         {
             if (slot < 0)
             { return; }
             deviceContext.ComputeShader.SetUnorderedAccessView(slot, uav);
         }
+
         /// <summary>
         /// Binds the unordered access views.
         /// </summary>
@@ -876,13 +742,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="UAVs">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindUnorderedAccessView(ComputeShader shader, int slot, UnorderedAccessView[] UAVs)
+        public void SetUnorderedAccessViews(ComputeShaderType shader, int slot, UnorderedAccessView[] UAVs)
         {
             if (slot < 0)
             { return; }
             deviceContext.ComputeShader.SetUnorderedAccessViews(slot, UAVs);
         }
-
+        /// <summary>
+        /// Gets the unordered access view.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="startSlot">The start slot.</param>
+        /// <param name="num">The number.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public UnorderedAccessView[] GetUnorderedAccessView(ComputeShaderType shader, int startSlot, int num)
+        {
+            return deviceContext.ComputeShader.GetUnorderedAccessViews(startSlot, num);
+        }
         /// <summary>
         /// Binds the sampler.
         /// </summary>
@@ -890,12 +767,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="sampler">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindSampler(ComputeShader shader, int slot, SamplerState sampler)
+        public void SetSampler(ComputeShaderType shader, int slot, SamplerState sampler)
         {
             if (slot < 0)
             { return; }
             deviceContext.ComputeShader.SetSampler(slot, sampler);
         }
+
         /// <summary>
         /// Binds the sampler.
         /// </summary>
@@ -903,16 +781,30 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="slot">The slot.</param>
         /// <param name="samplers">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void BindSampler(ComputeShader shader, int slot, SamplerState[] samplers)
+        public void SetSamplers(ComputeShaderType shader, int slot, SamplerState[] samplers)
         {
             if (slot < 0)
             { return; }
             deviceContext.ComputeShader.SetSamplers(slot, samplers);
         }
-        #endregion
-        #endregion
+        /// <summary>
+        /// Gets the sampler.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        /// <param name="startSlot">The start slot.</param>
+        /// <param name="num">The number.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public SamplerState[] GetSampler(ComputeShaderType shader, int startSlot, int num)
+        {
+            return deviceContext.ComputeShader.GetSamplers(startSlot, num);
+        }
+        #endregion Compute Shader
 
-        #region Get targets    
+        #endregion Set ShaderResources
+
+        #region Get targets
+
         /// <summary>
         /// Gets the depth stencil view.
         /// </summary>
@@ -920,7 +812,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <remarks>
         ///     Any returned interfaces will have their reference count incremented by one. Applications
         ///     should call {{IUnknown::Release}} on the returned interfaces when they are no
-        ///     longer needed to avoid memory leaks.         
+        ///     longer needed to avoid memory leaks.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void GetDepthStencilView(out DepthStencilView depthStencilViewRef)
@@ -936,7 +828,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <remarks>
         ///     Any returned interfaces will have their reference count incremented by one. Applications
         ///     should call {{IUnknown::Release}} on the returned interfaces when they are no
-        ///     longer needed to avoid memory leaks.        
+        ///     longer needed to avoid memory leaks.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RenderTargetView[] GetRenderTargets(int numViews)
@@ -953,7 +845,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <remarks>
         ///     Any returned interfaces will have their reference count incremented by one. Applications
         ///     should call {{IUnknown::Release}} on the returned interfaces when they are no
-        ///     longer needed to avoid memory leaks.      
+        ///     longer needed to avoid memory leaks.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RenderTargetView[] GetRenderTargets(int numViews, out DepthStencilView depthStencilViewRef)
@@ -970,7 +862,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <remarks>
         ///     Any returned interfaces will have their reference count incremented by one. Applications
         ///     should call IUnknown::Release on the returned interfaces when they are no longer
-        ///     needed to avoid memory leaks. 
+        ///     needed to avoid memory leaks.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UnorderedAccessView[] GetUnorderedAccessViews(int startSlot, int count)
@@ -978,9 +870,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             return deviceContext.OutputMerger.GetUnorderedAccessViews(startSlot, count);
         }
 
-        #endregion
+        #endregion Get targets
 
         #region DrawCall
+
         /// <summary>
         /// Draw non-indexed, non-instanced primitives.
         /// </summary>
@@ -991,7 +884,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///    comes from a vertex buffer that is bound to the pipeline.Even without any vertex
         ///     buffer bound to the pipeline, you can generate your own vertex data in your vertex
         ///     shader by using the SV_VertexID system-value semantic to determine the current
-        ///     vertex that the runtime is processing. 
+        ///     vertex that the runtime is processing.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Draw(int vertexCount, int startVertexLocation)
@@ -1001,7 +894,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// Draw geometry of an unknown size. 
+        /// Draw geometry of an unknown size.
         /// </summary>
         /// <remarks>
         ///     A draw API submits work to the rendering pipeline. This API submits work of an
@@ -1023,7 +916,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     0. Applications must create the SO buffer resource with both binding flags, SharpDX.Direct3D11.BindFlags.VertexBuffer
         ///     and SharpDX.Direct3D11.BindFlags.StreamOutput.This API does not support indexing
         ///     or instancing.If an application needs to retrieve the size of the streaming-output
-        ///     buffer, it can query for statistics on streaming output by using SharpDX.Direct3D11.QueryType.StreamOutputStatistics.    
+        ///     buffer, it can query for statistics on streaming output by using SharpDX.Direct3D11.QueryType.StreamOutputStatistics.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawAuto()
@@ -1040,7 +933,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="baseVertexLocation">A value added to each index before reading a vertex from the vertex buffer.</param>
         /// <remarks>
         ///     A draw API submits work to the rendering pipeline.If the sum of both indices
-        ///     is negative, the result of the function call is undefined.     
+        ///     is negative, the result of the function call is undefined.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawIndexed(int indexCount, int startIndexLocation, int baseVertexLocation)
@@ -1062,7 +955,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     by reusing the same geometry to draw multiple objects in a scene. One example
         ///     of instancing could be to draw the same object with different positions and colors.
         ///     Instancing requires multiple vertex buffers: at least one for per-vertex data
-        ///     and a second buffer for per-instance data. 
+        ///     and a second buffer for per-instance data.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawIndexedInstanced(int indexCountPerInstance, int instanceCount, int startIndexLocation, int baseVertexLocation, int startInstanceLocation)
@@ -1082,7 +975,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     flag in the MiscFlags member of the SharpDX.Direct3D11.BufferDescription structure
         ///     that describes the buffer. To create the buffer, the application calls the SharpDX.Direct3D11.Device.CreateBuffer(SharpDX.Direct3D11.BufferDescription@,System.Nullable{SharpDX.DataBox},SharpDX.Direct3D11.Buffer)
         ///     method and in this call passes a reference to SharpDX.Direct3D11.BufferDescription
-        ///     in the pDesc parameter. Windows?Phone?8: This API is supported.        
+        ///     in the pDesc parameter. Windows?Phone?8: This API is supported.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawIndexedInstancedIndirect(Buffer bufferForArgsRef, int alignedByteOffsetForArgs)
@@ -1104,7 +997,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     of instancing could be to draw the same object with different positions and colors.The
         ///     vertex data for an instanced draw call normally comes from a vertex buffer that
         ///     is bound to the pipeline. However, you could also provide the vertex data from
-        ///     a shader that has instanced data identified with a system-value semantic (SV_InstanceID). 
+        ///     a shader that has instanced data identified with a system-value semantic (SV_InstanceID).
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawInstanced(int vertexCountPerInstance, int instanceCount, int startVertexLocation, int startInstanceLocation)
@@ -1124,7 +1017,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     flag in the MiscFlags member of the SharpDX.Direct3D11.BufferDescription structure
         ///     that describes the buffer. To create the buffer, the application calls the SharpDX.Direct3D11.Device.CreateBuffer(SharpDX.Direct3D11.BufferDescription@,System.Nullable{SharpDX.DataBox},SharpDX.Direct3D11.Buffer)
         ///     method and in this call passes a reference to SharpDX.Direct3D11.BufferDescription
-        ///     in the pDesc parameter.         
+        ///     in the pDesc parameter.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DrawInstancedIndirect(Buffer bufferForArgsRef, int alignedByteOffsetForArgs)
@@ -1132,7 +1025,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             ++NumberOfDrawCalls;
             deviceContext.DrawInstancedIndirect(bufferForArgsRef, alignedByteOffsetForArgs);
         }
-        #endregion
+
+        #endregion DrawCall
+
         /// <summary>
         /// Restore all default settings.
         /// </summary>
@@ -1142,7 +1037,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     depth-stencil state, rasterizer state, blend state, sampler state, and viewports
         ///     to null. The primitive topology is set to UNDEFINED.For a scenario where you
         ///     would like to clear a list of commands recorded so far, call SharpDX.Direct3D11.DeviceContext.FinishCommandListInternal(SharpDX.Mathematics.Interop.RawBool,SharpDX.Direct3D11.CommandList@)
-        ///     and throw away the resulting SharpDX.Direct3D11.CommandList.   
+        ///     and throw away the resulting SharpDX.Direct3D11.CommandList.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ClearState()
@@ -1160,7 +1055,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     channel, where ni is the number of bits in the ith channel of the resource format
         ///     (for example, R8G8B8_FLOAT has 8 bits for the first 3 channels). This works on
         ///     any UAV with no format conversion. For a raw or structured buffer view, only
-        ///     the first array element value is used.      
+        ///     the first array element value is used.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ClearUnorderedAccessView(UnorderedAccessView unorderedAccessViewRef, Int4 values)
@@ -1176,7 +1071,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <remarks>
         ///     This API works on FLOAT, UNORM, and SNORM unordered access views (UAVs), with
         ///     format conversion from FLOAT to *NORM where appropriate. On other UAVs, the operation
-        ///     is invalid and the call will not reach the driver.   
+        ///     is invalid and the call will not reach the driver.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ClearUnorderedAccessView(UnorderedAccessView unorderedAccessViewRef, Vector4 values)
@@ -1185,6 +1080,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         #region Copy Resources
+
         /// <summary>
         ///     Copy the entire contents of the source resource to the destination resource using
         ///     the GPU.
@@ -1212,7 +1108,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     call which may be added to the command-buffer queue. This attempts to remove
         ///     pipeline stalls that may occur when copying data. An application that only needs
         ///     to copy a portion of the data in a resource should use SharpDX.Direct3D11.DeviceContext.CopySubresourceRegion_(SharpDX.Direct3D11.Resource,System.Int32,System.Int32,System.Int32,System.Int32,SharpDX.Direct3D11.Resource,System.Int32,System.Nullable{SharpDX.Direct3D11.ResourceRegion})
-        ///     instead.  
+        ///     instead.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void CopyResource(Resource source, Resource destination)
@@ -1238,7 +1134,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     created with either SharpDX.Direct3D11.UnorderedAccessViewBufferFlags.Append
         ///     or SharpDX.Direct3D11.UnorderedAccessViewBufferFlags.Counter specified when the
         ///     UAV was created. These types of resources have hidden counters tracking "how
-        ///     many" records have been written.  
+        ///     many" records have been written.
         /// </param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void CopyStructureCount(Buffer dstBufferRef, int dstAlignedByteOffset, UnorderedAccessView srcViewRef)
@@ -1259,11 +1155,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="destination">A reference to the destination resource (see SharpDX.Direct3D11.Resource).</param>
         /// <param name="destinationSubResource">Destination subresource index.</param>
         /// <param name="dstX">The x-coordinate of the upper left corner of the destination region.</param>
-        /// <param name="dstY">        
+        /// <param name="dstY">
         ///     The y-coordinate of the upper left corner of the destination region. For a 1D
         ///     subresource, this must be zero.
         /// </param>
-        /// <param name="dstZ">        
+        /// <param name="dstZ">
         ///     The z-coordinate of the upper left corner of the destination region. For a 1D
         ///     or 2D subresource, this must be zero.
         /// </param>
@@ -1296,7 +1192,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     sourceRegion.left = 120; sourceRegion.right = 200; sourceRegion.top = 100; sourceRegion.bottom
         ///     = 220; sourceRegion.front = 0; sourceRegion.back = 1; pd3dDeviceContext->CopySubresourceRegion(
         ///     pDestTexture, 0, 10, 20, 0, pSourceTexture, 0, sourceRegion ); Notice, that
-        ///     for a 2D texture, front and back are set to 0 and 1 respectively.     
+        ///     for a 2D texture, front and back are set to 0 and 1 respectively.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void CopySubresourceRegion(Resource source, int sourceSubresource, ResourceRegion? sourceRegion, Resource destination,
@@ -1305,23 +1201,24 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             deviceContext.CopySubresourceRegion(source, sourceSubresource, sourceRegion, destination, destinationSubResource, dstX, dstY, dstZ);
         }
 
-        #endregion
+        #endregion Copy Resources
 
         #region Dispatch
+
         /// <summary>
         /// Execute a command list from a thread group.
         /// </summary>
-        /// <param name="threadGroupCountX">        
+        /// <param name="threadGroupCountX">
         ///     The number of groups dispatched in the x direction. ThreadGroupCountX must be
         ///     less than or equal to SharpDX.Direct3D11.ComputeShaderStage.DispatchMaximumThreadGroupsPerDimension
         ///     (65535).
         ///  </param>
-        ///  <param name="threadGroupCountY">        
+        ///  <param name="threadGroupCountY">
         ///     The number of groups dispatched in the y direction. ThreadGroupCountY must be
         ///     less than or equal to SharpDX.Direct3D11.ComputeShaderStage.DispatchMaximumThreadGroupsPerDimension
         ///     (65535).
         ///  </param>
-        ///  <param name="threadGroupCountZ">        
+        ///  <param name="threadGroupCountZ">
         ///     The number of groups dispatched in the z direction. ThreadGroupCountZ must be
         ///     less than or equal to SharpDX.Direct3D11.ComputeShaderStage.DispatchMaximumThreadGroupsPerDimension
         ///     (65535). In feature level 10 the value for ThreadGroupCountZ must be 1.
@@ -1336,7 +1233,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     shows the relationship between the parameters passed to SharpDX.Direct3D11.DeviceContext.Dispatch(System.Int32,System.Int32,System.Int32),
         ///     Dispatch(5,3,2), the values specified in the numthreads attribute, numthreads(10,8,3),
         ///     and values that will passed to the compute shader for the thread-related system
-        ///     values (SV_GroupIndex,SV_DispatchThreadID,SV_GroupThreadID,SV_GroupID).         
+        ///     values (SV_GroupIndex,SV_DispatchThreadID,SV_GroupThreadID,SV_GroupID).
         ///  </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Dispatch(int threadGroupCountX, int threadGroupCountY, int threadGroupCountZ)
@@ -1348,7 +1245,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Execute a command list over one or more thread groups.
         /// </summary>
-        /// <param name="bufferForArgsRef">        
+        /// <param name="bufferForArgsRef">
         ///     A reference to an SharpDX.Direct3D11.Buffer, which must be loaded with data that
         ///     matches the argument list for SharpDX.Direct3D11.DeviceContext.Dispatch(System.Int32,System.Int32,System.Int32).
         /// </param>
@@ -1360,7 +1257,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     flag in the MiscFlags member of the SharpDX.Direct3D11.BufferDescription structure
         ///     that describes the buffer. To create the buffer, the application calls the SharpDX.Direct3D11.Device.CreateBuffer(SharpDX.Direct3D11.BufferDescription@,System.Nullable{SharpDX.DataBox},SharpDX.Direct3D11.Buffer)
         ///     method and in this call passes a reference to SharpDX.Direct3D11.BufferDescription
-        ///     in the pDesc parameter.     
+        ///     in the pDesc parameter.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void DispatchIndirect(Buffer bufferForArgsRef, int alignedByteOffsetForArgs)
@@ -1368,42 +1265,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             ++NumberOfDrawCalls;
             deviceContext.DispatchIndirect(bufferForArgsRef, alignedByteOffsetForArgs);
         }
-        #endregion
 
-        /// <summary>
-        ///     Sends queued-up commands in the command buffer to the graphics processing unit
-        ///     (GPU).
-        /// </summary>
-        /// <remarks>
-        ///     Most applications don't need to call this method. If an application calls this
-        ///     method when not necessary, it incurs a performance penalty. Each call to Flush
-        ///     incurs a significant amount of overhead.When Microsoft Direct3D state-setting,
-        ///     present, or draw commands are called by an application, those commands are queued
-        ///     into an internal command buffer. Flush sends those commands to the GPU for processing.
-        ///     Typically, the Direct3D runtime sends these commands to the GPU automatically
-        ///     whenever the runtime determines that they need to be sent, such as when the command
-        ///     buffer is full or when an application maps a resource. Flush sends the commands
-        ///     manually.We recommend that you use Flush when the CPU waits for an arbitrary
-        ///     amount of time (such as when you call the Sleep function).Because Flush operates
-        ///     asynchronously, it can return either before or after the GPU finishes executing
-        ///     the queued graphics commands. However, the graphics commands eventually always
-        ///     complete. You can call the SharpDX.Direct3D11.Device.CreateQuery(SharpDX.Direct3D11.QueryDescription,SharpDX.Direct3D11.Query)
-        ///     method with the SharpDX.Direct3D11.QueryType.Event value to create an event query;
-        ///     you can then use that event query in a call to the SharpDX.Direct3D11.DeviceContext.GetDataInternal(SharpDX.Direct3D11.Asynchronous,System.IntPtr,System.Int32,SharpDX.Direct3D11.AsynchronousFlags)
-        ///     method to determine when the GPU is finished processing the graphics commands.
-        ///     Microsoft Direct3D?11 defers the destruction of objects. Therefore, an application
-        ///     can't rely upon objects immediately being destroyed. By calling Flush, you destroy
-        ///     any objects whose destruction was deferred. If an application requires synchronous
-        ///     destruction of an object, we recommend that the application release all its references,
-        ///     call SharpDX.Direct3D11.DeviceContext.ClearState, and then call Flush. 
-        /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Flush()
-        {
-            deviceContext.Flush();
-        }
+        #endregion Dispatch
 
         #region Map/Unmap resources
+
         /// <summary>
         ///     Maps the data contained in a subresource to a memory pointer, and denies the
         ///     GPU access to that subresource.
@@ -1518,7 +1384,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     The Direct3D 11 and earlier runtimes limited mapping to vertex or index buffers.
         ///     If SharpDX.Direct3D11.MapFlags.DoNotWait is used and the resource is still being
         ///     used by the GPU, this method return an empty DataBox whose property SharpDX.DataBox.IsEmpty
-        ///     returns true.    
+        ///     returns true.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public DataBox MapSubresource(Resource resourceRef, int subresource, MapMode mapType, MapFlags mapFlags)
@@ -1533,7 +1399,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="subresource">The subresource.</param>
         /// <remarks>
         ///     For info about how to use Unmap, see How to: Use dynamic resources. Windows?Phone?8:
-        ///     This API is supported.         
+        ///     This API is supported.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void UnmapSubresource(Resource resourceRef, int subresource)
@@ -1570,16 +1436,381 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     then DXGI_FORMAT_R32_FLOAT could be specified in the Format parameter). For example,
         ///     given the DXGI_FORMAT_R16G16B16A16_TYPELESS format: The source (or dest) format
         ///     could be DXGI_FORMAT_R16G16B16A16_UNORM The dest (or source) format could be
-        ///     DXGI_FORMAT_R16G16B16A16_FLOAT ?    
+        ///     DXGI_FORMAT_R16G16B16A16_FLOAT ?
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ResolveSubresource(Resource source, int sourceSubresource, Resource destination, int destinationSubresource, global::SharpDX.DXGI.Format format)
         {
             deviceContext.ResolveSubresource(source, sourceSubresource, destination, destinationSubresource, format);
         }
+
+        #endregion Map/Unmap resources
+
+        #region Upload sub resources
+
+        /// <summary>
+        /// The CPU copies data from memory to a subresource created in non-mappable memory.
+        /// </summary>
+        /// <param name="dstResourceRef">A reference to the destination resource (see SharpDX.Direct3D11.Resource).</param>
+        /// <param name="dstSubresource">A zero-based index, that identifies the destination subresource. See D3D11CalcSubresource for more details.</param>
+        /// <param name="dstBoxRef">
+        ///     A reference to a box that defines the portion of the destination subresource
+        ///     to copy the resource data into. Coordinates are in bytes for buffers and in texels
+        ///     for textures. If null, the data is written to the destination subresource with
+        ///     no offset. The dimensions of the source must fit the destination (see SharpDX.Direct3D11.ResourceRegion).
+        ///     An empty box results in a no-op. A box is empty if the top value is greater than
+        ///     or equal to the bottom value, or the left value is greater than or equal to the
+        ///     right value, or the front value is greater than or equal to the back value. When
+        ///     the box is empty, UpdateSubresource doesn't perform an update operation.
+        /// </param>
+        /// <param name="srcDataRef">A reference to the source data in memory.</param>
+        /// <param name="srcRowPitch">The size of one row of the source data.</param>
+        /// <param name="srcDepthPitch">The size of one depth slice of source data.</param>
+        /// <remarks>
+        /// Remarks:
+        ///     For a shader-constant buffer; set pDstBox to null. It is not possible to use
+        ///     this method to partially update a shader-constant buffer.A resource cannot be
+        ///     used as a destination if: the resource is created with immutable or dynamic usage.
+        ///     the resource is created as a depth-stencil resource. the resource is created
+        ///     with multisampling capability (see SharpDX.DXGI.SampleDescription). When UpdateSubresource
+        ///     returns, the application is free to change or even free the data pointed to by
+        ///     pSrcData because the method has already copied/snapped away the original contents.The
+        ///     performance of UpdateSubresource depends on whether or not there is contention
+        ///     for the destination resource. For example, contention for a vertex buffer resource
+        ///     occurs when the application executes a Draw call and later calls UpdateSubresource
+        ///     on the same vertex buffer before the Draw call is actually executed by the GPU.
+        ///     When there is contention for the resource, UpdateSubresource will perform 2 copies
+        ///     of the source data. First, the data is copied by the CPU to a temporary storage
+        ///     space accessible by the command buffer. This copy happens before the method returns.
+        ///     A second copy is then performed by the GPU to copy the source data into non-mappable
+        ///     memory. This second copy happens asynchronously because it is executed by GPU
+        ///     when the command buffer is flushed. When there is no resource contention, the
+        ///     behavior of UpdateSubresource is dependent on which is faster (from the CPU's
+        ///     perspective): copying the data to the command buffer and then having a second
+        ///     copy execute when the command buffer is flushed, or having the CPU copy the data
+        ///     to the final resource location. This is dependent on the architecture of the
+        ///     underlying system. Note??Applies only to feature level 9_x hardware If you use
+        ///     UpdateSubresource or SharpDX.Direct3D11.DeviceContext.CopySubresourceRegion_(SharpDX.Direct3D11.Resource,System.Int32,System.Int32,System.Int32,System.Int32,SharpDX.Direct3D11.Resource,System.Int32,System.Nullable{SharpDX.Direct3D11.ResourceRegion})
+        ///     to copy from a staging resource to a default resource, you can corrupt the destination
+        ///     contents. This occurs if you pass a null source box and if the source resource
+        ///     has different dimensions from those of the destination resource or if you use
+        ///     destination offsets, (x, y, and z). In this situation, always pass a source box
+        ///     that is the full size of the source resource.?To better understand the source
+        ///     row pitch and source depth pitch parameters, the following illustration shows
+        ///     a 3D volume texture.Each block in this visual represents an element of data,
+        ///     and the size of each element is dependent on the resource's format. For example,
+        ///     if the resource format is SharpDX.DXGI.Format.R32G32B32A32_Float, the size of
+        ///     each element would be 128 bits, or 16 bytes. This 3D volume texture has a width
+        ///     of two, a height of three, and a depth of four.To calculate the source row pitch
+        ///     and source depth pitch for a given resource, use the following formulas: Source
+        ///     Row Pitch = [size of one element in bytes] * [number of elements in one row]
+        ///     Source Depth Pitch = [Source Row Pitch] * [number of rows (height)] In the case
+        ///     of this example 3D volume texture where the size of each element is 16 bytes,
+        ///     the formulas are as follows: Source Row Pitch = 16 * 2 = 32 Source Depth Pitch
+        ///     = 16 * 2 * 3 = 96 The following illustration shows the resource as it is laid
+        ///     out in memory.For example, the following code snippet shows how to specify a
+        ///     destination region in a 2D texture. Assume the destination texture is 512x512
+        ///     and the operation will copy the data pointed to by pData to [(120,100)..(200,220)]
+        ///     in the destination texture. Also assume that rowPitch has been initialized with
+        ///     the proper value (as explained above). front and back are set to 0 and 1 respectively,
+        ///     because by having front equal to back, the box is technically empty. SharpDX.Direct3D11.ResourceRegion
+        ///     destRegion; destRegion.left = 120; destRegion.right = 200; destRegion.top = 100;
+        ///     destRegion.bottom = 220; destRegion.front = 0; destRegion.back = 1; pd3dDeviceContext->UpdateSubresource(
+        ///     pDestTexture, 0, &destRegion, pData, rowPitch, 0 ); The 1D case is similar. The
+        ///     following snippet shows how to specify a destination region in a 1D texture.
+        ///     Use the same assumptions as above, except that the texture is 512 in length.
+        ///     SharpDX.Direct3D11.ResourceRegion destRegion; destRegion.left = 120; destRegion.right
+        ///     = 200; destRegion.top = 0; destRegion.bottom = 1; destRegion.front = 0; destRegion.back
+        ///     = 1; pd3dDeviceContext->UpdateSubresource( pDestTexture, 0, &destRegion, pData,
+        ///     rowPitch, 0 ); For info about various resource types and how UpdateSubresource
+        ///     might work with each resource type, see Introduction to a Resource in Direct3D
+        ///     11.
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UpdateSubresource(Resource dstResourceRef, int dstSubresource, ResourceRegion? dstBoxRef, System.IntPtr srcDataRef, int srcRowPitch, int srcDepthPitch)
+        {
+            deviceContext.UpdateSubresource(dstResourceRef, dstSubresource, dstBoxRef, srcDataRef, srcRowPitch, srcDepthPitch);
+        }
+
+        /// <summary>
+        /// Copies data from the CPU to to a non-mappable subresource region.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="resource">The resource.</param>
+        /// <param name="subresource">The subresource.</param>
+        /// <param name="region">The region.</param>
+        /// <remarks>This method is implementing the workaround for deferred context.</remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UpdateSubresource(DataBox source, Resource resource, int subresource, ref ResourceRegion region)
+        {
+            deviceContext.UpdateSubresource(source, resource, subresource, region);
+        }
+
+        /// <summary>
+        /// Copies data from the CPU to to a non-mappable subresource region.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="resource">The resource.</param>
+        /// <param name="subresource">The subresource.</param>
+        /// <remarks>This method is implementing the workaround for deferred context.       </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UpdateSubresource(DataBox source, Resource resource, int subresource = 0)
+        {
+            deviceContext.UpdateSubresource(source, resource, subresource);
+        }
+
+        /// <summary>
+        /// Copies data from the CPU to to a non-mappable subresource region.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data">The data.</param>
+        /// <param name="resource">The resource.</param>
+        /// <param name="subresource">The subresource.</param>
+        /// <param name="rowPitch">The row pitch.</param>
+        /// <param name="depthPitch">The depth pitch.</param>
+        /// <param name="region">
+        /// A region that defines the portion of the destination subresource to copy the
+        /// resource data into. Coordinates are in bytes for buffers and in texels for textures.
+        /// </param>
+        /// <remarks>This method is implementing the workaround for deferred context.     </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UpdateSubresource<T>(T[] data, Resource resource, int subresource = 0, int rowPitch = 0, int depthPitch = 0, ResourceRegion? region = null) where T : struct
+        {
+            deviceContext.UpdateSubresource(data, resource, subresource, rowPitch, depthPitch, region);
+        }
+
+        /// <summary>
+        /// Copies data from the CPU to to a non-mappable subresource region.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data">The data.</param>
+        /// <param name="resource">The resource.</param>
+        /// <param name="subresource">The subresource.</param>
+        /// <param name="rowPitch">The row pitch.</param>
+        /// <param name="depthPitch">The depth pitch.</param>
+        /// <param name="region">The region.</param>
+        /// <remarks>This method is implementing the workaround for deferred context.        </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UpdateSubresource<T>(ref T data, Resource resource, int subresource = 0, int rowPitch = 0, int depthPitch = 0, ResourceRegion? region = null) where T : struct
+        {
+            deviceContext.UpdateSubresource(ref data, resource, subresource, rowPitch, depthPitch, region);
+        }
+
+        /// <summary>
+        /// Copies data from the CPU to to a non-mappable subresource region.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="resource">The resource.</param>
+        /// <param name="srcBytesPerElement">The size in bytes per pixel/block element.</param>
+        /// <param name="subresource">The subresource.</param>
+        /// <param name="isCompressedResource">if set to true the resource is a block/compressed resource</param>
+        /// <remarks>This method is implementing the workaround for deferred context. </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UpdateSubresourceSafe(ref DataBox source, Resource resource, int srcBytesPerElement, int subresource = 0, bool isCompressedResource = false)
+        {
+            deviceContext.UpdateSubresourceSafe(source, resource, srcBytesPerElement, subresource, isCompressedResource);
+        }
+
+        /// <summary>
+        /// Copies data from the CPU to to a non-mappable subresource region.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="resource">The resource.</param>
+        /// <param name="srcBytesPerElement">The size in bytes per pixel/block element.</param>
+        /// <param name="subresource">The subresource.</param>
+        /// <param name="region">The region.</param>
+        /// <param name="isCompressedResource">if set to true the resource is a block/compressed resource</param>
+        /// <remarks>This method is implementing the workaround for deferred context.    </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UpdateSubresourceSafe(ref DataBox source, Resource resource, int srcBytesPerElement, int subresource, ResourceRegion region, bool isCompressedResource = false)
+        {
+            deviceContext.UpdateSubresourceSafe(source, resource, srcBytesPerElement, subresource, region, isCompressedResource);
+        }
+
+        /// <summary>
+        /// Copies data from the CPU to to a non-mappable subresource region.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data">The data.</param>
+        /// <param name="resource">The resource.</param>
+        /// <param name="srcBytesPerElement">The size in bytes per pixel/block element.</param>
+        /// <param name="subresource">The subresource.</param>
+        /// <param name="rowPitch">The row pitch.</param>
+        /// <param name="depthPitch">The depth pitch.</param>
+        /// <param name="isCompressedResource">if set to true the resource is a block/compressed resource</param>
+        /// <remarks>This method is implementing the workaround for deferred context.       </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UpdateSubresourceSafe<T>(T[] data, Resource resource, int srcBytesPerElement, int subresource = 0, int rowPitch = 0, int depthPitch = 0,
+            bool isCompressedResource = false) where T : struct
+        {
+            deviceContext.UpdateSubresourceSafe(data, resource, srcBytesPerElement, subresource, rowPitch, depthPitch);
+        }
+
+        /// <summary>
+        ///  Copies data from the CPU to to a non-mappable subresource region.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data">The data.</param>
+        /// <param name="resource">The resource.</param>
+        /// <param name="srcBytesPerElement">The size in bytes per pixel/block element.</param>
+        /// <param name="subresource">The subresource.</param>
+        /// <param name="rowPitch">The row pitch.</param>
+        /// <param name="depthPitch">The depth pitch.</param>
+        /// <param name="isCompressedResource">if set to <c>true</c> [is compressed resource].</param>
+        /// <remarks>This method is implementing the workaround for deferred context.  </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UpdateSubresourceSafe<T>(ref T data, Resource resource, int srcBytesPerElement, int subresource = 0, int rowPitch = 0, int depthPitch = 0,
+            bool isCompressedResource = false) where T : struct
+        {
+            deviceContext.UpdateSubresourceSafe(ref data, resource, srcBytesPerElement, subresource, rowPitch, depthPitch, isCompressedResource);
+        }
+
+        #endregion Upload sub resources
+
+        #region set buffers 
+        /// <summary>
+        /// Bind an index buffer to the input-assembler stage.
+        /// </summary>
+        /// <param name="indexBufferRef">
+        ///     A reference to an SharpDX.Direct3D11.Buffer object, that contains indices. The
+        ///     index buffer must have been created with the SharpDX.Direct3D11.BindFlags.IndexBuffer
+        ///     flag. 
+        /// </param>
+        /// <param name="format">
+        ///     A SharpDX.DXGI.Format that specifies the format of the data in the index buffer.
+        ///     The only formats allowed for index buffer data are 16-bit (SharpDX.DXGI.Format.R16_UInt)
+        ///     and 32-bit (SharpDX.DXGI.Format.R32_UInt) integers.
+        /// </param>
+        /// <param name="offset">Offset (in bytes) from the start of the index buffer to the first index to use.</param>
+        /// <remarks>
+        ///     For information about creating index buffers, see How to: Create an Index Buffer.
+        ///     Calling this method using a buffer that is currently bound for writing (i.e.
+        ///     bound to the stream output pipeline stage) will effectively bind null instead
+        ///     because a buffer cannot be bound as both an input and an output at the same time.
+        ///     The debug layer will generate a warning whenever a resource is prevented from
+        ///     being bound simultaneously as an input and an output, but this will not prevent
+        ///     invalid data from being used by the runtime. The method will hold a reference
+        ///     to the interfaces passed in. This differs from the device state behavior in Direct3D
+        ///     10. Windows?Phone?8: This API is supported.  
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetIndexBuffer(Buffer indexBufferRef, global::SharpDX.DXGI.Format format, int offset)
+        {
+            deviceContext.InputAssembler.SetIndexBuffer(indexBufferRef, format, offset);
+        }
+
+        /// <summary>
+        /// Bind a single vertex buffer to the input-assembler stage.
+        /// </summary>
+        /// <param name="slot">
+        ///     The first input slot for binding. The first vertex buffer is explicitly bound
+        ///     to the start slot; this causes each additional vertex buffer in the array to
+        ///     be implicitly bound to each subsequent input slot. The maximum of 16 or 32 input
+        ///     slots (ranges from 0 to SharpDX.Direct3D11.InputAssemblerStage.VertexInputResourceSlotCount
+        ///     - 1) are available; the maximum number of input slots depends on the feature
+        ///     level. 
+        /// </param>
+        /// <param name="vertexBufferBinding">
+        ///     A SharpDX.Direct3D11.VertexBufferBinding. The vertex buffer must have been created
+        ///     with the SharpDX.Direct3D11.BindFlags.VertexBuffer flag. 
+        /// </param>
+        /// <remarks>
+        ///     For information about creating vertex buffers, see Create a Vertex Buffer.Calling
+        ///     this method using a buffer that is currently bound for writing (i.e. bound to
+        ///     the stream output pipeline stage) will effectively bind null instead because
+        ///     a buffer cannot be bound as both an input and an output at the same time.The
+        ///     debug layer will generate a warning whenever a resource is prevented from being
+        ///     bound simultaneously as an input and an output, but this will not prevent invalid
+        ///     data from being used by the runtime. The method will hold a reference to the
+        ///     interfaces passed in. This differs from the device state behavior in Direct3D
+        ///     10. 
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetVertexBuffers(int slot, ref VertexBufferBinding vertexBufferBinding)
+        {
+            deviceContext.InputAssembler.SetVertexBuffers(slot, vertexBufferBinding);
+        }
+
+        /// <summary>
+        /// Bind an array of vertex buffers to the input-assembler stage.
+        /// </summary>
+        /// <param name="firstSlot">
+        ///     The first input slot for binding. The first vertex buffer is explicitly bound
+        ///     to the start slot; this causes each additional vertex buffer in the array to
+        ///     be implicitly bound to each subsequent input slot. The maximum of 16 or 32 input
+        ///     slots (ranges from 0 to SharpDX.Direct3D11.InputAssemblerStage.VertexInputResourceSlotCount
+        ///     - 1) are available; the maximum number of input slots depends on the feature
+        ///     level. 
+        /// </param>
+        /// <param name="vertexBufferBindings">
+        ///     A reference to an array of SharpDX.Direct3D11.VertexBufferBinding. The vertex
+        ///     buffers must have been created with the SharpDX.Direct3D11.BindFlags.VertexBuffer
+        ///     flag. 
+        /// </param>
+        /// <remarks>
+        ///     For information about creating vertex buffers, see Create a Vertex Buffer.Calling
+        ///     this method using a buffer that is currently bound for writing (i.e. bound to
+        ///     the stream output pipeline stage) will effectively bind null instead because
+        ///     a buffer cannot be bound as both an input and an output at the same time.The
+        ///     debug layer will generate a warning whenever a resource is prevented from being
+        ///     bound simultaneously as an input and an output, but this will not prevent invalid
+        ///     data from being used by the runtime. The method will hold a reference to the
+        ///     interfaces passed in. This differs from the device state behavior in Direct3D
+        ///     10.
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetVertexBuffers(int firstSlot, params VertexBufferBinding[] vertexBufferBindings)
+        {
+            deviceContext.InputAssembler.SetVertexBuffers(firstSlot, vertexBufferBindings);
+        }
+    
+        /// <summary>
+        /// Sets the vertex buffers.
+        /// </summary>
+        /// <param name="slot">
+        ///     The first input slot for binding. The first vertex buffer is explicitly bound
+        ///     to the start slot; this causes each additional vertex buffer in the array to
+        ///     be implicitly bound to each subsequent input slot. The maximum of 16 or 32 input
+        ///     slots (ranges from 0 to SharpDX.Direct3D11.InputAssemblerStage.VertexInputResourceSlotCount
+        ///     - 1) are available; the maximum number of input slots depends on the feature
+        ///     level.
+        /// </param>
+        /// <param name="vertexBuffers">
+        ///     A reference to an array of vertex buffers (see SharpDX.Direct3D11.Buffer). The
+        ///     vertex buffers must have been created with the SharpDX.Direct3D11.BindFlags.VertexBuffer
+        ///     flag.
+        /// </param>
+        /// <param name="stridesRef">
+        ///     Pointer to an array of stride values; one stride value for each buffer in the
+        ///     vertex-buffer array. Each stride is the size (in bytes) of the elements that
+        ///     are to be used from that vertex buffer.
+        /// </param>
+        /// <param name="offsetsRef">
+        ///     Pointer to an array of offset values; one offset value for each buffer in the
+        ///     vertex-buffer array. Each offset is the number of bytes between the first element
+        ///     of a vertex buffer and the first element that will be used.
+        /// </param>
+        /// <remarks>
+        ///     For information about creating vertex buffers, see Create a Vertex Buffer.Calling
+        ///     this method using a buffer that is currently bound for writing (i.e. bound to
+        ///     the stream output pipeline stage) will effectively bind null instead because
+        ///     a buffer cannot be bound as both an input and an output at the same time.The
+        ///     debug layer will generate a warning whenever a resource is prevented from being
+        ///     bound simultaneously as an input and an output, but this will not prevent invalid
+        ///     data from being used by the runtime. The method will hold a reference to the
+        ///     interfaces passed in. This differs from the device state behavior in Direct3D
+        ///     10.     
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetVertexBuffers(int slot, Buffer[] vertexBuffers, int[] stridesRef, int[] offsetsRef)
+        {
+            deviceContext.InputAssembler.SetVertexBuffers(slot, vertexBuffers, stridesRef, offsetsRef);
+        }
+
         #endregion
 
         #region CommandList
+
         /// <summary>
         /// Create a command list and record graphics commands into it.
         /// </summary>
@@ -1607,7 +1838,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     should typically use SharpDX.Result.False unless they will restore the state
         ///     to be nearly equivalent to the state that the runtime would restore if TRUE were
         ///     passed. When applications use SharpDX.Result.False, they can avoid unnecessary
-        ///     and inefficient state transitions. 
+        ///     and inefficient state transitions.
         /// </param>
         /// <remarks>
         ///     Use this method to play back a command list that was recorded by a deferred context
@@ -1624,16 +1855,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     method does not execute the command list. However, the state of the device context
         ///     is still maintained, as would be expected (SharpDX.Direct3D11.DeviceContext.ClearState
         ///     is performed, unless the application indicates to preserve the device context
-        ///     state). Windows?Phone?8: This API is supported.   
+        ///     state). Windows?Phone?8: This API is supported.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ExecuteCommandList(CommandList commandListRef, bool restoreContextState)
         {
             deviceContext.ExecuteCommandList(commandListRef, restoreContextState);
         }
-        #endregion
+
+        #endregion CommandList
 
         #region Viewport and Scissors
+
         /// <summary>
         /// Sets the scissor rectangle.
         /// </summary>
@@ -1649,7 +1882,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     output by a geometry shader (see shader semantic syntax). If a geometry shader
         ///     does not make use of the SV_ViewportArrayIndex semantic then Direct3D will use
         ///     the first scissor rectangle in the array.Each scissor rectangle in the array
-        ///     corresponds to a viewport in an array of viewports (see SharpDX.Direct3D11.RasterizerStage.SetViewports(SharpDX.Mathematics.Interop.RawViewportF[],System.Int32)). 
+        ///     corresponds to a viewport in an array of viewports (see SharpDX.Direct3D11.RasterizerStage.SetViewports(SharpDX.Mathematics.Interop.RawViewportF[],System.Int32)).
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetScissorRectangle(int left, int top, int right, int bottom)
@@ -1670,7 +1903,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     output by a geometry shader (see shader semantic syntax). If a geometry shader
         ///     does not make use of the SV_ViewportArrayIndex semantic then Direct3D will use
         ///     the first scissor rectangle in the array.Each scissor rectangle in the array
-        ///     corresponds to a viewport in an array of viewports (see SharpDX.Direct3D11.RasterizerStage.SetViewports(SharpDX.Mathematics.Interop.RawViewportF[],System.Int32)). 
+        ///     corresponds to a viewport in an array of viewports (see SharpDX.Direct3D11.RasterizerStage.SetViewports(SharpDX.Mathematics.Interop.RawViewportF[],System.Int32)).
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetScissorRectangles<T>(params T[] scissorRectangles) where T : struct
@@ -1691,7 +1924,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     All viewports must be set atomically as one operation. Any viewports not defined
         ///     by the call are disabled.Which viewport to use is determined by the SV_ViewportArrayIndex
         ///     semantic output by a geometry shader; if a geometry shader does not specify the
-        ///     semantic, Direct3D will use the first viewport in the array.       
+        ///     semantic, Direct3D will use the first viewport in the array.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetViewport(float x, float y, float width, float height, float minZ = 0, float maxZ = 1)
@@ -1707,13 +1940,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     All viewports must be set atomically as one operation. Any viewports not defined
         ///     by the call are disabled.Which viewport to use is determined by the SV_ViewportArrayIndex
         ///     semantic output by a geometry shader; if a geometry shader does not specify the
-        ///     semantic, Direct3D will use the first viewport in the array.    
+        ///     semantic, Direct3D will use the first viewport in the array.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetViewport(ref Viewport viewport)
         {
             deviceContext.Rasterizer.SetViewport(viewport);
         }
+
         /// <summary>
         /// Binds a single viewport to the rasterizer stage.
         /// </summary>
@@ -1722,14 +1956,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     All viewports must be set atomically as one operation. Any viewports not defined
         ///     by the call are disabled.Which viewport to use is determined by the SV_ViewportArrayIndex
         ///     semantic output by a geometry shader; if a geometry shader does not specify the
-        ///     semantic, Direct3D will use the first viewport in the array.    
+        ///     semantic, Direct3D will use the first viewport in the array.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetViewport(ref ViewportF viewport)
         {
             deviceContext.Rasterizer.SetViewport(viewport);
         }
-        #endregion
+
+        #endregion Viewport and Scissors
 
         /// <summary>
         /// Generates mipmaps for the given shader resource.
@@ -1762,13 +1997,47 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     SharpDX.DXGI.Format.R8G8_UNorm SharpDX.DXGI.Format.R8G8_SNorm SharpDX.DXGI.Format.R16_Float
         ///     SharpDX.DXGI.Format.R16_UNorm SharpDX.DXGI.Format.R16_SNorm SharpDX.DXGI.Format.R8_UNorm
         ///     SharpDX.DXGI.Format.R8_SNorm SharpDX.DXGI.Format.A8_UNorm SharpDX.DXGI.Format.B5G5R5A1_UNorm
-        ///     (optional) For all other unsupported formats, GenerateMips will silently fail.   
+        ///     (optional) For all other unsupported formats, GenerateMips will silently fail.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void GenerateMips(ShaderResourceView shaderResourceViewRef)
         {
             deviceContext.GenerateMips(shaderResourceViewRef);
         }
+
+        /// <summary>
+        ///     Sends queued-up commands in the command buffer to the graphics processing unit
+        ///     (GPU).
+        /// </summary>
+        /// <remarks>
+        ///     Most applications don't need to call this method. If an application calls this
+        ///     method when not necessary, it incurs a performance penalty. Each call to Flush
+        ///     incurs a significant amount of overhead.When Microsoft Direct3D state-setting,
+        ///     present, or draw commands are called by an application, those commands are queued
+        ///     into an internal command buffer. Flush sends those commands to the GPU for processing.
+        ///     Typically, the Direct3D runtime sends these commands to the GPU automatically
+        ///     whenever the runtime determines that they need to be sent, such as when the command
+        ///     buffer is full or when an application maps a resource. Flush sends the commands
+        ///     manually.We recommend that you use Flush when the CPU waits for an arbitrary
+        ///     amount of time (such as when you call the Sleep function).Because Flush operates
+        ///     asynchronously, it can return either before or after the GPU finishes executing
+        ///     the queued graphics commands. However, the graphics commands eventually always
+        ///     complete. You can call the SharpDX.Direct3D11.Device.CreateQuery(SharpDX.Direct3D11.QueryDescription,SharpDX.Direct3D11.Query)
+        ///     method with the SharpDX.Direct3D11.QueryType.Event value to create an event query;
+        ///     you can then use that event query in a call to the SharpDX.Direct3D11.DeviceContext.GetDataInternal(SharpDX.Direct3D11.Asynchronous,System.IntPtr,System.Int32,SharpDX.Direct3D11.AsynchronousFlags)
+        ///     method to determine when the GPU is finished processing the graphics commands.
+        ///     Microsoft Direct3D?11 defers the destruction of objects. Therefore, an application
+        ///     can't rely upon objects immediately being destroyed. By calling Flush, you destroy
+        ///     any objects whose destruction was deferred. If an application requires synchronous
+        ///     destruction of an object, we recommend that the application release all its references,
+        ///     call SharpDX.Direct3D11.DeviceContext.ClearState, and then call Flush.
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Flush()
+        {
+            deviceContext.Flush();
+        }
+
         /// <summary>
         /// Resets this instance.
         /// </summary>
@@ -1785,7 +2054,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int ResetDrawCalls()
@@ -1796,7 +2065,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="disposeManagedResources"></param>
         protected override void OnDispose(bool disposeManagedResources)

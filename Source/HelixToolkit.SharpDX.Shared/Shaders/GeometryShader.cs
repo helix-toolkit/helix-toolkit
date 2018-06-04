@@ -19,6 +19,7 @@ namespace HelixToolkit.UWP.Shaders
     {
         internal global::SharpDX.Direct3D11.GeometryShader Shader { private set; get; }
         public static readonly GeometryShader NullGeometryShader = new GeometryShader("NULL");
+        public static readonly GeometryShaderType Type;
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryShader"/> class.
         /// </summary>
@@ -45,6 +46,12 @@ namespace HelixToolkit.UWP.Shaders
         public void Bind(DeviceContextProxy context, bool bindConstantBuffer = true)
         {
             context.SetShader(this);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator GeometryShaderType(GeometryShader s)
+        {
+            return Type;
         }
     }
 }

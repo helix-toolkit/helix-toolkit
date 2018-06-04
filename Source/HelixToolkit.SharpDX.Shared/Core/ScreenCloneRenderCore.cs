@@ -269,7 +269,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     deviceContext.SetScissorRectangle(left, top, (int)context.ActualWidth - left, (int)context.ActualHeight - top);
                     using (var textureView = new global::SharpDX.Direct3D11.ShaderResourceView(deviceContext, frameProcessor.SharedTexture))
                     {
-                        deviceContext.BindTexture(DefaultShaderPass.PixelShader, textureBindSlot, textureView);                       
+                        deviceContext.SetShaderResource(PixelShader.Type, textureBindSlot, textureView);                       
                         deviceContext.Draw(4, 0);
                     }
                     if (ShowMouseCursor && cursorValid)

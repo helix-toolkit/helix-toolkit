@@ -62,6 +62,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 return EffectsManager.Device;
             }
         }
+
+        private DeviceContextProxy immediateDeviceContext;
+        /// <summary>
+        /// Gets the immediate device context.
+        /// </summary>
+        /// <value>
+        /// The immediate device context.
+        /// </value>
+        public DeviceContextProxy ImmediateDeviceContext
+        {
+            get { return immediateDeviceContext; }
+        }
         /// <summary>
         /// Gets the device2d.
         /// </summary>
@@ -184,11 +196,17 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     {
                         currentManager.OnDisposeResources -= OnManagerDisposed;
                     }
+                    RemoveAndDispose(ref immediateDeviceContext);
                     if (effectsManager != null)
                     {
                         effectsManager.OnDisposeResources += OnManagerDisposed;
                         RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
                         FeatureLevel = effectsManager.Device.FeatureLevel;
+#if DX11_1
+                        immediateDeviceContext = Collect(new DeviceContextProxy(effectsManager.Device.ImmediateContext1, effectsManager.Device));
+#else
+                        immediateDeviceContext = Collect(new DeviceContextProxy(effectsManager.Device.ImmediateContext, effectsManager.Device));
+#endif
                         if (IsInitialized)
                         {
                             Restart(false);
@@ -394,7 +412,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public IRenderStatistics RenderStatistics { get { return renderStatistics; } }
         protected readonly RenderStatistics renderStatistics = new RenderStatistics();
-        #region Perframe renderables
+#region Perframe renderables
         /// <summary>
         /// Gets the current frame renderables for rendering.
         /// </summary>
@@ -437,8 +455,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The per frame transparent nodes.
         /// </value>
         public abstract List<SceneNode> PerFrameTransparentNodes { get; }
-        #endregion
-        #region Configuration
+#endregion
+#region Configuration
         /// <summary>
         /// Gets or sets a value indicating whether [show render statistics].
         /// </summary>
@@ -467,10 +485,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// The feature level.
         /// </value>
         public global::SharpDX.Direct3D.FeatureLevel FeatureLevel { get; private set; } = global::SharpDX.Direct3D.FeatureLevel.Level_11_0;
-        #endregion
-        #endregion
+#endregion
+#endregion
 
-        #region Events
+#region Events
         /// <summary>
         /// Occurs when [exception occurred].
         /// </summary>
@@ -493,9 +511,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public event EventHandler OnRendered;
 
         private readonly Func<IDevice3DResources, IRenderer> createRendererFunction;
-        #endregion
+#endregion
 
-        #region Private variables
+#region Private variables
 
         protected IRenderer renderer;
         /// <summary>
@@ -514,7 +532,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private int updateCounter = 0; // Used to render at least twice. D3DImage sometimes not getting refresh if only render once.
 
         protected volatile bool UpdateSceneGraphRequested = true;
-        #endregion
+#endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DX11RenderHostBase"/> class.
@@ -647,7 +665,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="clearBackBuffer">if set to <c>true</c> [clear back buffer].</param>
         /// <param name="clearDepthStencilBuffer">if set to <c>true</c> [clear depth stencil buffer].</param>
-        public void ClearRenderTarget(DeviceContext context, bool clearBackBuffer,bool clearDepthStencilBuffer)
+        public void ClearRenderTarget(DeviceContextProxy context, bool clearBackBuffer,bool clearDepthStencilBuffer)
         {
             renderBuffer?.ClearRenderTarget(context, ClearColor, clearBackBuffer, clearDepthStencilBuffer);
         }
@@ -656,11 +674,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         protected virtual void PreRender()
         {
-#if DX11_1
-            SetDefaultRenderTargets(Device.ImmediateContext1, RenderConfiguration.ClearEachFrame);
-#else
-            SetDefaultRenderTargets(Device.ImmediateContext, RenderConfiguration.ClearEachFrame);
-#endif
+            SetDefaultRenderTargets(immediateDeviceContext, RenderConfiguration.ClearEachFrame);
         }
         /// <summary>
         /// Called after OnRender.
@@ -683,7 +697,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context"></param>
         /// <param name="clear"></param>
         /// <returns>Set successful?</returns>
-        public bool SetDefaultRenderTargets(DeviceContext context, bool clear = true)
+        public bool SetDefaultRenderTargets(DeviceContextProxy context, bool clear = true)
         {
             if (!IsInitialized) { return false; }
             renderBuffer.SetDefaultRenderTargets(context);
@@ -823,9 +837,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 viewport.Attach(this);
             }
 #if DX11_1
-            renderContext = Collect(CreateRenderContext(deviceResources.Device.ImmediateContext1));
+            renderContext = Collect(CreateRenderContext());
 #else
-            renderContext = Collect(CreateRenderContext(deviceResources.Device.ImmediateContext));
+            renderContext = Collect(CreateRenderContext());
 #endif
 
             renderContext2D = Collect(CreateRenderContext2D(deviceResources.DeviceContext2D));
@@ -835,7 +849,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected virtual RenderContext CreateRenderContext(DeviceContext context)
+        protected virtual RenderContext CreateRenderContext()
         {
             return new RenderContext(this);
         }
@@ -940,11 +954,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="clear">if set to <c>true</c> [clear].</param>
         public virtual void SetDefaultRenderTargets(bool clear)
         {
-#if DX11_1
-            SetDefaultRenderTargets(Device.ImmediateContext1, clear);
-#else
-            SetDefaultRenderTargets(Device.ImmediateContext, clear);
-#endif
+            SetDefaultRenderTargets(immediateDeviceContext, clear);
         }
 
         /// <summary>

@@ -13,6 +13,7 @@ namespace HelixToolkit.UWP.Core
     using System;
     using System.Collections.Generic;
     using Utilities;
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -104,7 +105,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="vertexBufferStartSlot">The vertex buffer start slot. Returns next available bind slot</param>
         /// <param name="deviceResources"></param>
         /// <returns></returns>
-        public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
+        public bool AttachBuffers(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {
             return true;
         }

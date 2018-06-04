@@ -10,11 +10,12 @@ namespace HelixToolkit.UWP.Core
 {
     using global::SharpDX.Direct3D;
     using global::SharpDX.Direct3D11;
-    using Utilities;
     using global::SharpDX.DXGI;
+    using Render;
     using System;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
+    using Utilities;
 
     /// <summary>
     /// General Geometry Buffer Model.
@@ -202,7 +203,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="vertexBufferStartSlot">The vertex buffer slot.</param>
         /// <param name="deviceResources">The device resources.</param>
         /// <returns></returns>
-        public bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
+        public bool AttachBuffers(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {
             for(int i=0; i < VertexChanged.Length; ++i)
             {
@@ -251,7 +252,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="geometry">The geometry.</param>
         /// <param name="deviceResources">The device resources.</param>
         /// <param name="bufferIndex"></param>
-        protected abstract void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources);
+        protected abstract void OnCreateVertexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources);
         /// <summary>
         /// Called when [create index buffer].
         /// </summary>
@@ -259,7 +260,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="buffer">The buffer.</param>
         /// <param name="geometry">The geometry.</param>
         /// <param name="deviceResources">The device resources.</param>
-        protected abstract void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources);
+        protected abstract void OnCreateIndexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources);
         /// <summary>
         /// Called when [attach buffer].
         /// </summary>
@@ -267,21 +268,21 @@ namespace HelixToolkit.UWP.Core
         /// <param name="vertexLayout">The vertex layout.</param>
         /// <param name="vertexBufferStartSlot">The vertex buffer start slot. It will be changed to the next available slot after binding</param>
         /// <returns></returns>
-        protected virtual bool OnAttachBuffer(DeviceContext context, InputLayout vertexLayout, ref int vertexBufferStartSlot)
+        protected virtual bool OnAttachBuffer(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot)
         {
-            context.InputAssembler.InputLayout = vertexLayout;
-            context.InputAssembler.PrimitiveTopology = Topology;
+            context.InputLayout = vertexLayout;
+            context.PrimitiveTopology = Topology;
             if (IndexBuffer != null)
             {
-                context.InputAssembler.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, IndexBuffer.Offset);
+                context.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, IndexBuffer.Offset);
             }
             else
             {
-                context.InputAssembler.SetIndexBuffer(null, Format.Unknown, 0);
+                context.SetIndexBuffer(null, Format.Unknown, 0);
             }
             if (VertexBuffer.Length > 0)
             {
-                context.InputAssembler.SetVertexBuffers(vertexBufferStartSlot, vertexBufferBindings);
+                context.SetVertexBuffers(vertexBufferStartSlot, vertexBufferBindings);
                 vertexBufferStartSlot += VertexBuffer.Length;
             }
             return true;

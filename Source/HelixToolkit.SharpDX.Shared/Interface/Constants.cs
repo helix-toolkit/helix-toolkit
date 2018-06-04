@@ -17,7 +17,15 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Collections.Generic;
     using Shaders;
     using System.Runtime.CompilerServices;
-
+    /// <summary>
+    /// Used for static function overloading
+    /// </summary>
+    public struct VertexShaderType { }
+    public struct HullShaderType { }
+    public struct DomainShaderType { }
+    public struct GeometryShaderType { }
+    public struct PixelShaderType { }
+    public struct ComputeShaderType { }
     /// <summary>
     /// 
     /// </summary>
@@ -28,6 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Number of shader stages
         /// </summary>
         public const int NumShaderStages = 6;
+
         /// <summary>
         /// Stages that can bind textures
         /// </summary>

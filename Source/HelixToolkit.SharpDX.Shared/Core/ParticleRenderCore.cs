@@ -830,7 +830,7 @@ namespace HelixToolkit.UWP.Core
         }
 
 
-        private int ReadCount(string src, DeviceContext context, UnorderedAccessView uav)
+        private int ReadCount(string src, DeviceContextProxy context, UnorderedAccessView uav)
         {
             context.CopyStructureCount(particleCountStaging, 0, uav);
             DataStream ds;

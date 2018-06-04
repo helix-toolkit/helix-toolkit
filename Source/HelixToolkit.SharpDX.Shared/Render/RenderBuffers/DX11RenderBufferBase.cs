@@ -9,7 +9,7 @@ using SharpDX.Direct3D11;
 using System;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
-using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
+using DeviceContextProxy = SharpDX.Direct3D11.DeviceContext1;
 #else
 using Device = SharpDX.Direct3D11.Device;
 #endif
@@ -304,28 +304,28 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Sets the default render-targets
         /// </summary>
-        public void SetDefaultRenderTargets(DeviceContext context, bool isColorBuffer = true)
+        public void SetDefaultRenderTargets(DeviceContextProxy context, bool isColorBuffer = true)
         {
-            context.OutputMerger.SetTargets(isColorBuffer ? depthStencilBuffer : null, new RenderTargetView[] { isColorBuffer ? colorBuffer : backBuffer });
+            context.SetRenderTargets(isColorBuffer ? depthStencilBuffer : null, new RenderTargetView[] { isColorBuffer ? colorBuffer : backBuffer });
             //context.OutputMerger.SetTargets(depthStencilBuffer, new RenderTargetView[] { isColorBuffer ? colorBuffer : backBuffer });
-            context.Rasterizer.SetViewport(0, 0, TargetWidth, TargetHeight, 0.0f, 1.0f);
-            context.Rasterizer.SetScissorRectangle(0, 0, TargetWidth, TargetHeight);
+            context.SetViewport(0, 0, TargetWidth, TargetHeight, 0.0f, 1.0f);
+            context.SetScissorRectangle(0, 0, TargetWidth, TargetHeight);
         }
 
         /// <summary>
         /// Clears the render target binding.
         /// </summary>
         /// <param name="context">The context.</param>
-        public void ClearRenderTargetBinding(DeviceContext context)
+        public void ClearRenderTargetBinding(DeviceContextProxy context)
         {
-            context.OutputMerger.ResetTargets();
+            context.ClearRenderTagetBindings();
         }
         /// <summary>
         /// Clears the render target.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="color">The color.</param>
-        public void ClearRenderTarget(DeviceContext context, Color4 color)
+        public void ClearRenderTarget(DeviceContextProxy context, Color4 color)
         {
             ClearRenderTarget(context, color, true, true);
         }
@@ -336,7 +336,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="color"></param>
         /// <param name="clearBackBuffer"></param>
         /// <param name="clearDepthStencilBuffer"></param>
-        public void ClearRenderTarget(DeviceContext context, Color4 color, bool clearBackBuffer, bool clearDepthStencilBuffer)
+        public void ClearRenderTarget(DeviceContextProxy context, Color4 color, bool clearBackBuffer, bool clearDepthStencilBuffer)
         {
             if (clearBackBuffer)
             {
