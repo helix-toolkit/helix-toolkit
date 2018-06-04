@@ -884,7 +884,10 @@ namespace HelixToolkit.UWP
         /// Rotate around this fixed rotation point only.<see cref="FixedRotationPointEnabledProperty"/>
         /// </summary>
         public static readonly DependencyProperty FixedRotationPointProperty = DependencyProperty.Register(
-            "FixedRotationPoint", typeof(Vector3), typeof(Viewport3DX), new PropertyMetadata(new Vector3()));
+            "FixedRotationPoint", typeof(Vector3), typeof(Viewport3DX), new PropertyMetadata(new Vector3(), (d, e) =>
+            {
+                (d as Viewport3DX).CameraController.FixedRotationPoint = (Vector3)e.NewValue;
+            }));
 
         /// <summary>
         /// Rotate around this fixed rotation point only.<see cref="FixedRotationPointEnabled"/>
@@ -905,7 +908,10 @@ namespace HelixToolkit.UWP
         /// Enable fixed rotation mode and use FixedRotationPoint for rotation. Only works under CameraMode = Inspect
         /// </summary>
         public static readonly DependencyProperty FixedRotationPointEnabledProperty = DependencyProperty.Register(
-            "FixedRotationPointEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+            "FixedRotationPointEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
+            {
+                (d as Viewport3DX).CameraController.FixedRotationPointEnabled = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// Enable fixed rotation mode and use <see cref="FixedRotationPoint"/>  for rotation. Only works under <see cref="CameraMode"/> = Inspect
@@ -1972,7 +1978,7 @@ namespace HelixToolkit.UWP
                     {
                         n.AttachViewport3DX(viewport);
                     }
-                    viewport.sharedModelContainerInternal = (IModelContainer)e.NewValue;
+                    viewport.SharedModelContainerInternal = (IModelContainer)e.NewValue;
                     if (viewport.renderHostInternal != null)
                     {
                         viewport.renderHostInternal.SharedModelContainer = (IModelContainer)e.NewValue;
@@ -2000,7 +2006,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The shared model container internal.
         /// </value>
-        protected IModelContainer sharedModelContainerInternal { private set; get; } = null;
+        protected IModelContainer SharedModelContainerInternal { private set; get; } = null;
 
         /// <summary>
         /// The show camera info property.

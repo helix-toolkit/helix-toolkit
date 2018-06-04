@@ -580,7 +580,26 @@ namespace HelixToolkit.Wpf.SharpDX
                 return this.ActualCamera as PerspectiveCamera;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [fixed rotation point enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [fixed rotation point enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool FixedRotationPointEnabled
+        {
+            set; get;
+        } = false;
+        /// <summary>
+        /// Gets or sets the fixed rotation point.
+        /// </summary>
+        /// <value>
+        /// The fixed rotation point.
+        /// </value>
+        public Point3D FixedRotationPoint
+        {
+            set; get;
+        } = new Point3D();
         #region TouchGesture
         public bool EnableTouchRotate { set; get; } = true;
         public bool EnablePinchZoom { set; get; } = true;
@@ -682,6 +701,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.rotationPosition = new Point(Viewport.ActualWidth / 2, Viewport.ActualHeight / 2);
                 this.rotationSpeed.X += dx * 40;
                 this.rotationSpeed.Y += dy * 40;
+            }
+            else if (FixedRotationPointEnabled)
+            {
+                this.rotationPosition = new Point(Viewport.ActualWidth / 2, Viewport.ActualHeight / 2);
+                this.rotateHandler.Rotate(
+                    this.rotationPosition, this.rotationPosition + new Vector(dx, dy), FixedRotationPoint);
             }
             else
             {
@@ -1364,10 +1389,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.ZoomAroundMouseDownPoint)
             {
                 var point = e.GetPosition(Viewport);
-                Point3D nearestPoint;
-                Vector3D normal;
-                Element3D visual;
-                if (this.Viewport.FindNearest(point, out nearestPoint, out normal, out visual))
+                if (this.Viewport.FindNearest(point, out Point3D nearestPoint, out Vector3D normal, out Element3D visual))
                 {
                     this.AddZoomForce(-e.Delta * 0.001, nearestPoint);
                     e.Handled = true;

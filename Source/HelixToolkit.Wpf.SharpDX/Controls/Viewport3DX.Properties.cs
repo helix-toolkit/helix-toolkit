@@ -860,13 +860,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Rotate around this fixed rotation point only.<see cref="FixedRotationPointEnabledProperty"/> 
         /// </summary>
         public static readonly DependencyProperty FixedRotationPointProperty = DependencyProperty.Register(
-            "FixedRotationPoint", typeof(Point3D), typeof(Viewport3DX), new PropertyMetadata(new Point3D()));
+            "FixedRotationPoint", typeof(Point3D), typeof(Viewport3DX), new PropertyMetadata(new Point3D(), (d,e)=>
+            {
+                (d as Viewport3DX).CameraController.FixedRotationPoint = (Point3D)e.NewValue;
+            }));
 
         /// <summary>
         /// Enable fixed rotation mode and use FixedRotationPoint for rotation. Only works under CameraMode = Inspect
         /// </summary>
         public static readonly DependencyProperty FixedRotationPointEnabledProperty = DependencyProperty.Register(
-            "FixedRotationPointEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+            "FixedRotationPointEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d,e)=> 
+            {
+                (d as Viewport3DX).CameraController.FixedRotationPointEnabled = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// Enable mouse button hit test
@@ -940,7 +946,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     {
                         n.AttachViewport3DX(viewport);
                     }
-                    viewport.sharedModelContainerInternal = (IModelContainer)e.NewValue;
+                    viewport.SharedModelContainerInternal = (IModelContainer)e.NewValue;
                     if (viewport.renderHostInternal != null)
                     {
                         viewport.renderHostInternal.SharedModelContainer = (IModelContainer)e.NewValue;
@@ -968,11 +974,11 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 if (e.OldValue is Element2D elementOld)
                 {
-                    (d as Viewport3DX).overlay2D.Children.Remove(elementOld);                   
+                    (d as Viewport3DX).Overlay2D.Children.Remove(elementOld);                   
                 }
                 if (e.NewValue is Element2D elementNew)
                 {
-                    (d as Viewport3DX).overlay2D.Children.Add(elementNew);                   
+                    (d as Viewport3DX).Overlay2D.Children.Add(elementNew);                   
                 }
             }));
 
@@ -2681,7 +2687,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The shared model container internal.
         /// </value>
-        protected IModelContainer sharedModelContainerInternal { private set; get; } = null;
+        protected IModelContainer SharedModelContainerInternal { private set; get; } = null;
 
         /// <summary>
         /// <para>Use HwndHost as rendering surface, swapchain for rendering. Much faster than using D3DImage.</para> 
