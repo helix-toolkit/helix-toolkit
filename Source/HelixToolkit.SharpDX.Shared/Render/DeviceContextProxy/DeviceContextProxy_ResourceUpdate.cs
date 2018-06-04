@@ -263,12 +263,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///     because by having front equal to back, the box is technically empty. SharpDX.Direct3D11.ResourceRegion
         ///     destRegion; destRegion.left = 120; destRegion.right = 200; destRegion.top = 100;
         ///     destRegion.bottom = 220; destRegion.front = 0; destRegion.back = 1; pd3dDeviceContext->UpdateSubresource(
-        ///     pDestTexture, 0, &destRegion, pData, rowPitch, 0 ); The 1D case is similar. The
+        ///     pDestTexture, 0, destRegion, pData, rowPitch, 0 ); The 1D case is similar. The
         ///     following snippet shows how to specify a destination region in a 1D texture.
         ///     Use the same assumptions as above, except that the texture is 512 in length.
         ///     SharpDX.Direct3D11.ResourceRegion destRegion; destRegion.left = 120; destRegion.right
         ///     = 200; destRegion.top = 0; destRegion.bottom = 1; destRegion.front = 0; destRegion.back
-        ///     = 1; pd3dDeviceContext->UpdateSubresource( pDestTexture, 0, &destRegion, pData,
+        ///     = 1; pd3dDeviceContext->UpdateSubresource( pDestTexture, 0, destRegion, pData,
         ///     rowPitch, 0 ); For info about various resource types and how UpdateSubresource
         ///     might work with each resource type, see Introduction to a Resource in Direct3D
         ///     11.

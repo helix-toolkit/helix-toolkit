@@ -32,7 +32,6 @@ namespace HelixToolkit.UWP.Model
         /// <summary>
         /// Registers the specified material unique identifier.
         /// </summary>
-        /// <param name="modelGuid">The material unique identifier.</param>
         /// <param name="textureStream">The texture steam.</param>
         /// <returns></returns>
         public ShaderResourceViewProxy Register(Stream textureStream)

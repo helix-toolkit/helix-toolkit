@@ -90,7 +90,7 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// Imports the techniques.
+        /// Imports the techniques. Make sure to detach effectsManager from viewport before importing
         /// </summary>
         /// <param name="manager">The manager.</param>
         /// <param name="reader">The reader.</param>
@@ -118,7 +118,7 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// Imports the techniques.
+        /// Imports the techniques. Make sure to detach effectsManager from viewport before importing
         /// </summary>
         /// <param name="manager">The manager.</param>
         /// <param name="filePath">The file path.</param>

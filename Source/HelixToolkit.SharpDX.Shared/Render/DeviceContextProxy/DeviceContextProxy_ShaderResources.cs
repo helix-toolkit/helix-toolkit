@@ -132,13 +132,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         #region Vertex Shader
 
         /// <summary>
-        /// Binds the texture.
+        /// Binds the texture.  Use <see cref="VertexShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shader type. Use <see cref="VertexShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetShaderResource(VertexShaderType shader, int slot, ShaderResourceView texture)
+        public void SetShaderResource(VertexShaderType shaderType, int slot, ShaderResourceView texture)
         {
             if (slot < 0)
             { return; }
@@ -146,38 +146,38 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// Binds the texture.
+        /// Binds the texture. Use <see cref="VertexShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shader. Use <see cref="VertexShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetShaderResources(VertexShaderType shader, int slot, ShaderResourceView[] texture)
+        public void SetShaderResources(VertexShaderType shaderType, int slot, ShaderResourceView[] texture)
         {
             if (slot < 0)
             { return; }
             deviceContext.VertexShader.SetShaderResources(slot, texture);
         }
         /// <summary>
-        /// Gets the texture.
+        /// Gets the texture. Use <see cref="VertexShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shader type.  Use <see cref="VertexShader.Type"/></param>
         /// <param name="startSlot">The start slot.</param>
         /// <param name="num">The number.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ShaderResourceView[] GetShaderResources(VertexShaderType shader, int startSlot, int num)
+        public ShaderResourceView[] GetShaderResources(VertexShaderType shaderType, int startSlot, int num)
         {
             return deviceContext.VertexShader.GetShaderResources(startSlot, num);
         }
         /// <summary>
-        /// Binds the sampler.
+        /// Binds the sampler.  Use <see cref="VertexShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shader type.  Use <see cref="VertexShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="sampler">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetSampler(VertexShaderType shader, int slot, SamplerState sampler)
+        public void SetSampler(VertexShaderType shaderType, int slot, SamplerState sampler)
         {
             if (slot < 0)
             { return; }
@@ -185,27 +185,27 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// Binds the sampler.
+        /// Binds the sampler. Use <see cref="VertexShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shader type. Use <see cref="VertexShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="samplers">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetSamplers(VertexShaderType shader, int slot, SamplerState[] samplers)
+        public void SetSamplers(VertexShaderType shaderType, int slot, SamplerState[] samplers)
         {
             if (slot < 0)
             { return; }
             deviceContext.VertexShader.SetSamplers(slot, samplers);
         }
         /// <summary>
-        /// Gets the sampler.
+        /// Gets the sampler. Use <see cref="VertexShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="VertexShader.Type"/></param>
         /// <param name="startSlot">The start slot.</param>
         /// <param name="num">The number.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SamplerState[] GetSampler(VertexShaderType shader, int startSlot, int num)
+        public SamplerState[] GetSampler(VertexShaderType shaderType, int startSlot, int num)
         {
             return deviceContext.VertexShader.GetSamplers(startSlot, num);
         }
@@ -214,13 +214,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         #region Domain Shader
 
         /// <summary>
-        /// Binds the texture.
+        /// Binds the texture. Use <see cref="DomainShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="DomainShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetShaderResource(DomainShaderType shader, int slot, ShaderResourceView texture)
+        public void SetShaderResource(DomainShaderType shaderType, int slot, ShaderResourceView texture)
         {
             if (slot < 0)
             { return; }
@@ -228,38 +228,38 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// Binds the texture.
+        /// Binds the texture. Use <see cref="DomainShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="DomainShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetShaderResources(DomainShaderType shader, int slot, ShaderResourceView[] texture)
+        public void SetShaderResources(DomainShaderType shaderType, int slot, ShaderResourceView[] texture)
         {
             if (slot < 0)
             { return; }
             deviceContext.DomainShader.SetShaderResources(slot, texture);
         }
         /// <summary>
-        /// Gets the texture.
+        /// Gets the texture. Use <see cref="DomainShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="DomainShader.Type"/></param>
         /// <param name="startSlot">The start slot.</param>
         /// <param name="num">The number.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ShaderResourceView[] GetShaderResources(DomainShaderType shader, int startSlot, int num)
+        public ShaderResourceView[] GetShaderResources(DomainShaderType shaderType, int startSlot, int num)
         {
             return deviceContext.DomainShader.GetShaderResources(startSlot, num);
         }
         /// <summary>
-        /// Binds the sampler.
+        /// Binds the sampler. Use <see cref="DomainShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="DomainShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="sampler">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetSampler(DomainShaderType shader, int slot, SamplerState sampler)
+        public void SetSampler(DomainShaderType shaderType, int slot, SamplerState sampler)
         {
             if (slot < 0)
             { return; }
@@ -267,27 +267,27 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// Binds the sampler.
+        /// Binds the sampler. Use <see cref="DomainShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="DomainShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="samplers">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetSamplers(DomainShaderType shader, int slot, SamplerState[] samplers)
+        public void SetSamplers(DomainShaderType shaderType, int slot, SamplerState[] samplers)
         {
             if (slot < 0)
             { return; }
             deviceContext.DomainShader.SetSamplers(slot, samplers);
         }
         /// <summary>
-        /// Gets the sampler.
+        /// Gets the sampler. Use <see cref="DomainShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="DomainShader.Type"/></param>
         /// <param name="startSlot">The start slot.</param>
         /// <param name="num">The number.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SamplerState[] GetSampler(DomainShaderType shader, int startSlot, int num)
+        public SamplerState[] GetSampler(DomainShaderType shaderType, int startSlot, int num)
         {
             return deviceContext.DomainShader.GetSamplers(startSlot, num);
         }
@@ -296,13 +296,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         #region Pixel Shader
 
         /// <summary>
-        /// Binds the texture.
+        /// Binds the texture. Use <see cref="PixelShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="PixelShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetShaderResource(PixelShaderType shader, int slot, ShaderResourceView texture)
+        public void SetShaderResource(PixelShaderType shaderType, int slot, ShaderResourceView texture)
         {
             if (slot < 0)
             { return; }
@@ -310,38 +310,38 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// Binds the texture.
+        /// Binds the texture. Use <see cref="PixelShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="PixelShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetShaderResources(PixelShaderType shader, int slot, ShaderResourceView[] texture)
+        public void SetShaderResources(PixelShaderType shaderType, int slot, ShaderResourceView[] texture)
         {
             if (slot < 0)
             { return; }
             deviceContext.PixelShader.SetShaderResources(slot, texture);
         }
         /// <summary>
-        /// Gets the texture.
+        /// Gets the texture. Use <see cref="PixelShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="PixelShader.Type"/></param>
         /// <param name="startSlot">The start slot.</param>
         /// <param name="num">The number.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ShaderResourceView[] GetShaderResources(PixelShaderType shader, int startSlot, int num)
+        public ShaderResourceView[] GetShaderResources(PixelShaderType shaderType, int startSlot, int num)
         {
             return deviceContext.PixelShader.GetShaderResources(startSlot, num);
         }
         /// <summary>
-        /// Binds the sampler.
+        /// Binds the sampler. Use <see cref="PixelShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="PixelShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="sampler">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetSampler(PixelShaderType shader, int slot, SamplerState sampler)
+        public void SetSampler(PixelShaderType shaderType, int slot, SamplerState sampler)
         {
             if (slot < 0)
             { return; }
@@ -349,27 +349,27 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// Binds the sampler.
+        /// Binds the sampler. Use <see cref="PixelShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="PixelShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="samplers">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetSamplers(PixelShaderType shader, int slot, SamplerState[] samplers)
+        public void SetSamplers(PixelShaderType shaderType, int slot, SamplerState[] samplers)
         {
             if (slot < 0)
             { return; }
             deviceContext.PixelShader.SetSamplers(slot, samplers);
         }
         /// <summary>
-        /// Gets the sampler.
+        /// Gets the sampler. Use <see cref="PixelShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="PixelShader.Type"/></param>
         /// <param name="startSlot">The start slot.</param>
         /// <param name="num">The number.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SamplerState[] GetSampler(PixelShaderType shader, int startSlot, int num)
+        public SamplerState[] GetSampler(PixelShaderType shaderType, int startSlot, int num)
         {
             return deviceContext.PixelShader.GetSamplers(startSlot, num);
         }
@@ -378,13 +378,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         #region Compute Shader
 
         /// <summary>
-        /// Binds the texture.
+        /// Binds the texture. Use <see cref="ComputeShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="ComputeShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetShaderResource(ComputeShaderType shader, int slot, ShaderResourceView texture)
+        public void SetShaderResource(ComputeShaderType shaderType, int slot, ShaderResourceView texture)
         {
             if (slot < 0)
             { return; }
@@ -392,38 +392,38 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// Binds the texture.
+        /// Binds the texture. Use <see cref="ComputeShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="ComputeShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="texture">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetShaderResources(ComputeShaderType shader, int slot, ShaderResourceView[] texture)
+        public void SetShaderResources(ComputeShaderType shaderType, int slot, ShaderResourceView[] texture)
         {
             if (slot < 0)
             { return; }
             deviceContext.ComputeShader.SetShaderResources(slot, texture);
         }
         /// <summary>
-        /// Gets the texture.
+        /// Gets the texture. Use <see cref="ComputeShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="ComputeShader.Type"/></param>
         /// <param name="startSlot">The start slot.</param>
         /// <param name="num">The number.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ShaderResourceView[] GetShaderResources(ComputeShaderType shader, int startSlot, int num)
+        public ShaderResourceView[] GetShaderResources(ComputeShaderType shaderType, int startSlot, int num)
         {
             return deviceContext.ComputeShader.GetShaderResources(startSlot, num);
         }
         /// <summary>
-        /// Binds the unordered access view.
+        /// Binds the unordered access view. Use <see cref="ComputeShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="ComputeShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="uav">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetUnorderedAccessView(ComputeShaderType shader, int slot, UnorderedAccessView uav)
+        public void SetUnorderedAccessView(ComputeShaderType shaderType, int slot, UnorderedAccessView uav)
         {
             if (slot < 0)
             { return; }
@@ -431,38 +431,38 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// Binds the unordered access views.
+        /// Binds the unordered access views. Use <see cref="ComputeShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="ComputeShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="UAVs">The texture.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetUnorderedAccessViews(ComputeShaderType shader, int slot, UnorderedAccessView[] UAVs)
+        public void SetUnorderedAccessViews(ComputeShaderType shaderType, int slot, UnorderedAccessView[] UAVs)
         {
             if (slot < 0)
             { return; }
             deviceContext.ComputeShader.SetUnorderedAccessViews(slot, UAVs);
         }
         /// <summary>
-        /// Gets the unordered access view.
+        /// Gets the unordered access view. Use <see cref="ComputeShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="ComputeShader.Type"/></param>
         /// <param name="startSlot">The start slot.</param>
         /// <param name="num">The number.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public UnorderedAccessView[] GetUnorderedAccessView(ComputeShaderType shader, int startSlot, int num)
+        public UnorderedAccessView[] GetUnorderedAccessView(ComputeShaderType shaderType, int startSlot, int num)
         {
             return deviceContext.ComputeShader.GetUnorderedAccessViews(startSlot, num);
         }
         /// <summary>
-        /// Binds the sampler.
+        /// Binds the sampler. Use <see cref="ComputeShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="ComputeShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="sampler">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetSampler(ComputeShaderType shader, int slot, SamplerState sampler)
+        public void SetSampler(ComputeShaderType shaderType, int slot, SamplerState sampler)
         {
             if (slot < 0)
             { return; }
@@ -470,27 +470,27 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         /// <summary>
-        /// Binds the sampler.
+        /// Binds the sampler. Use <see cref="ComputeShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="ComputeShader.Type"/></param>
         /// <param name="slot">The slot.</param>
         /// <param name="samplers">The sampler.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetSamplers(ComputeShaderType shader, int slot, SamplerState[] samplers)
+        public void SetSamplers(ComputeShaderType shaderType, int slot, SamplerState[] samplers)
         {
             if (slot < 0)
             { return; }
             deviceContext.ComputeShader.SetSamplers(slot, samplers);
         }
         /// <summary>
-        /// Gets the sampler.
+        /// Gets the sampler. Use <see cref="ComputeShader.Type"/>
         /// </summary>
-        /// <param name="shader">The shader.</param>
+        /// <param name="shaderType">The shaderType. Use <see cref="ComputeShader.Type"/></param>
         /// <param name="startSlot">The start slot.</param>
         /// <param name="num">The number.</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SamplerState[] GetSampler(ComputeShaderType shader, int startSlot, int num)
+        public SamplerState[] GetSampler(ComputeShaderType shaderType, int startSlot, int num)
         {
             return deviceContext.ComputeShader.GetSamplers(startSlot, num);
         }

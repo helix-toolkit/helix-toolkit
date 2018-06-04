@@ -847,7 +847,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Creates the render context.
         /// </summary>
-        /// <param name="context">The context.</param>
         /// <returns></returns>
         protected virtual RenderContext CreateRenderContext()
         {
