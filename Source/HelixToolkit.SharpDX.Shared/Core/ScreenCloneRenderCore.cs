@@ -861,27 +861,29 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 }
                 OutputDuplicateFrameInformation frameInfo;
                 Resource desktopResource;
-                try
+                var code = info.Duplication.TryAcquireNextFrame(getFrameTimeOut, out frameInfo, out desktopResource);
+                if (!code.Success)
                 {
-                    info.Duplication.AcquireNextFrame(getFrameTimeOut, out frameInfo, out desktopResource);
-                    RetrieveCursorMetadata(ref frameInfo, info.Duplication, outputIndex, ref pointer);
-                }
-                catch(SharpDXException ex)
-                {
-                    if(ex.ResultCode.Code == ResultCode.WaitTimeout.Result.Code)
+                    if (code.Code == ResultCode.WaitTimeout.Result.Code)
                     {
                         timeOut = true;
                         return false;
                     }
-                    else if(ex.ResultCode.Code == ResultCode.AccessLost.Code)
+                    else if (code.Code == ResultCode.AccessLost.Code)
                     {
                         accessLost = true;
                         return false;
                     }
                     else
                     {
+#if DEBUG
                         throw new HelixToolkitException("Failed to acquire next frame.");
+#endif
                     }
+                }
+                else
+                {
+                    RetrieveCursorMetadata(ref frameInfo, info.Duplication, outputIndex, ref pointer);
                 }
                 currentDuplicationStack.Push(info.Duplication);
                 var texture2D = desktopResource.QueryInterface<Texture2D>();
@@ -967,7 +969,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     {
                         fixed (byte* ptrShapeBufferPtr = pointerInfo.PtrShapeBuffer)
                         {
-                            OutputDuplicatePointerShapeInformation info;
+                            OutputDuplicatePointerShapeInformation info;                           
                             duplication.GetFramePointerShape(frameInfo.PointerShapeBufferSize, (IntPtr)ptrShapeBufferPtr, out pointerInfo.BufferSize, out info);
                             if(info.Type != 0)
                             {

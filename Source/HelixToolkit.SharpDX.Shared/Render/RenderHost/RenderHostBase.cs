@@ -629,7 +629,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 {
                     var desc = ResultDescriptor.Find(ex.ResultCode);
                     if (desc == global::SharpDX.DXGI.ResultCode.DeviceRemoved || desc == global::SharpDX.DXGI.ResultCode.DeviceReset 
-                        || desc == global::SharpDX.DXGI.ResultCode.DeviceHung || desc == global::SharpDX.Direct2D1.ResultCode.RecreateTarget
+                        || desc == global::SharpDX.DXGI.ResultCode.DeviceHung
                         || desc == global::SharpDX.DXGI.ResultCode.AccessLost)
                     {
                         Log(LogLevel.Warning, $"Device Lost, code = {desc.Code}");
