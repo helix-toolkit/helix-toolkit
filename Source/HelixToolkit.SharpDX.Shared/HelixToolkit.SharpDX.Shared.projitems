@@ -191,6 +191,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ScreenSpacedNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\SortingGroupNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ViewBoxNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_DrawCalls.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_InputAssembler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_ResourceUpdate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_ShaderResources.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_States.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_Targets.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_Viewport.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\ColorBufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11RenderBufferBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11SwapChainCompositionRenderBufferProxy.cs" />
@@ -199,7 +206,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Render\Renderer\DeferredContextRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\RenderHostBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DefaultRenderHost.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11Texture2DRenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext.cs" />

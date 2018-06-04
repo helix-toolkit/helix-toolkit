@@ -119,18 +119,10 @@ namespace HelixToolkit.UWP.Shaders
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void BindShader(DeviceContextProxy context, bool bindConstantBuffer = true)
         {
-            if (context.LastShaderPass == this || IsNULL)
-            {
-                return;
-            }
-            VertexShader.Bind(context, bindConstantBuffer);
-            PixelShader.Bind(context);
-            ComputeShader.Bind(context);
-            HullShader.Bind(context);
-            DomainShader.Bind(context);
-            GeometryShader.Bind(context);
-            context.LastShaderPass = this;
+            context.SetShaderPass(this, bindConstantBuffer);
         }
+
+        #region Get Shaders
         /// <summary>
         /// <see cref="ShaderPass.GetShader(ShaderStage)"/>
         /// </summary>
@@ -157,7 +149,69 @@ namespace HelixToolkit.UWP.Shaders
                     return null;
             }
         }
+        /// <summary>
+        /// Gets the shader.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public VertexShader GetShader(VertexShaderType type)
+        {
+            return VertexShader;
+        }
+        /// <summary>
+        /// Gets the shader.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public HullShader GetShader(HullShaderType type)
+        {
+            return HullShader;
+        }
+        /// <summary>
+        /// Gets the shader.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public DomainShader GetShader(DomainShaderType type)
+        {
+            return DomainShader;
+        }
+        /// <summary>
+        /// Gets the shader.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public GeometryShader GetShader(GeometryShaderType type)
+        {
+            return GeometryShader;
+        }
+        /// <summary>
+        /// Gets the shader.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PixelShader GetShader(PixelShaderType type)
+        {
+            return PixelShader;
+        }
+        /// <summary>
+        /// Gets the shader.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComputeShader GetShader(ComputeShaderType type)
+        {
+            return ComputeShader;
+        }
+        #endregion
 
+        #region Set Shaders
         /// <summary>
         /// Sets the shader.
         /// </summary>
@@ -186,6 +240,55 @@ namespace HelixToolkit.UWP.Shaders
                     break;
             }
         }
+        /// <summary>
+        /// Sets the shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        public void SetShader(VertexShader shader)
+        {
+            VertexShader = shader;
+        }
+        /// <summary>
+        /// Sets the shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        public void SetShader(HullShader shader)
+        {
+            HullShader = shader;
+        }
+        /// <summary>
+        /// Sets the shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        public void SetShader(DomainShader shader)
+        {
+            DomainShader = shader;
+        }
+        /// <summary>
+        /// Sets the shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        public void SetShader(GeometryShader shader)
+        {
+            GeometryShader = shader;
+        }
+        /// <summary>
+        /// Sets the shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        public void SetShader(PixelShader shader)
+        {
+            PixelShader = shader;
+        }
+        /// <summary>
+        /// Sets the shader.
+        /// </summary>
+        /// <param name="shader">The shader.</param>
+        public void SetShader(ComputeShader shader)
+        {
+            ComputeShader = shader;
+        }
+        #endregion
 
         /// <summary>
         /// Binds the states.
