@@ -294,6 +294,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\ModelReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\ObjReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\OffReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\RenderTechniqueImportExport.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\StLReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\StudioReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\LineBuilder.cs" />

@@ -38,14 +38,18 @@ namespace HelixToolkit.UWP.Shaders
         /// </value>
         [DataMember]
         public ShaderStage ShaderType { set; get; }
+
         /// <summary>
         /// Gets or sets the level.
         /// </summary>
         /// <value>
         /// The level.
         /// </value>
-        [DataMember]
-        public FeatureLevel Level { set; get; }
+        public FeatureLevel Level
+        {
+            set; get;
+        }
+
         /// <summary>
         /// Gets or sets the byte code.
         /// </summary>
@@ -60,7 +64,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The constant buffer mappings.
         /// </value>
-        [DataMember]
         public ConstantBufferMapping[] ConstantBufferMappings { set; get; }
         /// <summary>
         /// Gets or sets the texture mappings.
@@ -68,7 +71,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The texture mappings.
         /// </value>
-        [DataMember]
         public TextureMapping[] TextureMappings { set; get; }
         /// <summary>
         /// Gets or sets the uav mappings.
@@ -76,7 +78,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The uav mappings.
         /// </value>
-        [DataMember]
         public UAVMapping[] UAVMappings { get; set; }
         /// <summary>
         /// Gets or sets the sampler mappings.
@@ -84,7 +85,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The sampler mappings.
         /// </value>
-        [DataMember]
         public SamplerMapping[] SamplerMappings { set; get; }
 
         /// <summary>

@@ -18,6 +18,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public interface IRenderTechnique : IDisposable
     {
+        TechniqueDescription Description { get; }
         /// <summary>
         /// 
         /// </summary>

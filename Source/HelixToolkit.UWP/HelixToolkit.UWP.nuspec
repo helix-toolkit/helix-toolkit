@@ -24,6 +24,7 @@
 		<dependency id="SharpDX.Mathematics" version="4.0.1" />
 		<dependency id="System.ComponentModel.TypeConverter" version="4.3.0"/>
 		<dependency id="System.Drawing.Primitives" version="4.3.0"/>		
+		<dependency id="System.Private.DataContractSerialization" version="4.3.0"/>
       </group>
     </dependencies>
   </metadata>

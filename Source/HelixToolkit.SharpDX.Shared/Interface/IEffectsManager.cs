@@ -166,5 +166,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="name"></param>
         /// <returns></returns>
         bool RemoveTechnique(string name);
+        /// <summary>
+        /// Removes all techniques.
+        /// </summary>
+        void RemoveAllTechniques();
+        /// <summary>
+        /// Determines whether the specified name has technique.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified name has technique; otherwise, <c>false</c>.
+        /// </returns>
+        bool HasTechnique(string name);
     }
 }
