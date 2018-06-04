@@ -315,8 +315,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         public void Attach(IRenderHost host)
         {
-            transparentRenderCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.MeshOITQuad));
-            postFXAACore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.PostEffectFXAA));
+            if (host.FeatureLevel >= global::SharpDX.Direct3D.FeatureLevel.Level_11_0)
+            {
+                transparentRenderCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.MeshOITQuad));
+                postFXAACore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.PostEffectFXAA));
+            }
         }
 
         public void Detach()
