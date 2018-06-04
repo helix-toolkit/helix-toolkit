@@ -127,10 +127,24 @@ namespace HelixToolkit.UWP.Utilities
         }
     }
 
+    public interface IRenderStatistics
+    {
+        IFrameStatistics FPSStatistics { get; }
+        IFrameStatistics LatencyStatistics { get; }
+        int NumModel3D { get; }
+        int NumCore3D { get; }
+        int NumTriangles { get; }
+        int NumDrawCalls { get; }
+        RenderDetail FrameDetail { set; get; }
+        ICamera Camera { set; get; }
+        string GetDetailString();
+        void Reset();
+    }
+
     /// <summary>
     /// 
     /// </summary>
-    public class RenderStatistics
+    public sealed class RenderStatistics : IRenderStatistics
     {
         const string LineBreak = "\n---------\n";
         /// <summary>
@@ -154,21 +168,28 @@ namespace HelixToolkit.UWP.Utilities
         /// <value>
         /// The number model3d.
         /// </value>
-        public int NumModel3D { set; get; } = 0;
+        public int NumModel3D { internal set; get; } = 0;
         /// <summary>
         /// Gets or sets the number of render core3d per frame.
         /// </summary>
         /// <value>
         /// The number core3 d.
         /// </value>
-        public int NumCore3D { set; get; } = 0;
+        public int NumCore3D { internal set; get; } = 0;
         /// <summary>
         /// Gets or sets the number triangles rendered in geometry model
         /// </summary>
         /// <value>
         /// The number triangles.
         /// </value>
-        public int NumTriangles { set; get; } = 0;
+        public int NumTriangles { internal set; get; } = 0;
+        /// <summary>
+        /// Gets or sets the number draw calls per frame
+        /// </summary>
+        /// <value>
+        /// The number draw calls.
+        /// </value>
+        public int NumDrawCalls { internal set; get; } = 0;
         /// <summary>
         /// Gets or sets the camera.
         /// </summary>
@@ -225,7 +246,9 @@ namespace HelixToolkit.UWP.Utilities
         {
             return $"Render(ms): {Math.Round(LatencyStatistics.AverageValue, 4)}\n" +
                 $"NumModel3D: {NumModel3D}\n" +
-                $"NumCore3D: {NumCore3D}" + LineBreak;
+                $"NumCore3D: {NumCore3D}\n" +
+                $"NumDrawCalls: {NumDrawCalls}"
+                + LineBreak;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private string GetTriangleCount()
@@ -244,7 +267,7 @@ namespace HelixToolkit.UWP.Utilities
         {
             FPSStatistics.Reset();
             LatencyStatistics.Reset();
-            NumTriangles = NumCore3D = NumModel3D = 0;
+            NumTriangles = NumCore3D = NumModel3D = NumDrawCalls = 0;
         }
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

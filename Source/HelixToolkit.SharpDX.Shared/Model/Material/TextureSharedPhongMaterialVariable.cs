@@ -16,6 +16,9 @@ namespace HelixToolkit.UWP.Model
     using System;
     using Utilities;
     using ShaderManager;
+    using Render;
+    using System.Runtime.CompilerServices;
+
     /// <summary>
     /// Default PhongMaterial Variables
     /// </summary>
@@ -32,7 +35,7 @@ namespace HelixToolkit.UWP.Model
         private const int NUMSAMPLERS = 5;
         private const int DiffuseIdx = 0, AlphaIdx = 1, NormalIdx = 2, DisplaceIdx = 3, ShadowIdx = 4;
 
-        private SharedTextureResourceProxy[] TextureResources = new SharedTextureResourceProxy[NUMTEXTURES];
+        private readonly ShaderResourceViewProxy[] TextureResources = new ShaderResourceViewProxy[NUMTEXTURES];
         private bool HasTextures
         {
             get
@@ -307,11 +310,11 @@ namespace HelixToolkit.UWP.Model
             }
             OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
         }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CreateTextureView(System.IO.Stream stream, int index)
         {
-            TextureResources[index]?.Detach(ModelGuid);
-            TextureResources[index] = stream == null ? null : textureManager.Register(ModelGuid, stream);
+            RemoveAndDispose(ref TextureResources[index]);
+            TextureResources[index] = stream == null ? null : Collect(textureManager.Register(stream));
         }
 
         private void CreateTextureViews()
@@ -327,8 +330,7 @@ namespace HelixToolkit.UWP.Model
             {
                 for (int i = 0; i < NUMTEXTURES; ++i)
                 {
-                    TextureResources[i]?.Detach(ModelGuid);
-                    TextureResources[i] = null;
+                    RemoveAndDispose(ref TextureResources[i]);
                 }
             }
         }
@@ -382,12 +384,12 @@ namespace HelixToolkit.UWP.Model
         }
 
         /// <summary>
-        /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContext, ShaderPass)"/>
+        /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContextProxy, ShaderPass)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="shaderPass"></param>
         /// <returns></returns>
-        public bool BindMaterialTextures(DeviceContext context, ShaderPass shaderPass)
+        public bool BindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)
         {
             if (material == null)
             {
@@ -395,72 +397,95 @@ namespace HelixToolkit.UWP.Model
             }
             UpdateMappings(shaderPass);
             if (HasTextures)
-            {                
-                for (int i = 0; i < shaderPass.Shaders.Count; ++i)
-                {
-                    var shader = shaderPass.Shaders[i];
-                    if (shader.IsNULL || !EnumHelper.HasFlag(Constants.CanBindTextureStages, shader.ShaderType))
-                    {
-                        continue;
-                    }
-                    OnBindMaterialTextures(context, shader);
-                }
+            {
+                OnBindMaterialTextures(context, shaderPass.VertexShader);
+                OnBindMaterialTextures(context, shaderPass.DomainShader);
+                OnBindMaterialTextures(context, shaderPass.PixelShader);
             }
             if (RenderShadowMap)
             {
-                shaderPass.GetShader(ShaderStage.Pixel).BindSampler(context, SamplerBindingMap[ShaderStage.Pixel.ToIndex()][NUMSAMPLERS - 1], SamplerResources[NUMSAMPLERS - 1]);
+                shaderPass.PixelShader.BindSampler(context, SamplerBindingMap[Constants.PixelIdx][NUMSAMPLERS - 1], SamplerResources[NUMSAMPLERS - 1]);
             }
             return true;
         }
-
-        private void UpdateMappings(ShaderPass shaderPass)
-        {
-            if (currentPass == shaderPass)
-            {
-                return;
-            }
-            currentPass = shaderPass;
-            for(int i = 0; i < shaderPass.Shaders.Count; ++i)
-            {
-                var shader = shaderPass.Shaders[i];
-                if (shader.IsNULL || !EnumHelper.HasFlag(Constants.CanBindTextureStages, shader.ShaderType))
-                {
-                    continue;
-                }
-                int idx = shaderPass.Shaders[i].ShaderType.ToIndex();
-                TextureBindingMap[idx][DiffuseIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderDiffuseTexName);
-                TextureBindingMap[idx][AlphaIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderAlphaTexName);
-                TextureBindingMap[idx][NormalIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderNormalTexName);
-                TextureBindingMap[idx][DisplaceIdx] = shader.ShaderResourceViewMapping.TryGetBindSlot(ShaderDisplaceTexName);
-
-                SamplerBindingMap[idx][DiffuseIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerDiffuseTexName);
-                SamplerBindingMap[idx][AlphaIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerAlphaTexName);
-                SamplerBindingMap[idx][NormalIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerNormalTexName);
-                SamplerBindingMap[idx][DisplaceIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerDisplaceTexName);
-                SamplerBindingMap[idx][ShadowIdx] = shader.SamplerMapping.TryGetBindSlot(ShaderSamplerShadowMapName);
-            }
-        }
-
 
         /// <summary>
         /// Actual bindings
         /// </summary>
         /// <param name="context"></param>
         /// <param name="shader"></param>
-        private void OnBindMaterialTextures(DeviceContext context, ShaderBase shader)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void OnBindMaterialTextures(DeviceContextProxy context, VertexShader shader)
         {
-            int idx = shader.ShaderType.ToIndex();
-            for (int i = 0; i < NUMTEXTURES; ++i)
+            if (shader.IsNULL)
             {
-                if (TextureResources[i] == null) { continue; }
-                shader.BindTexture(context, TextureBindingMap[idx][i], TextureResources[i]);
-                shader.BindSampler(context, SamplerBindingMap[idx][i], SamplerResources[i]);
+                return;
             }
-            if (RenderShadowMap)
-            {
-                shader.BindSampler(context, SamplerBindingMap[idx][NUMSAMPLERS - 1], SamplerResources[NUMSAMPLERS - 1]);
-            }
+            int idx = shader.ShaderStageIndex;
+            shader.BindTexture(context, TextureBindingMap[idx][DisplaceIdx], TextureResources[DisplaceIdx]);
+            shader.BindSampler(context, SamplerBindingMap[idx][DisplaceIdx], SamplerResources[DisplaceIdx]);
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void OnBindMaterialTextures(DeviceContextProxy context, DomainShader shader)
+        {
+            if (shader.IsNULL)
+            {
+                return;
+            }
+            int idx = shader.ShaderStageIndex;
+            shader.BindTexture(context, TextureBindingMap[idx][DisplaceIdx], TextureResources[DisplaceIdx]);
+            shader.BindSampler(context, SamplerBindingMap[idx][DisplaceIdx], SamplerResources[DisplaceIdx]);
+        }
+        /// <summary>
+        /// Actual bindings
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="shader"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void OnBindMaterialTextures(DeviceContextProxy context, PixelShader shader)
+        {
+            if (shader.IsNULL)
+            {
+                return;
+            }
+            int idx = shader.ShaderStageIndex;
+            shader.BindTexture(context, TextureBindingMap[idx][DiffuseIdx], TextureResources[DiffuseIdx]);
+            shader.BindSampler(context, SamplerBindingMap[idx][DiffuseIdx], SamplerResources[DiffuseIdx]);
+            shader.BindTexture(context, TextureBindingMap[idx][NormalIdx], TextureResources[NormalIdx]);
+            shader.BindSampler(context, SamplerBindingMap[idx][NormalIdx], SamplerResources[NormalIdx]);
+            shader.BindTexture(context, TextureBindingMap[idx][AlphaIdx], TextureResources[AlphaIdx]);
+            shader.BindSampler(context, SamplerBindingMap[idx][AlphaIdx], SamplerResources[AlphaIdx]);
+            shader.BindSampler(context, SamplerBindingMap[idx][ShadowIdx], SamplerResources[ShadowIdx]);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void UpdateMappings(ShaderPass shaderPass)
+        {
+            if (currentPass == shaderPass)
+            {
+                return;
+            }
+            var pixelIdx = shaderPass.PixelShader.ShaderStageIndex;
+            TextureBindingMap[pixelIdx][DiffuseIdx] = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderDiffuseTexName);
+            TextureBindingMap[pixelIdx][AlphaIdx] = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderAlphaTexName);
+            TextureBindingMap[pixelIdx][NormalIdx] = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderNormalTexName);
+            SamplerBindingMap[pixelIdx][DiffuseIdx] = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderSamplerDiffuseTexName);
+            SamplerBindingMap[pixelIdx][AlphaIdx] = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderSamplerAlphaTexName);
+            SamplerBindingMap[pixelIdx][NormalIdx] = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderSamplerNormalTexName);
+            SamplerBindingMap[pixelIdx][ShadowIdx] = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderSamplerShadowMapName);
+
+            var vertexIdx = shaderPass.VertexShader.ShaderStageIndex;
+            SamplerBindingMap[vertexIdx][DisplaceIdx] = shaderPass.VertexShader.SamplerMapping.TryGetBindSlot(ShaderSamplerDisplaceTexName);
+            TextureBindingMap[vertexIdx][DisplaceIdx] = shaderPass.VertexShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderDisplaceTexName);
+
+
+            var domainIdx = shaderPass.DomainShader.ShaderStageIndex;
+            SamplerBindingMap[domainIdx][DisplaceIdx] = shaderPass.DomainShader.SamplerMapping.TryGetBindSlot(ShaderSamplerDisplaceTexName);
+            TextureBindingMap[domainIdx][DisplaceIdx] = shaderPass.DomainShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderDisplaceTexName);
+
+            currentPass = shaderPass;
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -470,7 +495,6 @@ namespace HelixToolkit.UWP.Model
             this.Material = null;
             for(int i=0; i< NUMTEXTURES; ++i)
             {
-                TextureResources[i]?.Detach(ModelGuid);
                 TextureResources[i] = null;
             }
             SamplerResources = null;

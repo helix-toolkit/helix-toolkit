@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP.Utilities
     /// <typeparam name="INDEXTYPE"></typeparam>
     /// <typeparam name="NAMETYPE"></typeparam>
     /// <typeparam name="DATATYPE"></typeparam>
-    public class MappingCollection<INDEXTYPE, NAMETYPE, DATATYPE>
+    public sealed class MappingCollection<INDEXTYPE, NAMETYPE, DATATYPE>
     {
         private readonly Dictionary<INDEXTYPE, NAMETYPE> indexNameMapping = new Dictionary<INDEXTYPE, NAMETYPE>();
         private readonly Dictionary<NAMETYPE, INDEXTYPE> nameIndexMapping = new Dictionary<NAMETYPE, INDEXTYPE>();
@@ -171,6 +171,7 @@ namespace HelixToolkit.UWP.Utilities
             nameIndexMapping.Clear();
             indexNameMapping.Clear();
             indexDataMapping.Clear();
+            MappingArray = new KeyValuePair<INDEXTYPE, DATATYPE>[0];
         }
         /// <summary>
         /// 

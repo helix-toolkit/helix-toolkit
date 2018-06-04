@@ -16,11 +16,13 @@ namespace HelixToolkit.UWP.Utilities
 #endif
 {
     using Shaders;
+    using System.Runtime.CompilerServices;
+    using Render;
 
     /// <summary>
     ///
     /// </summary>
-    public class ConstantBufferProxy : BufferProxyBase
+    public sealed class ConstantBufferProxy : BufferProxyBase
     {
         /// <summary>
         ///
@@ -39,7 +41,8 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="usage"></param>
         /// <param name="strideSize"></param>
         public ConstantBufferProxy(int structSize, BindFlags bindFlags = BindFlags.ConstantBuffer,
-            CpuAccessFlags cpuAccessFlags = CpuAccessFlags.None, ResourceOptionFlags optionFlags = ResourceOptionFlags.None, ResourceUsage usage = ResourceUsage.Default, int strideSize = 0)
+            CpuAccessFlags cpuAccessFlags = CpuAccessFlags.None, ResourceOptionFlags optionFlags = ResourceOptionFlags.None,
+            ResourceUsage usage = ResourceUsage.Default, int strideSize = 0)
             : base(structSize, bindFlags)
         {
             if (structSize % 16 != 0)
@@ -85,30 +88,33 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="device"></param>
         public void CreateBuffer(Device device)
         {
+            RemoveAndDispose(ref buffer);
             buffer = Collect(new SDX11.Buffer(device, bufferDesc));
         }
 
         /// <summary>
-        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, ref T)"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, ref T)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context"></param>
         /// <param name="data"></param>
-        public void UploadDataToBuffer<T>(DeviceContext context, ref T data) where T : struct
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UploadDataToBuffer<T>(DeviceContextProxy context, ref T data) where T : struct
         {
             UploadDataToBuffer<T>(context, ref data, 0);
         }
 
         /// <summary>
-        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, ref T, int)"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, ref T, int)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context"></param>
         /// <param name="data"></param>
         /// <param name="offset"></param>
-        public void UploadDataToBuffer<T>(DeviceContext context, ref T data, int offset) where T : struct
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UploadDataToBuffer<T>(DeviceContextProxy context, ref T data, int offset) where T : struct
         {
-            if (buffer.Description.Usage == ResourceUsage.Dynamic)
+            if (bufferDesc.Usage == ResourceUsage.Dynamic)
             {
                 DataStream stream;
                 context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
@@ -125,28 +131,30 @@ namespace HelixToolkit.UWP.Utilities
         }
 
         /// <summary>
-        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, T[], int)"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, T[], int)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context"></param>
         /// <param name="data"></param>
         /// <param name="count"></param>
-        public void UploadDataToBuffer<T>(DeviceContext context, T[] data, int count) where T : struct
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UploadDataToBuffer<T>(DeviceContextProxy context, T[] data, int count) where T : struct
         {
             UploadDataToBuffer<T>(context, data, count, 0);
         }
 
         /// <summary>
-        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContext, T[], int, int)"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer{T}(DeviceContextProxy, T[], int, int)"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="context"></param>
         /// <param name="data"></param>
         /// <param name="count"></param>
         /// <param name="offset"></param>
-        public void UploadDataToBuffer<T>(DeviceContext context, T[] data, int count, int offset) where T : struct
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UploadDataToBuffer<T>(DeviceContextProxy context, T[] data, int count, int offset) where T : struct
         {
-            if (buffer.Description.Usage == ResourceUsage.Dynamic)
+            if (bufferDesc.Usage == ResourceUsage.Dynamic)
             {
                 DataStream stream;
                 context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
@@ -163,13 +171,14 @@ namespace HelixToolkit.UWP.Utilities
         }
 
         /// <summary>
-        /// <see cref="ConstantBufferProxy.UploadDataToBuffer(DeviceContext, Action{DataStream})"/>
+        /// <see cref="ConstantBufferProxy.UploadDataToBuffer(DeviceContextProxy, Action{DataStream})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="writeFuc"></param>
-        public void UploadDataToBuffer(DeviceContext context, Action<DataStream> writeFuc)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UploadDataToBuffer(DeviceContextProxy context, Action<DataStream> writeFuc)
         {
-            if (buffer.Description.Usage == ResourceUsage.Dynamic)
+            if (bufferDesc.Usage == ResourceUsage.Dynamic)
             {
                 DataStream stream;
                 context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
@@ -181,7 +190,9 @@ namespace HelixToolkit.UWP.Utilities
             }
             else
             {
+#if DEBUG
                 throw new Exception("Constant buffer must be dynamic to use this function.");
+#endif
             }
         }
 

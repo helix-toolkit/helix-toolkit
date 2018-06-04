@@ -136,6 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private Task getPostEffectCoreTask;
 
         private int numRendered = 0;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
         /// </summary>
@@ -285,7 +286,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 getTriangleCountTask = Task.Factory.StartNew(() =>
                 {
                     int count = 0;
-                    foreach(var core in opaqueNodes)
+                    foreach(var core in opaqueNodes.Select(x=>x.RenderCore))
                     {
                         if (core is IGeometryRenderCore c)
                         {
@@ -293,7 +294,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                                 count += c.GeometryBuffer.Geometry.Indices.Count / 3;
                         }
                     }
-                    foreach (var core in transparentNodes)
+                    foreach (var core in transparentNodes.Select(x => x.RenderCore))
                     {
                         if (core is IGeometryRenderCore c)
                         {
@@ -301,7 +302,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                                 count += c.GeometryBuffer.Geometry.Indices.Count / 3;
                         }
                     }
-                    RenderStatistics.NumTriangles = count;
+                    renderStatistics.NumTriangles = count;
                 });
             }
         }
@@ -347,7 +348,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
            
             renderer.RenderScreenSpaced(RenderContext, screenSpacedNodes, ref renderParameter);
             renderer.RenderToBackBuffer(RenderContext, ref renderParameter);
-            numRendered += preProcNodes.Count + postProcNodes.Count + screenSpacedNodes.Count;            
+            numRendered += preProcNodes.Count + postProcNodes.Count + screenSpacedNodes.Count;
+            if (ShowRenderDetail != RenderDetail.None)
+            {
+                getTriangleCountTask?.Wait();
+                renderStatistics.NumModel3D = perFrameFlattenedScene.Count;
+                renderStatistics.NumCore3D = numRendered;
+            }
         }
 
         /// <summary>
@@ -376,18 +383,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 d2dRoot.Measure(new Size2F((float)ActualWidth, (float)ActualHeight));
                 d2dRoot.Arrange(new RectangleF(0, 0, (float)ActualWidth, (float)ActualHeight));
             }                
-            if(!renderD2D && ShowRenderDetail == RenderDetail.None)
+            if(!renderD2D)
             {
                 return;
             }        
             viewportRenderable2D.AddRange(Viewport.D2DRenderables);
             renderer.UpdateSceneGraph2D(RenderContext2D, viewportRenderable2D);      
-            if (ShowRenderDetail != RenderDetail.None)
-            {
-                getTriangleCountTask?.Wait();
-                RenderStatistics.NumModel3D = perFrameFlattenedScene.Count;
-                RenderStatistics.NumCore3D = numRendered;
-            }
+
             for (int i = 0; i < viewportRenderable2D.Count; ++i)
             {
                 viewportRenderable2D[i].Render(RenderContext2D);

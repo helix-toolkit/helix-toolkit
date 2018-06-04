@@ -83,11 +83,13 @@ namespace HelixToolkit.UWP.Core
         private int shaderTextureSlot;
         private int textureSamplerSlot;
 
+        private IBillboardBufferModel billboardBuffer;
+
         protected override void OnDefaultPassChanged(ShaderPass pass)
         {
             base.OnDefaultPassChanged(pass);
-            shaderTextureSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
-            textureSamplerSlot = pass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
+            shaderTextureSlot = pass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
+            textureSamplerSlot = pass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
         }
 
         protected override bool OnAttach(IRenderTechnique technique)
@@ -104,12 +106,17 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        protected override void OnGeometryBufferChanged(IGeometryBufferModel buffer)
+        {
+            billboardBuffer = buffer as IBillboardBufferModel;
+        }
+
         protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             model.BoolParams.X = FixedSize;
-            var type = (GeometryBuffer as IBillboardBufferModel).Type;
+            var type = billboardBuffer.Type;
             model.Params.X = (int)type;
         }
 
@@ -127,28 +134,30 @@ namespace HelixToolkit.UWP.Core
             }
             pass.BindShader(deviceContext);
             pass.BindStates(deviceContext, DefaultStateBinding);
-            BindBillboardTexture(deviceContext, pass.GetShader(ShaderStage.Pixel));
+            BindBillboardTexture(deviceContext, pass.PixelShader);
             OnDraw(deviceContext, InstanceBuffer);
         }        
 
-        protected virtual void BindBillboardTexture(DeviceContext context, ShaderBase shader)
+        private void BindBillboardTexture(DeviceContextProxy context, PixelShader shader)
         {
-            var buffer = GeometryBuffer as IBillboardBufferModel;
+            var buffer = billboardBuffer;
             shader.BindTexture(context, shaderTextureSlot, buffer.TextureView);
             shader.BindSampler(context, textureSamplerSlot, textureSampler);
         }
 
-        protected override void OnDraw(DeviceContext context, IElementsBufferModel instanceModel)
+        protected override void OnDraw(DeviceContextProxy context, IElementsBufferModel instanceModel)
         {
-            var billboardGeometry = GeometryBuffer.Geometry as IBillboardText;
-            var vertexCount = billboardGeometry.BillboardVertices.Count;
-            if (instanceModel == null || !instanceModel.HasElements)
+            if (GeometryBuffer.VertexBuffer.Length > 0)
             {
-                context.Draw(vertexCount, 0);
-            }
-            else
-            {
-                context.DrawInstanced(vertexCount, instanceModel.Buffer.ElementCount, 0, 0);
+                if (instanceModel == null || !instanceModel.HasElements)
+                {
+                    context.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
+                }
+                else
+                {
+                    context.DrawInstanced(GeometryBuffer.VertexBuffer[0].ElementCount, instanceModel.Buffer.ElementCount,
+                        0, instanceModel.Buffer.Offset);
+                }
             }
         }
 

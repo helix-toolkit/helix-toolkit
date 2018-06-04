@@ -105,8 +105,8 @@ namespace HelixToolkit.UWP.Core
             {
                 if (SetAffectsRender(ref defaultShaderPass, value))
                 {
-                    cubeTextureSlot = value.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
-                    textureSamplerSlot = value.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
+                    cubeTextureSlot = value.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
+                    textureSamplerSlot = value.PixelShader.SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
                     InvalidateRenderer();
                 }
             }
@@ -388,11 +388,11 @@ namespace HelixToolkit.UWP.Core
 #endif
             {
                 var ctx = contextPool.Get();
-                ctx.DeviceContext.ClearRenderTargetView(cubeRTVs[index], context.RenderHost.ClearColor);
-                ctx.DeviceContext.ClearDepthStencilView(cubeDSVs[index], DepthStencilClearFlags.Depth, 1, 0);
-                ctx.DeviceContext.OutputMerger.SetRenderTargets(cubeDSVs[index], cubeRTVs[index]);
-                ctx.DeviceContext.Rasterizer.SetViewport(viewport);
-                ctx.DeviceContext.Rasterizer.SetScissorRectangle(0, 0, FaceSize, FaceSize);
+                ctx.ClearRenderTargetView(cubeRTVs[index], context.RenderHost.ClearColor);
+                ctx.ClearDepthStencilView(cubeDSVs[index], DepthStencilClearFlags.Depth, 1, 0);
+                ctx.SetRenderTarget(cubeDSVs[index], cubeRTVs[index]);
+                ctx.SetViewport(ref viewport);
+                ctx.SetScissorRectangle(0, 0, FaceSize, FaceSize);
                 var transforms = new GlobalTransformStruct();
                 transforms.Projection = cubeFaceCameras.Cameras[index].Projection;
                 transforms.View = cubeFaceCameras.Cameras[index].View;
@@ -420,7 +420,7 @@ namespace HelixToolkit.UWP.Core
                         node.Render(context, ctx);
                     }
                 }
-                commands[index] = ctx.DeviceContext.FinishCommandList(false);
+                commands[index] = ctx.FinishCommandList(false);
                 contextPool.Put(ctx);
             }
 #if !TEST
@@ -432,8 +432,8 @@ namespace HelixToolkit.UWP.Core
                 Device.ImmediateContext.ExecuteCommandList(commands[i], true);
                 commands[i].Dispose();
             }
-            deviceContext.DeviceContext.GenerateMips(CubeMap);
-            context.UpdatePerFrameData(true, false);
+            deviceContext.GenerateMips(CubeMap);
+            context.UpdatePerFrameData(true, false, deviceContext);
         }
 
         protected override void OnUpdatePerModelStruct(ref GlobalTransformStruct model, RenderContext context)
@@ -454,7 +454,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
+        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
         }
 
@@ -469,12 +469,12 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         public void BindCubeMap(DeviceContextProxy deviceContext)
         {
-            currSampler = deviceContext.DeviceContext.PixelShader.GetSamplers(cubeTextureSlot, 1);
-            currRes = deviceContext.DeviceContext.PixelShader.GetShaderResources(cubeTextureSlot, 1);
+            currSampler = deviceContext.GetSampler(PixelShader.Type, cubeTextureSlot, 1);
+            currRes = deviceContext.GetShaderResources(PixelShader.Type, cubeTextureSlot, 1);
             if (EnableReflector)
             {
-                deviceContext.DeviceContext.PixelShader.SetShaderResource(cubeTextureSlot, CubeMap);
-                deviceContext.DeviceContext.PixelShader.SetSampler(textureSamplerSlot, textureSampler);
+                deviceContext.SetShaderResource(PixelShader.Type, cubeTextureSlot, CubeMap);
+                deviceContext.SetSampler(PixelShader.Type, textureSamplerSlot, textureSampler);
             }
         }
 
@@ -484,8 +484,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         public void UnBindCubeMap(DeviceContextProxy deviceContext)
         {
-            deviceContext.DeviceContext.PixelShader.SetShaderResources(cubeTextureSlot, currRes);
-            deviceContext.DeviceContext.PixelShader.SetSamplers(textureSamplerSlot, currSampler);
+            deviceContext.SetShaderResources(PixelShader.Type, cubeTextureSlot, currRes);
+            deviceContext.SetSamplers(PixelShader.Type, textureSamplerSlot, currSampler);
             for (int i = 0; i < currSampler.Length; ++i)
             {
                 Disposer.RemoveAndDispose(ref currSampler[i]);

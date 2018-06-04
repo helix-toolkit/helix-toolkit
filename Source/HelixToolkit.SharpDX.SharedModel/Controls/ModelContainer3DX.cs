@@ -478,7 +478,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The render statistics.
         /// </value>
-        public RenderStatistics RenderStatistics { get { return CurrentRenderHost != null ? CurrentRenderHost.RenderStatistics : null; } }
+        public IRenderStatistics RenderStatistics { get { return CurrentRenderHost != null ? CurrentRenderHost.RenderStatistics : null; } }
         /// <summary>
         /// Gets or sets a value indicating whether [show statistics].
         /// </summary>
@@ -578,12 +578,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context">The context.</param>
         /// <param name="clearBackBuffer">if set to <c>true</c> [clear back buffer].</param>
         /// <param name="clearDepthStencilBuffer">if set to <c>true</c> [clear depth stencil buffer].</param>
-        public void ClearRenderTarget(DeviceContext context, bool clearBackBuffer, bool clearDepthStencilBuffer)
+        public void ClearRenderTarget(DeviceContextProxy context, bool clearBackBuffer, bool clearDepthStencilBuffer)
         {
-            if (CurrentRenderHost != null)
-            {
-                CurrentRenderHost.ClearRenderTarget(context, clearBackBuffer, clearDepthStencilBuffer);
-            }
+             CurrentRenderHost?.ClearRenderTarget(context, clearBackBuffer, clearDepthStencilBuffer);
         }
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

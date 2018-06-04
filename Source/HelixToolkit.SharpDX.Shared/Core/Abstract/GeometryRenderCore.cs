@@ -3,7 +3,6 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using System;
-using SharpDX;
 using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -81,6 +80,7 @@ namespace HelixToolkit.UWP.Core
                 {
                     geometryBuffer.OnInvalidateRender += InvalidateRenderEvent;
                 }
+                OnGeometryBufferChanged(value);
             }
             get { return geometryBuffer; }
         }
@@ -252,6 +252,11 @@ namespace HelixToolkit.UWP.Core
         /// <param name="pass"></param>
         protected virtual void OnShadowPassChanged(ShaderPass pass) { }
         /// <summary>
+        /// Called when [geometry buffer changed].
+        /// </summary>
+        /// <param name="buffer">The buffer.</param>
+        protected virtual void OnGeometryBufferChanged(IGeometryBufferModel buffer) { }
+        /// <summary>
         /// Set all necessary states and buffers
         /// </summary>
         /// <param name="context"></param>
@@ -272,7 +277,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="vertStartSlot"></param>
-        protected override void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
+        protected override void OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
         {
             GeometryBuffer.AttachBuffers(context, this.VertexLayout, ref vertStartSlot, EffectTechnique.EffectsManager);
             InstanceBuffer?.AttachBuffer(context, ref vertStartSlot);           
@@ -292,7 +297,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="instanceModel"></param>
-        protected virtual void OnDraw(DeviceContext context, IElementsBufferModel instanceModel)
+        protected virtual void OnDraw(DeviceContextProxy context, IElementsBufferModel instanceModel)
         {
             if (GeometryBuffer.IndexBuffer != null)
             {

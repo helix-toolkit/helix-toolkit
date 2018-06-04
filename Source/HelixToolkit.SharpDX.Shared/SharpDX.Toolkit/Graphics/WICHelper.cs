@@ -535,7 +535,7 @@ namespace SharpDX.Toolkit.Graphics
                             try
                             {
                                 converter.CopyPixels(rowPitch, temp, slicePitch);
-                                frame.Palette = palette;
+                                frame.SetPalette(palette);
                                 frame.WritePixels(image.Height, temp, rowPitch, slicePitch);
                             }
                             finally

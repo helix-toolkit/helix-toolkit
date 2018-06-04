@@ -224,20 +224,20 @@ namespace HelixToolkit.UWP.Core
                 resolutionChanged = false;
             }
 
-            deviceContext.DeviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
+            deviceContext.ClearDepthStencilView(viewResource, DepthStencilClearFlags.Depth, 1.0f, 0);
             context.IsShadowPass = true;
             var orgFrustum = context.BoundingFrustum;
             var frustum = new BoundingFrustum(LightViewProjectMatrix);
             context.BoundingFrustum = frustum;
 #if !TEST
-            deviceContext.DeviceContext.Rasterizer.SetViewport(0, 0, Width, Height);
+            deviceContext.SetViewport(0, 0, Width, Height);
 
-            deviceContext.DeviceContext.OutputMerger.SetTargets(viewResource.DepthStencilView, new RenderTargetView[0]);
+            deviceContext.SetDepthStencilOnly(viewResource.DepthStencilView);
             for (int i = 0; i < context.RenderHost.PerFrameOpaqueNodes.Count; ++i)
             {
                 //Only support opaque object for throwing shadows.
                 var core = context.RenderHost.PerFrameOpaqueNodes[i];
-                if (core.IsThrowingShadow && core.TestViewFrustum(ref frustum))
+                if (core.RenderCore.IsThrowingShadow && core.TestViewFrustum(ref frustum))
                 {
                     core.Render(context, deviceContext);
                 }
@@ -246,7 +246,7 @@ namespace HelixToolkit.UWP.Core
             context.IsShadowPass = false;
             context.BoundingFrustum = orgFrustum;
             context.RenderHost.SetDefaultRenderTargets(false);
-            context.SharedResource.ShadowView = viewResource.TextureView;
+            context.SharedResource.ShadowView = viewResource;
 #endif
         }
 

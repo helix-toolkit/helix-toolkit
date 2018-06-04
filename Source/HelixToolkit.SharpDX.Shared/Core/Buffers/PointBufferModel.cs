@@ -2,17 +2,18 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
-using System.Linq;
-using SharpDX;
 using global::SharpDX.Direct3D;
 using global::SharpDX.Direct3D11;
+using SharpDX;
+using System;
+using System.Linq;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Render;
     using Utilities;
     /// <summary>
     /// Point Geometry Buffer Model. Use for point rendering
@@ -61,7 +62,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="geometry">The geometry.</param>
         /// <param name="deviceResources">The device resources.</param>
         /// <param name="bufferIndex"></param>
-        protected override void OnCreateVertexBuffer(DeviceContext context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
+        protected override void OnCreateVertexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
         {
             // -- set geometry if given
             if (geometry != null && geometry.Positions != null && geometry.Positions.Count > 0)
@@ -83,7 +84,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="buffer">The buffer.</param>
         /// <param name="geometry">The geometry.</param>
         /// <param name="deviceResources">The device resources.</param>
-        protected override void OnCreateIndexBuffer(DeviceContext context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources)
+        protected override void OnCreateIndexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, Geometry3D geometry, IDeviceResources deviceResources)
         {
             
         }

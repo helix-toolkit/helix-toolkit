@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Shaders;
     using Core;
-
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -154,6 +154,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context"></param>
         /// <param name="shaderPass"></param>
         /// <returns></returns>
-        bool BindMaterialTextures(DeviceContext context, ShaderPass shaderPass);
+        bool BindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass);
     }
 }

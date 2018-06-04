@@ -44,9 +44,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public ImmediateContextRenderer(IDevice3DResources deviceResource)
         {
 #if DX11_1
-            ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext1));
+            ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext1, deviceResource.Device));
 #else
-            ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext));
+            ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext, deviceResource.Device));
 #endif
             transparentRenderCore = Collect(new OrderIndependentTransparentRenderCore());
             postFXAACore = Collect(new PostEffectFXAA());
@@ -102,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
             if (parameter.UpdatePerFrameData)
             {
-                context.UpdatePerFrameData();
+                context.UpdatePerFrameData(ImmediateContext);
             }
         }
 
@@ -184,9 +184,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         public void SetRenderTargets(ref RenderParameter parameter)
         {
-            ImmediateContext.DeviceContext.OutputMerger.SetTargets(parameter.DepthStencilView, parameter.RenderTargetView);
-            ImmediateContext.DeviceContext.Rasterizer.SetViewport(parameter.ViewportRegion);
-            ImmediateContext.DeviceContext.Rasterizer.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top, 
+            ImmediateContext.SetRenderTargets(parameter.DepthStencilView, parameter.RenderTargetView);
+            ImmediateContext.SetViewport(ref parameter.ViewportRegion);
+            ImmediateContext.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top, 
                 parameter.ScissorRegion.Right, parameter.ScissorRegion.Bottom);
         }
 
@@ -248,16 +248,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 if (parameter.IsMSAATexture)
                 {
-                    ImmediateContext.DeviceContext.ResolveSubresource(parameter.CurrentTargetTexture, 0, buffer.FullResPPBuffer.CurrentTexture, 0, buffer.Format);
+                    ImmediateContext.ResolveSubresource(parameter.CurrentTargetTexture, 0, buffer.FullResPPBuffer.CurrentTexture, 0, buffer.Format);
                 }
                 else
                 {
-                    ImmediateContext.DeviceContext.CopyResource(parameter.CurrentTargetTexture, buffer.FullResPPBuffer.CurrentTexture);                    
+                    ImmediateContext.CopyResource(parameter.CurrentTargetTexture, buffer.FullResPPBuffer.CurrentTexture);                    
                 }
             }
             else
             {
-                ImmediateContext.DeviceContext.CopyResource(parameter.CurrentTargetTexture, buffer.FullResPPBuffer.CurrentTexture);
+                ImmediateContext.CopyResource(parameter.CurrentTargetTexture, buffer.FullResPPBuffer.CurrentTexture);
                 postFXAACore.FXAALevel = context.RenderHost.RenderConfiguration.FXAALevel;
                 postFXAACore.Render(context, ImmediateContext);
             }
@@ -277,7 +277,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 bool useDefault = parameter.RenderTargetView[0] == buffer.ColorBuffer.RenderTargetView;
 
                 var depthStencilBuffer = useDefault ? buffer.DepthStencilBuffer : buffer.FullResDepthStencilPool.Get(Format.D32_Float_S8X24_UInt);
-                ImmediateContext.DeviceContext.OutputMerger.SetRenderTargets(depthStencilBuffer, parameter.RenderTargetView);
+                ImmediateContext.SetRenderTargets(depthStencilBuffer, parameter.RenderTargetView);
 
                 for (int i = 0; i < count; ++i)
                 {
@@ -299,11 +299,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             var buffer = context.RenderHost.RenderBuffer;
             if (parameter.IsMSAATexture)
             {
-                ImmediateContext.DeviceContext.ResolveSubresource(parameter.CurrentTargetTexture, 0, buffer.BackBuffer.Resource, 0, buffer.Format);
+                ImmediateContext.ResolveSubresource(parameter.CurrentTargetTexture, 0, buffer.BackBuffer.Resource, 0, buffer.Format);
             }
             else
             {
-                ImmediateContext.DeviceContext.CopyResource(parameter.CurrentTargetTexture, buffer.BackBuffer.Resource);
+                ImmediateContext.CopyResource(parameter.CurrentTargetTexture, buffer.BackBuffer.Resource);
             }
         }
 

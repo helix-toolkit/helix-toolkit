@@ -18,7 +18,7 @@ namespace CustomShaderDemo
     {
         private int ColorTextureSlot;
         private int ColorTextureSamplerSlot;
-        private SamplerState colorTextureSampler;
+        private SamplerStateProxy colorTextureSampler;
 
         private bool colorChanged = true;
 
@@ -85,7 +85,7 @@ namespace CustomShaderDemo
             model.Params.Y = dataHeightScale;
         }
 
-        protected override void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
+        protected override void OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
         {
             base.OnAttachBuffers(context, ref vertStartSlot);
             if (colorChanged)
@@ -107,8 +107,8 @@ namespace CustomShaderDemo
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
-            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, ColorTextureSamplerSlot, colorTextureSampler);
-            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, ColorTextureSlot, colorGradientResource);
+            DefaultShaderPass.PixelShader.BindSampler(deviceContext, ColorTextureSamplerSlot, colorTextureSampler);
+            DefaultShaderPass.PixelShader.BindTexture(deviceContext, ColorTextureSlot, colorGradientResource);
             base.OnRender(context, deviceContext);
         }
     }

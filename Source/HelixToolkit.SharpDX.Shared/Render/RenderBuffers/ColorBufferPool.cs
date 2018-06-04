@@ -14,16 +14,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     public sealed class PingPongColorBuffers : DisposeObject
     {
         /// <summary>
-        /// Gets the current ShaderResourceView.
+        /// Gets the current ShaderResourceViewProxy.
         /// </summary>
         /// <value>
         /// The current SRV.
         /// </value>
-        public ShaderResourceView CurrentSRV
+        public ShaderResourceViewProxy CurrentSRV
         {
             get
             {
-                return textures[0].TextureView;
+                return textures[0];
             }
         }
 
@@ -33,11 +33,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The next SRV.
         /// </value>
-        public ShaderResourceView NextSRV
+        public ShaderResourceViewProxy NextSRV
         {
             get
             {
-                return textures[1].TextureView;
+                return textures[1];
             }
         }
 
@@ -51,11 +51,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The current RTV.
         /// </value>
-        public RenderTargetView CurrentRTV
+        public ShaderResourceViewProxy CurrentRTV
         {
             get
             {
-                return textures[0].RenderTargetView;
+                return textures[0];
             }
         }
 
@@ -65,11 +65,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <value>
         /// The next RTV.
         /// </value>
-        public RenderTargetView NextRTV
+        public ShaderResourceViewProxy NextRTV
         {
             get
             {
-                return textures[1].RenderTargetView;
+                return textures[1];
             }
         }
 
@@ -196,7 +196,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 return;
             }
-            ConcurrentBag<ShaderResourceViewProxy> bag = pool.GetOrAdd(format, new System.Func<Format, ConcurrentBag<ShaderResourceViewProxy>>((d) => { return new ConcurrentBag<ShaderResourceViewProxy>(); }));
+            ConcurrentBag<ShaderResourceViewProxy> bag = pool.GetOrAdd(format, new System.Func<Format, ConcurrentBag<ShaderResourceViewProxy>>((d) =>
+            { return new ConcurrentBag<ShaderResourceViewProxy>(); }));
             bag.Add(proxy);
         }
 

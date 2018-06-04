@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using global::SharpDX.Direct3D;
 using global::SharpDX.Direct3D11;
 using global::SharpDX.DXGI;
+using System.Linq;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -326,6 +327,18 @@ namespace HelixToolkit.UWP
             }
             techniqueDict.Add(description.Name, new Lazy<IRenderTechnique>(() => { return Initialized ? Collect(new Technique(description, Device, this)) : null; }, true));
         }
+
+        /// <summary>
+        /// Determines whether the specified name has technique.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified name has technique; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasTechnique(string name)
+        {
+            return techniqueDict.ContainsKey(name);
+        }
         /// <summary>
         /// <see cref="IEffectsManager.RemoveTechnique(string)"/>
         /// </summary>
@@ -333,14 +346,28 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public bool RemoveTechnique(string name)
         {
-            Lazy<IRenderTechnique> t;
-            techniqueDict.TryGetValue(name, out t);
-            if (t != null && t.IsValueCreated)
+            if(techniqueDict.TryGetValue(name, out Lazy<IRenderTechnique> t))
             {
-                var v = t.Value;
-                RemoveAndDispose(ref v);
+                if (t.IsValueCreated)
+                {
+                    var v = t.Value;
+                    RemoveAndDispose(ref v);
+                }
+                return techniqueDict.Remove(name);
             }
-            return techniqueDict.Remove(name);
+            return false;
+        }
+
+        /// <summary>
+        /// Removes all technique.
+        /// </summary>
+        public void RemoveAllTechniques()
+        {
+            var names = techniqueDict.Keys.ToArray();
+            foreach(var name in names)
+            {
+                RemoveTechnique(name);
+            }
         }
 
         /// <summary>

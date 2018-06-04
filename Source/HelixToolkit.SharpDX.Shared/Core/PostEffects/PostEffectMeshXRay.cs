@@ -156,14 +156,14 @@ namespace HelixToolkit.UWP.Core
             if (hasMSAA)
             {
                 //Needs to do a depth pass for existing meshes.Because the msaa depth buffer is not resolvable.
-                deviceContext.DeviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Depth, 1, 0);
+                deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Depth, 1, 0);
                 depthPrepassCore.Render(context, deviceContext);
             }
 
             context.IsCustomPass = true;
             if (dPass)
             {                
-                deviceContext.DeviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 1, 0);
+                deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 1, 0);
                 currentCores.Clear();
                 for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                 {
@@ -239,7 +239,7 @@ namespace HelixToolkit.UWP.Core
             }
             if (hasMSAA)
             {
-                deviceContext.DeviceContext.OutputMerger.ResetTargets();
+                deviceContext.ClearRenderTagetBindings();
                 buffer.FullResDepthStencilPool.Put(Format.D32_Float_S8X24_UInt, depthStencilBuffer);
             }
             context.IsCustomPass = false;
@@ -251,15 +251,15 @@ namespace HelixToolkit.UWP.Core
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContext context, int width, int height, bool clear = true)
+        private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height, bool clear = true)
         {
             if (clear)
             {
                 context.ClearRenderTargetView(targetView, global::SharpDX.Color.Transparent);
             }
-            context.OutputMerger.SetRenderTargets(dsv, targetView == null ? null : new RenderTargetView[] { targetView });
-            context.Rasterizer.SetViewport(0, 0, width, height);
-            context.Rasterizer.SetScissorRectangle(0, 0, width, height);
+            context.SetRenderTargets(dsv, targetView == null ? null : new RenderTargetView[] { targetView });
+            context.SetViewport(0, 0, width, height);
+            context.SetScissorRectangle(0, 0, width, height);
         }
     }
 }

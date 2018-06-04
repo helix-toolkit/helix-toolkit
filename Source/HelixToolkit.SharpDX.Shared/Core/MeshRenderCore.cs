@@ -157,7 +157,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnDefaultPassChanged(ShaderPass pass)
         {
             base.OnDefaultPassChanged(pass);
-            shadowMapSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowMapTextureName);
+            shadowMapSlot = pass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderShadowMapTextureName);
         }
 
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
@@ -181,7 +181,7 @@ namespace HelixToolkit.UWP.Core
             }
             if (context.RenderHost.IsShadowMapEnabled)
             {
-                pass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, shadowMapSlot, context.SharedResource.ShadowView);
+                pass.PixelShader.BindTexture(deviceContext, shadowMapSlot, context.SharedResource.ShadowView);
             }
             DynamicReflector?.BindCubeMap(deviceContext);
             OnDraw(deviceContext, InstanceBuffer);

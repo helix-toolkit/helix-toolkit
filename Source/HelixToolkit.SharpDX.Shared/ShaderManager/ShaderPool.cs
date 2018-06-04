@@ -55,7 +55,7 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <returns></returns>
         protected override ShaderBase Create(Device device, ref ShaderDescription description)
         {
-            return description.ByteCode == null ? NullShader.GetNullShader(description.ShaderType) : description.CreateShader(device, ConstantBufferPool, logger);
+            return description.ByteCode == null ? Constants.GetNullShader(description.ShaderType) : description.CreateShader(device, ConstantBufferPool, logger);
         }
     }
     /// <summary>
@@ -106,12 +106,12 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="logger"></param>
         public ShaderPoolManager(Device device, IConstantBufferPool cbPool, LogWrapper logger)
         {
-            shaderPools[ShaderStage.Vertex.ToIndex()] = Collect(new ShaderPool(device, cbPool, logger));
-            shaderPools[ShaderStage.Domain.ToIndex()] = Collect(new ShaderPool(device, cbPool, logger));
-            shaderPools[ShaderStage.Hull.ToIndex()] = Collect(new ShaderPool(device, cbPool, logger));
-            shaderPools[ShaderStage.Geometry.ToIndex()] = Collect(new ShaderPool(device, cbPool, logger));
-            shaderPools[ShaderStage.Pixel.ToIndex()] = Collect(new ShaderPool(device, cbPool, logger));
-            shaderPools[ShaderStage.Compute.ToIndex()] = Collect(new ShaderPool(device, cbPool, logger));
+            shaderPools[Constants.VertexIdx] = Collect(new ShaderPool(device, cbPool, logger));
+            shaderPools[Constants.DomainIdx] = Collect(new ShaderPool(device, cbPool, logger));
+            shaderPools[Constants.HullIdx] = Collect(new ShaderPool(device, cbPool, logger));
+            shaderPools[Constants.GeometryIdx] = Collect(new ShaderPool(device, cbPool, logger));
+            shaderPools[Constants.PixelIdx] = Collect(new ShaderPool(device, cbPool, logger));
+            shaderPools[Constants.ComputeIdx] = Collect(new ShaderPool(device, cbPool, logger));
             layoutPool = Collect(new LayoutPool(device, logger));
         }
         /// <summary>

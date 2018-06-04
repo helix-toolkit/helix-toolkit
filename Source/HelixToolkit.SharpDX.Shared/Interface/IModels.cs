@@ -11,8 +11,7 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using Core;
-    using global::SharpDX.Direct3D11;
+    using Render;
     using System;
     using Utilities;
     /// <summary>
@@ -110,7 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         void ResetLightCount();
         /// <summary>
-        /// Increments the light count. Increment during each light render (except Ambient light). <see cref="LightCoreBase.Render(RenderContext, Render.DeviceContextProxy)"/>
+        /// Increments the light count. Increment during each light render (except Ambient light).
         /// </summary>
         void IncrementLightCount();
         /// <summary>
@@ -118,6 +117,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="context">The context.</param>
-        void UploadToBuffer(IBufferProxy buffer, DeviceContext context);
+        void UploadToBuffer(IBufferProxy buffer, DeviceContextProxy context);
     }
 }

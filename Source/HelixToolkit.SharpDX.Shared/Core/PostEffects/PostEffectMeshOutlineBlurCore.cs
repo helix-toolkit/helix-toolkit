@@ -148,7 +148,7 @@ namespace HelixToolkit.UWP.Core
 
         private int samplerSlot;
 
-        private SamplerState sampler;
+        private SamplerStateProxy sampler;
 
         private const int downSamplingScale = 2;
 
@@ -188,8 +188,8 @@ namespace HelixToolkit.UWP.Core
                 blurPassVertical = technique.GetPass(DefaultPassNames.EffectBlurVertical);
                 blurPassHorizontal = technique.GetPass(DefaultPassNames.EffectBlurHorizontal);
                 screenOutlinePass = technique.GetPass(DefaultPassNames.MeshOutline);
-                textureSlot = screenOutlinePass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
-                samplerSlot = screenOutlinePass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
+                textureSlot = screenOutlinePass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
+                samplerSlot = screenOutlinePass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
                 sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
                 blurCore = Collect(new PostEffectBlurCore(global::SharpDX.DXGI.Format.B8G8R8A8_UNorm, blurPassVertical,
                     blurPassHorizontal, textureSlot, samplerSlot, DefaultSamplers.LinearSamplerClampAni1, technique.EffectsManager));
@@ -216,7 +216,7 @@ namespace HelixToolkit.UWP.Core
                 depthdesc.Width = buffer.TargetWidth;
                 depthdesc.Height = buffer.TargetHeight;
 
-                blurCore.Resize(deviceContext.DeviceContext.Device,
+                blurCore.Resize(deviceContext,
                     depthdesc.Width / downSamplingScale,
                     depthdesc.Height / downSamplingScale);
                 //Skip this frame to avoid performance hit due to texture creation
@@ -230,7 +230,7 @@ namespace HelixToolkit.UWP.Core
             #region Render objects onto offscreen texture
             var renderTargetFull = buffer.FullResPPBuffer.NextRTV;
 
-            deviceContext.DeviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
+            deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
             BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
 
             context.IsCustomPass = true;
@@ -266,34 +266,34 @@ namespace HelixToolkit.UWP.Core
             #endregion
             if (hasMesh)
             {
-                deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-                deviceContext.DeviceContext.PixelShader.SetSampler(samplerSlot, sampler);
+                deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
                 #region Do Blur Pass
                 BindTarget(null, blurCore.CurrentRTV, deviceContext, blurCore.Width, blurCore.Height, true);
-                blurPassVertical.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
+                blurPassVertical.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
+                blurPassVertical.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
                 blurPassVertical.BindShader(deviceContext);
                 blurPassVertical.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-                deviceContext.DeviceContext.Draw(4, 0);
+                deviceContext.Draw(4, 0);
 
                 blurCore.Run(deviceContext, NumberOfBlurPass, 1, 0);//Already blur once on vertical, pass 1 as initial index.            
                 #endregion
 
                 #region Draw back with stencil test
                 BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
-                screenQuadPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, blurCore.CurrentSRV);
+                screenQuadPass.PixelShader.BindTexture(deviceContext, textureSlot, blurCore.CurrentSRV);
                 screenQuadPass.BindShader(deviceContext);
                 deviceContext.SetDepthStencilState(screenQuadPass.DepthStencilState, 0);
                 screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState);
-                deviceContext.DeviceContext.Draw(4, 0);
+                deviceContext.Draw(4, 0);
                 #endregion
 
                 #region Draw outline onto original target
                 BindTarget(null, buffer.FullResPPBuffer.CurrentRTV, deviceContext, buffer.TargetWidth, buffer.TargetHeight, false);
-                screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
+                screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
                 screenOutlinePass.BindShader(deviceContext);
                 screenOutlinePass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
-                deviceContext.DeviceContext.Draw(4, 0);
-                screenOutlinePass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
+                deviceContext.Draw(4, 0);
+                screenOutlinePass.PixelShader.BindTexture(deviceContext, textureSlot, null);
                 #endregion
             }
             buffer.FullResDepthStencilPool.Put(depthdesc.Format, depthStencilBuffer);
@@ -306,15 +306,15 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContext context, int width, int height, bool clear = true)
+        private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height, bool clear = true)
         {
             if (clear)
             {
                 context.ClearRenderTargetView(targetView, global::SharpDX.Color.Transparent);
             }
-            context.OutputMerger.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
-            context.Rasterizer.SetViewport(0, 0, width, height);
-            context.Rasterizer.SetScissorRectangle(0, 0, width, height);
+            context.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
+            context.SetViewport(0, 0, width, height);
+            context.SetScissorRectangle(0, 0, width, height);
         }
 
         protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)

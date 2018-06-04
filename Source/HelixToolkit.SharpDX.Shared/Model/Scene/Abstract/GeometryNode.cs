@@ -369,7 +369,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is throwing shadow.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is throwing shadow; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsThrowingShadow
+        {
+            set
+            {
+                RenderCore.IsThrowingShadow = value;
+            }
+            get
+            {
+                return RenderCore.IsThrowingShadow;
+            }
+        }
         #endregion Properties
 
         /// <summary>

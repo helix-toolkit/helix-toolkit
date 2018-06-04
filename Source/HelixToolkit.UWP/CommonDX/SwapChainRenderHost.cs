@@ -69,7 +69,7 @@ namespace HelixToolkit.UWP
             using (global::SharpDX.DXGI.ISwapChainPanelNative nativeObject = global::SharpDX.ComObject.As<global::SharpDX.DXGI.ISwapChainPanelNative>(this))
             {
                 // Set its swap chain.
-                nativeObject.SwapChain = (renderHost.RenderBuffer as DX11SwapChainCompositionRenderBufferProxy).SwapChain;
+                nativeObject.SetSwapChain((renderHost.RenderBuffer as DX11SwapChainCompositionRenderBufferProxy).SwapChain);
             }
         }
 

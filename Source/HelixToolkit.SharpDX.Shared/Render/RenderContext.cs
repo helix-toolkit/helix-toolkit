@@ -21,6 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model;
     using Shaders;
     using Utilities;
+    using Render;
 
     /// <summary>
     /// The render-context is currently generated per frame
@@ -141,14 +142,6 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   <c>true</c> if [enable bounding frustum]; otherwise, <c>false</c>.
         /// </value>
         public bool EnableBoundingFrustum { set; get; } = false;
-
-        /// <summary>
-        /// Gets or sets the device context.
-        /// </summary>
-        /// <value>
-        /// The device context.
-        /// </value>
-        public DeviceContext DeviceContext { private set; get; }
 
         /// <summary>
         /// Gets the actual width.
@@ -365,14 +358,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Initializes a new instance of the <see cref="RenderContext"/> class.
         /// </summary>
         /// <param name="renderHost">The render host.</param>
-        /// <param name="renderContext">The render context.</param>
-        public RenderContext(IRenderHost renderHost, DeviceContext renderContext)
+        public RenderContext(IRenderHost renderHost)
         {
             this.RenderHost = renderHost;
             this.IsShadowPass = false;
             this.IsDeferredPass = false;
             cbuffer = renderHost.EffectsManager.ConstantBufferPool.Register(DefaultBufferNames.GlobalTransformCB, GlobalTransformStruct.SizeInBytes);
-            DeviceContext = renderContext;
             LightScene = Collect(new Light3DSceneShared(renderHost.EffectsManager.ConstantBufferPool));
             SharedResource = Collect(new ContextSharedResource());
             OITWeightPower = 3;
@@ -394,16 +385,16 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Call to update constant buffer for per frame
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UpdatePerFrameData()
+        public void UpdatePerFrameData(DeviceContextProxy deviceContext)
         {
-            UpdatePerFrameData(true, true);
+            UpdatePerFrameData(true, true, deviceContext);
         }
 
         /// <summary>
         /// Call to update constant buffer for per frame
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UpdatePerFrameData(bool updateGlobalTransform, bool updateLights)
+        public void UpdatePerFrameData(bool updateGlobalTransform, bool updateLights, DeviceContextProxy deviceContext)
         {
             if (updateGlobalTransform)
             {
@@ -415,11 +406,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     screenViewProjectionMatrix = ViewMatrix * ProjectionMatrix * ViewportMatrix;
                     matrixChanged = false;
                 }
-                cbuffer.UploadDataToBuffer(DeviceContext, ref globalTransform);
+                cbuffer.UploadDataToBuffer(deviceContext, ref globalTransform);
             }
             if (updateLights)
             {
-                LightScene.UploadToBuffer(DeviceContext);
+                LightScene.UploadToBuffer(deviceContext);
             }
         }
     }

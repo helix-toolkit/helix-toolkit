@@ -10,7 +10,7 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
-    using global::SharpDX.Direct3D11;
+    using Render;
     using Utilities;
     /// <summary>
     /// 
@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="vertexBufferStartSlot">The vertex buffer slot. Returns the next available slot after binding</param>
-        void AttachBuffer(DeviceContext context, ref int vertexBufferStartSlot);
+        void AttachBuffer(DeviceContextProxy context, ref int vertexBufferStartSlot);
         /// <summary>
         /// Initializes this instance.
         /// </summary>

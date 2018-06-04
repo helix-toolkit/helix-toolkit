@@ -4,9 +4,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-using System;
-using System.Runtime.Serialization;
 using System.Linq;
+using System.Runtime.Serialization;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
@@ -16,13 +15,12 @@ namespace HelixToolkit.UWP.Shaders
 {
     using HelixToolkit.Logger;
     using ShaderManager;
-    using System.Collections.Generic;
 
     /// <summary>
     /// 
     /// </summary>
     [DataContract]
-    public class ShaderDescription
+    public sealed class ShaderDescription
     {
         /// <summary>
         /// Gets or sets the name.
@@ -40,14 +38,18 @@ namespace HelixToolkit.UWP.Shaders
         /// </value>
         [DataMember]
         public ShaderStage ShaderType { set; get; }
+
         /// <summary>
         /// Gets or sets the level.
         /// </summary>
         /// <value>
         /// The level.
         /// </value>
-        [DataMember]
-        public FeatureLevel Level { set; get; }
+        public FeatureLevel Level
+        {
+            set; get;
+        }
+
         /// <summary>
         /// Gets or sets the byte code.
         /// </summary>
@@ -62,7 +64,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The constant buffer mappings.
         /// </value>
-        [DataMember]
         public ConstantBufferMapping[] ConstantBufferMappings { set; get; }
         /// <summary>
         /// Gets or sets the texture mappings.
@@ -70,7 +71,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The texture mappings.
         /// </value>
-        [DataMember]
         public TextureMapping[] TextureMappings { set; get; }
         /// <summary>
         /// Gets or sets the uav mappings.
@@ -78,7 +78,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The uav mappings.
         /// </value>
-        [DataMember]
         public UAVMapping[] UAVMappings { get; set; }
         /// <summary>
         /// Gets or sets the sampler mappings.
@@ -86,7 +85,6 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The sampler mappings.
         /// </value>
-        [DataMember]
         public SamplerMapping[] SamplerMappings { set; get; }
 
         /// <summary>
@@ -95,7 +93,8 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The shader reflector.
         /// </value>
-        protected IShaderReflector shaderReflector { private set; get; }
+        public IShaderReflector ShaderReflector { set; get; }
+
         /// <summary>
         /// Create a empty description
         /// </summary>
@@ -109,7 +108,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="name"></param>
         /// <param name="type"></param>
         /// <param name="byteCode"></param>
-        protected ShaderDescription(string name, ShaderStage type, byte[] byteCode)
+        public ShaderDescription(string name, ShaderStage type, byte[] byteCode)
         {
             Name = name;
             ShaderType = type;
@@ -146,7 +145,7 @@ namespace HelixToolkit.UWP.Shaders
         public ShaderDescription(string name, ShaderStage type, IShaderReflector reflector, byte[] byteCode)
             : this(name, type, byteCode)
         {
-            shaderReflector = reflector;
+            ShaderReflector = reflector;
         }
 
         /// <summary>
@@ -163,20 +162,20 @@ namespace HelixToolkit.UWP.Shaders
             {
                 return null;
             }
-            if(shaderReflector != null)
+            if(ShaderReflector != null)
             {
-                shaderReflector.Parse(ByteCode, ShaderType);
-                Level = shaderReflector.FeatureLevel;
+                ShaderReflector.Parse(ByteCode, ShaderType);
+                Level = ShaderReflector.FeatureLevel;
                 if (Level > device.FeatureLevel)
                 {
                     logger?.Log(LogLevel.Warning, $"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
                     return null;
                     //throw new Exception($"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
                 }
-                this.ConstantBufferMappings = shaderReflector.ConstantBufferMappings.Values.ToArray();
-                this.TextureMappings = shaderReflector.TextureMappings.Values.ToArray();
-                this.UAVMappings = shaderReflector.UAVMappings.Values.ToArray();
-                this.SamplerMappings = shaderReflector.SamplerMappings.Values.ToArray();
+                this.ConstantBufferMappings = ShaderReflector.ConstantBufferMappings.Values.ToArray();
+                this.TextureMappings = ShaderReflector.TextureMappings.Values.ToArray();
+                this.UAVMappings = ShaderReflector.UAVMappings.Values.ToArray();
+                this.SamplerMappings = ShaderReflector.SamplerMappings.Values.ToArray();
             }
             ShaderBase shader = null;
             switch (ShaderType)
@@ -200,7 +199,6 @@ namespace HelixToolkit.UWP.Shaders
                     shader = new GeometryShader(device, Name, ByteCode);
                     break;
                 default:
-                    shader = NullShader.GetNullShader(ShaderType);
                     break;
             }
             if (ConstantBufferMappings != null)

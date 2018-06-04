@@ -228,7 +228,7 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
-        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
+        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
             base.OnUploadPerModelConstantBuffers(context);
             clipParamCB.UploadDataToBuffer(context, ref clipParameter);
@@ -238,14 +238,9 @@ namespace HelixToolkit.UWP.Core
         {
             base.OnRender(renderContext, deviceContext);
             // Draw backface into stencil buffer
-            DepthStencilView dsView;
-            var renderTargets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1, out dsView);
-            if (dsView == null)
-            {
-                return;
-            }
-            deviceContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
-            deviceContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, new RenderTargetView[0]);//Remove render target
+            var dsView = renderContext.RenderHost.DepthStencilBufferView;
+            deviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
+            deviceContext.SetDepthStencilOnly(dsView);//Remove render target
             deviceContext.SetRasterState(backfaceRasterState);
             drawBackfacePass.BindShader(deviceContext);
             drawBackfacePass.BindStates(deviceContext, StateType.BlendState);
@@ -253,18 +248,13 @@ namespace HelixToolkit.UWP.Core
             OnDraw(deviceContext, InstanceBuffer);
 
             //Draw full screen quad to fill cross section            
-            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+            deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             deviceContext.SetRasterState(RasterState);
             drawScreenQuadPass.BindShader(deviceContext);
             drawScreenQuadPass.BindStates(deviceContext, StateType.BlendState);
-            deviceContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, renderTargets);//Rebind render target
+            renderContext.RenderHost.SetDefaultRenderTargets(false);//Rebind render target
             deviceContext.SetDepthStencilState(drawScreenQuadPass.DepthStencilState, 1); //Only pass stencil buffer test if value is 1
-            deviceContext.DeviceContext.Draw(4, 0);
-
-            //Decrement ref count. See OutputMerger.GetRenderTargets remarks
-            dsView.Dispose();
-            foreach (var t in renderTargets)
-            { t.Dispose(); }
+            deviceContext.Draw(4, 0);
         }
     }
 }

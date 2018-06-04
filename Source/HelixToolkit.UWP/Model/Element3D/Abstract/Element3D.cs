@@ -60,31 +60,6 @@ namespace HelixToolkit.UWP
             get { return (Matrix)this.GetValue(Transform3DProperty); }
             set { this.SetValue(Transform3DProperty, value); }
         }
-        /// <summary>
-        /// The is throwing shadow property
-        /// </summary>
-        public static readonly DependencyProperty IsThrowingShadowProperty =
-            DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(Element3D), new PropertyMetadata(false, (d, e) =>
-            {
-                if ((d as Element3DCore).SceneNode is Core.IThrowingShadow t)
-                {
-                    t.IsThrowingShadow = (bool)e.NewValue;
-                }
-            }));
-        /// <summary>
-        /// <see cref="Core.IThrowingShadow.IsThrowingShadow"/>
-        /// </summary>
-        public bool IsThrowingShadow
-        {
-            set
-            {
-                SetValue(IsThrowingShadowProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(IsThrowingShadowProperty);
-            }
-        }
         #endregion
 
         /// <summary>

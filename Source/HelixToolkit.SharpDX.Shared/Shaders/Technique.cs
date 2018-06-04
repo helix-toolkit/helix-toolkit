@@ -16,8 +16,9 @@ namespace HelixToolkit.UWP.Shaders
 #endif
 {
     using ShaderManager;
-    public class Technique :  DisposeObject, IRenderTechnique
+    public sealed class Technique :  DisposeObject, IRenderTechnique
     {
+        public TechniqueDescription Description { private set; get; }
         private readonly Dictionary<string, Lazy<ShaderPass>> passDict = new Dictionary<string, Lazy<ShaderPass>>();
         private readonly List<Lazy<ShaderPass>> passList = new List<Lazy<ShaderPass>>();
 
@@ -55,6 +56,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="manager"></param>
         public Technique(TechniqueDescription description, Device device, IEffectsManager manager)
         {
+            Description = description;
             Name = description.Name;
             EffectsManager = manager;
             Layout = manager.ShaderManager.RegisterInputLayout(description.InputLayoutDescription);

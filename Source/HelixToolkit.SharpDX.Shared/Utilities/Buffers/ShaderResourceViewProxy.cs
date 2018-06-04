@@ -1,4 +1,5 @@
 using SharpDX.Direct3D11;
+using System.Threading;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Utilities
@@ -89,7 +90,14 @@ namespace HelixToolkit.UWP.Utilities
         {
             this.resource = Collect(resource);
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        public ShaderResourceViewProxy(ShaderResourceView view) : this(view.Device)
+        {
+            textureView = Collect(view);
+        }
         /// <summary>
         /// Creates the view.
         /// </summary>
@@ -110,6 +118,10 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateView(ShaderResourceViewDescription desc)
         {
             RemoveAndDispose(ref textureView);
+            if (resource == null)
+            {
+                return;
+            }
             textureView = Collect(new ShaderResourceView(device, resource, desc));
         }
         /// <summary>
@@ -119,6 +131,10 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateView(DepthStencilViewDescription desc)
         {
             RemoveAndDispose(ref depthStencilView);
+            if (resource == null)
+            {
+                return;
+            }
             depthStencilView = Collect(new DepthStencilView(device, resource, desc));
         }
         /// <summary>
@@ -128,6 +144,10 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateView(RenderTargetViewDescription desc)
         {
             RemoveAndDispose(ref renderTargetView);
+            if (resource == null)
+            {
+                return;
+            }
             renderTargetView = Collect(new RenderTargetView(device, resource, desc));
         }
         /// <summary>
@@ -136,6 +156,10 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateTextureView()
         {
             RemoveAndDispose(ref textureView);
+            if (resource == null)
+            {
+                return;
+            }
             textureView = Collect(new ShaderResourceView(device, resource));
         }
         /// <summary>
@@ -144,12 +168,20 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateRenderTargetView()
         {
             RemoveAndDispose(ref renderTargetView);
+            if (resource == null)
+            {
+                return;
+            }
             renderTargetView = Collect(new RenderTargetView(device, resource));
         }
 
         public void CreateDepthStencilView()
         {
             RemoveAndDispose(ref depthStencilView);
+            if (resource == null)
+            {
+                return;
+            }
             depthStencilView = Collect(new DepthStencilView(device, resource));
         }
 
@@ -203,5 +235,24 @@ namespace HelixToolkit.UWP.Utilities
         {
             return proxy == null ? null : proxy.renderTargetView;
         }
+
+        #region Ref Counter
+
+
+        private int refCounter = 1;
+
+        internal int IncRef()
+        {
+            return Interlocked.Increment(ref refCounter);
+        }
+
+        protected override void OnDispose(bool disposeManagedResources)
+        {
+            if(Interlocked.Decrement(ref refCounter) == 0)
+            {
+                base.OnDispose(disposeManagedResources);
+            }          
+        }
+        #endregion
     }
 }
