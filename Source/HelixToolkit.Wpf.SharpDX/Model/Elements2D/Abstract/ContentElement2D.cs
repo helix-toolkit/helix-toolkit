@@ -132,6 +132,12 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
             }
         }
 
+        protected override void OnAttached()
+        {
+            backgroundChanged = true;
+            base.OnAttached();
+        }
+
         protected void SetupBindings(Element2D content)
         {
             if (content is TextModel2D)
