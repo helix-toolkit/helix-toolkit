@@ -121,7 +121,7 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <returns></returns>
         public ShaderBase RegisterShader(ShaderDescription description)
         {
-            return shaderPools[description.ShaderType.ToIndex()].Register(description);
+            return description == null ? null : shaderPools[description.ShaderType.ToIndex()].Register(description);
         }
         /// <summary>
         /// Registers the input layout.
@@ -130,7 +130,7 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <returns></returns>
         public InputLayout RegisterInputLayout(InputLayoutDescription description)
         {
-            return layoutPool.Register(description.Description);
+            return description == null ? null : layoutPool.Register(description.Description);
         }
         /// <summary>
         /// Called when [dispose].

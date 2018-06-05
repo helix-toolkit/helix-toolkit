@@ -38,6 +38,13 @@ namespace HelixToolkit.UWP.Shaders
         /// </value>
         [DataMember]
         public IList<ShaderPassDescription> PassDescriptions { set; get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this technique is null technique.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is null; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsNull { set; get; } = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TechniqueDescription"/> class.
