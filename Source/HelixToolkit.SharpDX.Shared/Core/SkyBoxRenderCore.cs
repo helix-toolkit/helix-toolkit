@@ -164,6 +164,12 @@ namespace HelixToolkit.UWP.Core
                 return false;
             }
         }
+
+        protected override void OnDetach()
+        {
+            textureSampler = null;
+            base.OnDetach();
+        }
         /// <summary>
         /// Gets the model constant buffer description.
         /// </summary>

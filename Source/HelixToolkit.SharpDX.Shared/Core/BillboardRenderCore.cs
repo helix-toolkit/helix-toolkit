@@ -165,5 +165,11 @@ namespace HelixToolkit.UWP.Core
         {
             
         }
+
+        protected override void OnDetach()
+        {
+            textureSampler = null;
+            base.OnDetach();
+        }
     }
 }

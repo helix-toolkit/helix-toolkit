@@ -170,9 +170,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private SamplerStateProxy textureSampler;
-
-        private double totalElapsed = 0;
         /// <summary>
         /// Gets a value indicating whether this instance has texture.
         /// </summary>
@@ -418,6 +415,9 @@ namespace HelixToolkit.UWP.Core
         private ConstantBufferProxy insertCB;
 
         private ShaderResourceViewProxy textureView;
+        private SamplerStateProxy textureSampler;
+        private BlendStateProxy blendState;
+        private double totalElapsed = 0;
         #endregion
         #region Buffers        
         /// <summary>
@@ -466,7 +466,6 @@ namespace HelixToolkit.UWP.Core
         private ParticleCountIndirectArgs drawArgument = new ParticleCountIndirectArgs();
         #endregion
 
-        private BlendStateProxy blendState;
         private BlendStateDescription blendDesc = new BlendStateDescription() { IndependentBlendEnable = false, AlphaToCoverageEnable = false };
         /// <summary>
         /// Particle blend state description
@@ -697,6 +696,8 @@ namespace HelixToolkit.UWP.Core
         protected override void OnDetach()
         {
             DisposeBuffers();
+            textureSampler = null;
+            blendState = null;
             base.OnDetach();
         }
 

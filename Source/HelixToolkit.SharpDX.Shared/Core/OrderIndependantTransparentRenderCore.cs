@@ -176,6 +176,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnDetach()
         {
+            targetSampler = null;
             width = height = 0;
             colorTarget = null;
             alphaTarget = null;

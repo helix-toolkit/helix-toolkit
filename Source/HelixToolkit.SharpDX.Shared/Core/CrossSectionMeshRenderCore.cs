@@ -199,6 +199,12 @@ namespace HelixToolkit.UWP.Core
             else { return false; }
         }
 
+        protected override void OnDetach()
+        {
+            backfaceRasterState = null;
+            base.OnDetach();
+        }
+
         protected virtual ConstantBufferDescription GetClipParamsCBDescription()
         {
             return new ConstantBufferDescription(DefaultBufferNames.ClipParamsCB, ClipPlaneStruct.SizeInBytes);

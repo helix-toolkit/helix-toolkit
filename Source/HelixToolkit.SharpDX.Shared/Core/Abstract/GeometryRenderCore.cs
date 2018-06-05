@@ -202,11 +202,11 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
         {
-            RemoveAndDispose(ref rasterState);
-            RemoveAndDispose(ref invertCullModeState);
             rasterDescription = description;
             if (!IsAttached && !force)
             { return false; }
+            RemoveAndDispose(ref rasterState);
+            RemoveAndDispose(ref invertCullModeState);
             rasterState = Collect(EffectTechnique.EffectsManager.StateManager.Register(description));
             if(description.CullMode != CullMode.None)
             {

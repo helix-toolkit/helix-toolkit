@@ -356,6 +356,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnDetach()
         {
+            textureSampler = null;
             contextPool = null;
             cubeMap = null;
             cubeDSV = null;
