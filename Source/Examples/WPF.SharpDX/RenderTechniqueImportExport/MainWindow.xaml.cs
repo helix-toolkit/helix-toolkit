@@ -23,6 +23,13 @@ namespace RenderTechniqueImportExport
         public MainWindow()
         {
             InitializeComponent();
+            listMenu.DataContext = DataContext;
+            DataContextChanged += MainWindow_DataContextChanged;
+        }
+
+        private void MainWindow_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            listMenu.DataContext = e.NewValue;
         }
     }
 }
