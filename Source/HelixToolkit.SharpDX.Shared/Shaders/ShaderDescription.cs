@@ -64,6 +64,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The constant buffer mappings.
         /// </value>
+        [DataMember]
         public ConstantBufferMapping[] ConstantBufferMappings { set; get; }
         /// <summary>
         /// Gets or sets the texture mappings.
@@ -71,6 +72,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The texture mappings.
         /// </value>
+        [DataMember]
         public TextureMapping[] TextureMappings { set; get; }
         /// <summary>
         /// Gets or sets the uav mappings.
@@ -78,6 +80,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The uav mappings.
         /// </value>
+        [DataMember]
         public UAVMapping[] UAVMappings { get; set; }
         /// <summary>
         /// Gets or sets the sampler mappings.
@@ -85,6 +88,7 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The sampler mappings.
         /// </value>
+        [DataMember]
         public SamplerMapping[] SamplerMappings { set; get; }
 
         /// <summary>
@@ -100,7 +104,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public ShaderDescription()
         {
-
+            ShaderReflector = new ShaderReflector();
         }
         /// <summary>
         /// 
@@ -113,6 +117,7 @@ namespace HelixToolkit.UWP.Shaders
             Name = name;
             ShaderType = type;
             ByteCode = byteCode;
+            ShaderReflector = new ShaderReflector();
         }
         /// <summary>
         /// Manually specifiy buffer mappings.
@@ -143,8 +148,10 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="reflector"></param>
         /// <param name="byteCode"></param>
         public ShaderDescription(string name, ShaderStage type, IShaderReflector reflector, byte[] byteCode)
-            : this(name, type, byteCode)
         {
+            Name = name;
+            ShaderType = type;
+            ByteCode = byteCode;
             ShaderReflector = reflector;
         }
 

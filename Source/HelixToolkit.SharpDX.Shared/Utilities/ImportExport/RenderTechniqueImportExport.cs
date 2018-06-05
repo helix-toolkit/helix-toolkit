@@ -96,7 +96,7 @@ namespace HelixToolkit.UWP
         /// <param name="reader">The reader.</param>
         /// <param name="append">if set to <c>true</c> [append techniques into effects manager]. Otherwise replace all existing techniques</param>
         /// <returns></returns>
-        public static int ImportTechniques(this IEffectsManager manager, XmlReader reader, bool append = false)
+        public static int ImportTechniques(this IEffectsManager manager, XmlReader reader, bool append = true)
         {
             var ser = new DataContractSerializer(typeof(List<TechniqueDescription>));
             var techniques = ser.ReadObject(reader) as List<TechniqueDescription>;
@@ -124,7 +124,7 @@ namespace HelixToolkit.UWP
         /// <param name="filePath">The file path.</param>
         /// <param name="append">if set to <c>true</c> [append techniques into effects manager]. Otherwise replace all existing techniques</param>
         /// <returns></returns>
-        public static int ImportTechniques(this IEffectsManager manager, string filePath, bool append = false)
+        public static int ImportTechniques(this IEffectsManager manager, string filePath, bool append = true)
         {
             using (var reader = File.OpenRead(filePath))
             {
@@ -134,7 +134,7 @@ namespace HelixToolkit.UWP
                     memory.Position = 0;
                     using (var binaryXMLReader = XmlDictionaryReader.CreateBinaryReader(memory, new XmlDictionaryReaderQuotas() { MaxArrayLength = (int)memory.Length }))
                     {
-                        return ImportTechniques(manager, binaryXMLReader);
+                        return ImportTechniques(manager, binaryXMLReader, append);
                     }
                 }               
             }

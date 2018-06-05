@@ -29,6 +29,7 @@ namespace HelixToolkit.UWP
     using HelixToolkit.Logger;
     using System.Runtime.CompilerServices;
     using System.Diagnostics.CodeAnalysis;
+    using System.Diagnostics;
 
     /// <summary>
     /// Shader and Technique manager
@@ -281,7 +282,7 @@ namespace HelixToolkit.UWP
 #else
             device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
-            Log(LogLevel.Information, $"Direct3D device initilized. DriverType: {DriverType}");
+            Log(LogLevel.Information, $"Direct3D device initilized. DriverType: {DriverType}; FeatureLevel: {device.FeatureLevel}");
 
 #region Initial Internal Pools
             Log(LogLevel.Information, "Initializing resource pools");
@@ -448,7 +449,9 @@ namespace HelixToolkit.UWP
             techniqueDict.TryGetValue(name, out t);
             if (t == null)
             {
-                throw new ArgumentException($"Technique {name} does not exist.");
+                Logger.Log(LogLevel.Warning, $"Technique {name} does not exist. Return a null technique.");
+                Debug.WriteLine($"Technique {name} does not exist. Return a null technique.");
+                return new Technique(new TechniqueDescription() { Name = name, IsNull = true }, device, this);
             }
             return t.Value;
         }
