@@ -284,7 +284,7 @@ namespace HelixToolkit.UWP
 #endif
             Log(LogLevel.Information, $"Direct3D device initilized. DriverType: {DriverType}; FeatureLevel: {device.FeatureLevel}");
 
-#region Initial Internal Pools
+            #region Initial Internal Pools
             Log(LogLevel.Information, "Initializing resource pools");
             RemoveAndDispose(ref constantBufferPool);
             constantBufferPool = Collect(new ConstantBufferPool(Device, Logger));
@@ -303,7 +303,7 @@ namespace HelixToolkit.UWP
 
             RemoveAndDispose(ref deviceContextPool);
             deviceContextPool = Collect(new DeviceContextPool(Device));
-            #endregion
+#endregion
             Log(LogLevel.Information, "Initializing Direct2D resources");
             factory2D = Collect(new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.MultiThreaded));
             wicImgFactory = Collect(new global::SharpDX.WIC.ImagingFactory());
@@ -449,9 +449,13 @@ namespace HelixToolkit.UWP
             techniqueDict.TryGetValue(name, out t);
             if (t == null)
             {
-                Logger.Log(LogLevel.Warning, $"Technique {name} does not exist. Return a null technique.");
+                Log(LogLevel.Warning, $"Technique {name} does not exist. Return a null technique.");
                 Debug.WriteLine($"Technique {name} does not exist. Return a null technique.");
+#if DX11_1
+                return new Technique(new TechniqueDescription() { Name = name, IsNull = true }, device1, this);
+#else
                 return new Technique(new TechniqueDescription() { Name = name, IsNull = true }, device, this);
+#endif
             }
             return t.Value;
         }
@@ -507,7 +511,7 @@ namespace HelixToolkit.UWP
 #endif
             Initialize(AdapterIndex);
         }
-        #endregion
+#endregion
 
 #if DEBUGMEMORY
         protected void ReportResources()
