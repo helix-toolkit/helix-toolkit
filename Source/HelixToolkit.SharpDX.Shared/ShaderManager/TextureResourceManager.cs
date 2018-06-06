@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 #if !NETFX_CORE
-namespace HelixToolkit.Wpf.SharpDX.Model
+namespace HelixToolkit.Wpf.SharpDX
 #else
-namespace HelixToolkit.UWP.Model
+namespace HelixToolkit.UWP
 #endif
 {
     using global::SharpDX.Direct3D11;
@@ -18,7 +17,8 @@ namespace HelixToolkit.UWP.Model
     /// </summary>
     public class TextureResourceManager : DisposeObject, ITextureResourceManager
     {
-        private readonly Dictionary<Stream, ShaderResourceViewProxy> resourceDictionary = new Dictionary<Stream, ShaderResourceViewProxy>();
+        private readonly Dictionary<Stream, ShaderResourceViewProxy> resourceDictionaryMipMaps = new Dictionary<Stream, ShaderResourceViewProxy>();
+        private readonly Dictionary<Stream, ShaderResourceViewProxy> resourceDictionaryNoMipMaps = new Dictionary<Stream, ShaderResourceViewProxy>();
         private readonly Device device;
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureResourceManager"/> class.
@@ -30,19 +30,30 @@ namespace HelixToolkit.UWP.Model
         }
 
         /// <summary>
+        /// Registers the specified texture stream. This creates mipmaps automatically
+        /// </summary>
+        /// <param name="textureStream">The texture stream.</param>
+        /// <returns></returns>
+        public ShaderResourceViewProxy Register(Stream textureStream)
+        {
+            return Register(textureStream, false);
+        }
+        /// <summary>
         /// Registers the specified material unique identifier.
         /// </summary>
         /// <param name="textureStream">The texture steam.</param>
+        /// <param name="disableAutoGenMipMap">Disable generate mipmaps automatically</param>
         /// <returns></returns>
-        public ShaderResourceViewProxy Register(Stream textureStream)
+        public ShaderResourceViewProxy Register(Stream textureStream, bool disableAutoGenMipMap)
         {
             if (textureStream == null)
             {
                 return null;
             }
-            lock (resourceDictionary)
+            var targetDict = disableAutoGenMipMap ? resourceDictionaryNoMipMaps : resourceDictionaryMipMaps;
+            lock (targetDict)
             {
-                if (resourceDictionary.TryGetValue(textureStream, out ShaderResourceViewProxy view))
+                if (targetDict.TryGetValue(textureStream, out ShaderResourceViewProxy view))
                 {
                     view.IncRef();
                     return view;
@@ -50,15 +61,15 @@ namespace HelixToolkit.UWP.Model
                 else
                 {
                     var proxy = new ShaderResourceViewProxy(device);
-                    proxy.CreateView(textureStream);
+                    proxy.CreateView(textureStream, disableAutoGenMipMap);
                     proxy.Disposed += (s, e) =>
                     {
-                        lock (resourceDictionary)
+                        lock (targetDict)
                         {
-                            resourceDictionary.Remove(textureStream);
+                            targetDict.Remove(textureStream);
                         }
                     };
-                    resourceDictionary.Add(textureStream, proxy);
+                    targetDict.Add(textureStream, proxy);
                     return proxy;
                 }
             }
@@ -72,13 +83,21 @@ namespace HelixToolkit.UWP.Model
         {
             if (disposeManagedResources)
             {
-                lock (resourceDictionary)
+                lock (resourceDictionaryMipMaps)
                 {
-                    foreach(var resource in resourceDictionary.Values.ToArray())
+                    foreach(var resource in resourceDictionaryMipMaps.Values.ToArray())
                     {
                         resource.Dispose();
                     }
-                    resourceDictionary.Clear();
+                    resourceDictionaryMipMaps.Clear();
+                }
+                lock (resourceDictionaryNoMipMaps)
+                {
+                    foreach (var resource in resourceDictionaryNoMipMaps.Values.ToArray())
+                    {
+                        resource.Dispose();
+                    }
+                    resourceDictionaryNoMipMaps.Clear();
                 }
             }
             base.OnDispose(disposeManagedResources);
