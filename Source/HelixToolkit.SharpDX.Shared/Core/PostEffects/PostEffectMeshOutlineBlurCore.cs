@@ -60,6 +60,36 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class PostEffectMeshOutlineBlurCore : RenderCoreBase<BorderEffectStruct>, IPostEffectOutlineBlur
     {
+        #region Variables
+        private SamplerStateProxy sampler;
+        private PostEffectBlurCore blurCore;
+        private ShaderPass screenQuadPass;
+
+        private ShaderPass blurPassVertical;
+
+        private ShaderPass blurPassHorizontal;
+
+        private ShaderPass screenOutlinePass;
+
+        private int textureSlot;
+
+        private int samplerSlot;
+
+        private const int downSamplingScale = 2;
+
+        private Texture2DDescription depthdesc = new Texture2DDescription
+        {
+            BindFlags = BindFlags.DepthStencil,
+            Format = global::SharpDX.DXGI.Format.D32_Float_S8X24_UInt,
+            MipLevels = 1,
+            SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0),
+            Usage = ResourceUsage.Default,
+            OptionFlags = ResourceOptionFlags.None,
+            CpuAccessFlags = CpuAccessFlags.None,
+            ArraySize = 1,
+        };
+        #endregion
+        #region Properties
         /// <summary>
         /// Gets or sets the name of the effect.
         /// </summary>
@@ -134,38 +164,7 @@ namespace HelixToolkit.UWP.Core
             }
             get { return numberOfBlurPass; }
         }
-
-        private ShaderPass screenQuadPass;
-
-        private ShaderPass blurPassVertical;
-
-        private ShaderPass blurPassHorizontal;
-
-        private ShaderPass screenOutlinePass;
-        #region Texture Resources    
-
-        private int textureSlot;
-
-        private int samplerSlot;
-
-        private SamplerStateProxy sampler;
-
-        private const int downSamplingScale = 2;
-
-        private Texture2DDescription depthdesc = new Texture2DDescription
-        {
-            BindFlags = BindFlags.DepthStencil,
-            Format = global::SharpDX.DXGI.Format.D32_Float_S8X24_UInt,
-            MipLevels = 1,
-            SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0),
-            Usage = ResourceUsage.Default,
-            OptionFlags = ResourceOptionFlags.None,
-            CpuAccessFlags = CpuAccessFlags.None,
-            ArraySize = 1,
-        };
-        #endregion
-
-        private PostEffectBlurCore blurCore;
+        #endregion        
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PostEffectMeshOutlineBlurCore"/> class.
@@ -303,8 +302,10 @@ namespace HelixToolkit.UWP.Core
         {
             depthdesc.Width = depthdesc.Height = 0;
             blurCore = null;
+            sampler = null;
             base.OnDetach();
         }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height, bool clear = true)
         {

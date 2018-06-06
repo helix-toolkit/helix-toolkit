@@ -54,6 +54,12 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        protected override void OnDetach()
+        {
+            sampler = null;
+            base.OnDetach();
+        }
+
         protected override bool CanRender(RenderContext context)
         {
             return base.CanRender(context) && FXAALevel != FXAALevel.None;

@@ -23,6 +23,44 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class PostEffectBlurCore : DisposeObject
     {
+        #region Variables
+        private const int NumPingPongBlurBuffer = 2;
+        private ShaderPass screenBlurPassVertical;
+        private ShaderPass screenBlurPassHorizontal;
+        private int textureSlot;
+        private int samplerSlot;
+        private Texture2DDescription texture2DDesc = new Texture2DDescription()
+        {
+            BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+            CpuAccessFlags = CpuAccessFlags.None,
+            Usage = ResourceUsage.Default,
+            ArraySize = 1,
+            MipLevels = 1,
+            OptionFlags = ResourceOptionFlags.None,
+            SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0)
+        };
+
+        private ShaderResourceViewDescription targetResourceViewDesc = new ShaderResourceViewDescription()
+        {
+            Dimension = ShaderResourceViewDimension.Texture2D,
+            Texture2D = new ShaderResourceViewDescription.Texture2DResource()
+            {
+                MipLevels = 1,
+                MostDetailedMip = 0,
+            }
+        };
+        private RenderTargetViewDescription renderTargetViewDesc = new RenderTargetViewDescription()
+        {
+            Dimension = RenderTargetViewDimension.Texture2D,
+            Texture2D = new RenderTargetViewDescription.Texture2DResource() { MipSlice = 0 }
+        };
+
+        #region Texture Resources
+        private ShaderResourceViewProxy[] renderTargetBlur = new ShaderResourceViewProxy[NumPingPongBlurBuffer];
+        private SamplerStateProxy sampler;
+        #endregion Texture Resources
+        #endregion
+        #region Properties
         /// <summary>
         /// Gets the current ShaderResourceView.
         /// </summary>
@@ -59,50 +97,7 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public RenderTargetView NextRTV { get { return renderTargetBlur[1].RenderTargetView; } }
 
-        private ShaderPass screenBlurPassVertical;
-
-        private ShaderPass screenBlurPassHorizontal;
-
-        #region Texture Resources
-
-        private const int NumPingPongBlurBuffer = 2;
-
-        private ShaderResourceViewProxy[] renderTargetBlur = new ShaderResourceViewProxy[NumPingPongBlurBuffer];
-
-        private int textureSlot;
-
-        private int samplerSlot;
-
-        private SamplerStateProxy sampler;
-
-        private Texture2DDescription texture2DDesc = new Texture2DDescription()
-        {
-            BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-            CpuAccessFlags = CpuAccessFlags.None,
-            Usage = ResourceUsage.Default,
-            ArraySize = 1,
-            MipLevels = 1,
-            OptionFlags = ResourceOptionFlags.None,
-            SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0)
-        };
-
-        private ShaderResourceViewDescription targetResourceViewDesc = new ShaderResourceViewDescription()
-        {
-            Dimension = ShaderResourceViewDimension.Texture2D,
-            Texture2D = new ShaderResourceViewDescription.Texture2DResource()
-            {
-                MipLevels = 1,
-                MostDetailedMip = 0,
-            }
-        };
-
-        private RenderTargetViewDescription renderTargetViewDesc = new RenderTargetViewDescription()
-        {
-            Dimension = RenderTargetViewDimension.Texture2D,
-            Texture2D = new RenderTargetViewDescription.Texture2DResource() { MipSlice = 0 }
-        };
-
-        #endregion Texture Resources
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PostEffectMeshOutlineBlurCore"/> class.

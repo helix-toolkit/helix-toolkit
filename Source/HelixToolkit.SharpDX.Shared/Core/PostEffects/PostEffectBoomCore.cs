@@ -36,6 +36,27 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class PostEffectBloomCore : RenderCoreBase<BorderEffectStruct>, IPostEffectBloom
     {
+        #region Variables
+        private SamplerStateProxy sampler;
+        private ShaderPass screenQuadPass;
+
+        private ShaderPass screenQuadCopy;
+
+        private ShaderPass blurPassVertical;
+
+        private ShaderPass blurPassHorizontal;
+
+        private ShaderPass screenOutlinePass;
+
+        private readonly List<PostEffectBlurCore> offScreenRenderTargets = new List<PostEffectBlurCore>();
+
+        private int textureSlot;
+
+        private int samplerSlot;
+      
+        private int width, height;
+        #endregion
+        #region Properties        
         /// <summary>
         /// Gets or sets the name of the effect.
         /// </summary>
@@ -129,27 +150,6 @@ namespace HelixToolkit.UWP.Core
             }
             get { return maximumDownSamplingStep; }
         }
-
-        private ShaderPass screenQuadPass;
-
-        private ShaderPass screenQuadCopy;
-
-        private ShaderPass blurPassVertical;
-
-        private ShaderPass blurPassHorizontal;
-
-        private ShaderPass screenOutlinePass;
-        #region Texture Resources
-
-        private readonly List<PostEffectBlurCore> offScreenRenderTargets = new List<PostEffectBlurCore>();
-
-        private int textureSlot;
-
-        private int samplerSlot;
-
-        private SamplerStateProxy sampler;
-
-        private int width, height;
         #endregion
 
         /// <summary>
@@ -286,6 +286,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnDetach()
         {
+            sampler = null;
             width = height = 0;
             offScreenRenderTargets.Clear();
             base.OnDetach();

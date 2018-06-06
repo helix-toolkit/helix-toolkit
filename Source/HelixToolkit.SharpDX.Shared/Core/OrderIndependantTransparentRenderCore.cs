@@ -20,13 +20,14 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     public class OrderIndependentTransparentRenderCore : RenderCoreBase<int>
     {
+        #region Variables
         private ShaderResourceViewProxy colorTarget;
         private ShaderResourceViewProxy alphaTarget;
         private ShaderResourceViewProxy colorTargetNoMSAA;
         private ShaderResourceViewProxy alphaTargetNoMSAA;
+        private SamplerStateProxy targetSampler;
 
         private SampleDescription sampleDesc = new SampleDescription(1, 0);
-
         private Texture2DDescription colorDesc = new Texture2DDescription()
         {
             Format = Format.R16G16B16A16_Float,
@@ -36,8 +37,6 @@ namespace HelixToolkit.UWP.Core
             Usage = ResourceUsage.Default,
             CpuAccessFlags = CpuAccessFlags.None,
         };
-
-
         private Texture2DDescription alphaDesc = new Texture2DDescription()
         {
             Format = Format.A8_UNorm,
@@ -47,19 +46,24 @@ namespace HelixToolkit.UWP.Core
             Usage = ResourceUsage.Default,
             CpuAccessFlags = CpuAccessFlags.None,
         };
-
         private int width = 0;
         private int height = 0;
 #if MSAASEPARATE
         private bool hasMSAA = false;
 #endif
-
         private ShaderPass screenQuadPass = ShaderPass.NullPass;
-        private int colorTexIndex, alphaTexIndex, samplerIndex;
-        private SamplerStateProxy targetSampler;
+        private int colorTexIndex, alphaTexIndex, samplerIndex;       
+        private RenderTargetView[] targets;
+        #endregion
+
+        #region Properties
         public int RenderCount { private set; get; } = 0;
         public RenderParameter ExternRenderParameter { set; get; }
-        private RenderTargetView[] targets;
+        #endregion        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrderIndependentTransparentRenderCore"/> class.
+        /// </summary>
         public OrderIndependentTransparentRenderCore() : base(RenderType.Transparent)
         { }
 
@@ -140,9 +144,10 @@ namespace HelixToolkit.UWP.Core
         private void UnBind(RenderContext context, DeviceContextProxy deviceContext)
         {
             deviceContext.SetRenderTargets(context.RenderHost.DepthStencilBufferView, targets);
-            foreach(var target in targets)
+            for(int i =0; i< targets.Length; ++i)
             {
-                target?.Dispose();
+                targets[i]?.Dispose();
+                targets[i] = null;
             }
 #if MSAASEPARATE
             if (hasMSAA)

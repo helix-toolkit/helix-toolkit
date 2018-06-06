@@ -15,6 +15,25 @@ namespace HelixToolkit.UWP.Core
     using Utilities;
     public class MeshRenderCore : MaterialGeometryRenderCore, IMeshRenderParams, IDynamicReflectable
     {
+        #region Variables
+        /// <summary>
+        /// Gets the raster state wireframe.
+        /// </summary>
+        /// <value>
+        /// The raster state wireframe.
+        /// </value>
+        protected RasterizerStateProxy RasterStateWireframe { get { return rasterStateWireframe; } }
+        private RasterizerStateProxy rasterStateWireframe = null;
+
+        private int shadowMapSlot;
+        #endregion
+
+        #region Properties
+        protected ShaderPass WireframePass { private set; get; } = ShaderPass.NullPass;
+        protected ShaderPass WireframeOITPass { private set; get; } = ShaderPass.NullPass;
+        protected ShaderPass TransparentPass { private set; get; } = ShaderPass.NullPass;
+
+        public string ShaderShadowMapTextureName { set; get; } = DefaultBufferNames.ShadowMapTB;
         /// <summary>
         /// 
         /// </summary>
@@ -63,7 +82,7 @@ namespace HelixToolkit.UWP.Core
             get { return modelStruct.WireframeColor; }
         }
 
-        private RasterizerStateProxy rasterStateWireframe = null;
+
 
         /// <summary>
         /// Gets or sets the dynamic reflector.
@@ -87,7 +106,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(SetAffectsRender(ref transparentPassName, value) && IsAttached)
+                if (SetAffectsRender(ref transparentPassName, value) && IsAttached)
                 {
                     TransparentPass = EffectTechnique[value];
                 }
@@ -96,23 +115,8 @@ namespace HelixToolkit.UWP.Core
             {
                 return transparentPassName;
             }
-        }
-
-        /// <summary>
-        /// Gets the raster state wireframe.
-        /// </summary>
-        /// <value>
-        /// The raster state wireframe.
-        /// </value>
-        protected RasterizerStateProxy RasterStateWireframe { get { return rasterStateWireframe; } }
-
-        protected ShaderPass WireframePass { private set; get; } = ShaderPass.NullPass;
-        protected ShaderPass WireframeOITPass { private set; get; } = ShaderPass.NullPass;
-        protected ShaderPass TransparentPass { private set; get; } = ShaderPass.NullPass;
-
-        public string ShaderShadowMapTextureName { set; get; } = DefaultBufferNames.ShadowMapTB;
-
-        private int shadowMapSlot;
+        } 
+        #endregion
 
         protected override bool CreateRasterState(RasterizerStateDescription description, bool force)
         {

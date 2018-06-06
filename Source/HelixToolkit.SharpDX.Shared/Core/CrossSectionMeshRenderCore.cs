@@ -17,13 +17,15 @@ namespace HelixToolkit.UWP.Core
 
     public class CrossSectionMeshRenderCore : PatchMeshRenderCore, ICrossSectionRenderParams
     {
+        private ClipPlaneStruct clipParameter = new ClipPlaneStruct() { EnableCrossPlane = new Bool4(false, false, false, false), CrossSectionColors = Color.Blue.ToVector4(), CrossPlaneParams = new Matrix() };
         #region Shader Variables
-
+        private ConstantBufferProxy clipParamCB;
+        private ShaderPass drawBackfacePass;
+        private ShaderPass drawScreenQuadPass;
         /// <summary>
         /// Used to draw back faced triangles onto stencil buffer
         /// </summary>
         private RasterizerStateProxy backfaceRasterState;
-
         #endregion
         #region Properties
         /// <summary>
@@ -179,13 +181,6 @@ namespace HelixToolkit.UWP.Core
         }
 
         #endregion
-
-        private ClipPlaneStruct clipParameter = new ClipPlaneStruct() { EnableCrossPlane = new Bool4(false, false, false, false), CrossSectionColors = Color.Blue.ToVector4(), CrossPlaneParams = new Matrix() };
-
-        private ConstantBufferProxy clipParamCB;
-
-        private ShaderPass drawBackfacePass;
-        private ShaderPass drawScreenQuadPass;
 
         protected override bool OnAttach(IRenderTechnique technique)
         {

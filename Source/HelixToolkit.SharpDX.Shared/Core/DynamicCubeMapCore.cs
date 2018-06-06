@@ -27,6 +27,47 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class DynamicCubeMapCore : RenderCoreBase<GlobalTransformStruct>, IDynamicReflector
     {
+        #region
+        private Vector3[] targets = new Vector3[6];
+        private Vector3[] upVectors = new Vector3[6] { Vector3.UnitY, Vector3.UnitY, -Vector3.UnitZ, Vector3.UnitZ, Vector3.UnitY, Vector3.UnitY };
+        private CubeFaceCamerasStruct cubeFaceCameras = new CubeFaceCamerasStruct() { Cameras = new CubeFaceCamera[6] };
+        // Create the cube map TextureCube (array of 6 textures)
+        private Texture2DDescription textureDesc = new Texture2DDescription()
+        {
+            Format = Format.R8G8B8A8_UNorm,
+            ArraySize = 6, // 6-sides of the cube
+            BindFlags = BindFlags.ShaderResource | BindFlags.RenderTarget,
+            OptionFlags = ResourceOptionFlags.GenerateMipMaps | ResourceOptionFlags.TextureCube,
+            SampleDescription = new SampleDescription(1, 0),
+            MipLevels = 0,
+            Usage = ResourceUsage.Default,
+            CpuAccessFlags = CpuAccessFlags.None,
+        };
+
+        private Texture2DDescription dsvTextureDesc = new Texture2DDescription()
+        {
+            Format = Format.D16_UNorm,
+            BindFlags = BindFlags.DepthStencil,
+            Usage = ResourceUsage.Default,
+            SampleDescription = new SampleDescription(1, 0),
+            CpuAccessFlags = CpuAccessFlags.None,
+            MipLevels = 1,
+            OptionFlags = ResourceOptionFlags.TextureCube,
+            ArraySize = 6
+        };
+
+        private Viewport viewport;
+        private int cubeTextureSlot;
+        private int textureSamplerSlot;
+        private ShaderResourceViewProxy cubeDSV;
+        // The RTVs, one for each face of cubemap
+        private RenderTargetView[] cubeRTVs = new RenderTargetView[6];
+        // The DSVs, one for each face of cubemap
+        private DepthStencilView[] cubeDSVs = new DepthStencilView[6];
+        private SamplerStateProxy textureSampler;
+        private IDeviceContextPool contextPool;
+        private readonly CommandList[] commands = new CommandList[6];
+        #endregion
         #region Properties
 
         public HashSet<Guid> IgnoredGuid { get; } = new HashSet<Guid>();
@@ -228,53 +269,10 @@ namespace HelixToolkit.UWP.Core
         public string ShaderCubeTextureSamplerName { set; get; } = DefaultSamplerStateNames.CubeMapSampler;
 
         #endregion Properties
-        private ShaderResourceViewProxy cubeDSV;
 
-        // The RTVs, one for each face of cubemap
-        private RenderTargetView[] cubeRTVs = new RenderTargetView[6];
-
-        // The DSVs, one for each face of cubemap
-        private DepthStencilView[] cubeDSVs = new DepthStencilView[6];
-        private int cubeTextureSlot;
-        private int textureSamplerSlot;
-        private SamplerStateProxy textureSampler;
-
-        private IDeviceContextPool contextPool;
-
-        private CubeFaceCamerasStruct cubeFaceCameras = new CubeFaceCamerasStruct() { Cameras = new CubeFaceCamera[6] };
-
-        private readonly CommandList[] commands = new CommandList[6];
-
-        private Vector3[] targets = new Vector3[6];
-        private Vector3[] upVectors = new Vector3[6] { Vector3.UnitY, Vector3.UnitY, -Vector3.UnitZ, Vector3.UnitZ, Vector3.UnitY, Vector3.UnitY };
-
-        // Create the cube map TextureCube (array of 6 textures)
-        private Texture2DDescription textureDesc = new Texture2DDescription()
-        {
-            Format = Format.R8G8B8A8_UNorm,
-            ArraySize = 6, // 6-sides of the cube
-            BindFlags = BindFlags.ShaderResource | BindFlags.RenderTarget,
-            OptionFlags = ResourceOptionFlags.GenerateMipMaps | ResourceOptionFlags.TextureCube,
-            SampleDescription = new SampleDescription(1, 0),
-            MipLevels = 0,
-            Usage = ResourceUsage.Default,
-            CpuAccessFlags = CpuAccessFlags.None,
-        };
-
-        private Texture2DDescription dsvTextureDesc = new Texture2DDescription()
-        {
-            Format = Format.D16_UNorm,
-            BindFlags = BindFlags.DepthStencil,
-            Usage = ResourceUsage.Default,
-            SampleDescription = new SampleDescription(1, 0),
-            CpuAccessFlags = CpuAccessFlags.None,
-            MipLevels = 1,
-            OptionFlags = ResourceOptionFlags.TextureCube,
-            ArraySize = 6
-        };
-
-        private Viewport viewport;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicCubeMapCore"/> class.
+        /// </summary>
         public DynamicCubeMapCore() : base(RenderType.PreProc)
         {
         }

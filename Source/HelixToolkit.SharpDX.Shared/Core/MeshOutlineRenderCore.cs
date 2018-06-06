@@ -17,6 +17,12 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class MeshOutlineRenderCore : PatchMeshRenderCore, IMeshOutlineParams
     {
+        #region Variables
+        /// <summary>
+        /// 
+        /// </summary>
+        protected ShaderPass outlineShaderPass { private set; get; }
+        #endregion
         #region Properties
         /// <summary>
         /// Outline color
@@ -113,10 +119,7 @@ namespace HelixToolkit.UWP.Core
         }
 
         #endregion
-        /// <summary>
-        /// 
-        /// </summary>
-        protected ShaderPass outlineShaderPass { private set; get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MeshOutlineRenderCore"/> class.
         /// </summary>

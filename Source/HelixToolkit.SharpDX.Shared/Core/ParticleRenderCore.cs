@@ -698,6 +698,7 @@ namespace HelixToolkit.UWP.Core
             DisposeBuffers();
             textureSampler = null;
             blendState = null;
+            textureView = null;
             base.OnDetach();
         }
 

@@ -32,6 +32,14 @@ namespace HelixToolkit.UWP.Core
         }
         #endregion
 
+        #region Variables
+        private ShaderResourceViewProxy cubeTextureRes;
+        private int cubeTextureSlot;
+        private SamplerStateProxy textureSampler;
+        private int textureSamplerSlot;
+        #endregion
+
+        #region Properties
         private Stream cubeTexture = null;
         /// <summary>
         /// Gets or sets the cube texture.
@@ -90,11 +98,8 @@ namespace HelixToolkit.UWP.Core
         /// The name of the shader cube texture sampler.
         /// </value>
         public string ShaderCubeTextureSamplerName { set; get; } = DefaultSamplerStateNames.CubeMapSampler;
+        #endregion
 
-        private ShaderResourceViewProxy cubeTextureRes;
-        private int cubeTextureSlot;
-        private SamplerStateProxy textureSampler;
-        private int textureSamplerSlot;
         /// <summary>
         /// Initializes a new instance of the <see cref="SkyBoxRenderCore"/> class.
         /// </summary>
@@ -131,6 +136,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnDetach()
         {
             textureSampler = null;
+            cubeTextureRes = null;
             base.OnDetach();
         }
         /// <summary>

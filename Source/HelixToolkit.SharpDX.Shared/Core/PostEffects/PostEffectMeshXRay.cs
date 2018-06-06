@@ -51,6 +51,11 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class PostEffectMeshXRayCore : RenderCoreBase<BorderEffectStruct>, IPostEffectMeshXRay
     {
+        #region Variables
+        private readonly List<KeyValuePair<SceneNode, IEffectAttributes>> currentCores = new List<KeyValuePair<SceneNode, IEffectAttributes>>();
+        private DepthPrepassCore depthPrepassCore;
+        #endregion
+        #region Properties
         /// <summary>
         /// Gets or sets the name of the effect.
         /// </summary>
@@ -108,17 +113,16 @@ namespace HelixToolkit.UWP.Core
                 return doublePass;
             }
         }
-
+        #endregion
         /// <summary>
         /// Initializes a new instance of the <see cref="PostEffectMeshXRayCore"/> class.
         /// </summary>
         public PostEffectMeshXRayCore() : base(RenderType.PostProc)
         {
             Color = global::SharpDX.Color.Blue;
+            depthPrepassCore = Collect(new DepthPrepassCore());
         }
 
-        private readonly List<KeyValuePair<SceneNode, IEffectAttributes>> currentCores = new List<KeyValuePair<SceneNode, IEffectAttributes>>();
-        private DepthPrepassCore depthPrepassCore;
         /// <summary>
         /// Gets the model constant buffer description.
         /// </summary>
@@ -129,7 +133,6 @@ namespace HelixToolkit.UWP.Core
         }
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            depthPrepassCore = Collect(new DepthPrepassCore());
             depthPrepassCore.Attach(technique);
             return base.OnAttach(technique);
         }
