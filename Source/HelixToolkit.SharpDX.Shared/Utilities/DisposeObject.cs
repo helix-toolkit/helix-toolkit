@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Threading;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -146,13 +147,21 @@ namespace HelixToolkit.UWP
         {
             Dispose(true);
         }
+
+        private int refCounter = 1;
+
+        internal int IncRef()
+        {
+            return Interlocked.Increment(ref refCounter);
+        }
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         private void Dispose(bool disposing)
         {
             // TODO Should we throw an exception if this method is called more than once?
-            if (!IsDisposed)
+            if (Interlocked.Decrement(ref refCounter) == 0 && !IsDisposed)
             {
                 Disposing?.Invoke(this, disposing ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
 

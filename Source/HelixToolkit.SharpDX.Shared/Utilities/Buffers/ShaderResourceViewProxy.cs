@@ -235,24 +235,5 @@ namespace HelixToolkit.UWP.Utilities
         {
             return proxy == null ? null : proxy.renderTargetView;
         }
-
-        #region Ref Counter
-
-
-        private int refCounter = 1;
-
-        internal int IncRef()
-        {
-            return Interlocked.Increment(ref refCounter);
-        }
-
-        protected override void OnDispose(bool disposeManagedResources)
-        {
-            if(Interlocked.Decrement(ref refCounter) == 0)
-            {
-                base.OnDispose(disposeManagedResources);
-            }          
-        }
-        #endregion
     }
 }

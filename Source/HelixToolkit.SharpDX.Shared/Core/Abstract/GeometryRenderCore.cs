@@ -97,7 +97,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(SetAffectsRender(ref rasterDescription, value))
+                if(SetAffectsRender(ref rasterDescription, value) && IsAttached)
                 {
                     CreateRasterState(value, false);
                 }
@@ -202,9 +202,6 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected virtual bool CreateRasterState(RasterizerStateDescription description, bool force)
         {
-            rasterDescription = description;
-            if (!IsAttached && !force)
-            { return false; }
             RemoveAndDispose(ref rasterState);
             RemoveAndDispose(ref invertCullModeState);
             rasterState = Collect(EffectTechnique.EffectsManager.StateManager.Register(description));

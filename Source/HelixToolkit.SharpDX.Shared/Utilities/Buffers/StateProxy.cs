@@ -13,9 +13,8 @@ namespace HelixToolkit.UWP.Utilities
     /// 
     /// </summary>
     /// <typeparam name="StateType">The type of the tate type.</typeparam>
-    public abstract class StateProxy<StateType> : IDisposable where StateType : ComObject
+    public abstract class StateProxy<StateType> : DisposeObject where StateType : ComObject
     {
-        public event EventHandler Disposed;
         /// <summary>
         /// Gets the state.
         /// </summary>
@@ -27,15 +26,9 @@ namespace HelixToolkit.UWP.Utilities
 
         public StateProxy(StateType state)
         {
-            this.state = state;
+            this.state = Collect(state);
         }
 
-        private int refCounter = 1;
-
-        internal int IncRef()
-        {
-            return Interlocked.Increment(ref refCounter);
-        }
         /// <summary>
         /// Performs an implicit conversion
         /// </summary>
@@ -47,44 +40,6 @@ namespace HelixToolkit.UWP.Utilities
         {
             return proxy.State;
         }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (Interlocked.Decrement(ref refCounter) == 0 && !disposedValue)
-            {
-                if (disposing)
-                {
-                    Disposer.RemoveAndDispose(ref state);
-                    Disposed?.Invoke(this, EventArgs.Empty);
-                    // TODO: dispose managed state (managed objects).
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-                //Disposed?.Invoke(this, EventArgs.Empty);
-                //Disposed = null;
-                disposedValue = true;
-            }
-        }
-
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~StateProxy() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
-        // This code added to correctly implement the disposable pattern.
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
-        }
-        #endregion
     }
 
     /// <summary>
