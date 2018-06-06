@@ -32,12 +32,73 @@ namespace HelixToolkit.UWP.Core
                 Context = context;
             }
         }
+        public event EventHandler<UpdateLightSourceEventArgs> OnUpdateLightSource;
+        #region Variables
+        private ShaderResourceViewProxy viewResource;
+        private int currentFrame = 0;
+        private bool resolutionChanged = true;
         /// <summary>
         /// 
         /// </summary>
-        protected ShaderResourceViewProxy viewResource;
-
-        private bool resolutionChanged = true;
+        protected virtual Texture2DDescription ShadowMapTextureDesc
+        {
+            get
+            {
+                return new Texture2DDescription()
+                {
+                    Format = Format.R32_Typeless, //!!!! because of depth and shader resource
+                                                  //Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
+                    ArraySize = 1,
+                    MipLevels = 1,
+                    Width = Width,
+                    Height = Height,
+                    SampleDescription = new SampleDescription(1, 0),
+                    Usage = ResourceUsage.Default,
+                    BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource, //!!!!
+                    CpuAccessFlags = CpuAccessFlags.None,
+                    OptionFlags = ResourceOptionFlags.None,
+                };
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual DepthStencilViewDescription DepthStencilViewDesc
+        {
+            get
+            {
+                return new DepthStencilViewDescription()
+                {
+                    Format = Format.D32_Float,
+                    Dimension = DepthStencilViewDimension.Texture2D,
+                    Texture2D = new DepthStencilViewDescription.Texture2DResource()
+                    {
+                        MipSlice = 0
+                    }
+                };
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual ShaderResourceViewDescription ShaderResourceViewDesc
+        {
+            get
+            {
+                return new ShaderResourceViewDescription()
+                {
+                    Format = Format.R32_Float,
+                    Dimension = ShaderResourceViewDimension.Texture2D,
+                    Texture2D = new ShaderResourceViewDescription.Texture2DResource()
+                    {
+                        MipLevels = 1,
+                        MostDetailedMip = 0,
+                    }
+                };
+            }
+        }
+        #endregion
+        #region Properties
         /// <summary>
         /// 
         /// </summary>
@@ -115,10 +176,8 @@ namespace HelixToolkit.UWP.Core
         /// Update shadow map every N frames
         /// </summary>
         public int UpdateFrequency { set; get; } = 1;
+        #endregion
 
-        private int currentFrame = 0;
-
-        public event EventHandler<UpdateLightSourceEventArgs> OnUpdateLightSource;
         /// <summary>
         /// 
         /// </summary>
@@ -128,66 +187,7 @@ namespace HelixToolkit.UWP.Core
             Intensity = 0.5f;
             Width = Height = 1024;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        protected virtual Texture2DDescription ShadowMapTextureDesc
-        {
-            get
-            {
-                return new Texture2DDescription()
-                {
-                    Format = Format.R32_Typeless, //!!!! because of depth and shader resource
-                                                  //Format = global::SharpDX.DXGI.Format.B8G8R8A8_UNorm,
-                    ArraySize = 1,
-                    MipLevels = 1,
-                    Width = Width,
-                    Height = Height,
-                    SampleDescription = new SampleDescription(1, 0),
-                    Usage = ResourceUsage.Default,
-                    BindFlags = BindFlags.DepthStencil | BindFlags.ShaderResource, //!!!!
-                    CpuAccessFlags = CpuAccessFlags.None,
-                    OptionFlags = ResourceOptionFlags.None,
-                };
-            }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        protected virtual DepthStencilViewDescription DepthStencilViewDesc
-        {
-            get
-            {
-                return new DepthStencilViewDescription()
-                {
-                    Format = Format.D32_Float,
-                    Dimension = DepthStencilViewDimension.Texture2D,
-                    Texture2D = new DepthStencilViewDescription.Texture2DResource()
-                    {
-                        MipSlice = 0
-                    }
-                };
-            }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        protected virtual ShaderResourceViewDescription ShaderResourceViewDesc
-        {
-            get
-            {
-                return new ShaderResourceViewDescription()
-                {
-                    Format = Format.R32_Float,
-                    Dimension = ShaderResourceViewDimension.Texture2D,
-                    Texture2D = new ShaderResourceViewDescription.Texture2DResource()
-                    {
-                        MipLevels = 1,
-                        MostDetailedMip = 0,
-                    }
-                };
-            }
-        }
+
 
         protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
@@ -248,6 +248,12 @@ namespace HelixToolkit.UWP.Core
             context.RenderHost.SetDefaultRenderTargets(false);
             context.SharedResource.ShadowView = viewResource;
 #endif
+        }
+
+        protected override void OnDetach()
+        {
+            viewResource = null;
+            base.OnDetach();
         }
 
         protected override void OnUpdatePerModelStruct(ref ShadowMapParamStruct model, RenderContext context)

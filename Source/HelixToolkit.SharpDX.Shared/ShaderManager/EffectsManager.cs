@@ -299,7 +299,7 @@ namespace HelixToolkit.UWP
             geometryBufferManager = Collect(new GeometryBufferManager());
 
             RemoveAndDispose(ref materialTextureManager);
-            materialTextureManager = Collect(new Model.TextureResourceManager(Device));
+            materialTextureManager = Collect(new TextureResourceManager(Device));
 
             RemoveAndDispose(ref deviceContextPool);
             deviceContextPool = Collect(new DeviceContextPool(Device));

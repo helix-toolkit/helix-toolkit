@@ -648,7 +648,6 @@ namespace HelixToolkit.UWP
         public void AddMoveForce(double dx, double dy, double dz)
         {
             CameraController.AddMoveForce(new Vector3((float)dx, (float)dy, (float)dz));
-            InvalidateRender();
         }
 
         /// <summary>
@@ -660,7 +659,6 @@ namespace HelixToolkit.UWP
         public void AddMoveForce(Vector3 delta)
         {
             CameraController.AddMoveForce(delta);
-            InvalidateRender();
         }
 
         /// <summary>
@@ -675,7 +673,6 @@ namespace HelixToolkit.UWP
         public void AddPanForce(double dx, double dy)
         {
             CameraController.AddPanForce(dx, dy);
-            InvalidateRender();
         }
 
         /// <summary>
@@ -687,7 +684,6 @@ namespace HelixToolkit.UWP
         public void AddPanForce(Vector3 pan)
         {
             CameraController.AddPanForce(pan);
-            InvalidateRender();
         }
 
         /// <summary>
@@ -702,7 +698,6 @@ namespace HelixToolkit.UWP
         public void AddRotateForce(double dx, double dy)
         {
             CameraController.AddRotateForce(dx, dy);
-            InvalidateRender();
         }
 
         /// <summary>
@@ -714,7 +709,6 @@ namespace HelixToolkit.UWP
         public void AddZoomForce(double dx)
         {
             CameraController.AddZoomForce(dx);
-            InvalidateRender();
         }
 
         /// <summary>
@@ -729,7 +723,6 @@ namespace HelixToolkit.UWP
         public void AddZoomForce(double dx, Vector3 zoomOrigin)
         {
             CameraController.AddZoomForce(dx, zoomOrigin);
-            InvalidateRender();
         }
 
         /// <summary>

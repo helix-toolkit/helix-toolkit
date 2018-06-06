@@ -469,6 +469,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             clearTarget = true;
             invalidRender = true;
             pointer = new PointerInfo();
+            textureSampler = null;
             base.OnDetach();
         }
 

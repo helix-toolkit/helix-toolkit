@@ -638,6 +638,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.PushCameraSetting();
             this.moveSpeed += delta * 40;
+            Viewport.InvalidateRender();
         }
 
         /// <summary>
@@ -676,6 +677,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.panHandler.Pan(pan);
             }
+            Viewport.InvalidateRender();
         }
 
         /// <summary>
@@ -714,6 +716,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.rotateHandler.Rotate(
                     this.rotationPosition, this.rotationPosition + new Vector(dx, dy), this.CameraTarget);
             }
+            Viewport.InvalidateRender();
         }
 
         /// <summary>

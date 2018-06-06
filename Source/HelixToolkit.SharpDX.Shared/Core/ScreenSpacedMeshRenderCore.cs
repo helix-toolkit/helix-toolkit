@@ -254,6 +254,12 @@ namespace HelixToolkit.UWP.Core
                 return false;
             }
         }
+
+        protected override void OnDetach()
+        {
+            rasterState = null;
+            base.OnDetach();
+        }
         /// <summary>
         /// Called when [bind raster state].
         /// </summary>

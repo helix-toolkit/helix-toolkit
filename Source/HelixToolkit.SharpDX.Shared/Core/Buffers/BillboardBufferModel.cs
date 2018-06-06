@@ -91,6 +91,7 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
+                textureView = null;
                 buffer.DisposeAndClear();
             }
         }
