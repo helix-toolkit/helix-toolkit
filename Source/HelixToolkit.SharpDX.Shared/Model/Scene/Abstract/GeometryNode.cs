@@ -592,5 +592,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 geometry?.UpdateOctree();
             }
         }
+
+        protected override void OnDispose(bool disposeManagedResources)
+        {
+            BoundManager.Dispose();
+            base.OnDispose(disposeManagedResources);
+        }
     }
 }

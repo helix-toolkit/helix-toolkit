@@ -336,6 +336,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 
         protected override void OnDispose(bool disposeManagedResources)
         {
+            if (geometry != null)
+            { geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate; }
             elementCore.OnTransformChanged -= OnTransformChanged;
             OnBoundChanged = null;
             OnTransformBoundChanged = null;
