@@ -116,6 +116,8 @@ namespace HelixToolkit.UWP
         public const string MeshOITQuad = "MeshOITQuad";
 
         public const string PostEffectFXAA = "PostEffectFXAA";
+
+        public const string PostEffectMeshXRayGrid = "PostEffectMeshXRayGrid";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -179,6 +181,18 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string EffectMeshXRayP2 = "EffectMeshXRayP2";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectMeshXRayGridP1 = "EffectMeshXRayGridP1";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectMeshXRayGridP2 = "EffectMeshXRayGridP2";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectMeshXRayGridP3 = "EffectMeshXRayGridP3";
         /// <summary>
         /// 
         /// </summary>

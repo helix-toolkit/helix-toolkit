@@ -438,6 +438,19 @@ namespace HelixToolkit.UWP.Shaders
                 return UWPShaderBytePool.Read("psLuma");
             }
         }
+        /// <summary>
+        /// Gets the ps effect x ray grid.
+        /// </summary>
+        /// <value>
+        /// The ps effect x ray grid.
+        /// </value>
+        public static byte[] PSEffectXRayGrid
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psEffectMeshXRayGrid");
+            }
+        }
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -650,6 +663,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSEffectLUMA = new ShaderDescription(nameof(PSEffectLUMA), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSEffectLUMA);
+        /// <summary>
+        /// The ps effect x ray grid
+        /// </summary>
+        public static ShaderDescription PSEffectXRayGrid = new ShaderDescription(nameof(PSEffectXRayGrid), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectXRayGrid);
 #if !NETFX_CORE
         /// <summary>
         /// The ps screen dup
