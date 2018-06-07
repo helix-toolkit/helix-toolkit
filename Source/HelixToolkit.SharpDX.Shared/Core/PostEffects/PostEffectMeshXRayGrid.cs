@@ -31,6 +31,7 @@ namespace HelixToolkit.UWP.Core
     {
         #region Variables
         private readonly List<KeyValuePair<SceneNode, IEffectAttributes>> currentCores = new List<KeyValuePair<SceneNode, IEffectAttributes>>();
+        private DepthPrepassCore depthPrepassCore;
         #endregion
         #region Properties
         /// <summary>
@@ -110,6 +111,19 @@ namespace HelixToolkit.UWP.Core
             return new ConstantBufferDescription(DefaultBufferNames.BorderEffectCB, BorderEffectStruct.SizeInBytes);
         }
 
+        protected override bool OnAttach(IRenderTechnique technique)
+        {
+            depthPrepassCore = Collect(new DepthPrepassCore());
+            depthPrepassCore.Attach(technique);
+            return base.OnAttach(technique);
+        }
+
+        protected override void OnDetach()
+        {
+            depthPrepassCore.Detach();
+            depthPrepassCore = null;
+            base.OnDetach();
+        }
         /// <summary>
         /// Called when [render].
         /// </summary>
@@ -121,6 +135,12 @@ namespace HelixToolkit.UWP.Core
             bool hasMSAA = buffer.ColorBufferSampleDesc.Count > 1;
             var depthStencilBuffer = hasMSAA ? buffer.FullResDepthStencilPool.Get(Format.D32_Float_S8X24_UInt) : buffer.DepthStencilBuffer;
             BindTarget(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV, deviceContext, buffer.TargetWidth, buffer.TargetHeight, false);
+            if (hasMSAA)
+            {
+                //Needs to do a depth pass for existing meshes.Because the msaa depth buffer is not resolvable.
+                deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Depth, 1, 0);
+                depthPrepassCore.Render(context, deviceContext);
+            }
             context.IsCustomPass = true;
 
             for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
