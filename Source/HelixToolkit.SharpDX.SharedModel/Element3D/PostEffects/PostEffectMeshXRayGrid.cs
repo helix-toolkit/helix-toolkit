@@ -47,8 +47,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The outline color property
         /// </summary>
-        public static DependencyProperty OutlineColorProperty = DependencyProperty.Register("OutlineColor", typeof(Color), typeof(PostEffectMeshXRayGrid),
-            new PropertyMetadata(Colors.Gray,
+        public static DependencyProperty GridColorProperty = DependencyProperty.Register("GridColor", typeof(Color), typeof(PostEffectMeshXRayGrid),
+            new PropertyMetadata(Colors.DarkBlue,
             (d, e) =>
             {
                 ((d as Element3DCore).SceneNode as NodePostEffectXRayGrid).Color = ((Color)e.NewValue).ToColor4();
@@ -60,17 +60,60 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The color of the outline.
         /// </value>
-        public Color OutlineColor
+        public Color GridColor
         {
             set
             {
-                SetValue(OutlineColorProperty, value);
+                SetValue(GridColorProperty, value);
             }
             get
             {
-                return (Color)GetValue(OutlineColorProperty);
+                return (Color)GetValue(GridColorProperty);
             }
         }
+
+        /// <summary>
+        /// Gets or sets the grid density.
+        /// </summary>
+        /// <value>
+        /// The grid density.
+        /// </value>
+        public int GridDensity
+        {
+            get { return (int)GetValue(GridDensityProperty); }
+            set { SetValue(GridDensityProperty, value); }
+        }
+        /// <summary>
+        /// The grid density property
+        /// </summary>
+        public static readonly DependencyProperty GridDensityProperty =
+            DependencyProperty.Register("GridDensity", typeof(int), typeof(PostEffectMeshXRayGrid), new PropertyMetadata(8,
+                (d,e)=> 
+                {
+                    ((d as Element3DCore).SceneNode as NodePostEffectXRayGrid).GridDensity = (int)e.NewValue;
+                }));
+
+        /// <summary>
+        /// Gets or sets the dimming factor.
+        /// </summary>
+        /// <value>
+        /// The dimming factor.
+        /// </value>
+        public double DimmingFactor
+        {
+            get { return (double)GetValue(DimmingFactorProperty); }
+            set { SetValue(DimmingFactorProperty, value); }
+        }
+
+        /// <summary>
+        /// The dimming factor property
+        /// </summary>
+        public static readonly DependencyProperty DimmingFactorProperty =
+            DependencyProperty.Register("DimmingFactor", typeof(double), typeof(PostEffectMeshXRayGrid), new PropertyMetadata(0.8,
+                (d, e)=> 
+                {
+                    ((d as Element3DCore).SceneNode as NodePostEffectXRayGrid).DimmingFactor = (float)(double)e.NewValue;
+                }));
         #endregion
 
         protected override SceneNode OnCreateSceneNode()
@@ -88,7 +131,9 @@ namespace HelixToolkit.Wpf.SharpDX
             if (core is NodePostEffectXRayGrid c)
             {
                 c.EffectName = EffectName;
-                c.Color = OutlineColor.ToColor4();
+                c.Color = GridColor.ToColor4();
+                c.GridDensity = GridDensity;
+                c.DimmingFactor = (float)DimmingFactor;
             }
         }
     }

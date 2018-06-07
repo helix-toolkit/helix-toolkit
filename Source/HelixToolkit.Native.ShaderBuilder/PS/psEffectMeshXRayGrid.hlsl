@@ -104,12 +104,18 @@ float4 main(PSInput input) : SV_Target
     {
         I.a *= alpha;
     }
-
-    if ((int) input.p.x % 4 == 0 || (int) input.p.y % 4 == 0)
-    {
-        I = Color;
-    }
-    return I;
+    float dimming = Param._m01;
+    I.rgb *= dimming;
+    int density = Param._m00;   
+    float2 pixel = floor(input.p);
+    float a = 1;
+    float b = fmod(abs(pixel.x - pixel.y), density);
+    float c = fmod(abs(pixel.x + pixel.y), density);
+    b = when_eq(b, 0);
+    c = when_eq(c, 0);
+    b = clamp(b + c, 0, 1);
+    I = I * (1 - b) + Color * b;
+    return saturate(I);
 }
 
 #endif

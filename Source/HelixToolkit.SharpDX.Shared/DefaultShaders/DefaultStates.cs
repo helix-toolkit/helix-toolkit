@@ -321,7 +321,7 @@ namespace HelixToolkit.UWP.Shaders
         {
             IsDepthEnabled = true,
             IsStencilEnabled = true,
-            DepthWriteMask = DepthWriteMask.Zero,
+            DepthWriteMask = DepthWriteMask.All,
             DepthComparison = Comparison.Less,
             StencilWriteMask = 0,
             StencilReadMask = 0xFF,

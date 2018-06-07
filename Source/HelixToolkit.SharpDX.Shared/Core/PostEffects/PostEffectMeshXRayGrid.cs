@@ -18,11 +18,16 @@ namespace HelixToolkit.UWP.Core
     using Model;
     using Model.Scene;
     using Utilities;
-
+    public interface IPostEffectMeshXRayGrid : IPostEffect
+    {
+        Color4 Color { set; get; }
+        int GridDensity { set; get; }
+        float DimmingFactor { set; get; }
+    }
     /// <summary>
     /// 
     /// </summary>
-    public class PostEffectMeshXRayGridCore : RenderCoreBase<BorderEffectStruct>
+    public class PostEffectMeshXRayGridCore : RenderCoreBase<BorderEffectStruct>, IPostEffectMeshXRayGrid
     {
         #region Variables
         private readonly List<KeyValuePair<SceneNode, IEffectAttributes>> currentCores = new List<KeyValuePair<SceneNode, IEffectAttributes>>();
@@ -39,7 +44,7 @@ namespace HelixToolkit.UWP.Core
             set; get;
         } = DefaultRenderTechniqueNames.PostEffectMeshXRayGrid;
 
-        private Color4 color = global::SharpDX.Color.Gray;
+        private Color4 color = global::SharpDX.Color.DarkBlue;
         /// <summary>
         /// Gets or sets the color of the border.
         /// </summary>
@@ -53,6 +58,38 @@ namespace HelixToolkit.UWP.Core
                 SetAffectsRender(ref color, value);
             }
             get { return color; }
+        }
+
+        private int gridDensity = 8;
+        /// <summary>
+        /// Gets or sets the grid density.
+        /// </summary>
+        /// <value>
+        /// The grid density.
+        /// </value>
+        public int GridDensity
+        {
+            set
+            {
+                SetAffectsRender(ref gridDensity, value);
+            }
+            get { return gridDensity; }
+        }
+
+        private float dimmingFactor = 0.8f;
+        /// <summary>
+        /// Gets or sets the dim factor on original color
+        /// </summary>
+        /// <value>
+        /// The dim factor.
+        /// </value>
+        public float DimmingFactor
+        {
+            set
+            {
+                SetAffectsRender(ref dimmingFactor, value);
+            }
+            get { return dimmingFactor; }
         }
         #endregion
 
@@ -85,12 +122,11 @@ namespace HelixToolkit.UWP.Core
             var depthStencilBuffer = hasMSAA ? buffer.FullResDepthStencilPool.Get(Format.D32_Float_S8X24_UInt) : buffer.DepthStencilBuffer;
             BindTarget(depthStencilBuffer, buffer.FullResPPBuffer.CurrentRTV, deviceContext, buffer.TargetWidth, buffer.TargetHeight, false);
             context.IsCustomPass = true;
-            currentCores.Clear();
+
             for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
             {
-                IEffectAttributes effect;
                 var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                if (mesh.TryGetPostEffect(EffectName, out effect))
+                if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
                 {
                     currentCores.Add(new KeyValuePair<SceneNode, IEffectAttributes>(mesh, effect));
                     context.CustomPassName = DefaultPassNames.EffectMeshXRayGridP1;
@@ -144,11 +180,14 @@ namespace HelixToolkit.UWP.Core
                 buffer.FullResDepthStencilPool.Put(Format.D32_Float_S8X24_UInt, depthStencilBuffer);
             }
             context.IsCustomPass = false;
+            currentCores.Clear();
         }
 
         protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)
         {
             modelStruct.Color = color;
+            modelStruct.Param.M11 = gridDensity;
+            modelStruct.Param.M12 = dimmingFactor;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

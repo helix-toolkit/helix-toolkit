@@ -28,11 +28,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             set
             {
-                (RenderCore as PostEffectMeshXRayGridCore).EffectName = value;
+                (RenderCore as IPostEffect).EffectName = value;
             }
             get
             {
-                return (RenderCore as PostEffectMeshXRayGridCore).EffectName;
+                return (RenderCore as IPostEffect).EffectName;
             }
         }
         /// <summary>
@@ -45,13 +45,48 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             set
             {
-                (RenderCore as PostEffectMeshXRayGridCore).Color = value;
+                (RenderCore as IPostEffectMeshXRayGrid).Color = value;
             }
             get
             {
-                return (RenderCore as PostEffectMeshXRayGridCore).Color;
+                return (RenderCore as IPostEffectMeshXRayGrid).Color;
             }
         }
+        /// <summary>
+        /// Gets or sets the grid density.
+        /// </summary>
+        /// <value>
+        /// The grid density.
+        /// </value>
+        public int GridDensity
+        {
+            set
+            {
+                (RenderCore as IPostEffectMeshXRayGrid).GridDensity = value;
+            }
+            get
+            {
+                return (RenderCore as IPostEffectMeshXRayGrid).GridDensity;
+            }
+        }
+        /// <summary>
+        /// Gets or sets the dimming factor.
+        /// </summary>
+        /// <value>
+        /// The dimming factor.
+        /// </value>
+        public float DimmingFactor
+        {
+            set
+            {
+                (RenderCore as IPostEffectMeshXRayGrid).DimmingFactor = value;
+            }
+            get
+            {
+                return (RenderCore as IPostEffectMeshXRayGrid).DimmingFactor;
+            }
+        }
+
         #endregion
 
         /// <summary>
