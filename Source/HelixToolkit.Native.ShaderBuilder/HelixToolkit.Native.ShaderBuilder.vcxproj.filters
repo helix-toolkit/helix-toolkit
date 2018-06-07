@@ -252,5 +252,8 @@
     <FxCompile Include="HS\hsMeshTriTessellation.hlsl">
       <Filter>HS</Filter>
     </FxCompile>
+    <FxCompile Include="PS\psEffectMeshXRayGrid.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

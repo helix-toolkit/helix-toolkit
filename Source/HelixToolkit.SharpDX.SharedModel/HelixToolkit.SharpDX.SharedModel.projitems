@@ -33,6 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshBorderHighlight.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshOutlineBlur.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRay.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRayGrid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MaterialExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\IOctreeManagerWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeManager.cs" />
