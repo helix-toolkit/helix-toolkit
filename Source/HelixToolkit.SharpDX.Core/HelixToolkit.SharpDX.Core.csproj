@@ -52,6 +52,7 @@
     <None Remove="Resources\psEffectGaussianBlurVertical.cso" />
     <None Remove="Resources\psEffectMeshBorderHighlight.cso" />
     <None Remove="Resources\psEffectMeshXRay.cso" />
+    <None Remove="Resources\psEffectMeshXRayGrid.cso" />
     <None Remove="Resources\psEffectOutlineQuad.cso" />
     <None Remove="Resources\psEffectOutlineQuadStencil.cso" />
     <None Remove="Resources\psEffectOutlineQualFinal.cso" />
@@ -117,6 +118,7 @@
     <EmbeddedResource Include="Resources\psEffectGaussianBlurVertical.cso" />
     <EmbeddedResource Include="Resources\psEffectMeshBorderHighlight.cso" />
     <EmbeddedResource Include="Resources\psEffectMeshXRay.cso" />
+    <EmbeddedResource Include="Resources\psEffectMeshXRayGrid.cso" />
     <EmbeddedResource Include="Resources\psEffectOutlineQuad.cso" />
     <EmbeddedResource Include="Resources\psEffectOutlineQuadStencil.cso" />
     <EmbeddedResource Include="Resources\psEffectOutlineQualFinal.cso" />
