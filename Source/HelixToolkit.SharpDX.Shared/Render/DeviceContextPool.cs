@@ -65,7 +65,7 @@ namespace HelixToolkit.UWP.Render
             }
             else
             {
-                return new DeviceContextProxy(device);
+                return Collect(new DeviceContextProxy(device));
             }
         }
         /// <summary>
@@ -97,12 +97,11 @@ namespace HelixToolkit.UWP.Render
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void OnDispose(bool disposeManagedResources)
         {
-            DeviceContextProxy context;
             while (!contextPool.IsEmpty)
             {
-                if(contextPool.TryTake(out context))
+                if(contextPool.TryTake(out DeviceContextProxy context))
                 {
-                    context.Dispose();
+                    RemoveAndDispose(ref context);
                 }
             }
             base.OnDispose(disposeManagedResources);

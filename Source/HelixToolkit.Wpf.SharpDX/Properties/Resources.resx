@@ -331,4 +331,7 @@
   <data name="psLuma" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psluma.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="psEffectMeshXRayGrid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectmeshxraygrid.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

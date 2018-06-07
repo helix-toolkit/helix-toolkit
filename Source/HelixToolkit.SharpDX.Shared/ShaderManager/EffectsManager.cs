@@ -483,9 +483,19 @@ namespace HelixToolkit.UWP
         protected override void OnDispose(bool disposeManagedResources)
         {
             OnDisposeResources?.Invoke(this, EventArgs.Empty);
+            foreach(var technique in techniqueDict.Values.ToArray())
+            {
+                if (technique.IsValueCreated)
+                {
+                    var t = technique.Value;
+                    RemoveAndDispose(ref t);
+                }
+            }
             techniqueDict.Clear();
+            RemoveAndDispose(ref shaderPoolManager);           
             base.OnDispose(disposeManagedResources);
             Initialized = false;
+            global::SharpDX.Toolkit.Graphics.WICHelper.Dispose();
 #if DX11_1
             Disposer.RemoveAndDispose(ref device1);
 #endif

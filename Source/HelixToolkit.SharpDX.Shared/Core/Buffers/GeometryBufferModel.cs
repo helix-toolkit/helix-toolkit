@@ -296,7 +296,11 @@ namespace HelixToolkit.UWP.Core
         protected override void OnDispose(bool disposeManagedResources)
         {
             OnInvalidateRender = null;
-            Geometry = null;
+            if (geometry != null)
+            {
+                geometry.PropertyChanged -= Geometry_PropertyChanged;
+            }
+            geometry = null;
             vertexBufferBindings = null;
             base.OnDispose(disposeManagedResources);
         }

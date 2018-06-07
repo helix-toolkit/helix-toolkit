@@ -129,7 +129,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="disposeManagedResources"></param>
         protected override void OnDispose(bool disposeManagedResources)
         {
-            ClearRenderTagetBindings();
+            if(deviceContext!=null && !deviceContext.IsDisposed)
+            {
+                deviceContext.ClearState();
+                deviceContext.OutputMerger.ResetTargets();
+            }
             base.OnDispose(disposeManagedResources);
         }
     }

@@ -119,8 +119,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public PostEffectMeshXRayCore() : base(RenderType.PostProc)
         {
-            Color = global::SharpDX.Color.Blue;
-            depthPrepassCore = Collect(new DepthPrepassCore());
+            Color = global::SharpDX.Color.Blue;           
         }
 
         /// <summary>
@@ -133,6 +132,7 @@ namespace HelixToolkit.UWP.Core
         }
         protected override bool OnAttach(IRenderTechnique technique)
         {
+            depthPrepassCore = Collect(new DepthPrepassCore());
             depthPrepassCore.Attach(technique);
             return base.OnAttach(technique);
         }
@@ -140,6 +140,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnDetach()
         {
             depthPrepassCore.Detach();
+            depthPrepassCore = null;
             base.OnDetach();
         }
 

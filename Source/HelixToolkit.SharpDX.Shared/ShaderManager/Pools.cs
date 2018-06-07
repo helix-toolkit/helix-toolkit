@@ -64,6 +64,7 @@ namespace HelixToolkit.UWP.ShaderManager
                         lock (pool)
                         {
                             pool.Remove(key);
+                            Remove(newValue);
                         }
                     };
                     return newValue;

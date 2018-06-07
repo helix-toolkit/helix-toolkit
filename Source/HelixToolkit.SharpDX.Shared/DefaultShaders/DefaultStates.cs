@@ -271,6 +271,75 @@ namespace HelixToolkit.UWP.Shaders
             }
         };
 
+        public readonly static DepthStencilStateDescription DSSEffectMeshXRayGridP1 = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = true,
+            IsStencilEnabled = true,
+            DepthWriteMask = DepthWriteMask.Zero,
+            DepthComparison = Comparison.Greater,
+            StencilWriteMask = 0xFF,
+            StencilReadMask = 0,
+            BackFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Never,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            },
+            FrontFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Replace,
+                Comparison = Comparison.Always,
+                DepthFailOperation = StencilOperation.Zero,
+                FailOperation = StencilOperation.Zero
+            }
+        };
+        public readonly static DepthStencilStateDescription DSSEffectMeshXRayGridP2 = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = true,
+            IsStencilEnabled = true,
+            DepthWriteMask = DepthWriteMask.Zero,
+            DepthComparison = Comparison.LessEqual,
+            StencilWriteMask = 0xFF,
+            StencilReadMask = 0,
+            BackFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Never,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            },
+            FrontFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Zero,
+                Comparison = Comparison.Equal,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Zero
+            }
+        };
+        public readonly static DepthStencilStateDescription DSSEffectMeshXRayGridP3 = new DepthStencilStateDescription()
+        {
+            IsDepthEnabled = true,
+            IsStencilEnabled = true,
+            DepthWriteMask = DepthWriteMask.All,
+            DepthComparison = Comparison.Less,
+            StencilWriteMask = 0,
+            StencilReadMask = 0xFF,
+            BackFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Never,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            },
+            FrontFace = new DepthStencilOperationDescription()
+            {
+                PassOperation = StencilOperation.Keep,
+                Comparison = Comparison.Equal,
+                DepthFailOperation = StencilOperation.Keep,
+                FailOperation = StencilOperation.Keep
+            }
+        };
         /// <summary>
         /// The DSS mesh outline pass1
         /// </summary>

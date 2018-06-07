@@ -337,6 +337,11 @@ namespace HelixToolkit.UWP.Model
 
         private void CreateSamplers()
         {
+            RemoveAndDispose(ref SamplerResources[DiffuseIdx]);
+            RemoveAndDispose(ref SamplerResources[NormalIdx]);
+            RemoveAndDispose(ref SamplerResources[AlphaIdx]);
+            RemoveAndDispose(ref SamplerResources[DisplaceIdx]);
+            RemoveAndDispose(ref SamplerResources[ShadowIdx]);
             if (material != null)
             {
                 SamplerResources[DiffuseIdx] = Collect(statePoolManager.Register(material.DiffuseMapSampler));
