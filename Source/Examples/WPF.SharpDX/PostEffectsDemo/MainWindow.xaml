@@ -47,7 +47,7 @@
                 CullMode="Back"
                 Geometry="{Binding MeshModel1}"
                 Material="{Binding Material1}"
-                PostEffects="glow[color:#E900FF]; xrayGrid[color:#D2AE982E]"
+                PostEffects="xrayGrid;glow[color:#85FA00];"
                 Transform="{Binding Model1Transform}" />
 
             <hx:MeshGeometryModel3D
@@ -63,12 +63,17 @@
                 Material="{Binding Material2}"
                 PostEffects="border; glow[color:#0000FF]; xrayGrid[color:#D21C9229]"
                 Transform="{Binding Model2Transform}" />
-
+            <hx:MeshGeometryModel3D
+                CullMode="Back"
+                Geometry="{Binding MeshModel3}"
+                Material="{Binding Material2}"
+                PostEffects="xrayGrid"
+                Transform="{Binding Model1Transform}" />
             <hx:MeshGeometryModel3D
                 CullMode="Back"
                 Geometry="{Binding FloorModel}"
                 Material="{Binding FloorMaterial}" />
-            <hx:PostEffectMeshXRayGrid EffectName="xrayGrid" />
+            <hx:PostEffectMeshXRayGrid EffectName="xrayGrid" GridDensity="4"/>
             <hx:PostEffectMeshOutlineBlur
                 EffectName="glow"
                 NumberOfBlurPass="6"

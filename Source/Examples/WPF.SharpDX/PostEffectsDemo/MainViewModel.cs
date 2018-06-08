@@ -21,7 +21,7 @@ namespace PostEffectsDemo
     {
         public Geometry3D MeshModel1 { private set; get; }
         public Geometry3D MeshModel2 { private set; get; }
-
+        public Geometry3D MeshModel3 { private set; get; }
         public Geometry3D FloorModel { private set; get; }
         public PhongMaterial Material1 { private set; get; } = PhongMaterials.Ruby;
         public PhongMaterial Material2 { private set; get; } = PhongMaterials.Turquoise;
@@ -59,6 +59,10 @@ namespace PostEffectsDemo
             var builder = new MeshBuilder();
             builder.AddBox(new Vector3(0, 0, -5), 15, 15, 0.2);
             FloorModel = builder.ToMesh();
+
+            builder = new MeshBuilder();
+            builder.AddSphere(new Vector3(0, 0, 0), 1);
+            MeshModel3 = builder.ToMesh();
         }
 
         public List<Object3D> Load3ds(string path)
