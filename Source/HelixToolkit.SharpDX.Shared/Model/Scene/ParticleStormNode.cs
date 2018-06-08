@@ -680,36 +680,17 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         /// <summary>
-        /// <para>Determine if this can be rendered.</para>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected override bool CanRender(RenderContext context)
-        {
-            if (base.CanRender(context) && (!(context.EnableBoundingFrustum && EnableViewFrustumCheck)
-                || CheckBoundingFrustum(context.BoundingFrustum)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Checks the bounding frustum.
+        /// Tests the view frustum.
         /// </summary>
         /// <param name="viewFrustum">The view frustum.</param>
         /// <returns></returns>
-        private bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
+        public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
         {
             if (!EnableViewFrustumCheck)
             {
                 return true;
             }
-            var bound = BoundsWithTransform;
-            return viewFrustum.Intersects(ref bound);
+            return BoundingFrustumExtensions.Intersects(ref viewFrustum, ref boundsWithTransform);
         }
         /// <summary>
         /// Determines whether this instance [can hit test] the specified context.

@@ -94,8 +94,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 return true;
             }
-            var sphere = this.BoundsSphereWithTransform;
-            return viewFrustum.Intersects(ref sphere);
+            return BoundingFrustumExtensions.Intersects(ref viewFrustum, ref BoundManager.BoundsSphereWithTransform);// viewFrustum.Intersects(ref sphere);
         }
 
         /// <summary>

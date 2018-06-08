@@ -79,6 +79,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\UWPShaderReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BitmapExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingFrustumExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingSphereExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Color4Extensions.cs" />
