@@ -160,6 +160,12 @@ namespace HelixToolkit.UWP.Core
 
         }
 
+        protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
+        {
+            BindBillboardTexture(deviceContext, DefaultShaderPass.PixelShader);
+            base.OnRenderCustom(context, deviceContext, shaderPass);
+        }
+
         protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
