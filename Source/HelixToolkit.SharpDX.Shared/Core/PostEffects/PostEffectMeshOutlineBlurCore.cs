@@ -231,14 +231,17 @@ namespace HelixToolkit.UWP.Core
 
             deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
             BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
-
+            var frustum = context.BoundingFrustum;
             context.IsCustomPass = true;
             bool hasMesh = false;
             for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
             {
-                IEffectAttributes effect;
                 var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                if (mesh.TryGetPostEffect(EffectName, out effect))
+                if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
+                {
+                    continue;
+                }
+                if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
                 {
                     object attribute;
                     var color = Color;

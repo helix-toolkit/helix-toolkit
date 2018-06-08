@@ -141,11 +141,16 @@ namespace HelixToolkit.UWP.Core
                 deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Depth, 1, 0);
                 depthPrepassCore.Render(context, deviceContext);
             }
+            var frustum = context.BoundingFrustum;
             context.IsCustomPass = true;
 
             for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
             {
                 var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
+                if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
+                {
+                    continue;
+                }
                 if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
                 {
                     currentCores.Add(new KeyValuePair<SceneNode, IEffectAttributes>(mesh, effect));
