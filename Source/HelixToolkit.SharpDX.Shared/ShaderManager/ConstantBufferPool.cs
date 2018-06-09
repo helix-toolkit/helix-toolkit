@@ -48,7 +48,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <summary>
     /// Pool to store and share constant buffers. Do not dispose constant buffer object externally.
     /// </summary>
-    public sealed class ConstantBufferPool : ResourcePoolBase<string, ConstantBufferProxy, ConstantBufferDescription>, IConstantBufferPool
+    public sealed class ConstantBufferPool : LongLivedResourcePoolBase<string, ConstantBufferProxy, ConstantBufferDescription>, IConstantBufferPool
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConstantBufferPool"/> class.
