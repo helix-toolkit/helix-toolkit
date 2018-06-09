@@ -100,6 +100,10 @@
                 Maximum="1"
                 Minimum="0"
                 Value="{Binding ElementName=xrayGridEffect, Path=DimmingFactor}" />
+            <Slider
+                Maximum="1"
+                Minimum="0"
+                Value="{Binding ElementName=xrayGridEffect, Path=BlendingFactor}" />
         </StackPanel>
     </Grid>
 </Window>

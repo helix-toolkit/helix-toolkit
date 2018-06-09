@@ -114,7 +114,7 @@ float4 main(PSInput input) : SV_Target
     b = when_eq(b, 0);
     c = when_eq(c, 0);
     b = clamp(b + c, 0, 1);
-    I = I * (1 - b) + Color * b;
+    I = I * (1 - b) + (I * (1 - Param._m02) + Color * Param._m02) * b;
     return saturate(I);
 }
 

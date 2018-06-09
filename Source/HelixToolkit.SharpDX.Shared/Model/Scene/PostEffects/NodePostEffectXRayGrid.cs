@@ -86,7 +86,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IPostEffectMeshXRayGrid).DimmingFactor;
             }
         }
-
+        /// <summary>
+        /// Gets or sets the blending factor for grid and original mesh color blending
+        /// </summary>
+        /// <value>
+        /// The blending factor.
+        /// </value>
+        public float BlendingFactor
+        {
+            set
+            {
+                (RenderCore as IPostEffectMeshXRayGrid).BlendingFactor = value;
+            }
+            get
+            {
+                return (RenderCore as IPostEffectMeshXRayGrid).BlendingFactor;
+            }
+        }
         #endregion
 
         /// <summary>
