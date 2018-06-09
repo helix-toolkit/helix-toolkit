@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
     using System;
     using BoundingSphere = global::SharpDX.BoundingSphere;
 
-    public class GeometryBoundManager : DisposeObject, IBoundable
+    public sealed class GeometryBoundManager : IDisposable
     {
         #region Properties
         private Geometry3D geometry = null;
@@ -27,23 +27,32 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             set
             {
-                var old = geometry;
-                if(Set(ref geometry, value))
+                if(geometry == value)
                 {
-                    if (geometry != null && geometry.Bound.Maximum == Vector3.Zero && geometry.Bound.Minimum == Vector3.Zero)
-                    {
-                        geometry.UpdateBounds();
-                    }
-                    if (old != null)
-                    {
-                        old.PropertyChanged -= OnGeometryPropertyChangedPrivate;
-                    }
-                    if (geometry != null)
-                    {
-                        geometry.PropertyChanged += OnGeometryPropertyChangedPrivate;
-                    }
-                    UpdateBounds();
+                    return;
                 }
+                var old = geometry;
+                geometry = value;
+                if (geometry != null && geometry.Bound.Maximum == Vector3.Zero && geometry.Bound.Minimum == Vector3.Zero)
+                {
+                    geometry.UpdateBounds();
+                }
+                if (old != null)
+                {
+                    old.PropertyChanged -= OnGeometryPropertyChangedPrivate;
+                }
+                if (geometry != null)
+                {
+                    geometry.PropertyChanged += OnGeometryPropertyChangedPrivate;
+                    OriginalBounds = geometry.Bound;
+                    OriginalBoundsSphere = geometry.BoundingSphere;
+                }
+                else
+                {
+                    OriginalBounds = DefaultBound;
+                    OriginalBoundsSphere = DefaultBoundSphere;
+                }
+                UpdateBounds();
             }
             get { return geometry; }
         }
@@ -53,10 +62,12 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             set
             {
-                if(Set(ref instances, value))
+                if(instances == value)
                 {
-                    UpdateBounds();
+                    return;
                 }
+                instances = value;
+                UpdateBounds();
             }
             get
             {
@@ -76,110 +87,46 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// <value>
         /// The original bound.
         /// </value>
-        public BoundingBox OriginalBounds
-        {
-            get { return Geometry == null ? DefaultBound : geometry.Bound; }
-        }
+        public BoundingBox OriginalBounds;
         /// <summary>
         /// Gets the original bound sphere from the geometry. Same as <see cref="Geometry3D.BoundingSphere"/> 
         /// </summary>
         /// <value>
         /// The original bound sphere.
         /// </value>
-        public BoundingSphere OriginalBoundsSphere
-        {
-            get { return Geometry == null ? DefaultBoundSphere : geometry.BoundingSphere; }
-        }
+        public BoundingSphere OriginalBoundsSphere;
 
-        private BoundingBox bounds = DefaultBound;
         /// <summary>
         /// Gets the bounds. Usually same as <see cref="OriginalBounds"/>. If have instances, the bound will enclose all instances.
         /// </summary>
         /// <value>
         /// The bounds.
         /// </value>
-        public BoundingBox Bounds
-        {
-            get { return bounds; }
-            protected set
-            {
-                if (bounds != value)
-                {
-                    var old = bounds;
-                    bounds = value;
-                    RaiseOnBoundChanged(value, old);
-                }
-            }
-        }
+        public BoundingBox Bounds = DefaultBound;
 
-        private BoundingBox boundsWithTransform = DefaultBound;
         /// <summary>
         /// Gets the bounds with transform. Usually same as <see cref="Bounds"/>. If have transform, the bound is the transformed <see cref="Bounds"/>
         /// </summary>
         /// <value>
         /// The bounds with transform.
         /// </value>
-        public BoundingBox BoundsWithTransform
-        {
-            get { return boundsWithTransform; }
-            private set
-            {
-                if (boundsWithTransform != value)
-                {
-                    var old = boundsWithTransform;
-                    boundsWithTransform = value;
-                    RaiseOnTransformBoundChanged(value, old);
-                }
-            }
-        }
+        public BoundingBox BoundsWithTransform = DefaultBound;
 
-        private BoundingSphere boundsSphere = DefaultBoundSphere;
         /// <summary>
         /// Gets the bounds sphere. Usually same as <see cref="OriginalBoundsSphere"/>. If have instances, the bound sphere will enclose all instances.
         /// </summary>
         /// <value>
         /// The bounds sphere.
         /// </value>
-        public BoundingSphere BoundsSphere
-        {
-            protected set
-            {
-                if (boundsSphere != value)
-                {
-                    var old = boundsSphere;
-                    boundsSphere = value;
-                    RaiseOnBoundSphereChanged(value, old);
-                }
-            }
-            get
-            {
-                return boundsSphere;
-            }
-        }
+        public BoundingSphere BoundsSphere = DefaultBoundSphere;
 
-        private BoundingSphere boundsSphereWithTransform = DefaultBoundSphere;
         /// <summary>
         /// Gets the bounds sphere with transform. If have transform, the bound is the transformed <see cref="BoundsSphere"/>
         /// </summary>
         /// <value>
         /// The bounds sphere with transform.
         /// </value>
-        public BoundingSphere BoundsSphereWithTransform
-        {
-            private set
-            {
-                if (boundsSphereWithTransform != value)
-                {
-                    var old = boundsSphereWithTransform;
-                    boundsSphereWithTransform = value;
-                    RaiseOnTransformBoundSphereChanged(value, old);
-                }
-            }
-            get
-            {
-                return boundsSphereWithTransform;
-            }
-        }
+        public BoundingSphere BoundsSphereWithTransform = DefaultBoundSphere;
 
         public bool HasBound { set; get; } = true;
         #endregion
@@ -242,10 +189,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 BoundsSphere = Geometry.BoundingSphere;
                 BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrix);
             }
-            if (GeometryValid)
-            {
-                OnGeometryPropertyChanged(sender, e);
-            }
         }
 
         /// <summary>
@@ -254,23 +197,22 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         /// </summary>
         /// <returns>
         /// </returns>
-        protected virtual bool CheckGeometry()
+        private bool CheckGeometry()
         {
             return !(this.Geometry == null || this.Geometry.Positions == null || this.Geometry.Positions.Count == 0);
         }
 
-        protected virtual void OnGeometryPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-
-        }
-
         private void OnTransformChanged(object sender, TransformArgs e)
         {
+            var oldBound = BoundsWithTransform;
             BoundsWithTransform = Bounds.Transform(e);
+            RaiseOnTransformBoundChanged(BoundsWithTransform, oldBound);
+            var oldSphere = BoundsSphereWithTransform;
             BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(e);
+            RaiseOnTransformBoundSphereChanged(BoundsSphereWithTransform, oldSphere);
         }
 
-        protected void UpdateBounds()
+        private void UpdateBounds()
         {
             GeometryValid = OnCheckGeometry != null ? OnCheckGeometry.Invoke(this.geometry) : CheckGeometry();
             if (!GeometryValid)
@@ -280,12 +222,22 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             }
             else
             {
+                BoundingBox oldBound;
+                BoundingSphere oldSphere;
                 if (!HasInstances)
                 {
+                    oldBound = Bounds;
                     Bounds = Geometry.Bound;
+                    RaiseOnBoundChanged(Bounds, oldBound);
+                    oldSphere = BoundsSphere;
                     BoundsSphere = Geometry.BoundingSphere;
+                    RaiseOnBoundSphereChanged(BoundsSphere, oldSphere);
+                    oldBound = BoundsWithTransform;
                     BoundsWithTransform = Bounds.Transform(elementCore.TotalModelMatrix);
+                    RaiseOnTransformBoundChanged(BoundsWithTransform, oldBound);
+                    oldSphere = BoundsSphereWithTransform;
                     BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrix);
+                    RaiseOnTransformBoundSphereChanged(BoundsSphereWithTransform, oldSphere);
                 }
                 else
                 {
@@ -320,30 +272,66 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                             BoundingSphere.Merge(ref boundSphere, ref bs, out boundSphere);
                         }
                     }
+                    oldBound = Bounds;
                     Bounds = bound;
+                    RaiseOnBoundChanged(Bounds, oldBound);
+                    oldSphere = BoundsSphere;
                     BoundsSphere = boundSphere;
+                    RaiseOnBoundSphereChanged(BoundsSphere, oldSphere);
+                    oldBound = BoundsWithTransform;
                     BoundsWithTransform = Bounds.Transform(elementCore.TotalModelMatrix);
+                    RaiseOnTransformBoundChanged(BoundsWithTransform, oldBound);
+                    oldSphere = BoundsSphereWithTransform;
                     BoundsSphereWithTransform = BoundsSphere.TransformBoundingSphere(elementCore.TotalModelMatrix);
+                    RaiseOnTransformBoundSphereChanged(BoundsSphereWithTransform, oldSphere);
                 }
             }
         }
 
-        public override void DisposeAndClear()
+        public void DisposeAndClear()
         {
             Geometry = null;
-            base.DisposeAndClear();
         }
 
-        protected override void OnDispose(bool disposeManagedResources)
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        void Dispose(bool disposing)
         {
-            if (geometry != null)
-            { geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate; }
-            elementCore.OnTransformChanged -= OnTransformChanged;
-            OnBoundChanged = null;
-            OnTransformBoundChanged = null;
-            OnBoundSphereChanged = null;
-            OnTransformBoundSphereChanged = null;
-            base.OnDispose(disposeManagedResources);
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    if (geometry != null)
+                    { geometry.PropertyChanged -= OnGeometryPropertyChangedPrivate; }
+                    elementCore.OnTransformChanged -= OnTransformChanged;
+                    OnBoundChanged = null;
+                    OnTransformBoundChanged = null;
+                    OnBoundSphereChanged = null;
+                    OnTransformBoundSphereChanged = null;
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
         }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~GeometryBoundManager() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

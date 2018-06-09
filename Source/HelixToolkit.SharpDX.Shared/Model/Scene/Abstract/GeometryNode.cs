@@ -527,9 +527,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 return true;
             }
-            var bound = BoundsWithTransform;
-            var sphere = BoundsSphereWithTransform;
-            return viewFrustum.Intersects(ref sphere) && viewFrustum.Intersects(ref bound);
+            return BoundingFrustumExtensions.Intersects(ref viewFrustum, ref BoundManager.BoundsWithTransform, ref BoundManager.BoundsSphereWithTransform);
+            //return viewFrustum.Intersects(ref BoundManager.BoundsWithTransform) && viewFrustum.Intersects(ref BoundManager.BoundsSphereWithTransform);
         }
 
         /// <summary>

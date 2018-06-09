@@ -115,7 +115,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 return upDirection;
             }
-        } 
+        }
         #endregion
 
         #region Fields
@@ -179,7 +179,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public ViewBoxNode()
         {
             RelativeScreenLocationX = 0.8f;
-            ViewBoxMeshModel = new MeshNode() { EnableViewFrustumCheck = false };
+            ViewBoxMeshModel = new MeshNode() { EnableViewFrustumCheck = false, CullMode = CullMode.Back };
             ViewBoxMeshModel.RenderCore.RenderType = RenderType.ScreenSpaced;
             var sampler = DefaultSamplers.LinearSamplerWrapAni1;
             sampler.BorderColor = Color.Gray;
@@ -244,7 +244,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 isRightHanded = e;
                 UpdateModel(UpDirection);
-            }          
+            }
         }
 
         private void UpdateTexture(Stream texture)
@@ -288,7 +288,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             builder.AddTriangleStrip(pts);
             var pie = builder.ToMesh();
             int count = pie.Indices.Count;
-
+            for (int i = 0; i < count;)
+            {
+                var v1 = pie.Indices[i++];
+                var v2 = pie.Indices[i++];
+                var v3 = pie.Indices[i++];
+                pie.Indices.Add(v1);
+                pie.Indices.Add(v3);
+                pie.Indices.Add(v2);
+            }
             var newMesh = MeshGeometry3D.Merge(new MeshGeometry3D[] { pie, mesh });
 
             if (!isRightHanded)
@@ -313,11 +321,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             int faces = 6;
             int segment = 4;
             float inc = 1f / faces;
-       
+
             for (int i = 0; i < mesh.TextureCoordinates.Count; ++i)
             {
                 mesh.TextureCoordinates[i] = new Vector2(mesh.TextureCoordinates[i].X * inc + inc * (int)(i / segment), mesh.TextureCoordinates[i].Y);
-            }           
+            }
         }
 
         protected override bool CanHitTest(RenderContext context)
@@ -382,6 +390,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 if (hit.ModelHit == ViewBoxMeshModel)
                 {
                     normal = -hit.NormalAtHit * inv;
+                    //Fix the normal if returned normal is reversed
+                    if(Vector3.Dot(normal, context.Camera.LookDirection) < 0)
+                    {
+                        normal *= -1;
+                    }
                 }
                 else if (hit.Tag is int)
                 {

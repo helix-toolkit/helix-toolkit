@@ -231,14 +231,17 @@ namespace HelixToolkit.UWP.Core
 
             deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 0, 0);
             BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
-
+            var frustum = context.BoundingFrustum;
             context.IsCustomPass = true;
             bool hasMesh = false;
             for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
             {
-                IEffectAttributes effect;
                 var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                if (mesh.TryGetPostEffect(EffectName, out effect))
+                if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
+                {
+                    continue;
+                }
+                if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
                 {
                     object attribute;
                     var color = Color;
@@ -255,8 +258,7 @@ namespace HelixToolkit.UWP.Core
                     var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
                     if (pass.IsNULL) { continue; }
                     pass.BindShader(deviceContext);
-                    pass.BindStates(deviceContext, StateType.BlendState);
-                    deviceContext.SetDepthStencilState(pass.DepthStencilState, 1);
+                    pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                     mesh.Render(context, deviceContext);
                     hasMesh = true;
                 }
@@ -281,8 +283,7 @@ namespace HelixToolkit.UWP.Core
                 BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
                 screenQuadPass.PixelShader.BindTexture(deviceContext, textureSlot, blurCore.CurrentSRV);
                 screenQuadPass.BindShader(deviceContext);
-                deviceContext.SetDepthStencilState(screenQuadPass.DepthStencilState, 0);
-                screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState);
+                screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
                 deviceContext.Draw(4, 0);
                 #endregion
 

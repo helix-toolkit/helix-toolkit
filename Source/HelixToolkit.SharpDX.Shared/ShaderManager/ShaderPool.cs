@@ -18,7 +18,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <summary>
     /// Pool to store and share shaders. Do not dispose shader object externally.
     /// </summary>
-    public sealed class ShaderPool : ResourcePoolBase<byte[], ShaderBase, ShaderDescription>
+    public sealed class ShaderPool : LongLivedResourcePoolBase<byte[], ShaderBase, ShaderDescription>
     {
         /// <summary>
         /// Gets or sets the constant buffer pool.
@@ -61,7 +61,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <summary>
     /// Pool to store and share shader layouts. Do not dispose layout object externally.
     /// </summary>
-    public sealed class LayoutPool : ResourcePoolBase<byte[], InputLayout, KeyValuePair<byte[], InputElement[]>>
+    public sealed class LayoutPool : LongLivedResourcePoolBase<byte[], InputLayout, KeyValuePair<byte[], InputElement[]>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LayoutPool"/> class.

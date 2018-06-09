@@ -163,25 +163,26 @@ namespace HelixToolkit.UWP.Core
                 deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Depth, 1, 0);
                 depthPrepassCore.Render(context, deviceContext);
             }
-
+            var frustum = context.BoundingFrustum;
             context.IsCustomPass = true;
             if (dPass)
             {                
                 deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Stencil, 1, 0);
-                currentCores.Clear();
                 for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                 {
-                    IEffectAttributes effect;
                     var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                    if (mesh.TryGetPostEffect(EffectName, out effect))
+                    if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
+                    {
+                        continue;
+                    }
+                    if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
                     {
                         currentCores.Add(new KeyValuePair<SceneNode, IEffectAttributes>(mesh, effect));
                         context.CustomPassName = DefaultPassNames.EffectMeshXRayP1;
                         var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP1];
                         if (pass.IsNULL) { continue; }
                         pass.BindShader(deviceContext);
-                        pass.BindStates(deviceContext, StateType.BlendState);
-                        deviceContext.SetDepthStencilState(pass.DepthStencilState, 0);//Increment the stencil value
+                        pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                         mesh.Render(context, deviceContext);
                     }
                 }
@@ -190,9 +191,8 @@ namespace HelixToolkit.UWP.Core
                 {
                     var mesh = currentCores[i];
                     IEffectAttributes effect = mesh.Value;
-                    object attribute;
                     var color = Color;
-                    if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out attribute) && attribute is string colorStr)
+                    if (effect.TryGetAttribute(EffectAttributeNames.ColorAttributeName, out object attribute) && attribute is string colorStr)
                     {
                         color = colorStr.ToColor4();
                     }
@@ -206,8 +206,7 @@ namespace HelixToolkit.UWP.Core
                     var pass = mesh.Key.EffectTechnique[DefaultPassNames.EffectMeshXRayP2];
                     if (pass.IsNULL) { continue; }
                     pass.BindShader(deviceContext);
-                    pass.BindStates(deviceContext, StateType.BlendState);
-                    deviceContext.SetDepthStencilState(pass.DepthStencilState, 1);//Do stencil test only on value = 1.
+                    pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                     mesh.Key.Render(context, deviceContext);
                 }
                 currentCores.Clear();                
@@ -216,9 +215,12 @@ namespace HelixToolkit.UWP.Core
             {
                 for (int i =0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
                 {
-                    IEffectAttributes effect;
                     var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
-                    if (mesh.TryGetPostEffect(EffectName, out effect))
+                    if (context.EnableBoundingFrustum && !mesh.TestViewFrustum(ref frustum))
+                    {
+                        continue;
+                    }
+                    if (mesh.TryGetPostEffect(EffectName, out IEffectAttributes effect))
                     {
                         object attribute;
                         var color = Color;

@@ -273,10 +273,10 @@ namespace HelixToolkit.UWP.Shaders
 
         public readonly static DepthStencilStateDescription DSSEffectMeshXRayGridP1 = new DepthStencilStateDescription()
         {
-            IsDepthEnabled = true,
+            IsDepthEnabled = false,
             IsStencilEnabled = true,
             DepthWriteMask = DepthWriteMask.Zero,
-            DepthComparison = Comparison.Greater,
+            DepthComparison = Comparison.Always,
             StencilWriteMask = 0xFF,
             StencilReadMask = 0,
             BackFace = new DepthStencilOperationDescription()

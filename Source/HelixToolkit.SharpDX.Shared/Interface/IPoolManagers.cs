@@ -17,13 +17,13 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
     public interface IShaderPoolManager
     {
         /// <summary>
-        /// Registers the shader.
+        /// Registers the shader. Shader object live time is managed by ShaderPoolManager. Shader should not be disposed manually.
         /// </summary>
         /// <param name="description">The description.</param>
         /// <returns></returns>
         ShaderBase RegisterShader(ShaderDescription description);
         /// <summary>
-        /// Registers the input layout.
+        /// Registers the input layout. Input layout object live time is managed by ShaderPoolManager. Input layout should not be disposed manually
         /// </summary>
         /// <param name="description">The description.</param>
         /// <returns></returns>
@@ -35,26 +35,26 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
     public interface IStatePoolManager
     {
         /// <summary>
-        /// Registers the specified desc.
+        /// Registers the specified desc. This function increments state proxy internal reference counter. Must be disposed if not used.
         /// </summary>
         /// <param name="desc">The desc.</param>
         /// <returns></returns>
         BlendStateProxy Register(BlendStateDescription desc);
 
         /// <summary>
-        /// Registers the specified desc.
+        /// Registers the specified desc. This function increments state proxy internal reference counter. Must be disposed if not used.
         /// </summary>
         /// <param name="desc">The desc.</param>
         /// <returns></returns>
         RasterizerStateProxy Register(RasterizerStateDescription desc);
         /// <summary>
-        /// Registers the specified desc.
+        /// Registers the specified desc. This function increments state proxy internal reference counter. Must be disposed if not used.
         /// </summary>
         /// <param name="desc">The desc.</param>
         /// <returns></returns>
         DepthStencilStateProxy Register(DepthStencilStateDescription desc);
         /// <summary>
-        /// Registers the specified desc.
+        /// Registers the specified desc. This function increments state proxy internal reference counter. Must be disposed if not used.
         /// </summary>
         /// <param name="desc">The desc.</param>
         /// <returns></returns>

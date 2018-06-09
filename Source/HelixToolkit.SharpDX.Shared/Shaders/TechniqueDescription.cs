@@ -150,6 +150,14 @@ namespace HelixToolkit.UWP.Shaders
         [DataMember]
         public int SampleFactor { set; get; } = -1;
         /// <summary>
+        /// Gets or sets the stencil reference.
+        /// </summary>
+        /// <value>
+        /// The stencil reference.
+        /// </value>
+        [DataMember]
+        public int StencilRef { set; get; } = 0;
+        /// <summary>
         /// 
         /// </summary>
         public DepthStencilStateDescription? DepthStencilStateDescription { set; get; } = null;

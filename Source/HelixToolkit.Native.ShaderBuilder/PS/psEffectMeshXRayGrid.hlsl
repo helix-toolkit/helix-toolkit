@@ -107,7 +107,7 @@ float4 main(PSInput input) : SV_Target
     float dimming = Param._m01;
     I.rgb *= dimming;
     int density = Param._m00;   
-    float2 pixel = floor(input.p);
+    float2 pixel = floor(input.p.xy);
     float a = 1;
     float b = fmod(abs(pixel.x - pixel.y), density);
     float c = fmod(abs(pixel.x + pixel.y), density);
