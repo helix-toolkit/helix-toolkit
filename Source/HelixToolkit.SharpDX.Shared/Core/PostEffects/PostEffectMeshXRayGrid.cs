@@ -143,7 +143,7 @@ namespace HelixToolkit.UWP.Core
             }
             var frustum = context.BoundingFrustum;
             context.IsCustomPass = true;
-
+            //First pass, draw onto stencil buffer
             for (int i = 0; i < context.RenderHost.PerFrameNodesWithPostEffect.Count; ++i)
             {
                 var mesh = context.RenderHost.PerFrameNodesWithPostEffect[i];
@@ -158,12 +158,11 @@ namespace HelixToolkit.UWP.Core
                     var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayGridP1];
                     if (pass.IsNULL) { continue; }
                     pass.BindShader(deviceContext);
-                    pass.BindStates(deviceContext, StateType.BlendState);
-                    deviceContext.SetDepthStencilState(pass.DepthStencilState, 1);//Set to 1
+                    pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                     mesh.Render(context, deviceContext);
                 }
             }
-
+            //Second pass, remove not covered part from stencil buffer
             for (int i = 0; i < currentCores.Count; ++i)
             {
                 var mesh = currentCores[i].Key;
@@ -171,13 +170,12 @@ namespace HelixToolkit.UWP.Core
                 var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayGridP2];
                 if (pass.IsNULL) { continue; }
                 pass.BindShader(deviceContext);
-                pass.BindStates(deviceContext, StateType.BlendState);
-                deviceContext.SetDepthStencilState(pass.DepthStencilState, 1);//Set to 1
+                pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                 mesh.Render(context, deviceContext);
             }
 
             deviceContext.ClearDepthStencilView(depthStencilBuffer, DepthStencilClearFlags.Depth, 1, 0);
-
+            //Thrid pass, draw mesh with grid overlay
             for (int i = 0; i < currentCores.Count; ++i)
             {
                 var mesh = currentCores[i].Key;
@@ -195,8 +193,7 @@ namespace HelixToolkit.UWP.Core
                 var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayGridP3];
                 if (pass.IsNULL) { continue; }
                 pass.BindShader(deviceContext);
-                pass.BindStates(deviceContext, StateType.BlendState);
-                deviceContext.SetDepthStencilState(pass.DepthStencilState, 1);
+                pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                 mesh.Render(context, deviceContext);
             }
             if (hasMSAA)

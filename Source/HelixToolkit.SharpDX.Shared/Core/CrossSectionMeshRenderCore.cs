@@ -244,17 +244,15 @@ namespace HelixToolkit.UWP.Core
             deviceContext.SetDepthStencilOnly(dsView);//Remove render target
             deviceContext.SetRasterState(backfaceRasterState);
             drawBackfacePass.BindShader(deviceContext);
-            drawBackfacePass.BindStates(deviceContext, StateType.BlendState);
-            deviceContext.SetDepthStencilState(drawBackfacePass.DepthStencilState, 1); //Draw backface onto stencil buffer, set value to 1
+            drawBackfacePass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
             OnDraw(deviceContext, InstanceBuffer);
 
             //Draw full screen quad to fill cross section            
             deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             deviceContext.SetRasterState(RasterState);
             drawScreenQuadPass.BindShader(deviceContext);
-            drawScreenQuadPass.BindStates(deviceContext, StateType.BlendState);
+            drawScreenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
             renderContext.RenderHost.SetDefaultRenderTargets(false);//Rebind render target
-            deviceContext.SetDepthStencilState(drawScreenQuadPass.DepthStencilState, 1); //Only pass stencil buffer test if value is 1
             deviceContext.Draw(4, 0);
         }
     }

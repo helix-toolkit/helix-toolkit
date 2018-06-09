@@ -258,8 +258,7 @@ namespace HelixToolkit.UWP.Core
                     var pass = mesh.EffectTechnique[DefaultPassNames.EffectOutlineP1];
                     if (pass.IsNULL) { continue; }
                     pass.BindShader(deviceContext);
-                    pass.BindStates(deviceContext, StateType.BlendState);
-                    deviceContext.SetDepthStencilState(pass.DepthStencilState, 1);
+                    pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                     mesh.Render(context, deviceContext);
                     hasMesh = true;
                 }
@@ -284,8 +283,7 @@ namespace HelixToolkit.UWP.Core
                 BindTarget(depthStencilBuffer, renderTargetFull, deviceContext, buffer.TargetWidth, buffer.TargetHeight);
                 screenQuadPass.PixelShader.BindTexture(deviceContext, textureSlot, blurCore.CurrentSRV);
                 screenQuadPass.BindShader(deviceContext);
-                deviceContext.SetDepthStencilState(screenQuadPass.DepthStencilState, 0);
-                screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState);
+                screenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.RasterState | StateType.DepthStencilState);
                 deviceContext.Draw(4, 0);
                 #endregion
 

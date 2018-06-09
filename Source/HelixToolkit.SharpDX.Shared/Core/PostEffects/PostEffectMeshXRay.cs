@@ -182,8 +182,7 @@ namespace HelixToolkit.UWP.Core
                         var pass = mesh.EffectTechnique[DefaultPassNames.EffectMeshXRayP1];
                         if (pass.IsNULL) { continue; }
                         pass.BindShader(deviceContext);
-                        pass.BindStates(deviceContext, StateType.BlendState);
-                        deviceContext.SetDepthStencilState(pass.DepthStencilState, 0);//Increment the stencil value
+                        pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                         mesh.Render(context, deviceContext);
                     }
                 }
@@ -207,8 +206,7 @@ namespace HelixToolkit.UWP.Core
                     var pass = mesh.Key.EffectTechnique[DefaultPassNames.EffectMeshXRayP2];
                     if (pass.IsNULL) { continue; }
                     pass.BindShader(deviceContext);
-                    pass.BindStates(deviceContext, StateType.BlendState);
-                    deviceContext.SetDepthStencilState(pass.DepthStencilState, 1);//Do stencil test only on value = 1.
+                    pass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
                     mesh.Key.Render(context, deviceContext);
                 }
                 currentCores.Clear();                
