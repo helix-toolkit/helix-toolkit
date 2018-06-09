@@ -148,13 +148,12 @@ namespace HelixToolkit.UWP.ShaderManager
         {
             if (description == null)
             { return null; }
-            TVALUE value;
             TKEY key = GetKey(ref description);
             if (key == null)
             { return null; }
             lock (pool)
             {
-                if (pool.TryGetValue(key, out value))
+                if (pool.TryGetValue(key, out TVALUE value))
                 {
                     ErrorCheck(value, ref description);
                     return value;

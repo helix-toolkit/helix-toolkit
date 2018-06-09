@@ -22,7 +22,7 @@ namespace HelixToolkit.UWP.Utilities
         /// The state.
         /// </value>
         public StateType State { get { return state; } }
-        private StateType state;
+        private readonly StateType state;
 
         public StateProxy(StateType state)
         {
