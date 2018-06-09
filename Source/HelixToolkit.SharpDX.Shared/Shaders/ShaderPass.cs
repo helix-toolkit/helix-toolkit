@@ -40,10 +40,27 @@ namespace HelixToolkit.UWP.Shaders
         /// <see cref="ShaderPass.BlendState"/>
         /// </summary>
         public BlendStateProxy BlendState { private set; get; } = null;
-
+        /// <summary>
+        /// Gets or sets the blend factor.
+        /// </summary>
+        /// <value>
+        /// The blend factor.
+        /// </value>
         public Color4 BlendFactor { private set; get; } = Color4.White;
-
+        /// <summary>
+        /// Gets or sets the sample mask.
+        /// </summary>
+        /// <value>
+        /// The sample mask.
+        /// </value>
         public int SampleMask { private set; get; } = -1;
+        /// <summary>
+        /// Gets or sets the stencil reference.
+        /// </summary>
+        /// <value>
+        /// The stencil reference.
+        /// </value>
+        public int StencilRef { private set; get; } = 0;
         /// <summary>
         /// <see cref="ShaderPass.DepthStencilState"/>
         /// </summary>
@@ -101,6 +118,8 @@ namespace HelixToolkit.UWP.Shaders
                 Collect(manager.StateManager.Register((RasterizerStateDescription)passDescription.RasterStateDescription)) : RasterizerStateProxy.Empty;
 
             BlendFactor = passDescription.BlendFactor;
+
+            StencilRef = passDescription.StencilRef;
         }
 
         /// <summary>
@@ -308,7 +327,7 @@ namespace HelixToolkit.UWP.Shaders
             }
             if (EnumHelper.HasFlag(type, StateType.DepthStencilState))
             {
-                context.SetDepthStencilState(DepthStencilState);
+                context.SetDepthStencilState(DepthStencilState, StencilRef);
             }
             if (EnumHelper.HasFlag(type, StateType.RasterState))
             {
