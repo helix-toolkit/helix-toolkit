@@ -10,7 +10,7 @@ namespace HelixToolkit.UWP.Utilities
     /// <summary>
     /// A proxy container to handle view resources
     /// </summary>
-    public sealed class ShaderResourceViewProxy : DisposeObject
+    public sealed class ShaderResourceViewProxy : ReferenceCountDisposeObject
     {
         /// <summary>
         /// Gets the texture view.

@@ -87,7 +87,7 @@ namespace HelixToolkit.UWP
                 {
                     foreach(var resource in resourceDictionaryMipMaps.Values.ToArray())
                     {
-                        resource.Dispose();
+                        resource.ForceDispose();
                     }
                     resourceDictionaryMipMaps.Clear();
                 }
@@ -95,7 +95,7 @@ namespace HelixToolkit.UWP
                 {
                     foreach (var resource in resourceDictionaryNoMipMaps.Values.ToArray())
                     {
-                        resource.Dispose();
+                        resource.ForceDispose();
                     }
                     resourceDictionaryNoMipMaps.Clear();
                 }

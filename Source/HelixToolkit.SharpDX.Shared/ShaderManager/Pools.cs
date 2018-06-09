@@ -23,7 +23,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <typeparam name="TKEY"></typeparam>
     /// <typeparam name="TVALUE"></typeparam>
     /// <typeparam name="TDescription"></typeparam>
-    public abstract class ComPoolBase<TKEY, TVALUE, TDescription> : DisposeObject where TVALUE : ComObject where TKEY : struct
+    public abstract class ComPoolBase<TKEY, TVALUE, TDescription> : IDisposable where TVALUE : ComObject where TKEY : struct
     {
         private readonly Dictionary<TKEY, StateProxy<TVALUE>> pool = new Dictionary<TKEY, StateProxy<TVALUE>>();
         /// <summary>
@@ -57,14 +57,13 @@ namespace HelixToolkit.UWP.ShaderManager
                 }
                 else
                 {
-                    var newValue = Collect(CreateProxy(Create(Device, ref description)));
+                    var newValue = CreateProxy(Create(Device, ref description));
                     pool.Add(key, newValue);
                     newValue.Disposed += (s, e) => 
                     {
                         lock (pool)
                         {
                             pool.Remove(key);
-                            Remove(newValue);
                         }
                     };
                     return newValue;
@@ -90,25 +89,50 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="state">The state.</param>
         /// <returns></returns>
         protected abstract StateProxy<TVALUE> CreateProxy(TVALUE state);
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void OnDispose(bool disposeManagedResources)
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
         {
-            if (disposeManagedResources)
+            if (!disposedValue)
             {
-                lock (pool)
+                if (disposing)
                 {
-                    foreach (var item in pool.Values.ToArray())
+                    // TODO: dispose managed state (managed objects).
+                    lock (pool)
                     {
-                        item.Dispose();
+                        var arr = pool.Values.ToArray();
+                        foreach (var item in arr)
+                        {
+                            item.ForceDispose();
+                        }
+                        pool.Clear();
                     }
-                    pool.Clear();
                 }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
             }
-            base.OnDispose(disposeManagedResources);
         }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~ComPoolBase() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 
 
