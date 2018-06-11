@@ -211,11 +211,12 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="format">The format.</param>
+        /// <param name="mipCount">The mipCount. Default = 0 Auto</param>
         /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
-        public void CreateView<T>(T[] array, int width, int height, global::SharpDX.DXGI.Format format, bool createSRV = true) where T : struct
+        public void CreateView<T>(T[] array, int width, int height, global::SharpDX.DXGI.Format format, int mipCount = 0, bool createSRV = true) where T : struct
         {
             this.DisposeAndClear();
-            resource = Collect(global::SharpDX.Toolkit.Graphics.Texture2D.New(device, width, height, global::SharpDX.Toolkit.Graphics.MipMapCount.Auto, format));
+            resource = Collect(global::SharpDX.Toolkit.Graphics.Texture2D.New(device, width, height, mipCount, format));
             if (createSRV)
             {
                 textureView = Collect(new ShaderResourceView(device, resource));
@@ -227,7 +228,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="array">The array.</param>
         public void CreateViewFromColorArray(Color4[] array)
         {
-            CreateView(array, global::SharpDX.DXGI.Format.R8G8B8A8_UNorm);
+            CreateView(array, global::SharpDX.DXGI.Format.R32G32B32A32_Float);
         }
         /// <summary>
         /// Creates the 2D texture view from color array.
@@ -235,9 +236,10 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="array">The array.</param>
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
-        public void CreateViewFromColorArray(Color4[] array, int width, int height)
+        /// <param name="mipCount">The mipCount. Default = 0 Auto</param>
+        public void CreateViewFromColorArray(Color4[] array, int width, int height, int mipCount = 0, bool createSRV = true)
         {
-            CreateView(array, width, height, global::SharpDX.DXGI.Format.R8G8B8A8_UNorm);
+            CreateView(array, width, height, global::SharpDX.DXGI.Format.R32G32B32A32_Float, mipCount, createSRV);
         }
         /// <summary>
         /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="ShaderResourceView"/>.

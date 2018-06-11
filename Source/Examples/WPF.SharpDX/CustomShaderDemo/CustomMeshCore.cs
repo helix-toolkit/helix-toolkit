@@ -94,7 +94,7 @@ namespace CustomShaderDemo
                 if(ColorGradients != null)
                 {
                     colorGradientResource = new ShaderResourceViewProxy(Device);
-                    colorGradientResource.CreateView(colorGradients.ToArray(), global::SharpDX.Toolkit.Graphics.PixelFormat.R32G32B32A32.Float);
+                    colorGradientResource.CreateViewFromColorArray(ColorGradients.ToArray());
                 }
                 colorChanged = false;
             }
