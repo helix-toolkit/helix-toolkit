@@ -6,9 +6,9 @@ using SharpDX.Direct3D11;
 using System.IO;
 
 #if NETFX_CORE
-namespace HelixToolkit.UWP
+namespace HelixToolkit.UWP.Utilities
 #else
-namespace HelixToolkit.Wpf.SharpDX
+namespace HelixToolkit.Wpf.SharpDX.Utilities
 #endif
 {
     /// <summary>
