@@ -237,6 +237,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="width">The width.</param>
         /// <param name="height">The height.</param>
         /// <param name="mipCount">The mipCount. Default = 0 Auto</param>
+        /// <param name="createSRV"></param>
         public void CreateViewFromColorArray(Color4[] array, int width, int height, int mipCount = 0, bool createSRV = true)
         {
             CreateView(array, width, height, global::SharpDX.DXGI.Format.R32G32B32A32_Float, mipCount, createSRV);
@@ -250,7 +251,7 @@ namespace HelixToolkit.UWP.Utilities
         /// </returns>
         public static implicit operator ShaderResourceView(ShaderResourceViewProxy proxy)
         {
-            return proxy == null ? null : proxy.textureView;
+            return proxy?.textureView;
         }
         /// <summary>
         /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="DepthStencilView"/>.
@@ -261,7 +262,7 @@ namespace HelixToolkit.UWP.Utilities
         /// </returns>
         public static implicit operator DepthStencilView(ShaderResourceViewProxy proxy)
         {
-            return proxy == null ? null : proxy.depthStencilView;
+            return proxy?.depthStencilView;
         }
         /// <summary>
         /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="RenderTargetView"/>.
@@ -272,7 +273,7 @@ namespace HelixToolkit.UWP.Utilities
         /// </returns>
         public static implicit operator RenderTargetView(ShaderResourceViewProxy proxy)
         {
-            return proxy == null ? null : proxy.renderTargetView;
+            return proxy?.renderTargetView;
         }
     }
 }
