@@ -1,3 +1,4 @@
+using SharpDX;
 using SharpDX.Direct3D11;
 using System.Threading;
 
@@ -187,20 +188,56 @@ namespace HelixToolkit.UWP.Utilities
 
 
         /// <summary>
-        /// Creates the view from data array.
+        /// Creates the 1D texture view from data array.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="array">The array.</param>
-        /// <param name="pixelFormat">The pixel format.</param>
+        /// <param name="format">The pixel format.</param>
         /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
-        public void CreateView<T>(T[] array, global::SharpDX.Toolkit.Graphics.PixelFormat pixelFormat, bool createSRV = true) where T : struct
+        public void CreateView<T>(T[] array, global::SharpDX.DXGI.Format format, bool createSRV = true) where T : struct
         {
             this.DisposeAndClear();
-            var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture1D.New(device, array.Length, pixelFormat, array));
+            resource = Collect(global::SharpDX.Toolkit.Graphics.Texture1D.New(device, array.Length, format, array));
             if (createSRV)
             {
-                textureView = Collect(new ShaderResourceView(device, texture));
+                textureView = Collect(new ShaderResourceView(device, resource));
             }
+        }
+        /// <summary>
+        /// Creates the 2D texture view from data array.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array">The array.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        public void CreateView<T>(T[] array, int width, int height, global::SharpDX.DXGI.Format format, bool createSRV = true) where T : struct
+        {
+            this.DisposeAndClear();
+            resource = Collect(global::SharpDX.Toolkit.Graphics.Texture2D.New(device, width, height, global::SharpDX.Toolkit.Graphics.MipMapCount.Auto, format));
+            if (createSRV)
+            {
+                textureView = Collect(new ShaderResourceView(device, resource));
+            }
+        }
+        /// <summary>
+        /// Creates the 1D texture view from color array.
+        /// </summary>
+        /// <param name="array">The array.</param>
+        public void CreateViewFromColorArray(Color4[] array)
+        {
+            CreateView(array, global::SharpDX.DXGI.Format.R8G8B8A8_UNorm);
+        }
+        /// <summary>
+        /// Creates the 2D texture view from color array.
+        /// </summary>
+        /// <param name="array">The array.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        public void CreateViewFromColorArray(Color4[] array, int width, int height)
+        {
+            CreateView(array, width, height, global::SharpDX.DXGI.Format.R8G8B8A8_UNorm);
         }
         /// <summary>
         /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="ShaderResourceView"/>.
