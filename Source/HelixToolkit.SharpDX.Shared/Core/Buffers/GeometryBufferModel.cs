@@ -15,6 +15,7 @@ namespace HelixToolkit.UWP.Core
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using Utilities;
 
     /// <summary>
@@ -108,8 +109,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private volatile bool updateVBinding = false;
-
         #region Constructors        
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryBufferModel"/> class.
@@ -121,7 +120,7 @@ namespace HelixToolkit.UWP.Core
         {
             Topology = topology;
             VertexBuffer = new IElementsBufferProxy[] { Collect(vertexBuffer) };
-            VertexChanged |= 1;
+            VertexChanged = 1u;
             if (indexBuffer != null)
             { IndexBuffer = Collect(indexBuffer); }
         }
@@ -134,7 +133,7 @@ namespace HelixToolkit.UWP.Core
         protected GeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy[] vertexBuffer, IElementsBufferProxy indexBuffer)
         {
             Topology = topology;
-            for(int i = 0; i< vertexBuffer.Length; ++i)
+            for(int i = 0; i < vertexBuffer.Length; ++i)
             {
                 Collect(vertexBuffer[i]);
                 VertexChanged |= 1u << i;
@@ -203,13 +202,15 @@ namespace HelixToolkit.UWP.Core
         /// <param name="vertexBufferStartSlot">The vertex buffer slot.</param>
         /// <param name="deviceResources">The device resources.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool AttachBuffers(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {
             if(VertexChanged != 0)
             {
                 lock (VertexBuffer)
                 {
-                    if(VertexChanged != 0)
+                    bool updateVBinding = false;
+                    if (VertexChanged != 0)
                     {
                         for(int i = 0; i < VertexBuffer.Length && VertexChanged != 0; ++i)
                         {
@@ -224,12 +225,6 @@ namespace HelixToolkit.UWP.Core
                             }
                         }      
                     }  
-                }
-            }
-            if (updateVBinding)
-            {
-                lock (VertexBuffer)
-                {
                     if (updateVBinding)
                     {
                         vertexBufferBindings = VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray();
