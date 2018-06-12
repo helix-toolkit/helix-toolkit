@@ -85,18 +85,25 @@ namespace CustomShaderDemo
             model.Params.Y = dataHeightScale;
         }
 
-        protected override void OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
+        protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
         {
-            base.OnAttachBuffers(context, ref vertStartSlot);
-            if (colorChanged)
+            if(base.OnAttachBuffers(context, ref vertStartSlot))
             {
-                RemoveAndDispose(ref colorGradientResource);
-                if(ColorGradients != null)
+                if (colorChanged)
                 {
-                    colorGradientResource = new ShaderResourceViewProxy(Device);
-                    colorGradientResource.CreateView(colorGradients.ToArray(), global::SharpDX.Toolkit.Graphics.PixelFormat.R32G32B32A32.Float);
+                    RemoveAndDispose(ref colorGradientResource);
+                    if(ColorGradients != null)
+                    {
+                        colorGradientResource = new ShaderResourceViewProxy(Device);
+                        colorGradientResource.CreateViewFromColorArray(ColorGradients.ToArray());
+                    }
+                    colorChanged = false;
                 }
-                colorChanged = false;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

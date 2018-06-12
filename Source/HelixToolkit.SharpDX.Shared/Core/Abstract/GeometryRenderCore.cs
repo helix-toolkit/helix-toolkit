@@ -274,10 +274,11 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="vertStartSlot"></param>
-        protected override void OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
+        protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
         {
-            GeometryBuffer.AttachBuffers(context, this.VertexLayout, ref vertStartSlot, EffectTechnique.EffectsManager);
-            InstanceBuffer?.AttachBuffer(context, ref vertStartSlot);           
+            bool succ = GeometryBuffer.AttachBuffers(context, this.VertexLayout, ref vertStartSlot, EffectTechnique.EffectsManager);
+            InstanceBuffer?.AttachBuffer(context, ref vertStartSlot);
+            return succ;
         }
         /// <summary>
         /// 

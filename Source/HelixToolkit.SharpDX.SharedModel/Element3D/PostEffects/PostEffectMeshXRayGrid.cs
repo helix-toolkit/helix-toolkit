@@ -114,6 +114,31 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Element3DCore).SceneNode as NodePostEffectXRayGrid).DimmingFactor = (float)(double)e.NewValue;
                 }));
+
+
+        /// <summary>
+        /// Gets or sets the blending factor for grid and original mesh color blending
+        /// </summary>
+        /// <value>
+        /// The blending factor.
+        /// </value>
+        public double BlendingFactor
+        {
+            get { return (double)GetValue(BlendingFactorProperty); }
+            set { SetValue(BlendingFactorProperty, value); }
+        }
+
+        /// <summary>
+        /// The blending factor property
+        /// </summary>
+        public static readonly DependencyProperty BlendingFactorProperty =
+            DependencyProperty.Register("BlendingFactor", typeof(double), typeof(PostEffectMeshXRayGrid), new PropertyMetadata(1.0,
+                (d, e) =>
+                {
+                    ((d as Element3DCore).SceneNode as NodePostEffectXRayGrid).BlendingFactor = (float)(double)e.NewValue;
+                }));
+
+
         #endregion
 
         protected override SceneNode OnCreateSceneNode()
@@ -134,6 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 c.Color = GridColor.ToColor4();
                 c.GridDensity = GridDensity;
                 c.DimmingFactor = (float)DimmingFactor;
+                c.BlendingFactor = (float)BlendingFactor;
             }
         }
     }

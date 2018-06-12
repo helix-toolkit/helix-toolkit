@@ -65,7 +65,10 @@ namespace HelixToolkit.UWP.Render
             }
             else
             {
-                return Collect(new DeviceContextProxy(device));
+                lock (this)
+                {
+                    return Collect(new DeviceContextProxy(device));
+                }
             }
         }
         /// <summary>

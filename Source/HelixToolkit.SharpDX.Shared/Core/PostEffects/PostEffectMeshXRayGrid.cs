@@ -23,6 +23,7 @@ namespace HelixToolkit.UWP.Core
         Color4 Color { set; get; }
         int GridDensity { set; get; }
         float DimmingFactor { set; get; }
+        float BlendingFactor { set; get; }
     }
     /// <summary>
     /// 
@@ -91,6 +92,22 @@ namespace HelixToolkit.UWP.Core
                 SetAffectsRender(ref dimmingFactor, value);
             }
             get { return dimmingFactor; }
+        }
+
+        private float blendingFactor = 1f;
+        /// <summary>
+        /// Gets or sets the blending factor for grid and original mesh color blending
+        /// </summary>
+        /// <value>
+        /// The blending factor.
+        /// </value>
+        public float BlendingFactor
+        {
+            set
+            {
+                SetAffectsRender(ref blendingFactor, value);
+            }
+            get { return blendingFactor; }
         }
         #endregion
 
@@ -210,6 +227,7 @@ namespace HelixToolkit.UWP.Core
             modelStruct.Color = color;
             modelStruct.Param.M11 = gridDensity;
             modelStruct.Param.M12 = dimmingFactor;
+            modelStruct.Param.M13 = blendingFactor;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
