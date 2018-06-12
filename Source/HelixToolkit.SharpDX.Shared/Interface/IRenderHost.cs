@@ -272,9 +272,13 @@ namespace HelixToolkit.UWP
         /// </summary>
         void InvalidateRender();
         /// <summary>
-        /// Invalidates the scene graph.
+        /// Invalidates the scene graph. This also calls <see cref="InvalidatePerFrameRenderables"/>
         /// </summary>
         void InvalidateSceneGraph();
+        /// <summary>
+        /// Invalidates the per frame renderables.
+        /// </summary>
+        void InvalidatePerFrameRenderables();
         /// <summary>
         /// Resizes
         /// </summary>

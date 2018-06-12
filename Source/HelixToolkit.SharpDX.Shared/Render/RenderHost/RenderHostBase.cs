@@ -531,7 +531,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         private int updateCounter = 0; // Used to render at least twice. D3DImage sometimes not getting refresh if only render once.
 
-        protected volatile bool UpdateSceneGraphRequested = true;
+        private volatile bool UpdateSceneGraphRequested = true;
+
+        private volatile bool UpdatePerFrameRenderableRequested = true;
 #endregion
 
         /// <summary>
@@ -569,6 +571,15 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public void InvalidateSceneGraph()
         {
             UpdateSceneGraphRequested = true;
+            InvalidatePerFrameRenderables();
+        }
+        /// <summary>
+        /// Invalidates the per frame renderables.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void InvalidatePerFrameRenderables()
+        {
+            UpdatePerFrameRenderableRequested = true;
             InvalidateRender();
         }
         /// <summary>
@@ -611,8 +622,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     renderContext.OITWeightDepthSlope = RenderConfiguration.OITWeightDepthSlope;
                     renderContext.OITWeightMode = RenderConfiguration.OITWeightMode;
                 }
-                PreRender();
+                bool updateSceneGraph = UpdateSceneGraphRequested;
+                bool updatePerFrameRenderable = UpdatePerFrameRenderableRequested;
                 UpdateSceneGraphRequested = false;
+                UpdatePerFrameRenderableRequested = false;
+                PreRender(updateSceneGraph, updatePerFrameRenderable);
                 try
                 {                    
                     if (renderBuffer.BeginDraw())
@@ -672,7 +686,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Called before OnRender.
         /// </summary>
-        protected virtual void PreRender()
+        protected virtual void PreRender(bool invalidateSceneGraph, bool invalidatePerFrameRenderables)
         {
             SetDefaultRenderTargets(immediateDeviceContext, RenderConfiguration.ClearEachFrame);
         }

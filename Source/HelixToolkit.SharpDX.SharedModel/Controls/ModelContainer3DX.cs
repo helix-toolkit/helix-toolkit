@@ -233,7 +233,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             foreach(var v in viewports)
             {
-                v.InvalidateRender();
+                v.RenderHost?.InvalidateRender();
             }
         }
 
@@ -244,7 +244,17 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             foreach (var v in viewports)
             {
-                v.InvalidateSceneGraph();
+                v.RenderHost?.InvalidateSceneGraph();
+            }
+        }
+        /// <summary>
+        /// Invalidates the per frame renderables.
+        /// </summary>
+        public void InvalidatePerFrameRenderables()
+        {
+            foreach (var v in viewports)
+            {
+                v.RenderHost?.InvalidatePerFrameRenderables();
             }
         }
         /// <summary>
