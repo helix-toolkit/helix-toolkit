@@ -276,7 +276,7 @@ namespace HelixToolkit.UWP
         /// </summary>
         void InvalidateSceneGraph();
         /// <summary>
-        /// Invalidates the per frame renderables.
+        /// Invalidates the per frame renderables. Called when <see cref="SceneNode.IsRenderable"/> changed or <see cref="SceneNode.RenderType"/> changed.
         /// </summary>
         void InvalidatePerFrameRenderables();
         /// <summary>
