@@ -58,8 +58,7 @@ namespace HelixToolkit.UWP.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public DeviceContextProxy Get()
         {
-            DeviceContextProxy context;
-            if (contextPool.TryTake(out context))
+            if (contextPool.TryTake(out DeviceContextProxy context))
             {
                 return context;
             }
