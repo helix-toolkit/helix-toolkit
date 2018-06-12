@@ -34,7 +34,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// change flags
         /// </summary>
-        protected volatile bool[] VertexChanged;
+        protected volatile uint VertexChanged;
         /// <summary>
         /// Gets or sets a value indicating whether [index changed].
         /// </summary>
@@ -95,9 +95,9 @@ namespace HelixToolkit.UWP.Core
                 {
                     geometry.PropertyChanged += Geometry_PropertyChanged;
                 }
-                for(int i = 0; i < VertexChanged.Length; ++i)
+                for(int i = 0; i < VertexBuffer.Length; ++i)
                 {
-                    VertexChanged[i] = true;
+                    VertexChanged |= 1u << i;
                 }
                 IndexChanged = true;
                 InvalidateRenderer();
@@ -121,7 +121,7 @@ namespace HelixToolkit.UWP.Core
         {
             Topology = topology;
             VertexBuffer = new IElementsBufferProxy[] { Collect(vertexBuffer) };
-            VertexChanged = new bool[] { true };
+            VertexChanged |= 1;
             if (indexBuffer != null)
             { IndexBuffer = Collect(indexBuffer); }
         }
@@ -134,11 +134,11 @@ namespace HelixToolkit.UWP.Core
         protected GeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy[] vertexBuffer, IElementsBufferProxy indexBuffer)
         {
             Topology = topology;
-            foreach(var buffer in vertexBuffer)
+            for(int i = 0; i< vertexBuffer.Length; ++i)
             {
-                Collect(buffer);
+                Collect(vertexBuffer[i]);
+                VertexChanged |= 1u << i;
             }
-            VertexChanged = Enumerable.Repeat<bool>(true, vertexBuffer.Length).ToArray();
             VertexBuffer = vertexBuffer;
             if (indexBuffer != null)
             { IndexBuffer = Collect(indexBuffer); }
@@ -149,11 +149,11 @@ namespace HelixToolkit.UWP.Core
         private void Geometry_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             bool vertChanged = false;
-            for(int i=0; i<VertexChanged.Length; ++i)
+            for(int i = 0; i < VertexBuffer.Length; ++i)
             {
                 if (IsVertexBufferChanged(e.PropertyName, i))
                 {
-                    VertexChanged[i] = true;
+                    VertexChanged |= 1u << i;
                     InvalidateRenderer();
                     vertChanged = true;
                     break;
@@ -205,19 +205,25 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         public bool AttachBuffers(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
         {
-            for(int i=0; i < VertexChanged.Length; ++i)
+            if(VertexChanged != 0)
             {
-                if (VertexChanged[i] && VertexBuffer[i] != null)
+                lock (VertexBuffer)
                 {
-                    lock (VertexBuffer)
+                    if(VertexChanged != 0)
                     {
-                        if (VertexChanged[i])
+                        for(int i = 0; i < VertexBuffer.Length && VertexChanged != 0; ++i)
                         {
-                            OnCreateVertexBuffer(context, VertexBuffer[i], i, Geometry, deviceResources);
-                        }
-                        VertexChanged[i] = false;
-                        updateVBinding = true;                        
-                    }
+                            if((VertexChanged & (1u << i)) != 0)
+                            {
+                                if(VertexBuffer[i] != null)
+                                {
+                                    OnCreateVertexBuffer(context, VertexBuffer[i], i, Geometry, deviceResources);
+                                }
+                                VertexChanged &= ~(1u << i);
+                                updateVBinding = true;  
+                            }
+                        }      
+                    }  
                 }
             }
             if (updateVBinding)
