@@ -57,6 +57,10 @@
                 x:Name="model1"
                 ItemsSource="{Binding Model1}"
                 Transform="{Binding Transform1}" />
+            <hx:GroupModel3D IsRendering="False"
+                x:Name="model1NormalVector"
+                ItemsSource="{Binding ModelNormalVector}"
+                Transform="{Binding Transform1}" />
             <hx:GroupModel3D
                 x:Name="model2"
                 ItemsSource="{Binding Model2}"
@@ -75,5 +79,7 @@
                 Transform="{Binding Transform5}" />
             <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
         </hx:Viewport3DX>
+        <CheckBox HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10"
+                  IsChecked="{Binding ElementName=model1NormalVector, Path=IsRendering}" Foreground="Blue">Show Normal Vector</CheckBox>
     </Grid>
 </Window>

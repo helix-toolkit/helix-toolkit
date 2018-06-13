@@ -32,6 +32,8 @@ namespace MaterialDemo
         public ObservableElement3DCollection Model4 { get; } = new ObservableElement3DCollection();
         public ObservableElement3DCollection Model5 { get; } = new ObservableElement3DCollection();
 
+        public ObservableElement3DCollection ModelNormalVector { get; } = new ObservableElement3DCollection();
+
         public MeshGeometry3D Floor { get; private set; }
 
         public Material FloorMaterial { get; } = PhongMaterials.Gray;
@@ -42,13 +44,16 @@ namespace MaterialDemo
 
         public Material VertMaterial { get; } = new VertColorMaterial();
 
+        public Material NormalVectorMaterial { get; } = new NormalVectorMaterial();
+
         public Stream EnvironmentMap { private set; get; }
 
-        public Transform3D Transform1 { get; } = new Media3D.TranslateTransform3D(-20, 0, 0);
-        public Transform3D Transform2 { get; } = new Media3D.TranslateTransform3D(-10, 0, 0);
+        public Transform3D Transform1 { get; } = new Media3D.TranslateTransform3D(-30, 0, 0);
+        public Transform3D Transform2 { get; } = new Media3D.TranslateTransform3D(-15, 0, 0);
         public Transform3D Transform3 { get; } = new Media3D.TranslateTransform3D(0, 0, 0);
-        public Transform3D Transform4 { get; } = new Media3D.TranslateTransform3D(10, 0, 0);
-        public Transform3D Transform5 { get; } = new Media3D.TranslateTransform3D(20, 0, 0);
+        public Transform3D Transform4 { get; } = new Media3D.TranslateTransform3D(15, 0, 0);
+        public Transform3D Transform5 { get; } = new Media3D.TranslateTransform3D(30, 0, 0);
+
 
         private Random rnd = new Random();
         private SynchronizationContext context = SynchronizationContext.Current;
@@ -89,7 +94,7 @@ namespace MaterialDemo
                 ob.Geometry.UpdateBounds();
                 context.Post((o) =>
                 {
-                    var scaleTransform = new Media3D.ScaleTransform3D(10, 10, 10);
+                    var scaleTransform = new Media3D.ScaleTransform3D(15, 15, 15);
                     var s = new MeshGeometryModel3D
                     {
                         Geometry = ob.Geometry,
@@ -121,6 +126,14 @@ namespace MaterialDemo
                         Transform = scaleTransform
                     });
 
+                    ModelNormalVector.Add(new MeshGeometryModel3D()
+                    {
+                        Geometry = ob.Geometry,
+                        CullMode = SharpDX.Direct3D11.CullMode.Back,
+                        IsThrowingShadow = true,
+                        Material = NormalVectorMaterial,
+                        Transform = scaleTransform
+                    });
                     Model3.Add(new MeshGeometryModel3D()
                     {
                         Geometry = ob.Geometry,

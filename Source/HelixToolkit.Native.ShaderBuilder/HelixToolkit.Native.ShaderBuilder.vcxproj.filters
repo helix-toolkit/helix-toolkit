@@ -255,5 +255,8 @@
     <FxCompile Include="PS\psEffectMeshXRayGrid.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
+    <FxCompile Include="GS\gsMeshNormalVector.hlsl">
+      <Filter>GS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

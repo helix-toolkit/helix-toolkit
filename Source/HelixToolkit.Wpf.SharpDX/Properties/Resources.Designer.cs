@@ -123,6 +123,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] gsMeshNormalVector {
+            get {
+                object obj = ResourceManager.GetObject("gsMeshNormalVector", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] gsParticle {
             get {
                 object obj = ResourceManager.GetObject("gsParticle", resourceCulture);

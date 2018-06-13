@@ -153,6 +153,10 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
+        public const string NormalVector = "RenderNormalVector";
+        /// <summary>
+        /// 
+        /// </summary>
         public const string PerturbedNormals = "RenderPerturbedNormals";
         /// <summary>
         /// 

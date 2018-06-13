@@ -36,6 +36,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRayGrid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MaterialExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\DiffuseMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\NormalVectorMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\PositionColorMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\VertColorMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\Material.cs" />
