@@ -2,15 +2,23 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using global::SharpDX;
+#if NETFX_CORE
+using Windows.UI.Xaml;
+using Windows.Foundation;
 namespace HelixToolkit.UWP
+#else
+using System.Windows;
+namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Cameras;
-    using global::SharpDX;
     using Model;
     using Model.Scene;
-    using Windows.Foundation;
-    using Windows.UI.Xaml;
-
+    
+    /// <summary>
+    /// 
+    /// </summary>
     public class ShadowMap3D : Element3D
     {
         
@@ -50,6 +58,47 @@ namespace HelixToolkit.UWP
                     ((d as Element3DCore).SceneNode as ShadowMapNode).LightCamera = (e.NewValue as ProjectionCamera).CameraInternal as ProjectionCameraCore;
                 }));
 
+        /// <summary>
+        /// The distance property
+        /// </summary>
+        public static readonly DependencyProperty DistanceProperty =
+            DependencyProperty.Register("Distance", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(200.0, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as ShadowMapNode).Distance = (float)(double)e.NewValue;
+            }));
+
+        /// <summary>
+        /// The ortho width property
+        /// </summary>
+        public static readonly DependencyProperty OrthoWidthProperty =
+            DependencyProperty.Register("OrthoWidth", typeof(double), typeof(ShadowMap3D), new PropertyMetadata(100.0, (d, e) =>
+            {
+                ((d as Element3DCore).SceneNode as ShadowMapNode).Distance = (float)(double)e.NewValue;
+            }));
+
+        /// <summary>
+        /// Gets or sets the distance for shadow caster.
+        /// </summary>
+        /// <value>
+        /// The distance of the shadow caster
+        /// </value>
+        public double Distance
+        {
+            get { return (double)GetValue(DistanceProperty); }
+            set { SetValue(DistanceProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the width of the orthographic camera used in shadow caster.
+        /// </summary>
+        /// <value>
+        /// The width of the orthographic matrix.
+        /// </value>
+        public double OrthoWidth
+        {
+            get { return (double)GetValue(OrthoWidthProperty); }
+            set { SetValue(OrthoWidthProperty, value); }
+        }
         /// <summary>
         /// Gets or sets the resolution.
         /// </summary>
@@ -103,6 +152,8 @@ namespace HelixToolkit.UWP
                 n.Intensity = (float)Intensity;
                 n.Bias = (float)Bias;
                 n.Resolution = new Size2((int)(Resolution.Width), (int)(Resolution.Height));
+                n.Distance = (float)Distance;
+                n.OrthoWidth = (float)OrthoWidth;
             }
             base.AssignDefaultValuesToSceneNode(core);
         }
