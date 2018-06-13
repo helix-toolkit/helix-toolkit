@@ -83,6 +83,7 @@
                 x:Name="model6"
                 ItemsSource="{Binding Model6}"
                 Transform="{Binding Transform6}" />
+            <hx:BillboardTextModel3D FixedSize="False" Geometry="{Binding MeshTitles}" Transform="{Binding TitleTransform}"/>
             <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1">

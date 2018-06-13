@@ -36,6 +36,8 @@ namespace MaterialDemo
 
         public MeshGeometry3D Floor { get; private set; }
 
+        public BillboardText3D MeshTitles { private set; get; }
+
         public Material FloorMaterial { get; } = PhongMaterials.Gray;
 
         public Material NormalMaterial { get; } = new NormalMaterial();
@@ -58,6 +60,8 @@ namespace MaterialDemo
 
         public Transform3D Transform6 { get; } = new Media3D.TranslateTransform3D(45, 0, 0);
 
+        public Transform3D TitleTransform { get; } = new Media3D.TranslateTransform3D(0, 10, 0);
+
         private Random rnd = new Random();
         private SynchronizationContext context = SynchronizationContext.Current;
         public MainViewModel()
@@ -79,6 +83,15 @@ namespace MaterialDemo
             EnvironmentMap = LoadFileToMemory("Cubemap_Grandcanyon.dds");
 
             ColorStripeMaterial.ColorStripe = GetGradients(new Color4(1, 0, 0, 1), new Color4(0, 1, 0, 1), new Color4(0, 0, 1, 1), 48).ToList();
+
+            MeshTitles = new BillboardText3D();
+            MeshTitles.TextInfo.Add(new TextInfo("Blinn", Transform1.ToVector3()) { Scale = 0.08f, Background = new Color4(1,1,1,1) });
+            MeshTitles.TextInfo.Add(new TextInfo("Normal", Transform2.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
+            MeshTitles.TextInfo.Add(new TextInfo("Diffuse", Transform3.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
+            MeshTitles.TextInfo.Add(new TextInfo("Position", Transform4.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
+            MeshTitles.TextInfo.Add(new TextInfo("VertexColor", Transform5.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
+            MeshTitles.TextInfo.Add(new TextInfo("ColorStripe", Transform6.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
+
         }
 
         public void LoadObj(string path)
