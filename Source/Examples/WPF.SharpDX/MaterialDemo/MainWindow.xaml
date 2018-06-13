@@ -44,7 +44,7 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="LeftClick" />
             </hx:Viewport3DX.InputBindings>
-            <hx:AmbientLight3D Color="DarkGray" />
+            <hx:AmbientLight3D Color="#515151" />
             <hx:DirectionalLight3D Direction="-1, -1, 0" Color="White" />
             <hx:ShadowMap3D />
             <hx:MeshGeometryModel3D
@@ -53,47 +53,25 @@
                 Geometry="{Binding Floor}"
                 Material="{Binding FloorMaterial}"
                 RenderShadowMap="True" />
-            <hx:MeshGeometryModel3D
+            <hx:GroupModel3D
                 x:Name="model1"
-                CullMode="Back"
-                Geometry="{Binding Model}"
-                IsThrowingShadow="True"
-                Material="{Binding PhongMaterial}"
-                PostEffects="xray"
-                RenderEnvironmentMap="True"
-                RenderShadowMap="True"
+                ItemsSource="{Binding Model1}"
                 Transform="{Binding Transform1}" />
-            <hx:MeshGeometryModel3D
+            <hx:GroupModel3D
                 x:Name="model2"
-                CullMode="Back"
-                Geometry="{Binding Model}"
-                IsThrowingShadow="True"
-                Material="{Binding NormalMaterial}"
-                PostEffects="xray"
+                ItemsSource="{Binding Model2}"
                 Transform="{Binding Transform2}" />
-            <hx:MeshGeometryModel3D
+            <hx:GroupModel3D
                 x:Name="model3"
-                CullMode="Back"
-                Geometry="{Binding Model}"
-                IsThrowingShadow="True"
-                Material="{Binding DiffuseMaterial}"
-                PostEffects="xray"
+                ItemsSource="{Binding Model3}"
                 Transform="{Binding Transform3}" />
-            <hx:MeshGeometryModel3D
+            <hx:GroupModel3D
                 x:Name="model4"
-                CullMode="Back"
-                Geometry="{Binding Model}"
-                IsThrowingShadow="True"
-                Material="{Binding PositionMaterial}"
-                PostEffects="xray"
+                ItemsSource="{Binding Model4}"
                 Transform="{Binding Transform4}" />
-            <hx:MeshGeometryModel3D
+            <hx:GroupModel3D
                 x:Name="model5"
-                CullMode="Back"
-                Geometry="{Binding Model}"
-                IsThrowingShadow="True"
-                Material="{Binding VertMaterial}"
-                PostEffects="xray"
+                ItemsSource="{Binding Model5}"
                 Transform="{Binding Transform5}" />
             <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
         </hx:Viewport3DX>
