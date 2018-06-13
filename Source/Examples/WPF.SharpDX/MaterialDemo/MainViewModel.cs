@@ -20,6 +20,10 @@ using HelixToolkit.Wpf.SharpDX.Model;
 
 namespace MaterialDemo
 {
+    /// <summary>
+    /// Model used in this demo is from: https://github.com/derkreature/IBLBaker
+    /// </summary>
+    /// <seealso cref="DemoCore.BaseViewModel" />
     public class MainViewModel : BaseViewModel
     {
         public ObservableElement3DCollection Model1 { get; } = new ObservableElement3DCollection();
@@ -51,6 +55,7 @@ namespace MaterialDemo
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
+            Title = "Material Demo";
             this.Camera = new PerspectiveCamera { Position = new Point3D(-30, 30, -30), LookDirection = new Vector3D(30, -30, 30), UpDirection = new Vector3D(0, 1, 0) };
 
             var builder = new MeshBuilder();
