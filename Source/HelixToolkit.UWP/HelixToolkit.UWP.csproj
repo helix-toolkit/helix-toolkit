@@ -441,7 +441,9 @@
     <Content Include="Resources\psEffectMeshXRayGrid.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\gsMeshNormalVector.cso" />
+    <Content Include="Resources\gsMeshNormalVector.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
