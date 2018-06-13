@@ -42,7 +42,7 @@ namespace HelixToolkit.UWP.Render
     {
         private readonly ConcurrentBag<DeviceContextProxy> contextPool = new ConcurrentBag<DeviceContextProxy>();
 
-        private Device device;
+        private readonly Device device;
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceContextPool"/> class.
         /// </summary>
@@ -58,8 +58,7 @@ namespace HelixToolkit.UWP.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public DeviceContextProxy Get()
         {
-            DeviceContextProxy context;
-            if (contextPool.TryTake(out context))
+            if (contextPool.TryTake(out DeviceContextProxy context))
             {
                 return context;
             }

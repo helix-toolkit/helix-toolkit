@@ -85,7 +85,7 @@
             Camera="{Binding Camera}"
             EnableAutoOctreeUpdate="True"
             EnableDeferredRendering="True"
-            EnableDesignModeRendering="True"
+            EnableDesignModeRendering="False"
             EnableSharedModelMode="True"
             FXAALevel="Low"
             IsShadowMappingEnabled="True"

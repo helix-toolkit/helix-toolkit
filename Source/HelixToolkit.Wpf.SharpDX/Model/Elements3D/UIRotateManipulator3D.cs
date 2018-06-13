@@ -109,13 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public UIRotateManipulator3D()
         {
-            OnSceneNodeCreated += UIRotateManipulator3D_OnSceneNodeCreated;
             this.Transform = new System.Windows.Media.Media3D.RotateTransform3D();            
-        }
-
-        private void UIRotateManipulator3D_OnSceneNodeCreated(object sender, Element3D.SceneNodeCreatedEventArgs e)
-        {
-            e.Node.OnSetRenderTechnique = OnCreateRenderTechnique;
         }
 
         /// <summary>
@@ -134,11 +128,6 @@ namespace HelixToolkit.Wpf.SharpDX
             var p2 = p0 + (d * (float)this.Length * 0.5f);
             mb.AddPipe(p1, p2, this.InnerDiameter, this.OuterDiameter, 64);
             this.Geometry = mb.ToMeshGeometry3D();
-        }
-
-        protected IRenderTechnique OnCreateRenderTechnique(IRenderHost host)
-        {
-            return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse];
         }
 
         /// <summary>

@@ -71,7 +71,7 @@
                 Material="{Binding ModelMaterial}" RenderWireframe="True" WireframeColor="#3F3B3B3B"/>
             <hx:LineGeometryModel3D Geometry="{Binding AxisModel}" Color="White" />
             <hx:BillboardTextModel3D x:Name="text" Geometry="{Binding AxisLabel}" IsTransparent="True"/>
-            <hx:MeshGeometryModel3D
+            <local:CustomNoiseMeshModel3D
                 CullMode="Back"
                 FillMode="{Binding FillMode}"
                 Geometry="{Binding SphereModel}"

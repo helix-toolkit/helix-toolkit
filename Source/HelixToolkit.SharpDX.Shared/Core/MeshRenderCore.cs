@@ -173,11 +173,13 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
-            ShaderPass pass = DefaultShaderPass;
+            ShaderPass pass = MaterialVariables.MaterialPass;
             if (RenderType == RenderType.Transparent && context.IsOITPass)
             {
                 pass = TransparentPass;
             }
+            if (pass.IsNULL)
+            { return; }
             pass.BindShader(deviceContext);
             pass.BindStates(deviceContext, DefaultStateBinding);
             if (!BindMaterialTextures(deviceContext, pass))

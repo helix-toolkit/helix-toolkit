@@ -50,15 +50,13 @@ namespace HelixToolkit.Wpf.SharpDX
             b1.AddBox(new Vector3(), 1f, 1f, 1.2f, BoxFaces.All);           
             var body = new MeshGeometryModel3D() { CullMode = CullMode.Back };
             body.Geometry = b1.ToMeshGeometry3D();
-            body.Material = PhongMaterials.Gray;
-            body.SceneNode.OnSetRenderTechnique = (h) => { return h.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
+            body.Material = new DiffuseMaterial() { DiffuseColor = Color.Gray };
             this.Children.Add(body);
             b1 = new MeshBuilder();
             b1.AddCone(new Vector3(0, 0, -1.2f), new Vector3(0, 0f, 0), 0.4f, true, 12);
             var lens = new MeshGeometryModel3D() { CullMode = CullMode.Back};
             lens.Geometry = b1.ToMeshGeometry3D();
-            lens.Material = PhongMaterials.Yellow;
-            lens.SceneNode.OnSetRenderTechnique = (h) => { return h.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
+            lens.Material = new DiffuseMaterial() { DiffuseColor = Color.Yellow };
             this.Children.Add(lens);
 
             var builder = new LineBuilder();
@@ -67,10 +65,12 @@ namespace HelixToolkit.Wpf.SharpDX
             builder.AddLine(Vector3.Zero, new Vector3(0, 0, -2));
 
             var mesh = builder.ToLineGeometry3D();
-            var arrowMeshModel = new LineGeometryModel3D();
-            arrowMeshModel.Geometry = mesh;
-            arrowMeshModel.Color = System.Windows.Media.Colors.White;
-            arrowMeshModel.IsHitTestVisible = false;
+            var arrowMeshModel = new LineGeometryModel3D
+            {
+                Geometry = mesh,
+                Color = System.Windows.Media.Colors.White,
+                IsHitTestVisible = false
+            };
             int segment = mesh.Positions.Count / 3;
             var colors = new Core.Color4Collection(Enumerable.Repeat<Color4>(Color.Black, mesh.Positions.Count));
             int i = 0;
@@ -95,8 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.OnMouse3DDown(sender, e);
 
-            var args = e as Mouse3DEventArgs;
-            if (args == null) return;
+            if (!(e is Mouse3DEventArgs args)) return;
             if (args.Viewport == null) return;
 
             this.isCaptured = true;

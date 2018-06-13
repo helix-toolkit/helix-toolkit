@@ -18,34 +18,34 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Blinn = "RenderBlinn";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Diffuse = "RenderDiffuse";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Colors = "RenderColors";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Positions = "RenderPositions";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Normals = "RenderNormals";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string PerturbedNormals = "RenderPerturbedNormals";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Tangents = "RenderTangents";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string TexCoords = "RenderTexCoords";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string Diffuse = "RenderDiffuse";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string Colors = "RenderColors";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string Positions = "RenderPositions";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string Normals = "RenderNormals";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string PerturbedNormals = "RenderPerturbedNormals";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string Tangents = "RenderTangents";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string TexCoords = "RenderTexCoords";
         /// <summary>
         /// 
         /// </summary>
@@ -134,7 +134,38 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Default = "Default";
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Diffuse = "RenderDiffuse";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Colors = "RenderColors";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Positions = "RenderPositions";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Normals = "RenderNormals";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string PerturbedNormals = "RenderPerturbedNormals";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Tangents = "RenderTangents";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string TexCoords = "RenderTexCoords";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string ViewCube = "RenderViewCube";
         /// <summary>
         /// The mesh transparent
         /// </summary>

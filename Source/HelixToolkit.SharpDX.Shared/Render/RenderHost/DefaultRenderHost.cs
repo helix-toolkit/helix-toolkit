@@ -162,10 +162,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void SeparateRenderables(RenderContext context)
+        private void SeparateRenderables(RenderContext context, bool invalidateSceneGraph, bool invalidatePerFrameRenderables)
         {
-            Clear(UpdateSceneGraphRequested);
-            if (UpdateSceneGraphRequested)
+            Clear(invalidateSceneGraph, invalidatePerFrameRenderables);
+            if (invalidateSceneGraph)
             {
                 viewportRenderables.AddRange(Viewport.Renderables);
                 renderer.UpdateSceneGraph(RenderContext, viewportRenderables, perFrameFlattenedScene);
@@ -173,56 +173,89 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 Debug.WriteLine("Flatten Scene Graph");
 #endif
             }
-
-            for(int i = 0; i < perFrameFlattenedScene.Count;)
+            if (invalidatePerFrameRenderables)
             {
-                var renderable = perFrameFlattenedScene[i];
-                renderable.Value.Update(context);
-                var type = renderable.Value.RenderType;
-                if (!renderable.Value.IsRenderable)
+#if DEBUG
+                Debug.WriteLine("Get PerFrameRenderables");
+#endif
+                for (int i = 0; i < perFrameFlattenedScene.Count;)
                 {
-                    //Skip scene graph depth larger than current node
-                    int depth = renderable.Key;
-                    ++i;
-                    for(; i <perFrameFlattenedScene.Count; ++i)
+                    var renderable = perFrameFlattenedScene[i];
+                    renderable.Value.Update(context);
+                    var type = renderable.Value.RenderType;
+                    if (!renderable.Value.IsRenderable)
                     {
-                        if(perFrameFlattenedScene[i].Key <= depth)
+                        //Skip scene graph depth larger than current node
+                        int depth = renderable.Key;
+                        ++i;
+                        for (; i < perFrameFlattenedScene.Count; ++i)
                         {
-                            break;
+                            if (perFrameFlattenedScene[i].Key <= depth)
+                            {
+                                break;
+                            }
+                            i += perFrameFlattenedScene[i].Value.Items.Count;
                         }
-                        i += perFrameFlattenedScene[i].Value.Items.Count;
+                        continue;
                     }
-                    continue;
+                    if (renderable.Value.RenderCore.NeedUpdate) // Run update function at the beginning of actual rendering.
+                    {
+                        needUpdateCores.Add(renderable.Value.RenderCore);
+                    }
+                    ++i;
+                    switch (type)
+                    {
+                        case RenderType.Opaque:
+                            opaqueNodes.Add(renderable.Value);
+                            break;
+                        case RenderType.Light:
+                            lightNodes.Add(renderable.Value);
+                            break;
+                        case RenderType.Transparent:
+                            transparentNodes.Add(renderable.Value);
+                            break;
+                        case RenderType.Particle:
+                            particleNodes.Add(renderable.Value);
+                            break;
+                        case RenderType.PreProc:
+                            preProcNodes.Add(renderable.Value);
+                            break;
+                        case RenderType.PostProc:
+                            postProcNodes.Add(renderable.Value);
+                            break;
+                        case RenderType.ScreenSpaced:
+                            screenSpacedNodes.Add(renderable.Value);
+                            break;
+                    }
                 }
-                if (renderable.Value.RenderCore.NeedUpdate) // Run update function at the beginning of actual rendering.
+            }
+            else
+            {
+                for (int i = 0; i < perFrameFlattenedScene.Count;)
                 {
-                    needUpdateCores.Add(renderable.Value.RenderCore);
+                    var renderable = perFrameFlattenedScene[i];
+                    renderable.Value.Update(context);
+                    if (!renderable.Value.IsRenderable)
+                    {
+                        //Skip scene graph depth larger than current node
+                        int depth = renderable.Key;
+                        ++i;
+                        for (; i < perFrameFlattenedScene.Count; ++i)
+                        {
+                            if (perFrameFlattenedScene[i].Key <= depth)
+                            {
+                                break;
+                            }
+                            i += perFrameFlattenedScene[i].Value.Items.Count;
+                        }
+                        continue;
+                    }
+                    if (renderable.Value.RenderCore.NeedUpdate) // Run update function at the beginning of actual rendering.
+                    {
+                        needUpdateCores.Add(renderable.Value.RenderCore);
+                    }
+                    ++i;
                 }
-                ++i;
-                switch (type)
-                {
-                    case RenderType.Opaque:
-                        opaqueNodes.Add(renderable.Value);
-                        break;
-                    case RenderType.Light:
-                        lightNodes.Add(renderable.Value);
-                        break;
-                    case RenderType.Transparent:
-                        transparentNodes.Add(renderable.Value);
-                        break;
-                    case RenderType.Particle:
-                        particleNodes.Add(renderable.Value);
-                        break;
-                    case RenderType.PreProc:
-                        preProcNodes.Add(renderable.Value);
-                        break;
-                    case RenderType.PostProc:
-                        postProcNodes.Add(renderable.Value);
-                        break;
-                    case RenderType.ScreenSpaced:
-                        screenSpacedNodes.Add(renderable.Value);
-                        break;
-                }           
             }
 
             //Get RenderCores with post effect specified.
@@ -271,11 +304,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// <see cref="DX11RenderHostBase.PreRender"/>
         /// </summary>
-        protected override void PreRender()
+        protected override void PreRender(bool invalidateSceneGraph, bool invalidatePerFrameRenderables)
         {
-            base.PreRender();
+            base.PreRender(invalidateSceneGraph, invalidatePerFrameRenderables);
 
-            SeparateRenderables(RenderContext);
+            SeparateRenderables(RenderContext, invalidateSceneGraph, invalidatePerFrameRenderables);
 
             asyncTask = Task.Factory.StartNew(() =>
             {
@@ -407,23 +440,26 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void Clear(bool clearFrameRenderables)
+        private void Clear(bool clearFrameRenderables, bool clearPerFrameRenderables)
         {
             numRendered = 0;
             viewportRenderables.Clear();
+            needUpdateCores.Clear();
+            nodesForPostRender.Clear();
             if (clearFrameRenderables)
             {
                 perFrameFlattenedScene.Clear();
             }
-            needUpdateCores.Clear();
-            opaqueNodes.Clear();
-            transparentNodes.Clear();
-            particleNodes.Clear();
-            lightNodes.Clear();
-            postProcNodes.Clear();
-            preProcNodes.Clear();
-            screenSpacedNodes.Clear();
-            nodesForPostRender.Clear();
+            if (clearPerFrameRenderables)
+            {                
+                opaqueNodes.Clear();
+                transparentNodes.Clear();
+                particleNodes.Clear();
+                lightNodes.Clear();
+                postProcNodes.Clear();
+                preProcNodes.Clear();
+                screenSpacedNodes.Clear();               
+            }
         }
 
         /// <summary>
@@ -435,7 +471,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             asyncTask?.Wait();
             getTriangleCountTask?.Wait();
             getPostEffectCoreTask?.Wait();
-            Clear(true);
+            Clear(true, true);
             base.OnEndingD3D();
         }
     }

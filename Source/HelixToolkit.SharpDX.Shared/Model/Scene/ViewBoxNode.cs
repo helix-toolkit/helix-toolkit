@@ -184,10 +184,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             var sampler = DefaultSamplers.LinearSamplerWrapAni1;
             sampler.BorderColor = Color.Gray;
             sampler.AddressU = sampler.AddressV = sampler.AddressW = TextureAddressMode.Border;
-
-            ViewBoxMeshModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.ViewCube]; };
             this.AddChildNode(ViewBoxMeshModel);
-            ViewBoxMeshModel.Material = new PhongMaterialCore()
+            ViewBoxMeshModel.Material = new ViewCubeMaterialCore()
             {
                 DiffuseColor = Color.White,
                 DiffuseMapSampler = sampler
@@ -196,24 +194,22 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             CornerModel = new InstancingMeshNode()
             {
                 EnableViewFrustumCheck = false,
-                Material = new PhongMaterialCore() { DiffuseColor = Color.Yellow },
+                Material = new DiffuseMaterialCore() { DiffuseColor = Color.Yellow },
                 Geometry = cornerGeometry,
                 Instances = cornerInstances,
                 Visible = false
             };
-            CornerModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
             CornerModel.RenderCore.RenderType = RenderType.ScreenSpaced;
             this.AddChildNode(CornerModel);
 
             EdgeModel = new InstancingMeshNode()
             {
                 EnableViewFrustumCheck = false,
-                Material = new PhongMaterialCore() { DiffuseColor = Color.Silver },
+                Material = new DiffuseMaterialCore() { DiffuseColor = Color.Silver },
                 Geometry = edgeGeometry,
                 Instances = edgeInstances,
                 Visible = false
             };
-            EdgeModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
             EdgeModel.RenderCore.RenderType = RenderType.ScreenSpaced;
             this.AddChildNode(EdgeModel);
             UpdateModel(UpDirection);
@@ -223,12 +219,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             if (base.OnAttach(host))
             {
-                var material = (ViewBoxMeshModel.Material as PhongMaterialCore);
+                var material = (ViewBoxMeshModel.Material as ViewCubeMaterialCore);
                 if (material.DiffuseMap == null)
                 {
-                    material.DiffuseMap = ViewBoxTexture == null ? BitmapExtensions.CreateViewBoxTexture(host.EffectsManager,
+                    material.DiffuseMap = ViewBoxTexture ?? BitmapExtensions.CreateViewBoxTexture(host.EffectsManager,
                         "F", "B", "L", "R", "U", "D", Color.Red, Color.Red, Color.Blue, Color.Blue, Color.Green, Color.Green,
-                        Color.White, Color.White, Color.White, Color.White, Color.White, Color.White) : ViewBoxTexture;
+                        Color.White, Color.White, Color.White, Color.White, Color.White, Color.White);
                 }
                 return true;
             }
@@ -358,11 +354,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
             var aspectRatio = screenSpaceCore.ScreenRatio;
             var projMatrix = screenSpaceCore.GlobalTransform.Projection;
-            Vector3 zn, zf;
+            Vector3 zn;
             v.X = (2 * px / viewportSize - 1) / projMatrix.M11;
             v.Y = -(2 * py / viewportSize - 1) / projMatrix.M22;
             v.Z = 1 / projMatrix.M33;
-            Vector3.TransformCoordinate(ref v, ref matrix, out zf);
+            Vector3.TransformCoordinate(ref v, ref matrix, out Vector3 zf);
             if (screenSpaceCore.IsPerspective)
             {
                 zn = screenSpaceCore.GlobalTransform.EyePos;
@@ -396,9 +392,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                         normal *= -1;
                     }
                 }
-                else if (hit.Tag is int)
+                else if (hit.Tag is int index)
                 {
-                    int index = (int)hit.Tag;
                     if (hit.ModelHit == EdgeModel && index < edgeInstances.Length)
                     {
                         Matrix transform = edgeInstances[index];

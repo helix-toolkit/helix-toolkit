@@ -229,5 +229,10 @@ namespace HelixToolkit.UWP.Model
             set { Set(ref displacementMapSampler, value); }
             get { return displacementMapSampler; }
         }
+
+        public override IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager)
+        {
+            return new TextureSharedPhongMaterialVariables(manager, this);
+        }
     }
 }

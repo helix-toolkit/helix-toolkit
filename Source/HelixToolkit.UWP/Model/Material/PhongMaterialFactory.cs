@@ -57,7 +57,7 @@ namespace HelixToolkit.UWP
         public static PhongMaterial GetMaterial(string materialName)
         {
             var mat = Materials.FirstOrDefault(x => x.Name == materialName);
-            return mat != null ? mat : PhongMaterials.DefaultVRML;
+            return mat ?? PhongMaterials.DefaultVRML;
         }
 
 

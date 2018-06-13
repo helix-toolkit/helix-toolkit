@@ -35,6 +35,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRay.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRayGrid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MaterialExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\DiffuseMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\PositionColorMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\VertColorMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\Material.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\NormalMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\PhongMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\IOctreeManagerWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeManager.cs" />
   </ItemGroup>
