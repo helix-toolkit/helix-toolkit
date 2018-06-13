@@ -215,7 +215,7 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if(Set(ref defaultShaderPassName, value) && isAttached)
+                if(!fixedPassName && Set(ref defaultShaderPassName, value) && isAttached)
                 {
                     MaterialPass = technique[value];
                     UpdateMappings(MaterialPass);
@@ -231,7 +231,7 @@ namespace HelixToolkit.UWP.Model
         private readonly PhongMaterialCore material;
         private bool isAttached = false;
         private IRenderTechnique technique;
-
+        private bool fixedPassName = false;
         /// <summary>
         /// 
         /// </summary>
@@ -254,7 +254,7 @@ namespace HelixToolkit.UWP.Model
             this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, EventArgs.Empty); };
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="TextureSharedPhongMaterialVariables"/> class.
+        /// Initializes a new instance of the <see cref="TextureSharedPhongMaterialVariables"/> class. This construct will be using the PassName pass into constructor only.
         /// </summary>
         /// <param name="passName">Name of the pass.</param>
         /// <param name="manager">The manager.</param>
@@ -263,6 +263,7 @@ namespace HelixToolkit.UWP.Model
             : this(manager, material)
         {
             DefaultShaderPassName = passName;
+            fixedPassName = true;
         }
 
         public bool Attach(IRenderTechnique technique)
