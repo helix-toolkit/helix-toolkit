@@ -211,11 +211,6 @@
                     <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
                 </Expander.Background>
                 <StackPanel Orientation="Vertical">
-                    <!--<ComboBox  Grid.Row="3" Text="- Select Model -" ItemsSource="{Binding ShadingModelCollection}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3"/>-->
-                    <ComboBox
-                        Margin="3"
-                        ItemsSource="{Binding EffectsManager.RenderTechniques}"
-                        SelectedItem="{Binding RenderTechniqueName}" />
                     <TextBlock>MSAA</TextBlock>
                     <ComboBox
                         Margin="3"

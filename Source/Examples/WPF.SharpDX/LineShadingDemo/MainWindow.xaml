@@ -96,33 +96,6 @@
         </hx:Viewport3DX>
         <StackPanel Grid.Row="1">
             <Expander
-                x:Name="shadingPanel"
-                Width="200"
-                Margin="10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                BorderBrush="LightGray"
-                Header="Render Technique"
-                IsExpanded="True">
-                <Expander.Background>
-                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
-                </Expander.Background>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <ComboBox
-                        Grid.Row="0"
-                        Margin="3"
-                        DisplayMemberPath="Key"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}"
-                        SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"
-                        SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"
-                        SelectedValuePath="Value" />
-                </Grid>
-            </Expander>
-            <Expander
                 x:Name="linesPanel"
                 Width="200"
                 Margin="10"

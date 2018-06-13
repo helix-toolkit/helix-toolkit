@@ -70,8 +70,6 @@ namespace DemoCore
             }
         }
 
-        public List<string> ShadingModelCollection { get; private set; }
-
         public List<string> CameraModelCollection { get; private set; }
 
         public string CameraModel
