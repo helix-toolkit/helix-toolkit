@@ -82,7 +82,8 @@ namespace MaterialDemo
 
             EnvironmentMap = LoadFileToMemory("Cubemap_Grandcanyon.dds");
 
-            ColorStripeMaterial.ColorStripe = GetGradients(new Color4(1, 0, 0, 1), new Color4(0, 1, 0, 1), new Color4(0, 0, 1, 1), 48).ToList();
+            ColorStripeMaterial.ColorStripeX = GetGradients(new Color4(1, 0, 0, 1), new Color4(0, 1, 0, 1), new Color4(0, 0, 1, 1), 48).ToList();
+            ColorStripeMaterial.ColorStripeY = GetGradients(new Color4(1, 1, 0, 1), new Color4(0, 1, 1, 1), new Color4(1, 0, 1, 1), 48).ToList();
 
             MeshTitles = new BillboardText3D();
             MeshTitles.TextInfo.Add(new TextInfo("Blinn", Transform1.ToVector3()) { Scale = 0.08f, Background = new Color4(1,1,1,1) });

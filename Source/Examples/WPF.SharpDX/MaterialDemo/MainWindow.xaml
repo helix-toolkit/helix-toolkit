@@ -88,7 +88,9 @@
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1">
             <CheckBox HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10"
-                      IsChecked="{Binding ElementName=model1NormalVector, Path=IsRendering}" Foreground="Blue">Show Normal Vector</CheckBox>
+                      IsChecked="{Binding ElementName=model1NormalVector, Path=IsRendering}">Show Normal Vector</CheckBox>
+            <CheckBox IsChecked="{Binding ColorStripeMaterial.ColorStripeXEnabled}">Enable StripeX</CheckBox>
+            <CheckBox IsChecked="{Binding ColorStripeMaterial.ColorStripeYEnabled}">Enable StripeY</CheckBox>
         </StackPanel>
     </Grid>
 </Window>

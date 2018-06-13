@@ -192,7 +192,8 @@ Texture2D billboardTexture : register(t0);; // billboard text image
 Texture2D texOITColor : register(t10);
 Texture2D texOITAlpha : register(t11);
 
-Texture1D texColorStripe1D : register(t12);
+Texture1D texColorStripe1DX : register(t12);
+Texture1D texColorStripe1DY : register(t13);
 ///------------------Samplers-------------------
 SamplerState samplerDiffuse : register(s0);
 

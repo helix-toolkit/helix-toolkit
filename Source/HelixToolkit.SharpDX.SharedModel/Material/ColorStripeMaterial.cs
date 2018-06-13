@@ -43,10 +43,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The color stripe property
         /// </summary>
-        public static readonly DependencyProperty ColorStripeProperty =
-            DependencyProperty.Register("ColorStripe", typeof(IList<Color4>), typeof(ColorStripeMaterial), new PropertyMetadata(null, (d, e) =>
+        public static readonly DependencyProperty ColorStripeXProperty =
+            DependencyProperty.Register("ColorStripeX", typeof(IList<Color4>), typeof(ColorStripeMaterial), new PropertyMetadata(null, (d, e) =>
             {
-                ((d as Material).Core as ColorStripeMaterialCore).ColorStripe = (IList<Color4>)e.NewValue;
+                ((d as Material).Core as ColorStripeMaterialCore).ColorStripeX = (IList<Color4>)e.NewValue;
             }));
 
         /// <summary>
@@ -55,18 +55,77 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The color stripe.
         /// </value>
-        public IList<Color4> ColorStripe
+        public IList<Color4> ColorStripeX
         {
-            get { return (IList<Color4>)GetValue(ColorStripeProperty); }
-            set { SetValue(ColorStripeProperty, value); }
+            get { return (IList<Color4>)GetValue(ColorStripeXProperty); }
+            set { SetValue(ColorStripeXProperty, value); }
         }
 
+        /// <summary>
+        /// The color stripe property
+        /// </summary>
+        public static readonly DependencyProperty ColorStripeYProperty =
+            DependencyProperty.Register("ColorStripeY", typeof(IList<Color4>), typeof(ColorStripeMaterial), new PropertyMetadata(null, (d, e) =>
+            {
+                ((d as Material).Core as ColorStripeMaterialCore).ColorStripeY = (IList<Color4>)e.NewValue;
+            }));
+
+        /// <summary>
+        /// Gets or sets the color stripe.
+        /// </summary>
+        /// <value>
+        /// The color stripe.
+        /// </value>
+        public IList<Color4> ColorStripeY
+        {
+            get { return (IList<Color4>)GetValue(ColorStripeYProperty); }
+            set { SetValue(ColorStripeYProperty, value); }
+        }
         /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty ColorStripeSamplerProperty =
             DependencyProperty.Register("ColorStripeSampler", typeof(SamplerStateDescription), typeof(ColorStripeMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1,
                 (d, e) => { ((d as Material).Core as ColorStripeMaterialCore).ColorStripeSampler = (SamplerStateDescription)e.NewValue; }));
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [color stripe x enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [color stripe x enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ColorStripeXEnabled
+        {
+            get { return (bool)GetValue(ColorStripeXEnabledProperty); }
+            set { SetValue(ColorStripeXEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// The color stripe x enabled property
+        /// </summary>
+        public static readonly DependencyProperty ColorStripeXEnabledProperty =
+            DependencyProperty.Register("ColorStripeXEnabled", typeof(bool), typeof(ColorStripeMaterial), new PropertyMetadata(true, 
+                (d, e) => { ((d as Material).Core as ColorStripeMaterialCore).ColorStripeXEnabled = (bool)e.NewValue; }));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [color stripe y enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [color stripe y enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ColorStripeYEnabled
+        {
+            get { return (bool)GetValue(ColorStripeYEnabledProperty); }
+            set { SetValue(ColorStripeYEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// The color stripe y enabled property
+        /// </summary>
+        public static readonly DependencyProperty ColorStripeYEnabledProperty =
+            DependencyProperty.Register("ColorStripeYEnabled", typeof(bool), typeof(ColorStripeMaterial), new PropertyMetadata(true,
+                (d, e) => { ((d as Material).Core as ColorStripeMaterialCore).ColorStripeYEnabled = (bool)e.NewValue; }));
 
         /// <summary>
         /// 

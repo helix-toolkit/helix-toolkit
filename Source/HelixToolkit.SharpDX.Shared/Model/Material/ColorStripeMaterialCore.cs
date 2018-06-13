@@ -35,11 +35,56 @@ namespace HelixToolkit.UWP.Model
             get { return diffuseColor; }
         }
 
-        private IList<Color4> colorStripe = null;
-        public IList<Color4> ColorStripe
+        private IList<Color4> colorStripeX = null;
+        /// <summary>
+        /// Gets or sets the color stripe x. Use texture coordinate X for sampling
+        /// </summary>
+        /// <value>
+        /// The color stripe x.
+        /// </value>
+        public IList<Color4> ColorStripeX
         {
-            set { Set(ref colorStripe, value); }
-            get { return colorStripe; }
+            set { Set(ref colorStripeX, value); }
+            get { return colorStripeX; }
+        }
+
+        private IList<Color4> colorStripeY = null;
+        /// <summary>
+        /// Gets or sets the color stripe y. Use texture coordinate Y for sampling
+        /// </summary>
+        /// <value>
+        /// The color stripe y.
+        /// </value>
+        public IList<Color4> ColorStripeY
+        {
+            set { Set(ref colorStripeY, value); }
+            get { return colorStripeY; }
+        }
+
+        private bool colorStripeXEnabled = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [color stripe x enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [color stripe x enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ColorStripeXEnabled
+        {
+            set { Set(ref colorStripeXEnabled, value); }
+            get { return colorStripeXEnabled; }
+        }
+
+        private bool colorStripeYEnabled = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [color stripe y enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [color stripe y enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ColorStripeYEnabled
+        {
+            set { Set(ref colorStripeYEnabled, value); }
+            get { return colorStripeYEnabled; }
         }
 
         private global::SharpDX.Direct3D11.SamplerStateDescription colorStripeSampler = DefaultSamplers.LinearSamplerClampAni1;
@@ -73,20 +118,20 @@ namespace HelixToolkit.UWP.Model
 
         private readonly ITextureResourceManager textureManager;
         private readonly IStatePoolManager statePoolManager;
-        private ShaderResourceViewProxy texture;
+        private readonly ShaderResourceViewProxy[] textures = new ShaderResourceViewProxy[2];
         private SamplerStateProxy sampler;
 
-        private int texDiffuseSlot;
+        private int texStripeXSlot, texStripeYSlot;
         private int samplerDiffuseSlot;
 
-        private bool hasTextures = false;
+        private uint textureIndex = 0;
 
         public ShaderPass MaterialPass { get; private set; } = ShaderPass.NullPass;
         /// <summary>
         /// 
         /// </summary>
-        public string ShaderDiffuseTexName { set; get; } = DefaultBufferNames.ColorStripe1DTB;
-
+        public string ShaderStripeTexXName { set; get; } = DefaultBufferNames.ColorStripe1DXTB;
+        public string ShaderStripeTexYName { set; get; } = DefaultBufferNames.ColorStripe1DYTB;
         /// <summary>
         /// 
         /// </summary>
@@ -175,7 +220,7 @@ namespace HelixToolkit.UWP.Model
             deviceResources = manager;
             needUpdate = true;
             material.PropertyChanged += Material_OnMaterialPropertyChanged;
-            texDiffuseSlot = -1;
+            texStripeXSlot = texStripeYSlot = -1;
             samplerDiffuseSlot = -1;
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
@@ -199,10 +244,14 @@ namespace HelixToolkit.UWP.Model
             {
                 return;
             }
-            if (e.PropertyName.Equals(nameof(ColorStripeMaterialCore.ColorStripe)))
+            if (e.PropertyName.Equals(nameof(ColorStripeMaterialCore.ColorStripeX)))
             {
-                CreateTextureView((sender as ColorStripeMaterialCore).ColorStripe);
-            }          
+                CreateTextureView((sender as ColorStripeMaterialCore).ColorStripeX, 0);
+            }
+            else if (e.PropertyName.Equals(nameof(ColorStripeMaterialCore.ColorStripeY)))
+            {
+                CreateTextureView((sender as ColorStripeMaterialCore).ColorStripeY, 1);
+            }
             else if (e.PropertyName.Equals(nameof(ColorStripeMaterialCore.ColorStripeSampler)))
             {
                 RemoveAndDispose(ref sampler);
@@ -213,23 +262,35 @@ namespace HelixToolkit.UWP.Model
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void CreateTextureView(IList<Color4> colors)
+        private void CreateTextureView(IList<Color4> colors, int which)
         {
-            RemoveAndDispose(ref texture);
-            texture = (colors == null || colors.Count == 0) ? null : Collect(new ShaderResourceViewProxy(deviceResources.Device));
-            texture?.CreateViewFromColorArray(colors.ToArray());
-            hasTextures = texture != null;
+            RemoveAndDispose(ref textures[which]);
+            textures[which] = (colors == null || colors.Count == 0) ? null : Collect(new ShaderResourceViewProxy(deviceResources.Device));
+            textures[which]?.CreateViewFromColorArray(colors.ToArray());
+            if(textures[which] != null)
+            {
+                textureIndex |= 1u << which;
+            }
+            else
+            {
+                textureIndex &= ~(1u << which);
+            }
         }
 
         private void CreateTextureViews()
         {
             if (material != null)
             {
-                CreateTextureView(material.ColorStripe);
+                CreateTextureView(material.ColorStripeX, 0);
+                CreateTextureView(material.ColorStripeY, 1);
             }
             else
             {
-                RemoveAndDispose(ref texture);
+                for (int i = 0; i < textures.Length; ++i)
+                {
+                    RemoveAndDispose(ref textures[i]);
+                }
+                textureIndex = 0;
             }
         }
 
@@ -245,10 +306,8 @@ namespace HelixToolkit.UWP.Model
         private void AssignVariables(ref ModelStruct modelstruct)
         {
             modelstruct.Diffuse = material.DiffuseColor;
-            modelstruct.HasDiffuseMap = RenderDiffuseMap && texture != null ? 1 : 0;
-            modelstruct.HasNormalMap = 0;
-            modelstruct.HasDiffuseAlphaMap = 0;
-            modelstruct.RenderShadowMap = 0;
+            modelstruct.HasDiffuseMap = material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0;
+            modelstruct.HasDiffuseAlphaMap = material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0;
         }
 
         /// <summary>
@@ -282,7 +341,7 @@ namespace HelixToolkit.UWP.Model
             {
                 return false;
             }
-            if (hasTextures)
+            if (textureIndex != 0)
             {
                 OnBindMaterialTextures(context, shaderPass.PixelShader);
             }
@@ -301,14 +360,16 @@ namespace HelixToolkit.UWP.Model
             {
                 return;
             }
-            shader.BindTexture(context, texDiffuseSlot, texture);
+            shader.BindTexture(context, texStripeXSlot, textures[0]);
+            shader.BindTexture(context, texStripeYSlot, textures[1]);
             shader.BindSampler(context, samplerDiffuseSlot, sampler);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void UpdateMappings(ShaderPass shaderPass)
         {
-            texDiffuseSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderDiffuseTexName);
+            texStripeXSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderStripeTexXName);
+            texStripeYSlot = shaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderStripeTexYName);
             samplerDiffuseSlot = shaderPass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderSamplerDiffuseTexName);
         }
 
@@ -323,7 +384,10 @@ namespace HelixToolkit.UWP.Model
             {
                 technique = null;
                 material.PropertyChanged -= Material_OnMaterialPropertyChanged;
-                texture = null;
+                for(int i =0; i < textures.Length; ++i)
+                {
+                    textures[i] = null;
+                }
                 sampler = null;
                 OnInvalidateRenderer = null;
             }

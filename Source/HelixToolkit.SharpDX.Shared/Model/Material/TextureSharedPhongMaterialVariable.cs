@@ -340,6 +340,7 @@ namespace HelixToolkit.UWP.Model
                 {
                     RemoveAndDispose(ref TextureResources[i]);
                 }
+                textureIndex = 0;
             }
         }
 
