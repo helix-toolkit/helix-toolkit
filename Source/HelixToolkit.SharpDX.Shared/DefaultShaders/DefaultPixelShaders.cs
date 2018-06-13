@@ -95,6 +95,14 @@ namespace HelixToolkit.UWP.Shaders
 
             }
         }
+        public static byte[] PSMeshColorStripe
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psMeshColorStripe");
+
+            }
+        }
 
         public static byte[] PSMeshViewCube
         {
@@ -507,6 +515,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSMeshDiffuseMap = new ShaderDescription(nameof(PSMeshDiffuseMap), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshDiffuseMap);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription PSMeshColorStripe = new ShaderDescription(nameof(PSMeshColorStripe), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshColorStripe);
         /// <summary>
         /// 
         /// </summary>

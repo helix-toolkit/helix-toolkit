@@ -1,0 +1,85 @@
+﻿using SharpDX;
+using SharpDX.Direct3D11;
+using System.IO;
+using System.Runtime.Serialization;
+
+#if NETFX_CORE
+using Windows.UI.Xaml;
+namespace HelixToolkit.UWP
+#else
+using System.Windows;
+namespace HelixToolkit.Wpf.SharpDX
+#endif
+{
+    using Model;
+    using Shaders;
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [DataContract]
+    public class ColorStripeMaterial : Material
+    {
+        /// <summary>
+        /// The diffuse color property
+        /// </summary>
+        public static readonly DependencyProperty DiffuseColorProperty =
+            DependencyProperty.Register("DiffuseColor", typeof(Color4), typeof(ColorStripeMaterial), new PropertyMetadata((Color4)Color.White,
+                (d, e) =>
+                {
+                    ((d as Material).Core as ColorStripeMaterialCore).DiffuseColor = (Color4)e.NewValue;
+                }));
+
+        /// <summary>
+        /// Gets or sets the diffuse color for the material.
+        /// </summary>
+        public Color4 DiffuseColor
+        {
+            get { return (Color4)this.GetValue(DiffuseColorProperty); }
+            set { this.SetValue(DiffuseColorProperty, value); }
+        }
+
+        /// <summary>
+        /// The color stripe property
+        /// </summary>
+        public static readonly DependencyProperty ColorStripeProperty =
+            DependencyProperty.Register("ColorStripe", typeof(IList<Color4>), typeof(ColorStripeMaterial), new PropertyMetadata(null, (d, e) =>
+            {
+                ((d as Material).Core as ColorStripeMaterialCore).ColorStripe = (IList<Color4>)e.NewValue;
+            }));
+
+        /// <summary>
+        /// Gets or sets the color stripe.
+        /// </summary>
+        /// <value>
+        /// The color stripe.
+        /// </value>
+        public IList<Color4> ColorStripe
+        {
+            get { return (IList<Color4>)GetValue(ColorStripeProperty); }
+            set { SetValue(ColorStripeProperty, value); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty ColorStripeSamplerProperty =
+            DependencyProperty.Register("ColorStripeSampler", typeof(SamplerStateDescription), typeof(ColorStripeMaterial), new PropertyMetadata(DefaultSamplers.LinearSamplerClampAni1,
+                (d, e) => { ((d as Material).Core as ColorStripeMaterialCore).ColorStripeSampler = (SamplerStateDescription)e.NewValue; }));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public SamplerStateDescription ColorStripeSampler
+        {
+            get { return (SamplerStateDescription)this.GetValue(ColorStripeSamplerProperty); }
+            set { this.SetValue(ColorStripeSamplerProperty, value); }
+        }
+
+        protected override MaterialCore OnCreateCore()
+        {
+            return new ColorStripeMaterialCore();
+        }
+    }
+}

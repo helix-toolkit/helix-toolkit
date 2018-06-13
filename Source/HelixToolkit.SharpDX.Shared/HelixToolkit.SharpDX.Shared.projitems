@@ -120,6 +120,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element2D\Element2DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Element3DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\GeometryBoundManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\ColorStripeMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\DiffuseMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\EmptyMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\MaterialCore.cs" />

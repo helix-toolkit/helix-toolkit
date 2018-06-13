@@ -33,6 +33,7 @@ namespace HelixToolkit.UWP.Shaders
         public static string CubeMapTB = "texCubeMap";
         public static string ShadowMapTB = "texShadowMap";
         public static string BillboardTB = "billboardTexture";
+        public static string ColorStripe1DTB = "texColorStripe1D";
         //----------Particle--------------
         public static string ParticleFrameCB = "cbParticleFrame";
         public static string ParticleCreateParameters = "cbParticleCreateParameters";

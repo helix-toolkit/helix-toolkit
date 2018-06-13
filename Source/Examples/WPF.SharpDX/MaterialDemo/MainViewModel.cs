@@ -31,7 +31,7 @@ namespace MaterialDemo
         public ObservableElement3DCollection Model3 { get; } = new ObservableElement3DCollection();
         public ObservableElement3DCollection Model4 { get; } = new ObservableElement3DCollection();
         public ObservableElement3DCollection Model5 { get; } = new ObservableElement3DCollection();
-
+        public ObservableElement3DCollection Model6 { get; } = new ObservableElement3DCollection();
         public ObservableElement3DCollection ModelNormalVector { get; } = new ObservableElement3DCollection();
 
         public MeshGeometry3D Floor { get; private set; }
@@ -46,6 +46,8 @@ namespace MaterialDemo
 
         public Material NormalVectorMaterial { get; } = new NormalVectorMaterial();
 
+        public ColorStripeMaterial ColorStripeMaterial { get; } = new ColorStripeMaterial();
+
         public Stream EnvironmentMap { private set; get; }
 
         public Transform3D Transform1 { get; } = new Media3D.TranslateTransform3D(-30, 0, 0);
@@ -54,6 +56,7 @@ namespace MaterialDemo
         public Transform3D Transform4 { get; } = new Media3D.TranslateTransform3D(15, 0, 0);
         public Transform3D Transform5 { get; } = new Media3D.TranslateTransform3D(30, 0, 0);
 
+        public Transform3D Transform6 { get; } = new Media3D.TranslateTransform3D(45, 0, 0);
 
         private Random rnd = new Random();
         private SynchronizationContext context = SynchronizationContext.Current;
@@ -64,7 +67,7 @@ namespace MaterialDemo
             this.Camera = new PerspectiveCamera { Position = new Point3D(-30, 30, -30), LookDirection = new Vector3D(30, -30, 30), UpDirection = new Vector3D(0, 1, 0) };
 
             var builder = new MeshBuilder();
-            builder.AddBox(new Vector3(0, -6, 0), 100, 2, 100);
+            builder.AddBox(new Vector3(0, -6, 0), 200, 2, 100);
 
             Floor = builder.ToMesh();
 
@@ -74,6 +77,8 @@ namespace MaterialDemo
             LoadObj(@"shaderBall\shaderBall.obj");
 
             EnvironmentMap = LoadFileToMemory("Cubemap_Grandcanyon.dds");
+
+            ColorStripeMaterial.ColorStripe = GetGradients(new Color4(1, 0, 0, 1), new Color4(0, 1, 0, 1), new Color4(0, 0, 1, 1), 48).ToList();
         }
 
         public void LoadObj(string path)
@@ -92,6 +97,7 @@ namespace MaterialDemo
                 ob.Geometry.Colors = new HelixToolkit.Wpf.SharpDX.Core.Color4Collection(Enumerable.Repeat(vertColor, ob.Geometry.Positions.Count));
                 ob.Geometry.UpdateOctree();
                 ob.Geometry.UpdateBounds();
+
                 context.Post((o) =>
                 {
                     var scaleTransform = new Media3D.ScaleTransform3D(15, 15, 15);
@@ -101,6 +107,7 @@ namespace MaterialDemo
                         CullMode = SharpDX.Direct3D11.CullMode.Back,
                         IsThrowingShadow = true,
                         RenderShadowMap = true,
+                        RenderEnvironmentMap = true,
                         Transform = scaleTransform
                     };
 
@@ -160,7 +167,37 @@ namespace MaterialDemo
                         Material = VertMaterial,
                         Transform = scaleTransform
                     });
+
+                    Model6.Add(new MeshGeometryModel3D()
+                    {
+                        Geometry = ob.Geometry,
+                        CullMode = SharpDX.Direct3D11.CullMode.Back,
+                        IsThrowingShadow = true,
+                        Material = ColorStripeMaterial,
+                        Transform = scaleTransform
+                    });
                 }, null);
+            }
+        }
+
+        public static IEnumerable<Color4> GetGradients(Color4 start, Color4 mid, Color4 end, int steps)
+        {
+            return GetGradients(start, mid, steps / 2).Concat(GetGradients(mid, end, steps / 2));
+        }
+
+        public static IEnumerable<Color4> GetGradients(Color4 start, Color4 end, int steps)
+        {
+            float stepA = ((end.Alpha - start.Alpha) / (steps - 1));
+            float stepR = ((end.Red - start.Red) / (steps - 1));
+            float stepG = ((end.Green - start.Green) / (steps - 1));
+            float stepB = ((end.Blue - start.Blue) / (steps - 1));
+
+            for (int i = 0; i < steps; i++)
+            {
+                yield return new Color4((start.Red + (stepR * i)),
+                                            (start.Green + (stepG * i)),
+                                            (start.Blue + (stepB * i)),
+                                            (start.Alpha + (stepA * i)));
             }
         }
     }

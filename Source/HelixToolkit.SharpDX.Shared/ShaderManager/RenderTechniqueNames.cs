@@ -171,6 +171,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public const string ViewCube = "RenderViewCube";
         /// <summary>
+        ///
+        /// </summary>
+        public const string ColorStripe1D = "ColorStripe1D";
+        /// <summary>
         /// The mesh transparent
         /// </summary>
         public const string OITPass = "MeshOITPass";
