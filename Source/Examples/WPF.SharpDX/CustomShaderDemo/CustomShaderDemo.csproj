@@ -99,6 +99,7 @@
     <Compile Include="CustomEffectsManager.cs" />
     <Compile Include="CustomMeshCore.cs" />
     <Compile Include="CustomMeshGeometryModel3D.cs" />
+    <Compile Include="CustomNoiseMeshModel3D.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

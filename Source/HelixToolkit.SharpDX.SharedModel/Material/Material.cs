@@ -2,11 +2,16 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System.ComponentModel;
 using System.Runtime.Serialization;
-using Windows.UI.Xaml;
 
+#if NETFX_CORE
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
+#else
+using System.ComponentModel;
+using System.Windows;
+namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Model;
 
@@ -46,7 +51,7 @@ namespace HelixToolkit.UWP
 
         public static implicit operator MaterialCore(Material m)
         {
-            return m == null ? null : m.Core;
+            return m?.Core;
         }
     }
 }

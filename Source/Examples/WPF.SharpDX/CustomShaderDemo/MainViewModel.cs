@@ -143,7 +143,6 @@ namespace CustomShaderDemo
             };
 
             EffectsManager = new CustomEffectsManager();
-            RenderTechnique = EffectsManager[CustomShaderNames.NoiseMesh];
            
 
             var builder = new MeshBuilder(true);

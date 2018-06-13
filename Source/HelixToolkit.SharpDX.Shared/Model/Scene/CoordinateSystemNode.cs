@@ -163,11 +163,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         ///
         /// </summary>
         public CoordinateSystemNode()
-        {
-            
-            arrowMeshModel.Material = new PhongMaterialCore() { DiffuseColor = Color.White };           
+        {          
+            arrowMeshModel.Material = new ColorMaterialCore();           
             arrowMeshModel.CullMode = CullMode.Back;
-            arrowMeshModel.OnSetRenderTechnique += (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Colors]; };
             arrowMeshModel.IsHitTestVisible = false;
             arrowMeshModel.RenderCore.RenderType = RenderType.ScreenSpaced;
 

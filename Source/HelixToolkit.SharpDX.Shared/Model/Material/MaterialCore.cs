@@ -9,7 +9,7 @@ using HelixToolkit.UWP.Utilities;
 namespace HelixToolkit.UWP.Model
 #endif
 {
-    public class MaterialCore : ObservableObject, IMaterial
+    public abstract class MaterialCore : ObservableObject, IMaterial
     {
         private string name;
         public string Name
@@ -23,5 +23,7 @@ namespace HelixToolkit.UWP.Model
                 return name;
             }
         }
+
+        public abstract IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager);
     }
 }

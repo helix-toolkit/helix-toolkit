@@ -178,12 +178,12 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 e.Node.OnAttached += SceneNode_OnAttached;
             };
-            this.translateX = new UITranslateManipulator3D { Direction = new Vector3(1, 0, 0), Material = PhongMaterials.Red };
-            this.translateY = new UITranslateManipulator3D { Direction = new Vector3(0, 1, 0), Material = PhongMaterials.Green };
-            this.translateZ = new UITranslateManipulator3D { Direction = new Vector3(0, 0, 1), Material = PhongMaterials.Blue };
-            this.rotateX = new UIRotateManipulator3D { Axis = new Vector3(1, 0, 0), Length = 0.05, Material = PhongMaterials.Red, };
-            this.rotateY = new UIRotateManipulator3D { Axis = new Vector3(0, 1, 0), Length = 0.05, Material = PhongMaterials.Green };
-            this.rotateZ = new UIRotateManipulator3D { Axis = new Vector3(0, 0, 1), Length = 0.05, Material = PhongMaterials.Blue };
+            this.translateX = new UITranslateManipulator3D { Direction = new Vector3(1, 0, 0), Material = DiffuseMaterials.Red };
+            this.translateY = new UITranslateManipulator3D { Direction = new Vector3(0, 1, 0), Material = DiffuseMaterials.Green };
+            this.translateZ = new UITranslateManipulator3D { Direction = new Vector3(0, 0, 1), Material = DiffuseMaterials.Blue };
+            this.rotateX = new UIRotateManipulator3D { Axis = new Vector3(1, 0, 0), Length = 0.05, Material = DiffuseMaterials.Red, };
+            this.rotateY = new UIRotateManipulator3D { Axis = new Vector3(0, 1, 0), Length = 0.05, Material = DiffuseMaterials.Green };
+            this.rotateZ = new UIRotateManipulator3D { Axis = new Vector3(0, 0, 1), Length = 0.05, Material = DiffuseMaterials.Blue };
 
             // bind UITranslateManipulators3D.TargetTransform to this.Transform            
             BindingOperations.SetBinding(this.translateX, UIManipulator3D.TargetTransformProperty, new Binding("TargetTransform") { Source = this });

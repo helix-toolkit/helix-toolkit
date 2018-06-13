@@ -1,31 +1,33 @@
-﻿/*
-The MIT License (MIT)
-Copyright (c) 2018 Helix Toolkit contributors
-*/
+﻿using SharpDX;
+using SharpDX.Direct3D11;
+using System.IO;
+using System.Runtime.Serialization;
+
+#if NETFX_CORE
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
+#else
+using System.Windows;
+namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Model;
     using Shaders;
-    using SharpDX;
-    using SharpDX.Direct3D11;
-    using System.IO;
-    using System.Runtime.Serialization;
-    using Windows.UI.Xaml;
-
+   
     /// <summary>
     /// Implments a phong-material with its all properties
     /// Includes Diffuse, Normal, Displacement, Specular, etc. maps
     /// </summary>
     [DataContract]
-    public class PhongMaterial : Material
+    public partial class PhongMaterial : Material
     {
         /// <summary>
         /// Identifies the System.Windows.Media.Media3D.DiffuseMaterial.AmbientColor�dependency
         /// property.
         /// </summary>
         public static readonly DependencyProperty AmbientColorProperty =
-            DependencyProperty.Register("AmbientColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Black,
-                (d, e) =>
+            DependencyProperty.Register("AmbientColor", typeof(Color4), typeof(PhongMaterial), new PropertyMetadata((Color4)Color.Black, 
+                (d, e)=> 
                 {
                     ((d as Material).Core as IPhongMaterial).AmbientColor = (Color4)e.NewValue;
                 }));
@@ -95,8 +97,8 @@ namespace HelixToolkit.UWP
         /// The color will be cDiffuse*cAlpha.
         /// </summary>
         public static readonly DependencyProperty DiffuseAlphaMapProperty =
-            DependencyProperty.Register("DiffuseAlphaMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null,
-                (d, e) => { ((d as Material).Core as IPhongMaterial).DiffuseAlphaMap = e.NewValue as Stream; }));
+            DependencyProperty.Register("DiffuseAlphaMap", typeof(Stream), typeof(PhongMaterial), new PropertyMetadata(null, 
+                (d,e)=> { ((d as Material).Core as IPhongMaterial).DiffuseAlphaMap = e.NewValue as Stream; }));
 
         /// <summary>
         /// 
@@ -116,7 +118,7 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public static readonly DependencyProperty DisplacementMapScaleMaskProperty =
-            DependencyProperty.Register("DisplacementMapScaleMask", typeof(Vector4), typeof(PhongMaterial), new PropertyMetadata(new Vector4(0, 0, 0, 1),
+            DependencyProperty.Register("DisplacementMapScaleMask", typeof(Vector4), typeof(PhongMaterial), new PropertyMetadata(new Vector4(0,0,0,1),
                 (d, e) => { ((d as Material).Core as IPhongMaterial).DisplacementMapScaleMask = (Vector4)e.NewValue; }));
 
         /// <summary>
