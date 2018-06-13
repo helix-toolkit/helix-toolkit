@@ -52,6 +52,13 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 #### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki)
 
 ## News
+#### V2.2.0 Developing Features and Changes
+1. Add per-frame draw call in RenderDetail.
+2. Add pingpong buffer for post effects. Add depth stencil buffer pooling
+3. Add RenderTechnique serialization/deserialization.
+4. Add BlendFactor/SampleMask/StencilRef in ShaderPassDescription.
+5. Support customizable mesh material. Added multiple new materials. Obsolete to change render technique to switch shading mode. Use different material to apply different shading pass. [MaterialDemo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/MaterialDemo) is available.
+6. Encapsulate DeviceContext functions into DeviceContextProxy.
 
 #### 2018-05-04
 [V2.1.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.1.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
@@ -59,20 +66,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 - [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.1.0)
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.1.0)
 
-##### Note: 2.0 Breaking changes from version 1.x.x. (HelixToolkit.SharpDX only)
-1. New architecture for backend rendering and shader management. No more dependency from obsoleted Effects framework. EffectsManager is mandatory to be provided from ViewModel for resource live cycle management by user to avoid memory leak.
-2. Many performance improvements. Viewports binding with same EffectsManager will share common resources. Models binding with same geometry3D will share same geometry buffers. Materials binding with same texture will share same resources.
-3. Support basic direct2d rendering and layouts arrangement. (Still needs a lot of implementations)
-4. No more HelixToolkit.WPF project dependency.
-5. Unify dependency property types. All WPF.SharpDx model's dependency properties are using class under System.Windows.Media. Such as Vector3D and Color. More Xaml friendly.
-6. Post effect support.(Note: Post effect elements does not recommend to be used in ModelContainer3DX for model sharing between viewports)
-7. Supports transparent meshes rendered after opaque meshes. IsTransparent property is added in MaterialGeometryModel3D.
-8. Rendering order by RenderType flag: 
-    ##### Pre(such as shadow map)->Opaque->Particle->Transparent->Post(post effects)->ScreenSpaced(ViewBox/CoordinateSystem).
-9. Core implementation are separated from platform dependent controls(Element3D) into its own Scene Node classes. Scene Node serves as complete Scene Graph for traversal inside render host. Element3D will only be used as a wrapper to manipulate scene node properties from XAML.
-10. Supports [Order independent transparent(OIT)](https://developer.nvidia.com/content/transparency-or-translucency-rendering) rendering.
-11. Supports [FXAA](https://docs.nvidia.com/gameworks/content/gameworkslibrary/graphicssamples/d3d_samples/fxaa311sample.htm). Prefer FXAA over MSAA if using OIT or post effects. Note: FXAA does not support transparent background for now.
-12. High performance static octree for Mesh/Point/Line/Instancing Models hit test.
+##### Note: 2.0 Breaking changes from version 1.x.x. (HelixToolkit.SharpDX only) see [ChangeLog](https://github.com/helix-toolkit/helix-toolkit/blob/develop/CHANGELOG.md)
 
 #### 2018-02-06
 
