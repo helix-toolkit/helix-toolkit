@@ -174,7 +174,6 @@
     <Compile Include="Model\Lights\DirectionalLight3D.cs" />
     <Compile Include="Model\Lights\Light3D.cs" />
     <Compile Include="Model\Lights\PointLight3D.cs" />
-    <Compile Include="Model\Lights\ShadowMap3D.cs" />
     <Compile Include="Model\Lights\SpotLight3D.cs" />
     <Compile Include="Model\Material\PhongMaterialFactory.cs" />
     <Compile Include="Model\Scene\SceneNode.cs" />
@@ -439,6 +438,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\psEffectMeshXRayGrid.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\gsMeshNormalVector.cso">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\psMeshColorStripe.cso">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

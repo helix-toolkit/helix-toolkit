@@ -39,7 +39,7 @@ namespace HelixToolkit.UWP.Core
             get { return fixedSize; }
         }
 
-        private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerWrapAni1;
+        private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerClampAni1;
         /// <summary>
         /// Billboard texture sampler description
         /// </summary>

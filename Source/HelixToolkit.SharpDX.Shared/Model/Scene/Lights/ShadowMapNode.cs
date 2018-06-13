@@ -52,6 +52,25 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             set { (RenderCore as ShadowMapCore).Intensity = value; }
         }
 
+        private float distance = 200;
+        public float Distance
+        {
+            set
+            {
+                SetAffectsRender(ref distance, value);
+            }
+            get { return distance; }
+        }
+
+        private float orthoWidth = 100;
+        public float OrthoWidth
+        {
+            set
+            {
+                SetAffectsRender(ref orthoWidth, value);
+            }
+            get { return orthoWidth; }
+        }
         /// <summary>
         /// Distance of the directional light from origin
         /// </summary>
@@ -117,7 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         private void Core_OnUpdateLightSource(object sender, ShadowMapCore.UpdateLightSourceEventArgs e)
         {
-            CameraCore camera = LightCamera == null ? null : LightCamera;
+            CameraCore camera = LightCamera ?? null;
             if (LightCamera == null)
             {
                 var lights = e.Context.RenderHost.PerFrameLights.Take(Constants.MaxLights);
@@ -126,12 +145,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     if (light.LightType == LightType.Directional)
                     {
                         var dlight = light.RenderCore as DirectionalLightCore;
-                        var dir = Vector4.Transform(dlight.Direction.ToVector4(0), dlight.ModelMatrix).Normalized();
-                        var pos = -100 * dir;
+                        var dir = Vector4.Transform(dlight.Direction.ToVector4(0), dlight.ModelMatrix).Normalized() * distance;
+                        var pos = -dir;
                         orthoCamera.LookDirection = new Vector3(dir.X, dir.Y, dir.Z);
                         orthoCamera.Position = new Vector3(pos.X, pos.Y, pos.Z);
                         orthoCamera.UpDirection = Vector3.UnitZ;
-                        orthoCamera.Width = 50;
+                        orthoCamera.Width = orthoWidth;
                         camera = orthoCamera;
                         break;
                     }

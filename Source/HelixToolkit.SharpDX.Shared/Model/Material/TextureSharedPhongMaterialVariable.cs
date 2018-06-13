@@ -224,7 +224,7 @@ namespace HelixToolkit.UWP.Model
         private readonly PhongMaterialCore material;
         private bool isAttached = false;
         private IRenderTechnique technique;
-        private bool fixedPassName = false;
+        private readonly bool fixedPassName = false;
         /// <summary>
         /// 
         /// </summary>
@@ -340,6 +340,7 @@ namespace HelixToolkit.UWP.Model
                 {
                     RemoveAndDispose(ref TextureResources[i]);
                 }
+                textureIndex = 0;
             }
         }
 

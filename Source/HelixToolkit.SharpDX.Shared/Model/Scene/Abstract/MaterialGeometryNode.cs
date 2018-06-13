@@ -28,9 +28,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 if (Set(ref isTransparent, value))
                 {
-                    if (RenderCore.RenderType == RenderType.Opaque || RenderCore.RenderType == RenderType.Transparent)
+                    if (RenderType == RenderType.Opaque || RenderType == RenderType.Transparent)
                     {
-                        RenderCore.RenderType = value ? RenderType.Transparent : RenderType.Opaque;
+                        RenderType = value ? RenderType.Transparent : RenderType.Opaque;
                     }
                 }
             }

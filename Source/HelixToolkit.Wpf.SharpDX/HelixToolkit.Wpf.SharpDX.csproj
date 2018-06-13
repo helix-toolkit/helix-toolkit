@@ -229,7 +229,6 @@
     <Compile Include="Model\Elements3D\AbstractElements3D\GroupElement3D.cs" />
     <Compile Include="Model\Lights3D\Light3D.cs" />
     <Compile Include="Model\Lights3D\PointLight3D.cs" />
-    <Compile Include="Model\Lights3D\ShadowMap3D.cs" />
     <Compile Include="Model\Lights3D\SpotLight3D.cs" />
     <Compile Include="Model\Interfaces.cs" />
     <Compile Include="Model\Lights3D\ThreePointLight3D.cs" />
@@ -269,6 +268,7 @@
     <None Include="Resources\dsMeshTriTessellation.cso" />
     <None Include="Resources\gsBillboard.cso" />
     <None Include="Resources\gsLine.cso" />
+    <None Include="Resources\gsMeshNormalVector.cso" />
     <None Include="Resources\gsParticle.cso" />
     <None Include="Resources\gsPoint.cso" />
     <None Include="Resources\hsMeshTriTessellation.cso" />
@@ -298,6 +298,7 @@
     <None Include="Resources\psMeshBlinnPhongOITQuad.cso" />
     <None Include="Resources\psMeshClipPlaneBackface.cso" />
     <None Include="Resources\psMeshClipPlaneQuad.cso" />
+    <None Include="Resources\psMeshColorStripe.cso" />
     <None Include="Resources\psMeshXRay.cso" />
     <None Include="Resources\psNormals.cso" />
     <None Include="Resources\psParticle.cso" />

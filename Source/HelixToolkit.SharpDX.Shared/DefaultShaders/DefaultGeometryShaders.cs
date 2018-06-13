@@ -57,6 +57,19 @@ namespace HelixToolkit.UWP.Shaders
                 return UWPShaderBytePool.Read("gsParticle");
             }
         }
+        /// <summary>
+        /// Gets the gs mesh normal vector.
+        /// </summary>
+        /// <value>
+        /// The gs mesh normal vector.
+        /// </value>
+        public static byte[] GSMeshNormalVector
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("gsMeshNormalVector");
+            }
+        }
     }
 
 
@@ -86,5 +99,10 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription GSParticle = new ShaderDescription(nameof(GSParticle), ShaderStage.Geometry, new ShaderReflector(),
             DefaultGSShaderByteCodes.GSParticle);
+        /// <summary>
+        /// The gs mesh normal vector
+        /// </summary>
+        public static ShaderDescription GSMeshNormalVector = new ShaderDescription(nameof(GSMeshNormalVector), ShaderStage.Geometry, new ShaderReflector(),
+            DefaultGSShaderByteCodes.GSMeshNormalVector);
     }
 }

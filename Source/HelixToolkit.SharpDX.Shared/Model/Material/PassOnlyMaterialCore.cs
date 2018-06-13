@@ -11,6 +11,9 @@ namespace HelixToolkit.UWP.Model
 {
     using Render;
     using Shaders;
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class NormalMaterialCore : MaterialCore
     {
         public override IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager)
@@ -18,7 +21,9 @@ namespace HelixToolkit.UWP.Model
             return new PassOnlyMaterialVariable(DefaultPassNames.Normals);
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class ColorMaterialCore : MaterialCore
     {
         public override IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager)
@@ -26,7 +31,9 @@ namespace HelixToolkit.UWP.Model
             return new PassOnlyMaterialVariable(DefaultPassNames.Colors);
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class PositionMaterialCore : MaterialCore
     {
         public override IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager)
@@ -34,7 +41,19 @@ namespace HelixToolkit.UWP.Model
             return new PassOnlyMaterialVariable(DefaultPassNames.Positions);
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class NormalVectorMaterialCore : MaterialCore
+    {
+        public override IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager)
+        {
+            return new PassOnlyMaterialVariable(DefaultPassNames.NormalVector);
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class PassOnlyMaterialVariable : IEffectMaterialVariables
     {
         public ShaderPass MaterialPass { private set; get; }
