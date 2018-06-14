@@ -3,6 +3,8 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.Collections.Generic;
+using global::SharpDX;
+using global::SharpDX.Direct3D;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -10,7 +12,6 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
-    using global::SharpDX;
     using HelixToolkit.Logger;
     using Shaders;
     /// <summary>
@@ -150,7 +151,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSLineColor
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess,
+                        Topology = PrimitiveTopology.PointList
                     },
                     new ShaderPassDescription(DefaultPassNames.OITPass)
                     {
@@ -378,7 +380,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSLineColor
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess,
+                        Topology = PrimitiveTopology.PointList
                     },
                     new ShaderPassDescription(DefaultPassNames.OITPass)
                     {
@@ -596,7 +599,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSLineColor
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess,
+                        Topology = PrimitiveTopology.PointList
                     },
                     new ShaderPassDescription(DefaultPassNames.OITPass)
                     {
@@ -979,7 +983,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSLineColor
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess,
+                        Topology = PrimitiveTopology.PointList
                     },
                     new ShaderPassDescription(DefaultPassNames.OITPass)
                     {

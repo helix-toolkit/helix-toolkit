@@ -2,19 +2,18 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System.Runtime.CompilerServices;
 using SharpDX.Direct3D11;
-using System.Collections.Generic;
+using global::SharpDX;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
 #else
 namespace HelixToolkit.UWP.Shaders
 #endif
-{
-    using Utilities;
+{    
     using Render;
-    using System.Runtime.CompilerServices;
-    using global::SharpDX;
+    using Utilities;
 
     /// <summary>
     /// Shader Pass
@@ -69,7 +68,16 @@ namespace HelixToolkit.UWP.Shaders
         /// <see cref="ShaderPass.RasterState"/>
         /// </summary>
         public RasterizerStateProxy RasterState { private set; get; } = null;
-
+        /// <summary>
+        /// Gets or sets the topology.
+        /// </summary>
+        /// <value>
+        /// The topology.
+        /// </value>
+        public global::SharpDX.Direct3D.PrimitiveTopology Topology
+        {
+            set; get;
+        } = global::SharpDX.Direct3D.PrimitiveTopology.Undefined;
         /// <summary>
         /// 
         /// </summary>
@@ -120,6 +128,10 @@ namespace HelixToolkit.UWP.Shaders
             BlendFactor = passDescription.BlendFactor;
 
             StencilRef = passDescription.StencilRef;
+
+            SampleMask = passDescription.SampleMask;
+
+            Topology = passDescription.Topology;
         }
 
         /// <summary>
@@ -138,6 +150,11 @@ namespace HelixToolkit.UWP.Shaders
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void BindShader(DeviceContextProxy context, bool bindConstantBuffer = true)
         {
+            if (Topology != global::SharpDX.Direct3D.PrimitiveTopology.Undefined)
+            {
+                //If specified, set topology
+                context.PrimitiveTopology = Topology;
+            }
             context.SetShaderPass(this, bindConstantBuffer);
         }
 
