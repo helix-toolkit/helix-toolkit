@@ -144,7 +144,6 @@ namespace HelixToolkit.UWP.Core
         /// <param name="initHorizontalIter">The initialize horizontal iter.</param>
         public virtual void Run(DeviceContextProxy deviceContext, int iteration, int initVerticalIter = 0, int initHorizontalIter = 0)
         {
-            deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             deviceContext.SetSampler(PixelShader.Type, samplerSlot, sampler);
             if (!screenBlurPassVertical.IsNULL)
             {

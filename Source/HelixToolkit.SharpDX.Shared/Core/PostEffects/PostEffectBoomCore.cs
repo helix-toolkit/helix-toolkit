@@ -237,8 +237,6 @@ namespace HelixToolkit.UWP.Core
                 deviceContext.CopyResource(buffer.FullResPPBuffer.CurrentTexture, resource2);
             }
             #endregion
-
-            deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             #region Do Bloom Pass
             //Extract bloom samples
             BindTarget(null, offScreenRenderTargets[0].NextRTV, deviceContext, offScreenRenderTargets[0].Width, offScreenRenderTargets[0].Height, false);

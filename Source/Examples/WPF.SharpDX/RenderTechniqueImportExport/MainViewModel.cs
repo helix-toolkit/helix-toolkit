@@ -24,7 +24,7 @@ namespace RenderTechniqueImportExport
 
         public MainViewModel()
         {
-            EffectsManager = new EffectsManager();
+            EffectsManager = new DefaultEffectsManager();
 
             var builder = new MeshBuilder();
             builder.AddSphere(new Vector3(), 2);
