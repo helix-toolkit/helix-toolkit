@@ -823,7 +823,6 @@ namespace HelixToolkit.UWP.Core
             renderPass.PixelShader.BindTexture(deviceContext, textureSlot, textureView);
             renderPass.PixelShader.BindSampler(deviceContext, samplerSlot, textureSampler);
             deviceContext.InputLayout = VertexLayout;
-            deviceContext.PrimitiveTopology = PrimitiveTopology.PointList;
             int firstSlot = 0;
             InstanceBuffer?.AttachBuffer(deviceContext, ref firstSlot);
             deviceContext.SetBlendState(blendState, blendFactor, sampleMask);

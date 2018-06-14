@@ -3,6 +3,8 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.Collections.Generic;
+using global::SharpDX;
+using global::SharpDX.Direct3D;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -10,7 +12,6 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
-    using global::SharpDX;
     using HelixToolkit.Logger;
     using Shaders;
     /// <summary>
@@ -150,7 +151,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSLineColor
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess,
+                        Topology = PrimitiveTopology.PointList
                     },
                     new ShaderPassDescription(DefaultPassNames.OITPass)
                     {
@@ -378,7 +380,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSLineColor
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess,
+                        Topology = PrimitiveTopology.PointList
                     },
                     new ShaderPassDescription(DefaultPassNames.OITPass)
                     {
@@ -596,7 +599,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSLineColor
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess,
+                        Topology = PrimitiveTopology.PointList
                     },
                     new ShaderPassDescription(DefaultPassNames.OITPass)
                     {
@@ -979,7 +983,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSLineColor
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess,
+                        Topology = PrimitiveTopology.PointList
                     },
                     new ShaderPassDescription(DefaultPassNames.OITPass)
                     {
@@ -1021,7 +1026,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSClipPlaneFillQuad,
-                        StencilRef = 1
+                        StencilRef = 1,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                     new ShaderPassDescription(DefaultPassNames.Wireframe)
                     {
@@ -1128,7 +1134,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSParticle
                         },
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite,
-                        RasterStateDescription = DefaultRasterDescriptions.RSSolidNoMSAA
+                        RasterStateDescription = DefaultRasterDescriptions.RSSolidNoMSAA,
+                        Topology = PrimitiveTopology.PointList
                     },
                     new ShaderPassDescription(DefaultPassNames.OITPass)
                     {
@@ -1178,7 +1185,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSMeshOITBlendQuad,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     }
                 }
             };
@@ -1197,7 +1205,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSOutlineFillQuad,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                     new ShaderPassDescription(DefaultPassNames.EffectBlurVertical)
                     {
@@ -1208,7 +1217,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                     new ShaderPassDescription(DefaultPassNames.EffectBlurHorizontal)
                     {
@@ -1219,7 +1229,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                     new ShaderPassDescription(DefaultPassNames.MeshOutline)
                     {
@@ -1230,7 +1241,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                 }
             };
@@ -1249,7 +1261,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSOutlineFillQuad,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                     new ShaderPassDescription(DefaultPassNames.EffectBlurVertical)
                     {
@@ -1260,7 +1273,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                     new ShaderPassDescription(DefaultPassNames.MeshOutline)
                     {
@@ -1271,7 +1285,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                 }
             };
@@ -1290,7 +1305,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                     new ShaderPassDescription(DefaultPassNames.ScreenQuadCopy)
                     {
@@ -1301,7 +1317,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                     new ShaderPassDescription(DefaultPassNames.EffectBlurVertical)
                     {
@@ -1312,7 +1329,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                     new ShaderPassDescription(DefaultPassNames.EffectBlurHorizontal)
                     {
@@ -1323,7 +1341,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                     new ShaderPassDescription(DefaultPassNames.MeshOutline)
                     {
@@ -1334,7 +1353,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.AdditiveBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                 }
             };
@@ -1353,7 +1373,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                     new ShaderPassDescription(DefaultPassNames.FXAAPass)
                     {
@@ -1364,7 +1385,8 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
-                        RasterStateDescription = DefaultRasterDescriptions.RSOutline
+                        RasterStateDescription = DefaultRasterDescriptions.RSOutline,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                 }
             };
@@ -1385,7 +1407,8 @@ namespace HelixToolkit.UWP
                         },
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
-                        RasterStateDescription = DefaultRasterDescriptions.RSScreenDuplication
+                        RasterStateDescription = DefaultRasterDescriptions.RSScreenDuplication,
+                        Topology = PrimitiveTopology.TriangleStrip
                     },
                     new ShaderPassDescription(DefaultPassNames.ScreenQuad)
                     {
@@ -1397,7 +1420,8 @@ namespace HelixToolkit.UWP
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSNoDepthNoStencil,
                         BlendStateDescription = DefaultBlendStateDescriptions.BSScreenDupCursorBlend,
                         BlendFactor = new Color4(0,0,0,0),
-                        RasterStateDescription = DefaultRasterDescriptions.RSScreenDuplication
+                        RasterStateDescription = DefaultRasterDescriptions.RSScreenDuplication,
+                        Topology = PrimitiveTopology.TriangleStrip
                     }
                 }
             };

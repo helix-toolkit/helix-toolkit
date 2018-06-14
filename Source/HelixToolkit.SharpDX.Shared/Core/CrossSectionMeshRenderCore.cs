@@ -3,7 +3,6 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -11,9 +10,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Render;
     using Shaders;
     using Utilities;
-    using Render;
 
     public class CrossSectionMeshRenderCore : PatchMeshRenderCore, ICrossSectionRenderParams
     {
@@ -248,7 +247,6 @@ namespace HelixToolkit.UWP.Core
             OnDraw(deviceContext, InstanceBuffer);
 
             //Draw full screen quad to fill cross section            
-            deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             deviceContext.SetRasterState(RasterState);
             drawScreenQuadPass.BindShader(deviceContext);
             drawScreenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);

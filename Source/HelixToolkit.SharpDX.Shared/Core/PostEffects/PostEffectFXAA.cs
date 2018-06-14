@@ -76,7 +76,6 @@ namespace HelixToolkit.UWP.Core
             LUMAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
             LUMAPass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.CurrentSRV);
             LUMAPass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
-            deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             deviceContext.Draw(4, 0);
            
             deviceContext.SetRenderTargets(null, new RenderTargetView[] { buffer.FullResPPBuffer.CurrentRTV });

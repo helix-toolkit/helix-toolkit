@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HelixToolkit.Wpf.SharpDX;
+using Microsoft.Win32;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using HelixToolkit.Wpf.SharpDX;
-using Microsoft.Win32;
 using Vector3 = SharpDX.Vector3;
 
 namespace RenderTechniqueImportExport
@@ -27,7 +24,7 @@ namespace RenderTechniqueImportExport
 
         public MainViewModel()
         {
-            EffectsManager = new EffectsManager();
+            EffectsManager = new DefaultEffectsManager();
 
             var builder = new MeshBuilder();
             builder.AddSphere(new Vector3(), 2);

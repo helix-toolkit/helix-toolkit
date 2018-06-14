@@ -234,7 +234,6 @@ namespace HelixToolkit.UWP.Core
             screenQuadPass.PixelShader.BindTexture(deviceContext, colorTexIndex, colorTargetNoMSAA);
             screenQuadPass.PixelShader.BindTexture(deviceContext, alphaTexIndex, alphaTargetNoMSAA);
             screenQuadPass.PixelShader.BindSampler(deviceContext, samplerIndex, targetSampler);
-            deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             deviceContext.Draw(4, 0);
         }
 

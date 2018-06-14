@@ -13,11 +13,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Render;
-    using Shaders;
     using Model;
     using Model.Scene;
-    using Utilities;
+    using Render;
+    using Shaders;
     public interface IPostEffectMeshXRayGrid : IPostEffect
     {
         Color4 Color { set; get; }

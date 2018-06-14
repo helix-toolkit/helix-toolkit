@@ -261,8 +261,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 {
                     ModelConstBuffer.UploadDataToBuffer(deviceContext, ref modelStruct);
                     DefaultShaderPass.BindShader(deviceContext);
-                    DefaultShaderPass.BindStates(deviceContext,StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);                  
-                    deviceContext.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
+                    DefaultShaderPass.BindStates(deviceContext,StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
                     DefaultShaderPass.PixelShader.BindSampler(deviceContext, samplerBindSlot, textureSampler);
                     int left = (int)(context.ActualWidth * Math.Abs(modelStruct.TopLeft.X + 1) / 2);
                     int top = (int)(context.ActualHeight * Math.Abs(modelStruct.TopLeft.Y - 1) / 2);

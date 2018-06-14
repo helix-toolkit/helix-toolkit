@@ -267,7 +267,6 @@ namespace HelixToolkit.UWP.Core
             #endregion
             if (hasMesh)
             {
-                deviceContext.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
                 #region Do Blur Pass
                 BindTarget(null, blurCore.CurrentRTV, deviceContext, blurCore.Width, blurCore.Height, true);
                 blurPassVertical.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
