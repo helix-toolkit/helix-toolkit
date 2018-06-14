@@ -501,14 +501,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetShaderPass(ShaderPass pass, bool bindConstantBuffer = true)
         {
-            if (CurrShaderPass == pass || pass.IsNULL)
-            {
-                return;
-            }
             if (pass.Topology != global::SharpDX.Direct3D.PrimitiveTopology.Undefined)
             {
                 //If specified, set topology
                 PrimitiveTopology = pass.Topology;
+            }
+            if (CurrShaderPass == pass || pass.IsNULL)
+            {
+                return;
             }
             SetShader(pass.VertexShader, bindConstantBuffer);
             SetShader(pass.PixelShader, bindConstantBuffer);
