@@ -3,17 +3,38 @@ All notable changes to this project will be documented in this file.
 
 ## For Next Release
 ### Added
-### Improvement and Changes
-### Fixed.
+1. Add per-frame draw call in RenderDetail.
+2. Add pingpong buffer for post effects. Add depth stencil buffer pooling
+3. Add RenderTechnique serialization/deserialization.
+4. Add BlendFactor/SampleMask/StencilRef in ShaderPassDescription.
 
-## [2.1.0]
+### Improvement and Changes
+1. Move FXAA before post effect.
+ ##### Pre(such as shadow map)->Opaque->Particle->Transparent->FXAA->Post(post effects)->ScreenSpaced(ViewBox/CoordinateSystem).
+2. Change to use specific material for mesh shading technique change. Added DiffuseMaterial(Render DiffuseColor/DiffuseMap only), NormalMaterial(Render Normals as Color), PositionColorMaterial(Render Vertex Position as Color), VertColorMaterial(Render Per Vertex Color). Remove separated techniques for normal/position/color rendering. Merge these passes into default BlinnPhong techniques.
+3. Encapsulate D3D11.DeviceContext functions into DeviceContextProxy. Skip redundant state bindings/shaderpass bindings.
+4. Re-implement shader class.
+
+### Fixed.
+- Fixed and improved state object and shader resource proxy pooling.
+- Errors building project (FeatureLevel10 issue). #754 (WPF.SharpDX & UWP)
+- Inertia does not work correctly when camera has lefthand coordinate system #760 (WPF.SharpDX & UWP)
+- Viewport not updating when rotating #767 (WPF.SharpDX & UWP)
+- error in LineIntersection #770
+- Viewport3DX Title and Subtitle are not rendered correctly #773 (WPF.SharpDX & UWP)
+- Billboard questions (transparency + adding billboards after initialize) #774 (WPF.SharpDX & UWP)
+- ZoomDistanceLimitNear/-Far does not work correctly #777 (WPF.SharpDX & UWP)
+- CameraTarget still showing up when TouchRotate disabled #782 (WPF.SharpDX & UWP)
+- SharpDX: Camera movement using keyboard doesn't work when mouse is not moving. #796 (WPF.SharpDX & UWP)
+
+## [2.1.0] - 2018-5-4
 ### Improvement and Changes
 1. New architecture for backend rendering and shader management. No more dependency from obsoleted Effects framework. EffectsManager is mandatory to be provided from ViewModel for resource live cycle management by user to avoid memory leak.
 2. Many performance improvements. Viewports binding with same EffectsManager will share common resources. Models binding with same geometry3D will share same geometry buffers. Materials binding with same texture will share same resources.
 3. Support basic direct2d rendering and layouts arrangement. (Still needs a lot of implementations)
 4. No more HelixToolkit.WPF project dependency.
 5. Unify dependency property types. All WPF.SharpDx model's dependency properties are using class under System.Windows.Media. Such as Vector3D and Color. More Xaml friendly.
-6. Post effect support.
+6. Post effect support. Note: Post effect elements does not recommend to be used in ModelContainer3DX for model sharing between viewports.
 7. Supports transparent meshes rendered after opaque meshes. IsTransparent property is added in MaterialGeometryModel3D.
 8. Rendering order by RenderType flag: 
     ##### Pre(such as shadow map)->Opaque->Particle->Transparent->Post(post effects)->ScreenSpaced(ViewBox/CoordinateSystem).
