@@ -150,11 +150,6 @@ namespace HelixToolkit.UWP.Shaders
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void BindShader(DeviceContextProxy context, bool bindConstantBuffer = true)
         {
-            if (Topology != global::SharpDX.Direct3D.PrimitiveTopology.Undefined)
-            {
-                //If specified, set topology
-                context.PrimitiveTopology = Topology;
-            }
             context.SetShaderPass(this, bindConstantBuffer);
         }
 

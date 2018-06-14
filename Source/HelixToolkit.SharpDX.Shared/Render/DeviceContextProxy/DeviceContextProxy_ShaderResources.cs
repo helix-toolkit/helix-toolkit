@@ -505,6 +505,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 return;
             }
+            if (pass.Topology != global::SharpDX.Direct3D.PrimitiveTopology.Undefined)
+            {
+                //If specified, set topology
+                PrimitiveTopology = pass.Topology;
+            }
             pass.VertexShader.Bind(this, bindConstantBuffer);
             pass.PixelShader.Bind(this);
             pass.ComputeShader.Bind(this);
