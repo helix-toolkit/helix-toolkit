@@ -510,12 +510,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 //If specified, set topology
                 PrimitiveTopology = pass.Topology;
             }
-            pass.VertexShader.Bind(this, bindConstantBuffer);
-            pass.PixelShader.Bind(this);
-            pass.ComputeShader.Bind(this);
-            pass.HullShader.Bind(this);
-            pass.DomainShader.Bind(this);
-            pass.GeometryShader.Bind(this);
+            SetShader(pass.VertexShader, bindConstantBuffer);
+            SetShader(pass.PixelShader, bindConstantBuffer);
+            SetShader(pass.ComputeShader, bindConstantBuffer);
+            SetShader(pass.HullShader, bindConstantBuffer);
+            SetShader(pass.DomainShader, bindConstantBuffer);
+            SetShader(pass.GeometryShader, bindConstantBuffer);
             CurrShaderPass = pass;
         }
     }
