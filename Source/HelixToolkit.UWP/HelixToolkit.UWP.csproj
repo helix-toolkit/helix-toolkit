@@ -126,7 +126,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Content Include="Resources\arial.png">
+    <Content Include="Resources\arial.dds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <PRIResource Include="Resources.resw" />

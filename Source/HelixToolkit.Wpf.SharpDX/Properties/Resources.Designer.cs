@@ -81,16 +81,6 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap DefaultViewboxTexture {
-            get {
-                object obj = ResourceManager.GetObject("DefaultViewboxTexture", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] dsMeshTriTessellation {
@@ -547,26 +537,6 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
             get {
                 object obj = ResourceManager.GetObject("psWireframeOIT", resourceCulture);
                 return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap random_dot3 {
-            get {
-                object obj = ResourceManager.GetObject("random_dot3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap random4x4_dot3 {
-            get {
-                object obj = ResourceManager.GetObject("random4x4_dot3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
