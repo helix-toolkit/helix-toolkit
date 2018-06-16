@@ -15,7 +15,7 @@
         <DockPanel.Resources>
             <Style TargetType="TextBlock">
                 <Style.Setters>
-                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Foreground" Value="White" />
                 </Style.Setters>
             </Style>
         </DockPanel.Resources>
@@ -25,21 +25,22 @@
         <Grid DockPanel.Dock="Left">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
-            
+
             <hx:Viewport3DX
                 x:Name="view1"
                 Title="Dynamic Code Surface"
                 Grid.Column="2"
                 Background="Black"
                 BackgroundColor="Black"
-                Camera="{Binding Camera}"       
-                FXAALevel="Low"
+                Camera="{Binding Camera}"
                 CameraRotationMode="Trackball"
-                EffectsManager="{Binding EffectsManager}">
+                EffectsManager="{Binding EffectsManager}"
+                FXAALevel="Low">
                 <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" />
+                <hx:AmbientLight3D Color="#4B4B4B"/>
                 <hx:DynamicCodeSurfaceModel3D
                     x:Name="surface1"
                     Material="{Binding Material}"
@@ -48,7 +49,12 @@
                     ParameterW="{Binding ParameterW}"
                     SourceCode="{Binding SourceCode}" />
             </hx:Viewport3DX>
-            <GridSplitter Grid.Column="1" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" Background="Gray" Width="5"/>
+            <GridSplitter
+                Grid.Column="1"
+                Width="5"
+                Background="Gray"
+                ResizeBehavior="PreviousAndNext"
+                ResizeDirection="Columns" />
             <Grid Name="SourcePanel">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -58,10 +64,24 @@
                 </Grid.RowDefinitions>
 
 
-                <StackPanel Orientation="Vertical" Margin="0,4">
+                <StackPanel Margin="0,4" Orientation="Vertical">
                     <CheckBox Foreground="White" IsChecked="{Binding ElementName=surface1, Path=RenderWireframe}">Show Wireframe</CheckBox>
-                    <Label Foreground="White">Existing Surface</Label>
-                    <ComboBox ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedModel}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label Foreground="White">Existing Surface</Label>
+                        <ComboBox
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            ItemsSource="{Binding Models}"
+                            SelectedItem="{Binding SelectedModel}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Foreground="White">Material</Label>
+                        <ComboBox
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            ItemsSource="{Binding Materials}"
+                            SelectedItem="{Binding SelectedMaterial}" />
+                    </StackPanel>
                 </StackPanel>
 
                 <Grid Grid.Row="1" Margin="4">
@@ -134,8 +154,10 @@
                 <ListView
                     x:Name="errorList"
                     Grid.Row="2"
-                    Height="100" TextBlock.Foreground="Red" Background="Black"
-                    ItemsSource="{Binding ElementName=surface1, Path=ErrorList}">
+                    Height="100"
+                    Background="Black"
+                    ItemsSource="{Binding ElementName=surface1, Path=ErrorList}"
+                    TextBlock.Foreground="Red">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn
@@ -152,12 +174,21 @@
                 <TextBox
                     x:Name="source1"
                     Grid.Row="3"
-                    AcceptsReturn="True" Foreground="Orange"
-                    Background="#464646" Text="{Binding SourceCode, UpdateSourceTrigger=LostFocus}"
+                    AcceptsReturn="True"
+                    Background="#464646"
                     FontFamily="Lucida Console, Courier New"
+                    Foreground="Orange"
                     HorizontalScrollBarVisibility="Auto"
+                    Text="{Binding SourceCode, UpdateSourceTrigger=LostFocus}"
                     VerticalScrollBarVisibility="Auto" />
-                <Button Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="50" Height="30">Update</Button>
+                <Button
+                    Grid.Row="3"
+                    Width="50"
+                    Height="30"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom">
+                    Update
+                </Button>
             </Grid>
         </Grid>
     </DockPanel>

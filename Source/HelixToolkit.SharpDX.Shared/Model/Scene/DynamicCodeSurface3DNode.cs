@@ -37,7 +37,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public Tuple<double,double,double,double> Evaluate(double u, double v, double w) {
         double x=0,y=0,z=0;
         double color=u;
-        # code#
+        #code#
         return new Tuple<double,double,double,double>(x,y,z,color);
         }
         }

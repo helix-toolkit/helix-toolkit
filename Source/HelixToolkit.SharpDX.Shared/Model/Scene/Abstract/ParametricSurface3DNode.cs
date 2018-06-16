@@ -140,8 +140,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     int x1 = (i + 1) * m;
                     int y0 = j;
                     int y1 = j + 1;
-                    AddTriangle(mesh, x0 + y0, x0 + y1, x1 + y0);
-                    AddTriangle(mesh, x1 + y0, x0 + y1, x1 + y1);
+                    AddTriangle(mesh, x0 + y0, x1 + y0, x0 + y1);
+                    AddTriangle(mesh, x1 + y0, x1 + y1, x0 + y1);
                 }
             }
 
