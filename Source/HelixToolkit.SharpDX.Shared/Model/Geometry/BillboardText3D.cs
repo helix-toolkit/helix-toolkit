@@ -72,37 +72,38 @@ namespace HelixToolkit.Wpf.SharpDX
         private readonly static BitmapFont bmpFont;
 
         public static Stream TextureStatic { get; private set; }
-
+        const float textureScale = 0.66f;
+        const string FontName = "arial";
         static BillboardText3D()
         {
 #if CORE
             var assembly = typeof(BillboardText3D).GetTypeInfo().Assembly;
-            Stream fontInfo = assembly.GetManifestResourceStream(@"HelixToolkit.SharpDX.Core.Resources.arial.fnt");
+            Stream fontInfo = assembly.GetManifestResourceStream($"HelixToolkit.SharpDX.Core.Resources.{FontName}.fnt");
             bmpFont = new BitmapFont();
             bmpFont.Load(fontInfo);
-            Stream font = assembly.GetManifestResourceStream(@"HelixToolkit.SharpDX.Core.Resources.arial.png");
+            Stream font = assembly.GetManifestResourceStream($"HelixToolkit.SharpDX.Core.Resources.{FontName}.dds");
             TextureStatic = font;
 #else
 #if !NETFX_CORE
             var assembly = Assembly.GetExecutingAssembly();
 
             //Read the texture description           
-            var texDescriptionStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.fnt");
+            var texDescriptionStream = assembly.GetManifestResourceStream($"HelixToolkit.Wpf.SharpDX.Textures.{FontName}.fnt");
 
             bmpFont = new BitmapFont();
             bmpFont.Load(texDescriptionStream);// BitmapFontLoader.LoadFontFromFile(texDescriptionFilePath);
             texDescriptionStream.Dispose();
             //Read the texture          
-            var texImageStream = assembly.GetManifestResourceStream("HelixToolkit.Wpf.SharpDX.Textures.arial.png");
+            var texImageStream = assembly.GetManifestResourceStream($"HelixToolkit.Wpf.SharpDX.Textures.{FontName}.dds");
             TextureStatic = MemoryStream.Synchronized(texImageStream);
 #else
             var packageFolder = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "HelixToolkit.UWP");
-            var sampleFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\Resources\arial.fnt");
+            var sampleFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\Resources\\{FontName}.fnt");
             bmpFont = new BitmapFont();
             var fileStream = new MemoryStream(sampleFile);
             bmpFont.Load(fileStream);
 
-            var texFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\Resources\arial.png");
+            var texFile = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + $"\\Resources\\{FontName}.dds");
             TextureStatic = new MemoryStream(texFile);         
 #endif
 #endif
@@ -191,7 +192,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     previousCharacter = character;
                     if (tempList.Count > 0)
                     {
-                        rect.Width = Math.Max(rect.Width, x * textInfo.Scale);
+                        rect.Width = Math.Max(rect.Width, x * textInfo.Scale * textureScale);
                         rect.Height = Math.Max(rect.Height, Math.Abs(tempList.Last().OffBR.Y));
                     }
                 }
@@ -261,8 +262,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 Background = Color.Transparent,
                 TexTL = uv_tl,
                 TexBR = uv_br,
-                OffTL = tl * info.Scale,
-                OffBR = br * info.Scale
+                OffTL = tl * info.Scale * textureScale,
+                OffBR = br * info.Scale * textureScale
             };
         }
 

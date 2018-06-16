@@ -16,6 +16,8 @@ namespace HelixToolkit.UWP.Model
     /// </summary>
     public sealed class NormalMaterialCore : MaterialCore
     {
+        public static readonly NormalMaterialCore Core = new NormalMaterialCore();
+
         public override IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager)
         {
             return new PassOnlyMaterialVariable(DefaultPassNames.Normals);
@@ -26,6 +28,7 @@ namespace HelixToolkit.UWP.Model
     /// </summary>
     public sealed class ColorMaterialCore : MaterialCore
     {
+        public static readonly ColorMaterialCore Core = new ColorMaterialCore();
         public override IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager)
         {
             return new PassOnlyMaterialVariable(DefaultPassNames.Colors);
@@ -36,6 +39,7 @@ namespace HelixToolkit.UWP.Model
     /// </summary>
     public sealed class PositionMaterialCore : MaterialCore
     {
+        public static readonly PositionMaterialCore Core = new PositionMaterialCore();
         public override IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager)
         {
             return new PassOnlyMaterialVariable(DefaultPassNames.Positions);
@@ -46,6 +50,7 @@ namespace HelixToolkit.UWP.Model
     /// </summary>
     public sealed class NormalVectorMaterialCore : MaterialCore
     {
+        public static readonly NormalVectorMaterialCore Core = new NormalVectorMaterialCore();
         public override IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager)
         {
             return new PassOnlyMaterialVariable(DefaultPassNames.NormalVector);

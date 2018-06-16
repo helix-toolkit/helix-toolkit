@@ -15,8 +15,8 @@
     </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <hx:Viewport3DX
             x:Name="view1"
@@ -27,10 +27,12 @@
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
             EnableDesignModeRendering="False"
-            FXAALevel="Low" EnableSwapChainRendering="True" EnableD2DRendering="False"
+            EnableSwapChainRendering="True"
+            FXAALevel="Low"
             IsShadowMappingEnabled="True"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="False"
+            ShowFrameDetails="True"
             SubTitle="{Binding SubTitle}"
             TextBrush="Black"
             UseDefaultGestures="False">
@@ -59,8 +61,9 @@
                 x:Name="model1"
                 ItemsSource="{Binding Model1}"
                 Transform="{Binding Transform1}" />
-            <hx:GroupModel3D IsRendering="False"
+            <hx:GroupModel3D
                 x:Name="model1NormalVector"
+                IsRendering="False"
                 ItemsSource="{Binding ModelNormalVector}"
                 Transform="{Binding Transform1}" />
             <hx:GroupModel3D
@@ -83,12 +86,20 @@
                 x:Name="model6"
                 ItemsSource="{Binding Model6}"
                 Transform="{Binding Transform6}" />
-            <hx:BillboardTextModel3D FixedSize="False" Geometry="{Binding MeshTitles}" Transform="{Binding TitleTransform}"/>
+            <hx:BillboardTextModel3D
+                FixedSize="False"
+                Geometry="{Binding MeshTitles}"
+                Transform="{Binding TitleTransform}" />
             <hx:EnvironmentMap3D Texture="{Binding EnvironmentMap}" />
         </hx:Viewport3DX>
         <StackPanel Grid.Column="1">
-            <CheckBox HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10"
-                      IsChecked="{Binding ElementName=model1NormalVector, Path=IsRendering}">Show Normal Vector</CheckBox>
+            <CheckBox
+                Margin="10"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                IsChecked="{Binding ElementName=model1NormalVector, Path=IsRendering}">
+                Show Normal Vector
+            </CheckBox>
             <CheckBox IsChecked="{Binding ColorStripeMaterial.ColorStripeXEnabled}">Enable StripeX</CheckBox>
             <CheckBox IsChecked="{Binding ColorStripeMaterial.ColorStripeYEnabled}">Enable StripeY</CheckBox>
         </StackPanel>
