@@ -1415,6 +1415,8 @@ namespace HelixToolkit.Wpf.SharpDX
             if (lastTick == 0)
             {
                 lastTick = ticks;
+                Viewport.InvalidateRender();
+                return;
             }
             var time = (double)(ticks - this.lastTick) / Stopwatch.Frequency;
             // should be independent of time

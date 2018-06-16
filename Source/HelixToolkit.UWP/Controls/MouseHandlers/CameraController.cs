@@ -1307,6 +1307,8 @@ namespace HelixToolkit.UWP
             if (lastTick == 0)
             {
                 lastTick = ticks;
+                Viewport.InvalidateRender();
+                return;
             }
             var time = (float)(ticks - this.lastTick) / Stopwatch.Frequency;
             // should be independent of time
