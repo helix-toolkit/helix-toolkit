@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         protected override MaterialCore OnCreateCore()
         {
-            return new ColorMaterialCore();
+            return ColorMaterialCore.Core;
         }
     }
 }

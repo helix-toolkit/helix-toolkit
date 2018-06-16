@@ -1,0 +1,16 @@
+﻿// http://root.cern.ch/root/html/tutorials/gl/glparametric.C.html
+// http://local.wasp.uwa.edu.au/~pbourke/geometry/tranguloid/
+ 
+u = (u - 0.5) * 2 * pi;
+v = (v - 0.5) * 2 * pi;
+
+double cosu = Math.Cos(u);
+double sinu = Math.Sin(u);
+double cosv = Math.Cos(v);
+double sinv = Math.Sin(v);
+double sin2u = Math.Sin(2 * u);
+double cos2u = Math.Cos(2 * u);
+
+x = 2 * sin(3 * u) / (2 + cosv);
+y = 2 * (sinu + 2 * sin2u) / (2 + cos(v + 2 * pi / 3));
+z = (cosu - 2 * cos2u) * (2 + cosv) * (2 + cos(v + 2 * pi / 3)) / 4;

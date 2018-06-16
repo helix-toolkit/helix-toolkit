@@ -140,6 +140,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Layouts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\Light3DSceneShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\LightsBufferModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Abstract\ParametricSurface3DNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\DynamicCodeSurface3DNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\NodePostEffectXRayGrid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\TextureSharedPhongMaterialVariable.cs" />
