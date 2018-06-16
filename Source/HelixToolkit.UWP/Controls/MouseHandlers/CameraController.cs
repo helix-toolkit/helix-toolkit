@@ -1307,10 +1307,9 @@ namespace HelixToolkit.UWP
             if (lastTick == 0)
             {
                 lastTick = ticks;
-                Viewport.InvalidateRender();
-                return;
             }
             var time = (float)(ticks - this.lastTick) / Stopwatch.Frequency;
+            time = time == 0 ? 0.016f : time;
             // should be independent of time
             var factor = Viewport.IsInertiaEnabled ? (float)Clamp(Math.Pow(Viewport.CameraInertiaFactor, time / 0.02f), 0.1f, 1) : 0;
             bool needUpdate = false;

@@ -1415,10 +1415,9 @@ namespace HelixToolkit.Wpf.SharpDX
             if (lastTick == 0)
             {
                 lastTick = ticks;
-                Viewport.InvalidateRender();
-                return;
             }
             var time = (double)(ticks - this.lastTick) / Stopwatch.Frequency;
+            time = time == 0 ? 0.016 : time;
             // should be independent of time
             var factor = this.IsInertiaEnabled ?  this.Clamp(Math.Pow(this.InertiaFactor, time / 0.02), 0.1, 1) : 0;
             bool needUpdate = false;
