@@ -53,7 +53,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 ## News
 #### 2018-06-17
-[V2.2.0](https://github.com/helix-toolkit/helix-toolkit/edit/release/2.2.0)[Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
+[V2.2.0](https://github.com/helix-toolkit/helix-toolkit/edit/release/2.2.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
 1. Add per-frame draw call in RenderDetail.
 2. Add pingpong buffer for post effects. Add depth stencil buffer pooling
 3. Add RenderTechnique serialization/deserialization.
