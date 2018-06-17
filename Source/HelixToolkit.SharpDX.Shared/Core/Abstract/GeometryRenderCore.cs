@@ -205,12 +205,12 @@ namespace HelixToolkit.UWP.Core
             RemoveAndDispose(ref rasterState);
             RemoveAndDispose(ref invertCullModeState);
             rasterState = Collect(EffectTechnique.EffectsManager.StateManager.Register(description));
+            var invCull = description;
             if(description.CullMode != CullMode.None)
             {
-                var invCull = description;
                 invCull.CullMode = description.CullMode == CullMode.Back ? CullMode.Front : CullMode.Back;
-                invertCullModeState = Collect(EffectTechnique.EffectsManager.StateManager.Register(invCull));
             }
+            invertCullModeState = Collect(EffectTechnique.EffectsManager.StateManager.Register(invCull));
             return true;
         }
         /// <summary>

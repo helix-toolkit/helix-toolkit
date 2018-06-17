@@ -214,6 +214,14 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
+            if (context.Camera.CreateLeftHandSystem && RasterDescription.IsFrontCounterClockwise)
+            {
+                var desc = RasterDescription;
+                desc.IsFrontCounterClockwise = false;
+                RasterDescription = desc;
+                InvalidateRenderer();
+                return;
+            }
             DefaultShaderPass.BindShader(deviceContext);
             DefaultShaderPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
             DefaultShaderPass.PixelShader.BindTexture(deviceContext, cubeTextureSlot, cubeTextureRes);
