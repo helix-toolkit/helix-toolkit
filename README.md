@@ -54,6 +54,11 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 ## News
 #### 2018-06-17
 [V2.2.0](https://github.com/helix-toolkit/helix-toolkit/edit/release/2.2.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.2.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.2.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.2.0)
+
+##### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
 1. Add per-frame draw call in RenderDetail.
 2. Add pingpong buffer for post effects. Add depth stencil buffer pooling
 3. Add RenderTechnique serialization/deserialization.
@@ -64,14 +69,9 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 
 #### 2018-05-04
 [V2.1.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.1.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.1.0)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.1.0)
-- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.1.0)
 
 ##### Note: 2.0 Breaking changes from version 1.x.x. (HelixToolkit.SharpDX only) see [ChangeLog](https://github.com/helix-toolkit/helix-toolkit/blob/develop/CHANGELOG.md)
 
 #### 2018-02-06
 
 [V1.1.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/1.1.0) releases are available.
-- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/1.1.0)
-- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/1.1.0)
