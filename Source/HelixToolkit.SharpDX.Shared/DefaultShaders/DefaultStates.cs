@@ -482,7 +482,7 @@ namespace HelixToolkit.UWP.Shaders
         public readonly static RasterizerStateDescription RSSkybox = new RasterizerStateDescription()
         {
             FillMode = FillMode.Solid,
-            CullMode = CullMode.Back,
+            CullMode = CullMode.None,
             DepthBias = 0,
             DepthBiasClamp = 0,
             SlopeScaledDepthBias = +0,
@@ -495,7 +495,7 @@ namespace HelixToolkit.UWP.Shaders
         public readonly static RasterizerStateDescription RSSkyDome = new RasterizerStateDescription()
         {
             FillMode = FillMode.Solid,
-            CullMode = CullMode.Back,
+            CullMode = CullMode.None,
             DepthBias = 0,
             DepthBiasClamp = 0,
             SlopeScaledDepthBias = +0,
