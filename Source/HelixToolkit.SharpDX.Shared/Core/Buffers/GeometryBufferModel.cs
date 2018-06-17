@@ -50,8 +50,8 @@ namespace HelixToolkit.UWP.Core
         /// The vertex buffer.
         /// </value>
         public IElementsBufferProxy[] VertexBuffer { private set; get; } = new IElementsBufferProxy[0];
-
-        private VertexBufferBinding[] vertexBufferBindings;
+        private static readonly VertexBufferBinding[] emptyBinding = new VertexBufferBinding[0];
+        private VertexBufferBinding[] vertexBufferBindings = emptyBinding;
         /// <summary>
         /// Gets the size of the vertex structure.
         /// </summary>
@@ -283,8 +283,15 @@ namespace HelixToolkit.UWP.Core
             }
             if (VertexBuffer.Length > 0)
             {
-                context.SetVertexBuffers(vertexBufferStartSlot, vertexBufferBindings);
-                vertexBufferStartSlot += VertexBuffer.Length;
+                if (VertexBuffer.Length == vertexBufferBindings.Length)
+                {
+                    context.SetVertexBuffers(vertexBufferStartSlot, vertexBufferBindings);
+                    vertexBufferStartSlot += VertexBuffer.Length;
+                }
+                else
+                {
+                    return false;
+                }
             }
             return true;
         }
@@ -302,7 +309,7 @@ namespace HelixToolkit.UWP.Core
                 geometry.PropertyChanged -= Geometry_PropertyChanged;
             }
             geometry = null;
-            vertexBufferBindings = null;
+            vertexBufferBindings = emptyBinding;
             base.OnDispose(disposeManagedResources);
         }
     }
