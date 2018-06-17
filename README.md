@@ -52,13 +52,15 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 #### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki)
 
 ## News
-#### V2.2.0 Developing Features and Changes
+#### 2018-06-17
+[V2.2.0](https://github.com/helix-toolkit/helix-toolkit/edit/release/2.2.0)[Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
 1. Add per-frame draw call in RenderDetail.
 2. Add pingpong buffer for post effects. Add depth stencil buffer pooling
 3. Add RenderTechnique serialization/deserialization.
 4. Add BlendFactor/SampleMask/StencilRef in ShaderPassDescription.
 5. Support customizable mesh material. Added multiple new materials. Obsolete to change render technique to switch shading mode. Use different material to apply different shading pass. [MaterialDemo](https://github.com/helix-toolkit/helix-toolkit/tree/develop/Source/Examples/WPF.SharpDX/MaterialDemo) is available.
 6. Encapsulate DeviceContext functions into DeviceContextProxy.
+7. Port DynamicCodeSurface3D to WPF.SharpDX.
 
 #### 2018-05-04
 [V2.1.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.1.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
