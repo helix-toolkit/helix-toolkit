@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 2. Add pingpong buffer for post effects. Add depth stencil buffer pooling
 3. Add RenderTechnique serialization/deserialization.
 4. Add BlendFactor/SampleMask/StencilRef in ShaderPassDescription.
+5. Port DynamicCodeSurface3D to SharpDX version.
 
 ### Improvement and Changes
 1. Move FXAA before post effect.
