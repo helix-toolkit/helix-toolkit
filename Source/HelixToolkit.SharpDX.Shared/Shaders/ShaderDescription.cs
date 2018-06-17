@@ -4,9 +4,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-using System;
-using System.Runtime.Serialization;
 using System.Linq;
+using System.Runtime.Serialization;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
@@ -14,14 +13,14 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    using HelixToolkit.Logger;
     using ShaderManager;
-    using System.Collections.Generic;
 
     /// <summary>
     /// 
     /// </summary>
     [DataContract]
-    public class ShaderDescription
+    public sealed class ShaderDescription
     {
         /// <summary>
         /// Gets or sets the name.
@@ -39,14 +38,18 @@ namespace HelixToolkit.UWP.Shaders
         /// </value>
         [DataMember]
         public ShaderStage ShaderType { set; get; }
+
         /// <summary>
         /// Gets or sets the level.
         /// </summary>
         /// <value>
         /// The level.
         /// </value>
-        [DataMember]
-        public FeatureLevel Level { set; get; }
+        public FeatureLevel Level
+        {
+            set; get;
+        }
+
         /// <summary>
         /// Gets or sets the byte code.
         /// </summary>
@@ -94,13 +97,14 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The shader reflector.
         /// </value>
-        protected IShaderReflector shaderReflector { private set; get; }
+        public IShaderReflector ShaderReflector { set; get; }
+
         /// <summary>
         /// Create a empty description
         /// </summary>
         public ShaderDescription()
         {
-
+            ShaderReflector = new ShaderReflector();
         }
         /// <summary>
         /// 
@@ -108,11 +112,12 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="name"></param>
         /// <param name="type"></param>
         /// <param name="byteCode"></param>
-        protected ShaderDescription(string name, ShaderStage type, byte[] byteCode)
+        public ShaderDescription(string name, ShaderStage type, byte[] byteCode)
         {
             Name = name;
             ShaderType = type;
             ByteCode = byteCode;
+            ShaderReflector = new ShaderReflector();
         }
         /// <summary>
         /// Manually specifiy buffer mappings.
@@ -136,16 +141,18 @@ namespace HelixToolkit.UWP.Shaders
 
         /// <summary>
         /// Create shader using reflector to get buffer mapping directly from shader codes.
-        /// <para>Actual creation happened when calling <see cref="CreateShader(Device, IConstantBufferPool)"/></para>
+        /// <para>Actual creation happened when calling <see cref="CreateShader(Device, IConstantBufferPool, LogWrapper)"/></para>
         /// </summary>
         /// <param name="name"></param>
         /// <param name="type"></param>
         /// <param name="reflector"></param>
         /// <param name="byteCode"></param>
         public ShaderDescription(string name, ShaderStage type, IShaderReflector reflector, byte[] byteCode)
-            : this(name, type, byteCode)
         {
-            shaderReflector = reflector;
+            Name = name;
+            ShaderType = type;
+            ByteCode = byteCode;
+            ShaderReflector = reflector;
         }
 
         /// <summary>
@@ -154,25 +161,28 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         /// <param name="device"></param>
         /// <param name="pool"></param>
+        /// <param name="logger"></param>
         /// <returns></returns>
-        public ShaderBase CreateShader(Device device, IConstantBufferPool pool)
+        public ShaderBase CreateShader(Device device, IConstantBufferPool pool, LogWrapper logger)
         {
             if (ByteCode == null)
             {
                 return null;
             }
-            if(shaderReflector != null)
+            if(ShaderReflector != null)
             {
-                shaderReflector.Parse(ByteCode, ShaderType);
-                Level = shaderReflector.FeatureLevel;
+                ShaderReflector.Parse(ByteCode, ShaderType);
+                Level = ShaderReflector.FeatureLevel;
                 if (Level > device.FeatureLevel)
                 {
-                    throw new Exception($"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
+                    logger?.Log(LogLevel.Warning, $"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
+                    return null;
+                    //throw new Exception($"Shader {this.Name} requires FeatureLevel {Level}. Current device only supports FeatureLevel {device.FeatureLevel} and below.");
                 }
-                this.ConstantBufferMappings = shaderReflector.ConstantBufferMappings.Values.ToArray();
-                this.TextureMappings = shaderReflector.TextureMappings.Values.ToArray();
-                this.UAVMappings = shaderReflector.UAVMappings.Values.ToArray();
-                this.SamplerMappings = shaderReflector.SamplerMappings.Values.ToArray();
+                this.ConstantBufferMappings = ShaderReflector.ConstantBufferMappings.Values.ToArray();
+                this.TextureMappings = ShaderReflector.TextureMappings.Values.ToArray();
+                this.UAVMappings = ShaderReflector.UAVMappings.Values.ToArray();
+                this.SamplerMappings = ShaderReflector.SamplerMappings.Values.ToArray();
             }
             ShaderBase shader = null;
             switch (ShaderType)
@@ -196,7 +206,6 @@ namespace HelixToolkit.UWP.Shaders
                     shader = new GeometryShader(device, Name, ByteCode);
                     break;
                 default:
-                    shader = NullShader.GetNullShader(ShaderType);
                     break;
             }
             if (ConstantBufferMappings != null)

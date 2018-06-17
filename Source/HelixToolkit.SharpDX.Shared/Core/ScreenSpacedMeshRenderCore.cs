@@ -21,6 +21,7 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public interface IScreenSpacedRenderParams
     {
+        event EventHandler<BoolArgs> OnCoordinateSystemChanged;
         /// <summary>
         /// Relative position X of the center of viewport
         /// </summary>
@@ -37,10 +38,6 @@ namespace HelixToolkit.UWP.Core
         /// 
         /// </summary>
         bool IsPerspective { set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        bool IsRightHand { set; get; }
         /// <summary>
         /// 
         /// </summary>
@@ -87,6 +84,8 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class ScreenSpacedMeshRenderCore : RenderCoreBase<ModelStruct>, IScreenSpacedRenderParams
     {
+        public event EventHandler<BoolArgs> OnCoordinateSystemChanged;
+
         private ConstantBufferProxy globalTransformCB;
         private Matrix projectionMatrix;
         public GlobalTransformStruct GlobalTransform { private set; get; }
@@ -155,8 +154,14 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public bool IsRightHand
         {
-            set { SetAffectsRender(ref isRightHand, value); }
             get { return isRightHand; }
+            private set
+            {
+                if(Set(ref isRightHand, value))
+                {
+                    OnCoordinateSystemChanged?.Invoke(this, value ? BoolArgs.TrueArgs : BoolArgs.FalseArgs);
+                }
+            }
         }
         /// <summary>
         /// Viewport Width
@@ -185,7 +190,7 @@ namespace HelixToolkit.UWP.Core
         private RasterizerStateDescription rasterDescription = new RasterizerStateDescription()
         {
             FillMode = FillMode.Solid,
-            CullMode = CullMode.Back,
+            CullMode = CullMode.None,
         };
         public RasterizerStateDescription RasterDescription
         {
@@ -248,6 +253,12 @@ namespace HelixToolkit.UWP.Core
             {
                 return false;
             }
+        }
+
+        protected override void OnDetach()
+        {
+            rasterState = null;
+            base.OnDetach();
         }
         /// <summary>
         /// Called when [bind raster state].
@@ -367,16 +378,16 @@ namespace HelixToolkit.UWP.Core
             DepthStencilView dsView;
             if (clearDepthBuffer)
             {
-                deviceContext.DeviceContext.OutputMerger.GetRenderTargets(out dsView);
+                deviceContext.GetDepthStencilView(out dsView);
                 if (dsView == null)
                 {
                     return;
                 }
 
-                deviceContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
+                deviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Depth, 1f, 0);
                 dsView.Dispose();
             }
-
+            IsRightHand = !context.Camera.CreateLeftHandSystem;
             float viewportSize = Size * SizeScale;
             var globalTrans = context.GlobalTransform;
             UpdateProjectionMatrix((float)context.ActualWidth, (float)context.ActualHeight);
@@ -388,8 +399,8 @@ namespace HelixToolkit.UWP.Core
             GlobalTransform = globalTrans;
             int offX = (int)(Width / 2 * (1 + RelativeScreenLocationX) - viewportSize / 2);
             int offY = (int)(Height / 2 * (1 - RelativeScreenLocationY) - viewportSize / 2);
-            deviceContext.DeviceContext.Rasterizer.SetViewport(offX, offY, viewportSize, viewportSize);
-            deviceContext.DeviceContext.Rasterizer.SetScissorRectangle(offX, offY, (int)viewportSize + offX, (int)viewportSize + offY);
+            deviceContext.SetViewport(offX, offY, viewportSize, viewportSize);
+            deviceContext.SetScissorRectangle(offX, offY, (int)viewportSize + offX, (int)viewportSize + offY);
         }
     }
 }

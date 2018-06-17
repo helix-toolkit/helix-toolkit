@@ -55,10 +55,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
-        public BillboardNode()
-        {
-            HasBound = false;
-        }
         /// <summary>
         /// Called when [create render core].
         /// </summary>
@@ -94,12 +90,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
         {
-            if (!HasBound)
+            if (!EnableViewFrustumCheck)
             {
                 return true;
             }
-            var sphere = this.BoundsSphereWithTransform;
-            return viewFrustum.Intersects(ref sphere);
+            return BoundingFrustumExtensions.Intersects(ref viewFrustum, ref BoundManager.BoundsSphereWithTransform);// viewFrustum.Intersects(ref sphere);
         }
 
         /// <summary>

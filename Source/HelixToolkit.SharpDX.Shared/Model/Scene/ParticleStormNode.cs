@@ -422,6 +422,31 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             get { return destAlphaBlend; }
         }
+        /// <summary>
+        /// Gets or sets the blend factor for blending
+        /// </summary>
+        /// <value>
+        /// The blend factor.
+        /// </value>
+        public Color4 BlendFactor
+        {
+            set
+            {
+                particleCore.BlendFactor = value;
+            }
+            get { return particleCore.BlendFactor; }
+        }
+        /// <summary>
+        /// Gets or sets the sample mask for blending
+        /// </summary>
+        /// <value>
+        /// The sample mask.
+        /// </value>
+        public int SampleMask
+        {
+            set { particleCore.SampleMask = value; }
+            get { return particleCore.SampleMask; }
+        }
 
         private IList<Matrix> instances;
         /// <summary>
@@ -494,6 +519,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         protected volatile bool boundChanged = true;
         #endregion
 
+        private bool enableViewFrustumCheck = true;
         /// <summary>
         /// Gets or sets a value indicating whether [enable view frustum check].
         /// </summary>
@@ -502,8 +528,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public bool EnableViewFrustumCheck
         {
-            set; get;
-        } = true;
+            set { enableViewFrustumCheck = value; }
+            get { return enableViewFrustumCheck && HasBound; }
+        }
 
         /// <summary>
         /// Gets the instance buffer.
@@ -653,37 +680,17 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         /// <summary>
-        /// <para>Determine if this can be rendered.</para>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected override bool CanRender(RenderContext context)
-        {
-            if (base.CanRender(context) && (!(context.EnableBoundingFrustum && EnableViewFrustumCheck)
-                || CheckBoundingFrustum(context.BoundingFrustum)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Checks the bounding frustum.
+        /// Tests the view frustum.
         /// </summary>
         /// <param name="viewFrustum">The view frustum.</param>
         /// <returns></returns>
-        private bool CheckBoundingFrustum(BoundingFrustum viewFrustum)
+        public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
         {
-            if (!HasBound)
+            if (!EnableViewFrustumCheck)
             {
                 return true;
             }
-            var bound = BoundsWithTransform;
-            var sphere = BoundsSphereWithTransform;
-            return viewFrustum.Intersects(ref bound) && viewFrustum.Intersects(ref sphere);
+            return BoundingFrustumExtensions.Intersects(ref viewFrustum, ref boundsWithTransform);
         }
         /// <summary>
         /// Determines whether this instance [can hit test] the specified context.

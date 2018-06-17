@@ -2,7 +2,6 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX.Direct3D11;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -70,7 +69,10 @@ namespace HelixToolkit.UWP.Core
             {
                 OnUpdatePerModelStruct(ref modelStruct, context);
                 int vertStartSlot = 0;
-                OnAttachBuffers(deviceContext, ref vertStartSlot);
+                if(!OnAttachBuffers(deviceContext, ref vertStartSlot))
+                {
+                    return;
+                }
                 OnUploadPerModelConstantBuffers(deviceContext);
                 OnBindRasterState(deviceContext, context.IsInvertCullMode);
                 switch (context.IsShadowPass)
@@ -123,8 +125,9 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="vertStartSlot">Start slot for vertex buffer binding</param>
-        protected virtual void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
-        {            
+        protected virtual bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
+        {
+            return true;
         }
 
         /// <summary>
@@ -164,7 +167,7 @@ namespace HelixToolkit.UWP.Core
         /// Called when [upload per model constant buffers].
         /// </summary>
         /// <param name="context">The context.</param>
-        protected virtual void OnUploadPerModelConstantBuffers(DeviceContext context)
+        protected virtual void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
             ModelConstBuffer.UploadDataToBuffer(context, ref modelStruct);
         }

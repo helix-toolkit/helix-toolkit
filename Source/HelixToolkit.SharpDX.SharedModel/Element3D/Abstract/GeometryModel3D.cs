@@ -33,6 +33,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     ((d as Element3DCore).SceneNode as GeometryNode).Geometry = e.NewValue as Geometry3D;
                 }));
+        public static readonly DependencyProperty IsThrowingShadowProperty =
+                DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(GeometryModel3D), new PropertyMetadata(false, (d, e) =>
+                {
+                    if ((d as Element3D).SceneNode is Core.IThrowingShadow t)
+                    {
+                        t.IsThrowingShadow = (bool)e.NewValue;
+                    }
+                }));
+
         /// <summary>
         /// The depth bias property
         /// </summary>
@@ -127,7 +136,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.SetValue(GeometryProperty, value);
             }
         }
-
+        /// <summary>
+        /// <see cref="Core.IThrowingShadow.IsThrowingShadow"/>
+        /// </summary>
+        public bool IsThrowingShadow
+        {
+            set
+            {
+                SetValue(IsThrowingShadowProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(IsThrowingShadowProperty);
+            }
+        }
         /// <summary>
         /// List of instance matrix.
         /// </summary>

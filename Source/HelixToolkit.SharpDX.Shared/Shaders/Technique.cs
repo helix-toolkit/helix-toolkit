@@ -16,8 +16,22 @@ namespace HelixToolkit.UWP.Shaders
 #endif
 {
     using ShaderManager;
-    public class Technique :  DisposeObject, IRenderTechnique
+    public sealed class Technique :  DisposeObject, IRenderTechnique
     {
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
+        public TechniqueDescription Description { private set; get; }
+        /// <summary>
+        /// Gets a value indicating whether this Technique is null.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this Technique is null; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsNull { get { return Description.IsNull; } }
         private readonly Dictionary<string, Lazy<ShaderPass>> passDict = new Dictionary<string, Lazy<ShaderPass>>();
         private readonly List<Lazy<ShaderPass>> passList = new List<Lazy<ShaderPass>>();
 
@@ -55,16 +69,20 @@ namespace HelixToolkit.UWP.Shaders
         /// <param name="manager"></param>
         public Technique(TechniqueDescription description, Device device, IEffectsManager manager)
         {
+            Description = description;
             Name = description.Name;
             EffectsManager = manager;
-            Layout = manager.ShaderManager.RegisterInputLayout(description.InputLayoutDescription);
-            if (description.PassDescriptions != null)
+            if (description.InputLayoutDescription != null && description.PassDescriptions != null)
             {
-                foreach(var desc in description.PassDescriptions)
+                Layout = manager.ShaderManager.RegisterInputLayout(description.InputLayoutDescription);
+                if (description.PassDescriptions != null)
                 {
-                    var pass = new Lazy<ShaderPass>(()=> { return Collect(new ShaderPass(desc, manager)); }, true);
-                    passDict.Add(desc.Name, pass);
-                    passList.Add(pass);
+                    foreach(var desc in description.PassDescriptions)
+                    {
+                        var pass = new Lazy<ShaderPass>(()=> { return Collect(new ShaderPass(desc, manager)); }, true);
+                        passDict.Add(desc.Name, pass);
+                        passList.Add(pass);
+                    }
                 }
             }
         }

@@ -11,9 +11,11 @@ namespace HelixToolkit.UWP.Model
 namespace HelixToolkit.Wpf.SharpDX.Model
 #endif
 {
+    using Utilities;
+
     public class ContextSharedResource : IDisposable
     {
-        public ShaderResourceView ShadowView
+        public ShaderResourceViewProxy ShadowView
         {
             set; get;
         }

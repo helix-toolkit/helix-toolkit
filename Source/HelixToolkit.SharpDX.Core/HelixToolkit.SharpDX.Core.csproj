@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE;RELEASE;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;RELEASE;NETSTANDARD1_3</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;CORE;SHARPDX;DX11;MSAA;DX11_1;RELEASE;NETSTANDARD1_3</DefineConstants>
     <DocumentationFile>bin\Release\netstandard1.3\HelixToolkit.SharpDX.Core.xml</DocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>1701;1702;1705;CS1591</NoWarn>
@@ -37,6 +37,7 @@
     <None Remove="Resources\dsMeshTriTessellation.cso" />
     <None Remove="Resources\gsBillboard.cso" />
     <None Remove="Resources\gsLine.cso" />
+    <None Remove="Resources\gsMeshNormalVector.cso" />
     <None Remove="Resources\gsParticle.cso" />
     <None Remove="Resources\gsPoint.cso" />
     <None Remove="Resources\hsMeshTriTessellation.cso" />
@@ -52,6 +53,7 @@
     <None Remove="Resources\psEffectGaussianBlurVertical.cso" />
     <None Remove="Resources\psEffectMeshBorderHighlight.cso" />
     <None Remove="Resources\psEffectMeshXRay.cso" />
+    <None Remove="Resources\psEffectMeshXRayGrid.cso" />
     <None Remove="Resources\psEffectOutlineQuad.cso" />
     <None Remove="Resources\psEffectOutlineQuadStencil.cso" />
     <None Remove="Resources\psEffectOutlineQualFinal.cso" />
@@ -60,6 +62,7 @@
     <None Remove="Resources\psMeshBlinnPhong.cso" />
     <None Remove="Resources\psMeshClipPlaneBackface.cso" />
     <None Remove="Resources\psMeshClipPlaneQuad.cso" />
+    <None Remove="Resources\psMeshColorStripe.cso" />
     <None Remove="Resources\psMeshXRay.cso" />
     <None Remove="Resources\psNormals.cso" />
     <None Remove="Resources\psParticle.cso" />
@@ -102,6 +105,7 @@
     <EmbeddedResource Include="Resources\dsMeshTriTessellation.cso" />
     <EmbeddedResource Include="Resources\gsBillboard.cso" />
     <EmbeddedResource Include="Resources\gsLine.cso" />
+    <EmbeddedResource Include="Resources\gsMeshNormalVector.cso" />
     <EmbeddedResource Include="Resources\gsParticle.cso" />
     <EmbeddedResource Include="Resources\gsPoint.cso" />
     <EmbeddedResource Include="Resources\hsMeshTriTessellation.cso" />
@@ -117,6 +121,7 @@
     <EmbeddedResource Include="Resources\psEffectGaussianBlurVertical.cso" />
     <EmbeddedResource Include="Resources\psEffectMeshBorderHighlight.cso" />
     <EmbeddedResource Include="Resources\psEffectMeshXRay.cso" />
+    <EmbeddedResource Include="Resources\psEffectMeshXRayGrid.cso" />
     <EmbeddedResource Include="Resources\psEffectOutlineQuad.cso" />
     <EmbeddedResource Include="Resources\psEffectOutlineQuadStencil.cso" />
     <EmbeddedResource Include="Resources\psEffectOutlineQualFinal.cso" />
@@ -125,6 +130,7 @@
     <EmbeddedResource Include="Resources\psMeshBlinnPhong.cso" />
     <EmbeddedResource Include="Resources\psMeshClipPlaneBackface.cso" />
     <EmbeddedResource Include="Resources\psMeshClipPlaneQuad.cso" />
+    <EmbeddedResource Include="Resources\psMeshColorStripe.cso" />
     <EmbeddedResource Include="Resources\psMeshXRay.cso" />
     <EmbeddedResource Include="Resources\psNormals.cso" />
     <EmbeddedResource Include="Resources\psParticle.cso" />
@@ -161,15 +167,17 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Cyotek.Drawing.BitmapFont" Version="1.3.4" />
-    <PackageReference Include="SharpDX.D3DCompiler" Version="4.0.1" />
-    <PackageReference Include="SharpDX.Direct2D1" Version="4.0.1" />
-    <PackageReference Include="SharpDX.Direct3D11" Version="4.0.1" />
-    <PackageReference Include="SharpDX.DXGI" Version="4.0.1" />
-    <PackageReference Include="SharpDX.Mathematics" Version="4.0.1" />
+    <PackageReference Include="SharpDX.D3DCompiler" Version="4.1.0" />
+    <PackageReference Include="SharpDX.Direct2D1" Version="4.1.0" />
+    <PackageReference Include="SharpDX.Direct3D11" Version="4.1.0" />
+    <PackageReference Include="SharpDX.DXGI" Version="4.1.0" />
+    <PackageReference Include="SharpDX.Mathematics" Version="4.1.0" />
     <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
     <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />
+    <PackageReference Include="System.Private.DataContractSerialization" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.0" />
     <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.Serialization.Xml" Version="4.3.0" />
     <PackageReference Include="System.Threading.Tasks.Parallel" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>

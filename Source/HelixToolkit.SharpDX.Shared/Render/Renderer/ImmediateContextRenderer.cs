@@ -44,9 +44,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         public ImmediateContextRenderer(IDevice3DResources deviceResource)
         {
 #if DX11_1
-            ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext1));
+            ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext1, deviceResource.Device));
 #else
-            ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext));
+            ImmediateContext = Collect(new DeviceContextProxy(deviceResource.Device.ImmediateContext, deviceResource.Device));
 #endif
             transparentRenderCore = Collect(new OrderIndependentTransparentRenderCore());
             postFXAACore = Collect(new PostEffectFXAA());
@@ -102,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
             if (parameter.UpdatePerFrameData)
             {
-                context.UpdatePerFrameData();
+                context.UpdatePerFrameData(ImmediateContext);
             }
         }
 
@@ -139,8 +139,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public virtual int RenderTransparent(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
-            if (context.RenderHost.RenderConfiguration.EnableOITRendering)
+            if (context.RenderHost.RenderConfiguration.EnableOITRendering
+                && context.RenderHost.FeatureLevel >= global::SharpDX.Direct3D.FeatureLevel.Level_11_0)
             {
+                transparentRenderCore.ExternRenderParameter = parameter;
                 transparentRenderCore.Render(context, ImmediateContext);
                 return transparentRenderCore.RenderCount;
             }
@@ -182,9 +184,9 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="parameter">The parameter.</param>
         public void SetRenderTargets(ref RenderParameter parameter)
         {
-            ImmediateContext.DeviceContext.OutputMerger.SetTargets(parameter.DepthStencilView, parameter.RenderTargetView);
-            ImmediateContext.DeviceContext.Rasterizer.SetViewport(parameter.ViewportRegion);
-            ImmediateContext.DeviceContext.Rasterizer.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top, 
+            ImmediateContext.SetRenderTargets(parameter.DepthStencilView, parameter.RenderTargetView);
+            ImmediateContext.SetViewport(ref parameter.ViewportRegion);
+            ImmediateContext.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top, 
                 parameter.ScissorRegion.Right, parameter.ScissorRegion.Bottom);
         }
 
@@ -232,27 +234,76 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 renderables[i].RenderCore.Render(context, ImmediateContext);
             }            
         }
-
-        public virtual void RenderToBackBuffer(RenderContext context, ref RenderParameter parameter)
+        /// <summary>
+        /// Renders to ping pong buffer.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="parameter">The parameter.</param>
+        public virtual void RenderToPingPongBuffer(RenderContext context, ref RenderParameter parameter)
         {
             var buffer = context.RenderHost.RenderBuffer;
-            if (context.RenderHost.RenderConfiguration.FXAALevel == FXAALevel.None || buffer.ColorBufferSampleDesc.Count > 1)
+            buffer.FullResPPBuffer.Initialize();
+            if (context.RenderHost.FeatureLevel < global::SharpDX.Direct3D.FeatureLevel.Level_11_0 
+                || context.RenderHost.RenderConfiguration.FXAALevel == FXAALevel.None || parameter.IsMSAATexture)
             {
-                ImmediateContext.DeviceContext.Flush();               
-                switch (buffer.ColorBufferSampleDesc.Count)
+                if (parameter.IsMSAATexture)
                 {
-                    case 1:
-                        ImmediateContext.DeviceContext.CopyResource(buffer.ColorBuffer.Resource, buffer.BackBuffer.Resource);
-                        break;
-                    default:
-                        ImmediateContext.DeviceContext.ResolveSubresource(buffer.ColorBuffer.Resource, 0, buffer.BackBuffer.Resource, 0, Format.B8G8R8A8_UNorm);
-                        break;
+                    ImmediateContext.ResolveSubresource(parameter.CurrentTargetTexture, 0, buffer.FullResPPBuffer.CurrentTexture, 0, buffer.Format);
+                }
+                else
+                {
+                    ImmediateContext.CopyResource(parameter.CurrentTargetTexture, buffer.FullResPPBuffer.CurrentTexture);                    
                 }
             }
             else
             {
+                ImmediateContext.CopyResource(parameter.CurrentTargetTexture, buffer.FullResPPBuffer.CurrentTexture);
                 postFXAACore.FXAALevel = context.RenderHost.RenderConfiguration.FXAALevel;
                 postFXAACore.Render(context, ImmediateContext);
+            }
+        }
+        /// <summary>
+        /// Renders the screen spaced.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="renderables">The renderables.</param>
+        /// <param name="parameter">The parameter.</param>
+        public virtual void RenderScreenSpaced(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
+        {
+            int count = renderables.Count;
+            if(count > 0)
+            {
+                var buffer = context.RenderHost.RenderBuffer;
+                bool useDefault = parameter.RenderTargetView[0] == buffer.ColorBuffer.RenderTargetView;
+
+                var depthStencilBuffer = useDefault ? buffer.DepthStencilBuffer : buffer.FullResDepthStencilPool.Get(Format.D32_Float_S8X24_UInt);
+                ImmediateContext.SetRenderTargets(depthStencilBuffer, parameter.RenderTargetView);
+
+                for (int i = 0; i < count; ++i)
+                {
+                    renderables[i].RenderCore.Render(context, ImmediateContext);
+                }
+                if (!useDefault)
+                {
+                    buffer.FullResDepthStencilPool.Put(Format.D32_Float_S8X24_UInt, depthStencilBuffer);
+                }
+            }
+        }
+        /// <summary>
+        /// Renders to back buffer.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="parameter">The parameter.</param>
+        public virtual void RenderToBackBuffer(RenderContext context, ref RenderParameter parameter)
+        {
+            var buffer = context.RenderHost.RenderBuffer;
+            if (parameter.IsMSAATexture)
+            {
+                ImmediateContext.ResolveSubresource(parameter.CurrentTargetTexture, 0, buffer.BackBuffer.Resource, 0, buffer.Format);
+            }
+            else
+            {
+                ImmediateContext.CopyResource(parameter.CurrentTargetTexture, buffer.BackBuffer.Resource);
             }
         }
 
@@ -264,8 +315,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         public void Attach(IRenderHost host)
         {
-            transparentRenderCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.MeshOITQuad));
-            postFXAACore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.PostEffectFXAA));
+            if (host.FeatureLevel >= global::SharpDX.Direct3D.FeatureLevel.Level_11_0)
+            {
+                transparentRenderCore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.MeshOITQuad));
+                postFXAACore.Attach(host.EffectsManager.GetTechnique(DefaultRenderTechniqueNames.PostEffectFXAA));
+            }
         }
 
         public void Detach()

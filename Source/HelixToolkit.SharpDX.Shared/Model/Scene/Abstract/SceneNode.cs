@@ -128,13 +128,24 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             get { return visible; }
         }
 
+        private bool isRenderable = true;
         /// <summary>
         /// Gets or sets a value indicating whether this instance is renderable.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is renderable; otherwise, <c>false</c>.
         /// </value>
-        public bool IsRenderable { private set; get; } = true;
+        public bool IsRenderable
+        {
+            private set
+            {
+                if(Set(ref isRenderable, value))
+                {
+                    InvalidatePerFrameRenderables();
+                }
+            }
+            get { return isRenderable; }
+        }
 
         /// <summary>
         /// If this has been attached onto renderhost.
@@ -182,23 +193,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public bool IsHitTestVisible { set; get; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is throwing shadow.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is throwing shadow; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsThrowingShadow
-        {
-            set
-            {
-                RenderCore.IsThrowingShadow = value;
-            }
-            get
-            {
-                return RenderCore.IsThrowingShadow;
-            }
-        }
-        /// <summary>
         /// Gets or sets the type of the render.
         /// </summary>
         /// <value>
@@ -212,7 +206,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
             set
             {
-                RenderCore.RenderType = value;
+                if (RenderCore.RenderType != value)
+                {
+                    RenderCore.RenderType = value;
+                    InvalidatePerFrameRenderables();
+                }
             }
         }
         /// <summary>
@@ -428,11 +426,19 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// Invalidates the scene graph. Use this if scene graph has been changed.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void InvalidateSceneGraph()
+        protected void InvalidateSceneGraph()
         {
             renderHost?.InvalidateSceneGraph();
         }
 
+        /// <summary>
+        /// Invalidates the per frame renderables.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected void InvalidatePerFrameRenderables()
+        {
+            renderHost?.InvalidatePerFrameRenderables();
+        }
         /// <summary>
         /// Updates the element total transforms, determine renderability, etc. by the specified time span.
         /// </summary>

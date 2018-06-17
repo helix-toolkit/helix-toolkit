@@ -15,7 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Shaders;
     using Core;
-
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -135,12 +135,71 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <summary>
     /// A material proxy variable interface to manage all the material related resources
     /// </summary>
-    public interface IEffectMaterialVariables : IMaterialRenderParams, IDisposable
+    public interface IEffectMaterialVariables : IDisposable
     {
+        /// <summary>
+        /// Gets or sets the default name of the shader pass.
+        /// </summary>
+        /// <value>
+        /// The default name of the shader pass.
+        /// </value>
+        string DefaultShaderPassName { set; get; }
+        /// <summary>
+        /// Gets the material pass.
+        /// </summary>
+        /// <value>
+        /// The material pass.
+        /// </value>
+        ShaderPass MaterialPass { get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [render diffuse map].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render diffuse map]; otherwise, <c>false</c>.
+        /// </value>
+        bool RenderDiffuseMap { set; get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [render diffuse alpha map].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render diffuse alpha map]; otherwise, <c>false</c>.
+        /// </value>
+        bool RenderDiffuseAlphaMap { set; get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [render normal map].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render normal map]; otherwise, <c>false</c>.
+        /// </value>
+        bool RenderNormalMap { set; get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [render displacement map].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render displacement map]; otherwise, <c>false</c>.
+        /// </value>
+        bool RenderDisplacementMap { set; get; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [render shadow map].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [render shadow map]; otherwise, <c>false</c>.
+        /// </value>
+        bool RenderShadowMap { set; get; }
+        /// <summary>
+        /// Reflect the environment cube map
+        /// </summary>
+        bool RenderEnvironmentMap { set; get; }
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
         event EventHandler<EventArgs> OnInvalidateRenderer;
+        /// <summary>
+        /// Attaches the specified technique.
+        /// </summary>
+        /// <param name="technique">The technique.</param>
+        /// <returns></returns>
+        bool Attach(IRenderTechnique technique);
         /// <summary>
         /// 
         /// </summary>
@@ -154,6 +213,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context"></param>
         /// <param name="shaderPass"></param>
         /// <returns></returns>
-        bool BindMaterialTextures(DeviceContext context, ShaderPass shaderPass);
+        bool BindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass);
     }
 }

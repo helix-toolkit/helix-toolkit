@@ -70,8 +70,6 @@ namespace DemoCore
             }
         }
 
-        public List<string> ShadingModelCollection { get; private set; }
-
         public List<string> CameraModelCollection { get; private set; }
 
         public string CameraModel
@@ -104,8 +102,15 @@ namespace DemoCore
                                        : value is OrthographicCamera ? Orthographic : null;
             }
         }
-
-        public IEffectsManager EffectsManager { get; protected set; }
+        private IEffectsManager effectsManager;
+        public IEffectsManager EffectsManager
+        {
+            get { return effectsManager; }
+            protected set
+            {
+                SetValue(ref effectsManager, value);
+            }
+        }
 
         private string renderTechniqueName = DefaultRenderTechniqueNames.Blinn;
         public string RenderTechniqueName

@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\CoordinateSystemModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\CrossSectionMeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\DepthPrepassElement3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\DynamicCodeSurfaceModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\DynamicReflectionMap3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\Element3DCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\EnvironmentMap3D.cs" />
@@ -33,7 +34,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshBorderHighlight.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshOutlineBlur.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRay.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRayGrid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MaterialExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Light3D\ShadowMap3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\ColorStripeMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\DiffuseMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\NormalVectorMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\PositionColorMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\VertColorMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\Material.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\NormalMaterial.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Material\PhongMaterial.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\IOctreeManagerWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\OctreeManager.cs" />
   </ItemGroup>

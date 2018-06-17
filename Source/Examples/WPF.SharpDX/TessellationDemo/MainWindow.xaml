@@ -117,11 +117,6 @@
                         Margin="3">
                         Render Techniqe:
                     </TextBlock>
-                    <!--<ComboBox  Grid.Row="3"  Grid.ColumnSpan="2" Text="" ItemsSource="{Binding Source={StaticResource RenderTechniques}}" SelectedItem="{Binding RenderTechnique}" IsReadOnly="True" Margin="3" />-->
-                    <ComboBox
-                        Margin="3"
-                        ItemsSource="{Binding EffectsManager.RenderTechniques}"
-                        SelectedItem="{Binding RenderTechniqueName}" />
                     <CheckBox
                         Grid.Row="5"
                         Grid.ColumnSpan="2"

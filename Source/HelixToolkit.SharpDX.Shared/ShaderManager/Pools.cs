@@ -15,16 +15,18 @@ namespace HelixToolkit.Wpf.SharpDX.ShaderManager
 namespace HelixToolkit.UWP.ShaderManager
 #endif
 {
+    using HelixToolkit.Logger;
     using Utilities;
     /// <summary>
-    /// Use to store resources for <see cref="ComObject"/>. Each register will increase the reference counter for ComObject by calling <see cref="ComObject.QueryInterface{T}()"/>
+    /// Use to store state resources for dynamic creation/destory. Each register will increase the reference counter/>
+    /// <para>User must call Dispose() to dispose the resources if not used.</para>
     /// </summary>
     /// <typeparam name="TKEY"></typeparam>
     /// <typeparam name="TVALUE"></typeparam>
     /// <typeparam name="TDescription"></typeparam>
-    public abstract class ComPoolBase<TKEY, TVALUE, TDescription> : DisposeObject where TVALUE : ComObject
+    public abstract class StatePoolBase<TKEY, TVALUE, TDescription> : IDisposable where TVALUE : ComObject where TKEY : struct
     {
-        private readonly Dictionary<TKEY, TVALUE> pool = new Dictionary<TKEY, TVALUE>();
+        private readonly Dictionary<TKEY, StateProxy<TVALUE>> pool = new Dictionary<TKEY, StateProxy<TVALUE>>();
         /// <summary>
         /// 
         /// </summary>
@@ -34,38 +36,38 @@ namespace HelixToolkit.UWP.ShaderManager
         /// 
         /// </summary>
         /// <param name="device"></param>
-        public ComPoolBase(Device device)
+        public StatePoolBase(Device device)
         {
             this.Device = device;
         }
         /// <summary>
-        /// Each register will increase the reference counter for ComObject by calling <see cref="ComObject.QueryInterface{T}()"/>
+        /// Each register will increase the reference counter
         /// Calling owner is responsible for dispose the obtained resource. Resource will be disposed automatically once reference counter = 0.
         /// </summary>
         /// <param name="description"></param>
         /// <returns></returns>
         public StateProxy<TVALUE> Register(TDescription description)
         {
-            TVALUE value;
             TKEY key = GetKey(ref description);
             lock (pool)
             {
-                if (pool.TryGetValue(key, out value))
+                if (pool.TryGetValue(key, out StateProxy<TVALUE> value))
                 {
-                    return CreateProxy(value.QueryInterface<TVALUE>());
+                    value.IncRef();
+                    return value;
                 }
                 else
                 {
-                    value = Collect(Create(Device, ref description));
-                    pool.Add(key, value);
-                    value.Disposed += (s, e) => 
+                    var newValue = CreateProxy(Create(Device, ref description));
+                    pool.Add(key, newValue);
+                    newValue.Disposed += (s, e) => 
                     {
                         lock (pool)
                         {
                             pool.Remove(key);
                         }
                     };
-                    return CreateProxy(value);
+                    return newValue;
                 }
             }
         }
@@ -88,25 +90,50 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="state">The state.</param>
         /// <returns></returns>
         protected abstract StateProxy<TVALUE> CreateProxy(TVALUE state);
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void OnDispose(bool disposeManagedResources)
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
         {
-            if (disposeManagedResources)
+            if (!disposedValue)
             {
-                lock (pool)
+                if (disposing)
                 {
-                    foreach (var item in pool.Values.ToArray())
+                    // TODO: dispose managed state (managed objects).
+                    lock (pool)
                     {
-                        item.Dispose();
+                        var arr = pool.Values.ToArray();
+                        foreach (var item in arr)
+                        {
+                            item.ForceDispose();
+                        }
+                        pool.Clear();
                     }
-                    pool.Clear();
                 }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
             }
-            base.OnDispose(disposeManagedResources);
         }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~ComPoolBase() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 
 
@@ -119,21 +146,23 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <typeparam name="TKEY"></typeparam>
     /// <typeparam name="TVALUE"></typeparam>
     /// <typeparam name="TDescription"></typeparam>
-    public abstract class ResourcePoolBase<TKEY, TVALUE, TDescription> : DisposeObject where TVALUE : class
+    public abstract class LongLivedResourcePoolBase<TKEY, TVALUE, TDescription> : IDisposable where TVALUE : class, IDisposable
     {
         private readonly Dictionary<TKEY, TVALUE> pool = new Dictionary<TKEY, TVALUE>();
         /// <summary>
         /// 
         /// </summary>
         public Device Device { private set; get; }
-
+        protected readonly LogWrapper logger;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="device"></param>
-        public ResourcePoolBase(Device device)
+        /// <param name="logger"></param>
+        public LongLivedResourcePoolBase(Device device, LogWrapper logger)
         {
             this.Device = device;
+            this.logger = logger;
         }
         /// <summary>
         /// 
@@ -144,24 +173,50 @@ namespace HelixToolkit.UWP.ShaderManager
         {
             if (description == null)
             { return null; }
-            TVALUE value;
             TKEY key = GetKey(ref description);
             if (key == null)
             { return null; }
             lock (pool)
             {
-                if (pool.TryGetValue(key, out value))
+                if (pool.TryGetValue(key, out TVALUE value))
                 {
                     ErrorCheck(value, ref description);
                     return value;
                 }
                 else
                 {
-                    value = Collect(Create(Device, ref description));
+                    value = Create(Device, ref description);
                     pool.Add(key, value);
                     return value;
                 }
             }
+        }
+        /// <summary>
+        /// Destory the value by its description.
+        /// </summary>
+        /// <param name="description">The description.</param>
+        /// <returns></returns>
+        public bool Destory(TDescription description)
+        {
+            if (description == null)
+            {
+                return false;
+            }
+            TKEY key = GetKey(ref description);
+            if(key == null)
+            {
+                return false;
+            }
+            lock (pool)
+            {
+                if(pool.TryGetValue(key, out TVALUE value))
+                {
+                    value.Dispose();
+                    pool.Remove(key);
+                    return true;
+                }
+            }
+            return false;
         }
 
         protected virtual void ErrorCheck(TVALUE value, ref TDescription description)
@@ -180,14 +235,50 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <param name="description">The description.</param>
         /// <returns></returns>
         protected abstract TVALUE Create(Device device, ref TDescription description);
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void OnDispose(bool disposeManagedResources)
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
         {
-            pool.Clear();
-            base.OnDispose(disposeManagedResources);
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                    // TODO: dispose managed state (managed objects).
+                    lock (pool)
+                    {
+                        var arr = pool.Values.ToArray();
+                        foreach (var item in arr)
+                        {
+                            item.Dispose();
+                        }
+                        pool.Clear();
+                    }
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
         }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~ResourcePoolBase() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

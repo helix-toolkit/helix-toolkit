@@ -80,6 +80,17 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
             return objects;
         }
+
+        #region Temp Variables for hittest
+        private bool needRecalculate = true;
+        private Vector3 clickPoint;
+        private Matrix smvpm;
+        #endregion
+        public override bool HitTest(RenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness)
+        {
+            needRecalculate = true;
+            return base.HitTest(context, model, modelMatrix, rayWS, ref hits, hitThickness);
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -111,14 +122,15 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 }
                 var result = new HitTestResult();
                 result.Distance = double.MaxValue;
-                var svpm = context.ScreenViewProjectionMatrix;
-                var smvpm = modelMatrix * svpm;
-                var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
-                var pos4 = new Vector4(rayWS.Position, 1);
-                Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
-                Vector4.Transform(ref pos4, ref svpm, out pos4);
-                var clickPoint = clickPoint4.ToVector3();
-
+                if (needRecalculate)
+                {
+                    var svpm = context.ScreenViewProjectionMatrix;
+                    smvpm = modelMatrix * svpm;
+                    var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
+                    Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
+                    clickPoint = clickPoint4.ToVector3();
+                    needRecalculate = false;
+                }
                 isIntersect = true;
                 var dist = hitThickness;
                 for (int i = octant.Start; i < octant.End; ++i)

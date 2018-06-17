@@ -158,16 +158,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <ComboBox
-                        Grid.Row="0"
-                        Grid.ColumnSpan="2"
-                        Margin="3"
-                        DisplayMemberPath="Key"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}"
-                        SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"
-                        SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"
-                        SelectedValuePath="Value" />
                 </Grid>
             </Expander>
             <Expander

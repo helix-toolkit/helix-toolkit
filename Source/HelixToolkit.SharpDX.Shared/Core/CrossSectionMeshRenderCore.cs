@@ -3,7 +3,6 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -11,19 +10,21 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Render;
     using Shaders;
     using Utilities;
-    using Render;
 
     public class CrossSectionMeshRenderCore : PatchMeshRenderCore, ICrossSectionRenderParams
     {
+        private ClipPlaneStruct clipParameter = new ClipPlaneStruct() { EnableCrossPlane = new Bool4(false, false, false, false), CrossSectionColors = Color.Blue.ToVector4(), CrossPlaneParams = new Matrix() };
         #region Shader Variables
-
+        private ConstantBufferProxy clipParamCB;
+        private ShaderPass drawBackfacePass;
+        private ShaderPass drawScreenQuadPass;
         /// <summary>
         /// Used to draw back faced triangles onto stencil buffer
         /// </summary>
         private RasterizerStateProxy backfaceRasterState;
-
         #endregion
         #region Properties
         /// <summary>
@@ -180,13 +181,6 @@ namespace HelixToolkit.UWP.Core
 
         #endregion
 
-        private ClipPlaneStruct clipParameter = new ClipPlaneStruct() { EnableCrossPlane = new Bool4(false, false, false, false), CrossSectionColors = Color.Blue.ToVector4(), CrossPlaneParams = new Matrix() };
-
-        private ConstantBufferProxy clipParamCB;
-
-        private ShaderPass drawBackfacePass;
-        private ShaderPass drawScreenQuadPass;
-
         protected override bool OnAttach(IRenderTechnique technique)
         {
             if (base.OnAttach(technique))
@@ -197,6 +191,12 @@ namespace HelixToolkit.UWP.Core
                 return true;
             }
             else { return false; }
+        }
+
+        protected override void OnDetach()
+        {
+            backfaceRasterState = null;
+            base.OnDetach();
         }
 
         protected virtual ConstantBufferDescription GetClipParamsCBDescription()
@@ -228,7 +228,7 @@ namespace HelixToolkit.UWP.Core
             return true;
         }
 
-        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
+        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
             base.OnUploadPerModelConstantBuffers(context);
             clipParamCB.UploadDataToBuffer(context, ref clipParameter);
@@ -238,33 +238,20 @@ namespace HelixToolkit.UWP.Core
         {
             base.OnRender(renderContext, deviceContext);
             // Draw backface into stencil buffer
-            DepthStencilView dsView;
-            var renderTargets = deviceContext.DeviceContext.OutputMerger.GetRenderTargets(1, out dsView);
-            if (dsView == null)
-            {
-                return;
-            }
-            deviceContext.DeviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
-            deviceContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, new RenderTargetView[0]);//Remove render target
+            var dsView = renderContext.RenderHost.DepthStencilBufferView;
+            deviceContext.ClearDepthStencilView(dsView, DepthStencilClearFlags.Stencil, 0, 0);
+            deviceContext.SetDepthStencilOnly(dsView);//Remove render target
             deviceContext.SetRasterState(backfaceRasterState);
             drawBackfacePass.BindShader(deviceContext);
-            drawBackfacePass.BindStates(deviceContext, StateType.BlendState);
-            deviceContext.SetDepthStencilState(drawBackfacePass.DepthStencilState, 1); //Draw backface onto stencil buffer, set value to 1
+            drawBackfacePass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
             OnDraw(deviceContext, InstanceBuffer);
 
             //Draw full screen quad to fill cross section            
-            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
             deviceContext.SetRasterState(RasterState);
             drawScreenQuadPass.BindShader(deviceContext);
-            drawScreenQuadPass.BindStates(deviceContext, StateType.BlendState);
-            deviceContext.DeviceContext.OutputMerger.SetRenderTargets(dsView, renderTargets);//Rebind render target
-            deviceContext.SetDepthStencilState(drawScreenQuadPass.DepthStencilState, 1); //Only pass stencil buffer test if value is 1
-            deviceContext.DeviceContext.Draw(4, 0);
-
-            //Decrement ref count. See OutputMerger.GetRenderTargets remarks
-            dsView.Dispose();
-            foreach (var t in renderTargets)
-            { t.Dispose(); }
+            drawScreenQuadPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState);
+            renderContext.RenderHost.SetDefaultRenderTargets(false);//Rebind render target
+            deviceContext.Draw(4, 0);
         }
     }
 }

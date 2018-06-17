@@ -1,4 +1,6 @@
+using SharpDX;
 using SharpDX.Direct3D11;
+using System.Threading;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Utilities
@@ -9,7 +11,7 @@ namespace HelixToolkit.UWP.Utilities
     /// <summary>
     /// A proxy container to handle view resources
     /// </summary>
-    public sealed class ShaderResourceViewProxy : DisposeObject
+    public sealed class ShaderResourceViewProxy : ReferenceCountDisposeObject
     {
         /// <summary>
         /// Gets the texture view.
@@ -89,7 +91,14 @@ namespace HelixToolkit.UWP.Utilities
         {
             this.resource = Collect(resource);
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShaderResourceViewProxy"/> class.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        public ShaderResourceViewProxy(ShaderResourceView view) : this(view.Device)
+        {
+            textureView = Collect(view);
+        }
         /// <summary>
         /// Creates the view.
         /// </summary>
@@ -110,6 +119,10 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateView(ShaderResourceViewDescription desc)
         {
             RemoveAndDispose(ref textureView);
+            if (resource == null)
+            {
+                return;
+            }
             textureView = Collect(new ShaderResourceView(device, resource, desc));
         }
         /// <summary>
@@ -119,6 +132,10 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateView(DepthStencilViewDescription desc)
         {
             RemoveAndDispose(ref depthStencilView);
+            if (resource == null)
+            {
+                return;
+            }
             depthStencilView = Collect(new DepthStencilView(device, resource, desc));
         }
         /// <summary>
@@ -128,6 +145,10 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateView(RenderTargetViewDescription desc)
         {
             RemoveAndDispose(ref renderTargetView);
+            if (resource == null)
+            {
+                return;
+            }
             renderTargetView = Collect(new RenderTargetView(device, resource, desc));
         }
         /// <summary>
@@ -136,6 +157,10 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateTextureView()
         {
             RemoveAndDispose(ref textureView);
+            if (resource == null)
+            {
+                return;
+            }
             textureView = Collect(new ShaderResourceView(device, resource));
         }
         /// <summary>
@@ -144,31 +169,78 @@ namespace HelixToolkit.UWP.Utilities
         public void CreateRenderTargetView()
         {
             RemoveAndDispose(ref renderTargetView);
+            if (resource == null)
+            {
+                return;
+            }
             renderTargetView = Collect(new RenderTargetView(device, resource));
         }
 
         public void CreateDepthStencilView()
         {
             RemoveAndDispose(ref depthStencilView);
+            if (resource == null)
+            {
+                return;
+            }
             depthStencilView = Collect(new DepthStencilView(device, resource));
         }
 
 
         /// <summary>
-        /// Creates the view from data array.
+        /// Creates the 1D texture view from data array.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="array">The array.</param>
-        /// <param name="pixelFormat">The pixel format.</param>
+        /// <param name="format">The pixel format.</param>
         /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
-        public void CreateView<T>(T[] array, global::SharpDX.Toolkit.Graphics.PixelFormat pixelFormat, bool createSRV = true) where T : struct
+        public void CreateView<T>(T[] array, global::SharpDX.DXGI.Format format, bool createSRV = true) where T : struct
         {
             this.DisposeAndClear();
-            var texture = Collect(global::SharpDX.Toolkit.Graphics.Texture1D.New(device, array.Length, pixelFormat, array));
+            resource = Collect(global::SharpDX.Toolkit.Graphics.Texture1D.New(device, array.Length, format, array));
             if (createSRV)
             {
-                textureView = Collect(new ShaderResourceView(device, texture));
+                textureView = Collect(new ShaderResourceView(device, resource));
             }
+        }
+        /// <summary>
+        /// Creates the 2D texture view from data array.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array">The array.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="mipCount">The mipCount. Default = 0 Auto</param>
+        /// <param name="createSRV">if set to <c>true</c> [create SRV].</param>
+        public void CreateView<T>(T[] array, int width, int height, global::SharpDX.DXGI.Format format, int mipCount = 0, bool createSRV = true) where T : struct
+        {
+            this.DisposeAndClear();
+            resource = Collect(global::SharpDX.Toolkit.Graphics.Texture2D.New(device, width, height, mipCount, format));
+            if (createSRV)
+            {
+                textureView = Collect(new ShaderResourceView(device, resource));
+            }
+        }
+        /// <summary>
+        /// Creates the 1D texture view from color array.
+        /// </summary>
+        /// <param name="array">The array.</param>
+        public void CreateViewFromColorArray(Color4[] array)
+        {
+            CreateView(array, global::SharpDX.DXGI.Format.R32G32B32A32_Float);
+        }
+        /// <summary>
+        /// Creates the 2D texture view from color array.
+        /// </summary>
+        /// <param name="array">The array.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="mipCount">The mipCount. Default = 0 Auto</param>
+        /// <param name="createSRV"></param>
+        public void CreateViewFromColorArray(Color4[] array, int width, int height, int mipCount = 0, bool createSRV = true)
+        {
+            CreateView(array, width, height, global::SharpDX.DXGI.Format.R32G32B32A32_Float, mipCount, createSRV);
         }
         /// <summary>
         /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="ShaderResourceView"/>.
@@ -179,7 +251,7 @@ namespace HelixToolkit.UWP.Utilities
         /// </returns>
         public static implicit operator ShaderResourceView(ShaderResourceViewProxy proxy)
         {
-            return proxy == null ? null : proxy.textureView;
+            return proxy?.textureView;
         }
         /// <summary>
         /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="DepthStencilView"/>.
@@ -190,7 +262,7 @@ namespace HelixToolkit.UWP.Utilities
         /// </returns>
         public static implicit operator DepthStencilView(ShaderResourceViewProxy proxy)
         {
-            return proxy == null ? null : proxy.depthStencilView;
+            return proxy?.depthStencilView;
         }
         /// <summary>
         /// Performs an implicit conversion from <see cref="ShaderResourceViewProxy"/> to <see cref="RenderTargetView"/>.
@@ -201,7 +273,7 @@ namespace HelixToolkit.UWP.Utilities
         /// </returns>
         public static implicit operator RenderTargetView(ShaderResourceViewProxy proxy)
         {
-            return proxy == null ? null : proxy.renderTargetView;
+            return proxy?.renderTargetView;
         }
     }
 }

@@ -45,12 +45,13 @@
             Camera="{Binding Camera}"
             CoordinateSystemLabelForeground="#434343"
             EffectsManager="{Binding EffectsManager}"
+            EnableDesignModeRendering="True"
             FXAALevel="Low"
             ModelUpDirection="{Binding UpDirection}"
             RenderTechnique="{Binding RenderTechnique}"
             ShowCoordinateSystem="True"
             SubTitle="{Binding SubTitle}"
-            TextBrush="Black" EnableDesignModeRendering="True"
+            TextBrush="Black"
             UseDefaultGestures="False">
             <hx:Viewport3DX.InputBindings>
                 <KeyBinding Key="B" Command="hx:ViewportCommands.BackView" />
@@ -108,38 +109,6 @@
                 Geometry="{Binding Text}"
                 Transform="{Binding GridTransform}" />
         </hx:Viewport3DX>
-
-        <StackPanel Grid.Row="1">
-            <Expander
-                x:Name="shadingPanel"
-                Width="150"
-                Margin="10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                BorderBrush="LightGray"
-                Header="Render Technique"
-                IsExpanded="True">
-                <Expander.Background>
-                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
-                </Expander.Background>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <ComboBox
-                        Grid.Row="0"
-                        Grid.ColumnSpan="2"
-                        Margin="3"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding EffectsManager.RenderTechniques}"
-                        SelectedItem="{Binding RenderTechniqueName}" />
-                </Grid>
-            </Expander>
-        </StackPanel>
 
         <StatusBar Grid.Row="1" VerticalAlignment="Bottom">
             <StatusBar.Background>

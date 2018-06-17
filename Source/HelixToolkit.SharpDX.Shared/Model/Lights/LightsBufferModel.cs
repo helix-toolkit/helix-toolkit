@@ -13,6 +13,7 @@ namespace HelixToolkit.UWP.Model
 namespace HelixToolkit.Wpf.SharpDX.Model
 #endif
 {
+    using Render;
     using Utilities;
     /// <summary>
     /// Default Light Model
@@ -48,7 +49,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
             LightCount = 0;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UploadToBuffer(IBufferProxy buffer, DeviceContext context)
+        public void UploadToBuffer(IBufferProxy buffer, DeviceContextProxy context)
         {
             if (buffer.StructureSize == SizeInBytes)
             {
@@ -67,7 +68,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model
             }
             else
             {
+#if DEBUG
                 throw new ArgumentException("Buffer type or size do not match the model requirement");
+#endif
             }
         }
     }

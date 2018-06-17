@@ -203,7 +203,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get
             {
-                yield return overlay2D.SceneNode;
+                yield return Overlay2D.SceneNode;
                 yield return frameStatisticModel.SceneNode;
             }
         }
@@ -214,7 +214,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private Window parentWindow;
 
-        private Overlay overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
+        private Overlay Overlay2D { get; } = new Overlay() { EnableBitmapCache = true };
         private bool enableMouseButtonHitTest = true;
         private ContentPresenter hostPresenter;
         /// <summary>
@@ -316,6 +316,8 @@ namespace HelixToolkit.Wpf.SharpDX
             this.cameraController.ModelUpDirection = this.ModelUpDirection;
             this.cameraController.ZoomDistanceLimitFar = this.ZoomDistanceLimitFar;
             this.cameraController.ZoomDistanceLimitNear = this.ZoomDistanceLimitNear;
+            this.cameraController.FixedRotationPoint = this.FixedRotationPoint;
+            this.cameraController.FixedRotationPointEnabled = this.FixedRotationPointEnabled;
             #endregion
         }
 
@@ -480,8 +482,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideTargetAdorner()
         {
-            var visual = this.hostPresenter as Visual;
-            if (visual == null)
+            if (!(this.hostPresenter is Visual visual))
             {
                 return;
             }
@@ -503,8 +504,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void HideZoomRectangle()
         {
-            var visual = this.hostPresenter as Visual;
-            if (visual == null)
+            if (!(this.hostPresenter is Visual visual))
             {
                 return;
             }
@@ -725,25 +725,25 @@ namespace HelixToolkit.Wpf.SharpDX
                     partItemsControl.Items.Add(item);
                 }
             }
-            overlay2D.Children.Clear();
-            this.RemoveLogicalChild(overlay2D);
-            this.AddLogicalChild(overlay2D);
+            Overlay2D.Children.Clear();
+            this.RemoveLogicalChild(Overlay2D);
+            this.AddLogicalChild(Overlay2D);
             var titleView = Template.FindName(PartTitleView, this);
             if (titleView is Element2D element)
             {
-                overlay2D.Children.Add(element);
+                Overlay2D.Children.Add(element);
             }
             if(viewCube != null)
             {
-                overlay2D.Children.Add(viewCube.MoverCanvas);
+                Overlay2D.Children.Add(viewCube.MoverCanvas);
             }
             if(coordinateView != null)
             {
-                overlay2D.Children.Add(coordinateView.MoverCanvas);
+                Overlay2D.Children.Add(coordinateView.MoverCanvas);
             }
             if (Content2D != null)
             {
-                overlay2D.Children.Add(Content2D);
+                Overlay2D.Children.Add(Content2D);
             }
         }
 
@@ -785,8 +785,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void SetView(Point3D newPosition, Vector3D newDirection, Vector3D newUpDirection, double animationTime)
         {
-            var projectionCamera = this.Camera as ProjectionCamera;
-            if (projectionCamera == null)
+            if (!(this.Camera is ProjectionCamera projectionCamera))
             {
                 return;
             }
@@ -810,8 +809,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            var visual = this.hostPresenter as UIElement;
-            if (visual == null)
+            if (!(this.hostPresenter is UIElement visual))
             {
                 return;
             }
@@ -832,8 +830,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            var visual = this.hostPresenter as UIElement;
-            if (visual == null)
+            if (!(this.hostPresenter is UIElement visual))
             {
                 return;
             }
@@ -906,7 +903,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     e.Attach(host);
                 }
-                sharedModelContainerInternal?.Attach(host);
+                SharedModelContainerInternal?.Attach(host);
                 foreach(var e in this.D2DRenderables)
                 {
                     e.Attach(host);
@@ -927,7 +924,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     e.Detach();
                 }
-                sharedModelContainerInternal?.Detach();
+                SharedModelContainerInternal?.Detach();
                 foreach(var e in this.D2DRenderables)
                 {
                     e.Detach();
@@ -1414,8 +1411,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.Camera = this.perspectiveCamera;
             }
 
-            var projectionCamera = oldCamera as ProjectionCamera;
-            if (projectionCamera != null)
+            if (oldCamera is ProjectionCamera projectionCamera)
             {
                 projectionCamera.CopyTo(this.Camera);
             }
@@ -1567,8 +1563,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void ViewCubeClicked(object sender, ViewBoxModel3D.ViewBoxClickedEventArgs e)
         {
-            var pc = this.Camera as ProjectionCamera;
-            if (pc == null)
+            if (!(this.Camera is ProjectionCamera pc))
             {
                 return;
             }
@@ -1607,7 +1602,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseDownHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
-            if (overlay2D.HitTest(pt.ToVector2(), out currentHit2D))
+            if (Overlay2D.HitTest(pt.ToVector2(), out currentHit2D))
             {
                 if(currentHit2D.ModelHit is Element2D e)
                 {
@@ -1654,8 +1649,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private bool ViewBoxHitTest(Point p)
         {
-            var camera = Camera as ProjectionCamera;
-            if (camera == null)
+            if (!(Camera is ProjectionCamera camera))
             {
                 return false;
             }
@@ -1682,8 +1676,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private void MouseMoveHitTest(Point pt, InputEventArgs originalInputEventArgs = null)
         {
-            HitTest2DResult hit2D;
-            if (overlay2D.HitTest(pt.ToVector2(), out hit2D))
+            if (Overlay2D.HitTest(pt.ToVector2(), out HitTest2DResult hit2D))
             {
                 if(hit2D.ModelHit is Element2D e)
                 {
@@ -1753,8 +1746,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var parent = System.Windows.Media.VisualTreeHelper.GetParent(obj);
                 while (parent != null)
                 {
-                    var typed = parent as T;
-                    if (typed != null)
+                    if (parent is T typed)
                     {
                         return typed;
                     }

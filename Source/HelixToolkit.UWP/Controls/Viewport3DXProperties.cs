@@ -884,7 +884,10 @@ namespace HelixToolkit.UWP
         /// Rotate around this fixed rotation point only.<see cref="FixedRotationPointEnabledProperty"/>
         /// </summary>
         public static readonly DependencyProperty FixedRotationPointProperty = DependencyProperty.Register(
-            "FixedRotationPoint", typeof(Vector3), typeof(Viewport3DX), new PropertyMetadata(new Vector3()));
+            "FixedRotationPoint", typeof(Vector3), typeof(Viewport3DX), new PropertyMetadata(new Vector3(), (d, e) =>
+            {
+                (d as Viewport3DX).CameraController.FixedRotationPoint = (Vector3)e.NewValue;
+            }));
 
         /// <summary>
         /// Rotate around this fixed rotation point only.<see cref="FixedRotationPointEnabled"/>
@@ -905,7 +908,10 @@ namespace HelixToolkit.UWP
         /// Enable fixed rotation mode and use FixedRotationPoint for rotation. Only works under CameraMode = Inspect
         /// </summary>
         public static readonly DependencyProperty FixedRotationPointEnabledProperty = DependencyProperty.Register(
-            "FixedRotationPointEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
+            "FixedRotationPointEnabled", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
+            {
+                (d as Viewport3DX).CameraController.FixedRotationPointEnabled = (bool)e.NewValue;
+            }));
 
         /// <summary>
         /// Enable fixed rotation mode and use <see cref="FixedRotationPoint"/>  for rotation. Only works under <see cref="CameraMode"/> = Inspect
@@ -1972,7 +1978,7 @@ namespace HelixToolkit.UWP
                     {
                         n.AttachViewport3DX(viewport);
                     }
-                    viewport.sharedModelContainerInternal = (IModelContainer)e.NewValue;
+                    viewport.SharedModelContainerInternal = (IModelContainer)e.NewValue;
                     if (viewport.renderHostInternal != null)
                     {
                         viewport.renderHostInternal.SharedModelContainer = (IModelContainer)e.NewValue;
@@ -2000,6 +2006,172 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The shared model container internal.
         /// </value>
-        protected IModelContainer sharedModelContainerInternal { private set; get; } = null;
+        protected IModelContainer SharedModelContainerInternal { private set; get; } = null;
+
+        /// <summary>
+        /// The show camera info property.
+        /// </summary>
+        public static readonly DependencyProperty ShowCameraInfoProperty = DependencyProperty.Register(
+            "ShowCameraInfo",
+            typeof(bool),
+            typeof(Viewport3DX),
+            new PropertyMetadata(false, (d, e) =>
+            {
+                if ((d as Viewport3DX).renderHostInternal != null)
+                {
+                    if (((bool)e.NewValue))
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail |= RenderDetail.Camera;
+                    }
+                    else
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail &= ~RenderDetail.Camera;
+                    }
+                }
+            }));
+        /// <summary>
+        /// Gets or sets a value indicating whether to show camera info.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if camera info should be shown; otherwise, <c>false</c> .
+        /// </value>
+        public bool ShowCameraInfo
+        {
+            get
+            {
+                return (bool)this.GetValue(ShowCameraInfoProperty);
+            }
+
+            set
+            {
+                this.SetValue(ShowCameraInfoProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// The show frame rate property.
+        /// </summary>
+        public static readonly DependencyProperty ShowFrameRateProperty = DependencyProperty.Register(
+            "ShowFrameRate", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
+            {
+                if ((d as Viewport3DX).renderHostInternal != null)
+                {
+                    if (((bool)e.NewValue))
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail |= RenderDetail.FPS;
+                    }
+                    else
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail &= ~RenderDetail.FPS;
+                    }
+                }
+            }));
+        /// <summary>
+        /// Gets or sets a value indicating whether to show frame rate.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if frame rate should be shown; otherwise, <c>false</c> .
+        /// </value>
+        public bool ShowFrameRate
+        {
+            get
+            {
+                return (bool)this.GetValue(ShowFrameRateProperty);
+            }
+
+            set
+            {
+                this.SetValue(ShowFrameRateProperty, value);
+            }
+        }
+
+
+        /// <summary>
+        /// The show frame rate property.
+        /// </summary>
+        public static readonly DependencyProperty ShowFrameDetailsProperty = DependencyProperty.Register(
+            "ShowFrameDetails", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
+            {
+                if ((d as Viewport3DX).renderHostInternal != null)
+                {
+                    if (((bool)e.NewValue))
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail |= RenderDetail.Statistics;
+                    }
+                    else
+                    {
+                        (d as Viewport3DX).renderHostInternal.ShowRenderDetail &= ~RenderDetail.Statistics;
+                    }
+                }
+            }));
+        /// <summary>
+        /// Gets or sets a value indicating whether [show frame details].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show frame details]; otherwise, <c>false</c>.
+        /// </value>
+        public bool ShowFrameDetails
+        {
+            set
+            {
+                SetValue(ShowFrameDetailsProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(ShowFrameDetailsProperty);
+            }
+        }
+        /// <summary>
+        /// The show triangle count info property.
+        /// </summary>
+        public static readonly DependencyProperty ShowTriangleCountInfoProperty = DependencyProperty.Register(
+             "ShowTriangleCountInfo", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false, (d, e) =>
+             {
+                 if ((d as Viewport3DX).renderHostInternal != null)
+                 {
+                     if (((bool)e.NewValue))
+                     {
+                         (d as Viewport3DX).renderHostInternal.ShowRenderDetail |= RenderDetail.TriangleInfo;
+                     }
+                     else
+                     {
+                         (d as Viewport3DX).renderHostInternal.ShowRenderDetail &= ~RenderDetail.TriangleInfo;
+                     }
+                 }
+             }));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to show the total number of triangles in the scene.
+        /// </summary>
+        public bool ShowTriangleCountInfo
+        {
+            get
+            {
+                return (bool)this.GetValue(ShowTriangleCountInfoProperty);
+            }
+
+            set
+            {
+                this.SetValue(ShowTriangleCountInfoProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the render detail output.
+        /// </summary>
+        /// <value>
+        /// The render detail output.
+        /// </value>
+        public string RenderDetailOutput
+        {
+            get { return (string)GetValue(RenderDetailOutputProperty); }
+            set { SetValue(RenderDetailOutputProperty, value); }
+        }
+
+        /// <summary>
+        /// The render detail output property
+        /// </summary>
+        public static readonly DependencyProperty RenderDetailOutputProperty =
+            DependencyProperty.Register("RenderDetailOutput", typeof(string), typeof(Viewport3DX), new PropertyMetadata(""));
     }
 }

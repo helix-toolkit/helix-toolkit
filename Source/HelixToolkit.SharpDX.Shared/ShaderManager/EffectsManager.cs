@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using global::SharpDX.Direct3D;
 using global::SharpDX.Direct3D11;
 using global::SharpDX.DXGI;
+using System.Linq;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -28,6 +29,7 @@ namespace HelixToolkit.UWP
     using HelixToolkit.Logger;
     using System.Runtime.CompilerServices;
     using System.Diagnostics.CodeAnalysis;
+    using System.Diagnostics;
 
     /// <summary>
     /// Shader and Technique manager
@@ -280,15 +282,15 @@ namespace HelixToolkit.UWP
 #else
             device = new global::SharpDX.Direct3D11.Device(DriverType.Hardware, DeviceCreationFlags.BgraSupport, FeatureLevel.Level_10_1);
 #endif
-            Log(LogLevel.Information, $"Direct3D device initilized. DriverType: {DriverType}");
+            Log(LogLevel.Information, $"Direct3D device initilized. DriverType: {DriverType}; FeatureLevel: {device.FeatureLevel}");
 
-#region Initial Internal Pools
+            #region Initial Internal Pools
             Log(LogLevel.Information, "Initializing resource pools");
             RemoveAndDispose(ref constantBufferPool);
-            constantBufferPool = Collect(new ConstantBufferPool(Device));
+            constantBufferPool = Collect(new ConstantBufferPool(Device, Logger));
 
             RemoveAndDispose(ref shaderPoolManager);
-            shaderPoolManager = Collect(new ShaderPoolManager(Device, constantBufferPool));
+            shaderPoolManager = Collect(new ShaderPoolManager(Device, constantBufferPool, Logger));
 
             RemoveAndDispose(ref statePoolManager);
             statePoolManager = Collect(new StatePoolManager(Device));
@@ -297,11 +299,11 @@ namespace HelixToolkit.UWP
             geometryBufferManager = Collect(new GeometryBufferManager());
 
             RemoveAndDispose(ref materialTextureManager);
-            materialTextureManager = Collect(new Model.TextureResourceManager(Device));
+            materialTextureManager = Collect(new TextureResourceManager(Device));
 
             RemoveAndDispose(ref deviceContextPool);
             deviceContextPool = Collect(new DeviceContextPool(Device));
-            #endregion
+#endregion
             Log(LogLevel.Information, "Initializing Direct2D resources");
             factory2D = Collect(new global::SharpDX.Direct2D1.Factory1(global::SharpDX.Direct2D1.FactoryType.MultiThreaded));
             wicImgFactory = Collect(new global::SharpDX.WIC.ImagingFactory());
@@ -326,6 +328,18 @@ namespace HelixToolkit.UWP
             }
             techniqueDict.Add(description.Name, new Lazy<IRenderTechnique>(() => { return Initialized ? Collect(new Technique(description, Device, this)) : null; }, true));
         }
+
+        /// <summary>
+        /// Determines whether the specified name has technique.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified name has technique; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasTechnique(string name)
+        {
+            return techniqueDict.ContainsKey(name);
+        }
         /// <summary>
         /// <see cref="IEffectsManager.RemoveTechnique(string)"/>
         /// </summary>
@@ -333,14 +347,28 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         public bool RemoveTechnique(string name)
         {
-            Lazy<IRenderTechnique> t;
-            techniqueDict.TryGetValue(name, out t);
-            if (t != null && t.IsValueCreated)
+            if(techniqueDict.TryGetValue(name, out Lazy<IRenderTechnique> t))
             {
-                var v = t.Value;
-                RemoveAndDispose(ref v);
+                if (t.IsValueCreated)
+                {
+                    var v = t.Value;
+                    RemoveAndDispose(ref v);
+                }
+                return techniqueDict.Remove(name);
             }
-            return techniqueDict.Remove(name);
+            return false;
+        }
+
+        /// <summary>
+        /// Removes all technique.
+        /// </summary>
+        public void RemoveAllTechniques()
+        {
+            var names = techniqueDict.Keys.ToArray();
+            foreach(var name in names)
+            {
+                RemoveTechnique(name);
+            }
         }
 
         /// <summary>
@@ -421,7 +449,13 @@ namespace HelixToolkit.UWP
             techniqueDict.TryGetValue(name, out t);
             if (t == null)
             {
-                throw new ArgumentException($"Technique {name} does not exist.");
+                Log(LogLevel.Warning, $"Technique {name} does not exist. Return a null technique.");
+                Debug.WriteLine($"Technique {name} does not exist. Return a null technique.");
+#if DX11_1
+                return new Technique(new TechniqueDescription() { Name = name, IsNull = true }, device1, this);
+#else
+                return new Technique(new TechniqueDescription() { Name = name, IsNull = true }, device, this);
+#endif
             }
             return t.Value;
         }
@@ -449,9 +483,19 @@ namespace HelixToolkit.UWP
         protected override void OnDispose(bool disposeManagedResources)
         {
             OnDisposeResources?.Invoke(this, EventArgs.Empty);
+            foreach(var technique in techniqueDict.Values.ToArray())
+            {
+                if (technique.IsValueCreated)
+                {
+                    var t = technique.Value;
+                    RemoveAndDispose(ref t);
+                }
+            }
             techniqueDict.Clear();
+            RemoveAndDispose(ref shaderPoolManager);           
             base.OnDispose(disposeManagedResources);
             Initialized = false;
+            global::SharpDX.Toolkit.Graphics.WICHelper.Dispose();
 #if DX11_1
             Disposer.RemoveAndDispose(ref device1);
 #endif
@@ -477,7 +521,7 @@ namespace HelixToolkit.UWP
 #endif
             Initialize(AdapterIndex);
         }
-        #endregion
+#endregion
 
 #if DEBUGMEMORY
         protected void ReportResources()

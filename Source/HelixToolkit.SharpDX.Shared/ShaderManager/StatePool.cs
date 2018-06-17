@@ -14,7 +14,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <summary>
     /// 
     /// </summary>
-    public sealed class BlendStatePool : ComPoolBase<BlendStateDescription, BlendState, BlendStateDescription>
+    public sealed class BlendStatePool : StatePoolBase<BlendStateDescription, BlendState, BlendStateDescription>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BlendStatePool"/> class.
@@ -29,6 +29,10 @@ namespace HelixToolkit.UWP.ShaderManager
         /// <returns></returns>
         protected override BlendState Create(Device device, ref BlendStateDescription description)
         {
+            if(device.FeatureLevel < global::SharpDX.Direct3D.FeatureLevel.Level_11_0 && description.IndependentBlendEnable)
+            {
+                description.IndependentBlendEnable = false;
+            }
             return new BlendState(device, description);
         }
 
@@ -49,7 +53,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <summary>
     /// 
     /// </summary>
-    public sealed class DepthStencilStatePool : ComPoolBase<DepthStencilStateDescription, DepthStencilState, DepthStencilStateDescription>
+    public sealed class DepthStencilStatePool : StatePoolBase<DepthStencilStateDescription, DepthStencilState, DepthStencilStateDescription>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DepthStencilStatePool"/> class.
@@ -84,7 +88,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <summary>
     /// 
     /// </summary>
-    public sealed class RasterStatePool : ComPoolBase<RasterizerStateDescription, RasterizerState, RasterizerStateDescription>
+    public sealed class RasterStatePool : StatePoolBase<RasterizerStateDescription, RasterizerState, RasterizerStateDescription>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RasterStatePool"/> class.
@@ -119,7 +123,7 @@ namespace HelixToolkit.UWP.ShaderManager
     /// <summary>
     /// 
     /// </summary>
-    public sealed class SamplerStatePool : ComPoolBase<SamplerStateDescription, SamplerState, SamplerStateDescription>
+    public sealed class SamplerStatePool : StatePoolBase<SamplerStateDescription, SamplerState, SamplerStateDescription>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SamplerStatePool"/> class.

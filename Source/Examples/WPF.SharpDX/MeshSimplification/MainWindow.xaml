@@ -49,7 +49,8 @@
             <hx:AmbientLight3D Color="{Binding AmbientLightColor}" />
             <hx:DirectionalLight3D Direction="{Binding Light1Direction}" Color="{Binding Light1Color}" />
             <hx:MeshGeometryModel3D
-                CullMode="Back" x:Name="model"
+                x:Name="model"
+                CullMode="Back"
                 Geometry="{Binding Model}"
                 IsMultisampleEnabled="False"
                 Material="{Binding ModelMaterial}"

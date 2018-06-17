@@ -118,15 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="random4x4_dot3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\textures\random4x4_dot3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="random_dot3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\textures\random_dot3.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DefaultViewboxTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\textures\defaultviewboxtexture.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="psMeshBlinnPhong" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\psmeshblinnphong.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -327,5 +318,17 @@
   </data>
   <data name="psWireframeOIT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\pswireframeoit.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psLuma" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psluma.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psEffectMeshXRayGrid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pseffectmeshxraygrid.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="gsMeshNormalVector" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\gsmeshnormalvector.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="psMeshColorStripe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\psmeshcolorstripe.cso;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

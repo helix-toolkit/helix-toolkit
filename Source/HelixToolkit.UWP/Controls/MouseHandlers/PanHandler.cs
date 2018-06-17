@@ -74,7 +74,8 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-
+            this.CameraController.StopSpin();
+            this.CameraController.StopZooming();
             this.Camera.Position += delta;
         }
 

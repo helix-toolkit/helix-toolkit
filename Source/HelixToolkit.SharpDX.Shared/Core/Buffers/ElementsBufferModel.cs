@@ -8,12 +8,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using global::SharpDX.Direct3D11;
-    using Utilities;
-    using System.Linq;
-    using System.Collections.Generic;
-    using System;
     using global::SharpDX;
+    using global::SharpDX.Direct3D11;
+    using Render;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Utilities;
 
     /// <summary>
     /// Used for managing instance buffer update
@@ -61,7 +62,7 @@ namespace HelixToolkit.UWP.Core
             instanceChanged = true;
         }
 
-        public virtual void AttachBuffer(DeviceContext context, ref int vertexBufferStartSlot)
+        public virtual void AttachBuffer(DeviceContextProxy context, ref int vertexBufferStartSlot)
         {
             if (HasElements)
             {
@@ -71,7 +72,7 @@ namespace HelixToolkit.UWP.Core
                     instanceChanged = false;
                     bufferBinding = new VertexBufferBinding(Buffer.Buffer, Buffer.StructureSize, Buffer.Offset);
                 }
-                context.InputAssembler.SetVertexBuffers(vertexBufferStartSlot, bufferBinding);
+                context.SetVertexBuffers(vertexBufferStartSlot, bufferBinding);
             }
             ++vertexBufferStartSlot;
         }

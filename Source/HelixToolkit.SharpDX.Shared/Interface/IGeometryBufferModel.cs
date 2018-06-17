@@ -2,9 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
+using System;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
+    using Render;
     using System.Collections.Generic;
     using Utilities;
     /// <summary>
@@ -67,7 +68,7 @@ namespace HelixToolkit.UWP
         /// <param name="vertexBufferStartSlot">The vertex buffer slot. It will be changed to next available slot after binding.</param>
         /// <param name="deviceResources"></param>
         /// <returns></returns>
-        bool AttachBuffers(DeviceContext context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources);
+        bool AttachBuffers(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources);
 
         ///// <summary>
         ///// Attaches the render host.
@@ -91,7 +92,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The texture view.
         /// </value>
-        ShaderResourceView TextureView { get; }
+        ShaderResourceViewProxy TextureView { get; }
         /// <summary>
         /// Gets the billboard type.
         /// </summary>

@@ -205,23 +205,15 @@ namespace HelixToolkit.Wpf
         /// </returns>
         public static Point3D? LineIntersection(this Plane plane, Point3D la, Point3D lb)
         {
-            // http://en.wikipedia.org/wiki/Line-plane_intersection
-            var l = lb - la;
-            var pos = plane.Normal * plane.D;
-            var k = pos - la;
-            var a = DotProduct(ref k, ref plane.Normal);
-            var b = DotProduct(ref l, ref plane.Normal);
-            if (a.Equals(0) && b.Equals(0))
+            // https://graphics.stanford.edu/~mdfisher/Code/Engine/Plane.cpp.html
+            var diff = la - lb;
+            float d = Vector3D.Dot(diff, plane.Normal);
+            if(d == 0)
             {
                 return null;
             }
-
-            if (b.Equals(0))
-            {
-                return null;
-            }
-
-            return la + ((a / b) * l);
+            float u = (Vector3D.Dot(la, plane.Normal) + plane.D) / d;
+            return (la + u * (lb - la));
         }
 #endif
     }

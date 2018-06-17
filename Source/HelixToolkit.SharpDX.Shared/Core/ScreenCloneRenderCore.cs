@@ -181,8 +181,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             {
                 DefaultShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.Default];
                 CursorShaderPass = technique.EffectsManager[DefaultRenderTechniqueNames.ScreenDuplication][DefaultPassNames.ScreenQuad];
-                textureBindSlot = DefaultShaderPass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
-                samplerBindSlot = DefaultShaderPass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
+                textureBindSlot = DefaultShaderPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
+                samplerBindSlot = DefaultShaderPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
                 textureSampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.ScreenDupSampler));
                 return Initialize(technique.EffectsManager);
             }
@@ -261,16 +261,15 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 {
                     ModelConstBuffer.UploadDataToBuffer(deviceContext, ref modelStruct);
                     DefaultShaderPass.BindShader(deviceContext);
-                    DefaultShaderPass.BindStates(deviceContext,StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);                  
-                    deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = global::SharpDX.Direct3D.PrimitiveTopology.TriangleStrip;
-                    DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerBindSlot, textureSampler);
+                    DefaultShaderPass.BindStates(deviceContext,StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
+                    DefaultShaderPass.PixelShader.BindSampler(deviceContext, samplerBindSlot, textureSampler);
                     int left = (int)(context.ActualWidth * Math.Abs(modelStruct.TopLeft.X + 1) / 2);
                     int top = (int)(context.ActualHeight * Math.Abs(modelStruct.TopLeft.Y - 1) / 2);
-                    deviceContext.DeviceContext.Rasterizer.SetScissorRectangle(left, top, (int)context.ActualWidth - left, (int)context.ActualHeight - top);
-                    using (var textureView = new global::SharpDX.Direct3D11.ShaderResourceView(deviceContext.DeviceContext.Device, frameProcessor.SharedTexture))
+                    deviceContext.SetScissorRectangle(left, top, (int)context.ActualWidth - left, (int)context.ActualHeight - top);
+                    using (var textureView = new global::SharpDX.Direct3D11.ShaderResourceView(deviceContext, frameProcessor.SharedTexture))
                     {
-                        DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureBindSlot, textureView);
-                        deviceContext.DeviceContext.Draw(4, 0);
+                        deviceContext.SetShaderResource(PixelShader.Type, textureBindSlot, textureView);                       
+                        deviceContext.Draw(4, 0);
                     }
                     if (ShowMouseCursor && cursorValid)
                     {                    
@@ -304,11 +303,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             {
                 return;
             }
-            CursorShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureBindSlot, frameProcessor.PointerResource);
+            CursorShaderPass.PixelShader.BindTexture(deviceContext, textureBindSlot, frameProcessor.PointerResource);
             CursorShaderPass.BindShader(deviceContext);
-            CursorShaderPass.BindStates(deviceContext, StateType.DepthStencilState | StateType.RasterState);
-            deviceContext.DeviceContext.OutputMerger.SetBlendState(CursorShaderPass.BlendState, new RawColor4(0, 0, 0, 0)); //Set special blend factor
-            deviceContext.DeviceContext.Draw(4, 0);
+            CursorShaderPass.BindStates(deviceContext, StateType.DepthStencilState | StateType.RasterState | StateType.BlendState);
+            //deviceContext.DeviceContext.OutputMerger.SetBlendState(CursorShaderPass.BlendState, new RawColor4(0, 0, 0, 0)); //Set special blend factor
+            deviceContext.Draw(4, 0);
         }
 
         #endregion
@@ -338,7 +337,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             model.TexBottomRight = new Vector2(texBound.Y, texBound.W);           
         }
 
-        protected override void OnUploadPerModelConstantBuffers(global::SharpDX.Direct3D11.DeviceContext context)
+        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
         }
         /// <summary>
@@ -469,6 +468,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             clearTarget = true;
             invalidRender = true;
             pointer = new PointerInfo();
+            textureSampler = null;
             base.OnDetach();
         }
 
@@ -503,9 +503,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                         CpuAccessFlags = CpuAccessFlags.None, Format = data.Frame.Description.Format, Width = data.Frame.Description.Width, Height = data.Frame.Description.Height,
                         MipLevels = 1, Usage = ResourceUsage.Default, SampleDescription = new SampleDescription(1, 0), OptionFlags = ResourceOptionFlags.None, ArraySize=1
                     };
-                    sharedTexture = Collect(new Texture2D(context.DeviceContext.Device, sharedDescription));
+                    sharedTexture = Collect(new Texture2D(context, sharedDescription));
                 }
-                context.DeviceContext.CopyResource(data.Frame, sharedTexture);
+                context.CopyResource(data.Frame, sharedTexture);
             }
 
             private const int BPP = 4;
@@ -587,8 +587,8 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     
                     global::SharpDX.Utilities.Pin(pointer.ShapeInfo.Type == (int)OutputDuplicatePointerShapeType.Color ? pointer.PtrShapeBuffer : initBuffer, ptr =>
                     {
-                        pointerResource = Collect(new ShaderResourceViewProxy(context.DeviceContext.Device,
-                            new Texture2D(context.DeviceContext.Device, pointerTexDesc, new[] { new DataBox(ptr, rowPitch, slicePitch) })));
+                        pointerResource = Collect(new ShaderResourceViewProxy(context,
+                            new Texture2D(context, pointerTexDesc, new[] { new DataBox(ptr, rowPitch, slicePitch) })));
                     });
                     pointerResource.CreateView(pointerSRVDesc);
 #if OUTPUTDETAIL
@@ -597,7 +597,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 }
                 else
                 {
-                    var dataBox = context.DeviceContext.MapSubresource(pointerResource.Resource, 0, global::SharpDX.Direct3D11.MapMode.WriteDiscard, 
+                    var dataBox = context.MapSubresource(pointerResource.Resource, 0, global::SharpDX.Direct3D11.MapMode.WriteDiscard, 
                         global::SharpDX.Direct3D11.MapFlags.None);
                     if (pointer.ShapeInfo.Type == (int)OutputDuplicatePointerShapeType.Color)
                     {
@@ -633,7 +633,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                             }
                         }
                     }
-                    context.DeviceContext.UnmapSubresource(pointerResource.Resource, 0);
+                    context.UnmapSubresource(pointerResource.Resource, 0);
                 }
                 return true;
             }           
@@ -693,13 +693,13 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 if(copyBuffer == null || stageTextureDesc.Width != width || stageTextureDesc.Height != height)
                 {
                     RemoveAndDispose(ref copyBuffer);
-                    copyBuffer = Collect(new Texture2D(context.DeviceContext.Device, stageTextureDesc));
+                    copyBuffer = Collect(new Texture2D(context, stageTextureDesc));
                 }
 
-                context.DeviceContext.CopySubresourceRegion(SharedTexture, 0,
+                context.CopySubresourceRegion(SharedTexture, 0,
                     new global::SharpDX.Direct3D11.ResourceRegion(left, top, 0, left + width, top + height, 1), copyBuffer, 0);
 
-                var dataBox = context.DeviceContext.MapSubresource(copyBuffer, 0, global::SharpDX.Direct3D11.MapMode.Read, global::SharpDX.Direct3D11.MapFlags.None);
+                var dataBox = context.MapSubresource(copyBuffer, 0, global::SharpDX.Direct3D11.MapMode.Read, global::SharpDX.Direct3D11.MapFlags.None);
 #region process
                 unsafe // Call unmanaged code
                 {
@@ -773,7 +773,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     }
                 }
 #endregion
-                context.DeviceContext.UnmapSubresource(copyBuffer, 0);
+                context.UnmapSubresource(copyBuffer, 0);
             }
         }
 
@@ -861,27 +861,29 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                 }
                 OutputDuplicateFrameInformation frameInfo;
                 Resource desktopResource;
-                try
+                var code = info.Duplication.TryAcquireNextFrame(getFrameTimeOut, out frameInfo, out desktopResource);
+                if (!code.Success)
                 {
-                    info.Duplication.AcquireNextFrame(getFrameTimeOut, out frameInfo, out desktopResource);
-                    RetrieveCursorMetadata(ref frameInfo, info.Duplication, outputIndex, ref pointer);
-                }
-                catch(SharpDXException ex)
-                {
-                    if(ex.ResultCode.Code == ResultCode.WaitTimeout.Result.Code)
+                    if (code.Code == ResultCode.WaitTimeout.Result.Code)
                     {
                         timeOut = true;
                         return false;
                     }
-                    else if(ex.ResultCode.Code == ResultCode.AccessLost.Code)
+                    else if (code.Code == ResultCode.AccessLost.Code)
                     {
                         accessLost = true;
                         return false;
                     }
                     else
                     {
+#if DEBUG
                         throw new HelixToolkitException("Failed to acquire next frame.");
+#endif
                     }
+                }
+                else
+                {
+                    RetrieveCursorMetadata(ref frameInfo, info.Duplication, outputIndex, ref pointer);
                 }
                 currentDuplicationStack.Push(info.Duplication);
                 var texture2D = desktopResource.QueryInterface<Texture2D>();
@@ -967,7 +969,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
                     {
                         fixed (byte* ptrShapeBufferPtr = pointerInfo.PtrShapeBuffer)
                         {
-                            OutputDuplicatePointerShapeInformation info;
+                            OutputDuplicatePointerShapeInformation info;                           
                             duplication.GetFramePointerShape(frameInfo.PointerShapeBufferSize, (IntPtr)ptrShapeBufferPtr, out pointerInfo.BufferSize, out info);
                             if(info.Type != 0)
                             {

@@ -15,6 +15,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using System;
     using System.Collections.Concurrent;
     using Model.Scene;
+    using System.Runtime.CompilerServices;
+
     /// <summary>
     /// 
     /// </summary>
@@ -31,11 +33,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="context">The context.</param>
         /// <param name="parameter">The parameter.</param>
         /// <param name="outputCommands">The output commands.</param>
-        /// <param name="filterType"></param>
         /// <param name="numRendered"></param>
         /// <returns></returns>
         bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
-            RenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered);
+            RenderContext context, RenderParameter parameter, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered);
     }
     /// <summary>
     /// 
@@ -107,16 +108,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="pool"></param>
         /// <param name="context"></param>
         /// <param name="parameter"></param>
-        /// <param name="filterType"></param>
         /// <param name="outputCommands"></param>
         /// <param name="numRendered"></param>
         /// <returns></returns>
         public bool ScheduleAndRun(List<SceneNode> items, IDeviceContextPool pool,
-            RenderContext context, RenderParameter parameter, RenderType filterType, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered)
+            RenderContext context, RenderParameter parameter, List<KeyValuePair<int, CommandList>> outputCommands, out int numRendered)
         {
             outputCommands.Clear();
             int totalCount = 0;
             numRendered = 0;
+            
             if (items.Count > schedulerParams.MinimumDrawCalls)
             {
                 var frustum = context.BoundingFrustum;
@@ -132,13 +133,10 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         {
                             continue;
                         }
-                        if (items[i].RenderCore.RenderType == filterType)
-                        {
-                            items[i].RenderCore.Render(context, deferred);
-                        }
-                        ++counter;
+                        items[i].RenderCore.Render(context, deferred);
+                        ++counter;         
                     }
-                    var command = deferred.DeviceContext.FinishCommandList(true);
+                    var command = deferred.FinishCommandList(true);
                     pool.Put(deferred);
                     lock (outputCommands)
                     {
@@ -160,11 +158,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="parameter">The parameter.</param>
-        private void SetRenderTargets(DeviceContext context, ref RenderParameter parameter)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void SetRenderTargets(DeviceContextProxy context, ref RenderParameter parameter)
         {
-            context.OutputMerger.SetTargets(parameter.DepthStencilView, parameter.RenderTargetView);
-            context.Rasterizer.SetViewport(parameter.ViewportRegion);
-            context.Rasterizer.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top,
+            context.SetRenderTargets(parameter.DepthStencilView, parameter.RenderTargetView);
+            context.SetViewport(ref parameter.ViewportRegion);
+            context.SetScissorRectangle(parameter.ScissorRegion.Left, parameter.ScissorRegion.Top,
                 parameter.ScissorRegion.Right, parameter.ScissorRegion.Bottom);
         }
     }

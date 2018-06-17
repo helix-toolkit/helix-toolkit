@@ -12,10 +12,24 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using Utilities;
     using Render;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class BillboardRenderCore : GeometryRenderCore<PointLineModelStruct>, IBillboardRenderParams
     {
+        #region Private Variables
+        private IBillboardBufferModel billboardBuffer;
+        private int textureSamplerSlot;
+        private int shaderTextureSlot;
+        private SamplerStateProxy textureSampler;
+        #endregion
         private bool fixedSize = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether [fixed size].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [fixed size]; otherwise, <c>false</c>.
+        /// </value>
         public bool FixedSize
         {
             set
@@ -24,7 +38,8 @@ namespace HelixToolkit.UWP.Core
             }
             get { return fixedSize; }
         }
-        private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerWrapAni4;
+
+        private SamplerStateDescription samplerDescription = DefaultSamplers.LinearSamplerClampAni1;
         /// <summary>
         /// Billboard texture sampler description
         /// </summary>
@@ -52,8 +67,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public string ShaderTextureSamplerName { set; get; } = DefaultSamplerStateNames.BillboardTextureSampler;
 
-
-        private string transparentPassName = DefaultPassNames.OITPass;
+        private string transparentPassName = DefaultPassNames.OITPass; 
         /// <summary>
         /// Gets or sets the name of the mesh transparent pass.
         /// </summary>
@@ -76,18 +90,9 @@ namespace HelixToolkit.UWP.Core
         }
 
         protected ShaderPass TransparentPass { private set; get; } = ShaderPass.NullPass;
-
-        private SamplerStateProxy textureSampler;
-
-
-        private int shaderTextureSlot;
-        private int textureSamplerSlot;
-
-        protected override void OnDefaultPassChanged(ShaderPass pass)
+        protected override ConstantBufferDescription GetModelConstantBufferDescription()
         {
-            base.OnDefaultPassChanged(pass);
-            shaderTextureSlot = pass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
-            textureSamplerSlot = pass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
+            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
         }
 
         protected override bool OnAttach(IRenderTechnique technique)
@@ -104,18 +109,37 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
+        protected override void OnDefaultPassChanged(ShaderPass pass)
         {
-            model.World = ModelMatrix * context.WorldMatrix;
-            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
-            model.BoolParams.X = FixedSize;
-            var type = (GeometryBuffer as IBillboardBufferModel).Type;
-            model.Params.X = (int)type;
+            base.OnDefaultPassChanged(pass);
+            shaderTextureSlot = pass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderTextureName);
+            textureSamplerSlot = pass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderTextureSamplerName);
+        }
+        protected override void OnDetach()
+        {
+            textureSampler = null;
+            base.OnDetach();
         }
 
-        protected override ConstantBufferDescription GetModelConstantBufferDescription()
+        protected override void OnDraw(DeviceContextProxy context, IElementsBufferModel instanceModel)
         {
-            return new ConstantBufferDescription(DefaultBufferNames.PointLineModelCB, PointLineModelStruct.SizeInBytes);
+            if (GeometryBuffer.VertexBuffer.Length > 0)
+            {
+                if (instanceModel == null || !instanceModel.HasElements)
+                {
+                    context.Draw(GeometryBuffer.VertexBuffer[0].ElementCount, 0);
+                }
+                else
+                {
+                    context.DrawInstanced(GeometryBuffer.VertexBuffer[0].ElementCount, instanceModel.Buffer.ElementCount,
+                        0, instanceModel.Buffer.Offset);
+                }
+            }
+        }
+
+        protected override void OnGeometryBufferChanged(IGeometryBufferModel buffer)
+        {
+            billboardBuffer = buffer as IBillboardBufferModel;
         }
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
@@ -127,34 +151,35 @@ namespace HelixToolkit.UWP.Core
             }
             pass.BindShader(deviceContext);
             pass.BindStates(deviceContext, DefaultStateBinding);
-            BindBillboardTexture(deviceContext, pass.GetShader(ShaderStage.Pixel));
+            BindBillboardTexture(deviceContext, pass.PixelShader);
             OnDraw(deviceContext, InstanceBuffer);
-        }        
-
-        protected virtual void BindBillboardTexture(DeviceContext context, ShaderBase shader)
-        {
-            var buffer = GeometryBuffer as IBillboardBufferModel;
-            shader.BindTexture(context, shaderTextureSlot, buffer.TextureView);
-            shader.BindSampler(context, textureSamplerSlot, textureSampler);
-        }
-
-        protected override void OnDraw(DeviceContext context, IElementsBufferModel instanceModel)
-        {
-            var billboardGeometry = GeometryBuffer.Geometry as IBillboardText;
-            var vertexCount = billboardGeometry.BillboardVertices.Count;
-            if (instanceModel == null || !instanceModel.HasElements)
-            {
-                context.Draw(vertexCount, 0);
-            }
-            else
-            {
-                context.DrawInstanced(vertexCount, instanceModel.Buffer.ElementCount, 0, 0);
-            }
         }
 
         protected override void OnRenderShadow(RenderContext context, DeviceContextProxy deviceContext)
         {
-            
+
+        }
+
+        protected override void OnRenderCustom(RenderContext context, DeviceContextProxy deviceContext, ShaderPass shaderPass)
+        {
+            BindBillboardTexture(deviceContext, DefaultShaderPass.PixelShader);
+            base.OnRenderCustom(context, deviceContext, shaderPass);
+        }
+
+        protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
+        {
+            model.World = ModelMatrix * context.WorldMatrix;
+            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
+            model.BoolParams.X = FixedSize;
+            var type = billboardBuffer.Type;
+            model.Params.X = (int)type;
+        }
+
+        private void BindBillboardTexture(DeviceContextProxy context, PixelShader shader)
+        {
+            var buffer = billboardBuffer;
+            shader.BindTexture(context, shaderTextureSlot, buffer.TextureView);
+            shader.BindSampler(context, textureSamplerSlot, textureSampler);
         }
     }
 }

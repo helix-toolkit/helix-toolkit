@@ -219,8 +219,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 
         protected override void OnAttached()
         {
-            base.OnAttached();
             strokeChanged = true;
+            base.OnAttached();          
         }
 
         protected override void OnUpdate(RenderContext2D context)

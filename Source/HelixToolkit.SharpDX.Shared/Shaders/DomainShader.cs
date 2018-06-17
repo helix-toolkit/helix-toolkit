@@ -2,23 +2,26 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
 using SharpDX.Direct3D11;
+using System.Runtime.CompilerServices;
 using System.Collections.Generic;
-
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
 #else
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    using Render;
+    using Utilities;   
+
     /// <summary>
     /// 
     /// </summary>
     public sealed class DomainShader : ShaderBase
     {
-        private readonly global::SharpDX.Direct3D11.DomainShader shader;
-
+        internal global::SharpDX.Direct3D11.DomainShader Shader { private set; get; }
+        public static readonly DomainShader NullDomainShader = new DomainShader("NULL");
+        public static readonly DomainShaderType Type;
         /// <summary>
         /// Vertex Shader
         /// </summary>
@@ -28,103 +31,103 @@ namespace HelixToolkit.UWP.Shaders
         public DomainShader(Device device, string name, byte[] byteCode)
             :base(name, ShaderStage.Domain)
         {
-            shader = Collect(new global::SharpDX.Direct3D11.DomainShader(device, byteCode));
+            Shader = Collect(new global::SharpDX.Direct3D11.DomainShader(device, byteCode));
+        }
+
+        private DomainShader(string name)
+            :base(name, ShaderStage.Domain, true)
+        {
+
         }
 
         /// <summary>
-        /// <see cref="ShaderBase.Bind(DeviceContext)"/>
+        /// Binds shader to pipeline
         /// </summary>
-        /// <param name="context"></param>
-        public override void Bind(DeviceContext context)
+        /// <param name="context">The context.</param>
+        /// <param name="bindConstantBuffer"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Bind(DeviceContextProxy context, bool bindConstantBuffer = true)
         {
-            context.DomainShader.Set(shader);
+            context.SetShader(this);
         }
         /// <summary>
-        /// <see cref="ShaderBase.BindConstantBuffers(DeviceContext)"/>
+        /// Binds the texture.
         /// </summary>
-        /// <param name="context"></param>
-        public override void BindConstantBuffers(DeviceContext context)
+        /// <param name="context">The context.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindTexture(DeviceContextProxy context, string name, ShaderResourceViewProxy texture)
         {
-            foreach (var buff in this.ConstantBufferMapping.Mappings)
-            {
-                context.DomainShader.SetConstantBuffer(buff.Key, buff.Value.Buffer);
-            }
+            int slot = this.ShaderResourceViewMapping.TryGetBindSlot(name);
+            context.SetShaderResource(Type, slot, texture);
         }
         /// <summary>
-        /// <see cref="ShaderBase.BindTexture(DeviceContext, string, ShaderResourceView)"/>
+        /// Binds the texture.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="name"></param>
-        /// <param name="texture"></param>
-        public override void BindTexture(DeviceContext context, string name, ShaderResourceView texture)
+        /// <param name="context">The context.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="texture">The texture.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindTexture(DeviceContextProxy context, int slot, ShaderResourceViewProxy texture)
         {
-            int slot = ShaderResourceViewMapping.TryGetBindSlot(name);
-            if (slot < 0)
-            { return; }
-            context.DomainShader.SetShaderResource(slot, texture);
+            context.SetShaderResource(Type, slot, texture);
         }
         /// <summary>
-        /// <see cref="ShaderBase.BindTexture(DeviceContext, int, ShaderResourceView)"/>
+        /// Binds the textures.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="slot"></param>
-        /// <param name="texture"></param>
-        public override void BindTexture(DeviceContext context, int slot, ShaderResourceView texture)
-        {
-            if (slot < 0)
-            { return; }
-            context.DomainShader.SetShaderResource(slot, texture);
-        }
-        /// <summary>
-        /// <see cref="ShaderBase.BindTextures(DeviceContext, IEnumerable{KeyValuePair{int, ShaderResourceView}})"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="textures"></param>
-        public override void BindTextures(DeviceContext context, IEnumerable<KeyValuePair<int, ShaderResourceView>> textures)
+        /// <param name="context">The context.</param>
+        /// <param name="textures">The textures.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindTextures(DeviceContextProxy context, IList<KeyValuePair<int, ShaderResourceViewProxy>> textures)
         {
             foreach (var texture in textures)
             {
-                context.DomainShader.SetShaderResource(texture.Key, texture.Value);
+                context.SetShaderResource(Type, texture.Key, texture.Value);
             }
         }
-
         /// <summary>
-        /// <see cref="ShaderBase.BindSampler(DeviceContext, int, SamplerState)"/>
+        /// Binds the sampler.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="slot"></param>
-        /// <param name="sampler"></param>
-        public override void BindSampler(DeviceContext context, int slot, SamplerState sampler)
+        /// <param name="context">The context.</param>
+        /// <param name="slot">The slot.</param>
+        /// <param name="sampler">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindSampler(DeviceContextProxy context, int slot, SamplerStateProxy sampler)
         {
-            if (slot < 0)
-            { return; }
-            context.DomainShader.SetSampler(slot, sampler);
+            context.SetSampler(Type, slot, sampler);
         }
         /// <summary>
-        /// <see cref="ShaderBase.BindSampler(DeviceContext, string, SamplerState)"/> 
+        /// Binds the sampler.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="name"></param>
-        /// <param name="sampler"></param>
-        public override void BindSampler(DeviceContext context, string name, SamplerState sampler)
+        /// <param name="context">The context.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="sampler">The sampler.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindSampler(DeviceContextProxy context, string name, SamplerStateProxy sampler)
         {
-            int slot = SamplerMapping.TryGetBindSlot(name);
-            if (slot < 0)
-            { return; }
-            context.DomainShader.SetSampler(slot, sampler);
+            int slot = this.SamplerMapping.TryGetBindSlot(name);
+            context.SetSampler(Type, slot, sampler);
         }
 
         /// <summary>
-        /// <see cref="ShaderBase.BindSamplers(DeviceContext, IEnumerable{KeyValuePair{int, SamplerState}})"/> 
+        /// Binds the samplers.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="samplers"></param>
-        public override void BindSamplers(DeviceContext context, IEnumerable<KeyValuePair<int, SamplerState>> samplers)
+        /// <param name="context">The context.</param>
+        /// <param name="samplers">The samplers.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void BindSamplers(DeviceContextProxy context, IList<KeyValuePair<int, SamplerStateProxy>> samplers)
         {
             foreach (var sampler in samplers)
             {
-                context.DomainShader.SetSampler(sampler.Key, sampler.Value);
+                context.SetSampler(Type, sampler.Key, sampler.Value);
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator DomainShaderType(DomainShader s)
+        {
+            return Type;
         }
     }
 }

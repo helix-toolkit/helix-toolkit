@@ -10,7 +10,7 @@ namespace HelixToolkit.UWP.Model
 namespace HelixToolkit.Wpf.SharpDX.Model
 #endif
 {
-    using global::SharpDX.Direct3D11;
+    using Render;
     using ShaderManager;
     using Shaders;
     using System;
@@ -33,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
             buffer = pool.Register(DefaultBufferNames.LightCB, LightsBufferModel.SizeInBytes);
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void UploadToBuffer(DeviceContext context)
+        public void UploadToBuffer(DeviceContextProxy context)
         {
             LightModels.UploadToBuffer(buffer, context);
         }

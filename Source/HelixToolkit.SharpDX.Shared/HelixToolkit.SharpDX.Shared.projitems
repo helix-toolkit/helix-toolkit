@@ -61,6 +61,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectFXAA.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectMeshOutlineBlurCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectMeshXRay.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectMeshXRayGrid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ScreenCloneRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ScreenSpacedMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ShadowMapCore.cs" />
@@ -78,12 +79,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)DefaultShaders\UWPShaderReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BitmapExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingBoxExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingFrustumExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingSphereExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Color4Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommonExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DataStreamExtension.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DeviceContextExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MatrixExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PointerSizeHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Vector3DExtensions.cs" />
@@ -119,9 +120,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element2D\Element2DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\Element3DCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Element3D\GeometryBoundManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\ColorStripeMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\DiffuseMaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\EmptyMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\MaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PassOnlyMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialVariables.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\ExposedArrayList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Geometry\BillboardBase.cs" />
@@ -136,7 +140,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Layouts.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\Light3DSceneShared.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Lights\LightsBufferModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\TextureResourceManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Abstract\ParametricSurface3DNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\DynamicCodeSurface3DNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\NodePostEffectXRayGrid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\TextureSharedPhongMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\Vector2Collection.cs" />
@@ -192,6 +199,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ScreenSpacedNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\SortingGroupNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ViewBoxNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_DrawCalls.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_InputAssembler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_ResourceUpdate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_ShaderResources.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_States.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_Targets.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy_Viewport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\ColorBufferPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11RenderBufferBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11SwapChainCompositionRenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11SwapChainRenderBufferProxy.cs" />
@@ -199,7 +214,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Render\Renderer\DeferredContextRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\RenderHostBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderHost\DefaultRenderHost.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Render\DeviceContextProxy\DeviceContextProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderBuffers\DX11Texture2DRenderBufferProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interface\IRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Render\RenderContext.cs" />
@@ -217,7 +232,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\ShaderPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\EffectsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\StatePool.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Shaders\BlendStates.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\ComputeShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\ConstantBufferDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\DomainShader.cs" />
@@ -225,7 +239,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\HullShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\InputLayoutDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\MappingProxy.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Shaders\NullShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\PixelShader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\SamplerDescription.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shaders\ShaderBase.cs" />
@@ -289,6 +302,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\ModelReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\ObjReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\OffReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\RenderTechniqueImportExport.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\StLReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ImportExport\StudioReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\LineBuilder.cs" />

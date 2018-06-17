@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
     /// </summary>
     public class FrameStatisticsRenderCore : RenderCore2DBase
     {
-        private RenderStatistics statistics;
+        private IRenderStatistics statistics;
 
         private D2D.Brush foreground = null;
         /// <summary>

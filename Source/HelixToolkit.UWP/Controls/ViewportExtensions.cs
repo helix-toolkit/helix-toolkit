@@ -215,8 +215,9 @@ namespace HelixToolkit.UWP
             {
                 element.HitTest(viewport.RenderContext, ray, ref hits);
             }
+            hits.Sort();
 
-            return hits.OrderBy(k => k.Distance).ToList();
+            return hits;
         }
 
         /// <summary>

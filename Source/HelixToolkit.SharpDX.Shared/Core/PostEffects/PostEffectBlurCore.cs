@@ -23,13 +23,51 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class PostEffectBlurCore : DisposeObject
     {
+        #region Variables
+        private const int NumPingPongBlurBuffer = 2;
+        private ShaderPass screenBlurPassVertical;
+        private ShaderPass screenBlurPassHorizontal;
+        private int textureSlot;
+        private int samplerSlot;
+        private Texture2DDescription texture2DDesc = new Texture2DDescription()
+        {
+            BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
+            CpuAccessFlags = CpuAccessFlags.None,
+            Usage = ResourceUsage.Default,
+            ArraySize = 1,
+            MipLevels = 1,
+            OptionFlags = ResourceOptionFlags.None,
+            SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0)
+        };
+
+        private ShaderResourceViewDescription targetResourceViewDesc = new ShaderResourceViewDescription()
+        {
+            Dimension = ShaderResourceViewDimension.Texture2D,
+            Texture2D = new ShaderResourceViewDescription.Texture2DResource()
+            {
+                MipLevels = 1,
+                MostDetailedMip = 0,
+            }
+        };
+        private RenderTargetViewDescription renderTargetViewDesc = new RenderTargetViewDescription()
+        {
+            Dimension = RenderTargetViewDimension.Texture2D,
+            Texture2D = new RenderTargetViewDescription.Texture2DResource() { MipSlice = 0 }
+        };
+
+        #region Texture Resources
+        private ShaderResourceViewProxy[] renderTargetBlur = new ShaderResourceViewProxy[NumPingPongBlurBuffer];
+        private SamplerStateProxy sampler;
+        #endregion Texture Resources
+        #endregion
+        #region Properties
         /// <summary>
         /// Gets the current ShaderResourceView.
         /// </summary>
         /// <value>
         /// The current SRV.
         /// </value>
-        public ShaderResourceView CurrentSRV { get { return renderTargetBlur[0].TextureView; } }
+        public ShaderResourceViewProxy CurrentSRV { get { return renderTargetBlur[0]; } }
 
         /// <summary>
         /// Gets the next SRV.
@@ -37,7 +75,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The next SRV.
         /// </value>
-        public ShaderResourceView NextSRV { get { return renderTargetBlur[1].TextureView; } }
+        public ShaderResourceViewProxy NextSRV { get { return renderTargetBlur[1]; } }
 
         public int Width { get { return texture2DDesc.Width; } }
 
@@ -59,50 +97,7 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public RenderTargetView NextRTV { get { return renderTargetBlur[1].RenderTargetView; } }
 
-        private ShaderPass screenBlurPassVertical;
-
-        private ShaderPass screenBlurPassHorizontal;
-
-        #region Texture Resources
-
-        private const int NumPingPongBlurBuffer = 2;
-
-        private ShaderResourceViewProxy[] renderTargetBlur = new ShaderResourceViewProxy[NumPingPongBlurBuffer];
-
-        private int textureSlot;
-
-        private int samplerSlot;
-
-        private SamplerState sampler;
-
-        private Texture2DDescription texture2DDesc = new Texture2DDescription()
-        {
-            BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-            CpuAccessFlags = CpuAccessFlags.None,
-            Usage = ResourceUsage.Default,
-            ArraySize = 1,
-            MipLevels = 1,
-            OptionFlags = ResourceOptionFlags.None,
-            SampleDescription = new global::SharpDX.DXGI.SampleDescription(1, 0)
-        };
-
-        private ShaderResourceViewDescription targetResourceViewDesc = new ShaderResourceViewDescription()
-        {
-            Dimension = ShaderResourceViewDimension.Texture2D,
-            Texture2D = new ShaderResourceViewDescription.Texture2DResource()
-            {
-                MipLevels = 1,
-                MostDetailedMip = 0,
-            }
-        };
-
-        private RenderTargetViewDescription renderTargetViewDesc = new RenderTargetViewDescription()
-        {
-            Dimension = RenderTargetViewDimension.Texture2D,
-            Texture2D = new RenderTargetViewDescription.Texture2DResource() { MipSlice = 0 }
-        };
-
-        #endregion Texture Resources
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PostEffectMeshOutlineBlurCore"/> class.
@@ -149,8 +144,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="initHorizontalIter">The initialize horizontal iter.</param>
         public virtual void Run(DeviceContextProxy deviceContext, int iteration, int initVerticalIter = 0, int initHorizontalIter = 0)
         {
-            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-            deviceContext.DeviceContext.PixelShader.SetSampler(samplerSlot, sampler);
+            deviceContext.SetSampler(PixelShader.Type, samplerSlot, sampler);
             if (!screenBlurPassVertical.IsNULL)
             {
                 screenBlurPassVertical.BindShader(deviceContext);
@@ -159,8 +153,8 @@ namespace HelixToolkit.UWP.Core
                 {
                     SwapTargets();
                     BindTarget(null, renderTargetBlur[0], deviceContext, texture2DDesc.Width, texture2DDesc.Height);
-                    screenBlurPassVertical.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetBlur[1].TextureView);
-                    deviceContext.DeviceContext.Draw(4, 0);
+                    screenBlurPassVertical.PixelShader.BindTexture(deviceContext, textureSlot, renderTargetBlur[1]);
+                    deviceContext.Draw(4, 0);
                 }
             }
 
@@ -172,11 +166,11 @@ namespace HelixToolkit.UWP.Core
                 {
                     SwapTargets();
                     BindTarget(null, renderTargetBlur[0], deviceContext, texture2DDesc.Width, texture2DDesc.Height);
-                    screenBlurPassHorizontal.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, renderTargetBlur[1].TextureView);
-                    deviceContext.DeviceContext.Draw(4, 0);
+                    screenBlurPassHorizontal.PixelShader.BindTexture(deviceContext, textureSlot, renderTargetBlur[1]);
+                    deviceContext.Draw(4, 0);
                 }
             }
-            deviceContext.DeviceContext.PixelShader.SetShaderResource(textureSlot, null);
+            deviceContext.SetShaderResource(PixelShader.Type, textureSlot, null);
         }
         /// <summary>
         /// Swaps the targets.
@@ -189,19 +183,19 @@ namespace HelixToolkit.UWP.Core
             renderTargetBlur[1] = current;
         }
 
-        private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContext context, int width, int height)
+        private static void BindTarget(DepthStencilView dsv, RenderTargetView targetView, DeviceContextProxy context, int width, int height)
         {
             //context.ClearRenderTargetView(targetView, Color.White);
-            context.OutputMerger.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
-            context.Rasterizer.SetViewport(0, 0, width, height);
-            context.Rasterizer.SetScissorRectangle(0, 0, width, height);
+            context.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
+            context.SetViewport(0, 0, width, height);
+            context.SetScissorRectangle(0, 0, width, height);
         }
         /// <summary>
         /// Clears the targets.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="c">The c.</param>
-        public void ClearTargets(DeviceContext context, Color c)
+        public void ClearTargets(DeviceContextProxy context, Color c)
         {
             foreach (var target in renderTargetBlur)
             {

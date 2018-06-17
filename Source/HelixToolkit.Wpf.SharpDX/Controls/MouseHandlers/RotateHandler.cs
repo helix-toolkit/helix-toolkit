@@ -131,7 +131,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-
+            
             switch (this.Controller.CameraRotationMode)
             {
                 case CameraRotationMode.Trackball:
@@ -198,7 +198,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             d *= this.RotationSensitivity;
 
-            var q1 = new Quaternion(this.rotationAxisX, d * delta.X);
+            var q1 = new Quaternion(this.rotationAxisX, d * inv * delta.X);
             var q2 = new Quaternion(this.rotationAxisY, d * delta.Y);
             Quaternion q = q1 * q2;
 
@@ -261,8 +261,8 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             d *= this.RotationSensitivity;
-
-            var q1 = new Quaternion(up, d * delta.X);
+            
+            var q1 = new Quaternion(up, d * inv * delta.X);
             var q2 = new Quaternion(right, d * delta.Y);
             Quaternion q = q1 * q2;
 
@@ -305,9 +305,9 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.rotationPoint3D = this.Camera.Position;
                     break;
                 default:
-                    if (Viewport.FixedRotationPointEnabled)
+                    if (Controller.FixedRotationPointEnabled)
                     {
-                        this.rotationPoint3D = Viewport.FixedRotationPoint;
+                        this.rotationPoint3D = Controller.FixedRotationPoint;
                     }
                     else if (this.changeLookAt && this.MouseDownNearestPoint3D != null)
                     {
@@ -471,8 +471,8 @@ namespace HelixToolkit.Wpf.SharpDX
             var v2 = ProjectToTrackball(p2, this.Viewport.ActualWidth, this.Viewport.ActualHeight);
 
             // transform the trackball coordinates to view space
-            var viewZ = this.Camera.LookDirection;
-            var viewX = Vector3D.CrossProduct(this.Camera.UpDirection, viewZ);
+            var viewZ = this.Camera.LookDirection * inv;
+            var viewX = Vector3D.CrossProduct(this.Camera.UpDirection, viewZ) * inv;
             var viewY = Vector3D.CrossProduct(viewX, viewZ);
             viewX.Normalize();
             viewY.Normalize();
@@ -495,7 +495,6 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             double angle = Vector3D.AngleBetween(u1, u2);
-
             // Create the transform
             var delta = new Quaternion(axis, -angle * this.RotationSensitivity * 5);
             var rotate = new RotateTransform3D(new QuaternionRotation3D(delta));

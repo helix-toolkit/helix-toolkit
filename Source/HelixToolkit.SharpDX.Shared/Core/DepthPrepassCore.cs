@@ -70,7 +70,7 @@ namespace HelixToolkit.UWP.Core
         /// Called when [upload per model constant buffers].
         /// </summary>
         /// <param name="context">The context.</param>
-        protected override void OnUploadPerModelConstantBuffers(global::SharpDX.Direct3D11.DeviceContext context)
+        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
             
         }

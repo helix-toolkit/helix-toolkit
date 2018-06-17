@@ -199,7 +199,7 @@ namespace HelixToolkit.UWP
 
             d *= (float)this.RotationSensitivity;
 
-            var q1 = Quaternion.RotationAxis(this.rotationAxisX, (float)(d * delta.X / 180 * Math.PI));
+            var q1 = Quaternion.RotationAxis(this.rotationAxisX, (float)(d * inv * delta.X / 180 * Math.PI));
             var q2 = Quaternion.RotationAxis(this.rotationAxisY, (float)(d * delta.Y / 180 * Math.PI));
             Quaternion q = q1 * q2;
 
@@ -262,7 +262,7 @@ namespace HelixToolkit.UWP
 
             d *= (float)this.RotationSensitivity;
 
-            var q1 = Quaternion.RotationAxis(up, (float)(d * delta.X / 180 * Math.PI));
+            var q1 = Quaternion.RotationAxis(up, (float)(d * inv * delta.X / 180 * Math.PI));
             var q2 = Quaternion.RotationAxis(right, (float)(d * delta.Y / 180 * Math.PI));
             Quaternion q = q1 * q2;
 
@@ -468,8 +468,8 @@ namespace HelixToolkit.UWP
             var v2 = ProjectToTrackball(p2, this.CameraController.Viewport.ActualWidth, this.CameraController.Viewport.ActualHeight);
 
             // transform the trackball coordinates to view space
-            var viewZ = this.Camera.LookDirection;
-            var viewX = Vector3D.Cross(this.Camera.UpDirection, viewZ);
+            var viewZ = this.Camera.LookDirection * inv;
+            var viewX = Vector3D.Cross(this.Camera.UpDirection, viewZ) * inv;
             var viewY = Vector3D.Cross(viewX, viewZ);
             viewX.Normalize();
             viewY.Normalize();

@@ -6,11 +6,10 @@ Copyright (c) 2018 Helix Toolkit contributors
 using SharpDX;
 using SharpDX.DXGI;
 using SharpDX.Direct3D11;
-using System.Linq;
 using System;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
-using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
+using DeviceContextProxy = SharpDX.Direct3D11.DeviceContext1;
 #else
 using Device = SharpDX.Direct3D11.Device;
 #endif
@@ -92,6 +91,12 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// </value>
         public IDeviceContextPool DeviceContextPool { get { return deviceContextPool; } }
 
+        private PingPongColorBuffers fullResPPBuffer;
+        public PingPongColorBuffers FullResPPBuffer { get { return fullResPPBuffer; } }
+
+        private TexturePool fullResDepthStencilPool;
+        public TexturePool FullResDepthStencilPool { get { return fullResDepthStencilPool; } }
+
         /// <summary>
         /// Gets or sets a value indicating whether this is initialized.
         /// </summary>
@@ -99,8 +104,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         ///   <c>true</c> if initialized; otherwise, <c>false</c>.
         /// </value>
         public bool Initialized { private set; get; } = false;
-
-
+        /// <summary>
+        /// Gets or sets the texture format.
+        /// </summary>
+        /// <value>
+        /// The format.
+        /// </value>
+        public Format Format { set; get; } = Format.B8G8R8A8_UNorm;
 #if MSAA
         /// <summary>
         /// Set MSAA level. If set to Two/Four/Eight, the actual level is set to minimum between Maximum and Two/Four/Eight
@@ -179,6 +189,19 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             OnCreateRenderTargetAndDepthBuffers(width, height, UseDepthStencilBuffer, out colorBuffer, out depthStencilBuffer);
             backBuffer = OnCreateBackBuffer(width, height);
             backBuffer.CreateRenderTargetView();
+            fullResPPBuffer = Collect(new PingPongColorBuffers(Format, width, height, this.deviceResources));
+            fullResDepthStencilPool = Collect(new TexturePool(this.deviceResources, new Texture2DDescription()
+            {
+                Width = width,
+                Height = height,
+                ArraySize = 1,
+                BindFlags = BindFlags.DepthStencil,
+                CpuAccessFlags = CpuAccessFlags.None,
+                Usage = ResourceUsage.Default,
+                MipLevels = 1,
+                OptionFlags = ResourceOptionFlags.None,
+                SampleDescription = new SampleDescription(1, 0)
+            }));
             Initialized = true;
             OnNewBufferCreated?.Invoke(this, new Texture2DArgs(backBuffer));
             return backBuffer;
@@ -189,6 +212,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         protected virtual void DisposeBuffers()
         {
             DeviceContext2D.Target = null;
+            RemoveAndDispose(ref fullResPPBuffer);
+            RemoveAndDispose(ref fullResDepthStencilPool);
             RemoveAndDispose(ref d2dTarget);
             RemoveAndDispose(ref colorBuffer);
             RemoveAndDispose(ref depthStencilBuffer);
@@ -241,7 +266,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             var colordesc = new Texture2DDescription
             {
                 BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-                Format = Format.B8G8R8A8_UNorm,
+                Format = Format,
                 Width = width,
                 Height = height,
                 MipLevels = 1,
@@ -279,28 +304,28 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <summary>
         /// Sets the default render-targets
         /// </summary>
-        public void SetDefaultRenderTargets(DeviceContext context, bool isColorBuffer = true)
+        public void SetDefaultRenderTargets(DeviceContextProxy context, bool isColorBuffer = true)
         {
-            context.OutputMerger.SetTargets(isColorBuffer ? depthStencilBuffer : null, new RenderTargetView[] { isColorBuffer ? colorBuffer : backBuffer});
+            context.SetRenderTargets(isColorBuffer ? depthStencilBuffer : null, new RenderTargetView[] { isColorBuffer ? colorBuffer : backBuffer });
             //context.OutputMerger.SetTargets(depthStencilBuffer, new RenderTargetView[] { isColorBuffer ? colorBuffer : backBuffer });
-            context.Rasterizer.SetViewport(0, 0, TargetWidth, TargetHeight, 0.0f, 1.0f);
-            context.Rasterizer.SetScissorRectangle(0, 0, TargetWidth, TargetHeight);
+            context.SetViewport(0, 0, TargetWidth, TargetHeight, 0.0f, 1.0f);
+            context.SetScissorRectangle(0, 0, TargetWidth, TargetHeight);
         }
 
         /// <summary>
         /// Clears the render target binding.
         /// </summary>
         /// <param name="context">The context.</param>
-        public void ClearRenderTargetBinding(DeviceContext context)
+        public void ClearRenderTargetBinding(DeviceContextProxy context)
         {
-            context.OutputMerger.SetTargets(null, new RenderTargetView[0]);
+            context.ClearRenderTagetBindings();
         }
         /// <summary>
         /// Clears the render target.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="color">The color.</param>
-        public void ClearRenderTarget(DeviceContext context, Color4 color)
+        public void ClearRenderTarget(DeviceContextProxy context, Color4 color)
         {
             ClearRenderTarget(context, color, true, true);
         }
@@ -311,7 +336,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="color"></param>
         /// <param name="clearBackBuffer"></param>
         /// <param name="clearDepthStencilBuffer"></param>
-        public void ClearRenderTarget(DeviceContext context, Color4 color, bool clearBackBuffer, bool clearDepthStencilBuffer)
+        public void ClearRenderTarget(DeviceContextProxy context, Color4 color, bool clearBackBuffer, bool clearDepthStencilBuffer)
         {
             if (clearBackBuffer)
             {
@@ -366,10 +391,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns></returns>
         public virtual bool EndDraw()
         {
-//            Device.ImmediateContext.Flush();
-//#if MSAA
-//            Device.ImmediateContext.ResolveSubresource(ColorBuffer.Resource, 0, backBuffer.Resource, 0, Format.B8G8R8A8_UNorm);
-//#endif  
             return true;
         }
         /// <summary>

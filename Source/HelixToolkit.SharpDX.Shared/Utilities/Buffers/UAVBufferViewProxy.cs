@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 namespace HelixToolkit.UWP.Utilities
 #endif
 {
+    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -25,7 +26,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <summary>
         /// The SRV
         /// </summary>
-        public ShaderResourceView srv;
+        public ShaderResourceViewProxy srv;
 
         /// <summary>
         /// Get UnorderedAccessView
@@ -35,7 +36,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <summary>
         /// Get ShaderResourceView
         /// </summary>
-        public ShaderResourceView SRV { get { return srv; } }
+        public ShaderResourceViewProxy SRV { get { return srv; } }
         /// <summary>
         /// Initializes a new instance of the <see cref="UAVBufferViewProxy"/> class.
         /// </summary>
@@ -46,7 +47,8 @@ namespace HelixToolkit.UWP.Utilities
         public UAVBufferViewProxy(Device device, ref BufferDescription bufferDesc, ref UnorderedAccessViewDescription uavDesc, ref ShaderResourceViewDescription srvDesc)
         {
             buffer = new SDX11.Buffer(device, bufferDesc);
-            srv = new ShaderResourceView(device, buffer);
+            srv = new ShaderResourceViewProxy(device, buffer);
+            srv.CreateTextureView();
             uav = new UnorderedAccessView(device, buffer, uavDesc);
         }
         /// <summary>
@@ -55,7 +57,7 @@ namespace HelixToolkit.UWP.Utilities
         /// <param name="device">The device.</param>
         /// <param name="destBuffer">The dest buffer.</param>
         /// <param name="offset">The offset.</param>
-        public void CopyCount(DeviceContext device, SDX11.Buffer destBuffer, int offset)
+        public void CopyCount(DeviceContextProxy device, SDX11.Buffer destBuffer, int offset)
         {
             device.CopyStructureCount(destBuffer, offset, UAV);
         }
@@ -65,7 +67,7 @@ namespace HelixToolkit.UWP.Utilities
             return proxy == null ? null : proxy.uav;
         }
 
-        public static implicit operator ShaderResourceView(UAVBufferViewProxy proxy)
+        public static implicit operator ShaderResourceViewProxy(UAVBufferViewProxy proxy)
         {
             return proxy == null ? null : proxy.srv;
         }

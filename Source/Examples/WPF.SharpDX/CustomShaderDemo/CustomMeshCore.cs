@@ -18,7 +18,7 @@ namespace CustomShaderDemo
     {
         private int ColorTextureSlot;
         private int ColorTextureSamplerSlot;
-        private SamplerState colorTextureSampler;
+        private SamplerStateProxy colorTextureSampler;
 
         private bool colorChanged = true;
 
@@ -85,18 +85,25 @@ namespace CustomShaderDemo
             model.Params.Y = dataHeightScale;
         }
 
-        protected override void OnAttachBuffers(DeviceContext context, ref int vertStartSlot)
+        protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)
         {
-            base.OnAttachBuffers(context, ref vertStartSlot);
-            if (colorChanged)
+            if(base.OnAttachBuffers(context, ref vertStartSlot))
             {
-                RemoveAndDispose(ref colorGradientResource);
-                if(ColorGradients != null)
+                if (colorChanged)
                 {
-                    colorGradientResource = new ShaderResourceViewProxy(Device);
-                    colorGradientResource.CreateView(colorGradients.ToArray(), global::SharpDX.Toolkit.Graphics.PixelFormat.R32G32B32A32.Float);
+                    RemoveAndDispose(ref colorGradientResource);
+                    if(ColorGradients != null)
+                    {
+                        colorGradientResource = new ShaderResourceViewProxy(Device);
+                        colorGradientResource.CreateViewFromColorArray(ColorGradients.ToArray());
+                    }
+                    colorChanged = false;
                 }
-                colorChanged = false;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -107,8 +114,8 @@ namespace CustomShaderDemo
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
-            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, ColorTextureSamplerSlot, colorTextureSampler);
-            DefaultShaderPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, ColorTextureSlot, colorGradientResource);
+            DefaultShaderPass.PixelShader.BindSampler(deviceContext, ColorTextureSamplerSlot, colorTextureSampler);
+            DefaultShaderPass.PixelShader.BindTexture(deviceContext, ColorTextureSlot, colorGradientResource);
             base.OnRender(context, deviceContext);
         }
     }

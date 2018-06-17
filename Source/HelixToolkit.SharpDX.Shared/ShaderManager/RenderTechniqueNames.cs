@@ -18,34 +18,34 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Blinn = "RenderBlinn";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Diffuse = "RenderDiffuse";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Colors = "RenderColors";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Positions = "RenderPositions";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Normals = "RenderNormals";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string PerturbedNormals = "RenderPerturbedNormals";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string Tangents = "RenderTangents";
-        /// <summary>
-        /// 
-        /// </summary>
-        public const string TexCoords = "RenderTexCoords";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string Diffuse = "RenderDiffuse";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string Colors = "RenderColors";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string Positions = "RenderPositions";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string Normals = "RenderNormals";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string PerturbedNormals = "RenderPerturbedNormals";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string Tangents = "RenderTangents";
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public const string TexCoords = "RenderTexCoords";
         /// <summary>
         /// 
         /// </summary>
@@ -116,6 +116,8 @@ namespace HelixToolkit.UWP
         public const string MeshOITQuad = "MeshOITQuad";
 
         public const string PostEffectFXAA = "PostEffectFXAA";
+
+        public const string PostEffectMeshXRayGrid = "PostEffectMeshXRayGrid";
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -132,7 +134,46 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Default = "Default";
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Diffuse = "RenderDiffuse";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Colors = "RenderColors";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Positions = "RenderPositions";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Normals = "RenderNormals";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string NormalVector = "RenderNormalVector";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string PerturbedNormals = "RenderPerturbedNormals";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string Tangents = "RenderTangents";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string TexCoords = "RenderTexCoords";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string ViewCube = "RenderViewCube";
+        /// <summary>
+        ///
+        /// </summary>
+        public const string ColorStripe1D = "ColorStripe1D";
         /// <summary>
         /// The mesh transparent
         /// </summary>
@@ -182,6 +223,18 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// 
         /// </summary>
+        public const string EffectMeshXRayGridP1 = "EffectMeshXRayGridP1";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectMeshXRayGridP2 = "EffectMeshXRayGridP2";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string EffectMeshXRayGridP3 = "EffectMeshXRayGridP3";
+        /// <summary>
+        /// 
+        /// </summary>
         public const string ShadowPass = "RenderShadow";
         /// <summary>
         /// 
@@ -203,6 +256,14 @@ namespace HelixToolkit.UWP
         /// The depth prepass
         /// </summary>
         public const string DepthPrepass = "DepthPrepass";
+        /// <summary>
+        /// Calculate luma and set luma as Alpha channel before FXAA pass.
+        /// </summary>
+        public const string LumaPass = "LumaPass";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string FXAAPass = "FXAAPass";
     }
     /// <summary>
     /// 

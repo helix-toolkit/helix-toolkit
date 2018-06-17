@@ -85,29 +85,6 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(TransformProperty, value); }
         }
 
-        public static readonly DependencyProperty IsThrowingShadowProperty =
-            DependencyProperty.Register("IsThrowingShadow", typeof(bool), typeof(Element3D), new PropertyMetadata(false, (d, e) =>
-            {
-                if ((d as Element3D).SceneNode is Core.IThrowingShadow t)
-                {
-                    t.IsThrowingShadow = (bool)e.NewValue;
-                }
-            }));
-        /// <summary>
-        /// <see cref="Core.IThrowingShadow.IsThrowingShadow"/>
-        /// </summary>
-        public bool IsThrowingShadow
-        {
-            set
-            {
-                SetValue(IsThrowingShadowProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(IsThrowingShadowProperty);
-            }
-        }
-
         /// <summary>
         /// The is hit test visible property
         /// </summary>

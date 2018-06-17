@@ -580,7 +580,26 @@ namespace HelixToolkit.Wpf.SharpDX
                 return this.ActualCamera as PerspectiveCamera;
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether [fixed rotation point enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [fixed rotation point enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool FixedRotationPointEnabled
+        {
+            set; get;
+        } = false;
+        /// <summary>
+        /// Gets or sets the fixed rotation point.
+        /// </summary>
+        /// <value>
+        /// The fixed rotation point.
+        /// </value>
+        public Point3D FixedRotationPoint
+        {
+            set; get;
+        } = new Point3D();
         #region TouchGesture
         public bool EnableTouchRotate { set; get; } = true;
         public bool EnablePinchZoom { set; get; } = true;
@@ -619,6 +638,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.PushCameraSetting();
             this.moveSpeed += delta * 40;
+            Viewport.InvalidateRender();
         }
 
         /// <summary>
@@ -657,6 +677,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.panHandler.Pan(pan);
             }
+            Viewport.InvalidateRender();
         }
 
         /// <summary>
@@ -683,12 +704,19 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.rotationSpeed.X += dx * 40;
                 this.rotationSpeed.Y += dy * 40;
             }
+            else if (FixedRotationPointEnabled)
+            {
+                this.rotationPosition = new Point(Viewport.ActualWidth / 2, Viewport.ActualHeight / 2);
+                this.rotateHandler.Rotate(
+                    this.rotationPosition, this.rotationPosition + new Vector(dx, dy), FixedRotationPoint);
+            }
             else
             {
                 this.rotationPosition = new Point(Viewport.ActualWidth / 2, Viewport.ActualHeight / 2);
                 this.rotateHandler.Rotate(
                     this.rotationPosition, this.rotationPosition + new Vector(dx, dy), this.CameraTarget);
             }
+            Viewport.InvalidateRender();
         }
 
         /// <summary>
@@ -882,8 +910,15 @@ namespace HelixToolkit.Wpf.SharpDX
         public void StopSpin()
         {
             this.isSpinning = false;
+            this.spinningSpeed = new Vector();
         }
-
+        /// <summary>
+        /// Stops the zooming inertia.
+        /// </summary>
+        public void StopZooming()
+        {
+            this.zoomSpeed = 0;
+        }
         /// <summary>
         /// Zooms by the specified delta value.
         /// </summary>
@@ -976,16 +1011,25 @@ namespace HelixToolkit.Wpf.SharpDX
                 switch (n)
                 {
                     case 1:
-                        this.rotateHandler.Started(position);
-                        e.Handled = true;
+                        if (EnableTouchRotate)
+                        {
+                            this.rotateHandler.Started(position);
+                            e.Handled = true;
+                        }
                         break;
                     case 2:
-                        this.zoomHandler.Started(p);
-                        e.Handled = true;
+                        if (EnablePinchZoom)
+                        {
+                            this.zoomHandler.Started(p);
+                            e.Handled = true;
+                        }
                         break;
                     case 3:
-                        this.panHandler.Started(position);
-                        e.Handled = true;
+                        if (EnableThreeFingerPan)
+                        {
+                            this.panHandler.Started(position);
+                            e.Handled = true;
+                        }
                         break;
                 }
                 this.manipulatorCount = n;
@@ -1017,7 +1061,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 if (zoomAroundPoint != null)
                                 {
                                     var s = e.CumulativeManipulation.Scale.Length;
-                                    Debug.WriteLine(s);
+                                    //Debug.WriteLine(s);
                                     this.zoomHandler.Zoom((prevScale - s), zoomAroundPoint.Value, true);
                                     prevScale = s;
                                 }
@@ -1163,10 +1207,10 @@ namespace HelixToolkit.Wpf.SharpDX
             var axis2 = Vector3D.CrossProduct(axis1, this.CameraLookDirection);
             axis1.Normalize();
             axis2.Normalize();
+            axis1 *= (ActualCamera.CreateLeftHandSystem ? -1 : 1);
             var l = this.CameraLookDirection.Length;
             var f = l * 0.001;
             var move = (-axis1 * f * dx) + (axis2 * f * dy);
-
             // this should be dependent on distance to target?
             return move;
         }
@@ -1348,10 +1392,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.ZoomAroundMouseDownPoint)
             {
                 var point = e.GetPosition(Viewport);
-                Point3D nearestPoint;
-                Vector3D normal;
-                Element3D visual;
-                if (this.Viewport.FindNearest(point, out nearestPoint, out normal, out visual))
+                if (this.Viewport.FindNearest(point, out Point3D nearestPoint, out Vector3D normal, out Element3D visual))
                 {
                     this.AddZoomForce(-e.Delta * 0.001, nearestPoint);
                     e.Handled = true;
@@ -1376,6 +1417,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 lastTick = ticks;
             }
             var time = (double)(ticks - this.lastTick) / Stopwatch.Frequency;
+            time = time == 0 ? 0.016 : time;
             // should be independent of time
             var factor = this.IsInertiaEnabled ?  this.Clamp(Math.Pow(this.InertiaFactor, time / 0.02), 0.1, 1) : 0;
             bool needUpdate = false;

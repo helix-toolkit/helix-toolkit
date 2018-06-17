@@ -21,6 +21,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// 
         /// </summary>
+        TechniqueDescription Description { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        bool IsNull { get; }
+        /// <summary>
+        /// 
+        /// </summary>
         string Name { get; }
         /// <summary>
         /// 

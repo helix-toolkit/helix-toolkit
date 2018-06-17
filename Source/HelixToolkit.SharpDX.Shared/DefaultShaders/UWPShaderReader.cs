@@ -41,8 +41,12 @@ namespace HelixToolkit.Wpf.SharpDX.Helper
 
 #else
 #if NETFX_CORE
-                            var packageFolder = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "HelixToolkit.UWP");
-                            byteCode = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\Resources\" + name + @".cso");
+                            var filePath = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, @"HelixToolkit.UWP" + @"\Resources\" + name + @".cso");
+                            if (!File.Exists(filePath))
+                            {
+                                throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");
+                            }
+                            byteCode = global::SharpDX.IO.NativeFile.ReadAllBytes(filePath);
                             if(byteCode == null)
                             {
                                 throw new System.Exception($"Shader byte code is not read. Shader Name: {name}");

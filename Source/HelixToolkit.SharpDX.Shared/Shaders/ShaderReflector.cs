@@ -45,7 +45,7 @@ namespace HelixToolkit.UWP.Shaders
                     {
                         case ShaderInputType.ConstantBuffer:
                             var cb = reflection.GetConstantBuffer(res.Name);
-                            var cbDesc = new ConstantBufferDescription(res.Name, cb.Description.Size) { Stage = stage };
+                            var cbDesc = new ConstantBufferDescription(res.Name, cb.Description.Size) { Stage = stage, Slot = res.BindPoint };
                             ConstantBufferMappings.Add(res.Name, cbDesc.CreateMapping(res.BindPoint));
                             break;
                         case ShaderInputType.Texture:

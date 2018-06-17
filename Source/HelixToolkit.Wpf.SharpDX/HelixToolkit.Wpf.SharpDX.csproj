@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;SHARPDX; </DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DX11; MSAA; SHARPDX;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -30,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;DX11; MSAA; SHARPDX;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -49,7 +49,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DX11; MSAA; SHARPDX;</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -57,7 +57,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;DX11; MSAA; SHARPDX;</DefineConstants>
     <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Wpf.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -69,7 +69,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DX11; MSAA; SHARPDX;</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -78,7 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;DX11; MSAA; PRECOMPILED_SHADERS; DEFERRED; DEFERRED_MSAA; SSAO; TESSELLATION;SHARPDX</DefineConstants>
+    <DefineConstants>TRACE;DX11; MSAA; SHARPDX;</DefineConstants>
     <DocumentationFile>bin\Release\HelixToolkit.SharpDX.Wpf.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -88,38 +88,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cyotek.Drawing.BitmapFont, Version=1.0.0.0, Culture=neutral, PublicKeyToken=58daa28b0b2de221, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cyotek.Drawing.BitmapFont.1.3.4\lib\net45\Cyotek.Drawing.BitmapFont.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDX.4.0.1\lib\net45\SharpDX.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SharpDX.D3DCompiler, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDX.D3DCompiler.4.0.1\lib\net45\SharpDX.D3DCompiler.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SharpDX.Direct2D1, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDX.Direct2D1.4.0.1\lib\net45\SharpDX.Direct2D1.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SharpDX.Direct3D11, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDX.Direct3D11.4.0.1\lib\net45\SharpDX.Direct3D11.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SharpDX.Direct3D9, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDX.Direct3D9.4.0.1\lib\net45\SharpDX.Direct3D9.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SharpDX.DXGI, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDX.DXGI.4.0.1\lib\net45\SharpDX.DXGI.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SharpDX.Mathematics, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpDX.Mathematics.4.0.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
@@ -204,8 +172,6 @@
     <Compile Include="Model\Elements3D\ScreenDuplicationModel.cs" />
     <Compile Include="Model\Elements3D\SortingGroupModel3D.cs" />
     <Compile Include="Model\Elements3D\ViewBoxModel3D.cs" />
-    <Compile Include="Model\Materials\Material.cs" />
-    <Compile Include="Model\Materials\PhongMaterial.cs" />
     <Compile Include="Model\Materials\PhongMaterialFactory.cs" />
     <Compile Include="Model\Scene\SceneNode.cs" />
     <Compile Include="Model\Scene\SceneNode2D.cs" />
@@ -238,7 +204,6 @@
     <Compile Include="Model\Elements3D\AbstractElements3D\GroupElement3D.cs" />
     <Compile Include="Model\Lights3D\Light3D.cs" />
     <Compile Include="Model\Lights3D\PointLight3D.cs" />
-    <Compile Include="Model\Lights3D\ShadowMap3D.cs" />
     <Compile Include="Model\Lights3D\SpotLight3D.cs" />
     <Compile Include="Model\Interfaces.cs" />
     <Compile Include="Model\Lights3D\ThreePointLight3D.cs" />
@@ -266,7 +231,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ClassDiagram1.cd" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -278,6 +242,7 @@
     <None Include="Resources\dsMeshTriTessellation.cso" />
     <None Include="Resources\gsBillboard.cso" />
     <None Include="Resources\gsLine.cso" />
+    <None Include="Resources\gsMeshNormalVector.cso" />
     <None Include="Resources\gsParticle.cso" />
     <None Include="Resources\gsPoint.cso" />
     <None Include="Resources\hsMeshTriTessellation.cso" />
@@ -294,17 +259,20 @@
     <None Include="Resources\psEffectGaussianBlurVertical.cso" />
     <None Include="Resources\psEffectMeshBorderHighlight.cso" />
     <None Include="Resources\psEffectMeshXRay.cso" />
+    <None Include="Resources\psEffectMeshXRayGrid.cso" />
     <None Include="Resources\psEffectOutlineQuad.cso" />
     <None Include="Resources\psEffectOutlineQuadStencil.cso" />
     <None Include="Resources\psEffectOutlineQualFinal.cso" />
     <None Include="Resources\psFXAA.cso" />
     <None Include="Resources\psLine.cso" />
     <None Include="Resources\psLineColor.cso" />
+    <None Include="Resources\psLuma.cso" />
     <None Include="Resources\psMeshBlinnPhong.cso" />
     <None Include="Resources\psMeshBlinnPhongOIT.cso" />
     <None Include="Resources\psMeshBlinnPhongOITQuad.cso" />
     <None Include="Resources\psMeshClipPlaneBackface.cso" />
     <None Include="Resources\psMeshClipPlaneQuad.cso" />
+    <None Include="Resources\psMeshColorStripe.cso" />
     <None Include="Resources\psMeshXRay.cso" />
     <None Include="Resources\psNormals.cso" />
     <None Include="Resources\psParticle.cso" />
@@ -345,14 +313,7 @@
     <Resource Include="Model\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Textures\DefaultViewboxTexture.jpg" />
-    <EmbeddedResource Include="Textures\arial.png" />
-    <Content Include="Textures\random4x4_dot3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Textures\random_dot3.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Textures\arial.dds" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelixToolkit\HelixToolkit.csproj">
@@ -360,7 +321,26 @@
       <Name>HelixToolkit</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="Cyotek.Drawing.BitmapFont">
+      <Version>1.3.4</Version>
+    </PackageReference>
+    <PackageReference Include="SharpDX.D3DCompiler">
+      <Version>4.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="SharpDX.Direct2D1">
+      <Version>4.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="SharpDX.Direct3D11">
+      <Version>4.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="SharpDX.Direct3D9">
+      <Version>4.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="SharpDX.Mathematics">
+      <Version>4.1.0</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems" Label="Shared" />

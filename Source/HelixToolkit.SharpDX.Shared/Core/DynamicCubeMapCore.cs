@@ -27,6 +27,47 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public class DynamicCubeMapCore : RenderCoreBase<GlobalTransformStruct>, IDynamicReflector
     {
+        #region
+        private Vector3[] targets = new Vector3[6];
+        private Vector3[] upVectors = new Vector3[6] { Vector3.UnitY, Vector3.UnitY, -Vector3.UnitZ, Vector3.UnitZ, Vector3.UnitY, Vector3.UnitY };
+        private CubeFaceCamerasStruct cubeFaceCameras = new CubeFaceCamerasStruct() { Cameras = new CubeFaceCamera[6] };
+        // Create the cube map TextureCube (array of 6 textures)
+        private Texture2DDescription textureDesc = new Texture2DDescription()
+        {
+            Format = Format.R8G8B8A8_UNorm,
+            ArraySize = 6, // 6-sides of the cube
+            BindFlags = BindFlags.ShaderResource | BindFlags.RenderTarget,
+            OptionFlags = ResourceOptionFlags.GenerateMipMaps | ResourceOptionFlags.TextureCube,
+            SampleDescription = new SampleDescription(1, 0),
+            MipLevels = 0,
+            Usage = ResourceUsage.Default,
+            CpuAccessFlags = CpuAccessFlags.None,
+        };
+
+        private Texture2DDescription dsvTextureDesc = new Texture2DDescription()
+        {
+            Format = Format.D16_UNorm,
+            BindFlags = BindFlags.DepthStencil,
+            Usage = ResourceUsage.Default,
+            SampleDescription = new SampleDescription(1, 0),
+            CpuAccessFlags = CpuAccessFlags.None,
+            MipLevels = 1,
+            OptionFlags = ResourceOptionFlags.TextureCube,
+            ArraySize = 6
+        };
+
+        private Viewport viewport;
+        private int cubeTextureSlot;
+        private int textureSamplerSlot;
+        private ShaderResourceViewProxy cubeDSV;
+        // The RTVs, one for each face of cubemap
+        private RenderTargetView[] cubeRTVs = new RenderTargetView[6];
+        // The DSVs, one for each face of cubemap
+        private DepthStencilView[] cubeDSVs = new DepthStencilView[6];
+        private SamplerStateProxy textureSampler;
+        private IDeviceContextPool contextPool;
+        private readonly CommandList[] commands = new CommandList[6];
+        #endregion
         #region Properties
 
         public HashSet<Guid> IgnoredGuid { get; } = new HashSet<Guid>();
@@ -105,8 +146,8 @@ namespace HelixToolkit.UWP.Core
             {
                 if (SetAffectsRender(ref defaultShaderPass, value))
                 {
-                    cubeTextureSlot = value.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
-                    textureSamplerSlot = value.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
+                    cubeTextureSlot = value.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
+                    textureSamplerSlot = value.PixelShader.SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
                     InvalidateRenderer();
                 }
             }
@@ -228,53 +269,10 @@ namespace HelixToolkit.UWP.Core
         public string ShaderCubeTextureSamplerName { set; get; } = DefaultSamplerStateNames.CubeMapSampler;
 
         #endregion Properties
-        private ShaderResourceViewProxy cubeDSV;
 
-        // The RTVs, one for each face of cubemap
-        private RenderTargetView[] cubeRTVs = new RenderTargetView[6];
-
-        // The DSVs, one for each face of cubemap
-        private DepthStencilView[] cubeDSVs = new DepthStencilView[6];
-        private int cubeTextureSlot;
-        private int textureSamplerSlot;
-        private SamplerStateProxy textureSampler;
-
-        private IDeviceContextPool contextPool;
-
-        private CubeFaceCamerasStruct cubeFaceCameras = new CubeFaceCamerasStruct() { Cameras = new CubeFaceCamera[6] };
-
-        private readonly CommandList[] commands = new CommandList[6];
-
-        private Vector3[] targets = new Vector3[6];
-        private Vector3[] upVectors = new Vector3[6] { Vector3.UnitY, Vector3.UnitY, -Vector3.UnitZ, Vector3.UnitZ, Vector3.UnitY, Vector3.UnitY };
-
-        // Create the cube map TextureCube (array of 6 textures)
-        private Texture2DDescription textureDesc = new Texture2DDescription()
-        {
-            Format = Format.R8G8B8A8_UNorm,
-            ArraySize = 6, // 6-sides of the cube
-            BindFlags = BindFlags.ShaderResource | BindFlags.RenderTarget,
-            OptionFlags = ResourceOptionFlags.GenerateMipMaps | ResourceOptionFlags.TextureCube,
-            SampleDescription = new SampleDescription(1, 0),
-            MipLevels = 0,
-            Usage = ResourceUsage.Default,
-            CpuAccessFlags = CpuAccessFlags.None,
-        };
-
-        private Texture2DDescription dsvTextureDesc = new Texture2DDescription()
-        {
-            Format = Format.D16_UNorm,
-            BindFlags = BindFlags.DepthStencil,
-            Usage = ResourceUsage.Default,
-            SampleDescription = new SampleDescription(1, 0),
-            CpuAccessFlags = CpuAccessFlags.None,
-            MipLevels = 1,
-            OptionFlags = ResourceOptionFlags.TextureCube,
-            ArraySize = 6
-        };
-
-        private Viewport viewport;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicCubeMapCore"/> class.
+        /// </summary>
         public DynamicCubeMapCore() : base(RenderType.PreProc)
         {
         }
@@ -356,6 +354,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnDetach()
         {
+            textureSampler = null;
             contextPool = null;
             cubeMap = null;
             cubeDSV = null;
@@ -388,11 +387,11 @@ namespace HelixToolkit.UWP.Core
 #endif
             {
                 var ctx = contextPool.Get();
-                ctx.DeviceContext.ClearRenderTargetView(cubeRTVs[index], context.RenderHost.ClearColor);
-                ctx.DeviceContext.ClearDepthStencilView(cubeDSVs[index], DepthStencilClearFlags.Depth, 1, 0);
-                ctx.DeviceContext.OutputMerger.SetRenderTargets(cubeDSVs[index], cubeRTVs[index]);
-                ctx.DeviceContext.Rasterizer.SetViewport(viewport);
-                ctx.DeviceContext.Rasterizer.SetScissorRectangle(0, 0, FaceSize, FaceSize);
+                ctx.ClearRenderTargetView(cubeRTVs[index], context.RenderHost.ClearColor);
+                ctx.ClearDepthStencilView(cubeDSVs[index], DepthStencilClearFlags.Depth, 1, 0);
+                ctx.SetRenderTarget(cubeDSVs[index], cubeRTVs[index]);
+                ctx.SetViewport(ref viewport);
+                ctx.SetScissorRectangle(0, 0, FaceSize, FaceSize);
                 var transforms = new GlobalTransformStruct();
                 transforms.Projection = cubeFaceCameras.Cameras[index].Projection;
                 transforms.View = cubeFaceCameras.Cameras[index].View;
@@ -420,7 +419,7 @@ namespace HelixToolkit.UWP.Core
                         node.Render(context, ctx);
                     }
                 }
-                commands[index] = ctx.DeviceContext.FinishCommandList(false);
+                commands[index] = ctx.FinishCommandList(false);
                 contextPool.Put(ctx);
             }
 #if !TEST
@@ -432,8 +431,8 @@ namespace HelixToolkit.UWP.Core
                 Device.ImmediateContext.ExecuteCommandList(commands[i], true);
                 commands[i].Dispose();
             }
-            deviceContext.DeviceContext.GenerateMips(CubeMap);
-            context.UpdatePerFrameData(true, false);
+            deviceContext.GenerateMips(CubeMap);
+            context.UpdatePerFrameData(true, false, deviceContext);
         }
 
         protected override void OnUpdatePerModelStruct(ref GlobalTransformStruct model, RenderContext context)
@@ -454,7 +453,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnUploadPerModelConstantBuffers(DeviceContext context)
+        protected override void OnUploadPerModelConstantBuffers(DeviceContextProxy context)
         {
         }
 
@@ -469,12 +468,12 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         public void BindCubeMap(DeviceContextProxy deviceContext)
         {
-            currSampler = deviceContext.DeviceContext.PixelShader.GetSamplers(cubeTextureSlot, 1);
-            currRes = deviceContext.DeviceContext.PixelShader.GetShaderResources(cubeTextureSlot, 1);
+            currSampler = deviceContext.GetSampler(PixelShader.Type, cubeTextureSlot, 1);
+            currRes = deviceContext.GetShaderResources(PixelShader.Type, cubeTextureSlot, 1);
             if (EnableReflector)
             {
-                deviceContext.DeviceContext.PixelShader.SetShaderResource(cubeTextureSlot, CubeMap);
-                deviceContext.DeviceContext.PixelShader.SetSampler(textureSamplerSlot, textureSampler);
+                deviceContext.SetShaderResource(PixelShader.Type, cubeTextureSlot, CubeMap);
+                deviceContext.SetSampler(PixelShader.Type, textureSamplerSlot, textureSampler);
             }
         }
 
@@ -484,8 +483,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext">The device context.</param>
         public void UnBindCubeMap(DeviceContextProxy deviceContext)
         {
-            deviceContext.DeviceContext.PixelShader.SetShaderResources(cubeTextureSlot, currRes);
-            deviceContext.DeviceContext.PixelShader.SetSamplers(textureSamplerSlot, currSampler);
+            deviceContext.SetShaderResources(PixelShader.Type, cubeTextureSlot, currRes);
+            deviceContext.SetSamplers(PixelShader.Type, textureSamplerSlot, currSampler);
             for (int i = 0; i < currSampler.Length; ++i)
             {
                 Disposer.RemoveAndDispose(ref currSampler[i]);

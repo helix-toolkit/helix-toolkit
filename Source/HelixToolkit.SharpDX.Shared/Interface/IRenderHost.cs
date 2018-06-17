@@ -108,6 +108,10 @@ namespace HelixToolkit.UWP
         /// </value>
         RenderContext RenderContext { get; }
         /// <summary>
+        /// Renderer
+        /// </summary>
+        IRenderer Renderer { get; }
+        /// <summary>
         /// Sets the default render targets.
         /// </summary>
         /// <param name="clear">if set to <c>true</c> [clear].</param>
@@ -126,6 +130,13 @@ namespace HelixToolkit.UWP
         /// the elements itself
         /// </summary>
         IRenderTechnique RenderTechnique { set; get; }
+        /// <summary>
+        /// Gets the feature level.
+        /// </summary>
+        /// <value>
+        /// The feature level.
+        /// </value>
+        global::SharpDX.Direct3D.FeatureLevel FeatureLevel { get; }
         /// <summary>
         /// Gets a value indicating whether this instance is deferred lighting.
         /// </summary>
@@ -261,9 +272,13 @@ namespace HelixToolkit.UWP
         /// </summary>
         void InvalidateRender();
         /// <summary>
-        /// Invalidates the scene graph.
+        /// Invalidates the scene graph. This also calls <see cref="InvalidatePerFrameRenderables"/>
         /// </summary>
         void InvalidateSceneGraph();
+        /// <summary>
+        /// Invalidates the per frame renderables. Called when <see cref="SceneNode.IsRenderable"/> changed or <see cref="SceneNode.RenderType"/> changed.
+        /// </summary>
+        void InvalidatePerFrameRenderables();
         /// <summary>
         /// Resizes
         /// </summary>
@@ -283,7 +298,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The render statistics.
         /// </value>
-        RenderStatistics RenderStatistics { get; }
+        IRenderStatistics RenderStatistics { get; }
         /// <summary>
         /// Gets or sets the render configuration.
         /// </summary>
@@ -305,7 +320,7 @@ namespace HelixToolkit.UWP
         /// <param name="context">The context.</param>
         /// <param name="clearBackBuffer">if set to <c>true</c> [clear back buffer].</param>
         /// <param name="clearDepthStencilBuffer">if set to <c>true</c> [clear depth stencil buffer].</param>
-        void ClearRenderTarget(DeviceContext context, bool clearBackBuffer, bool clearDepthStencilBuffer);
+        void ClearRenderTarget(DeviceContextProxy context, bool clearBackBuffer, bool clearDepthStencilBuffer);
     }
 
     public sealed class DX11RenderHostConfiguration

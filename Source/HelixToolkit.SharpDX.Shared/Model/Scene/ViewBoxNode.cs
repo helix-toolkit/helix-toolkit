@@ -20,12 +20,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 {
     using Shaders;
     using Core;
-    #region Properties
+
     /// <summary>
     /// 
     /// </summary>
     public class ViewBoxNode : ScreenSpacedNode
     {
+        #region Properties
         /// <summary>
         /// 
         /// </summary>
@@ -114,7 +115,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 return upDirection;
             }
-        } 
+        }
         #endregion
 
         #region Fields
@@ -135,7 +136,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 
         private readonly MeshNode ViewBoxMeshModel;
         private readonly InstancingMeshNode EdgeModel;
-        private readonly InstancingMeshNode CornerModel; 
+        private readonly InstancingMeshNode CornerModel;
+
+        private bool isRightHanded = true;
         #endregion
 
         static ViewBoxNode()
@@ -176,16 +179,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public ViewBoxNode()
         {
             RelativeScreenLocationX = 0.8f;
-            ViewBoxMeshModel = new MeshNode() { EnableViewFrustumCheck = false };
+            ViewBoxMeshModel = new MeshNode() { EnableViewFrustumCheck = false, CullMode = CullMode.Back };
             ViewBoxMeshModel.RenderCore.RenderType = RenderType.ScreenSpaced;
             var sampler = DefaultSamplers.LinearSamplerWrapAni1;
             sampler.BorderColor = Color.Gray;
             sampler.AddressU = sampler.AddressV = sampler.AddressW = TextureAddressMode.Border;
-
-            ViewBoxMeshModel.CullMode = CullMode.Back;
-            ViewBoxMeshModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.ViewCube]; };
             this.AddChildNode(ViewBoxMeshModel);
-            ViewBoxMeshModel.Material = new PhongMaterialCore()
+            ViewBoxMeshModel.Material = new ViewCubeMaterialCore()
             {
                 DiffuseColor = Color.White,
                 DiffuseMapSampler = sampler
@@ -194,24 +194,22 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             CornerModel = new InstancingMeshNode()
             {
                 EnableViewFrustumCheck = false,
-                Material = new PhongMaterialCore() { DiffuseColor = Color.Yellow },
+                Material = new DiffuseMaterialCore() { DiffuseColor = Color.Yellow },
                 Geometry = cornerGeometry,
                 Instances = cornerInstances,
                 Visible = false
             };
-            CornerModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
             CornerModel.RenderCore.RenderType = RenderType.ScreenSpaced;
             this.AddChildNode(CornerModel);
 
             EdgeModel = new InstancingMeshNode()
             {
                 EnableViewFrustumCheck = false,
-                Material = new PhongMaterialCore() { DiffuseColor = Color.Silver },
+                Material = new DiffuseMaterialCore() { DiffuseColor = Color.Silver },
                 Geometry = edgeGeometry,
                 Instances = edgeInstances,
                 Visible = false
             };
-            EdgeModel.OnSetRenderTechnique = (host) => { return host.EffectsManager[DefaultRenderTechniqueNames.Diffuse]; };
             EdgeModel.RenderCore.RenderType = RenderType.ScreenSpaced;
             this.AddChildNode(EdgeModel);
             UpdateModel(UpDirection);
@@ -221,18 +219,27 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             if (base.OnAttach(host))
             {
-                var material = (ViewBoxMeshModel.Material as PhongMaterialCore);
+                var material = (ViewBoxMeshModel.Material as ViewCubeMaterialCore);
                 if (material.DiffuseMap == null)
                 {
-                    material.DiffuseMap = ViewBoxTexture == null ? BitmapExtensions.CreateViewBoxTexture(host.EffectsManager,
+                    material.DiffuseMap = ViewBoxTexture ?? BitmapExtensions.CreateViewBoxTexture(host.EffectsManager,
                         "F", "B", "L", "R", "U", "D", Color.Red, Color.Red, Color.Blue, Color.Blue, Color.Green, Color.Green,
-                        Color.White, Color.White, Color.White, Color.White, Color.White, Color.White) : ViewBoxTexture;
+                        Color.White, Color.White, Color.White, Color.White, Color.White, Color.White);
                 }
                 return true;
             }
             else
             {
                 return false;
+            }
+        }
+
+        protected override void OnCoordinateSystemChanged(bool e)
+        {
+            if (isRightHanded != e)
+            {
+                isRightHanded = e;
+                UpdateModel(UpDirection);
             }
         }
 
@@ -245,6 +252,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             var left = new Vector3(up.Y, up.Z, up.X);
             var front = Vector3.Cross(left, up);
+            if (!isRightHanded)
+            {
+                front *= -1;
+                left *= -1;
+            }
             var builder = new MeshBuilder(true, true, false);
             builder.AddCubeFace(new Vector3(0, 0, 0), front, up, size, size, size);
             builder.AddCubeFace(new Vector3(0, 0, 0), -front, up, size, size, size);
@@ -272,21 +284,31 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             builder.AddTriangleStrip(pts);
             var pie = builder.ToMesh();
             int count = pie.Indices.Count;
-            for (int i = 0; i < count; i += 3)
+            for (int i = 0; i < count;)
             {
-                pie.Indices.Add(pie.Indices[i + 2]);
-                pie.Indices.Add(pie.Indices[i + 1]);
-                pie.Indices.Add(pie.Indices[i]);
+                var v1 = pie.Indices[i++];
+                var v2 = pie.Indices[i++];
+                var v3 = pie.Indices[i++];
+                pie.Indices.Add(v1);
+                pie.Indices.Add(v3);
+                pie.Indices.Add(v2);
             }
-
             var newMesh = MeshGeometry3D.Merge(new MeshGeometry3D[] { pie, mesh });
 
-            newMesh.TextureCoordinates = new Core.Vector2Collection(Enumerable.Repeat(new Vector2(-1, -1), pie.Positions.Count));
-            newMesh.Colors = new Core.Color4Collection(Enumerable.Repeat(new Color4(1f, 1f, 1f, 1f), pie.Positions.Count));
+            if (!isRightHanded)
+            {
+                for (int i = 0; i < newMesh.Positions.Count; ++i)
+                {
+                    var p = newMesh.Positions[i];
+                    p.Z *= -1;
+                    newMesh.Positions[i] = p;
+                }
+            }
+
+            newMesh.TextureCoordinates = new Vector2Collection(Enumerable.Repeat(new Vector2(-1, -1), pie.Positions.Count));
+            newMesh.Colors = new Color4Collection(Enumerable.Repeat(new Color4(1f, 1f, 1f, 1f), pie.Positions.Count));
             newMesh.TextureCoordinates.AddRange(mesh.TextureCoordinates);
             newMesh.Colors.AddRange(Enumerable.Repeat(new Color4(1, 1, 1, 1), mesh.Positions.Count));
-            newMesh.Normals = newMesh.CalculateNormals();
-
             ViewBoxMeshModel.Geometry = newMesh;
         }
 
@@ -295,6 +317,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             int faces = 6;
             int segment = 4;
             float inc = 1f / faces;
+
             for (int i = 0; i < mesh.TextureCoordinates.Count; ++i)
             {
                 mesh.TextureCoordinates[i] = new Vector2(mesh.TextureCoordinates[i].X * inc + inc * (int)(i / segment), mesh.TextureCoordinates[i].Y);
@@ -331,11 +354,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
             var aspectRatio = screenSpaceCore.ScreenRatio;
             var projMatrix = screenSpaceCore.GlobalTransform.Projection;
-            Vector3 zn, zf;
+            Vector3 zn;
             v.X = (2 * px / viewportSize - 1) / projMatrix.M11;
             v.Y = -(2 * py / viewportSize - 1) / projMatrix.M22;
             v.Z = 1 / projMatrix.M33;
-            Vector3.TransformCoordinate(ref v, ref matrix, out zf);
+            Vector3.TransformCoordinate(ref v, ref matrix, out Vector3 zf);
             if (screenSpaceCore.IsPerspective)
             {
                 zn = screenSpaceCore.GlobalTransform.EyePos;
@@ -359,13 +382,18 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 Debug.WriteLine("View box hit.");
                 var hit = viewBoxHit[0];
                 Vector3 normal = Vector3.Zero;
+                int inv = isRightHanded ? 1 : -1;
                 if (hit.ModelHit == ViewBoxMeshModel)
                 {
-                    normal = -hit.NormalAtHit;
+                    normal = -hit.NormalAtHit * inv;
+                    //Fix the normal if returned normal is reversed
+                    if(Vector3.Dot(normal, context.Camera.LookDirection) < 0)
+                    {
+                        normal *= -1;
+                    }
                 }
-                else if (hit.Tag is int)
+                else if (hit.Tag is int index)
                 {
-                    int index = (int)hit.Tag;
                     if (hit.ModelHit == EdgeModel && index < edgeInstances.Length)
                     {
                         Matrix transform = edgeInstances[index];

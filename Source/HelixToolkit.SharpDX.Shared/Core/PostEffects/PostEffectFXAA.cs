@@ -2,10 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-using System.Collections.Generic;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -13,10 +11,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Utilities;
     using Render;
     using Shaders;
-    using global::SharpDX.DXGI;
+    using Utilities;
 
     public sealed class PostEffectFXAA : RenderCoreBase<BorderEffectStruct>, IPostEffect
     {
@@ -31,6 +28,7 @@ namespace HelixToolkit.UWP.Core
         private int samplerSlot;
         private SamplerStateProxy sampler;
         private ShaderPass FXAAPass;
+        private ShaderPass LUMAPass;
 
         public PostEffectFXAA() : base(RenderType.PostProc) { }
 
@@ -43,9 +41,10 @@ namespace HelixToolkit.UWP.Core
         {
             if (base.OnAttach(technique))
             {
-                FXAAPass = technique[DefaultPassNames.Default];
-                textureSlot = FXAAPass.GetShader(ShaderStage.Pixel).ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
-                samplerSlot = FXAAPass.GetShader(ShaderStage.Pixel).SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
+                FXAAPass = technique[DefaultPassNames.FXAAPass];
+                LUMAPass = technique[DefaultPassNames.LumaPass];
+                textureSlot = FXAAPass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(DefaultBufferNames.DiffuseMapTB);
+                samplerSlot = FXAAPass.PixelShader.SamplerMapping.TryGetBindSlot(DefaultSamplerStateNames.DiffuseMapSampler);
                 sampler = Collect(technique.EffectsManager.StateManager.Register(DefaultSamplers.LinearSamplerClampAni1));
                 return true;
             }
@@ -53,6 +52,12 @@ namespace HelixToolkit.UWP.Core
             {
                 return false;
             }
+        }
+
+        protected override void OnDetach()
+        {
+            sampler = null;
+            base.OnDetach();
         }
 
         protected override bool CanRender(RenderContext context)
@@ -63,14 +68,21 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             var buffer = context.RenderHost.RenderBuffer;
-            buffer.SetDefaultRenderTargets(deviceContext, false);
+            deviceContext.SetRenderTargets(null, new RenderTargetView[] { buffer.FullResPPBuffer.NextRTV });
+            deviceContext.SetViewport(0, 0, buffer.TargetWidth, buffer.TargetHeight, 0.0f, 1.0f);
+            deviceContext.SetScissorRectangle(0, 0, buffer.TargetWidth, buffer.TargetHeight);
+
+            LUMAPass.BindShader(deviceContext);
+            LUMAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
+            LUMAPass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.CurrentSRV);
+            LUMAPass.PixelShader.BindSampler(deviceContext, samplerSlot, sampler);
+            deviceContext.Draw(4, 0);
+           
+            deviceContext.SetRenderTargets(null, new RenderTargetView[] { buffer.FullResPPBuffer.CurrentRTV });
             FXAAPass.BindShader(deviceContext);
-            FXAAPass.BindStates(deviceContext, StateType.BlendState | StateType.DepthStencilState | StateType.RasterState);
-            FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, buffer.ColorBuffer);
-            FXAAPass.GetShader(ShaderStage.Pixel).BindSampler(deviceContext, samplerSlot, sampler);
-            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-            deviceContext.DeviceContext.Draw(4, 0);
-            FXAAPass.GetShader(ShaderStage.Pixel).BindTexture(deviceContext, textureSlot, null);
+            FXAAPass.PixelShader.BindTexture(deviceContext, textureSlot, buffer.FullResPPBuffer.NextSRV);
+            deviceContext.Draw(4, 0);
+            FXAAPass.PixelShader.BindTexture(deviceContext, textureSlot, null);
         }
 
         protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)

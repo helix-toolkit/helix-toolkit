@@ -95,6 +95,14 @@ namespace HelixToolkit.UWP.Shaders
 
             }
         }
+        public static byte[] PSMeshColorStripe
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psMeshColorStripe");
+
+            }
+        }
 
         public static byte[] PSMeshViewCube
         {
@@ -425,6 +433,32 @@ namespace HelixToolkit.UWP.Shaders
                 return UWPShaderBytePool.Read("psFXAA");
             }
         }
+        /// <summary>
+        /// Gets the ps effect luma.
+        /// </summary>
+        /// <value>
+        /// The ps effect luma.
+        /// </value>
+        public static byte[] PSEffectLUMA
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psLuma");
+            }
+        }
+        /// <summary>
+        /// Gets the ps effect x ray grid.
+        /// </summary>
+        /// <value>
+        /// The ps effect x ray grid.
+        /// </value>
+        public static byte[] PSEffectXRayGrid
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psEffectMeshXRayGrid");
+            }
+        }
 #if !NETFX_CORE
         /// <summary>
         /// 
@@ -481,6 +515,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSMeshDiffuseMap = new ShaderDescription(nameof(PSMeshDiffuseMap), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshDiffuseMap);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription PSMeshColorStripe = new ShaderDescription(nameof(PSMeshColorStripe), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshColorStripe);
         /// <summary>
         /// 
         /// </summary>
@@ -632,6 +671,16 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSEffectFXAA = new ShaderDescription(nameof(PSEffectFXAA), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSEffectFXAA);
+        /// <summary>
+        /// The ps effect luma
+        /// </summary>
+        public static ShaderDescription PSEffectLUMA = new ShaderDescription(nameof(PSEffectLUMA), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectLUMA);
+        /// <summary>
+        /// The ps effect x ray grid
+        /// </summary>
+        public static ShaderDescription PSEffectXRayGrid = new ShaderDescription(nameof(PSEffectXRayGrid), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectXRayGrid);
 #if !NETFX_CORE
         /// <summary>
         /// The ps screen dup

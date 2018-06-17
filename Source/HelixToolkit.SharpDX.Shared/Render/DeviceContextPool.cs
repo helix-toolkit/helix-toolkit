@@ -4,6 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 
 using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 using SharpDX.Direct3D11;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
@@ -29,6 +30,10 @@ namespace HelixToolkit.UWP.Render
         /// </summary>
         /// <param name="context">The context.</param>
         void Put(DeviceContextProxy context);
+        /// <summary>
+        /// Resets the draw calls.
+        /// </summary>
+        int ResetDrawCalls();
     }
     /// <summary>
     /// 
@@ -37,7 +42,7 @@ namespace HelixToolkit.UWP.Render
     {
         private readonly ConcurrentBag<DeviceContextProxy> contextPool = new ConcurrentBag<DeviceContextProxy>();
 
-        private Device device;
+        private readonly Device device;
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceContextPool"/> class.
         /// </summary>
@@ -50,27 +55,43 @@ namespace HelixToolkit.UWP.Render
         /// Gets this instance from pool
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public DeviceContextProxy Get()
         {
-            DeviceContextProxy context;
-            if (contextPool.TryTake(out context))
+            if (contextPool.TryTake(out DeviceContextProxy context))
             {
                 return context;
             }
             else
             {
-                return new DeviceContextProxy(device);
+                lock (this)
+                {
+                    return Collect(new DeviceContextProxy(device));
+                }
             }
         }
         /// <summary>
         /// Puts the specified context back to the pool after use
         /// </summary>
         /// <param name="context">The context.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Put(DeviceContextProxy context)
         {
-            context.DeviceContext.OutputMerger.ResetTargets();
+            context.ClearRenderTagetBindings();
             context.Reset();
             contextPool.Add(context);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int ResetDrawCalls()
+        {
+            int totalCalls = 0;
+            foreach(var ctx in contextPool)
+            {
+                totalCalls += ctx.NumberOfDrawCalls;
+                ctx.ResetDrawCalls();
+            }
+            return totalCalls;
         }
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
@@ -78,12 +99,11 @@ namespace HelixToolkit.UWP.Render
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void OnDispose(bool disposeManagedResources)
         {
-            DeviceContextProxy context;
             while (!contextPool.IsEmpty)
             {
-                if(contextPool.TryTake(out context))
+                if(contextPool.TryTake(out DeviceContextProxy context))
                 {
-                    context.Dispose();
+                    RemoveAndDispose(ref context);
                 }
             }
             base.OnDispose(disposeManagedResources);

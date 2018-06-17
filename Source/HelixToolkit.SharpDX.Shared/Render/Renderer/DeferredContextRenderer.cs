@@ -49,14 +49,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <returns>Number of node has been rendered</returns>
         public override int RenderOpaque(RenderContext context, List<SceneNode> renderables, ref RenderParameter parameter)
         {
-            int counter = 0;
-            if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, RenderType.Opaque, commandList, out counter))
+            if (scheduler.ScheduleAndRun(renderables, deferredContextPool, context, parameter, commandList, out int counter))
             {
                 RenderParameter param = parameter;
 
                 foreach (var command in commandList.OrderBy(x=>x.Key))
                 {
-                    ImmediateContext.DeviceContext.ExecuteCommandList(command.Value, true);
+                    ImmediateContext.ExecuteCommandList(command.Value, true);
                     command.Value.Dispose();
                 }
                 commandList.Clear();
@@ -66,34 +65,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 return base.RenderOpaque(context, renderables, ref parameter);
             }
-        }
-
-
-
-        private void RenderOthers(List<SceneNode> list, RenderType filter, RenderContext context, IDeviceContextPool deviceContextPool,
-            ref RenderParameter parameter,
-            CommandList[] commandsArray, int idx)
-        {
-            var deviceContext = deviceContextPool.Get();
-            SetRenderTargets(deviceContext, ref parameter);
-            bool hasValue = false;
-            for(int i = 0; i < list.Count; ++i)
-            {
-                if(list[i].RenderCore.RenderType == filter)
-                {
-                    list[i].RenderCore.Render(context, deviceContext);
-                    hasValue = true;
-                }
-            }
-            if (hasValue)
-            {
-                commandsArray[idx] = deviceContext.DeviceContext.FinishCommandList(true);
-            }
-            else
-            {
-                commandsArray[idx] = null;
-            }
-            deviceContextPool.Put(deviceContext);
         }
 
 

@@ -491,6 +491,27 @@ namespace HelixToolkit.UWP
                 return this.ActualCamera as PerspectiveCamera;
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [fixed rotation point enabled].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [fixed rotation point enabled]; otherwise, <c>false</c>.
+        /// </value>
+        public bool FixedRotationPointEnabled
+        {
+            set; get;
+        } = false;
+        /// <summary>
+        /// Gets or sets the fixed rotation point.
+        /// </summary>
+        /// <value>
+        /// The fixed rotation point.
+        /// </value>
+        public Point3D FixedRotationPoint
+        {
+            set; get;
+        } = new Point3D();
         #endregion
 
         #region TouchGesture
@@ -599,7 +620,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// The zoom event handler.
         /// </summary>
-        private ZoomHandler zoomHandler;
+        private readonly ZoomHandler zoomHandler;
 
         /// <summary>
         /// The point to zoom around.
@@ -818,6 +839,12 @@ namespace HelixToolkit.UWP
                 this.rotationSpeed.X += (float)dx * 40;
                 this.rotationSpeed.Y += (float)dy * 40;
             }
+            else if (FixedRotationPointEnabled)
+            {
+                this.rotationPosition = new Point(Viewport.ActualWidth / 2, Viewport.ActualHeight / 2);
+                this.rotateHandler.Rotate(
+                    this.rotationPosition, new Point(this.rotationPosition.X + dx, this.rotationPosition.Y + dy), FixedRotationPoint);
+            }
             else
             {
                 this.rotationPosition = new Point(this.Viewport.ActualWidth / 2, this.Viewport.ActualHeight / 2);
@@ -976,6 +1003,14 @@ namespace HelixToolkit.UWP
         public void StopSpin()
         {
             this.isSpinning = false;
+            this.spinningSpeed = new Vector2();
+        }
+        /// <summary>
+        /// Stops the zooming inertia
+        /// </summary>
+        public void StopZooming()
+        {
+            this.zoomSpeed = 0;
         }
 
         /// <summary>
@@ -1067,16 +1102,25 @@ namespace HelixToolkit.UWP
                 switch (n)
                 {
                     case 1:
-                        this.rotateHandler.Started(position);
-                        e.Handled = true;
+                        if (EnableTouchRotate)
+                        {
+                            this.rotateHandler.Started(position);
+                            e.Handled = true;
+                        }
                         break;
                     case 2:
-                        this.zoomHandler.Started(e.Position);
-                        e.Handled = true;
+                        if (EnablePinchZoom)
+                        {
+                            this.zoomHandler.Started(e.Position);
+                            e.Handled = true;
+                        }
                         break;
                     case 3:
-                        this.panHandler.Started(position);
-                        e.Handled = true;
+                        if (EnableThreeFingerPan)
+                        {
+                            this.panHandler.Started(position);
+                            e.Handled = true;
+                        }
                         break;
                 }
 
@@ -1243,6 +1287,7 @@ namespace HelixToolkit.UWP
             var axis2 = Vector3D.Cross(axis1, this.CameraLookDirection);
             axis1.Normalize();
             axis2.Normalize();
+            axis1 *= (ActualCamera.CreateLeftHandSystem ? -1 : 1);
             var l = this.CameraLookDirection.Length();
             var f = l * 0.001f;
             var move = (-axis1 * f * (float)dx) + (axis2 * f * (float)dy);
@@ -1264,6 +1309,7 @@ namespace HelixToolkit.UWP
                 lastTick = ticks;
             }
             var time = (float)(ticks - this.lastTick) / Stopwatch.Frequency;
+            time = time == 0 ? 0.016f : time;
             // should be independent of time
             var factor = Viewport.IsInertiaEnabled ? (float)Clamp(Math.Pow(Viewport.CameraInertiaFactor, time / 0.02f), 0.1f, 1) : 0;
             bool needUpdate = false;
@@ -1353,10 +1399,7 @@ namespace HelixToolkit.UWP
             if (Viewport.ZoomAroundMouseDownPoint)
             {
                 var point = e.GetCurrentPoint(Viewport).Position;
-                Point3D nearestPoint;
-                Vector3D normal;
-                Element3D visual;
-                if (this.Viewport.FindNearest(point, out nearestPoint, out normal, out visual))
+                if (this.Viewport.FindNearest(point, out Point3D nearestPoint, out Vector3D normal, out Element3D visual))
                 {
                     this.AddZoomForce(-delta * 0.001, nearestPoint);
                     e.Handled = true;

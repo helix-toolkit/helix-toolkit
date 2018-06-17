@@ -328,6 +328,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         #endregion Rasterizer parameters        
+        private bool enableViewFrustumCheck = true;
         /// <summary>
         /// Gets or sets a value indicating whether [enable view frustum check].
         /// </summary>
@@ -336,8 +337,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         public bool EnableViewFrustumCheck
         {
-            set; get;
-        } = true;
+            set { enableViewFrustumCheck = value; }
+            get { return enableViewFrustumCheck && HasBound; }
+        }
 
         private string postEffects;
         /// <summary>
@@ -367,7 +369,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
             }
         }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is throwing shadow.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is throwing shadow; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsThrowingShadow
+        {
+            set
+            {
+                RenderCore.IsThrowingShadow = value;
+            }
+            get
+            {
+                return RenderCore.IsThrowingShadow;
+            }
+        }
         #endregion Properties
 
         /// <summary>
@@ -505,13 +523,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         public override bool TestViewFrustum(ref BoundingFrustum viewFrustum)
         {
-            if (!HasBound || !EnableViewFrustumCheck)
+            if (!EnableViewFrustumCheck)
             {
                 return true;
             }
-            var bound = BoundsWithTransform;
-            var sphere = BoundsSphereWithTransform;
-            return viewFrustum.Intersects(ref sphere) && viewFrustum.Intersects(ref bound);
+            return BoundingFrustumExtensions.Intersects(ref viewFrustum, ref BoundManager.BoundsWithTransform, ref BoundManager.BoundsSphereWithTransform);
+            //return viewFrustum.Intersects(ref BoundManager.BoundsWithTransform) && viewFrustum.Intersects(ref BoundManager.BoundsSphereWithTransform);
         }
 
         /// <summary>
@@ -573,6 +590,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 geometry?.UpdateOctree();
             }
+        }
+
+        protected override void OnDispose(bool disposeManagedResources)
+        {
+            BoundManager.Dispose();
+            base.OnDispose(disposeManagedResources);
         }
     }
 }

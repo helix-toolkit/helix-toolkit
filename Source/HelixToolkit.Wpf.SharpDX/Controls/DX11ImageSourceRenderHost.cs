@@ -38,11 +38,6 @@ namespace HelixToolkit.Wpf.SharpDX.Controls
             this.OnNewRenderTargetTexture += DX11ImageSourceRenderer_OnNewBufferCreated;
         }
 
-        protected override void PreRender()
-        {
-            base.PreRender();
-        }
-
         protected override void PostRender()
         {
             surfaceD3D?.InvalidateD3DImage();

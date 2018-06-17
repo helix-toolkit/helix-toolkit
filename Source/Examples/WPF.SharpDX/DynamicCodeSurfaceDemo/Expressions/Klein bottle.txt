@@ -1,0 +1,20 @@
+﻿// http://en.wikipedia.org/wiki/Klein_bottle
+
+u *= 2 * pi;
+v *= 2 * pi;
+
+double cosu = Math.Cos(u);
+double sinu = Math.Sin(u);
+double cosv = Math.Cos(v);
+double sinv = Math.Sin(v);
+double cos2u = Math.Cos(2 * u);
+
+double c1 = Math.Sign(u - pi);
+double c3 = 4 * (1 - cosu / 2);
+double c4 = Math.Max(-c1, 0);
+double c5 = Math.Max(c1, 0);
+
+x = 6 * cosu * (1 + sinu) + c4 * c3 * cosu * cosv 
+  + c5 * c3 * Math.Cos(v + pi);
+y = 16 * sinu + c4 * c3 * sinu * cosv;
+z = c3 * sinv;

@@ -134,14 +134,14 @@ namespace HelixToolkit.UWP.Core
             switch (meshType)
             {
                 case MeshTopologyEnum.PNTriangles:
-                    deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
+                    deviceContext.PrimitiveTopology = PrimitiveTopology.PatchListWith3ControlPoints;
                     break;
                 case MeshTopologyEnum.PNQuads:
-                    deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.PatchListWith4ControlPoints;
+                    deviceContext.PrimitiveTopology = PrimitiveTopology.PatchListWith4ControlPoints;
                     break;
             }
             base.OnRender(context, deviceContext);
-            deviceContext.DeviceContext.InputAssembler.PrimitiveTopology = GeometryBuffer.Topology;
+            deviceContext.PrimitiveTopology = GeometryBuffer.Topology;
         }
     }
 }

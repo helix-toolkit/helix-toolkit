@@ -68,23 +68,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IScreenSpacedRenderParams).SizeScale;
             }
         }
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is right hand.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is right hand; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsRightHand
-        {
-            set
-            {
-                (RenderCore as IScreenSpacedRenderParams).IsRightHand = value;
-            }
-            get
-            {
-                return (RenderCore as IScreenSpacedRenderParams).IsRightHand;
-            }
-        } 
         #endregion
         /// <summary>
         /// Gets or sets a value indicating whether [need clear depth buffer].
@@ -100,8 +83,17 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override RenderCore OnCreateRenderCore()
         {
-            return new ScreenSpacedMeshRenderCore();
+            var core = new ScreenSpacedMeshRenderCore();
+            core.OnCoordinateSystemChanged += Core_OnCoordinateSystemChanged;
+            return core;
         }
+
+        private void Core_OnCoordinateSystemChanged(object sender, BoolArgs e)
+        {
+            OnCoordinateSystemChanged(e.Value);
+        }
+
+        protected virtual void OnCoordinateSystemChanged(bool e) { }
         /// <summary>
         /// Called when [attach].
         /// </summary>
