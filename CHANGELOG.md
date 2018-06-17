@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2.1.0] - 2018-6-17
+## [2.2.0] - 2018-6-17
 ### Added
 1. Add per-frame draw call in RenderDetail.
 2. Add pingpong buffer for post effects. Add depth stencil buffer pooling
@@ -27,6 +27,8 @@ All notable changes to this project will be documented in this file.
 - ZoomDistanceLimitNear/-Far does not work correctly #777 (WPF.SharpDX & UWP)
 - CameraTarget still showing up when TouchRotate disabled #782 (WPF.SharpDX & UWP)
 - SharpDX: Camera movement using keyboard doesn't work when mouse is not moving. #796 (WPF.SharpDX & UWP)
+- SharpDX: Instanced Models do not follow the viewports current render technique #802 (WPF.SharpDX & UWP) Note: Use material for switching
+- EnvironmentMap3D not working when using LeftHandSystem SharpDX #533 (SharpDX & UWP)
 
 ## [2.1.0] - 2018-5-4
 ### Improvement and Changes
