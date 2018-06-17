@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## For Next Release
+## [2.1.0] - 2018-6-17
 ### Added
 1. Add per-frame draw call in RenderDetail.
 2. Add pingpong buffer for post effects. Add depth stencil buffer pooling
