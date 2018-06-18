@@ -95,6 +95,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialDemo", "Examples\WP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicCodeSurfaceDemo", "Examples\WPF.SharpDX\DynamicCodeSurfaceDemo\DynamicCodeSurfaceDemo.csproj", "{6BAA6F89-637A-49EB-A554-76AB527A5968}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelixToolkit.Mathematics", "HelixToolkit.Mathematics\HelixToolkit.Mathematics.csproj", "{893B43A3-6506-4486-839D-B4BA5885C398}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{1aefcb64-e997-425a-8c84-dc93263cc4a7}*SharedItemsImports = 13
@@ -546,6 +548,18 @@ Global
 		{6BAA6F89-637A-49EB-A554-76AB527A5968}.Release|x64.Build.0 = Release|Any CPU
 		{6BAA6F89-637A-49EB-A554-76AB527A5968}.Release|x86.ActiveCfg = Release|Any CPU
 		{6BAA6F89-637A-49EB-A554-76AB527A5968}.Release|x86.Build.0 = Release|Any CPU
+		{893B43A3-6506-4486-839D-B4BA5885C398}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{893B43A3-6506-4486-839D-B4BA5885C398}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{893B43A3-6506-4486-839D-B4BA5885C398}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{893B43A3-6506-4486-839D-B4BA5885C398}.Debug|x64.Build.0 = Debug|Any CPU
+		{893B43A3-6506-4486-839D-B4BA5885C398}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{893B43A3-6506-4486-839D-B4BA5885C398}.Debug|x86.Build.0 = Debug|Any CPU
+		{893B43A3-6506-4486-839D-B4BA5885C398}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{893B43A3-6506-4486-839D-B4BA5885C398}.Release|Any CPU.Build.0 = Release|Any CPU
+		{893B43A3-6506-4486-839D-B4BA5885C398}.Release|x64.ActiveCfg = Release|Any CPU
+		{893B43A3-6506-4486-839D-B4BA5885C398}.Release|x64.Build.0 = Release|Any CPU
+		{893B43A3-6506-4486-839D-B4BA5885C398}.Release|x86.ActiveCfg = Release|Any CPU
+		{893B43A3-6506-4486-839D-B4BA5885C398}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
