@@ -77,6 +77,16 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </value>
         protected bool NeedClearDepthBuffer { set; get; } = true;
 
+        public ScreenSpacedNode()
+        {
+            this.OnAddChildNode += ScreenSpacedNode_OnAddChildNode;
+        }
+
+        private void ScreenSpacedNode_OnAddChildNode(object sender, OnChildNodeChangedArgs e)
+        {
+            e.Node.RenderType = RenderType.ScreenSpaced;
+        }
+
         /// <summary>
         /// Called when [create render core].
         /// </summary>
@@ -106,6 +116,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             screenSpaceCore.RelativeScreenLocationX = RelativeScreenLocationX;
             screenSpaceCore.RelativeScreenLocationY = RelativeScreenLocationY;
             screenSpaceCore.SizeScale = SizeScale;
+            for (int i = 0; i < Items.Count; ++i)
+            {
+                Items[i].RenderType = RenderType.ScreenSpaced;
+            }
             return base.OnAttach(host);
         }
         /// <summary>
