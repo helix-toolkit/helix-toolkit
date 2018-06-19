@@ -180,7 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             RelativeScreenLocationX = 0.8f;
             ViewBoxMeshModel = new MeshNode() { EnableViewFrustumCheck = false, CullMode = CullMode.Back };
-            ViewBoxMeshModel.RenderCore.RenderType = RenderType.ScreenSpaced;
+            ViewBoxMeshModel.RenderType = RenderType.ScreenSpaced;
             var sampler = DefaultSamplers.LinearSamplerWrapAni1;
             sampler.BorderColor = Color.Gray;
             sampler.AddressU = sampler.AddressV = sampler.AddressW = TextureAddressMode.Border;
@@ -199,7 +199,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 Instances = cornerInstances,
                 Visible = false
             };
-            CornerModel.RenderCore.RenderType = RenderType.ScreenSpaced;
+            CornerModel.RenderType = RenderType.ScreenSpaced;
             this.AddChildNode(CornerModel);
 
             EdgeModel = new InstancingMeshNode()
@@ -210,7 +210,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 Instances = edgeInstances,
                 Visible = false
             };
-            EdgeModel.RenderCore.RenderType = RenderType.ScreenSpaced;
+            EdgeModel.RenderType = RenderType.ScreenSpaced;
             this.AddChildNode(EdgeModel);
             UpdateModel(UpDirection);
         }
