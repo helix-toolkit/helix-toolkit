@@ -34,7 +34,8 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using SharpDX.Mathematics.Interop;
-
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Mathematics
 {
     /// <summary>
@@ -248,9 +249,9 @@ namespace HelixToolkit.Mathematics
         /// <returns>The projected vector.</returns>
         public Vector3 Project(Vector3 source, Matrix projection, Matrix view, Matrix world)
         {
-            Matrix matrix;
-            Matrix.Multiply(ref world, ref view, out matrix);
-            Matrix.Multiply(ref matrix, ref projection, out matrix);
+            Matrix matrix = world * view * projection;
+            //Matrix.Multiply(ref world, ref view, out matrix);
+            //Matrix.Multiply(ref matrix, ref projection, out matrix);
 
             Vector3 vector;
             Project(ref source, ref matrix, out vector);
@@ -265,7 +266,7 @@ namespace HelixToolkit.Mathematics
         /// <param name="vector">The projected vector.</param>
         public void Project(ref Vector3 source, ref Matrix matrix, out Vector3 vector)
         {
-            Vector3.Transform(ref source, ref matrix, out vector);
+            vector = Vector3.Transform(source, matrix);
             float a = (((source.X * matrix.M14) + (source.Y * matrix.M24)) + (source.Z * matrix.M34)) + matrix.M44;
 
             if (!MathUtil.IsOne(a))
@@ -288,10 +289,10 @@ namespace HelixToolkit.Mathematics
         /// <returns>The unprojected Vector.</returns>
         public Vector3 Unproject(Vector3 source, Matrix projection, Matrix view, Matrix world)
         {
-            Matrix matrix;
-            Matrix.Multiply(ref world, ref view, out matrix);
-            Matrix.Multiply(ref matrix, ref projection, out matrix);
-            Matrix.Invert(ref matrix, out matrix);
+            Matrix.Invert(world * view * projection, out Matrix matrix);
+            //Matrix.Multiply(ref world, ref view, out matrix);
+            //Matrix.Multiply(ref matrix, ref projection, out matrix);
+            //Matrix.Invert(matrix, out matrix);
 
             Vector3 vector;
             Unproject(ref source, ref matrix, out vector);
@@ -311,7 +312,7 @@ namespace HelixToolkit.Mathematics
             vector.Z = (source.Z - MinDepth) / (MaxDepth - MinDepth);
 
             float a = (((vector.X * matrix.M14) + (vector.Y * matrix.M24)) + (vector.Z * matrix.M34)) + matrix.M44;
-            Vector3.Transform(ref vector, ref matrix, out vector);
+            vector = Vector3.Transform(vector, matrix);
 
             if (!MathUtil.IsOne(a))
             {

@@ -33,7 +33,8 @@ using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Mathematics
 {
     /// <summary>
@@ -63,7 +64,7 @@ namespace HelixToolkit.Mathematics
         {
             var Center = bb.Minimum + (bb.Maximum - bb.Minimum) / 2f;
             Extents = bb.Maximum - Center;
-            Transformation = Matrix.Translation(Center);
+            Transformation = Matrix.CreateTranslation(Center);
         }
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace HelixToolkit.Mathematics
         {
             var Center = minimum + (maximum - minimum) / 2f;
             Extents = maximum - Center;
-            Transformation = Matrix.Translation(Center);
+            Transformation = Matrix.CreateTranslation(Center);
         }
 
         /// <summary>
@@ -99,13 +100,13 @@ namespace HelixToolkit.Mathematics
 
             for (int i = 0; i < points.Length; ++i)
             {
-                Vector3.Min(ref minimum, ref points[i], out minimum);
-                Vector3.Max(ref maximum, ref points[i], out maximum);
+                minimum = Vector3.Min(minimum, points[i]);
+                maximum = Vector3.Max(maximum, points[i]);
             }
 
             var Center = minimum + (maximum - minimum) / 2f;
             Extents = maximum - Center;
-            Transformation = Matrix.Translation(Center);
+            Transformation = Matrix.CreateTranslation(Center);
         }
 
         /// <summary>
@@ -117,11 +118,11 @@ namespace HelixToolkit.Mathematics
             var xv = new Vector3(Extents.X, 0, 0);
             var yv = new Vector3(0, Extents.Y, 0);
             var zv = new Vector3(0, 0, Extents.Z);
-            Vector3.TransformNormal(ref xv, ref Transformation, out xv);
-            Vector3.TransformNormal(ref yv, ref Transformation, out yv);
-            Vector3.TransformNormal(ref zv, ref Transformation, out zv);
+            xv = Vector3.TransformNormal(xv, Transformation);
+            yv = Vector3.TransformNormal(yv, Transformation);
+            zv = Vector3.TransformNormal(zv, Transformation);
 
-            var center = Transformation.TranslationVector;
+            var center = Transformation.Translation;
 
             var corners = new Vector3[8];
             corners[0] = center + xv + yv + zv;
@@ -198,7 +199,7 @@ namespace HelixToolkit.Mathematics
         /// <param name="translation">the translation vector.</param>
         public void Translate(ref Vector3 translation)
         {
-            Transformation.TranslationVector += translation;
+            Transformation.Translation += translation;
         }
 
         /// <summary>
@@ -207,7 +208,7 @@ namespace HelixToolkit.Mathematics
         /// <param name="translation">the translation vector.</param>
         public void Translate(Vector3 translation)
         {
-            Transformation.TranslationVector += translation;
+            Transformation.Translation += translation;
         }
 
         /// <summary>
@@ -238,9 +239,9 @@ namespace HelixToolkit.Mathematics
             var xv = new Vector3(Extents.X * 2, 0, 0);
             var yv = new Vector3(0, Extents.Y * 2, 0);
             var zv = new Vector3(0, 0, Extents.Z * 2);
-            Vector3.TransformNormal(ref xv, ref Transformation, out xv);
-            Vector3.TransformNormal(ref yv, ref Transformation, out yv);
-            Vector3.TransformNormal(ref zv, ref Transformation, out zv);
+            xv = Vector3.TransformNormal(xv, Transformation);
+            yv = Vector3.TransformNormal(yv, Transformation);
+            zv = Vector3.TransformNormal(zv, Transformation);
 
             return new Vector3(xv.Length(), yv.Length(), zv.Length());
         }
@@ -254,9 +255,9 @@ namespace HelixToolkit.Mathematics
             var xv = new Vector3(Extents.X * 2, 0, 0);
             var yv = new Vector3(0, Extents.Y * 2, 0);
             var zv = new Vector3(0, 0, Extents.Z * 2);
-            Vector3.TransformNormal(ref xv, ref Transformation, out xv);
-            Vector3.TransformNormal(ref yv, ref Transformation, out yv);
-            Vector3.TransformNormal(ref zv, ref Transformation, out zv);
+            xv = Vector3.TransformNormal(xv, Transformation);
+            yv = Vector3.TransformNormal(yv, Transformation);
+            zv = Vector3.TransformNormal(zv, Transformation);
 
             return new Vector3(xv.LengthSquared(), yv.LengthSquared(), zv.LengthSquared());
         }
@@ -268,7 +269,7 @@ namespace HelixToolkit.Mathematics
         {
             get
             {
-                return Transformation.TranslationVector;
+                return Transformation.Translation;
             }
         }
 
@@ -281,10 +282,10 @@ namespace HelixToolkit.Mathematics
         {
             // Transform the point into the obb coordinates
             Matrix invTrans;
-            Matrix.Invert(ref Transformation, out invTrans);
+            Matrix.Invert(Transformation, out invTrans);
 
             Vector3 locPoint;
-            Vector3.TransformCoordinate(ref point, ref invTrans, out locPoint);
+            Vector3Helper.TransformCoordinate(ref point, ref invTrans, out locPoint);
 
             locPoint.X = Math.Abs(locPoint.X);
             locPoint.Y = Math.Abs(locPoint.Y);
@@ -317,7 +318,7 @@ namespace HelixToolkit.Mathematics
         public ContainmentType Contains(Vector3[] points)
         {
             Matrix invTrans;
-            Matrix.Invert(ref Transformation, out invTrans);
+            Matrix.Invert(Transformation, out invTrans);
 
             var containsAll = true;
             var containsAny = false;
@@ -325,7 +326,7 @@ namespace HelixToolkit.Mathematics
             for (int i = 0; i < points.Length; i++)
             {
                 Vector3 locPoint;
-                Vector3.TransformCoordinate(ref points[i], ref invTrans, out locPoint);
+                Vector3Helper.TransformCoordinate(ref points[i], ref invTrans, out locPoint);
 
                 locPoint.X = Math.Abs(locPoint.X);
                 locPoint.Y = Math.Abs(locPoint.Y);
@@ -363,11 +364,11 @@ namespace HelixToolkit.Mathematics
         public ContainmentType Contains(BoundingSphere sphere, bool IgnoreScale = false)
         {
             Matrix invTrans;
-            Matrix.Invert(ref Transformation, out invTrans);
+            Matrix.Invert(Transformation, out invTrans);
 
             // Transform sphere center into the obb coordinates
             Vector3 locCenter;
-            Vector3.TransformCoordinate(ref sphere.Center, ref invTrans, out locCenter);
+            Vector3Helper.TransformCoordinate(ref sphere.Center, ref invTrans, out locCenter);
 
             float locRadius;
             if (IgnoreScale)
@@ -376,14 +377,13 @@ namespace HelixToolkit.Mathematics
             {
                 // Transform sphere radius into the obb coordinates
                 Vector3 vRadius = Vector3.UnitX * sphere.Radius;
-                Vector3.TransformNormal(ref vRadius, ref invTrans, out vRadius);
+                vRadius = Vector3.TransformNormal(vRadius, invTrans);
                 locRadius = vRadius.Length();
             }
 
             //Perform regular BoundingBox to BoundingSphere containment check
             Vector3 minusExtens = -Extents;
-            Vector3 vector;
-            Vector3.Clamp(ref locCenter, ref minusExtens, ref Extents, out vector);
+            Vector3 vector = Vector3.Clamp(locCenter, minusExtens, Extents);
             float distance = Vector3.DistanceSquared(locCenter, vector);
 
             if (distance > locRadius * locRadius)
@@ -439,8 +439,8 @@ namespace HelixToolkit.Mathematics
             for (i = 0; i < 3; i++)
                 for (k = 0; k < 3; k++)
                 {
-                    R[i, k] = Vector3.Dot(RotA[i], RotB[k]);
-                    AR[i, k] = Math.Abs(R[i, k]);
+                    MatrixHelper.Set(ref R, i, k, Vector3.Dot(RotA[i], RotB[k]));
+                    MatrixHelper.Set(ref AR, i, k, Math.Abs(R.Get(i, k)));
                 }
 
 
@@ -452,9 +452,9 @@ namespace HelixToolkit.Mathematics
             // Test if any of A's basis vectors separate the box
             for (i = 0; i < 3; i++)
             {
-                ExtentA = SizeA[i];
-                ExtentB = Vector3.Dot(SizeB, new Vector3(AR[i, 0], AR[i, 1], AR[i, 2]));
-                Separation = Math.Abs(vSepA[i]);
+                ExtentA = SizeA.Get(i);
+                ExtentB = Vector3.Dot(SizeB, new Vector3(AR.Get(i, 0), AR.Get(i, 1), AR.Get(i, 2)));
+                Separation = Math.Abs(vSepA.Get(i));
 
                 if (Separation > ExtentA + ExtentB)
                     return ContainmentType.Disjoint;
@@ -463,9 +463,9 @@ namespace HelixToolkit.Mathematics
             // Test if any of B's basis vectors separate the box
             for (k = 0; k < 3; k++)
             {
-                ExtentA = Vector3.Dot(SizeA, new Vector3(AR[0, k], AR[1, k], AR[2, k]));
-                ExtentB = SizeB[k];
-                Separation = Math.Abs(Vector3.Dot(vSepA, new Vector3(R[0, k], R[1, k], R[2, k])));
+                ExtentA = Vector3.Dot(SizeA, new Vector3(AR.Get(0, k), AR.Get(1, k), AR.Get(2, k)));
+                ExtentB = SizeB.Get(k);
+                Separation = Math.Abs(Vector3.Dot(vSepA, new Vector3(R.Get(0, k), R.Get(1, k), R.Get(2, k))));
 
                 if (Separation > ExtentA + ExtentB)
                     return ContainmentType.Disjoint;
@@ -477,9 +477,9 @@ namespace HelixToolkit.Mathematics
                 {
                     int i1 = (i + 1) % 3, i2 = (i + 2) % 3;
                     int k1 = (k + 1) % 3, k2 = (k + 2) % 3;
-                    ExtentA = SizeA[i1] * AR[i2, k] + SizeA[i2] * AR[i1, k];
-                    ExtentB = SizeB[k1] * AR[i, k2] + SizeB[k2] * AR[i, k1];
-                    Separation = Math.Abs(vSepA[i2] * R[i1, k] - vSepA[i1] * R[i2, k]);
+                    ExtentA = SizeA.Get(i1) * AR.Get(i2, k) + SizeA.Get(i2) * AR.Get(i1, k);
+                    ExtentB = SizeB.Get(k1) * AR.Get(i, k2) + SizeB.Get(k2) * AR.Get(i, k1);
+                    Separation = Math.Abs(vSepA.Get(i2) * R.Get(i1, k) - vSepA.Get(i1) * R.Get(i2, k));
                     if (Separation > ExtentA + ExtentB)
                         return ContainmentType.Disjoint;
                 }
@@ -507,12 +507,12 @@ namespace HelixToolkit.Mathematics
             //http://www.3dkingdoms.com/weekly/bbox.cpp
             // Put line in box space
             Matrix invTrans;
-            Matrix.Invert(ref Transformation, out invTrans);
+            Matrix.Invert(Transformation, out invTrans);
 
             Vector3 LB1;
-            Vector3.TransformCoordinate(ref L1, ref invTrans, out LB1);
+            Vector3Helper.TransformCoordinate(ref L1, ref invTrans, out LB1);
             Vector3 LB2;
-            Vector3.TransformCoordinate(ref L1, ref invTrans, out LB2);
+            Vector3Helper.TransformCoordinate(ref L1, ref invTrans, out LB2);
 
             // Get line midpoint and extent
             var LMid = (LB1 + LB2) * 0.5f;
@@ -558,13 +558,13 @@ namespace HelixToolkit.Mathematics
             int i, k;
 
             Matrix R;                   // Rotation from B to A
-            Matrix.Invert(ref Transformation, out R);
+            Matrix.Invert(Transformation, out R);
             var AR = new Matrix();      // absolute values of R matrix, to use with box extents
 
             for (i = 0; i < 3; i++)
                 for (k = 0; k < 3; k++)
                 {
-                    AR[i, k] = Math.Abs(R[i, k]);
+                    MatrixHelper.Set(ref AR, i, k, Math.Abs(R.Get(i, k)));
                 }
 
 
@@ -576,9 +576,9 @@ namespace HelixToolkit.Mathematics
             // Test if any of A's basis vectors separate the box
             for (i = 0; i < 3; i++)
             {
-                ExtentA = SizeA[i];
-                ExtentB = Vector3.Dot(SizeB, new Vector3(AR[i, 0], AR[i, 1], AR[i, 2]));
-                Separation = Math.Abs(vSepA[i]);
+                ExtentA = SizeA.Get(i);
+                ExtentB = Vector3.Dot(SizeB, new Vector3(AR.Get(i, 0), AR.Get(i, 1), AR.Get(i, 2)));
+                Separation = Math.Abs(vSepA.Get(i));
 
                 if (Separation > ExtentA + ExtentB)
                     return ContainmentType.Disjoint;
@@ -587,9 +587,9 @@ namespace HelixToolkit.Mathematics
             // Test if any of B's basis vectors separate the box
             for (k = 0; k < 3; k++)
             {
-                ExtentA = Vector3.Dot(SizeA, new Vector3(AR[0, k], AR[1, k], AR[2, k]));
-                ExtentB = SizeB[k];
-                Separation = Math.Abs(Vector3.Dot(vSepA, new Vector3(R[0, k], R[1, k], R[2, k])));
+                ExtentA = Vector3.Dot(SizeA, new Vector3(AR.Get(0, k), AR.Get(1, k), AR.Get(2, k)));
+                ExtentB = SizeB.Get(k);
+                Separation = Math.Abs(Vector3.Dot(vSepA, new Vector3(R.Get(0, k), R.Get(1, k), R.Get(2, k))));
 
                 if (Separation > ExtentA + ExtentB)
                     return ContainmentType.Disjoint;
@@ -601,9 +601,9 @@ namespace HelixToolkit.Mathematics
                 {
                     int i1 = (i + 1) % 3, i2 = (i + 2) % 3;
                     int k1 = (k + 1) % 3, k2 = (k + 2) % 3;
-                    ExtentA = SizeA[i1] * AR[i2, k] + SizeA[i2] * AR[i1, k];
-                    ExtentB = SizeB[k1] * AR[i, k2] + SizeB[k2] * AR[i, k1];
-                    Separation = Math.Abs(vSepA[i2] * R[i1, k] - vSepA[i1] * R[i2, k]);
+                    ExtentA = SizeA.Get(i1) * AR.Get(i2, k) + SizeA.Get(i2) * AR.Get(i1, k);
+                    ExtentB = SizeB.Get(k1) * AR.Get(i, k2) + SizeB.Get(k2) * AR.Get(i, k1);
+                    Separation = Math.Abs(vSepA.Get(i2) * R.Get(i1, k) - vSepA.Get(i1) * R.Get(i2, k));
                     if (Separation > ExtentA + ExtentB)
                         return ContainmentType.Disjoint;
                 }
@@ -623,11 +623,11 @@ namespace HelixToolkit.Mathematics
         {
             // Put ray in box space
             Matrix invTrans;
-            Matrix.Invert(ref Transformation, out invTrans);
+            Matrix.Invert(Transformation, out invTrans);
 
             Ray bRay;
-            Vector3.TransformNormal(ref ray.Direction, ref invTrans, out bRay.Direction);
-            Vector3.TransformCoordinate(ref ray.Position, ref invTrans, out bRay.Position);
+            bRay.Direction = Vector3.TransformNormal(ray.Direction, invTrans);
+            Vector3Helper.TransformCoordinate(ref ray.Position, ref invTrans, out bRay.Position);
 
             //Perform a regular ray to BoundingBox check
             var bb = new BoundingBox(-Extents, Extents);
@@ -635,7 +635,7 @@ namespace HelixToolkit.Mathematics
 
             //Put the result intersection back to world
             if (intersects)
-                Vector3.TransformCoordinate(ref point, ref Transformation, out point);
+                Vector3Helper.TransformCoordinate(ref point, ref Transformation, out point);
 
             return intersects;
         }
@@ -658,12 +658,12 @@ namespace HelixToolkit.Mathematics
             var zv = new Vector3(0, 0, Extents.Z);
 
             var corners = new Vector3[8];
-            corners[0] = +xv + yv + zv;
-            corners[1] = +xv + yv - zv;
+            corners[0] = xv + yv + zv;
+            corners[1] = xv + yv - zv;
             corners[2] = -xv + yv - zv;
             corners[3] = -xv + yv + zv;
-            corners[4] = +xv - yv + zv;
-            corners[5] = +xv - yv - zv;
+            corners[4] = xv - yv + zv;
+            corners[5] = xv - yv - zv;
             corners[6] = -xv - yv - zv;
             corners[7] = -xv - yv + zv;
 
@@ -701,7 +701,7 @@ namespace HelixToolkit.Mathematics
                 int i, k;
                 for (i = 0; i < 3; i++)
                     for (k = 0; k < 3; k++)
-                        AtoB_Matrix[i, k] = Vector3.Dot(RotB[i], RotA[k]);
+                        MatrixHelper.Set(ref AtoB_Matrix, i, k, Vector3.Dot(RotB[i], RotA[k]));
                 var v = B.Center - A.Center;
                 AtoB_Matrix.M41 = Vector3.Dot(v, RotA[0]);
                 AtoB_Matrix.M42 = Vector3.Dot(v, RotA[1]);
@@ -711,7 +711,7 @@ namespace HelixToolkit.Mathematics
             else
             {
                 Matrix AInvMat;
-                Matrix.Invert(ref A.Transformation, out AInvMat);
+                Matrix.Invert(A.Transformation, out AInvMat);
                 AtoB_Matrix = B.Transformation * AInvMat;
             }
 
@@ -735,7 +735,7 @@ namespace HelixToolkit.Mathematics
 
             //Get B corners in A Space
             var bCorners = B.GetLocalCorners();
-            Vector3.TransformCoordinate(bCorners, ref AtoB_Matrix, bCorners);
+            Vector3Helper.TransformCoordinate(bCorners, ref AtoB_Matrix, bCorners);
 
             //Get A local Bounding Box
             var A_LocalBB = new BoundingBox(-A.Extents, A.Extents);
@@ -750,8 +750,8 @@ namespace HelixToolkit.Mathematics
             //Find the new Extents and Center, Transform Center back to world
             var newCenter = mergedBB.Minimum + (mergedBB.Maximum - mergedBB.Minimum) / 2f;
             A.Extents = mergedBB.Maximum - newCenter;
-            Vector3.TransformCoordinate(ref newCenter, ref A.Transformation, out newCenter);
-            A.Transformation.TranslationVector = newCenter;
+            Vector3Helper.TransformCoordinate(ref newCenter, ref A.Transformation, out newCenter);
+            A.Transformation.Translation = newCenter;
         }
 
         /// <summary>

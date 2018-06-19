@@ -32,7 +32,8 @@ The MIT License (MIT)
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Mathematics
 {
     /// <summary>

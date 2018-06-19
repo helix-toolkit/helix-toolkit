@@ -34,7 +34,8 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using SharpDX.Mathematics.Interop;
-
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Mathematics
 {
     /// <summary>
@@ -46,7 +47,7 @@ namespace HelixToolkit.Mathematics
         /// <summary>
         /// The size of the <see cref = "Int4" /> type, in bytes.
         /// </summary>
-        public static readonly int SizeInBytes = Utilities.SizeOf<Int4>();
+        public static readonly int SizeInBytes = global::SharpDX.Utilities.SizeOf<Int4>();
 
         /// <summary>
         /// A <see cref = "Int4" /> with all of its components set to zero.

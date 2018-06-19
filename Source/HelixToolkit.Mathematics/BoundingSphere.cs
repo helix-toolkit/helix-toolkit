@@ -33,6 +33,8 @@ using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 
 namespace HelixToolkit.Mathematics
 {
@@ -240,7 +242,7 @@ namespace HelixToolkit.Mathematics
             Vector3 center = Vector3.Zero;
             for (int i = start; i < upperEnd; ++i)
             {
-                Vector3.Add(ref points[i], ref center, out center);
+                center += points[i];
             }
 
             //This is the center of our sphere.
@@ -252,8 +254,8 @@ namespace HelixToolkit.Mathematics
             {
                 //We are doing a relative distance comparison to find the maximum distance
                 //from the center of our sphere.
-                float distance;
-                Vector3.DistanceSquared(ref center, ref points[i], out distance);
+                float distance = Vector3.DistanceSquared(center, points[i]);
+                
 
                 if (distance > radius)
                     radius = distance;
@@ -301,14 +303,8 @@ namespace HelixToolkit.Mathematics
         /// <param name="result">When the method completes, the newly constructed bounding sphere.</param>
         public static void FromBox(ref BoundingBox box, out BoundingSphere result)
         {
-            Vector3.Lerp(ref box.Minimum, ref box.Maximum, 0.5f, out result.Center);
-
-            float x = box.Minimum.X - box.Maximum.X;
-            float y = box.Minimum.Y - box.Maximum.Y;
-            float z = box.Minimum.Z - box.Maximum.Z;
-
-            float distance = (float)(Math.Sqrt((x * x) + (y * y) + (z * z)));
-            result.Radius = distance * 0.5f;
+            result.Center = Vector3.Lerp(box.Minimum, box.Maximum, 0.5f);
+            result.Radius = Vector3.Distance(box.Minimum, box.Maximum) * 0.5f;
         }
 
         /// <summary>

@@ -32,7 +32,8 @@ The MIT License (MIT)
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Mathematics
 {
     /// <summary>
@@ -240,42 +241,42 @@ namespace HelixToolkit.Mathematics
             left.Normal.Y = matrix.M24 + matrix.M21;
             left.Normal.Z = matrix.M34 + matrix.M31;
             left.D = matrix.M44 + matrix.M41;
-            left.Normalize();
+            left = Plane.Normalize(left);
 
             // Right plane
             right.Normal.X = matrix.M14 - matrix.M11;
             right.Normal.Y = matrix.M24 - matrix.M21;
             right.Normal.Z = matrix.M34 - matrix.M31;
             right.D = matrix.M44 - matrix.M41;
-            right.Normalize();
+            right = Plane.Normalize(right);
 
             // Top plane
             top.Normal.X = matrix.M14 - matrix.M12;
             top.Normal.Y = matrix.M24 - matrix.M22;
             top.Normal.Z = matrix.M34 - matrix.M32;
             top.D = matrix.M44 - matrix.M42;
-            top.Normalize();
+            top = Plane.Normalize(top);
 
             // Bottom plane
             bottom.Normal.X = matrix.M14 + matrix.M12;
             bottom.Normal.Y = matrix.M24 + matrix.M22;
             bottom.Normal.Z = matrix.M34 + matrix.M32;
             bottom.D = matrix.M44 + matrix.M42;
-            bottom.Normalize();
+            bottom = Plane.Normalize(bottom);
 
             // Near plane
             near.Normal.X = matrix.M13;
             near.Normal.Y = matrix.M23;
             near.Normal.Z = matrix.M33;
             near.D = matrix.M43;
-            near.Normalize();
+            near = Plane.Normalize(near);
 
             // Far plane
             far.Normal.X = matrix.M14 - matrix.M13;
             far.Normal.Y = matrix.M24 - matrix.M23;
             far.Normal.Z = matrix.M34 - matrix.M33;
             far.D = matrix.M44 - matrix.M43;
-            far.Normalize();
+            far = Plane.Normalize(far);
         }
 
         private static Vector3 Get3PlanesInterPoint(ref Plane p1, ref Plane p2, ref Plane p3)
@@ -324,23 +325,23 @@ namespace HelixToolkit.Mathematics
             Vector3 Far3 = farCenter + farHalfHeight * upDir - farHalfWidth * rightDir;
             Vector3 Far4 = farCenter - farHalfHeight * upDir - farHalfWidth * rightDir;
 
-            var result = new BoundingFrustum();
-            result.pNear = new Plane(Near1, Near2, Near3);
-            result.pFar = new Plane(Far3, Far2, Far1);
-            result.pLeft = new Plane(Near4, Near3, Far3);
-            result.pRight = new Plane(Far1, Far2, Near2);
-            result.pTop = new Plane(Near2, Far2, Far3);
-            result.pBottom = new Plane(Far4, Far1, Near1);
-
-            result.pNear.Normalize();
-            result.pFar.Normalize();
-            result.pLeft.Normalize();
-            result.pRight.Normalize();
-            result.pTop.Normalize();
-            result.pBottom.Normalize();
-
-            result.pMatrix = Matrix.LookAtLH(cameraPos, cameraPos + lookDir * 10, upDir) * Matrix.PerspectiveFovLH(fov, aspect, znear, zfar);
-
+            var result = new BoundingFrustum
+            {
+                pNear = Plane.Normalize(PlaneHelper.GetPlane(Near1, Near2, Near3)),
+                pFar = Plane.Normalize(PlaneHelper.GetPlane(Far3, Far2, Far1)),
+                pLeft = Plane.Normalize(PlaneHelper.GetPlane(Near4, Near3, Far3)),
+                pRight = Plane.Normalize(PlaneHelper.GetPlane(Far1, Far2, Near2)),
+                pTop = Plane.Normalize(PlaneHelper.GetPlane(Near2, Far2, Far3)),
+                pBottom = Plane.Normalize(PlaneHelper.GetPlane(Far4, Far1, Near1)),
+                pMatrix = MatrixHelper.LookAtLH(cameraPos, cameraPos + lookDir * 10, upDir) 
+                * MatrixHelper.PerspectiveFovLH(fov, aspect, znear, zfar)
+            };
+            //result.pNear.Normalize();
+            //result.pFar.Normalize();
+            //result.pLeft.Normalize();
+            //result.pRight.Normalize();
+            //result.pTop.Normalize();
+            //result.pBottom.Normalize();                  
             return result;
         }
         /// <summary>

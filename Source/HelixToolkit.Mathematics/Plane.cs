@@ -33,115 +33,38 @@ using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 
 namespace HelixToolkit.Mathematics
 {
     /// <summary>
     /// Represents a plane in three dimensional space.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct Plane : IEquatable<Plane>, IFormattable
+    public static class PlaneHelper
     {
-        /// <summary>
-        /// The normal vector of the plane.
-        /// </summary>
-        public Vector3 Normal;
-
-        /// <summary>
-        /// The distance of the plane along its normal from the origin.
-        /// </summary>
-        public float D;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Plane"/> struct.
-        /// </summary>
-        /// <param name="value">The value that will be assigned to all components.</param>
-        public Plane(float value)
+        public static Plane GetPlane(Vector3 point1, Vector3 point2, Vector3 point3)
         {
-            Normal.X = Normal.Y = Normal.Z = D = value;
+            Vector3 p12 = point2 - point1;
+            Vector3 p13 = point3 - point1;
+            Vector3 normal = Vector3.Normalize(Vector3.Cross(p12, p13));
+
+            //float x1 = point2.X - point1.X;
+            //float y1 = point2.Y - point1.Y;
+            //float z1 = point2.Z - point1.Z;
+            //float x2 = point3.X - point1.X;
+            //float y2 = point3.Y - point1.Y;
+            //float z2 = point3.Z - point1.Z;
+            //float yz = (y1 * z2) - (z1 * y2);
+            //float xz = (z1 * x2) - (x1 * z2);
+            //float xy = (x1 * y2) - (y1 * x2);
+            //float invPyth = 1.0f / (float)(Math.Sqrt((yz * yz) + (xz * xz) + (xy * xy)));
+
+            //Normal.X = yz * invPyth;
+            //Normal.Y = xz * invPyth;
+            //Normal.Z = xy * invPyth;
+            return new Plane(normal, -Vector3.Dot(normal, point1));
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Plane"/> struct.
-        /// </summary>
-        /// <param name="a">The X component of the normal.</param>
-        /// <param name="b">The Y component of the normal.</param>
-        /// <param name="c">The Z component of the normal.</param>
-        /// <param name="d">The distance of the plane along its normal from the origin.</param>
-        public Plane(float a, float b, float c, float d)
-        {
-            Normal.X = a;
-            Normal.Y = b;
-            Normal.Z = c;
-            D = d;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:SharpDX.Plane" /> class.
-        /// </summary>
-        /// <param name="point">Any point that lies along the plane.</param>
-        /// <param name="normal">The normal vector to the plane.</param>
-        public Plane(Vector3 point, Vector3 normal)
-        {
-            this.Normal = normal;
-            this.D = -Vector3.Dot(normal, point);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Plane"/> struct.
-        /// </summary>
-        /// <param name="value">The normal of the plane.</param>
-        /// <param name="d">The distance of the plane along its normal from the origin</param>
-        public Plane(Vector3 value, float d)
-        {
-            Normal = value;
-            D = d;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Plane"/> struct.
-        /// </summary>
-        /// <param name="point1">First point of a triangle defining the plane.</param>
-        /// <param name="point2">Second point of a triangle defining the plane.</param>
-        /// <param name="point3">Third point of a triangle defining the plane.</param>
-        public Plane(Vector3 point1, Vector3 point2, Vector3 point3)
-        {
-            float x1 = point2.X - point1.X;
-            float y1 = point2.Y - point1.Y;
-            float z1 = point2.Z - point1.Z;
-            float x2 = point3.X - point1.X;
-            float y2 = point3.Y - point1.Y;
-            float z2 = point3.Z - point1.Z;
-            float yz = (y1 * z2) - (z1 * y2);
-            float xz = (z1 * x2) - (x1 * z2);
-            float xy = (x1 * y2) - (y1 * x2);
-            float invPyth = 1.0f / (float)(Math.Sqrt((yz * yz) + (xz * xz) + (xy * xy)));
-
-            Normal.X = yz * invPyth;
-            Normal.Y = xz * invPyth;
-            Normal.Z = xy * invPyth;
-            D = -((Normal.X * point1.X) + (Normal.Y * point1.Y) + (Normal.Z * point1.Z));
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Plane"/> struct.
-        /// </summary>
-        /// <param name="values">The values to assign to the A, B, C, and D components of the plane. This must be an array with four elements.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="values"/> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="values"/> contains more or less than four elements.</exception>
-        public Plane(float[] values)
-        {
-            if (values == null)
-                throw new ArgumentNullException("values");
-            if (values.Length != 4)
-                throw new ArgumentOutOfRangeException("values", "There must be four and only four input values for Plane.");
-
-            Normal.X = values[0];
-            Normal.Y = values[1];
-            Normal.Z = values[2];
-            D = values[3];
-        }
-
         /// <summary>
         /// Gets or sets the component at the specified index.
         /// </summary>
@@ -149,109 +72,150 @@ namespace HelixToolkit.Mathematics
         /// <param name="index">The index of the component to access. Use 0 for the A component, 1 for the B component, 2 for the C component, and 3 for the D component.</param>
         /// <returns>The value of the component at the specified index.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
-        public float this[int index]
+        public static float Get(this Plane p, int index)
         {
-            get
+            switch (index)
             {
-                switch (index)
-                {
-                    case 0: return Normal.X;
-                    case 1: return Normal.Y;
-                    case 2: return Normal.Z;
-                    case 3: return D;
-                }
-
-                throw new ArgumentOutOfRangeException("index", "Indices for Plane run from 0 to 3, inclusive.");
+                case 0: return p.Normal.X;
+                case 1: return p.Normal.Y;
+                case 2: return p.Normal.Z;
+                case 3: return p.D;
             }
 
-            set
-            {
-                switch (index)
-                {
-                    case 0: Normal.X = value; break;
-                    case 1: Normal.Y = value; break;
-                    case 2: Normal.Z = value; break;
-                    case 3: D = value; break;
-                    default: throw new ArgumentOutOfRangeException("index", "Indices for Plane run from 0 to 3, inclusive.");
-                }
-            }
+            throw new ArgumentOutOfRangeException("index", "Indices for Plane run from 0 to 3, inclusive.");
         }
 
-        /// <summary>
-        /// Changes the coefficients of the normal vector of the plane to make it of unit length.
-        /// </summary>
-        public void Normalize()
+        public static void Set(ref Plane p, int index, float value)
         {
-            float magnitude = 1.0f / (float)(Math.Sqrt((Normal.X * Normal.X) + (Normal.Y * Normal.Y) + (Normal.Z * Normal.Z)));
-
-            Normal.X *= magnitude;
-            Normal.Y *= magnitude;
-            Normal.Z *= magnitude;
-            D *= magnitude;
+            switch (index)
+            {
+                case 0: p.Normal.X = value; break;
+                case 1: p.Normal.Y = value; break;
+                case 2: p.Normal.Z = value; break;
+                case 3: p.D = value; break;
+                default: throw new ArgumentOutOfRangeException("index", "Indices for Plane run from 0 to 3, inclusive.");
+            }
         }
 
         /// <summary>
         /// Creates an array containing the elements of the plane.
         /// </summary>
         /// <returns>A four-element array containing the components of the plane.</returns>
-        public float[] ToArray()
+        public static float[] ToArray(this Plane p)
         {
-            return new float[] { Normal.X, Normal.Y, Normal.Z, D };
+            return new float[] { p.Normal.X, p.Normal.Y, p.Normal.Z, p.D };
         }
 
         /// <summary>
         /// Determines if there is an intersection between the current object and a point.
         /// </summary>
+        /// <param name="p"></param>
         /// <param name="point">The point to test.</param>
         /// <returns>Whether the two objects intersected.</returns>
-        public PlaneIntersectionType Intersects(ref Vector3 point)
+        public static PlaneIntersectionType Intersects(ref Plane p, ref Vector3 point)
         {
-            return Collision.PlaneIntersectsPoint(ref this, ref point);
+            return Collision.PlaneIntersectsPoint(ref p, ref point);
         }
 
         /// <summary>
+        /// Determines if there is an intersection between the current object and a point.
+        /// </summary>
+        /// <param name="p">The p.</param>
+        /// <param name="point">The point.</param>
+        /// <returns></returns>
+        public static PlaneIntersectionType Intersects(this Plane p, ref Vector3 point)
+        {
+            return Collision.PlaneIntersectsPoint(ref p, ref point);
+        }
+        /// <summary>
         /// Determines if there is an intersection between the current object and a <see cref="Ray"/>.
         /// </summary>
+        /// <param name="p"></param>
         /// <param name="ray">The ray to test.</param>
         /// <returns>Whether the two objects intersected.</returns>
-        public bool Intersects(ref Ray ray)
+        public static bool Intersects(this Plane p, ref Ray ray)
         {
             float distance;
-            return Collision.RayIntersectsPlane(ref ray, ref this, out distance);
+            return Collision.RayIntersectsPlane(ref ray, ref p, out distance);
         }
 
         /// <summary>
         /// Determines if there is an intersection between the current object and a <see cref="Ray"/>.
         /// </summary>
+        /// <param name="p">The p.</param>
+        /// <param name="ray">The ray.</param>
+        /// <returns></returns>
+        public static bool Intersects(ref Plane p, ref Ray ray)
+        {
+            float distance;
+            return Collision.RayIntersectsPlane(ref ray, ref p, out distance);
+        }
+        /// <summary>
+        /// Determines if there is an intersection between the current object and a <see cref="Ray"/>.
+        /// </summary>
+        /// <param name="p"></param>
         /// <param name="ray">The ray to test.</param>
         /// <param name="distance">When the method completes, contains the distance of the intersection,
         /// or 0 if there was no intersection.</param>
         /// <returns>Whether the two objects intersected.</returns>
-        public bool Intersects(ref Ray ray, out float distance)
+        public static bool Intersects(this Plane p, ref Ray ray, out float distance)
         {
-            return Collision.RayIntersectsPlane(ref ray, ref this, out distance);
+            return Collision.RayIntersectsPlane(ref ray, ref p, out distance);
+        }
+        /// <summary>
+        /// Determines if there is an intersection between the current object and a <see cref="Ray"/>.
+        /// </summary>
+        /// <param name="p">The p.</param>
+        /// <param name="ray">The ray.</param>
+        /// <param name="distance">The distance.</param>
+        /// <returns></returns>
+        public static bool Intersects(ref Plane p, ref Ray ray, out float distance)
+        {
+            return Collision.RayIntersectsPlane(ref ray, ref p, out distance);
+        }
+        /// <summary>
+        /// Determines if there is an intersection between the current object and a <see cref="Ray"/>.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="ray">The ray to test.</param>
+        /// <param name="point">When the method completes, contains the point of intersection,
+        /// or <see cref="Vector3.Zero"/> if there was no intersection.</param>
+        /// <returns>Whether the two objects intersected.</returns>
+        public static bool Intersects(this Plane p, ref Ray ray, out Vector3 point)
+        {
+            return Collision.RayIntersectsPlane(ref ray, ref p, out point);
         }
 
         /// <summary>
         /// Determines if there is an intersection between the current object and a <see cref="Ray"/>.
         /// </summary>
-        /// <param name="ray">The ray to test.</param>
-        /// <param name="point">When the method completes, contains the point of intersection,
-        /// or <see cref="Vector3.Zero"/> if there was no intersection.</param>
-        /// <returns>Whether the two objects intersected.</returns>
-        public bool Intersects(ref Ray ray, out Vector3 point)
+        /// <param name="p">The p.</param>
+        /// <param name="ray">The ray.</param>
+        /// <param name="point">The point.</param>
+        /// <returns></returns>
+        public static bool Intersects(ref Plane p, ref Ray ray, out Vector3 point)
         {
-            return Collision.RayIntersectsPlane(ref ray, ref this, out point);
+            return Collision.RayIntersectsPlane(ref ray, ref p, out point);
         }
-
         /// <summary>
         /// Determines if there is an intersection between the current object and a <see cref="Plane"/>.
         /// </summary>
         /// <param name="plane">The plane to test.</param>
         /// <returns>Whether the two objects intersected.</returns>
-        public bool Intersects(ref Plane plane)
+        public static bool Intersects(this Plane p, ref Plane plane)
         {
-            return Collision.PlaneIntersectsPlane(ref this, ref plane);
+            return Collision.PlaneIntersectsPlane(ref p, ref plane);
+        }
+
+        /// <summary>
+        /// Determines if there is an intersection between the current object and a <see cref="Plane"/>.
+        /// </summary>
+        /// <param name="p">The p.</param>
+        /// <param name="plane">The plane.</param>
+        /// <returns></returns>
+        public static bool Intersects(ref Plane p, ref Plane plane)
+        {
+            return Collision.PlaneIntersectsPlane(ref p, ref plane);
         }
 
         /// <summary>
@@ -261,53 +225,100 @@ namespace HelixToolkit.Mathematics
         /// <param name="line">When the method completes, contains the line of intersection
         /// as a <see cref="Ray"/>, or a zero ray if there was no intersection.</param>
         /// <returns>Whether the two objects intersected.</returns>
-        public bool Intersects(ref Plane plane, out Ray line)
+        public static bool Intersects(this Plane p, ref Plane plane, out Ray line)
         {
-            return Collision.PlaneIntersectsPlane(ref this, ref plane, out line);
+            return Collision.PlaneIntersectsPlane(ref p, ref plane, out line);
+        }
+
+        /// <summary>
+        /// Determines if there is an intersection between the current object and a <see cref="Plane"/>.
+        /// </summary>
+        /// <param name="p">The p.</param>
+        /// <param name="plane">The plane.</param>
+        /// <param name="line">The line.</param>
+        /// <returns></returns>
+        public static bool Intersects(ref Plane p, ref Plane plane, out Ray line)
+        {
+            return Collision.PlaneIntersectsPlane(ref p, ref plane, out line);
         }
 
         /// <summary>
         /// Determines if there is an intersection between the current object and a triangle.
         /// </summary>
+        /// <param name="p"></param>
         /// <param name="vertex1">The first vertex of the triangle to test.</param>
         /// <param name="vertex2">The second vertex of the triangle to test.</param>
         /// <param name="vertex3">The third vertex of the triangle to test.</param>
         /// <returns>Whether the two objects intersected.</returns>
-        public PlaneIntersectionType Intersects(ref Vector3 vertex1, ref Vector3 vertex2, ref Vector3 vertex3)
+        public static PlaneIntersectionType Intersects(this Plane p, ref Vector3 vertex1, ref Vector3 vertex2, ref Vector3 vertex3)
         {
-            return Collision.PlaneIntersectsTriangle(ref this, ref vertex1, ref vertex2, ref vertex3);
+            return Collision.PlaneIntersectsTriangle(ref p, ref vertex1, ref vertex2, ref vertex3);
+        }
+        /// <summary>
+        /// Determines if there is an intersection between the current object and a triangle.
+        /// </summary>
+        /// <param name="p">The p.</param>
+        /// <param name="vertex1">The vertex1.</param>
+        /// <param name="vertex2">The vertex2.</param>
+        /// <param name="vertex3">The vertex3.</param>
+        /// <returns></returns>
+        public static PlaneIntersectionType Intersects(ref Plane p, ref Vector3 vertex1, ref Vector3 vertex2, ref Vector3 vertex3)
+        {
+            return Collision.PlaneIntersectsTriangle(ref p, ref vertex1, ref vertex2, ref vertex3);
+        }
+        /// <summary>
+        /// Determines if there is an intersection between the current object and a <see cref="BoundingBox"/>.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="box">The box to test.</param>
+        /// <returns>Whether the two objects intersected.</returns>
+        public static PlaneIntersectionType Intersects(this Plane p, ref BoundingBox box)
+        {
+            return Collision.PlaneIntersectsBox(ref p, ref box);
         }
 
         /// <summary>
         /// Determines if there is an intersection between the current object and a <see cref="BoundingBox"/>.
         /// </summary>
-        /// <param name="box">The box to test.</param>
-        /// <returns>Whether the two objects intersected.</returns>
-        public PlaneIntersectionType Intersects(ref BoundingBox box)
+        /// <param name="p">The p.</param>
+        /// <param name="box">The box.</param>
+        /// <returns></returns>
+        public static PlaneIntersectionType Intersects(ref Plane p, ref BoundingBox box)
         {
-            return Collision.PlaneIntersectsBox(ref this, ref box);
+            return Collision.PlaneIntersectsBox(ref p, ref box);
         }
 
         /// <summary>
         /// Determines if there is an intersection between the current object and a <see cref="BoundingSphere"/>.
         /// </summary>
+        /// <param name="p"></param>
         /// <param name="sphere">The sphere to test.</param>
         /// <returns>Whether the two objects intersected.</returns>
-        public PlaneIntersectionType Intersects(ref BoundingSphere sphere)
+        public static PlaneIntersectionType Intersects(this Plane p, ref BoundingSphere sphere)
         {
-            return Collision.PlaneIntersectsSphere(ref this, ref sphere);
+            return Collision.PlaneIntersectsSphere(ref p, ref sphere);
+        }
+        /// <summary>
+        /// Determines if there is an intersection between the current object and a <see cref="BoundingSphere"/>.
+        /// </summary>
+        /// <param name="p">The p.</param>
+        /// <param name="sphere">The sphere.</param>
+        /// <returns></returns>
+        public static PlaneIntersectionType Intersects(ref Plane p, ref BoundingSphere sphere)
+        { 
+            return Collision.PlaneIntersectsSphere(ref p, ref sphere);
         }
 
         /// <summary>
         /// Builds a matrix that can be used to reflect vectors about a plane.
         /// </summary>
-        /// <param name="plane">The plane for which the reflection occurs. This parameter is assumed to be normalized.</param>
-        /// <param name="result">When the method completes, contains the reflection matrix.</param>
-        public void Reflection(out Matrix result)
+        /// <param name="p">The p.</param>
+        /// <param name="result">The result.</param>
+        public static void Reflection(ref Plane p, out Matrix result)
         {
-            float x = this.Normal.X;
-            float y = this.Normal.Y;
-            float z = this.Normal.Z;
+            float x = p.Normal.X;
+            float y = p.Normal.Y;
+            float z = p.Normal.Z;
             float x2 = -2.0f * x;
             float y2 = -2.0f * y;
             float z2 = -2.0f * z;
@@ -324,37 +335,38 @@ namespace HelixToolkit.Mathematics
             result.M32 = y2 * z;
             result.M33 = (z2 * z) + 1.0f;
             result.M34 = 0.0f;
-            result.M41 = x2 * this.D;
-            result.M42 = y2 * this.D;
-            result.M43 = z2 * this.D;
+            result.M41 = x2 * p.D;
+            result.M42 = y2 * p.D;
+            result.M43 = z2 * p.D;
             result.M44 = 1.0f;
         }
-
         /// <summary>
         /// Builds a matrix that can be used to reflect vectors about a plane.
         /// </summary>
+        /// <param name="p"></param>
         /// <returns>The reflection matrix.</returns>
-        public Matrix Reflection()
+        public static Matrix Reflection(this Plane p)
         {
             Matrix result;
-            Reflection(out result);
+            Reflection(ref p, out result);
             return result;
         }
 
         /// <summary>
-        /// Creates a matrix that flattens geometry into a shadow from this the plane onto which to project the geometry as a shadow. 
+        /// Creates a matrix that flattens geometry into a shadow from the plane onto which to project the geometry as a shadow. 
         /// This plane  is assumed to be normalized
         /// </summary>
+        /// <param name="p"></param>
         /// <param name="light">The light direction. If the W component is 0, the light is directional light; if the
         /// W component is 1, the light is a point light.</param>
         /// <param name="result">When the method completes, contains the shadow matrix.</param>
-        public void Shadow(ref Vector4 light, out Matrix result)
+        public static void Shadow(ref Plane p, ref Vector4 light, out Matrix result)
         {
-            float dot = (this.Normal.X * light.X) + (this.Normal.Y * light.Y) + (this.Normal.Z * light.Z) + (this.D * light.W);
-            float x = -this.Normal.X;
-            float y = -this.Normal.Y;
-            float z = -this.Normal.Z;
-            float d = -this.D;
+            float dot = Plane.Dot(p, light);// (p.Normal.X * light.X) + (p.Normal.Y * light.Y) + (p.Normal.Z * light.Z) + (p.D * light.W);
+            float x = -p.Normal.X;
+            float y = -p.Normal.Y;
+            float z = -p.Normal.Z;
+            float d = -p.D;
 
             result.M11 = (x * light.X) + dot;
             result.M21 = y * light.X;
@@ -378,13 +390,14 @@ namespace HelixToolkit.Mathematics
         /// Creates a matrix that flattens geometry into a shadow from this the plane onto which to project the geometry as a shadow. 
         /// This plane  is assumed to be normalized
         /// </summary>
+        /// <param name="p"></param>
         /// <param name="light">The light direction. If the W component is 0, the light is directional light; if the
         /// W component is 1, the light is a point light.</param>
         /// <returns>The shadow matrix.</returns>
-        public Matrix Shadow(Vector4 light)
+        public static Matrix Shadow(this Plane p, Vector4 light)
         {
             Matrix result;
-            Shadow(ref light, out result);
+            Shadow(ref p, ref light, out result);
             return result;
         }
 
@@ -392,12 +405,13 @@ namespace HelixToolkit.Mathematics
         /// Builds a Matrix3x3 that can be used to reflect vectors about a plane for which the reflection occurs. 
         /// This plane is assumed to be normalized
         /// </summary>
+        /// <param name="p"></param>
         /// <param name="result">When the method completes, contains the reflection Matrix3x3.</param>
-        public void Reflection(out Matrix3x3 result)
+        public static void Reflection(ref Plane p, out Matrix3x3 result)
         {
-            float x = this.Normal.X;
-            float y = this.Normal.Y;
-            float z = this.Normal.Z;
+            float x = p.Normal.X;
+            float y = p.Normal.Y;
+            float z = p.Normal.Z;
             float x2 = -2.0f * x;
             float y2 = -2.0f * y;
             float z2 = -2.0f * z;
@@ -418,10 +432,10 @@ namespace HelixToolkit.Mathematics
         /// This plane is assumed to be normalized
         /// </summary>
         /// <returns>The reflection Matrix3x3.</returns>
-        public Matrix3x3 Reflection3x3()
+        public static Matrix3x3 Reflection3x3(this Plane p)
         {
             Matrix3x3 result;
-            Reflection(out result);
+            Reflection(ref p, out result);
             return result;
         }
 
@@ -434,7 +448,7 @@ namespace HelixToolkit.Mathematics
         /// <param name="result">When the method completes, contains the shadow Matrix3x3.</param>
         public static void Shadow(ref Vector4 light, ref Plane plane, out Matrix3x3 result)
         {
-            float dot = (plane.Normal.X * light.X) + (plane.Normal.Y * light.Y) + (plane.Normal.Z * light.Z) + (plane.D * light.W);
+            float dot = Plane.Dot(plane, light);//(plane.Normal.X * light.X) + (plane.Normal.Y * light.Y) + (plane.Normal.Z * light.Z) + (plane.D * light.W);
             float x = -plane.Normal.X;
             float y = -plane.Normal.Y;
             float z = -plane.Normal.Z;
@@ -474,9 +488,7 @@ namespace HelixToolkit.Mathematics
         /// <param name="result">When the method completes, contains the scaled plane.</param>
         public static void Multiply(ref Plane value, float scale, out Plane result)
         {
-            result.Normal.X = value.Normal.X * scale;
-            result.Normal.Y = value.Normal.Y * scale;
-            result.Normal.Z = value.Normal.Z * scale;
+            result.Normal = value.Normal * scale;
             result.D = value.D * scale;
         }
 
@@ -488,29 +500,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The scaled plane.</returns>
         public static Plane Multiply(Plane value, float scale)
         {
-            return new Plane(value.Normal.X * scale, value.Normal.Y * scale, value.Normal.Z * scale, value.D * scale);
-        }
-
-        /// <summary>
-        /// Calculates the dot product of the specified vector and plane.
-        /// </summary>
-        /// <param name="left">The source plane.</param>
-        /// <param name="right">The source vector.</param>
-        /// <param name="result">When the method completes, contains the dot product of the specified plane and vector.</param>
-        public static void Dot(ref Plane left, ref Vector4 right, out float result)
-        {
-            result = (left.Normal.X * right.X) + (left.Normal.Y * right.Y) + (left.Normal.Z * right.Z) + (left.D * right.W);
-        }
-
-        /// <summary>
-        /// Calculates the dot product of the specified vector and plane.
-        /// </summary>
-        /// <param name="left">The source plane.</param>
-        /// <param name="right">The source vector.</param>
-        /// <returns>The dot product of the specified plane and vector.</returns>
-        public static float Dot(Plane left, Vector4 right)
-        {
-            return (left.Normal.X * right.X) + (left.Normal.Y * right.Y) + (left.Normal.Z * right.Z) + (left.D * right.W);
+            return new Plane(value.Normal * scale, value.D * scale);
         }
 
         /// <summary>
@@ -521,7 +511,7 @@ namespace HelixToolkit.Mathematics
         /// <param name="result">When the method completes, contains the dot product of a specified vector and the normal of the Plane plus the distance value of the plane.</param>
         public static void DotCoordinate(ref Plane left, ref Vector3 right, out float result)
         {
-            result = (left.Normal.X * right.X) + (left.Normal.Y * right.Y) + (left.Normal.Z * right.Z) + left.D;
+            result = Vector3.Dot(left.Normal, right) + left.D;
         }
 
         /// <summary>
@@ -532,7 +522,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The dot product of a specified vector and the normal of the Plane plus the distance value of the plane.</returns>
         public static float DotCoordinate(Plane left, Vector3 right)
         {
-            return (left.Normal.X * right.X) + (left.Normal.Y * right.Y) + (left.Normal.Z * right.Z) + left.D;
+            return Vector3.Dot(left.Normal, right) + left.D;
         }
 
         /// <summary>
@@ -543,7 +533,7 @@ namespace HelixToolkit.Mathematics
         /// <param name="result">When the method completes, contains the dot product of the specified vector and the normal of the plane.</param>
         public static void DotNormal(ref Plane left, ref Vector3 right, out float result)
         {
-            result = (left.Normal.X * right.X) + (left.Normal.Y * right.Y) + (left.Normal.Z * right.Z);
+            result = Vector3.Dot(left.Normal, right);
         }
 
         /// <summary>
@@ -554,33 +544,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The dot product of the specified vector and the normal of the plane.</returns>
         public static float DotNormal(Plane left, Vector3 right)
         {
-            return (left.Normal.X * right.X) + (left.Normal.Y * right.Y) + (left.Normal.Z * right.Z);
-        }
-
-        /// <summary>
-        /// Changes the coefficients of the normal vector of the plane to make it of unit length.
-        /// </summary>
-        /// <param name="plane">The source plane.</param>
-        /// <param name="result">When the method completes, contains the normalized plane.</param>
-        public static void Normalize(ref Plane plane, out Plane result)
-        {
-            float magnitude = 1.0f / (float)(Math.Sqrt((plane.Normal.X * plane.Normal.X) + (plane.Normal.Y * plane.Normal.Y) + (plane.Normal.Z * plane.Normal.Z)));
-
-            result.Normal.X = plane.Normal.X * magnitude;
-            result.Normal.Y = plane.Normal.Y * magnitude;
-            result.Normal.Z = plane.Normal.Z * magnitude;
-            result.D = plane.D * magnitude;
-        }
-
-        /// <summary>
-        /// Changes the coefficients of the normal vector of the plane to make it of unit length.
-        /// </summary>
-        /// <param name="plane">The source plane.</param>
-        /// <returns>The normalized plane.</returns>
-        public static Plane Normalize(Plane plane)
-        {
-            float magnitude = 1.0f / (float)(Math.Sqrt((plane.Normal.X * plane.Normal.X) + (plane.Normal.Y * plane.Normal.Y) + (plane.Normal.Z * plane.Normal.Z)));
-            return new Plane(plane.Normal.X * magnitude, plane.Normal.Y * magnitude, plane.Normal.Z * magnitude, plane.D * magnitude);
+            return Vector3.Dot(left.Normal, right);
         }
 
         /// <summary>
@@ -591,61 +555,7 @@ namespace HelixToolkit.Mathematics
         /// <param name="result">When the method completes, contains the transformed plane.</param>
         public static void Transform(ref Plane plane, ref Quaternion rotation, out Plane result)
         {
-            float x2 = rotation.X + rotation.X;
-            float y2 = rotation.Y + rotation.Y;
-            float z2 = rotation.Z + rotation.Z;
-            float wx = rotation.W * x2;
-            float wy = rotation.W * y2;
-            float wz = rotation.W * z2;
-            float xx = rotation.X * x2;
-            float xy = rotation.X * y2;
-            float xz = rotation.X * z2;
-            float yy = rotation.Y * y2;
-            float yz = rotation.Y * z2;
-            float zz = rotation.Z * z2;
-
-            float x = plane.Normal.X;
-            float y = plane.Normal.Y;
-            float z = plane.Normal.Z;
-
-            result.Normal.X = ((x * ((1.0f - yy) - zz)) + (y * (xy - wz))) + (z * (xz + wy));
-            result.Normal.Y = ((x * (xy + wz)) + (y * ((1.0f - xx) - zz))) + (z * (yz - wx));
-            result.Normal.Z = ((x * (xz - wy)) + (y * (yz + wx))) + (z * ((1.0f - xx) - yy));
-            result.D = plane.D;
-        }
-
-        /// <summary>
-        /// Transforms a normalized plane by a quaternion rotation.
-        /// </summary>
-        /// <param name="plane">The normalized source plane.</param>
-        /// <param name="rotation">The quaternion rotation.</param>
-        /// <returns>The transformed plane.</returns>
-        public static Plane Transform(Plane plane, Quaternion rotation)
-        {
-            Plane result;
-            float x2 = rotation.X + rotation.X;
-            float y2 = rotation.Y + rotation.Y;
-            float z2 = rotation.Z + rotation.Z;
-            float wx = rotation.W * x2;
-            float wy = rotation.W * y2;
-            float wz = rotation.W * z2;
-            float xx = rotation.X * x2;
-            float xy = rotation.X * y2;
-            float xz = rotation.X * z2;
-            float yy = rotation.Y * y2;
-            float yz = rotation.Y * z2;
-            float zz = rotation.Z * z2;
-
-            float x = plane.Normal.X;
-            float y = plane.Normal.Y;
-            float z = plane.Normal.Z;
-
-            result.Normal.X = ((x * ((1.0f - yy) - zz)) + (y * (xy - wz))) + (z * (xz + wy));
-            result.Normal.Y = ((x * (xy + wz)) + (y * ((1.0f - xx) - zz))) + (z * (yz - wx));
-            result.Normal.Z = ((x * (xz - wy)) + (y * (yz + wx))) + (z * ((1.0f - xx) - yy));
-            result.D = plane.D;
-
-            return result;
+            result = Plane.Transform(plane, rotation);
         }
 
         /// <summary>
@@ -659,32 +569,9 @@ namespace HelixToolkit.Mathematics
             if (planes == null)
                 throw new ArgumentNullException("planes");
 
-            float x2 = rotation.X + rotation.X;
-            float y2 = rotation.Y + rotation.Y;
-            float z2 = rotation.Z + rotation.Z;
-            float wx = rotation.W * x2;
-            float wy = rotation.W * y2;
-            float wz = rotation.W * z2;
-            float xx = rotation.X * x2;
-            float xy = rotation.X * y2;
-            float xz = rotation.X * z2;
-            float yy = rotation.Y * y2;
-            float yz = rotation.Y * z2;
-            float zz = rotation.Z * z2;
-
-            for (int i = 0; i < planes.Length; ++i)
+            for(int i=0; i < planes.Length; ++i)
             {
-                float x = planes[i].Normal.X;
-                float y = planes[i].Normal.Y;
-                float z = planes[i].Normal.Z;
-
-                /*
-                 * Note:
-                 * Factor common arithmetic out of loop.
-                */
-                planes[i].Normal.X = ((x * ((1.0f - yy) - zz)) + (y * (xy - wz))) + (z * (xz + wy));
-                planes[i].Normal.Y = ((x * (xy + wz)) + (y * ((1.0f - xx) - zz))) + (z * (yz - wx));
-                planes[i].Normal.Z = ((x * (xz - wy)) + (y * (yz + wx))) + (z * ((1.0f - xx) - yy));
+                planes[i] = Plane.Transform(planes[i], rotation);
             }
         }
 
@@ -696,41 +583,7 @@ namespace HelixToolkit.Mathematics
         /// <param name="result">When the method completes, contains the transformed plane.</param>
         public static void Transform(ref Plane plane, ref Matrix transformation, out Plane result)
         {
-            float x = plane.Normal.X;
-            float y = plane.Normal.Y;
-            float z = plane.Normal.Z;
-            float d = plane.D;
-
-            Matrix inverse;
-            Matrix.Invert(ref transformation, out inverse);
-
-            result.Normal.X = (((x * inverse.M11) + (y * inverse.M12)) + (z * inverse.M13)) + (d * inverse.M14);
-            result.Normal.Y = (((x * inverse.M21) + (y * inverse.M22)) + (z * inverse.M23)) + (d * inverse.M24);
-            result.Normal.Z = (((x * inverse.M31) + (y * inverse.M32)) + (z * inverse.M33)) + (d * inverse.M34);
-            result.D = (((x * inverse.M41) + (y * inverse.M42)) + (z * inverse.M43)) + (d * inverse.M44);
-        }
-
-        /// <summary>
-        /// Transforms a normalized plane by a matrix.
-        /// </summary>
-        /// <param name="plane">The normalized source plane.</param>
-        /// <param name="transformation">The transformation matrix.</param>
-        /// <returns>When the method completes, contains the transformed plane.</returns>
-        public static Plane Transform(Plane plane, Matrix transformation)
-        {
-            Plane result;
-            float x = plane.Normal.X;
-            float y = plane.Normal.Y;
-            float z = plane.Normal.Z;
-            float d = plane.D;
-
-            transformation.Invert();
-            result.Normal.X = (((x * transformation.M11) + (y * transformation.M12)) + (z * transformation.M13)) + (d * transformation.M14);
-            result.Normal.Y = (((x * transformation.M21) + (y * transformation.M22)) + (z * transformation.M23)) + (d * transformation.M24);
-            result.Normal.Z = (((x * transformation.M31) + (y * transformation.M32)) + (z * transformation.M33)) + (d * transformation.M34);
-            result.D = (((x * transformation.M41) + (y * transformation.M42)) + (z * transformation.M43)) + (d * transformation.M44);
-
-            return result;
+            result = Plane.Transform(plane, transformation);
         }
 
         /// <summary>
@@ -744,165 +597,10 @@ namespace HelixToolkit.Mathematics
             if (planes == null)
                 throw new ArgumentNullException("planes");
 
-            Matrix inverse;
-            Matrix.Invert(ref transformation, out inverse);
-
             for (int i = 0; i < planes.Length; ++i)
             {
-                Transform(ref planes[i], ref transformation, out planes[i]);
+                planes[i] = Plane.Transform(planes[i], transformation);
             }
-        }
-
-        /// <summary>
-        /// Scales a plane by the given value.
-        /// </summary>
-        /// <param name="scale">The amount by which to scale the plane.</param>
-        /// <param name="plane">The plane to scale.</param>
-        /// <returns>The scaled plane.</returns>
-        public static Plane operator *(float scale, Plane plane)
-        {
-            return new Plane(plane.Normal.X * scale, plane.Normal.Y * scale, plane.Normal.Z * scale, plane.D * scale);
-        }
-
-        /// <summary>
-        /// Scales a plane by the given value.
-        /// </summary>
-        /// <param name="plane">The plane to scale.</param>
-        /// <param name="scale">The amount by which to scale the plane.</param>
-        /// <returns>The scaled plane.</returns>
-        public static Plane operator *(Plane plane, float scale)
-        {
-            return new Plane(plane.Normal.X * scale, plane.Normal.Y * scale, plane.Normal.Z * scale, plane.D * scale);
-        }
-
-        /// <summary>
-        /// Tests for equality between two objects.
-        /// </summary>
-        /// <param name="left">The first value to compare.</param>
-        /// <param name="right">The second value to compare.</param>
-        /// <returns><c>true</c> if <paramref name="left"/> has the same value as <paramref name="right"/>; otherwise, <c>false</c>.</returns>
-        [MethodImpl((MethodImplOptions)0x100)] // MethodImplOptions.AggressiveInlining
-        public static bool operator ==(Plane left, Plane right)
-        {
-            return left.Equals(ref right);
-        }
-
-        /// <summary>
-        /// Tests for inequality between two objects.
-        /// </summary>
-        /// <param name="left">The first value to compare.</param>
-        /// <param name="right">The second value to compare.</param>
-        /// <returns><c>true</c> if <paramref name="left"/> has a different value than <paramref name="right"/>; otherwise, <c>false</c>.</returns>
-        [MethodImpl((MethodImplOptions)0x100)] // MethodImplOptions.AggressiveInlining
-        public static bool operator !=(Plane left, Plane right)
-        {
-            return !left.Equals(ref right);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return string.Format(CultureInfo.CurrentCulture, "A:{0} B:{1} C:{2} D:{3}", Normal.X, Normal.Y, Normal.Z, D);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <param name="format">The format.</param>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public string ToString(string format)
-        {
-            return string.Format(CultureInfo.CurrentCulture, "A:{0} B:{1} C:{2} D:{3}", Normal.X.ToString(format, CultureInfo.CurrentCulture),
-                Normal.Y.ToString(format, CultureInfo.CurrentCulture), Normal.Z.ToString(format, CultureInfo.CurrentCulture), D.ToString(format, CultureInfo.CurrentCulture));
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <param name="formatProvider">The format provider.</param>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public string ToString(IFormatProvider formatProvider)
-        {
-            return string.Format(formatProvider, "A:{0} B:{1} C:{2} D:{3}", Normal.X, Normal.Y, Normal.Z, D);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <param name="format">The format.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public string ToString(string format, IFormatProvider formatProvider)
-        {
-            return string.Format(formatProvider, "A:{0} B:{1} C:{2} D:{3}", Normal.X.ToString(format, formatProvider),
-                Normal.Y.ToString(format, formatProvider), Normal.Z.ToString(format, formatProvider), D.ToString(format, formatProvider));
-        }
-
-        /// <summary>
-        /// Returns a hash code for this instance.
-        /// </summary>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
-        /// </returns>
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (Normal.GetHashCode() * 397) ^ D.GetHashCode();
-            }
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="Vector4"/> is equal to this instance.
-        /// </summary>
-        /// <param name="value">The <see cref="Vector4"/> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="Vector4"/> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
-        [MethodImpl((MethodImplOptions)0x100)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(ref Plane value)
-        {
-            return Normal == value.Normal && D == value.D;
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="Vector4"/> is equal to this instance.
-        /// </summary>
-        /// <param name="value">The <see cref="Vector4"/> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="Vector4"/> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
-        [MethodImpl((MethodImplOptions)0x100)] // MethodImplOptions.AggressiveInlining
-        public bool Equals(Plane value)
-        {
-            return Equals(ref value);
-        }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
-        /// </summary>
-        /// <param name="value">The <see cref="System.Object"/> to compare with this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
-        public override bool Equals(object value)
-        {
-            if (!(value is Plane))
-                return false;
-
-            var strongValue = (Plane)value;
-            return Equals(ref strongValue);
         }
     }
 }
