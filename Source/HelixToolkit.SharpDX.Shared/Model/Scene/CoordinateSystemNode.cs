@@ -167,10 +167,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             arrowMeshModel.Material = new ColorMaterialCore();           
             arrowMeshModel.CullMode = CullMode.Back;
             arrowMeshModel.IsHitTestVisible = false;
-            arrowMeshModel.RenderCore.RenderType = RenderType.ScreenSpaced;
+            arrowMeshModel.RenderType = RenderType.ScreenSpaced;
 
             axisBillboard.IsHitTestVisible = false;
-            axisBillboard.RenderCore.RenderType = RenderType.ScreenSpaced;
+            axisBillboard.RenderType = RenderType.ScreenSpaced;
             axisBillboard.EnableViewFrustumCheck = false;
             var axisLabel = new BillboardText3D();
             axisLabel.TextInfo.Add(new TextInfo());
