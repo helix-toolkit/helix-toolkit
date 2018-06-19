@@ -2137,5 +2137,10 @@ namespace HelixToolkit.Mathematics
             var strongValue = (Matrix3x3)value;
             return Equals(ref strongValue);
         }
+
+        public Matrix ToMatrix()
+        {
+            return new Matrix(M11, M12, M13, 0, M21, M22, M23, 0, M31, M32, M33, 0, 0, 0, 0, 1);
+        }
     }
 }
