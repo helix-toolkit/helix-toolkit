@@ -91,6 +91,8 @@
     <Compile Include="Geometry\Polygon3DTests.cs" />
     <Compile Include="Elements3D\MeshGeometryModel3DTests.cs" />
     <Compile Include="Importers\ObjReaderTests.cs" />
+    <Compile Include="Maths\Common.cs" />
+    <Compile Include="Maths\ViewFrustum.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="Utilities\MeshBuilderTests.cs" />
   </ItemGroup>
@@ -178,7 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NUnit">
-      <Version>3.7.1</Version>
+      <Version>3.10.1</Version>
     </PackageReference>
     <PackageReference Include="SharpDX.D3DCompiler">
       <Version>4.1.0</Version>
@@ -190,6 +192,7 @@
       <Version>4.1.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

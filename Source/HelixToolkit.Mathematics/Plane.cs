@@ -65,7 +65,7 @@ namespace HelixToolkit.Mathematics
             Vector3 p12 = point2 - point1;
             Vector3 p13 = point3 - point1;
             Vector3 normal = Vector3.Normalize(Vector3.Cross(p12, p13));
-
+            return new Plane(normal, -Vector3.Dot(normal, point1));
             //float x1 = point2.X - point1.X;
             //float y1 = point2.Y - point1.Y;
             //float z1 = point2.Z - point1.Z;
@@ -76,11 +76,11 @@ namespace HelixToolkit.Mathematics
             //float xz = (z1 * x2) - (x1 * z2);
             //float xy = (x1 * y2) - (y1 * x2);
             //float invPyth = 1.0f / (float)(Math.Sqrt((yz * yz) + (xz * xz) + (xy * xy)));
-
+            //var Normal = Vector3.Zero;
             //Normal.X = yz * invPyth;
             //Normal.Y = xz * invPyth;
             //Normal.Z = xy * invPyth;
-            return new Plane(normal, -Vector3.Dot(normal, point1));
+            //return new Plane(Normal, -Vector3.Dot(Normal, point1));
         }
         /// <summary>
         /// Gets or sets the component at the specified index.
