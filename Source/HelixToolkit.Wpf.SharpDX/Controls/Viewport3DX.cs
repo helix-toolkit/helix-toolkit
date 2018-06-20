@@ -9,14 +9,17 @@
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Cameras;
     using Controls;
     using Elements2D;
-    using Cameras;
-    using Utilities;
+    using Model.Scene;
+    using Model.Scene2D;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
+    using System.Numerics;
+    using System.Runtime.CompilerServices;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
@@ -25,11 +28,8 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media;
     using System.Windows.Media.Animation;
     using System.Windows.Media.Media3D;
+    using Utilities;
     using MouseButtons = System.Windows.Forms.MouseButtons;
-    using Model;
-    using Model.Scene;
-    using Model.Scene2D;
-    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -847,7 +847,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="speed">The speed.</param>
         /// <param name="position">The position.</param>
         /// <param name="aroundPoint">The point to spin around.</param>
-        public void StartSpin(Vector speed, Point position, Point3D aroundPoint)
+        public void StartSpin(System.Windows.Vector speed, Point position, Point3D aroundPoint)
         {
             cameraController.StartSpin(speed, position, aroundPoint);
         }

@@ -2,7 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -45,7 +45,7 @@ namespace HelixToolkit.UWP.Core
             set; get;
         } = DefaultRenderTechniqueNames.PostEffectMeshXRayGrid;
 
-        private Color4 color = global::SharpDX.Color.DarkBlue;
+        private Color4 color = Mathematics.Color.DarkBlue;
         /// <summary>
         /// Gets or sets the color of the border.
         /// </summary>
@@ -115,7 +115,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public PostEffectMeshXRayGridCore() : base(RenderType.PostProc)
         {
-            Color = global::SharpDX.Color.Blue;
+            Color = Mathematics.Color.Blue;
         }
 
         /// <summary>
@@ -234,7 +234,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (clear)
             {
-                context.ClearRenderTargetView(targetView, global::SharpDX.Color.Transparent);
+                context.ClearRenderTargetView(targetView, Mathematics.Color.Transparent);
             }
             context.SetRenderTargets(dsv, targetView == null ? null : new RenderTargetView[] { targetView });
             context.SetViewport(0, 0, width, height);

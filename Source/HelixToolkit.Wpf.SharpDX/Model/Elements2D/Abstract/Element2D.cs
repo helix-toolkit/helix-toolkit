@@ -1,16 +1,13 @@
 ﻿#if DEBUG
 //#define DEBUGMOUSEEVENT
 #endif
-using SharpDX;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Input;
 using Media = System.Windows.Media;
-
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
-    using System;
-    using System.Diagnostics;
     using Extensions;
 
     public abstract class Element2D : Element2DCore, ITransformable2D, IHitable2D

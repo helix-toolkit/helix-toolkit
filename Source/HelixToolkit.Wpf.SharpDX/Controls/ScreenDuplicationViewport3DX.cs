@@ -1,4 +1,10 @@
-﻿using System;
+﻿using HelixToolkit.Wpf.SharpDX.Cameras;
+using HelixToolkit.Wpf.SharpDX.Controls;
+using HelixToolkit.Wpf.SharpDX.Model.Scene;
+using HelixToolkit.Wpf.SharpDX.Model.Scene2D;
+using HelixToolkit.Wpf.SharpDX.Render;
+using HelixToolkit.Wpf.SharpDX.Utilities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -6,13 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
-using HelixToolkit.Wpf.SharpDX.Cameras;
-using HelixToolkit.Wpf.SharpDX.Controls;
-using HelixToolkit.Wpf.SharpDX.Model.Scene;
-using HelixToolkit.Wpf.SharpDX.Render;
-using HelixToolkit.Wpf.SharpDX.Utilities;
-using HelixToolkit.Wpf.SharpDX.Model.Scene2D;
-
+using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Wpf.SharpDX
 {
     [DefaultProperty("Children")]
@@ -119,7 +119,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public CameraCore CameraCore { get; } = new PerspectiveCameraCore();
 
-        public global::SharpDX.Matrix WorldMatrix { get; } = global::SharpDX.Matrix.Identity;
+        public Matrix WorldMatrix { get; } = Matrix.Identity;
 
         public IEnumerable<SceneNode> Renderables
         {

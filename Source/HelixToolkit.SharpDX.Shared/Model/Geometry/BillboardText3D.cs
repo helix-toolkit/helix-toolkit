@@ -2,20 +2,21 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System.Collections.Generic;
-using SharpDX;
-using System;
-using System.Linq;
-using System.IO;
-using System.Reflection;
 using Cyotek.Drawing.BitmapFont;
+using HelixToolkit.Mathematics;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Numerics;
+using System.Reflection;
+using Matrix = System.Numerics.Matrix4x4;
 #if CORE
 
 #else
 #if NETFX_CORE
 using Media = Windows.UI.Xaml.Media;
 #else
-using Media = System.Windows.Media;
 #endif
 #endif
 
@@ -25,7 +26,6 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using Core;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
 
@@ -278,19 +278,19 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
-            var scale = modelMatrix.ScaleVector;
+            var scale = modelMatrix.ScaleVector();
             var projectionMatrix = context.ProjectionMatrix;
             var viewMatrix = context.ViewMatrix;
             var viewMatrixInv = viewMatrix.PsudoInvert();
             var visualToScreen = context.ScreenViewProjectionMatrix;
             int index = -1;
+            var rayDir = Vector3.Normalize(rayWS.Direction);
             foreach (var info in TextInfo)
             {
                 ++index;
-                var c = Vector3.TransformCoordinate(info.Origin, modelMatrix);
-                var dir = c - rayWS.Position;
-                dir.Normalize();
-                if (Vector3.Dot(dir, rayWS.Direction.Normalized()) < 0)
+                var c = Vector3Helper.TransformCoordinate(info.Origin, modelMatrix);
+                var dir = Vector3.Normalize(c - rayWS.Position);
+                if (Vector3.Dot(dir, rayDir) < 0)
                 {
                     continue;
                 }

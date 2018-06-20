@@ -2,12 +2,11 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
 #else

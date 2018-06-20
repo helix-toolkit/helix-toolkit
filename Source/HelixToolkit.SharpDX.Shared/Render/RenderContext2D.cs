@@ -1,13 +1,15 @@
-﻿using SharpDX.Direct2D1;
+﻿using HelixToolkit.Mathematics;
+using SharpDX.Direct2D1;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.CompilerServices;
+
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using global::SharpDX;    
     using Utilities;
 
     /// <summary>

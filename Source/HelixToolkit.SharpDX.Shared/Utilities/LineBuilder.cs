@@ -6,23 +6,19 @@
 //
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using HelixToolkit.Mathematics;
+using System;
+using Point3D = System.Numerics.Vector3;
+using Vector3 = System.Numerics.Vector3;
+using Vector3D = System.Numerics.Vector3;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using System;
-
-    using global::SharpDX;
 
     using Core;
-
-    using Vector3D = global::SharpDX.Vector3;
-    using Vector3 = global::SharpDX.Vector3;
-    using Point3D = global::SharpDX.Vector3;    
-    
 
     public class LineBuilder
     {
@@ -267,7 +263,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         public static LineGeometry3D GenerateBoundingBox(Vector3[] points)
         {
-            var bb = global::SharpDX.BoundingBox.FromPoints(points);
+            var bb = BoundingBox.FromPoints(points);
             return GenerateBoundingBox(bb);
         }
 
@@ -276,7 +272,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="bb">The bounding-box</param>
         /// <returns></returns>
-        public static LineGeometry3D GenerateBoundingBox(global::SharpDX.BoundingBox bb)
+        public static LineGeometry3D GenerateBoundingBox(BoundingBox bb)
         {            
             var cc = bb.GetCorners();
             var ll = new LineBuilder();

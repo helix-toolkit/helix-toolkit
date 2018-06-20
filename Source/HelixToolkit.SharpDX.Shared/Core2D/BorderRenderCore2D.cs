@@ -2,11 +2,11 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using D2D = SharpDX.Direct2D1;
-using SharpDX.DirectWrite;
+using HelixToolkit.Mathematics;
 using SharpDX;
 using System.Collections.Generic;
-using System;
+using System.Numerics;
+using D2D = SharpDX.Direct2D1;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Core2D
@@ -176,7 +176,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
                 context.DeviceContext.FillRoundedRectangle(roundRect, Background);
             }
 
-            if (!borderThickness.IsZero && StrokeBrush != null && StrokeStyle != null)
+            if (!borderThickness.IsZero() && StrokeBrush != null && StrokeStyle != null)
             {
                 if(borderThickness.X == borderThickness.Y && borderThickness.X == borderThickness.Z && borderThickness.X == borderThickness.W)
                 {

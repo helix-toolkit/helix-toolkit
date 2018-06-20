@@ -23,15 +23,15 @@ namespace HelixToolkit.Wpf
     using System.Diagnostics;
     using System.Linq;
 #if SHARPDX
-    using Vector3D = global::SharpDX.Vector3;
-    using Point3D = global::SharpDX.Vector3;
-    using Point = global::SharpDX.Vector2;
+    using Vector3D = System.Numerics.Vector3;
+    using Point3D = System.Numerics.Vector3;
+    using Point = System.Numerics.Vector2;
     using Int32Collection = Core.IntCollection;
     using Vector3DCollection = Core.Vector3Collection;
     using Point3DCollection = Core.Vector3Collection;
     using PointCollection = Core.Vector2Collection;
     using DoubleOrSingle = System.Single;
-    using Matrix3D = global::SharpDX.Matrix;
+    using Matrix3D = System.Numerics.Matrix4x4;
     using HelixToolkit.Wpf;
 #else
     using System.Windows;
@@ -370,17 +370,25 @@ namespace HelixToolkit.Wpf
                     deleted[i] = true;
                     continue;
                 }
-
+#if SHARPDX
+                Vector3D d1 = Vector3D.Normalize(vertices[id1].p - p);
+                Vector3D d2 = Vector3D.Normalize(vertices[id2].p - p);
+#else
                 Vector3D d1 = vertices[id1].p - p;
                 d1.Normalize();
                 Vector3D d2 = vertices[id2].p - p;
                 d2.Normalize();
+#endif
                 if (SharedFunctions.DotProduct(ref d1, ref d2) > 0.999)
                 {
                     return true;
                 }
+#if SHARPDX
+                var n = Vector3D.Normalize(SharedFunctions.CrossProduct(ref d1, ref d2));
+#else
                 var n = SharedFunctions.CrossProduct(ref d1, ref d2);
                 n.Normalize();
+#endif
                 deleted[i] = false;
                 if (SharedFunctions.DotProduct(ref n, ref t.normal) < 0.2)
                 {
@@ -483,8 +491,12 @@ namespace HelixToolkit.Wpf
                     var p0 = vertices[tri.v[0]].p;
                     var p1 = vertices[tri.v[1]].p;
                     var p2 = vertices[tri.v[2]].p;
+#if SHARPDX
+                    var n = Vector3D.Normalize(SharedFunctions.CrossProduct(p1 - p0, p2 - p0));
+#else
                     var n = SharedFunctions.CrossProduct(p1 - p0, p2 - p0);
                     n.Normalize();
+#endif
                     tri.normal = n;
                     for (int j = 0; j < 3; ++j)
                     {

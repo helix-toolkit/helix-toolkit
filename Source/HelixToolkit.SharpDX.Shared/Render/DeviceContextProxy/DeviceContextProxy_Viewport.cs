@@ -1,4 +1,4 @@
-﻿using SharpDX;
+﻿using HelixToolkit.Mathematics;
 using System.Runtime.CompilerServices;
 
 #if DX11_1

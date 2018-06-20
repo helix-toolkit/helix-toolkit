@@ -2,9 +2,11 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using global::SharpDX;
 using System;
 using System.Collections.Generic;
+using HelixToolkit.Mathematics;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP
@@ -24,11 +26,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="start">The start.</param>
         /// <param name="count">The count.</param>
         /// <returns></returns>
-        public static global::SharpDX.BoundingSphere FromPoints(IList<Vector3> points, int start, int count)
+        public static BoundingSphere FromPoints(IList<Vector3> points, int start, int count)
         {
             if (points == null || start < 0 || start >= points.Count || count < 0 || (start + count) > points.Count)
             {
-                return new global::SharpDX.BoundingSphere();
+                return new BoundingSphere();
             }
 
             var upperEnd = start + count;
@@ -38,7 +40,7 @@ namespace HelixToolkit.Wpf.SharpDX
             for (int i = start; i < upperEnd; ++i)
             {
                 var p = points[i];
-                Vector3.Add(ref p, ref center, out center);
+                center += p;
             }
 
             //This is the center of our sphere.
@@ -50,9 +52,9 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 //We are doing a relative distance comparison to find the maximum distance
                 //from the center of our sphere.
-                float distance;
+                
                 var p = points[i];
-                Vector3.DistanceSquared(ref center, ref p, out distance);
+                float distance = Vector3.Distance(center, p);
 
                 if (distance > radius)
                     radius = distance;
@@ -62,7 +64,7 @@ namespace HelixToolkit.Wpf.SharpDX
             radius = (float)Math.Sqrt(radius);
 
             //Construct the sphere.
-            return new global::SharpDX.BoundingSphere(center, radius);
+            return new BoundingSphere(center, radius);
         }
 
         /// <summary>
@@ -70,11 +72,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="points">The points.</param>
         /// <returns></returns>
-        public static global::SharpDX.BoundingSphere FromPoints(IList<Vector3> points)
+        public static BoundingSphere FromPoints(IList<Vector3> points)
         {
             if (points == null)
             {
-                return new global::SharpDX.BoundingSphere();
+                return new BoundingSphere();
             }
 
             return FromPoints(points, 0, points.Count);
@@ -86,15 +88,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="b">The b.</param>
         /// <param name="m">The m.</param>
         /// <returns></returns>
-        public static global::SharpDX.BoundingSphere TransformBoundingSphere(this global::SharpDX.BoundingSphere b, Matrix m)
+        public static BoundingSphere TransformBoundingSphere(this BoundingSphere b, Matrix m)
         {
             var center = b.Center;
-            var edge = b.Center + Vector3.Right * b.Radius;
+            var edge = b.Center + Vector3Helper.Right * b.Radius;
 
             var worldCenter = Vector3.Transform(center, m);
             var worldEdge = Vector3.Transform(edge, m);
 
-            return new global::SharpDX.BoundingSphere(worldCenter.ToXYZ(), (worldEdge - worldCenter).Length());
+            return new BoundingSphere(worldCenter, (worldEdge - worldCenter).Length());
         }
     }
 }

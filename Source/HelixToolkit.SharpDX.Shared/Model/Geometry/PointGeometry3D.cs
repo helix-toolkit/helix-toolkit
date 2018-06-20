@@ -2,14 +2,15 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-
+using HelixToolkit.Mathematics;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using global::SharpDX;
     using System;
     using System.Collections.Generic;
     using Utilities;
@@ -56,8 +57,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
                 var pos4 = new Vector4(rayWS.Position, 1);
                 // var dir3 = new Vector3();
-                Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
-                Vector4.Transform(ref pos4, ref svpm, out pos4);
+                clickPoint4 = Vector4.Transform(clickPoint4, svpm);
+                pos4 = Vector4.Transform(pos4, svpm);
                 //Vector3.TransformNormal(ref rayWS.Direction, ref svpm, out dir3);
                 //dir3.Normalize();
 
@@ -70,17 +71,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 foreach (var point in Positions)
                 {
-                    var p0 = Vector3.TransformCoordinate(point, smvpm);
+                    var p0 = Vector3Helper.TransformCoordinate(point, smvpm);
                     var pv = p0 - clickPoint;
                     var dist = pv.Length();
                     if (dist < lastDist && dist <= maxDist)
                     {
                         lastDist = dist;
-                        Vector4 res;
+                        
                         var lp0 = point;
-                        Vector3.Transform(ref lp0, ref modelMatrix, out res);
-                        var pvv = res.ToVector3();
-                        result.Distance = (rayWS.Position - res.ToVector3()).Length();
+                        Vector3 pvv = Vector3.Transform(lp0, modelMatrix);
+                        result.Distance = (rayWS.Position - pvv).Length();
                         result.PointHit = pvv;
                         result.ModelHit = originalSource;
                         result.IsValid = true;

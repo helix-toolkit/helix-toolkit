@@ -6,28 +6,22 @@
 
 namespace SimpleDemo
 {
-    using System.Linq;
-
     using DemoCore;
-
+    using HelixToolkit.Mathematics;
     using HelixToolkit.Wpf.SharpDX;
     using HelixToolkit.Wpf.SharpDX.Core;
-
-    using SharpDX;
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Numerics;
+    using System.Windows.Input;
+    using System.Windows.Media.Imaging;
+    using Color = System.Windows.Media.Color;
+    using Colors = System.Windows.Media.Colors;
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
-    using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using Color = System.Windows.Media.Color;
-    using Plane = SharpDX.Plane;
-    using Vector3 = SharpDX.Vector3;
-    using Colors = System.Windows.Media.Colors;
-    using Color4 = SharpDX.Color4;
-    using HelixToolkit.Wpf;
-    using System.Windows.Media.Imaging;
-    using System.IO;
-    using System.Windows.Input;
-    using System;
+    using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
     public class MainViewModel : BaseViewModel
     {

@@ -2,19 +2,18 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using HelixToolkit.Mathematics;
 using SharpDX;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
 using System.Diagnostics;
-
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
 #else
-using Device = SharpDX.Direct3D11.Device;
 #endif
 
 #if NETFX_CORE
@@ -27,7 +26,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
     using HelixToolkit.Logger;
     using Model.Scene;
     using Model.Scene2D;
-    
+
 
     /// <summary>
     /// 

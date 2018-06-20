@@ -2,9 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
-using System.Collections.Generic;
-using System.Text;
+using HelixToolkit.Mathematics;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 #if !CORE
 #if NETFX_CORE
 using Media = Windows.UI.Xaml.Media;
@@ -12,7 +12,6 @@ using Media = Windows.UI.Xaml.Media;
 using Media = System.Windows.Media;
 #endif
 #endif
-using global::SharpDX;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP

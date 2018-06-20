@@ -2,7 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
 using SharpDX.Direct3D11;
 using System;
 using System.Runtime.CompilerServices;
@@ -13,6 +13,7 @@ namespace HelixToolkit.UWP.Model
 namespace HelixToolkit.Wpf.SharpDX.Model
 #endif
 {
+    using global::SharpDX;
     using Render;
     using Utilities;
     /// <summary>

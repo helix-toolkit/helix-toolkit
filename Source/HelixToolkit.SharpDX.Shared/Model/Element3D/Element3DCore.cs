@@ -2,12 +2,11 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using HelixToolkit.Mathematics;
+using Matrix = System.Numerics.Matrix4x4;
 #if !CORE
-using SharpDX;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;

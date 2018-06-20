@@ -6,18 +6,14 @@
 //   A translate manipulator.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using System.Numerics;
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using HelixToolkit.Wpf.SharpDX.Utilities;
     using System.ComponentModel;
     using System.Windows;
-
-    using global::SharpDX;
-
-    using HelixToolkit.Wpf.SharpDX.Utilities;
-
-    using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
     using MatrixTransform3D = System.Windows.Media.Media3D.MatrixTransform3D;
+    using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
 
     /// <summary>
     ///   A translate manipulator.
@@ -89,8 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {            
             var mb = new MeshBuilder();
             var p0 = this.Offset;// new Vector3(0, 0, 0);
-            var d = this.Direction;
-            d.Normalize();
+            var d = Vector3.Normalize(this.Direction);
             var p1 = p0 + (d * (float)this.Length);
             mb.AddArrow(p0, p1, this.Diameter, 2, 64);
             this.Geometry = mb.ToMeshGeometry3D();            
@@ -110,7 +105,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // up direction
             var upWS = Vector3.Cross(normalWS, directionWS);
             // the direction plane
-            normalWS = Vector3.Cross(upWS, directionWS); normalWS.Normalize();
+            normalWS = Vector3.Normalize(Vector3.Cross(upWS, directionWS));
             // find new hit on the camera-direction plane
             var newHit = this.viewport.UnProjectOnPlane(args.Position.ToVector2(), lastHitPosWS, normalWS);
 

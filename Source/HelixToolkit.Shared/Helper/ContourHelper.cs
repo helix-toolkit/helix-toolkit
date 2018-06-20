@@ -13,9 +13,10 @@ namespace HelixToolkit.Wpf
     using System.Linq;
     using System.Runtime.CompilerServices;
 #if SHARPDX
-    using Vector3D = global::SharpDX.Vector3;
-    using Point3D = global::SharpDX.Vector3;
-    using Point = global::SharpDX.Vector2;
+    using System.Numerics;
+    using Vector3D = System.Numerics.Vector3;
+    using Point3D = System.Numerics.Vector3;
+    using Point = System.Numerics.Vector2;
     using DoubleOrSingle = System.Single;
 #else
     using Vector2D = System.Windows.Vector;

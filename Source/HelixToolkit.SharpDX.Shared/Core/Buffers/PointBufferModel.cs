@@ -4,7 +4,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using global::SharpDX.Direct3D;
 using global::SharpDX.Direct3D11;
-using SharpDX;
+using HelixToolkit.Mathematics;
+using System.Numerics;
 using System;
 using System.Linq;
 #if !NETFX_CORE

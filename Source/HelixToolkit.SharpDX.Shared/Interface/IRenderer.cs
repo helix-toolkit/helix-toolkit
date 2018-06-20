@@ -1,14 +1,12 @@
-﻿using SharpDX;
+﻿using HelixToolkit.Mathematics;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
-
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Render
 #else
 namespace HelixToolkit.Wpf.SharpDX.Render
 #endif
 {
-    using Core;
     using Model.Scene;
     using Model.Scene2D;
     /// <summary>

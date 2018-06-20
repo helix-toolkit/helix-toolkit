@@ -6,7 +6,7 @@
 //
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using System.Numerics;
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
@@ -77,7 +77,7 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Matrix3D Translate3D(global::SharpDX.Vector3 v)
+        public static Matrix3D Translate3D(Vector3 v)
         {
             var m = Matrix3D.Identity;
             m.OffsetX = v.X;

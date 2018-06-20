@@ -5,9 +5,10 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 using global::SharpDX.Direct3D;
 using global::SharpDX.Direct3D11;
-using SharpDX;
+using HelixToolkit.Mathematics;
 using System;
 using System.Linq;
+using System.Numerics;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core

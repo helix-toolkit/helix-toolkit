@@ -3,9 +3,8 @@
 //   Author: Lunci Hua
 // </copyright>
 
-using SharpDX;
 using System.Collections.Generic;
-
+using HelixToolkit.Mathematics;
 #if NETFX_CORE
 using Media = Windows.UI;
 using Windows.UI.Xaml;

@@ -2,14 +2,15 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using HelixToolkit.Mathematics;
 using System.Collections.Generic;
-using SharpDX;
 using System.IO;
 using System.Linq;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 
 #else
-using System.Windows.Media.Imaging;
 #endif
 
 
@@ -19,7 +20,6 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using Core;
     using System;
     using System.Diagnostics;
 
@@ -116,7 +116,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return false;
             }
-            var scale = modelMatrix.ScaleVector;
+            var scale = modelMatrix.ScaleVector();
             var left = -(Width * scale.X) / 2;
             var right = -left;
             var top = -(Height * scale.Y) / 2;
@@ -125,12 +125,12 @@ namespace HelixToolkit.Wpf.SharpDX
             var viewMatrix = context.ViewMatrix;
             var viewMatrixInv = viewMatrix.PsudoInvert();
             var visualToScreen = context.ScreenViewProjectionMatrix;
+            var rayDir = Vector3.Normalize(rayWS.Direction);
             foreach(var center in BillboardVertices.Select(x=>x.Position))
             {
-                var c = Vector3.TransformCoordinate(center.ToVector3(), modelMatrix);
-                var dir = c - rayWS.Position;
-                dir.Normalize();
-                if(Vector3.Dot(dir, rayWS.Direction.Normalized()) < 0)
+                var c = Vector3Helper.TransformCoordinate(center.ToVector3(), modelMatrix);
+                var dir = Vector3.Normalize(c - rayWS.Position);
+                if(Vector3.Dot(dir, rayDir) < 0)
                 {
                     continue;
                 }
@@ -166,7 +166,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (fixedSize)
             {
-                var screenPoint = Vector3.Transform(center, visualToScreen);
+                var screenPoint = Vector4.Transform(center, visualToScreen);
                 var spw = screenPoint.W;
                 var spx = screenPoint.X;
                 var spy = screenPoint.Y;
@@ -181,7 +181,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Z = spz;
 
                 Vector3 bl;
-                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out bl);
+                Vector3Helper.TransformCoordinate(ref v, ref viewMatrixInv, out bl);
 
 
                 x = spx + right * spw;
@@ -191,7 +191,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Z = spz;
 
                 Vector3 br;
-                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out br);
+                Vector3Helper.TransformCoordinate(ref v, ref viewMatrixInv, out br);
 
                 x = spx + right * spw;
                 y = spy + top * spw;
@@ -200,7 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Z = spz;
 
                 Vector3 tr;
-                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out tr);
+                Vector3Helper.TransformCoordinate(ref v, ref viewMatrixInv, out tr);
 
                 x = spx + left * spw;
                 y = spy + top * spw;
@@ -209,12 +209,12 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Z = spz;
 
                 Vector3 tl;
-                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out tl);
+                Vector3Helper.TransformCoordinate(ref v, ref viewMatrixInv, out tl);
                 return BoundingBox.FromPoints(new Vector3[] { tl, tr, bl, br });
             }
             else
             {
-                var vcenter = Vector3.Transform(center, viewMatrix);
+                var vcenter = Vector4.Transform(center, viewMatrix);
                 var vcX = vcenter.X;
                 var vcY = vcenter.Y;
 

@@ -1,22 +1,19 @@
 ﻿namespace SimpleDemo
 {
+    using HelixToolkit.Wpf.SharpDX;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Numerics;
     using System.Windows;
     using System.Windows.Media;
-    using System.Windows.Media.Media3D;
-
-    using HelixToolkit.Wpf;
-    using HelixToolkit.Wpf.SharpDX;
     using TriangleNet.Geometry;
     using TriangleNet.Meshing;
-
     using LineSegment = System.Windows.Media.LineSegment;
     using Point = System.Windows.Point;
-    using Vector3D = global::SharpDX.Vector3;
-    using Point3D = global::SharpDX.Vector3;
+    using Point3D = System.Numerics.Vector3;
+    using Vector3D = System.Numerics.Vector3;
 
     public static class Extensions
     {
@@ -37,7 +34,7 @@
                     var outline = outlines[i];
                     var isHole = i != outlines.Count - 1 && IsPointInPolygon(outerOutline, outline[0]);
                     polygon.AddContour(outline.Select(p => new Vertex(p.X, p.Y)), marker++, isHole);
-                    builder.AddExtrudedSegments(outline.ToSegments().Select(x => new SharpDX.Vector2((float)x.X, (float)x.Y)).ToList(),
+                    builder.AddExtrudedSegments(outline.ToSegments().Select(x => new Vector2((float)x.X, (float)x.Y)).ToList(),
                         textDirection, p0, p1);
                 }
             }
@@ -46,10 +43,8 @@
             var options = new ConstraintOptions();
             var mesh = mesher.Triangulate(polygon, options);
 
-            var u = textDirection;
-            u.Normalize();
-            var z = p1 - p0;
-            z.Normalize();
+            var u = Vector3D.Normalize(textDirection);
+            var z = Vector3D.Normalize(p1 - p0);
             var v = Vector3D.Cross(z, u);
 
             // Convert the triangles

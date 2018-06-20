@@ -3,7 +3,11 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using System;
-using SharpDX;
+using System.Numerics;
+using global::SharpDX;
+using HelixToolkit.Mathematics;
+using Matrix = System.Numerics.Matrix4x4;
+using global::SharpDX.Mathematics.Interop;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -15,8 +19,6 @@ namespace HelixToolkit.Wpf.SharpDX
     
 #else
 #if NETFX_CORE   
-//    using Vector3D = System.Numerics.Vector3;
-//    using Matrix3D = System.Numerics.Matrix4x4;
     using Media = Windows.UI;
 #else
     using System.Windows.Media.Media3D;
@@ -80,69 +82,75 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 #endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector3 ToVector3(this Vector2 vector, float z = 1.0f)
+        public static Vector3 ToVector3(this Vector2 vector, float z = 1.0f)
         {
-            return new global::SharpDX.Vector3(vector.X, vector.Y, z);
+            return new Vector3(vector.X, vector.Y, z);
         }
 #if !CORE
 #if NETFX_CORE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector2 ToVector2(this Windows.Foundation.Point p)
+        public static Vector2 ToVector2(this Windows.Foundation.Point p)
         {
-            return new global::SharpDX.Vector2((float)p.X, (float)p.Y);
+            return new Vector2((float)p.X, (float)p.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Windows.Foundation.Point ToPoint(this global::SharpDX.Vector2 p)
+        public static Windows.Foundation.Point ToPoint(this Vector2 p)
         {
             return new Windows.Foundation.Point(p.X, p.Y);
         }
 #else
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector2 ToVector2(this Point vector)
+        public static Vector2 ToVector2(this Point vector)
         {
-            return new global::SharpDX.Vector2((float)vector.X, (float)vector.Y);
+            return new Vector2((float)vector.X, (float)vector.Y);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RawVector2 ToVector2Raw(this Point vector)
+        {
+            return new RawVector2((float)vector.X, (float)vector.Y);
         }
 #endif
 #endif
 
 #if !NETFX_CORE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector3 ToVector3(this Point3D point)
+        public static Vector3 ToVector3(this Point3D point)
         {
-            return new global::SharpDX.Vector3((float)point.X, (float)point.Y, (float)point.Z);
+            return new Vector3((float)point.X, (float)point.Y, (float)point.Z);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector4 ToVector4(this Point3D point, float w = 1f)
+        public static Vector4 ToVector4(this Point3D point, float w = 1f)
         {
-            return new global::SharpDX.Vector4((float)point.X, (float)point.Y, (float)point.Z, w);
+            return new Vector4((float)point.X, (float)point.Y, (float)point.Z, w);
         }
 #endif
 #if !NETFX_CORE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector3 ToVector3(this Vector3D vector)
+        public static Vector3 ToVector3(this Vector3D vector)
         {
-            return new global::SharpDX.Vector3((float)vector.X, (float)vector.Y, (float)vector.Z);
+            return new Vector3((float)vector.X, (float)vector.Y, (float)vector.Z);
         }
 #endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector3 ToVector3(this Vector4 vector)
+        public static Vector3 ToVector3(this Vector4 vector)
         {
-            return new global::SharpDX.Vector3(vector.X / vector.W, vector.Y / vector.W, vector.Z / vector.W);
+            return new Vector3(vector.X / vector.W, vector.Y / vector.W, vector.Z / vector.W);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector3 ToXYZ(this Vector4 vector)
+        public static Vector3 ToXYZ(this Vector4 vector)
         {
-            return new global::SharpDX.Vector3(vector.X, vector.Y, vector.Z);
+            return new Vector3(vector.X, vector.Y, vector.Z);
         }
 
 #if !NETFX_CORE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector4 ToVector4(this Vector3D vector, float w = 1f)
+        public static Vector4 ToVector4(this Vector3D vector, float w = 1f)
         {
-            return new global::SharpDX.Vector4((float)vector.X, (float)vector.Y, (float)vector.Z, w);
+            return new Vector4((float)vector.X, (float)vector.Y, (float)vector.Z, w);
         }
 #endif
         /// <summary>
@@ -153,8 +161,8 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         public static float AngleBetween(this Vector3 vector1, Vector3 vector2)
         {
-            vector1.Normalize();
-            vector2.Normalize();
+            vector1 = Vector3.Normalize(vector1);
+            vector2 = Vector3.Normalize(vector2);
             var ratio = Vector3.Dot(vector1, vector2);
             float theta;
 
@@ -170,24 +178,24 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 #if !NETFX_CORE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector4 ToVector4(this Transform3D trafo)
+        public static Vector4 ToVector4(this Transform3D trafo)
         {
             var matrix = trafo.Value;
-            return new global::SharpDX.Vector4((float)matrix.OffsetX, (float)matrix.OffsetY, (float)matrix.OffsetZ, (float)matrix.M44);
+            return new Vector4((float)matrix.OffsetX, (float)matrix.OffsetY, (float)matrix.OffsetZ, (float)matrix.M44);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector3 ToVector3(this Transform3D trafo)
+        public static Vector3 ToVector3(this Transform3D trafo)
         {
             var matrix = trafo.Value;
-            return new global::SharpDX.Vector3((float)matrix.OffsetX, (float)matrix.OffsetY, (float)matrix.OffsetZ);
+            return new Vector3((float)matrix.OffsetX, (float)matrix.OffsetY, (float)matrix.OffsetZ);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Matrix ToMatrix(this Transform3D trafo)
+        public static Matrix ToMatrix(this Transform3D trafo)
         {
             var m = trafo.Value;
-            return new global::SharpDX.Matrix(
+            return new Matrix(
                 (float)m.M11,
                 (float)m.M12,
                 (float)m.M13,
@@ -208,40 +216,40 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector4 ToVector4(this global::SharpDX.Vector3 vector, float w = 1f)
+        public static Vector4 ToVector4(this Vector3 vector, float w = 1f)
         {
-            return new global::SharpDX.Vector4((float)vector.X, (float)vector.Y, (float)vector.Z, w);
+            return new Vector4((float)vector.X, (float)vector.Y, (float)vector.Z, w);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Color4 ToColor4(this global::SharpDX.Vector4 vector, float w = 1f)
+        public static Color4 ToColor4(this Vector4 vector, float w = 1f)
         {
-            return new global::SharpDX.Color4((float)vector.X, (float)vector.Y, (float)vector.Z, (float)vector.W);
+            return new Color4((float)vector.X, (float)vector.Y, (float)vector.Z, (float)vector.W);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Color4 ToColor4(this global::SharpDX.Vector3 vector, float w = 1f)
+        public static Color4 ToColor4(this Vector3 vector, float w = 1f)
         {
-            return new global::SharpDX.Color4((float)vector.X, (float)vector.Y, (float)vector.Z, w);
+            return new Color4((float)vector.X, (float)vector.Y, (float)vector.Z, w);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Color4 ToColor4(this global::SharpDX.Color3 vector, float alpha = 1f)
+        public static Color4 ToColor4(this Color3 vector, float alpha = 1f)
         {
-            return new global::SharpDX.Color4(vector.Red, vector.Green, vector.Blue, alpha);
+            return new Color4(vector.Red, vector.Green, vector.Blue, alpha);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Color4 ToColor4(this global::SharpDX.Vector2 vector, float z = 1f, float w = 1f)
+        public static Color4 ToColor4(this Vector2 vector, float z = 1f, float w = 1f)
         {
-            return new global::SharpDX.Color4((float)vector.X, (float)vector.Y, z, w);
+            return new Color4((float)vector.X, (float)vector.Y, z, w);
         }
 
 #if !NETFX_CORE
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Matrix ToMatrix(this Matrix3D m)
+        public static Matrix ToMatrix(this Matrix3D m)
         {
-            return new global::SharpDX.Matrix(
+            return new Matrix(
                 (float)m.M11,
                 (float)m.M12,
                 (float)m.M13,
@@ -260,31 +268,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 (float)m.M44);
         }
 #endif
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector3 Normalized(this global::SharpDX.Vector3 vector)
-        {
-            vector.Normalize();
-            return vector;
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector4 Normalized(this global::SharpDX.Vector4 vector)
-        {
-            vector.Normalize();
-            return vector;
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Color4 Normalized(this global::SharpDX.Color4 vector)
-        {
-            var v = vector.ToVector3();
-            v.Normalize();
-            return v.ToColor4();
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Matrix Inverted(this global::SharpDX.Matrix m)
-        {
-            m.Invert();
-            return m;
-        }
 
         /// <summary>
         /// Find a <see cref="Vector3"/> that is perpendicular to the given <see cref="Vector3"/>.
@@ -296,9 +279,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// A perpendicular vector.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static global::SharpDX.Vector3 FindAnyPerpendicular(this Vector3 n)
+        public static Vector3 FindAnyPerpendicular(this Vector3 n)
         {
-            n.Normalize();
+            n = Vector3.Normalize(n);
             Vector3 u = Vector3.Cross(new Vector3(0, 1, 0), n);
             if (u.LengthSquared() < 1e-3)
             {
@@ -326,7 +309,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Color4 ToColor4(this Media.Color color)
         {
             color.Clamp();
-            return new global::SharpDX.Color4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
+            return new Color4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -356,7 +339,7 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color4 ToColor4(this Media.Color color)
         {
-            return new global::SharpDX.Color4((float)color.R / 255, (float)color.G / 255, (float)color.B / 255, (float)color.A / 255);
+            return new Color4((float)color.R / 255, (float)color.G / 255, (float)color.B / 255, (float)color.A / 255);
         }
 #endif
 #endif

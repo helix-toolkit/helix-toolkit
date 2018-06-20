@@ -2,10 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System.Collections.Generic;
-using global::SharpDX;
 using global::SharpDX.Direct3D;
-
+using HelixToolkit.Mathematics;
+using System.Collections.Generic;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else

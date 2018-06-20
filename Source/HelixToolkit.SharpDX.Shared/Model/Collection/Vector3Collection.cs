@@ -13,9 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
     using System.ComponentModel;
     using System.Globalization;
     using System.Text;
-
-    using global::SharpDX;
-
+    using System.Numerics;
     using Utilities;
 
 #if !NETFX_CORE

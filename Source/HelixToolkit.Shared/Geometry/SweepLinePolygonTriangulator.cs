@@ -20,7 +20,8 @@ namespace HelixToolkit.Wpf
     using System.Collections.Generic;
     using System.Linq;
 #if SHARPDX
-    using Point = global::SharpDX.Vector2;
+    using System.Numerics;
+    using Point = System.Numerics.Vector2;
     using Int32Collection = System.Collections.Generic.List<int>;
     using DoubleOrSingle = System.Single;
 #else
@@ -455,16 +456,24 @@ namespace HelixToolkit.Wpf
             var bestEdge = possibleEdges[0];
             var bestAngle = (float)Math.PI * 2;
             // Vector from last Point to current Point
-            var lastVector = (lastEdge.PointTwo.Point - lastEdge.PointOne.Point);
+#if SHARPDX
+            var lastVector = Vector2.Normalize(lastEdge.PointTwo.Point - lastEdge.PointOne.Point);
+#else
+            var lastVector = lastEdge.PointTwo.Point - lastEdge.PointOne.Point;
             lastVector.Normalize();
+#endif
             // Using CCW Point Order, so the left Vector always points towards the Polygon Center
             var insideVector = new Point(-lastVector.Y, lastVector.X);
             // Check all possible Edges
             foreach (var possibleEdge in possibleEdges)
             {
                 // Next Edge Vector
-                var edgeVector = (possibleEdge.PointTwo.Point - possibleEdge.PointOne.Point);
+#if SHARPDX
+                var edgeVector = Vector2.Normalize(possibleEdge.PointTwo.Point - possibleEdge.PointOne.Point);
+#else
+                var edgeVector = possibleEdge.PointTwo.Point - possibleEdge.PointOne.Point;
                 edgeVector.Normalize();
+#endif
                 // Dot determines if the Vector also points towards the Polygon Center or not (> 0, yes, < 0, no)
                 var dot =  insideVector.X * edgeVector.X + insideVector.Y * edgeVector.Y;
                 // Cos represents the Angle between the last Edge and the next Edge
@@ -847,13 +856,21 @@ namespace HelixToolkit.Wpf
                 throw new Exception("No closed Polygon");
             // Calculate the necessary Vectors
             // From-last-to-this Vector
+#if SHARPDX
+            var vecFromLast = Vector2.Normalize(this.Point - this.Last.Point);
+#else
             var vecFromLast = this.Point - this.Last.Point;
             vecFromLast.Normalize();
+#endif
             // "Left" Vector (pointing "inward")
             var vecLeft = new Point(-vecFromLast.Y, vecFromLast.X);
             // From-this-to-next Vector
-            var vecToNext = this.Next.Point - this.Point;
+#if SHARPDX
+            var vecToNext = Vector2.Normalize(this.Next.Point - this.Point);
+#else
+            var vecToNext = Next.Point - this.Point;
             vecToNext.Normalize();
+#endif
             // If the next Vector is pointing to the left Vector's direction,
             // the current Point is a convex Point (Dot-Product bigger than 0)
             if ((vecLeft.X * vecToNext.X + vecLeft.Y * vecToNext.Y) >= 0)

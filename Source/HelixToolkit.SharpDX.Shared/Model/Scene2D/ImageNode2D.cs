@@ -8,8 +8,8 @@ using global::SharpDX.WIC;
 using SharpDX;
 using System;
 using System.IO;
+using System.Numerics;
 using Bitmap = SharpDX.Direct2D1.Bitmap;
-
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene2D
 #else

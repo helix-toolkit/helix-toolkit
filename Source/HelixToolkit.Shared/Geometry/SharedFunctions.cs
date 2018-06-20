@@ -12,11 +12,11 @@ namespace HelixToolkit.Wpf
 #endif
 {
 #if SHARPDX
-    using global::SharpDX;
-    using Vector3D = global::SharpDX.Vector3;
-    using Point3D = global::SharpDX.Vector3;
+    using System.Numerics;
+    using Vector3D = System.Numerics.Vector3;
+    using Point3D = System.Numerics.Vector3;
     using DoubleOrSingle = System.Single;
-    using Vector = global::SharpDX.Vector2;
+    using Vector = System.Numerics.Vector2;
 #else
     using System.Windows;
     using System.Windows.Media;
@@ -63,7 +63,13 @@ namespace HelixToolkit.Wpf
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DoubleOrSingle DotProduct(ref Vector3D first, ref Vector3D second)
         {
+
+#if SHARPDX
+            return Vector3D.Dot(first, second);
+#else
             return first.X * second.X + first.Y * second.Y + first.Z * second.Z;
+#endif
+
         }
 
         /// <summary>
@@ -75,7 +81,13 @@ namespace HelixToolkit.Wpf
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DoubleOrSingle DotProduct(ref Vector first, ref Vector second)
         {
+
+#if SHARPDX
+            return Vector.Dot(first, second);
+#else
             return first.X * second.X + first.Y * second.Y;
+#endif
+
         }
         /// <summary>
         /// 
@@ -85,7 +97,13 @@ namespace HelixToolkit.Wpf
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DoubleOrSingle LengthSquared(ref Vector3D vector)
         {
+
+#if SHARPDX
+            return vector.LengthSquared();
+#else
             return vector.X * vector.X + vector.Y * vector.Y + vector.Z * vector.Z;
+#endif
+
         }
         /// <summary>
         /// Lengthes the squared.
@@ -95,7 +113,13 @@ namespace HelixToolkit.Wpf
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DoubleOrSingle LengthSquared(ref Vector vector)
         {
+
+#if SHARPDX
+            return vector.LengthSquared();
+#else
             return vector.X * vector.X + vector.Y * vector.Y;
+#endif
+
         }
         /// <summary>
         /// 
@@ -105,7 +129,13 @@ namespace HelixToolkit.Wpf
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DoubleOrSingle Length(ref Vector3D vector)
         {
+
+#if SHARPDX
+            return vector.Length();
+#else
             return (DoubleOrSingle)Math.Sqrt(LengthSquared(ref vector));
+#endif
+
         }
 
 #if !NETFX_CORE

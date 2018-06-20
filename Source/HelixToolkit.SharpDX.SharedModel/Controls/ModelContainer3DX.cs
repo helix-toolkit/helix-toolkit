@@ -1,11 +1,10 @@
-﻿using SharpDX;
-using SharpDX.Direct3D11;
+﻿using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using SharpDX.Direct3D;
-
+using HelixToolkit.Mathematics;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -17,16 +16,15 @@ using Windows.UI.Xaml.Controls;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
-using System.Windows.Controls;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using Controls;
     using Core2D;
     using HelixToolkit.Logger;
-    using Render;
     using Model.Scene;
+    using Render;
     using Utilities;
-    using Controls;
 
 
     /// <summary>

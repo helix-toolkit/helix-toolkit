@@ -2,18 +2,19 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using HelixToolkit.Mathematics;
+using System;
+using System.Numerics;
+using System.Runtime.Serialization;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using System;
-    using global::SharpDX;
     using Core;
     using Model;
-    using System.Runtime.Serialization;
-    using System.Collections.Generic;
+
 
 #if !NETFX_CORE
     [Serializable]

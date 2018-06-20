@@ -6,18 +6,16 @@
 //   Class ModelReader.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
+using HelixToolkit.Mathematics;
 using System.IO;
-using SharpDX;
 #if !NETFX_CORE
-using System.Windows.Threading;
 namespace HelixToolkit.Wpf.SharpDX
 #else
 namespace HelixToolkit.UWP
 #endif
 {
-    using Mesh3DGroup = System.Collections.Generic.List<Object3D>;
     using Model;
+    using Mesh3DGroup = System.Collections.Generic.List<Object3D>;
     /// <summary>
     /// Class ModelReader.
     /// </summary>

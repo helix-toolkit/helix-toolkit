@@ -4,7 +4,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 using System.Runtime.CompilerServices;
 using SharpDX.Direct3D11;
-using global::SharpDX;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Shaders
@@ -14,7 +13,7 @@ namespace HelixToolkit.UWP.Shaders
 {    
     using Render;
     using Utilities;
-
+    using Mathematics;
     /// <summary>
     /// Shader Pass
     /// </summary>

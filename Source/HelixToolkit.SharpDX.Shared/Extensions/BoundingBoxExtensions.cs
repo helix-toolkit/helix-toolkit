@@ -2,11 +2,10 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
-using System;
+using HelixToolkit.Mathematics;
 using System.Collections.Generic;
-using System.Text;
-
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -35,8 +34,8 @@ namespace HelixToolkit.Wpf.SharpDX
             foreach (var p in points)
             {
                 var point = p;
-                Vector3.Min(ref min, ref point, out min);
-                Vector3.Max(ref max, ref point, out max);
+                min = Vector3.Min(min, point);
+                max = Vector3.Max(max, point);
             }
 
             return new BoundingBox(min, max);
@@ -51,8 +50,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public static BoundingBox Transform(this BoundingBox box, Matrix transform)
         {
             /////////////////Row 4/////////////////
-            var min = transform.TranslationVector;
-            var max = transform.TranslationVector;
+            var min = transform.Translation;
+            var max = transform.Translation;
             /////////////////Row 1/////////////////
             if (transform.M11 > 0f)
             {

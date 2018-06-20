@@ -1,7 +1,8 @@
-﻿using SharpDX;
+﻿using HelixToolkit.Mathematics;
 using System;
 using System.Collections.Generic;
-
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Utilities
 #else
@@ -270,7 +271,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             }
         }
 
-        public override bool FindNearestPointBySphereExcludeChild(RenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(RenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
         {
             throw new NotImplementedException();
         }

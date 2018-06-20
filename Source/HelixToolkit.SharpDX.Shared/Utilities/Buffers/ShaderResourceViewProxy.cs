@@ -1,6 +1,5 @@
-using SharpDX;
+using HelixToolkit.Mathematics;
 using SharpDX.Direct3D11;
-using System.Threading;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Utilities

@@ -3,10 +3,12 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 //#define DEBUG
-using SharpDX;
+using HelixToolkit.Mathematics;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.CompilerServices;
+using Matrix = System.Numerics.Matrix4x4;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Utilities
@@ -123,18 +125,14 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     var v0 = Positions[idx1];
                     var v1 = Positions[idx2];
 
-                    var t0 = Vector3.TransformCoordinate(v0, modelMatrix);
-                    var t1 = Vector3.TransformCoordinate(v1, modelMatrix);
+                    var t0 = Vector3Helper.TransformCoordinate(v0, modelMatrix);
+                    var t1 = Vector3Helper.TransformCoordinate(v1, modelMatrix);
                     Vector3 sp, tp;
                     float sc, tc;
                     var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out sp, out tp, out sc, out tc);
                     var svpm = context.ScreenViewProjectionMatrix;
-                    Vector4 sp4;
-                    Vector4 tp4;
-                    Vector3.Transform(ref sp, ref svpm, out sp4);
-                    Vector3.Transform(ref tp, ref svpm, out tp4);
-                    var sp3 = sp4.ToVector3();
-                    var tp3 = tp4.ToVector3();
+                    Vector3 sp3 = Vector3.Transform(sp, svpm);
+                    Vector3 tp3 = Vector3.Transform(tp, svpm);
                     var tv2 = new Vector2(tp3.X - sp3.X, tp3.Y - sp3.Y);
                     var dist = tv2.Length();
                     if (dist < lastDist && dist <= hitThickness)

@@ -3,8 +3,10 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
+using HelixToolkit.Mathematics;
 using SharpDX;
 using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
@@ -512,7 +514,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 
             var rectWidthHeight = new Vector2(rect.Width, rect.Height);
 
-            if ((!IsArrangeDirty && !ancestorDirty && previousArrange == rect) || rectWidthHeight.IsZero)
+            if ((!IsArrangeDirty && !ancestorDirty && previousArrange == rect) || rectWidthHeight.IsZero())
                 return;
             previousArrange = rect;
             var arrangeSize = rectWidthHeight;
@@ -682,7 +684,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         {
             LayoutBound = new RectangleF((float)Margin.Left, (float)Margin.Top, RenderSize.X, RenderSize.Y);
             LayoutClipBound = new RectangleF(0, 0, RenderSize.X + MarginWidthHeight.X, RenderSize.Y + MarginWidthHeight.Y);
-            LayoutTranslate = Matrix3x2.Translation((float)Math.Round(LayoutOffsets.X), (float)Math.Round(LayoutOffsets.Y));
+            LayoutTranslate = Matrix3x2.CreateTranslation((float)Math.Round(LayoutOffsets.X), (float)Math.Round(LayoutOffsets.Y));
         }
 
         protected virtual RectangleF ArrangeOverride(RectangleF finalSize)

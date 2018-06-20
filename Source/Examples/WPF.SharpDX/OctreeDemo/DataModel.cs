@@ -1,14 +1,11 @@
 ﻿using DemoCore;
+using HelixToolkit.Mathematics;
 using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Numerics;
 using System.Windows.Media.Animation;
 using Media3D = System.Windows.Media.Media3D;
-
 namespace OctreeDemo
 {
     public class DataModel : ObservableObject

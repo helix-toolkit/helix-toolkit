@@ -1,8 +1,6 @@
-﻿using SharpDX;
-using SharpDX.Direct3D11;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP

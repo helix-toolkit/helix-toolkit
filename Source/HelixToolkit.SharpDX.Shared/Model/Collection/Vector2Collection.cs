@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
     using System.Globalization;
     using System.Text;
 
-    using global::SharpDX;
+    using System.Numerics;
 
     using Utilities;
 

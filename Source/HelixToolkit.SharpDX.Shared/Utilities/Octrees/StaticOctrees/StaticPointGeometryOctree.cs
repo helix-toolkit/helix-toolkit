@@ -3,9 +3,10 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 //#define DEBUG
-using SharpDX;
+using HelixToolkit.Mathematics;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Utilities
@@ -127,8 +128,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                     var svpm = context.ScreenViewProjectionMatrix;
                     smvpm = modelMatrix * svpm;
                     var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
-                    Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
-                    clickPoint = clickPoint4.ToVector3();
+                    clickPoint = Vector4.Transform(clickPoint4, svpm).ToVector3();
                     needRecalculate = false;
                 }
                 isIntersect = true;
@@ -136,7 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                 for (int i = octant.Start; i < octant.End; ++i)
                 {
                     var v0 = Positions[Objects[i]];
-                    var p0 = Vector3.TransformCoordinate(v0, smvpm);
+                    var p0 = Vector3Helper.TransformCoordinate(v0, smvpm);
                     var pv = p0 - clickPoint;
                     var d = pv.Length();
                     if (d < dist) // If d is NaN, the condition is false.
@@ -144,7 +144,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                         dist = d;
                         result.IsValid = true;
                         result.ModelHit = model;
-                        var px = Vector3.TransformCoordinate(v0, modelMatrix);
+                        var px = Vector3Helper.TransformCoordinate(v0, modelMatrix);
                         result.PointHit = px;
                         result.Distance = (rayWS.Position - px).Length();
                         result.Tag = Objects[i];

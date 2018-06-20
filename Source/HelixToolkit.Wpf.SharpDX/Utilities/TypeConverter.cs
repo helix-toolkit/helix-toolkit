@@ -7,12 +7,12 @@
 
 namespace HelixToolkit.Wpf.SharpDX.Utilities
 {
+    using Core;
+    using HelixToolkit.Mathematics;
     using System;
     using System.ComponentModel;
     using System.Globalization;
-
-    using global::SharpDX;
-    using Core;
+    using System.Numerics;
 
 
     public abstract class FromToStringTypeConverter : TypeConverter

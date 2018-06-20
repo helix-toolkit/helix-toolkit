@@ -6,7 +6,7 @@
 //   Provides extension methods for the cameras.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Wpf.SharpDX
 {
     using HelixToolkit.Wpf.SharpDX.Cameras;
@@ -16,10 +16,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows;
     using System.Windows.Media.Animation;
     using System.Windows.Media.Media3D;
-
-    using Matrix = global::SharpDX.Matrix;
-    using Matrix3x3 = global::SharpDX.Matrix3x3;
-    using Vector3 = global::SharpDX.Vector3;
 
     /// <summary>
     /// Provides extension methods for the cameras.
@@ -371,7 +367,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static Matrix GetInverseViewProjectionMatrix(this CameraCore camera, double aspectRatio)
         {
             var m = GetViewProjectionMatrix(camera, aspectRatio);
-            m.Invert();
+            Matrix.Invert(m, out m);
             return m;
         }
 

@@ -4,9 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using SharpDX;
+using HelixToolkit.Mathematics;
 using System.Collections.Generic;
-
+using System.Numerics;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else

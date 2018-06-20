@@ -2,7 +2,7 @@
 //   Copyright (c) 2017 Helix Toolkit contributors
 // </copyright>
 
-
+using System.Numerics;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 using Media = Windows.UI;
@@ -15,7 +15,6 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Model;
     using Model.Scene;
-    using global::SharpDX;
 
 
     /// <summary>

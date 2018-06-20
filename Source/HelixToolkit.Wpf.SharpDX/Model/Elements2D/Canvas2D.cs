@@ -3,13 +3,13 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
+using HelixToolkit.Mathematics;
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;
     using global::SharpDX;
-    using System.Windows;
     using Model.Scene2D;
+    using System.Windows;
 
     /// <summary>
     /// Supports both ItemsSource binding and Xaml children. Binds with ObservableElement2DCollection 

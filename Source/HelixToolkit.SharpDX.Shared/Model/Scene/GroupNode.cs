@@ -2,9 +2,10 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-
+using HelixToolkit.Mathematics;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Matrix = System.Numerics.Matrix4x4;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
@@ -101,7 +102,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="ray">The ray.</param>
         /// <param name="hits">The hits.</param>
         /// <returns></returns>
-        protected override bool OnHitTest(RenderContext context, global::SharpDX.Matrix totalModelMatrix, ref global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             bool isHit = false;
             if (octreeManager != null)

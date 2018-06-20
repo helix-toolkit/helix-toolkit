@@ -3,10 +3,12 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
-using SharpDX;
+using HelixToolkit.Mathematics;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
+using global::SharpDX;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
 #else
@@ -145,7 +147,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     if (light.LightType == LightType.Directional)
                     {
                         var dlight = light.RenderCore as DirectionalLightCore;
-                        var dir = Vector4.Transform(dlight.Direction.ToVector4(0), dlight.ModelMatrix).Normalized() * distance;
+                        var dir = Vector4.Normalize(Vector4.Transform(dlight.Direction.ToVector4(0), dlight.ModelMatrix)) * distance;
                         var pos = -dir;
                         orthoCamera.LookDirection = new Vector3(dir.X, dir.Y, dir.Z);
                         orthoCamera.Position = new Vector3(pos.X, pos.Y, pos.Z);
@@ -157,7 +159,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     else if (light.LightType == LightType.Spot)
                     {
                         var splight = light.RenderCore as SpotLightCore;
-                        persCamera.Position = (splight.Position + splight.ModelMatrix.Row4.ToVector3());
+                        persCamera.Position = (splight.Position + splight.ModelMatrix.Row4().ToVector3());
                         var look = Vector4.Transform(splight.Direction.ToVector4(0), splight.ModelMatrix);
                         persCamera.LookDirection = new Vector3(look.X, look.Y, look.Z);
                         persCamera.FarPlaneDistance = (float)splight.Range;

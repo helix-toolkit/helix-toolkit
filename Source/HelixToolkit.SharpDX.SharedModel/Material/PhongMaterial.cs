@@ -1,8 +1,8 @@
-﻿using SharpDX;
-using SharpDX.Direct3D11;
+﻿using SharpDX.Direct3D11;
 using System.IO;
 using System.Runtime.Serialization;
-
+using HelixToolkit.Mathematics;
+using System.Numerics;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
@@ -13,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using Model;
     using Shaders;
-   
+
     /// <summary>
     /// Implments a phong-material with its all properties
     /// Includes Diffuse, Normal, Displacement, Specular, etc. maps

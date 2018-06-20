@@ -2,16 +2,15 @@
 //   Copyright (c) 2017 Helix Toolkit contributors
 //   Author: Lunci Hua
 // </copyright>
-using SharpDX;
 using System;
+using System.Numerics;
 using System.Windows;
-using Media3D = System.Windows.Media.Media3D;
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Elements2D;
+    using Converters;
     using Model;
     using Model.Scene;
-    using Elements2D;
-    using HelixToolkit.Wpf.SharpDX.Converters;
     using System;
     using System.Windows.Data;
 
@@ -201,8 +200,8 @@ namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Model.Scene2D;
     using HorizontalAlignment = System.Windows.HorizontalAlignment;
-    using VerticalAlignment = System.Windows.VerticalAlignment;
     using Thickness = System.Windows.Thickness;
+    using VerticalAlignment = System.Windows.VerticalAlignment;
     using Visibility = System.Windows.Visibility;
     /// <summary>
     /// 

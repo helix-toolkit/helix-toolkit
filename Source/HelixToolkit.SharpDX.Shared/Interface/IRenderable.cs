@@ -3,7 +3,9 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
+using System;
+using System.Collections.Generic;
+using Matrix = System.Numerics.Matrix4x4;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -11,11 +13,9 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Cameras;
-    using global::SharpDX;
     using Model.Scene;
     using Model.Scene2D;
-    using System;
-    using System.Collections.Generic;
+
 
     /// <summary>
     /// 

@@ -2,7 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.IO;

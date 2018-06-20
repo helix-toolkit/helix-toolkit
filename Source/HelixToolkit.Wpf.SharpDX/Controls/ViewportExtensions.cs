@@ -19,12 +19,13 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Media.Imaging;
     using System.Windows.Media.Media3D;
     using System.Windows.Shapes;
+    using Matrix = System.Numerics.Matrix4x4;
+    using Plane = System.Numerics.Plane;
+    using Ray = Mathematics.Ray;
+    using Vector2 = System.Numerics.Vector2;
+    using Vector3 = System.Numerics.Vector3;
+    using BoundingBox = Mathematics.BoundingBox;
 
-    using Matrix = global::SharpDX.Matrix;
-    using Plane = global::SharpDX.Plane;
-    using Ray = global::SharpDX.Ray;
-    using Vector2 = global::SharpDX.Vector2;
-    using Vector3 = global::SharpDX.Vector3;
     using Cameras;
     using Model.Scene;
     using global::SharpDX.Direct3D11;
@@ -217,7 +218,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     if (r.HasBound && r.BoundsWithTransform.Maximum != maxVector)
                     {
-                        bounds = global::SharpDX.BoundingBox.Merge(bounds, r.BoundsWithTransform);
+                        bounds = BoundingBox.Merge(bounds, r.BoundsWithTransform);
                     }
                 }
             }
@@ -399,7 +400,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var py = (float)point2d.Y;
 
                 var viewMatrix = camera.GetViewMatrix();
-                Vector3 v = new Vector3();
+
                 
                 var matrix = MatrixExtensions.PsudoInvert(ref viewMatrix);
                 float w = (float)viewport.ActualWidth;
@@ -407,11 +408,15 @@ namespace HelixToolkit.Wpf.SharpDX
                 var aspectRatio = w / h;
 
                 var projMatrix = camera.GetProjectionMatrix(aspectRatio);
-                Vector3 zn, zf;
-                v.X = (2 * px / w - 1) / projMatrix.M11;
-                v.Y = -(2 * py / h - 1) / projMatrix.M22;
-                v.Z = 1 / projMatrix.M33;
-                Vector3.TransformCoordinate(ref v, ref matrix, out zf);
+
+                Vector3 v = new Vector3
+                {
+                    X = (2 * px / w - 1) / projMatrix.M11,
+                    Y = -(2 * py / h - 1) / projMatrix.M22,
+                    Z = 1 / projMatrix.M33
+                };
+                Vector3 zn;
+                Mathematics.Vector3Helper.TransformCoordinate(ref v, ref matrix, out Vector3 zf);
 
                 if (camera is PerspectiveCameraCore)
                 {
@@ -420,10 +425,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 else
                 {
                     v.Z = 0;
-                    Vector3.TransformCoordinate(ref v, ref matrix, out zn);
-                }           
-                Vector3 r = zf - zn;
-                r.Normalize();               
+                    Mathematics.Vector3Helper.TransformCoordinate(ref v, ref matrix, out zn);
+                }
+                Vector3 r = Vector3.Normalize(zf - zn);             
 
                 return new Ray(zn + r * camera.NearPlaneDistance, r);
             }
@@ -505,7 +509,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         public static Vector3? UnProjectOnPlane(this Viewport3DX viewport, Vector2 p, Vector3 position, Vector3 normal)
         {            
-            var plane = new Plane(position, normal);
+            var plane = Mathematics.PlaneHelper.GetPlane(position, normal);
             return UnProjectOnPlane(viewport, p, plane);
         }
           

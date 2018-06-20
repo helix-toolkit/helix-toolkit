@@ -2,20 +2,20 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
 using SharpDX.Direct3D11;
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Numerics;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using Shaders;
-    using Core;
     using Render;
+    using Shaders;
     /// <summary>
     /// 
     /// </summary>

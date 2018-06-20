@@ -2,7 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
@@ -13,8 +15,7 @@ namespace HelixToolkit.UWP.Model
     using Render;
     using ShaderManager;
     using Shaders;
-    using System;
-    using System.Runtime.CompilerServices;
+
     using Utilities;
 
     /// <summary>

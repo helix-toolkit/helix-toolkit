@@ -6,14 +6,12 @@
 //   Specifies what portion of the 3D scene is rendered by the Viewport3DX element.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using Matrix = System.Numerics.Matrix4x4;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Media3D;
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System.Windows.Media.Animation;
-    using System.Windows.Media.Media3D;
-
-    using global::SharpDX;
-    using HelixToolkit.Wpf.SharpDX.Cameras;
+    using Cameras;
 
     /// <summary>
     /// Specifies what portion of the 3D scene is rendered by the Viewport3DX element.

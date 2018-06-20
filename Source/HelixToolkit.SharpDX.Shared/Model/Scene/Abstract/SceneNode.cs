@@ -3,7 +3,9 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
-using SharpDX;
+using HelixToolkit.Mathematics;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -661,7 +663,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// Raises the on transform bound sphere changed.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        protected void RaiseOnTransformBoundSphereChanged(BoundChangeArgs<global::SharpDX.BoundingSphere> args)
+        protected void RaiseOnTransformBoundSphereChanged(BoundChangeArgs<BoundingSphere> args)
         {
             OnTransformBoundSphereChanged?.Invoke(this, args);
         }
@@ -670,7 +672,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// Raises the on bound sphere changed.
         /// </summary>
         /// <param name="args">The arguments.</param>
-        protected void RaiseOnBoundSphereChanged(BoundChangeArgs<global::SharpDX.BoundingSphere> args)
+        protected void RaiseOnBoundSphereChanged(BoundChangeArgs<BoundingSphere> args)
         {
             OnBoundSphereChanged?.Invoke(this, args);
         }

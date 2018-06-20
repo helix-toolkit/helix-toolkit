@@ -4,12 +4,14 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 
 using global::SharpDX.Direct3D11;
-using SharpDX;
+using HelixToolkit.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene
@@ -18,8 +20,8 @@ namespace HelixToolkit.UWP.Model.Scene
 namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
-    using Shaders;
     using Core;
+    using Shaders;
 
     /// <summary>
     /// 
@@ -157,22 +159,22 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             cornerInstances = new Matrix[cornerPoints.Length];
             for (int i = 0; i < cornerPoints.Length; ++i)
             {
-                cornerInstances[i] = Matrix.Translation(cornerPoints[i] * size / 2 * 0.95f);
+                cornerInstances[i] = Matrix.CreateTranslation(cornerPoints[i] * size / 2 * 0.95f);
             }
             int count = xAligned.Length;
             edgeInstances = new Matrix[count * 3];
 
             for (int i = 0; i < count; ++i)
             {
-                edgeInstances[i] = Matrix.RotationZ((float)Math.PI / 2) * Matrix.Translation(xAligned[i] * halfSize * 0.95f);
+                edgeInstances[i] = Matrix.CreateRotationZ((float)Math.PI / 2) * Matrix.CreateTranslation(xAligned[i] * halfSize * 0.95f);
             }
             for (int i = count; i < count * 2; ++i)
             {
-                edgeInstances[i] = Matrix.Translation(yAligned[i % count] * halfSize * 0.95f);
+                edgeInstances[i] = Matrix.CreateTranslation(yAligned[i % count] * halfSize * 0.95f);
             }
             for (int i = count * 2; i < count * 3; ++i)
             {
-                edgeInstances[i] = Matrix.RotationX((float)Math.PI / 2) * Matrix.Translation(zAligned[i % count] * halfSize * 0.95f);
+                edgeInstances[i] = Matrix.CreateRotationX((float)Math.PI / 2) * Matrix.CreateTranslation(zAligned[i % count] * halfSize * 0.95f);
             }
         }
 
@@ -358,7 +360,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             v.X = (2 * px / viewportSize - 1) / projMatrix.M11;
             v.Y = -(2 * py / viewportSize - 1) / projMatrix.M22;
             v.Z = 1 / projMatrix.M33;
-            Vector3.TransformCoordinate(ref v, ref matrix, out Vector3 zf);
+            Vector3Helper.TransformCoordinate(ref v, ref matrix, out Vector3 zf);
             if (screenSpaceCore.IsPerspective)
             {
                 zn = screenSpaceCore.GlobalTransform.EyePos;
@@ -366,11 +368,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             else
             {
                 v.Z = 0;
-                Vector3.TransformCoordinate(ref v, ref matrix, out zn);
+                Vector3Helper.TransformCoordinate(ref v, ref matrix, out zn);
             }
 
-            Vector3 r = zf - zn;
-            r.Normalize();
+            Vector3 r = Vector3.Normalize(zf - zn);
 
             ray = new Ray(zn, r);
             List<HitTestResult> viewBoxHit = new List<HitTestResult>();
@@ -397,12 +398,12 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     if (hit.ModelHit == EdgeModel && index < edgeInstances.Length)
                     {
                         Matrix transform = edgeInstances[index];
-                        normal = -transform.TranslationVector;
+                        normal = -transform.Translation;
                     }
                     else if (hit.ModelHit == CornerModel && index < cornerInstances.Length)
                     {
                         Matrix transform = cornerInstances[index];
-                        normal = -transform.TranslationVector;
+                        normal = -transform.Translation;
                     }
                     else
                     {
@@ -413,7 +414,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 {
                     return false;
                 }
-                normal.Normalize();
+                normal = Vector3.Normalize(normal);
                 if (Vector3.Cross(normal, UpDirection).LengthSquared() < 1e-5)
                 {
                     var vecLeft = new Vector3(-normal.Y, -normal.Z, -normal.X);

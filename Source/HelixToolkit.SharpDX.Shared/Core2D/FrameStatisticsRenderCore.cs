@@ -2,11 +2,11 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using D2D = SharpDX.Direct2D1;
+using HelixToolkit.Mathematics;
 using SharpDX.DirectWrite;
-using SharpDX;
 using System;
-
+using System.Numerics;
+using D2D = SharpDX.Direct2D1;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Core2D
 #else
@@ -114,9 +114,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             var metrices = textLayout.Metrics;
             renderBound.Width = Math.Max(metrices.Width, renderBound.Width);
             renderBound.Height = metrices.Height;
-            context.DeviceContext.Transform = Matrix3x2.Translation((float)context.ActualWidth - renderBound.Width, 0);                                     
+            context.DeviceContext.Transform = Matrix3x2.CreateTranslation((float)context.ActualWidth - renderBound.Width, 0).ToRaw();                                     
             context.DeviceContext.FillRectangle(renderBound, background);
-            context.DeviceContext.DrawTextLayout(Vector2.Zero, textLayout, foreground);
+            context.DeviceContext.DrawTextLayout(Vector2Helper.Zero.ToRaw(), textLayout, foreground);
         }
     }
 }

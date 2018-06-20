@@ -14,14 +14,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows;
     using System.Windows.Media.Media3D;
 
-    using global::SharpDX;
-
-    using Matrix = global::SharpDX.Matrix;
-    using System.Windows.Media.Imaging;
-    using HelixToolkit.Wpf.SharpDX.Core;
-    using System.IO;
-    using System;
-
     public interface ITraversable
     {
         IList<ITraversable> Items { get; }

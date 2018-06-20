@@ -2,16 +2,16 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
 using System;
 using System.Collections.Generic;
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using BoundingSphere = global::SharpDX.BoundingSphere;
     /// <summary>
     /// 
     /// </summary>

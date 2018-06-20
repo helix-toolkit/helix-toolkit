@@ -10,6 +10,7 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
+    using Mathematics;
     /// <summary>
     /// 
     /// </summary>
@@ -23,7 +24,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <param name="context">The context.</param>
         protected override void OnRender(RenderContext2D context)
         {
-            ellipse.Point = LayoutBound.Center;
+            ellipse.Point = LayoutBound.Center.ToRaw();
             ellipse.RadiusX = LayoutBound.Width / 2;
             ellipse.RadiusY = LayoutBound.Height / 2;
             if (FillBrush != null)

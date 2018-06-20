@@ -2,20 +2,20 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
-using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-using System.Collections.Generic;
 using System;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using HelixToolkit.Mathematics;
+    using Render;
     using Shaders;
     using Utilities;
-    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -277,14 +277,14 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected Matrix CreateViewMatrix(RenderContext renderContext, out Vector3 eye)
         {
-            eye = -renderContext.Camera.LookDirection.Normalized() * CameraDistance;
+            eye = -Vector3.Normalize(renderContext.Camera.LookDirection) * CameraDistance;
             if (IsRightHand)
             {
-                return Matrix.LookAtRH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
+                return Matrix.CreateLookAt(eye, Vector3.Zero, renderContext.Camera.UpDirection);
             }
             else
             {
-                return Matrix.LookAtLH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
+                return MatrixHelper.LookAtLH(eye, Vector3.Zero, renderContext.Camera.UpDirection);
             }
         }
         /// <summary>
@@ -295,11 +295,11 @@ namespace HelixToolkit.UWP.Core
         {
             if (IsPerspective)
             {
-                projectionMatrix = IsRightHand ? Matrix.PerspectiveFovRH(Fov, 1, 0.001f, 100f) : Matrix.PerspectiveFovLH(Fov, 1, 0.1f, 100f);
+                projectionMatrix = IsRightHand ? Matrix.CreatePerspectiveFieldOfView(Fov, 1, 0.001f, 100f) : MatrixHelper.PerspectiveFovLH(Fov, 1, 0.1f, 100f);
             }
             else
             {
-                projectionMatrix = IsRightHand ? Matrix.OrthoRH(CameraDistance, CameraDistance, 0.1f, 100f) : Matrix.OrthoLH(CameraDistance, CameraDistance, 0.1f, 100f);
+                projectionMatrix = IsRightHand ? Matrix.CreateOrthographic(CameraDistance, CameraDistance, 0.1f, 100f) : MatrixHelper.OrthoLH(CameraDistance, CameraDistance, 0.1f, 100f);
             }
         }
         /// <summary>

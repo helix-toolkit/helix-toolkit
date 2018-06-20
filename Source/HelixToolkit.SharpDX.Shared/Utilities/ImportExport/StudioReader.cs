@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using SharpDX;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 using System.Diagnostics;
 
 #if !NETFX_CORE
@@ -15,7 +16,8 @@ namespace HelixToolkit.UWP
 #endif
 {
     using Core;
-    using Object3DGroup = System.Collections.Generic.List<Object3D>;
+    using Mathematics;
+    using Object3DGroup = List<Object3D>;
 #if CORE
     using Material = Model.MaterialCore;
     using PhongMaterial = Model.PhongMaterialCore;
@@ -514,12 +516,11 @@ namespace HelixToolkit.UWP
 
                 var p1 = v2 - v1;
                 var p2 = v3 - v1;
-                var n = Vector3.Cross(p1, p2);
+                var n = Vector3.Normalize(Vector3.Cross(p1, p2));
                 // angle
-                p1.Normalize();
-                p2.Normalize();
+                p1 = Vector3.Normalize(p1);
+                p2 = Vector3.Normalize(p2);
                 var a = (float)Math.Acos(Vector3.Dot(p1, p2));
-                n.Normalize();
                 normals[i1] += (a * n);
                 normals[i2] += (a * n);
                 normals[i3] += (a * n);
@@ -527,9 +528,7 @@ namespace HelixToolkit.UWP
 
             for (int i = 0; i < normals.Count; i++)
             {
-                var n = normals[i];
-                n.Normalize();
-                normals[i] = n;
+                normals[i] = Vector3.Normalize(normals[i]);
             }
         }
 

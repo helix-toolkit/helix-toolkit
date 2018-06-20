@@ -3,11 +3,12 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 //#define TEST
-using System;
-using SharpDX;
-using SharpDX.Direct3D11;
+using HelixToolkit.Mathematics;
 using SharpDX.Direct3D;
+using SharpDX.Direct3D11;
 using SharpDX.DXGI;
+using System;
+using Matrix = System.Numerics.Matrix4x4;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -15,9 +16,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using Render;
     using Shaders;
     using Utilities;
-    using Render;
 
     /// <summary>
     /// 

@@ -6,14 +6,12 @@
 //   A translate manipulator.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using System.Numerics;
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
     using System.ComponentModel;
     using System.Windows;
-
-    using global::SharpDX;
 
     using Utilities;
     using MatrixTransform3D = System.Windows.Media.Media3D.MatrixTransform3D;
@@ -122,8 +120,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.InnerDiameter >= this.OuterDiameter)
                 this.OuterDiameter = this.InnerDiameter + 0.3;
 
-            var d = this.Axis;
-            d.Normalize();
+            var d = Vector3.Normalize(this.Axis);
             var p1 = p0 - (d * (float)this.Length * 0.5f);
             var p2 = p0 + (d * (float)this.Length * 0.5f);
             mb.AddPipe(p1, p2, this.InnerDiameter, this.OuterDiameter, 64);
@@ -141,7 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             // --- get the plane for translation (camera normal is a good choice)                     
             var normal = this.cameraNormal;
-            var position = this.TotalModelMatrix.TranslationVector;
+            var position = this.TotalModelMatrix.Translation;
             //var position = this.totalModelMatrix.TranslationVector;
 
             // --- hit position 
@@ -150,10 +147,8 @@ namespace HelixToolkit.Wpf.SharpDX
             if (newHit.HasValue)
             {
                 var newHitPos = newHit.Value;
-                var v = this.lastHitPosWS - position;
-                var u = newHitPos - position;
-                v.Normalize();
-                u.Normalize();
+                var v = Vector3.Normalize(lastHitPosWS - position);
+                var u = Vector3.Normalize(newHitPos - position);
                 
                 var currentAxis = Vector3.Cross(u, v);
                 var mainAxis = ToWorldVec(this.Axis);// this.Transform.Transform(this.Axis.ToVector3D()).ToVector3();

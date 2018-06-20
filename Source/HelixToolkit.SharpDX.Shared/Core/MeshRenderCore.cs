@@ -2,16 +2,16 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using global::SharpDX.Direct3D11;
+using HelixToolkit.Mathematics;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Shaders;
     using Render;
-    using global::SharpDX.Direct3D11;
-    using global::SharpDX;
+    using Shaders;
     using Utilities;
     public class MeshRenderCore : MaterialGeometryRenderCore, IMeshRenderParams, IDynamicReflectable
     {

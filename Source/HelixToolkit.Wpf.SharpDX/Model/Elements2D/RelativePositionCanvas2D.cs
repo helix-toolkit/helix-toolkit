@@ -1,6 +1,6 @@
-﻿using SharpDX;
+﻿using HelixToolkit.Mathematics;
+using SharpDX;
 using System.Windows;
-
 namespace HelixToolkit.Wpf.SharpDX.Elements2D
 {
     using Core2D;

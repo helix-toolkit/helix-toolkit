@@ -3,13 +3,12 @@
 //   Copyright (c) 2014 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
+using HelixToolkit.Mathematics;
+using HelixToolkit.Wpf.SharpDX.Core;
+using System.Collections.Generic;
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System;
-    using System.Collections.Generic;
-    using HelixToolkit.Wpf.SharpDX.Core;
-    using SharpDX;
+
 
     public class Light3DCollection : GroupElement3D, ILight3D
     {
@@ -21,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        public override bool HitTest(RenderContext context, global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        public override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }

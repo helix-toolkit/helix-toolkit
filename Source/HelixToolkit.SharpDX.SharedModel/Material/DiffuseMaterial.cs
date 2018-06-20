@@ -1,10 +1,9 @@
-﻿using SharpDX;
-using SharpDX.Direct3D11;
+﻿using SharpDX.Direct3D11;
 using System.IO;
 using System.Linq;
 using System;
 using System.Collections.ObjectModel;
-
+using HelixToolkit.Mathematics;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 namespace HelixToolkit.UWP

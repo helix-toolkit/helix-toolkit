@@ -2,10 +2,13 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Numerics;
 using System.Threading.Tasks;
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Core
 #else
@@ -13,8 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 #endif
 {
     using Model.Scene;
-    using System;
-    using BoundingSphere = global::SharpDX.BoundingSphere;
+
 
     public sealed class GeometryBoundManager : IDisposable
     {

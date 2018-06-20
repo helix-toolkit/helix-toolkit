@@ -6,7 +6,7 @@
 //   Base class for renderable elements.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using SharpDX;
+using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Windows;

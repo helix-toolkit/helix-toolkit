@@ -1,10 +1,10 @@
-﻿using HelixToolkit.Wpf.SharpDX.Cameras;
-using SharpDX;
+﻿using HelixToolkit.Mathematics;
+using HelixToolkit.Wpf.SharpDX.Cameras;
 using SharpDX.Direct3D11;
 using System.Linq;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Media.Media3D;
-
 namespace HelixToolkit.Wpf.SharpDX
 {
     public class CameraModel3D : CompositeModel3D

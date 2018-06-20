@@ -8,10 +8,10 @@
 //   the elements itself
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+using global::SharpDX.Direct3D11;
+using HelixToolkit.Mathematics;
 using System;
 using System.Collections.Generic;
-using global::SharpDX;
-using global::SharpDX.Direct3D11;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 using DeviceContext = SharpDX.Direct3D11.DeviceContext1;
@@ -24,12 +24,11 @@ namespace HelixToolkit.UWP
 #endif
 {
 
-    using Utilities;
-    using Model.Scene;
     using Core2D;
     using HelixToolkit.Logger;
-    using Core;
+    using Model.Scene;
     using Render;
+    using Utilities;
     /// <summary>
     /// 
     /// </summary>

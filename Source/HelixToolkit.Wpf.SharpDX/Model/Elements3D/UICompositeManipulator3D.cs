@@ -6,15 +6,12 @@
 //   The can rotate x property.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using System.Numerics;
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System.Collections.Generic;
+    using Model;
     using System.Windows;
     using System.Windows.Data;
-
-    using global::SharpDX;
-    using Model;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
 
     public class UICompositeManipulator3D : CompositeModel3D

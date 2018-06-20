@@ -3,14 +3,15 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 //#define DEBUG
-using SharpDX;
+using HelixToolkit.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Numerics;
 //using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -529,9 +530,9 @@ namespace HelixToolkit.Wpf.SharpDX
             var hitStack = stack;
             bool isHit = false;
             modelHits.Clear();
-            var modelInv = modelMatrix.Inverted();
-            if (modelInv == Matrix.Zero) { return false; }//Cannot be inverted
-            var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInv), Vector3.TransformNormal(rayWS.Direction, modelInv));
+            if (!Matrix.Invert(modelMatrix, out Matrix modelInv))
+            { return false; }//Cannot be inverted
+            var rayModel = new Ray(Vector3Helper.TransformCoordinate(rayWS.Position, modelInv), Vector3.TransformNormal(rayWS.Direction, modelInv));
             var treeArray = SelfArray;
             int i = -1;
             while (true)
@@ -601,7 +602,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="sphere"></param>
         /// <param name="points"></param>
         /// <returns></returns>
-        public virtual bool FindNearestPointBySphere(RenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points)
+        public virtual bool FindNearestPointBySphere(RenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> points)
         {
             if (points == null)
             {
@@ -651,7 +652,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             var hitStack = stack;
 
-            var sphere = new global::SharpDX.BoundingSphere(point, float.MaxValue);
+            var sphere = new BoundingSphere(point, float.MaxValue);
             bool isIntersect = false;
             bool isHit = false;
             heuristicSearchFactor = Math.Min(1.0f, Math.Max(0.1f, heuristicSearchFactor));
@@ -694,7 +695,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="points"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public abstract bool FindNearestPointBySphereExcludeChild(RenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
+        public abstract bool FindNearestPointBySphereExcludeChild(RenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect);
         /// <summary>
         /// <see cref="DynamicOctreeBase{T}.Add(T)"/>
         /// </summary>
@@ -1223,7 +1224,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         public bool FindNearestPointByPointAndSearchRadius(RenderContext context, ref Vector3 point, float radius, ref List<HitTestResult> result)
         {
-            var sphere = new global::SharpDX.BoundingSphere(point, radius);
+            var sphere = new BoundingSphere(point, radius);
             return FindNearestPointBySphere(context, ref sphere, ref result);
         }
 
@@ -1515,15 +1516,14 @@ namespace HelixToolkit.Wpf.SharpDX
                             result.IsValid = true;
                             result.ModelHit = model;
                             // transform hit-info to world space now:
-                            var pointWorld = Vector3.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
+                            var pointWorld = Vector3Helper.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
                             result.PointHit = pointWorld;
                             result.Distance = (rayWS.Position - pointWorld).Length();
 
-                            var p0 = Vector3.TransformCoordinate(v0, modelMatrix);
-                            var p1 = Vector3.TransformCoordinate(v1, modelMatrix);
-                            var p2 = Vector3.TransformCoordinate(v2, modelMatrix);
-                            var n = Vector3.Cross(p1 - p0, p2 - p0);
-                            n.Normalize();
+                            var p0 = Vector3Helper.TransformCoordinate(v0, modelMatrix);
+                            var p1 = Vector3Helper.TransformCoordinate(v1, modelMatrix);
+                            var p2 = Vector3Helper.TransformCoordinate(v2, modelMatrix);
+                            var n = Vector3.Normalize(Vector3.Cross(p1 - p0, p2 - p0));
                             // transform hit-info to world space now:
                             result.NormalAtHit = n;// Vector3.TransformNormal(n, m).ToVector3D();
                             result.TriangleIndices = new Tuple<int, int, int>(t1, t2, t3);
@@ -1555,14 +1555,14 @@ namespace HelixToolkit.Wpf.SharpDX
             return isHit;
         }
         /// <summary>
-        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(RenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(RenderContext, ref BoundingSphere, ref List{HitTestResult}, ref bool)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
         /// <param name="result"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public override bool FindNearestPointBySphereExcludeChild(RenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(RenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
             var containment = Bound.Contains(ref sphere);
@@ -1781,18 +1781,15 @@ namespace HelixToolkit.Wpf.SharpDX
                     var v0 = Positions[idx1];
                     var v1 = Positions[idx2];
 
-                    var t0 = Vector3.TransformCoordinate(v0, modelMatrix);
-                    var t1 = Vector3.TransformCoordinate(v1, modelMatrix);
+                    var t0 = Vector3Helper.TransformCoordinate(v0, modelMatrix);
+                    var t1 = Vector3Helper.TransformCoordinate(v1, modelMatrix);
                     Vector3 sp, tp;
                     float sc, tc;
                     var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out sp, out tp, out sc, out tc);
                     var svpm = context.ScreenViewProjectionMatrix;
-                    Vector4 sp4;
-                    Vector4 tp4;
-                    Vector3.Transform(ref sp, ref svpm, out sp4);
-                    Vector3.Transform(ref tp, ref svpm, out tp4);
-                    var sp3 = sp4.ToVector3();
-                    var tp3 = tp4.ToVector3();
+                    Vector3 sp3 = Vector3.Transform(sp, svpm);
+                    Vector3 tp3 = Vector3.Transform(tp, svpm);
+                                      
                     var tv2 = new Vector2(tp3.X - sp3.X, tp3.Y - sp3.Y);
                     var dist = tv2.Length();
                     if (dist < lastDist && dist <= hitThickness)
@@ -1835,14 +1832,14 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(RenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(RenderContext, ref BoundingSphere, ref List{HitTestResult}, ref bool)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
         /// <param name="result"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public override bool FindNearestPointBySphereExcludeChild(RenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(RenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
             var containment = Bound.Contains(ref sphere);
@@ -2023,8 +2020,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 var smvpm = modelMatrix * svpm;
                 var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
                 var pos4 = new Vector4(rayWS.Position, 1);
-                Vector4.Transform(ref clickPoint4, ref svpm, out clickPoint4);
-                Vector4.Transform(ref pos4, ref svpm, out pos4);
+                clickPoint4 = Vector4.Transform(clickPoint4, svpm);
+                pos4 = Vector4.Transform(pos4, svpm);
                 var clickPoint = clickPoint4.ToVector3();
 
                 
@@ -2032,7 +2029,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 for (int i = 0; i < Objects.Count; ++i)
                 {
                     var v0 = Positions[Objects[i]];
-                    var p0 = Vector3.TransformCoordinate(v0, smvpm);
+                    var p0 = Vector3Helper.TransformCoordinate(v0, smvpm);
                     var pv = p0 - clickPoint;
                     var d = pv.Length();
                     if (d < dist) // If d is NaN, the condition is false.
@@ -2040,7 +2037,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         dist = d;
                         result.IsValid = true;
                         result.ModelHit = model;
-                        var px = Vector3.TransformCoordinate(v0, modelMatrix);
+                        var px = Vector3Helper.TransformCoordinate(v0, modelMatrix);
                         result.PointHit = px;
                         result.Distance = (rayWS.Position - px).Length();
                         result.Tag = Objects[i];
@@ -2090,14 +2087,14 @@ namespace HelixToolkit.Wpf.SharpDX
             return new BoundingBox(Positions[item] - BoundOffset, Positions[item] + BoundOffset);
         }
         /// <summary>
-        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(RenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(RenderContext, ref BoundingSphere, ref List{HitTestResult}, ref bool)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
         /// <param name="result"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public override bool FindNearestPointBySphereExcludeChild(RenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(RenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect)
         {
             bool isHit = false;
             var containment = Bound.Contains(ref sphere);
@@ -2198,14 +2195,14 @@ namespace HelixToolkit.Wpf.SharpDX
             InstanceMatrix = instanceMatrix;
         }
         /// <summary>
-        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(RenderContext, ref global::SharpDX.BoundingSphere, ref List{HitTestResult}, ref bool)"/>
+        /// <see cref="DynamicOctreeBase{T}.FindNearestPointBySphereExcludeChild(RenderContext, ref BoundingSphere, ref List{HitTestResult}, ref bool)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sphere"></param>
         /// <param name="points"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        public override bool FindNearestPointBySphereExcludeChild(RenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
+        public override bool FindNearestPointBySphereExcludeChild(RenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
         {
             return false;
         }

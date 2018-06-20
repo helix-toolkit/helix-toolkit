@@ -6,14 +6,11 @@
 //
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using HelixToolkit.Mathematics;
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using System.Linq;
     using System.Collections.ObjectModel;
-
-    using global::SharpDX;
-    using System;
+    using System.Linq;
 
     public class PhongMaterialCollection : ObservableCollection<PhongMaterial>
     {

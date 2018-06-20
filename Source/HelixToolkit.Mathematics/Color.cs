@@ -29,13 +29,12 @@ The MIT License (MIT)
 Copyright (c) 2007-2011 SlimDX Group
 The MIT License (MIT)
 */
+using SharpDX.Mathematics.Interop;
 using System;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using SharpDX.Mathematics.Interop;
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Mathematics
 {
     /// <summary>

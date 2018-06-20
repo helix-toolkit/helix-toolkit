@@ -19,7 +19,7 @@ namespace HelixToolkit.Wpf
 {
 #if SHARPDX
     using Int32Collection = System.Collections.Generic.List<int>;
-    using PointCollection = System.Collections.Generic.List<global::SharpDX.Vector2>;
+    using PointCollection = System.Collections.Generic.List<System.Numerics.Vector2>;
 #else
     using System.Windows.Media;
 #endif

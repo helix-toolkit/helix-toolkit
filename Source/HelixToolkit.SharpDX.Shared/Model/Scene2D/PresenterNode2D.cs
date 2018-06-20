@@ -2,9 +2,10 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-
+using HelixToolkit.Mathematics;
 using SharpDX;
 using System.Collections.Generic;
+using System.Numerics;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene2D

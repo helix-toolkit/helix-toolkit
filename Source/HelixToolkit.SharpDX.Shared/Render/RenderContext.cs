@@ -7,10 +7,10 @@
 //   Optimizations might be possible
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using SharpDX;
-using SharpDX.Direct3D11;
 using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -18,11 +18,11 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Cameras;
+    using Mathematics;
     using Model;
+    using Render;
     using Shaders;
     using Utilities;
-    using Render;
-
     /// <summary>
     /// The render-context is currently generated per frame
     /// Optimizations might be possible

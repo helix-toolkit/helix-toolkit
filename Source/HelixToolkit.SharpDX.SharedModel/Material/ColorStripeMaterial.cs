@@ -1,6 +1,4 @@
-﻿using SharpDX;
-using SharpDX.Direct3D11;
-using System.IO;
+﻿using SharpDX.Direct3D11;
 using System.Runtime.Serialization;
 
 #if NETFX_CORE
@@ -11,10 +9,10 @@ using System.Windows;
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
+    using Mathematics;
     using Model;
     using Shaders;
     using System.Collections.Generic;
-
     /// <summary>
     /// 
     /// </summary>

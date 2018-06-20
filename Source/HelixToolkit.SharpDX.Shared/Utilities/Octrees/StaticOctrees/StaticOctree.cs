@@ -4,7 +4,9 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 
 //#define DEBUG
-using SharpDX;
+using HelixToolkit.Mathematics;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -557,9 +559,10 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             hitStack.Clear();
             bool isHit = false;
             modelHits.Clear();
-            var modelInv = modelMatrix.Inverted();
-            if (modelInv == Matrix.Zero) { return false; }//Cannot be inverted
-            var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInv), Vector3.TransformNormal(rayWS.Direction, modelInv));
+            
+            if (!Matrix.Invert(modelMatrix, out Matrix modelInv))
+            { return false; }//Cannot be inverted
+            var rayModel = new Ray(Vector3Helper.TransformCoordinate(rayWS.Position, modelInv), Vector3.TransformNormal(rayWS.Direction, modelInv));
 
             int parent = -1;
             int curr = -1;
@@ -752,7 +755,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <returns></returns>
         public bool FindNearestPointByPointAndSearchRadius(RenderContext context, ref Vector3 point, float radius, ref List<HitTestResult> result)
         {
-            var sphere = new global::SharpDX.BoundingSphere(point, radius);
+            var sphere = new BoundingSphere(point, radius);
             return FindNearestPointBySphere(context, ref sphere, ref result);
         }
         /// <summary>
@@ -832,8 +835,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static bool BoxDisjointSphere(BoundingBox box, ref BoundingSphere sphere)
         {
-            Vector3 vector;
-            Vector3.Clamp(ref sphere.Center, ref box.Minimum, ref box.Maximum, out vector);
+            Vector3 vector = Vector3.Clamp(sphere.Center, box.Minimum, box.Maximum);
+            
             float distance = Vector3.DistanceSquared(sphere.Center, vector);
 
             return distance > sphere.Radius * sphere.Radius;

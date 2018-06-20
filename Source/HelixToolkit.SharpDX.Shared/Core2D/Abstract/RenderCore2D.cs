@@ -2,9 +2,10 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 #if NETFX_CORE

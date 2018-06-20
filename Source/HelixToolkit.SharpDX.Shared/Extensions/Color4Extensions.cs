@@ -2,15 +2,11 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
-using SharpDX.DirectWrite;
+using HelixToolkit.Mathematics;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
-using System.Reflection;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP

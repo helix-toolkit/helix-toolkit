@@ -2,18 +2,19 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using global::SharpDX.Direct3D11;
+using Matrix = System.Numerics.Matrix4x4;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using global::SharpDX;
-    using global::SharpDX.Direct3D11;
+    using HelixToolkit.Mathematics;
     using Render;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Utilities;
 
     /// <summary>
@@ -95,7 +96,7 @@ namespace HelixToolkit.UWP.Core
     public class MatrixInstanceBufferModel : ElementsBufferModel<Matrix>
     {
         public MatrixInstanceBufferModel()
-            : base(Matrix.SizeInBytes)
+            : base(MatrixHelper.SizeInBytes)
         {
         }
     }

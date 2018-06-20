@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 #if SHARPDX
-using Vector2 = SharpDX.Vector2;
+using System.Numerics;
 using DoubleOrSingle = System.Single;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
@@ -130,10 +130,12 @@ namespace HelixToolkit.Wpf
                     gradient = new Vector2((float)(_random.NextDouble() * 2 - 1), (float)(_random.NextDouble() * 2 - 1));
                 }
                 while (SharedFunctions.LengthSquared(ref gradient) >= 1);
-
+#if SHARPDX
+                grad[i] = Vector2.Normalize(gradient);
+#else
                 gradient.Normalize();
-
                 grad[i] = gradient;
+#endif
             }
 
         }

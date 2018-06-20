@@ -15,12 +15,13 @@ namespace HelixToolkit.Wpf
 #if SHARPDX
     using System;
     using System.Collections.Generic;
-
-    using Matrix3D = global::SharpDX.Matrix;
-    using Point = global::SharpDX.Vector2;
-    using Point3D = global::SharpDX.Vector3;
-    using PointCollection = System.Collections.Generic.List<global::SharpDX.Vector2>;
-    using Vector3D = global::SharpDX.Vector3;
+    using System.Numerics;
+    using HelixToolkit.Mathematics;
+    using Matrix3D = System.Numerics.Matrix4x4;
+    using Point = System.Numerics.Vector2;
+    using Point3D = System.Numerics.Vector3;
+    using PointCollection = System.Collections.Generic.List<System.Numerics.Vector2>;
+    using Vector3D = System.Numerics.Vector3;
 #else
     using System;
     using System.Collections.Generic;
@@ -90,8 +91,12 @@ namespace HelixToolkit.Wpf
         {
             // http://forums.xna.com/forums/p/16529/86802.aspx
             // http://stackoverflow.com/questions/1023948/rotate-normal-vector-onto-axis-plane
-            var up = this.GetNormal();
+#if SHARPDX
+            var up = Vector3D.Normalize(GetNormal());
+#else
+            var up = GetNormal();
             up.Normalize();
+#endif
 #if SHARPDX
             var right = Vector3D.Cross(
 #else
@@ -108,7 +113,7 @@ namespace HelixToolkit.Wpf
 
             // make first point origin
 #if SHARPDX
-            var offs = Vector3D.TransformCoordinate(Points[0], m);
+            var offs = Vector3Helper.TransformCoordinate(Points[0], m);
             m.M41 = -offs.X;
             m.M42 = -offs.Y;
 #else
@@ -121,7 +126,7 @@ namespace HelixToolkit.Wpf
             foreach (var p in this.Points)
             {
 #if SHARPDX
-                var pp = Vector3D.TransformCoordinate(p, m);
+                var pp = Vector3Helper.TransformCoordinate(p, m);
 #else
                 var pp = m.Transform(p);
 #endif
@@ -153,22 +158,25 @@ namespace HelixToolkit.Wpf
                 if (n.LengthSquared() > 1e-10)
 #else
                 var n = Vector3D.CrossProduct(v1, this.Points[i] - this.Points[0]);
-
-                if (n.LengthSquared > 1e-10)
 #endif
+                if (n.LengthSquared() > 1e-10)
                 {
+#if SHARPDX
+                    return Vector3D.Normalize(n);
+#else
                     n.Normalize();
                     return n;
+#endif
                 }
             }
 
 #if SHARPDX
-            Vector3D result = Vector3D.Cross(v1, this.Points[2] - this.Points[0]);
+            return Vector3D.Normalize(Vector3D.Cross(v1, this.Points[2] - this.Points[0]));
 #else
             Vector3D result = Vector3D.CrossProduct(v1, this.Points[2] - this.Points[0]);
-#endif
             result.Normalize();
             return result;
+#endif
         }
 
         /// <summary>
@@ -184,11 +192,11 @@ namespace HelixToolkit.Wpf
             for (int i = 2; i < this.Points.Count; i++)
             {
 #if SHARPDX
-                var n = Vector3D.Cross(v1, this.Points[i] - this.Points[0]);
+                var n = Vector3D.Normalize(Vector3D.Cross(v1, this.Points[i] - this.Points[0]));
 #else
                 var n = Vector3D.CrossProduct(v1, this.Points[i] - this.Points[0]);
-#endif
                 n.Normalize();
+#endif
                 if (i == 2)
                 {
                     normal = n;

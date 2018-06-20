@@ -9,11 +9,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 using System;
-using SharpDX;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 using Media = Windows.UI;

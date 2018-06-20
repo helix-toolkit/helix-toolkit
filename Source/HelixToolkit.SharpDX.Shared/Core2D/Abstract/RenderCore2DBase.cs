@@ -3,7 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 //#define DEBUGBOUNDS
-using SharpDX;
+using HelixToolkit.Mathematics;
 using D2D = global::SharpDX.Direct2D1;
 
 #if NETFX_CORE
@@ -36,7 +36,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             if (CanRender(context))
             {
-                context.DeviceContext.Transform = Transform;
+                context.DeviceContext.Transform = Transform.ToRaw();
                 if (ShowDrawingBorder)
                 {
                     using (var borderBrush = new D2D.SolidColorBrush(context.DeviceContext, Color.Blue))

@@ -6,22 +6,20 @@
 //   A Geomview Object File Format (OFF) reader.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;  
+using System.IO;
+using Matrix = System.Numerics.Matrix4x4;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
 #else
 namespace HelixToolkit.UWP
 #endif
 {
-    using Object3DGroup = System.Collections.Generic.List<Object3D>;
-    using Point = global::SharpDX.Vector2;
-    using Point3D = global::SharpDX.Vector3;
-    using global::SharpDX;
     using Model;
-
+    using Object3DGroup = List<Object3D>;
+    using Point3D = System.Numerics.Vector3;
+    using Mathematics;
     /// <summary>
     /// A Geomview Object File Format (OFF) reader.
     /// </summary>
@@ -135,10 +133,10 @@ namespace HelixToolkit.UWP
             gm.Material = new PhongMaterialCore()
             {
                 Name = "DefaultVRML",
-                AmbientColor = new Color(0.2f, 0.2f, 0.2f, 1.0f),
-                DiffuseColor = new Color(0.8f, 0.8f, 0.8f, 1.0f),
-                SpecularColor = new Color(0.0f, 0.0f, 0.0f, 1.0f),
-                EmissiveColor = new Color(0.0f, 0.0f, 0.0f, 1.0f),
+                AmbientColor = new Color4(0.2f, 0.2f, 0.2f, 1.0f),
+                DiffuseColor = new Color4(0.8f, 0.8f, 0.8f, 1.0f),
+                SpecularColor = new Color4(0.0f, 0.0f, 0.0f, 1.0f),
+                EmissiveColor = new Color4(0.0f, 0.0f, 0.0f, 1.0f),
                 SpecularShininess = 25.6f,
             };
             modelGroup.Add(gm);

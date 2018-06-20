@@ -2,9 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System.Numerics;
 using D2D = SharpDX.Direct2D1;
-using SharpDX.DirectWrite;
-using SharpDX;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Core2D
@@ -12,6 +11,7 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
+    using Mathematics;
     /// <summary>
     /// <see href="https://jeremiahmorrill.wordpress.com/2013/02/06/direct2d-gui-librarygraphucks/"/>
     /// </summary>
@@ -41,7 +41,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <param name="sink">The sink.</param>
         public override void Create(D2D.GeometrySink sink)
         {
-            sink.AddBezier(new D2D.BezierSegment() { Point1 = P1, Point2 = P2, Point3 = P3 });
+            sink.AddBezier(new D2D.BezierSegment() { Point1 = P1.ToRaw(), Point2 = P2.ToRaw(), Point3 = P3.ToRaw() });
         }
     }
 }

@@ -2,11 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
-using SharpDX.Direct3D;
+using HelixToolkit.Mathematics;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
-
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -294,7 +292,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (clear)
             {
-                context.ClearRenderTargetView(targetView, global::SharpDX.Color.Transparent);
+                context.ClearRenderTargetView(targetView, Color.Transparent);
             }
             context.SetRenderTargets(dsv, new RenderTargetView[] { targetView });
             context.SetViewport(0, 0, width, height);

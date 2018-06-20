@@ -5,7 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 using SharpDX;
 using System.Linq;
-
+using System.Numerics;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene2D
 #else

@@ -12,10 +12,8 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using global::SharpDX;
-
+using Matrix = System.Numerics.Matrix4x4;
 #if !NETFX_CORE
-using System.Windows;
 //using System.Windows.Media.Imaging;
 namespace HelixToolkit.Wpf.SharpDX
 #else
@@ -28,17 +26,12 @@ namespace HelixToolkit.UWP
 #if CORE
     using PhongMaterial = Model.PhongMaterialCore;
 #endif
-    using Color = global::SharpDX.Color4;
-    using Int32Collection = System.Collections.Generic.List<int>;
-    using Object3DGroup = System.Collections.Generic.List<Object3D>;
-    using Plane3D = global::SharpDX.Plane;
-    using Point = global::SharpDX.Vector2;
-    using Point3D = global::SharpDX.Vector3;
-    using Point3DCollection = System.Collections.Generic.List<global::SharpDX.Vector3>;
-    using PointCollection = System.Collections.Generic.List<global::SharpDX.Vector2>;
-    using Ray3D = global::SharpDX.Ray;
-    using Vector3D = global::SharpDX.Vector3;
     using Model;
+    using Color = Mathematics.Color4;
+    using Object3DGroup = System.Collections.Generic.List<Object3D>;
+    using Point = System.Numerics.Vector2;
+    using Point3D = System.Numerics.Vector3;
+    using Vector3D = System.Numerics.Vector3;
 
     public class Object3D
     {
@@ -71,7 +64,7 @@ namespace HelixToolkit.UWP
             this.IsSmoothingDefault = true;
             this.SkipTransparencyValues = true;
 
-            this.DefaultColor = global::SharpDX.Color.Gold;
+            this.DefaultColor = Mathematics.Color.Gold;
 
             this.Points = new List<Point3D>();
             this.TextureCoordinates = new List<Point>();

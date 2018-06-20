@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>55f779f7-399f-438b-9e36-e3bba48b2e7c</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>HelixToolkit.Mathematics</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AngleSingle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bool4.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BoundingBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BoundingFrustum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BoundingSphere.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collision.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Color.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Color.Palette.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Color3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Color4.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ColorBGRA.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FrustumCameraParams.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Half.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Half2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Half3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Half4.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HalfUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Int3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Int4.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MathUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Matrix.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Matrix3x2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Matrix3x3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NamespaceDoc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OrientedBoundingBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plane.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Point.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Quaternion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RandomUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ray.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rectangle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RectangleF.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Vector2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Vector3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Vector4.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Viewport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewportF.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)HelixToolkit.Mathematics.licenseheader" />
+  </ItemGroup>
+</Project>

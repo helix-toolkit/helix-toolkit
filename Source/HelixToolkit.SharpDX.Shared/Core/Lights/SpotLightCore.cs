@@ -3,9 +3,8 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
-using SharpDX;
 using System;
-
+using System.Numerics;
 #if !NETFX_CORE
 
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -88,7 +87,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnRender(Light3DSceneShared lightScene, int index)
         {
             base.OnRender(lightScene, index);
-            lightScene.LightModels.Lights[index].LightDir = Vector4.Transform(direction.ToVector4(0), ModelMatrix).Normalized();
+            lightScene.LightModels.Lights[index].LightDir = Vector4.Normalize(Vector4.Transform(direction.ToVector4(0), ModelMatrix));
             lightScene.LightModels.Lights[index].LightSpot = new Vector4((float)Math.Cos(outerAngle / 360.0f * Math.PI), (float)Math.Cos(innerAngle / 360.0f * Math.PI), fallOff, 0);
         }
     }

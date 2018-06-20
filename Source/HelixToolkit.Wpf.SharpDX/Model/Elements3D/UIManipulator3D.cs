@@ -6,19 +6,17 @@
 //   An abstract base class for manipulators.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using HelixToolkit.Mathematics;
+    using HelixToolkit.Wpf.SharpDX.Utilities;
+    using Model;
     using System.ComponentModel;
     using System.Windows;
     using System.Windows.Data;
-
-    using global::SharpDX;
-
-    using HelixToolkit.Wpf.SharpDX.Utilities;
-
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using Model;
     /// <summary>
     ///   An abstract base class for manipulators.
     /// </summary>
@@ -282,7 +280,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Vector3 ToWorldPos(Vector3 vec)
         {
             //var m = this.Transform.Value.ToMatrix();
-            return Vector3.TransformCoordinate(vec, this.TotalModelMatrix);
+            return Vector3Helper.TransformCoordinate(vec, this.TotalModelMatrix);
         }
 
         /// <summary>
@@ -304,7 +302,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Vector3 ToModelPos(Vector3 vec)
         {
             //var m = this.Transform.Value.ToMatrix();
-            return Vector3.TransformCoordinate(vec, this.TotalModelMatrix.PsudoInvert());
+            return Vector3Helper.TransformCoordinate(vec, this.TotalModelMatrix.PsudoInvert());
         }
 
         /// <summary>
@@ -315,7 +313,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected Vector3 ToModelVec(Vector3 vec)
         {
             //var m = this.Transform.Value.ToMatrix();
-            return Vector3.TransformNormal(vec, Matrix.Invert(this.TotalModelMatrix.PsudoInvert()));
+            return Vector3.TransformNormal(vec, this.TotalModelMatrix.PsudoInvert());
         }
     }
 }

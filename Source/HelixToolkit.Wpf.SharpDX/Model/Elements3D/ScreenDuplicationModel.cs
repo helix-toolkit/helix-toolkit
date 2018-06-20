@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using HelixToolkit.Mathematics;
 using System.Windows;
-using SharpDX;
-
 namespace HelixToolkit.Wpf.SharpDX
 {
     using Model;

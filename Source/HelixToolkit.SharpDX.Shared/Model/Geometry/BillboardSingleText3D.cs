@@ -2,8 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
-using System.Collections.Generic;
+using HelixToolkit.Mathematics;
+using System.Numerics;
 #if CORE
 using SharpDX.DirectWrite;
 using FontWeight = SharpDX.DirectWrite.FontWeight;
@@ -15,8 +15,7 @@ using Thickness = HelixToolkit.UWP.Model.Scene2D.Thickness;
     using Media = Windows.UI.Xaml.Media;
     using Windows.UI.Text;
 #else
-    using System.Windows;
-    using Media = System.Windows.Media;
+using System.Windows;
 #endif
 #endif
 
@@ -26,7 +25,6 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-using Core;
     using Extensions;
     using System;
     /// <summary>

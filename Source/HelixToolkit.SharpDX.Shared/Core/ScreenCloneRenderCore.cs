@@ -3,28 +3,29 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 //#define OUTPUTDETAIL
+using HelixToolkit.Mathematics;
 using SharpDX;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using System;
+using System.Numerics;
 using System.Runtime.InteropServices;
-using Texture2D = SharpDX.Direct3D11.Texture2D;
-using Texture2DDescription = SharpDX.Direct3D11.Texture2DDescription;
 using BindFlags = SharpDX.Direct3D11.BindFlags;
 using CpuAccessFlags = SharpDX.Direct3D11.CpuAccessFlags;
-using ResourceUsage = SharpDX.Direct3D11.ResourceUsage;
 using ResourceOptionFlags = SharpDX.Direct3D11.ResourceOptionFlags;
+using ResourceUsage = SharpDX.Direct3D11.ResourceUsage;
 using ShaderResourceViewDescription = SharpDX.Direct3D11.ShaderResourceViewDescription;
+using Texture2D = SharpDX.Direct3D11.Texture2D;
+using Texture2DDescription = SharpDX.Direct3D11.Texture2DDescription;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 {
-    using Utilities;
     using Render;
     using Shaders;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Diagnostics;
+    using Utilities;
 
 
     /// <summary>

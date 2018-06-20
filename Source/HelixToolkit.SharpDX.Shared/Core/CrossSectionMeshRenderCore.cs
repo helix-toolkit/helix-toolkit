@@ -2,8 +2,10 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
 using SharpDX.Direct3D11;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
@@ -110,15 +112,15 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(clipParameter.CrossPlaneParams.Row1 != value)
+                if(clipParameter.CrossPlaneParams.Row1() != value)
                 {
-                    clipParameter.CrossPlaneParams.Row1 = value;
+                    MatrixHelper.SetRow1(ref clipParameter.CrossPlaneParams, value);
                     InvalidateRenderer();
                 }
             }
             get
             {
-                return clipParameter.CrossPlaneParams.Row1;
+                return clipParameter.CrossPlaneParams.Row1();
             }
         }
 
@@ -129,15 +131,15 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (clipParameter.CrossPlaneParams.Row2 != value)
+                if (clipParameter.CrossPlaneParams.Row2() != value)
                 {
-                    clipParameter.CrossPlaneParams.Row2 = value;
+                    MatrixHelper.SetRow2(ref clipParameter.CrossPlaneParams, value);
                     InvalidateRenderer();
                 }
             }
             get
             {
-                return clipParameter.CrossPlaneParams.Row2;
+                return clipParameter.CrossPlaneParams.Row2();
             }
         }
 
@@ -148,15 +150,15 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (clipParameter.CrossPlaneParams.Row3 != value)
+                if (clipParameter.CrossPlaneParams.Row3() != value)
                 {
-                    clipParameter.CrossPlaneParams.Row3 = value;
+                    MatrixHelper.SetRow3(ref clipParameter.CrossPlaneParams, value);
                     InvalidateRenderer();
                 }
             }
             get
             {
-                return clipParameter.CrossPlaneParams.Row3;
+                return clipParameter.CrossPlaneParams.Row3();
             }
         }
 
@@ -167,15 +169,15 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (clipParameter.CrossPlaneParams.Row4 != value)
+                if (clipParameter.CrossPlaneParams.Row4() != value)
                 {
-                    clipParameter.CrossPlaneParams.Row4 = value;
+                    MatrixHelper.SetRow4(ref clipParameter.CrossPlaneParams, value);
                     InvalidateRenderer();
                 }
             }
             get
             {
-                return clipParameter.CrossPlaneParams.Row4;
+                return clipParameter.CrossPlaneParams.Row4();
             }
         }
 

@@ -6,8 +6,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 //#define DEBUGDRAWING
 //#define DISABLEBITMAPCACHE
 #endif
+using System.Numerics;
 #if !CORE
-using SharpDX;
 using System;
 #if NETFX_CORE
 using Windows.UI.Xaml;

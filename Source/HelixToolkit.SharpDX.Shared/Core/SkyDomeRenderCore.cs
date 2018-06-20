@@ -2,20 +2,20 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using System;
-using SharpDX;
-using SharpDX.Direct3D11;
 using SharpDX.Direct3D;
+using SharpDX.Direct3D11;
+using System.Numerics;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
+    using HelixToolkit.Mathematics;
+    using Render;
     using Shaders;
     using System.IO;
     using Utilities;
-    using Render;
     /// <summary>
     /// 
     /// </summary>
@@ -208,7 +208,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         private sealed class SkyDomeBufferModel : MeshGeometryBufferModel<Vector3>
         {
-            public SkyDomeBufferModel() : base(Vector3.SizeInBytes)
+            public SkyDomeBufferModel() : base(Vector3Helper.SizeInBytes)
             {
                 Topology = PrimitiveTopology.TriangleList;
             }

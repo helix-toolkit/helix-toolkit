@@ -2,8 +2,8 @@
 //   Copyright (c) 2018 Helix Toolkit contributors
 // </copyright>
 
+using HelixToolkit.Mathematics;
 using System.Collections.Generic;
-using SharpDX;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else

@@ -2,6 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using HelixToolkit.Mathematics;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 #if !CORE
 using System;
 using D2D = SharpDX.Direct2D1;
@@ -221,7 +224,7 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             else if(brush is Media.LinearGradientBrush linear)
             {
                 return new D2D.LinearGradientBrush(target,
-                    new D2D.LinearGradientBrushProperties() { StartPoint = linear.StartPoint.ToVector2(), EndPoint = linear.EndPoint.ToVector2() },
+                    new D2D.LinearGradientBrushProperties() { StartPoint = linear.StartPoint.ToVector2Raw(), EndPoint = linear.EndPoint.ToVector2Raw() },
                     new D2D.GradientStopCollection
                     (
                         target,
@@ -237,8 +240,8 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             {
                 return new D2D.RadialGradientBrush(target,
                     new D2D.RadialGradientBrushProperties() {
-                        Center = radial.Center.ToVector2(),
-                        GradientOriginOffset = radial.GradientOrigin.ToVector2(),
+                        Center = radial.Center.ToVector2Raw(),
+                        GradientOriginOffset = radial.GradientOrigin.ToVector2Raw(),
                         RadiusX = (float)radial.RadiusX, RadiusY = (float)radial.RadiusY
                     },
                     new D2D.GradientStopCollection

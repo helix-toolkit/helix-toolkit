@@ -3,11 +3,13 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
-using SharpDX;
+using HelixToolkit.Mathematics;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
-
+using System.Runtime.CompilerServices;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene2D
 #else
@@ -16,7 +18,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
 #endif
 {
     using Core2D;
-    using System.Runtime.CompilerServices;
+    using global::SharpDX;
+    using global::SharpDX.Mathematics.Interop;
+
 
     /// <summary>
     ///
@@ -409,15 +413,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
             { return; }
             if (IsTransformDirty)
             {
-                RelativeMatrix = Matrix3x2.Translation(-RenderSize * RenderTransformOrigin)
-                    * ModelMatrix * Matrix3x2.Translation(RenderSize * RenderTransformOrigin)
+                RelativeMatrix = Matrix3x2.CreateTranslation(-RenderSize * RenderTransformOrigin)
+                    * ModelMatrix * Matrix3x2.CreateTranslation(RenderSize * RenderTransformOrigin)
                     * LayoutTranslate;
                 TotalModelMatrix = RelativeMatrix * ParentMatrix;
                 IsTransformDirty = false;
                 InvalidateVisual();
             }
 
-            LayoutBoundWithTransform = LayoutBound.Translate(TotalModelMatrix.TranslationVector);
+            LayoutBoundWithTransform = LayoutBound.Translate(TotalModelMatrix.Translation);
 
 #if DISABLEBITMAPCACHE
             IsBitmapCacheValid = false;
@@ -432,7 +436,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                     Debug.WriteLine("Redraw bitmap cache");
 #endif
                     context.PushRenderTarget(bitmapCache, true);
-                    context.DeviceContext.Transform = Matrix3x2.Identity;
+                    context.DeviceContext.Transform = Matrix3x2.Identity.ToRaw();
                     context.PushRelativeTransform(Matrix3x2.Identity);
                     RenderCore.Transform = context.RelativeTransform;
                     OnRender(context);
@@ -442,8 +446,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
                 }
                 if (context.HasTarget)
                 {
-                    context.DeviceContext.Transform = context.RelativeTransform * RelativeMatrix;
-                    context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), LayoutClipBound,
+                    context.DeviceContext.Transform = (context.RelativeTransform * RelativeMatrix).ToRaw();
+                    context.DeviceContext.DrawImage(bitmapCache, new RawVector2(0, 0), LayoutClipBound,
                         InterpolationMode.Linear, global::SharpDX.Direct2D1.CompositeMode.SourceOver);
                 }
             }
@@ -465,8 +469,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene2D
         {
             if (IsRenderable && EnableBitmapCache && IsBitmapCacheValid && !IsVisualDirty && context.HasTarget)
             {
-                context.DeviceContext.Transform = RelativeMatrix;
-                context.DeviceContext.DrawImage(bitmapCache, new Vector2(0, 0), new RectangleF(0, 0, RenderSize.X, RenderSize.Y),
+                context.DeviceContext.Transform = RelativeMatrix.ToRaw();
+                context.DeviceContext.DrawImage(bitmapCache, new RawVector2(0, 0), new RectangleF(0, 0, RenderSize.X, RenderSize.Y),
                     InterpolationMode.Linear, global::SharpDX.Direct2D1.CompositeMode.SourceOver);
             }
             else

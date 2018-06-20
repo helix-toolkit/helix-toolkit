@@ -43,6 +43,23 @@ namespace HelixToolkit.Mathematics
     /// </summary>
     public static class PlaneHelper
     {
+        /// <summary>
+        /// Gets the plane.
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <param name="normal">The normal.</param>
+        /// <returns></returns>
+        public static Plane GetPlane(Vector3 point, Vector3 normal)
+        {
+            return new Plane(normal, -Vector3.Dot(normal, point));
+        }
+        /// <summary>
+        /// Gets the plane.
+        /// </summary>
+        /// <param name="point1">The point1.</param>
+        /// <param name="point2">The point2.</param>
+        /// <param name="point3">The point3.</param>
+        /// <returns></returns>
         public static Plane GetPlane(Vector3 point1, Vector3 point2, Vector3 point3)
         {
             Vector3 p12 = point2 - point1;

@@ -4,12 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using SharpDX;
+using HelixToolkit.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Utilities
 #else
@@ -18,7 +18,6 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
 {
     using Model;
     using Model.Scene;
-    using System.Diagnostics;
 
     /// <summary>
     /// 

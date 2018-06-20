@@ -1,5 +1,6 @@
 ﻿using System;
-using SharpDX;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Cameras
@@ -7,6 +8,7 @@ namespace HelixToolkit.UWP.Cameras
 namespace HelixToolkit.Wpf.SharpDX.Cameras
 #endif
 {
+    using HelixToolkit.Mathematics;
     using Model;
     using System.Globalization;
 
@@ -162,8 +164,8 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
 
         public override Matrix CreateViewMatrix()
         {
-            return CreateLeftHandSystem ? Matrix.LookAtLH(this.Position, this.Position + this.LookDirection, this.UpDirection)
-                : Matrix.LookAtRH(this.Position, this.Position + this.LookDirection, this.UpDirection);
+            return CreateLeftHandSystem ? MatrixHelper.LookAtLH(this.Position, this.Position + this.LookDirection, this.UpDirection)
+                : Matrix.CreateLookAt(this.Position, this.Position + this.LookDirection, this.UpDirection);
         }
 
         public override string ToString()
@@ -192,12 +194,12 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
 
         public override Matrix CreateProjectionMatrix(float aspectRatio)
         {
-            return this.CreateLeftHandSystem ? Matrix.OrthoLH(
+            return this.CreateLeftHandSystem ? MatrixHelper.OrthoLH(
                     this.Width,
                     (float)(this.Width / aspectRatio),
                     this.NearPlaneDistance,
                     Math.Min(1e15f, this.FarPlaneDistance))
-                    : Matrix.OrthoRH(
+                    : MatrixHelper.OrthoRH(
                     this.Width,
                     (float)(this.Width / aspectRatio),
                     this.NearPlaneDistance,
@@ -224,7 +226,7 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
             Matrix projM;
             if (this.CreateLeftHandSystem)
             {
-                projM = Matrix.PerspectiveFovLH(
+                projM = MatrixHelper.PerspectiveFovLH(
                     (float)fov,
                     aspectRatio,
                     NearPlaneDistance,
@@ -232,7 +234,7 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
             }
             else
             {
-                projM = Matrix.PerspectiveFovRH(
+                projM = MatrixHelper.PerspectiveFovRH(
                     (float)fov, (float)aspectRatio, NearPlaneDistance, FarPlaneDistance);
             }
             if (float.IsNaN(projM.M33) || float.IsNaN(projM.M43))

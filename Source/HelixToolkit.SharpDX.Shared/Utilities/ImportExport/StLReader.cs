@@ -11,20 +11,18 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
-using SharpDX;
 
 #if !NETFX_CORE
-using System.Windows.Threading;
 using Color = System.Windows.Media.Color;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 namespace HelixToolkit.Wpf.SharpDX
 #else
-using Vector3D = SharpDX.Vector3;
+using Vector3D = System.Numerics.Vector3;
 namespace HelixToolkit.UWP
 #endif
 {
-    using Mesh3DGroup = System.Collections.Generic.List<Object3D>;    
-    using Point3D = global::SharpDX.Vector3;
+    using Mesh3DGroup = System.Collections.Generic.List<Object3D>;
+    using Point3D = System.Numerics.Vector3;
 #if NETFX_CORE
     using FileFormatException = Exception;
 #endif

@@ -2,7 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +14,11 @@ namespace HelixToolkit.UWP.Model
 #endif
 {
     using Render;
-    using Shaders;
     using ShaderManager;
-    using Utilities;
+    using Shaders;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
+    using Utilities;
 
     public class ColorStripeMaterialCore : MaterialCore
     {

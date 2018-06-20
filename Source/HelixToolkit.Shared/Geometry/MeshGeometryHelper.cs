@@ -21,9 +21,9 @@ namespace HelixToolkit.Wpf
     using System.Diagnostics;
     using System.Text;
 #if SHARPDX
-    using Vector3D = global::SharpDX.Vector3;
-    using Point3D = global::SharpDX.Vector3;
-    using Point = global::SharpDX.Vector2;
+    using Vector3D = System.Numerics.Vector3;
+    using Point3D = System.Numerics.Vector3;
+    using Point = System.Numerics.Vector2;
     using Int32Collection = Core.IntCollection;
     using Vector3DCollection = Core.Vector3Collection;
     using Point3DCollection = Core.Vector3Collection;
@@ -91,8 +91,12 @@ namespace HelixToolkit.Wpf
                 var p2 = positions[index2];
                 Vector3D u = p1 - p0;
                 Vector3D v = p2 - p0;
+#if SHARPDX
+                Vector3D w = Vector3D.Normalize(SharedFunctions.CrossProduct(ref u, ref v));
+#else
                 Vector3D w = SharedFunctions.CrossProduct(ref u, ref v);
                 w.Normalize();
+#endif
                 normals[index0] += w;
                 normals[index1] += w;
                 normals[index2] += w;
@@ -100,9 +104,14 @@ namespace HelixToolkit.Wpf
 
             for (int i = 0; i < normals.Count; i++)
             {
+#if SHARPDX
+                normals[i] = Vector3D.Normalize(normals[i]);
+#else
                 var n = normals[i];
                 n.Normalize();
                 normals[i] = n;
+#endif
+
             }
 
             return normals;
@@ -222,8 +231,12 @@ namespace HelixToolkit.Wpf
                 var p2 = mesh.Positions[mesh.TriangleIndices[i0 + 2]];
                 var p10 = p1 - p0;
                 var p20 = p2 - p0;
+#if SHARPDX
+                var n = Vector3D.Normalize(SharedFunctions.CrossProduct(ref p10, ref p20));
+#else
                 var n = SharedFunctions.CrossProduct(ref p10, ref p20);
                 n.Normalize();
+#endif
                 for (int j = 0; j < 3; j++)
                 {
                     int index0 = mesh.TriangleIndices[i0 + j];
@@ -234,8 +247,12 @@ namespace HelixToolkit.Wpf
                     Vector3D value;
                     if (edgeNormals.TryGetValue(key, out value))
                     {
+#if SHARPDX
+                        var n2 = Vector3D.Normalize(value);
+#else
                         var n2 = value;
                         n2.Normalize();
+#endif
                         var angle = 180 / (DoubleOrSingle)Math.PI * (DoubleOrSingle)Math.Acos(SharedFunctions.DotProduct(ref n, ref n2));
                         if (angle > minimumAngle)
                         {

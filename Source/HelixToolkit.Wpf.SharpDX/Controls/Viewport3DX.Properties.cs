@@ -7,15 +7,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
+using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Wpf.SharpDX
 {
     using Controls;
     using Elements2D;
-    using System;
-    using System.Windows;
-    using System.Windows.Input;
-    using System.Windows.Media;
-    using System.Windows.Media.Media3D;
+
 
     /// <summary>
     /// Provides the dependency properties for Viewport3DX.
@@ -961,9 +963,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The world matrix property
         /// </summary>
         public static readonly DependencyProperty WorldMatrixProperty
-            = DependencyProperty.Register("WorldMatrix", typeof(global::SharpDX.Matrix), typeof(Viewport3DX), new PropertyMetadata(global::SharpDX.Matrix.Identity,
+            = DependencyProperty.Register("WorldMatrix", typeof(Matrix), typeof(Viewport3DX), new PropertyMetadata(Matrix.Identity,
                 (d, e) => {
-                    (d as Viewport3DX).worldMatrixInternal = (global::SharpDX.Matrix)e.NewValue;
+                    (d as Viewport3DX).worldMatrixInternal = (Matrix)e.NewValue;
                     (d as Viewport3DX).InvalidateRender();
                 }));
         /// <summary>
@@ -2707,14 +2709,14 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
-        private global::SharpDX.Matrix worldMatrixInternal = global::SharpDX.Matrix.Identity;
+        private Matrix worldMatrixInternal = Matrix.Identity;
         /// <summary>
         /// Gets or sets the world matrix.
         /// </summary>
         /// <value>
         /// The world matrix.
         /// </value>
-        public global::SharpDX.Matrix WorldMatrix
+        public Matrix WorldMatrix
         {
             set
             {
@@ -2722,7 +2724,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             get
             {
-                return (global::SharpDX.Matrix)GetValue(WorldMatrixProperty);
+                return (Matrix)GetValue(WorldMatrixProperty);
             }
         }
         /// <summary>

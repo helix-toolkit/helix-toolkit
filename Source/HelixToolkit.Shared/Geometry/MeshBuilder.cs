@@ -20,10 +20,10 @@ namespace HelixToolkit.Wpf
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Threading;
-
-#if SHARPDX
     using System.Linq;
-    using global::SharpDX;
+#if SHARPDX
+    using System.Numerics;
+    using HelixToolkit.Mathematics;
 #if NETFX_CORE
     using HelixToolkit.UWP;
     using HelixToolkit.Wpf;
@@ -33,16 +33,15 @@ namespace HelixToolkit.Wpf
 #if !NETFX_CORE
     using Rect3D = System.Windows.Media.Media3D.Rect3D;
 #endif
-    using Point = global::SharpDX.Vector2;
-    using Point3D = global::SharpDX.Vector3;
-    using Vector3D = global::SharpDX.Vector3;
+    using Point = System.Numerics.Vector2;
+    using Point3D = System.Numerics.Vector3;
+    using Vector3D = System.Numerics.Vector3;
     using Vector3DCollection = Core.Vector3Collection;
     using Point3DCollection = Core.Vector3Collection;
     using PointCollection = Core.Vector2Collection;
     using Int32Collection = Core.IntCollection;
     using DoubleOrSingle = System.Single;
 #else
-    using System.Linq;
     using System.Windows;
     using System.Windows.Media;
     using System.Windows.Media.Media3D;
@@ -467,9 +466,13 @@ namespace HelixToolkit.Wpf
 
             for (int i = 0; i < mb.positions.Count; i++)
             {
-                var v = mb.Positions[i].ToVector3D();
-                v.Normalize();
-                mb.Positions[i] = SharedFunctions.ToPoint3D(ref v);
+#if SHARPDX
+                mb.Positions[i] = Vector3D.Normalize(mb.Positions[i]);
+#else
+                var temp = mb.Positions[i].ToVector3D();
+                temp.Normalize();
+                mb.Positions[i] = temp.ToPoint3D();
+#endif
             }
             var mesh = mb.ToMesh();
             UnitSphereCache.Value[subdivisions] = mesh;
@@ -477,13 +480,13 @@ namespace HelixToolkit.Wpf
         }
 #endif
 
-        /// <summary>
-        /// Calculate the Mesh's Normals
-        /// </summary>
-        /// <param name="positions">The Positions.</param>
-        /// <param name="triangleIndices">The TriangleIndices.</param>
-        /// <param name="normals">The calcualted Normals.</param>
-        private static void ComputeNormals(Point3DCollection positions, Int32Collection triangleIndices, out Vector3DCollection normals)
+                /// <summary>
+                /// Calculate the Mesh's Normals
+                /// </summary>
+                /// <param name="positions">The Positions.</param>
+                /// <param name="triangleIndices">The TriangleIndices.</param>
+                /// <param name="normals">The calcualted Normals.</param>
+                private static void ComputeNormals(Point3DCollection positions, Int32Collection triangleIndices, out Vector3DCollection normals)
         {
             normals = new Vector3DCollection(positions.Count);
             for (int i = 0; i < positions.Count; i++)
@@ -502,20 +505,33 @@ namespace HelixToolkit.Wpf
                 var p2 = v3 - v1;
                 var n = SharedFunctions.CrossProduct(ref p1, ref p2);
                 // angle
+#if SHARPDX
+                p1 = Vector3D.Normalize(p1);
+                p2 = Vector3D.Normalize(p2);
+#else
                 p1.Normalize();
                 p2.Normalize();
+#endif
                 var a = (float)Math.Acos(SharedFunctions.DotProduct(ref p1, ref p2));
+#if SHARPDX
+                n = Vector3D.Normalize(n);
+#else
                 n.Normalize();
+#endif
                 normals[i1] += (a * n);
                 normals[i2] += (a * n);
                 normals[i3] += (a * n);
             }
             for (int i = 0; i < normals.Count; i++)
             {
-            //Cannot use normals[i].normalize() if using Media3D.Vector3DCollection. Does not change the internal value in Vector3DCollection.
+                //Cannot use normals[i].normalize() if using Media3D.Vector3DCollection. Does not change the internal value in Vector3DCollection.
+#if SHARPDX
+                normals[i] = Vector3D.Normalize(normals[i]);
+#else
                 var n = normals[i];
                 n.Normalize();
                 normals[i] = n;
+#endif
             }
         }
         /// <summary>
@@ -591,7 +607,11 @@ namespace HelixToolkit.Wpf
                 var n = normals[i];
                 var t = tan1[i];
                 t = (t - n * SharedFunctions.DotProduct(ref n, ref t));
+#if SHARPDX
+                t = Vector3D.Normalize(t);
+#else
                 t.Normalize();
+#endif
                 var b = SharedFunctions.CrossProduct(ref n, ref t);
                 tangents.Add(t);
                 bitangents.Add(b);
@@ -648,7 +668,11 @@ namespace HelixToolkit.Wpf
                 var n = normals[i];
                 var t = tan1[i];
                 t = (t - n * SharedFunctions.DotProduct(ref n, ref t));
+#if SHARPDX
+                t = Vector3D.Normalize(t);
+#else
                 t.Normalize();
+#endif
                 var b = SharedFunctions.CrossProduct(ref n, ref t);
                 tangents.Add(t);
                 bitangents.Add(b);
@@ -706,10 +730,10 @@ namespace HelixToolkit.Wpf
                     break;
             }
         }
-        #endregion Geometric Base Functions
+#endregion Geometric Base Functions
 
 
-        #region Add Geometry
+#region Add Geometry
         /// <summary>
         /// Adds an arrow to the mesh.
         /// </summary>
@@ -1069,7 +1093,12 @@ namespace HelixToolkit.Wpf
         {
             Vector3D n = p2 - p1;
             var l = SharedFunctions.Length(ref n);
+#if SHARPDX
+            n = Vector3D.Normalize(n);
+#else
             n.Normalize();
+#endif
+
             this.AddCone(p1, n, diameter / 2, diameter / 2, l, false, false, thetaDiv);
         }
         /// <summary>
@@ -1100,7 +1129,12 @@ namespace HelixToolkit.Wpf
         {
             Vector3D n = p2 - p1;
             var l = SharedFunctions.Length(ref n);
+#if SHARPDX
+            n = Vector3D.Normalize(n);
+#else
             n.Normalize();
+#endif
+
             this.AddCone(p1, n, radius, radius, l, cap1, cap2, thetaDiv);
         }
         /// <summary>
@@ -1143,10 +1177,16 @@ namespace HelixToolkit.Wpf
             // Base Upper Points
             foreach (var point in basePoints)
             {
+#if SHARPDX
+                var baseCenterToPoint = Vector3D.Normalize(point - baseCenter);
+                var centerToPoint = Vector3D.Normalize(point - center);
+#else
                 var baseCenterToPoint = point - baseCenter;
                 baseCenterToPoint.Normalize();
                 var centerToPoint = point - center;
                 centerToPoint.Normalize();
+#endif
+
                 var tempRight = SharedFunctions.CrossProduct(ref up, ref baseCenterToPoint);
                 var newPoint = new Point3D(radiusSphere * (DoubleOrSingle)Math.Cos(gamma), 0, radiusSphere * (DoubleOrSingle)Math.Sin(gamma));
                 var tempUp = SharedFunctions.CrossProduct(ref centerToPoint, ref tempRight);
@@ -1164,10 +1204,17 @@ namespace HelixToolkit.Wpf
             // Top Lower Points
             foreach (var point in topPoints)
             {
+
+#if SHARPDX
+                var topCenterToPoint = Vector3D.Normalize(point - topCenter);
+                var centerToPoint = Vector3D.Normalize(point - center);
+#else
                 var topCenterToPoint = point - topCenter;
                 topCenterToPoint.Normalize();
                 var centerToPoint = point - center;
                 centerToPoint.Normalize();
+#endif
+
                 var tempRight = SharedFunctions.CrossProduct(ref up, ref topCenterToPoint);
                 var newPoint = new Point3D(radiusSphere * (DoubleOrSingle)Math.Cos(gamma), 0, radiusSphere * (DoubleOrSingle)Math.Sin(gamma));
                 var tempUp = SharedFunctions.CrossProduct(ref tempRight, ref centerToPoint);
@@ -1184,8 +1231,14 @@ namespace HelixToolkit.Wpf
             {
                 for (int i = positionsCount; i < this.positions.Count; i++)
                 {
+
+#if SHARPDX
+                    var centerToPoint = Vector3D.Normalize(this.positions[i] - center);
+#else
                     var centerToPoint = this.positions[i] - center;
                     centerToPoint.Normalize();
+#endif
+
                     this.normals.Add(centerToPoint);
                 }
             }
@@ -1195,11 +1248,23 @@ namespace HelixToolkit.Wpf
             {
                 for (int i = positionsCount; i < this.positions.Count; i++)
                 {
+
+#if SHARPDX
+                    var centerToPoint = Vector3D.Normalize(this.positions[i] - center);
+#else
                     var centerToPoint = this.positions[i] - center;
                     centerToPoint.Normalize();
+#endif
+
                     var cTPUpValue = SharedFunctions.DotProduct(ref centerToPoint, ref up);
+
+#if SHARPDX
+                    var planeCTP = Vector3D.Normalize(centerToPoint - up * cTPUpValue);
+#else
                     var planeCTP = centerToPoint - up * cTPUpValue;
                     planeCTP.Normalize();
+#endif
+
                     var u = (DoubleOrSingle)Math.Atan2(SharedFunctions.DotProduct(ref planeCTP, ref forward), SharedFunctions.DotProduct(ref planeCTP, ref right));
                     var v = cTPUpValue * 0.5f + 0.5f;
                     this.textureCoordinates.Add(new Point(u, v));
@@ -1339,8 +1404,15 @@ namespace HelixToolkit.Wpf
         {
             var p10 = p1 - p0;
             var ydirection = SharedFunctions.CrossProduct(ref xaxis, ref p10);
+
+#if SHARPDX
+            ydirection = Vector3D.Normalize(ydirection);
+            xaxis = Vector3D.Normalize(xaxis);
+#else
             ydirection.Normalize();
             xaxis.Normalize();
+#endif
+
 
             int index0 = this.positions.Count;
             int np = 2 * points.Count;
@@ -1349,7 +1421,13 @@ namespace HelixToolkit.Wpf
                 var v = (xaxis * p.X) + (ydirection * p.Y);
                 this.positions.Add(p0 + v);
                 this.positions.Add(p1 + v);
+
+#if SHARPDX
+                v = Vector3D.Normalize(v);
+#else
                 v.Normalize();
+#endif
+
                 if (this.normals != null)
                 {
                     this.normals.Add(v);
@@ -1697,8 +1775,15 @@ namespace HelixToolkit.Wpf
             }
             var p10 = p1 - p0;
             var axisY = SharedFunctions.CrossProduct(ref axisX, ref p10);
+
+#if SHARPDX
+            axisY = Vector3D.Normalize(axisY);
+            axisX = Vector3D.Normalize(axisX);
+#else
             axisY.Normalize();
             axisX.Normalize();
+#endif
+
             int index0 = this.positions.Count;
 
             for (int i = 0; i < points.Count; i++)
@@ -1710,7 +1795,13 @@ namespace HelixToolkit.Wpf
 
                 if (this.normals != null)
                 {
+
+#if SHARPDX
+                    d = Vector3D.Normalize(d);
+#else
                     d.Normalize();
+#endif
+
                     this.normals.Add(d);
                     this.normals.Add(d);
                 }
@@ -1904,7 +1995,13 @@ namespace HelixToolkit.Wpf
             var dir = point2 - point1;
 
             var height = SharedFunctions.Length(ref dir);
+
+#if SHARPDX
+            dir = Vector3D.Normalize(dir);
+#else
             dir.Normalize();
+#endif
+
 
             var pc = new PointCollection
                 {
@@ -2209,7 +2306,13 @@ namespace HelixToolkit.Wpf
                 var p10 = p1 - p0;
                 var p30 = p3 - p0;
                 var w = SharedFunctions.CrossProduct(ref p10, ref p30);
+
+#if SHARPDX
+                w = Vector3D.Normalize(w);
+#else
                 w.Normalize();
+#endif
+
                 this.normals.Add(w);
                 this.normals.Add(w);
                 this.normals.Add(w);
@@ -2540,7 +2643,13 @@ namespace HelixToolkit.Wpf
                     var v = Point3D.Subtract(
                         this.positions[index0 + (i0 * columns) + j1], this.positions[index0 + (i0 * columns) + j0]);
                     var normal = SharedFunctions.CrossProduct(ref u, ref v);
+
+#if SHARPDX
+                    normal = Vector3D.Normalize(normal);
+#else
                     normal.Normalize();
+#endif
+
                     this.normals.Add(normal);
                 }
             }
@@ -2770,13 +2879,26 @@ namespace HelixToolkit.Wpf
         /// </remarks>
         public void AddRevolvedGeometry(IList<Point> points, IList<double> textureValues, Point3D origin, Vector3D direction, int thetaDiv)
         {
+
+#if SHARPDX
+            direction = Vector3D.Normalize(direction);
+#else
             direction.Normalize();
+#endif
+
 
             // Find two unit vectors orthogonal to the specified direction
             var u = direction.FindAnyPerpendicular();
             var v = SharedFunctions.CrossProduct(ref direction, ref u);
+
+#if SHARPDX
+            u = Vector3D.Normalize(u);
+            v = Vector3D.Normalize(v);
+#else
             u.Normalize();
             v.Normalize();
+#endif
+
 
             var circle = GetCircle(thetaDiv);
 
@@ -2808,7 +2930,13 @@ namespace HelixToolkit.Wpf
                         var tx = points[j + 1].X - points[j].X;
                         var ty = points[j + 1].Y - points[j].Y;
                         var normal = (-direction * ty) + (w * tx);
+
+#if SHARPDX
+                        normal = Vector3D.Normalize(normal);
+#else
                         normal.Normalize();
+#endif
+
                         this.normals.Add(normal);
                         this.normals.Add(normal);
                     }
@@ -2906,7 +3034,12 @@ namespace HelixToolkit.Wpf
                 throw new InvalidOperationException(WrongNumberOfTextureCoordinates);
             }
 
+#if SHARPDX
+            axis = Vector3D.Normalize(axis);
+#else
             axis.Normalize();
+#endif
+
 
             // Find two unit vectors orthogonal to the specified direction
             var u = axis.FindAnyPerpendicular();
@@ -2926,8 +3059,14 @@ namespace HelixToolkit.Wpf
                         var tx = section[j + 1].X - section[j].X;
                         var ty = section[j + 1].Y - section[j].Y;
                         var normal = (-axis * ty) + (w * tx);
+
+#if SHARPDX
+                        normals.Add(Vector3D.Normalize(normal));
+#else
                         normal.Normalize();
                         this.normals.Add(normal);
+#endif
+
                     }
 
                     if (this.textureCoordinates != null)
@@ -3075,8 +3214,14 @@ namespace HelixToolkit.Wpf
                         for (int j = 0; j < rotatedPoints.Count; j++)
                         {
                             // The default Normal has the same Direction as the Vector from the Center to the Vertex
+
+#if SHARPDX
+                            var normal = Vector3D.Normalize(rotatedPoints[j] - rotatedOrigin);
+#else
                             var normal = rotatedPoints[j] - rotatedOrigin;
                             normal.Normalize();
+#endif
+
                             // If self-intersecting Torus and first Point of first Cross-Section,
                             // modify Normal
                             if (selfIntersecting && i == 0 && j == 0)
@@ -3278,8 +3423,14 @@ namespace HelixToolkit.Wpf
             {
                 var p10 = p1 - p0;
                 var p20 = p2 - p0;
+
+#if SHARPDX
+                var w = Vector3D.Normalize(SharedFunctions.CrossProduct(ref p10, ref p20));
+#else
                 var w = SharedFunctions.CrossProduct(ref p10, ref p20);
                 w.Normalize();
+#endif
+
                 this.normals.Add(w);
                 this.normals.Add(w);
                 this.normals.Add(w);
@@ -3634,8 +3785,15 @@ namespace HelixToolkit.Wpf
                 var right = SharedFunctions.CrossProduct(ref up, ref forward);
 
                 up = SharedFunctions.CrossProduct(ref forward, ref right);
+
+#if SHARPDX
+                up = Vector3D.Normalize(up);
+                right = Vector3D.Normalize(right);
+#else
                 up.Normalize();
                 right.Normalize();
+#endif
+
                 var u = right;
                 var v = up;
 
@@ -3653,8 +3811,15 @@ namespace HelixToolkit.Wpf
                     //** Please verify that negation of "up" is correct here
                     up *= -1;
                     right = SharedFunctions.CrossProduct(ref up, ref forward);
+
+#if SHARPDX
+                    up = Vector3D.Normalize(up);
+                    right = Vector3D.Normalize(right);
+#else
                     up.Normalize();
                     right.Normalize();
+#endif
+
                     u = right;
                     v = up;
                 }
@@ -3670,8 +3835,14 @@ namespace HelixToolkit.Wpf
                     this.positions.Add(q);
                     if (this.normals != null)
                     {
+
+#if SHARPDX
+                        normals.Add(Vector3D.Normalize(w));
+#else
                         w.Normalize();
                         this.normals.Add(w);
+#endif
+
                     }
 
                     if (this.textureCoordinates != null)
@@ -3694,8 +3865,14 @@ namespace HelixToolkit.Wpf
                 if (backCap)
                 {
                     var circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).Reverse().ToArray();
+
+#if SHARPDX
+                    var normal = Vector3D.Normalize(path[count - 1] - path[count - 2]);
+#else
                     var normal = path[count - 1] - path[count - 2];
                     normal.Normalize();
+#endif
+
                     for (int i = 0; i < normals.Length; ++i)
                     {
                         normals[i] = normal;
@@ -3705,8 +3882,14 @@ namespace HelixToolkit.Wpf
                 if (frontCap)
                 {
                     var circleFront = Positions.Take(section.Count).ToArray();
+
+#if SHARPDX
+                    var normal = Vector3D.Normalize(path[0] - path[1]);
+#else
                     var normal = path[0] - path[1];
                     normal.Normalize();
+#endif
+
 
                     for (int i = 0; i < normals.Length; ++i)
                     {
@@ -3764,8 +3947,15 @@ namespace HelixToolkit.Wpf
             var forward = path[1] - path[0];
             var right = sectionXAxis;
             var up = SharedFunctions.CrossProduct(ref forward, ref right);
+
+#if SHARPDX
+            up = Vector3D.Normalize(up);
+            right = Vector3D.Normalize(right);
+#else
             up.Normalize();
             right.Normalize();
+#endif
+
 
             int diametersCount = diameters != null ? diameters.Count : 0;
             int valuesCount = values != null ? values.Count : 0;
@@ -3789,8 +3979,14 @@ namespace HelixToolkit.Wpf
                     up = SharedFunctions.CrossProduct(ref forward, ref right);
                 }
 
+#if SHARPDX
+                up = Vector3D.Normalize(up);
+                right = Vector3D.Normalize(right);
+#else
                 up.Normalize();
                 right.Normalize();
+#endif
+
                 for (int j = 0; j < sectionLength; j++)
                 {
                     var x = (section[j].X * ct) - (section[j].Y * st);
@@ -3801,8 +3997,14 @@ namespace HelixToolkit.Wpf
                     this.positions.Add(q);
                     if (this.normals != null)
                     {
+
+#if SHARPDX
+                        normals.Add(Vector3D.Normalize(w));
+#else
                         w.Normalize();
                         this.normals.Add(w);
+#endif
+
                     }
 
                     if (this.textureCoordinates != null)
@@ -3824,8 +4026,14 @@ namespace HelixToolkit.Wpf
                 if (backCap)
                 {
                     var circleBack = Positions.Skip(Positions.Count - section.Count).Take(section.Count).Reverse().ToArray();
+
+#if SHARPDX
+                    var normal = Vector3D.Normalize(path[count - 1] - path[count - 2]);
+#else
                     var normal = path[count - 1] - path[count - 2];
                     normal.Normalize();
+#endif
+
                     for (int i = 0; i < normals.Length; ++i)
                     {
                         normals[i] = normal;
@@ -3835,8 +4043,14 @@ namespace HelixToolkit.Wpf
                 if (frontCap)
                 {
                     var circleFront = Positions.Take(section.Count).ToArray();
+
+#if SHARPDX
+                    var normal = Vector3D.Normalize(path[0] - path[1]);
+#else
                     var normal = path[0] - path[1];
                     normal.Normalize();
+#endif
+
 
                     for (int i = 0; i < normals.Length; ++i)
                     {
@@ -3846,10 +4060,10 @@ namespace HelixToolkit.Wpf
                 }
             }
         }
-        #endregion Add Geometry
+#endregion Add Geometry
 
 
-        #region Helper Functions
+#region Helper Functions
         /// <summary>
         /// Appends the specified mesh.
         /// </summary>
@@ -3984,7 +4198,7 @@ namespace HelixToolkit.Wpf
             this.positions.Add(newCornerPoint);
 
 #if SHARPDX
-            var plane = new Plane(newCornerPoint, cornerNormal);
+            var plane = PlaneHelper.GetPlane(newCornerPoint, cornerNormal);
 #else
             var plane = new Plane3D(newCornerPoint, cornerNormal);
 #endif
@@ -4146,8 +4360,14 @@ namespace HelixToolkit.Wpf
                 // calculate the triangle normal and check if this face is already added
                 var p10 = p1 - p0;
                 var p20 = p2 - p0;
+
+#if SHARPDX
+                var normal = Vector3.Normalize(SharedFunctions.CrossProduct(ref p10, ref p20));
+#else
                 var normal = SharedFunctions.CrossProduct(ref p10, ref p20);
                 normal.Normalize();
+#endif
+
 
                 // todo: need to use the epsilon value to compare the normals?
                 if (addedNormals.Contains(normal))
@@ -4261,8 +4481,14 @@ namespace HelixToolkit.Wpf
                 {
                     var v = new Vector3D(
                         this.Normals[i].X * (DoubleOrSingle)scaleX, this.Normals[i].Y * (DoubleOrSingle)scaleY, this.Normals[i].Z * (DoubleOrSingle)scaleZ);
+
+#if SHARPDX
+                    Normals[i] = Vector3.Normalize(v);
+#else
                     v.Normalize();
                     this.Normals[i] = v;
+#endif
+
                 }
             }
         }
@@ -4447,10 +4673,10 @@ namespace HelixToolkit.Wpf
                 this.Subdivide4();
             }
         }
-        #endregion Helper Functions
+#endregion Helper Functions
 
 
-        #region Exporter Functions
+#region Exporter Functions
 #if SHARPDX
         /// <summary>
         /// Generate a MeshGeometry3D from the generated Data.
@@ -4628,7 +4854,7 @@ namespace HelixToolkit.Wpf
             return mg;
         }
 #endif
-        #endregion Exporter Functions
+#endregion Exporter Functions
     }
 #pragma warning restore 0436
 }

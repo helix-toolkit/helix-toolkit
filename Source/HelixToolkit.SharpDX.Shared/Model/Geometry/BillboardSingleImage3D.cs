@@ -2,7 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
+using System.Numerics;
 using System;
 using System.IO;
 using SharpDX.Toolkit.Graphics;

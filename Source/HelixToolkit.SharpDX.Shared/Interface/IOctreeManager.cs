@@ -3,10 +3,10 @@
 //   Copyright (c) 2018 Helix Toolkit contributors
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+using HelixToolkit.Mathematics;
 using System;
 using System.Collections.Generic;
-using SharpDX;
-
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
@@ -14,7 +14,7 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
     using Model.Scene;
-    
+
     /// <summary>
     /// 
     /// </summary>

@@ -1,6 +1,7 @@
-﻿using SharpDX.Direct3D11;
+﻿using HelixToolkit.Mathematics;
+using SharpDX.Direct3D11;
+using System.Numerics;
 using System.Runtime.CompilerServices;
-using SharpDX;
 
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
@@ -220,7 +221,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ClearUnorderedAccessView(UnorderedAccessView unorderedAccessViewRef, Vector4 values)
         {
-            deviceContext.ClearUnorderedAccessView(unorderedAccessViewRef, values);
+            deviceContext.ClearUnorderedAccessView(unorderedAccessViewRef, values.ToRaw());
         }
         #endregion Clear Targets
     }

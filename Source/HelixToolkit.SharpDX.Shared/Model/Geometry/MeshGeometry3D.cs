@@ -2,18 +2,21 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using HelixToolkit.Mathematics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Runtime.Serialization;
+using Matrix = System.Numerics.Matrix4x4;
 #if NETFX_CORE
 namespace HelixToolkit.UWP
 #else
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+
     using Core;
-    using System.Runtime.Serialization;
-    using global::SharpDX;
     using Utilities;
 #if !NETFX_CORE
     [Serializable]
@@ -162,13 +165,12 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 var result = new HitTestResult();
                 result.Distance = double.MaxValue;
-                var modelInvert = modelMatrix.Inverted();
-                if (modelInvert == Matrix.Zero)//Check if model matrix can be inverted.
+                if (!Matrix.Invert(modelMatrix, out Matrix modelInvert))//Check if model matrix can be inverted.
                 {
                     return false;
                 }
                 //transform ray into model coordinates
-                var rayModel = new Ray(Vector3.TransformCoordinate(rayWS.Position, modelInvert), Vector3.TransformNormal(rayWS.Direction, modelInvert));
+                var rayModel = new Ray(Vector3Helper.TransformCoordinate(rayWS.Position, modelInvert), Vector3.TransformNormal(rayWS.Direction, modelInvert));
 
                 var b = this.Bound;
                 //Do hit test in local space
@@ -188,14 +190,13 @@ namespace HelixToolkit.Wpf.SharpDX
                                 result.IsValid = true;
                                 result.ModelHit = originalSource;
                                 // transform hit-info to world space now:
-                                var pointWorld = Vector3.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
+                                var pointWorld = Vector3Helper.TransformCoordinate(rayModel.Position + (rayModel.Direction * d), modelMatrix);
                                 result.PointHit = pointWorld;
                                 result.Distance = (rayWS.Position - pointWorld).Length();
-                                var p0 = Vector3.TransformCoordinate(v0, modelMatrix);
-                                var p1 = Vector3.TransformCoordinate(v1, modelMatrix);
-                                var p2 = Vector3.TransformCoordinate(v2, modelMatrix);
-                                var n = Vector3.Cross(p1 - p0, p2 - p0);
-                                n.Normalize();
+                                var p0 = Vector3Helper.TransformCoordinate(v0, modelMatrix);
+                                var p1 = Vector3Helper.TransformCoordinate(v1, modelMatrix);
+                                var p2 = Vector3Helper.TransformCoordinate(v2, modelMatrix);
+                                var n = Vector3.Normalize(Vector3.Cross(p1 - p0, p2 - p0));
                                 // transform hit-info to world space now:
                                 result.NormalAtHit = n;// Vector3.TransformNormal(n, m).ToVector3D();
                                 result.TriangleIndices = new System.Tuple<int, int, int>(Indices[index], Indices[index + 1], Indices[index + 2]);

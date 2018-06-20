@@ -2,11 +2,11 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Matrix = System.Numerics.Matrix4x4;
 #if DX11_1
 using Device = SharpDX.Direct3D11.Device1;
 #endif
@@ -16,7 +16,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Model;
     using Render;
     /// <summary>
     /// 

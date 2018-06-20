@@ -5,12 +5,13 @@ Copyright (c) 2018 Helix Toolkit contributors
 //#if DEBUG
 //#define OUTPUTDEBUGGING
 //#endif
-using System;
+using HelixToolkit.Mathematics;
 using SharpDX;
-using SharpDX.Direct3D11;
 using SharpDX.Direct3D;
-using System.Diagnostics;
+using SharpDX.Direct3D11;
+using System;
 using System.IO;
+using System.Numerics;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -18,9 +19,9 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Utilities;
-    using Shaders;
     using Render;
+    using Shaders;
+    using Utilities;
 
     /// <summary>
     /// 

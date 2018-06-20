@@ -3,9 +3,9 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
+using HelixToolkit.Mathematics;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
-
 #if !NETFX_CORE
 
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -13,7 +13,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using global::SharpDX;
     using Render;
     using Shaders;
     using Utilities;
@@ -195,7 +194,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="c">The c.</param>
-        public void ClearTargets(DeviceContextProxy context, Color c)
+        public void ClearTargets(DeviceContextProxy context, Color4 c)
         {
             foreach (var target in renderTargetBlur)
             {

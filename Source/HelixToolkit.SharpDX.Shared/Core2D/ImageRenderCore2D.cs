@@ -4,9 +4,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 //#define DEBUGBOUNDS
 using SharpDX;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using D2D = global::SharpDX.Direct2D1;
 
 #if NETFX_CORE

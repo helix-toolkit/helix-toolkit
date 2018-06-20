@@ -5,7 +5,6 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 using global::SharpDX.DXGI;
 using SharpDX;
-
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Model.Scene2D
 #else

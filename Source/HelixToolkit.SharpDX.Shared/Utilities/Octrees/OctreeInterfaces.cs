@@ -2,7 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using HelixToolkit.Mathematics;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 using System;
 using System.Collections.Generic;
 #if NETFX_CORE
@@ -177,7 +179,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="result"></param>
         /// <param name="isIntersect"></param>
         /// <returns></returns>
-        bool FindNearestPointBySphereExcludeChild(RenderContext context, ref global::SharpDX.BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect);
+        bool FindNearestPointBySphereExcludeChild(RenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> result, ref bool isIntersect);
 
         /// <summary>
         /// Build current node level only, this will only build current node and create children, but not build its children. 

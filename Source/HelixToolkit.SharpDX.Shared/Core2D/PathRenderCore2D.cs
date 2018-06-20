@@ -3,7 +3,6 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 //#define DEBUGBOUNDS
-using SharpDX;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using D2D = global::SharpDX.Direct2D1;
