@@ -159,7 +159,7 @@ namespace HelixToolkit.Wpf
 #else
                 var n = Vector3D.CrossProduct(v1, this.Points[i] - this.Points[0]);
 #endif
-                if (n.LengthSquared() > 1e-10)
+                if (SharedFunctions.LengthSquared(ref n) > 1e-10)
                 {
 #if SHARPDX
                     return Vector3D.Normalize(n);
