@@ -465,8 +465,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The clamped value.</returns>
         public static Color4 Clamp(Color4 value, Color4 min, Color4 max)
         {
-            Color4 result;
-            Clamp(ref value, ref min, ref max, out result);
+            Clamp(ref value, ref min, ref max, out Color4 result);
             return result;
         }
 
@@ -500,8 +499,7 @@ namespace HelixToolkit.Mathematics
         /// </remarks>
         public static Color4 Lerp(Color4 start, Color4 end, float amount)
         {
-            Color4 result;
-            Lerp(ref start, ref end, amount, out result);
+            Lerp(ref start, ref end, amount, out Color4 result);
             return result;
         }
 
@@ -527,8 +525,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The cubic interpolation of the two colors.</returns>
         public static Color4 SmoothStep(Color4 start, Color4 end, float amount)
         {
-            Color4 result;
-            SmoothStep(ref start, ref end, amount, out result);
+            SmoothStep(ref start, ref end, amount, out Color4 result);
             return result;
         }
 
@@ -554,8 +551,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>A color containing the largest components of the source colors.</returns>
         public static Color4 Max(Color4 left, Color4 right)
         {
-            Color4 result;
-            Max(ref left, ref right, out result);
+            Max(ref left, ref right, out Color4 result);
             return result;
         }
 
@@ -581,8 +577,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>A color containing the smallest components of the source colors.</returns>
         public static Color4 Min(Color4 left, Color4 right)
         {
-            Color4 result;
-            Min(ref left, ref right, out result);
+            Min(ref left, ref right, out Color4 result);
             return result;
         }
 
@@ -668,8 +663,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The premultiplied result.</returns>
         public static Color4 Premultiply(Color4 value)
         {
-            Color4 result;
-            Premultiply(ref value, out result);
+            Premultiply(ref value, out Color4 result);
             return result;
         }
 
@@ -1014,7 +1008,16 @@ namespace HelixToolkit.Mathematics
         }
 #if !CORE
 #if NETFX_CORE
+        public static implicit operator Windows.UI.Color(Color4 color)
+        {
+            return Windows.UI.Color.FromArgb((byte)(color.Alpha * 255), (byte)(color.Red * 255),
+                (byte)(color.Green * 255), (byte)(color.Blue * 255));
+        }
 
+        public static implicit operator Color4(Windows.UI.Color color)
+        {
+            return new Color4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
+        }
 #else
         public static implicit operator System.Windows.Media.Color(Color4 color)
         {

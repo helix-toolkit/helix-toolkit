@@ -376,8 +376,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The clamped value.</returns>
         public static Color3 Clamp(Color3 value, Color3 min, Color3 max)
         {
-            Color3 result;
-            Clamp(ref value, ref min, ref max, out result);
+            Clamp(ref value, ref min, ref max, out Color3 result);
             return result;
         }
 
@@ -410,8 +409,7 @@ namespace HelixToolkit.Mathematics
         /// </remarks>
         public static Color3 Lerp(Color3 start, Color3 end, float amount)
         {
-            Color3 result;
-            Lerp(ref start, ref end, amount, out result);
+            Lerp(ref start, ref end, amount, out Color3 result);
             return result;
         }
 
@@ -437,8 +435,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The cubic interpolation of the two colors.</returns>
         public static Color3 SmoothStep(Color3 start, Color3 end, float amount)
         {
-            Color3 result;
-            SmoothStep(ref start, ref end, amount, out result);
+            SmoothStep(ref start, ref end, amount, out Color3 result);
             return result;
         }
 
@@ -463,8 +460,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>A color containing the largest components of the source colors.</returns>
         public static Color3 Max(Color3 left, Color3 right)
         {
-            Color3 result;
-            Max(ref left, ref right, out result);
+            Max(ref left, ref right, out Color3 result);
             return result;
         }
 
@@ -489,8 +485,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>A color containing the smallest components of the source colors.</returns>
         public static Color3 Min(Color3 left, Color3 right)
         {
-            Color3 result;
-            Min(ref left, ref right, out result);
+            Min(ref left, ref right, out Color3 result);
             return result;
         }
 
@@ -573,8 +568,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The premultiplied color.</returns>
         public static Color3 Premultiply(Color3 value, float alpha)
         {
-            Color3 result;
-            Premultiply(ref value, alpha, out result);
+            Premultiply(ref value, alpha, out Color3 result);
             return result;
         }
 

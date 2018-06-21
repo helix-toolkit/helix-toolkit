@@ -172,7 +172,6 @@
     <PackageReference Include="SharpDX.Direct2D1" Version="4.1.0" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.1.0" />
     <PackageReference Include="SharpDX.DXGI" Version="4.1.0" />
-    <PackageReference Include="SharpDX.Mathematics" Version="4.1.0" />
     <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
     <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
