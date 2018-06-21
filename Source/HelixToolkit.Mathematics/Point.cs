@@ -187,5 +187,21 @@ namespace HelixToolkit.Mathematics
         {
             return *(Point*)&value;
         }
+
+#if !CORE
+#if NETFX_CORE
+
+#else
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="Point"/> to <see cref="RawPoint"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator System.Windows.Point(Point value)
+        {
+            return new System.Windows.Point(value.X, value.Y);
+        }
+#endif
+#endif
     }
 }

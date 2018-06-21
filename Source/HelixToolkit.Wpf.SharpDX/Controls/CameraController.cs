@@ -708,13 +708,13 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 this.rotationPosition = new Point(Viewport.ActualWidth / 2, Viewport.ActualHeight / 2);
                 this.rotateHandler.Rotate(
-                    this.rotationPosition, this.rotationPosition + new Vector(dx, dy), FixedRotationPoint);
+                    this.rotationPosition, this.rotationPosition + new Vector(dx, dy), FixedRotationPoint.ToVector3());
             }
             else
             {
                 this.rotationPosition = new Point(Viewport.ActualWidth / 2, Viewport.ActualHeight / 2);
                 this.rotateHandler.Rotate(
-                    this.rotationPosition, this.rotationPosition + new Vector(dx, dy), this.CameraTarget);
+                    this.rotationPosition, this.rotationPosition + new Vector(dx, dy), this.CameraTarget.ToVector3());
             }
             Viewport.InvalidateRender();
         }
@@ -1425,7 +1425,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.rotationSpeed.LengthSquared > 0.1)
             {
                 this.rotateHandler.Rotate(
-                    this.rotationPosition, this.rotationPosition + (this.rotationSpeed * time), this.rotationPoint3D);
+                    this.rotationPosition, this.rotationPosition + (this.rotationSpeed * time), this.rotationPoint3D.ToVector3());
                 this.rotationSpeed *= factor;
                 needUpdate = true;
                 this.spinningSpeed = VectorZero;
@@ -1436,7 +1436,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (this.isSpinning && this.spinningSpeed.LengthSquared > 0.1)
                 {
                     this.rotateHandler.Rotate(
-                        this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D);
+                        this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D.ToVector3());
                     if (!this.InfiniteSpin)
                     {
                         this.spinningSpeed *= factor;
