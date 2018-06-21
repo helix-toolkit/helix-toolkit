@@ -1695,12 +1695,14 @@ namespace HelixToolkit.Mathematics
             float yScale = (float)(1.0f / Math.Tan(fov * 0.5f));
             float q = zfar / (zfar - znear);
 
-            result = new Matrix();
-            result.M11 = yScale / aspect;
-            result.M22 = yScale;
-            result.M33 = q;
-            result.M34 = 1.0f;
-            result.M43 = -q * znear;
+            result = new Matrix
+            {
+                M11 = yScale / aspect,
+                M22 = yScale,
+                M33 = q,
+                M34 = 1.0f,
+                M43 = -q * znear
+            };
         }
 
         /// <summary>

@@ -51,6 +51,7 @@ namespace HelixToolkit.Mathematics
         /// <returns></returns>
         public static Plane GetPlane(Vector3 point, Vector3 normal)
         {
+            normal = Vector3.Normalize(normal);
             return new Plane(normal, -Vector3.Dot(normal, point));
         }
         /// <summary>
@@ -81,6 +82,17 @@ namespace HelixToolkit.Mathematics
             //Normal.Y = xz * invPyth;
             //Normal.Z = xy * invPyth;
             //return new Plane(Normal, -Vector3.Dot(Normal, point1));
+        }
+
+        /// <summary>
+        /// Changes the coefficients of the normal vector of the plane to make it of unit length.
+        /// </summary>
+        public static Plane NormalizeUnit(this Plane plane)
+        {
+            var length = 1 / plane.Normal.Length();
+            plane.Normal *= length;
+            plane.D *= length;
+            return plane;
         }
         /// <summary>
         /// Gets or sets the component at the specified index.

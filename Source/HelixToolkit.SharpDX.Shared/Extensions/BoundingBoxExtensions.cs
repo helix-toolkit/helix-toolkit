@@ -33,9 +33,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
             foreach (var p in points)
             {
-                var point = p;
-                min = Vector3.Min(min, point);
-                max = Vector3.Max(max, point);
+                min = Vector3.Min(min, p);
+                max = Vector3.Max(max, p);
             }
 
             return new BoundingBox(min, max);

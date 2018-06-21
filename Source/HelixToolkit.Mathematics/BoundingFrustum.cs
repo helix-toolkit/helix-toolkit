@@ -241,42 +241,42 @@ namespace HelixToolkit.Mathematics
             left.Normal.Y = matrix.M24 + matrix.M21;
             left.Normal.Z = matrix.M34 + matrix.M31;
             left.D = matrix.M44 + matrix.M41;
-            left = Plane.Normalize(left);
+            left = PlaneHelper.NormalizeUnit(left);
 
             // Right plane
             right.Normal.X = matrix.M14 - matrix.M11;
             right.Normal.Y = matrix.M24 - matrix.M21;
             right.Normal.Z = matrix.M34 - matrix.M31;
             right.D = matrix.M44 - matrix.M41;
-            right = Plane.Normalize(right);
+            right = PlaneHelper.NormalizeUnit(right);
 
             // Top plane
             top.Normal.X = matrix.M14 - matrix.M12;
             top.Normal.Y = matrix.M24 - matrix.M22;
             top.Normal.Z = matrix.M34 - matrix.M32;
             top.D = matrix.M44 - matrix.M42;
-            top = Plane.Normalize(top);
+            top = PlaneHelper.NormalizeUnit(top);
 
             // Bottom plane
             bottom.Normal.X = matrix.M14 + matrix.M12;
             bottom.Normal.Y = matrix.M24 + matrix.M22;
             bottom.Normal.Z = matrix.M34 + matrix.M32;
             bottom.D = matrix.M44 + matrix.M42;
-            bottom = Plane.Normalize(bottom);
+            bottom = PlaneHelper.NormalizeUnit(bottom);
 
             // Near plane
             near.Normal.X = matrix.M13;
             near.Normal.Y = matrix.M23;
             near.Normal.Z = matrix.M33;
             near.D = matrix.M43;
-            near = Plane.Normalize(near);
+            near = PlaneHelper.NormalizeUnit(near);
 
             // Far plane
             far.Normal.X = matrix.M14 - matrix.M13;
             far.Normal.Y = matrix.M24 - matrix.M23;
             far.Normal.Z = matrix.M34 - matrix.M33;
             far.D = matrix.M44 - matrix.M43;
-            far = Plane.Normalize(far);
+            far = PlaneHelper.NormalizeUnit(far);
         }
 
         private static Vector3 Get3PlanesInterPoint(ref Plane p1, ref Plane p2, ref Plane p3)
@@ -327,12 +327,12 @@ namespace HelixToolkit.Mathematics
 
             var result = new BoundingFrustum
             {
-                pNear = Plane.Normalize(PlaneHelper.GetPlane(Near1, Near2, Near3)),
-                pFar = Plane.Normalize(PlaneHelper.GetPlane(Far3, Far2, Far1)),
-                pLeft = Plane.Normalize(PlaneHelper.GetPlane(Near4, Near3, Far3)),
-                pRight = Plane.Normalize(PlaneHelper.GetPlane(Far1, Far2, Near2)),
-                pTop = Plane.Normalize(PlaneHelper.GetPlane(Near2, Far2, Far3)),
-                pBottom = Plane.Normalize(PlaneHelper.GetPlane(Far4, Far1, Near1)),
+                pNear = PlaneHelper.GetPlane(Near1, Near2, Near3),
+                pFar = PlaneHelper.GetPlane(Far3, Far2, Far1),
+                pLeft = PlaneHelper.GetPlane(Near4, Near3, Far3),
+                pRight = PlaneHelper.GetPlane(Far1, Far2, Near2),
+                pTop = PlaneHelper.GetPlane(Near2, Far2, Far3),
+                pBottom = PlaneHelper.GetPlane(Far4, Far1, Near1),
                 pMatrix = MatrixHelper.LookAtLH(cameraPos, cameraPos + lookDir * 10, upDir) 
                 * MatrixHelper.PerspectiveFovLH(fov, aspect, znear, zfar)
             };

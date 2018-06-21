@@ -882,7 +882,7 @@ namespace HelixToolkit.Mathematics
 
             //If direction is the zero vector, the planes are parallel and possibly
             //coincident. It is not an intersection. The dot product will tell us.
-            float denominator = -Vector3.Dot(direction, direction);
+            float denominator = Vector3.Dot(direction, direction);
             
 
             if (MathUtil.IsZero(denominator))

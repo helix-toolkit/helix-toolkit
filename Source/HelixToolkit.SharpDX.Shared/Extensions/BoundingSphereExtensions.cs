@@ -54,7 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 //from the center of our sphere.
                 
                 var p = points[i];
-                float distance = Vector3.Distance(center, p);
+                float distance = Vector3.DistanceSquared(center, p);
 
                 if (distance > radius)
                     radius = distance;
