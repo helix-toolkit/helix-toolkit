@@ -62,15 +62,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             var actual = triangleIndex * 2;
             var v1 = Positions[Indices[actual++]];
             var v2 = Positions[Indices[actual]];
-            var maxX = Math.Max(v1.X, v2.X);
-            var maxY = Math.Max(v1.Y, v2.Y);
-            var maxZ = Math.Max(v1.Z, v2.Z);
 
-            var minX = Math.Min(v1.X, v2.X);
-            var minY = Math.Min(v1.Y, v2.Y);
-            var minZ = Math.Min(v1.Z, v2.Z);
-
-            return new BoundingBox(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
+            return new BoundingBox(Vector3.Min(v1, v2), Vector3.Max(v1, v2));
         }
 
         protected override BoundingBox GetMaxBound()

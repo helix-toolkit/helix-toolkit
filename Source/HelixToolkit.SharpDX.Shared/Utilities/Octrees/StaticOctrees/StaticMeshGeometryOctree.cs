@@ -72,15 +72,8 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             var v1 = Positions[Indices[actual++]];
             var v2 = Positions[Indices[actual++]];
             var v3 = Positions[Indices[actual]];
-            var maxX = Math.Max(v1.X, Math.Max(v2.X, v3.X));
-            var maxY = Math.Max(v1.Y, Math.Max(v2.Y, v3.Y));
-            var maxZ = Math.Max(v1.Z, Math.Max(v2.Z, v3.Z));
 
-            var minX = Math.Min(v1.X, Math.Min(v2.X, v3.X));
-            var minY = Math.Min(v1.Y, Math.Min(v2.Y, v3.Y));
-            var minZ = Math.Min(v1.Z, Math.Min(v2.Z, v3.Z));
-
-            return new BoundingBox(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
+            return new BoundingBox(Vector3.Min(Vector3.Min(v1, v2), v3), Vector3.Max(Vector3.Max(v1, v2), v3));
         }
         /// <summary>
         /// 
