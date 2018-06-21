@@ -9,21 +9,21 @@
 
 namespace TessellationDemo
 {
-    using System.Linq;
     using DemoCore;
+    using HelixToolkit.Mathematics;
     using HelixToolkit.Wpf.SharpDX;
-    using SharpDX;
-    using Media3D = System.Windows.Media.Media3D;
-    using Point3D = System.Windows.Media.Media3D.Point3D;
-    using Vector3D = System.Windows.Media.Media3D.Vector3D;
-    using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using Color = System.Windows.Media.Color;
-    using Vector3 = SharpDX.Vector3;
-    using Colors = System.Windows.Media.Colors;
-    using Color4 = SharpDX.Color4;
     using HelixToolkit.Wpf.SharpDX.Core;
     using SharpDX.Direct3D11;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Numerics;
+    using Color = System.Windows.Media.Color;
+    using Colors = System.Windows.Media.Colors;
+    using Matrix = System.Numerics.Matrix4x4;
+    using Media3D = System.Windows.Media.Media3D;
+    using Point3D = System.Windows.Media.Media3D.Point3D;
+    using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
     public class MainViewModel : BaseViewModel
     {
@@ -146,7 +146,8 @@ namespace TessellationDemo
             builder.AddBox(new Vector3(0, -5, 0), 60, 0.5, 60, BoxFaces.All);
             FloorModel = builder.ToMesh();
 
-            Instances = new Matrix[] { Matrix.Identity, Matrix.Translation(10, 0, 10), Matrix.Translation(-10, 0, 10), Matrix.Translation(10, 0, -10), Matrix.Translation(-10, 0, -10), };
+            Instances = new Matrix[] { Matrix.Identity, MatrixHelper.Translation(10, 0, 10), MatrixHelper.Translation(-10, 0, 10),
+                MatrixHelper.Translation(10, 0, -10), MatrixHelper.Translation(-10, 0, -10), };
         }
 
         /// <summary>

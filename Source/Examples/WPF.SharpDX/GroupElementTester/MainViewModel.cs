@@ -1,24 +1,17 @@
 ﻿using DemoCore;
 using HelixToolkit.Wpf.SharpDX;
+using HelixToolkit.Wpf.SharpDX.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.Numerics;
+using System.Windows.Input;
+using System.Windows.Media.Animation;
+using Colors = System.Windows.Media.Colors;
 using Media3D = System.Windows.Media.Media3D;
 using Point3D = System.Windows.Media.Media3D.Point3D;
-using Vector3D = System.Windows.Media.Media3D.Vector3D;
 using Transform3D = System.Windows.Media.Media3D.Transform3D;
 using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-using Color = System.Windows.Media.Color;
-using Plane = SharpDX.Plane;
-using Vector3 = SharpDX.Vector3;
-using Colors = System.Windows.Media.Colors;
-using Color4 = SharpDX.Color4;
-using HelixToolkit.Wpf.SharpDX.Core;
-using System.Windows.Input;
-using System.Collections.ObjectModel;
-using System.Windows.Media.Animation;
+using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace GroupElementTester
 {

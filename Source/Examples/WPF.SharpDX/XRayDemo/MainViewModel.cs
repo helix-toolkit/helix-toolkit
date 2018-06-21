@@ -6,29 +6,22 @@
 
 namespace XRayDemo
 {
-    using System;
-    using System.Windows.Media.Animation;
-    using System.Windows.Media.Imaging;
     using DemoCore;
+    using HelixToolkit.Mathematics;
     using HelixToolkit.Wpf.SharpDX;
-    using SharpDX;
-    using Media3D = System.Windows.Media.Media3D;
-    using Point3D = System.Windows.Media.Media3D.Point3D;
-    using Vector3D = System.Windows.Media.Media3D.Vector3D;
-    using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using Color = System.Windows.Media.Color;
-    using Plane = SharpDX.Plane;
-    using Vector3 = SharpDX.Vector3;
-    using Colors = System.Windows.Media.Colors;
-    using Color4 = SharpDX.Color4;
-    using HelixToolkit.Wpf;
-    using System.IO;
+    using SharpDX.Direct3D11;
     using System.Collections.Generic;
     using System.Linq;
-    using SharpDX.Direct3D11;
+    using System.Numerics;
     using System.Windows;
     using System.Windows.Data;
-    using HelixToolkit.Wpf.SharpDX.Extensions;
+    using Color = System.Windows.Media.Color;
+    using Colors = System.Windows.Media.Colors;
+    using Matrix = System.Numerics.Matrix4x4;
+    using Media3D = System.Windows.Media.Media3D;
+    using Point3D = System.Windows.Media.Media3D.Point3D;
+    using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
     public class MainViewModel : BaseViewModel
     {
@@ -134,13 +127,13 @@ namespace XRayDemo
             Instances = new Matrix[6];
             for(int i=0; i<Instances.Length; ++i)
             {
-                Instances[i] = Matrix.Translation(new Vector3(15 * i - 30, 15 * (i % 2) - 30, 0));
+                Instances[i] = MatrixHelper.Translation(new Vector3(15 * i - 30, 15 * (i % 2) - 30, 0));
             }
 
             OutlineInstances = new Matrix[6];
             for (int i = 0; i < Instances.Length; ++i)
             {
-                OutlineInstances[i] = Matrix.Translation(new Vector3(15 * i - 30, 15 * (i % 2), 0));
+                OutlineInstances[i] = MatrixHelper.Translation(new Vector3(15 * i - 30, 15 * (i % 2), 0));
             }
 
             var blendDesc = new BlendStateDescription();

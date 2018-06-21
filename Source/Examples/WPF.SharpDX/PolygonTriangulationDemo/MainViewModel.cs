@@ -9,7 +9,9 @@ namespace PolygonTriangulationDemo
 {
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
-    using SharpDX;
+    using System.Numerics;
+    using HelixToolkit.Mathematics;
+    using Matrix = System.Numerics.Matrix4x4;
     using System;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
@@ -33,11 +35,11 @@ namespace PolygonTriangulationDemo
         /// <summary>
         /// Color of the Gridlines
         /// </summary>
-        public SharpDX.Color GridColor { get; private set; }
+        public Color GridColor { get; private set; }
         /// <summary>
         /// Color of the Triangle Lines
         /// </summary>
-        public SharpDX.Color TriangulationColor { get; private set; }
+        public Color TriangulationColor { get; private set; }
         /// <summary>
         /// Transform of the Grid
         /// </summary>
@@ -180,11 +182,11 @@ namespace PolygonTriangulationDemo
             
             // Model Materials and Colors
             this.Material = PhongMaterials.PolishedBronze;
-            this.TriangulationColor = SharpDX.Color.Black;
+            this.TriangulationColor = Color.Black;
 
             // Grid Setup
             this.Grid = LineBuilder.GenerateGrid(Vector3.UnitY, -5, 5, 0, 10);
-            this.GridColor = SharpDX.Color.DarkGray;
+            this.GridColor = Color.DarkGray;
             this.GridTransform = new TranslateTransform3D(0, -0.01, 0);
         }
     }

@@ -2084,6 +2084,76 @@ namespace HelixToolkit.Mathematics
         }
 
         /// <summary>
+        /// Scalings the specified scaling.
+        /// </summary>
+        /// <param name="scaling">The scaling.</param>
+        /// <returns></returns>
+        public static Matrix Scaling(float scaling)
+        {
+            return Matrix.CreateScale(scaling);
+        }
+
+        /// <summary>
+        /// Scalings the specified x.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="z">The z.</param>
+        /// <returns></returns>
+        public static Matrix Scaling(float x, float y, float z)
+        {
+            return Matrix.CreateScale(x, y, z);
+        }
+        /// <summary>
+        /// Scalings the specified v.
+        /// </summary>
+        /// <param name="v">The v.</param>
+        /// <returns></returns>
+        public static Matrix Scaling(Vector3 v)
+        {
+            return Matrix.CreateScale(v);
+        }
+        /// <summary>
+        /// Scalings the specified v.
+        /// </summary>
+        /// <param name="v">The v.</param>
+        /// <param name="center">The center.</param>
+        /// <returns></returns>
+        public static Matrix Scaling(Vector3 v, Vector3 center)
+        {
+            return Matrix.CreateScale(v, center);
+        }
+        /// <summary>
+        /// Translations the specified x.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <param name="z">The z.</param>
+        /// <returns></returns>
+        public static Matrix Translation(float x, float y, float z)
+        {
+            return Matrix.CreateTranslation(x, y, z);
+        }
+        /// <summary>
+        /// Translations the specified v.
+        /// </summary>
+        /// <param name="v">The v.</param>
+        /// <returns></returns>
+        public static Matrix Translation(Vector3 v)
+        {
+            return Matrix.CreateTranslation(v);
+        }
+        /// <summary>
+        /// Rotations the axis. Angle is radian.
+        /// </summary>
+        /// <param name="axis">The axis.</param>
+        /// <param name="angle">The angle.</param>
+        /// <returns></returns>
+        public static Matrix RotationAxis(Vector3 axis, float angle)
+        {
+            return Matrix.CreateFromAxisAngle(axis, angle);
+        }
+        /// <summary>
         /// Performs an implicit conversion from <see cref="Matrix"/> to <see cref="RawMatrix"/>.
         /// </summary>
         /// <param name="value">The value.</param>

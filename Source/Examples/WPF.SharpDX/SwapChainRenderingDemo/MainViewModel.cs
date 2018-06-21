@@ -1,30 +1,25 @@
 ﻿namespace SwapChainRenderingDemo
 {
-    using System;
-    using System.Windows.Media.Animation;
-    using System.Windows.Media.Imaging;
     using DemoCore;
+    using HelixToolkit.Mathematics;
     using HelixToolkit.Wpf.SharpDX;
-    using SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Model;
+    using SharpDX.Direct3D11;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Numerics;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows.Media.Animation;
+    using Color = System.Windows.Media.Color;
+    using Colors = System.Windows.Media.Colors;
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
-    using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using Color = System.Windows.Media.Color;
-    using Plane = SharpDX.Plane;
-    using Vector3 = SharpDX.Vector3;
-    using Colors = System.Windows.Media.Colors;
-    using Color4 = SharpDX.Color4;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-    using HelixToolkit.Wpf;
-    using System.IO;
-    using System.Collections.Generic;
-    using System.Linq;
-    using SharpDX.Direct3D11;
-    using System.Diagnostics;
-    using System.Threading.Tasks;
-    using System.Threading;
-    using HelixToolkit.Wpf.SharpDX.Model;
+    using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
     public class MainViewModel : BaseViewModel
     {

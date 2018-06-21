@@ -6,27 +6,22 @@
 
 namespace InstancingDemo
 {
-    using System.Collections.Generic;
-
     using DemoCore;
-
+    using HelixToolkit.Mathematics;
     using HelixToolkit.Wpf.SharpDX;
-    using SharpDX;
+    using Matrix = System.Numerics.Matrix4x4;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Numerics;
+    using System.Windows.Threading;
+    using Color = System.Windows.Media.Color;
+    using Colors = System.Windows.Media.Colors;
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
-    using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-    using Color = System.Windows.Media.Color;
-    using Plane = SharpDX.Plane;
-    using Vector3 = SharpDX.Vector3;
-    using Colors = System.Windows.Media.Colors;
-    using Color4 = SharpDX.Color4;
-    using System;
-    using System.IO;
-    using System.Windows.Threading;
-    using System.Diagnostics;
-    using System.Linq;
+    using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
     public class MainViewModel : BaseViewModel
     {
@@ -146,8 +141,8 @@ namespace InstancingDemo
             {
                 for (int j = -num - (int)aniX; j < num + aniX; j++)
                 {
-                    var matrix = Matrix.RotationAxis(new Vector3(0, 1, 0), aniX * Math.Sign(j))
-                        * Matrix.Translation(new Vector3(i * 1.2f + Math.Sign(i), j * 1.2f + Math.Sign(j), i * j / 2.0f));
+                    var matrix = Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), aniX * Math.Sign(j))
+                        * Matrix.CreateTranslation(new Vector3(i * 1.2f + Math.Sign(i), j * 1.2f + Math.Sign(j), i * j / 2.0f));
                     var color = new Color4(1, 1, 1, 1);//new Color4((float)Math.Abs(i) / num, (float)Math.Abs(j) / num, (float)Math.Abs(i + j) / (2 * num), 1);
                     //  var emissiveColor = new Color4( rnd.NextFloat(0,1) , rnd.NextFloat(0, 1), rnd.NextFloat(0, 1), rnd.NextFloat(0, 0.2f));
                     var k = Math.Abs(i + j) % 4;
@@ -183,8 +178,8 @@ namespace InstancingDemo
                 {
                     billboardParams.Add(new BillboardInstanceParameter()
                     { TexCoordOffset = new Vector2(1f/6 * rnd.Next(0, 6), 1f/6 * rnd.Next(0,6)), TexCoordScale = new Vector2(1f/6, 1f/6) });
-                    billboardinstances.Add( Matrix.Scaling(rnd.NextFloat(0.5f, 4f), rnd.NextFloat(0.5f, 3f), rnd.NextFloat(0.5f, 3f))
-                        * Matrix.Translation(new Vector3(rnd.NextFloat(0, 100), rnd.NextFloat(0, 100), rnd.NextFloat(-50, 50))));
+                    billboardinstances.Add( Matrix.CreateScale(rnd.NextFloat(0.5f, 4f), rnd.NextFloat(0.5f, 3f), rnd.NextFloat(0.5f, 3f))
+                        * Matrix.CreateTranslation(new Vector3(rnd.NextFloat(0, 100), rnd.NextFloat(0, 100), rnd.NextFloat(-50, 50))));
                 }
                 BillboardInstanceParams = billboardParams.ToArray();
                 BillboardInstances = billboardinstances.ToArray();

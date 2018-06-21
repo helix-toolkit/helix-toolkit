@@ -10,9 +10,8 @@ using System.Windows.Data;
 using System.Windows.Threading;
 using Media3D = System.Windows.Media.Media3D;
 using System.Windows.Media;
-using Vector3 = global::SharpDX.Vector3;
-using Matrix = global::SharpDX.Matrix;
-using Vector4 = global::SharpDX.Vector4;
+using System.Numerics;
+using Matrix = System.Numerics.Matrix4x4;
 
 namespace BoneSkinDemo
 {
@@ -170,7 +169,7 @@ namespace BoneSkinDemo
 
         private const int NumSegments = 100;
         private const int Theta = 24;
-        private IList<SharpDX.Vector3> path;
+        private IList<Vector3> path;
         private int numSegmentPerBone;
         public MainViewModel()
         {
@@ -245,15 +244,15 @@ namespace BoneSkinDemo
             Instances = new List<Matrix>();
             for (int i = 0; i < 3; ++i)
             {
-                Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, -10)));
+                Instances.Add(Matrix.CreateTranslation(new Vector3(-5 + i * 4, 0, -10)));
             }
             for (int i = 0; i < 3; ++i)
             {
-                Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, 0)));
+                Instances.Add(Matrix.CreateTranslation(new Vector3(-5 + i * 4, 0, 0)));
             }
             for (int i = 0; i < 3; ++i)
             {
-                Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, 10)));
+                Instances.Add(Matrix.CreateTranslation(new Vector3(-5 + i * 4, 0, 10)));
             }
 
             timer.Tick += Timer_Tick;
@@ -268,7 +267,7 @@ namespace BoneSkinDemo
             var xAxis = new Vector3(1, 0, 0);
             var zAxis = new Vector3(0, 0, 1);
             var yAxis = new Vector3(0, 1, 0);
-            var rotation = Matrix.RotationAxis(xAxis, 0);
+            var rotation = Matrix.CreateFromAxisAngle(xAxis, 0);
             double angleEach = 0;
             int counter = 0;
             for (int i=0; i< NumSegments && i < numBonesInModel; ++i, counter+= numSegmentPerBone)
@@ -279,16 +278,16 @@ namespace BoneSkinDemo
                 }
                 else
                 {
-                    var vp = Vector3.Transform(path[counter - numSegmentPerBone], Matrix.RotationAxis(xAxis, (float)angleEach)).ToVector3();
+                    var vp = Vector3.Transform(path[counter - numSegmentPerBone], Matrix.CreateFromAxisAngle(xAxis, (float)angleEach));
                     angleEach += angle;
-                    var v = Vector3.Transform(path[counter], Matrix.RotationAxis(xAxis, (float)angleEach)).ToVector3();
-                    var rad = Math.Acos(Vector3.Dot(yAxis, (v-vp).Normalized()));
+                    var v = Vector3.Transform(path[counter], Matrix.CreateFromAxisAngle(xAxis, (float)angleEach));
+                    var rad = Math.Acos(Vector3.Dot(yAxis, Vector3.Normalize(v-vp)));
                     if (angleEach < 0)
                     {
                         rad = -rad;
                     }
-                    var rot = Matrix.RotationAxis(xAxis, (float)rad);
-                    var trans = Matrix.Translation(v);
+                    var rot = Matrix.CreateFromAxisAngle(xAxis, (float)rad);
+                    var trans = Matrix.CreateTranslation(v);
                     boneInternal[i] = rot * trans;
                 }
             }

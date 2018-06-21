@@ -6,10 +6,9 @@
 
 namespace TemplateDemo
 {
-    using HelixToolkit.Wpf;
     using HelixToolkit.Wpf.SharpDX;
 
-    using SharpDX;
+    using System.Numerics;
 
     public class Cube : Shape
     {

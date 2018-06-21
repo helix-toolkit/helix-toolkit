@@ -6,23 +6,18 @@
 
 namespace LightingDemo
 {
-    using System;
-    using System.Windows.Media.Animation;
-    using System.Windows.Media.Imaging;
     using DemoCore;
+    using HelixToolkit.Mathematics;
     using HelixToolkit.Wpf.SharpDX;
-    using SharpDX;
-
+    using System;
+    using System.Numerics;
+    using System.Windows.Media.Animation;
+    using Color = System.Windows.Media.Color;
+    using Colors = System.Windows.Media.Colors;
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
-    using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-    using Color = System.Windows.Media.Color;
-    using Plane = SharpDX.Plane;
-    using Vector3 = SharpDX.Vector3;
-    using Colors = System.Windows.Media.Colors;
-    using Color4 = SharpDX.Color4;
+    using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
     public class MainViewModel : BaseViewModel
     {
@@ -271,7 +266,7 @@ namespace LightingDemo
             ModelMaterial.DiffuseMap = FloorMaterial.DiffuseMap;
 
             ReflectMaterial = PhongMaterials.PolishedSilver;
-            ReflectMaterial.ReflectiveColor = global::SharpDX.Color.Silver;
+            ReflectMaterial.ReflectiveColor = Colors.Silver.ToColor4();
 
             InitialObjectTransforms();
         }

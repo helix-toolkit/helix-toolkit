@@ -10,10 +10,9 @@
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
     using Color = System.Windows.Media.Color;
-    using Plane = SharpDX.Plane;
-    using Vector3 = SharpDX.Vector3;
-    using Colors = System.Windows.Media.Colors;
-    using Color4 = SharpDX.Color4;
+    using System.Numerics;
+    using HelixToolkit.Mathematics;
+    using Colors = System.Windows.Media.Colors;    
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Data;

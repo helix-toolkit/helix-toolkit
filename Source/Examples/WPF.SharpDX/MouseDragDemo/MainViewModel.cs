@@ -6,26 +6,20 @@
 
 namespace MouseDragDemo
 {
+    using DemoCore;
+    using HelixToolkit.Wpf.SharpDX;
+    using HelixToolkit.Wpf.SharpDX.Core;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
-
-    using DemoCore;
-
-    using HelixToolkit.Wpf.SharpDX;
-    using HelixToolkit.Wpf.SharpDX.Core;
-
-    using SharpDX;
-
+    using System.Numerics;
+    using Color = System.Windows.Media.Color;
+    using Colors = System.Windows.Media.Colors;
+    using Matrix = System.Numerics.Matrix4x4;
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
-    using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using Color = System.Windows.Media.Color;
-    using Plane = SharpDX.Plane;
-    using Vector3 = SharpDX.Vector3;
-    using Colors = System.Windows.Media.Colors;
-    using Color4 = SharpDX.Color4;
+    using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
     public class MainViewModel : BaseViewModel
     {
@@ -87,7 +81,7 @@ namespace MouseDragDemo
             this.Model1Instances = new List<Matrix>();
             for (int i = 0; i < 5; i++)
             {
-                this.Model1Instances.Add(Matrix.Translation(0, i, 0));
+                this.Model1Instances.Add(Matrix.CreateTranslation(0, i, 0));
             }
 
             // lines model3d
@@ -157,9 +151,9 @@ namespace MouseDragDemo
                     Material = this.GreenMaterial,
                     Transform = this.Model2Transform,
                     Instances = new List<Matrix> { 
-                        Matrix.Translation(-1,0,0), Matrix.Translation(+1,0,0), 
-                        Matrix.Translation(0,-1,0), Matrix.Translation(0,+1,0),
-                        Matrix.Translation(0,0,-1), Matrix.Translation(0,0,+1), 
+                        Matrix.CreateTranslation(-1,0,0), Matrix.CreateTranslation(+1,0,0), 
+                        Matrix.CreateTranslation(0,-1,0), Matrix.CreateTranslation(0,+1,0),
+                        Matrix.CreateTranslation(0,0,-1), Matrix.CreateTranslation(0,0,+1), 
                     },
                 });
 

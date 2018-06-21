@@ -10,11 +10,11 @@ namespace CustomShaderDemo
     using System.Windows.Media;
     using DemoCore;
 
-    using HelixToolkit.Wpf;
     using HelixToolkit.Wpf.SharpDX;
     using HelixToolkit.Wpf.SharpDX.Core;
 
-    using SharpDX;
+    using System.Numerics;
+    using HelixToolkit.Mathematics;
     using Media3D = System.Windows.Media.Media3D;
     using Color = System.Windows.Media.Color;
     using Point3D = System.Windows.Media.Media3D.Point3D;

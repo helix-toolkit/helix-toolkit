@@ -1,16 +1,12 @@
 ﻿using DemoCore;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Media3D = System.Windows.Media.Media3D;
-using Media = System.Windows.Media;
+using System.Numerics;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
+using Media = System.Windows.Media;
+using Media3D = System.Windows.Media.Media3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace D2DScreenMenuExample

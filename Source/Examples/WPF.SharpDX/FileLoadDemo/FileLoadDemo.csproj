@@ -111,8 +111,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SharpDX.Mathematics">
-      <Version>4.1.0</Version>
+    <PackageReference Include="System.Numerics.Vectors">
+      <Version>4.5.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

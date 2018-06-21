@@ -13,7 +13,9 @@ namespace MouseDragDemo
     using System.Windows;
     using HelixToolkit.Wpf.SharpDX;
 
-    using SharpDX;
+    using System.Numerics;
+    using HelixToolkit.Mathematics;
+    using Matrix = System.Numerics.Matrix4x4;
 
     public class ResizeManipulator3D : GroupElement3D //, IHitable, INotifyPropertyChanged
     {

@@ -11,7 +11,8 @@ namespace Workitem10048
     using System.Windows.Forms;
 
     using HelixToolkit.Wpf.SharpDX;
-    using SharpDX;
+    using System.Numerics;
+    using HelixToolkit.Mathematics;
     using System.Windows.Media;
     using Color = System.Windows.Media.Color;
     using HitTestResult = HelixToolkit.Wpf.SharpDX.HitTestResult;

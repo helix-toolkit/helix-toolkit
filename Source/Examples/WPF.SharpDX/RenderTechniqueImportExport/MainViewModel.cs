@@ -3,8 +3,8 @@ using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Numerics;
 using System.Windows.Input;
-using Vector3 = SharpDX.Vector3;
 
 namespace RenderTechniqueImportExport
 {

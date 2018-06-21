@@ -1,18 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows;
 using System.Linq;
-using HelixToolkit.Wpf;
+using System.Windows;
 
 namespace PolygonTriangulationDemo
 {
+    using HelixToolkit.Mathematics;
     using HelixToolkit.Wpf.SharpDX;
-    using SharpDX;
-    using System.Windows.Media;
     using System;
-    using DemoCore;
-    using System.Windows.Media.Media3D;
-    using System.Globalization;
+    using System.Numerics;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

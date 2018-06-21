@@ -7,11 +7,12 @@
 namespace EnvironmentMapDemo
 {
     using DemoCore;
-    using HelixToolkit.Wpf;
+    using HelixToolkit.Mathematics;
     using HelixToolkit.Wpf.SharpDX;
-    using SharpDX;
+    using Matrix = System.Numerics.Matrix4x4;
     using System.Collections.Generic;
     using System.IO;
+    using System.Numerics;
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
@@ -66,15 +67,15 @@ namespace EnvironmentMapDemo
             int t = 5;
             for (int i = 0; i < 10; ++i)
             {
-                Instances1.Add(Matrix.Translation(new Vector3(t, t, (i - 5) * t)));
+                Instances1.Add(Matrix.CreateTranslation(new Vector3(t, t, (i - 5) * t)));
             }
             for (int i = 0; i < 10; ++i)
             {
-                Instances2.Add(Matrix.Translation(new Vector3(t, (i - 5) * t, t)));
+                Instances2.Add(Matrix.CreateTranslation(new Vector3(t, (i - 5) * t, t)));
             }
             for (int i = 0; i < 10; ++i)
             {
-                Instances3.Add(Matrix.Translation(new Vector3(-(i - 5) * t, t, (i - 5) * t)));
+                Instances3.Add(Matrix.CreateTranslation(new Vector3(-(i - 5) * t, t, (i - 5) * t)));
             }
             //int t = 5;
             //Instances.Add(Matrix.Translation(new Vector3(t, t, t)));

@@ -6,6 +6,9 @@
 
 namespace OrderIndependentTransparentRendering
 {
+    using System.Numerics;
+    using HelixToolkit.Mathematics;
+    using Matrix = System.Numerics.Matrix4x4;
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
     using System;
@@ -14,6 +17,8 @@ namespace OrderIndependentTransparentRendering
     using System.Threading.Tasks;
     using System.Windows.Input;
     using Media3D = System.Windows.Media.Media3D;
+    using SharpDX.Direct3D11;
+    using HelixToolkit.Wpf.SharpDX.Model;
 
     public class MainViewModel : BaseViewModel
     {
@@ -83,13 +88,13 @@ namespace OrderIndependentTransparentRendering
             {
                 for (int j = 0; j < 10; ++j)
                 {
-                    builder.AddLine(new SharpDX.Vector3(-i * 5, 0, j * 5), new SharpDX.Vector3(i * 5, 0, j * 5));
-                    builder.AddLine(new SharpDX.Vector3(-i * 5, 0, -j * 5), new SharpDX.Vector3(i * 5, 0, -j * 5));
-                    builder.AddLine(new SharpDX.Vector3(i * 5, 0, -j * 5), new SharpDX.Vector3(i * 5, 0, j * 5));
-                    builder.AddLine(new SharpDX.Vector3(-i * 5, 0, -j * 5), new SharpDX.Vector3(-i * 5, 0, j * 5));
-                    builder.AddLine(new SharpDX.Vector3(-i * 5, j * 5, zOff), new SharpDX.Vector3(i * 5, j * 5, zOff));
-                    builder.AddLine(new SharpDX.Vector3(i * 5, 0, zOff), new SharpDX.Vector3(i * 5, j * 5, zOff));
-                    builder.AddLine(new SharpDX.Vector3(-i * 5, 0, zOff), new SharpDX.Vector3(-i * 5, j * 5, zOff));
+                    builder.AddLine(new Vector3(-i * 5, 0, j * 5), new Vector3(i * 5, 0, j * 5));
+                    builder.AddLine(new Vector3(-i * 5, 0, -j * 5), new Vector3(i * 5, 0, -j * 5));
+                    builder.AddLine(new Vector3(i * 5, 0, -j * 5), new Vector3(i * 5, 0, j * 5));
+                    builder.AddLine(new Vector3(-i * 5, 0, -j * 5), new Vector3(-i * 5, 0, j * 5));
+                    builder.AddLine(new Vector3(-i * 5, j * 5, zOff), new Vector3(i * 5, j * 5, zOff));
+                    builder.AddLine(new Vector3(i * 5, 0, zOff), new Vector3(i * 5, j * 5, zOff));
+                    builder.AddLine(new Vector3(-i * 5, 0, zOff), new Vector3(-i * 5, j * 5, zOff));
                 }
             }
             GridModel = builder.ToLineGeometry3D();
@@ -100,11 +105,11 @@ namespace OrderIndependentTransparentRendering
         {
             PlaneGeometry = new ObservableElement3DCollection();
             var builder = new MeshBuilder(true);
-            builder.AddBox(new SharpDX.Vector3(0, 0, 0), 15, 15, 0.5);
+            builder.AddBox(new Vector3(0, 0, 0), 15, 15, 0.5);
             var mesh = builder.ToMesh();
 
             var material = new PhongMaterial();
-            material.DiffuseColor = new SharpDX.Color4(1, 0, 0, 0.5f);
+            material.DiffuseColor = new Color4(1, 0, 0, 0.5f);
 
             var model = new MeshGeometryModel3D()
             {
@@ -112,12 +117,12 @@ namespace OrderIndependentTransparentRendering
                 Material = material,
                 Transform = new Media3D.TranslateTransform3D(-15, 0, 0),
                 IsTransparent = true,
-                CullMode = SharpDX.Direct3D11.CullMode.Back
+                CullMode = CullMode.Back
             };
             PlaneGeometry.Add(model);
 
             material = new PhongMaterial();
-            material.DiffuseColor = new SharpDX.Color4(0, 1, 0, 0.5f);
+            material.DiffuseColor = new Color4(0, 1, 0, 0.5f);
 
             model = new MeshGeometryModel3D()
             {
@@ -125,12 +130,12 @@ namespace OrderIndependentTransparentRendering
                 Material = material,
                 Transform = new Media3D.TranslateTransform3D(-20, 5, -10),
                 IsTransparent = true,
-                CullMode = SharpDX.Direct3D11.CullMode.Back
+                CullMode = CullMode.Back
             };
             PlaneGeometry.Add(model);
 
             material = new PhongMaterial();
-            material.DiffuseColor = new SharpDX.Color4(0, 0, 1, 0.5f);
+            material.DiffuseColor = new Color4(0, 0, 1, 0.5f);
 
             model = new MeshGeometryModel3D()
             {
@@ -138,7 +143,7 @@ namespace OrderIndependentTransparentRendering
                 Material = material,
                 Transform = new Media3D.TranslateTransform3D(-25, 10, -20),
                 IsTransparent = true,
-                CullMode = SharpDX.Direct3D11.CullMode.Back
+                CullMode = CullMode.Back
             };
             PlaneGeometry.Add(model);
         }
@@ -179,9 +184,9 @@ namespace OrderIndependentTransparentRendering
                         Geometry = ob.Geometry,
                         DepthBias = -100,
                         SlopeScaledDepthBias = 0,
-                        CullMode = SharpDX.Direct3D11.CullMode.Back
+                        CullMode = CullMode.Back
                     };
-                    if (ob.Material is HelixToolkit.Wpf.SharpDX.Model.PhongMaterialCore p)
+                    if (ob.Material is PhongMaterialCore p)
                     {
                         var diffuse = p.DiffuseColor;
                         diffuse.Red = (float)rnd.NextDouble();

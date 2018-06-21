@@ -17,25 +17,25 @@ namespace HelixToolkit.Maths
 {
     public static class Common
     {
-        public static bool Equal(ref V2H vh, ref V2S vs)
+        public static bool Equal(V2H vh, V2S vs)
         {
-            return MathUtil.NearEqual(vh.X, vs.X)
-                && MathUtil.NearEqual(vh.Y, vs.Y);
+            return Math.Abs(vh.X - vs.X) < 1e-4
+                && Math.Abs(vh.Y - vs.Y) < 1e-4;
         }
 
-        public static bool Equal(ref V3H vh, ref V3S vs)
+        public static bool Equal(V3H vh, V3S vs)
         {
-            return MathUtil.NearEqual(vh.X, vs.X)
-                && MathUtil.NearEqual(vh.Y, vs.Y)
-                && MathUtil.NearEqual(vh.Z, vs.Z);
+            return Math.Abs(vh.X - vs.X) < 1e-4
+                && Math.Abs(vh.Y - vs.Y) < 1e-4
+                && Math.Abs(vh.Z - vs.Z) < 1e-4;
         }
 
-        public static bool Equal(ref V4H vh, ref V4S vs)
+        public static bool Equal(V4H vh, V4S vs)
         {
-            return MathUtil.NearEqual(vh.X, vs.X)
-                && MathUtil.NearEqual(vh.Y, vs.Y)
-                && MathUtil.NearEqual(vh.Z, vs.Z)
-                && MathUtil.NearEqual(vh.W, vs.W);
+            return Math.Abs(vh.X - vs.X) < 1e-4
+                && Math.Abs(vh.Y - vs.Y) < 1e-4
+                && Math.Abs(vh.Z - vs.Z) < 1e-4
+                && Math.Abs(vh.W - vs.W) < 1e-4;
         }
     }
 }

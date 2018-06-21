@@ -12,7 +12,7 @@ namespace EnvironmentMapDemo
     using System;
     using System.Windows.Controls;
     using System.Windows.Data;
-
+    using HelixToolkit.Mathematics;
     using HelixToolkit.Wpf.SharpDX;
 
     /// <summary>
@@ -30,7 +30,7 @@ namespace EnvironmentMapDemo
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            var c = (global::SharpDX.Color4)value;
+            var c = (Color4)value;
             return c.ToColor();      
         }
 

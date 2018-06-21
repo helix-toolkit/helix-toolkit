@@ -6,24 +6,19 @@
 
 namespace ImageViewDemo
 {
+    using DemoCore;
+    using ExifLib;
+    using HelixToolkit.Wpf.SharpDX;
     using System;
     using System.IO;
+    using System.Numerics;
+    using HelixToolkit.Mathematics;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media.Imaging;
-
-    using DemoCore;
-
-    using ExifLib;
-
-    using HelixToolkit.Wpf.SharpDX;
-
-    using SharpDX;
-
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
-    using HelixToolkit.Wpf;
 
     public class MainViewModel : BaseViewModel
     {

@@ -15,13 +15,13 @@
     using HelixToolkit.Wpf.SharpDX.Core;
     using HelixToolkit.Wpf.SharpDX.Extensions;
 
-    using SharpDX;
+    using System.Numerics;
+    using HelixToolkit.Mathematics;
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
     using Color = System.Windows.Media.Color;
     using Colors = System.Windows.Media.Colors;
-    using HelixToolkit.Wpf;
 
     public class MainViewModel : BaseViewModel
     {
@@ -32,7 +32,7 @@
         public PhongMaterial RedMaterial { get; private set; }
         public PhongMaterial GreenMaterial { get; private set; }
         public PhongMaterial BlueMaterial { get; private set; }
-        public SharpDX.Color GridColor { get; private set; }
+        public Color GridColor { get; private set; }
 
         public Media3D.Transform3D Model1Transform { get; private set; }
         public Media3D.Transform3D Model2Transform { get; private set; }
@@ -61,7 +61,7 @@
 
             // floor plane grid
             this.Grid = LineBuilder.GenerateGrid();
-            this.GridColor = SharpDX.Color.Black;
+            this.GridColor = Colors.Black;
             this.GridTransform = new Media3D.TranslateTransform3D(-5, -1, -5);
 
             // scene model3d

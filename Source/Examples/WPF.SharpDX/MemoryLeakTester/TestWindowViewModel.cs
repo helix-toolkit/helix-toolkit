@@ -6,13 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Media3D = System.Windows.Media.Media3D;
-using SDX = SharpDX;
+using System.Numerics;
+using HelixToolkit.Mathematics;
 namespace MemoryLeakTester
 {
     public class TestWindowViewModel : BaseViewModel
     {
         public MeshGeometry3D Mesh { get; private set; }
-        public SDX.Color4 DirectionalLightColor { get; private set; } = SDX.Color.White;
+        public Color4 DirectionalLightColor { get; private set; } = Color.White;
 
         public PhongMaterial Material { get; } = PhongMaterials.Blue;
         public TestWindowViewModel()
@@ -21,7 +22,7 @@ namespace MemoryLeakTester
             EffectsManager = new DefaultEffectsManager();
             RenderTechnique = EffectsManager[DefaultRenderTechniqueNames.Blinn];
             var builder = new MeshBuilder();
-            builder.AddBox(new SDX.Vector3(), 2, 2, 2);
+            builder.AddBox(new Vector3(), 2, 2, 2);
             Mesh = builder.ToMesh();
         }
     }

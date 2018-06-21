@@ -6,30 +6,22 @@
 
 namespace MeshSimplification
 {
-    using System;
-    using System.Windows.Media.Animation;
-    using System.Windows.Media.Imaging;
     using DemoCore;
+    using HelixToolkit.Mathematics;
     using HelixToolkit.Wpf.SharpDX;
-    using SharpDX;
-    using Media3D = System.Windows.Media.Media3D;
-    using Point3D = System.Windows.Media.Media3D.Point3D;
-    using Vector3D = System.Windows.Media.Media3D.Vector3D;
-    using Transform3D = System.Windows.Media.Media3D.Transform3D;
-    using Color = System.Windows.Media.Color;
-    using Plane = SharpDX.Plane;
-    using Vector3 = SharpDX.Vector3;
-    using Colors = System.Windows.Media.Colors;
-    using Color4 = SharpDX.Color4;
-    using System.Collections.Generic;
-    using System.Linq;
     using SharpDX.Direct3D11;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Data;
-    using HelixToolkit.Wpf.SharpDX.Extensions;
     using System.Windows.Input;
-    using System.Threading.Tasks;
-    using System.Diagnostics;
+    using Color = System.Windows.Media.Color;
+    using Colors = System.Windows.Media.Colors;
+    using Point3D = System.Windows.Media.Media3D.Point3D;
+    using Transform3D = System.Windows.Media.Media3D.Transform3D;
+    using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
     public class MainViewModel : BaseViewModel
     {
@@ -149,7 +141,7 @@ namespace MeshSimplification
             //}
             Model = models[0];
             OrgMesh = Model;
-
+            OrgMesh.UpdateOctree();
             //ModelTransform = new Media3D.RotateTransform3D() { Rotation = new Media3D.AxisAngleRotation3D(new Vector3D(1, 0, 0), -90) };
 
             SimplifyCommand = new RelayCommand(Simplify, CanSimplify);
@@ -194,6 +186,7 @@ namespace MeshSimplification
                 sw.Stop();
                 CalculationTime = sw.ElapsedMilliseconds;
                 model.Normals = model.CalculateNormals();
+                model.UpdateOctree();
                 return model;
             }).ContinueWith(x => 
             {

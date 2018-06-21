@@ -1,14 +1,13 @@
 ﻿using DemoCore;
+using HelixToolkit.Mathematics;
 using HelixToolkit.Wpf.SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using SharpDX;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Numerics;
 using System.Windows;
+using Matrix = System.Numerics.Matrix4x4;
 using Media = System.Windows.Media;
 using Media3D = System.Windows.Media.Media3D;
 
@@ -109,9 +108,9 @@ namespace ParticleSystemDemo
             }
         }
 
-        public Material EmitterMaterial { get; } = new PhongMaterial() { DiffuseColor = new SharpDX.Color4(1, 0, 1, 1) };
+        public Material EmitterMaterial { get; } = new PhongMaterial() { DiffuseColor = new Color4(1, 0, 1, 1) };
 
-        public Material ConsumerMaterial { get; } = new PhongMaterial() { DiffuseColor = new SharpDX.Color4(0.5f, 1f, 0.5f, 1) };
+        public Material ConsumerMaterial { get; } = new PhongMaterial() { DiffuseColor = new Color4(0.5f, 1f, 0.5f, 1) };
 
         private Stream particleTexture;
         public Stream ParticleTexture
@@ -513,16 +512,16 @@ namespace ParticleSystemDemo
         {
             EffectsManager = new DefaultEffectsManager();
             var lineBuilder = new LineBuilder();
-            lineBuilder.AddBox(new SharpDX.Vector3(), 1, 1, 1);
+            lineBuilder.AddBox(new Vector3(), 1, 1, 1);
             BoundingLines = lineBuilder.ToLineGeometry3D();
             LoadTexture(SelectedTextureIndex);
             var meshBuilder = new MeshBuilder();
-            meshBuilder.AddSphere(new SharpDX.Vector3(0, 0, 0), 0.5, 16, 16);
+            meshBuilder.AddSphere(new Vector3(0, 0, 0), 0.5, 16, 16);
             Model = meshBuilder.ToMesh();
             Camera = new PerspectiveCamera() { Position = new Media3D.Point3D(0, 0, 20), UpDirection = new Media3D.Vector3D(0, 1, 0), LookDirection = new Media3D.Vector3D(0, 0, -20) };
             Instances = new Matrix[] {
-                Matrix.Identity, Matrix.Scaling(1,-1, 1) * Matrix.Translation(10, 0, 10), Matrix.Translation(-10, 0, 10), Matrix.Translation(10, 0, -10),
-                Matrix.RotationAxis(new Vector3(1,0,0), 90) *  Matrix.Translation(-10, 0, -10), };
+                Matrix.Identity, MatrixHelper.Scaling(1,-1, 1) * MatrixHelper.Translation(10, 0, 10), MatrixHelper.Translation(-10, 0, 10), MatrixHelper.Translation(10, 0, -10),
+                MatrixHelper.RotationAxis(new Vector3(1,0,0), 90) *  MatrixHelper.Translation(-10, 0, -10), };
         }
 
         private void LoadTexture(int index)

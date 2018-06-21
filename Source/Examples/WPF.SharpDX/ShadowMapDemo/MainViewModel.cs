@@ -6,22 +6,17 @@
 
 namespace ShadowMapDemo
 {
-    using System;
-    using System.Windows.Media.Animation;
-    using Media = System.Windows.Media;
-    using HelixToolkit.Wpf;
-
     using DemoCore;
-
+    using HelixToolkit.Mathematics;
     using HelixToolkit.Wpf.SharpDX;
-
-    using SharpDX;
-
-    using Matrix = SharpDX.Matrix;
+    using System;
+    using System.Numerics;
+    using System.Windows.Media.Animation;
+    using Matrix = System.Numerics.Matrix4x4;
+    using Media = System.Windows.Media;
     using Media3D = System.Windows.Media.Media3D;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
-    using System.Diagnostics;
 
     public class MainViewModel : BaseViewModel
     {
@@ -80,7 +75,7 @@ namespace ShadowMapDemo
             b1.AddSphere(new Vector3(0, 0, 0), 0.5);
             b1.AddBox(new Vector3(0, 0, 0), 1, 0.25, 2, BoxFaces.All);
             Model = b1.ToMeshGeometry3D();
-            Instances = new[] { Matrix.Translation(0, 0, -1.5f), Matrix.Translation(0, 0, 1.5f) };
+            Instances = new[] { MatrixHelper.Translation(0, 0, -1.5f), MatrixHelper.Translation(0, 0, 1.5f) };
 
             var b2 = new MeshBuilder();
             b2.AddBox(new Vector3(0, 0, 0), 10, 0, 10, BoxFaces.PositiveY);

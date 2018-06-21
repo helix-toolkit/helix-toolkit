@@ -13,10 +13,11 @@ namespace MouseDragDemo
     using System.Windows;
     using HelixToolkit.Wpf.SharpDX;
 
-    using SharpDX;
+    using System.Numerics;
+    using HelixToolkit.Mathematics;
 
     using MatrixTransform3D = System.Windows.Media.Media3D.MatrixTransform3D;
-    using Matrix = SharpDX.Matrix;
+    using Matrix = System.Numerics.Matrix4x4;
 
     using System.Windows.Input;
     using HelixToolkit.Wpf;
@@ -127,14 +128,14 @@ namespace MouseDragDemo
             // 3 --- 2 
             // |     |
             // 0 --- 1
-            var m0 = Matrix.Scaling(+2, 1, 1) * Matrix.Translation(positions[0]);
+            var m0 = Matrix.CreateScale(+2, 1, 1) * Matrix.CreateTranslation(positions[0]);
             this.edgeHandles[0].Transform = new MatrixTransform3D(m0.ToMatrix3D());
-            var m2 = Matrix.Scaling(+2, 1, 1) * Matrix.Translation(positions[3]);
+            var m2 = Matrix.CreateScale(+2, 1, 1) * Matrix.CreateTranslation(positions[3]);
             this.edgeHandles[2].Transform = new MatrixTransform3D(m2.ToMatrix3D());
 
-            var m1 = Matrix.Scaling(1,+2, 1) * Matrix.Translation(positions[1]);
+            var m1 = Matrix.CreateScale(1,+2, 1) * Matrix.CreateTranslation(positions[1]);
             this.edgeHandles[1].Transform = new MatrixTransform3D(m1.ToMatrix3D());
-            var m3 = Matrix.Scaling(1,+2, 1) * Matrix.Translation(positions[0]);
+            var m3 = Matrix.CreateScale(1,+2, 1) * Matrix.CreateTranslation(positions[0]);
             this.edgeHandles[3].Transform = new MatrixTransform3D(m3.ToMatrix3D());
 
             this.dragTransform = new MatrixTransform3D(this.Transform.Value);         
@@ -231,7 +232,7 @@ namespace MouseDragDemo
         {
             var cornerTrafos = this.cornerHandles.Select(x => (x.Transform as MatrixTransform3D)).ToArray();
             var cornerMatrix = cornerTrafos.Select(x => (x).Value).ToArray();
-            this.positions = cornerMatrix.Select(x => x.ToMatrix().TranslationVector).ToArray();
+            this.positions = cornerMatrix.Select(x => x.ToMatrix().Translation).ToArray();
 
             BoundingBox bb;
             if (sender == cornerHandles[0] || sender == cornerHandles[2])
@@ -254,7 +255,7 @@ namespace MouseDragDemo
                 {
                     Application.Current.MainWindow.Cursor = Cursors.SizeWE;
                 }
-                positions = this.midpointHandles.Select(x => x.Transform.Value.ToMatrix().TranslationVector).ToArray();
+                positions = this.midpointHandles.Select(x => x.Transform.Value.ToMatrix().Translation).ToArray();
                 bb = BoundingBox.FromPoints(positions);
             }
 
@@ -285,14 +286,14 @@ namespace MouseDragDemo
             // 3 --- 2 
             // |     |
             // 0 --- 1
-            var m0 = Matrix.Scaling(positions[1].X - positions[0].X, 1, 1) * Matrix.Translation(positions[0]);
+            var m0 = Matrix.CreateScale(positions[1].X - positions[0].X, 1, 1) * Matrix.CreateTranslation(positions[0]);
             ((MatrixTransform3D)this.edgeHandles[0].Transform).Matrix = (m0.ToMatrix3D());
-            var m2 = Matrix.Scaling(positions[1].X - positions[0].X, 1, 1) * Matrix.Translation(positions[3]);
+            var m2 = Matrix.CreateScale(positions[1].X - positions[0].X, 1, 1) * Matrix.CreateTranslation(positions[3]);
             ((MatrixTransform3D)this.edgeHandles[2].Transform).Matrix = (m2.ToMatrix3D());
 
-            var m1 = Matrix.Scaling(1, positions[2].Y - positions[1].Y, 1) * Matrix.Translation(positions[1]);
+            var m1 = Matrix.CreateScale(1, positions[2].Y - positions[1].Y, 1) * Matrix.CreateTranslation(positions[1]);
             ((MatrixTransform3D)this.edgeHandles[1].Transform).Matrix = (m1.ToMatrix3D());
-            var m3 = Matrix.Scaling(1, positions[2].Y - positions[1].Y, 1) * Matrix.Translation(positions[0]);
+            var m3 = Matrix.CreateScale(1, positions[2].Y - positions[1].Y, 1) * Matrix.CreateTranslation(positions[0]);
             ((MatrixTransform3D)this.edgeHandles[3].Transform).Matrix = (m3.ToMatrix3D());
 
 

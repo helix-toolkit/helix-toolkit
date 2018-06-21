@@ -1,13 +1,10 @@
 ﻿using DemoCore;
+using HelixToolkit.Mathematics;
 using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace DynamicCodeSurfaceDemo
 {

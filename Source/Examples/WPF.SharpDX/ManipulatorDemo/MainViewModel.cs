@@ -6,25 +6,20 @@
 
 namespace ManipulatorDemo
 {
-    using System;
-    using System.Windows.Media.Animation;
-
     using DemoCore;
-
     using HelixToolkit.Wpf.SharpDX;
-    using SharpDX;
+    using System;
+    using System.Numerics;
+    using System.Windows.Media.Animation;
     using AxisAngleRotation3D = System.Windows.Media.Media3D.AxisAngleRotation3D;
+    using Color = System.Windows.Media.Color;
+    using Colors = System.Windows.Media.Colors;
     using Point3D = System.Windows.Media.Media3D.Point3D;
     using RotateTransform3D = System.Windows.Media.Media3D.RotateTransform3D;
     using Transform3D = System.Windows.Media.Media3D.Transform3D;
     using Transform3DGroup = System.Windows.Media.Media3D.Transform3DGroup;
     using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
     using Vector3D = System.Windows.Media.Media3D.Vector3D;
-    using Color = System.Windows.Media.Color;
-    using Plane = SharpDX.Plane;
-    using Vector3 = SharpDX.Vector3;
-    using Colors = System.Windows.Media.Colors;
-    using Color4 = SharpDX.Color4;
 
     public class MainViewModel : BaseViewModel
     {
