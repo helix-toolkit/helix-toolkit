@@ -180,8 +180,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     globalTransform.Viewport = new Vector4((float)ActualWidth, (float)ActualHeight, 1f/(float)ActualWidth, 1f/(float)ActualHeight);
                     var ar = globalTransform.Viewport.X / globalTransform.Viewport.Y;
 
-                    var pc = c as PerspectiveCameraCore;
-                    var fov = (pc != null) ? pc.FieldOfView : 90f;
+                    var fov = (c is PerspectiveCameraCore pc) ? pc.FieldOfView : 90f;
 
                     var zn = c.NearPlaneDistance > 0 ? c.NearPlaneDistance : 0.1;
                     var zf = c.FarPlaneDistance + 0.0;
@@ -290,7 +289,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// Gets or sets a value indicating whether this render pass is using inverted cull mode.
-        /// If <see cref="CullMode"/>=<see cref="CullMode.None"/>, default state is used.
+        /// If <see cref="SharpDX.Direct3D11.CullMode"/>=<see cref="SharpDX.Direct3D11.CullMode.None"/>, default state is used.
         /// This is usually used when rendering <see cref="Core.DynamicCubeMapCore"/>.
         /// </summary>
         /// <value>

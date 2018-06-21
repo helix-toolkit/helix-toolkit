@@ -99,6 +99,7 @@ namespace HelixToolkit.Mathematics
         /// Gets or sets the component at the specified index.
         /// </summary>
         /// <value>The value of the X, Y, Z, or W component, depending on the index.</value>
+        /// <param name="v"></param>
         /// <param name="index">The index of the component to access. Use 0 for the X component, 1 for the Y component, 2 for the Z component, and 3 for the W component.</param>
         /// <returns>The value of the component at the specified index.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
@@ -164,8 +165,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>A new <see cref="Vector4"/> containing the 4D Cartesian coordinates of the specified point.</returns>
         public static Vector4 Barycentric(Vector4 value1, Vector4 value2, Vector4 value3, float amount1, float amount2)
         {
-            Vector4 result;
-            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out result);
+            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out Vector4 result);
             return result;
         }
 
@@ -191,8 +191,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The cubic interpolation of the two vectors.</returns>
         public static Vector4 SmoothStep(Vector4 start, Vector4 end, float amount)
         {
-            Vector4 result;
-            SmoothStep(ref start, ref end, amount, out result);
+            SmoothStep(ref start, ref end, amount, out Vector4 result);
             return result;
         }
 
@@ -232,8 +231,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The result of the Hermite spline interpolation.</returns>
         public static Vector4 Hermite(Vector4 value1, Vector4 tangent1, Vector4 value2, Vector4 tangent2, float amount)
         {
-            Vector4 result;
-            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out result);
+            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out Vector4 result);
             return result;
         }
 
@@ -268,8 +266,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>A vector that is the result of the Catmull-Rom interpolation.</returns>
         public static Vector4 CatmullRom(Vector4 value1, Vector4 value2, Vector4 value3, Vector4 value4, float amount)
         {
-            Vector4 result;
-            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out result);
+            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out Vector4 result);
             return result;
         }
 

@@ -134,6 +134,7 @@ namespace HelixToolkit.Mathematics
         /// Gets or sets the component at the specified index.
         /// </summary>
         /// <value>The value of the X, Y, or Z component, depending on the index.</value>
+        /// <param name="v"></param>
         /// <param name="index">The index of the component to access. Use 0 for the X component, 1 for the Y component, and 2 for the Z component.</param>
         /// <returns>The value of the component at the specified index.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 2].</exception>
@@ -197,8 +198,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>A new <see cref="Vector3"/> containing the 3D Cartesian coordinates of the specified point.</returns>
         public static Vector3 Barycentric(Vector3 value1, Vector3 value2, Vector3 value3, float amount1, float amount2)
         {
-            Vector3 result;
-            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out result);
+            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out Vector3 result);
             return result;
         }
 
@@ -250,8 +250,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The cubic interpolation of the two vectors.</returns>
         public static Vector3 SmoothStep(Vector3 start, Vector3 end, float amount)
         {
-            Vector3 result;
-            SmoothStep(ref start, ref end, amount, out result);
+            SmoothStep(ref start, ref end, amount, out Vector3 result);
             return result;
         }
 
@@ -291,8 +290,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The result of the Hermite spline interpolation.</returns>
         public static Vector3 Hermite(Vector3 value1, Vector3 tangent1, Vector3 value2, Vector3 tangent2, float amount)
         {
-            Vector3 result;
-            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out result);
+            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out Vector3 result);
             return result;
         }
 
@@ -338,8 +336,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>A vector that is the result of the Catmull-Rom interpolation.</returns>
         public static Vector3 CatmullRom(Vector3 value1, Vector3 value2, Vector3 value3, Vector3 value4, float amount)
         {
-            Vector3 result;
-            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out result);
+            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out Vector3 result);
             return result;
         }
 
@@ -377,8 +374,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The vector in screen space.</returns>
         public static Vector3 Project(Vector3 vector, float x, float y, float width, float height, float minZ, float maxZ, Matrix worldViewProjection)
         {
-            Vector3 result;
-            Project(ref vector, x, y, width, height, minZ, maxZ, ref worldViewProjection, out result);
+            Project(ref vector, x, y, width, height, minZ, maxZ, ref worldViewProjection, out Vector3 result);
             return result;
         }
 
@@ -420,8 +416,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The vector in object space.</returns>
         public static Vector3 Unproject(Vector3 vector, float x, float y, float width, float height, float minZ, float maxZ, Matrix worldViewProjection)
         {
-            Vector3 result;
-            Unproject(ref vector, x, y, width, height, minZ, maxZ, ref worldViewProjection, out result);
+            Unproject(ref vector, x, y, width, height, minZ, maxZ, ref worldViewProjection, out Vector3 result);
             return result;
         }
 
@@ -592,8 +587,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The transformed <see cref="Vector3"/>.</returns>
         public static Vector3 Transform(Vector3 vector, Matrix3x3 transform)
         {
-            Vector3 result;
-            Transform(ref vector, ref transform, out result);
+            Transform(ref vector, ref transform, out Vector3 result);
             return result;
         }
 

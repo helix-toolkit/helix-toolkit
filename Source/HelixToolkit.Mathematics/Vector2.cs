@@ -89,6 +89,7 @@ namespace HelixToolkit.Mathematics
         /// Gets or sets the component at the specified index.
         /// </summary>
         /// <value>The value of the X or Y component, depending on the index.</value>
+        /// <param name="v"></param>
         /// <param name="index">The index of the component to access. Use 0 for the X component and 1 for the Y component.</param>
         /// <returns>The value of the component at the specified index.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 1].</exception>
@@ -149,8 +150,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>A new <see cref="Vector2"/> containing the 2D Cartesian coordinates of the specified point.</returns>
         public static Vector2 Barycentric(Vector2 value1, Vector2 value2, Vector2 value3, float amount1, float amount2)
         {
-            Vector2 result;
-            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out result);
+            Barycentric(ref value1, ref value2, ref value3, amount1, amount2, out Vector2 result);
             return result;
         }
 
@@ -184,8 +184,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The cubic interpolation of the two vectors.</returns>
         public static Vector2 SmoothStep(Vector2 start, Vector2 end, float amount)
         {
-            Vector2 result;
-            SmoothStep(ref start, ref end, amount, out result);
+            SmoothStep(ref start, ref end, amount, out Vector2 result);
             return result;
         }
 
@@ -222,8 +221,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The result of the Hermite spline interpolation.</returns>
         public static Vector2 Hermite(Vector2 value1, Vector2 tangent1, Vector2 value2, Vector2 tangent2, float amount)
         {
-            Vector2 result;
-            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out result);
+            Hermite(ref value1, ref tangent1, ref value2, ref tangent2, amount, out Vector2 result);
             return result;
         }
 
@@ -264,8 +262,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>A vector that is the result of the Catmull-Rom interpolation.</returns>
         public static Vector2 CatmullRom(Vector2 value1, Vector2 value2, Vector2 value3, Vector2 value4, float amount)
         {
-            Vector2 result;
-            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out result);
+            CatmullRom(ref value1, ref value2, ref value3, ref value4, amount, out Vector2 result);
             return result;
         }
 
@@ -469,8 +466,7 @@ namespace HelixToolkit.Mathematics
         /// </remarks>
         public static Vector2 TransformCoordinate(Vector2 coordinate, Matrix transform)
         {
-            Vector2 result;
-            TransformCoordinate(ref coordinate, ref transform, out result);
+            TransformCoordinate(ref coordinate, ref transform, out Vector2 result);
             return result;
         }
 
@@ -540,8 +536,7 @@ namespace HelixToolkit.Mathematics
         /// </remarks>
         public static Vector2 TransformNormal(Vector2 normal, Matrix transform)
         {
-            Vector2 result;
-            TransformNormal(ref normal, ref transform, out result);
+            TransformNormal(ref normal, ref transform, out Vector2 result);
             return result;
         }
 

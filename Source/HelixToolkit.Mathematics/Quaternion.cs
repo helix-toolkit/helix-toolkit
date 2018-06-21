@@ -238,9 +238,10 @@ namespace HelixToolkit.Mathematics
                 if (!MathUtil.IsZero(sin))
                 {
                     float coeff = angle / sin;
-                    result.X = value.X * coeff;
-                    result.Y = value.Y * coeff;
-                    result.Z = value.Z * coeff;
+                    result = value * coeff;
+                    //result.X = value.X * coeff;
+                    //result.Y = value.Y * coeff;
+                    //result.Z = value.Z * coeff;
                 }
                 else
                 {

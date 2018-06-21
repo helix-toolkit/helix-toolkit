@@ -98,6 +98,7 @@ namespace HelixToolkit.Mathematics
         /// Gets or sets the component at the specified index.
         /// </summary>
         /// <value>The value of the A, B, C, or D component, depending on the index.</value>
+        /// <param name="p"></param>
         /// <param name="index">The index of the component to access. Use 0 for the A component, 1 for the B component, 2 for the C component, and 3 for the D component.</param>
         /// <returns>The value of the component at the specified index.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 3].</exception>
@@ -164,8 +165,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>Whether the two objects intersected.</returns>
         public static bool Intersects(this Plane p, ref Ray ray)
         {
-            float distance;
-            return Collision.RayIntersectsPlane(ref ray, ref p, out distance);
+            return Collision.RayIntersectsPlane(ref ray, ref p, out float distance);
         }
 
         /// <summary>
@@ -176,8 +176,7 @@ namespace HelixToolkit.Mathematics
         /// <returns></returns>
         public static bool Intersects(ref Plane p, ref Ray ray)
         {
-            float distance;
-            return Collision.RayIntersectsPlane(ref ray, ref p, out distance);
+            return Collision.RayIntersectsPlane(ref ray, ref p, out float distance);
         }
         /// <summary>
         /// Determines if there is an intersection between the current object and a <see cref="Ray"/>.
@@ -229,6 +228,7 @@ namespace HelixToolkit.Mathematics
         /// <summary>
         /// Determines if there is an intersection between the current object and a <see cref="Plane"/>.
         /// </summary>
+        /// <param name="p"></param>
         /// <param name="plane">The plane to test.</param>
         /// <returns>Whether the two objects intersected.</returns>
         public static bool Intersects(this Plane p, ref Plane plane)
@@ -250,6 +250,7 @@ namespace HelixToolkit.Mathematics
         /// <summary>
         /// Determines if there is an intersection between the current object and a <see cref="Plane"/>.
         /// </summary>
+        /// <param name="p"></param>
         /// <param name="plane">The plane to test.</param>
         /// <param name="line">When the method completes, contains the line of intersection
         /// as a <see cref="Ray"/>, or a zero ray if there was no intersection.</param>
@@ -376,8 +377,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The reflection matrix.</returns>
         public static Matrix Reflection(this Plane p)
         {
-            Matrix result;
-            Reflection(ref p, out result);
+            Reflection(ref p, out Matrix result);
             return result;
         }
 
@@ -425,8 +425,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The shadow matrix.</returns>
         public static Matrix Shadow(this Plane p, Vector4 light)
         {
-            Matrix result;
-            Shadow(ref p, ref light, out result);
+            Shadow(ref p, ref light, out Matrix result);
             return result;
         }
 
@@ -463,8 +462,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The reflection Matrix3x3.</returns>
         public static Matrix3x3 Reflection3x3(this Plane p)
         {
-            Matrix3x3 result;
-            Reflection(ref p, out result);
+            Reflection(ref p, out Matrix3x3 result);
             return result;
         }
 
@@ -503,8 +501,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The shadow Matrix3x3.</returns>
         public static Matrix3x3 Shadow(Vector4 light, Plane plane)
         {
-            Matrix3x3 result;
-            Shadow(ref light, ref plane, out result);
+            Shadow(ref light, ref plane, out Matrix3x3 result);
             return result;
         }
 

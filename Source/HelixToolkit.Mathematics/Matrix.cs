@@ -493,6 +493,7 @@ namespace HelixToolkit.Mathematics
         /// <summary>
         /// Decomposes a matrix into an orthonormalized matrix Q and a right triangular matrix R.
         /// </summary>
+        /// <param name="m"></param>
         /// <param name="Q">When the method completes, contains the orthonormalized matrix of the decomposition.</param>
         /// <param name="R">When the method completes, contains the right triangular matrix of the decomposition.</param>
         public static void DecomposeQR(this Matrix m, out Matrix Q, out Matrix R)
@@ -522,32 +523,36 @@ namespace HelixToolkit.Mathematics
         /// <summary>
         /// Decomposes a matrix into a lower triangular matrix L and an orthonormalized matrix Q.
         /// </summary>
+        /// <param name="m"></param>
         /// <param name="L">When the method completes, contains the lower triangular matrix of the decomposition.</param>
         /// <param name="Q">When the method completes, contains the orthonormalized matrix of the decomposition.</param>
         public static void DecomposeLQ(this Matrix m, out Matrix L, out Matrix Q)
         {
             Orthonormalize(ref m, out Q);
 
-            L = new Matrix();
-            L.M11 = Vector4.Dot(Q.Row1(), m.Row1());
-            
-            L.M21 = Vector4.Dot(Q.Row1(), m.Row2());
-            L.M22 = Vector4.Dot(Q.Row2(), m.Row2());
-            
-            L.M31 = Vector4.Dot(Q.Row1(), m.Row3());
-            L.M32 = Vector4.Dot(Q.Row2(), m.Row3());
-            L.M33 = Vector4.Dot(Q.Row3(), m.Row3());
-            
-            L.M41 = Vector4.Dot(Q.Row1(), m.Row4());
-            L.M42 = Vector4.Dot(Q.Row2(), m.Row4());
-            L.M43 = Vector4.Dot(Q.Row3(), m.Row4());
-            L.M44 = Vector4.Dot(Q.Row4(), m.Row4());
+            L = new Matrix
+            {
+                M11 = Vector4.Dot(Q.Row1(), m.Row1()),
+
+                M21 = Vector4.Dot(Q.Row1(), m.Row2()),
+                M22 = Vector4.Dot(Q.Row2(), m.Row2()),
+
+                M31 = Vector4.Dot(Q.Row1(), m.Row3()),
+                M32 = Vector4.Dot(Q.Row2(), m.Row3()),
+                M33 = Vector4.Dot(Q.Row3(), m.Row3()),
+
+                M41 = Vector4.Dot(Q.Row1(), m.Row4()),
+                M42 = Vector4.Dot(Q.Row2(), m.Row4()),
+                M43 = Vector4.Dot(Q.Row3(), m.Row4()),
+                M44 = Vector4.Dot(Q.Row4(), m.Row4())
+            };
         }
 
         /// <summary>
         /// Decomposes a uniform scale matrix into a scale, rotation, and translation.
         /// A uniform scale matrix has the same scale in every axis.
         /// </summary>
+        /// <param name="m"></param>
         /// <param name="scale">When the method completes, contains the scaling component of the decomposed matrix.</param>
         /// <param name="rotation">When the method completes, contains the rotation component of the decomposed matrix.</param>
         /// <param name="translation">When the method completes, contains the translation component of the decomposed matrix.</param>
@@ -573,20 +578,22 @@ namespace HelixToolkit.Mathematics
             }
 
             //The rotation is the left over matrix after dividing out the scaling.
-            Matrix rotationmatrix = new Matrix();
-            rotationmatrix.M11 = m.M11 * inv_scale;
-            rotationmatrix.M12 = m.M12 * inv_scale;
-            rotationmatrix.M13 = m.M13 * inv_scale;
+            Matrix rotationmatrix = new Matrix
+            {
+                M11 = m.M11 * inv_scale,
+                M12 = m.M12 * inv_scale,
+                M13 = m.M13 * inv_scale,
 
-            rotationmatrix.M21 = m.M21 * inv_scale;
-            rotationmatrix.M22 = m.M22 * inv_scale;
-            rotationmatrix.M23 = m.M23 * inv_scale;
+                M21 = m.M21 * inv_scale,
+                M22 = m.M22 * inv_scale,
+                M23 = m.M23 * inv_scale,
 
-            rotationmatrix.M31 = m.M31 * inv_scale;
-            rotationmatrix.M32 = m.M32 * inv_scale;
-            rotationmatrix.M33 = m.M33 * inv_scale;
+                M31 = m.M31 * inv_scale,
+                M32 = m.M32 * inv_scale,
+                M33 = m.M33 * inv_scale,
 
-            rotationmatrix.M44 = 1f;
+                M44 = 1f
+            };
 
             rotation = Quaternion.CreateFromRotationMatrix(rotationmatrix);
             return true;
@@ -729,8 +736,7 @@ namespace HelixToolkit.Mathematics
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="exponent"/> is negative.</exception>
         public static Matrix Exponent(Matrix value, int exponent)
         {
-            Matrix result;
-            Exponent(ref value, exponent, out result);
+            Exponent(ref value, exponent, out Matrix result);
             return result;
         }
 
@@ -781,8 +787,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The cubic interpolation of the two matrices.</returns>
         public static Matrix SmoothStep(Matrix start, Matrix end, float amount)
         {
-            Matrix result;
-            SmoothStep(ref start, ref end, amount, out result);
+            SmoothStep(ref start, ref end, amount, out Matrix result);
             return result;
         }
 
@@ -841,8 +846,7 @@ namespace HelixToolkit.Mathematics
         /// </remarks>
         public static Matrix Orthogonalize(Matrix value)
         {
-            Matrix result;
-            Orthogonalize(ref value, out result);
+            Orthogonalize(ref value, out Matrix result);
             return result;
         }
 
@@ -912,8 +916,7 @@ namespace HelixToolkit.Mathematics
         /// </remarks>
         public static Matrix Orthonormalize(Matrix value)
         {
-            Matrix result;
-            Orthonormalize(ref value, out result);
+            Orthonormalize(ref value, out Matrix result);
             return result;
         }
 
@@ -994,8 +997,7 @@ namespace HelixToolkit.Mathematics
         /// </remarks>
         public static Matrix UpperTriangularForm(Matrix value)
         {
-            Matrix result;
-            UpperTriangularForm(ref value, out result);
+            UpperTriangularForm(ref value, out Matrix result);
             return result;
         }
 
@@ -1080,8 +1082,7 @@ namespace HelixToolkit.Mathematics
         /// </remarks>
         public static Matrix LowerTriangularForm(Matrix value)
         {
-            Matrix result;
-            LowerTriangularForm(ref value, out result);
+            LowerTriangularForm(ref value, out Matrix result);
             return result;
         }
 
@@ -1156,8 +1157,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>When the method completes, contains the row echelon form of the matrix.</returns>
         public static Matrix RowEchelonForm(Matrix value)
         {
-            Matrix result;
-            RowEchelonForm(ref value, out result);
+            RowEchelonForm(ref value, out Matrix result);
             return result;
         }
 
@@ -1335,8 +1335,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The created billboard matrix.</returns>
         public static Matrix BillboardLH(Vector3 objectPosition, Vector3 cameraPosition, Vector3 cameraUpVector, Vector3 cameraForwardVector)
         {
-            Matrix result;
-            BillboardLH(ref objectPosition, ref cameraPosition, ref cameraUpVector, ref cameraForwardVector, out result);
+            BillboardLH(ref objectPosition, ref cameraPosition, ref cameraUpVector, ref cameraForwardVector, out Matrix result);
             return result;
         }
 
@@ -1430,8 +1429,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The created look-at matrix.</returns>
         public static Matrix LookAtLH(Vector3 eye, Vector3 target, Vector3 up)
         {
-            Matrix result;
-            LookAtLH(ref eye, ref target, ref up, out result);
+            LookAtLH(ref eye, ref target, ref up, out Matrix result);
             return result;
         }
 
@@ -1505,8 +1503,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The created projection matrix.</returns>
         public static Matrix OrthoLH(float width, float height, float znear, float zfar)
         {
-            Matrix result;
-            OrthoLH(width, height, znear, zfar, out result);
+            OrthoLH(width, height, znear, zfar, out Matrix result);
             return result;
         }
 
@@ -1578,8 +1575,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The created projection matrix.</returns>
         public static Matrix OrthoOffCenterLH(float left, float right, float bottom, float top, float znear, float zfar)
         {
-            Matrix result;
-            OrthoOffCenterLH(left, right, bottom, top, znear, zfar, out result);
+            OrthoOffCenterLH(left, right, bottom, top, znear, zfar, out Matrix result);
             return result;
         }
 
@@ -1644,8 +1640,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The created projection matrix.</returns>
         public static Matrix PerspectiveLH(float width, float height, float znear, float zfar)
         {
-            Matrix result;
-            PerspectiveLH(width, height, znear, zfar, out result);
+            PerspectiveLH(width, height, znear, zfar, out Matrix result);
             return result;
         }
 
@@ -1715,8 +1710,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The created projection matrix.</returns>
         public static Matrix PerspectiveFovLH(float fov, float aspect, float znear, float zfar)
         {
-            Matrix result;
-            PerspectiveFovLH(fov, aspect, znear, zfar, out result);
+            PerspectiveFovLH(fov, aspect, znear, zfar, out Matrix result);
             return result;
         }
 
@@ -1772,14 +1766,16 @@ namespace HelixToolkit.Mathematics
         {
             float zRange = zfar / (zfar - znear);
 
-            result = new Matrix();
-            result.M11 = 2.0f * znear / (right - left);
-            result.M22 = 2.0f * znear / (top - bottom);
-            result.M31 = (left + right) / (left - right);
-            result.M32 = (top + bottom) / (bottom - top);
-            result.M33 = zRange;
-            result.M34 = 1.0f;
-            result.M43 = -znear * zRange;
+            result = new Matrix
+            {
+                M11 = 2.0f * znear / (right - left),
+                M22 = 2.0f * znear / (top - bottom),
+                M31 = (left + right) / (left - right),
+                M32 = (top + bottom) / (bottom - top),
+                M33 = zRange,
+                M34 = 1.0f,
+                M43 = -znear * zRange
+            };
         }
 
         /// <summary>
@@ -1794,8 +1790,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The created projection matrix.</returns>
         public static Matrix PerspectiveOffCenterLH(float left, float right, float bottom, float top, float znear, float zfar)
         {
-            Matrix result;
-            PerspectiveOffCenterLH(left, right, bottom, top, znear, zfar, out result);
+            PerspectiveOffCenterLH(left, right, bottom, top, znear, zfar, out Matrix result);
             return result;
         }
 
@@ -1960,8 +1955,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The created affine transformation matrix.</returns>
         public static Matrix AffineTransformation2D(float scaling, float rotation, Vector2 translation)
         {
-            Matrix result;
-            AffineTransformation2D(scaling, rotation, ref translation, out result);
+            AffineTransformation2D(scaling, rotation, ref translation, out Matrix result);
             return result;
         }
 
@@ -1992,8 +1986,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The created affine transformation matrix.</returns>
         public static Matrix AffineTransformation2D(float scaling, Vector2 rotationCenter, float rotation, Vector2 translation)
         {
-            Matrix result;
-            AffineTransformation2D(scaling, ref rotationCenter, rotation, ref translation, out result);
+            AffineTransformation2D(scaling, ref rotationCenter, rotation, ref translation, out Matrix result);
             return result;
         }
 
@@ -2034,8 +2027,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The created transformation matrix.</returns>
         public static Matrix Transformation(Vector3 scalingCenter, Quaternion scalingRotation, Vector3 scaling, Vector3 rotationCenter, Quaternion rotation, Vector3 translation)
         {
-            Matrix result;
-            Transformation(ref scalingCenter, ref scalingRotation, ref scaling, ref rotationCenter, ref rotation, ref translation, out result);
+            Transformation(ref scalingCenter, ref scalingRotation, ref scaling, ref rotationCenter, ref rotation, ref translation, out Matrix result);
             return result;
         }
 
@@ -2078,8 +2070,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>The created transformation matrix.</returns>
         public static Matrix Transformation2D(Vector2 scalingCenter, float scalingRotation, Vector2 scaling, Vector2 rotationCenter, float rotation, Vector2 translation)
         {
-            Matrix result;
-            Transformation2D(ref scalingCenter, scalingRotation, ref scaling, ref rotationCenter, rotation, ref translation, out result);
+            Transformation2D(ref scalingCenter, scalingRotation, ref scaling, ref rotationCenter, rotation, ref translation, out Matrix result);
             return result;
         }
 

@@ -250,15 +250,14 @@ namespace HelixToolkit.Mathematics
         /// <param name="projection">The projection matrix.</param>
         /// <param name="view">The view matrix.</param>
         /// <param name="world">The world matrix.</param>
-        /// <returns>The projected vector./returns>
+        /// <returns>The projected vector.</returns>
         public Vector3 Project(Vector3 source, Matrix projection, Matrix view, Matrix world)
         {
             Matrix matrix = world * view * projection;
             //Matrix.Multiply(ref world, ref view, out matrix);
             //Matrix.Multiply(ref matrix, ref projection, out matrix);
 
-            Vector3 vector;
-            Project(ref source, ref matrix, out vector);
+            Project(ref source, ref matrix, out Vector3 vector);
             return vector;
         }
 
@@ -270,7 +269,7 @@ namespace HelixToolkit.Mathematics
         /// <param name="vector">The projected vector.</param>
         public void Project(ref Vector3 source, ref Matrix matrix, out Vector3 vector)
         {
-            vector = Vector3.Transform(source, matrix);
+            vector = Vector3Helper.TransformCoordinate(source, matrix);
             float a = (((source.X * matrix.M14) + (source.Y * matrix.M24)) + (source.Z * matrix.M34)) + matrix.M44;
 
             if (!MathUtil.IsOne(a))
@@ -298,8 +297,7 @@ namespace HelixToolkit.Mathematics
             //Matrix.Multiply(ref matrix, ref projection, out matrix);
             //Matrix.Invert(ref matrix, out matrix);
 
-            Vector3 vector;
-            Unproject(ref source, ref matrix, out vector);
+            Unproject(ref source, ref matrix, out Vector3 vector);
             return vector;
         }
 
@@ -316,7 +314,7 @@ namespace HelixToolkit.Mathematics
             vector.Z = (source.Z - MinDepth) / (MaxDepth - MinDepth);
 
             float a = (((vector.X * matrix.M14) + (vector.Y * matrix.M24)) + (vector.Z * matrix.M34)) + matrix.M44;
-            vector = Vector3.Transform(vector, matrix);
+            vector = Vector3Helper.TransformCoordinate(vector, matrix);
 
             if (!MathUtil.IsOne(a))
             {
