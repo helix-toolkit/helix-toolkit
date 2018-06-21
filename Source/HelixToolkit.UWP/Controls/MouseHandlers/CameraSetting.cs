@@ -9,8 +9,8 @@
 
 namespace HelixToolkit.UWP
 {
-    using Point3D = SharpDX.Vector3;
-    using Vector3D = SharpDX.Vector3;
+    using Point3D = System.Numerics.Vector3;
+    using Vector3D = System.Numerics.Vector3;
 
     /// <summary>
     /// Represents camera settings.

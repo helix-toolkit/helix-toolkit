@@ -1,17 +1,15 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using HelixToolkit.Logger;
+using HelixToolkit.Mathematics;
 using HelixToolkit.UWP;
-using SharpDX;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Numerics;
 using System.Windows.Input;
 using Windows.UI.Xaml;
+using Matrix = System.Numerics.Matrix4x4;
 
 namespace SimpleDemoW10
 {
@@ -92,7 +90,7 @@ namespace SimpleDemoW10
             get { return transform3; }
         }
 
-        private Matrix transform4 = Matrix.Translation(-3, 4, 3);
+        private Matrix transform4 = Matrix.CreateTranslation(-3, 4, 3);
         public Matrix Transform4
         {
             set
@@ -123,7 +121,7 @@ namespace SimpleDemoW10
             Camera = new PerspectiveCamera() { Position = new Vector3(40, 10, 100), LookDirection = new Vector3(0, -10, -100), UpDirection = UpDirection, FarPlaneDistance = 500, NearPlaneDistance = 0.1 };
             Camera1 = new OrthographicCamera() { Position = new Vector3(60, 10, 100), LookDirection = new Vector3(0, -10, -100), UpDirection = upDirection, Width = 30, FarPlaneDistance = 500, NearPlaneDistance = 20};
             var builder = new MeshBuilder(true, true, true);
-            builder.AddBox(new SharpDX.Vector3(0, 0, 0), 2, 2, 2);
+            builder.AddBox(new Vector3(0, 0, 0), 2, 2, 2);
             builder.AddSphere(new Vector3(0, 2, 0), 1.5);
             Geometry = builder.ToMesh();
             Geometry.UpdateOctree();
@@ -185,20 +183,20 @@ namespace SimpleDemoW10
         private void Timer_Tick(object sender, object e)
         {
             var time = (float)Stopwatch.GetTimestamp() / Stopwatch.Frequency;
-            Transform = global::SharpDX.Matrix.Scaling((float)this.scale) * global::SharpDX.Matrix.RotationX(rotationSpeed * time)
-                    * global::SharpDX.Matrix.RotationY(rotationSpeed * time * 2.0f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time * .7f);
-            Transform1 = global::SharpDX.Matrix.Scaling((float)this.scale) * global::SharpDX.Matrix.RotationX(-rotationSpeed * time * .7f)
-                * global::SharpDX.Matrix.RotationY(-rotationSpeed * time * 1.0f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time) * Matrix.Translation(3, -3, -3);
-            Transform2 = global::SharpDX.Matrix.Scaling((float)this.scale) * global::SharpDX.Matrix.RotationX(-rotationSpeed * time * -.7f)
-                    * global::SharpDX.Matrix.RotationY(-rotationSpeed * time * 1.0f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time) * Matrix.Translation(3, 3, 3);
-            Transform3 = global::SharpDX.Matrix.Scaling((float)this.scale) * global::SharpDX.Matrix.RotationX(-rotationSpeed * time * .7f)
-                    * global::SharpDX.Matrix.RotationY(-rotationSpeed * time * -0.5f) * global::SharpDX.Matrix.RotationZ(rotationSpeed * time) * Matrix.Translation(-5, -5, 5);
+            Transform = MatrixHelper.Scaling((float)this.scale) * MatrixHelper.RotationX(rotationSpeed * time)
+                    * MatrixHelper.RotationY(rotationSpeed * time * 2.0f) * MatrixHelper.RotationZ(rotationSpeed * time * .7f);
+            Transform1 = MatrixHelper.Scaling((float)this.scale) * MatrixHelper.RotationX(-rotationSpeed * time * .7f)
+                * MatrixHelper.RotationY(-rotationSpeed * time * 1.0f) * MatrixHelper.RotationZ(rotationSpeed * time) * MatrixHelper.Translation(3, -3, -3);
+            Transform2 = MatrixHelper.Scaling((float)this.scale) * MatrixHelper.RotationX(-rotationSpeed * time * -.7f)
+                    * MatrixHelper.RotationY(-rotationSpeed * time * 1.0f) * MatrixHelper.RotationZ(rotationSpeed * time) * MatrixHelper.Translation(3, 3, 3);
+            Transform3 = MatrixHelper.Scaling((float)this.scale) * MatrixHelper.RotationX(-rotationSpeed * time * .7f)
+                    * MatrixHelper.RotationY(-rotationSpeed * time * -0.5f) * MatrixHelper.RotationZ(rotationSpeed * time) * MatrixHelper.Translation(-5, -5, 5);
         }
 
         private Stream LoadTexture(string file)
         {
             var packageFolder = Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, "");
-            var bytecode = global::SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\" + file);
+            var bytecode = SharpDX.IO.NativeFile.ReadAllBytes(packageFolder + @"\" + file);
             return new MemoryStream(bytecode);
         }
 

@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Color.Palette.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Color3.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Color4.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Color4Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ColorBGRA.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FrustumCameraParams.cs" />

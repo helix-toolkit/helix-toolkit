@@ -1286,5 +1286,20 @@ namespace HelixToolkit.Mathematics
         {
             return (byte)(value < 0 ? 0 : value > 255 ? 255 : value);
         }
+
+#if NETFX_CORE
+
+#else
+        public static implicit operator System.Windows.Media.Color(Color color)
+        {
+            return System.Windows.Media.Color.FromArgb(color.A, color.R,
+                color.G, color.B);
+        }
+
+        public static implicit operator Color(System.Windows.Media.Color color)
+        {
+            return new Color(color.R, color.G, color.B, color.A);
+        }
+#endif
     }
 }

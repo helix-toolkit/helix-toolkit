@@ -1,8 +1,7 @@
-﻿using SharpDX;
+﻿using HelixToolkit.Mathematics;
 using System;
+using System.Numerics;
 using Windows.Foundation;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media.Animation;
 using Point = Windows.Foundation.Point;
 
 namespace HelixToolkit.UWP
@@ -196,12 +195,9 @@ namespace HelixToolkit.UWP
                 return;
             }
 
-            var u = topLeftRay.Direction;
-            var v = topRightRay.Direction;
-            var w = centerRay.Direction;
-            u.Normalize();
-            v.Normalize();
-            w.Normalize();
+            var u = Vector3.Normalize(topLeftRay.Direction);
+            var v = Vector3.Normalize(topRightRay.Direction);
+            var w = Vector3.Normalize(centerRay.Direction);
             var perspectiveCamera = camera as PerspectiveCamera;
             if (perspectiveCamera != null)
             {
@@ -255,8 +251,7 @@ namespace HelixToolkit.UWP
         {
             var target = camera.Position + camera.LookDirection;
             var length = camera.LookDirection.Length();
-            newLookDir.Normalize();
-            LookAt(camera, target, newLookDir * length, newUpDirection, animationTime);
+            LookAt(camera, target, Vector3.Normalize(newLookDir) * length, newUpDirection, animationTime);
         }
 
         /// <summary>
@@ -478,8 +473,7 @@ namespace HelixToolkit.UWP
                 double distv = radius / Math.Tan(0.5 * vfov * Math.PI / 180);
 
                 var dist = (float)Math.Max(disth, distv);
-                var dir = projectionCamera.LookDirection;
-                dir.Normalize();
+                var dir = Vector3.Normalize(projectionCamera.LookDirection);
                 LookAt(projectionCamera, center, dir * dist, animationTime);
             }
             else if (camera is OrthographicCamera orth)

@@ -1,15 +1,12 @@
 ﻿using GalaSoft.MvvmLight;
-using SharpDX;
+using HelixToolkit.Mathematics;
 using SharpDX.Direct3D11;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Numerics;
 using Windows.Foundation;
 using Media = Windows.UI;
-using Vector3 = SharpDX.Vector3;
+using Matrix = System.Numerics.Matrix4x4;
 
 namespace SimpleDemoW10
 {

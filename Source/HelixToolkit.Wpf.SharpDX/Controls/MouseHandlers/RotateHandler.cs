@@ -10,6 +10,7 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System;
+    using System.Diagnostics;
     using System.Windows;
     using System.Windows.Input;
     using System.Windows.Media.Media3D;
@@ -495,6 +496,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             double angle = Vector3D.AngleBetween(u1, u2);
+            
             // Create the transform
             var delta = new Quaternion(axis, -angle * this.RotationSensitivity * 5);
             var rotate = new RotateTransform3D(new QuaternionRotation3D(delta));

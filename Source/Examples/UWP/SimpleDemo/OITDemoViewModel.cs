@@ -1,14 +1,14 @@
 ﻿using GalaSoft.MvvmLight;
+using HelixToolkit.Mathematics;
 using HelixToolkit.UWP;
-using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using Matrix = System.Numerics.Matrix4x4;
 
 namespace SimpleDemoW10
 {
@@ -46,9 +46,9 @@ namespace SimpleDemoW10
     {
         public ObservableCollection<OITModel> ModelGeometry { get; private set; } = new ObservableCollection<OITModel>();
 
-        public Matrix Transform { private set; get; } = Matrix.Translation(60, -10, 0);
+        public Matrix Transform { private set; get; } = MatrixHelper.Translation(60, -10, 0);
         public LineGeometry3D GridModel { private set; get; }
-        public Matrix GridTransform { private set; get; } = Matrix.Translation(60, -10, 0);
+        public Matrix GridTransform { private set; get; } = MatrixHelper.Translation(60, -10, 0);
         public OITWeightMode[] OITWeights { get; } = new OITWeightMode[] { OITWeightMode.Linear0, OITWeightMode.Linear1, OITWeightMode.Linear2, OITWeightMode.NonLinear };
 
         private bool showWireframe = false;
@@ -87,13 +87,13 @@ namespace SimpleDemoW10
             {
                 for (int j = 0; j < 10; ++j)
                 {
-                    builder.AddLine(new SharpDX.Vector3(-i * 5, 0, j * 5), new SharpDX.Vector3(i * 5, 0, j * 5));
-                    builder.AddLine(new SharpDX.Vector3(-i * 5, 0, -j * 5), new SharpDX.Vector3(i * 5, 0, -j * 5));
-                    builder.AddLine(new SharpDX.Vector3(i * 5, 0, -j * 5), new SharpDX.Vector3(i * 5, 0, j * 5));
-                    builder.AddLine(new SharpDX.Vector3(-i * 5, 0, -j * 5), new SharpDX.Vector3(-i * 5, 0, j * 5));
-                    builder.AddLine(new SharpDX.Vector3(-i * 5, j * 5, zOff), new SharpDX.Vector3(i * 5, j * 5, zOff));
-                    builder.AddLine(new SharpDX.Vector3(i * 5, 0, zOff), new SharpDX.Vector3(i * 5, j * 5, zOff));
-                    builder.AddLine(new SharpDX.Vector3(-i * 5, 0, zOff), new SharpDX.Vector3(-i * 5, j * 5, zOff));
+                    builder.AddLine(new Vector3(-i * 5, 0, j * 5), new Vector3(i * 5, 0, j * 5));
+                    builder.AddLine(new Vector3(-i * 5, 0, -j * 5), new Vector3(i * 5, 0, -j * 5));
+                    builder.AddLine(new Vector3(i * 5, 0, -j * 5), new Vector3(i * 5, 0, j * 5));
+                    builder.AddLine(new Vector3(-i * 5, 0, -j * 5), new Vector3(-i * 5, 0, j * 5));
+                    builder.AddLine(new Vector3(-i * 5, j * 5, zOff), new Vector3(i * 5, j * 5, zOff));
+                    builder.AddLine(new Vector3(i * 5, 0, zOff), new Vector3(i * 5, j * 5, zOff));
+                    builder.AddLine(new Vector3(-i * 5, 0, zOff), new Vector3(-i * 5, j * 5, zOff));
                 }
             }
             GridModel = builder.ToLineGeometry3D();

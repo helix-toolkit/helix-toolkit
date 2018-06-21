@@ -24,7 +24,7 @@
             BackgroundColor="#303030"
             Camera="{Binding Camera}"
             CameraMode="Inspect"
-            CameraRotationMode="Turnball"
+            CameraRotationMode="Trackball"
             CoordinateSystemLabelForeground="White"
             EffectsManager="{Binding EffectsManager}"
             FXAALevel="Medium"

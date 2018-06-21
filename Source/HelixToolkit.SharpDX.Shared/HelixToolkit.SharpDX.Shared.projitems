@@ -82,7 +82,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingFrustumExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\BoundingSphereExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Color4Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommonExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DataStreamExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MatrixExtensions.cs" />

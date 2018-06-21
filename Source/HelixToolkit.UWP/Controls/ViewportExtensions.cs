@@ -1,9 +1,10 @@
-﻿using SharpDX;
-using System;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
-using Point = Windows.Foundation.Point;
+using Matrix = System.Numerics.Matrix4x4;
+using HelixToolkit.Mathematics;
 
 namespace HelixToolkit.UWP
 {
@@ -40,7 +41,7 @@ namespace HelixToolkit.UWP
                 v.X = (2 * px / w - 1) / projMatrix.M11;
                 v.Y = -(2 * py / h - 1) / projMatrix.M22;
                 v.Z = 1 / projMatrix.M33;
-                Vector3.TransformCoordinate(ref v, ref matrix, out zf);
+                Vector3Helper.TransformCoordinate(ref v, ref matrix, out zf);
 
                 if (camera is PerspectiveCameraCore)
                 {
@@ -49,10 +50,9 @@ namespace HelixToolkit.UWP
                 else
                 {
                     v.Z = 0;
-                    Vector3.TransformCoordinate(ref v, ref matrix, out zn);
+                    Vector3Helper.TransformCoordinate(ref v, ref matrix, out zn);
                 }
-                Vector3 r = zf - zn;
-                r.Normalize();
+                Vector3 r = Vector3.Normalize(zf - zn);
 
                 return new Ray(zn + r * camera.NearPlaneDistance, r);
             }
@@ -304,8 +304,7 @@ namespace HelixToolkit.UWP
 
             pcamera.FieldOfView = fov;
             double d2 = r / Math.Tan(0.5 * fov / 180 * Math.PI);
-            var newLookDirection = pcamera.LookDirection;
-            newLookDirection.Normalize();
+            var newLookDirection = Vector3.Normalize(pcamera.LookDirection);
             newLookDirection *= (float)d2;
             var target = pcamera.Position + pcamera.LookDirection;
             pcamera.Position = target - newLookDirection;
@@ -384,7 +383,7 @@ namespace HelixToolkit.UWP
                 {
                     if (r.HasBound && r.BoundsWithTransform.Maximum != maxVector)
                     {
-                        bounds = global::SharpDX.BoundingBox.Merge(bounds, r.BoundsWithTransform);
+                        bounds = BoundingBox.Merge(bounds, r.BoundsWithTransform);
                     }
                 }
             }

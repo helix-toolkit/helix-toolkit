@@ -3,15 +3,15 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 
-using HelixToolkit.UWP.Utilities;
 using System;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
-using Vector3 = SharpDX.Vector3;
+using System.Numerics;
 
 namespace HelixToolkit.UWP
 {
+    using Utilities;
     public partial class Viewport3DX
     {
         #region Events

@@ -6,7 +6,8 @@ Copyright (c) 2018 Helix Toolkit contributors
 namespace HelixToolkit.UWP
 {
     using Cameras;
-    using global::SharpDX;
+    using System.Numerics;
+    using Matrix = System.Numerics.Matrix4x4;
     using System.Diagnostics;
     using Windows.UI.Xaml;
 

@@ -6,6 +6,7 @@
 
 namespace HelixToolkit.UWP
 {
+    using HelixToolkit.Mathematics;
     using Core;
     using System.Collections.Generic;
 
@@ -19,7 +20,7 @@ namespace HelixToolkit.UWP
             }
         }
 
-        public override bool HitTest(RenderContext context, global::SharpDX.Ray ray, ref List<HitTestResult> hits)
+        public override bool HitTest(RenderContext context, Ray ray, ref List<HitTestResult> hits)
         {
             return false;
         }

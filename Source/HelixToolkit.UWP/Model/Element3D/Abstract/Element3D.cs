@@ -2,16 +2,16 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using HelixToolkit.UWP.Model;
-using SharpDX;
 using System;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Matrix = System.Numerics.Matrix4x4;
 using Point = Windows.Foundation.Point;
 
 namespace HelixToolkit.UWP
 {
+    using Model;
     /// <summary>
     /// 
     /// </summary>

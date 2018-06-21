@@ -2,7 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using System.Numerics;
+using HelixToolkit.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Markup;
 using Point = Windows.Foundation.Point;
-
+using Matrix = System.Numerics.Matrix4x4;
 
 namespace HelixToolkit.UWP
 {

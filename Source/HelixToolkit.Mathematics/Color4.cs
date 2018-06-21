@@ -1001,5 +1001,32 @@ namespace HelixToolkit.Mathematics
         {
             return *(Color4*)&value;
         }
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="Color4"/>.
+        /// </summary>
+        /// <param name="colorStr">The color string.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
+        public static implicit operator Color4(string colorStr)
+        {
+            return Color4Extensions.ToColor4(colorStr);
+        }
+#if !CORE
+#if NETFX_CORE
+
+#else
+        public static implicit operator System.Windows.Media.Color(Color4 color)
+        {
+            return System.Windows.Media.Color.FromArgb((byte)(color.Alpha * 255), (byte)(color.Red * 255), 
+                (byte)(color.Green * 255), (byte)(color.Blue * 255));
+        }
+
+        public static implicit operator Color4(System.Windows.Media.Color color)
+        {
+            return new Color4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
+        }
+#endif
+#endif
     }
 }

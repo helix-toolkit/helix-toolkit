@@ -18,7 +18,7 @@ using Matrix = System.Numerics.Matrix4x4;
 using Windows.UI.Xaml;
 using Media = Windows.UI;
 using Windows.Foundation;
-using Vector3D = SharpDX.Vector3;
+using Vector3D = System.Numerics.Vector3;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
@@ -31,6 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model;
     using Model.Scene;
     using Utilities;
+    using Mathematics;
     using static Core.ParticleRenderCore;
 
     public class ParticleStormModel3D : Element3D

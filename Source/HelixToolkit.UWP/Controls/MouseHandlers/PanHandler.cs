@@ -9,9 +9,9 @@
 
 namespace HelixToolkit.UWP
 {
-    using SharpDX;
-    using Point3D = SharpDX.Vector3;
-    using Vector3D = SharpDX.Vector3;
+    using System.Numerics;
+    using Point3D = System.Numerics.Vector3;
+    using Vector3D = System.Numerics.Vector3;
     using Point = Windows.Foundation.Point;
     using Windows.UI.Core;
 

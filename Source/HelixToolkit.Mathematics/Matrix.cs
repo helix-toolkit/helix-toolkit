@@ -2154,6 +2154,33 @@ namespace HelixToolkit.Mathematics
             return Matrix.CreateFromAxisAngle(axis, angle);
         }
         /// <summary>
+        /// Rotations the x.Angle is radian.
+        /// </summary>
+        /// <param name="angle">The radian.</param>
+        /// <returns></returns>
+        public static Matrix RotationX(float angle)
+        {
+            return Matrix.CreateRotationX(angle);
+        }
+        /// <summary>
+        /// Rotations the y.Angle is radian.
+        /// </summary>
+        /// <param name="angle">The radian.</param>
+        /// <returns></returns>
+        public static Matrix RotationY(float angle)
+        {
+            return Matrix.CreateRotationY(angle);
+        }
+        /// <summary>
+        /// Rotations the z.Angle is radian.
+        /// </summary>
+        /// <param name="angle">The radian.</param>
+        /// <returns></returns>
+        public static Matrix RotationZ(float angle)
+        {
+            return Matrix.CreateRotationZ(angle);
+        }
+        /// <summary>
         /// Performs an implicit conversion from <see cref="Matrix"/> to <see cref="RawMatrix"/>.
         /// </summary>
         /// <param name="value">The value.</param>

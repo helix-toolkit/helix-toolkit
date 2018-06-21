@@ -83,6 +83,7 @@
             Background="Black"
             BackgroundColor="Black"
             Camera="{Binding Camera}"
+            CameraRotationMode="Trackball"
             EnableAutoOctreeUpdate="True"
             EnableDeferredRendering="True"
             EnableDesignModeRendering="False"

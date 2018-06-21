@@ -8,6 +8,7 @@ using Matrix = System.Numerics.Matrix4x4;
 #if !CORE
 using System;
 using D2D = SharpDX.Direct2D1;
+using SharpDX.Mathematics.Interop;
 #if NETFX_CORE
 using Windows.UI.Text;
 using Media = Windows.UI.Xaml.Media;
@@ -224,7 +225,10 @@ namespace HelixToolkit.Wpf.SharpDX.Extensions
             else if(brush is Media.LinearGradientBrush linear)
             {
                 return new D2D.LinearGradientBrush(target,
-                    new D2D.LinearGradientBrushProperties() { StartPoint = linear.StartPoint.ToVector2Raw(), EndPoint = linear.EndPoint.ToVector2Raw() },
+                    new D2D.LinearGradientBrushProperties() {
+                        StartPoint = new RawVector2((float)linear.StartPoint.X, (float)linear.StartPoint.Y),
+                        EndPoint = new RawVector2((float)linear.EndPoint.X, (float)linear.EndPoint.Y)
+                    },
                     new D2D.GradientStopCollection
                     (
                         target,

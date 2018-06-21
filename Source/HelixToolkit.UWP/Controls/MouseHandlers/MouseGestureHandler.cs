@@ -9,15 +9,14 @@
 
 namespace HelixToolkit.UWP
 {
+    using HelixToolkit.Mathematics;
     using System.Diagnostics;
-    using Windows.Foundation;
     using Windows.UI.Core;
-    using SharpDX;
-    using Point3D = SharpDX.Vector3;
-    using Vector3D = SharpDX.Vector3;
-    using Point = Windows.Foundation.Point;
-    using System;
     using Windows.UI.Xaml.Input;
+    using System.Numerics;
+    using Point = Windows.Foundation.Point;
+    using Point3D = System.Numerics.Vector3;
+    using Vector3D = System.Numerics.Vector3;
 
     /// <summary>
     /// An abstract base class for the mouse gesture handlers.
@@ -248,8 +247,10 @@ namespace HelixToolkit.UWP
             {
                 return null;
             }
-
-            return ray.PlaneIntersection(position, normal);
+            var plane = PlaneHelper.GetPlane(position, normal);
+            if (ray.Intersects(ref plane, out Point3D point))
+            { return point; }
+            else { return null; }
         }
 
         /// <summary>
@@ -385,7 +386,9 @@ namespace HelixToolkit.UWP
             Point3D nearestPoint;
             Vector3D normal;
             Element3D visual;
-            if (!this.CameraController.Viewport.FixedRotationPointEnabled && this.CameraController.Viewport.FindNearest(this.MouseDownPoint, out nearestPoint, out normal, out visual))
+            if (!this.CameraController.Viewport.FixedRotationPointEnabled 
+                && this.CameraController.Viewport.FindNearest
+                (this.MouseDownPoint, out nearestPoint, out normal, out visual))
             {
                 this.MouseDownNearestPoint3D = nearestPoint;
             }

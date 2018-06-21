@@ -6,7 +6,7 @@ namespace HelixToolkit.UWP
 {
     using Model;
     using Model.Scene;
-    using SharpDX;
+    using System.Numerics;
     using Windows.UI.Xaml;
 
     public sealed class DirectionalLight3D : Light3D

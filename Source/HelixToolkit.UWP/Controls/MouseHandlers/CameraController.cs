@@ -1,9 +1,10 @@
-﻿using SharpDX;
+﻿using System.Numerics;
+using HelixToolkit.Mathematics;
 using System;
 using System.Linq;
 using Point = Windows.Foundation.Point;
-using Point3D = SharpDX.Vector3;
-using Vector3D = SharpDX.Vector3;
+using Point3D = System.Numerics.Vector3;
+using Vector3D = System.Numerics.Vector3;
 
 namespace HelixToolkit.UWP
 {
@@ -843,13 +844,15 @@ namespace HelixToolkit.UWP
             {
                 this.rotationPosition = new Point(Viewport.ActualWidth / 2, Viewport.ActualHeight / 2);
                 this.rotateHandler.Rotate(
-                    this.rotationPosition, new Point(this.rotationPosition.X + dx, this.rotationPosition.Y + dy), FixedRotationPoint);
+                    this.rotationPosition, new Point(this.rotationPosition.X + dx, this.rotationPosition.Y + dy), 
+                    FixedRotationPoint);
             }
             else
             {
                 this.rotationPosition = new Point(this.Viewport.ActualWidth / 2, this.Viewport.ActualHeight / 2);
                 this.rotateHandler.Rotate(
-                    this.rotationPosition, new Point(this.rotationPosition.X + dx, this.rotationPosition.Y + dy), this.CameraTarget);
+                    this.rotationPosition, new Point(this.rotationPosition.X + dx, this.rotationPosition.Y + dy), 
+                    this.CameraTarget);
             }
             Viewport.InvalidateRender();
         }
@@ -1283,10 +1286,8 @@ namespace HelixToolkit.UWP
         /// </returns>
         private Vector3D FindPanVector(double dx, double dy)
         {
-            var axis1 = Vector3D.Cross(this.CameraLookDirection, this.CameraUpDirection);
-            var axis2 = Vector3D.Cross(axis1, this.CameraLookDirection);
-            axis1.Normalize();
-            axis2.Normalize();
+            var axis1 =Vector3D.Normalize(Vector3D.Cross(this.CameraLookDirection, this.CameraUpDirection));
+            var axis2 =Vector3D.Normalize(Vector3D.Cross(axis1, this.CameraLookDirection));
             axis1 *= (ActualCamera.CreateLeftHandSystem ? -1 : 1);
             var l = this.CameraLookDirection.Length();
             var f = l * 0.001f;

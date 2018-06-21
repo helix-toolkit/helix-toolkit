@@ -12,8 +12,8 @@ namespace HelixToolkit.UWP
     using System;
     using System.Diagnostics;
     using Windows.Foundation;
-    using Point3D = SharpDX.Vector3;
-    using Vector3D = SharpDX.Vector3;
+    using Point3D = System.Numerics.Vector3;
+    using Vector3D = System.Numerics.Vector3;
     using Point = Windows.Foundation.Point;
     using Windows.UI.Core;
 
@@ -166,11 +166,11 @@ namespace HelixToolkit.UWP
         /// <param name="delta">The translation vector in camera space (z in look direction, y in up direction, and x perpendicular to the two others)</param>
         public void MoveCameraPosition(Vector3D delta)
         {
-            var z = this.Camera.LookDirection;
-            z.Normalize();
+            var z = Vector3D.Normalize(this.Camera.LookDirection);
+      
             var x = Vector3D.Cross(this.Camera.LookDirection, this.Camera.UpDirection);
-            var y = Vector3D.Cross(x, z);
-            y.Normalize();
+            var y = Vector3D.Normalize(Vector3D.Cross(x, z));
+          
             x = Vector3D.Cross(z, y);
 
             // delta *= this.ZoomSensitivity;
@@ -262,7 +262,7 @@ namespace HelixToolkit.UWP
             {
                 if (delta > 0) //If Zoom out from very close distance, increase the initial relativePosition
                 {
-                    relativePosition.Normalize();
+                    relativePosition = Vector3D.Normalize(relativePosition);
                     relativePosition /= 10;
                 }
                 else//If Zoom in too close, stop it.

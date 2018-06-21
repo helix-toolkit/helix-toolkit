@@ -4,7 +4,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 namespace HelixToolkit.UWP
 {
-    using global::SharpDX;
+    using HelixToolkit.Mathematics;
     using System;
     using System.Collections.ObjectModel;
     using System.Linq;

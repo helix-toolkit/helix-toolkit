@@ -29,6 +29,7 @@
   </PropertyGroup>
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />
+  <Import Project="..\HelixToolkit.Mathematics\HelixToolkit.Mathematics.projitems" Label="Shared" />
   <ItemGroup>
     <None Remove="Resources\arial.fnt" />
     <None Remove="Resources\arial.png" />
@@ -174,6 +175,7 @@
     <PackageReference Include="SharpDX.Mathematics" Version="4.1.0" />
     <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
     <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     <PackageReference Include="System.Private.DataContractSerialization" Version="4.3.0" />
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.0" />
     <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />

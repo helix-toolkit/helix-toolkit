@@ -5,7 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 namespace HelixToolkit.UWP
 {
     using Cameras;
-    using SharpDX;
+    using System.Numerics;
     using Windows.UI.Xaml;
 
     /// <summary>
