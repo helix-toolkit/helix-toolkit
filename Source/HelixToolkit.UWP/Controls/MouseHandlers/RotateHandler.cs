@@ -421,7 +421,7 @@ namespace HelixToolkit.UWP
             double fx = p1.X / this.CameraController.Viewport.ActualWidth;
             double fy = p1.Y / this.CameraController.Viewport.ActualHeight;
 
-            var up = this.Camera.UpDirection;
+            var up = Vector3D.Normalize(this.Camera.UpDirection);
             var dir = Vector3D.Normalize(this.Camera.LookDirection);           
 
             var right = Vector3D.Normalize(Vector3D.Cross(dir, this.Camera.UpDirection));            
@@ -492,7 +492,7 @@ namespace HelixToolkit.UWP
             var angle = u1.AngleBetween(u2);
             
             // Create the transform
-            var delta = Quaternion.CreateFromAxisAngle(axis, -(float)(angle * this.RotationSensitivity * 5));
+            var delta = Quaternion.CreateFromAxisAngle(Vector3D.Normalize(axis), -(float)(angle * this.RotationSensitivity * 5));
             var rotate = Matrix.CreateFromQuaternion(delta);
 
             // Find vectors relative to the rotate-around point
