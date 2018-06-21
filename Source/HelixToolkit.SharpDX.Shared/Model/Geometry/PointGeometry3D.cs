@@ -55,10 +55,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 var smvpm = modelMatrix * svpm;
 
                 var clickPoint4 = new Vector4(rayWS.Position + rayWS.Direction, 1);
-                var pos4 = new Vector4(rayWS.Position, 1);
+                //var pos4 = new Vector4(rayWS.Position, 1);
                 // var dir3 = new Vector3();
                 clickPoint4 = Vector4.Transform(clickPoint4, svpm);
-                pos4 = Vector4.Transform(pos4, svpm);
+                //pos4 = Vector4.Transform(pos4, svpm);
                 //Vector3.TransformNormal(ref rayWS.Direction, ref svpm, out dir3);
                 //dir3.Normalize();
 
@@ -79,7 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         lastDist = dist;
                         
                         var lp0 = point;
-                        Vector3 pvv = Vector3.Transform(lp0, modelMatrix);
+                        Vector3 pvv = Vector3Helper.TransformCoordinate(lp0, modelMatrix);
                         result.Distance = (rayWS.Position - pvv).Length();
                         result.PointHit = pvv;
                         result.ModelHit = originalSource;

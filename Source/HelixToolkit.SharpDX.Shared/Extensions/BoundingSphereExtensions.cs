@@ -93,8 +93,8 @@ namespace HelixToolkit.Wpf.SharpDX
             var center = b.Center;
             var edge = b.Center + Vector3Helper.Right * b.Radius;
 
-            var worldCenter = Vector3.Transform(center, m);
-            var worldEdge = Vector3.Transform(edge, m);
+            var worldCenter = Vector3Helper.TransformCoordinate(center, m);
+            var worldEdge = Vector3Helper.TransformCoordinate(edge, m);
 
             return new BoundingSphere(worldCenter, (worldEdge - worldCenter).Length());
         }

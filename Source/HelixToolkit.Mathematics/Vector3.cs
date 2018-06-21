@@ -602,17 +602,6 @@ namespace HelixToolkit.Mathematics
         /// </summary>
         /// <param name="vector">The source vector.</param>
         /// <param name="transform">The transformation <see cref="Matrix"/>.</param>
-        /// <param name="result">When the method completes, contains the transformed <see cref="Vector3"/>.</param>
-        public static void Transform(ref Vector3 vector, ref Matrix transform, out Vector3 result)
-        {
-            result = Vector3.Transform(vector, transform);
-        }
-
-        /// <summary>
-        /// Transforms a 3D vector by the given <see cref="Matrix"/>.
-        /// </summary>
-        /// <param name="vector">The source vector.</param>
-        /// <param name="transform">The transformation <see cref="Matrix"/>.</param>
         /// <param name="result">When the method completes, contains the transformed <see cref="Vector4"/>.</param>
         public static void Transform(ref Vector3 vector, ref Matrix transform, out Vector4 result)
         {
@@ -685,9 +674,9 @@ namespace HelixToolkit.Mathematics
         /// </remarks>
         public static Vector3 TransformCoordinate(Vector3 coordinate, Matrix transform)
         {
-            Vector3 result;
-            TransformCoordinate(ref coordinate, ref transform, out result);
-            return result;
+            Vector4 v = Vector4.Transform(new Vector4(coordinate, 1), transform);
+            v /= v.W;
+            return new Vector3(v.X, v.Y, v.Z);
         }
 
         /// <summary>
