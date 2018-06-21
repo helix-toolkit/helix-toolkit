@@ -289,7 +289,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         /// <summary>
         /// Gets or sets a value indicating whether this render pass is using inverted cull mode.
-        /// If <see cref="SharpDX.Direct3D11.CullMode"/>=<see cref="SharpDX.Direct3D11.CullMode.None"/>, default state is used.
+        /// If <see cref="global::SharpDX.Direct3D11.CullMode"/>=<see cref="global::SharpDX.Direct3D11.CullMode.None"/>, default state is used.
         /// This is usually used when rendering <see cref="Core.DynamicCubeMapCore"/>.
         /// </summary>
         /// <value>
