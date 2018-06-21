@@ -202,7 +202,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             d *= (float)RotationSensitivity;
 
-            var q1 = Quaternion.CreateFromAxisAngle(this.rotationAxisX, d * inv * delta.X / 180 * (float)Math.PI);
+            var q1 = Quaternion.CreateFromAxisAngle(this.rotationAxisX, d * Inv * delta.X / 180 * (float)Math.PI);
             var q2 = Quaternion.CreateFromAxisAngle(this.rotationAxisY, d * delta.Y / 180 * (float)Math.PI);
             Quaternion q = q1 * q2;
 
@@ -259,7 +259,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             d *= (float)this.RotationSensitivity;
             
-            var q1 = Quaternion.CreateFromAxisAngle(up, d * inv * delta.X / 180 * (float)Math.PI);
+            var q1 = Quaternion.CreateFromAxisAngle(up, d * Inv * delta.X / 180 * (float)Math.PI);
             var q2 = Quaternion.CreateFromAxisAngle(right, d * delta.Y / 180 * (float)Math.PI);
             Quaternion q = q1 * q2;
 
@@ -465,8 +465,8 @@ namespace HelixToolkit.Wpf.SharpDX
             var v2 = ProjectToTrackball(p2, this.Viewport.ActualWidth, this.Viewport.ActualHeight);
             var cUP = Camera.UpDirection.ToVector3();
             // transform the trackball coordinates to view space
-            var viewZ = Vector3.Normalize(Camera.LookDirection.ToVector3() * inv);
-            var viewX = Vector3.Normalize(Vector3.Cross(cUP, viewZ) * inv);
+            var viewZ = Vector3.Normalize(Camera.LookDirection.ToVector3() * Inv);
+            var viewX = Vector3.Normalize(Vector3.Cross(cUP, viewZ) * Inv);
             var viewY = Vector3.Normalize(Vector3.Cross(viewX, viewZ));
             var u1 = (viewZ * v1.Z) + (viewX * v1.X) + (viewY * v1.Y);
             var u2 = (viewZ * v2.Z) + (viewX * v2.X) + (viewY * v2.Y);

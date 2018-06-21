@@ -32,7 +32,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// <seealso cref="System.Windows.Controls.Image" />
     public class DPFSurfaceSwapChain : WinformHostExtend, IRenderCanvas
     {
-        private IRenderHost renderHost;
+        private readonly IRenderHost renderHost;
         /// <summary>
         /// Gets or sets the render host.
         /// </summary>
@@ -207,8 +207,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             EndD3D();
 
-            var sdxException = exception as SharpDXException;
-            if (sdxException != null &&
+            if (exception is SharpDXException sdxException &&
                 (sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceRemoved ||
                  sdxException.Descriptor == global::SharpDX.DXGI.ResultCode.DeviceReset))
             {
@@ -231,8 +230,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var parent = System.Windows.Media.VisualTreeHelper.GetParent(obj);
                 while (parent != null)
                 {
-                    var typed = parent as T;
-                    if (typed != null)
+                    if (parent is T typed)
                     {
                         return typed;
                     }

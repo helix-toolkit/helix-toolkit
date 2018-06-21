@@ -92,7 +92,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         /// The inv.
         /// </value>
-        protected int inv { private set; get; } = 1;
+        protected int Inv { private set; get; } = 1;
 
         /// <summary>
         /// Gets the model up direction.
@@ -226,7 +226,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.LastPoint3D = this.MouseDownPoint3D;
             //this.ManipulationWatch.Restart();
             startTick = Stopwatch.GetTimestamp();
-            inv = Camera.CreateLeftHandSystem ? -1 : 1;
+            Inv = Camera.CreateLeftHandSystem ? -1 : 1;
         }
 
         /// <summary>
@@ -385,10 +385,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.MouseDownPoint = position;
 
-            Point3D nearestPoint;
-            Vector3D normal;
-            Element3D visual;
-            if (!this.Viewport.FixedRotationPointEnabled && this.Viewport.FindNearest(this.MouseDownPoint, out nearestPoint, out normal, out visual))
+            if (!this.Viewport.FixedRotationPointEnabled && this.Viewport.FindNearest(this.MouseDownPoint, out Point3D nearestPoint, out Vector3D normal, out Element3D visual))
             {
                 this.MouseDownNearestPoint3D = nearestPoint;
             }
