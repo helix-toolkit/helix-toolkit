@@ -21,11 +21,12 @@
 		<dependency id="SharpDX.Direct2D1" version="4.1.0" />
 		<dependency id="SharpDX.Direct3D11" version="4.1.0" />
 		<dependency id="SharpDX.DXGI" version="4.1.0" />
-		<dependency id="SharpDX.Mathematics" version="4.1.0" />
+		<dependency id="System.Numerics.Vectors" version="4.5.0" />
 		<dependency id="System.ComponentModel.TypeConverter" version="4.3.0"/>
 		<dependency id="System.Drawing.Primitives" version="4.3.0"/>		
 		<dependency id="System.Private.DataContractSerialization" version="4.3.0"/>
-      </group>
+		<dependency id="System.Reflection" version="4.3.0"/>
+	  </group>
     </dependencies>
   </metadata>
   <files>
