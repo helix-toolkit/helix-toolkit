@@ -254,7 +254,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
             var uv_tl = new Vector2(cu / w, cv / h);
             var uv_br = new Vector2((cu + cw) / w, (cv + ch) / h);
-
+            var off_tl = tl * info.Scale * textureScale;
+            var off_br = br * info.Scale * textureScale;
             return new BillboardVertex()
             {
                 Position = info.Origin.ToVector4(),
@@ -262,8 +263,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 Background = Color.Transparent,
                 TexTL = uv_tl,
                 TexBR = uv_br,
-                OffTL = tl * info.Scale * textureScale,
-                OffBR = br * info.Scale * textureScale
+                OffTL = off_tl,
+                OffBR = off_br
             };
         }
 
