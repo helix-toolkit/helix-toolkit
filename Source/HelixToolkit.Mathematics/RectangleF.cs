@@ -34,9 +34,8 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using SharpDX.Mathematics.Interop;
-using System.Numerics;
-using Matrix = System.Numerics.Matrix4x4;
 using SharpDX;
+using Vector2 = System.Numerics.Vector2;
 
 namespace HelixToolkit.Mathematics
 {
