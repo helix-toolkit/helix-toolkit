@@ -40,7 +40,7 @@
                 EffectsManager="{Binding EffectsManager}"
                 FXAALevel="Low">
                 <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" />
-                <hx:AmbientLight3D Color="#4B4B4B"/>
+                <hx:AmbientLight3D Color="#4B4B4B" />
                 <hx:DynamicCodeSurfaceModel3D
                     x:Name="surface1"
                     Material="{Binding Material}"
@@ -99,7 +99,7 @@
                     <TextBlock Grid.Row="0" Text="Elements in 'u' direction" />
                     <TextBlock Grid.Row="1" Text="Elements in 'v' direction" />
                     <TextBlock Grid.Row="2" Text="Parameter 'w'" />
-                    <TextBlock Grid.Row="3" Text="Stereobase" />
+                    <!--<TextBlock Grid.Row="3" Text="Stereobase" />-->
                     <Slider
                         Name="slider1"
                         Grid.Row="0"
@@ -124,7 +124,7 @@
                         Maximum="2"
                         Minimum="0"
                         Value="{Binding ParameterW}" />
-                    <Slider
+                    <!--<Slider
                         Name="slider4"
                         Grid.Row="3"
                         Grid.Column="1"
@@ -132,7 +132,7 @@
                         IsEnabled="{Binding ViewStereo}"
                         Maximum="1.2"
                         Minimum="0.003"
-                        Value="{Binding StereoBase}" />
+                        Value="{Binding StereoBase}" />-->
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="2"

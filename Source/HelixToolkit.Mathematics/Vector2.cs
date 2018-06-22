@@ -597,9 +597,9 @@ namespace HelixToolkit.Mathematics
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
-        public unsafe static RawVector2 ToRaw(this Vector2 value)
+        public static RawVector2 ToRaw(this Vector2 value)
         {
-            return *(RawVector2*)&value;
+            return new RawVector2(value.X, value.Y);
         }
 
         /// <summary>
@@ -607,9 +607,9 @@ namespace HelixToolkit.Mathematics
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
-        public unsafe static Vector2 ToVector2(this RawVector2 value)
+        public static Vector2 ToVector2(this RawVector2 value)
         {
-            return *(Vector2*)&value;
+            return new Vector2(value.X, value.Y);
         }
     }
 }

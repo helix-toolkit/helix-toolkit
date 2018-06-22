@@ -13,6 +13,7 @@ namespace HelixToolkit.UWP.Core2D
 namespace HelixToolkit.Wpf.SharpDX.Core2D
 #endif
 {
+    using global::SharpDX.Mathematics.Interop;
     using Utilities;
     /// <summary>
     /// 
@@ -116,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
             renderBound.Height = metrices.Height;
             context.DeviceContext.Transform = Matrix3x2.CreateTranslation((float)context.ActualWidth - renderBound.Width, 0).ToRaw();                                     
             context.DeviceContext.FillRectangle(renderBound, background);
-            context.DeviceContext.DrawTextLayout(Vector2Helper.Zero.ToRaw(), textLayout, foreground);
+            context.DeviceContext.DrawTextLayout(new RawVector2(), textLayout, foreground);
         }
     }
 }

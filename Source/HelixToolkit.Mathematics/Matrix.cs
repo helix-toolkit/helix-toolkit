@@ -59,7 +59,7 @@ namespace HelixToolkit.Mathematics
         /// </summary>
         public static readonly Matrix Identity = new Matrix() { M11 = 1.0f, M22 = 1.0f, M33 = 1.0f, M44 = 1.0f };
 
-        
+
         /// <summary>
         /// Gets or sets the up <see cref="Vector3"/> of the matrix; that is M21, M22, and M23.
         /// </summary>
@@ -74,7 +74,7 @@ namespace HelixToolkit.Mathematics
             m.M22 = up.Y;
             m.M23 = up.Z;
         }
-    
+
         /// <summary>
         /// Gets or sets the down <see cref="Vector3"/> of the matrix; that is -M21, -M22, and -M23.
         /// </summary>
@@ -89,7 +89,7 @@ namespace HelixToolkit.Mathematics
             m.M22 = -value.Y;
             m.M23 = -value.Z;
         }
-    
+
         /// <summary>
         /// Gets or sets the right <see cref="Vector3"/> of the matrix; that is M11, M12, and M13.
         /// </summary>
@@ -104,7 +104,7 @@ namespace HelixToolkit.Mathematics
             m.M12 = value.Y;
             m.M13 = value.Z;
         }
-    
+
         /// <summary>
         /// Gets or sets the left <see cref="Vector3"/> of the matrix; that is -M11, -M12, and -M13.
         /// </summary>
@@ -112,7 +112,7 @@ namespace HelixToolkit.Mathematics
         {
             return new Vector3(-m.M11, -m.M12, -m.M13);
         }
-        
+
         public static void SetLeft(ref Matrix m, ref Vector3 value)
         {
             m.M11 = -value.X;
@@ -126,7 +126,7 @@ namespace HelixToolkit.Mathematics
         {
             return new Vector3(-m.M31, -m.M32, -m.M33);
         }
-        
+
         public static void SetForward(ref Matrix m, ref Vector3 value)
         {
             m.M31 = -value.X;
@@ -147,7 +147,7 @@ namespace HelixToolkit.Mathematics
             m.M32 = value.Y;
             m.M33 = value.Z;
         }
-       
+
 
         /// <summary>
         /// Gets or sets the first row in the matrix; that is M11, M12, M13, and M14.
@@ -313,7 +313,7 @@ namespace HelixToolkit.Mathematics
 
         public static void SetColumn2(ref Matrix m, ref Vector4 value)
         {
-             m.M12 = value.X; m.M22 = value.Y; m.M32 = value.Z; m.M42 = value.W;
+            m.M12 = value.X; m.M22 = value.Y; m.M32 = value.Z; m.M42 = value.W;
         }
         public static void SetColumn2(ref Matrix m, Vector4 value)
         {
@@ -374,51 +374,51 @@ namespace HelixToolkit.Mathematics
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="index"/> is out of the range [0, 15].</exception>
         public static float Get(this Matrix m, int index)
         {
-                switch (index)
-                {
-                    case 0:  return m.M11;
-                    case 1:  return m.M12;
-                    case 2:  return m.M13;
-                    case 3:  return m.M14;
-                    case 4:  return m.M21;
-                    case 5:  return m.M22;
-                    case 6:  return m.M23;
-                    case 7:  return m.M24;
-                    case 8:  return m.M31;
-                    case 9:  return m.M32;
-                    case 10: return m.M33;
-                    case 11: return m.M34;
-                    case 12: return m.M41;
-                    case 13: return m.M42;
-                    case 14: return m.M43;
-                    case 15: return m.M44;
-                }
+            switch (index)
+            {
+                case 0: return m.M11;
+                case 1: return m.M12;
+                case 2: return m.M13;
+                case 3: return m.M14;
+                case 4: return m.M21;
+                case 5: return m.M22;
+                case 6: return m.M23;
+                case 7: return m.M24;
+                case 8: return m.M31;
+                case 9: return m.M32;
+                case 10: return m.M33;
+                case 11: return m.M34;
+                case 12: return m.M41;
+                case 13: return m.M42;
+                case 14: return m.M43;
+                case 15: return m.M44;
+            }
 
-                throw new ArgumentOutOfRangeException("index", "Indices for Matrix run from 0 to 15, inclusive.");
+            throw new ArgumentOutOfRangeException("index", "Indices for Matrix run from 0 to 15, inclusive.");
         }
 
         public static void Set(ref Matrix m, int index, float value)
         {
-                switch (index)
-                {
-                    case 0: m.M11 = value; break;
-                    case 1: m.M12 = value; break;
-                    case 2: m.M13 = value; break;
-                    case 3: m.M14 = value; break;
-                    case 4: m.M21 = value; break;
-                    case 5: m.M22 = value; break;
-                    case 6: m.M23 = value; break;
-                    case 7: m.M24 = value; break;
-                    case 8: m.M31 = value; break;
-                    case 9: m.M32 = value; break;
-                    case 10: m.M33 = value; break;
-                    case 11: m.M34 = value; break;
-                    case 12: m.M41 = value; break;
-                    case 13: m.M42 = value; break;
-                    case 14: m.M43 = value; break;
-                    case 15: m.M44 = value; break;
-                    default: throw new ArgumentOutOfRangeException("index", "Indices for Matrix run from 0 to 15, inclusive.");
-                }
+            switch (index)
+            {
+                case 0: m.M11 = value; break;
+                case 1: m.M12 = value; break;
+                case 2: m.M13 = value; break;
+                case 3: m.M14 = value; break;
+                case 4: m.M21 = value; break;
+                case 5: m.M22 = value; break;
+                case 6: m.M23 = value; break;
+                case 7: m.M24 = value; break;
+                case 8: m.M31 = value; break;
+                case 9: m.M32 = value; break;
+                case 10: m.M33 = value; break;
+                case 11: m.M34 = value; break;
+                case 12: m.M41 = value; break;
+                case 13: m.M42 = value; break;
+                case 14: m.M43 = value; break;
+                case 15: m.M44 = value; break;
+                default: throw new ArgumentOutOfRangeException("index", "Indices for Matrix run from 0 to 15, inclusive.");
+            }
         }
 
         /// <summary>
@@ -432,12 +432,12 @@ namespace HelixToolkit.Mathematics
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the <paramref name="row"/> or <paramref name="column"/>is out of the range [0, 3].</exception>
         public static float Get(this Matrix m, int row, int column)
         {
-                if (row < 0 || row > 3)
-                    throw new ArgumentOutOfRangeException("row", "Rows and columns for matrices run from 0 to 3, inclusive.");
-                if (column < 0 || column > 3)
-                    throw new ArgumentOutOfRangeException("column", "Rows and columns for matrices run from 0 to 3, inclusive.");
+            if (row < 0 || row > 3)
+                throw new ArgumentOutOfRangeException("row", "Rows and columns for matrices run from 0 to 3, inclusive.");
+            if (column < 0 || column > 3)
+                throw new ArgumentOutOfRangeException("column", "Rows and columns for matrices run from 0 to 3, inclusive.");
 
-                return m.Get((row * 4) + column);
+            return m.Get((row * 4) + column);
         }
 
         public static void Set(ref Matrix m, int row, int column, float value)
@@ -1390,7 +1390,8 @@ namespace HelixToolkit.Mathematics
         /// <param name="cameraUpVector">The up vector of the camera.</param>
         /// <param name="cameraForwardVector">The forward vector of the camera.</param>
         /// <returns>The created billboard matrix.</returns>
-        public static Matrix BillboardRH(Vector3 objectPosition, Vector3 cameraPosition, Vector3 cameraUpVector, Vector3 cameraForwardVector) {
+        public static Matrix BillboardRH(Vector3 objectPosition, Vector3 cameraPosition, Vector3 cameraUpVector, Vector3 cameraForwardVector)
+        {
             return Matrix.CreateBillboard(objectPosition, cameraPosition, cameraUpVector, cameraForwardVector);
             //Matrix result;
             //BillboardRH(ref objectPosition, ref cameraPosition, ref cameraUpVector, ref cameraForwardVector, out result);
@@ -1415,9 +1416,9 @@ namespace HelixToolkit.Mathematics
             result.M12 = yaxis.X; result.M22 = yaxis.Y; result.M32 = yaxis.Z;
             result.M13 = zaxis.X; result.M23 = zaxis.Y; result.M33 = zaxis.Z;
 
-            result.M41 = -Vector3.Dot(xaxis, eye );
-            result.M42 = -Vector3.Dot(yaxis, eye );
-            result.M43 = -Vector3.Dot(zaxis, eye );
+            result.M41 = -Vector3.Dot(xaxis, eye);
+            result.M42 = -Vector3.Dot(yaxis, eye);
+            result.M43 = -Vector3.Dot(zaxis, eye);
         }
 
         /// <summary>
@@ -1850,10 +1851,10 @@ namespace HelixToolkit.Mathematics
             Vector3 e1 = Vector3.Normalize(transVec);
 
             float rv1 = Vector3.Dot(rotationVec, e1);
-            
+
             e0 += rv1 * e1;
             float rv0 = Vector3.Dot(rotationVec, e0);
-            
+
             float cosa = (float)Math.Cos(angle);
             float sina = (float)Math.Sin(angle);
             float rr0 = rv0 * cosa - rv1 * sina;
@@ -1943,7 +1944,7 @@ namespace HelixToolkit.Mathematics
         {
             result = Matrix.CreateScale(scaling, scaling, 1) * Matrix.CreateRotationZ(rotation)
                 * Matrix.CreateTranslation(new Vector3(translation, 0));
-                //Scaling(scaling, scaling, 1.0f) * RotationZ(rotation) * Translation((Vector3)translation);
+            //Scaling(scaling, scaling, 1.0f) * RotationZ(rotation) * Translation((Vector3)translation);
         }
 
         /// <summary>
@@ -1972,8 +1973,8 @@ namespace HelixToolkit.Mathematics
             result = Matrix.CreateScale(scaling, scaling, 1) * Matrix.CreateTranslation(new Vector3(-rotationCenter, 0))
                 * Matrix.CreateRotationZ(rotation) * Matrix.CreateTranslation(new Vector3(rotationCenter, 0))
                 * Matrix.CreateTranslation(new Vector3(translation, 0));
-                //Scaling(scaling, scaling, 1.0f) * Translation((Vector3)(-rotationCenter)) * RotationZ(rotation) *
-                //Translation((Vector3)rotationCenter) * Translation((Vector3)translation);
+            //Scaling(scaling, scaling, 1.0f) * Translation((Vector3)(-rotationCenter)) * RotationZ(rotation) *
+            //Translation((Vector3)rotationCenter) * Translation((Vector3)translation);
         }
 
         /// <summary>
@@ -2176,9 +2177,27 @@ namespace HelixToolkit.Mathematics
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
-        public unsafe static RawMatrix ToRaw(this Matrix value)
+        public static RawMatrix ToRaw(this Matrix value)
         {
-            return *(RawMatrix*)&value;
+            return new RawMatrix()
+            {
+                M11 = value.M11,
+                M12 = value.M12,
+                M13 = value.M13,
+                M14 = value.M14,
+                M21 = value.M21,
+                M22 = value.M22,
+                M23 = value.M23,
+                M24 = value.M24,
+                M31 = value.M31,
+                M32 = value.M32,
+                M33 = value.M33,
+                M34 = value.M34,
+                M41 = value.M41,
+                M42 = value.M42,
+                M43 = value.M43,
+                M44 = value.M44
+            };
         }
 
         /// <summary>
@@ -2186,9 +2205,12 @@ namespace HelixToolkit.Mathematics
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
-        public unsafe static Matrix ToMatrix(this RawMatrix value)
+        public static Matrix ToMatrix(this RawMatrix value)
         {
-            return *(Matrix*)&value;
+            return new Matrix(value.M11, value.M12, value.M13, value.M14,
+                value.M21, value.M22, value.M23, value.M24,
+                value.M31, value.M32, value.M33, value.M34,
+                value.M41, value.M42, value.M43, value.M44);
         }
     }
 }

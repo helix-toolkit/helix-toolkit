@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 
 namespace DynamicCodeSurfaceDemo
 {
@@ -72,7 +73,7 @@ namespace DynamicCodeSurfaceDemo
         private string sourceCode;
         public string SourceCode
         {
-            private set
+            set
             {
                 SetValue(ref sourceCode, value);
             }
