@@ -10,6 +10,7 @@ using SharpV3 = SharpDX.Vector3;
 using NumV4 = System.Numerics.Vector4;
 using SharpV4 = SharpDX.Vector4;
 using System.Diagnostics;
+using HelixToolkit.Mathematics;
 
 namespace SIMDTest
 {
@@ -90,6 +91,8 @@ namespace SIMDTest
             for (int i = 0; i < Size; ++i)
             {
                 NumV4s[i] = NumV4.Transform(NumV4s[i], m);
+                m = scale * rotate * translate * view;
+                MatrixHelper.Orthogonalize(ref m);
             }
             return true;
         }
@@ -105,6 +108,38 @@ namespace SIMDTest
             for (int i = 0; i < Size; ++i)
             {
                 SharpV4s[i] = SharpV4.Transform(SharpV4s[i], m);
+                m = scale * rotate * translate * view;
+                m.Orthogonalize();
+            }
+            return true;
+        }
+
+        public static bool TestNumMatrixOrthogonalize()
+        {
+            NumM m;
+            for (int i = 0; i < Iteration; ++i)
+            {
+                var scale = NumM.CreateScale(rnd.Next(-100, 100));
+                var rotate = NumM.CreateFromAxisAngle(new NumV3(1, 0, 0), 30f / 180 * (float)Math.PI);
+                var translate = NumM.CreateTranslation(new NumV3(rnd.Next(-100, 100), rnd.Next(-100, 100), rnd.Next(-100, 100)));
+                var view = NumM.CreateLookAt(new NumV3(rnd.Next(-100, 100), rnd.Next(-100, 100), rnd.Next(-100, 100)), new NumV3(rnd.Next(-100, 100), rnd.Next(-100, 100), rnd.Next(-100, 100)), new NumV3(0, 1, 0));
+                m = scale * rotate * translate * view;
+                MatrixHelper.Orthogonalize(ref m);
+            }
+            return true;
+        }
+
+        public static bool TestSharpMatrixOrthogonalize()
+        {
+            SharpM m;
+            for (int i = 0; i < Iteration; ++i)
+            {
+                var scale = SharpM.Scaling(rnd.Next(-100, 100));
+                var rotate = SharpM.RotationAxis(new SharpV3(1, 0, 0), 30f / 180 * (float)Math.PI);
+                var translate = SharpM.Translation(new SharpV3(rnd.Next(-100, 100), rnd.Next(-100, 100), rnd.Next(-100, 100)));
+                var view = SharpM.LookAtRH(new SharpV3(rnd.Next(-100, 100), rnd.Next(-100, 100), rnd.Next(-100, 100)), new SharpV3(rnd.Next(-100, 100), rnd.Next(-100, 100), rnd.Next(-100, 100)), new SharpV3(0, 1, 0));
+                m = scale * rotate * translate * view;
+                m.Orthogonalize();
             }
             return true;
         }

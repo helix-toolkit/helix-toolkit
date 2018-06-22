@@ -64,5 +64,11 @@
       <Version>4.5.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.SharpDX.csproj">
+      <Project>{39740654-f5f1-4936-b4ea-9bc97d4cde37}</Project>
+      <Name>HelixToolkit.Wpf.SharpDX</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

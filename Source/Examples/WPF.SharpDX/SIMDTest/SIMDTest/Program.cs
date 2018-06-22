@@ -16,6 +16,8 @@ namespace SIMDTest
             new TestWrapper("Vector4 Mul Matrix Sharp", Tests.TestSharpVector4MulMatrix),
             new TestWrapper("Matrix Mult SIMD", Tests.TestNumMatrixMultiplication),
             new TestWrapper("Matrix Mult Sharp", Tests.TestSharpMatrixMultiplication),
+            new TestWrapper("Matrix Ortho SIMD", Tests.TestNumMatrixOrthogonalize),
+            new TestWrapper("Matrix Ortho Sharp", Tests.TestSharpMatrixOrthogonalize),
         };
         static void Main(string[] args)
         {
