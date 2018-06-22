@@ -142,7 +142,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     using (var layout = GetTextLayoutMetrices(texts[i], deviceResources, fontSize, fontFamily, fontWeight, fontStyle, faceSize, faceSize))
                     {
                         var metrices = layout.Metrics;
-                        var offset = new Vector2((faceSize - metrices.WidthIncludingTrailingWhitespace) / 2, (faceSize - metrices.Height) / 2);
+                        var offset = new RawVector2((faceSize - metrices.WidthIncludingTrailingWhitespace) / 2, (faceSize - metrices.Height) / 2);
                         offset.X += faceRect.Left;
                         using (var brush = new SolidColorBrush(target, faceColors[i]))
                         {
@@ -150,7 +150,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         }
                         using (var brush = new SolidColorBrush(target, textColors[i]))
                         {
-                            target.DrawTextLayout(offset.ToRaw(), layout, brush);
+                            target.DrawTextLayout(offset, layout, brush);
                         }
                     }
                     faceRect.Left += faceSize;

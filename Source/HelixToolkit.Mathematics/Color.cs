@@ -1286,9 +1286,17 @@ namespace HelixToolkit.Mathematics
         {
             return (byte)(value < 0 ? 0 : value > 255 ? 255 : value);
         }
-
+#if !CORE
 #if NETFX_CORE
+        public static implicit operator Windows.UI.Color(Color color)
+        {
+            return new Windows.UI.Color() { A = color.A, R = color.R, G = color.G, B = color.B };
+        }
 
+        public static implicit operator Color(Windows.UI.Color color)
+        {
+            return new Color(color.R, color.G, color.B, color.A);
+        }
 #else
         public static implicit operator System.Windows.Media.Color(Color color)
         {
@@ -1300,6 +1308,7 @@ namespace HelixToolkit.Mathematics
         {
             return new Color(color.R, color.G, color.B, color.A);
         }
+#endif
 #endif
     }
 }
