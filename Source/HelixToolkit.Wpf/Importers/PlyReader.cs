@@ -225,10 +225,7 @@ namespace HelixToolkit.Wpf
                     }
                     else { continue; }
                     linCount += 1;
-                }
-                textReader.Dispose();
-                textReader.Close();
-                
+                }               
             }
 
             #region MyRegion
