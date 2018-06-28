@@ -1,4 +1,4 @@
-﻿using SharpDX;
+﻿using System.Numerics;
 using System.Collections.Generic;
 using System.IO;
 
@@ -88,7 +88,7 @@ namespace HelixToolkit.UWP
 
             if (TextureCoordinates.Count > 0)
             {
-                foreach (Point item in TextureCoordinates)
+                foreach (var item in TextureCoordinates)
                 {
                     mesh.TextureCoordinates.Add(item);
                 }
