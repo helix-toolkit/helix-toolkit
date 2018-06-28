@@ -188,6 +188,36 @@ namespace SIMDTest
             return true;
         }
 
+        public static bool TestNumMatrixInvert()
+        {
+            NumM m;
+            for (int i = 0; i < Iteration; ++i)
+            {
+                var scale = NumM.CreateScale(rnd.Next(-100, 100));
+                var rotate = NumM.CreateFromAxisAngle(new NumV3(1, 0, 0), 30f / 180 * (float)Math.PI);
+                var translate = NumM.CreateTranslation(new NumV3(rnd.Next(-100, 100), rnd.Next(-100, 100), rnd.Next(-100, 100)));
+                var view = NumM.CreateLookAt(new NumV3(rnd.Next(-100, 100), rnd.Next(-100, 100), rnd.Next(-100, 100)), new NumV3(rnd.Next(-100, 100), rnd.Next(-100, 100), rnd.Next(-100, 100)), new NumV3(0, 1, 0));
+                m = scale * rotate * translate * view;
+                NumM.Invert(m, out m);
+            }
+            return true;
+        }
+
+        public static bool TestSharpMatrixInvert()
+        {
+            SharpM m;
+            for (int i = 0; i < Iteration; ++i)
+            {
+                var scale = SharpM.Scaling(rnd.Next(-100, 100));
+                var rotate = SharpM.RotationAxis(new SharpV3(1, 0, 0), 30f / 180 * (float)Math.PI);
+                var translate = SharpM.Translation(new SharpV3(rnd.Next(-100, 100), rnd.Next(-100, 100), rnd.Next(-100, 100)));
+                var view = SharpM.LookAtRH(new SharpV3(rnd.Next(-100, 100), rnd.Next(-100, 100), rnd.Next(-100, 100)), new SharpV3(rnd.Next(-100, 100), rnd.Next(-100, 100), rnd.Next(-100, 100)), new SharpV3(0, 1, 0));
+                m = scale * rotate * translate * view;
+                m = SharpM.Invert(m);
+            }
+            return true;
+        }
+
         public static bool TestNumVector4IsZero()
         {
 
