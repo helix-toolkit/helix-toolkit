@@ -13,11 +13,11 @@ namespace HelixToolkit.Wpf
     /// <summary>
     /// Polygon File Format Reader.
     /// </summary>
-    /// <see cref="https://www.cc.gatech.edu/projects/large_models/ply.html"/>
-    /// <see cref="http://graphics.stanford.edu/data/3Dscanrep/"/>
+    /// https://www.cc.gatech.edu/projects/large_models/ply.html
+    /// http://graphics.stanford.edu/data/3Dscanrep/
     /// <remarks>
     /// This reader only reads ascii ply formats.
-    /// This was initially meant to read models exported by Blender 3D Software <see cref=""/>.
+    /// This was initially meant to read models exported by Blender 3D Software.
     /// </remarks>
     public class PlyReader : ModelReader
     {
@@ -270,7 +270,10 @@ namespace HelixToolkit.Wpf
 
 
         }
-
+        /// <summary>
+        /// Loads the specified filepath.
+        /// </summary>
+        /// <param name="filepath">The filepath.</param>
         public void Load(string filepath)
         {
             InitializeProperties();
@@ -290,7 +293,12 @@ namespace HelixToolkit.Wpf
         /// Gets or sets the vertices of this ply model.
         /// </summary>
         public IList<Point3D> Vertices { get; private set; }
-
+        /// <summary>
+        /// Gets the faces.
+        /// </summary>
+        /// <value>
+        /// The faces.
+        /// </value>
         public IList<int[]> Faces { get; private set; }
 
         /// <summary>

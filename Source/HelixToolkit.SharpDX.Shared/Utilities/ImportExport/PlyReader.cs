@@ -15,18 +15,17 @@ namespace HelixToolkit.UWP
     /// <summary>
     /// Polygon File Format Reader.
     /// </summary>
-    /// <see cref="https://www.cc.gatech.edu/projects/large_models/ply.html"/>
-    /// <see cref="http://graphics.stanford.edu/data/3Dscanrep/"/>
+    /// https://www.cc.gatech.edu/projects/large_models/ply.html
+    /// http://graphics.stanford.edu/data/3Dscanrep/
     /// <remarks>
     /// This reader only reads ascii ply formats.
-    /// This was initially meant to read models exported by Blender 3D Software <see cref=""/>.
+    /// This was initially meant to read models exported by Blender 3D Software.
     /// </remarks>
     public class PlyReader : ModelReader
     {
         /// <summary>
         /// Initializes a new <see cref="PlyReader"/>.
         /// </summary>
-        /// <param name="dispatcher"></param>
         public PlyReader()
         {
             InitializeProperties();
@@ -37,7 +36,8 @@ namespace HelixToolkit.UWP
         /// Reads the model from the specified stream.
         /// </summary>
         /// <param name="s">The stream.</param>
-        /// <returns>A <see cref="Model3DGroup" />.</returns>
+        /// <param name="info"></param>
+        /// <returns>A <see cref="Mesh3DGroup" /></returns>       
         public override Mesh3DGroup Read(Stream s, ModelInfo info = default(ModelInfo))
         {
             InitializeProperties();
@@ -65,7 +65,7 @@ namespace HelixToolkit.UWP
         /// Creates a mesh from the loaded file.
         /// </summary>
         /// <returns>
-        /// A <see cref="Mesh3D" />.
+        /// A <see cref="MeshGeometry3D" />.
         /// </returns>
         public MeshGeometry3D CreateMesh()
         {
@@ -163,9 +163,9 @@ namespace HelixToolkit.UWP
         }
 
         /// <summary>
-        /// Creates a <see cref="Model3DGroup" /> from the loaded file.
+        /// Creates a <see cref="Mesh3DGroup" /> from the loaded file.
         /// </summary>
-        /// <returns>A <see cref="Model3DGroup" />.</returns>
+        /// <returns>A <see cref="Mesh3DGroup" />.</returns>
         public Mesh3DGroup CreateModel3D()
         {
             Mesh3DGroup modelGroup = null;
