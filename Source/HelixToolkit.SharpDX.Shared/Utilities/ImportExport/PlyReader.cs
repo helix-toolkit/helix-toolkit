@@ -136,8 +136,6 @@ namespace HelixToolkit.UWP
             }
             if (Normals.Count == 0)
             {
-                Normals = null;
-                mb.Normals = null;
                 mb.CreateNormals = false;
             }
 
@@ -156,7 +154,12 @@ namespace HelixToolkit.UWP
                 mb.CreateTextureCoordinates = false;
             }
 
-            return mb.ToMesh();
+            var mesh = mb.ToMesh();
+            if(mesh.Normals == null || mesh.Normals.Count == 0)
+            {
+                mesh.Normals = mesh.CalculateNormals();
+            }
+            return mesh;
         }
 
         /// <summary>
