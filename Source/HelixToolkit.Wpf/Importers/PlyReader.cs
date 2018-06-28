@@ -16,7 +16,7 @@ namespace HelixToolkit.Wpf
     /// <see cref="https://www.cc.gatech.edu/projects/large_models/ply.html"/>
     /// <see cref="http://graphics.stanford.edu/data/3Dscanrep/"/>
     /// <remarks>
-    /// This reader does not parse Normals, Texture Coordinates and only reads ascii ply formats.
+    /// This reader only reads ascii ply formats.
     /// This was initially meant to read models exported by Blender 3D Software <see cref=""/>.
     /// </remarks>
     public class PlyReader : ModelReader
