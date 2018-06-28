@@ -115,6 +115,7 @@ namespace DynamicCodeSurfaceDemo
             materialDict.Add("Pearl", PhongMaterials.Pearl);
             materialDict.Add("PolishedBronze", PhongMaterials.PolishedBronze);
             materialDict.Add("ColorStripe", new ColorStripeMaterial() { ColorStripeX = GetGradients(Color.Red, Color.Green, Color.Blue, 48).ToArray() });
+            materialDict.Add("Diffuse", DiffuseMaterials.Orange);
             Materials = materialDict.Keys.ToArray();
             SelectedMaterial = "Normal";
         }

@@ -46,14 +46,14 @@
         public Color Light1Color { get; set; }
 
         public bool EnablePlane1 { set; get; } = true;
-        public Plane Plane1 { set; get; } = new Plane(new Vector3(0, -1, 0), -15);
+        public Plane Plane1 { set; get; } = new Plane(new Vector3(0, -1, 0), -8);
         private float plane1Factor = 0.05f;
 
         public bool EnablePlane2 { set; get; } = true;
-        public Plane Plane2 { set; get; } = new Plane(new Vector3(-1, 0, 0), -15);
+        public Plane Plane2 { set; get; } = new Plane(new Vector3(-1, 0, 0), -8);
         private float plane2Factor = 0.05f;
 
-        public bool EnableAnimation { set; get; } = true;
+        public bool EnableAnimation { set; get; } = false;
 
         private DispatcherTimer timer;
         public MainViewModel()
