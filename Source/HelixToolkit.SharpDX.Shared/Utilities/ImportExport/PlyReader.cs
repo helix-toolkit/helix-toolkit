@@ -1,15 +1,17 @@
-using System;
+﻿using SharpDX;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media.Media3D;
-using System.Windows.Threading;
 
-namespace HelixToolkit.Wpf
+#if !NETFX_CORE
+namespace HelixToolkit.Wpf.SharpDX
+#else
+namespace HelixToolkit.UWP
+#endif
 {
+    using Mesh3DGroup = List<Object3D>;
+#if NETFX_CORE
+    using FileFormatException = System.Exception;
+#endif
     /// <summary>
     /// Polygon File Format Reader.
     /// </summary>
@@ -24,8 +26,7 @@ namespace HelixToolkit.Wpf
         /// <summary>
         /// Initializes a new <see cref="PlyReader"/>.
         /// </summary>
-        /// <param name="dispatcher"></param>
-        public PlyReader(Dispatcher dispatcher = null) : base(dispatcher)
+        public PlyReader()
         {
             InitializeProperties();
         }
@@ -35,8 +36,9 @@ namespace HelixToolkit.Wpf
         /// Reads the model from the specified stream.
         /// </summary>
         /// <param name="s">The stream.</param>
-        /// <returns>A <see cref="Model3DGroup" />.</returns>
-        public override Model3DGroup Read(Stream s)
+        /// <param name="info"></param>
+        /// <returns>A <see cref="Mesh3DGroup" /></returns>       
+        public override Mesh3DGroup Read(Stream s, ModelInfo info = default(ModelInfo))
         {
             InitializeProperties();
             this.Load(s);
@@ -48,10 +50,10 @@ namespace HelixToolkit.Wpf
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns>The model.</returns>
-        public override Model3DGroup Read(string path)
+        public Mesh3DGroup Read(string path)
         {
             InitializeProperties();
-            plymodelURI =path;
+            plymodelURI = path;
             Load(path);
             using (var s = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -63,35 +65,35 @@ namespace HelixToolkit.Wpf
         /// Creates a mesh from the loaded file.
         /// </summary>
         /// <returns>
-        /// A <see cref="Mesh3D" />.
+        /// A <see cref="MeshGeometry3D" />.
         /// </returns>
-        public Mesh3D CreateMesh()
+        public MeshGeometry3D CreateMesh()
         {
-            var mesh = new Mesh3D();
-            if (Vertices.Count>0)
+            var mesh = new MeshGeometry3D();
+            if (Vertices.Count > 0)
             {
                 foreach (var vert in Vertices)
                 {
-                    mesh.Vertices.Add(vert);
+                    mesh.Positions.Add(vert);
                 }
             }
 
-            if (Faces.Count>0)
+            if (Faces.Count > 0)
             {
                 foreach (var face in Faces)
                 {
-                    mesh.Faces.Add((int[])face.Clone());
+                    mesh.Indices.AddRange((int[])face.Clone());
                 }
             }
 
-            if (TextureCoordinates.Count>0)
+            if (TextureCoordinates.Count > 0)
             {
                 foreach (Point item in TextureCoordinates)
                 {
                     mesh.TextureCoordinates.Add(item);
                 }
             }
-            if (TextureCoordinates.Count==0)
+            if (TextureCoordinates.Count == 0)
             {
                 TextureCoordinates = null;
             }
@@ -107,16 +109,16 @@ namespace HelixToolkit.Wpf
         public MeshGeometry3D CreateMeshGeometry3D()
         {
             var mb = new MeshBuilder(true, true);
-            
-            if (Vertices.Count>0)
+
+            if (Vertices.Count > 0)
             {
                 foreach (var p in this.Vertices)
                 {
                     mb.Positions.Add(p);
                 }
             }
-            
-            if (Faces.Count>0)
+
+            if (Faces.Count > 0)
             {
                 foreach (var face in Faces)
                 {
@@ -124,22 +126,20 @@ namespace HelixToolkit.Wpf
                 }
             }
 
-            if (Normals.Count>0)
+            if (Normals.Count > 0)
             {
-                mb.CreateNormals=true;
+                mb.CreateNormals = true;
                 foreach (var item in Normals)
                 {
                     mb.Normals.Add(item);
                 }
             }
-            if (Normals.Count==0)
+            if (Normals.Count == 0)
             {
-                Normals = null;
-                mb.Normals = null;
                 mb.CreateNormals = false;
             }
 
-            if (TextureCoordinates.Count>0)
+            if (TextureCoordinates.Count > 0)
             {
                 mb.CreateTextureCoordinates = true;
                 foreach (var item in TextureCoordinates)
@@ -147,44 +147,36 @@ namespace HelixToolkit.Wpf
                     mb.TextureCoordinates.Add(item);
                 }
             }
-            if (TextureCoordinates.Count==0)
+            if (TextureCoordinates.Count == 0)
             {
                 TextureCoordinates = null;
                 mb.TextureCoordinates = null;
                 mb.CreateTextureCoordinates = false;
             }
-            
-            return mb.ToMesh();
+
+            var mesh = mb.ToMesh();
+            if(mesh.Normals == null || mesh.Normals.Count == 0)
+            {
+                mesh.Normals = mesh.CalculateNormals();
+            }
+            return mesh;
         }
 
         /// <summary>
-        /// Creates a <see cref="Model3DGroup" /> from the loaded file.
+        /// Creates a <see cref="Mesh3DGroup" /> from the loaded file.
         /// </summary>
-        /// <returns>A <see cref="Model3DGroup" />.</returns>
-        public Model3DGroup CreateModel3D()
+        /// <returns>A <see cref="Mesh3DGroup" />.</returns>
+        public Mesh3DGroup CreateModel3D()
         {
-            Model3DGroup modelGroup = null;
-            this.Dispatch(() =>
+            Mesh3DGroup modelGroup = null;
+            modelGroup = new Mesh3DGroup();
+            var g = this.CreateMeshGeometry3D();
+            var gm = new Object3D
             {
-                modelGroup = new Model3DGroup();
-                var g = this.CreateMeshGeometry3D();
-                var gm = new GeometryModel3D
-                {
-                    Geometry = g,
-                    Material = this.DefaultMaterial,
-                    BackMaterial = DefaultMaterial
-                };
-                if (this.Freeze)
-                {
-                    gm.Freeze();
-                }
-                modelGroup.Children.Add(gm);
-                if (this.Freeze)
-                {
-                    modelGroup.Freeze();
-                }
-            });
-
+                Geometry = g,
+                Material = this.DefaultMaterial,
+            };
+            modelGroup.Add(gm);
             return modelGroup;
         }
 
@@ -209,7 +201,7 @@ namespace HelixToolkit.Wpf
                         if (initarr[1] == "ascii")
                         {
                             modelFormat = PlyFormatTypes.ascii;
-                            
+
                         }
 
                         else if (initarr[1] == "binary_big_endian")
@@ -225,7 +217,7 @@ namespace HelixToolkit.Wpf
                     }
                     else { continue; }
                     linCount += 1;
-                }               
+                }
             }
 
             #region MyRegion
@@ -233,15 +225,15 @@ namespace HelixToolkit.Wpf
             {
                 case PlyFormatTypes.ascii:
                     {
-                        if (plymodelURI.Length>6)
+                        if (plymodelURI.Length > 6)
                         {
                             using (FileStream fs = new FileStream(plymodelURI, FileMode.Open, FileAccess.Read))
                             {
                                 Load_ascii(fs);
                             }
                         }
-                        
-                        
+
+
                         break;
                     }
 
@@ -270,53 +262,45 @@ namespace HelixToolkit.Wpf
 
 
         }
-        /// <summary>
-        /// Loads the specified filepath.
-        /// </summary>
-        /// <param name="filepath">The filepath.</param>
+
         public void Load(string filepath)
         {
             InitializeProperties();
             plymodelURI = filepath;
-            using (FileStream fs=new FileStream(filepath,FileMode.Open,FileAccess.Read))
+            using (FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read))
             {
                 Load(fs);
             }
         }
-        
+
         #endregion
 
         #region Properties
-        
-        
+
+
         /// <summary>
         /// Gets or sets the vertices of this ply model.
         /// </summary>
-        public IList<Point3D> Vertices { get; private set; }
-        /// <summary>
-        /// Gets the faces.
-        /// </summary>
-        /// <value>
-        /// The faces.
-        /// </value>
+        public IList<Vector3> Vertices { get; private set; }
+
         public IList<int[]> Faces { get; private set; }
 
         /// <summary>
         /// Gets or sets the normal vectors of this ply model.
         /// </summary>
-        public IList<Vector3D> Normals { get; private set; }
-        
+        public IList<Vector3> Normals { get; private set; }
+
         /// <summary>
         /// Gets or sets the texture coordinates of the ply model.
         /// </summary>
         /// <remarks>S,T->X,Y</remarks>
-        public IList<Point> TextureCoordinates { get; private set; }
-        
+        public IList<Vector2> TextureCoordinates { get; private set; }
+
         /// <summary>
         /// Gets or sets the number of vertices.
         /// </summary>
         public int VerticesNumber { get; private set; }
-        
+
         /// <summary>
         /// Gets or sets the number of faces.
         /// </summary>
@@ -328,13 +312,13 @@ namespace HelixToolkit.Wpf
         public Dictionary<string, double> ObjectInformation { get; private set; }
 
         #endregion
-        
+
         #region Initialized Variables
         /// <summary>
         /// Stores the type of ply format in the <see cref="Stream"/>.
         /// </summary>
         private PlyFormatTypes modelFormat = PlyFormatTypes.ascii;
-        
+
         /// <summary>
         /// Tells us what the current element in the header is, 
         /// so we can pick its property values in the subsequent lines.
@@ -441,7 +425,7 @@ namespace HelixToolkit.Wpf
             /// The point from which the current element starts to get picked.
             /// </summary>
             public int StartRange { get; set; }
-            
+
             /// <summary>
             /// The point at which the current element stops to get picked.
             /// </summary>
@@ -464,9 +448,9 @@ namespace HelixToolkit.Wpf
             /// Stores the number of the specified element in the current Ply model.
             /// </summary>
             public int ElementCount { get; private set; }
-            
+
             #endregion
-            
+
             /// <summary>
             /// Returns a value specifying whether the index: <paramref name="num"/> is in this <see cref="PLYElement"/> range.
             /// </summary>
@@ -499,10 +483,10 @@ namespace HelixToolkit.Wpf
         private void InitializeProperties()
         {
             #region public:
-            Vertices = new List<Point3D>();
+            Vertices = new List<Vector3>();
             Faces = new List<int[]>();
-            Normals = new List<Vector3D>();
-            TextureCoordinates = new List<Point>();
+            Normals = new List<Vector3>();
+            TextureCoordinates = new List<Vector2>();
             FacesNumber = 0;
             VerticesNumber = 0;
             ObjectInformation = new Dictionary<string, double>();
@@ -518,14 +502,14 @@ namespace HelixToolkit.Wpf
             #endregion
 
         }
-        
+
         /// <summary>
         /// Loads an ascii format ply file.
         /// </summary>
         /// <param name="s"></param>
         private void Load_ascii(Stream s)
         {
-            
+
             using (var reader = new StreamReader(s))
             {
                 while (!reader.EndOfStream)
@@ -540,9 +524,9 @@ namespace HelixToolkit.Wpf
 
                     #region Heading
                     //comment Line
-                    else if (strarr[0] == "comment"|| strarr[0] == "format"|| strarr[0] == "ply")
+                    else if (strarr[0] == "comment" || strarr[0] == "format" || strarr[0] == "ply")
                     {
-                        
+
 
                     }
 
@@ -559,12 +543,12 @@ namespace HelixToolkit.Wpf
                          * vertex
                          * face
                          */
-                        
+
                         if (strarr[1] == "vertex")
                         {
                             VerticesNumber = int.Parse(strarr[2]);
                             //Add the vertex element to the dictionary, including its contextual range
-                            elements_range.Add("vertex", new PLYElement(elementLines_Count+1, elementLines_Count + VerticesNumber));
+                            elements_range.Add("vertex", new PLYElement(elementLines_Count + 1, elementLines_Count + VerticesNumber));
                             elementLines_Count += int.Parse(strarr[2]);
                             //set the current element as a "vertex"element 
                             currentElement = PlyElements.vertex;
@@ -574,10 +558,10 @@ namespace HelixToolkit.Wpf
                         {
                             FacesNumber = int.Parse(strarr[2]);
 
-                            elements_range.Add("face", new PLYElement(elementLines_Count+1, elementLines_Count + FacesNumber));
+                            elements_range.Add("face", new PLYElement(elementLines_Count + 1, elementLines_Count + FacesNumber));
                             elementLines_Count += int.Parse(strarr[2]);
                             currentElement = PlyElements.face;
-                           
+
                         }
 
                         else
@@ -607,11 +591,11 @@ namespace HelixToolkit.Wpf
                                     {
                                         elements_range["vertex"].ContainsNormals = true;
                                     }
-                                    else if (strarr[2] == "s"|| strarr[2] == "t")
+                                    else if (strarr[2] == "s" || strarr[2] == "t")
                                     {
                                         elements_range["vertex"].ContainsTextureCoordinates = true;
                                     }
-                                    
+
                                     break;
                                 }
 
@@ -631,7 +615,7 @@ namespace HelixToolkit.Wpf
                     {
                         //end info, begin number collection.
                         elementLine_Current = 0;
-                        
+
                     }
 
                     #endregion
@@ -643,20 +627,20 @@ namespace HelixToolkit.Wpf
                     else if (IsDigitChar(strarr[0][0]) == true)
                     {
                         elementLine_Current++;
-                        if ( elements_range.ContainsKey("vertex"))
+                        if (elements_range.ContainsKey("vertex"))
                         {
-                            
+
                             if (elements_range["vertex"].ContainsNumber(elementLine_Current) == true)
                             {
                                 //Get vertices
                                 int x_Indx = elements_range["vertex"].Property_with_Index["x"];
                                 int y_Indx = elements_range["vertex"].Property_with_Index["y"];
                                 int z_Indx = elements_range["vertex"].Property_with_Index["z"];
-                                Point3D pt = new Point3D()
+                                Vector3 pt = new Vector3()
                                 {
-                                    X = double.Parse(strarr[x_Indx]),
-                                    Y = double.Parse(strarr[y_Indx]),
-                                    Z = double.Parse(strarr[z_Indx])
+                                    X = float.Parse(strarr[x_Indx]),
+                                    Y = float.Parse(strarr[y_Indx]),
+                                    Z = float.Parse(strarr[z_Indx])
                                 };
                                 Vertices.Add(pt);
 
@@ -666,11 +650,11 @@ namespace HelixToolkit.Wpf
                                     int ny_Indx = elements_range["vertex"].Property_with_Index["ny"];
                                     int nz_Indx = elements_range["vertex"].Property_with_Index["nz"];
 
-                                    Vector3D vect3d = new Vector3D
+                                    Vector3 vect3d = new Vector3
                                     {
-                                        X = double.Parse(strarr[nx_Indx]),
-                                        Y = double.Parse(strarr[ny_Indx]),
-                                        Z = double.Parse(strarr[nz_Indx])
+                                        X = float.Parse(strarr[nx_Indx]),
+                                        Y = float.Parse(strarr[ny_Indx]),
+                                        Z = float.Parse(strarr[nz_Indx])
                                     };
                                     Normals.Add(vect3d);
                                 }
@@ -680,10 +664,10 @@ namespace HelixToolkit.Wpf
                                     int s_Indx = elements_range["vertex"].Property_with_Index["s"];
                                     int t_Indx = elements_range["vertex"].Property_with_Index["t"];
 
-                                    Point texpt = new Point
+                                    Vector2 texpt = new Vector2
                                     {
-                                        X = double.Parse(strarr[s_Indx]),
-                                        Y = double.Parse(strarr[t_Indx]),
+                                        X = float.Parse(strarr[s_Indx]),
+                                        Y = float.Parse(strarr[t_Indx]),
                                     };
                                     TextureCoordinates.Add(texpt);
                                 }
@@ -694,10 +678,10 @@ namespace HelixToolkit.Wpf
 
                         if (elements_range.ContainsKey("face"))
                         {
-                            
+
                             if (elements_range["face"].ContainsNumber(elementLine_Current) == true)
                             {
-                                
+
                                 List<int> facepos = new List<int>();
                                 for (int i = 1; i <= int.Parse(strarr[0]); i++)
                                 {
@@ -705,7 +689,7 @@ namespace HelixToolkit.Wpf
                                 }
                                 Faces.Add(facepos.ToArray());
                             }
-                            
+
                         }
 
                         else
@@ -718,10 +702,10 @@ namespace HelixToolkit.Wpf
 
                     else { continue; }
 
-                    
+
                 }
 
-                
+
             }
 
         }
@@ -761,7 +745,7 @@ namespace HelixToolkit.Wpf
                         if (strarr[1] == "vertex")
                         {
                             VerticesNumber = int.Parse(strarr[2]);
-                            
+
                             //Add the vertex element to the dictionary, including its contextual range
                             elements_range.Add("vertex", new PLYElement(_y1: elementLines_Count, _y2: elementLines_Count + VerticesNumber));
                             elementLines_Count += int.Parse(strarr[2]);
@@ -771,7 +755,7 @@ namespace HelixToolkit.Wpf
                         else if (strarr[1] == "face")
                         {
                             FacesNumber = int.Parse(strarr[2]);
-                            
+
                             elements_range.Add("face", new PLYElement(elementLines_Count, elementLines_Count + FacesNumber));
                             elementLines_Count += int.Parse(strarr[2]);
                             currentElement = PlyElements.face;
@@ -779,8 +763,8 @@ namespace HelixToolkit.Wpf
                         else
                         {
                             int miscElementNumber = int.Parse(strarr[2]);
-                            
-                            elements_range.Add(strarr[1], new PLYElement(elementLines_Count, elementLines_Count+miscElementNumber));
+
+                            elements_range.Add(strarr[1], new PLYElement(elementLines_Count, elementLines_Count + miscElementNumber));
                             elementLines_Count += int.Parse(strarr[2]);
 
                         }
@@ -835,11 +819,11 @@ namespace HelixToolkit.Wpf
                         int x_Indx = elements_range["vertex"].Property_with_Index["x"];
                         int y_Indx = elements_range["vertex"].Property_with_Index["y"];
                         int z_Indx = elements_range["vertex"].Property_with_Index["z"];
-                        Point3D pt = new Point3D()
+                        Vector3 pt = new Vector3()
                         {
-                            X = double.Parse(strarr[x_Indx]),
-                            Y = double.Parse(strarr[y_Indx]),
-                            Z = double.Parse(strarr[z_Indx])
+                            X = float.Parse(strarr[x_Indx]),
+                            Y = float.Parse(strarr[y_Indx]),
+                            Z = float.Parse(strarr[z_Indx])
                         };
                         Vertices.Add(pt);
 
@@ -849,11 +833,11 @@ namespace HelixToolkit.Wpf
                             int ny_Indx = elements_range["vertex"].Property_with_Index["ny"];
                             int nz_Indx = elements_range["vertex"].Property_with_Index["nz"];
 
-                            Vector3D vect3 = new Vector3D
+                            Vector3 vect3 = new Vector3
                             {
-                                X = double.Parse(strarr[nx_Indx]),
-                                Y = double.Parse(strarr[ny_Indx]),
-                                Z = double.Parse(strarr[nz_Indx])
+                                X = float.Parse(strarr[nx_Indx]),
+                                Y = float.Parse(strarr[ny_Indx]),
+                                Z = float.Parse(strarr[nz_Indx])
                             };
                         }
 
@@ -882,9 +866,5 @@ namespace HelixToolkit.Wpf
         }
 
         #endregion
-
-
-
     }
 }
- 
