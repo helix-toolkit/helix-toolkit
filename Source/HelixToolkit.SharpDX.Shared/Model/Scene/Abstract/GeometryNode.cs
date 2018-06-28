@@ -546,7 +546,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     foreach (var modelMatrix in InstanceBuffer.Elements)
                     {
                         var b = this.Bounds;
-                        if (OnHitTest(context, TotalModelMatrix * modelMatrix, ref rayWS, ref hits))
+                        if (OnHitTest(context, modelMatrix * TotalModelMatrix, ref rayWS, ref hits))
                         {
                             hit = true;
                             var lastHit = hits[hits.Count - 1];

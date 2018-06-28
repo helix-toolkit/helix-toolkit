@@ -1,11 +1,10 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
-using System.Numerics;
+using SharpDX;
 using System.Windows;
 using Point = System.Windows.Point;
 using MatrixTransform3D = System.Windows.Media.Media3D.MatrixTransform3D;
 using System;
-using Matrix = System.Numerics.Matrix4x4;
-using HelixToolkit.Mathematics;
+using System.Windows.Input;
 
 namespace CrossSectionDemo
 {
@@ -26,7 +25,7 @@ namespace CrossSectionDemo
                     if (!model.internalUpdate)
                     {
                         var plane = (Plane)e.NewValue;
-                        model.currentTranslation = Matrix.CreateTranslation(plane.Normal * plane.D);
+                        model.currentTranslation = Matrix.Translation(plane.Normal * plane.D);
                         var v1 = plane.Normal.FindAnyPerpendicular();
                         var v2 = Vector3.Cross(plane.Normal, v1);
                         model.currentRotation = new Matrix(v2.X, v2.Y, v2.Z, 0, v1.X, v1.Y, v1.Z, 0, -plane.Normal.X, -plane.Normal.Y, -plane.Normal.Z, 0, 0, 0, 0, 1);
@@ -87,7 +86,7 @@ namespace CrossSectionDemo
         }
 
         public static readonly DependencyProperty CornerMaterialProperty =
-            DependencyProperty.Register("CornerMaterial", typeof(Material), typeof(CrossSectionPlaneManipulator3D), new PropertyMetadata(null, (d,e)=> 
+            DependencyProperty.Register("CornerMaterial", typeof(Material), typeof(CrossSectionPlaneManipulator3D), new PropertyMetadata(null, (d, e) =>
             {
                 (d as CrossSectionPlaneManipulator3D).UpdateCornerMaterial(e.NewValue as Material);
             }));
@@ -101,7 +100,7 @@ namespace CrossSectionDemo
         }
 
         public static readonly DependencyProperty EdgeMaterialProperty =
-            DependencyProperty.Register("EdgeMaterial", typeof(Material), typeof(CrossSectionPlaneManipulator3D), new PropertyMetadata(null, (d,e)=> 
+            DependencyProperty.Register("EdgeMaterial", typeof(Material), typeof(CrossSectionPlaneManipulator3D), new PropertyMetadata(null, (d, e) =>
             {
                 (d as CrossSectionPlaneManipulator3D).UpdateEdgeMaterial(e.NewValue as Material);
             }));
@@ -121,9 +120,9 @@ namespace CrossSectionDemo
             new Vector3(-1,+1,0),
         };
         private readonly static Geometry3D NodeGeometry;
-        private readonly static Geometry3D EdgeHGeometry, EdgeVGeometry;
-        private readonly MeshGeometryModel3D[] cornerHandles = new MeshGeometryModel3D[4];
-        private readonly MeshGeometryModel3D[] edgeHandles = new MeshGeometryModel3D[4];
+        private readonly static Geometry3D EdgeHGeometry;
+        private readonly MeshGeometryModel3D cornerHandle;
+        private readonly MeshGeometryModel3D edgeHandle;
         private Point startPoint;
         private Vector3 startHitPoint;
         private Viewport3DX viewport;
@@ -137,43 +136,39 @@ namespace CrossSectionDemo
         static CrossSectionPlaneManipulator3D()
         {
             var b1 = new MeshBuilder();
-            b1.AddSphere(new Vector3(), 0.125, 16, 16);
+            b1.AddSphere(new Vector3(), 0.125, 12, 12);
             b1.AddPyramid(new Vector3(0, 0, -0.15f), new Vector3(1, 0, 0), new Vector3(0, 0, -1), 0.125, 0.25);
             NodeGeometry = b1.ToMeshGeometry3D();
-
+            NodeGeometry.OctreeParameter.MinimumOctantSize = 0.01f;
+            NodeGeometry.UpdateOctree();
             var b2 = new MeshBuilder();
-            b2.AddCylinder(new Vector3(0, 0, 0), new Vector3(1, 0, 0), 0.05, 16, true, true);
+            b2.AddCylinder(new Vector3(0, 0, 0), new Vector3(1, 0, 0), 0.05, 12, true, true);
             EdgeHGeometry = b2.ToMeshGeometry3D();
-
-            var b3 = new MeshBuilder();
-            b3.AddCylinder(new Vector3(0, 0, 0), new Vector3(0, 1, 0), 0.05, 16, true, true);
-            EdgeVGeometry = b3.ToMeshGeometry3D();
+            EdgeHGeometry.OctreeParameter.MinimumOctantSize = 0.01f;
+            EdgeHGeometry.UpdateOctree();
         }
 
         public CrossSectionPlaneManipulator3D()
         {
-            for (int i = 0; i < 4; ++i)
+            this.cornerHandle = new MeshGeometryModel3D()
             {
-                this.cornerHandles[i] = new MeshGeometryModel3D()
-                {
-                    Geometry = NodeGeometry,
-                    CullMode = SharpDX.Direct3D11.CullMode.Back,
-                };
-                this.cornerHandles[i].MouseMove3D += OnNodeMouse3DMove;
-                this.cornerHandles[i].MouseUp3D += OnNodeMouse3DUp;
-                this.cornerHandles[i].MouseDown3D += OnNodeMouse3DDown;
+                Geometry = NodeGeometry,
+                CullMode = SharpDX.Direct3D11.CullMode.Back,
+            };
+            this.cornerHandle.MouseMove3D += OnNodeMouse3DMove;
+            this.cornerHandle.MouseUp3D += OnNodeMouse3DUp;
+            this.cornerHandle.MouseDown3D += OnNodeMouse3DDown;
 
-                this.edgeHandles[i] = new MeshGeometryModel3D()
-                {
-                    Geometry = (i % 2 == 0) ? EdgeHGeometry : EdgeVGeometry,
-                    CullMode = SharpDX.Direct3D11.CullMode.Back,
-                };
-                this.edgeHandles[i].MouseMove3D += OnEdgeMouse3DMove;
-                this.edgeHandles[i].MouseUp3D += OnEdgeMouse3DUp;
-                this.edgeHandles[i].MouseDown3D += OnEdgeMouse3DDown;
-                this.Children.Add(cornerHandles[i]);
-                this.Children.Add(edgeHandles[i]);
-            }
+            this.edgeHandle = new MeshGeometryModel3D()
+            {
+                Geometry = EdgeHGeometry,
+                CullMode = SharpDX.Direct3D11.CullMode.Back,
+            };
+            this.edgeHandle.MouseMove3D += OnEdgeMouse3DMove;
+            this.edgeHandle.MouseUp3D += OnEdgeMouse3DUp;
+            this.edgeHandle.MouseDown3D += OnEdgeMouse3DDown;
+            this.Children.Add(cornerHandle);
+            this.Children.Add(edgeHandle);
 
             CornerMaterial = DiffuseMaterials.Orange;
             EdgeMaterial = DiffuseMaterials.Blue;
@@ -187,35 +182,29 @@ namespace CrossSectionDemo
             // 3 --- 2 
             // |     |
             // 0 --- 1
-            var m0 = Matrix.CreateScale(+2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.CreateTranslation(positions[0] * sizeScale);
-            this.edgeHandles[0].Transform = new MatrixTransform3D(m0.ToMatrix3D());
-            var m2 = Matrix.CreateScale(+2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.CreateTranslation(positions[3] * sizeScale);
-            this.edgeHandles[2].Transform = new MatrixTransform3D(m2.ToMatrix3D());
-
-            var m1 = Matrix.CreateScale(edgeThicknessScale, +2 * sizeScale, edgeThicknessScale) * Matrix.CreateTranslation(positions[1] * sizeScale);
-            this.edgeHandles[1].Transform = new MatrixTransform3D(m1.ToMatrix3D());
-            var m3 = Matrix.CreateScale(edgeThicknessScale, +2 * sizeScale, edgeThicknessScale) * Matrix.CreateTranslation(positions[0] * sizeScale);
-            this.edgeHandles[3].Transform = new MatrixTransform3D(m3.ToMatrix3D());
-
-            for(int i = 0; i < cornerHandles.Length; ++i)
+            edgeHandle.Instances = new Matrix[4]
             {
-                this.cornerHandles[i].Transform = new MatrixTransform3D((Matrix.CreateScale(cornerScale) * Matrix.CreateTranslation(positions[i] * sizeScale)).ToMatrix3D());
-            }
+                Matrix.Scaling(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.Translation(positions[0] * sizeScale),
+                Matrix.Scaling(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.Translation(positions[3] * sizeScale),
+                Matrix.Scaling(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.RotationAxis(new Vector3(0, 0, 1), (float)(Math.PI / 2)) * Matrix.Translation(positions[1] * sizeScale),
+                Matrix.Scaling(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.RotationAxis(new Vector3(0, 0, 1), (float)(Math.PI / 2)) * Matrix.Translation(positions[0] * sizeScale)
+            };
+            cornerHandle.Instances = new Matrix[4]
+            {
+                Matrix.Scaling(cornerScale) * Matrix.Translation(positions[0] * sizeScale),
+                Matrix.Scaling(cornerScale) * Matrix.Translation(positions[1] * sizeScale),
+                Matrix.Scaling(cornerScale) * Matrix.Translation(positions[2] * sizeScale),
+                Matrix.Scaling(cornerScale) * Matrix.Translation(positions[3] * sizeScale),
+            };
         }
 
         private void UpdateCornerMaterial(Material material)
         {
-            foreach(var model in cornerHandles)
-            {
-                model.Material = material;
-            }
+            cornerHandle.Material = material;
         }
         private void UpdateEdgeMaterial(Material material)
         {
-            foreach (var model in edgeHandles)
-            {
-                model.Material = material;
-            }
+            edgeHandle.Material = material;
         }
         private void SceneNode_OnVisibleChanged(object sender, BoolArgs e)
         {
@@ -235,6 +224,7 @@ namespace CrossSectionDemo
                 camera = viewport.Camera;
                 startPoint = arg.Position;
                 isCaptured = true;
+                e.Handled = true;
             }
         }
 
@@ -249,7 +239,7 @@ namespace CrossSectionDemo
         {
             if (isCaptured && e is Mouse3DEventArgs arg && arg.Viewport == viewport)
             {
-                RotateTrackball(startPoint, arg.Position, currentTranslation.Translation);
+                RotateTrackball(startPoint, arg.Position, currentTranslation.TranslationVector);
                 startPoint = arg.Position;
             }
         }
@@ -282,8 +272,9 @@ namespace CrossSectionDemo
                     var newPos = newHit.Value.ToVector3();
                     var offset = newPos - startHitPoint;
                     startHitPoint = newPos;
-                    currentTranslation.Translation += offset;
+                    currentTranslation.TranslationVector += offset;
                     UpdateTransform();
+                    e.Handled = true;
                 }
             }
         }
@@ -308,9 +299,12 @@ namespace CrossSectionDemo
             var v2 = ProjectToTrackball(p2, viewport.ActualWidth, viewport.ActualHeight);
 
             // transform the trackball coordinates to view space
-            var viewZ = Vector3.Normalize(camera.CameraInternal.LookDirection);
-            var viewX = Vector3.Normalize(Vector3.Cross(camera.CameraInternal.UpDirection, viewZ));
-            var viewY = Vector3.Normalize(Vector3.Cross(viewX, viewZ));
+            var viewZ = camera.CameraInternal.LookDirection;
+            var viewX = Vector3.Cross(camera.CameraInternal.UpDirection, viewZ);
+            var viewY = Vector3.Cross(viewX, viewZ);
+            viewX.Normalize();
+            viewY.Normalize();
+            viewZ.Normalize();
             var u1 = (viewZ * v1.Z) + (viewX * v1.X) + (viewY * v1.Y);
             var u2 = (viewZ * v2.Z) + (viewX * v2.X) + (viewY * v2.Y);
 
@@ -330,14 +324,14 @@ namespace CrossSectionDemo
 
             var angle = u1.AngleBetween(u2);
             // Create the transform
-            currentRotation *= Matrix.CreateFromAxisAngle(Vector3.Normalize(axis), (float)(angle * this.RotationSensitivity * 5));
+            currentRotation *= Matrix.RotationAxis(Vector3.Normalize(axis), (float)(angle * this.RotationSensitivity * 5));
             UpdateTransform();
         }
 
         private void UpdateCutPlane()
         {
             var planeNormal = Vector3.TransformNormal(new Vector3(0, 0, -1), currentRotation);
-            CutPlane = PlaneHelper.GetPlane(-currentTranslation.Translation, planeNormal);
+            CutPlane = new Plane(-currentTranslation.TranslationVector, planeNormal);
         }
 
         private void UpdateTransform(bool updateCutPlane = true)
