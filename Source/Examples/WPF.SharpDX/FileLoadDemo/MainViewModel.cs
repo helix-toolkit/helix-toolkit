@@ -21,7 +21,7 @@ namespace FileLoadDemo
 
     public class MainViewModel : BaseViewModel
     {
-        private const string OpenFileFilter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;";
+        private const string OpenFileFilter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;*.ply;";
 
         public ObservableElement3DCollection ModelGeometry { get; private set; }
 
@@ -94,6 +94,10 @@ namespace FileLoadDemo
                 {
                     LoadStl(path);
                 }
+                else if(Path.GetExtension(path).ToLower() == ".ply")
+                {
+                    LoadPly(path);
+                }
             });
 
         }
@@ -114,6 +118,13 @@ namespace FileLoadDemo
         public void LoadStl(string path)
         {
             var reader = new StLReader();
+            var objCol = reader.Read(path);
+            AttachModelList(objCol);
+        }
+
+        public void LoadPly(string path)
+        {
+            var reader = new PlyReader();
             var objCol = reader.Read(path);
             AttachModelList(objCol);
         }
