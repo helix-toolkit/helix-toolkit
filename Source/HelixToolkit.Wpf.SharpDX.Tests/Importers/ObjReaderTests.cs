@@ -12,11 +12,10 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf.SharpDX.Model;
 using NUnit.Framework;
-using SharpDX;
+using System.Numerics;
+using HelixToolkit.Mathematics;
 
 namespace HelixToolkit.Wpf.SharpDX.Tests.Importers
 {
