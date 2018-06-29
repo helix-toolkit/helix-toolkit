@@ -378,7 +378,7 @@ namespace CrossSectionDemo
                             }
                             else if (hit.ModelHit == edgeHandle)
                             {
-                                hit.Distance = 0;
+                                hit.Distance = 0.01;
                                 break;
                             }
                         }
