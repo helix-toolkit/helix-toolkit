@@ -267,10 +267,10 @@ namespace CrossSectionDemo
         {
             if (isCaptured && e is Mouse3DEventArgs arg && arg.Viewport == viewport)
             {
-                var newHit = viewport.UnProjectOnPlane(arg.Position, startHitPoint.ToPoint3D(), camera.LookDirection);
+                var newHit = viewport.UnProjectOnPlane(arg.Position, startHitPoint, camera.CameraInternal.LookDirection);
                 if (newHit.HasValue)
                 {
-                    var newPos = newHit.Value.ToVector3();
+                    var newPos = newHit.Value;
                     var offset = newPos - startHitPoint;
                     startHitPoint = newPos;
                     currentTranslation.Translation += offset;

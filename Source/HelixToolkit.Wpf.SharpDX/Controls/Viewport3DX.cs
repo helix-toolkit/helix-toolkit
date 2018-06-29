@@ -27,7 +27,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Windows.Markup;
     using System.Windows.Media;
     using System.Windows.Media.Animation;
-    using System.Windows.Media.Media3D;
     using Utilities;
     using MouseButtons = System.Windows.Forms.MouseButtons;
 
@@ -313,10 +312,10 @@ namespace HelixToolkit.Wpf.SharpDX
             this.cameraController.LeftRightRotationSensitivity = this.LeftRightRotationSensitivity;
             this.cameraController.MaximumFieldOfView = this.MaximumFieldOfView;
             this.cameraController.MinimumFieldOfView = this.MinimumFieldOfView;
-            this.cameraController.ModelUpDirection = this.ModelUpDirection;
+            this.cameraController.ModelUpDirection = this.ModelUpDirection.ToVector3();
             this.cameraController.ZoomDistanceLimitFar = this.ZoomDistanceLimitFar;
             this.cameraController.ZoomDistanceLimitNear = this.ZoomDistanceLimitNear;
-            this.cameraController.FixedRotationPoint = this.FixedRotationPoint;
+            this.cameraController.FixedRotationPoint = this.FixedRotationPoint.ToVector3();
             this.cameraController.FixedRotationPointEnabled = this.FixedRotationPointEnabled;
             #endregion
         }
@@ -361,7 +360,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddMoveForce(double dx, double dy, double dz)
         {
-            this.cameraController.AddMoveForce(new Vector3D(dx, dy, dz));
+            this.cameraController.AddMoveForce(new Vector3((float)dx, (float)dy, (float)dz));
         }
 
         /// <summary>
@@ -370,7 +369,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="delta">
         /// The delta. 
         /// </param>
-        public void AddMoveForce(Vector3D delta)
+        public void AddMoveForce(Vector3 delta)
         {
             this.cameraController.AddMoveForce(delta);
         }
@@ -386,7 +385,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddPanForce(double dx, double dy)
         {
-            this.cameraController.AddPanForce(dx, dy);
+            this.cameraController.AddPanForce((float)dx, (float)dy);
         }
 
         /// <summary>
@@ -395,7 +394,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="pan">
         /// The pan. 
         /// </param>
-        public void AddPanForce(Vector3D pan)
+        public void AddPanForce(Vector3 pan)
         {
             this.cameraController.AddPanForce(pan);
         }
@@ -411,7 +410,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddRotateForce(double dx, double dy)
         {
-            this.cameraController.AddRotateForce(dx, dy);
+            this.cameraController.AddRotateForce((float)dx, (float)dy);
         }
 
         /// <summary>
@@ -422,7 +421,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddZoomForce(double dx)
         {
-            this.cameraController.AddZoomForce(dx);
+            this.cameraController.AddZoomForce((float)dx);
         }
 
         /// <summary>
@@ -434,9 +433,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="zoomOrigin">
         /// The zoom origin. 
         /// </param>
-        public void AddZoomForce(double dx, Point3D zoomOrigin)
+        public void AddZoomForce(double dx, Vector3 zoomOrigin)
         {
-            this.cameraController.AddZoomForce(dx, zoomOrigin);
+            this.cameraController.AddZoomForce((float)dx, zoomOrigin);
         }
 
         /// <summary>
@@ -451,7 +450,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="animationTime">
         /// The animation time. 
         /// </param>
-        public void ChangeDirection(Vector3D lookDir, Vector3D upDir, double animationTime = 500)
+        public void ChangeDirection(Vector3 lookDir, Vector3 upDir, double animationTime = 500)
         {
             this.cameraController.ChangeDirection(lookDir, upDir, animationTime);
         }
@@ -463,9 +462,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The screen point (2D).
         /// </param>
         /// <returns>
-        /// A Point3D or null.
+        /// A Vector3 or null.
         /// </returns>
-        public Point3D? FindNearestPoint(Point pt)
+        public Vector3? FindNearestPoint(Point pt)
         {
             return ViewportExtensions.FindNearestPoint(this, pt);
         }
@@ -543,9 +542,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="p">
         /// The point.
         /// </param>
-        public void LookAt(Point3D p)
+        public void LookAt(Vector3 p)
         {
-            this.cameraController.ActualCamera?.LookAt(p, 0);
+            this.cameraController.ActualCamera?.LookAt(p.ToPoint3D(), 0);
         }
 
         /// <summary>
@@ -557,9 +556,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public void LookAt(Point3D p, double animationTime)
+        public void LookAt(Vector3 p, double animationTime)
         {
-            this.cameraController.ActualCamera?.LookAt(p, animationTime);
+            this.cameraController.ActualCamera?.LookAt(p.ToPoint3D(), animationTime);
         }
 
         /// <summary>
@@ -574,9 +573,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public void LookAt(Point3D p, double distance, double animationTime)
+        public void LookAt(Vector3 p, double distance, double animationTime)
         {
-            this.cameraController.ActualCamera?.LookAt(p, distance, animationTime);
+            this.cameraController.ActualCamera?.LookAt(p.ToPoint3D(), distance, animationTime);
         }
 
         /// <summary>
@@ -591,9 +590,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public void LookAt(Point3D p, Vector3D direction, double animationTime)
+        public void LookAt(Vector3 p, Vector3 direction, double animationTime)
         {
-            this.cameraController.ActualCamera?.LookAt(p, direction, animationTime);
+            this.cameraController.ActualCamera?.LookAt(p.ToPoint3D(), direction.ToVector3D(), animationTime);
         }
 
 
@@ -783,14 +782,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public void SetView(Point3D newPosition, Vector3D newDirection, Vector3D newUpDirection, double animationTime)
+        public void SetView(Vector3 newPosition, Vector3 newDirection, Vector3 newUpDirection, double animationTime)
         {
             if (!(this.Camera is ProjectionCamera projectionCamera))
             {
                 return;
             }
 
-            projectionCamera.AnimateTo(newPosition, newDirection, newUpDirection, animationTime);
+            projectionCamera.AnimateTo(newPosition.ToPoint3D(), newDirection.ToVector3D(), newUpDirection.ToVector3D(), animationTime);
         }
 
         /// <summary>
@@ -847,7 +846,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="speed">The speed.</param>
         /// <param name="position">The position.</param>
         /// <param name="aroundPoint">The point to spin around.</param>
-        public void StartSpin(System.Windows.Vector speed, Point position, Point3D aroundPoint)
+        public void StartSpin(Vector2 speed, Point position, Vector3 aroundPoint)
         {
             cameraController.StartSpin(speed, position, aroundPoint);
         }
@@ -869,7 +868,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public void ZoomExtents(Rect3D bounds, double animationTime = 0)
+        public void ZoomExtents(Mathematics.BoundingBox bounds, double animationTime = 0)
         {
             ViewportExtensions.ZoomExtents(this, bounds, animationTime);
         }
@@ -1050,14 +1049,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 var pos = this.FindNearestPoint(pt);
                 if (pos != null)
                 {
-                    this.CurrentPosition = pos.Value;
+                    this.CurrentPosition = pos.Value.ToPoint3D();
                 }
                 else
                 {
                     var p = this.UnProjectOnPlane(pt);
                     if (p != null)
                     {
-                        this.CurrentPosition = p.Value;
+                        this.CurrentPosition = p.Value.ToPoint3D();
                     }
                 }
             }
@@ -1169,11 +1168,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.IsModelUpDirectionY())
             {
-                this.ChangeDirection(new Vector3D(0, 0, 1), new Vector3D(0, 1, 0));
+                this.ChangeDirection(new Vector3(0, 0, 1), new Vector3(0, 1, 0));
             }
             else
             {
-                this.ChangeDirection(new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
+                this.ChangeDirection(new Vector3(1, 0, 0), new Vector3(0, 0, 1));
             }
         }
 
@@ -1190,11 +1189,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.IsModelUpDirectionY())
             {
-                this.ChangeDirection(new Vector3D(0, 1, 0), new Vector3D(0, 0, 1));
+                this.ChangeDirection(new Vector3(0, 1, 0), new Vector3(0, 0, 1));
             }
             else
             {
-                this.ChangeDirection(new Vector3D(0, 0, 1), new Vector3D(0, -1, 0));
+                this.ChangeDirection(new Vector3(0, 0, 1), new Vector3(0, -1, 0));
             }
         }
 
@@ -1350,11 +1349,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.IsModelUpDirectionY())
             {
-                this.ChangeDirection(new Vector3D(0, 0, -1), new Vector3D(0, 1, 0));
+                this.ChangeDirection(new Vector3(0, 0, -1), new Vector3(0, 1, 0));
             }
             else
             {
-                this.ChangeDirection(new Vector3D(-1, 0, 0), new Vector3D(0, 0, 1));
+                this.ChangeDirection(new Vector3(-1, 0, 0), new Vector3(0, 0, 1));
             }
         }
 
@@ -1371,11 +1370,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.IsModelUpDirectionY())
             {
-                this.ChangeDirection(new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
+                this.ChangeDirection(new Vector3(1, 0, 0), new Vector3(0, 1, 0));
             }
             else
             {
-                this.ChangeDirection(new Vector3D(0, 1, 0), new Vector3D(0, 0, 1));
+                this.ChangeDirection(new Vector3(0, 1, 0), new Vector3(0, 0, 1));
             }
         }
 
@@ -1477,11 +1476,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.IsModelUpDirectionY())
             {
-                this.ChangeDirection(new Vector3D(-1, 0, 0), new Vector3D(0, 1, 0));
+                this.ChangeDirection(new Vector3(-1, 0, 0), new Vector3(0, 1, 0));
             }
             else
             {
-                this.ChangeDirection(new Vector3D(0, -1, 0), new Vector3D(0, 0, 1));
+                this.ChangeDirection(new Vector3(0, -1, 0), new Vector3(0, 0, 1));
             }
         }
 
@@ -1538,11 +1537,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (this.IsModelUpDirectionY())
             {
-                this.ChangeDirection(new Vector3D(0, -1, 0), new Vector3D(0, 0, 1));
+                this.ChangeDirection(new Vector3(0, -1, 0), new Vector3(0, 0, 1));
             }
             else
             {
-                this.ChangeDirection(new Vector3D(0, 0, -1), new Vector3D(0, 1, 0));
+                this.ChangeDirection(new Vector3(0, 0, -1), new Vector3(0, 1, 0));
             }
         }
 

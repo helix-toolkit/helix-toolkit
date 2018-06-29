@@ -6,17 +6,17 @@
 //   Provides extension methods for the cameras.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+using System;
+using System.Globalization;
+using System.Numerics;
+using System.Text;
+using System.Windows;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Media3D;
 using Matrix = System.Numerics.Matrix4x4;
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using HelixToolkit.Wpf.SharpDX.Cameras;
-    using System;
-    using System.Globalization;
-    using System.Numerics;
-    using System.Text;
-    using System.Windows;
-    using System.Windows.Media.Animation;
-    using System.Windows.Media.Media3D;
+    using Cameras;
 
     /// <summary>
     /// Provides extension methods for the cameras.
@@ -630,9 +630,9 @@ namespace HelixToolkit.Wpf.SharpDX
             this Camera camera, Viewport3DX viewport, double animationTime = 0)
         {
             var bounds = viewport.FindBounds();
-            var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
+            var diagonal = bounds.Maximum - bounds.Minimum;
 
-            if (bounds.IsEmpty || diagonal.LengthSquared.Equals(0))
+            if (diagonal.LengthSquared().Equals(0))
             {
                 return;
             }
@@ -656,17 +656,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The animation time.
         /// </param>
         public static void ZoomExtents(
-            this Camera camera, Viewport3DX viewport, Rect3D bounds, double animationTime = 0)
+            this Camera camera, Viewport3DX viewport, Mathematics.BoundingBox bounds, double animationTime = 0)
         {
             if (!(camera is ProjectionCamera projectionCamera))
             {
                 return;
             }
 
-            var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
-            var center = bounds.Location + (diagonal * 0.5);
-            double radius = diagonal.Length * 0.5;
-            ZoomExtents(projectionCamera, viewport, center, radius, animationTime);
+            var diagonal = bounds.Maximum - bounds.Minimum;
+            var center = bounds.Center;
+            double radius = diagonal.Length() * 0.5;
+            ZoomExtents(projectionCamera, viewport, center.ToPoint3D(), radius, animationTime);
         }
 
         /// <summary>
@@ -754,22 +754,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            var u = topLeftRay.Direction;
-            var v = topRightRay.Direction;
-            var w = centerRay.Direction;
-            u.Normalize();
-            v.Normalize();
-            w.Normalize();
+            var u = Vector3.Normalize(topLeftRay.Direction);
+            var v = Vector3.Normalize(topRightRay.Direction);
+            var w = Vector3.Normalize(centerRay.Direction);
+
             if (camera is PerspectiveCamera perspectiveCamera)
             {
                 var distance = pcam.LookDirection.Length;
 
                 // option 1: change distance
                 var newDistance = distance * zoomRectangle.Width / viewport.ActualWidth;
-                var newLookDirection = newDistance * w;
-                var newPosition = perspectiveCamera.Position + ((distance - newDistance) * w);
+                var newLookDirection = (float)newDistance * w;
+                var newPosition = perspectiveCamera.CameraInternal.Position + ((float)(distance - newDistance) * w);
                 var newTarget = newPosition + newLookDirection;
-                LookAt(pcam, newTarget, newLookDirection, 200);
+                LookAt(pcam, newTarget.ToPoint3D(), newLookDirection.ToVector3D(), 200);
 
                 // option 2: change fov
                 // double newFieldOfView = Math.Acos(Vector3D.DotProduct(u, v));
@@ -781,13 +779,12 @@ namespace HelixToolkit.Wpf.SharpDX
             if (camera is OrthographicCamera orthographicCamera)
             {
                 orthographicCamera.Width *= zoomRectangle.Width / viewport.ActualWidth;
-                var oldTarget = pcam.Position + pcam.LookDirection;
-                var distance = pcam.LookDirection.Length;
-                var newTarget = centerRay.PlaneIntersection(oldTarget, w);
-                if (newTarget != null)
+                var oldTarget = pcam.CameraInternal.Position + pcam.CameraInternal.LookDirection;
+                var distance = pcam.CameraInternal.LookDirection.Length();
+                if (centerRay.PlaneIntersection(oldTarget, w, out Vector3 newTarget))
                 {
-                    orthographicCamera.LookDirection = w * distance;
-                    orthographicCamera.Position = newTarget.Value - orthographicCamera.LookDirection;
+                    orthographicCamera.LookDirection = (w * distance).ToVector3D();
+                    orthographicCamera.Position = (newTarget - orthographicCamera.CameraInternal.LookDirection).ToPoint3D();
                 }
             }
         }

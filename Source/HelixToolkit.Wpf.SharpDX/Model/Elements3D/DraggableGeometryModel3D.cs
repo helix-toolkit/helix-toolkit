@@ -11,7 +11,7 @@
 namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Windows;
-    using System.Windows.Media.Media3D;
+    using System.Numerics;
 
     /// <summary>
     /// Example class how to implement mouse dragging for objects.
@@ -22,7 +22,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected bool isCaptured;
         protected Viewport3DX viewport;
         protected Camera camera;
-        protected Point3D lastHitPos;
+        protected Vector3 lastHitPos;
 
         public static readonly DependencyProperty DragXProperty =
             DependencyProperty.Register("DragX", typeof(bool), typeof(DraggableGeometryModel3D), new PropertyMetadata(true));
@@ -52,7 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX
             set { this.SetValue(DragZProperty, value); }
         }
 
-        public Point3D LastHitPosition
+        public Vector3 LastHitPosition
         {
             get { return this.lastHitPos; }
         }
@@ -61,14 +61,13 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.OnMouse3DDown(sender, e);
 
-            var args = e as Mouse3DEventArgs;
-            if (args == null) return;
+            if (!(e is Mouse3DEventArgs args)) return;
             if (args.Viewport == null) return;
 
             this.isCaptured = true;
             this.viewport = args.Viewport;
             this.camera = args.Viewport.Camera;
-            this.lastHitPos = args.HitTestResult.PointHit.ToPoint3D();
+            this.lastHitPos = args.HitTestResult.PointHit;
         }
 
         protected override void OnMouse3DUp(object sender, RoutedEventArgs e)
@@ -90,7 +89,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 var args = e as Mouse3DEventArgs;
 
                 // move dragmodel                         
-                var normal = this.camera.LookDirection;
+                var normal = this.camera.CameraInternal.LookDirection;
 
                 // hit position                        
                 var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos, normal);
@@ -100,11 +99,11 @@ namespace HelixToolkit.Wpf.SharpDX
                     this.lastHitPos = newHit.Value;
                     if (Transform == null)
                     {
-                        Transform = new TranslateTransform3D(offset);
+                        Transform = new System.Windows.Media.Media3D.TranslateTransform3D(offset.ToVector3D());
                     }
                     else
                     {
-                        this.Transform = new MatrixTransform3D(Transform.AppendTransform(new TranslateTransform3D(offset)).Value);
+                        this.Transform = new System.Windows.Media.Media3D.MatrixTransform3D(Transform.AppendTransform(new System.Windows.Media.Media3D.TranslateTransform3D(offset.ToVector3D())).Value);
                     }
                 }
             }

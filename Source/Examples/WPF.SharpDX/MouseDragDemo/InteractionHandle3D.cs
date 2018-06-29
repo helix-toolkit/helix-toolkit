@@ -41,7 +41,7 @@ namespace MouseDragDemo
         private bool isCaptured;
         private Viewport3DX viewport;
         private CameraCore camera;
-        private System.Windows.Media.Media3D.Point3D lastHitPos;
+        private Vector3 lastHitPos;
         private MatrixTransform3D dragTransform;
         //private Material selectionMaterial;
 
@@ -181,7 +181,7 @@ namespace MouseDragDemo
             this.isCaptured = true;
             this.viewport = args.Viewport;
             this.camera = args.Viewport.Camera;
-            this.lastHitPos = args.HitTestResult.PointHit.ToPoint3D();
+            this.lastHitPos = args.HitTestResult.PointHit;
         }
 
         private void OnEdgeMouse3DUp(object sender, RoutedEventArgs e)
@@ -206,7 +206,7 @@ namespace MouseDragDemo
                 var normal = this.camera.LookDirection;
 
                 // hit position                        
-                var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos, normal.ToVector3D());
+                var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos, normal);
                 if (newHit.HasValue)
                 {
                     var offset = (newHit.Value - lastHitPos);

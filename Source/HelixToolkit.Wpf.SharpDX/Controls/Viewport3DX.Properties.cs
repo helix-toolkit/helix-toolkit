@@ -457,7 +457,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "ModelUpDirection", typeof(Vector3D), typeof(Viewport3DX), new PropertyMetadata(new Vector3D(0, 1, 0), (d, e) =>
             {
                 var viewport = d as Viewport3DX;
-                viewport.CameraController.ModelUpDirection = (Vector3D)e.NewValue;
+                viewport.CameraController.ModelUpDirection = ((Vector3D)e.NewValue).ToVector3();
             }));
 
         /// <summary>
@@ -864,7 +864,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty FixedRotationPointProperty = DependencyProperty.Register(
             "FixedRotationPoint", typeof(Point3D), typeof(Viewport3DX), new PropertyMetadata(new Point3D(), (d,e)=>
             {
-                (d as Viewport3DX).CameraController.FixedRotationPoint = (Point3D)e.NewValue;
+                (d as Viewport3DX).CameraController.FixedRotationPoint = ((Point3D)e.NewValue).ToVector3();
             }));
 
         /// <summary>
@@ -891,7 +891,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "ManualLookAtPoint", typeof(Point3D), typeof(Viewport3DX), new FrameworkPropertyMetadata(new Point3D(), (d, e) => { },
                 (d, e) =>
                 {
-                    (d as Viewport3DX).LookAt((Point3D)e);
+                    (d as Viewport3DX).LookAt(((Point3D)e).ToVector3());
                     return e;
                 })
             { BindsTwoWayByDefault = false });

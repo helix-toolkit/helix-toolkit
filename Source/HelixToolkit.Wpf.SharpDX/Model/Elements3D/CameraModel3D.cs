@@ -126,18 +126,18 @@ namespace HelixToolkit.Wpf.SharpDX
                 var normal = this.viewportCamera.LookDirection;
 
                 // hit position                        
-                var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos.ToPoint3D(), normal.ToVector3D());
+                var newHit = this.viewport.UnProjectOnPlane(args.Position, lastHitPos, normal);
                 if (newHit.HasValue)
                 {
-                    var offset = (newHit.Value - lastHitPos.ToPoint3D());
-                    this.lastHitPos = newHit.Value.ToVector3();
+                    var offset = (newHit.Value - lastHitPos);
+                    this.lastHitPos = newHit.Value;
                     if (Transform == null)
                     {
-                        Transform = new TranslateTransform3D(offset);
+                        Transform = new TranslateTransform3D(offset.ToVector3D());
                     }
                     else
                     {
-                        this.Transform = new MatrixTransform3D(Transform.AppendTransform(new TranslateTransform3D(offset)).Value);
+                        this.Transform = new MatrixTransform3D(Transform.AppendTransform(new TranslateTransform3D(offset.ToVector3D())).Value);
                     }
                 }
             }

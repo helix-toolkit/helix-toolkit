@@ -125,7 +125,6 @@
     <Compile Include="Controls\WinformHostExtend.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
-    <Compile Include="Core\Ray3D.cs" />
     <Compile Include="Extensions\BitmapExtension.cs" />
     <Compile Include="Extensions\Geometry3DExtensions.cs" />
     <Compile Include="Controls\RenderTechniqueConverter.cs" />

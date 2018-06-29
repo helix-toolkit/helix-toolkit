@@ -12,9 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Input;
-
-    using Point3D = System.Windows.Media.Media3D.Point3D;
-    using Vector3D = System.Windows.Media.Media3D.Vector3D;
+    using System.Numerics;
 
     /// <summary>
     /// An abstract base class for the mouse gesture handlers.
@@ -35,7 +33,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets the origin.
         /// </summary>
-        public Point3D Origin
+        public Vector3 Origin
         {
             get
             {
@@ -49,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     return this.MouseDownPoint3D.Value;
                 }
 
-                return new Point3D();
+                return new Vector3();
             }
         }
 
@@ -85,7 +83,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets the last point (in 3D world coordinates).
         /// </summary>
-        protected Point3D? LastPoint3D { get; set; }
+        protected Vector3? LastPoint3D { get; set; }
         /// <summary>
         /// Use to invert the left handed system
         /// </summary>
@@ -98,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets the model up direction.
         /// </summary>
         /// <value>The model up direction.</value>
-        protected Vector3D ModelUpDirection
+        protected Vector3 ModelUpDirection
         {
             get
             {
@@ -109,7 +107,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets the mouse down point at the nearest hit element (3D world coordinates).
         /// </summary>
-        protected Point3D? MouseDownNearestPoint3D { get; set; }
+        protected Vector3? MouseDownNearestPoint3D { get; set; }
 
         /// <summary>
         /// Gets or sets the mouse down point (2D screen coordinates).
@@ -119,7 +117,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Gets or sets the mouse down point (3D world coordinates).
         /// </summary>
-        protected Point3D? MouseDownPoint3D { get; set; }
+        protected Vector3? MouseDownPoint3D { get; set; }
 
         /// <summary>
         /// Gets the rotation sensitivity.
@@ -244,15 +242,20 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// A 3D point.
         /// </returns>
-        public Point3D? UnProject(Point p, Point3D position, Vector3D normal)
+        public Vector3? UnProject(Point p, Vector3 position, Vector3 normal)
         {
             var ray = this.GetRay(p);
             if (ray == null)
             {
                 return null;
             }
-
-            return ray.PlaneIntersection(position, normal);
+            var plane = Mathematics.PlaneHelper.GetPlane(position, normal);
+            if(ray.Intersects(ref plane, out Vector3 point))
+            {
+                return point;
+            }
+            else { return null; }
+            //return ray.PlaneIntersection(position, normal);
         }
 
         /// <summary>
@@ -264,9 +267,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// A 3D point.
         /// </returns>
-        public Point3D? UnProject(Point p)
+        public Vector3? UnProject(Point p)
         {
-            return this.UnProject(p, this.Camera.Target, this.Camera.LookDirection);
+            return this.UnProject(p, this.Camera.Target.ToVector3(), this.Camera.CameraInternal.LookDirection);
         }
 
         /// <summary>
@@ -297,7 +300,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// A ray
         /// </returns>
-        protected Ray3D GetRay(Point position)
+        protected Mathematics.Ray GetRay(Point position)
         {
             return this.Viewport.UnProject(position);
         }
@@ -370,7 +373,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// The 2D point.
         /// </returns>
-        protected Point Project(Point3D p)
+        protected Point Project(Vector3 p)
         {
             return this.Viewport.Project(p);
         }
@@ -385,7 +388,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             this.MouseDownPoint = position;
 
-            if (!this.Viewport.FixedRotationPointEnabled && this.Viewport.FindNearest(this.MouseDownPoint, out Point3D nearestPoint, out Vector3D normal, out Element3D visual))
+            if (!this.Viewport.FixedRotationPointEnabled && this.Viewport.FindNearest(this.MouseDownPoint, out Vector3 nearestPoint, out Vector3 normal, out Element3D visual))
             {
                 this.MouseDownNearestPoint3D = nearestPoint;
             }

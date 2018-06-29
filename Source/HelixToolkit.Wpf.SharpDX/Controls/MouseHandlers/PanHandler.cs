@@ -11,10 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX
 {
     using System.Windows;
     using System.Windows.Input;
-
-    using Point3D = System.Windows.Media.Media3D.Point3D;
-    using Vector3D = System.Windows.Media.Media3D.Vector3D;
-
+    using System.Numerics;
     /// <summary>
     /// Handles panning.
     /// </summary>
@@ -23,7 +20,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The 3D pan origin.
         /// </summary>
-        private Point3D panPoint3D;
+        private Vector3 panPoint3D;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PanHandler"/> class.
@@ -43,7 +40,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Delta(Point e)
         {
             base.Delta(e);
-            var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.LookDirection);
+            var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
             if (this.LastPoint3D == null || thisPoint3D == null)
             {
@@ -54,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Pan(delta3D);
 
             this.LastPoint = e;
-            this.LastPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.LookDirection);
+            this.LastPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
         }
 
         /// <summary>
@@ -63,7 +60,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="delta">
         /// The panning vector.
         /// </param>
-        public void Pan(Vector3D delta)
+        public void Pan(Vector3 delta)
         {
             if (!this.Controller.IsPanEnabled)
             {
@@ -76,7 +73,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             this.Controller.StopSpin();
             this.Controller.StopZooming();
-            this.Camera.Position += delta;
+            this.Camera.Position += delta.ToVector3D();
         }
 
         /// <summary>
@@ -85,11 +82,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="delta">
         /// The delta.
         /// </param>
-        public void Pan(Vector delta)
+        public void Pan(Vector2 delta)
         {
-            var mousePoint = this.LastPoint + delta;
+            var mousePoint = new Point(LastPoint.X + delta.X, LastPoint.Y + delta.Y);
 
-            var thisPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.LookDirection);
+            var thisPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
             if (this.LastPoint3D == null || thisPoint3D == null)
             {
@@ -99,7 +96,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var delta3D = this.LastPoint3D.Value - thisPoint3D.Value;
             this.Pan(delta3D);
 
-            this.LastPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.LookDirection);
+            this.LastPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
             this.LastPoint = mousePoint;
         }
@@ -111,13 +108,13 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Started(Point e)
         {
             base.Started(e);
-            this.panPoint3D = this.Camera.Target;
+            this.panPoint3D = this.Camera.Target.ToVector3();
             if (this.MouseDownNearestPoint3D != null)
             {
                 this.panPoint3D = this.MouseDownNearestPoint3D.Value;
             }
 
-            this.LastPoint3D = this.UnProject(this.MouseDownPoint, this.panPoint3D, this.Camera.LookDirection);
+            this.LastPoint3D = this.UnProject(this.MouseDownPoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
         }
 
         /// <summary>
@@ -151,7 +148,7 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnInertiaStarting(double elapsedTime)
         {
             var speed = (this.LastPoint - this.MouseDownPoint) * (40.0 / elapsedTime);
-            this.Controller.AddPanForce(speed.X, speed.Y);
+            this.Controller.AddPanForce((float)speed.X, (float)speed.Y);
         }
     }
 }

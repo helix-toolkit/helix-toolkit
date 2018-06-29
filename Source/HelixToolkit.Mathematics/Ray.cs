@@ -82,8 +82,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>Whether the two objects intersected.</returns>
         public bool Intersects(ref Ray ray)
         {
-            Vector3 point;
-            return Collision.RayIntersectsRay(ref this, ref ray, out point);
+            return Collision.RayIntersectsRay(ref this, ref ray, out Vector3 point);
         }
 
         /// <summary>
@@ -105,8 +104,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>Whether the two objects intersected.</returns>
         public bool Intersects(ref Plane plane)
         {
-            float distance;
-            return Collision.RayIntersectsPlane(ref this, ref plane, out distance);
+            return Collision.RayIntersectsPlane(ref this, ref plane, out float distance);
         }
 
         /// <summary>
@@ -142,8 +140,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>Whether the two objects intersected.</returns>
         public bool Intersects(ref Vector3 vertex1, ref Vector3 vertex2, ref Vector3 vertex3)
         {
-            float distance;
-            return Collision.RayIntersectsTriangle(ref this, ref vertex1, ref vertex2, ref vertex3, out distance);
+            return Collision.RayIntersectsTriangle(ref this, ref vertex1, ref vertex2, ref vertex3, out float distance);
         }
 
         /// <summary>
@@ -181,8 +178,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>Whether the two objects intersected.</returns>
         public bool Intersects(ref BoundingBox box)
         {
-            float distance;
-            return Collision.RayIntersectsBox(ref this, ref box, out distance);
+            return Collision.RayIntersectsBox(ref this, ref box, out float distance);
         }
 
         /// <summary>
@@ -226,8 +222,7 @@ namespace HelixToolkit.Mathematics
         /// <returns>Whether the two objects intersected.</returns>
         public bool Intersects(ref BoundingSphere sphere)
         {
-            float distance;
-            return Collision.RayIntersectsSphere(ref this, ref sphere, out distance);
+            return Collision.RayIntersectsSphere(ref this, ref sphere, out float distance);
         }
 
         /// <summary>
@@ -263,7 +258,18 @@ namespace HelixToolkit.Mathematics
         {
             return Collision.RayIntersectsSphere(ref this, ref sphere, out point);
         }
-
+        /// <summary>
+        /// Planes the intersection.
+        /// </summary>
+        /// <param name="planePosition">The plane position.</param>
+        /// <param name="planeNormal">The plane normal.</param>
+        /// <param name="intersect"></param>
+        /// <returns></returns>
+        public bool PlaneIntersection(Vector3 planePosition, Vector3 planeNormal, out Vector3 intersect)
+        {
+            var plane = PlaneHelper.GetPlane(planePosition, planeNormal);
+            return Collision.RayIntersectsPlane(ref this, ref plane, out intersect);
+        }
         /// <summary>
         /// Calculates a world space <see cref="Ray"/> from 2d screen coordinates.
         /// </summary>

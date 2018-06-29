@@ -511,5 +511,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return new System.Windows.Point(v.X, v.Y);
         }
+
+        public static System.Numerics.Vector2 ToVector2(this System.Windows.Vector v)
+        {
+            return new Vector2((float)v.X, (float)v.Y);
+        }
+
+        public static System.Windows.Point ToPoint(this System.Numerics.Vector2 v)
+        {
+            return new System.Windows.Point(v.X, v.Y);
+        }
     }
 }

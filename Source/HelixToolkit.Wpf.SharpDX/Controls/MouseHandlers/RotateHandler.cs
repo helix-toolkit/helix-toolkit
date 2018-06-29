@@ -13,7 +13,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Numerics;
     using System.Windows;
     using System.Windows.Input;
-    using System.Windows.Media.Media3D;
     using Quaternion = System.Numerics.Quaternion;
     /// <summary>
     /// Handles rotation.
@@ -104,14 +103,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public void LookAt(Point3D target, double animationTime)
+        public void LookAt(Vector3 target, double animationTime)
         {
             if (!this.Controller.IsPanEnabled)
             {
                 return;
             }
 
-            this.Camera.LookAt(target, animationTime);
+            this.Camera.LookAt(target.ToPoint3D(), animationTime);
         }
 
         /// <summary>
@@ -168,7 +167,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var p1 = p0 + delta;
             if (this.MouseDownPoint3D != null)
             {
-                this.Rotate(p0, p1, this.MouseDownPoint3D.Value.ToVector3());
+                this.Rotate(p0, p1, this.MouseDownPoint3D.Value);
             }
             this.LastPoint = new Point(p0.X, p0.Y);
         }
@@ -245,9 +244,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public void RotateTurntable(Vector2 delta, Vector3 rotateAround)
         {
             var relativeTarget = rotateAround - this.Camera.Target.ToVector3();
-            var relativePosition = rotateAround - this.Camera.Position.ToVector3();
-            var cUp = Camera.UpDirection.ToVector3();
-            var up = this.ModelUpDirection.ToVector3();
+            var relativePosition = rotateAround - this.Camera.CameraInternal.Position;
+            var cUp = Camera.CameraInternal.UpDirection;
+            var up = this.ModelUpDirection;
             var dir = Vector3.Normalize(Camera.LookDirection.ToVector3());
             var right = Vector3.Normalize(Vector3.Cross(dir, cUp));
 
@@ -303,7 +302,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 default:
                     if (Controller.FixedRotationPointEnabled)
                     {
-                        this.rotationPoint3D = Controller.FixedRotationPoint.ToVector3();
+                        this.rotationPoint3D = Controller.FixedRotationPoint;
                     }
                     else if (this.changeLookAt && this.MouseDownNearestPoint3D != null)
                     {
@@ -313,7 +312,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     else if (this.Controller.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
                     {
                         this.rotationPoint = this.MouseDownPoint;
-                        this.rotationPoint3D = this.MouseDownNearestPoint3D.Value.ToVector3();
+                        this.rotationPoint3D = this.MouseDownNearestPoint3D.Value;
                     }
 
                     break;
@@ -374,12 +373,12 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnInertiaStarting(double elapsedTime)
         {
             var delta = this.LastPoint - this.MouseDownPoint;
-
+            var deltaV = new Vector2((float)delta.X, (float)delta.Y);
             // Debug.WriteLine("SpinInertiaStarting: " + elapsedTime + "ms " + delta.Length + "px");
             this.Controller.StartSpin(
-                4 * delta * ((double)this.Controller.SpinReleaseTime / elapsedTime),
+                4 * deltaV * (float)(this.Controller.SpinReleaseTime / elapsedTime),
                 this.MouseDownPoint,
-                this.rotationPoint3D.ToPoint3D());
+                this.rotationPoint3D);
         }
 
         /// <summary>
