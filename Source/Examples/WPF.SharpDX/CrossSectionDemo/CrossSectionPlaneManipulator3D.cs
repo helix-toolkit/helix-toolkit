@@ -343,5 +343,50 @@ namespace CrossSectionDemo
                 internalUpdate = false;
             }
         }
+        protected override SceneNode OnCreateSceneNode()
+        {
+            return new AlwaysHitGroupNode(this);
+        }
+
+        private sealed class AlwaysHitGroupNode : GroupNode
+        {
+            private readonly object edgeHandle;
+            private readonly object cornerHandle;
+
+            public AlwaysHitGroupNode(CrossSectionPlaneManipulator3D manipulator)
+            {
+                this.edgeHandle = manipulator.edgeHandle;
+                this.cornerHandle = manipulator.cornerHandle;
+            }
+            protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            {
+                //Set hit distance to 0 so event manipulator is inside the model, hit test still works
+                if (base.OnHitTest(context, totalModelMatrix, ref ray, ref hits))
+                {
+                    if (hits.Count > 0)
+                    {
+                        foreach (var hit in hits)
+                        {
+                            if (hit.ModelHit == cornerHandle)
+                            {
+                                hit.Distance = 0;
+                                break;
+                            }
+                            else if (hit.ModelHit == edgeHandle)
+                            {
+                                hit.Distance = 0.01;
+                                break;
+                            }
+                        }
+
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
     }
 }
