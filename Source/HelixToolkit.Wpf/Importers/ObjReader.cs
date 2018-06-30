@@ -690,6 +690,8 @@ namespace HelixToolkit.Wpf
                     {
                         foreach (var gm in g.CreateModels())
                         {
+                            gm.SetName(g.Name);
+
                             if (this.Freeze)
                             {
                                 gm.Freeze();
