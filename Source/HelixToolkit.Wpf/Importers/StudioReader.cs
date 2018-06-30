@@ -179,10 +179,10 @@ namespace HelixToolkit.Wpf
                 }
 
                 int headerSize = this.ReadChunkSize(reader);
-                if (headerSize != length)
-                {
-                    throw new FileFormatException("Incomplete file (file length does not match header)");
-                }
+                //if (headerSize != length)
+                //{
+                //    throw new FileFormatException("Incomplete file (file length does not match header)");
+                //}
 
                 while (reader.BaseStream.Position < reader.BaseStream.Length)
                 {
@@ -283,8 +283,6 @@ namespace HelixToolkit.Wpf
             {
                 case ChunkID.COL_RGB:
                     {
-                        // this code has not been tested...
-                        Debug.Assert(false);
                         float r = reader.ReadSingle();
                         float g = reader.ReadSingle();
                         float b = reader.ReadSingle();
@@ -743,7 +741,7 @@ namespace HelixToolkit.Wpf
                 this.meshes.Add(new Mesh
                 {
                     Positions = positions,
-                    TriangleIndices = ConvertFaceIndices(faces, faces),
+                    TriangleIndices = faces,
                     TextureCoordinates = textureCoordinates,
                     Material = this.DefaultMaterial,
                     BackMaterial = this.DefaultMaterial
