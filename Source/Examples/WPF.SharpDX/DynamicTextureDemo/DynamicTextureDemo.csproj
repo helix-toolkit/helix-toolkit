@@ -94,10 +94,10 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <Content Include="TextureCheckerboard2_dot3.dds">
+    <Content Include="..\..\..\..\Images\Textures\TextureCheckerboard2_dot3.dds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TextureCheckerboard2.dds">
+    <Content Include="..\..\..\..\Images\Textures\TextureCheckerboard2.dds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -118,16 +118,16 @@
     <Content Include="test.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TextureCheckerboard2.jpg">
+    <Content Include="..\..\..\..\Images\Textures\TextureCheckerboard2.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TextureCheckerboard2_dot3.jpg">
+    <Content Include="..\..\..\..\Images\Textures\TextureCheckerboard2_dot3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TextureNoise1.jpg">
+    <Content Include="..\..\..\..\Images\Textures\TextureNoise1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TextureNoise1_dot3.jpg">
+    <Content Include="..\..\..\..\Images\Textures\TextureNoise1_dot3.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

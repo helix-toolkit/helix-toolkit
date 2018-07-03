@@ -92,7 +92,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="Car.3DS">
+    <Content Include="..\..\..\..\Models\3ds\Car.3DS">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\Settings.settings">
@@ -101,7 +101,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="FodyWeavers.xml" />
-    <Content Include="wall12.obj">
+    <Content Include="..\..\..\..\Models\obj\wall12.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
