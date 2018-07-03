@@ -176,6 +176,17 @@ struct VSInputBT
     float4 mr3 : TEXCOORD7;
 };
 
+struct GSInputBT
+{
+    float4 p : POSITION;
+    float4 foreground : COLOR;
+    float4 background : COLOR1;
+    float2 t0 : TEXCOORD0;
+    float2 t3 : TEXCOORD1;
+    float2 offTL : TEXCOORD2;
+    float2 offBR : TEXCOORD3;
+};
+
 struct VSInputBTInstancing
 {
 	float4 p : POSITION;
