@@ -231,6 +231,134 @@ namespace HelixToolkit.UWP.Model
             get { return displacementMapSampler; }
         }
 
+        private bool renderDiffuseMap = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderDiffuseMap
+        {
+            set
+            {
+                Set(ref renderDiffuseMap, value);
+            }
+            get { return renderDiffuseMap; }
+        }
+
+        private bool renderDiffuseAlphaMap = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderDiffuseAlphaMap
+        {
+            set
+            {
+                Set(ref renderDiffuseAlphaMap, value);
+            }
+            get
+            {
+                return renderDiffuseAlphaMap;
+            }
+        }
+        private bool renderNormalMap = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderNormalMap
+        {
+            set
+            {
+                Set(ref renderNormalMap, value);
+            }
+            get
+            {
+                return renderNormalMap;
+            }
+        }
+        private bool renderDisplacementMap = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderDisplacementMap
+        {
+            set
+            {
+                Set(ref renderDisplacementMap, value);
+            }
+            get { return renderDisplacementMap; }
+        }
+
+        private float minTessellationDistance = 10;
+        public float MinTessellationDistance
+        {
+            set
+            {
+                Set(ref minTessellationDistance, value);
+            }
+            get { return minTessellationDistance; }
+        }
+
+        private float maxTessellationDistance = 100;
+        public float MaxTessellationDistance
+        {
+            set
+            {
+                Set(ref maxTessellationDistance, value);
+            }
+            get { return maxTessellationDistance; }
+        }
+
+        private float minTessellationFactor = 2;
+        public float MinTessellationFactor
+        {
+            set
+            {
+                Set(ref minTessellationFactor, value);
+            }
+            get
+            {
+                return minTessellationFactor;
+            }
+        }
+
+        private float maxTessellationFactor = 1;
+        public float MaxTessellationFactor
+        {
+            set
+            {
+                Set(ref maxTessellationFactor, value);
+            }
+            get
+            {
+                return maxTessellationFactor;
+            }
+        }
+
+        private MeshTopologyEnum meshType = MeshTopologyEnum.PNTriangles;
+        public MeshTopologyEnum MeshType
+        {
+            set
+            {
+                Set(ref meshType, value);
+            }
+            get
+            {
+                return meshType;
+            }
+        }
+
+        private bool enableTessellation = false;
+        public bool EnableTessellation
+        {
+            set
+            {
+                Set(ref enableTessellation, value);
+            }
+            get
+            {
+                return enableTessellation;
+            }
+        }
+
         public override IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager)
         {
             return new TextureSharedPhongMaterialVariables(manager, this);

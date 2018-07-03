@@ -15,13 +15,13 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public class MeshOutlineRenderCore : PatchMeshRenderCore, IMeshOutlineParams
+    public class MeshOutlineRenderCore : MeshRenderCore, IMeshOutlineParams
     {
         #region Variables
         /// <summary>
         /// 
         /// </summary>
-        protected ShaderPass outlineShaderPass { private set; get; }
+        protected ShaderPass OutlineShaderPass { private set; get; }
         #endregion
         #region Properties
         /// <summary>
@@ -109,7 +109,7 @@ namespace HelixToolkit.UWP.Core
             {
                 if(SetAffectsRender(ref outlinePassName, value) && IsAttached)
                 {
-                    outlineShaderPass = EffectTechnique[value];
+                    OutlineShaderPass = EffectTechnique[value];
                 }
             }
             get
@@ -134,7 +134,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected override bool OnAttach(IRenderTechnique technique)
         {
-            outlineShaderPass = technique[OutlinePassName];
+            OutlineShaderPass = technique[OutlinePassName];
             return base.OnAttach(technique);
         }
         /// <summary>
@@ -156,8 +156,8 @@ namespace HelixToolkit.UWP.Core
         {
             if (DrawOutlineBeforeMesh)
             {
-                outlineShaderPass.BindShader(deviceContext);
-                outlineShaderPass.BindStates(deviceContext, DefaultStateBinding);
+                OutlineShaderPass.BindShader(deviceContext);
+                OutlineShaderPass.BindStates(deviceContext, DefaultStateBinding);
                 OnDraw(deviceContext, InstanceBuffer);
             }
             if (DrawMesh)
@@ -166,8 +166,8 @@ namespace HelixToolkit.UWP.Core
             }
             if (!DrawOutlineBeforeMesh)
             {
-                outlineShaderPass.BindShader(deviceContext);
-                outlineShaderPass.BindStates(deviceContext, DefaultStateBinding);
+                OutlineShaderPass.BindShader(deviceContext);
+                OutlineShaderPass.BindStates(deviceContext, DefaultStateBinding);
                 OnDraw(deviceContext, InstanceBuffer);
             }
         }

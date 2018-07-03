@@ -12,7 +12,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using Utilities;
 
-    public class BoneSkinRenderCore : PatchMeshRenderCore, IBoneSkinRenderParams
+    public class BoneSkinRenderCore : MeshRenderCore, IBoneSkinRenderParams
     {
         public IElementsBufferModel VertexBoneIdBuffer { set; get; }
 

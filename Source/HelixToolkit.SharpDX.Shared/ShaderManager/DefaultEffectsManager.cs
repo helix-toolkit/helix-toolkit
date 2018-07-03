@@ -183,7 +183,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSMeshBlinnPhong
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual,
+                        Topology = PrimitiveTopology.PatchListWith3ControlPoints
                     },
                     new ShaderPassDescription(DefaultPassNames.MeshTriTessellationOIT)
                     {
@@ -195,7 +196,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSMeshBlinnPhongOIT
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite,
+                        Topology = PrimitiveTopology.PatchListWith3ControlPoints
                     },
                     new ShaderPassDescription(DefaultPassNames.MeshOutline)
                     {
@@ -226,6 +228,7 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
+                        Topology = PrimitiveTopology.TriangleList
                     },
                     new ShaderPassDescription(DefaultPassNames.WireframeOITPass)
                     {
@@ -236,6 +239,7 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
+                        Topology = PrimitiveTopology.TriangleList
                     },
                     new ShaderPassDescription(DefaultPassNames.EffectOutlineP1)
                     {
@@ -412,7 +416,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSMeshBlinnPhong
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual,
+                        Topology = PrimitiveTopology.PatchListWith3ControlPoints
                     },
                     new ShaderPassDescription(DefaultPassNames.MeshTriTessellationOIT)
                     {
@@ -424,7 +429,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSMeshBlinnPhongOIT
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite,
+                        Topology = PrimitiveTopology.PatchListWith3ControlPoints
                     },
                     new ShaderPassDescription(DefaultPassNames.ShadowPass)
                     {
@@ -445,6 +451,7 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
+                        Topology = PrimitiveTopology.TriangleList
                     },
                     new ShaderPassDescription(DefaultPassNames.WireframeOITPass)
                     {
@@ -455,6 +462,7 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
+                        Topology = PrimitiveTopology.TriangleList
                     },
                     new ShaderPassDescription(DefaultPassNames.EffectOutlineP1)
                     {
@@ -631,7 +639,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSMeshBlinnPhong
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLessEqual,
+                        Topology = PrimitiveTopology.PatchListWith3ControlPoints
                     },
                     new ShaderPassDescription(DefaultPassNames.MeshTriTessellationOIT)
                     {
@@ -643,7 +652,8 @@ namespace HelixToolkit.UWP
                             DefaultPSShaderDescriptions.PSMeshBlinnPhongOIT
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
-                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessNoWrite,
+                        Topology = PrimitiveTopology.PatchListWith3ControlPoints
                     },
                     new ShaderPassDescription(DefaultPassNames.ShadowPass)
                     {
@@ -664,6 +674,7 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSSourceAlways,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
+                        Topology = PrimitiveTopology.TriangleList
                     },
                     new ShaderPassDescription(DefaultPassNames.WireframeOITPass)
                     {
@@ -674,6 +685,7 @@ namespace HelixToolkit.UWP
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOITBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite,
+                        Topology = PrimitiveTopology.TriangleList
                     },
                     new ShaderPassDescription(DefaultPassNames.EffectOutlineP1)
                     {

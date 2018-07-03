@@ -115,8 +115,6 @@
                     Geometry="{Binding Model}"
                     IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
                     Material="{Binding ModelMaterial}"
-                    RenderDiffuseMap="{Binding RenderDiffuseMap}"
-                    RenderNormalMap="{Binding RenderNormalMap}"
                     RenderShadowMap="True"
                     Transform="{Binding ModelTransform}" />
                 <hx:DynamicReflectionMap3D>
@@ -185,12 +183,8 @@
                 <hx:MeshGeometryModel3D
                     x:Name="floor"
                     CullMode="Back"
-                    EnableTessellation="{Binding ElementName=model, Path=EnableTessellation}"
                     Geometry="{Binding Floor}"
                     Material="{Binding FloorMaterial}"
-                    MinTessellationFactor="{Binding ElementName=model, Path=MinTessellationFactor}"
-                    RenderDiffuseMap="{Binding RenderDiffuseMap}"
-                    RenderNormalMap="{Binding RenderNormalMap}"
                     RenderShadowMap="True"
                     Transform="{Binding FloorTransform}" />
             </hx:GroupModel3D>
@@ -221,7 +215,7 @@
                         Margin="3"
                         ItemsSource="{Binding FXAAs}"
                         SelectedItem="{Binding FXAA}" />
-                    <CheckBox x:Name="tessCheckBox" IsChecked="{Binding ElementName=model, Path=EnableTessellation}">Enable Tessellation</CheckBox>
+                    <CheckBox x:Name="tessCheckBox" IsChecked="{Binding ModelMaterial.EnableTessellation}">Enable Tessellation</CheckBox>
                     <Slider
                         Grid.Row="9"
                         Grid.ColumnSpan="2"
@@ -231,7 +225,7 @@
                         Maximum="5"
                         Minimum="1"
                         TickFrequency="1"
-                        Value="{Binding MinTessellationFactor, ElementName=model}" />
+                        Value="{Binding ModelMaterial.MinTessellationFactor}" />
                 </StackPanel>
             </Expander>
             <Expander

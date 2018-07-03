@@ -16,7 +16,7 @@ namespace HelixToolkit.UWP.Core
     using Shaders;
     using Utilities;
 
-    public class CrossSectionMeshRenderCore : PatchMeshRenderCore, ICrossSectionRenderParams
+    public class CrossSectionMeshRenderCore : MeshRenderCore, ICrossSectionRenderParams
     {
         private ClipPlaneStruct clipParameter = new ClipPlaneStruct() { EnableCrossPlane = new Bool4(false, false, false, false), CrossSectionColors = Color.Blue.ToVector4(), CrossPlaneParams = new Matrix() };
         #region Shader Variables
