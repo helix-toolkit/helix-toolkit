@@ -474,7 +474,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseAlphaMapSampler = this.DiffuseAlphaMapSampler,
                 DiffuseMapSampler = this.DiffuseMapSampler,
                 DisplacementMapSampler = this.DisplacementMapSampler,
-                NormalMapSampler = this.NormalMapSampler
+                NormalMapSampler = this.NormalMapSampler,
+                MaxTessellationDistance = (float)this.MaxTessellationDistance,
+                MinTessellationDistance = (float)this.MinTessellationDistance,
+                MaxTessellationFactor = (float)this.MaxTessellationFactor,
+                MinTessellationFactor = (float)this.MinTessellationFactor,
+                EnableTessellation = EnableTessellation,
+                RenderDiffuseAlphaMap = RenderDiffuseAlphaMap,
+                RenderDiffuseMap = RenderDiffuseMap,
+                RenderDisplacementMap = RenderDisplacementMap,
+                RenderNormalMap = RenderNormalMap
             };
         }
 

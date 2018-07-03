@@ -10,7 +10,7 @@ using HelixToolkit.UWP.Utilities;
 namespace HelixToolkit.UWP.Model
 #endif
 {
-    using HelixToolkit.Wpf.SharpDX.Core;
+    using Core;
     using Render;
     using ShaderManager;
     using Shaders;
