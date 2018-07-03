@@ -129,7 +129,8 @@ namespace TessellationDemo
                 SpecularColor = Colors.White.ToColor4(),
                 SpecularShininess = 100f,
                 DiffuseMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString()),
-                NormalMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString())
+                NormalMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString()),
+                EnableTessellation = true
             };
 
             // ---------------------------------------------
