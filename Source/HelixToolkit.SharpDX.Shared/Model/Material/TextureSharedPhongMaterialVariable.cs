@@ -5,6 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
@@ -16,7 +17,6 @@ namespace HelixToolkit.UWP.Model
     using Render;
     using ShaderManager;
     using Shaders;
-
     using Utilities;
 
     /// <summary>
