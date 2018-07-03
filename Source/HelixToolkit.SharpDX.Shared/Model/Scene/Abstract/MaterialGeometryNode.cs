@@ -66,33 +66,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        public bool RenderDiffuseAlphaMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderDiffuseAlphaMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderDiffuseAlphaMap = value; }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public bool RenderDiffuseMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderDiffuseMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderDiffuseMap = value; }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public bool RenderDisplacementMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderDisplacementMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderDisplacementMap = value; }
-        }
-
-        /// <summary>
         /// Render environment map on this mesh if has environment map
         /// <para>Default: false</para>
         /// </summary>
@@ -102,14 +75,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             set { (RenderCore as IMaterialRenderParams).RenderEnvironmentMap = value; }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public bool RenderNormalMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderNormalMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderNormalMap = value; }
-        }
         /// <summary>
         /// Render shadow on this mesh if has shadow map
         /// <para>Default: false</para>
