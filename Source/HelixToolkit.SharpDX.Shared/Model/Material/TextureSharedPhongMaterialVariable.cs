@@ -10,10 +10,12 @@ using HelixToolkit.UWP.Utilities;
 namespace HelixToolkit.UWP.Model
 #endif
 {
+    using Core;
     using Render;
     using ShaderManager;
     using Shaders;
     using System;
+    using System.Collections.Generic;
     using System.Runtime.CompilerServices;
     using Utilities;
 
@@ -48,7 +50,7 @@ namespace HelixToolkit.UWP.Model
         }
 
         public ShaderPass MaterialPass { get; private set; } = ShaderPass.NullPass;
-
+        public ShaderPass TransparentPass { private set; get; } = ShaderPass.NullPass;
         /// <summary>
         /// 
         /// </summary>
@@ -86,79 +88,6 @@ namespace HelixToolkit.UWP.Model
         /// 
         /// </summary>
         public string ShaderSamplerShadowMapName { set; get; } = DefaultSamplerStateNames.ShadowMapSampler;
-
-        private bool renderDiffuseMap = true;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderDiffuseMap
-        {
-            set
-            {
-                if (Set(ref renderDiffuseMap, value))
-                {
-                    needUpdate = true;
-                }
-            }
-            get
-            {
-                return renderDiffuseMap;
-            }
-        }
-        private bool renderDiffuseAlphaMap = true;
-        /// <summary>
-        ///
-        /// </summary>
-        public bool RenderDiffuseAlphaMap
-        {
-            set
-            {
-                if (Set(ref renderDiffuseAlphaMap, value))
-                {
-                    needUpdate = true;
-                }
-            }
-            get
-            {
-                return renderDiffuseAlphaMap;
-            }
-        }
-        private bool renderNormalMap = true;
-        /// <summary>
-        ///
-        /// </summary>
-        public bool RenderNormalMap
-        {
-            set
-            {
-                if (Set(ref renderNormalMap, value))
-                {
-                    needUpdate = true;
-                }
-            }
-            get
-            {
-                return renderNormalMap;
-            }
-        }
-        private bool renderDisplacementMap = true;
-        /// <summary>
-        ///
-        /// </summary>
-        public bool RenderDisplacementMap
-        {
-            set
-            {
-                if (Set(ref renderDisplacementMap, value))
-                {
-                    needUpdate = true;
-                }
-            }
-            get
-            {
-                return renderDisplacementMap;
-            }
-        }
 
         private bool renderShadowMap = false;
 
@@ -220,6 +149,61 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
+        private string transparentPassName = DefaultPassNames.OITPass;
+        /// <summary>
+        /// Gets or sets the name of the mesh transparent pass.
+        /// </summary>
+        /// <value>
+        /// The name of the transparent pass.
+        /// </value>
+        public string TransparentPassName
+        {
+            set
+            {
+                if (!fixedPassName && Set(ref transparentPassName, value) && isAttached)
+                {
+                    TransparentPass = technique[value];
+                }
+            }
+            get
+            {
+                return transparentPassName;
+            }
+        }
+
+        private bool enableTessellation = false;
+        public bool EnableTessellation
+        {
+            private set
+            {
+                if (SetAffectsRender(ref enableTessellation, value))
+                {
+                    if (enableTessellation)
+                    {
+                        switch (material.MeshType)
+                        {
+                            case MeshTopologyEnum.PNTriangles:
+                                DefaultShaderPassName = DefaultPassNames.MeshTriTessellation;
+                                TransparentPassName = DefaultPassNames.MeshTriTessellationOIT;
+                                break;
+                            case MeshTopologyEnum.PNQuads:
+                                DefaultShaderPassName = DefaultPassNames.MeshQuadTessellation;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        DefaultShaderPassName = DefaultPassNames.Default;
+                        TransparentPassName = DefaultPassNames.OITPass;
+                    }
+                }
+            }
+            get
+            {
+                return enableTessellation;
+            }
+        }
+
         private bool needUpdate = true;
         private readonly PhongMaterialCore material;
         private bool isAttached = false;
@@ -241,6 +225,7 @@ namespace HelixToolkit.UWP.Model
             statePoolManager = manager.StateManager;
             CreateTextureViews();
             CreateSamplers();
+            EnableTessellation = material.EnableTessellation;
             this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, EventArgs.Empty); };
         }
         /// <summary>
@@ -260,6 +245,7 @@ namespace HelixToolkit.UWP.Model
         {
             this.technique = technique;
             MaterialPass = technique[DefaultShaderPassName];
+            TransparentPass = technique[TransparentPassName];
             UpdateMappings(MaterialPass);
             isAttached = true;
             return !MaterialPass.IsNULL;
@@ -307,6 +293,10 @@ namespace HelixToolkit.UWP.Model
             {
                 RemoveAndDispose(ref SamplerResources[NormalIdx]);
                 SamplerResources[NormalIdx] = Collect(statePoolManager.Register((sender as PhongMaterialCore).NormalMapSampler));
+            }
+            else if (e.PropertyName.Equals(nameof(PhongMaterialCore.EnableTessellation)))
+            {
+                EnableTessellation = material.EnableTessellation;
             }
             OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
         }
@@ -369,13 +359,17 @@ namespace HelixToolkit.UWP.Model
             modelstruct.Reflect = material.ReflectiveColor;
             modelstruct.Specular = material.SpecularColor;
             modelstruct.Shininess = material.SpecularShininess;
-            modelstruct.HasDiffuseMap = RenderDiffuseMap && TextureResources[DiffuseIdx] != null ? 1 : 0;
-            modelstruct.HasDiffuseAlphaMap = RenderDiffuseAlphaMap && TextureResources[AlphaIdx] != null ? 1 : 0;
-            modelstruct.HasNormalMap = RenderNormalMap && TextureResources[NormalIdx] != null ? 1 : 0;
-            modelstruct.HasDisplacementMap = RenderDisplacementMap && TextureResources[DisplaceIdx] != null ? 1 : 0;
+            modelstruct.HasDiffuseMap = material.RenderDiffuseMap && TextureResources[DiffuseIdx] != null ? 1 : 0;
+            modelstruct.HasDiffuseAlphaMap = material.RenderDiffuseAlphaMap && TextureResources[AlphaIdx] != null ? 1 : 0;
+            modelstruct.HasNormalMap = material.RenderNormalMap && TextureResources[NormalIdx] != null ? 1 : 0;
+            modelstruct.HasDisplacementMap = material.RenderDisplacementMap && TextureResources[DisplaceIdx] != null ? 1 : 0;
             modelstruct.DisplacementMapScaleMask = material.DisplacementMapScaleMask;
             modelstruct.RenderShadowMap = RenderShadowMap ? 1 : 0;
             modelstruct.HasCubeMap = RenderEnvironmentMap ? 1 : 0;
+            modelstruct.MaxTessDistance = material.MaxTessellationDistance;
+            modelstruct.MinTessDistance = material.MinTessellationDistance;
+            modelstruct.MaxTessFactor = material.MaxTessellationFactor;
+            modelstruct.MinTessFactor = material.MinTessellationFactor;
         }
 
         /// <summary>
@@ -512,6 +506,25 @@ namespace HelixToolkit.UWP.Model
             }
 
             base.OnDispose(disposeManagedResources);
+        }
+
+        public ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context)
+        {
+            return core.RenderType == RenderType.Transparent && context.IsOITPass ? TransparentPass : MaterialPass;
+        }
+
+        private bool SetAffectsRender<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            this.RaisePropertyChanged(propertyName);
+            needUpdate = true;
+            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
+            return true;
         }
     }
 }

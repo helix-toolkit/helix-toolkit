@@ -121,7 +121,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\LightingDemo\TextureCheckerboard2.jpg">
+    <Content Include="..\..\..\..\Images\Textures\TextureCheckerboard2.jpg">
       <Link>TextureCheckerboard2.jpg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

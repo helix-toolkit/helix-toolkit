@@ -24,43 +24,6 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         #region Dependency Properties
         /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty RenderDiffuseMapProperty =
-            DependencyProperty.Register("RenderDiffuseMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
-                (d, e) =>
-                {
-                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderDiffuseMap = (bool)e.NewValue;
-                }));
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty RenderDiffuseAlphaMapProperty =
-            DependencyProperty.Register("RenderDiffuseAlphaMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
-                (d, e) =>
-                {
-                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderDiffuseAlphaMap = (bool)e.NewValue;
-                }));
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty RenderNormalMapProperty =
-            DependencyProperty.Register("RenderNormalMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
-                (d, e) =>
-                {
-                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderNormalMap = (bool)e.NewValue;
-                }));
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly DependencyProperty RenderDisplacementMapProperty =
-            DependencyProperty.Register("RenderDisplacementMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(true,
-                (d, e) =>
-                {
-                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderDisplacementMap = (bool)e.NewValue;
-                }));
-
-        /// <summary>
         /// Render shadow on this mesh if has shadow map
         /// </summary>
         public static readonly DependencyProperty RenderShadowMapProperty =
@@ -97,44 +60,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 ((d as Element3DCore).SceneNode as MaterialGeometryNode).IsTransparent = (bool)e.NewValue;
             }));
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderDiffuseMap
-        {
-            get { return (bool)this.GetValue(RenderDiffuseMapProperty); }
-            set { this.SetValue(RenderDiffuseMapProperty, value); }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderNormalMap
-        {
-            get { return (bool)this.GetValue(RenderNormalMapProperty); }
-            set { this.SetValue(RenderNormalMapProperty, value); }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderDiffuseAlphaMap
-        {
-            get { return (bool)this.GetValue(RenderDiffuseAlphaMapProperty); }
-            set { this.SetValue(RenderDiffuseAlphaMapProperty, value); }
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderDisplacementMap
-        {
-            get { return (bool)this.GetValue(RenderDisplacementMapProperty); }
-            set { this.SetValue(RenderDisplacementMapProperty, value); }
-        }
 
         /// <summary>
         /// Render shadow on this mesh if has shadow map
@@ -184,10 +109,6 @@ namespace HelixToolkit.Wpf.SharpDX
             if (node is MaterialGeometryNode n)
             {
                 n.Material = this.Material;
-                n.RenderDiffuseMap = this.RenderDiffuseMap;
-                n.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
-                n.RenderNormalMap = this.RenderNormalMap;
-                n.RenderDisplacementMap = this.RenderDisplacementMap;
                 n.RenderEnvironmentMap = this.RenderEnvironmentMap;
                 n.RenderShadowMap = this.RenderShadowMap;
             }
