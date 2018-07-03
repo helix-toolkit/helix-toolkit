@@ -1,0 +1,54 @@
+# Blender MTL File: 'None'
+# Material Count: 4
+
+newmtl BaseMaterial
+Ns 62.745098
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.250000 0.250000 0.250000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+map_Bump .\\CushionN.dds
+map_Kd .\\CushionA.dds
+map_Ks .\\CushionRMC.dds
+
+newmtl KMaterial4
+Ns 62.745098
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.250000 0.250000 0.250000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump .\\KN.dds
+map_Kd .\\KAlbedo.dds
+map_Ks .\\KRMC.dds
+
+newmtl bakersetup:SimpleShaderBall
+Ns 62.745098
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.250000 0.250000 0.250000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+map_Bump .\\BrickBrownN4x.dds
+map_Kd .\\BrickBrownA4x.dds
+map_Ks .\\BrickBrownRMC4x.dds
+
+newmtl bakersetup:SimpleShaderBallIndent
+Ns 62.745098
+Ka 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.250000 0.250000 0.250000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+map_Bump .\\IndentN.dds
+map_Kd .\\IndentA.dds
+map_Ks .\\IndentRMC.dds
