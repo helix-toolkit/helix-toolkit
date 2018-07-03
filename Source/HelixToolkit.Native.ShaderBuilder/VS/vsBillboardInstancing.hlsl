@@ -5,9 +5,9 @@
 #include"..\Common\Common.hlsl"
 #pragma pack_matrix( row_major )
 
-VSInputBT main(VSInputBTInstancing input)
+GSInputBT main(VSInputBTInstancing input)
 {
-    VSInputBT output = (VSInputBT) 0;
+    GSInputBT output = (GSInputBT) 0;
     output.p = input.p;
     output.offBR = input.offBR;
     output.offTL = input.offTL;

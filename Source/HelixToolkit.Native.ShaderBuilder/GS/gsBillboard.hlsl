@@ -7,7 +7,7 @@
 
 //--------------------------------------------------------------------------------
 [maxvertexcount(4)]
-void main(point VSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream)
+void main(point GSInputBT input[1], inout TriangleStream<PSInputBT> SpriteStream)
 {
     float4 ndcPosition0 = input[0].p;
     float4 ndcPosition1 = input[0].p;
