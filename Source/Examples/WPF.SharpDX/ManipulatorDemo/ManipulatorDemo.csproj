@@ -120,6 +120,9 @@
     <None Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Expression.Interaction">
+      <Version>3.0.40218</Version>
+    </PackageReference>
     <PackageReference Include="Fody">
       <Version>3.0.4</Version>
     </PackageReference>

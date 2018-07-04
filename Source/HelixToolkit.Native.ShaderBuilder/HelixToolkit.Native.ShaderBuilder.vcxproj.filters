@@ -261,5 +261,8 @@
     <FxCompile Include="PS\psMeshColorStripe.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
+    <FxCompile Include="PS\psEffectMeshDiffuseXRayGrid.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -46,6 +46,7 @@ namespace ManipulatorDemo
         public Color DirectionalLightColor { get; private set; }
         public Color AmbientLightColor { get; private set; }
 
+        public Element3D Target { set; get; }
 
         public MainViewModel()
         {
@@ -91,6 +92,14 @@ namespace ManipulatorDemo
 
             var dr = Colors.DarkRed;
             Console.WriteLine(dr);
+        }
+
+        public void OnMouseDown3DHandler(object sender, MouseDown3DEventArgs e)
+        {
+            if(e.HitTestResult != null && e.HitTestResult.ModelHit is MeshGeometryModel3D m && m.Geometry == Model)
+            {
+                Target = e.HitTestResult.ModelHit as Element3D;
+            }
         }
 
         private Transform3D CreateAnimatedTransform(Vector3D translate, Vector3D axis, double speed = 4)

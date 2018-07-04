@@ -307,6 +307,17 @@ namespace HelixToolkit.UWP
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSEffectMeshXRayGridP3,
                         StencilRef = 1
                     },
+                    new ShaderPassDescription(DefaultPassNames.EffectMeshDiffuseXRayGridP3)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshDefault,
+                            DefaultPSShaderDescriptions.PSEffectDiffuseXRayGrid
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSEffectMeshXRayGridP3,
+                        StencilRef = 1
+                    },
                 }
             };
 
@@ -530,6 +541,17 @@ namespace HelixToolkit.UWP
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSEffectMeshXRayGridP3,
                         StencilRef = 1
                     },
+                    new ShaderPassDescription(DefaultPassNames.EffectMeshDiffuseXRayGridP3)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshInstancing,
+                            DefaultPSShaderDescriptions.PSEffectDiffuseXRayGrid
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSEffectMeshXRayGridP3,
+                        StencilRef = 1
+                    },
                 }
             };
 
@@ -748,6 +770,17 @@ namespace HelixToolkit.UWP
                         {
                             DefaultVSShaderDescriptions.VSMeshBoneSkinning,
                             DefaultPSShaderDescriptions.PSEffectXRayGrid
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSEffectMeshXRayGridP3,
+                        StencilRef = 1
+                    },
+                    new ShaderPassDescription(DefaultPassNames.EffectMeshDiffuseXRayGridP3)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshBoneSkinning,
+                            DefaultPSShaderDescriptions.PSEffectDiffuseXRayGrid
                         },
                         BlendStateDescription = DefaultBlendStateDescriptions.BSAlphaBlend,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSEffectMeshXRayGridP3,
