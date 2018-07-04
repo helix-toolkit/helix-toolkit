@@ -138,6 +138,7 @@
     <Compile Include="Importers\Importers.cs" />
     <Compile Include="Importers\ModelReader.cs" />
     <Compile Include="Importers\OffReader.cs" />
+    <Compile Include="Importers\PlyReader.cs" />
     <Compile Include="MarkupExtensions\KeyGestureExtension.cs" />
     <Compile Include="MarkupExtensions\LinearGradientBrushExtension.cs" />
     <Compile Include="MarkupExtensions\PerspectiveCameraExtension.cs" />

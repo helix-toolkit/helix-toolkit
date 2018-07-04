@@ -31,7 +31,6 @@ namespace HelixToolkit.UWP.Core
         #region Properties
         protected ShaderPass WireframePass { private set; get; } = ShaderPass.NullPass;
         protected ShaderPass WireframeOITPass { private set; get; } = ShaderPass.NullPass;
-        protected ShaderPass TransparentPass { private set; get; } = ShaderPass.NullPass;
 
         public string ShaderShadowMapTextureName { set; get; } = DefaultBufferNames.ShadowMapTB;
         /// <summary>
@@ -94,28 +93,6 @@ namespace HelixToolkit.UWP.Core
         {
             set; get;
         }
-
-        private string transparentPassName = DefaultPassNames.OITPass;
-        /// <summary>
-        /// Gets or sets the name of the mesh transparent pass.
-        /// </summary>
-        /// <value>
-        /// The name of the transparent pass.
-        /// </value>
-        public string TransparentPassName
-        {
-            set
-            {
-                if (SetAffectsRender(ref transparentPassName, value) && IsAttached)
-                {
-                    TransparentPass = EffectTechnique[value];
-                }
-            }
-            get
-            {
-                return transparentPassName;
-            }
-        } 
         #endregion
 
         protected override bool CreateRasterState(RasterizerStateDescription description, bool force)
@@ -143,7 +120,6 @@ namespace HelixToolkit.UWP.Core
             {
                 WireframePass = technique.GetPass(DefaultPassNames.Wireframe);
                 WireframeOITPass = technique.GetPass(DefaultPassNames.WireframeOITPass);
-                TransparentPass = technique.GetPass(TransparentPassName);
                 return true;
             }
             else
@@ -173,11 +149,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
-            ShaderPass pass = MaterialVariables.MaterialPass;
-            if (RenderType == RenderType.Transparent && context.IsOITPass)
-            {
-                pass = TransparentPass;
-            }
+            ShaderPass pass = MaterialVariables.GetPass(this, context);
             if (pass.IsNULL)
             { return; }
             pass.BindShader(deviceContext);

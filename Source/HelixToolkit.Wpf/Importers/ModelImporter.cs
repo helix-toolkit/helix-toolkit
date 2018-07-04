@@ -106,7 +106,12 @@ namespace HelixToolkit.Wpf
                         model = r.Read(path);
                         break;
                     }
-
+                case ".ply":
+                    {
+                        var r = new PlyReader(dispatcher) { DefaultMaterial = this.DefaultMaterial, Freeze = freeze };
+                        model = r.Read(path);
+                        break;
+                    }
                 default:
                     throw new InvalidOperationException("File format not supported.");
             }

@@ -9,6 +9,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 namespace HelixToolkit.UWP.Model
 #endif
 {
+    using Core;
     using Render;
     using Shaders;
     /// <summary>
@@ -96,7 +97,10 @@ namespace HelixToolkit.UWP.Model
         {
             return true;
         }
-
+        public ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context)
+        {
+            return MaterialPass;
+        }
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 

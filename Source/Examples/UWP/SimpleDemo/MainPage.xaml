@@ -106,7 +106,6 @@
                         IsThrowingShadow="True"
                         Material="{Binding Material1}"
                         RenderEnvironmentMap="True"
-                        RenderNormalMap="False"
                         RenderShadowMap="True" />
                 </hx:DynamicReflectionMap3D>
                 <hx:LineGeometryModel3D

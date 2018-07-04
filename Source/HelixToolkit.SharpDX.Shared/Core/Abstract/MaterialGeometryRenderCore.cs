@@ -50,73 +50,6 @@ namespace HelixToolkit.UWP.Core
                 return material;
             }
         }
-        private bool renderDiffuseMap = true;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderDiffuseMap
-        {
-            set
-            {
-                if(Set(ref renderDiffuseMap, value) && materialVariables != null)
-                {
-                    materialVariables.RenderDiffuseMap = value;
-                }               
-            }
-            get { return renderDiffuseMap; }
-        }
-
-        private bool renderDiffuseAlphaMap = true;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderDiffuseAlphaMap
-        {
-            set
-            {
-                if(Set(ref renderDiffuseAlphaMap, value) && materialVariables != null)
-                {
-                    materialVariables.RenderDiffuseAlphaMap = value;
-                }
-            }
-            get
-            {
-                return renderDiffuseAlphaMap;
-            }
-        }
-        private bool renderNormalMap = true;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderNormalMap
-        {
-            set
-            {
-                if(Set(ref renderNormalMap, value) && materialVariables != null)
-                {
-                    materialVariables.RenderNormalMap = value;
-                }
-            }
-            get
-            {
-                return renderNormalMap;
-            }
-        }
-        private bool renderDisplacementMap = true;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderDisplacementMap
-        {
-            set
-            {
-                if(Set(ref renderDisplacementMap, value) && materialVariables != null)
-                {
-                    materialVariables.RenderDisplacementMap = value;
-                }
-            }
-            get { return renderDisplacementMap; }
-        }
 
         private bool renderShadowMap = false;
         /// <summary>
@@ -181,25 +114,14 @@ namespace HelixToolkit.UWP.Core
         {
             materialVariables.OnInvalidateRenderer -= MaterialVariables_OnInvalidateRenderer;
             materialVariables.RenderShadowMap = this.RenderShadowMap;
-            materialVariables.RenderDiffuseMap = this.RenderDiffuseMap;
-            materialVariables.RenderNormalMap = this.RenderNormalMap;
-            materialVariables.RenderDisplacementMap = this.RenderDisplacementMap;
-            materialVariables.RenderDiffuseAlphaMap = this.RenderDiffuseAlphaMap;
             materialVariables.RenderEnvironmentMap = this.RenderEnvironmentMap;
             materialVariables.OnInvalidateRenderer += MaterialVariables_OnInvalidateRenderer;
-            materialVariables.DefaultShaderPassName = DefaultShaderPassName;
             materialVariables.Attach(technique);
         }
 
         private void MaterialVariables_OnInvalidateRenderer(object sender, System.EventArgs e)
         {
             InvalidateRenderer();
-        }
-
-        protected override void OnDefaultPassChanged(ShaderPass pass)
-        {
-            base.OnDefaultPassChanged(pass);
-            materialVariables.DefaultShaderPassName = pass.Name;
         }
 
         protected override void OnDetach()

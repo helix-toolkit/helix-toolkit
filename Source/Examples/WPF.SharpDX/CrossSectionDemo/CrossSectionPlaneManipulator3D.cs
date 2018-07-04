@@ -4,6 +4,9 @@ using System.Windows;
 using Point = System.Windows.Point;
 using MatrixTransform3D = System.Windows.Media.Media3D.MatrixTransform3D;
 using System;
+using System.Windows.Input;
+using HelixToolkit.Wpf.SharpDX.Model.Scene;
+using System.Collections.Generic;
 
 namespace CrossSectionDemo
 {
@@ -85,7 +88,7 @@ namespace CrossSectionDemo
         }
 
         public static readonly DependencyProperty CornerMaterialProperty =
-            DependencyProperty.Register("CornerMaterial", typeof(Material), typeof(CrossSectionPlaneManipulator3D), new PropertyMetadata(null, (d,e)=> 
+            DependencyProperty.Register("CornerMaterial", typeof(Material), typeof(CrossSectionPlaneManipulator3D), new PropertyMetadata(null, (d, e) =>
             {
                 (d as CrossSectionPlaneManipulator3D).UpdateCornerMaterial(e.NewValue as Material);
             }));
@@ -99,7 +102,7 @@ namespace CrossSectionDemo
         }
 
         public static readonly DependencyProperty EdgeMaterialProperty =
-            DependencyProperty.Register("EdgeMaterial", typeof(Material), typeof(CrossSectionPlaneManipulator3D), new PropertyMetadata(null, (d,e)=> 
+            DependencyProperty.Register("EdgeMaterial", typeof(Material), typeof(CrossSectionPlaneManipulator3D), new PropertyMetadata(null, (d, e) =>
             {
                 (d as CrossSectionPlaneManipulator3D).UpdateEdgeMaterial(e.NewValue as Material);
             }));
@@ -119,9 +122,9 @@ namespace CrossSectionDemo
             new Vector3(-1,+1,0),
         };
         private readonly static Geometry3D NodeGeometry;
-        private readonly static Geometry3D EdgeHGeometry, EdgeVGeometry;
-        private readonly MeshGeometryModel3D[] cornerHandles = new MeshGeometryModel3D[4];
-        private readonly MeshGeometryModel3D[] edgeHandles = new MeshGeometryModel3D[4];
+        private readonly static Geometry3D EdgeHGeometry;
+        private readonly MeshGeometryModel3D cornerHandle;
+        private readonly MeshGeometryModel3D edgeHandle;
         private Point startPoint;
         private Vector3 startHitPoint;
         private Viewport3DX viewport;
@@ -135,43 +138,39 @@ namespace CrossSectionDemo
         static CrossSectionPlaneManipulator3D()
         {
             var b1 = new MeshBuilder();
-            b1.AddSphere(new Vector3(), 0.125, 16, 16);
+            b1.AddSphere(new Vector3(), 0.125, 12, 12);
             b1.AddPyramid(new Vector3(0, 0, -0.15f), new Vector3(1, 0, 0), new Vector3(0, 0, -1), 0.125, 0.25);
             NodeGeometry = b1.ToMeshGeometry3D();
-
+            NodeGeometry.OctreeParameter.MinimumOctantSize = 0.01f;
+            NodeGeometry.UpdateOctree();
             var b2 = new MeshBuilder();
-            b2.AddCylinder(new Vector3(0, 0, 0), new Vector3(1, 0, 0), 0.05, 16, true, true);
+            b2.AddCylinder(new Vector3(0, 0, 0), new Vector3(1, 0, 0), 0.05, 12, true, true);
             EdgeHGeometry = b2.ToMeshGeometry3D();
-
-            var b3 = new MeshBuilder();
-            b3.AddCylinder(new Vector3(0, 0, 0), new Vector3(0, 1, 0), 0.05, 16, true, true);
-            EdgeVGeometry = b3.ToMeshGeometry3D();
+            EdgeHGeometry.OctreeParameter.MinimumOctantSize = 0.01f;
+            EdgeHGeometry.UpdateOctree();
         }
 
         public CrossSectionPlaneManipulator3D()
         {
-            for (int i = 0; i < 4; ++i)
+            this.cornerHandle = new MeshGeometryModel3D()
             {
-                this.cornerHandles[i] = new MeshGeometryModel3D()
-                {
-                    Geometry = NodeGeometry,
-                    CullMode = SharpDX.Direct3D11.CullMode.Back,
-                };
-                this.cornerHandles[i].MouseMove3D += OnNodeMouse3DMove;
-                this.cornerHandles[i].MouseUp3D += OnNodeMouse3DUp;
-                this.cornerHandles[i].MouseDown3D += OnNodeMouse3DDown;
+                Geometry = NodeGeometry,
+                CullMode = SharpDX.Direct3D11.CullMode.Back,
+            };
+            this.cornerHandle.MouseMove3D += OnNodeMouse3DMove;
+            this.cornerHandle.MouseUp3D += OnNodeMouse3DUp;
+            this.cornerHandle.MouseDown3D += OnNodeMouse3DDown;
 
-                this.edgeHandles[i] = new MeshGeometryModel3D()
-                {
-                    Geometry = (i % 2 == 0) ? EdgeHGeometry : EdgeVGeometry,
-                    CullMode = SharpDX.Direct3D11.CullMode.Back,
-                };
-                this.edgeHandles[i].MouseMove3D += OnEdgeMouse3DMove;
-                this.edgeHandles[i].MouseUp3D += OnEdgeMouse3DUp;
-                this.edgeHandles[i].MouseDown3D += OnEdgeMouse3DDown;
-                this.Children.Add(cornerHandles[i]);
-                this.Children.Add(edgeHandles[i]);
-            }
+            this.edgeHandle = new MeshGeometryModel3D()
+            {
+                Geometry = EdgeHGeometry,
+                CullMode = SharpDX.Direct3D11.CullMode.Back,
+            };
+            this.edgeHandle.MouseMove3D += OnEdgeMouse3DMove;
+            this.edgeHandle.MouseUp3D += OnEdgeMouse3DUp;
+            this.edgeHandle.MouseDown3D += OnEdgeMouse3DDown;
+            this.Children.Add(cornerHandle);
+            this.Children.Add(edgeHandle);
 
             CornerMaterial = DiffuseMaterials.Orange;
             EdgeMaterial = DiffuseMaterials.Blue;
@@ -185,35 +184,29 @@ namespace CrossSectionDemo
             // 3 --- 2 
             // |     |
             // 0 --- 1
-            var m0 = Matrix.Scaling(+2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.Translation(positions[0] * sizeScale);
-            this.edgeHandles[0].Transform = new MatrixTransform3D(m0.ToMatrix3D());
-            var m2 = Matrix.Scaling(+2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.Translation(positions[3] * sizeScale);
-            this.edgeHandles[2].Transform = new MatrixTransform3D(m2.ToMatrix3D());
-
-            var m1 = Matrix.Scaling(edgeThicknessScale, +2 * sizeScale, edgeThicknessScale) * Matrix.Translation(positions[1] * sizeScale);
-            this.edgeHandles[1].Transform = new MatrixTransform3D(m1.ToMatrix3D());
-            var m3 = Matrix.Scaling(edgeThicknessScale, +2 * sizeScale, edgeThicknessScale) * Matrix.Translation(positions[0] * sizeScale);
-            this.edgeHandles[3].Transform = new MatrixTransform3D(m3.ToMatrix3D());
-
-            for(int i = 0; i < cornerHandles.Length; ++i)
+            edgeHandle.Instances = new Matrix[4]
             {
-                this.cornerHandles[i].Transform = new MatrixTransform3D((Matrix.Scaling(cornerScale) * Matrix.Translation(positions[i] * sizeScale)).ToMatrix3D());
-            }
+                Matrix.Scaling(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.Translation(positions[0] * sizeScale),
+                Matrix.Scaling(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.Translation(positions[3] * sizeScale),
+                Matrix.Scaling(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.RotationAxis(new Vector3(0, 0, 1), (float)(Math.PI / 2)) * Matrix.Translation(positions[1] * sizeScale),
+                Matrix.Scaling(2 * sizeScale, edgeThicknessScale, edgeThicknessScale) * Matrix.RotationAxis(new Vector3(0, 0, 1), (float)(Math.PI / 2)) * Matrix.Translation(positions[0] * sizeScale)
+            };
+            cornerHandle.Instances = new Matrix[4]
+            {
+                Matrix.Scaling(cornerScale) * Matrix.Translation(positions[0] * sizeScale),
+                Matrix.Scaling(cornerScale) * Matrix.Translation(positions[1] * sizeScale),
+                Matrix.Scaling(cornerScale) * Matrix.Translation(positions[2] * sizeScale),
+                Matrix.Scaling(cornerScale) * Matrix.Translation(positions[3] * sizeScale),
+            };
         }
 
         private void UpdateCornerMaterial(Material material)
         {
-            foreach(var model in cornerHandles)
-            {
-                model.Material = material;
-            }
+            cornerHandle.Material = material;
         }
         private void UpdateEdgeMaterial(Material material)
         {
-            foreach (var model in edgeHandles)
-            {
-                model.Material = material;
-            }
+            edgeHandle.Material = material;
         }
         private void SceneNode_OnVisibleChanged(object sender, BoolArgs e)
         {
@@ -233,6 +226,7 @@ namespace CrossSectionDemo
                 camera = viewport.Camera;
                 startPoint = arg.Position;
                 isCaptured = true;
+                e.Handled = true;
             }
         }
 
@@ -282,6 +276,7 @@ namespace CrossSectionDemo
                     startHitPoint = newPos;
                     currentTranslation.TranslationVector += offset;
                     UpdateTransform();
+                    e.Handled = true;
                 }
             }
         }
@@ -350,6 +345,51 @@ namespace CrossSectionDemo
                 internalUpdate = true;
                 UpdateCutPlane();
                 internalUpdate = false;
+            }
+        }
+        protected override SceneNode OnCreateSceneNode()
+        {
+            return new AlwaysHitGroupNode(this);
+        }
+
+        private sealed class AlwaysHitGroupNode : GroupNode
+        {
+            private readonly object edgeHandle;
+            private readonly object cornerHandle;
+
+            public AlwaysHitGroupNode(CrossSectionPlaneManipulator3D manipulator)
+            {
+                this.edgeHandle = manipulator.edgeHandle;
+                this.cornerHandle = manipulator.cornerHandle;
+            }
+            protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
+            {
+                //Set hit distance to 0 so event manipulator is inside the model, hit test still works
+                if (base.OnHitTest(context, totalModelMatrix, ref ray, ref hits))
+                {
+                    if (hits.Count > 0)
+                    {
+                        foreach (var hit in hits)
+                        {
+                            if (hit.ModelHit == cornerHandle)
+                            {
+                                hit.Distance = 0;
+                                break;
+                            }
+                            else if (hit.ModelHit == edgeHandle)
+                            {
+                                hit.Distance = 0.01;
+                                break;
+                            }
+                        }
+
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }

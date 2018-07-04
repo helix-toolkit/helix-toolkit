@@ -107,10 +107,12 @@
       <Link>Media\teapot_quads_tex.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Media\TextureCheckerboard2.dds">
+    <Content Include="..\..\..\..\Images\Textures\TextureCheckerboard2.dds">
+        <Link>Media\TextureCheckerboard2.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Media\TextureCheckerboard2_dot3.dds">
+    <Content Include="..\..\..\..\Images\Textures\TextureCheckerboard2_dot3.dds">
+        <Link>Media\TextureCheckerboard2_dot3.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\Settings.settings">
