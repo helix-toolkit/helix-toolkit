@@ -95,7 +95,7 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <TextBlock
+                    <!--<TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
                         Margin="3">
@@ -107,7 +107,7 @@
                         Margin="3"
                         ItemsSource="{Binding Source={StaticResource Topology}}"
                         SelectedItem="{Binding MeshTopology}"
-                        Text="" />
+                        Text="" />-->
 
                     <TextBlock
                         Grid.Row="2"
