@@ -26,6 +26,7 @@ namespace ManipulatorDemo
     using Colors = System.Windows.Media.Colors;
     using Color4 = SharpDX.Color4;
     using System.Collections.Generic;
+    using System.Windows.Input;
 
     public class MainViewModel : BaseViewModel
     {
@@ -50,6 +51,9 @@ namespace ManipulatorDemo
 
         public Element3D Target { set; get; }
         public Vector3 CenterOffset { set; get; }
+
+        public ICommand ResetTransformsCommand { private set; get; }
+
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
@@ -91,7 +95,7 @@ namespace ManipulatorDemo
             this.Lines = e1.ToLineGeometry3D();
 
             // model trafos
-            this.Model1Transform = new TranslateTransform3D(0, 0, 0);//CreateAnimatedTransform(new Vector3D(0, 0, 0), new Vector3D(1, 1, 1), 20);
+            this.Model1Transform = new TranslateTransform3D(0, 0, 0);
             this.Model2Transform = new TranslateTransform3D(-3, 0, 0);
             this.Model3Transform = new TranslateTransform3D(+3, 0, 0);
 
@@ -102,35 +106,22 @@ namespace ManipulatorDemo
 
             var dr = Colors.DarkRed;
             Console.WriteLine(dr);
+            ResetTransformsCommand = new RelayCommand((o) => 
+            {
+                this.Model1Transform = new TranslateTransform3D(0, 0, 0);
+                this.Model2Transform = new TranslateTransform3D(-3, 0, 0);
+                this.Model3Transform = new TranslateTransform3D(+3, 0, 0);
+            });
         }
 
         public void OnMouseDown3DHandler(object sender, MouseDown3DEventArgs e)
         {
             if(e.HitTestResult != null && e.HitTestResult.ModelHit is MeshGeometryModel3D m && (m.Geometry == Model || m.Geometry == Model2))
             {
+                Target = null;
                 Target = e.HitTestResult.ModelHit as Element3D;
                 CenterOffset = m.Geometry.Bound.Center;
             }
-        }
-
-        private Transform3D CreateAnimatedTransform(Vector3D translate, Vector3D axis, double speed = 4)
-        {
-            var animationTrafo = new Transform3DGroup();
-            animationTrafo.Children.Add(new TranslateTransform3D(translate));
-
-            var rotateAnimation = new Rotation3DAnimation
-            {
-                RepeatBehavior = RepeatBehavior.Forever,
-                By = new AxisAngleRotation3D(axis, 90),
-                Duration = TimeSpan.FromSeconds(speed / 4),
-                IsCumulative = true,
-            };
-
-            var rotateTransform = new RotateTransform3D();
-            rotateTransform.BeginAnimation(RotateTransform3D.RotationProperty, rotateAnimation);
-            animationTrafo.Children.Add(rotateTransform);
-
-            return animationTrafo;
         }
 
         public List<Object3D> Load3ds(string path)

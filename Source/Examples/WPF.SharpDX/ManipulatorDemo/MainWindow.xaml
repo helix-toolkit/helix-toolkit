@@ -57,22 +57,19 @@
                 x:Name="model1"
                 Geometry="{Binding Model2}"
                 Material="{Binding Material1}"
-                Transform="{Binding Model1Transform}" />
+                Transform="{Binding Model1Transform, Mode=TwoWay}" />
 
             <hx:MeshGeometryModel3D
                 x:Name="model2"
                 Geometry="{Binding Model}"
                 Material="{Binding Material2}"
-                Transform="{Binding Model2Transform}" />
-            <hx:TransformManipulator3D
-                x:Name="manipulator"
-                CenterOffset="{Binding CenterOffset}"
-                Target="{Binding Target}" />
+                Transform="{Binding Model2Transform, Mode=TwoWay}" />
+
             <hx:DraggableGeometryModel3D
                 x:Name="model3"
                 Geometry="{Binding Model}"
                 Material="{Binding Material3}"
-                Transform="{Binding Model3Transform}" />
+                Transform="{Binding Model3Transform, Mode=TwoWay}" />
 
             <hx:LineGeometryModel3D
                 x:Name="lines"
@@ -81,7 +78,11 @@
                 Thickness="2"
                 Transform="{Binding Transform, ElementName=model3}"
                 Color="Black" />
-
+            <hx:TransformManipulator3D
+                x:Name="manipulator"
+                CenterOffset="{Binding CenterOffset}"
+                SizeScale="1"
+                Target="{Binding Target}" />
             <!--<hx:UITranslateManipulator3D
                 x:Name="translateX"
                 Direction="1,0,0"
@@ -160,6 +161,7 @@
             <CheckBox IsChecked="{Binding ElementName=manipulator, Path=EnableRotation}">Enable Rotation</CheckBox>
             <CheckBox IsChecked="{Binding ElementName=manipulator, Path=EnableTranslation}">Enable Translation</CheckBox>
             <CheckBox IsChecked="{Binding ElementName=manipulator, Path=EnableXRayGrid}">Enable XRayGrid</CheckBox>
+            <Button Command="{Binding ResetTransformsCommand}">Reset</Button>
         </StackPanel>
         <StatusBar Grid.Row="1" VerticalAlignment="Bottom">
             <StatusBar.Background>
