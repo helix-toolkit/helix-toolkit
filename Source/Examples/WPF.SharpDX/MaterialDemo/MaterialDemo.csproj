@@ -90,10 +90,12 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Content Include="shaderBall\shaderBall.mtl">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\shaderBall.mtl">
+        <Link>shaderBall\shaderBall.mtl</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaderBall\shaderBall.obj">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\shaderBall.obj">
+        <Link>shaderBall\shaderBall.obj</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -115,43 +117,55 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Cubemap_Grandcanyon.dds">
+    <Content Include="..\..\..\..\Images\EnvironmentMaps\Cubemap_Grandcanyon.dds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaderBall\BrickBrownA4x.dds">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\BrickBrownA4x.dds">
+        <Link>shaderBall\BrickBrownA4x.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaderBall\BrickBrownN4x.dds">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\BrickBrownN4x.dds">
+        <Link>shaderBall\BrickBrownN4x.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaderBall\BrickBrownRMC4x.dds">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\BrickBrownRMC4x.dds">
+        <Link>shaderBall\BrickBrownRMC4x.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaderBall\CushionA.dds">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\CushionA.dds">
+        <Link>shaderBall\CushionA.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaderBall\CushionN.dds">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\CushionN.dds">
+        <Link>shaderBall\CushionN.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaderBall\CushionRMC.dds">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\CushionRMC.dds">
+        <Link>shaderBall\CushionRMC.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaderBall\IndentA.dds">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\IndentA.dds">
+        <Link>shaderBall\IndentA.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaderBall\IndentN.dds">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\IndentN.dds">
+        <Link>shaderBall\IndentN.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaderBall\IndentRMC.dds">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\IndentRMC.dds">
+        <Link>shaderBall\IndentRMC.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaderBall\KAlbedo.dds">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\KAlbedo.dds">
+        <Link>shaderBall\KAlbedo.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaderBall\KN.dds">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\KN.dds">
+        <Link>shaderBall\KN.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="shaderBall\KRMC.dds">
+    <Content Include="..\..\..\..\Models\obj\shaderBall\KRMC.dds">
+        <Link>shaderBall\KRMC.dds</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

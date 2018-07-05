@@ -104,6 +104,23 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return (RenderCore as IPostEffectMeshXRayGrid).BlendingFactor;
             }
         }
+        /// <summary>
+        /// Gets or sets the name of the x ray drawing pass. This is the final pass to draw mesh and grid overlay onto render target
+        /// </summary>
+        /// <value>
+        /// The name of the x ray drawing pass.
+        /// </value>
+        public string XRayDrawingPassName
+        {
+            set
+            {
+                (RenderCore as IPostEffectMeshXRayGrid).XRayDrawingPassName = value;
+            }
+            get
+            {
+                return (RenderCore as IPostEffectMeshXRayGrid).XRayDrawingPassName;
+            }
+        }
         #endregion
 
         /// <summary>

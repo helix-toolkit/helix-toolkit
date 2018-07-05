@@ -54,7 +54,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\MeshOutlineRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\OrderIndependantTransparentRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ParticleRenderCore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\PatchMeshRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PointRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectBlurCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\PostEffects\PostEffectBoomCore.cs" />
@@ -187,7 +186,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\MeshNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\MeshOutlineNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\ParticleStormNode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PatchMeshNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PointNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\Abstract\SceneNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\NodePostEffectBloom.cs" />

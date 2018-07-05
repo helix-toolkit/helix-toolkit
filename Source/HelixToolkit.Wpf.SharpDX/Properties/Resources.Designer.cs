@@ -273,6 +273,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] psEffectMeshDiffuseXRayGrid {
+            get {
+                object obj = ResourceManager.GetObject("psEffectMeshDiffuseXRayGrid", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] psEffectMeshXRay {
             get {
                 object obj = ResourceManager.GetObject("psEffectMeshXRay", resourceCulture);

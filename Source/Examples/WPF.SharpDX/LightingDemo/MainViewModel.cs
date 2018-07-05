@@ -69,10 +69,29 @@ namespace LightingDemo
         public bool RenderLight2 { get; set; }
         public bool RenderLight3 { get; set; }
         public bool RenderLight4 { get; set; }
+        private bool renderDiffuseMap = true;
+        public bool RenderDiffuseMap {
+            set
+            {
+                if(SetValue(ref renderDiffuseMap, value))
+                {
+                    ModelMaterial.RenderDiffuseMap = FloorMaterial.RenderDiffuseMap = value;
+                }
+            }
+            get { return renderDiffuseMap; }
+        }
 
-        public bool RenderDiffuseMap { set; get; } = true;
-
-        public bool RenderNormalMap { set; get; } = true;
+        private bool renderNormalMap = true;
+        public bool RenderNormalMap {
+            set
+            {
+                if(SetValue(ref renderNormalMap, value))
+                {
+                    ModelMaterial.RenderNormalMap = FloorMaterial.RenderNormalMap = value;
+                }
+            }
+            get { return renderNormalMap; }
+        }
 
         public string[] TextureFiles { get; } = new string[] { @"TextureCheckerboard2.jpg", @"TextureCheckerboard3.jpg", @"TextureNoise1.jpg", @"TextureNoise1_dot3.jpg", @"TextureCheckerboard2_dot3.jpg" };
 
@@ -264,11 +283,11 @@ namespace LightingDemo
                 //DisplacementMapScaleMask = new Vector4(-1f,0,0,-1f)
             };
             ModelMaterial.DiffuseMap = FloorMaterial.DiffuseMap;
-
+            
             ReflectMaterial = PhongMaterials.PolishedSilver;
             ReflectMaterial.ReflectiveColor = Colors.Silver.ToColor4();
 
-            InitialObjectTransforms();
+            InitialObjectTransforms();           
         }
 
         private void InitialObjectTransforms()

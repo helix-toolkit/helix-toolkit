@@ -142,7 +142,8 @@ namespace SimpleDemoW10
             Material.NormalMap = LoadTexture("TextureCheckerboard2_dot3.jpg");
             Material1 = Material.Clone();
             Material1.ReflectiveColor = Color.Silver;
-
+            Material1.RenderDiffuseMap = false;
+            Material1.RenderNormalMap = false;
             var lineBuilder = new LineBuilder();
             lineBuilder.AddLine(Vector3.Zero, new Vector3(5, 0, 0));
             lineBuilder.AddLine(Vector3.Zero, new Vector3(0, 5, 0));

@@ -65,34 +65,6 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         MaterialCore Material { set; get; }
         /// <summary>
-        /// Gets or sets a value indicating whether [render diffuse map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render diffuse map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderDiffuseMap { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render diffuse alpha map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render diffuse alpha map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderDiffuseAlphaMap { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render normal map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render normal map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderNormalMap { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render displacement map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render displacement map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderDisplacementMap { set; get; }
-        /// <summary>
         /// Gets or sets a value indicating whether [render shadow map].
         /// </summary>
         /// <value>

@@ -39,43 +39,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public static readonly DependencyProperty InvertNormalProperty = DependencyProperty.Register("InvertNormal", typeof(bool), typeof(MeshGeometryModel3D),
             new PropertyMetadata(false, (d, e) => { ((d as Element3DCore).SceneNode as MeshNode).InvertNormal = (bool)e.NewValue; }));
-        /// <summary>
-        /// The enable tessellation property
-        /// </summary>
-        public static readonly DependencyProperty EnableTessellationProperty = DependencyProperty.Register("EnableTessellation", typeof(bool), typeof(MeshGeometryModel3D),
-            new PropertyMetadata(false, (d, e) => { ((d as Element3DCore).SceneNode as MeshNode).EnableTessellation = (bool)e.NewValue; }));
-        /// <summary>
-        /// The maximum tessellation factor property
-        /// </summary>
-        public static readonly DependencyProperty MaxTessellationFactorProperty =
-            DependencyProperty.Register("MaxTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
-            { ((d as Element3DCore).SceneNode as MeshNode).MaxTessellationFactor = (float)(double)e.NewValue; }));
-        /// <summary>
-        /// The minimum tessellation factor property
-        /// </summary>
-        public static readonly DependencyProperty MinTessellationFactorProperty =
-            DependencyProperty.Register("MinTessellationFactor", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(2.0, (d, e) =>
-            { ((d as Element3DCore).SceneNode as MeshNode).MinTessellationFactor = (float)(double)e.NewValue; }));
-        /// <summary>
-        /// The maximum tessellation distance property
-        /// </summary>
-        public static readonly DependencyProperty MaxTessellationDistanceProperty =
-            DependencyProperty.Register("MaxTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(50.0, (d, e) =>
-            { ((d as Element3DCore).SceneNode as MeshNode).MaxTessellationDistance = (float)(double)e.NewValue; }));
-        /// <summary>
-        /// The minimum tessellation distance property
-        /// </summary>
-        public static readonly DependencyProperty MinTessellationDistanceProperty =
-            DependencyProperty.Register("MinTessellationDistance", typeof(double), typeof(MeshGeometryModel3D), new PropertyMetadata(1.0, (d, e) =>
-            { ((d as Element3DCore).SceneNode as MeshNode).MinTessellationDistance = (float)(double)e.NewValue; }));
-
-        /// <summary>
-        /// The mesh topology property
-        /// </summary>
-        public static readonly DependencyProperty MeshTopologyProperty =
-            DependencyProperty.Register("MeshTopology", typeof(MeshTopologyEnum), typeof(MeshGeometryModel3D), new PropertyMetadata(
-                MeshTopologyEnum.PNTriangles, (d, e) =>
-                { ((d as Element3DCore).SceneNode as MeshNode).MeshType = (MeshTopologyEnum)e.NewValue; }));
 
         /// <summary>
         /// The render wireframe property
@@ -164,78 +127,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return (bool)GetValue(InvertNormalProperty);
             }
         }
-        /// <summary>
-        /// Gets or sets a value indicating whether [enable tessellation].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable tessellation]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableTessellation
-        {
-            set
-            {
-                SetValue(EnableTessellationProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(EnableTessellationProperty);
-            }
-        }
-        /// <summary>
-        /// Gets or sets the maximum tessellation factor.
-        /// </summary>
-        /// <value>
-        /// The maximum tessellation factor.
-        /// </value>
-        public double MaxTessellationFactor
-        {
-            get { return (double)GetValue(MaxTessellationFactorProperty); }
-            set { SetValue(MaxTessellationFactorProperty, value); }
-        }
-        /// <summary>
-        /// Gets or sets the minimum tessellation factor.
-        /// </summary>
-        /// <value>
-        /// The minimum tessellation factor.
-        /// </value>
-        public double MinTessellationFactor
-        {
-            get { return (double)GetValue(MinTessellationFactorProperty); }
-            set { SetValue(MinTessellationFactorProperty, value); }
-        }
-        /// <summary>
-        /// Gets or sets the maximum tessellation distance.
-        /// </summary>
-        /// <value>
-        /// The maximum tessellation distance.
-        /// </value>
-        public double MaxTessellationDistance
-        {
-            get { return (double)GetValue(MaxTessellationDistanceProperty); }
-            set { SetValue(MaxTessellationDistanceProperty, value); }
-        }
-        /// <summary>
-        /// Gets or sets the minimum tessellation distance.
-        /// </summary>
-        /// <value>
-        /// The minimum tessellation distance.
-        /// </value>
-        public double MinTessellationDistance
-        {
-            get { return (double)GetValue(MinTessellationDistanceProperty); }
-            set { SetValue(MinTessellationDistanceProperty, value); }
-        }
-        /// <summary>
-        /// Gets or sets the mesh topology.
-        /// </summary>
-        /// <value>
-        /// The mesh topology.
-        /// </value>
-        public MeshTopologyEnum MeshTopology
-        {
-            set { SetValue(MeshTopologyProperty, value); }
-            get { return (MeshTopologyEnum)GetValue(MeshTopologyProperty); }
-        }
+
         #endregion        
         /// <summary>
         /// Called when [create scene node].
@@ -256,12 +148,6 @@ namespace HelixToolkit.Wpf.SharpDX
             c.InvertNormal = this.InvertNormal;
             c.WireframeColor = this.WireframeColor.ToColor4();
             c.RenderWireframe = this.RenderWireframe;
-            c.MaxTessellationFactor = (float)this.MaxTessellationFactor;
-            c.MinTessellationFactor = (float)this.MinTessellationFactor;
-            c.MaxTessellationDistance = (float)this.MaxTessellationDistance;
-            c.MinTessellationDistance = (float)this.MinTessellationDistance;
-            c.MeshType = this.MeshTopology;
-            c.EnableTessellation = this.EnableTessellation;
             base.AssignDefaultValuesToSceneNode(node);
         }
     }

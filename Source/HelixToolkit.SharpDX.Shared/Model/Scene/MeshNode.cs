@@ -75,150 +75,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 (RenderCore as MeshRenderCore).InvertNormal = value;
             }
         }
-        /// <summary>
-        /// Gets or sets a value indicating whether [enable tessellation].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable tessellation]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableTessellation
-        {
-            get
-            {
-                if (RenderCore is IPatchRenderParams core)
-                {
-                    return core.EnableTessellation;
-                }
-                else { return false; }
-            }
-            set
-            {
-                if (RenderCore is IPatchRenderParams core)
-                {
-                    core.EnableTessellation = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the maximum tessellation factor.
-        /// </summary>
-        /// <value>
-        /// The maximum tessellation factor.
-        /// </value>
-        public float MaxTessellationFactor
-        {
-            get
-            {
-                if (RenderCore is IPatchRenderParams core)
-                {
-                    return core.MaxTessellationFactor;
-                }
-                return 0;
-            }
-            set
-            {
-                if (RenderCore is IPatchRenderParams core)
-                {
-                    core.MaxTessellationFactor = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the minimum tessellation factor.
-        /// </summary>
-        /// <value>
-        /// The minimum tessellation factor.
-        /// </value>
-        public float MinTessellationFactor
-        {
-            get
-            {
-                if (RenderCore is IPatchRenderParams core)
-                {
-                    return core.MinTessellationFactor;
-                }
-                return 0;
-            }
-            set
-            {
-                if (RenderCore is IPatchRenderParams core)
-                {
-                    core.MinTessellationFactor = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the maximum tessellation distance.
-        /// </summary>
-        /// <value>
-        /// The maximum tessellation distance.
-        /// </value>
-        public float MaxTessellationDistance
-        {
-            get
-            {
-                if (RenderCore is IPatchRenderParams core)
-                {
-                    return core.MaxTessellationDistance;
-                }
-                return 0;
-            }
-            set
-            {
-                if (RenderCore is IPatchRenderParams core)
-                {
-                    core.MaxTessellationDistance = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the minimum tessellation distance.
-        /// </summary>
-        /// <value>
-        /// The minimum tessellation distance.
-        /// </value>
-        public float MinTessellationDistance
-        {
-            get
-            {
-                if (RenderCore is IPatchRenderParams core)
-                {
-                    return core.MinTessellationDistance;
-                }
-                return 0;
-            }
-            set
-            {
-                if (RenderCore is IPatchRenderParams core)
-                {
-                    core.MinTessellationDistance = value;
-                }
-            }
-        }
-        /// <summary>
-        /// Gets or sets the type of the mesh.
-        /// </summary>
-        /// <value>
-        /// The type of the mesh.
-        /// </value>
-        public MeshTopologyEnum MeshType
-        {
-            get
-            {
-                if (RenderCore is IPatchRenderParams core)
-                {
-                    return core.MeshType;
-                }
-                return 0;
-            }
-            set
-            {
-                if (RenderCore is IPatchRenderParams core)
-                {
-                    core.MeshType = value;
-                }
-            }
-        }
+
         /// <summary>
         /// Gets or sets the color of the wireframe.
         /// </summary>
@@ -273,7 +130,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <returns></returns>
         protected override RenderCore OnCreateRenderCore()
         {
-            return new PatchMeshRenderCore();
+            return new MeshRenderCore();
         }
 
         /// <summary>
@@ -315,18 +172,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         protected override bool OnCheckGeometry(Geometry3D geometry)
         {
             return base.OnCheckGeometry(geometry) && geometry is MeshGeometry3D;
-        }
-
-        /// <summary>
-        /// Determines whether this instance [can hit test] the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        ///   <c>true</c> if this instance [can hit test] the specified context; otherwise, <c>false</c>.
-        /// </returns>
-        protected override bool CanHitTest(RenderContext context)
-        {
-            return base.CanHitTest(context) && MeshType == MeshTopologyEnum.PNTriangles;
         }
 
         /// <summary>

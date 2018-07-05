@@ -6,6 +6,8 @@ using HelixToolkit.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
@@ -16,6 +18,9 @@ namespace HelixToolkit.UWP.Model
     using Render;
     using ShaderManager;
     using Shaders;
+    using ShaderManager;
+    using Utilities;
+    using Core;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using Utilities;
@@ -393,6 +398,11 @@ namespace HelixToolkit.UWP.Model
             }
 
             base.OnDispose(disposeManagedResources);
+        }
+
+        public ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context)
+        {
+            return MaterialPass;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace HelixToolkit.UWP.Core
 {
     using Render;
 
-    public class InstancingMeshRenderCore : PatchMeshRenderCore
+    public class InstancingMeshRenderCore : MeshRenderCore
     {
         private IElementsBufferModel parameterBufferModel;
         public IElementsBufferModel ParameterBuffer

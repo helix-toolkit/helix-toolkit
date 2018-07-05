@@ -51,12 +51,12 @@ namespace HelixToolkit.UWP
                 var d = s as ItemsModel3D;
                 if (e.OldValue != null)
                 {
-                    d.itemsContainer?.Items.Remove(e.OldValue);
+                    d.Items.Remove(e.OldValue);
                 }
 
                 if (e.NewValue != null)
                 {
-                    d.itemsContainer?.Items.Add(e.NewValue);
+                    d.Items.Add(e.NewValue);
                 }
                 (d.SceneNode as GroupNode).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
             }));
@@ -109,20 +109,17 @@ namespace HelixToolkit.UWP
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            if (itemsContainer != null)
+            Items.Clear();
+            foreach (var item in Children)
             {
-                itemsContainer.Items.Clear();
-                foreach (var item in Children)
+                if (item.Parent != this)
                 {
-                    if (item.Parent != itemsContainer)
-                    {
-                        itemsContainer.Items.Add(item);
-                    }
+                    Items.Add(item);
                 }
-                if (OctreeManager != null)
-                {
-                    itemsContainer.Items.Add(OctreeManager);
-                }
+            }
+            if (OctreeManager != null)
+            {
+                Items.Add(OctreeManager);
             }
         }
 
@@ -143,13 +140,13 @@ namespace HelixToolkit.UWP
             }
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
-                itemsContainer?.Items.Clear();
+                Items.Clear();
                 var node = SceneNode as GroupNode;
                 node.Clear();
                 AttachChildren(sender as IList);
                 if (OctreeManager != null)
                 {
-                    itemsContainer?.Items.Add(OctreeManager);
+                    Items.Add(OctreeManager);
                 }
             }
             else if (e.NewItems != null)
@@ -166,9 +163,9 @@ namespace HelixToolkit.UWP
             var node = SceneNode as GroupNode;
             foreach (Element3D c in children)
             {
-                if (node.AddChildNode(c) && itemsContainer != null)
+                if (node.AddChildNode(c))
                 {
-                    itemsContainer.Items.Add(c);
+                    Items.Add(c);
                 }
             }
         }
@@ -181,9 +178,9 @@ namespace HelixToolkit.UWP
             var node = SceneNode as GroupNode;
             foreach (Element3D c in children)
             {
-                if (node.RemoveChildNode(c) && itemsContainer != null)
+                if (node.RemoveChildNode(c))
                 {
-                    itemsContainer.Items.Remove(c);
+                    Items.Remove(c);
                 }
             }
         }

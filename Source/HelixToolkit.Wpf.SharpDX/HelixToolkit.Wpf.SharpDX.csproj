@@ -258,6 +258,7 @@
     <None Include="Resources\psEffectGaussianBlurHorizontal.cso" />
     <None Include="Resources\psEffectGaussianBlurVertical.cso" />
     <None Include="Resources\psEffectMeshBorderHighlight.cso" />
+    <None Include="Resources\psEffectMeshDiffuseXRayGrid.cso" />
     <None Include="Resources\psEffectMeshXRay.cso" />
     <None Include="Resources\psEffectMeshXRayGrid.cso" />
     <None Include="Resources\psEffectOutlineQuad.cso" />

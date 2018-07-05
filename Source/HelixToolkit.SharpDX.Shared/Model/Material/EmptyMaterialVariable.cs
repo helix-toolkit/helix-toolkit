@@ -9,6 +9,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 namespace HelixToolkit.UWP.Model
 #endif
 {
+    using Core;
     using Render;
     using Shaders;
     public sealed class EmptyMaterialVariable : IEffectMaterialVariables
@@ -74,6 +75,11 @@ namespace HelixToolkit.UWP.Model
             Dispose(true);
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
+        }
+
+        public ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context)
+        {
+            return MaterialPass;
         }
         #endregion
     }

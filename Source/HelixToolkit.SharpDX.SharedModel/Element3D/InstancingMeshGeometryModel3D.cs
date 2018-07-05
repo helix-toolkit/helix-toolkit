@@ -29,13 +29,13 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 var d = s as InstancingMeshGeometryModel3D;
 #if NETFX_CORE
-                if(e.OldValue != null && d.itemsContainer != null)
+                if(e.OldValue != null)
                 {
-                    d.itemsContainer.Items.Remove(e.OldValue);
+                    d.Items.Remove(e.OldValue);
                 }
-                if(e.NewValue != null && d.itemsContainer != null)
+                if(e.NewValue != null)
                 {
-                    d.itemsContainer.Items.Add(e.NewValue);
+                    d.Items.Add(e.NewValue);
                 }
 #else
                 if (e.OldValue != null)
@@ -105,9 +105,9 @@ namespace HelixToolkit.Wpf.SharpDX
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            if(OctreeManager != null && !itemsContainer.Items.Contains(OctreeManager))
+            if(OctreeManager != null && !Items.Contains(OctreeManager))
             {
-                itemsContainer.Items.Add(OctreeManager);
+                Items.Add(OctreeManager);
             }
         }
 #endif
