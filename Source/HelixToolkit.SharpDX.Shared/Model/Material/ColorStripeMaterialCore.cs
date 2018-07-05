@@ -18,12 +18,8 @@ namespace HelixToolkit.UWP.Model
     using Render;
     using ShaderManager;
     using Shaders;
-    using ShaderManager;
     using Utilities;
     using Core;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
-    using Utilities;
 
     public class ColorStripeMaterialCore : MaterialCore
     {

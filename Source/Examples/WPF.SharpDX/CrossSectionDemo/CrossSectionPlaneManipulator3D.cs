@@ -5,10 +5,9 @@ using Point = System.Windows.Point;
 using MatrixTransform3D = System.Windows.Media.Media3D.MatrixTransform3D;
 using Matrix = System.Numerics.Matrix4x4;
 using System;
-using System.Windows.Input;
+using HelixToolkit.Mathematics;
 using HelixToolkit.Wpf.SharpDX.Model.Scene;
 using System.Collections.Generic;
-using HelixToolkit.Mathematics;
 
 namespace CrossSectionDemo
 {

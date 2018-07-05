@@ -17,6 +17,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Core;
     using Render;
     using Shaders;
+    using Core;
     /// <summary>
     /// 
     /// </summary>
