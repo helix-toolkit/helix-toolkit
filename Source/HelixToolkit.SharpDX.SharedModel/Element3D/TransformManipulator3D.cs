@@ -121,14 +121,45 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 (d as TransformManipulator3D).xrayEffect.IsRendering = (bool)e.NewValue;
             }));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether determine target center automatically. Default is using BoundingBox.Center.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable automatic centering]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableAutoCentering
+        {
+            get { return (bool)GetValue(EnableAutoCenteringProperty); }
+            set { SetValue(EnableAutoCenteringProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableAutoCenteringProperty =
+            DependencyProperty.Register("EnableAutoCentering", typeof(bool), typeof(TransformManipulator3D), new PropertyMetadata(false));
+
+
+
+        public double SizeScale
+        {
+            get { return (double)GetValue(SizeScaleProperty); }
+            set { SetValue(SizeScaleProperty, value); }
+        }
+
+        public static readonly DependencyProperty SizeScaleProperty =
+            DependencyProperty.Register("SizeScale", typeof(double), typeof(TransformManipulator3D), new PropertyMetadata(1.0, (d,e) =>
+            {
+                (d as TransformManipulator3D).sizeScale = (double)e.NewValue;
+            }));
+
         #endregion
+        #region Variables
         private readonly MeshGeometryModel3D translationX, translationY, translationZ;
         private readonly MeshGeometryModel3D rotationX, rotationY, rotationZ;
         private readonly MeshGeometryModel3D scaleX, scaleY, scaleZ;
-        private readonly GroupModel3D translationGroup, rotationGroup, scaleGroup;
+        private readonly GroupModel3D translationGroup, rotationGroup, scaleGroup, ctrlGroup;
         private readonly Element3D xrayEffect;
-
-        private Matrix translationMatrix = Matrix.Identity;
+        private Vector3 centerOffset = Vector3.Zero;
+        private Vector3 translationVector = Vector3.Zero;
         private Matrix rotationMatrix = Matrix.Identity;
         private Matrix scaleMatrix = Matrix.Identity;
         private Matrix targetMatrix = Matrix.Identity;
@@ -141,7 +172,8 @@ namespace HelixToolkit.Wpf.SharpDX
         private Vector3 direction;
         private Vector3 currentHit;
         private bool isCaptured = false;
-
+        private double sizeScale = 1;
+        #endregion
         private enum ManipulationType
         {
             None, TranslationX, TranslationY, TranslationZ, RotationX, RotationY, RotationZ, ScaleX, ScaleY, ScaleZ
@@ -153,7 +185,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             var rotationYMatrix = Matrix.RotationZ((float)Math.PI / 2);
             var rotationZMatrix = Matrix.RotationY(-(float)Math.PI / 2);
-
+            ctrlGroup = new GroupModel3D();
             #region Translation Models
             translationX = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
             translationY = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Green, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
@@ -188,7 +220,7 @@ namespace HelixToolkit.Wpf.SharpDX
             translationGroup.Children.Add(translationX);
             translationGroup.Children.Add(translationY);
             translationGroup.Children.Add(translationZ);
-            Children.Add(translationGroup);
+            ctrlGroup.Children.Add(translationGroup);
             #endregion
             #region Rotation Models
             rotationX = new MeshGeometryModel3D() { Geometry = RotationXGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
@@ -224,7 +256,7 @@ namespace HelixToolkit.Wpf.SharpDX
             rotationGroup.Children.Add(rotationX);
             rotationGroup.Children.Add(rotationY);
             rotationGroup.Children.Add(rotationZ);
-            Children.Add(rotationGroup);
+            ctrlGroup.Children.Add(rotationGroup);
             #endregion
             #region Scaling Models
             scaleX = new MeshGeometryModel3D() { Geometry = ScalingGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
@@ -260,8 +292,9 @@ namespace HelixToolkit.Wpf.SharpDX
             scaleGroup.Children.Add(scaleX);
             scaleGroup.Children.Add(scaleY);
             scaleGroup.Children.Add(scaleZ);
-            Children.Add(scaleGroup);
+            ctrlGroup.Children.Add(scaleGroup);
             #endregion
+            Children.Add(ctrlGroup);
             xrayEffect = new PostEffectMeshXRayGrid()
             {
                 EffectName = "ManipulatorXRayGrid",
@@ -270,6 +303,21 @@ namespace HelixToolkit.Wpf.SharpDX
             };
             (xrayEffect.SceneNode as NodePostEffectXRayGrid).XRayDrawingPassName = DefaultPassNames.EffectMeshDiffuseXRayGridP3;
             Children.Add(xrayEffect);
+            SceneNode.OnAttached += SceneNode_OnAttached;
+            SceneNode.OnDetached += SceneNode_OnDetached;
+        }
+
+        private void SceneNode_OnDetached(object sender, EventArgs e)
+        {
+            if (target != null)
+            {
+                target.SceneNode.OnBoundChanged -= SceneNode_OnBoundChanged;
+            }
+        }
+
+        private void SceneNode_OnAttached(object sender, EventArgs e)
+        {
+            OnTargetChanged(target);
         }
         #region Handle Translation
         private void Translation_Mouse3DDown(object sender, MouseDown3DEventArgs e)
@@ -326,21 +374,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 switch (manipulationType)
                 {
                     case ManipulationType.TranslationX:
-                        translationMatrix.TranslationVector += new Vector3(moveDir.X, 0, 0);
+                        translationVector += new Vector3(moveDir.X, 0, 0);
                         break;
                     case ManipulationType.TranslationY:
-                        translationMatrix.TranslationVector += new Vector3(0, moveDir.Y, 0);
+                        translationVector += new Vector3(0, moveDir.Y, 0);
                         break;
                     case ManipulationType.TranslationZ:
-                        translationMatrix.TranslationVector += new Vector3(0, 0, moveDir.Z);
+                        translationVector += new Vector3(0, 0, moveDir.Z);
                         break;
                 }
-
-#if !NETFX_CORE
-                Transform = new Media3D.MatrixTransform3D(translationMatrix.ToMatrix3D());
-#else
-                Transform3D = translationMatrix;
-#endif
+                OnUpdateSelfTransform();
                 OnUpdateTargetMatrix();
             }
 
@@ -396,7 +439,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
             var hit = currentViewport.UnProjectOnPlane(e.Position.ToVector2(), lastHitPosWS, normal);
-            var position = this.translationMatrix.TranslationVector;
+            var position = this.translationVector + centerOffset;
             if (hit.HasValue)
             {
                 var v = Vector3.Normalize(currentHit - position);
@@ -499,6 +542,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         scaleMatrix.M33 += moveDir.Z;
                         break;
                 }
+                
                 OnUpdateTargetMatrix();
             }
         }
@@ -512,38 +556,60 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void ResetTransforms()
         {
-            translationMatrix = scaleMatrix = rotationMatrix = targetMatrix = Matrix.Identity;
-#if !NETFX_CORE
-            Transform = new Media3D.MatrixTransform3D(translationMatrix.ToMatrix3D());
-#else
-            this.Transform3D = translationMatrix;
-#endif
+            scaleMatrix = rotationMatrix = targetMatrix = Matrix.Identity;
+            translationVector = Vector3.Zero;
+            OnUpdateSelfTransform();
         }
-
+        /// <summary>
+        /// Called when [target changed]. Use target boundingbox center as Manipulator center
+        /// </summary>
+        /// <param name="target">The target.</param>
         private void OnTargetChanged(Element3D target)
         {
             Debug.WriteLine("OnTargetChanged");
+            if(target != null)
+            {
+                target.SceneNode.OnBoundChanged -= SceneNode_OnBoundChanged;
+            }
             this.target = target;
             if (target == null)
             {
                 ResetTransforms();
+                return;
             }
-            var m = Matrix.Identity;
-#if !NETFX_CORE
-            if (target.Transform != null)
-            { m = target.Transform.Value.ToMatrix(); }
-#else
-            m = target.Transform3D;
-#endif
+            else
+            {
+                target.SceneNode.OnBoundChanged += SceneNode_OnBoundChanged;
+                SceneNode_OnBoundChanged(target.SceneNode, null);
+                SceneNode_OnTransformChanged(target.SceneNode, new TransformArgs(target.SceneNode.ModelMatrix));
+            }
+        }
+        /// <summary>
+        /// Scenes the node on bound changed. Use target boundingbox center as Manipulator center by default
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
+        protected virtual void SceneNode_OnBoundChanged(object sender, BoundChangeArgs<BoundingBox> e)
+        {
+            if (EnableAutoCentering)
+            {
+                centerOffset = target.Bounds.Center;
+                OnUpdateSelfTransform();
+            }
+            else
+            {
+                centerOffset = Vector3.Zero;
+            }
+        }
+
+        private void SceneNode_OnTransformChanged(object sender, TransformArgs e)
+        {
+            var m = e.Transform;
             m.Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation);
             scaleMatrix = Matrix.Scaling(scale);
             rotationMatrix = Matrix.RotationQuaternion(rotation);
-            translationMatrix = Matrix.Translation(translation);
-#if !NETFX_CORE
-            Transform = new Media3D.MatrixTransform3D(translationMatrix.ToMatrix3D());
-#else
-            Transform3D = m;
-#endif
+            translationVector = translation;
+            OnUpdateSelfTransform();
             OnUpdateTargetMatrix();
         }
 
@@ -553,11 +619,22 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            targetMatrix = scaleMatrix * rotationMatrix * translationMatrix;
+            targetMatrix = Matrix.Translation(-centerOffset) * scaleMatrix * rotationMatrix * Matrix.Translation(centerOffset) * Matrix.Translation(translationVector);
 #if !NETFX_CORE
             target.Transform = new Media3D.MatrixTransform3D(targetMatrix.ToMatrix3D());
 #else
             target.Transform3D = targetMatrix;
+#endif
+        }
+
+        private void OnUpdateSelfTransform()
+        {
+            var m = Matrix.Translation(centerOffset + translationVector);
+            m.M11 = m.M22 = m.M33 = (float)sizeScale;
+#if !NETFX_CORE
+            ctrlGroup.Transform = new Media3D.MatrixTransform3D(m.ToMatrix3D());
+#else
+            ctrlGroup.Transform3D = m;
 #endif
         }
 
