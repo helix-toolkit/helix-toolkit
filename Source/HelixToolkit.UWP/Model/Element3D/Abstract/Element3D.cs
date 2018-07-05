@@ -61,11 +61,6 @@ namespace HelixToolkit.UWP
             set { this.SetValue(Transform3DProperty, value); }
         }
         #endregion
-
-        /// <summary>
-        /// The items container
-        /// </summary>
-        protected ItemsControl itemsContainer { private set; get; }
         private static readonly Size oneSize = new Size(1, 1);
 
         /// <summary>
@@ -95,15 +90,15 @@ namespace HelixToolkit.UWP
             return oneSize;
         }
 
-        /// <summary>
-        /// Invoked whenever application code or internal processes (such as a rebuilding layout pass) call ApplyTemplate. In simplest terms, this means the method is called just before a UI element displays in your app. Override this method to influence the default post-template logic of a class.
-        /// </summary>
-        protected override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            itemsContainer = GetTemplateChild("PART_ItemsContainer") as ItemsControl;
-            itemsContainer?.Items.Clear();
-        }
+        ///// <summary>
+        ///// Invoked whenever application code or internal processes(such as a rebuilding layout pass) call ApplyTemplate.In simplest terms, this means the method is called just before a UI element displays in your app. Override this method to influence the default post-template logic of a class.
+        ///// </summary>
+        //protected override void OnApplyTemplate()
+        //{
+        //    base.OnApplyTemplate();
+        //    itemsContainer = GetTemplateChild("PART_ItemsContainer") as ItemsControl;
+        //    itemsContainer?.Items.Clear();
+        //}
 
         #region Events
         public event EventHandler<MouseDown3DEventArgs> OnMouse3DDown;
