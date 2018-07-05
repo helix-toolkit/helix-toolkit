@@ -447,7 +447,7 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
-        /// Gets the ps effect x ray grid.
+        /// Gets the ps effect x ray grid. This is based on BlinnPhong
         /// </summary>
         /// <value>
         /// The ps effect x ray grid.
@@ -457,6 +457,19 @@ namespace HelixToolkit.UWP.Shaders
             get
             {
                 return UWPShaderBytePool.Read("psEffectMeshXRayGrid");
+            }
+        }
+        /// <summary>
+        /// Gets the ps effect diffuse x ray grid.
+        /// </summary>
+        /// <value>
+        /// The ps effect diffuse x ray grid.
+        /// </value>
+        public static byte[] PSEffectDiffuseXRayGrid
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psEffectMeshDiffuseXRayGrid");
             }
         }
 #if !NETFX_CORE
@@ -677,10 +690,15 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription PSEffectLUMA = new ShaderDescription(nameof(PSEffectLUMA), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSEffectLUMA);
         /// <summary>
-        /// The ps effect x ray grid
+        /// The ps effect x ray grid, this is based on BlinnPhong
         /// </summary>
         public static ShaderDescription PSEffectXRayGrid = new ShaderDescription(nameof(PSEffectXRayGrid), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSEffectXRayGrid);
+        /// <summary>
+        /// The ps effect x ray grid, this is based on diffuse shading
+        /// </summary>
+        public static ShaderDescription PSEffectDiffuseXRayGrid = new ShaderDescription(nameof(PSEffectDiffuseXRayGrid), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSEffectDiffuseXRayGrid);
 #if !NETFX_CORE
         /// <summary>
         /// The ps screen dup

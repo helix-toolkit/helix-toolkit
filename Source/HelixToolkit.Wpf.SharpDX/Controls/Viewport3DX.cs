@@ -1304,7 +1304,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (this.ZoomExtentsWhenLoaded)
             {
-                this.ZoomExtents();
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.ContextIdle, new Action(() => 
+                {
+                    this.ZoomExtents();
+                }));              
             }
             FormMouseMove += Viewport3DX_FormMouseMove;
         }

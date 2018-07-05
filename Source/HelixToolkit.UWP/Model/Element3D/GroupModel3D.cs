@@ -14,5 +14,9 @@ namespace HelixToolkit.UWP
     /// <seealso cref="HelixToolkit.UWP.IHitable" />
     public class GroupModel3D : GroupElement3D, IHitable
     {
+        public GroupModel3D()
+        {
+            this.DefaultStyleKey = typeof(GroupModel3D);
+        }
     }
 }

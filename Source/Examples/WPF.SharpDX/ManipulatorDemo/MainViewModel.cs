@@ -25,10 +25,13 @@ namespace ManipulatorDemo
     using Vector3 = SharpDX.Vector3;
     using Colors = System.Windows.Media.Colors;
     using Color4 = SharpDX.Color4;
+    using System.Collections.Generic;
+    using System.Windows.Input;
 
     public class MainViewModel : BaseViewModel
     {
         public MeshGeometry3D Model { get; private set; }
+        public MeshGeometry3D Model2 { private set; get; }
         public LineGeometry3D Lines { get; private set; }
         public LineGeometry3D Grid { get; private set; }
 
@@ -46,6 +49,10 @@ namespace ManipulatorDemo
         public Color DirectionalLightColor { get; private set; }
         public Color AmbientLightColor { get; private set; }
 
+        public Element3D Target { set; get; }
+        public Vector3 CenterOffset { set; get; }
+
+        public ICommand ResetTransformsCommand { private set; get; }
 
         public MainViewModel()
         {
@@ -73,14 +80,22 @@ namespace ManipulatorDemo
             b1.AddSphere(new Vector3(0, 0, 0), 0.5);
             b1.AddBox(new Vector3(0, 0, 0), 1, 0.5, 1.5, BoxFaces.All);
             this.Model = b1.ToMeshGeometry3D();
-
+            var m1 = Load3ds("suzanne.3ds");
+            this.Model2 = m1[0].Geometry as MeshGeometry3D;
+            //Manully set an offset for test
+            for(int i=0; i < Model2.Positions.Count; ++i)
+            {
+                Model2.Positions[i] = Model2.Positions[i] + new Vector3(2, 3, 4);
+            }
+            Model2.UpdateBounds();
+            
             // lines model3d
             var e1 = new LineBuilder();
             e1.AddBox(new Vector3(0, 0, 0), 1, 0.5, 1.5);
             this.Lines = e1.ToLineGeometry3D();
 
             // model trafos
-            this.Model1Transform = CreateAnimatedTransform(new Vector3D(0, 0, 0), new Vector3D(1, 1, 1), 20);
+            this.Model1Transform = new TranslateTransform3D(0, 0, 0);
             this.Model2Transform = new TranslateTransform3D(-3, 0, 0);
             this.Model3Transform = new TranslateTransform3D(+3, 0, 0);
 
@@ -91,26 +106,42 @@ namespace ManipulatorDemo
 
             var dr = Colors.DarkRed;
             Console.WriteLine(dr);
+            ResetTransformsCommand = new RelayCommand((o) => 
+            {
+                this.Model1Transform = new TranslateTransform3D(0, 0, 0);
+                this.Model2Transform = new TranslateTransform3D(-3, 0, 0);
+                this.Model3Transform = new TranslateTransform3D(+3, 0, 0);
+            });
         }
 
-        private Transform3D CreateAnimatedTransform(Vector3D translate, Vector3D axis, double speed = 4)
+        public void OnMouseDown3DHandler(object sender, MouseDown3DEventArgs e)
         {
-            var animationTrafo = new Transform3DGroup();
-            animationTrafo.Children.Add(new TranslateTransform3D(translate));
-
-            var rotateAnimation = new Rotation3DAnimation
+            if(e.HitTestResult != null && e.HitTestResult.ModelHit is MeshGeometryModel3D m && (m.Geometry == Model || m.Geometry == Model2))
             {
-                RepeatBehavior = RepeatBehavior.Forever,
-                By = new AxisAngleRotation3D(axis, 90),
-                Duration = TimeSpan.FromSeconds(speed / 4),
-                IsCumulative = true,
-            };
+                Target = null;
+                Target = e.HitTestResult.ModelHit as Element3D;
+                CenterOffset = m.Geometry.Bound.Center;
+            }
+        }
 
-            var rotateTransform = new RotateTransform3D();
-            rotateTransform.BeginAnimation(RotateTransform3D.RotationProperty, rotateAnimation);
-            animationTrafo.Children.Add(rotateTransform);
-
-            return animationTrafo;
+        public List<Object3D> Load3ds(string path)
+        {
+            if (path.EndsWith(".obj", StringComparison.CurrentCultureIgnoreCase))
+            {
+                var reader = new ObjReader();
+                var list = reader.Read(path);
+                return list;
+            }
+            else if (path.EndsWith(".3ds", StringComparison.CurrentCultureIgnoreCase))
+            {
+                var reader = new StudioReader();
+                var list = reader.Read(path);
+                return list;
+            }
+            else
+            {
+                return new List<Object3D>();
+            }
         }
     }
 }

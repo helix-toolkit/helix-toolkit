@@ -33,6 +33,7 @@ namespace ManipulatorDemo
         {
             InitializeComponent();
             this.DataContext  = new MainViewModel();
+
         }
     }
 }
