@@ -122,22 +122,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d as TransformManipulator3D).xrayEffect.IsRendering = (bool)e.NewValue;
             }));
 
-        /// <summary>
-        /// Gets or sets a value indicating whether determine target center automatically. Default is using BoundingBox.Center.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [enable automatic centering]; otherwise, <c>false</c>.
-        /// </value>
-        public bool EnableAutoCentering
+
+
+        public Vector3 CenterOffset
         {
-            get { return (bool)GetValue(EnableAutoCenteringProperty); }
-            set { SetValue(EnableAutoCenteringProperty, value); }
+            get { return (Vector3)GetValue(CenterOffsetProperty); }
+            set { SetValue(CenterOffsetProperty, value); }
         }
 
-        public static readonly DependencyProperty EnableAutoCenteringProperty =
-            DependencyProperty.Register("EnableAutoCentering", typeof(bool), typeof(TransformManipulator3D), new PropertyMetadata(false));
-
-
+        public static readonly DependencyProperty CenterOffsetProperty =
+            DependencyProperty.Register("CenterOffset", typeof(Vector3), typeof(TransformManipulator3D), new PropertyMetadata(Vector3.Zero, (d,e)=> 
+            {
+                (d as TransformManipulator3D).centerOffset = (Vector3)e.NewValue;
+                (d as TransformManipulator3D).OnUpdateSelfTransform();
+            }));
 
         public double SizeScale
         {
@@ -309,10 +307,10 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void SceneNode_OnDetached(object sender, EventArgs e)
         {
-            if (target != null)
-            {
-                target.SceneNode.OnBoundChanged -= SceneNode_OnBoundChanged;
-            }
+            //if (target != null)
+            //{
+            //    target.SceneNode.OnTransformChanged -= SceneNode_OnTransformChanged;
+            //}
         }
 
         private void SceneNode_OnAttached(object sender, EventArgs e)
@@ -567,38 +565,19 @@ namespace HelixToolkit.Wpf.SharpDX
         private void OnTargetChanged(Element3D target)
         {
             Debug.WriteLine("OnTargetChanged");
-            if(target != null)
-            {
-                target.SceneNode.OnBoundChanged -= SceneNode_OnBoundChanged;
-            }
+            //if(target != null)
+            //{
+            //    target.SceneNode.OnTransformChanged -= SceneNode_OnTransformChanged;
+            //}
             this.target = target;
             if (target == null)
-            {
+            {                
                 ResetTransforms();
-                return;
             }
             else
             {
-                target.SceneNode.OnBoundChanged += SceneNode_OnBoundChanged;
-                SceneNode_OnBoundChanged(target.SceneNode, null);
+                //target.SceneNode.OnTransformChanged += SceneNode_OnTransformChanged;
                 SceneNode_OnTransformChanged(target.SceneNode, new TransformArgs(target.SceneNode.ModelMatrix));
-            }
-        }
-        /// <summary>
-        /// Scenes the node on bound changed. Use target boundingbox center as Manipulator center by default
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The e.</param>
-        protected virtual void SceneNode_OnBoundChanged(object sender, BoundChangeArgs<BoundingBox> e)
-        {
-            if (EnableAutoCentering)
-            {
-                centerOffset = target.Bounds.Center;
-                OnUpdateSelfTransform();
-            }
-            else
-            {
-                centerOffset = Vector3.Zero;
             }
         }
 

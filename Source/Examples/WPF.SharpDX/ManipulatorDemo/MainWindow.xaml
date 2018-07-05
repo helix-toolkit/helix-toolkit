@@ -55,7 +55,7 @@
 
             <hx:MeshGeometryModel3D
                 x:Name="model1"
-                Geometry="{Binding Model}"
+                Geometry="{Binding Model2}"
                 Material="{Binding Material1}"
                 Transform="{Binding Model1Transform}" />
 
@@ -64,7 +64,10 @@
                 Geometry="{Binding Model}"
                 Material="{Binding Material2}"
                 Transform="{Binding Model2Transform}" />
-            <hx:TransformManipulator3D x:Name="manipulator" Target="{Binding Target}" />
+            <hx:TransformManipulator3D
+                x:Name="manipulator"
+                CenterOffset="{Binding CenterOffset}"
+                Target="{Binding Target}" />
             <hx:DraggableGeometryModel3D
                 x:Name="model3"
                 Geometry="{Binding Model}"
