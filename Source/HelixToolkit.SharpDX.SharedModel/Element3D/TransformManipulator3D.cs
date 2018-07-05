@@ -171,6 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX
         private Vector3 currentHit;
         private bool isCaptured = false;
         private double sizeScale = 1;
+        private Color4 currentColor;
         #endregion
         private enum ManipulationType
         {
@@ -345,6 +346,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 isCaptured = false;
                 return;
             }
+            var material = ((e.HitTestResult.ModelHit as MeshGeometryModel3D).Material as DiffuseMaterial);
+            currentColor = material.DiffuseColor;
+            material.DiffuseColor = Color.Yellow;
             currentViewport = e.Viewport;
             var cameraNormal = Vector3.Normalize(e.Viewport.Camera.CameraInternal.LookDirection);
             this.lastHitPosWS = e.HitTestResult.PointHit;
@@ -417,6 +421,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 isCaptured = false;
                 return;
             }
+            var material = ((e.HitTestResult.ModelHit as MeshGeometryModel3D).Material as DiffuseMaterial);
+            currentColor = material.DiffuseColor;
+            material.DiffuseColor = Color.Yellow;
             currentViewport = e.Viewport;
             normal = Vector3.Normalize(e.Viewport.Camera.CameraInternal.LookDirection);
             this.lastHitPosWS = e.HitTestResult.PointHit;
@@ -504,6 +511,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 isCaptured = false;
                 return;
             }
+            var material = ((e.HitTestResult.ModelHit as MeshGeometryModel3D).Material as DiffuseMaterial);
+            currentColor = material.DiffuseColor;
+            material.DiffuseColor = Color.Yellow;
             currentViewport = e.Viewport;
             var cameraNormal = Vector3.Normalize(e.Viewport.Camera.CameraInternal.LookDirection);
             this.lastHitPosWS = e.HitTestResult.PointHit;
@@ -548,6 +558,11 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void Manipulation_Mouse3DUp(object sender, MouseUp3DEventArgs e)
         {
+            if (isCaptured)
+            {
+                var material = ((e.HitTestResult.ModelHit as MeshGeometryModel3D).Material as DiffuseMaterial);
+                material.DiffuseColor = currentColor;
+            }
             manipulationType = ManipulationType.None;
             isCaptured = false;
         }
