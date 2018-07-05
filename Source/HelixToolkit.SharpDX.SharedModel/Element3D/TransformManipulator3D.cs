@@ -538,19 +538,32 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 var moveDir = hit.Value - currentHit;
                 currentHit = hit.Value;
+                var orgAxis = Vector3.Zero;
+                float scale = 1;
                 switch (manipulationType)
                 {
                     case ManipulationType.ScaleX:
-                        scaleMatrix.M11 += moveDir.X;
+                        orgAxis = Vector3.UnitX;
+                        scale = moveDir.X;
                         break;
                     case ManipulationType.ScaleY:
-                        scaleMatrix.M22 += moveDir.Y;
+                        orgAxis = Vector3.UnitY;
+                        scale = moveDir.Y;
                         break;
                     case ManipulationType.ScaleZ:
-                        scaleMatrix.M33 += moveDir.Z;
+                        orgAxis = Vector3.UnitZ;
+                        scale = moveDir.Z;
                         break;
                 }
-                
+                var axisX = Vector3.TransformNormal(Vector3.UnitX, rotationMatrix);
+                var axisY = Vector3.TransformNormal(Vector3.UnitY, rotationMatrix);
+                var axisZ = Vector3.TransformNormal(Vector3.UnitZ, rotationMatrix);
+                var dotX = Vector3.Dot(axisX, orgAxis);
+                var dotY = Vector3.Dot(axisY, orgAxis);
+                var dotZ = Vector3.Dot(axisZ, orgAxis);
+                scaleMatrix.M11 += scale * Math.Abs(dotX);
+                scaleMatrix.M22 += scale * Math.Abs(dotY);
+                scaleMatrix.M33 += scale * Math.Abs(dotZ);
                 OnUpdateTargetMatrix();
             }
         }
@@ -604,7 +617,7 @@ namespace HelixToolkit.Wpf.SharpDX
             rotationMatrix = Matrix.RotationQuaternion(rotation);
             translationVector = translation;
             OnUpdateSelfTransform();
-            OnUpdateTargetMatrix();
+            //OnUpdateTargetMatrix();
         }
 
         private void OnUpdateTargetMatrix()
