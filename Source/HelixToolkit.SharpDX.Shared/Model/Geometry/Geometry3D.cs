@@ -227,6 +227,15 @@ namespace HelixToolkit.Wpf.SharpDX
             octreeDirty = true;
         }
         /// <summary>
+        /// Manuals the set octree.
+        /// </summary>
+        /// <param name="octree">The octree.</param>
+        public void ManualSetOctree(IOctreeBasic octree)
+        {
+            Octree = octree;
+            octreeDirty = false;
+        }
+        /// <summary>
         /// Manually call this function to update AABB and Bounding Sphere
         /// </summary>
         public virtual void UpdateBounds()
