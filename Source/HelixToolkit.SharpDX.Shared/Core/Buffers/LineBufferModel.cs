@@ -21,6 +21,8 @@ namespace HelixToolkit.UWP.Core
     /// <typeparam name="VertexStruct"></typeparam>
     public abstract class LineGeometryBufferModel<VertexStruct> : GeometryBufferModel where VertexStruct : struct
     {
+        private static readonly VertexStruct[] emptyVertices = new VertexStruct[0];
+        private static readonly int[] emptyIndices = new int[0];
         /// <summary>
         /// 
         /// </summary>
@@ -103,7 +105,8 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                buffer.DisposeAndClear();
+                //buffer.DisposeAndClear();
+                buffer.UploadDataToBuffer(context, emptyVertices, 0);
             }
         }
         /// <summary>
@@ -121,7 +124,8 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                buffer.DisposeAndClear();
+                // buffer.DisposeAndClear();
+                buffer.UploadDataToBuffer(context, emptyIndices, 0);
             }
         }
         /// <summary>

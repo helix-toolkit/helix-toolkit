@@ -21,6 +21,7 @@ namespace HelixToolkit.UWP.Core
     /// <typeparam name="VertexStruct">The type of the ertex structure.</typeparam>
     public abstract class BillboardBufferModel<VertexStruct> : GeometryBufferModel, IBillboardBufferModel where VertexStruct : struct
     {
+        private static readonly VertexStruct[] emptyVerts = new VertexStruct[0];
         /// <summary>
         /// Called when [build vertex array].
         /// </summary>
@@ -95,7 +96,8 @@ namespace HelixToolkit.UWP.Core
             else
             {
                 textureView = null;
-                buffer.DisposeAndClear();
+                buffer.UploadDataToBuffer(context, emptyVerts, 0);
+                //buffer.DisposeAndClear();
             }
         }
 

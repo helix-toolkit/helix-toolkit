@@ -21,6 +21,7 @@ namespace HelixToolkit.UWP.Core
     /// <typeparam name="VertexStruct"></typeparam>
     public abstract class PointGeometryBufferModel<VertexStruct> : GeometryBufferModel where VertexStruct : struct
     {
+        private static readonly VertexStruct[] emptyVerts = new VertexStruct[0];
         /// <summary>
         /// Called when [build vertex array].
         /// </summary>
@@ -77,7 +78,8 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                buffer.DisposeAndClear();
+                //buffer.DisposeAndClear();
+                buffer.UploadDataToBuffer(context, emptyVerts, 0);
             }
         }
         /// <summary>

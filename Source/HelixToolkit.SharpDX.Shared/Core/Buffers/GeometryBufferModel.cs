@@ -271,16 +271,6 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected virtual bool OnAttachBuffer(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot)
         {
-            context.InputLayout = vertexLayout;
-            context.PrimitiveTopology = Topology;
-            if (IndexBuffer != null)
-            {
-                context.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, IndexBuffer.Offset);
-            }
-            else
-            {
-                context.SetIndexBuffer(null, Format.Unknown, 0);
-            }
             if (VertexBuffer.Length > 0)
             {
                 if (VertexBuffer.Length == vertexBufferBindings.Length)
@@ -293,6 +283,16 @@ namespace HelixToolkit.UWP.Core
                     return false;
                 }
             }
+            if (IndexBuffer != null)
+            {
+                context.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, IndexBuffer.Offset);
+            }
+            else
+            {
+                context.SetIndexBuffer(null, Format.Unknown, 0);
+            }
+            context.InputLayout = vertexLayout;
+            context.PrimitiveTopology = Topology;
             return true;
         }
 
