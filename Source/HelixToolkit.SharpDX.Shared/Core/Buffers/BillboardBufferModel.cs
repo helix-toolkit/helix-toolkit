@@ -51,6 +51,7 @@ namespace HelixToolkit.UWP.Core
         /// Initializes a new instance of the <see cref="BillboardBufferModel{VertexStruct}"/> class.
         /// </summary>
         /// <param name="structSize">Size of the structure.</param>
+        /// <param name="dynamic"></param>
         public BillboardBufferModel(int structSize, bool dynamic = false)
             : base(PrimitiveTopology.PointList,
                   dynamic ? new DynamicBufferProxy(structSize, BindFlags.VertexBuffer) : new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer) as IElementsBufferProxy,
