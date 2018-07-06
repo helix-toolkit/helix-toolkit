@@ -168,8 +168,7 @@ namespace HelixToolkit.UWP.Utilities
             }
             else
             {
-                DataStream stream;
-                context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out stream);
+                context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
                 using (stream)
                 {
                     stream.WriteRange(data.GetArrayByType(), offset, count);
