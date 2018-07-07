@@ -2,7 +2,9 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
-using SharpDX;
+using System.Numerics;
+using HelixToolkit.Mathematics;
+using Matrix = System.Numerics.Matrix4x4;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.Linq;
@@ -182,8 +184,8 @@ namespace HelixToolkit.Wpf.SharpDX
 
         public TransformManipulator3D()
         {
-            var rotationYMatrix = Matrix.RotationZ((float)Math.PI / 2);
-            var rotationZMatrix = Matrix.RotationY(-(float)Math.PI / 2);
+            var rotationYMatrix = Matrix.CreateRotationZ((float)Math.PI / 2);
+            var rotationZMatrix = Matrix.CreateRotationY(-(float)Math.PI / 2);
             ctrlGroup = new GroupModel3D();
             #region Translation Models
             translationX = new MeshGeometryModel3D() { Geometry = TranslationXGeometry, Material = DiffuseMaterials.Red, CullMode = CullMode.Back, PostEffects = "ManipulatorXRayGrid" };
@@ -469,13 +471,13 @@ namespace HelixToolkit.Wpf.SharpDX
                 switch (manipulationType)
                 {
                     case ManipulationType.RotationX:
-                        rotationMatrix *= Matrix.RotationX(theta);
+                        rotationMatrix *= Matrix.CreateRotationX(theta);
                         break;
                     case ManipulationType.RotationY:
-                        rotationMatrix *= Matrix.RotationY(theta);
+                        rotationMatrix *= Matrix.CreateRotationY(theta);
                         break;
                     case ManipulationType.RotationZ:
-                        rotationMatrix *= Matrix.RotationZ(theta);
+                        rotationMatrix *= Matrix.CreateRotationZ(theta);
                         break;
                 }
                 OnUpdateTargetMatrix();
@@ -612,9 +614,9 @@ namespace HelixToolkit.Wpf.SharpDX
         private void SceneNode_OnTransformChanged(object sender, TransformArgs e)
         {
             var m = e.Transform;
-            m.Decompose(out Vector3 scale, out Quaternion rotation, out Vector3 translation);
-            scaleMatrix = Matrix.Scaling(scale);
-            rotationMatrix = Matrix.RotationQuaternion(rotation);
+            Matrix.Decompose(m, out Vector3 scale, out Quaternion rotation, out Vector3 translation);
+            scaleMatrix = Matrix.CreateScale(scale);
+            rotationMatrix = Matrix.CreateFromQuaternion(rotation);
             translationVector = translation;
             OnUpdateSelfTransform();
             //OnUpdateTargetMatrix();
@@ -626,7 +628,7 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 return;
             }
-            targetMatrix = Matrix.Translation(-centerOffset) * scaleMatrix * rotationMatrix * Matrix.Translation(centerOffset) * Matrix.Translation(translationVector);
+            targetMatrix = Matrix.CreateTranslation(-centerOffset) * scaleMatrix * rotationMatrix * Matrix.CreateTranslation(centerOffset) * Matrix.CreateTranslation(translationVector);
 #if !NETFX_CORE
             target.Transform = new Media3D.MatrixTransform3D(targetMatrix.ToMatrix3D());
 #else
@@ -636,7 +638,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
         private void OnUpdateSelfTransform()
         {
-            var m = Matrix.Translation(centerOffset + translationVector);
+            var m = Matrix.CreateTranslation(centerOffset + translationVector);
             m.M11 = m.M22 = m.M33 = (float)sizeScale;
 #if !NETFX_CORE
             ctrlGroup.Transform = new Media3D.MatrixTransform3D(m.ToMatrix3D());
