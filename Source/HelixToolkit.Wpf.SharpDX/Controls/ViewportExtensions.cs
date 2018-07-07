@@ -370,6 +370,34 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
 
+        public static bool FindNearest(this Viewport3DX viewport, Point position,
+            out Vector3 point, out Vector3 normal, out Element3D model)
+        {
+            point = new Vector3();
+            normal = new Vector3();
+            model = null;
+
+            var camera = viewport.Camera as ProjectionCamera;
+            if (camera == null)
+            {
+                return false;
+            }
+
+            var hits = FindHits(viewport, position);
+            if (hits.Count > 0)
+            {
+                point = hits[0].PointHit;
+                normal = hits[0].NormalAtHit;
+                model = hits[0].ModelHit as Element3D;
+                return true;
+            }
+            else
+            {
+                // check for nearest points in the scene
+                // TODO!!
+                return false;
+            }
+        }
         /// <summary>
         /// Find the coordinates of the nearest point given a 2D position in the viewport
         /// </summary>
@@ -440,11 +468,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="viewport">The viewport.</param>
         /// <param name="point2d">The input point.</param>
         /// <returns>The ray.</returns>
-        public static Ray3D UnProject(this Viewport3DX viewport, Point point2d)
+        public static Ray UnProject(this Viewport3DX viewport, Point point2d)
         {
             //Vector3 p0, p1;
             var r = UnProject(viewport, point2d.ToVector2());//, out p0, out p1);
-            return new Ray3D(r.Position.ToPoint3D(), r.Direction.ToVector3D());
+            return new Ray(r.Position, r.Direction);
         }
 
         /// <summary>
@@ -453,10 +481,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="viewport">The viewport.</param>
         /// <param name="point2d">The point.</param>
         /// <returns>The ray.</returns>
-        public static Ray3D UnProjectToRay(this Viewport3DX viewport, Point point2d)
+        public static Ray UnProjectToRay(this Viewport3DX viewport, Point point2d)
         {
             var r = viewport.UnProject(point2d.ToVector2());            
-            return new Ray3D(r.Position.ToPoint3D(), r.Direction.ToVector3D());
+            return new Ray(r.Position, r.Direction);
         }
 
         /// <summary>
@@ -491,12 +519,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public static Point3D? UnProjectOnPlane(this Viewport3DX viewport, Point p, Point3D position, Vector3D normal)
         {
-            var ray = UnProjectToRay(viewport, p);
-            if (ray == null)
-            {
-                return null;
-            }
-            return ray.PlaneIntersection(position, normal);
+            return UnProjectOnPlane(viewport, p.ToVector2(), position.ToVector3(), normal.ToVector3())?.ToPoint3D();
         }
 
         /// <summary>
@@ -567,6 +590,33 @@ namespace HelixToolkit.Wpf.SharpDX
             return pt;
         }
 
+        public static Point Project(this Viewport3DX viewport, Vector3 point)
+        {
+            var matrix = GetScreenViewProjectionMatrix(viewport);
+            var pointTransformed = Vector3.TransformCoordinate(point, matrix);
+            var pt = new Point(pointTransformed.X, pointTransformed.Y);
+            return pt;
+        }
+
+        /// <summary>
+        /// Finds the intersection with a plane.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <param name="normal">The normal.</param>
+        /// <param name="ray"></param>
+        /// <returns>The intersection point.</returns>
+        public static Vector3? PlaneIntersection(this Ray ray, Vector3 position, Vector3 normal)
+        {
+            // http://paulbourke.net/geometry/planeline/
+            var dn = Vector3.Dot(normal, ray.Direction);
+            if (dn == 0)
+            {
+                return null;
+            }
+
+            var u = Vector3.Dot(normal, position - ray.Position) / dn;
+            return ray.Position + u * ray.Direction;
+        }
         /// <summary>
         /// Prints the specified viewport.
         /// </summary>

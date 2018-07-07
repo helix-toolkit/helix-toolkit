@@ -42,6 +42,11 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
             get { return upDirection; }
         }
 
+        public Vector3 Target
+        {
+            get { return position + lookDirection; }
+        }
+
         private bool createLeftHandSystem = false;
         /// <summary>
         /// Gets or sets a value indicating whether to create a left hand system.

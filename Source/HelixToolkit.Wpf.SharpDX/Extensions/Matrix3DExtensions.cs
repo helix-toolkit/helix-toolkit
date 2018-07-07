@@ -511,5 +511,11 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             return new System.Windows.Point(v.X, v.Y);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static global::SharpDX.Vector2 ToVector2(this System.Windows.Vector v)
+        {
+            return new global::SharpDX.Vector2((float)v.X, (float)v.Y);
+        }
     }
 }

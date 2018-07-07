@@ -30,6 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model.Scene;
     using Model.Scene2D;
     using System.Runtime.CompilerServices;
+    using Vector3 = global::SharpDX.Vector3;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -313,10 +314,10 @@ namespace HelixToolkit.Wpf.SharpDX
             this.cameraController.LeftRightRotationSensitivity = this.LeftRightRotationSensitivity;
             this.cameraController.MaximumFieldOfView = this.MaximumFieldOfView;
             this.cameraController.MinimumFieldOfView = this.MinimumFieldOfView;
-            this.cameraController.ModelUpDirection = this.ModelUpDirection;
+            this.cameraController.ModelUpDirection = this.ModelUpDirection.ToVector3();
             this.cameraController.ZoomDistanceLimitFar = this.ZoomDistanceLimitFar;
             this.cameraController.ZoomDistanceLimitNear = this.ZoomDistanceLimitNear;
-            this.cameraController.FixedRotationPoint = this.FixedRotationPoint;
+            this.cameraController.FixedRotationPoint = this.FixedRotationPoint.ToVector3();
             this.cameraController.FixedRotationPointEnabled = this.FixedRotationPointEnabled;
             #endregion
         }
@@ -361,7 +362,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddMoveForce(double dx, double dy, double dz)
         {
-            this.cameraController.AddMoveForce(new Vector3D(dx, dy, dz));
+            this.cameraController.AddMoveForce(new Vector3((float)dx, (float)dy, (float)dz));
         }
 
         /// <summary>
@@ -372,7 +373,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddMoveForce(Vector3D delta)
         {
-            this.cameraController.AddMoveForce(delta);
+            this.cameraController.AddMoveForce(delta.ToVector3());
         }
 
         /// <summary>
@@ -386,7 +387,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddPanForce(double dx, double dy)
         {
-            this.cameraController.AddPanForce(dx, dy);
+            this.cameraController.AddPanForce((float)dx, (float)dy);
         }
 
         /// <summary>
@@ -397,7 +398,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddPanForce(Vector3D pan)
         {
-            this.cameraController.AddPanForce(pan);
+            this.cameraController.AddPanForce(pan.ToVector3());
         }
 
         /// <summary>
@@ -411,7 +412,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddRotateForce(double dx, double dy)
         {
-            this.cameraController.AddRotateForce(dx, dy);
+            this.cameraController.AddRotateForce((float)dx, (float)dy);
         }
 
         /// <summary>
@@ -422,7 +423,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddZoomForce(double dx)
         {
-            this.cameraController.AddZoomForce(dx);
+            this.cameraController.AddZoomForce((float)dx);
         }
 
         /// <summary>
@@ -436,7 +437,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void AddZoomForce(double dx, Point3D zoomOrigin)
         {
-            this.cameraController.AddZoomForce(dx, zoomOrigin);
+            this.cameraController.AddZoomForce((float)dx, zoomOrigin.ToVector3());
         }
 
         /// <summary>
@@ -849,7 +850,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="aroundPoint">The point to spin around.</param>
         public void StartSpin(Vector speed, Point position, Point3D aroundPoint)
         {
-            cameraController.StartSpin(speed, position, aroundPoint);
+            cameraController.StartSpin(speed.ToVector2(), position, aroundPoint.ToVector3());
         }
 
         /// <summary>
