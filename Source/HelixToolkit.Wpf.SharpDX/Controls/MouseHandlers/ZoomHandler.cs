@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void Zoom(double delta)
         {
-            this.Zoom(delta, this.Camera.Target.ToVector3());
+            this.Zoom(delta, this.Camera.CameraInternal.Target);
         }
 
         /// <summary>

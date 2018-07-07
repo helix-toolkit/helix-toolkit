@@ -108,7 +108,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Started(Point e)
         {
             base.Started(e);
-            this.panPoint3D = this.Camera.Target.ToVector3();
+            this.panPoint3D = this.Camera.CameraInternal.Target;
             if (this.MouseDownNearestPoint3D != null)
             {
                 this.panPoint3D = this.MouseDownNearestPoint3D.Value;
