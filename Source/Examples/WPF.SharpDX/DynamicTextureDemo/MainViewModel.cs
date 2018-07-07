@@ -20,6 +20,8 @@ using Plane = SharpDX.Plane;
 using Vector3 = SharpDX.Vector3;
 using Colors = System.Windows.Media.Colors;
 using Color4 = SharpDX.Color4;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace DynamicTextureDemo
 {
@@ -118,6 +120,9 @@ namespace DynamicTextureDemo
         private Random rnd = new Random();
         private bool isRemoving = true;
         private int removedIndex = 0;
+        private CancellationTokenSource cts = new CancellationTokenSource();
+        private SynchronizationContext context = SynchronizationContext.Current;
+
         public MainViewModel()
         {            // titles
             this.Title = "DynamicTexture Demo";
@@ -176,11 +181,18 @@ namespace DynamicTextureDemo
 
             initialPosition = Model.Positions;
             initialIndicies = Model.Indices;
-
-
-            timer.Interval = TimeSpan.FromMilliseconds(16);
-            timer.Tick += Timer_Tick;
-            timer.Start();
+            var token = cts.Token;
+            Task.Run(() =>
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    Timer_Tick();
+                    Task.Delay(16).Wait();
+                }
+            }, token);
+            //timer.Interval = TimeSpan.FromMilliseconds(16);
+            //timer.Tick += Timer_Tick;
+            //timer.Start();
         }
 
         public static Stream ToStream(System.Drawing.Image image, ImageFormat format)
@@ -207,7 +219,7 @@ namespace DynamicTextureDemo
             BindingOperations.SetBinding(dobj, property, binding);
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick()
         {
             if (DynamicTexture)
             {
@@ -218,16 +230,20 @@ namespace DynamicTextureDemo
                 }
                 texture[texture.Count - 1] = Model.TextureCoordinates[0];
                 Model.TextureCoordinates = texture;
-                if (ReverseInnerRotation)
+                context.Send((o) =>
                 {
-                    var texture1 = new Vector2Collection(texture);
-                    texture1.Reverse();
-                    InnerModel.TextureCoordinates = texture1;
-                }
-                else
-                {
-                    InnerModel.TextureCoordinates = texture;
-                }
+                    if (ReverseInnerRotation)
+                    {
+                        var texture1 = new Vector2Collection(texture);
+                        texture1.Reverse();                   
+                        InnerModel.TextureCoordinates = texture1;
+                    }
+                    else
+                    {
+                        InnerModel.TextureCoordinates = texture;
+                    }
+                }, null);
+
             }
             if (DynamicVertices)
             {
@@ -236,16 +252,15 @@ namespace DynamicTextureDemo
                 {
                     positions[i] = positions[i] * (float)rnd.Next(95, 105) / 100;
                 }
-                Model.Normals = MeshGeometryHelper.CalculateNormals(positions, Model.Indices);
-                InnerModel.Normals = new Vector3Collection(Model.Normals.Select(x => { return x * -1; }));
-                Model.Positions = positions;
-                InnerModel.Positions = positions;
-                //Alternative implementation
-                //Floor.DisablePropertyChangedEvent = true;
-                //Floor.Positions = positions;
-                //Floor.CalculateNormals();
-                //Floor.DisablePropertyChangedEvent = false;
-                //Floor.UpdateVertex();
+                var normals =  MeshGeometryHelper.CalculateNormals(positions, Model.Indices);
+                var innerNormals =  new Vector3Collection(normals.Select(x => { return x * -1; }));
+                context.Send((o) =>
+                {
+                    Model.Normals = normals;
+                    InnerModel.Normals = innerNormals;
+                    Model.Positions = positions;
+                    InnerModel.Positions = positions;
+                }, null);
             }
             if (DynamicTriangles)
             {
@@ -269,15 +284,20 @@ namespace DynamicTextureDemo
                     }
                 }
                 indices.RemoveRange(0, removedIndex);
-                Model.Indices = indices;
-                InnerModel.Indices = indices;
+                context.Send((o) =>
+                {
+                    Model.Indices = indices;
+                    InnerModel.Indices = indices;
+                }, null);
             }
         }
 
         protected override void Dispose(bool disposing)
         {
-            timer.Stop();
-            timer.Tick -= Timer_Tick;
+            //timer.Stop();
+            //timer.Tick -= Timer_Tick;
+            cts.Cancel(true);
+            cts.Dispose();
             base.Dispose(disposing);
         }
     }
