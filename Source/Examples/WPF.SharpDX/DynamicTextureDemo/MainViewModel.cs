@@ -224,14 +224,15 @@ namespace DynamicTextureDemo
             if (DynamicTexture)
             {
                 var texture = new Vector2Collection(Model.TextureCoordinates);
-                for (int i = 1; i < Model.TextureCoordinates.Count; ++i)
+                var t0 = texture[0];
+                for (int i = 1; i < texture.Count; ++i)
                 {
-                    texture[i - 1] = Model.TextureCoordinates[i];
+                    texture[i - 1] = texture[i];
                 }
-                texture[texture.Count - 1] = Model.TextureCoordinates[0];
-                Model.TextureCoordinates = texture;
+                texture[texture.Count - 1] = t0;                
                 context.Send((o) =>
                 {
+                    Model.TextureCoordinates = texture;
                     if (ReverseInnerRotation)
                     {
                         var texture1 = new Vector2Collection(texture);
@@ -252,7 +253,7 @@ namespace DynamicTextureDemo
                 {
                     positions[i] = positions[i] * (float)rnd.Next(95, 105) / 100;
                 }
-                var normals =  MeshGeometryHelper.CalculateNormals(positions, Model.Indices);
+                var normals =  MeshGeometryHelper.CalculateNormals(positions, initialIndicies);
                 var innerNormals =  new Vector3Collection(normals.Select(x => { return x * -1; }));
                 context.Send((o) =>
                 {
