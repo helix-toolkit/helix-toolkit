@@ -24,7 +24,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
-        public static readonly DependencyProperty ItemsSourceProperty =
+        public new static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IList<Element3D>), typeof(GroupElement3D),
                 new PropertyMetadata(null,
                     (d, e) => {
@@ -54,7 +54,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
-        public IList<Element3D> ItemsSource
+        public new IList<Element3D> ItemsSource
         {
             get { return (IList<Element3D>)this.GetValue(ItemsSourceProperty); }
             set { this.SetValue(ItemsSourceProperty, value); }
@@ -73,7 +73,7 @@ namespace HelixToolkit.UWP
 
         private IOctreeBasic Octree
         {
-            get { return (SceneNode as GroupNode).OctreeManager == null ? null : (SceneNode as GroupNode).OctreeManager.Octree; }
+            get { return (SceneNode as GroupNode).OctreeManager?.Octree; }
         }
 
         private IList<Element3D> itemsSourceInternal;

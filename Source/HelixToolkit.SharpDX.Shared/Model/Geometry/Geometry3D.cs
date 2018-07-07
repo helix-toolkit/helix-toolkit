@@ -136,9 +136,17 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <value>
         ///   <c>true</c> if [octree dirty]; otherwise, <c>false</c>.
         /// </value>
-        public bool OctreeDirty { get { return octreeDirty; } }
-
-        private volatile bool octreeDirty = true;
+        public bool OctreeDirty { get; private set; } = true;
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is dynamic. Must be set before passing to GeometryModel3D.
+        /// <para>When set to true, the internal vertex/index buffer will be created using dynamic buffer.</para> 
+        /// <para>Default is false, which is using immutable.</para>
+        /// <para>Dynamic buffer is useful if user streaming similar sizes of Vertices/Indices into this geometry, this will avoid unnecessary buffer creation and reuse the existing dynamic buffer if the max size less than the size of existing buffer.</para>
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is dynamic; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsDynamic { set; get; } = false;
 
         private readonly object octreeLock = new object();
         /// <summary>
@@ -154,9 +162,15 @@ namespace HelixToolkit.Wpf.SharpDX
             OctreeParameter.PropertyChanged += OctreeParameter_PropertyChanged;
         }
 
+        public Geometry3D(bool isDynamic) 
+            : this()
+        {
+            IsDynamic = isDynamic;
+        }
+
         private void OctreeParameter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            octreeDirty = true;
+            OctreeDirty = true;
         }
 
         /// <summary>
@@ -181,15 +195,15 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             if (CanCreateOctree())
             {
-                if (octreeDirty || force)
+                if (OctreeDirty || force)
                 {
                     lock (octreeLock)
                     {
-                        if (octreeDirty || force)
+                        if (OctreeDirty || force)
                         {
                             this.Octree = CreateOctree(this.OctreeParameter);              
                             this.Octree?.BuildTree();                                
-                            octreeDirty = false;   
+                            OctreeDirty = false;   
                         }                 
                     }
                     RaisePropertyChanged(nameof(Octree));
@@ -198,7 +212,7 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 this.Octree = null;
-                octreeDirty = true;
+                OctreeDirty = true;
             }
         }
         
@@ -224,7 +238,16 @@ namespace HelixToolkit.Wpf.SharpDX
         public void ClearOctree()
         {
             Octree = null;
-            octreeDirty = true;
+            OctreeDirty = true;
+        }
+        /// <summary>
+        /// Manuals the set octree.
+        /// </summary>
+        /// <param name="octree">The octree.</param>
+        public void ManualSetOctree(IOctreeBasic octree)
+        {
+            Octree = octree;
+            OctreeDirty = false;
         }
         /// <summary>
         /// Manually call this function to update AABB and Bounding Sphere

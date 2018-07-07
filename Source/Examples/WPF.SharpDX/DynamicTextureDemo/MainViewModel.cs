@@ -138,6 +138,7 @@ namespace DynamicTextureDemo
             var b2 = new MeshBuilder(true, true, true);
             b2.AddSphere(new Vector3(0f, 0f, 0f), 4, 64, 64);
             this.Model = b2.ToMeshGeometry3D();
+            Model.IsDynamic = true;
             this.InnerModel = new MeshGeometry3D()
             {
                 Indices = Model.Indices,
@@ -145,7 +146,8 @@ namespace DynamicTextureDemo
                 Normals = new Vector3Collection(Model.Normals.Select(x => { return x * -1; })),
                 TextureCoordinates = Model.TextureCoordinates,
                 Tangents = Model.Tangents,
-                BiTangents = Model.BiTangents
+                BiTangents = Model.BiTangents,
+                IsDynamic = true
             };
 
             var image = LoadFileToMemory(new System.Uri(@"test.png", System.UriKind.RelativeOrAbsolute).ToString());

@@ -23,6 +23,8 @@ namespace HelixToolkit.UWP.Core
     /// <typeparam name="VertexStruct"></typeparam>
     public abstract class MeshGeometryBufferModel<VertexStruct> : GeometryBufferModel where VertexStruct : struct
     {
+        private static readonly VertexStruct[] emptyVerts = new VertexStruct[0];
+        private static readonly int[] emptyIndices = new int[0];
         /// <summary>
         /// Builds the vertex array.
         /// </summary>
@@ -34,9 +36,11 @@ namespace HelixToolkit.UWP.Core
         /// Initializes a new instance of the <see cref="MeshGeometryBufferModel{VertexStruct}"/> class.
         /// </summary>
         /// <param name="structSize">Size of the structure.</param>
-        public MeshGeometryBufferModel(int structSize) 
-            : base(PrimitiveTopology.TriangleList, new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), 
-                  new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer))
+        /// <param name="dynamic">Create dynamic buffer or immutable buffer</param>
+        public MeshGeometryBufferModel(int structSize, bool dynamic = false)
+            : base(PrimitiveTopology.TriangleList,
+                  dynamic ? new DynamicBufferProxy(structSize, BindFlags.VertexBuffer) : new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer) as IElementsBufferProxy,
+                  dynamic ? new DynamicBufferProxy(sizeof(int), BindFlags.IndexBuffer) : new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer) as IElementsBufferProxy)
         {
         }
 
@@ -45,9 +49,11 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="structSize">Size of the structure.</param>
         /// <param name="topology">The topology.</param>
-        public MeshGeometryBufferModel(int structSize, PrimitiveTopology topology) 
-            : base(topology, new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer),
-                  new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer))
+        /// <param name="dynamic">Create dynamic buffer or immutable buffer</param>
+        public MeshGeometryBufferModel(int structSize, PrimitiveTopology topology, bool dynamic = false)
+            : base(topology,
+                  dynamic ? new DynamicBufferProxy(structSize, BindFlags.VertexBuffer) : new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer) as IElementsBufferProxy,
+                  dynamic ? new DynamicBufferProxy(sizeof(int), BindFlags.IndexBuffer) : new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer) as IElementsBufferProxy)
         {
         }
 
@@ -56,8 +62,11 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="topology">The topology.</param>
         /// <param name="vertexBuffers"></param>
-        public MeshGeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy[] vertexBuffers)
-            : base(topology, vertexBuffers, new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer))
+        /// <param name="dynamic">Create dynamic buffer or immutable buffer</param>
+        public MeshGeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy[] vertexBuffers, bool dynamic = false)
+            : base(topology,
+                  vertexBuffers,
+                  dynamic ? new DynamicBufferProxy(sizeof(int), BindFlags.IndexBuffer) : new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer) as IElementsBufferProxy)
         {
         }
 
@@ -67,7 +76,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="topology">The topology.</param>
         /// <param name="vertexBuffer">The vertex buffer.</param>
         /// <param name="indexBuffer">The index buffer.</param>
-        protected MeshGeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer) 
+        protected MeshGeometryBufferModel(PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer)
             : base(topology, vertexBuffer, indexBuffer)
         {
         }
@@ -114,7 +123,8 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                buffer.DisposeAndClear();
+                //buffer.DisposeAndClear();
+                buffer.UploadDataToBuffer(context, emptyVerts, 0);
             }
         }
         /// <summary>
@@ -132,7 +142,8 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                buffer.DisposeAndClear();
+                buffer.UploadDataToBuffer(context, emptyIndices, 0);
+                //buffer.DisposeAndClear();
             }
         }
     }
@@ -149,6 +160,63 @@ namespace HelixToolkit.UWP.Core
         /// Initializes a new instance of the <see cref="DefaultMeshGeometryBufferModel"/> class.
         /// </summary>
         public DefaultMeshGeometryBufferModel() : base(DefaultVertex.SizeInBytes) { }
+
+        /// <summary>
+        /// Builds the vertex array.
+        /// </summary>
+        /// <param name="geometry">The geometry.</param>
+        /// <returns></returns>
+        protected override DefaultVertex[] BuildVertexArray(MeshGeometry3D geometry)
+        {
+            //var geometry = this.geometryInternal as MeshGeometry3D;
+            var positions = geometry.Positions.GetEnumerator();
+            var vertexCount = geometry.Positions.Count;
+
+            var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
+            var textureCoordinates = geometry.TextureCoordinates != null ? geometry.TextureCoordinates.GetEnumerator() : Enumerable.Repeat(Vector2.Zero, vertexCount).GetEnumerator();
+            var normals = geometry.Normals != null ? geometry.Normals.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
+            var tangents = geometry.Tangents != null ? geometry.Tangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
+            var bitangents = geometry.BiTangents != null ? geometry.BiTangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
+
+            var array = vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new DefaultVertex[vertexCount];
+            vertexArrayBuffer = array;
+            for (var i = 0; i < vertexCount; i++)
+            {
+                positions.MoveNext();
+                colors.MoveNext();
+                textureCoordinates.MoveNext();
+                normals.MoveNext();
+                tangents.MoveNext();
+                bitangents.MoveNext();
+                array[i].Position = new Vector4(positions.Current, 1f);
+                array[i].Color = colors.Current;
+                array[i].TexCoord = textureCoordinates.Current;
+                array[i].Normal = normals.Current;
+                array[i].Tangent = tangents.Current;
+                array[i].BiTangent = bitangents.Current;
+            }
+            colors.Dispose();
+            textureCoordinates.Dispose();
+            normals.Dispose();
+            tangents.Dispose();
+            bitangents.Dispose();
+            positions.Dispose();
+            return array;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class DynamicMeshGeometryBufferModel : MeshGeometryBufferModel<DefaultVertex>
+    {
+        [ThreadStatic]
+        private static DefaultVertex[] vertexArrayBuffer = null;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicMeshGeometryBufferModel"/> class.
+        /// </summary>
+        public DynamicMeshGeometryBufferModel() : base(DefaultVertex.SizeInBytes, true) { }
 
         /// <summary>
         /// Builds the vertex array.

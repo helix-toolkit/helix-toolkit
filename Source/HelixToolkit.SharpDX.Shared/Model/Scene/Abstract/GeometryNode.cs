@@ -122,7 +122,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 { return; }
                 Disposer.RemoveAndDispose(ref bufferModelInternal);
                 bufferModelInternal = value;
-                ((IGeometryRenderCore)RenderCore).GeometryBuffer = bufferModelInternal == null ? null : bufferModelInternal.BufferModel;
+                ((IGeometryRenderCore)RenderCore).GeometryBuffer = bufferModelInternal?.BufferModel;
             }
             get
             {

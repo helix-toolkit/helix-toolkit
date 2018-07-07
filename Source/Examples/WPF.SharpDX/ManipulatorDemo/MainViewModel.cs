@@ -40,10 +40,10 @@ namespace ManipulatorDemo
         public PhongMaterial Material3 { get; private set; }
         public Color GridColor { get; private set; }
 
-        public Transform3D Model1Transform { get; private set; }
-        public Transform3D Model2Transform { get; private set; }
-        public Transform3D Model3Transform { get; private set; }
-        public Transform3D GridTransform { get; private set; }
+        public Transform3D Model1Transform { get; set; }
+        public Transform3D Model2Transform { get; set; }
+        public Transform3D Model3Transform { get; set; }
+        public Transform3D GridTransform { get; set; }
 
         public Vector3D DirectionalLightDirection { get; private set; }
         public Color DirectionalLightColor { get; private set; }

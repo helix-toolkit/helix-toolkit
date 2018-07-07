@@ -78,5 +78,12 @@ namespace HelixToolkit.UWP.Utilities
             StructureSize = structureSize;
             BindFlags = bindFlags;
         }
+
+        public override void DisposeAndClear()
+        {
+            buffer = null;
+            ElementCount = 0;
+            base.DisposeAndClear();
+        }
     }
 }

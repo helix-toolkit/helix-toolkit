@@ -93,6 +93,11 @@ namespace HelixToolkit.UWP.Utilities
         public void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count, int offset) where T : struct
         {
             RemoveAndDispose(ref buffer);
+            ElementCount = count;
+            if(count == 0)
+            {
+                return;
+            }
             var buffdesc = new BufferDescription()
             {
                 BindFlags = this.BindFlags,
@@ -103,7 +108,6 @@ namespace HelixToolkit.UWP.Utilities
                 Usage = ResourceUsage.Immutable
             };
             buffer = Collect(Buffer.Create(context, data.GetArrayByType(), buffdesc));
-            ElementCount = count;
         }
     }
 
@@ -152,7 +156,11 @@ namespace HelixToolkit.UWP.Utilities
         public void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count, int offset) where T : struct
         {
             ElementCount = count;
-            if (buffer == null || buffer.Description.SizeInBytes < StructureSize * count)
+            if (count == 0)
+            {
+                return;
+            }
+            else if (buffer == null || buffer.Description.SizeInBytes < StructureSize * count)
             {
                 RemoveAndDispose(ref buffer);
                 var buffdesc = new BufferDescription()
@@ -168,13 +176,12 @@ namespace HelixToolkit.UWP.Utilities
             }
             else
             {
-                DataStream stream;
-                context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out stream);
+                context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
                 using (stream)
                 {
-                    stream.WriteRange(data.GetArrayByType(), offset, count);
-                    context.UnmapSubresource(this.buffer, 0);
+                    stream.WriteRange(data.GetArrayByType(), offset, count);                    
                 }
+                context.UnmapSubresource(this.buffer, 0);
             }
         }
     }
