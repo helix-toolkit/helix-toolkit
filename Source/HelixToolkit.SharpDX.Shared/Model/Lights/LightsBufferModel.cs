@@ -54,18 +54,14 @@ namespace HelixToolkit.Wpf.SharpDX.Model
         {
             if (buffer.StructureSize == SizeInBytes)
             {
-                if(buffer.Buffer.Description.Usage == ResourceUsage.Dynamic)
+                context.MapSubresource(buffer.Buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
+                using (stream)
                 {
-                    DataStream stream;
-                    context.MapSubresource(buffer.Buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
-                    using (stream)
-                    {
-                        stream.WriteRange(Lights, 0, Lights.Length);
-                        stream.Write(AmbientLight);
-                        stream.Write(LightCount);
-                        context.UnmapSubresource(buffer.Buffer, 0);
-                    }
+                    stream.WriteRange(Lights, 0, Lights.Length);
+                    stream.Write(AmbientLight);
+                    stream.Write(LightCount);                        
                 }
+                context.UnmapSubresource(buffer.Buffer, 0);
             }
             else
             {

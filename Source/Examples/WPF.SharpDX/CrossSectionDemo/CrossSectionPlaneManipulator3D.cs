@@ -135,6 +135,7 @@ namespace CrossSectionDemo
         private Matrix currentRotation = Matrix.Identity;
         private Matrix totalTransform = Matrix.Identity;
         private bool internalUpdate = false;
+        private Color4 orgColor;
 
         static CrossSectionPlaneManipulator3D()
         {
@@ -228,11 +229,20 @@ namespace CrossSectionDemo
                 startPoint = arg.Position;
                 isCaptured = true;
                 e.Handled = true;
+                if(EdgeMaterial is DiffuseMaterial m)
+                {
+                    orgColor = m.DiffuseColor;
+                    m.DiffuseColor = Color.Yellow;
+                }
             }
         }
 
         private void OnEdgeMouse3DUp(object sender, RoutedEventArgs e)
         {
+            if (isCaptured && EdgeMaterial is DiffuseMaterial m)
+            {
+                m.DiffuseColor = orgColor;
+            }
             isCaptured = false;
             viewport = null;
             camera = null;
@@ -255,11 +265,21 @@ namespace CrossSectionDemo
                 camera = viewport.Camera;
                 startHitPoint = arg.HitTestResult.PointHit;
                 isCaptured = true;
+                e.Handled = true;
+                if (CornerMaterial is DiffuseMaterial m)
+                {
+                    orgColor = m.DiffuseColor;
+                    m.DiffuseColor = Color.Yellow;
+                }
             }
         }
 
         private void OnNodeMouse3DUp(object sender, RoutedEventArgs e)
         {
+            if (isCaptured && CornerMaterial is DiffuseMaterial m)
+            {
+                m.DiffuseColor = orgColor;
+            }
             isCaptured = false;
             viewport = null;
             camera = null;
@@ -367,20 +387,18 @@ namespace CrossSectionDemo
                 {
                     if (hits.Count > 0)
                     {
+                        HitTestResult res = new HitTestResult() { Distance = int.MaxValue };
                         foreach (var hit in hits)
                         {
-                            if (hit.ModelHit == cornerHandle)
+                            if (hit.ModelHit == cornerHandle || hit.ModelHit == edgeHandle)
                             {
-                                hit.Distance = 0;
-                                break;
-                            }
-                            else if (hit.ModelHit == edgeHandle)
-                            {
-                                hit.Distance = 0.01;
-                                break;
+                                if(res.Distance > hit.Distance)
+                                {
+                                    res = hit;
+                                }
                             }
                         }
-
+                        res.Distance = 0;
                     }
                     return true;
                 }
