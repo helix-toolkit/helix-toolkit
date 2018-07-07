@@ -178,6 +178,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The bounding box.</returns>
         public static Rect3D FindBounds(this Viewport3DX viewport)
         {
+            if(viewport.RenderHost != null && viewport.RenderHost.IsRendering)
+            {
+                viewport.RenderHost.UpdateAndRender();
+            }
             var maxVector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var firstModel = viewport.Renderables.PreorderDFT((r) =>
             {
@@ -588,25 +592,26 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>A bitmap.</returns>
         public static BitmapSource RenderBitmap(this Viewport3DX view)
         {
-            using (var memoryStream = new System.IO.MemoryStream())
+            if(view.RenderHost != null && view.RenderHost.IsRendering)
             {
-                if (view.RenderHost != null && view.RenderHost.IsRendering)
+                view.RenderHost.UpdateAndRender();
+                using (var memoryStream = new System.IO.MemoryStream())
                 {
-                    Utilities.ScreenCapture.SaveWICTextureToBitmapStream(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.BackBuffer.Resource as Texture2D, memoryStream);
-                    var bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    memoryStream.Position = 0;
-                    bitmap.StreamSource = memoryStream;
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.EndInit();
-                    bitmap.Freeze();
-                    return bitmap;
-                }
-                else
-                {
-                    return null;
+                    if (view.RenderHost != null && view.RenderHost.IsRendering)
+                    {
+                        Utilities.ScreenCapture.SaveWICTextureToBitmapStream(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.BackBuffer.Resource as Texture2D, memoryStream);
+                        var bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        memoryStream.Position = 0;
+                        bitmap.StreamSource = memoryStream;
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.EndInit();
+                        bitmap.Freeze();
+                        return bitmap;
+                    }
                 }
             }
+            return null;
         }
 
         /// <summary>
@@ -643,13 +648,13 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             view.Width = width;
             view.Height = height;
-            if (double.IsNaN(width) || double.IsNaN(height))
+            if (double.IsNaN(width) || double.IsNaN(height) || view.RenderHost != null || !view.RenderHost.IsRendering)
             {
                 return;
-            }
-
+            }            
             view.Measure(new Size(width, height));
             view.Arrange(new Rect(0, 0, width, height));
+            view.RenderHost.Resize(width, height);
         }
 
 
@@ -697,6 +702,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (view.RenderHost != null && view.RenderHost.IsRendering)
             {
+                view.RenderHost.UpdateAndRender();
                 Utilities.ScreenCapture.SaveWICTextureToFile(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.BackBuffer.Resource as Texture2D, fileName, format);
             }
         }
@@ -825,28 +831,6 @@ namespace HelixToolkit.Wpf.SharpDX
             var target = pcamera.Position + pcamera.LookDirection;
             pcamera.Position = target - newLookDirection;
             pcamera.LookDirection = newLookDirection;
-        }
-
-        /// <summary>
-        /// Copies the source bitmap to the specified position in the target bitmap.
-        /// </summary>
-        /// <param name="source">The source bitmap.</param>
-        /// <param name="target">The target bitmap.</param>
-        /// <param name="offsetx">The x offset.</param>
-        /// <param name="offsety">The y offset.</param>
-        private static void CopyBitmap(BitmapSource source, WriteableBitmap target, int offsetx, int offsety)
-        {
-            // Calculate stride of source
-            int stride = source.PixelWidth * (source.Format.BitsPerPixel / 8);
-
-            // Create data array to hold source pixel data
-            var data = new byte[stride * source.PixelHeight];
-
-            // Copy source image pixels to the data array
-            source.CopyPixels(data, stride, 0);
-
-            // Write the pixel data to the WriteableBitmap.
-            target.WritePixels(new Int32Rect(offsetx, offsety, source.PixelWidth, source.PixelHeight), data, stride, 0);
         }
     }
 }
