@@ -9,7 +9,9 @@ namespace ManipulatorDemo
     using DemoCore;
     using HelixToolkit.Wpf.SharpDX;
     using System;
+    using System.Collections.Generic;
     using System.Numerics;
+    using System.Windows.Input;
     using System.Windows.Media.Animation;
     using AxisAngleRotation3D = System.Windows.Media.Media3D.AxisAngleRotation3D;
     using Color = System.Windows.Media.Color;
