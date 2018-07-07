@@ -135,6 +135,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>The bounding box.</returns>
         public static BoundingBox FindBounds(this Viewport3DX viewport)
         {
+            if (viewport.RenderHost != null && viewport.RenderHost.IsRendering)
+            {
+                viewport.RenderHost.UpdateAndRender();
+            }
             var maxVector = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var firstModel = viewport.Renderables.PreorderDFT((r) =>
             {
@@ -556,25 +560,26 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>A bitmap.</returns>
         public static BitmapSource RenderBitmap(this Viewport3DX view)
         {
-            using (var memoryStream = new System.IO.MemoryStream())
+            if (view.RenderHost != null && view.RenderHost.IsRendering)
             {
-                if (view.RenderHost != null && view.RenderHost.IsRendering)
+                view.RenderHost.UpdateAndRender();
+                using (var memoryStream = new System.IO.MemoryStream())
                 {
-                    Utilities.ScreenCapture.SaveWICTextureToBitmapStream(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.BackBuffer.Resource as Texture2D, memoryStream);
-                    var bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    memoryStream.Position = 0;
-                    bitmap.StreamSource = memoryStream;
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.EndInit();
-                    bitmap.Freeze();
-                    return bitmap;
-                }
-                else
-                {
-                    return null;
+                    if (view.RenderHost != null && view.RenderHost.IsRendering)
+                    {
+                        Utilities.ScreenCapture.SaveWICTextureToBitmapStream(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.BackBuffer.Resource as Texture2D, memoryStream);
+                        var bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        memoryStream.Position = 0;
+                        bitmap.StreamSource = memoryStream;
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.EndInit();
+                        bitmap.Freeze();
+                        return bitmap;
+                    }
                 }
             }
+            return null;
         }
 
         /// <summary>
@@ -618,6 +623,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             view.Measure(new Size(width, height));
             view.Arrange(new Rect(0, 0, width, height));
+            view.RenderHost.Resize(width, height);
         }
 
 
@@ -665,6 +671,7 @@ namespace HelixToolkit.Wpf.SharpDX
             }
             if (view.RenderHost != null && view.RenderHost.IsRendering)
             {
+                view.RenderHost.UpdateAndRender();
                 Utilities.ScreenCapture.SaveWICTextureToFile(view.RenderHost.EffectsManager, view.RenderHost.RenderBuffer.BackBuffer.Resource as Texture2D, fileName, format);
             }
         }
