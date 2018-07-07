@@ -8,6 +8,7 @@ using Matrix = System.Numerics.Matrix4x4;
 using SharpDX.Direct3D11;
 using System.Collections.Generic;
 using System.Linq;
+using Matrix = System.Numerics.Matrix4x4;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;
