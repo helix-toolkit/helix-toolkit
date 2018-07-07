@@ -250,7 +250,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var relativePosition = rotateAround - this.Camera.CameraInternal.Position;
             var cUp = Camera.CameraInternal.UpDirection;
             var up = this.ModelUpDirection;
-            var dir = Vector3.Normalize(Camera.LookDirection.ToVector3());
+            var dir = Vector3.Normalize(Camera.CameraInternal.LookDirection);
             var right = Vector3.Normalize(Vector3.Cross(dir, cUp));
 
             float d = -0.5f;
@@ -422,8 +422,8 @@ namespace HelixToolkit.Wpf.SharpDX
             double fx = p1.X / this.Viewport.ActualWidth;
             double fy = p1.Y / this.Viewport.ActualHeight;
 
-            var up = Vector3.Normalize(Camera.UpDirection.ToVector3());
-            var dir = Vector3.Normalize(this.Camera.LookDirection.ToVector3());
+            var up = Vector3.Normalize(Camera.CameraInternal.UpDirection);
+            var dir = Vector3.Normalize(Camera.CameraInternal.LookDirection);
 
             var right = Vector3.Normalize(Vector3.Cross(dir, up));
 
@@ -465,9 +465,9 @@ namespace HelixToolkit.Wpf.SharpDX
             // http://www.codeplex.com/3DTools/Thread/View.aspx?ThreadId=22310
             var v1 = ProjectToTrackball(p1, this.Viewport.ActualWidth, this.Viewport.ActualHeight);
             var v2 = ProjectToTrackball(p2, this.Viewport.ActualWidth, this.Viewport.ActualHeight);
-            var cUP = Camera.UpDirection.ToVector3();
+            var cUP = Camera.CameraInternal.UpDirection;
             // transform the trackball coordinates to view space
-            var viewZ = Vector3.Normalize(Camera.LookDirection.ToVector3() * Inv);
+            var viewZ = Vector3.Normalize(Camera.CameraInternal.LookDirection * Inv);
             var viewX = Vector3.Normalize(Vector3.Cross(cUP, viewZ) * Inv);
             var viewY = Vector3.Normalize(Vector3.Cross(viewX, viewZ));
             var u1 = (viewZ * v1.Z) + (viewX * v1.X) + (viewY * v1.Y);

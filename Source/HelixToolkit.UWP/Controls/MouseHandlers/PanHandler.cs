@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP
         public override void Delta(Point e)
         {
             base.Delta(e);
-            var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.LookDirection);
+            var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
             if (this.LastPoint3D == null || thisPoint3D == null)
             {
@@ -54,7 +54,7 @@ namespace HelixToolkit.UWP
             this.Pan(delta3D);
 
             this.LastPoint = e;
-            this.LastPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.LookDirection);
+            this.LastPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace HelixToolkit.UWP
         {
             var mousePoint = (this.LastPoint.ToVector2() + delta).ToPoint();
 
-            var thisPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.LookDirection);
+            var thisPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
             if (this.LastPoint3D == null || thisPoint3D == null)
             {
@@ -99,7 +99,7 @@ namespace HelixToolkit.UWP
             var delta3D = this.LastPoint3D.Value - thisPoint3D.Value;
             this.Pan(delta3D);
 
-            this.LastPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.LookDirection);
+            this.LastPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
             this.LastPoint = mousePoint;
         }
@@ -111,13 +111,13 @@ namespace HelixToolkit.UWP
         public override void Started(Point e)
         {
             base.Started(e);
-            this.panPoint3D = this.Camera.Target;
+            this.panPoint3D = this.Camera.CameraInternal.Target;
             if (this.MouseDownNearestPoint3D != null)
             {
                 this.panPoint3D = this.MouseDownNearestPoint3D.Value;
             }
 
-            this.LastPoint3D = this.UnProject(this.MouseDownPoint, this.panPoint3D, this.Camera.LookDirection);
+            this.LastPoint3D = this.UnProject(this.MouseDownPoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
         }
 
         /// <summary>

@@ -188,8 +188,8 @@ namespace HelixToolkit.UWP
 
             Vector2 delta = p2.ToVector2() - p1.ToVector2();
 
-            var relativeTarget = rotateAround - this.Camera.Target;
-            var relativePosition = rotateAround - this.Camera.Position;
+            var relativeTarget = rotateAround - this.Camera.CameraInternal.Target;
+            var relativePosition = rotateAround - this.Camera.CameraInternal.Position;
 
             float d = -1f;
             if (this.CameraMode != CameraMode.Inspect)
@@ -205,8 +205,8 @@ namespace HelixToolkit.UWP
 
             var m = Matrix.RotationQuaternion(q);
 
-            var newLookDir = Vector3D.Transform(this.Camera.LookDirection, m).ToVector3();
-            var newUpDirection = Vector3D.Transform(this.Camera.UpDirection, m).ToVector3();
+            var newLookDir = Vector3D.Transform(this.Camera.CameraInternal.LookDirection, m).ToVector3();
+            var newUpDirection = Vector3D.Transform(this.Camera.CameraInternal.UpDirection, m).ToVector3();
 
             var newRelativeTarget = Vector3D.Transform(relativeTarget, m).ToVector3();
             var newRelativePosition = Vector3D.Transform(relativePosition, m).ToVector3();
@@ -244,14 +244,14 @@ namespace HelixToolkit.UWP
         /// </param>
         public void RotateTurntable(Vector2 delta, Point3D rotateAround)
         {
-            var relativeTarget = rotateAround - this.Camera.Target;
-            var relativePosition = rotateAround - this.Camera.Position;
+            var relativeTarget = rotateAround - this.Camera.CameraInternal.Target;
+            var relativePosition = rotateAround - this.Camera.CameraInternal.Position;
 
             var up = this.ModelUpDirection;
-            var dir = this.Camera.LookDirection;
+            var dir = this.Camera.CameraInternal.LookDirection;
             dir.Normalize();
 
-            var right = Vector3D.Cross(dir, this.Camera.UpDirection);
+            var right = Vector3D.Cross(dir, this.Camera.CameraInternal.UpDirection);
             right.Normalize();
 
             var d = -0.5f;
@@ -268,7 +268,7 @@ namespace HelixToolkit.UWP
 
             var m = Matrix.RotationQuaternion(q);
 
-            var newUpDirection = Vector3D.Transform(this.Camera.UpDirection, m).ToVector3();
+            var newUpDirection = Vector3D.Transform(this.Camera.CameraInternal.UpDirection, m).ToVector3();
             var newRelativeTarget = Vector3D.Transform(relativeTarget, m).ToVector3();
             var newRelativePosition = Vector3D.Transform(relativePosition, m).ToVector3();
             var newTarget = rotateAround - newRelativeTarget;
@@ -293,13 +293,13 @@ namespace HelixToolkit.UWP
 
             this.rotationPoint = new Point(
                 this.CameraController.Viewport.ActualWidth / 2, this.CameraController.Viewport.ActualHeight / 2);
-            this.rotationPoint3D = this.Camera.Target;
+            this.rotationPoint3D = this.Camera.CameraInternal.Target;
 
             switch (this.CameraMode)
             {
                 case CameraMode.WalkAround:
                     this.rotationPoint = this.MouseDownPoint;
-                    this.rotationPoint3D = this.Camera.Position;
+                    this.rotationPoint3D = this.Camera.CameraInternal.Position;
                     break;
                 default:
                     if (CameraController.Viewport.FixedRotationPointEnabled)
@@ -309,7 +309,7 @@ namespace HelixToolkit.UWP
                     else if (this.changeLookAt && this.MouseDownNearestPoint3D != null)
                     {
                         this.LookAt(this.MouseDownNearestPoint3D.Value, 0);
-                        this.rotationPoint3D = this.Camera.Target;               
+                        this.rotationPoint3D = this.Camera.CameraInternal.Target;               
                     }
                     else if (this.CameraController.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
                     {
@@ -421,11 +421,11 @@ namespace HelixToolkit.UWP
             double fx = p1.X / this.CameraController.Viewport.ActualWidth;
             double fy = p1.Y / this.CameraController.Viewport.ActualHeight;
 
-            var up = this.Camera.UpDirection;
-            var dir = this.Camera.LookDirection;
+            var up = this.Camera.CameraInternal.UpDirection;
+            var dir = this.Camera.CameraInternal.LookDirection;
             dir.Normalize();
 
-            var right = Vector3D.Cross(dir, this.Camera.UpDirection);
+            var right = Vector3D.Cross(dir, this.Camera.CameraInternal.UpDirection);
             right.Normalize();
 
             this.rotationAxisX = up;
@@ -468,8 +468,8 @@ namespace HelixToolkit.UWP
             var v2 = ProjectToTrackball(p2, this.CameraController.Viewport.ActualWidth, this.CameraController.Viewport.ActualHeight);
 
             // transform the trackball coordinates to view space
-            var viewZ = this.Camera.LookDirection * inv;
-            var viewX = Vector3D.Cross(this.Camera.UpDirection, viewZ) * inv;
+            var viewZ = this.Camera.CameraInternal.LookDirection * inv;
+            var viewX = Vector3D.Cross(this.Camera.CameraInternal.UpDirection, viewZ) * inv;
             var viewY = Vector3D.Cross(viewX, viewZ);
             viewX.Normalize();
             viewY.Normalize();
@@ -498,13 +498,13 @@ namespace HelixToolkit.UWP
             var rotate = Matrix.RotationQuaternion(delta);
 
             // Find vectors relative to the rotate-around point
-            var relativeTarget = rotateAround - this.Camera.Target;
-            var relativePosition = rotateAround - this.Camera.Position;
+            var relativeTarget = rotateAround - this.Camera.CameraInternal.Target;
+            var relativePosition = rotateAround - this.Camera.CameraInternal.Position;
 
             // Rotate the relative vectors
             var newRelativeTarget = Vector3D.Transform(relativeTarget, rotate).ToVector3();
             var newRelativePosition = Vector3D.Transform(relativePosition, rotate).ToVector3();
-            var newUpDirection = Vector3D.Transform(this.Camera.UpDirection, rotate).ToVector3();
+            var newUpDirection = Vector3D.Transform(this.Camera.CameraInternal.UpDirection, rotate).ToVector3();
 
             // Find new camera position
             var newTarget = rotateAround - newRelativeTarget;

@@ -79,7 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.Started(e);
             this.zoomPoint = new Point(this.Viewport.ActualWidth / 2, this.Viewport.ActualHeight / 2);
-            this.zoomPoint3D = this.Camera.Target.ToVector3();
+            this.zoomPoint3D = this.Camera.CameraInternal.Target;
 
             if (this.Controller.ZoomAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
             {
@@ -101,7 +101,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         public void Zoom(double delta)
         {
-            this.Zoom(delta, this.Camera.Target.ToVector3());
+            this.Zoom(delta, this.Camera.CameraInternal.Target);
         }
 
         /// <summary>

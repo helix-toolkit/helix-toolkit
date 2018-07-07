@@ -147,7 +147,7 @@ namespace HelixToolkit.UWP
                             this.ChangeCameraDistance(ref delta, zoomAround);
                             break;
                         case CameraMode.WalkAround:
-                            this.Camera.Position -= this.Camera.LookDirection * (float)delta;
+                            this.Camera.Position -= this.Camera.CameraInternal.LookDirection * (float)delta;
                             break;
                     }
                 }
@@ -166,9 +166,9 @@ namespace HelixToolkit.UWP
         /// <param name="delta">The translation vector in camera space (z in look direction, y in up direction, and x perpendicular to the two others)</param>
         public void MoveCameraPosition(Vector3D delta)
         {
-            var z = this.Camera.LookDirection;
+            var z = this.Camera.CameraInternal.LookDirection;
             z.Normalize();
-            var x = Vector3D.Cross(this.Camera.LookDirection, this.Camera.UpDirection);
+            var x = Vector3D.Cross(this.Camera.CameraInternal.LookDirection, this.Camera.CameraInternal.UpDirection);
             var y = Vector3D.Cross(x, z);
             y.Normalize();
             x = Vector3D.Cross(z, y);
@@ -255,9 +255,9 @@ namespace HelixToolkit.UWP
         private bool ChangeCameraDistance(ref double delta, Point3D zoomAround)
         {
             // Handle the 'zoomAround' point
-            var target = this.Camera.Position + this.Camera.LookDirection;
+            var target = this.Camera.CameraInternal.Position + this.Camera.CameraInternal.LookDirection;
             var relativeTarget = zoomAround - target;
-            var relativePosition = zoomAround - this.Camera.Position;
+            var relativePosition = zoomAround - this.Camera.CameraInternal.Position;
             if (relativePosition.Length() < 1e-4)
             {
                 if (delta > 0) //If Zoom out from very close distance, increase the initial relativePosition
@@ -278,7 +278,7 @@ namespace HelixToolkit.UWP
             var newPosition = zoomAround - newRelativePosition;
 
             var newDistance = (newPosition - zoomAround).Length();
-            var oldDistance = (this.Camera.Position - zoomAround).Length();
+            var oldDistance = (this.Camera.CameraInternal.Position - zoomAround).Length();
 
             if (newDistance > this.CameraController.ZoomDistanceLimitFar && (oldDistance < this.CameraController.ZoomDistanceLimitFar || newDistance > oldDistance))
             {
