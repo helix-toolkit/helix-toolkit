@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sdxm="clr-namespace:SharpDX;assembly=SharpDX.Mathematics"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -42,28 +44,32 @@
                 <MouseBinding Command="hx:ViewportCommands.Zoom" Gesture="MiddleClick" />
                 <MouseBinding Command="hx:ViewportCommands.Pan" Gesture="Shift+RightClick" />
             </hx:Viewport3DX.InputBindings>
-
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDown3D">
+                    <ie:CallMethodAction MethodName="OnMouseDown3DHandler" TargetObject="{Binding}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <!--<hx:AmbientLight3D Color="{Binding AmbientLightColor}"/>-->
 
             <hx:DirectionalLight3D Direction="{Binding DirectionalLightDirection}" Color="{Binding DirectionalLightColor}" />
 
             <hx:MeshGeometryModel3D
                 x:Name="model1"
-                Geometry="{Binding Model}"
+                Geometry="{Binding Model2}"
                 Material="{Binding Material1}"
-                Transform="{Binding Model1Transform}" />
+                Transform="{Binding Model1Transform, Mode=TwoWay}" />
 
             <hx:MeshGeometryModel3D
                 x:Name="model2"
                 Geometry="{Binding Model}"
                 Material="{Binding Material2}"
-                Transform="{Binding Model2Transform}" />
+                Transform="{Binding Model2Transform, Mode=TwoWay}" />
 
             <hx:DraggableGeometryModel3D
                 x:Name="model3"
                 Geometry="{Binding Model}"
                 Material="{Binding Material3}"
-                Transform="{Binding Model3Transform}" />
+                Transform="{Binding Model3Transform, Mode=TwoWay}" />
 
             <hx:LineGeometryModel3D
                 x:Name="lines"
@@ -72,8 +78,12 @@
                 Thickness="2"
                 Transform="{Binding Transform, ElementName=model3}"
                 Color="Black" />
-
-            <hx:UITranslateManipulator3D
+            <hx:TransformManipulator3D
+                x:Name="manipulator"
+                CenterOffset="{Binding CenterOffset}"
+                SizeScale="1"
+                Target="{Binding Target}" />
+            <!--<hx:UITranslateManipulator3D
                 x:Name="translateX"
                 Direction="1,0,0"
                 Material="{x:Static hx:PhongMaterials.Red}"
@@ -132,7 +142,7 @@
                 CanTranslateZ="true"
                 Diameter="2"
                 TargetTransform="{Binding Transform, ElementName=model1}"
-                Transform="{Binding Transform, ElementName=model1}" />
+                Transform="{Binding Transform, ElementName=model1}" />-->
 
 
             <hx:LineGeometryModel3D
@@ -143,56 +153,15 @@
 
 
         </hx:Viewport3DX>
-        <StackPanel Grid.Row="1">
-            <Expander
-                x:Name="shadingPanel"
-                Width="150"
-                Margin="10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                BorderBrush="LightGray"
-                Header="Render Technique"
-                IsExpanded="True">
-                <Expander.Background>
-                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
-                </Expander.Background>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="23*" />
-                        <ColumnDefinition Width="51*" />
-                    </Grid.ColumnDefinitions>
-                    <ComboBox
-                        Grid.Row="0"
-                        Grid.ColumnSpan="2"
-                        Margin="3"
-                        DisplayMemberPath="Key"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding RenderTechniquesManager.RenderTechniques}"
-                        SelectedItem="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"
-                        SelectedValue="{Binding RenderTechnique, Converter={StaticResource RenderTechniqueConverter}}"
-                        SelectedValuePath="Value" />
-                </Grid>
-            </Expander>
-            <Expander
-                Width="150"
-                Margin="10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                BorderBrush="LightGray"
-                Header="Camera Model"
-                IsExpanded="True">
-                <Expander.Background>
-                    <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
-                </Expander.Background>
-                <Grid>
-                    <ComboBox
-                        Grid.Row="0"
-                        Margin="3"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding CameraModelCollection}"
-                        SelectedItem="{Binding CameraModel}" />
-                </Grid>
-            </Expander>
+        <StackPanel
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Orientation="Vertical">
+            <CheckBox IsChecked="{Binding ElementName=manipulator, Path=EnableScaling}">Enable Scaling</CheckBox>
+            <CheckBox IsChecked="{Binding ElementName=manipulator, Path=EnableRotation}">Enable Rotation</CheckBox>
+            <CheckBox IsChecked="{Binding ElementName=manipulator, Path=EnableTranslation}">Enable Translation</CheckBox>
+            <CheckBox IsChecked="{Binding ElementName=manipulator, Path=EnableXRayGrid}">Enable XRayGrid</CheckBox>
+            <Button Command="{Binding ResetTransformsCommand}">Reset</Button>
         </StackPanel>
         <StatusBar Grid.Row="1" VerticalAlignment="Bottom">
             <StatusBar.Background>

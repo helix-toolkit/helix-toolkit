@@ -13,14 +13,18 @@ namespace HelixToolkit.UWP
     using Windows.Foundation;
 
     public static class ViewportExtensions
-    {        
+    {
+        public static Ray UnProject(this Viewport3DX viewport, Point point2d)
+        {
+            return UnProject(viewport, point2d.ToVector2());
+        }
         /// <summary>
         /// Un-projects a 2D screen point.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
         /// <param name="point2d">The input point.</param>
         /// <returns>The ray.</returns>
-        public static Ray UnProject(this Viewport3DX viewport, Point point2d)//, out Vector3 pointNear, out Vector3 pointFar)
+        public static Ray UnProject(this Viewport3DX viewport, Vector2 point2d)
         {
             var camera = viewport.CameraCore as ProjectionCameraCore;
             if (camera != null)
@@ -86,7 +90,23 @@ namespace HelixToolkit.UWP
             }
             return ray.PlaneIntersection(position, normal);
         }
-
+        /// <summary>
+        /// Uns the project on plane.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="p">The p.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="normal">The normal.</param>
+        /// <returns></returns>
+        public static Vector3? UnProjectOnPlane(this Viewport3DX viewport, Vector2 p, Vector3 position, Vector3 normal)
+        {
+            var ray = UnProject(viewport, p);
+            if (ray == null)
+            {
+                return null;
+            }
+            return ray.PlaneIntersection(position, normal);
+        }
         /// <summary>
         /// Finds the intersection with a plane.
         /// </summary>

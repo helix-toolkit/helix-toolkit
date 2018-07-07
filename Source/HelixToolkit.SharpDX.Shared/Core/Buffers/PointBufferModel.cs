@@ -22,6 +22,7 @@ namespace HelixToolkit.UWP.Core
     /// <typeparam name="VertexStruct"></typeparam>
     public abstract class PointGeometryBufferModel<VertexStruct> : GeometryBufferModel where VertexStruct : struct
     {
+        private static readonly VertexStruct[] emptyVerts = new VertexStruct[0];
         /// <summary>
         /// Called when [build vertex array].
         /// </summary>
@@ -33,8 +34,11 @@ namespace HelixToolkit.UWP.Core
         /// Initializes a new instance of the <see cref="PointGeometryBufferModel{VertexStruct}"/> class.
         /// </summary>
         /// <param name="structSize">Size of the structure.</param>
-        public PointGeometryBufferModel(int structSize) : base(PrimitiveTopology.PointList,
-            new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), null)
+        /// <param name="dynamic">Create dynamic buffer or immutable buffer</param>
+        public PointGeometryBufferModel(int structSize, bool dynamic = false) 
+            : base(PrimitiveTopology.PointList,
+            dynamic ? new DynamicBufferProxy(structSize, BindFlags.VertexBuffer) : new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer) as IElementsBufferProxy,
+            null)
         {
         }
 
@@ -75,7 +79,8 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                buffer.DisposeAndClear();
+                //buffer.DisposeAndClear();
+                buffer.UploadDataToBuffer(context, emptyVerts, 0);
             }
         }
         /// <summary>
@@ -102,6 +107,41 @@ namespace HelixToolkit.UWP.Core
         /// Initializes a new instance of the <see cref="DefaultPointGeometryBufferModel"/> class.
         /// </summary>
         public DefaultPointGeometryBufferModel() : base(PointsVertex.SizeInBytes) { }
+
+        /// <summary>
+        /// Called when [build vertex array].
+        /// </summary>
+        /// <param name="geometry">The geometry.</param>
+        /// <returns></returns>
+        protected override PointsVertex[] OnBuildVertexArray(PointGeometry3D geometry)
+        {
+            var positions = geometry.Positions;
+            var vertexCount = geometry.Positions.Count;
+            var array = vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new PointsVertex[vertexCount];
+            var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
+            vertexArrayBuffer = array;
+            for (var i = 0; i < vertexCount; i++)
+            {
+                colors.MoveNext();
+                array[i].Position = new Vector4(positions[i], 1f);
+                array[i].Color = colors.Current;
+            }
+            colors.Dispose();
+            return array;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class DynamicPointGeometryBufferModel : PointGeometryBufferModel<PointsVertex>
+    {
+        [ThreadStatic]
+        private static PointsVertex[] vertexArrayBuffer;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicPointGeometryBufferModel"/> class.
+        /// </summary>
+        public DynamicPointGeometryBufferModel() : base(PointsVertex.SizeInBytes, true) { }
 
         /// <summary>
         /// Called when [build vertex array].

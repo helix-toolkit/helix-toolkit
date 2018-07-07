@@ -116,13 +116,12 @@ namespace HelixToolkit.UWP.Utilities
         {
             if (bufferDesc.Usage == ResourceUsage.Dynamic)
             {
-                DataStream stream;
-                context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
+                context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
                 using (stream)
                 {
-                    stream.Write(data);
-                    context.UnmapSubresource(buffer, 0);
+                    stream.Write(data);                   
                 }
+                context.UnmapSubresource(buffer, 0);
             }
             else
             {
@@ -156,13 +155,12 @@ namespace HelixToolkit.UWP.Utilities
         {
             if (bufferDesc.Usage == ResourceUsage.Dynamic)
             {
-                DataStream stream;
-                context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
+                context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
                 using (stream)
                 {
-                    stream.WriteRange(data, offset, count);
-                    context.UnmapSubresource(buffer, 0);
+                    stream.WriteRange(data, offset, count);                   
                 }
+                context.UnmapSubresource(buffer, 0);
             }
             else
             {
@@ -180,13 +178,12 @@ namespace HelixToolkit.UWP.Utilities
         {
             if (bufferDesc.Usage == ResourceUsage.Dynamic)
             {
-                DataStream stream;
-                context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out stream);
+                context.MapSubresource(buffer, 0, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
                 using (stream)
                 {
-                    writeFuc?.Invoke(stream);
-                    context.UnmapSubresource(buffer, 0);
+                    writeFuc?.Invoke(stream);                    
                 }
+                context.UnmapSubresource(buffer, 0);
             }
             else
             {
@@ -214,7 +211,7 @@ namespace HelixToolkit.UWP.Utilities
 
         public static implicit operator SDX11.Buffer(ConstantBufferProxy proxy)
         {
-            return proxy == null ? null : proxy.buffer;
+            return proxy?.buffer;
         }
     }
 }

@@ -86,6 +86,8 @@ namespace HelixToolkit.Wpf.SharpDX
             Add(DiffuseMaterials.BlackPlastic);
             Add(DiffuseMaterials.BlackRubber);
             Add(DiffuseMaterials.Blue);
+            Add(DiffuseMaterials.LightBlue);
+            Add(DiffuseMaterials.SkyBlue);
             Add(DiffuseMaterials.Brass);
             Add(DiffuseMaterials.Bronze);
             Add(DiffuseMaterials.Chrome);
@@ -95,6 +97,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Add(DiffuseMaterials.Glass);
             Add(DiffuseMaterials.Gold);
             Add(DiffuseMaterials.Green);
+            Add(DiffuseMaterials.LightGreen);
             Add(DiffuseMaterials.Indigo);
             Add(DiffuseMaterials.Jade);
             Add(DiffuseMaterials.Gray);
@@ -210,7 +213,28 @@ namespace HelixToolkit.Wpf.SharpDX
                 };
             }
         }
-
+        public static DiffuseMaterial LightBlue
+        {
+            get
+            {
+                return new DiffuseMaterial
+                {
+                    Name = "LightBlue",
+                    DiffuseColor = Color.LightBlue,
+                };
+            }
+        }
+        public static DiffuseMaterial SkyBlue
+        {
+            get
+            {
+                return new DiffuseMaterial
+                {
+                    Name = "SkyBlue",
+                    DiffuseColor = Color.SkyBlue,
+                };
+            }
+        }
         public static DiffuseMaterial Green
         {
             get
@@ -222,7 +246,17 @@ namespace HelixToolkit.Wpf.SharpDX
                 };
             }
         }
-
+        public static DiffuseMaterial LightGreen
+        {
+            get
+            {
+                return new DiffuseMaterial
+                {
+                    Name = "LightGreen",
+                    DiffuseColor = Color.LightGreen,
+                };
+            }
+        }
         public static DiffuseMaterial Orange
         {
             get

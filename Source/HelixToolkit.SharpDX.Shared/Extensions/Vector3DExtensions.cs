@@ -308,15 +308,14 @@ namespace HelixToolkit.Wpf.SharpDX
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color4 ToColor4(this Media.Color color)
         {
-            color.Clamp();
-            return new Color4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
+            return new global::SharpDX.Color4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static System.Windows.Media.Color ToColor(this Color4 color)
         {
-            //return System.Windows.Media.Color.FromArgb((byte)(color.Alpha * 256), (byte)(color.Red * 256), (byte)(color.Green * 256), (byte)(color.Blue * 256));
-            return System.Windows.Media.Color.FromScRgb(color.Alpha, color.Red, color.Green, color.Blue);
+            return System.Windows.Media.Color.FromArgb((byte)(color.Alpha * 255), (byte)(color.Red * 255), (byte)(color.Green * 255), (byte)(color.Blue * 255));
+            //return System.Windows.Media.Color.FromScRgb(color.Alpha, color.Red, color.Green, color.Blue);
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Transform3D AppendTransform(this Transform3D t1, Transform3D t2)

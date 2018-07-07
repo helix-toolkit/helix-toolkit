@@ -233,6 +233,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public const string EffectMeshXRayGridP3 = "EffectMeshXRayGridP3";
         /// <summary>
+        /// The effect mesh diffuse x ray grid p3
+        /// </summary>
+        public const string EffectMeshDiffuseXRayGridP3 = "EffectMeshDiffueXRayGridP3";
+        /// <summary>
         /// 
         /// </summary>
         public const string ShadowPass = "RenderShadow";

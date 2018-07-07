@@ -33,12 +33,12 @@ namespace HelixToolkit.UWP
                 var model = d as Element3DPresenter;
                 if (e.OldValue != null)
                 {
-                    model.itemsContainer.Items.Remove(e.OldValue);
+                    model.Items.Remove(e.OldValue);
                     (model.SceneNode as GroupNode).RemoveChildNode(e.OldValue as Element3D);
                 }
                 if (e.NewValue != null)
                 {
-                    model.itemsContainer.Items.Add(e.NewValue);
+                    model.Items.Add(e.NewValue);
                     (model.SceneNode as GroupNode).AddChildNode(e.NewValue as Element3D);
                 }
             }));

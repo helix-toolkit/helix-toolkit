@@ -22,6 +22,8 @@ namespace HelixToolkit.UWP.Core
     /// <typeparam name="VertexStruct"></typeparam>
     public abstract class LineGeometryBufferModel<VertexStruct> : GeometryBufferModel where VertexStruct : struct
     {
+        private static readonly VertexStruct[] emptyVertices = new VertexStruct[0];
+        private static readonly int[] emptyIndices = new int[0];
         /// <summary>
         /// 
         /// </summary>
@@ -33,8 +35,11 @@ namespace HelixToolkit.UWP.Core
         /// Initializes a new instance of the <see cref="LineGeometryBufferModel{VertexStruct}"/> class.
         /// </summary>
         /// <param name="structSize">Size of the structure.</param>
-        public LineGeometryBufferModel(int structSize) : base(PrimitiveTopology.LineList,
-            new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer))
+        /// <param name="dynamic">Create dynamic buffer or immutable buffer</param>
+        public LineGeometryBufferModel(int structSize, bool dynamic = false)
+            : base(PrimitiveTopology.LineList,
+            dynamic ? new DynamicBufferProxy(structSize, BindFlags.VertexBuffer) : new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer) as IElementsBufferProxy, 
+            dynamic ? new DynamicBufferProxy(sizeof(int), BindFlags.IndexBuffer) : new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer) as IElementsBufferProxy)
         {
         }
 
@@ -42,8 +47,11 @@ namespace HelixToolkit.UWP.Core
         /// Initializes a new instance of the <see cref="LineGeometryBufferModel{VertexStruct}"/> class.
         /// </summary>
         /// <param name="vertexBuffer"></param>
-        public LineGeometryBufferModel(IElementsBufferProxy vertexBuffer) : base(PrimitiveTopology.LineList,
-            vertexBuffer, new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer))
+        /// <param name="dynamic">Create dynamic buffer or immutable buffer</param> 
+        public LineGeometryBufferModel(IElementsBufferProxy vertexBuffer, bool dynamic = false)
+            : base(PrimitiveTopology.LineList,
+            vertexBuffer,
+            dynamic ? new DynamicBufferProxy(sizeof(int), BindFlags.IndexBuffer) : new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer) as IElementsBufferProxy)
         {
         }
 
@@ -51,8 +59,11 @@ namespace HelixToolkit.UWP.Core
         /// Initializes a new instance of the <see cref="LineGeometryBufferModel{VertexStruct}"/> class.
         /// </summary>
         /// <param name="vertexBuffer"></param>
-        public LineGeometryBufferModel(IElementsBufferProxy[] vertexBuffer) : base(PrimitiveTopology.LineList,
-            vertexBuffer, new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer))
+        /// <param name="dynamic">Create dynamic buffer or immutable buffer</param> 
+        public LineGeometryBufferModel(IElementsBufferProxy[] vertexBuffer, bool dynamic = false) 
+            : base(PrimitiveTopology.LineList,
+            vertexBuffer,
+            dynamic ? new DynamicBufferProxy(sizeof(int), BindFlags.IndexBuffer) : new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer) as IElementsBufferProxy)
         {
         }
         /// <summary>
@@ -95,7 +106,8 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                buffer.DisposeAndClear();
+                //buffer.DisposeAndClear();
+                buffer.UploadDataToBuffer(context, emptyVertices, 0);
             }
         }
         /// <summary>
@@ -113,7 +125,8 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                buffer.DisposeAndClear();
+                // buffer.DisposeAndClear();
+                buffer.UploadDataToBuffer(context, emptyIndices, 0);
             }
         }
         /// <summary>
@@ -148,6 +161,43 @@ namespace HelixToolkit.UWP.Core
             var positions = geometry.Positions;
             var vertexCount = geometry.Positions.Count;
             var array =  vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new LinesVertex[vertexCount];
+            var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
+
+            vertexArrayBuffer = array;
+
+            for (var i = 0; i < vertexCount; i++)
+            {
+                colors.MoveNext();
+                array[i].Position = new Vector4(positions[i], 1f);
+                array[i].Color = colors.Current;
+            }
+            colors.Dispose();
+            return array;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class DynamicLineGeometryBufferModel : LineGeometryBufferModel<LinesVertex>
+    {
+        [ThreadStatic]
+        private static LinesVertex[] vertexArrayBuffer = null;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicLineGeometryBufferModel"/> class.
+        /// </summary>
+        public DynamicLineGeometryBufferModel() : base(LinesVertex.SizeInBytes, true) { }
+
+        /// <summary>
+        /// Called when [build vertex array].
+        /// </summary>
+        /// <param name="geometry">The geometry.</param>
+        /// <returns></returns>
+        protected override LinesVertex[] OnBuildVertexArray(LineGeometry3D geometry)
+        {
+            var positions = geometry.Positions;
+            var vertexCount = geometry.Positions.Count;
+            var array = vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new LinesVertex[vertexCount];
             var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
 
             vertexArrayBuffer = array;
