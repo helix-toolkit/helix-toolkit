@@ -192,17 +192,17 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty EnableTessellationProperty = DependencyProperty.Register("EnableTessellation", typeof(bool), typeof(PhongMaterial),
             new PropertyMetadata(false, (d, e) => { ((d as Material).Core as IPhongMaterial).EnableTessellation = (bool)e.NewValue; }));
         /// <summary>
-        /// The maximum tessellation factor property
+        /// The tessellation factor at <see cref="MaxTessellationDistance"/> property
         /// </summary>
-        public static readonly DependencyProperty MaxTessellationFactorProperty =
-            DependencyProperty.Register("MaxTessellationFactor", typeof(double), typeof(PhongMaterial), new PropertyMetadata(1.0, (d, e) =>
-            { ((d as Material).Core as IPhongMaterial).MaxTessellationFactor = (float)(double)e.NewValue; }));
+        public static readonly DependencyProperty MaxDistanceTessellationFactorProperty =
+            DependencyProperty.Register("MaxDistanceTessellationFactor", typeof(double), typeof(PhongMaterial), new PropertyMetadata(1.0, (d, e) =>
+            { ((d as Material).Core as IPhongMaterial).MaxDistanceTessellationFactor = (float)(double)e.NewValue; }));
         /// <summary>
-        /// The minimum tessellation factor property
+        /// The tessellation factor at <see cref="MinTessellationDistance"/> property
         /// </summary>
-        public static readonly DependencyProperty MinTessellationFactorProperty =
-            DependencyProperty.Register("MinTessellationFactor", typeof(double), typeof(PhongMaterial), new PropertyMetadata(2.0, (d, e) =>
-            { ((d as Material).Core as IPhongMaterial).MinTessellationFactor = (float)(double)e.NewValue; }));
+        public static readonly DependencyProperty MinDistanceTessellationFactorProperty =
+            DependencyProperty.Register("MinDistanceTessellationFactor", typeof(double), typeof(PhongMaterial), new PropertyMetadata(2.0, (d, e) =>
+            { ((d as Material).Core as IPhongMaterial).MinDistanceTessellationFactor = (float)(double)e.NewValue; }));
         /// <summary>
         /// The maximum tessellation distance property
         /// </summary>
@@ -411,26 +411,26 @@ namespace HelixToolkit.Wpf.SharpDX
             }
         }
         /// <summary>
-        /// Gets or sets the maximum tessellation factor.
+        /// Gets or sets the tessellation factor at <see cref="MaxTessellationDistance"/>.
         /// </summary>
         /// <value>
         /// The maximum tessellation factor.
         /// </value>
-        public double MaxTessellationFactor
+        public double MaxDistanceTessellationFactor
         {
-            get { return (double)GetValue(MaxTessellationFactorProperty); }
-            set { SetValue(MaxTessellationFactorProperty, value); }
+            get { return (double)GetValue(MaxDistanceTessellationFactorProperty); }
+            set { SetValue(MaxDistanceTessellationFactorProperty, value); }
         }
         /// <summary>
-        /// Gets or sets the minimum tessellation factor.
+        /// Gets or sets the tessellation factor at <see cref="MinTessellationDistance"/>
         /// </summary>
         /// <value>
         /// The minimum tessellation factor.
         /// </value>
-        public double MinTessellationFactor
+        public double MinDistanceTessellationFactor
         {
-            get { return (double)GetValue(MinTessellationFactorProperty); }
-            set { SetValue(MinTessellationFactorProperty, value); }
+            get { return (double)GetValue(MinDistanceTessellationFactorProperty); }
+            set { SetValue(MinDistanceTessellationFactorProperty, value); }
         }
         /// <summary>
         /// Gets or sets the maximum tessellation distance.
@@ -477,8 +477,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 NormalMapSampler = this.NormalMapSampler,
                 MaxTessellationDistance = (float)this.MaxTessellationDistance,
                 MinTessellationDistance = (float)this.MinTessellationDistance,
-                MaxTessellationFactor = (float)this.MaxTessellationFactor,
-                MinTessellationFactor = (float)this.MinTessellationFactor,
+                MaxDistanceTessellationFactor = (float)this.MaxDistanceTessellationFactor,
+                MinDistanceTessellationFactor = (float)this.MinDistanceTessellationFactor,
                 EnableTessellation = EnableTessellation,
                 RenderDiffuseAlphaMap = RenderDiffuseAlphaMap,
                 RenderDiffuseMap = RenderDiffuseMap,
@@ -509,8 +509,8 @@ namespace HelixToolkit.Wpf.SharpDX
                 NormalMapSampler = this.NormalMapSampler,
                 MaxTessellationDistance = (float)this.MaxTessellationDistance,
                 MinTessellationDistance = (float)this.MinTessellationDistance,
-                MaxTessellationFactor = (float)this.MaxTessellationFactor,
-                MinTessellationFactor = (float)this.MinTessellationFactor,
+                MaxDistanceTessellationFactor = (float)this.MaxDistanceTessellationFactor,
+                MinDistanceTessellationFactor = (float)this.MinDistanceTessellationFactor,
                 EnableTessellation = EnableTessellation,
                 RenderDiffuseAlphaMap = RenderDiffuseAlphaMap,
                 RenderDiffuseMap = RenderDiffuseMap,

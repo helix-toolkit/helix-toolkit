@@ -225,7 +225,7 @@
                         Maximum="5"
                         Minimum="1"
                         TickFrequency="1"
-                        Value="{Binding ModelMaterial.MinTessellationFactor}" />
+                        Value="{Binding ModelMaterial.MinDistanceTessellationFactor}" />
                 </StackPanel>
             </Expander>
             <Expander
