@@ -12,10 +12,10 @@ namespace HelixToolkit.Wpf.SharpDX
     using System;
     using System.Windows;
     using System.Windows.Input;
-    using Vector3 = global::SharpDX.Vector3;
-    using Vector2 = global::SharpDX.Vector2;
-    using Quaternion = global::SharpDX.Quaternion;
-    using Matrix = global::SharpDX.Matrix;
+    using Vector3 = System.Numerics.Vector3;
+    using Vector2 = System.Numerics.Vector2;
+    using Quaternion = System.Numerics.Quaternion;
+    using Matrix = System.Numerics.Matrix4x4;
 
     /// <summary>
     /// Handles rotation.
@@ -215,16 +215,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
             d *= (float)RotationSensitivity;
 
-            var q1 = Quaternion.RotationAxis(this.rotationAxisX, d * Inv * delta.X / 180 * (float)Math.PI);
-            var q2 = Quaternion.RotationAxis(this.rotationAxisY, d * delta.Y / 180 * (float)Math.PI);
+            var q1 = Quaternion.CreateFromAxisAngle(this.rotationAxisX, d * Inv * delta.X / 180 * (float)Math.PI);
+            var q2 = Quaternion.CreateFromAxisAngle(this.rotationAxisY, d * delta.Y / 180 * (float)Math.PI);
             Quaternion q = q1 * q2;
 
-            var m = Matrix.RotationQuaternion(q);
+            var m = Matrix.CreateFromQuaternion(q);
             Vector3 newLookDir = Vector3.TransformNormal(this.Camera.CameraInternal.LookDirection, m);
             Vector3 newUpDirection = Vector3.TransformNormal(this.Camera.CameraInternal.UpDirection, m);
 
-            Vector3 newRelativeTarget = Vector3.TransformCoordinate(relativeTarget, m);
-            Vector3 newRelativePosition = Vector3.TransformCoordinate(relativePosition, m);
+            Vector3 newRelativeTarget = Mathematics.Vector3Helper.TransformCoordinate(relativeTarget, m);
+            Vector3 newRelativePosition = Mathematics.Vector3Helper.TransformCoordinate(relativePosition, m);
 
             var newRightVector = Vector3.Normalize(Vector3.Cross(newLookDir, newUpDirection));
             var modUpDir = Vector3.Normalize(Vector3.Cross(newRightVector, newLookDir));
@@ -272,16 +272,16 @@ namespace HelixToolkit.Wpf.SharpDX
 
             d *= (float)this.RotationSensitivity;
 
-            var q1 = Quaternion.RotationAxis(up, d * Inv * delta.X / 180 * (float)Math.PI);
-            var q2 = Quaternion.RotationAxis(right, d * delta.Y / 180 * (float)Math.PI);
+            var q1 = Quaternion.CreateFromAxisAngle(up, d * Inv * delta.X / 180 * (float)Math.PI);
+            var q2 = Quaternion.CreateFromAxisAngle(right, d * delta.Y / 180 * (float)Math.PI);
             Quaternion q = q1 * q2;
 
-            var m = Matrix.RotationQuaternion(q);
+            var m = Matrix.CreateFromQuaternion(q);
 
             var newUpDirection = Vector3.TransformNormal(cUp, m);
 
-            var newRelativeTarget = Vector3.TransformCoordinate(relativeTarget, m);
-            var newRelativePosition = Vector3.TransformCoordinate(relativePosition, m);
+            var newRelativeTarget = Mathematics.Vector3Helper.TransformCoordinate(relativeTarget, m);
+            var newRelativePosition = Mathematics.Vector3Helper.TransformCoordinate(relativePosition, m);
 
             var newTarget = rotateAround - newRelativeTarget;
             var newPosition = rotateAround - newRelativePosition;
@@ -500,16 +500,16 @@ namespace HelixToolkit.Wpf.SharpDX
             var angle = VectorExtensions.AngleBetween(u1, u2);
 
             // Create the transform
-            var rotate = Matrix.RotationAxis(Vector3.Normalize(axis), -angle * (float)RotationSensitivity * 5);
+            var rotate = Matrix.CreateFromAxisAngle(Vector3.Normalize(axis), -angle * (float)RotationSensitivity * 5);
 
             // Find vectors relative to the rotate-around point
             var relativeTarget = rotateAround - this.Camera.CameraInternal.Target;
             var relativePosition = rotateAround - this.Camera.CameraInternal.Position;
 
             // Rotate the relative vectors
-            var newRelativeTarget = Vector3.TransformCoordinate(relativeTarget, rotate);
-            var newRelativePosition = Vector3.TransformCoordinate(relativePosition, rotate);
-            var newUpDirection = Vector3.TransformCoordinate(cUP, rotate);
+            var newRelativeTarget = Mathematics.Vector3Helper.TransformCoordinate(relativeTarget, rotate);
+            var newRelativePosition = Mathematics.Vector3Helper.TransformCoordinate(relativePosition, rotate);
+            var newUpDirection = Mathematics.Vector3Helper.TransformCoordinate(cUP, rotate);
 
             // Find new camera position
             var newTarget = rotateAround - newRelativeTarget;

@@ -7,8 +7,8 @@ using System.Diagnostics;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;
-using Vector3D = SharpDX.Vector3;
-using Point3D = SharpDX.Vector3;
+using Vector3D = System.Numerics.Vector3;
+using Point3D = System.Numerics.Vector3;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
@@ -20,7 +20,6 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Numerics;
     using Matrix = System.Numerics.Matrix4x4;
     using System.Diagnostics;
-    using Windows.UI.Xaml;
 
     public interface ICameraModel
     {

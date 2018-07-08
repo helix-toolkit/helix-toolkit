@@ -4,9 +4,9 @@ Copyright (c) 2018 Helix Toolkit contributors
 */
 #if NETFX_CORE
 using Windows.UI.Xaml;
-using Vector3D = SharpDX.Vector3;
-using Point3D = SharpDX.Vector3;
-using Matrix3D = SharpDX.Matrix;
+using Vector3D = System.Numerics.Vector3;
+using Point3D = System.Numerics.Vector3;
+using Matrix3D = System.Numerics.Matrix4x4;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;

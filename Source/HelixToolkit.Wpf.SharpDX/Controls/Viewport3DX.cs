@@ -30,7 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model.Scene;
     using Model.Scene2D;
     using System.Runtime.CompilerServices;
-    using Vector3 = global::SharpDX.Vector3;
+    using Vector3 = System.Numerics.Vector3;
 
     /// <summary>
     /// Provides a Viewport control.
@@ -466,7 +466,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// A Point3D or null.
         /// </returns>
-        public Point3D? FindNearestPoint(Point pt)
+        public Vector3? FindNearestPoint(Point pt)
         {
             return ViewportExtensions.FindNearestPoint(this, pt);
         }
@@ -865,7 +865,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="animationTime">
         /// The animation time.
         /// </param>
-        public void ZoomExtents(Rect3D bounds, double animationTime = 0)
+        public void ZoomExtents(Mathematics.BoundingBox bounds, double animationTime = 0)
         {
             ViewportExtensions.ZoomExtents(this, bounds, animationTime);
         }
@@ -1038,14 +1038,14 @@ namespace HelixToolkit.Wpf.SharpDX
                 var pos = this.FindNearestPoint(pt);
                 if (pos != null)
                 {
-                    this.CurrentPosition = pos.Value;
+                    this.CurrentPosition = pos.Value.ToPoint3D();
                 }
                 else
                 {
                     var p = this.UnProjectOnPlane(pt);
                     if (p != null)
                     {
-                        this.CurrentPosition = p.Value;
+                        this.CurrentPosition = p.Value.ToPoint3D();
                     }
                 }
             }

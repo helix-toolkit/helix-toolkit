@@ -894,7 +894,7 @@ namespace HelixToolkit.Wpf.SharpDX
             "ManualLookAtPoint", typeof(Point3D), typeof(Viewport3DX), new FrameworkPropertyMetadata(new Point3D(), (d, e) => { },
                 (d, e) =>
                 {
-                    (d as Viewport3DX).LookAt(((Point3D)e).ToVector3());
+                    (d as Viewport3DX).LookAt((Point3D)e);
                     return e;
                 })
             { BindsTwoWayByDefault = false });

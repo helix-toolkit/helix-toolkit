@@ -13,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Input;
-    using Vector3 = global::SharpDX.Vector3;
+    using Vector3 = System.Numerics.Vector3;
 
     /// <summary>
     /// Handles zooming.

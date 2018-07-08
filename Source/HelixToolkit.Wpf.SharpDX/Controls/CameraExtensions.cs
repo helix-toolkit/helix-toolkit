@@ -14,12 +14,10 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Globalization;
     using System.Text;
     using System.Windows;
-    using System.Windows.Media.Animation;
     using System.Windows.Media.Media3D;
 
-    using Matrix = global::SharpDX.Matrix;
-    using Matrix3x3 = global::SharpDX.Matrix3x3;
-    using Vector3 = global::SharpDX.Vector3;
+    using Matrix = System.Numerics.Matrix4x4;
+    using Vector3 = System.Numerics.Vector3;
 
     /// <summary>
     /// Provides extension methods for the cameras.
@@ -166,13 +164,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public static string GetInfo(this Camera camera)
         {
-            var matrixCamera = camera as MatrixCamera;
-            var perspectiveCamera = camera as PerspectiveCamera;
-            var projectionCamera = camera as IProjectionCameraModel;
-            var orthographicCamera = camera as OrthographicCamera;
             var sb = new StringBuilder();
             sb.AppendLine(camera.GetType().Name);
-            if (projectionCamera != null)
+            if (camera is IProjectionCameraModel projectionCamera)
             {
                 sb.AppendLine(
                     string.Format(
@@ -210,19 +204,17 @@ namespace HelixToolkit.Wpf.SharpDX
                     string.Format(CultureInfo.InvariantCulture, "FarPlaneDist:\t{0}", projectionCamera.FarPlaneDistance));
             }
 
-            if (perspectiveCamera != null)
+            if (camera is IPerspectiveCameraModel perspectiveCamera)
             {
                 sb.AppendLine(
                     string.Format(CultureInfo.InvariantCulture, "FieldOfView:\t{0:0.#}°", perspectiveCamera.FieldOfView));
             }
-
-            if (orthographicCamera != null)
+            else if (camera is IOrthographicCameraModel orthographicCamera)
             {
                 sb.AppendLine(
                     string.Format(CultureInfo.InvariantCulture, "Width:\t{0:0.###}", orthographicCamera.Width));
             }
-
-            if (matrixCamera != null)
+            else if (camera is IMatrixCameraModel matrixCamera)
             {
                 sb.AppendLine("ProjectionMatrix:");
                 sb.AppendLine(matrixCamera.ProjectionMatrix.ToString(CultureInfo.InvariantCulture));
@@ -264,8 +256,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public static Matrix GetInverseViewProjectionMatrix(this CameraCore camera, double aspectRatio)
         {
-            var m = GetViewProjectionMatrix(camera, aspectRatio);
-            m.Invert();
+            Matrix.Invert(GetViewProjectionMatrix(camera, aspectRatio), out Matrix m);
             return m;
         }
 
@@ -528,9 +519,9 @@ namespace HelixToolkit.Wpf.SharpDX
             this Camera camera, Viewport3DX viewport, double animationTime = 0)
         {
             var bounds = viewport.FindBounds();
-            var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
+            var diagonal = bounds.Maximum - bounds.Minimum;
 
-            if (bounds.IsEmpty || diagonal.LengthSquared.Equals(0))
+            if (diagonal.LengthSquared().Equals(0))
             {
                 return;
             }
@@ -554,12 +545,12 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The animation time.
         /// </param>
         public static void ZoomExtents(
-            this Camera camera, Viewport3DX viewport, Rect3D bounds, double animationTime = 0)
+            this Camera camera, Viewport3DX viewport, Mathematics.BoundingBox bounds, double animationTime = 0)
         {
-            var diagonal = new Vector3D(bounds.SizeX, bounds.SizeY, bounds.SizeZ);
-            var center = bounds.Location + (diagonal * 0.5);
-            double radius = diagonal.Length * 0.5;
-            ZoomExtents(camera, viewport, center, radius, animationTime);
+            var diagonal = bounds.Maximum-bounds.Minimum;
+            var center = bounds.Center;
+            double radius = diagonal.Length() * 0.5;
+            ZoomExtents(camera, viewport, center.ToPoint3D(), radius, animationTime);
         }
 
         /// <summary>
@@ -662,10 +653,9 @@ namespace HelixToolkit.Wpf.SharpDX
                 orthographicCamera.Width *= zoomRectangle.Width / viewport.ActualWidth;
                 var oldTarget = camera.CameraInternal.Position + camera.CameraInternal.LookDirection;
                 var distance = camera.CameraInternal.LookDirection.Length();
-                var newTarget = centerRay.PlaneIntersection(oldTarget, w);
-                if (newTarget != null)
+                if(centerRay.PlaneIntersection(oldTarget, w, out Vector3 newTarget))
                 {
-                    LookAt(orthographicCamera, newTarget.Value.ToPoint3D(), 200);
+                    LookAt(orthographicCamera, newTarget.ToPoint3D(), 200);
                 }
             }
         }
