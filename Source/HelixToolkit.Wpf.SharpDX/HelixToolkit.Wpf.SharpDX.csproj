@@ -180,11 +180,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Model\Camera\Camera.cs" />
-    <Compile Include="Model\Camera\MatrixCamera.cs" />
-    <Compile Include="Model\Camera\OrthographicCamera.cs" />
-    <Compile Include="Model\Camera\PerspectiveCamera.cs" />
-    <Compile Include="Model\Camera\ProjectionCamera.cs" />
     <Compile Include="Model\Elements3D\CompositeModel3D.cs" />
     <Compile Include="Model\Elements3D\DraggableGeometryModel3D.cs">
       <SubType>Code</SubType>
@@ -340,6 +335,9 @@
     <PackageReference Include="SharpDX.Mathematics">
       <Version>4.1.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\Camera\" />
   </ItemGroup>
   <Import Project="..\HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems" Label="Shared" />
   <Import Project="..\HelixToolkit.Shared\HelixToolkit.Shared.projitems" Label="Shared" />

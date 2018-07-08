@@ -23,30 +23,31 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="camera">
         /// The camera.
         /// </param>
-        public CameraSetting(ProjectionCamera camera)
+        public CameraSetting(Camera camera)
         {
             this.Position = camera.Position;
             this.LookDirection = camera.LookDirection;
             this.UpDirection = camera.UpDirection;
-            this.NearPlaneDistance = camera.NearPlaneDistance;
-            this.FarPlaneDistance = camera.FarPlaneDistance;
-            var pcamera = camera as PerspectiveCamera;
-            if (pcamera != null)
+            if(camera is IProjectionCameraModel c)
             {
-                this.FieldOfView = pcamera.FieldOfView;
-            }
-            else
-            {
+                this.NearPlaneDistance = c.NearPlaneDistance;
+                this.FarPlaneDistance = c.FarPlaneDistance;
                 this.FieldOfView = 45;
-            }
-
-            var ocamera = camera as OrthographicCamera;
-            if (ocamera != null)
-            {
-                this.Width = ocamera.Width;
+                this.Width = 100;
+                if (camera is IPerspectiveCameraModel pcamera)
+                {
+                    this.FieldOfView = pcamera.FieldOfView;
+                }
+                else if (camera is IOrthographicCameraModel ocamera)
+                {
+                    this.Width = ocamera.Width;
+                }
             }
             else
             {
+                this.NearPlaneDistance = 0;
+                this.FarPlaneDistance = 0;
+                this.FieldOfView = 45;
                 this.Width = 100;
             }
         }
@@ -92,23 +93,23 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="camera">
         /// The camera.
         /// </param>
-        public void UpdateCamera(ProjectionCamera camera)
+        public void UpdateCamera(Camera camera)
         {
             camera.Position = this.Position;
             camera.LookDirection = this.LookDirection;
             camera.UpDirection = this.UpDirection;
-            camera.NearPlaneDistance = this.NearPlaneDistance;
-            camera.FarPlaneDistance = this.FarPlaneDistance;
-            var perspectiveCamera = camera as PerspectiveCamera;
-            if (perspectiveCamera != null)
+            if(camera is IProjectionCameraModel c)
             {
-                perspectiveCamera.FieldOfView = this.FieldOfView;
-            }
-
-            var orthographicCamera = camera as OrthographicCamera;
-            if (orthographicCamera != null)
-            {
-                orthographicCamera.Width = this.Width;
+                c.NearPlaneDistance = this.NearPlaneDistance;
+                c.FarPlaneDistance = this.FarPlaneDistance;
+                if (camera is IPerspectiveCameraModel perspectiveCamera)
+                {
+                    perspectiveCamera.FieldOfView = this.FieldOfView;
+                }
+                else if (camera is IOrthographicCameraModel orthographicCamera)
+                {
+                    orthographicCamera.Width = this.Width;
+                }
             }
         }
     }

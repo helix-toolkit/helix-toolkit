@@ -2,16 +2,30 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+#if NETFX_CORE
+using Windows.UI.Xaml;
+using Vector3D = SharpDX.Vector3;
+using Point3D = SharpDX.Vector3;
 namespace HelixToolkit.UWP
+#else
+using System.Windows;
+using System.Windows.Media.Media3D;
+namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Cameras;
-    using SharpDX;
-    using Windows.UI.Xaml;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
 
+    public interface IProjectionCameraModel : ICameraModel
+    {
+        double FarPlaneDistance { set; get; }
+        double NearPlaneDistance { set; get; }
+    }
     /// <summary>
     /// An abstract base class for perspective and orthographic projection cameras.
     /// </summary>
-    public abstract class ProjectionCamera : Camera
+    public abstract class ProjectionCamera : Camera, IProjectionCameraModel
     {
         /// <summary>
         /// The create left hand system property
@@ -37,9 +51,13 @@ namespace HelixToolkit.UWP
         /// The look direction property
         /// </summary>
         public static readonly DependencyProperty LookDirectionProperty = DependencyProperty.Register(
-            "LookDirection", typeof(Vector3), typeof(ProjectionCamera), new PropertyMetadata(new Vector3(0, 0, -5), (d, e) =>
+            "LookDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(0, 0, -5), (d, e) =>
             {
-                ((d as Camera).CameraInternal as ProjectionCameraCore).LookDirection = (Vector3)e.NewValue;
+#if NETFX_CORE
+                ((d as Camera).CameraInternal as ProjectionCameraCore).LookDirection = (Vector3D)e.NewValue;
+#else
+                ((d as Camera).CameraInternal as ProjectionCameraCore).LookDirection = ((Vector3D)e.NewValue).ToVector3();
+#endif
             }));
 
         /// <summary>
@@ -57,20 +75,28 @@ namespace HelixToolkit.UWP
         /// </summary>
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
             "Position",
-            typeof(Vector3),
+            typeof(Point3D),
             typeof(ProjectionCamera),
-            new PropertyMetadata(new Vector3(0, 0, +5), (d, e) =>
+            new PropertyMetadata(new Point3D(0, 0, +5), (d, e) =>
             {
-                ((d as Camera).CameraInternal as ProjectionCameraCore).Position = (Vector3)e.NewValue;
+#if NETFX_CORE
+                ((d as Camera).CameraInternal as ProjectionCameraCore).Position = (Point3D)e.NewValue;
+#else
+                ((d as Camera).CameraInternal as ProjectionCameraCore).Position = ((Point3D)e.NewValue).ToVector3();
+#endif
             }));
 
         /// <summary>
         /// Up direction property
         /// </summary>
         public static readonly DependencyProperty UpDirectionProperty = DependencyProperty.Register(
-            "UpDirection", typeof(Vector3), typeof(ProjectionCamera), new PropertyMetadata(new Vector3(0, 1, 0), (d, e) =>
+            "UpDirection", typeof(Vector3D), typeof(ProjectionCamera), new PropertyMetadata(new Vector3D(0, 1, 0), (d, e) =>
             {
-                ((d as Camera).CameraInternal as ProjectionCameraCore).UpDirection = (Vector3)e.NewValue;
+#if NETFX_CORE
+                ((d as Camera).CameraInternal as ProjectionCameraCore).UpDirection = (Vector3D)e.NewValue;
+#else
+                ((d as Camera).CameraInternal as ProjectionCameraCore).UpDirection = ((Vector3D)e.NewValue).ToVector3();
+#endif
             }));
 
         /// <summary>
@@ -79,7 +105,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// <c>true</c> if creating a left hand system; otherwise, <c>false</c>.
         /// </value>
-        public bool CreateLeftHandSystem
+        public override bool CreateLeftHandSystem
         {
             get { return (bool)this.GetValue(CreateLeftHandSystemProperty); }
             set { this.SetValue(CreateLeftHandSystemProperty, value); }
@@ -103,9 +129,9 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The look direction.
         /// </value>
-        public override Vector3 LookDirection
+        public override Vector3D LookDirection
         {
-            get { return (Vector3)this.GetValue(LookDirectionProperty); }
+            get { return (Vector3D)this.GetValue(LookDirectionProperty); }
             set { this.SetValue(LookDirectionProperty, value); }
         }
 
@@ -127,9 +153,9 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The position.
         /// </value>
-        public override Vector3 Position
+        public override Point3D Position
         {
-            get { return (Vector3)this.GetValue(PositionProperty); }
+            get { return (Point3D)this.GetValue(PositionProperty); }
             set { this.SetValue(PositionProperty, value); }
         }
 
@@ -139,7 +165,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The target.
         /// </value>
-        public Vector3 Target
+        public Point3D Target
         {
             get { return this.Position + this.LookDirection; }
         }
@@ -150,9 +176,9 @@ namespace HelixToolkit.UWP
         /// <value>
         /// Up direction.
         /// </value>
-        public override Vector3 UpDirection
+        public override Vector3D UpDirection
         {
-            get { return (Vector3)this.GetValue(UpDirectionProperty); }
+            get { return (Vector3D)this.GetValue(UpDirectionProperty); }
             set { this.SetValue(UpDirectionProperty, value); }
         }
     }

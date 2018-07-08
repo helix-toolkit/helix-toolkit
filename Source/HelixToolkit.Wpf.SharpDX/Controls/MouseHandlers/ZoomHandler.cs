@@ -121,7 +121,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 return;
             }
 
-            if (this.Camera is PerspectiveCamera)
+            if (this.Camera is IPerspectiveCameraModel)
             {
                 if (!isTouch)
                 {
@@ -151,7 +151,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 return;
             }
-            else if (this.Camera is OrthographicCamera)
+            else if (this.Camera is IOrthographicCameraModel)
             {
                 this.ZoomByChangingCameraWidth(delta, zoomAround);
             }
@@ -202,7 +202,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (ChangeCameraDistance(ref delta, zoomAround))
                     {
                         // Modify the camera width
-                        if (Camera is OrthographicCamera ocamera)
+                        if (Camera is IOrthographicCameraModel ocamera)
                         {
                             ocamera.Width *= Math.Pow(2.5, delta);
                         }

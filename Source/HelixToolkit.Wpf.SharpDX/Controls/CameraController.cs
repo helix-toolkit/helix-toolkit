@@ -149,11 +149,11 @@ namespace HelixToolkit.Wpf.SharpDX
             this.Viewport = viewport;
         }
 
-        private ProjectionCamera actualCamera;
+        private Camera actualCamera;
         /// <summary>
         /// Gets ActualCamera.
         /// </summary>
-        public ProjectionCamera ActualCamera
+        public Camera ActualCamera
         {
             set
             {
@@ -839,6 +839,10 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public void PushCameraSetting()
         {
+            if(ActualCamera == null)
+            {
+                return;
+            }
             this.cameraHistory.Add(new CameraSetting(this.ActualCamera));
             if (this.cameraHistory.IsFull())
             {
@@ -1487,6 +1491,11 @@ namespace HelixToolkit.Wpf.SharpDX
             else
             {
                 zoomSpeed = 0;
+            }
+
+            if (ActualCamera != null && ActualCamera.OnTimeStep())
+            {
+                needUpdate = true;
             }
             if (needUpdate)
             {

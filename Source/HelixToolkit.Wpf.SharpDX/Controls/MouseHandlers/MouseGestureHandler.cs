@@ -57,7 +57,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Gets the camera.
         /// </summary>
         /// <value>The camera.</value>
-        protected ProjectionCamera Camera
+        protected Camera Camera
         {
             get
             {
@@ -271,7 +271,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </returns>
         public Vector3? UnProject(Point p)
         {
-            return this.UnProject(p, this.Camera.Target.ToVector3(), this.Camera.CameraInternal.LookDirection);
+            return this.UnProject(p, this.Camera.CameraInternal.Target, this.Camera.CameraInternal.LookDirection);
         }
 
         /// <summary>

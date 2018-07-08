@@ -102,7 +102,10 @@ namespace HelixToolkit.Wpf.SharpDX
             "Camera",
             typeof(Camera),
             typeof(Viewport3DX),
-            new PropertyMetadata(null, (s, e) => (s as Viewport3DX).CameraPropertyChanged(e.NewValue as Camera)));
+            new PropertyMetadata(null, (s, e) => 
+            {
+                (s as Viewport3DX).CameraPropertyChanged(e);
+            }));
 
         /// <summary>
         /// The camera rotation mode property
