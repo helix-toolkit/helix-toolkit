@@ -30,6 +30,7 @@ namespace HelixToolkit.Wpf.SharpDX
             Vector3D newDirection,
             Vector3D newUpDirection,
             double animationTime);
+        void StopAnimation();
         bool OnTimeStep();
     }
     /// <summary>
@@ -221,6 +222,11 @@ namespace HelixToolkit.Wpf.SharpDX
 #endif
                 return true;
             }
+        }
+
+        public void StopAnimation()
+        {
+            aniTime = 0;
         }
 
         public static implicit operator CameraCore(Camera camera)

@@ -114,13 +114,18 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The zoom around.
         /// </param>
         /// <param name="isTouch"></param>
-        public void Zoom(double delta, Vector3 zoomAround, bool isTouch = false)
+        /// <param name="stopOther">Stop other manipulation</param>
+        public void Zoom(double delta, Vector3 zoomAround, bool isTouch = false, bool stopOther = true)
         {
             if (!this.Controller.IsZoomEnabled)
             {
                 return;
             }
-
+            if (stopOther)
+            {
+                this.Controller.StopSpin();
+                this.Controller.StopPanning();
+            }
             if (this.Camera is IPerspectiveCameraModel)
             {
                 if (!isTouch)
@@ -161,8 +166,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Changes the camera position by the specified vector.
         /// </summary>
         /// <param name="delta">The translation vector in camera space (z in look direction, y in up direction, and x perpendicular to the two others)</param>
-        public void MoveCameraPosition(Vector3 delta)
+        /// <param name="stopOther">Stop other manipulation</param>
+        public void MoveCameraPosition(Vector3 delta, bool stopOther = true)
         {
+            if (stopOther)
+            {
+                Controller.StopPanning();
+                Controller.StopSpin();
+            }
             var z = Vector3.Normalize(this.Camera.CameraInternal.LookDirection);
             var x = Vector3.Cross(this.Camera.CameraInternal.LookDirection, this.Camera.CameraInternal.UpDirection);
             var y = Vector3.Normalize(Vector3.Cross(x, z));

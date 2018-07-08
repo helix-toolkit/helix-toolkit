@@ -63,19 +63,24 @@ namespace HelixToolkit.UWP
         /// <param name="delta">
         /// The panning vector.
         /// </param>
-        public void Pan(Vector3D delta)
+        /// <param name="stopOther">Stop other manipulation</param>
+        public void Pan(Vector3D delta, bool stopOther = true)
         {
-            if (!this.CameraController.IsPanEnabled)
+            if (!this.Controller.IsPanEnabled)
             {
                 return;
             }
-
+            if (stopOther)
+            {
+                this.Controller.StopSpin();
+                this.Controller.StopZooming();
+            }
             if (this.CameraMode == CameraMode.FixedPosition)
             {
                 return;
             }
-            this.CameraController.StopSpin();
-            this.CameraController.StopZooming();
+            this.Controller.StopSpin();
+            this.Controller.StopZooming();
             this.Camera.Position += delta;
         }
 
@@ -85,8 +90,14 @@ namespace HelixToolkit.UWP
         /// <param name="delta">
         /// The delta.
         /// </param>
-        public void Pan(Vector2 delta)
+        /// <param name="stopOther">Stop other manipulation</param>
+        public void Pan(Vector2 delta, bool stopOther = true)
         {
+            if (stopOther)
+            {
+                this.Controller.StopSpin();
+                this.Controller.StopZooming();
+            }
             var mousePoint = (this.LastPoint.ToVector2() + delta).ToPoint();
 
             var thisPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
@@ -128,7 +139,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected override bool CanExecute()
         {
-            return this.CameraController.IsPanEnabled && this.CameraController.CameraMode != CameraMode.FixedPosition;
+            return this.Controller.IsPanEnabled && this.Controller.CameraMode != CameraMode.FixedPosition;
         }
 
         /// <summary>
@@ -139,7 +150,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected override CoreCursorType GetCursor()
         {
-            return this.CameraController.PanCursor;
+            return this.Controller.PanCursor;
         }
 
         /// <summary>
@@ -151,7 +162,7 @@ namespace HelixToolkit.UWP
         protected override void OnInertiaStarting(double elapsedTime)
         {
             var speed = (this.LastPoint.ToVector2() - this.MouseDownPoint.ToVector2()) * (40.0f / (float)elapsedTime);
-            this.CameraController.AddPanForce(speed.X, speed.Y);
+            this.Controller.AddPanForce(speed.X, speed.Y);
         }
     }
 }

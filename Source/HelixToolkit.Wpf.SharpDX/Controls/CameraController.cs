@@ -933,6 +933,13 @@ namespace HelixToolkit.Wpf.SharpDX
             this.zoomSpeed = 0;
         }
         /// <summary>
+        /// Stops the panning.
+        /// </summary>
+        public void StopPanning()
+        {
+            panSpeed = Vector3.Zero;
+        }
+        /// <summary>
         /// Zooms by the specified delta value.
         /// </summary>
         /// <param name="delta">
@@ -1436,7 +1443,7 @@ namespace HelixToolkit.Wpf.SharpDX
             if (this.rotationSpeed.LengthSquared() > 0.1f)
             {
                 this.rotateHandler.Rotate(
-                    this.rotationPosition, this.rotationPosition + (this.rotationSpeed * time), this.rotationPoint3D);
+                    this.rotationPosition, this.rotationPosition + (this.rotationSpeed * time), this.rotationPoint3D, false);
                 this.rotationSpeed *= factor;
                 needUpdate = true;
                 this.spinningSpeed = VectorZero;
@@ -1447,7 +1454,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 if (this.isSpinning && this.spinningSpeed.LengthSquared() > 0.1f)
                 {
                     this.rotateHandler.Rotate(
-                        this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D);
+                        this.spinningPosition, this.spinningPosition + (this.spinningSpeed * time), this.spinningPoint3D, false);
                     if (!this.InfiniteSpin)
                     {
                         this.spinningSpeed *= factor;
@@ -1462,7 +1469,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (this.panSpeed.LengthSquared() > 0.0001f)
             {
-                this.panHandler.Pan(this.panSpeed * time);
+                this.panHandler.Pan(this.panSpeed * time, false);
                 this.panSpeed *= factor;
                 needUpdate = true;
             }
@@ -1473,7 +1480,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (this.moveSpeed.LengthSquared() > 0.0001f)
             {
-                this.zoomHandler.MoveCameraPosition(this.moveSpeed * time);
+                this.zoomHandler.MoveCameraPosition(this.moveSpeed * time, false);
                 this.moveSpeed *= factor;
                 needUpdate = true;
             }
@@ -1484,7 +1491,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if (Math.Abs(this.zoomSpeed) > 0.001f)
             {
-                this.zoomHandler.Zoom(this.zoomSpeed * time, this.zoomPoint3D);
+                this.zoomHandler.Zoom(this.zoomSpeed * time, this.zoomPoint3D, false, false);
                 this.zoomSpeed *= factor;
                 needUpdate = true;
             }
@@ -1559,11 +1566,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The stop animations.
         /// </summary>
-        private void StopAnimations()
+        public void StopAnimations()
         {
-            this.rotationSpeed = new Vector2();
-            this.panSpeed = new Vector3();
-            this.zoomSpeed = 0;
+            StopPanning();
+            StopZooming();
+            StopSpin();
         }
 
         /// <summary>

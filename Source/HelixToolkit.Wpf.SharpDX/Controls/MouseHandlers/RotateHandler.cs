@@ -133,13 +133,24 @@ namespace HelixToolkit.Wpf.SharpDX
             Rotate(p0.ToVector2(), p1.ToVector2(), rotateAround);
         }
 
-        public void Rotate(Vector2 p0, Vector2 p1, Vector3 rotateAround)
+        /// <summary>
+        /// Rotates the specified p0.
+        /// </summary>
+        /// <param name="p0">The p0.</param>
+        /// <param name="p1">The p1.</param>
+        /// <param name="rotateAround">The rotate around.</param>
+        /// <param name="stopOther">if set to <c>true</c> [stop other].</param>
+        public void Rotate(Vector2 p0, Vector2 p1, Vector3 rotateAround, bool stopOther = true)
         {
             if (!this.Controller.IsRotationEnabled)
             {
                 return;
             }
-
+            if (stopOther)
+            {
+                Controller.StopZooming();
+                Controller.StopPanning();
+            }
             switch (this.Controller.CameraRotationMode)
             {
                 case CameraRotationMode.Trackball:
@@ -291,7 +302,6 @@ namespace HelixToolkit.Wpf.SharpDX
         public override void Started(Point e)
         {
             base.Started(e);
-
             this.rotationPoint = new Point(
                 this.Viewport.ActualWidth / 2, this.Viewport.ActualHeight / 2);
             this.rotationPoint3D = this.Camera.CameraInternal.Target;
