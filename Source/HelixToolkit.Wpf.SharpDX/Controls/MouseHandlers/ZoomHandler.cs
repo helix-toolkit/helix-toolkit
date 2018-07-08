@@ -13,7 +13,7 @@ namespace HelixToolkit.Wpf.SharpDX
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Input;
-    using System.Numerics;
+    using Vector3 = global::SharpDX.Vector3;
 
     /// <summary>
     /// Handles zooming.
@@ -79,7 +79,7 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             base.Started(e);
             this.zoomPoint = new Point(this.Viewport.ActualWidth / 2, this.Viewport.ActualHeight / 2);
-            this.zoomPoint3D = this.Camera.Target.ToVector3();
+            this.zoomPoint3D = this.Camera.CameraInternal.Target;
 
             if (this.Controller.ZoomAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
             {
@@ -114,14 +114,19 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The zoom around.
         /// </param>
         /// <param name="isTouch"></param>
-        public void Zoom(double delta, Vector3 zoomAround, bool isTouch = false)
+        /// <param name="stopOther">Stop other manipulation</param>
+        public void Zoom(double delta, Vector3 zoomAround, bool isTouch = false, bool stopOther = true)
         {
             if (!this.Controller.IsZoomEnabled)
             {
                 return;
             }
-            
-            if (this.Camera is PerspectiveCamera)
+            if (stopOther)
+            {
+                this.Controller.StopSpin();
+                this.Controller.StopPanning();
+            }
+            if (this.Camera is IPerspectiveCameraModel)
             {
                 if (!isTouch)
                 {
@@ -151,7 +156,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 return;
             }
-            else if (this.Camera is OrthographicCamera)
+            else if (this.Camera is IOrthographicCameraModel)
             {
                 this.ZoomByChangingCameraWidth(delta, zoomAround);
             }
@@ -161,8 +166,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Changes the camera position by the specified vector.
         /// </summary>
         /// <param name="delta">The translation vector in camera space (z in look direction, y in up direction, and x perpendicular to the two others)</param>
-        public void MoveCameraPosition(Vector3 delta)
+        /// <param name="stopOther">Stop other manipulation</param>
+        public void MoveCameraPosition(Vector3 delta, bool stopOther = true)
         {
+            if (stopOther)
+            {
+                Controller.StopPanning();
+                Controller.StopSpin();
+            }
             var z = Vector3.Normalize(this.Camera.CameraInternal.LookDirection);
             var x = Vector3.Cross(this.Camera.CameraInternal.LookDirection, this.Camera.CameraInternal.UpDirection);
             var y = Vector3.Normalize(Vector3.Cross(x, z));
@@ -199,10 +210,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 case CameraMode.WalkAround:
                 case CameraMode.Inspect:
                 case CameraMode.FixedPosition:
-                    if(ChangeCameraDistance(ref delta, zoomAround))
+                    if (ChangeCameraDistance(ref delta, zoomAround))
                     {
                         // Modify the camera width
-                        if (Camera is OrthographicCamera ocamera)
+                        if (Camera is IOrthographicCameraModel ocamera)
                         {
                             ocamera.Width *= Math.Pow(2.5, delta);
                         }
@@ -263,7 +274,7 @@ namespace HelixToolkit.Wpf.SharpDX
             var f = (float)Math.Pow(2.5, delta);
             var newRelativePosition = relativePosition * f;
             var newRelativeTarget = relativeTarget * f;
-           
+
             var newTarget = zoomAround - newRelativeTarget;
             var newPosition = zoomAround - newRelativePosition;
 
@@ -280,7 +291,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 newTarget = zoomAround - newRelativeTarget;
                 newPosition = zoomAround - newRelativePosition;
                 delta = Math.Log(f) / Math.Log(2.5);
-               // return false;
+                // return false;
             }
 
             if (newDistance < this.Controller.ZoomDistanceLimitNear && (oldDistance > this.Controller.ZoomDistanceLimitNear || newDistance < oldDistance))
@@ -293,7 +304,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 newTarget = zoomAround - newRelativeTarget;
                 newPosition = zoomAround - newRelativePosition;
                 delta = Math.Log(f) / Math.Log(2.5);
-               // return false;
+                // return false;
             }
 
             var newLookDirection = newTarget - newPosition;

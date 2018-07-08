@@ -225,7 +225,7 @@
                         Maximum="5"
                         Minimum="1"
                         TickFrequency="1"
-                        Value="{Binding ModelMaterial.MinTessellationFactor}" />
+                        Value="{Binding ModelMaterial.MinDistanceTessellationFactor}" />
                 </StackPanel>
             </Expander>
             <Expander
@@ -326,35 +326,5 @@
                     Value="{Binding ElementName=bloom, Path=BloomPassIntensity}" />
             </StackPanel>
         </StackPanel>
-        <StatusBar
-            Grid.Row="1"
-            Grid.ColumnSpan="2"
-            VerticalAlignment="Bottom">
-            <StatusBar.Background>
-                <SolidColorBrush Opacity="0.25" Color="WhiteSmoke" />
-            </StatusBar.Background>
-            <StatusBarItem>
-                <TextBlock
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Text="{Binding FrameRateText, ElementName=view1, StringFormat=D3D11 - \{0:0.00\} FPS}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding Camera.Position, StringFormat=Position: \{0:0.0\}}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding Camera.LookDirection, StringFormat=LookDirection: \{0:0.0\}}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding Camera.UpDirection, StringFormat=UpDirection: \{0:0.0\}}" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Text="{Binding Items.Count, ElementName=view1, StringFormat=Children: \{0\}}" />
-            </StatusBarItem>
-        </StatusBar>
     </Grid>
 </Window>

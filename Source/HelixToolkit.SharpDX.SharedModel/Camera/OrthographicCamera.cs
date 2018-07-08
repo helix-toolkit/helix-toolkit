@@ -2,17 +2,24 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+#if NETFX_CORE
 using Windows.UI.Xaml;
-
 namespace HelixToolkit.UWP
+#else
+using System.Windows;
+namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Cameras;
-    using System;
-
+    public interface IOrthographicCameraModel : IProjectionCameraModel
+    {
+        double Width { set; get; }
+        void AnimateWidth(double newWidth, double animationTime);
+    }
     /// <summary>
     /// Represents an orthographic projection camera.
     /// </summary>
-    public class OrthographicCamera : ProjectionCamera
+    public class OrthographicCamera : ProjectionCamera, IOrthographicCameraModel
     {
         /// <summary>
         /// The width property
@@ -49,16 +56,15 @@ namespace HelixToolkit.UWP
 
         protected override CameraCore CreatePortableCameraCore()
         {
-            return new OrthographicCameraCore()
-            {
-                CreateLeftHandSystem = this.CreateLeftHandSystem,
-                FarPlaneDistance = (float)this.FarPlaneDistance,
-                LookDirection = this.LookDirection,
-                NearPlaneDistance = (float)this.NearPlaneDistance,
-                Position = this.Position,
-                UpDirection = this.UpDirection,
-                Width = (float)this.Width
-            };
+            return new OrthographicCameraCore();
+        }
+
+        protected override void OnCoreCreated(CameraCore core)
+        {
+            base.OnCoreCreated(core);
+            (core as OrthographicCameraCore).FarPlaneDistance = (float)this.FarPlaneDistance;
+            (core as OrthographicCameraCore).NearPlaneDistance = (float)this.NearPlaneDistance;
+            (core as OrthographicCameraCore).Width = (float)this.Width;
         }
 
         public void AnimateWidth(double newWidth, double animationTime)

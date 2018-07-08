@@ -307,29 +307,41 @@ namespace HelixToolkit.UWP.Model
             get { return maxTessellationDistance; }
         }
 
-        private float minTessellationFactor = 2;
-        public float MinTessellationFactor
+        private float minDistanceTessellationFactor = 2;
+        /// <summary>
+        /// Gets or sets the tessellation factor at <see cref="MinTessellationDistance"/>.
+        /// </summary>
+        /// <value>
+        /// The minimum distance tessellation factor.
+        /// </value>
+        public float MinDistanceTessellationFactor
         {
             set
             {
-                Set(ref minTessellationFactor, value);
+                Set(ref minDistanceTessellationFactor, value);
             }
             get
             {
-                return minTessellationFactor;
+                return minDistanceTessellationFactor;
             }
         }
 
-        private float maxTessellationFactor = 1;
-        public float MaxTessellationFactor
+        private float maxDistanceTessellationFactor = 1;
+        /// <summary>
+        /// Gets or sets the tessellation factor at <see cref="MaxDistanceTessellationFactor"/>
+        /// </summary>
+        /// <value>
+        /// The maximum distance tessellation factor.
+        /// </value>
+        public float MaxDistanceTessellationFactor
         {
             set
             {
-                Set(ref maxTessellationFactor, value);
+                Set(ref maxDistanceTessellationFactor, value);
             }
             get
             {
-                return maxTessellationFactor;
+                return maxDistanceTessellationFactor;
             }
         }
 

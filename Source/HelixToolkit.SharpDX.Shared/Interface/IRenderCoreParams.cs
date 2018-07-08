@@ -283,36 +283,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IPatchRenderParams
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        float MinTessellationDistance { set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        float MaxTessellationDistance { set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        float MinTessellationFactor { set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        float MaxTessellationFactor { set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        MeshTopologyEnum MeshType { set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        bool EnableTessellation { set; get; }
-    }
 
 
     /// <summary>

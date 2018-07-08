@@ -74,7 +74,7 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                return this.CameraController.CameraRotationMode;
+                return this.Controller.CameraRotationMode;
             }
         }
         
@@ -109,7 +109,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void LookAt(Point3D target, double animationTime)
         {
-            if (!this.CameraController.IsPanEnabled)
+            if (!this.Controller.IsPanEnabled)
             {
                 return;
             }
@@ -129,13 +129,19 @@ namespace HelixToolkit.UWP
         /// <param name="rotateAround">
         /// The rotate around.
         /// </param>
-        public void Rotate(Point p0, Point p1, Point3D rotateAround)
+        /// <param name="stopOther">Stop other manipulation</param>
+        public void Rotate(Point p0, Point p1, Point3D rotateAround, bool stopOther = true)
         {
-            if (!this.CameraController.IsRotationEnabled)
+            if (!this.Controller.IsRotationEnabled)
             {
                 return;
             }
-            switch (this.CameraController.CameraRotationMode)
+            if (stopOther)
+            {
+                Controller.StopZooming();
+                Controller.StopPanning();
+            }
+            switch (this.Controller.CameraRotationMode)
             {
                 case CameraRotationMode.Trackball:
                     this.RotateTrackball(p0, p1, rotateAround);
@@ -190,8 +196,8 @@ namespace HelixToolkit.UWP
 
             Vector2 delta = p2.ToVector2() - p1.ToVector2();
 
-            var relativeTarget = rotateAround - this.Camera.Target;
-            var relativePosition = rotateAround - this.Camera.Position;
+            var relativeTarget = rotateAround - this.Camera.CameraInternal.Target;
+            var relativePosition = rotateAround - this.Camera.CameraInternal.Position;
 
             float d = -1f;
             if (this.CameraMode != CameraMode.Inspect)
@@ -246,8 +252,8 @@ namespace HelixToolkit.UWP
         /// </param>
         public void RotateTurntable(Vector2 delta, Point3D rotateAround)
         {
-            var relativeTarget = rotateAround - this.Camera.Target;
-            var relativePosition = rotateAround - this.Camera.Position;
+            var relativeTarget = rotateAround - this.Camera.CameraInternal.Target;
+            var relativePosition = rotateAround - this.Camera.CameraInternal.Position;
 
             var up = this.ModelUpDirection;
             var dir = Vector3D.Normalize(this.Camera.LookDirection);
@@ -292,26 +298,26 @@ namespace HelixToolkit.UWP
             base.Started(e);
 
             this.rotationPoint = new Point(
-                this.CameraController.Viewport.ActualWidth / 2, this.CameraController.Viewport.ActualHeight / 2);
-            this.rotationPoint3D = this.Camera.Target;
+                this.Controller.Viewport.ActualWidth / 2, this.Controller.Viewport.ActualHeight / 2);
+            this.rotationPoint3D = this.Camera.CameraInternal.Target;
 
             switch (this.CameraMode)
             {
                 case CameraMode.WalkAround:
                     this.rotationPoint = this.MouseDownPoint;
-                    this.rotationPoint3D = this.Camera.Position;
+                    this.rotationPoint3D = this.Camera.CameraInternal.Position;
                     break;
                 default:
-                    if (CameraController.Viewport.FixedRotationPointEnabled)
+                    if (Controller.Viewport.FixedRotationPointEnabled)
                     {
-                        this.rotationPoint3D = CameraController.Viewport.FixedRotationPoint;
+                        this.rotationPoint3D = Controller.Viewport.FixedRotationPoint;
                     }
                     else if (this.changeLookAt && this.MouseDownNearestPoint3D != null)
                     {
                         this.LookAt(this.MouseDownNearestPoint3D.Value, 0);
-                        this.rotationPoint3D = this.Camera.Target;               
+                        this.rotationPoint3D = this.Camera.CameraInternal.Target;               
                     }
-                    else if (this.CameraController.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
+                    else if (this.Controller.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
                     {
                         this.rotationPoint = this.MouseDownPoint;
                         this.rotationPoint3D = this.MouseDownNearestPoint3D.Value;
@@ -336,7 +342,7 @@ namespace HelixToolkit.UWP
                     break;
             }
 
-            this.CameraController.StopSpin();
+            this.Controller.StopSpin();
         }
 
         /// <summary>
@@ -349,10 +355,10 @@ namespace HelixToolkit.UWP
         {
             if (this.changeLookAt)
             {
-                return this.CameraMode != CameraMode.FixedPosition && this.CameraController.IsPanEnabled;
+                return this.CameraMode != CameraMode.FixedPosition && this.Controller.IsPanEnabled;
             }
 
-            return this.CameraController.IsRotationEnabled;
+            return this.Controller.IsRotationEnabled;
         }
 
         /// <summary>
@@ -363,7 +369,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected override CoreCursorType GetCursor()
         {
-            return this.CameraController.RotateCursor;
+            return this.Controller.RotateCursor;
         }
 
         /// <summary>
@@ -377,8 +383,8 @@ namespace HelixToolkit.UWP
             Vector2 delta = this.LastPoint.ToVector2() - this.MouseDownPoint.ToVector2();
 
             // Debug.WriteLine("SpinInertiaStarting: " + elapsedTime + "ms " + delta.Length + "px");
-            this.CameraController.StartSpin(
-                4 * delta * (float)(this.CameraController.SpinReleaseTime / elapsedTime),
+            this.Controller.StartSpin(
+                4 * delta * (float)(this.Controller.SpinReleaseTime / elapsedTime),
                 this.MouseDownPoint,
                 this.rotationPoint3D);
         }
@@ -418,8 +424,8 @@ namespace HelixToolkit.UWP
         /// </param>
         private void InitTurnballRotationAxes(Point p1)
         {
-            double fx = p1.X / this.CameraController.Viewport.ActualWidth;
-            double fy = p1.Y / this.CameraController.Viewport.ActualHeight;
+            double fx = p1.X / this.Controller.Viewport.ActualWidth;
+            double fy = p1.Y / this.Controller.Viewport.ActualHeight;
 
             var up = Vector3D.Normalize(this.Camera.UpDirection);
             var dir = Vector3D.Normalize(this.Camera.LookDirection);           
@@ -462,8 +468,8 @@ namespace HelixToolkit.UWP
         {
             // http://viewport3d.com/trackball.htm
             // http://www.codeplex.com/3DTools/Thread/View.aspx?ThreadId=22310
-            var v1 = ProjectToTrackball(p1, this.CameraController.Viewport.ActualWidth, this.CameraController.Viewport.ActualHeight);
-            var v2 = ProjectToTrackball(p2, this.CameraController.Viewport.ActualWidth, this.CameraController.Viewport.ActualHeight);
+            var v1 = ProjectToTrackball(p1, this.Controller.Viewport.ActualWidth, this.Controller.Viewport.ActualHeight);
+            var v2 = ProjectToTrackball(p2, this.Controller.Viewport.ActualWidth, this.Controller.Viewport.ActualHeight);
 
             // transform the trackball coordinates to view space
             var viewZ = this.Camera.LookDirection * inv;
@@ -496,8 +502,8 @@ namespace HelixToolkit.UWP
             var rotate = Matrix.CreateFromQuaternion(delta);
 
             // Find vectors relative to the rotate-around point
-            var relativeTarget = rotateAround - this.Camera.Target;
-            var relativePosition = rotateAround - this.Camera.Position;
+            var relativeTarget = rotateAround - this.Camera.CameraInternal.Target;
+            var relativePosition = rotateAround - this.Camera.CameraInternal.Position;
 
             // Rotate the relative vectors
             var newRelativeTarget = Vector3D.Transform(relativeTarget, rotate);

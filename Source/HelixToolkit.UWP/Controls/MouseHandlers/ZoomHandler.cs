@@ -80,10 +80,10 @@ namespace HelixToolkit.UWP
         public override void Started(Point e)
         {
             base.Started(e);
-            this.zoomPoint = new Point(this.CameraController.Viewport.ActualWidth / 2, this.CameraController.Viewport.ActualHeight / 2);
+            this.zoomPoint = new Point(this.Controller.Viewport.ActualWidth / 2, this.Controller.Viewport.ActualHeight / 2);
             this.zoomPoint3D = this.Camera.Target;
 
-            if (this.CameraController.ZoomAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
+            if (this.Controller.ZoomAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
             {
                 this.zoomPoint = this.MouseDownPoint;
                 this.zoomPoint3D = this.MouseDownNearestPoint3D.Value;
@@ -116,11 +116,17 @@ namespace HelixToolkit.UWP
         /// The zoom around.
         /// </param>
         /// <param name="isTouch"></param>
-        public void Zoom(double delta, Point3D zoomAround, bool isTouch = false)
+        /// <param name="stopOther">Stop other manipulation</param>
+        public void Zoom(double delta, Point3D zoomAround, bool isTouch = false, bool stopOther = true)
         {
-            if (!this.CameraController.IsZoomEnabled)
+            if (!this.Controller.IsZoomEnabled)
             {
                 return;
+            }
+            if (stopOther)
+            {
+                this.Controller.StopSpin();
+                this.Controller.StopPanning();
             }
             if (this.Camera is PerspectiveCamera)
             {
@@ -137,7 +143,7 @@ namespace HelixToolkit.UWP
 
                 if (this.CameraMode == CameraMode.FixedPosition || this.changeFieldOfView)
                 {
-                    this.CameraController.Viewport.ZoomByChangingFieldOfView(delta);
+                    this.Controller.Viewport.ZoomByChangingFieldOfView(delta);
                 }
                 else
                 {
@@ -147,7 +153,7 @@ namespace HelixToolkit.UWP
                             this.ChangeCameraDistance(ref delta, zoomAround);
                             break;
                         case CameraMode.WalkAround:
-                            this.Camera.Position -= this.Camera.LookDirection * (float)delta;
+                            this.Camera.Position -= this.Camera.CameraInternal.LookDirection * (float)delta;
                             break;
                     }
                 }
@@ -164,7 +170,8 @@ namespace HelixToolkit.UWP
         /// Changes the camera position by the specified vector.
         /// </summary>
         /// <param name="delta">The translation vector in camera space (z in look direction, y in up direction, and x perpendicular to the two others)</param>
-        public void MoveCameraPosition(Vector3D delta)
+        /// <param name="stopOther">Stop other manipulation</param>
+        public void MoveCameraPosition(Vector3D delta, bool stopOther = true)
         {
             var z = Vector3D.Normalize(this.Camera.LookDirection);
       
@@ -230,10 +237,10 @@ namespace HelixToolkit.UWP
         {
             if (this.changeFieldOfView)
             {
-                return this.CameraController.IsChangeFieldOfViewEnabled && this.Camera is PerspectiveCamera;
+                return this.Controller.IsChangeFieldOfViewEnabled && this.Camera is PerspectiveCamera;
             }
 
-            return this.CameraController.IsZoomEnabled;
+            return this.Controller.IsZoomEnabled;
         }
 
         /// <summary>
@@ -244,7 +251,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected override CoreCursorType GetCursor()
         {
-            return this.CameraController.ZoomCursor;
+            return this.Controller.ZoomCursor;
         }
 
         /// <summary>
@@ -255,9 +262,9 @@ namespace HelixToolkit.UWP
         private bool ChangeCameraDistance(ref double delta, Point3D zoomAround)
         {
             // Handle the 'zoomAround' point
-            var target = this.Camera.Position + this.Camera.LookDirection;
+            var target = this.Camera.CameraInternal.Position + this.Camera.CameraInternal.LookDirection;
             var relativeTarget = zoomAround - target;
-            var relativePosition = zoomAround - this.Camera.Position;
+            var relativePosition = zoomAround - this.Camera.CameraInternal.Position;
             if (relativePosition.Length() < 1e-4)
             {
                 if (delta > 0) //If Zoom out from very close distance, increase the initial relativePosition
@@ -278,11 +285,11 @@ namespace HelixToolkit.UWP
             var newPosition = zoomAround - newRelativePosition;
 
             var newDistance = (newPosition - zoomAround).Length();
-            var oldDistance = (this.Camera.Position - zoomAround).Length();
+            var oldDistance = (this.Camera.CameraInternal.Position - zoomAround).Length();
 
-            if (newDistance > this.CameraController.ZoomDistanceLimitFar && (oldDistance < this.CameraController.ZoomDistanceLimitFar || newDistance > oldDistance))
+            if (newDistance > this.Controller.ZoomDistanceLimitFar && (oldDistance < this.Controller.ZoomDistanceLimitFar || newDistance > oldDistance))
             {
-                var ratio = (newDistance - this.CameraController.ZoomDistanceLimitFar) / newDistance;
+                var ratio = (newDistance - this.Controller.ZoomDistanceLimitFar) / newDistance;
                 f *= 1 - ratio;
                 newRelativePosition = relativePosition * (float)f;
                 newRelativeTarget = relativeTarget * (float)f;
@@ -292,9 +299,9 @@ namespace HelixToolkit.UWP
                 delta = Math.Log(f) / Math.Log(2.5);
             }
 
-            if (newDistance < this.CameraController.ZoomDistanceLimitNear && (oldDistance > this.CameraController.ZoomDistanceLimitNear || newDistance < oldDistance))
+            if (newDistance < this.Controller.ZoomDistanceLimitNear && (oldDistance > this.Controller.ZoomDistanceLimitNear || newDistance < oldDistance))
             {
-                var ratio = (this.CameraController.ZoomDistanceLimitNear - newDistance) / newDistance;
+                var ratio = (this.Controller.ZoomDistanceLimitNear - newDistance) / newDistance;
                 f *= (1 + ratio);
                 newRelativePosition = relativePosition * (float)f;
                 newRelativeTarget = relativeTarget * (float)f;

@@ -60,19 +60,23 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="delta">
         /// The panning vector.
         /// </param>
-        public void Pan(Vector3 delta)
+        /// <param name="stopOther">Stop other manipulation</param>
+        public void Pan(Vector3 delta, bool stopOther = true)
         {
             if (!this.Controller.IsPanEnabled)
             {
                 return;
             }
-
+            if (stopOther)
+            {
+                this.Controller.StopSpin();
+                this.Controller.StopZooming();
+            }
             if (this.CameraMode == CameraMode.FixedPosition)
             {
                 return;
             }
-            this.Controller.StopSpin();
-            this.Controller.StopZooming();
+
             this.Camera.Position += delta.ToVector3D();
         }
 
@@ -82,8 +86,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="delta">
         /// The delta.
         /// </param>
-        public void Pan(Vector2 delta)
+        /// <param name="stopOther">Stop other manipulation</param>
+        public void Pan(Vector2 delta, bool stopOther = true)
         {
+            if (stopOther)
+            {
+                this.Controller.StopSpin();
+                this.Controller.StopZooming();
+            }
             var mousePoint = new Point(LastPoint.X + delta.X, LastPoint.Y + delta.Y);
 
             var thisPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);

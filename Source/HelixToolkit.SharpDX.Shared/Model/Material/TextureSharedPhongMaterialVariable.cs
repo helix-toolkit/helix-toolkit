@@ -368,8 +368,8 @@ namespace HelixToolkit.UWP.Model
             modelstruct.HasCubeMap = RenderEnvironmentMap ? 1 : 0;
             modelstruct.MaxTessDistance = material.MaxTessellationDistance;
             modelstruct.MinTessDistance = material.MinTessellationDistance;
-            modelstruct.MaxTessFactor = material.MaxTessellationFactor;
-            modelstruct.MinTessFactor = material.MinTessellationFactor;
+            modelstruct.MaxDistTessFactor = material.MaxDistanceTessellationFactor;
+            modelstruct.MinDistTessFactor = material.MinDistanceTessellationFactor;
         }
 
         /// <summary>

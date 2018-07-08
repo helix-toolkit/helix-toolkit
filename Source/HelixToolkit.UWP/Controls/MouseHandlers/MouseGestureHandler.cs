@@ -31,7 +31,7 @@ namespace HelixToolkit.UWP
         /// </param>
         protected MouseGestureHandler(CameraController viewport)
         {
-            this.CameraController = viewport;
+            this.Controller = viewport;
             //this.ManipulationWatch = new Stopwatch();
         }
 
@@ -42,7 +42,7 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                if (CameraController.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
+                if (Controller.RotateAroundMouseDownPoint && this.MouseDownNearestPoint3D != null)
                 {
                     return this.MouseDownNearestPoint3D.Value;
                 }
@@ -63,7 +63,7 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                return this.CameraController.ActualCamera as ProjectionCamera;
+                return this.Controller.ActualCamera as ProjectionCamera;
             }
         }
 
@@ -75,7 +75,7 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                return this.CameraController.CameraMode;
+                return this.Controller.CameraMode;
             }
         }
 
@@ -103,7 +103,7 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                return this.CameraController.ModelUpDirection;
+                return this.Controller.ModelUpDirection;
             }
         }
 
@@ -130,7 +130,7 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                return this.CameraController.RotationSensitivity;
+                return this.Controller.RotationSensitivity;
             }
         }
 
@@ -138,7 +138,7 @@ namespace HelixToolkit.UWP
         /// Gets the viewport.
         /// </summary>
         /// <value>The viewport.</value>
-        protected CameraController CameraController { get; private set; }
+        protected CameraController Controller { get; private set; }
 
         /// <summary>
         /// Gets the zoom sensitivity.
@@ -148,7 +148,7 @@ namespace HelixToolkit.UWP
         {
             get
             {
-                return this.CameraController.ZoomSensitivity;
+                return this.Controller.ZoomSensitivity;
             }
         }
 
@@ -166,7 +166,7 @@ namespace HelixToolkit.UWP
         public virtual void Completed(Point e)
         {
             var elapsed = (double)(Stopwatch.GetTimestamp() - startTick) / Stopwatch.Frequency * 1000; //this.ManipulationWatch.ElapsedMilliseconds;
-            if (elapsed > 0 && elapsed < this.CameraController.SpinReleaseTime)
+            if (elapsed > 0 && elapsed < this.Controller.SpinReleaseTime)
             {
                 this.OnInertiaStarting(elapsed);
             }
@@ -198,14 +198,14 @@ namespace HelixToolkit.UWP
             {
                 return;
             }
-            this.CameraController.Viewport.PointerReleased -= OnMouseUp;
-            this.CameraController.Viewport.PointerMoved -= OnMouseMove;
+            this.Controller.Viewport.PointerReleased -= OnMouseUp;
+            this.Controller.Viewport.PointerMoved -= OnMouseMove;
 
-            this.CameraController.Viewport.PointerReleased += OnMouseUp;
+            this.Controller.Viewport.PointerReleased += OnMouseUp;
             //this.Viewport.Focus();
-            this.CameraController.Viewport.CapturePointer(e.Pointer);
+            this.Controller.Viewport.CapturePointer(e.Pointer);
             this.OnMouseDown(sender, e);
-            this.CameraController.Viewport.PointerMoved += OnMouseMove;
+            this.Controller.Viewport.PointerMoved += OnMouseMove;
         }
 
         private long startTick;
@@ -223,6 +223,7 @@ namespace HelixToolkit.UWP
             //this.ManipulationWatch.Restart();
             startTick = Stopwatch.GetTimestamp();
             inv = Camera.CreateLeftHandSystem ? -1 : 1;
+            Controller.StopAnimations();
         }
 
         /// <summary>
@@ -297,7 +298,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected Ray GetRay(Point position)
         {
-            return this.CameraController.Viewport.UnProject(position);
+            return this.Controller.Viewport.UnProject(position);
         }
 
         /// <summary>
@@ -321,7 +322,7 @@ namespace HelixToolkit.UWP
         /// </param>
         protected virtual void OnMouseDown(object sender, PointerRoutedEventArgs e)
         {
-            this.Started(e.GetCurrentPoint(this.CameraController.Viewport).Position);
+            this.Started(e.GetCurrentPoint(this.Controller.Viewport).Position);
 
             this.OldCursor = Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor;
             Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = new CoreCursor(this.GetCursor(), OldCursor.Id);
@@ -338,7 +339,7 @@ namespace HelixToolkit.UWP
         /// </param>
         protected virtual void OnMouseMove(object sender, PointerRoutedEventArgs e)
         {
-            this.Delta(e.GetCurrentPoint(this.CameraController.Viewport).Position);
+            this.Delta(e.GetCurrentPoint(this.Controller.Viewport).Position);
         }
 
         /// <summary>
@@ -352,11 +353,11 @@ namespace HelixToolkit.UWP
         /// </param>
         protected virtual void OnMouseUp(object sender, PointerRoutedEventArgs e)
         {
-            this.CameraController.Viewport.PointerMoved -= this.OnMouseMove;
-            this.CameraController.Viewport.PointerReleased -= this.OnMouseUp;
-            this.CameraController.Viewport.ReleasePointerCapture(e.Pointer);
+            this.Controller.Viewport.PointerMoved -= this.OnMouseMove;
+            this.Controller.Viewport.PointerReleased -= this.OnMouseUp;
+            this.Controller.Viewport.ReleasePointerCapture(e.Pointer);
             Windows.UI.Xaml.Window.Current.CoreWindow.PointerCursor = this.OldCursor;
-            this.Completed(e.GetCurrentPoint(this.CameraController.Viewport).Position);
+            this.Completed(e.GetCurrentPoint(this.Controller.Viewport).Position);
         }
 
         /// <summary>
@@ -370,7 +371,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected Point Project(Point3D p)
         {
-            return this.CameraController.Viewport.Project(p);
+            return this.Controller.Viewport.Project(p);
         }
 
         /// <summary>
@@ -386,9 +387,7 @@ namespace HelixToolkit.UWP
             Point3D nearestPoint;
             Vector3D normal;
             Element3D visual;
-            if (!this.CameraController.Viewport.FixedRotationPointEnabled 
-                && this.CameraController.Viewport.FindNearest
-                (this.MouseDownPoint, out nearestPoint, out normal, out visual))
+            if (!this.Controller.Viewport.FixedRotationPointEnabled && this.Controller.Viewport.FindNearest(this.MouseDownPoint, out nearestPoint, out normal, out visual))
             {
                 this.MouseDownNearestPoint3D = nearestPoint;
             }

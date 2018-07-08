@@ -147,7 +147,7 @@
                         Grid.Row="8"
                         Grid.Column="1"
                         Margin="3"
-                        Text="{Binding DefaultMaterial.MinTessellationFactor}" />
+                        Text="{Binding DefaultMaterial.MinDistanceTessellationFactor}" />
                     <Slider
                         Grid.Row="9"
                         Grid.ColumnSpan="2"
@@ -156,7 +156,7 @@
                         Maximum="24"
                         Minimum="1"
                         TickFrequency="1"
-                        Value="{Binding DefaultMaterial.MinTessellationFactor}" />
+                        Value="{Binding DefaultMaterial.MinDistanceTessellationFactor}" />
 
                 </Grid>
             </Expander>

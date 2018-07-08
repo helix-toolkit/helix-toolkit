@@ -2,8 +2,19 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using SharpDX;
+using System.Diagnostics;
 
+#if NETFX_CORE
+using Windows.UI.Xaml;
+using Vector3D = SharpDX.Vector3;
+using Point3D = SharpDX.Vector3;
 namespace HelixToolkit.UWP
+#else
+using System.Windows;
+using System.Windows.Media.Media3D;
+namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Cameras;
     using System.Numerics;
@@ -11,10 +22,25 @@ namespace HelixToolkit.UWP
     using System.Diagnostics;
     using Windows.UI.Xaml;
 
+    public interface ICameraModel
+    {
+        bool CreateLeftHandSystem { set; get; }
+        Point3D Position { set; get; }
+        Vector3D LookDirection { set; get; }
+        Vector3D UpDirection { set; get; }
+        CameraCore CameraInternal { get; }
+        void AnimateTo(
+            Point3D newPosition,
+            Vector3D newDirection,
+            Vector3D newUpDirection,
+            double animationTime);
+        void StopAnimation();
+        bool OnTimeStep();
+    }
     /// <summary>
     /// Specifies what portion of the 3D scene is rendered by the Viewport3DX element.
     /// </summary>
-    public abstract class Camera : DependencyObject
+    public abstract class Camera : DependencyObject, ICameraModel
     {
         /// <summary>
         /// Gets or sets the position.
@@ -22,7 +48,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The position.
         /// </value>
-        public abstract Vector3 Position { get; set; }
+        public abstract Point3D Position { get; set; }
 
         /// <summary>
         /// Gets or sets the look direction.
@@ -30,7 +56,7 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The look direction.
         /// </value>
-        public abstract Vector3 LookDirection { get; set; }
+        public abstract Vector3D LookDirection { get; set; }
 
         /// <summary>
         /// Gets or sets up direction.
@@ -38,7 +64,14 @@ namespace HelixToolkit.UWP
         /// <value>
         /// Up direction.
         /// </value>
-        public abstract Vector3 UpDirection { get; set; }
+        public abstract Vector3D UpDirection { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether [create left hand system].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [create left hand system]; otherwise, <c>false</c>.
+        /// </value>
+        public abstract bool CreateLeftHandSystem { set; get; }
 
         private CameraCore core;
         /// <summary>
@@ -47,13 +80,14 @@ namespace HelixToolkit.UWP
         /// <value>
         /// The camera internal.
         /// </value>
-        internal CameraCore CameraInternal
+        public CameraCore CameraInternal
         {
             get
             {
                 if (core == null)
                 {
                     core = CreatePortableCameraCore();
+                    OnCoreCreated(core);
                 }
                 return core;
             }
@@ -87,6 +121,22 @@ namespace HelixToolkit.UWP
         /// <returns></returns>
         protected abstract CameraCore CreatePortableCameraCore();
         /// <summary>
+        /// Called when [core created].
+        /// </summary>
+        protected virtual void OnCoreCreated(CameraCore core)
+        {
+#if NETFX_CORE
+            core.LookDirection = this.LookDirection;
+            core.Position = this.Position;
+            core.UpDirection = this.UpDirection;
+#else
+            core.LookDirection = this.LookDirection.ToVector3();
+            core.Position = this.Position.ToVector3();
+            core.UpDirection = this.UpDirection.ToVector3();
+#endif
+            core.CreateLeftHandSystem = this.CreateLeftHandSystem;
+        }
+        /// <summary>
         /// Animates to.
         /// </summary>
         /// <param name="newPosition">The new position.</param>
@@ -94,9 +144,9 @@ namespace HelixToolkit.UWP
         /// <param name="newUpDirection">The new up direction.</param>
         /// <param name="animationTime">The animation time.</param>
         public void AnimateTo(
-            Vector3 newPosition,
-            Vector3 newDirection,
-            Vector3 newUpDirection,
+            Point3D newPosition,
+            Vector3D newDirection,
+            Vector3D newUpDirection,
             double animationTime)
         {
             if (animationTime == 0)
@@ -108,12 +158,18 @@ namespace HelixToolkit.UWP
             }
             else
             {
+#if NETFX_CORE
                 targetPosition = newPosition;
                 targetLookDirection = newDirection;
                 targetUpDirection = newUpDirection;
-                oldPosition = Position;
-                oldLookDir = LookDirection;
-                oldUpDir = UpDirection;
+#else
+                targetPosition = newPosition.ToVector3();
+                targetLookDirection = newDirection.ToVector3();
+                targetUpDirection = newUpDirection.ToVector3();
+#endif
+                oldPosition = CameraInternal.Position;
+                oldLookDir = CameraInternal.LookDirection;
+                oldUpDir = CameraInternal.UpDirection;
                 aniTime = animationTime;
                 accumTime = 1;
                 prevTicks = Stopwatch.GetTimestamp();
@@ -141,30 +197,45 @@ namespace HelixToolkit.UWP
             accumTime += ellapsed;
             if (accumTime > aniTime)
             {
+#if NETFX_CORE
                 Position = targetPosition;
                 LookDirection = targetLookDirection;
                 UpDirection = targetUpDirection;
+#else
+                Position = targetPosition.ToPoint3D();
+                LookDirection = targetLookDirection.ToVector3D();
+                UpDirection = targetUpDirection.ToVector3D();
+#endif
                 aniTime = 0;
                 return false;
             }
             else
             {
                 var l = (float)(accumTime / aniTime);
-                var next = Vector3.Lerp(oldPosition, targetPosition, l);
-                Position = next;
-
-                next = Vector3.Lerp(oldLookDir, targetLookDirection, l);
-                LookDirection = next;
-
-                next = Vector3.Lerp(oldUpDir, targetUpDirection, l);
-                UpDirection = next;
+                var nextPos = Vector3.Lerp(oldPosition, targetPosition, l);
+                var nextLook = Vector3.Lerp(oldLookDir, targetLookDirection, l);
+                var nextUp = Vector3.Lerp(oldUpDir, targetUpDirection, l);
+#if NETFX_CORE
+                Position = nextPos;
+                LookDirection = nextLook;
+                UpDirection = nextUp;
+#else
+                Position = nextPos.ToPoint3D();
+                LookDirection = nextLook.ToVector3D();
+                UpDirection = nextUp.ToVector3D();
+#endif
                 return true;
             }
         }
 
+        public void StopAnimation()
+        {
+            aniTime = 0;
+        }
+
         public static implicit operator CameraCore(Camera camera)
         {
-            return camera == null ? null : camera.CameraInternal;
+            return camera?.CameraInternal;
         }
     }
 }
