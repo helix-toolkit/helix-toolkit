@@ -53,7 +53,7 @@ namespace HelixToolkit.UWP
         {
             base.Delta(e);
 
-            double ar = this.CameraController.Viewport.ActualHeight / this.CameraController.Viewport.ActualWidth;
+            double ar = this.Controller.Viewport.ActualHeight / this.Controller.Viewport.ActualWidth;
             var delta = this.MouseDownPoint.ToVector2() - e.ToVector2();
 
             if (Math.Abs(delta.Y / delta.X) < ar)
@@ -89,7 +89,7 @@ namespace HelixToolkit.UWP
         /// </param>
         public void ZoomRectangle(Rect rectangle)
         {
-            if (!this.CameraController.IsZoomEnabled)
+            if (!this.Controller.IsZoomEnabled)
             {
                 return;
             }
@@ -99,7 +99,7 @@ namespace HelixToolkit.UWP
                 return;
             }
 
-            this.CameraController.Viewport.ZoomToRectangle(rectangle);
+            this.Controller.Viewport.ZoomToRectangle(rectangle);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace HelixToolkit.UWP
         /// <returns>True if the execution can continue.</returns>
         protected override bool CanExecute()
         {
-            return this.CameraController.IsZoomEnabled;
+            return this.Controller.IsZoomEnabled;
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace HelixToolkit.UWP
         /// <returns>A cursor.</returns>
         protected override CoreCursorType GetCursor()
         {
-            return this.CameraController.ZoomRectangleCursor;
+            return this.Controller.ZoomRectangleCursor;
         }
     }
 }

@@ -2,15 +2,23 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+#if NETFX_CORE
+using Windows.UI.Xaml;
 namespace HelixToolkit.UWP
+#else
+using System.Windows;
+namespace HelixToolkit.Wpf.SharpDX
+#endif
 {
     using Cameras;
-    using Windows.UI.Xaml;
-
+    public interface IPerspectiveCameraModel
+    {
+        double FieldOfView { set; get; }
+    }
     /// <summary>
     /// Represents a perspective projection camera.
     /// </summary>
-    public class PerspectiveCamera : ProjectionCamera
+    public class PerspectiveCamera : ProjectionCamera, IPerspectiveCameraModel
     {
         /// <summary>
         /// The field of view property
@@ -36,16 +44,15 @@ namespace HelixToolkit.UWP
 
         protected override CameraCore CreatePortableCameraCore()
         {
-            return new PerspectiveCameraCore()
-            {
-                CreateLeftHandSystem = this.CreateLeftHandSystem,
-                FarPlaneDistance = (float)this.FarPlaneDistance,
-                FieldOfView = (float)this.FieldOfView,
-                LookDirection = this.LookDirection,
-                NearPlaneDistance = (float)this.NearPlaneDistance,
-                Position = this.Position,
-                UpDirection = this.UpDirection
-            };
+            return new PerspectiveCameraCore();
+        }
+
+        protected override void OnCoreCreated(CameraCore core)
+        {
+            base.OnCoreCreated(core);
+            (core as PerspectiveCameraCore).FarPlaneDistance = (float)this.FarPlaneDistance;
+            (core as PerspectiveCameraCore).FieldOfView = (float)this.FieldOfView;
+            (core as PerspectiveCameraCore).NearPlaneDistance = (float)this.NearPlaneDistance;
         }
     }
 }

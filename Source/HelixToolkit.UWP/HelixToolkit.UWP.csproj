@@ -156,13 +156,9 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
-    <Compile Include="Model\Camera\OrthographicCamera.cs" />
     <Compile Include="Model\Element2D\Element2D.cs" />
     <Compile Include="Model\Element3D\Abstract\Element3D.cs" />
     <Compile Include="Model\Element3D\Abstract\GroupElement3D.cs" />
-    <Compile Include="Model\Camera\Camera.cs" />
-    <Compile Include="Model\Camera\PerspectiveCamera.cs" />
-    <Compile Include="Model\Camera\ProjectionCamera.cs" />
     <Compile Include="Model\Element3D\Abstract\ScreenSpaceMeshGeometry3D.cs" />
     <Compile Include="Model\Element3D\Element3DPresenter.cs" />
     <Compile Include="Model\Element3D\GroupModel3D.cs" />

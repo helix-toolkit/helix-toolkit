@@ -1012,7 +1012,13 @@ namespace HelixToolkit.UWP
         {
             this.zoomSpeed = 0;
         }
-
+        /// <summary>
+        /// Stops the panning.
+        /// </summary>
+        public void StopPanning()
+        {
+            this.panSpeed = Vector3.Zero;
+        }
         /// <summary>
         /// Zooms by the specified delta value.
         /// </summary>
@@ -1317,7 +1323,7 @@ namespace HelixToolkit.UWP
             if (this.rotationSpeed.LengthSquared() > 0.1)
             {
                 this.rotateHandler.Rotate(
-                    this.rotationPosition, (rotationPosition.ToVector2() + (rotationSpeed * time)).ToPoint(), this.rotationPoint3D);
+                    this.rotationPosition, (rotationPosition.ToVector2() + (rotationSpeed * time)).ToPoint(), this.rotationPoint3D, false);
                 this.rotationSpeed *= factor;
                 needUpdate = true;
                 this.spinningSpeed = VectorZero;
@@ -1328,7 +1334,7 @@ namespace HelixToolkit.UWP
                 if (this.isSpinning && this.spinningSpeed.LengthSquared() > 0.1)
                 {
                     this.rotateHandler.Rotate(
-                        this.spinningPosition, (spinningPosition.ToVector2() + (spinningSpeed * time)).ToPoint(), this.spinningPoint3D);
+                        this.spinningPosition, (spinningPosition.ToVector2() + (spinningSpeed * time)).ToPoint(), this.spinningPoint3D, false);
                     if (!Viewport.InfiniteSpin)
                     {
                         this.spinningSpeed *= factor;
@@ -1343,7 +1349,7 @@ namespace HelixToolkit.UWP
 
             if (this.panSpeed.LengthSquared() > 0.0001)
             {
-                this.panHandler.Pan(this.panSpeed * time);
+                this.panHandler.Pan(this.panSpeed * time, false);
                 this.panSpeed *= factor;
                 needUpdate = true;
             }
@@ -1354,7 +1360,7 @@ namespace HelixToolkit.UWP
 
             if (this.moveSpeed.LengthSquared() > 0.0001)
             {
-                this.zoomHandler.MoveCameraPosition(this.moveSpeed * time);
+                this.zoomHandler.MoveCameraPosition(this.moveSpeed * time, false);
                 this.moveSpeed *= factor;
                 needUpdate = true;
             }
@@ -1365,7 +1371,7 @@ namespace HelixToolkit.UWP
 
             if (Math.Abs(this.zoomSpeed) > 0.001)
             {
-                this.zoomHandler.Zoom(this.zoomSpeed * time, this.zoomPoint3D);
+                this.zoomHandler.Zoom(this.zoomSpeed * time, this.zoomPoint3D, false, false);
                 this.zoomSpeed *= factor;
                 needUpdate = true;
             }
@@ -1414,11 +1420,11 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// The stop animations.
         /// </summary>
-        private void StopAnimations()
+        public void StopAnimations()
         {
-            this.rotationSpeed = new Vector2();
-            this.panSpeed = new Vector3D();
-            this.zoomSpeed = 0;
+            StopPanning();
+            StopZooming();
+            StopSpin();
         }
 
         private void ExecuteZoomExtents()
