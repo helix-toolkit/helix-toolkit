@@ -285,7 +285,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         public virtual void UpdateBounds()
         {
-            if (position == null || position.Count == 0 || DisableUpdateBound)
+            if (DisableUpdateBound)
+            {
+                return;
+            }
+            else if (position == null || position.Count == 0)
             {
                 Bound = new BoundingBox();
                 BoundingSphere = new BoundingSphere();
