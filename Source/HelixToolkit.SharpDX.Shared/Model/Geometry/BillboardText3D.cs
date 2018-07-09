@@ -149,6 +149,15 @@ namespace HelixToolkit.Wpf.SharpDX
             textInfo.CollectionChanged += CollectionChanged;
         }
 
+        protected override void OnAssignTo(Geometry3D target)
+        {
+            base.OnAssignTo(target);
+            if(target is BillboardText3D billboard)
+            {
+                billboard.TextInfo = this.TextInfo;
+            }
+        }
+
         private void CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             IsInitialized = false;

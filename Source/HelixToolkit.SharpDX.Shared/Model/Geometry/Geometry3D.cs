@@ -147,6 +147,10 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   <c>true</c> if this instance is dynamic; otherwise, <c>false</c>.
         /// </value>
         public bool IsDynamic { set; get; } = false;
+        /// <summary>
+        /// The disable update bound
+        /// </summary>
+        internal bool DisableUpdateBound = false;
 
         private readonly object octreeLock = new object();
         /// <summary>
@@ -249,12 +253,39 @@ namespace HelixToolkit.Wpf.SharpDX
             Octree = octree;
             OctreeDirty = false;
         }
+
+        /// <summary>
+        /// Assigns internal properties to another geometry3D
+        /// </summary>
+        /// <param name="target">The target.</param>
+        public void AssignTo(Geometry3D target)
+        {
+            target.DisableUpdateBound = true;
+            target.Positions = this.Positions;
+            target.ClearOctree();
+            target.DisableUpdateBound = false;
+            target.Indices = this.Indices;
+            target.Colors = this.Colors;
+            target.Bound = this.Bound;
+            target.BoundingSphere = this.BoundingSphere;
+            target.ManualSetOctree(Octree);
+            target.OctreeParameter.MinimumOctantSize = OctreeParameter.MinimumOctantSize;
+            target.OctreeParameter.MinObjectSizeToSplit = OctreeParameter.MinObjectSizeToSplit;
+            target.OctreeParameter.Cubify = OctreeParameter.Cubify;
+            target.OctreeParameter.EnableParallelBuild = OctreeParameter.EnableParallelBuild;
+            OnAssignTo(target);
+        }
+
+        protected virtual void OnAssignTo(Geometry3D target)
+        {
+
+        }
         /// <summary>
         /// Manually call this function to update AABB and Bounding Sphere
         /// </summary>
         public virtual void UpdateBounds()
         {
-            if (position == null || position.Count == 0)
+            if (position == null || position.Count == 0 || DisableUpdateBound)
             {
                 Bound = new BoundingBox();
                 BoundingSphere = new BoundingSphere();

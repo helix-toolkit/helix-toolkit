@@ -95,6 +95,15 @@ namespace HelixToolkit.Wpf.SharpDX
 
         }
 
+        protected override void OnAssignTo(Geometry3D target)
+        {
+            base.OnAssignTo(target);
+            if(target is BillboardBase billboard)
+            {
+                billboard.Texture = Texture;
+                IsInitialized = false;
+            }
+        }
         /// <summary>
         /// Hits the test.
         /// </summary>
