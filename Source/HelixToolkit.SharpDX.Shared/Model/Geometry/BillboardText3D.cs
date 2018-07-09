@@ -280,8 +280,10 @@ namespace HelixToolkit.Wpf.SharpDX
             object originalSource, bool fixedSize)
         {
             var h = false;
-            var result = new BillboardHitResult();
-            result.Distance = double.MaxValue;
+            var result = new BillboardHitResult
+            {
+                Distance = double.MaxValue
+            };
 
             if (context == null || Width == 0 || Height == 0)
             {
@@ -318,8 +320,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 if (rayWS.Intersects(ref b))
                 {
-                    float distance;
-                    if (Collision.RayIntersectsBox(ref rayWS, ref b, out distance))
+                    if (Collision.RayIntersectsBox(ref rayWS, ref b, out float distance))
                     {
                         h = true;
                         result.ModelHit = originalSource;
