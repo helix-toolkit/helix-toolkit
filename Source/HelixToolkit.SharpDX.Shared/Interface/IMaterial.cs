@@ -138,9 +138,9 @@ namespace HelixToolkit.Wpf.SharpDX
 
         bool EnableTessellation { set; get; }
 
-        float MaxTessellationFactor { set; get; }
+        float MaxDistanceTessellationFactor { set; get; }
 
-        float MinTessellationFactor { set; get; }
+        float MinDistanceTessellationFactor { set; get; }
 
         float MaxTessellationDistance { set; get; }
 

@@ -59,14 +59,10 @@ namespace HelixToolkit.Wpf.SharpDX
                 {
                     var t0 = Vector3.TransformCoordinate(line.P0, modelMatrix);
                     var t1 = Vector3.TransformCoordinate(line.P1, modelMatrix);
-                    Vector3 sp, tp;
-                    float sc, tc;
-                    var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out sp, out tp, out sc, out tc);
+                    var rayToLineDistance = LineBuilder.GetRayToLineDistance(rayWS, t0, t1, out Vector3 sp, out Vector3 tp, out float sc, out float tc);
                     var svpm = context.ScreenViewProjectionMatrix;
-                    Vector4 sp4;
-                    Vector4 tp4;
-                    Vector3.Transform(ref sp, ref svpm, out sp4);
-                    Vector3.Transform(ref tp, ref svpm, out tp4);
+                    Vector3.Transform(ref sp, ref svpm, out Vector4 sp4);
+                    Vector3.Transform(ref tp, ref svpm, out Vector4 tp4);
                     var sp3 = sp4.ToVector3();
                     var tp3 = tp4.ToVector3();
                     var tv2 = new Vector2(tp3.X - sp3.X, tp3.Y - sp3.Y);

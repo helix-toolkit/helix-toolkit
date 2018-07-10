@@ -295,8 +295,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public Bool4 BoolParams;
         public float MinTessDistance; // Minimum distance to do tessellation
         public float MaxTessDistance; // Maximum distance to do tessellation
-        public float MinTessFactor; // Tessellation factor when at minimum distance, usually MinTessFactor > MaxTessFactor
-        public float MaxTessFactor; // Tessellation factor when at maximum distance
+        public float MinDistTessFactor; // Tessellation factor when at minimum distance, usually MinTessFactor > MaxTessFactor
+        public float MaxDistTessFactor; // Tessellation factor when at maximum distance
         /// <summary>
         /// Material variables
         /// </summary>

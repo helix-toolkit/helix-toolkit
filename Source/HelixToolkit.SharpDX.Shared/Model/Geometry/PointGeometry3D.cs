@@ -76,9 +76,8 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (dist < lastDist && dist <= maxDist)
                     {
                         lastDist = dist;
-                        Vector4 res;
                         var lp0 = point;
-                        Vector3.Transform(ref lp0, ref modelMatrix, out res);
+                        Vector3.Transform(ref lp0, ref modelMatrix, out Vector4 res);
                         var pvv = res.ToVector3();
                         result.Distance = (rayWS.Position - res.ToVector3()).Length();
                         result.PointHit = pvv;

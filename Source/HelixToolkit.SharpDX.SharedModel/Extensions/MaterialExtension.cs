@@ -59,9 +59,9 @@ namespace HelixToolkit.UWP
             targetMaterial.EmissiveColor = material.EmissiveColor;
             targetMaterial.EnableTessellation = material.EnableTessellation;
             targetMaterial.MaxTessellationDistance = material.MaxTessellationDistance;
-            targetMaterial.MaxTessellationFactor = material.MaxTessellationFactor;
+            targetMaterial.MaxDistanceTessellationFactor = material.MaxDistanceTessellationFactor;
             targetMaterial.MinTessellationDistance = material.MinTessellationDistance;
-            targetMaterial.MinTessellationFactor = material.MinTessellationFactor;
+            targetMaterial.MinDistanceTessellationFactor = material.MinDistanceTessellationFactor;
             targetMaterial.NormalMap = material.NormalMap;
             targetMaterial.NormalMapSampler = material.NormalMapSampler;
             targetMaterial.ReflectiveColor = material.ReflectiveColor;
