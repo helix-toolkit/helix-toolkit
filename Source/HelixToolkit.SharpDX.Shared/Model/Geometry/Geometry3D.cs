@@ -148,9 +148,23 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         public bool IsDynamic { set; get; } = false;
         /// <summary>
-        /// The disable update bound
+        /// The pre defined vertex count. Only used when <see cref="IsDynamic"/> = true.
+        /// <para>The pre define vertex count allows user to initialize a dynamic buffer with a minimum pre-define size.</para>
+        /// <para>Example: If the vertex count increments from 0 to around 3000 during vertex array streaming, 
+        /// pre-define a size of 3000 for this geometry allows the dynamic buffer to be reused and avoid recreating dynamic buffer 3000 times.</para>
         /// </summary>
-        internal bool DisableUpdateBound = false;
+        public int PreDefinedVertexCount = 0;
+        /// <summary>
+        /// The pre defined index count. Used when <see cref="IsDynamic"/> = true.
+        ///  <para>The pre define index count allows user to initialize a dynamic buffer with a minimum pre-define size.</para>
+        /// <para>Example: If the index count increments from 0 to around 3000 during index array streaming, 
+        /// pre-define a size of 3000 for this geometry allows the dynamic buffer to be reused and avoid recreating dynamic buffer 3000 times.</para>
+        /// </summary>
+        public int PreDefinedIndexCount = 0;
+        /// <summary>
+        /// The disable update bound, only used in <see cref="AssignTo(Geometry3D)"/>
+        /// </summary>
+        protected bool DisableUpdateBound = false;
 
         private readonly object octreeLock = new object();
         /// <summary>
@@ -255,7 +269,12 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Assigns internal properties to another geometry3D
+        /// Assigns internal properties to another geometry3D. This does not assign <see cref="IsDynamic"/>/<see cref="PreDefinedIndexCount"/>/<see cref="PreDefinedVertexCount"/>
+        /// <para>
+        /// Following properties are assigned:
+        /// <see cref="Positions"/>, <see cref="Indices"/>, <see cref="Colors"/>, <see cref="Bound"/>, <see cref="BoundingSphere"/>, <see cref="Octree"/>, <see cref="OctreeParameter"/>
+        /// </para>
+        /// <para>Override <see cref="OnAssignTo(Geometry3D)"/> to assign custom properties in child class</para>
         /// </summary>
         /// <param name="target">The target.</param>
         public void AssignTo(Geometry3D target)
