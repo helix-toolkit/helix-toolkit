@@ -149,6 +149,18 @@ namespace HelixToolkit.Wpf.SharpDX
             return new StaticMeshGeometryOctree(this.Positions, this.Indices, parameter);
         }
 
+        protected override void OnAssignTo(Geometry3D target)
+        {
+            base.OnAssignTo(target);
+            if(target is MeshGeometry3D mesh)
+            {
+                mesh.Normals = this.Normals;
+                mesh.TextureCoordinates = this.TextureCoordinates;
+                mesh.Tangents = this.Tangents;
+                mesh.BiTangents = this.BiTangents;
+            }
+        }
+
         public virtual bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource)
         {
             if(Positions == null || Positions.Count == 0

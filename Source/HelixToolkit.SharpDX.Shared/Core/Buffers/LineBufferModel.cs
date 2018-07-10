@@ -102,7 +102,7 @@ namespace HelixToolkit.UWP.Core
                 // --- get geometry
                 var mesh = geometry as LineGeometry3D;
                 var data = OnBuildVertexArray(mesh);
-                buffer.UploadDataToBuffer(context, data, geometry.Positions.Count);
+                buffer.UploadDataToBuffer(context, data, geometry.Positions.Count, 0, geometry.PreDefinedVertexCount);
             }
             else
             {
@@ -121,7 +121,7 @@ namespace HelixToolkit.UWP.Core
         {
             if (geometry != null && geometry.Indices != null && geometry.Indices.Count > 0)
             {
-                buffer.UploadDataToBuffer(context, geometry.Indices, geometry.Indices.Count);
+                buffer.UploadDataToBuffer(context, geometry.Indices, geometry.Indices.Count, 0, geometry.PreDefinedIndexCount);
             }
             else
             {

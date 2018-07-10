@@ -148,6 +148,24 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   <c>true</c> if this instance is dynamic; otherwise, <c>false</c>.
         /// </value>
         public bool IsDynamic { set; get; } = false;
+        /// <summary>
+        /// The pre defined vertex count. Only used when <see cref="IsDynamic"/> = true.
+        /// <para>The pre define vertex count allows user to initialize a dynamic buffer with a minimum pre-define size.</para>
+        /// <para>Example: If the vertex count increments from 0 to around 3000 during vertex array streaming, 
+        /// pre-define a size of 3000 for this geometry allows the dynamic buffer to be reused and avoid recreating dynamic buffer 3000 times.</para>
+        /// </summary>
+        public int PreDefinedVertexCount = 0;
+        /// <summary>
+        /// The pre defined index count. Used when <see cref="IsDynamic"/> = true.
+        ///  <para>The pre define index count allows user to initialize a dynamic buffer with a minimum pre-define size.</para>
+        /// <para>Example: If the index count increments from 0 to around 3000 during index array streaming, 
+        /// pre-define a size of 3000 for this geometry allows the dynamic buffer to be reused and avoid recreating dynamic buffer 3000 times.</para>
+        /// </summary>
+        public int PreDefinedIndexCount = 0;
+        /// <summary>
+        /// The disable update bound, only used in <see cref="AssignTo(Geometry3D)"/>
+        /// </summary>
+        protected bool DisableUpdateBound = false;
 
         private readonly object octreeLock = new object();
         /// <summary>
@@ -250,12 +268,48 @@ namespace HelixToolkit.Wpf.SharpDX
             Octree = octree;
             OctreeDirty = false;
         }
+
+        /// <summary>
+        /// Assigns internal properties to another geometry3D. This does not assign <see cref="IsDynamic"/>/<see cref="PreDefinedIndexCount"/>/<see cref="PreDefinedVertexCount"/>
+        /// <para>
+        /// Following properties are assigned:
+        /// <see cref="Positions"/>, <see cref="Indices"/>, <see cref="Colors"/>, <see cref="Bound"/>, <see cref="BoundingSphere"/>, <see cref="Octree"/>, <see cref="OctreeParameter"/>
+        /// </para>
+        /// <para>Override <see cref="OnAssignTo(Geometry3D)"/> to assign custom properties in child class</para>
+        /// </summary>
+        /// <param name="target">The target.</param>
+        public void AssignTo(Geometry3D target)
+        {
+            target.DisableUpdateBound = true;
+            target.Positions = this.Positions;
+            target.ClearOctree();
+            target.DisableUpdateBound = false;
+            target.Indices = this.Indices;
+            target.Colors = this.Colors;
+            target.Bound = this.Bound;
+            target.BoundingSphere = this.BoundingSphere;
+            target.ManualSetOctree(Octree);
+            target.OctreeParameter.MinimumOctantSize = OctreeParameter.MinimumOctantSize;
+            target.OctreeParameter.MinObjectSizeToSplit = OctreeParameter.MinObjectSizeToSplit;
+            target.OctreeParameter.Cubify = OctreeParameter.Cubify;
+            target.OctreeParameter.EnableParallelBuild = OctreeParameter.EnableParallelBuild;
+            OnAssignTo(target);
+        }
+
+        protected virtual void OnAssignTo(Geometry3D target)
+        {
+
+        }
         /// <summary>
         /// Manually call this function to update AABB and Bounding Sphere
         /// </summary>
         public virtual void UpdateBounds()
         {
-            if (position == null || position.Count == 0)
+            if (DisableUpdateBound)
+            {
+                return;
+            }
+            else if (position == null || position.Count == 0)
             {
                 Bound = new BoundingBox();
                 BoundingSphere = new BoundingSphere();
