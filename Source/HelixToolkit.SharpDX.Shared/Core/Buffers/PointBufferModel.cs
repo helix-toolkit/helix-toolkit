@@ -74,7 +74,7 @@ namespace HelixToolkit.UWP.Core
                 // --- get geometry
                 var mesh = geometry as PointGeometry3D;
                 var data = OnBuildVertexArray(mesh);
-                buffer.UploadDataToBuffer(context, data, geometry.Positions.Count);
+                buffer.UploadDataToBuffer(context, data, geometry.Positions.Count, 0, geometry.PreDefinedVertexCount);
             }
             else
             {

@@ -86,7 +86,7 @@ namespace HelixToolkit.UWP.Core
             {
                 Type = billboardGeometry.Type;              
                 var data = OnBuildVertexArray(billboardGeometry, deviceResources);
-                buffer.UploadDataToBuffer(context, data, billboardGeometry.BillboardVertices.Count);
+                buffer.UploadDataToBuffer(context, data, billboardGeometry.BillboardVertices.Count, 0, geometry.PreDefinedVertexCount);
                 RemoveAndDispose(ref textureView);
                 if (billboardGeometry.Texture != null)
                 {
