@@ -19,12 +19,11 @@ namespace HelixToolkit.Wpf.SharpDX
     public struct DefaultVertex
     {
         public Vector4 Position;
-        public Color4 Color;
-        public Vector2 TexCoord;
         public Vector3 Normal;
         public Vector3 Tangent;
         public Vector3 BiTangent;
-
+        public Vector2 TexCoord;
+        public Color4 Color;
         public const int SizeInBytes = 4 * (4 + 4 + 2 + 3 + 3 + 3);
     }
     /// <summary>
