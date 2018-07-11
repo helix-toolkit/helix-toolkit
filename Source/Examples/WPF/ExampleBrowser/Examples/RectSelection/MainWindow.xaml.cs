@@ -8,6 +8,7 @@ namespace RectSelection
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -31,14 +32,20 @@ namespace RectSelection
         }
     }
 
-    public class MainWindowViewModel
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
         private IList<Model3D> selectedModels;
+        private IList<Visual3D> selectedVisuals;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
         public MainWindowViewModel(Viewport3D viewport)
         {
-            this.RectangleSelectionCommand = new RectangleSelectionCommand(viewport, this.HandleSelectionEvent);
-            this.PointSelectionCommand = new PointSelectionCommand(viewport, this.HandleSelectionEvent);
+            this.RectangleSelectionCommand = new RectangleSelectionCommand(viewport, this.HandleSelectionModelsEvent, this.HandleSelectionVisualsEvent);
+            this.PointSelectionCommand = new PointSelectionCommand(viewport, this.HandleSelectionModelsEvent, this.HandleSelectionVisualsEvent);
         }
 
         public RectangleSelectionCommand RectangleSelectionCommand { get; private set; }
@@ -66,7 +73,20 @@ namespace RectSelection
             }
         }
 
-        private void HandleSelectionEvent(object sender, ModelsSelectedEventArgs args)
+        public string SelectedVisuals
+        {
+            get
+            {
+                return selectedVisuals == null ? "" : string.Join("; ", selectedVisuals.Select(x => x.GetType().Name));
+            }
+        }
+
+        private void HandleSelectionVisualsEvent(object sender, VisualsSelectedEventArgs args)
+        {
+            this.selectedVisuals = args.SelectedVisuals;
+            RaisePropertyChanged(nameof(SelectedVisuals));
+        }
+        private void HandleSelectionModelsEvent(object sender, ModelsSelectedEventArgs args)
         {
             this.ChangeMaterial(this.selectedModels, Materials.Blue);
             this.selectedModels = args.SelectedModels;
