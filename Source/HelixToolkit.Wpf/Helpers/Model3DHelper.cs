@@ -108,6 +108,25 @@ namespace HelixToolkit.Wpf
                 action(gm, childTransform);
             }
         }
+
+        /// <summary>
+        /// Traverses the Model3D tree and invokes the specified action on each Model3D of the specified type.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type.
+        /// </typeparam>
+        /// <param name="model">
+        /// The model.
+        /// </param>
+        /// <param name="visual">
+        /// The visual.
+        /// </param>
+        /// <param name="transform">
+        /// The transform.
+        /// </param>
+        /// <param name="action">
+        /// The action.
+        /// </param>
         public static void Traverse<T>(this Model3D model, Visual3D visual, Transform3D transform, Action<T, Visual3D, Transform3D> action)
             where T : Model3D
         {

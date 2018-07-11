@@ -281,6 +281,19 @@ namespace HelixToolkit.Wpf
                 Traverse(child, action);
             }
         }
+
+        /// <summary>
+        /// Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type filter.
+        /// </typeparam>
+        /// <param name="visuals">
+        /// The visuals.
+        /// </param>
+        /// <param name="action">
+        /// The action.
+        /// </param>
         public static void Traverse<T>(this Visual3DCollection visuals, Action<T, Visual3D, Transform3D> action) where T : Model3D
         {
             foreach (var child in visuals)
@@ -305,6 +318,19 @@ namespace HelixToolkit.Wpf
         {
             Traverse(visual, Transform3D.Identity, action);
         }
+
+        /// <summary>
+        /// Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type filter.
+        /// </typeparam>
+        /// <param name="visual">
+        /// The visual.
+        /// </param>
+        /// <param name="action">
+        /// The action.
+        /// </param>
         public static void Traverse<T>(this Visual3D visual, Action<T, Visual3D, Transform3D> action) where T : Model3D
         {
             Traverse(visual, Transform3D.Identity, action);

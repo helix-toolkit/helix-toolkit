@@ -33,7 +33,8 @@ namespace HelixToolkit.Wpf
         /// Initializes a new instance of the <see cref="SelectionCommand"/> class.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <param name="eventHandler">The selection event handler.</param>
+        /// <param name="eventHandlerModels">The selection event handler for models.</param>
+        /// <param name="eventHandlerVisuals">The selection event handler for visuals.</param>
         protected SelectionCommand(Viewport3D viewport, EventHandler<ModelsSelectedEventArgs> eventHandlerModels, EventHandler<VisualsSelectedEventArgs> eventHandlerVisuals)
         {
             this.Viewport = viewport;

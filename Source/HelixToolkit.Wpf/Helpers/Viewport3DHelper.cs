@@ -1231,6 +1231,7 @@ namespace HelixToolkit.Wpf
             /// Initializes a new instance of the <see cref="RectangleHitResult" /> class.
             /// </summary>
             /// <param name="model">The hit model.</param>
+            /// <param name="visual">The hit visual.</param>
             public RectangleHitResult(Model3D model, Visual3D visual)
             {
                 this.Model = model;
