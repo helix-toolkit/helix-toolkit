@@ -237,6 +237,21 @@ namespace HelixToolkit.Wpf.SharpDX
             Bound = BoundingBox.FromSphere(BoundingSphere);
         }
 
+        protected override void OnAssignTo(Geometry3D target)
+        {
+            base.OnAssignTo(target);
+            if(target is BillboardSingleText3D billboard)
+            {
+                billboard.BackgroundColor = BackgroundColor;
+                billboard.FontColor = FontColor;
+                billboard.FontFamily = FontFamily;
+                billboard.FontSize = FontSize;
+                billboard.FontStyle = FontStyle;
+                billboard.FontWeight = FontWeight;
+                billboard.TextInfo = TextInfo;
+                billboard.Padding = Padding;
+            }
+        }
         /// <summary>
         /// Called when [draw texture].
         /// </summary>

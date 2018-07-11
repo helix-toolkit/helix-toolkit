@@ -320,10 +320,16 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             OnTargetChanged(target);
         }
+
+        protected virtual bool CanBeginTransform(MouseDown3DEventArgs e)
+        {
+            return true;
+        }
+
         #region Handle Translation
         private void Translation_Mouse3DDown(object sender, MouseDown3DEventArgs e)
         {
-            if (target == null)
+            if (target == null || !CanBeginTransform(e))
             {
                 return;
             }
@@ -398,7 +404,7 @@ namespace HelixToolkit.Wpf.SharpDX
         #region Handle Rotation
         private void Rotation_Mouse3DDown(object sender, MouseDown3DEventArgs e)
         {
-            if (target == null)
+            if (target == null || !CanBeginTransform(e))
             {
                 return;
             }
@@ -488,7 +494,7 @@ namespace HelixToolkit.Wpf.SharpDX
         #region Handle Scaling
         private void Scaling_Mouse3DDown(object sender, MouseDown3DEventArgs e)
         {
-            if (target == null)
+            if (target == null || !CanBeginTransform(e))
             {
                 return;
             }

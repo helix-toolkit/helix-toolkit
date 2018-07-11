@@ -103,6 +103,15 @@ namespace HelixToolkit.Wpf.SharpDX
             Bound = BoundingBox.FromSphere(BoundingSphere);
         }
 
+        protected override void OnAssignTo(Geometry3D target)
+        {
+            base.OnAssignTo(target);
+            if(target is BillboardSingleImage3D billboard)
+            {
+                billboard.Center = Center;
+                billboard.MaskColor = MaskColor;
+            }
+        }
         /// <summary>
         /// Called when [draw texture].
         /// </summary>
