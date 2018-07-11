@@ -108,5 +108,25 @@ namespace HelixToolkit.Wpf
                 action(gm, childTransform);
             }
         }
+        public static void Traverse<T>(this Model3D model, Visual3D visual, Transform3D transform, Action<T, Visual3D, Transform3D> action)
+            where T : Model3D
+        {
+            var mg = model as Model3DGroup;
+            if (mg != null)
+            {
+                var childTransform = Transform3DHelper.CombineTransform(model.Transform, transform);
+                foreach (var m in mg.Children)
+                {
+                    Traverse(m, visual, childTransform, action);
+                }
+            }
+
+            var gm = model as T;
+            if (gm != null)
+            {
+                var childTransform = Transform3DHelper.CombineTransform(model.Transform, transform);
+                action(gm, visual, childTransform);
+            }
+        }
     }
 }

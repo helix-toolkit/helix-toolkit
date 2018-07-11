@@ -281,6 +281,13 @@ namespace HelixToolkit.Wpf
                 Traverse(child, action);
             }
         }
+        public static void Traverse<T>(this Visual3DCollection visuals, Action<T, Visual3D, Transform3D> action) where T : Model3D
+        {
+            foreach (var child in visuals)
+            {
+                Traverse(child, action);
+            }
+        }
 
         /// <summary>
         /// Traverses the Visual3D/Model3D tree and invokes the specified action on each Model3D of the specified type.
@@ -295,6 +302,10 @@ namespace HelixToolkit.Wpf
         /// The action.
         /// </param>
         public static void Traverse<T>(this Visual3D visual, Action<T, Transform3D> action) where T : Model3D
+        {
+            Traverse(visual, Transform3D.Identity, action);
+        }
+        public static void Traverse<T>(this Visual3D visual, Action<T, Visual3D, Transform3D> action) where T : Model3D
         {
             Traverse(visual, Transform3D.Identity, action);
         }
@@ -410,6 +421,21 @@ namespace HelixToolkit.Wpf
             if (model != null)
             {
                 model.Traverse(childTransform, action);
+            }
+
+            foreach (var child in GetChildren(visual))
+            {
+                Traverse(child, childTransform, action);
+            }
+        }
+        private static void Traverse<T>(Visual3D visual, Transform3D transform, Action<T, Visual3D, Transform3D> action)
+            where T : Model3D
+        {
+            var childTransform = Transform3DHelper.CombineTransform(visual.Transform, transform);
+            var model = GetModel(visual);
+            if (model != null)
+            {
+                model.Traverse(visual, childTransform, action);
             }
 
             foreach (var child in GetChildren(visual))
