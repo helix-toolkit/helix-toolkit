@@ -22,13 +22,6 @@ namespace HelixToolkit.UWP.Core
     public abstract class BillboardBufferModel<VertexStruct> : GeometryBufferModel, IBillboardBufferModel where VertexStruct : struct
     {
         private static readonly VertexStruct[] emptyVerts = new VertexStruct[0];
-        /// <summary>
-        /// Called when [build vertex array].
-        /// </summary>
-        /// <param name="geometry">The geometry.</param>
-        /// <param name="deviceResources"></param>
-        /// <returns></returns>
-        protected abstract VertexStruct[] OnBuildVertexArray(IBillboardText geometry, IDeviceResources deviceResources);
 
         /// <summary>
         /// Use the shared texture resource proxy
@@ -85,8 +78,7 @@ namespace HelixToolkit.UWP.Core
             if (billboardGeometry != null && billboardGeometry.BillboardVertices != null && billboardGeometry.BillboardVertices.Count > 0)
             {
                 Type = billboardGeometry.Type;              
-                var data = OnBuildVertexArray(billboardGeometry, deviceResources);
-                buffer.UploadDataToBuffer(context, data, billboardGeometry.BillboardVertices.Count, 0, geometry.PreDefinedVertexCount);
+                buffer.UploadDataToBuffer(context, billboardGeometry.BillboardVertices, billboardGeometry.BillboardVertices.Count, 0, geometry.PreDefinedVertexCount);
                 RemoveAndDispose(ref textureView);
                 if (billboardGeometry.Texture != null)
                 {
@@ -97,7 +89,6 @@ namespace HelixToolkit.UWP.Core
             {
                 textureView = null;
                 buffer.UploadDataToBuffer(context, emptyVerts, 0);
-                //buffer.DisposeAndClear();
             }
         }
 
@@ -130,33 +121,10 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public sealed class DefaultBillboardBufferModel : BillboardBufferModel<BillboardVertex>
     {
-        [ThreadStatic]
-        private static BillboardVertex[] vertexArrayBuffer;
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultBillboardBufferModel"/> class.
         /// </summary>
         public DefaultBillboardBufferModel() : base(BillboardVertex.SizeInBytes) { }
-
-        /// <summary>
-        /// Called when [build vertex array].
-        /// </summary>
-        /// <param name="geometry">The geometry.</param>
-        /// <param name="deviceResources"></param>
-        /// <returns></returns>
-        protected override BillboardVertex[] OnBuildVertexArray(IBillboardText geometry, IDeviceResources deviceResources)
-        {
-            var vertexCount = geometry.BillboardVertices.Count;
-            var array = vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new BillboardVertex[vertexCount];
-
-            vertexArrayBuffer = array;
-
-            for (var i = 0; i < vertexCount; i++)
-            {
-                array[i] = geometry.BillboardVertices[i];
-            }
-
-            return array;
-        }
     }
 
     /// <summary>
@@ -164,32 +132,9 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public sealed class DynamicBillboardBufferModel : BillboardBufferModel<BillboardVertex>
     {
-        [ThreadStatic]
-        private static BillboardVertex[] vertexArrayBuffer;
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicBillboardBufferModel"/> class.
         /// </summary>
         public DynamicBillboardBufferModel() : base(BillboardVertex.SizeInBytes, true) { }
-
-        /// <summary>
-        /// Called when [build vertex array].
-        /// </summary>
-        /// <param name="geometry">The geometry.</param>
-        /// <param name="deviceResources"></param>
-        /// <returns></returns>
-        protected override BillboardVertex[] OnBuildVertexArray(IBillboardText geometry, IDeviceResources deviceResources)
-        {
-            var vertexCount = geometry.BillboardVertices.Count;
-            var array = vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new BillboardVertex[vertexCount];
-
-            vertexArrayBuffer = array;
-
-            for (var i = 0; i < vertexCount; i++)
-            {
-                array[i] = geometry.BillboardVertices[i];
-            }
-
-            return array;
-        }
     }
 }

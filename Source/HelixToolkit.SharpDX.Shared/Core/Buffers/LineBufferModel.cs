@@ -21,14 +21,8 @@ namespace HelixToolkit.UWP.Core
     /// <typeparam name="VertexStruct"></typeparam>
     public abstract class LineGeometryBufferModel<VertexStruct> : GeometryBufferModel where VertexStruct : struct
     {
-        private static readonly VertexStruct[] emptyVertices = new VertexStruct[0];
-        private static readonly int[] emptyIndices = new int[0];
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="geometry">The geometry.</param>
-        /// <returns></returns>
-        protected abstract VertexStruct[] OnBuildVertexArray(LineGeometry3D geometry);
+        protected static readonly VertexStruct[] emptyVertices = new VertexStruct[0];
+        protected static readonly int[] emptyIndices = new int[0];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LineGeometryBufferModel{VertexStruct}"/> class.
@@ -85,6 +79,25 @@ namespace HelixToolkit.UWP.Core
             vertexBuffer, indexBuffer)
         {
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class DefaultLineGeometryBufferModel : LineGeometryBufferModel<LinesVertex>
+    {
+        [ThreadStatic]
+        private static LinesVertex[] vertexArrayBuffer = null;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultLineGeometryBufferModel"/> class.
+        /// </summary>
+        public DefaultLineGeometryBufferModel() : base(LinesVertex.SizeInBytes) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultLineGeometryBufferModel"/> class.
+        /// </summary>
+        /// <param name="isDynamic"></param>
+        public DefaultLineGeometryBufferModel(bool isDynamic) : base(LinesVertex.SizeInBytes, isDynamic) { }
+
         /// <summary>
         /// Called when [create vertex buffer].
         /// </summary>
@@ -99,8 +112,7 @@ namespace HelixToolkit.UWP.Core
             if (geometry != null && geometry.Positions != null && geometry.Positions.Count > 0)
             {
                 // --- get geometry
-                var mesh = geometry as LineGeometry3D;
-                var data = OnBuildVertexArray(mesh);
+                var data = OnBuildVertexArray(geometry);
                 buffer.UploadDataToBuffer(context, data, geometry.Positions.Count, 0, geometry.PreDefinedVertexCount);
             }
             else
@@ -108,6 +120,11 @@ namespace HelixToolkit.UWP.Core
                 //buffer.DisposeAndClear();
                 buffer.UploadDataToBuffer(context, emptyVertices, 0);
             }
+        }
+
+        protected override bool IsVertexBufferChanged(string propertyName, int vertexBufferIndex)
+        {
+            return base.IsVertexBufferChanged(propertyName, vertexBufferIndex) || propertyName.Equals(nameof(Geometry3D.Colors));
         }
         /// <summary>
         /// Called when [create index buffer].
@@ -124,38 +141,15 @@ namespace HelixToolkit.UWP.Core
             }
             else
             {
-                // buffer.DisposeAndClear();
                 buffer.UploadDataToBuffer(context, emptyIndices, 0);
             }
         }
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void OnDispose(bool disposeManagedResources)
-        {
-            base.OnDispose(disposeManagedResources);
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public sealed class DefaultLineGeometryBufferModel : LineGeometryBufferModel<LinesVertex>
-    {
-        [ThreadStatic]
-        private static LinesVertex[] vertexArrayBuffer = null;
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultLineGeometryBufferModel"/> class.
-        /// </summary>
-        public DefaultLineGeometryBufferModel() : base(LinesVertex.SizeInBytes) { }
-
         /// <summary>
         /// Called when [build vertex array].
         /// </summary>
         /// <param name="geometry">The geometry.</param>
         /// <returns></returns>
-        protected override LinesVertex[] OnBuildVertexArray(LineGeometry3D geometry)
+        private LinesVertex[] OnBuildVertexArray(Geometry3D geometry)
         {
             var positions = geometry.Positions;
             var vertexCount = geometry.Positions.Count;
@@ -178,37 +172,11 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public sealed class DynamicLineGeometryBufferModel : LineGeometryBufferModel<LinesVertex>
+    public sealed class DynamicLineGeometryBufferModel : DefaultLineGeometryBufferModel
     {
-        [ThreadStatic]
-        private static LinesVertex[] vertexArrayBuffer = null;
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicLineGeometryBufferModel"/> class.
         /// </summary>
-        public DynamicLineGeometryBufferModel() : base(LinesVertex.SizeInBytes, true) { }
-
-        /// <summary>
-        /// Called when [build vertex array].
-        /// </summary>
-        /// <param name="geometry">The geometry.</param>
-        /// <returns></returns>
-        protected override LinesVertex[] OnBuildVertexArray(LineGeometry3D geometry)
-        {
-            var positions = geometry.Positions;
-            var vertexCount = geometry.Positions.Count;
-            var array = vertexArrayBuffer != null && vertexArrayBuffer.Length >= vertexCount ? vertexArrayBuffer : new LinesVertex[vertexCount];
-            var colors = geometry.Colors != null ? geometry.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
-
-            vertexArrayBuffer = array;
-
-            for (var i = 0; i < vertexCount; i++)
-            {
-                colors.MoveNext();
-                array[i].Position = new Vector4(positions[i], 1f);
-                array[i].Color = colors.Current;
-            }
-            colors.Dispose();
-            return array;
-        }
+        public DynamicLineGeometryBufferModel() : base(true) { }
     }
 }
