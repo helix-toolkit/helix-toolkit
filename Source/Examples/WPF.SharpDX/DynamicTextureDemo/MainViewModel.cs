@@ -1,27 +1,19 @@
 ﻿using DemoCore;
 using HelixToolkit.Wpf.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Core;
-using SharpDX;
 using SharpDX.Direct3D11;
 using System;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Threading;
-using Media3D = System.Windows.Media.Media3D;
-using Point3D = System.Windows.Media.Media3D.Point3D;
-using Vector3D = System.Windows.Media.Media3D.Vector3D;
-using Transform3D = System.Windows.Media.Media3D.Transform3D;
-using TranslateTransform3D = System.Windows.Media.Media3D.TranslateTransform3D;
-using Color = System.Windows.Media.Color;
-using Plane = SharpDX.Plane;
-using Vector3 = SharpDX.Vector3;
-using Colors = System.Windows.Media.Colors;
-using Color4 = SharpDX.Color4;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Threading;
+using Color = System.Windows.Media.Color;
+using Color4 = HelixToolkit.Mathematics.Color4;
+using Colors = System.Windows.Media.Colors;
+using Point3D = System.Windows.Media.Media3D.Point3D;
+using Vector3 = System.Numerics.Vector3;
+using Vector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace DynamicTextureDemo
 {
