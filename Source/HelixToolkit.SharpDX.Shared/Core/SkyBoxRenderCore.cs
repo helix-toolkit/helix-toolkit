@@ -258,9 +258,18 @@ namespace HelixToolkit.UWP.Core
                 Topology = PrimitiveTopology.TriangleList;
             }
 
-            protected override Vector3[] OnBuildVertexArray(PointGeometry3D geometry)
+            protected override void OnCreateVertexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
             {
-                return geometry.Positions.ToArray();
+                // -- set geometry if given
+                if (geometry != null && geometry.Positions != null && geometry.Positions.Count > 0)
+                {
+
+                    buffer.UploadDataToBuffer(context, geometry.Positions, geometry.Positions.Count);
+                }
+                else
+                {
+                    buffer.UploadDataToBuffer(context, emptyVerts, 0);
+                }
             }
         }
     }

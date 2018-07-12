@@ -26,11 +26,11 @@ struct LightStruct
 struct VSInput
 {
 	float4 p : POSITION;
-	float4 c : COLOR;
-	float2 t : TEXCOORD;
 	float3 n : NORMAL;
 	float3 t1 : TANGENT;
 	float3 t2 : BINORMAL;
+	float2 t : TEXCOORD;
+	float4 c : COLOR;
 
 	float4 mr0 : TEXCOORD1;
 	float4 mr1 : TEXCOORD2;
@@ -41,11 +41,11 @@ struct VSInput
 struct VSBoneSkinInput
 {
 	float4 p : POSITION;
-	float4 c : COLOR;
-	float2 t : TEXCOORD;
 	float3 n : NORMAL;
 	float3 t1 : TANGENT;
 	float3 t2 : BINORMAL;
+	float2 t : TEXCOORD;
+	float4 c : COLOR;
 
 	float4 mr0 : TEXCOORD1;
 	float4 mr1 : TEXCOORD2;
@@ -63,11 +63,11 @@ struct VSBoneSkinInput
 struct VSInstancingInput
 {
 	float4 p : POSITION;
-	float4 c : COLOR;
-	float2 t : TEXCOORD;
 	float3 n : NORMAL;
 	float3 t1 : TANGENT;
 	float3 t2 : BINORMAL;
+	float2 t : TEXCOORD;
+	float4 c : COLOR;
 
 	float4 mr0 : TEXCOORD1;
 	float4 mr1 : TEXCOORD2;
@@ -288,11 +288,11 @@ struct HSInput
 struct VSIn
 {
 	float4 p : POSITION;
-	float4 c : COLOR;
-	float2 t : TEXCOORD;
 	float3 n : NORMAL;
 	float3 t1 : TANGENT;
 	float3 t2 : BINORMAL;
+	float2 t : TEXCOORD;
+	float4 c : COLOR;
 };
 
 //
