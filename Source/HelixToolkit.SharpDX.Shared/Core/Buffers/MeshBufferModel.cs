@@ -135,8 +135,9 @@ namespace HelixToolkit.UWP.Core
         /// Initializes a new instance of the <see cref="DefaultMeshGeometryBufferModel"/> class.
         /// </summary>
         /// <param name="buffers">The buffers.</param>
-        public DefaultMeshGeometryBufferModel(IElementsBufferProxy[] buffers) 
-            : base(PrimitiveTopology.TriangleList, buffers)
+        /// <param name="isDynamic"></param>
+        public DefaultMeshGeometryBufferModel(IElementsBufferProxy[] buffers, bool isDynamic) 
+            : base(PrimitiveTopology.TriangleList, buffers, isDynamic)
         {
         }
         /// <summary>
@@ -262,7 +263,7 @@ namespace HelixToolkit.UWP.Core
                       new DynamicBufferProxy(DefaultVertex.SizeInBytes, BindFlags.VertexBuffer),
                       new DynamicBufferProxy(Vector2.SizeInBytes, BindFlags.VertexBuffer),
                       new DynamicBufferProxy(Vector4.SizeInBytes, BindFlags.VertexBuffer)
-                  } as IElementsBufferProxy[])
+                  } as IElementsBufferProxy[], true)
         { }
     }
 }
