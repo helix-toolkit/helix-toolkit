@@ -186,7 +186,12 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         public void UpdateCanRenderFlag()
         {
-            CanRenderFlag = OnUpdateCanRenderFlag();
+            bool flag = OnUpdateCanRenderFlag();
+            if(CanRenderFlag != flag)
+            {
+                CanRenderFlag = flag;
+                InvalidateRenderer();
+            }
         }
 
         /// <summary>
