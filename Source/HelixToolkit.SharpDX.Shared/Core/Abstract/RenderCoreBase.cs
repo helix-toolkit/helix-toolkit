@@ -65,7 +65,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceContext"></param>
         public override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
-            if (CanRender(context))
+            if (CanRenderFlag)
             {
                 OnUpdatePerModelStruct(ref modelStruct, context);
                 int vertStartSlot = 0;
@@ -106,7 +106,7 @@ namespace HelixToolkit.UWP.Core
 
         public override void Update(RenderContext context, DeviceContextProxy deviceContext)
         {
-            if (CanRender(context))
+            if (CanRenderFlag)
             {
                 OnUpdate(context, deviceContext);
             }
@@ -178,14 +178,5 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context"></param>
         protected virtual void PostRender(RenderContext context)
         { }
-
-        /// <summary>
-        /// Check if can render
-        /// </summary>
-        /// <returns></returns>
-        protected virtual bool CanRender(RenderContext context)
-        {
-            return IsAttached;
-        }
     }
 }

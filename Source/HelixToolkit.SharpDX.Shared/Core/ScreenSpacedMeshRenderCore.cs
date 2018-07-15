@@ -328,17 +328,7 @@ namespace HelixToolkit.UWP.Core
             model.World = Matrix.Identity;
             model.HasInstances = 0;
         }
-        /// <summary>
-        /// Determines whether this instance can render the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        ///   <c>true</c> if this instance can render the specified context; otherwise, <c>false</c>.
-        /// </returns>
-        protected override bool CanRender(RenderContext context)
-        {
-            return context.ActualWidth > Size && context.ActualHeight > Size;
-        }
+
         /// <summary>
         /// Called when [render].
         /// </summary>
@@ -374,6 +364,10 @@ namespace HelixToolkit.UWP.Core
         /// <param name="clearDepthBuffer">if set to <c>true</c> [clear depth buffer].</param>
         protected virtual void SetScreenSpacedCoordinates(RenderContext context, DeviceContextProxy deviceContext, bool clearDepthBuffer)
         {
+            if(context.ActualWidth < Size || context.ActualHeight < Size)
+            {
+                return;
+            }
             context.WorldMatrix = Matrix.Identity;
             DepthStencilView dsView;
             if (clearDepthBuffer)

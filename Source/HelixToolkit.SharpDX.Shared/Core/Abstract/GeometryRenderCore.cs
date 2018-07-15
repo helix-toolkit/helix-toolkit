@@ -40,16 +40,16 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (instanceBuffer != value)
+                var old = instanceBuffer;
+                if(SetAffectsCanRenderFlag(ref instanceBuffer, value))
                 {
-                    if (instanceBuffer != null)
+                    if (old != null)
                     {
-                        instanceBuffer.OnElementChanged -= InvalidateRenderEvent;
+                        old.OnElementChanged -= OnElementChanged;
                     }
-                    instanceBuffer = value;
                     if (instanceBuffer != null)
                     {
-                        instanceBuffer.OnElementChanged += InvalidateRenderEvent;
+                        instanceBuffer.OnElementChanged += OnElementChanged;
                     }
                 }
             }
@@ -67,20 +67,19 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(geometryBuffer == value)
+                var old = geometryBuffer;
+                if(SetAffectsCanRenderFlag(ref geometryBuffer, value))
                 {
-                    return;
+                    if(old != null)
+                    {
+                        old.OnInvalidateRender -= OnInvalidateRendererEvent;
+                    }
+                    if (geometryBuffer != null)
+                    {
+                        geometryBuffer.OnInvalidateRender += OnInvalidateRendererEvent;
+                    }
+                    OnGeometryBufferChanged(value);
                 }
-                if(geometryBuffer != null)
-                {
-                    geometryBuffer.OnInvalidateRender -= InvalidateRenderEvent;
-                }
-                geometryBuffer = value;
-                if (geometryBuffer != null)
-                {
-                    geometryBuffer.OnInvalidateRender += InvalidateRenderEvent;
-                }
-                OnGeometryBufferChanged(value);
             }
             get { return geometryBuffer; }
         }
@@ -281,13 +280,12 @@ namespace HelixToolkit.UWP.Core
             return succ;
         }
         /// <summary>
-        /// 
+        /// Called when [update can render flag].
         /// </summary>
-        /// <param name="context"></param>
         /// <returns></returns>
-        protected override bool CanRender(RenderContext context)
+        protected override bool OnUpdateCanRenderFlag()
         {
-            return base.CanRender(context) && GeometryBuffer != null;
+            return base.OnUpdateCanRenderFlag() && GeometryBuffer != null;
         }
 
         /// <summary>
@@ -336,7 +334,13 @@ namespace HelixToolkit.UWP.Core
             OnDraw(deviceContext, InstanceBuffer);
         }
 
-        protected void InvalidateRenderEvent(object sender, EventArgs e)
+        protected void OnElementChanged(object sender, EventArgs e)
+        {
+            UpdateCanRenderFlag();
+            InvalidateRenderer();
+        }
+
+        protected void OnInvalidateRendererEvent(object sender, EventArgs e)
         {
             InvalidateRenderer();
         }

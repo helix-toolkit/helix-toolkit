@@ -18,30 +18,25 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (parameterBufferModel == value)
+                var old = parameterBufferModel;
+                if(SetAffectsCanRenderFlag(ref parameterBufferModel, value))
                 {
-                    return;
-                }
-                if (parameterBufferModel != null)
-                {
-                    parameterBufferModel.OnElementChanged -= ParameterBufferModel_OnElementChanged;
-                }
-                parameterBufferModel = value;
-                if (parameterBufferModel != null)
-                {
-                    parameterBufferModel.OnElementChanged += ParameterBufferModel_OnElementChanged;
-                }
+                    if (old != null)
+                    {
+                        old.OnElementChanged -= OnElementChanged;
+                    }
+                    if (parameterBufferModel != null)
+                    {
+                        parameterBufferModel.OnElementChanged += OnElementChanged;
+                    }
+                }                
             }
             get { return parameterBufferModel; }
         }
 
-        private void ParameterBufferModel_OnElementChanged(object sender, EventArgs e)
+        protected override bool OnUpdateCanRenderFlag()
         {
-            InvalidateRenderer();
-        }
-        protected override bool CanRender(RenderContext context)
-        {
-            return base.CanRender(context) && InstanceBuffer != null && InstanceBuffer.HasElements;
+            return base.OnUpdateCanRenderFlag() && InstanceBuffer != null && InstanceBuffer.HasElements;
         }
 
         protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)

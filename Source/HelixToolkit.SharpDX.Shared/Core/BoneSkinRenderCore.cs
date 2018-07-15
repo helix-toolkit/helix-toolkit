@@ -14,7 +14,32 @@ namespace HelixToolkit.UWP.Core
 
     public class BoneSkinRenderCore : MeshRenderCore, IBoneSkinRenderParams
     {
-        public IElementsBufferModel VertexBoneIdBuffer { set; get; }
+        private IElementsBufferModel vertexBoneIdBuffer;
+        /// <summary>
+        /// Gets or sets the vertex bone identifier buffer.
+        /// </summary>
+        /// <value>
+        /// The vertex bone identifier buffer.
+        /// </value>
+        public IElementsBufferModel VertexBoneIdBuffer
+        {
+            set
+            {
+                var old = vertexBoneIdBuffer;
+                if(SetAffectsCanRenderFlag(ref vertexBoneIdBuffer, value))
+                {
+                    if(old != null)
+                    {
+                        old.OnElementChanged -= OnElementChanged;
+                    }
+                    if (vertexBoneIdBuffer != null)
+                    {
+                        vertexBoneIdBuffer.OnElementChanged += OnElementChanged;
+                    }
+                }              
+            }
+            get { return vertexBoneIdBuffer; }
+        }
 
         private BoneMatricesStruct boneMatrices;
         public BoneMatricesStruct BoneMatrices
@@ -41,9 +66,9 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool CanRender(RenderContext context)
+        protected override bool OnUpdateCanRenderFlag()
         {
-            return base.CanRender(context) && VertexBoneIdBuffer != null && VertexBoneIdBuffer.HasElements;
+            return base.OnUpdateCanRenderFlag() && VertexBoneIdBuffer != null && VertexBoneIdBuffer.HasElements;
         }
 
         protected override bool OnAttachBuffers(DeviceContextProxy context, ref int vertStartSlot)

@@ -165,11 +165,6 @@ namespace HelixToolkit.UWP.Core
             cubeTextureSlot = pass.PixelShader.ShaderResourceViewMapping.TryGetBindSlot(ShaderCubeTextureName);
             textureSamplerSlot = pass.PixelShader.SamplerMapping.TryGetBindSlot(ShaderCubeTextureSamplerName);
         }
-
-        protected override bool CanRender(RenderContext context)
-        {
-            return base.CanRender(context) && GeometryBuffer.VertexBuffer.Length > 0;
-        }
         /// <summary>
         /// Called when [render].
         /// </summary>
