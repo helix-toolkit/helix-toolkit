@@ -63,7 +63,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context"></param>
         /// <param name="deviceContext"></param>
-        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
+        public sealed override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (CanRenderFlag)
             {
@@ -104,7 +104,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        public override void Update(RenderContext context, DeviceContextProxy deviceContext)
+        public sealed override void Update(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (CanRenderFlag)
             {
