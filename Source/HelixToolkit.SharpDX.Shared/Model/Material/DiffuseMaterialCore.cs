@@ -114,7 +114,7 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        private string transparentPassName = DefaultPassNames.OITPass;
+        private string transparentPassName = DefaultPassNames.DiffuseOIT;
         /// <summary>
         /// Gets or sets the name of the mesh transparent pass.
         /// </summary>

@@ -139,6 +139,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public const string Diffuse = "RenderDiffuse";
         /// <summary>
+        /// The diffuse oit
+        /// </summary>
+        public const string DiffuseOIT = "RenderDiffuseOIT";
+        /// <summary>
         /// 
         /// </summary>
         public const string Colors = "RenderColors";
