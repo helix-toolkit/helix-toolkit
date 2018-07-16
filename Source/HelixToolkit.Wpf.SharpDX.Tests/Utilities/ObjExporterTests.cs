@@ -59,7 +59,7 @@ f 1/1 2/2 3/3
 
 ";
 
-                Assert.AreEqual(contentObj, expectedObj);
+                Assert.AreEqual(expectedObj.Replace("\r\n", "\n"), contentObj.Replace("\r\n", "\n"));
 
                 string contentMtl = File.ReadAllText(mtlPath);
             }
