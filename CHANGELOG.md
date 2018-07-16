@@ -13,8 +13,8 @@ All notable changes to this project will be documented in this file.
 2. Obsolete Ray3D. Use SharpDX.Ray instead. (WPF.SharpDX and UWP)
 3. Optimize all gesture handlers. (WPF.SharpDX and UWP)
 4. Move camera to shared project. (WPF.SharpDX and UWP)
-5. Rearrange the order of DefaultVertex struct. Separate Texture Cooridnates and Vertex Colors into own buffers. (WPF.SharpDX and UWP)
-6. Change to use CanRenderFlag in render core instead of calling CanRender during rendering. Use UpdateCanRenderFlag or SetAffectsCanRenderFlag to update the flag during property change. (WPF.SharpDX and UWP)
+5. Rearrange the order of `DefaultVertex` struct. Separate Texture Cooridnates and Vertex Colors into own buffers. (WPF.SharpDX and UWP)
+6. Change to use `CanRenderFlag` in render core instead of calling `CanRender` during rendering. Use `UpdateCanRenderFlag` or `SetAffectsCanRenderFlag` to update the flag during property change. (WPF.SharpDX and UWP)
 
 ### Fixed
 1. Fixed model transform matrix multiplication wrong sequence on HitTest with GroupModel and Instancing.(WPF.SharpDX and UWP)
