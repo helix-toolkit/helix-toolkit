@@ -12,7 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         protected override SceneNode OnCreateSceneNode()
         {
-            return new NodePostEffectMeshOutlineBlur();
+            return new NodePostEffectBorderHighlight();
         }
     }
 }

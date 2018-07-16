@@ -55,6 +55,19 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
+        /// Gets the ps mesh diffuse map oit.
+        /// </summary>
+        /// <value>
+        /// The ps mesh diffuse map oit.
+        /// </value>
+        public static byte[] PSMeshDiffuseMapOIT
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("psMeshDiffuseMapOIT");
+            }
+        }
+        /// <summary>
         /// 
         /// </summary>
         public static byte[] PSMeshVertColor
@@ -528,6 +541,11 @@ namespace HelixToolkit.UWP.Shaders
         /// </summary>
         public static ShaderDescription PSMeshDiffuseMap = new ShaderDescription(nameof(PSMeshDiffuseMap), ShaderStage.Pixel, new ShaderReflector(),
             DefaultPSShaderByteCodes.PSMeshDiffuseMap);
+        /// <summary>
+        /// The ps mesh diffuse map oit
+        /// </summary>
+        public static ShaderDescription PSMeshDiffuseMapOIT = new ShaderDescription(nameof(PSMeshDiffuseMapOIT), ShaderStage.Pixel, new ShaderReflector(),
+            DefaultPSShaderByteCodes.PSMeshDiffuseMapOIT);
         /// <summary>
         /// 
         /// </summary>
