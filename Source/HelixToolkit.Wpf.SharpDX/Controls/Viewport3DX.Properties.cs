@@ -1110,7 +1110,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (viewport.renderHostInternal != null)
                     {
                         viewport.renderHostInternal.RenderConfiguration.EnableRenderOrder = (bool)e.NewValue;
-                        viewport.InvalidateRender();
+                        viewport.renderHostInternal.InvalidatePerFrameRenderables();
                     }
                 }));
 

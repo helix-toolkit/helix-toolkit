@@ -2198,7 +2198,7 @@ namespace HelixToolkit.UWP
                     if (viewport.renderHostInternal != null)
                     {
                         viewport.renderHostInternal.RenderConfiguration.EnableRenderOrder = (bool)e.NewValue;
-                        viewport.InvalidateRender();
+                        viewport.renderHostInternal.InvalidatePerFrameRenderables();
                     }
                 }));
     }
