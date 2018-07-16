@@ -195,27 +195,19 @@ namespace HelixToolkit.UWP.Core
             return new ConstantBufferDescription(DefaultBufferNames.ShadowParamCB, ShadowMapParamStruct.SizeInBytes);
         }
 
-        protected override bool CanRender(RenderContext context)
-        {
-#if TEST
-            if (base.CanRender(context))
-#else
-            if(base.CanRender(context) && !context.IsShadowPass)
-#endif
-            {
-                OnUpdateLightSource?.Invoke(this, new UpdateLightSourceEventArgs(context));
-                ++currentFrame;
-                currentFrame %= Math.Max(1, UpdateFrequency);
-                return FoundLightSource && currentFrame == 0;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
+            if (context.IsShadowPass)
+            {
+                return;
+            }
+            OnUpdateLightSource?.Invoke(this, new UpdateLightSourceEventArgs(context));
+            ++currentFrame;
+            currentFrame %= Math.Max(1, UpdateFrequency);
+            if(!FoundLightSource || currentFrame != 0)
+            {
+                return;
+            }
             if (resolutionChanged)
             {
                 RemoveAndDispose(ref viewResource);

@@ -269,6 +269,7 @@
     <None Include="Resources\psMeshClipPlaneBackface.cso" />
     <None Include="Resources\psMeshClipPlaneQuad.cso" />
     <None Include="Resources\psMeshColorStripe.cso" />
+    <None Include="Resources\psMeshDiffuseMapOIT.cso" />
     <None Include="Resources\psMeshXRay.cso" />
     <None Include="Resources\psNormals.cso" />
     <None Include="Resources\psParticle.cso" />

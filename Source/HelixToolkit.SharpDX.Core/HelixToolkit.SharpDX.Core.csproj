@@ -65,6 +65,7 @@
     <None Remove="Resources\psMeshClipPlaneBackface.cso" />
     <None Remove="Resources\psMeshClipPlaneQuad.cso" />
     <None Remove="Resources\psMeshColorStripe.cso" />
+    <None Remove="Resources\psMeshDiffuseMapOIT.cso" />
     <None Remove="Resources\psMeshXRay.cso" />
     <None Remove="Resources\psNormals.cso" />
     <None Remove="Resources\psParticle.cso" />
@@ -134,6 +135,7 @@
     <EmbeddedResource Include="Resources\psMeshClipPlaneBackface.cso" />
     <EmbeddedResource Include="Resources\psMeshClipPlaneQuad.cso" />
     <EmbeddedResource Include="Resources\psMeshColorStripe.cso" />
+    <EmbeddedResource Include="Resources\psMeshDiffuseMapOIT.cso" />
     <EmbeddedResource Include="Resources\psMeshXRay.cso" />
     <EmbeddedResource Include="Resources\psNormals.cso" />
     <EmbeddedResource Include="Resources\psParticle.cso" />

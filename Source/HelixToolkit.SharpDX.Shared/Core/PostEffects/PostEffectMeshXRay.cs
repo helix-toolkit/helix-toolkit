@@ -55,6 +55,7 @@ namespace HelixToolkit.UWP.Core
         private DepthPrepassCore depthPrepassCore;
         #endregion
         #region Properties
+        private string effectName = DefaultRenderTechniqueNames.PostEffectMeshXRay;
         /// <summary>
         /// Gets or sets the name of the effect.
         /// </summary>
@@ -63,8 +64,9 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public string EffectName
         {
-            set; get;
-        } = DefaultRenderTechniqueNames.PostEffectMeshXRay;
+            set { SetAffectsCanRenderFlag(ref effectName, value); }
+            get { return effectName; }
+        }
 
         private Color4 color = Mathematics.Color.Red;
         /// <summary>
@@ -248,6 +250,11 @@ namespace HelixToolkit.UWP.Core
                 buffer.FullResDepthStencilPool.Put(Format.D32_Float_S8X24_UInt, depthStencilBuffer);
             }
             context.IsCustomPass = false;
+        }
+
+        protected override bool OnUpdateCanRenderFlag()
+        {
+            return IsAttached && !string.IsNullOrEmpty(EffectName);
         }
 
         protected override void OnUpdatePerModelStruct(ref BorderEffectStruct model, RenderContext context)

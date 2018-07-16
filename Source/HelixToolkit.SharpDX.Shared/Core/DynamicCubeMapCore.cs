@@ -94,7 +94,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                SetAffectsRender(ref enableReflector, value);
+                SetAffectsCanRenderFlag(ref enableReflector, value);
             }
             get
             {
@@ -369,9 +369,9 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
 
-        protected override bool CanRender(RenderContext context)
+        protected override bool OnUpdateCanRenderFlag()
         {
-            return base.CanRender(context) && EnableReflector;
+            return base.OnUpdateCanRenderFlag() && EnableReflector;
         }
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)

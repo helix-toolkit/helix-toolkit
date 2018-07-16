@@ -189,15 +189,14 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
 
-        protected override bool CanRender(RenderContext context)
-        {
-            return base.CanRender(context) && context.RenderHost.PerFrameTransparentNodes.Count > 0;
-        }
-
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
         {
             RenderCount = 0;
-            if(CreateTextureResources(context, deviceContext))
+            if(context.RenderHost.PerFrameTransparentNodes.Count == 0)
+            {
+                return;
+            }
+            else if(CreateTextureResources(context, deviceContext))
             {
                 InvalidateRenderer();
                 return; // Skip this frame if texture resized to reduce latency.
