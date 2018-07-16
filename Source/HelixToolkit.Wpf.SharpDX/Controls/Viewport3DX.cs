@@ -649,6 +649,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 this.renderHostInternal.RenderConfiguration.OITWeightDepthSlope = (float)OITWeightDepthSlope;
                 this.renderHostInternal.RenderConfiguration.OITWeightMode = OITWeightMode;
                 this.renderHostInternal.RenderConfiguration.FXAALevel = FXAALevel;
+                this.renderHostInternal.RenderConfiguration.EnableRenderOrder = EnableRenderOrder;
                 if (ShowFrameRate)
                 {
                     this.renderHostInternal.ShowRenderDetail |= RenderDetail.FPS;
