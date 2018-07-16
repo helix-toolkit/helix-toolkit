@@ -1,19 +1,17 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObjExporter.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// <summary>
-//   Export the 3D visual tree to a Wavefront OBJ file
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using global::SharpDX;
+    using Model;
+    using Model.Scene;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
-    using System.Windows.Media;
     using System.Windows.Media.Media3D;
 
     /// <summary>
@@ -37,6 +35,11 @@ namespace HelixToolkit.Wpf.SharpDX
         public bool UseDissolveForTransparency { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to switch Y and Z coordinates.
+        /// </summary>
+        public bool SwitchYZ { get; set; }
+
+        /// <summary>
         /// The directory.
         /// </summary>
         private readonly string directory;
@@ -44,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The exported materials.
         /// </summary>
-        private readonly Dictionary<Material, string> exportedMaterials = new Dictionary<Material, string>();
+        private readonly Dictionary<MaterialCore, string> exportedMaterials = new Dictionary<MaterialCore, string>();
 
         /// <summary>
         /// The mwriter.
@@ -70,6 +73,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// Vertex index counter.
         /// </summary>
         private int vertexIndex = 1;
+
+        /// <summary>
+        /// Object index counter.
+        /// </summary>
+        private int objectNo = 1;
+
+        /// <summary>
+        /// Group index counter.
+        /// </summary>
+        private int groupNo = 1;
+
+        /// <summary>
+        /// Material index counter.
+        /// </summary>
+        private int matNo = 1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjExporter"/> class.
@@ -113,11 +131,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to switch Y and Z coordinates.
-        /// </summary>
-        public bool SwitchYZ { get; set; }
-
-        /// <summary>
         /// Closes this exporter.
         /// </summary>
         public override void Close()
@@ -125,6 +138,37 @@ namespace HelixToolkit.Wpf.SharpDX
             this.writer.Close();
             this.mwriter.Close();
             base.Close();
+        }
+
+        /// <summary>
+        /// The export model.
+        /// </summary>
+        /// <param name="model">
+        /// The model.
+        /// </param>
+        /// <param name="transform">
+        /// The transform.
+        /// </param>
+        protected override void ExportModel(MeshNode model, Transform3D transform)
+        {
+            this.writer.WriteLine(string.Format("o object{0}", this.objectNo++));
+            this.writer.WriteLine(string.Format("g group{0}", this.groupNo++));
+
+            if (this.exportedMaterials.ContainsKey(model.Material))
+            {
+                string matName = this.exportedMaterials[model.Material];
+                this.writer.WriteLine(string.Format("usemtl {0}", matName));
+            }
+            else
+            {
+                string matName = string.Format("mat{0}", this.matNo++);
+                this.writer.WriteLine(string.Format("usemtl {0}", matName));
+                this.ExportMaterial(matName, model.Material);
+                this.exportedMaterials.Add(model.Material, matName);
+            }
+
+            var mesh = model.Geometry as MeshGeometry3D;
+            this.ExportMesh(mesh, transform);
         }
 
         /// <summary>
@@ -198,26 +242,26 @@ namespace HelixToolkit.Wpf.SharpDX
             }
 
             Func<int, string> formatIndices = i0 =>
+            {
+                bool hasTextureIndex = textureIndexMap.ContainsKey(i0);
+                bool hasNormalIndex = normalIndexMap.ContainsKey(i0);
+                if (hasTextureIndex && hasNormalIndex)
                 {
-                    bool hasTextureIndex = textureIndexMap.ContainsKey(i0);
-                    bool hasNormalIndex = normalIndexMap.ContainsKey(i0);
-                    if (hasTextureIndex && hasNormalIndex)
-                    {
-                        return string.Format("{0}/{1}/{2}", vertexIndexMap[i0], textureIndexMap[i0], normalIndexMap[i0]);
-                    }
+                    return string.Format("{0}/{1}/{2}", vertexIndexMap[i0], textureIndexMap[i0], normalIndexMap[i0]);
+                }
 
-                    if (hasTextureIndex)
-                    {
-                        return string.Format("{0}/{1}", vertexIndexMap[i0], textureIndexMap[i0]);
-                    }
+                if (hasTextureIndex)
+                {
+                    return string.Format("{0}/{1}", vertexIndexMap[i0], textureIndexMap[i0]);
+                }
 
-                    if (hasNormalIndex)
-                    {
-                        return string.Format("{0}//{1}", vertexIndexMap[i0], normalIndexMap[i0]);
-                    }
+                if (hasNormalIndex)
+                {
+                    return string.Format("{0}//{1}", vertexIndexMap[i0], normalIndexMap[i0]);
+                }
 
-                    return vertexIndexMap[i0].ToString();
-                };
+                return vertexIndexMap[i0].ToString();
+            };
 
             if (m.Indices != null)
             {
@@ -237,39 +281,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// The export model.
-        /// </summary>
-        /// <param name="model">
-        /// The model.
-        /// </param>
-        /// <param name="transform">
-        /// The transform.
-        /// </param>
-        protected override void ExportModel(GeometryModel3D model, Transform3D transform)
-        {
-#if TODO_MATERIAL
-            this.writer.WriteLine(string.Format("o object{0}", this.objectNo++));
-            this.writer.WriteLine(string.Format("g group{0}", this.groupNo++));
-
-            if (this.exportedMaterials.ContainsKey(model.Material))
-            {
-                string matName = this.exportedMaterials[model.Material];
-                this.writer.WriteLine(string.Format("usemtl {0}", matName));
-            }
-            else
-            {
-                string matName = string.Format("mat{0}", this.matNo++);
-                this.writer.WriteLine(string.Format("usemtl {0}", matName));
-                this.ExportMaterial(matName, model.Material, model.BackMaterial);
-                this.exportedMaterials.Add(model.Material, matName);
-            }
-
-            var mesh = model.Geometry as MeshGeometry3D;
-            this.ExportMesh(mesh, Transform3DHelper.CombineTransform(transform, model.Transform));
-#endif
-        }
-
-        /// <summary>
         /// The export material.
         /// </summary>
         /// <param name="matName">
@@ -278,53 +289,28 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="material">
         /// The material.
         /// </param>
-        /// <param name="backMaterial">
-        /// The back material.
-        /// </param>
-        private void ExportMaterial(string matName, Material material, Material backMaterial)
+        private void ExportMaterial(string matName, MaterialCore material)
         {
-#if TODO_MATERIAL
             this.mwriter.WriteLine(string.Format("newmtl {0}", matName));
-            var dm = material as DiffuseMaterial;
-            var sm = material as SpecularMaterial;
-            var mg = material as MaterialGroup;
-            if (mg != null)
+            var pm = material as PhongMaterialCore;
+
+            if (pm != null)
             {
-                foreach (var m in mg.Children)
+                if (pm.DiffuseMap == null)
                 {
-                    if (m is DiffuseMaterial)
-                    {
-                        dm = m as DiffuseMaterial;
-                    }
-
-                    if (m is SpecularMaterial)
-                    {
-                        sm = m as SpecularMaterial;
-                    }
-                }
-            }
-
-            if (dm != null)
-            {
-                var adjustedAmbientColor = dm.AmbientColor.ChangeIntensity(0.2);
-
-                // this.mwriter.WriteLine(string.Format("Ka {0}", this.ToColorString(adjustedAmbientColor)));
-                var scb = dm.Brush as SolidColorBrush;
-                if (scb != null)
-                {
-                    this.mwriter.WriteLine(string.Format("Kd {0}", this.ToColorString(scb.Color)));
+                    this.mwriter.WriteLine(string.Format("Kd {0}", this.ToColorString(pm.DiffuseColor)));
 
                     if (this.UseDissolveForTransparency)
                     {
                         // Dissolve factor
                         this.mwriter.WriteLine(
-                            string.Format(CultureInfo.InvariantCulture, "d {0:F4}", scb.Color.A / 255.0));
+                            string.Format(CultureInfo.InvariantCulture, "d {0:F4}", pm.DiffuseColor.Alpha));
                     }
                     else
                     {
                         // Transparency
                         this.mwriter.WriteLine(
-                            string.Format(CultureInfo.InvariantCulture, "Tr {0:F4}", scb.Color.A / 255.0));
+                            string.Format(CultureInfo.InvariantCulture, "Tr {0:F4}", pm.DiffuseColor.Alpha));
                     }
                 }
                 else
@@ -333,7 +319,7 @@ namespace HelixToolkit.Wpf.SharpDX
                     var texturePath = Path.Combine(this.directory, textureFilename);
 
                     // create .png bitmap file for the brush
-                    RenderBrush(texturePath, dm.Brush, 1024, 1024);
+                    RenderBrush(texturePath, pm.DiffuseMap);
                     this.mwriter.WriteLine(string.Format("map_Ka {0}", textureFilename));
                 }
             }
@@ -345,12 +331,11 @@ namespace HelixToolkit.Wpf.SharpDX
             // color = KaIa + Kd { SUM j=1..ls, (N * Lj)Ij }
             int illum = 1; // Lambertian
 
-            if (sm != null)
+            if (pm != null)
             {
-                var scb = sm.Brush as SolidColorBrush;
                 this.mwriter.WriteLine(
                     string.Format(
-                        "Ks {0}", this.ToColorString(scb != null ? scb.Color : Color.FromScRgb(1.0f, 0.2f, 0.2f, 0.2f))));
+                        "Ks {0}", this.ToColorString(pm.DiffuseMap == null ? pm.SpecularColor : new Color4(0.2f, 0.2f, 0.2f, 1.0f))));
 
                 // Illumination model 2
                 // This is a diffuse and specular illumination model using Lambertian
@@ -362,7 +347,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
                 // Specifies the specular exponent for the current material.  This defines the focus of the specular highlight.
                 // "exponent" is the value for the specular exponent.  A high exponent results in a tight, concentrated highlight.  Ns values normally range from 0 to 1000.
-                this.mwriter.WriteLine(string.Format(CultureInfo.InvariantCulture, "Ns {0:F4}", sm.SpecularPower));
+                this.mwriter.WriteLine(string.Format(CultureInfo.InvariantCulture, "Ns {0:F4}", pm.SpecularShininess));
             }
 
             // roughness
@@ -392,8 +377,7 @@ namespace HelixToolkit.Wpf.SharpDX
             // 9		Transparency: Glass on
             // Reflection: Ray trace off
             // 10		Casts shadows onto invisible surfaces
-            this.mwriter.WriteLine(string.Format("illum {0}", illum)); 
-#endif
+            this.mwriter.WriteLine(string.Format("illum {0}", illum));
         }
 
         /// <summary>
@@ -405,11 +389,14 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns>
         /// The string.
         /// </returns>
-        private string ToColorString(Color color)
+        private string ToColorString(Color4 color)
         {
             return string.Format(
-                CultureInfo.InvariantCulture, "{0:F4} {1:F4} {2:F4}", color.R / 255.0, color.G / 255.0, color.B / 255.0);
+                CultureInfo.InvariantCulture,
+                "{0:F4} {1:F4} {2:F4}",
+                color.Red,
+                color.Green,
+                color.Blue);
         }
-
     }
 }
