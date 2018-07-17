@@ -332,16 +332,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     {
                         if (core is IGeometryRenderCore c)
                         {
-                            if(c.GeometryBuffer != null && c.GeometryBuffer.Geometry != null && c.GeometryBuffer.Geometry.Indices != null)
-                                count += c.GeometryBuffer.Geometry.Indices.Count / 3;
+                            if(c.GeometryBuffer is IGeometryBufferModel geo && geo.Geometry != null && geo.Geometry.Indices != null)
+                                count += geo.Geometry.Indices.Count / 3;
                         }
                     }
                     foreach (var core in transparentNodes.Select(x => x.RenderCore))
                     {
                         if (core is IGeometryRenderCore c)
                         {
-                            if (c.GeometryBuffer != null && c.GeometryBuffer.Geometry != null && c.GeometryBuffer.Geometry.Indices != null)
-                                count += c.GeometryBuffer.Geometry.Indices.Count / 3;
+                            if (c.GeometryBuffer is IGeometryBufferModel geo && geo.Geometry != null && geo.Geometry.Indices != null)
+                                count += geo.Geometry.Indices.Count / 3;
                         }
                     }
                     renderStatistics.NumTriangles = count;

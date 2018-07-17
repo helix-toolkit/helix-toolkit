@@ -59,11 +59,11 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private IGeometryBufferModel geometryBuffer;
+        private IAttachableBufferModel geometryBuffer;
         /// <summary>
         /// 
         /// </summary>
-        public IGeometryBufferModel GeometryBuffer
+        public IAttachableBufferModel GeometryBuffer
         {
             set
             {
@@ -251,7 +251,7 @@ namespace HelixToolkit.UWP.Core
         /// Called when [geometry buffer changed].
         /// </summary>
         /// <param name="buffer">The buffer.</param>
-        protected virtual void OnGeometryBufferChanged(IGeometryBufferModel buffer) { }
+        protected virtual void OnGeometryBufferChanged(IAttachableBufferModel buffer) { }
         /// <summary>
         /// Set all necessary states and buffers
         /// </summary>

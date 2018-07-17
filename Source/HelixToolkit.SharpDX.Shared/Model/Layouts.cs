@@ -24,6 +24,22 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector3 BiTangent;
         public const int SizeInBytes = 4 * (4 + 3 + 3 + 3);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct BatchedMeshVertex
+    {
+        public Vector4 Position;
+        public Vector3 Normal;
+        public Vector3 Tangent;
+        public Vector3 BiTangent;
+        public Vector2 TexCoord;
+        public Vector4 Color;
+        public int MaterialIndex;
+        public const int SizeInBytes = 4 * (4 + 3 + 3 + 3 + 2 + 4 + 1);
+    }
     /// <summary>
     /// 
     /// </summary>

@@ -28,6 +28,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\MaterialGeometryRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\RenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Abstract\RenderCoreBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Batching\DefaultMeshBatchingBuffer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Batching\StaticGeometryBatchingBufferBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BillboardRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BoneSkinRenderCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Buffers\BillboardBufferModel.cs" />
