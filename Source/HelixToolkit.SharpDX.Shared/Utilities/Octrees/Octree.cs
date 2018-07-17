@@ -497,10 +497,11 @@ namespace HelixToolkit.Wpf.SharpDX
             Array.Clear(ChildNodes, 0, ChildNodes.Length);
         }
         /// <summary>
-        /// <see cref="IOctreeBasic.HitTest(RenderContext, object, Matrix, Ray, ref List{HitTestResult})"/>
+        /// <see cref="IOctreeBasic.HitTest(RenderContext, object, Geometry3D, Matrix, Ray, ref List{HitTestResult})"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
@@ -510,7 +511,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return HitTest(context, model, geometry, modelMatrix, rayWS, ref hits, 0);
         }
         /// <summary>
-        /// <see cref="IOctreeBasic.HitTest(RenderContext, object, Matrix, Ray, ref List{HitTestResult}, float)"/>
+        /// <see cref="IOctreeBasic.HitTest(RenderContext, object, Geometry3D, Matrix, Ray, ref List{HitTestResult}, float)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
@@ -2218,7 +2219,7 @@ namespace HelixToolkit.Wpf.SharpDX
             return false;
         }
         /// <summary>
-        /// <see cref="DynamicOctreeBase{T}.HitTestCurrentNodeExcludeChild(RenderContext, object, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
+        /// <see cref="DynamicOctreeBase{T}.HitTestCurrentNodeExcludeChild(RenderContext, object, Geometry3D, Matrix, ref Ray, ref Ray, ref List{HitTestResult}, ref bool, float)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>

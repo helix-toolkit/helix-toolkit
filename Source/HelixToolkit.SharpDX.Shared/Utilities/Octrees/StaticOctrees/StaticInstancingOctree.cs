@@ -136,8 +136,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <summary>
         /// Initializes a new instance of the <see cref="StaticInstancingModelOctree"/> class.
         /// </summary>
-        /// <param name="instanceMatrix">The instance matrix.</param>
-        /// <param name="geometryBound">The geometry bound.</param>
+        /// <param name="geometries">Batched geometries.</param>
         /// <param name="parameter">The parameter.</param>
         public StaticBatchedGeometryBoundsOctree(BatchedMeshGeometryConfig[] geometries, OctreeBuildParameter parameter)
             : base(parameter)

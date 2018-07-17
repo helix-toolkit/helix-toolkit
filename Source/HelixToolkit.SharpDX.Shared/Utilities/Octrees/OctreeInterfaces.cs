@@ -54,6 +54,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
@@ -65,6 +66,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
@@ -159,6 +161,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
