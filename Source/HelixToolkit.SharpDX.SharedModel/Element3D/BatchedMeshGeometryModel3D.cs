@@ -8,6 +8,8 @@ using System.Linq;
 
 #if NETFX_CORE
 using Windows.UI.Xaml;
+using Color = Windows.UI.Color;
+using Colors = Windows.UI.Colors;
 namespace HelixToolkit.UWP
 #else
 using System.Windows;
