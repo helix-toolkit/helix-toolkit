@@ -74,6 +74,10 @@ namespace BatchedMeshDemo
 
         public Material SelectedMaterial { get; } = new PhongMaterial() { EmissiveColor = Color.Yellow };
 
+        public Geometry3D FloorModel { private set; get; }
+
+        public Material FloorMaterial { private set; get; } = PhongMaterials.Pearl;
+
         private SynchronizationContext context = SynchronizationContext.Current;
 
         public MainViewModel()
@@ -81,6 +85,10 @@ namespace BatchedMeshDemo
             EffectsManager = new DefaultEffectsManager();
             Camera = new PerspectiveCamera() { Position = new Point3D(0, 0, 200), LookDirection = new Vector3D(0, 0, -200), UpDirection = new Vector3D(0, 1, 0), FarPlaneDistance = 1000 };
             Task.Run(() => { LoadModels(); });
+            var builder = new MeshBuilder(true);
+            builder.AddBox(new Vector3(0, -65, 0), 600, 1, 600);
+            FloorModel = builder.ToMesh();
+            (MainMaterial as PhongMaterial).NormalMap = LoadFileToMemory("TextureNoise1_dot3.jpg");
         }
 
         private void LoadModels()

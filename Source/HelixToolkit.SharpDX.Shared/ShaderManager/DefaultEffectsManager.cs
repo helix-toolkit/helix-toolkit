@@ -474,16 +474,16 @@ namespace HelixToolkit.UWP
                         BlendStateDescription = DefaultBlendStateDescriptions.BSOverlayBlending,
                         DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSLessEqualNoWrite
                     },
-                    //new ShaderPassDescription(DefaultPassNames.ShadowPass)
-                    //{
-                    //    ShaderList = new[]
-                    //    {
-                    //        DefaultVSShaderDescriptions.VSMeshShadow,
-                    //        DefaultPSShaderDescriptions.PSShadow
-                    //    },
-                    //    BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
-                    //    DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
-                    //},
+                    new ShaderPassDescription(DefaultPassNames.ShadowPass)
+                    {
+                        ShaderList = new[]
+                        {
+                            DefaultVSShaderDescriptions.VSMeshBatchedShadow,
+                            DefaultPSShaderDescriptions.PSShadow
+                        },
+                        BlendStateDescription = DefaultBlendStateDescriptions.NoBlend,
+                        DepthStencilStateDescription = DefaultDepthStencilDescriptions.DSSDepthLess
+                    },
                     new ShaderPassDescription(DefaultPassNames.Wireframe)
                     {
                         ShaderList = new[]

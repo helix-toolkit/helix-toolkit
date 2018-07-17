@@ -49,6 +49,13 @@ namespace HelixToolkit.UWP.Shaders
             get;
         } = "vsMeshShadow";
         /// <summary>
+        ///
+        /// </summary>
+        public static string VSMeshBatchedShadow
+        {
+            get;
+        } = "vsMeshBatchedShadow";
+        /// <summary>
         /// 
         /// </summary>
         public static string VSMeshInstancing
@@ -393,6 +400,12 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription VSMeshShadow = new ShaderDescription(nameof(VSMeshShadow), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshShadow);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSMeshBatchedShadow = new ShaderDescription(nameof(VSMeshBatchedShadow), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshBatchedShadow);
         /// <summary>
         /// 
         /// </summary>

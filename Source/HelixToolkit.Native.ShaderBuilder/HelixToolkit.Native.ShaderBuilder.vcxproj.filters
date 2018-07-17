@@ -273,5 +273,8 @@
     <FxCompile Include="VS\vsMeshBatchedWireframe.hlsl">
       <Filter>VS</Filter>
     </FxCompile>
+    <FxCompile Include="VS\vsMeshBatchedShadow.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

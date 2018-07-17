@@ -289,6 +289,7 @@
     <None Include="Resources\vsBoneSkinningWireframe.cso" />
     <None Include="Resources\vsCubeMap.cso" />
     <None Include="Resources\vsMeshBatched.cso" />
+    <None Include="Resources\vsMeshBatchedShadow.cso" />
     <None Include="Resources\vsMeshBatchedWireframe.cso" />
     <None Include="Resources\vsMeshClipPlane.cso" />
     <None Include="Resources\vsMeshClipPlaneQuad.cso" />
