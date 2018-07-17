@@ -1,5 +1,5 @@
-﻿using SharpDX.Direct3D;
-using SharpDX;
+﻿using SharpDX;
+using SharpDX.Direct3D;
 using System.Linq;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -7,35 +7,21 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Utilities;
+    using global::SharpDX.Direct3D11;
     using Model;
-    using HelixToolkit.Wpf.SharpDX.Render;
+    using Utilities;
 
-    public struct BatchedMeshGeometryConfig : IBatchedGeometry
+    public class DefaultStaticMeshBatchingBuffer
+        : StaticGeometryBatchingBufferBase<BatchedMeshGeometryConfig, BatchedMeshVertex>
     {
-        public Geometry3D Geometry { private set; get; }
-        public Matrix ModelTransform { private set; get; }
-        public int MaterialIndex { private set; get; }
-        public BatchedMeshGeometryConfig(Geometry3D geometry, Matrix modelTransform, int materialIndex)
-        {
-            Geometry = geometry;
-            ModelTransform = modelTransform;
-            MaterialIndex = materialIndex;
-        }
-    }
-
-    public abstract class DefaultStaticMeshBatchingBufferBase<MaterialType> 
-        : StaticGeometryBatchingBufferBase<BatchedMeshGeometryConfig, BatchedMeshVertex> where MaterialType : MaterialCore
-    {
-        private bool materialChanged = true;
-        private MaterialType[] materials;
-        public MaterialType[] Materials
+        private PhongMaterialCore[] materials;
+        public PhongMaterialCore[] Materials
         {
             set
             {
                 if(Set(ref materials, value))
                 {
-                    materialChanged = true;
+                    InvalidateGeometries();
                 }
             }
             get
@@ -44,23 +30,19 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        public DefaultStaticMeshBatchingBufferBase(PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer)
+        public DefaultStaticMeshBatchingBuffer(PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer)
             : base(topology, vertexBuffer, indexBuffer)
         {
 
         }
 
-        protected override void OnSubmitGeometries(RenderContext context, DeviceContextProxy deviceContext, ref Matrix parentTransform)
+        public DefaultStaticMeshBatchingBuffer()
+            :base(PrimitiveTopology.TriangleList, 
+                 new ImmutableBufferProxy(BatchedMeshVertex.SizeInBytes, BindFlags.VertexBuffer), 
+                 new ImmutableBufferProxy(sizeof(int), BindFlags.IndexBuffer))
         {
-            base.OnSubmitGeometries(context, deviceContext, ref parentTransform);
-            if (materialChanged)
-            {
-                OnSubmitMaterials(deviceContext);
-                materialChanged = false;
-            }
-        }
 
-        protected abstract void OnSubmitMaterials(DeviceContextProxy deviceContext);
+        }
 
         protected override void OnFillVertArray(BatchedMeshVertex[] array, int offset, ref BatchedMeshGeometryConfig geometry, ref Matrix transform)
         {
@@ -72,7 +54,15 @@ namespace HelixToolkit.UWP.Core
                 var tangents = mesh.Tangents != null ? mesh.Tangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
                 var bitangents = mesh.BiTangents != null ? mesh.BiTangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
                 var textures = mesh.TextureCoordinates != null ? mesh.TextureCoordinates.GetEnumerator() : Enumerable.Repeat(Vector2.Zero, vertexCount).GetEnumerator();
-                var colors = mesh.Colors != null ? mesh.Colors.GetEnumerator() : Enumerable.Repeat(Color4.White, vertexCount).GetEnumerator();
+                var material = Materials[geometry.MaterialIndex];
+
+                var diffuse = material.DiffuseColor.EncodeToFloat();
+                var emissive = material.EmissiveColor.EncodeToFloat();
+                var specular = material.SpecularColor.EncodeToFloat();
+                var reflect = material.ReflectiveColor.EncodeToFloat();
+                var ambient = material.EmissiveColor.EncodeToFloat();
+                var colorEncode = new Vector4(diffuse, emissive, specular, reflect);
+                var colorEncode2 = new Vector2(ambient, material.SpecularShininess);
 
                 if(transform == Matrix.Identity)
                 {
@@ -83,15 +73,15 @@ namespace HelixToolkit.UWP.Core
                         tangents.MoveNext();
                         bitangents.MoveNext();
                         textures.MoveNext();
-                        colors.MoveNext();
                         array[i] = new BatchedMeshVertex()
                         {
                             Position = positions.Current.ToVector4(),
                             Normal = normals.Current,
-                            Tangent =tangents.Current,
+                            Tangent = tangents.Current,
                             BiTangent = bitangents.Current,
                             TexCoord = textures.Current,
-                            Color = colors.Current
+                            Color = colorEncode,
+                            Color2 = colorEncode2
                         };
                     }
                 }
@@ -104,7 +94,6 @@ namespace HelixToolkit.UWP.Core
                         tangents.MoveNext();
                         bitangents.MoveNext();
                         textures.MoveNext();
-                        colors.MoveNext();
                         array[i] = new BatchedMeshVertex()
                         {
                             Position = Vector3.Transform(positions.Current, transform),
@@ -112,7 +101,8 @@ namespace HelixToolkit.UWP.Core
                             Tangent = Vector3.TransformNormal(tangents.Current, transform),
                             BiTangent = Vector3.TransformNormal(bitangents.Current, transform),
                             TexCoord = textures.Current,
-                            Color = colors.Current
+                            Color = colorEncode,
+                            Color2 = colorEncode2
                         };
                     }
                 }
@@ -122,7 +112,6 @@ namespace HelixToolkit.UWP.Core
                 tangents.Dispose();
                 bitangents.Dispose();
                 textures.Dispose();
-                colors.Dispose();
             }
         }
     }

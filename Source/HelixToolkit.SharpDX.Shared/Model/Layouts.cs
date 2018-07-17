@@ -36,9 +36,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public Vector3 Tangent;
         public Vector3 BiTangent;
         public Vector2 TexCoord;
-        public Vector4 Color;
-        public int MaterialIndex;
-        public const int SizeInBytes = 4 * (4 + 3 + 3 + 3 + 2 + 4 + 1);
+        public Vector4 Color;//Diffuse, Emissive, Specular, Reflect
+        public Vector2 Color2;//Ambient, sMaterialShininess
+        public const int SizeInBytes = 4 * (4 + 3 + 3 + 3 + 2 + 4 + 2);
     }
     /// <summary>
     /// 
@@ -305,7 +305,8 @@ namespace HelixToolkit.Wpf.SharpDX
         public int HasBones;
         public Vector4 Params;
         public Vector4 Color;
-        public Bool4 BoolParams;
+        public Int3 BoolParams;
+        public int Batched;
         public float MinTessDistance; // Minimum distance to do tessellation
         public float MaxTessDistance; // Maximum distance to do tessellation
         public float MinDistTessFactor; // Tessellation factor when at minimum distance, usually MinTessFactor > MaxTessFactor

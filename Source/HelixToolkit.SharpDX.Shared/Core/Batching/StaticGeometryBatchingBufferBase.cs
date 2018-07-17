@@ -5,14 +5,14 @@ using SharpDX.DXGI;
 using System.Linq;
 using System;
 using System.Collections.Generic;
-
+using System.Runtime.CompilerServices;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Render;
+    using Render;    
     using Utilities;
     public interface IBatchedGeometry
     {
@@ -26,6 +26,8 @@ namespace HelixToolkit.UWP.Core
         public Guid GUID { get; } = Guid.NewGuid();
         public event EventHandler<EventArgs> OnInvalidateRender;
         private bool isGeometryChanged = true;
+        private static readonly VertStruct[] EmptyArray = new VertStruct[0];
+        private static readonly int[] EmptyIntArray = new int[0];
         /// <summary>
         /// Gets or sets the vertex buffer.
         /// </summary>
@@ -34,7 +36,7 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public IElementsBufferProxy[] VertexBuffer { private set; get; }
         public IEnumerable<int> VertexStructSize { get { return VertexBuffer.Select(x => x != null ? x.StructureSize : 0); } }
-        private readonly VertexBufferBinding[] vertexBufferBindings;
+        private VertexBufferBinding[] vertexBufferBindings = new VertexBufferBinding[0];
         /// <summary>
         /// Gets or sets the index buffer.
         /// </summary>
@@ -57,7 +59,7 @@ namespace HelixToolkit.UWP.Core
             {
                 if(Set(ref geometries, value))
                 {
-                    isGeometryChanged = true;
+                    InvalidateGeometries();
                 }
             }
             get
@@ -66,27 +68,45 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void InvalidateGeometries()
+        {
+            isGeometryChanged = true;
+            OnInvalidateRender?.Invoke(this, EventArgs.Empty);
+        }
+
         public StaticGeometryBatchingBufferBase(PrimitiveTopology topology, IElementsBufferProxy vertexBuffer, IElementsBufferProxy indexBuffer)
         {
             Topology = topology;
             VertexBuffer = new IElementsBufferProxy[] { Collect(vertexBuffer) };
-            vertexBufferBindings = new [] { new VertexBufferBinding(vertexBuffer.Buffer, vertexBuffer.StructureSize, vertexBuffer.Offset) };
             if (indexBuffer != null)
             { IndexBuffer = Collect(indexBuffer); }
         }
 
-        public void Commit(RenderContext context, DeviceContextProxy deviceContext, Matrix parentTransform)
+        public bool Commit(DeviceContextProxy deviceContext)
         {
             if (isGeometryChanged)
             {
-                OnSubmitGeometries(context, deviceContext, ref parentTransform);
+                OnSubmitGeometries(deviceContext);
                 isGeometryChanged = false;
                 OnInvalidateRender?.Invoke(this, EventArgs.Empty);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
-        protected virtual void OnSubmitGeometries(RenderContext context, DeviceContextProxy deviceContext, ref Matrix parentTransform)
+        protected virtual void OnSubmitGeometries(DeviceContextProxy deviceContext)
         {
+            if(Geometries == null)
+            {
+                VertexBuffer[0].UploadDataToBuffer(deviceContext, EmptyArray, 0);
+                IndexBuffer?.UploadDataToBuffer(deviceContext, EmptyIntArray, 0);
+                vertexBufferBindings = new VertexBufferBinding[0];
+                return;
+            }
             int totalVertex = 0;
             int totalIndices = 0;
 
@@ -106,7 +126,7 @@ namespace HelixToolkit.UWP.Core
             for(int i = 0; i < Geometries.Length; ++i)
             {
                 var geo = Geometries[i];
-                var transform = geo.ModelTransform * parentTransform;
+                var transform = geo.ModelTransform;
                 OnFillVertArray(tempVerts, vertOffset, ref geo, ref transform);
                 vertOffset += geo.Geometry.Positions.Count;
 
@@ -124,6 +144,7 @@ namespace HelixToolkit.UWP.Core
             }
             VertexBuffer[0].UploadDataToBuffer(deviceContext, tempVerts, tempVerts.Length);
             IndexBuffer?.UploadDataToBuffer(deviceContext, tempIndices, tempIndices.Length);
+            vertexBufferBindings = new[] { new VertexBufferBinding(VertexBuffer[0].Buffer, VertexBuffer[0].StructureSize, VertexBuffer[0].Offset) };
         }
 
 
@@ -138,8 +159,8 @@ namespace HelixToolkit.UWP.Core
         /// <param name="deviceResources">The device resources.</param>
         /// <returns></returns>
         public bool AttachBuffers(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources)
-        {
-            if (VertexBuffer[0] != null)
+        {        
+            if (!Commit(context) && vertexBufferBindings.Length > 0)
             {
                 context.SetVertexBuffers(vertexBufferStartSlot, vertexBufferBindings);
                 ++vertexBufferStartSlot;

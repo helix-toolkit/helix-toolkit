@@ -28,6 +28,19 @@ namespace HelixToolkit.UWP.Shaders
             }
         }
         /// <summary>
+        /// Gets the vs mesh batched.
+        /// </summary>
+        /// <value>
+        /// The vs mesh batched.
+        /// </value>
+        public static byte[] VSMeshBatched
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("vsMeshBatched");
+            }
+        }
+        /// <summary>
         /// 
         /// </summary>
         public static byte[] VSMeshTessellation
@@ -278,6 +291,17 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
             new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1)
         };
+
+        public static InputElement[] VSMeshBatchedInput { get; } = new InputElement[]
+        {
+            new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+            new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+            new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+            new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
+            new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+            new InputElement("COLOR",    1, Format.R32G32_Float, InputElement.AppendAligned, 0),
+        };
         /// <summary>
         /// 
         /// </summary>
@@ -410,6 +434,13 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription VSMeshDefault = new ShaderDescription(nameof(VSMeshDefault), ShaderStage.Vertex, 
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshDefault);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSMeshBatched = new ShaderDescription(nameof(VSMeshBatched), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshBatched);
         /// <summary>
         /// 
         /// </summary>

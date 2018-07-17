@@ -165,4 +165,27 @@ float4 not(float4 a)
 {
     return 1.0 - a;
 }
+
+float4 FloatToRGBA(float v)
+{
+    v /= 1000;
+    v = v + 1;
+    float4 kEncodeMul = float4(1, 255, 65535, 16777215);
+    float kEncodeBit = 1.0 / 255;
+    float4 enc = kEncodeMul * v;
+    enc = frac(enc);
+    enc -= enc.yzww * kEncodeBit;
+    return enc;
+}
+
+float RGBAToFloat(float4 enc)
+{
+    float4 kDecodeDot = float4(1.0, 1 / 255, 1 / 65535, 1 / 16777215);
+    float f = dot(enc, kDecodeDot) * 1000;
+    if (f > 500)
+    {
+        f -= 1000;
+    }
+    return f;
+}
 #endif

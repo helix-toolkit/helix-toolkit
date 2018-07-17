@@ -267,5 +267,8 @@
     <FxCompile Include="PS\psMeshDiffuseMapOIT.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
+    <FxCompile Include="VS\vsMeshBatched.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

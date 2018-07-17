@@ -211,6 +211,17 @@ namespace HelixToolkit.Wpf.SharpDX
             return value;
         }
 
+        public static float EncodeToFloat(this Color4 color)
+        {
+            Vector4 c = new Vector4(1f, 1f / 255f, 1f / 65535, 1f / 16777215f);
+            float f = Vector4.Dot(color, c) * 1000;
+            if (f > 500)
+            {
+                f = -1000 + f;
+            }
+            return f;
+        }
+
         internal static object GetNamedColor(string name)
         {
             object color;
