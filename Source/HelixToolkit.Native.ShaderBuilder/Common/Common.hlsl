@@ -166,26 +166,23 @@ float4 not(float4 a)
     return 1.0 - a;
 }
 
-float4 FloatToRGBA(float v)
+static const float encodeS = 1.0 / 16777216;
+static const float4 encode = float4(16777216, 1.0 / 65536, 1.0 / 256, 1.0 / 255.0); 
+float4 FloatToRGB(float v)
 {
-    v /= 1000;
-    v = v + 1;
-    float4 kEncodeMul = float4(1, 255, 65535, 16777215);
-    float kEncodeBit = 1.0 / 255;
-    float4 enc = kEncodeMul * v;
-    enc = frac(enc);
-    enc -= enc.yzww * kEncodeBit;
-    return enc;
+    uint vi = (uint) (v * encode.x);
+    int ex = (int) ((vi * encode.y) % 256);
+    int ey = (int) ((vi * encode.z) % 256);
+    int ez = (int) (vi % 256);
+    float4 e = float4(ex, ey, ez, 1) * encode.w;
+    e.a = 1;
+    return e;
 }
 
-float RGBAToFloat(float4 enc)
+float RGBToFloat(float4 c)
 {
-    float4 kDecodeDot = float4(1.0, 1 / 255, 1 / 65535, 1 / 16777215);
-    float f = dot(enc, kDecodeDot) * 1000;
-    if (f > 500)
-    {
-        f -= 1000;
-    }
-    return f;
+    c *= 255;
+    uint v = (uint) c.r << 16 + (uint) c.g << 8 + (uint) c.b;
+    return v * encodeS;
 }
 #endif

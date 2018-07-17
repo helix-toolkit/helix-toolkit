@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 #if NETFX_CORE
 namespace HelixToolkit.UWP
@@ -211,15 +212,24 @@ namespace HelixToolkit.Wpf.SharpDX
             return value;
         }
 
+        private const float encodeDiv = 1f / 16777216;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float EncodeToFloat(this Color4 color)
         {
-            Vector4 c = new Vector4(1f, 1f / 255f, 1f / 65535, 1f / 16777215f);
-            float f = Vector4.Dot(color, c) * 1000;
-            if (f > 500)
-            {
-                f = -1000 + f;
-            }
-            return f;
+            var ex = (uint)(color.Red * 255);
+            var ey = (uint)(color.Green * 255);
+            var ez = (uint)(color.Blue * 255);
+            var v = (ex << 16) + (ey << 8) + ez;
+            return v * encodeDiv;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Encode2FloatToFloat(float a, float b)
+        {
+            uint aScaled = (uint)a * 0xFFFF;
+            uint bScaled = (uint)b * 0xFFFF;
+            uint abPacked = (aScaled << 16) | (bScaled & 0xFFFF);
+            return abPacked;
         }
 
         internal static object GetNamedColor(string name)

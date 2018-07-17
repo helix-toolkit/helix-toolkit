@@ -128,8 +128,7 @@ namespace HelixToolkit.UWP.Core
                 var geo = Geometries[i];
                 var transform = geo.ModelTransform;
                 OnFillVertArray(tempVerts, vertOffset, ref geo, ref transform);
-                vertOffset += geo.Geometry.Positions.Count;
-
+                
                 if(IndexBuffer != null && geo.Geometry.Indices != null)
                 {
                     //Fill Indices, make sure to correct the offset
@@ -137,10 +136,11 @@ namespace HelixToolkit.UWP.Core
                     int tempIdx = indexOffset;
                     for (int j = 0; j < count; ++j, ++tempIdx)
                     {
-                        tempIndices[tempIdx] = geo.Geometry.Indices[j] + indexOffset;
+                        tempIndices[tempIdx] = geo.Geometry.Indices[j] + vertOffset;
                     }
                     indexOffset += geo.Geometry.Indices.Count;
-                }                
+                }
+                vertOffset += geo.Geometry.Positions.Count;                
             }
             VertexBuffer[0].UploadDataToBuffer(deviceContext, tempVerts, tempVerts.Length);
             IndexBuffer?.UploadDataToBuffer(deviceContext, tempIndices, tempIndices.Length);

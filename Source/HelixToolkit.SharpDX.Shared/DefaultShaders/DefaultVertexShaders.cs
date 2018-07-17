@@ -300,7 +300,7 @@ namespace HelixToolkit.UWP.Shaders
             new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
             new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
             new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-            new InputElement("COLOR",    1, Format.R32G32_Float, InputElement.AppendAligned, 0),
+            new InputElement("COLOR",    1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
         };
         /// <summary>
         /// 

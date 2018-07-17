@@ -19,7 +19,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <hx:Viewport3DX
-            BackgroundColor="White"
+            BackgroundColor="Black"
             Camera="{Binding Camera}"
             EffectsManager="{Binding EffectsManager}"
             EnableD2DRendering="False"
@@ -29,7 +29,7 @@
             <hx:BatchedMeshGeometryModel3D
                 BatchedGeometries="{Binding BatchedMeshes}"
                 BatchedMaterials="{Binding BatchedMaterials}"
-                Material="{Binding MainMaterial}" />
+                Material="{Binding MainMaterial}" CullMode="Back"/>
         </hx:Viewport3DX>
     </Grid>
 </Window>

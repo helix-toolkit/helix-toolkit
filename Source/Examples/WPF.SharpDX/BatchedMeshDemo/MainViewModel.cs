@@ -48,7 +48,7 @@ namespace BatchedMeshDemo
         public MainViewModel()
         {
             EffectsManager = new DefaultEffectsManager();
-            Camera = new PerspectiveCamera() { Position = new Point3D(0, 0, -200), LookDirection = new Vector3D(0, 0, 200), UpDirection = new Vector3D(0, 1, 0), FarPlaneDistance = 10000 };
+            Camera = new PerspectiveCamera() { Position = new Point3D(0, 0, -200), LookDirection = new Vector3D(0, 0, 200), UpDirection = new Vector3D(0, 1, 0), FarPlaneDistance = 5000 };
             Task.Run(() => { LoadModels(); });
         }
 
@@ -57,15 +57,15 @@ namespace BatchedMeshDemo
             var models = Load3ds("Car.3DS");
             int count = 0;
             Dictionary<MaterialCore, int> materialDict = new Dictionary<MaterialCore, int>();
-            materialDict.Add(new PhongMaterialCore() { DiffuseColor = new Color4(1, 0, 0, 1) }, count);
-            //foreach(var model in models)
-            //{
-            //    if (materialDict.ContainsKey(model.Material))
-            //    {
-            //        continue;
-            //    }
-            //    materialDict.Add(model.Material, count++);
-            //}
+            //materialDict.Add(new PhongMaterialCore() { DiffuseColor = new Color4(1, 0, 0, 1) }, count);
+            foreach (var model in models)
+            {
+                if (materialDict.ContainsKey(model.Material))
+                {
+                    continue;
+                }
+                materialDict.Add(model.Material, count++);
+            }
             var modelList = new List<BatchedMeshGeometryConfig>(models.Count);
             foreach(var model in models)
             {
@@ -73,14 +73,14 @@ namespace BatchedMeshDemo
                 {
                     foreach(var transform in model.Transform)
                     {
-                       // modelList.Add(new BatchedMeshGeometryConfig(model.Geometry, transform, materialDict[model.Material]));
-                        modelList.Add(new BatchedMeshGeometryConfig(model.Geometry, transform, 0));
+                        modelList.Add(new BatchedMeshGeometryConfig(model.Geometry, transform, materialDict[model.Material]));
+                        //modelList.Add(new BatchedMeshGeometryConfig(model.Geometry, transform, 0));
                     }
                 }
                 else
                 {
-                   // modelList.Add(new BatchedMeshGeometryConfig(model.Geometry, Matrix.Identity, materialDict[model.Material]));
-                    modelList.Add(new BatchedMeshGeometryConfig(model.Geometry, Matrix.Identity, 0));
+                    modelList.Add(new BatchedMeshGeometryConfig(model.Geometry, Matrix.Identity, materialDict[model.Material]));
+                    //modelList.Add(new BatchedMeshGeometryConfig(model.Geometry, Matrix.Identity, 0));
                 }
             }
 

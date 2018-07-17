@@ -106,9 +106,9 @@ float4 main(PSInput input) : SV_Target
     float4 reflectColor = vMaterialReflect;
     if (bBatched)
     {
-        specular = FloatToRGBA(input.c.z);
+        specular = FloatToRGB(input.c.z);
         shininess = input.c.x;
-        reflectColor = FloatToRGBA(input.c.w);
+        reflectColor = FloatToRGB(input.c.w);
     }
     // compute lighting
     for (int i = 0; i < NumLights; ++i)
@@ -174,7 +174,7 @@ float4 main(PSInput input) : SV_Target
         I = cubeMapReflection(input, I, reflectColor);
     }
 
-    return input.cDiffuse;
+    return I;
 }
 
 #endif

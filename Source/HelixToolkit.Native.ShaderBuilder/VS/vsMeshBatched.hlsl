@@ -65,8 +65,9 @@ PSInput main(VSInputBatched input)
     output.t = input.t;
     output.c = input.c;
 
-    output.cDiffuse = FloatToRGBA(input.c.x);
-    output.c2 = mad(FloatToRGBA(input.c1.x), vLightAmbient, FloatToRGBA(input.c.y));
+    output.cDiffuse = FloatToRGB(input.c.x);
+    output.cDiffuse.a = input.c1.z;
+    output.c2 = mad(FloatToRGB(input.c1.x), vLightAmbient, FloatToRGB(input.c.y));
     output.c.x = input.c1.y; // switch element to shininess
 
 

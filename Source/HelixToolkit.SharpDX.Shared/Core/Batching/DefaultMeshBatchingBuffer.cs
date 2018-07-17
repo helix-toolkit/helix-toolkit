@@ -62,7 +62,7 @@ namespace HelixToolkit.UWP.Core
                 var reflect = material.ReflectiveColor.EncodeToFloat();
                 var ambient = material.EmissiveColor.EncodeToFloat();
                 var colorEncode = new Vector4(diffuse, emissive, specular, reflect);
-                var colorEncode2 = new Vector2(ambient, material.SpecularShininess);
+                var colorEncode2 = new Vector4(ambient, material.SpecularShininess, material.DiffuseColor.Alpha, 0);
 
                 if(transform == Matrix.Identity)
                 {
