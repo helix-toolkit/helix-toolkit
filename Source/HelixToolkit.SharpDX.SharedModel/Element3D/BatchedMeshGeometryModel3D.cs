@@ -169,31 +169,31 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// The front counter clockwise property
         /// </summary>
-        public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(MeshGeometryModel3D),
+        public static readonly DependencyProperty FrontCounterClockwiseProperty = DependencyProperty.Register("FrontCounterClockwise", typeof(bool), typeof(BatchedMeshGeometryModel3D),
             new PropertyMetadata(true, (d, e) => { ((d as Element3DCore).SceneNode as BatchedMeshNode).FrontCCW = (bool)e.NewValue; }));
         /// <summary>
         /// The cull mode property
         /// </summary>
-        public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(MeshGeometryModel3D),
+        public static readonly DependencyProperty CullModeProperty = DependencyProperty.Register("CullMode", typeof(CullMode), typeof(BatchedMeshGeometryModel3D),
             new PropertyMetadata(CullMode.None, (d, e) => { ((d as Element3DCore).SceneNode as BatchedMeshNode).CullMode = (CullMode)e.NewValue; }));
         /// <summary>
         /// The invert normal property
         /// </summary>
-        public static readonly DependencyProperty InvertNormalProperty = DependencyProperty.Register("InvertNormal", typeof(bool), typeof(MeshGeometryModel3D),
+        public static readonly DependencyProperty InvertNormalProperty = DependencyProperty.Register("InvertNormal", typeof(bool), typeof(BatchedMeshGeometryModel3D),
             new PropertyMetadata(false, (d, e) => { ((d as Element3DCore).SceneNode as BatchedMeshNode).InvertNormal = (bool)e.NewValue; }));
 
         /// <summary>
         /// The render wireframe property
         /// </summary>
         public static readonly DependencyProperty RenderWireframeProperty =
-            DependencyProperty.Register("RenderWireframe", typeof(bool), typeof(MeshGeometryModel3D), new PropertyMetadata(false, (d, e) =>
+            DependencyProperty.Register("RenderWireframe", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(false, (d, e) =>
             { ((d as Element3DCore).SceneNode as BatchedMeshNode).RenderWireframe = (bool)e.NewValue; }));
 
         /// <summary>
         /// The wireframe color property
         /// </summary>
         public static readonly DependencyProperty WireframeColorProperty =
-            DependencyProperty.Register("WireframeColor", typeof(Color), typeof(MeshGeometryModel3D), new PropertyMetadata(Colors.SkyBlue, (d, e) =>
+            DependencyProperty.Register("WireframeColor", typeof(Color), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(Colors.SkyBlue, (d, e) =>
             { ((d as Element3DCore).SceneNode as BatchedMeshNode).WireframeColor = ((Color)e.NewValue).ToColor4(); }));
 
         public string PostEffects

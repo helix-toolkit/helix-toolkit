@@ -46,15 +46,20 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnFillVertArray(BatchedMeshVertex[] array, int offset, ref BatchedMeshGeometryConfig geometry, ref Matrix transform)
         {
-            if(geometry.Geometry is MeshGeometry3D mesh)
+            if (Materials == null)
             {
+                return;
+            }
+            else if(geometry.Geometry is MeshGeometry3D mesh)
+            {
+                var materialCount = Materials.Length;
                 var vertexCount = mesh.Positions.Count;
                 var positions = mesh.Positions.GetEnumerator();
                 var normals = mesh.Normals != null ? mesh.Normals.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
                 var tangents = mesh.Tangents != null ? mesh.Tangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
                 var bitangents = mesh.BiTangents != null ? mesh.BiTangents.GetEnumerator() : Enumerable.Repeat(Vector3.Zero, vertexCount).GetEnumerator();
                 var textures = mesh.TextureCoordinates != null ? mesh.TextureCoordinates.GetEnumerator() : Enumerable.Repeat(Vector2.Zero, vertexCount).GetEnumerator();
-                var material = Materials[geometry.MaterialIndex];
+                var material = Materials[geometry.MaterialIndex < materialCount ? geometry.MaterialIndex : 0];
 
                 var diffuse = material.DiffuseColor.EncodeToFloat();
                 var emissive = material.EmissiveColor.EncodeToFloat();

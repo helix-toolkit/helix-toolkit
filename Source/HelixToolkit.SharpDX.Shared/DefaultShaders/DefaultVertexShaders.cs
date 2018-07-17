@@ -209,7 +209,19 @@ namespace HelixToolkit.UWP.Shaders
                 return UWPShaderBytePool.Read("vsMeshWireframe");
             }
         }
-
+        /// <summary>
+        /// Gets the vs mesh batched wireframe.
+        /// </summary>
+        /// <value>
+        /// The vs mesh batched wireframe.
+        /// </value>
+        public static byte[] VSMeshBatchedWireframe
+        {
+            get
+            {
+                return UWPShaderBytePool.Read("vsMeshBatchedWireframe");
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -539,7 +551,10 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs mesh wireframe
         /// </summary>
         public static ShaderDescription VSMeshWireframe = new ShaderDescription(nameof(VSMeshWireframe), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshWireframe);
-
+        /// <summary>
+        /// The vs mesh batched wireframe
+        /// </summary>
+        public static ShaderDescription VSMeshBatchedWireframe = new ShaderDescription(nameof(VSMeshBatchedWireframe), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshBatchedWireframe);
         /// <summary>
         /// The vs bone skinning wireframe
         /// </summary>

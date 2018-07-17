@@ -24,5 +24,10 @@ namespace BatchedMeshDemo
         {
             InitializeComponent();
         }
+
+        private void BatchedMeshGeometryModel3D_Mouse3DDown(object sender, HelixToolkit.Wpf.SharpDX.MouseDown3DEventArgs e)
+        {
+            viewModel.SelectedGeometry =  e.HitTestResult.Geometry;
+        }
     }
 }

@@ -643,6 +643,16 @@ namespace HelixToolkit.Wpf.SharpDX.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] vsMeshBatchedWireframe {
+            get {
+                object obj = ResourceManager.GetObject("vsMeshBatchedWireframe", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] vsMeshClipPlane {
             get {
                 object obj = ResourceManager.GetObject("vsMeshClipPlane", resourceCulture);

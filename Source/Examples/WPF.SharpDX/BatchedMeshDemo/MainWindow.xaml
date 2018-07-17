@@ -26,9 +26,15 @@
             ShowViewCube="True">
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" />
             <hx:BatchedMeshGeometryModel3D
+                x:Name="batchedMesh"
                 BatchedGeometries="{Binding BatchedMeshes}"
-                BatchedMaterials="{Binding BatchedMaterials}"
-                Material="{Binding MainMaterial}" CullMode="Back"/>
+                BatchedMaterials="{Binding BatchedMaterials}" Transform="{Binding BatchedTransform}"
+                Material="{Binding MainMaterial}" CullMode="Back" Mouse3DDown="BatchedMeshGeometryModel3D_Mouse3DDown"/>
+            <hx:MeshGeometryModel3D IsHitTestVisible="False" Geometry="{Binding SelectedGeometry}" Material="{Binding SelectedMaterial}"
+                                    Transform="{Binding SelectedTransform}" CullMode="Back" DepthBias="-100"/>
         </hx:Viewport3DX>
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <CheckBox IsChecked="{Binding ElementName=batchedMesh, Path=RenderWireframe}">Wireframe</CheckBox>
+        </StackPanel>
     </Grid>
 </Window>

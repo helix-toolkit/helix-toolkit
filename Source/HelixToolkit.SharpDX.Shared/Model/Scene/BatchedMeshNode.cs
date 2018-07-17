@@ -16,6 +16,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
 #endif
 {
     using Core;
+    using Utilities;
+
     public class BatchedMeshNode : SceneNode, IHitable, IThrowingShadow, IBoundable
     {
         #region Properties
@@ -47,6 +49,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 if(SetAffectsRender(ref materials, value) && IsAttached)
                 {
                     batchingBuffer.Materials = value;
+                    if (value == null && Material is PhongMaterialCore p)
+                    {
+                        batchingBuffer.Materials = new PhongMaterialCore[] { p };
+                    }
                 }
             }
             get { return materials; }
@@ -463,6 +469,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public CreateRasterStateFunc OnCreateRasterState;
 
         protected DefaultStaticMeshBatchingBuffer batchingBuffer;
+
+        protected StaticBatchedGeometryBoundsOctree BatchedGeometryOctree { private set; get; }
         #endregion
 
         public BatchedMeshNode()
@@ -526,6 +534,10 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             var core = RenderCore as IMaterialRenderParams;
             core.Material = this.Material;
+            if(Materials == null && Material is PhongMaterialCore p)
+            {
+                batchingBuffer.Materials = new PhongMaterialCore[] { p };
+            }
         }
 
         /// <summary>
@@ -605,12 +617,15 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
                 originalBounds = b;
                 originalBoundsSphere = bs;
+                BatchedGeometryOctree = new StaticBatchedGeometryBoundsOctree(geometries, new OctreeBuildParameter());
             }
             else
             {
                 originalBounds = MaxBound;
                 originalBoundsSphere = MaxBoundSphere;
+                BatchedGeometryOctree = null;
             }
+
             RaiseOnBoundChanged(new BoundChangeArgs<BoundingBox>(ref originalBounds, ref oldBound));
             RaiseOnBoundSphereChanged(new BoundChangeArgs<BoundingSphere>(ref originalBoundsSphere, ref oldBoundSphere));
             UpdateBoundsWithTransform();
@@ -680,21 +695,32 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     geometry.Geometry?.UpdateOctree();
                 }
             }
+            if(BatchedGeometryOctree != null && !BatchedGeometryOctree.TreeBuilt)
+            {
+                BatchedGeometryOctree.BuildTree();
+            }
         }
 
         protected override bool OnHitTest(RenderContext context, Matrix totalModelMatrix, ref Ray ray, ref List<HitTestResult> hits)
         {
             if(ray.Intersects(boundsWithTransform) && ray.Intersects(boundsSphereWithTransform))
-            {
-                bool isHit = false;
-                foreach(var geo in Geometries)
+            {                
+                if(BatchedGeometryOctree != null && BatchedGeometryOctree.TreeBuilt)
                 {
-                    if(geo.Geometry is MeshGeometry3D mesh)
-                    {
-                        isHit |= mesh.HitTest(context, geo.ModelTransform * totalModelMatrix, ref ray, ref hits, WrapperSource);
-                    }
+                    return BatchedGeometryOctree.HitTest(context, WrapperSource, null, totalModelMatrix, ray, ref hits);
                 }
-                return isHit;
+                else
+                {
+                    bool isHit = false;
+                    foreach(var geo in Geometries)
+                    {
+                        if(geo.Geometry is MeshGeometry3D mesh)
+                        {
+                            isHit |= mesh.HitTest(context, geo.ModelTransform * totalModelMatrix, ref ray, ref hits, WrapperSource);
+                        }
+                    }
+                    return isHit;
+                }            
             }
             else
             {
