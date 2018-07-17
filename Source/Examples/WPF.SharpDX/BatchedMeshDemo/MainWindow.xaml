@@ -22,8 +22,7 @@
             BackgroundColor="Black"
             Camera="{Binding Camera}"
             EffectsManager="{Binding EffectsManager}"
-            EnableD2DRendering="False"
-            EnableSwapChainRendering="True"
+            ShowFrameDetails="True"
             ShowViewCube="True">
             <hx:DirectionalLight3D Direction="{Binding Camera.LookDirection}" />
             <hx:BatchedMeshGeometryModel3D

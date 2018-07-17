@@ -487,6 +487,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 n.InvertNormal = this.InvertNormal;
                 n.WireframeColor = this.WireframeColor.ToColor4();
                 n.RenderWireframe = this.RenderWireframe;
+                n.CullMode = this.CullMode;
             }
             base.AssignDefaultValuesToSceneNode(node);
         }
