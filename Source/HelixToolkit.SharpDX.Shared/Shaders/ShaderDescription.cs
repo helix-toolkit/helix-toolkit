@@ -50,6 +50,7 @@ namespace HelixToolkit.UWP.Shaders
             set; get;
         }
 
+        private byte[] byteCode;
         /// <summary>
         /// Gets or sets the byte code.
         /// </summary>
@@ -57,7 +58,29 @@ namespace HelixToolkit.UWP.Shaders
         /// The byte code.
         /// </value>
         [DataMember]
-        public byte[] ByteCode { set; get; }
+        public byte[] ByteCode
+        {
+            set
+            {
+                byteCode = value;
+            }
+            get
+            {
+                if (byteCode == null && !string.IsNullOrEmpty(ByteCodeName))
+                {
+                    byteCode = Helper.UWPShaderBytePool.Read(ByteCodeName);
+                }
+                return byteCode;
+            }
+        }
+        /// <summary>
+        /// Gets or sets the name of the byte code.
+        /// </summary>
+        /// <value>
+        /// The name of the byte code.
+        /// </value>
+        [IgnoreDataMember]
+        public string ByteCodeName { private set; get; }
         /// <summary>
         /// Gets or sets the constant buffer mappings.
         /// </summary>
@@ -154,7 +177,20 @@ namespace HelixToolkit.UWP.Shaders
             ByteCode = byteCode;
             ShaderReflector = reflector;
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShaderDescription"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="reflector">The reflector.</param>
+        /// <param name="byteCodeName">Name of the byte code.</param>
+        public ShaderDescription(string name, ShaderStage type, IShaderReflector reflector, string byteCodeName)
+        {
+            Name = name;
+            ShaderType = type;
+            ByteCodeName = byteCodeName;
+            ShaderReflector = reflector;
+        }
         /// <summary>
         /// Create Shader.
         /// <para>All constant buffers for all shaders are created here./></para>

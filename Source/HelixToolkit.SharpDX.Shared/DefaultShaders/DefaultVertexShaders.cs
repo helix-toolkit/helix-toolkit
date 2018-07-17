@@ -20,263 +20,191 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshDefault
+        public static string VSMeshDefault
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshDefault");
-            }
-        }
+            get;
+        } = "vsMeshDefault";
         /// <summary>
         /// Gets the vs mesh batched.
         /// </summary>
         /// <value>
         /// The vs mesh batched.
         /// </value>
-        public static byte[] VSMeshBatched
+        public static string VSMeshBatched
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshBatched");
-            }
-        }
+            get;
+        } = "vsMeshBatched";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshTessellation
+        public static string VSMeshTessellation
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshTessellation");
-            }
-        }
+            get;
+        } = "vsMeshTessellation";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshShadow
+        public static string VSMeshShadow
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshShadow");
-            }
-        }
+            get;
+        } = "vsMeshShadow";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshInstancing
+        public static string VSMeshInstancing
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshInstancing");
-            }
-        }
+            get;
+        } = "vsMeshInstancing";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshInstancingTessellation
+        public static string VSMeshInstancingTessellation
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshInstancingTessellation");
-            }
-        }
+            get;
+        } = "vsMeshInstancingTessellation";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshBoneSkinning
+        public static string VSMeshBoneSkinning
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsBoneSkinning");
-            }
-        }
+            get;
+        } = "vsBoneSkinning";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshBoneSkinningShadow
+        public static string VSMeshBoneSkinningShadow
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsBoneSkinningShadow");
-            }
-        }
+            get;
+        } = "vsBoneSkinningShadow";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshBoneSkinningTessellation
+        public static string VSMeshBoneSkinningTessellation
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsBoneSkinningTessellation");
-            }
-        }
+            get;
+        } = "vsBoneSkinningTessellation";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSPoint
+        public static string VSPoint
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsPoint");
-            }
-        }
+            get;
+        } = "vsPoint";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSPointShadow
+        public static string VSPointShadow
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsPointShadow");
-            }
-        }
+            get;
+        } = "vsPointShadow";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSBillboard
+        public static string VSBillboard
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsBillboard");
-            }
-        }
+            get;
+        } = "vsBillboard";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSBillboardInstancing
+        public static string VSBillboardInstancing
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsBillboardInstancing");
-            }
-        }
+            get;
+        } = "vsBillboardInstancing";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshClipPlane
+        public static string VSMeshClipPlane
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshClipPlane");
-            }
-        }
+            get;
+        } = "vsMeshClipPlane";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshClipPlaneQuad
+        public static string VSMeshClipPlaneQuad
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshClipPlaneQuad");
-            }
-        }
+            get;
+        } = "vsMeshClipPlaneQuad";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSParticle
+        public static string VSParticle
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsParticle");
-            }
-        }
+            get;
+        } = "vsParticle";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSSkybox
+        public static string VSSkybox
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsSkybox");
-            }
-        }
+            get;
+        } = "vsSkybox";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshWireframe
+        public static string VSMeshWireframe
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshWireframe");
-            }
-        }
+            get;
+        } = "vsMeshWireframe";
         /// <summary>
         /// Gets the vs mesh batched wireframe.
         /// </summary>
         /// <value>
         /// The vs mesh batched wireframe.
         /// </value>
-        public static byte[] VSMeshBatchedWireframe
+        public static string VSMeshBatchedWireframe
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshBatchedWireframe");
-            }
-        }
+            get;
+        } = "vsMeshBatchedWireframe";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshBoneSkinningWireframe
+        public static string VSMeshBoneSkinningWireframe
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsBoneSkinningWireframe");
-            }
-        }
+            get;
+        } = "vsBoneSkinningWireframe";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshOutlineP1
+        public static string VSMeshOutlineP1
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshOutlinePass1");
-            }
-        }
+            get;
+        } = "vsMeshOutlinePass1";
 
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshOutlineScreenQuad
+        public static string VSMeshOutlineScreenQuad
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshOutlineScreenQuad");
-            }
-        }
+            get;
+        } = "vsMeshOutlineScreenQuad";
 
 #if !NETFX_CORE
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSScreenDup
+        public static string VSScreenDup
         {
-            get
-            {
-                return Properties.Resources.vsScreenDup;
-            }
-        }
+            get;
+        } = "vsScreenDup";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSScreenDupCursor
+        public static string VSScreenDupCursor
         {
-            get
-            {
-                return Properties.Resources.vsScreenDupCursor;
-            }
-        }
+            get;
+        } = "vsScreenDupCursor";
 #endif
     }
 

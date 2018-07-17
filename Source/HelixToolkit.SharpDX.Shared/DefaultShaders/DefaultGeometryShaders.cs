@@ -19,57 +19,42 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] GSPoint
+        public static string GSPoint
         {
-            get
-            {
-                return UWPShaderBytePool.Read("gsPoint");
-            }
-        }
+            get;
+        } = "gsPoint";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] GSLine
+        public static string GSLine
         {
-            get
-            {
-                return UWPShaderBytePool.Read("gsLine");
-            }
-        }
+            get;
+        } = "gsLine";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] GSBillboard
+        public static string GSBillboard
         {
-            get
-            {
-                return UWPShaderBytePool.Read("gsBillboard");
-            }
-        }
+            get;
+        } = "gsBillboard";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] GSParticle
+        public static string GSParticle
         {
-            get
-            {
-                return UWPShaderBytePool.Read("gsParticle");
-            }
-        }
+            get;
+        } = "gsParticle";
         /// <summary>
         /// Gets the gs mesh normal vector.
         /// </summary>
         /// <value>
         /// The gs mesh normal vector.
         /// </value>
-        public static byte[] GSMeshNormalVector
+        public static string GSMeshNormalVector
         {
-            get
-            {
-                return UWPShaderBytePool.Read("gsMeshNormalVector");
-            }
-        }
+            get;
+        } = "gsMeshNormalVector";
     }
 
 
