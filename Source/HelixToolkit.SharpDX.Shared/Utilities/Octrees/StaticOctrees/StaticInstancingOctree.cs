@@ -74,6 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="octant">The octant.</param>
         /// <param name="context">The context.</param>
         /// <param name="model">The model.</param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix">The model matrix.</param>
         /// <param name="rayWS">The ray ws.</param>
         /// <param name="rayModel">The ray model.</param>
@@ -81,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="isIntersect">if set to <c>true</c> [is intersect].</param>
         /// <param name="hitThickness">The hit thickness.</param>
         /// <returns></returns>
-        protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
+        protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
         {
             isIntersect = false;
             if (!octant.IsBuilt)

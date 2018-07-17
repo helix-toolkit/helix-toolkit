@@ -86,6 +86,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="octant"></param>
         /// <param name="context"></param>
         /// <param name="model"></param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
         /// <param name="rayWS"></param>
         /// <param name="rayModel"></param>
@@ -94,7 +95,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="hitThickness"></param>
         /// <returns></returns>
         protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant,
-            RenderContext context, object model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits,
+            RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits,
             ref bool isIntersect, float hitThickness)
         {
             isIntersect = false;
@@ -145,6 +146,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                             result.NormalAtHit = n;// Vector3.TransformNormal(n, m).ToVector3D();
                             result.TriangleIndices = new Tuple<int, int, int>(t1, t2, t3);
                             result.Tag = idx;
+                            result.Geometry = geometry;
                             isHit = true;
                         }
                     }
