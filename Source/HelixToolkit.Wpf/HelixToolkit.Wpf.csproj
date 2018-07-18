@@ -151,6 +151,9 @@
     <Compile Include="SelectionCommands\RectangleSelectionCommand.cs" />
     <Compile Include="SelectionCommands\SelectionCommand.cs" />
     <Compile Include="SelectionCommands\SelectionHitMode.cs" />
+    <Compile Include="SelectionCommands\VisualsSelectedByPointEventArgs.cs" />
+    <Compile Include="SelectionCommands\VisualsSelectedByRectangleEventArgs.cs" />
+    <Compile Include="SelectionCommands\VisualsSelectedEventArgs.cs" />
     <Compile Include="ShaderEffects\InterlacedEffect.cs" />
     <Compile Include="ShaderEffects\AnaglyphMethod.cs" />
     <Compile Include="Visual3Ds\LightSetups\DirectionalHeadLight.cs" />

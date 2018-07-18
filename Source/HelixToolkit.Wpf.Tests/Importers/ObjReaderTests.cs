@@ -431,6 +431,34 @@ Kd 0 0 0
                 File.Delete(tempMtl);
             }
         }
+
+        [Test]
+        public void Name_Valid()
+        {
+            string content = @"
+g group1
+
+v 0 0 0
+v 1 0 0
+v 0 1 0
+
+f 1 2 3
+";
+
+            string expectedName = "group1";
+
+            var buffer = Encoding.UTF8.GetBytes(content);
+
+            using (var stream = new MemoryStream(buffer, false))
+            {
+                var model = new ObjReader().Read(stream);
+                var mesh = model.Children[0];
+
+                string name = mesh.GetName();
+
+                Assert.AreEqual(name, expectedName);
+            }
+        }
     }
 
     public static class Model3DTestExtensions 

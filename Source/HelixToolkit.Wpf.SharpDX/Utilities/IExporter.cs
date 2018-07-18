@@ -1,14 +1,12 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IExporter.cs" company="Helix Toolkit">
-//   Copyright (c) 2014 Helix Toolkit contributors
-// </copyright>
-// <summary>
-//   Interface for 3D exporters.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+/*
+The MIT License (MIT)
+Copyright (c) 2018 Helix Toolkit contributors
+*/
 
 namespace HelixToolkit.Wpf.SharpDX
 {
+    using Model.Scene;
+
     /// <summary>
     /// Interface for 3D exporters.
     /// </summary>
@@ -28,6 +26,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="model">
         /// The model.
         /// </param>
-        void Export(Element3D model);
+        void Export(SceneNode model);
     }
 }

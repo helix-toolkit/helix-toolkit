@@ -215,12 +215,12 @@ namespace HelixToolkit.Wpf
             if (rectangle.Width < Tolerance && rectangle.Height < Tolerance)
             {
                 var hitResults = FindHits(viewport, rectangle.BottomLeft);
-                return hitResults.Select(x => x.Model).Select(model => new RectangleHitResult(model));
+                return hitResults.Select(x => new RectangleHitResult(x.Model, x.Visual));
             }
 
             var results = new List<RectangleHitResult>();
             viewport.Children.Traverse<GeometryModel3D>(
-                (model, transform) =>
+                (model, visual, transform) =>
                 {
                     var geometry = model.Geometry as MeshGeometry3D;
                     if (geometry == null || geometry.Positions == null || geometry.TriangleIndices == null)
@@ -261,7 +261,7 @@ namespace HelixToolkit.Wpf
 
                     if (status)
                     {
-                        results.Add(new RectangleHitResult(model));
+                        results.Add(new RectangleHitResult(model, visual));
                     }
                 });
 
@@ -1231,15 +1231,22 @@ namespace HelixToolkit.Wpf
             /// Initializes a new instance of the <see cref="RectangleHitResult" /> class.
             /// </summary>
             /// <param name="model">The hit model.</param>
-            public RectangleHitResult(Model3D model)
+            /// <param name="visual">The hit visual.</param>
+            public RectangleHitResult(Model3D model, Visual3D visual)
             {
                 this.Model = model;
+                this.Visual = visual;
             }
 
             /// <summary>
             /// Gets the hit model.
             /// </summary>
             public Model3D Model { get; private set; }
+            
+            /// <summary>
+            /// Gets the hit visual.
+            /// </summary>
+            public Visual3D Visual { get; private set; }
         }
 
         /// <summary>
