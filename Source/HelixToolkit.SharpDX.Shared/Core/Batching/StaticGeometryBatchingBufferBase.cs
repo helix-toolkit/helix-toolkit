@@ -1,5 +1,5 @@
 ﻿//#define OutputBuildTime
-using SharpDX;
+using Matrix = System.Numerics.Matrix4x4;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;

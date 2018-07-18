@@ -6,6 +6,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 using HelixToolkit.Mathematics;
 using System.Collections.Generic;
 using Matrix = System.Numerics.Matrix4x4;
+using System.Linq;
 #if NETFX_CORE
 namespace HelixToolkit.UWP.Utilities
 #else
