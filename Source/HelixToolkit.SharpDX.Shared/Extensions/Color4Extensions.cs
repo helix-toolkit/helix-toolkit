@@ -212,15 +212,15 @@ namespace HelixToolkit.Wpf.SharpDX
             return value;
         }
 
-        private const float encodeDiv = 1f / 16777216;
+        //private const float encodeDiv = 1f / 16777216;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float EncodeToFloat(this Color4 color)
         {
             var ex = (uint)(color.Red * 255);
             var ey = (uint)(color.Green * 255);
             var ez = (uint)(color.Blue * 255);
-            var v = (ex << 16) + (ey << 8) + ez;
-            return v * encodeDiv;
+            var v = (ex << 16) | (ey << 8) | ez;
+            return v;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

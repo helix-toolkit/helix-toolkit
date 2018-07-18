@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
@@ -15,8 +16,7 @@ namespace HelixToolkit.Wpf.SharpDX.Core
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Render;
-
+    using Render;    
     using Utilities;
     public interface IBatchedGeometry
     {
@@ -133,21 +133,25 @@ namespace HelixToolkit.UWP.Core
             var tempIndices = new int[totalIndices];
             if(Geometries.Length > 50 && totalVertex > 5000)
             {
-                Parallel.For(0, Geometries.Length, (i) =>
+                var partitionParams = Partitioner.Create(0, Geometries.Length);
+                Parallel.ForEach(partitionParams, (range) =>
                 {
-                    var geo = Geometries[i];
-                    var transform = geo.ModelTransform;
-                    var vertStart = vertRange[i];
-                    OnFillVertArray(tempVerts, vertStart, ref geo, ref transform);
-
-                    if (IndexBuffer != null && geo.Geometry.Indices != null)
+                    for (int i = range.Item1; i < range.Item2; ++i)
                     {
-                        //Fill Indices, make sure to correct the offset
-                        int count = geo.Geometry.Indices.Count;
-                        int tempIdx = idxRange[i];
-                        for (int j = 0; j < count; ++j, ++tempIdx)
+                        var geo = Geometries[i];
+                        var transform = geo.ModelTransform;
+                        var vertStart = vertRange[i];
+                        OnFillVertArray(tempVerts, vertStart, ref geo, ref transform);
+
+                        if (IndexBuffer != null && geo.Geometry.Indices != null)
                         {
-                            tempIndices[tempIdx] = geo.Geometry.Indices[j] + vertStart;
+                            //Fill Indices, make sure to correct the offset
+                            int count = geo.Geometry.Indices.Count;
+                            int tempIdx = idxRange[i];
+                            for (int j = 0; j < count; ++j, ++tempIdx)
+                            {
+                                tempIndices[tempIdx] = geo.Geometry.Indices[j] + vertStart;
+                            }
                         }
                     }
                 });
