@@ -93,6 +93,16 @@ namespace HelixToolkit.UWP.Core
         {
             set; get;
         }
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="MeshRenderCore"/> is batched.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if batched; otherwise, <c>false</c>.
+        /// </value>
+        public bool Batched
+        {
+            set; get;
+        } = false;
         #endregion
 
         protected override bool CreateRasterState(RasterizerStateDescription description, bool force)
@@ -145,6 +155,7 @@ namespace HelixToolkit.UWP.Core
         {
             base.OnUpdatePerModelStruct(ref model, context);
             model.RenderOIT = context.IsOITPass ? 1 : 0;
+            model.Batched = Batched ? 1 : 0;
         }
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)

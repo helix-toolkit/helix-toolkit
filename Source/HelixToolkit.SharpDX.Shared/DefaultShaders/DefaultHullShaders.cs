@@ -16,13 +16,10 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] HSMeshTessellation
+        public static string HSMeshTessellation
         {
-            get
-            {
-                return UWPShaderBytePool.Read("hsMeshTriTessellation");
-            }
-        }
+            get;
+        } = "hsMeshTriTessellation";
     }
 
     public static class DefaultHullShaderDescriptions

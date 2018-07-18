@@ -330,6 +330,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         result.Distance = distance;
                         result.TextInfo = info;
                         result.TextInfoIndex = index;
+                        result.Geometry = this;
                         Debug.WriteLine($"Hit; Text:{info.Text}; HitPoint:{result.PointHit};");
                         break;
                     }

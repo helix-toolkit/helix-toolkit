@@ -56,6 +56,8 @@ HSInput main(VSBoneSkinInput input)
     output.t2 = inputt2;
     output.c = input.c;
     output.c2 = mad(vMaterialAmbient, vLightAmbient, vMaterialEmissive);
+    float tess = saturate((minTessDistance - distance(output.p, vEyePos)) / (minTessDistance - maxTessDistance));
+    output.tessF = mad(tess, (maxTessFactor - minTessFactor), minTessFactor);
 	return output;
 }
 

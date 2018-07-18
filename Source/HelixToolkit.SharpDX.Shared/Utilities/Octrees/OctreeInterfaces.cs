@@ -56,23 +56,25 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        bool HitTest(RenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
+        bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        bool HitTest(RenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness);
+        bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness);
 
         /// <summary>
         ///
@@ -161,6 +163,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
@@ -168,7 +171,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="hitThickness">Only used for point/line hit test</param>
         /// <param name="rayModel"></param>
         /// <returns></returns>
-        bool HitTestCurrentNodeExcludeChild(RenderContext context, object model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
+        bool HitTestCurrentNodeExcludeChild(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
             ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness);
 
         /// <summary>

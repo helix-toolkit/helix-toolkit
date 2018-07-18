@@ -18,302 +18,211 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSMeshBinnPhong
+        public static string PSMeshBinnPhong
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psMeshBlinnPhong");
-
-            }
-        }
+            get;
+        } = "psMeshBlinnPhong";
         /// <summary>
         /// Gets the ps mesh binn phong order independent transparent shader.
         /// </summary>
         /// <value>
         /// The ps mesh binn phong order independent transparent shader.
         /// </value>
-        public static byte[] PSMeshBinnPhongOIT
+        public static string PSMeshBinnPhongOIT
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psMeshBlinnPhongOIT");
-
-            }
-        }
+            get;
+        } = "psMeshBlinnPhongOIT";
         /// <summary>
         /// Gets the ps mesh binn phong oit quad.
         /// </summary>
         /// <value>
         /// The ps mesh binn phong oit quad.
         /// </value>
-        public static byte[] PSMeshBinnPhongOITQuad
+        public static string PSMeshBinnPhongOITQuad
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psMeshBlinnPhongOITQuad");
-
-            }
-        }
+            get;
+        } = "psMeshBlinnPhongOITQuad";
         /// <summary>
         /// Gets the ps mesh diffuse map oit.
         /// </summary>
         /// <value>
         /// The ps mesh diffuse map oit.
         /// </value>
-        public static byte[] PSMeshDiffuseMapOIT
+        public static string PSMeshDiffuseMapOIT
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psMeshDiffuseMapOIT");
-            }
-        }
+            get;
+        } = "psMeshDiffuseMapOIT";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSMeshVertColor
+        public static string PSMeshVertColor
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psColor");
-            }
-        }
+            get;
+        } = "psColor";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSMeshVertPosition
+        public static string PSMeshVertPosition
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psPositions");
-
-            }
-        }
+            get;
+        } = "psPositions";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSMeshNormal
+        public static string PSMeshNormal
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psNormals");
+            get;
+        } = "psNormals";
 
-            }
-        }
-
-        public static byte[] PSMeshDiffuseMap
+        public static string PSMeshDiffuseMap
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psDiffuseMap");
-
-            }
-        }
-        public static byte[] PSMeshColorStripe
+            get;
+        } = "psDiffuseMap";
+        public static string PSMeshColorStripe
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psMeshColorStripe");
+            get;
+        } = "psMeshColorStripe";
 
-            }
-        }
-
-        public static byte[] PSMeshViewCube
+        public static string PSMeshViewCube
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psViewCube");
-
-            }
-        }
+            get;
+        } = "psViewCube";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSShadow
+        public static string PSShadow
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psShadow");
-            }
-        }
+            get;
+        } = "psShadow";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSPoint
+        public static string PSPoint
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psPoint");
-
-            }
-        }
+            get;
+        } = "psPoint";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSLine
+        public static string PSLine
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psLine");
-            }
-        }
+            get;
+        } = "psLine";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSLineColor
+        public static string PSLineColor
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psLineColor");
-
-            }
-        }
+            get;
+        } = "psLineColor";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSBillboardText
+        public static string PSBillboardText
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psBillboardText");
-            }
-        }
+            get;
+        } = "psBillboardText";
         /// <summary>
         /// Gets the ps billboard text order independent transparent shader.
         /// </summary>
         /// <value>
         /// The ps billboard text order independent transparent shader.
         /// </value>
-        public static byte[] PSBillboardTextOIT
+        public static string PSBillboardTextOIT
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psBillboardTextOIT");
-            }
-        }
+            get;
+        } = "psBillboardTextOIT";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSMeshXRay
+        public static string PSMeshXRay
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psMeshXRay");
-            }
-        }
+            get;
+        } = "psMeshXRay";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSMeshClipPlaneBackface
+        public static string PSMeshClipPlaneBackface
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psMeshClipPlaneBackface");
-            }
-        }
+            get;
+        } = "psMeshClipPlaneBackface";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSMeshClipPlaneQuad
+        public static string PSMeshClipPlaneQuad
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psMeshClipPlaneQuad");
-            }
-        }
+            get;
+        } = "psMeshClipPlaneQuad";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSParticle
+        public static string PSParticle
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psParticle");
-            }
-        }
+            get;
+        } = "psParticle";
         /// <summary>
         /// Gets the ps particle order independent transparent shader.
         /// </summary>
-        public static byte[] PSParticleOIT
+        public static string PSParticleOIT
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psParticleOIT");
-            }
-        }
+            get;
+        } = "psParticleOIT";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSSkybox
+        public static string PSSkybox
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psSkybox");
-            }
-        }
+            get;
+        } = "psSkybox";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSMeshWireframe
+        public static string PSMeshWireframe
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psWireframe");
-            }
-        }
+            get;
+        } = "psWireframe";
         /// <summary>
         /// Gets the ps mesh wireframe oit.
         /// </summary>
         /// <value>
         /// The ps mesh wireframe oit.
         /// </value>
-        public static byte[] PSMeshWireframeOIT
+        public static string PSMeshWireframeOIT
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psWireframeOIT");
-            }
-        }
+            get;
+        } = "psWireframeOIT";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSDepthStencilTestOnly
+        public static string PSDepthStencilTestOnly
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psDepthStencilOnly");
-            }
-        }
+            get;
+        } = "psDepthStencilOnly";
         /// <summary>
         /// Gets the ps mesh outline screen quad.
         /// </summary>
         /// <value>
         /// The ps mesh outline screen quad.
         /// </value>
-        public static byte[] PSEffectOutlineScreenQuad
+        public static string PSEffectOutlineScreenQuad
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psEffectOutlineQuad");
-            }
-        }
+            get;
+        } = "psEffectOutlineQuad";
         /// <summary>
         /// Gets the ps effect full screen blur vertical.
         /// </summary>
         /// <value>
         /// The ps effect full screen blur vertical.
         /// </value>
-        public static byte[] PSEffectFullScreenBlurVertical
+        public static string PSEffectFullScreenBlurVertical
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psEffectGaussianBlurVertical");
-            }
-        }
+            get;
+        } = "psEffectGaussianBlurVertical";
 
         /// <summary>
         /// Gets the ps effect full screen blur horizontal.
@@ -321,13 +230,10 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The ps effect full screen blur horizontal.
         /// </value>
-        public static byte[] PSEffectFullScreenBlurHorizontal
+        public static string PSEffectFullScreenBlurHorizontal
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psEffectGaussianBlurHorizontal");
-            }
-        }
+            get;
+        } = "psEffectGaussianBlurHorizontal";
 
         /// <summary>
         /// Gets the ps mesh border highlight
@@ -335,168 +241,128 @@ namespace HelixToolkit.UWP.Shaders
         /// <value>
         /// The ps mesh mesh border highlight
         /// </value>
-        public static byte[] PSEffectMeshBorderHighlight
+        public static string PSEffectMeshBorderHighlight
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psEffectMeshBorderHighlight");
-            }
-        }
+            get;
+        } = "psEffectMeshBorderHighlight";
         /// <summary>
         /// Gets the ps mesh outline screen quad stencil.
         /// </summary>
         /// <value>
         /// The ps mesh outline screen quad stencil.
         /// </value>
-        public static byte[] PSEffectOutlineScreenQuadStencil
+        public static string PSEffectOutlineScreenQuadStencil
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psEffectOutlineQuadStencil");
-            }
-        }
+            get;
+        } = "psEffectOutlineQuadStencil";
         /// <summary>
         /// Gets the ps mesh outline quad final.
         /// </summary>
         /// <value>
         /// The ps mesh outline quad final.
         /// </value>
-        public static byte[] PSEffectOutlineQuadFinal
+        public static string PSEffectOutlineQuadFinal
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psEffectOutlineQualFinal");
-            }
-        }
+            get;
+        } = "psEffectOutlineQualFinal";
         /// <summary>
         /// 
         /// </summary>
         /// <value>
         /// 
         /// </value>
-        public static byte[] PSEffectMeshXRay
+        public static string PSEffectMeshXRay
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psEffectMeshXRay");
-            }
-        }
+            get;
+        } = "psEffectMeshXRay";
         /// <summary>
         /// Gets the ps effect bloom extract.
         /// </summary>
         /// <value>
         /// The ps effect bloom extract.
         /// </value>
-        public static byte[] PSEffectBloomExtract
+        public static string PSEffectBloomExtract
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psEffectBloomExtract");
-            }
-        }
+            get;
+        } = "psEffectBloomExtract";
         /// <summary>
         /// Gets the ps effect bloom vertical blur.
         /// </summary>
         /// <value>
         /// The ps effect bloom vertical blur.
         /// </value>
-        public static byte[] PSEffectBloomVerticalBlur
+        public static string PSEffectBloomVerticalBlur
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psEffectBloomBlurVertical");
-            }
-        }
+            get;
+        } = "psEffectBloomBlurVertical";
         /// <summary>
         /// Gets the ps effect bloom horizontal blur.
         /// </summary>
         /// <value>
         /// The ps effect bloom horizontal blur.
         /// </value>
-        public static byte[] PSEffectBloomHorizontalBlur
+        public static string PSEffectBloomHorizontalBlur
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psEffectBloomBlurHorizontal");
-            }
-        }
+            get;
+        } = "psEffectBloomBlurHorizontal";
         /// <summary>
         /// Gets the ps effect bloom combine.
         /// </summary>
         /// <value>
         /// The ps effect bloom combine.
         /// </value>
-        public static byte[] PSEffectBloomCombine
+        public static string PSEffectBloomCombine
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psEffectBloomCombine");
-            }
-        }
+            get;
+        } = "psEffectBloomCombine";
         /// <summary>
         /// Gets the ps effect fxaa.
         /// </summary>
         /// <value>
         /// The ps effect fxaa.
         /// </value>
-        public static byte[] PSEffectFXAA
+        public static string PSEffectFXAA
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psFXAA");
-            }
-        }
+            get;
+        } = "psFXAA";
         /// <summary>
         /// Gets the ps effect luma.
         /// </summary>
         /// <value>
         /// The ps effect luma.
         /// </value>
-        public static byte[] PSEffectLUMA
+        public static string PSEffectLUMA
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psLuma");
-            }
-        }
+            get;
+        } = "psLuma";
         /// <summary>
         /// Gets the ps effect x ray grid. This is based on BlinnPhong
         /// </summary>
         /// <value>
         /// The ps effect x ray grid.
         /// </value>
-        public static byte[] PSEffectXRayGrid
+        public static string PSEffectXRayGrid
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psEffectMeshXRayGrid");
-            }
-        }
+            get;
+        } = "psEffectMeshXRayGrid";
         /// <summary>
         /// Gets the ps effect diffuse x ray grid.
         /// </summary>
         /// <value>
         /// The ps effect diffuse x ray grid.
         /// </value>
-        public static byte[] PSEffectDiffuseXRayGrid
+        public static string PSEffectDiffuseXRayGrid
         {
-            get
-            {
-                return UWPShaderBytePool.Read("psEffectMeshDiffuseXRayGrid");
-            }
-        }
+            get;
+        } = "psEffectMeshDiffuseXRayGrid";
 #if !NETFX_CORE
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] PSScreenDup
+        public static string PSScreenDup
         {
-            get
-            {
-
-                return Properties.Resources.psScreenDup;
-            }
-        }
+            get;
+        } = "psScreenDup";
 #endif
     }
 

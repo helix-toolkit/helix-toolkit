@@ -56,6 +56,37 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 return totalModelMatrix;
             }
         }
+        /// <summary>
+        /// Gets or sets the order key.
+        /// </summary>
+        /// <value>
+        /// The render order key.
+        /// </value>
+        public OrderKey RenderOrderKey
+        {
+            private set;
+            get;
+        }
+
+        private uint renderOrder = 0;
+        /// <summary>
+        /// Gets or sets the render order. Manually specify the render order
+        /// </summary>
+        /// <value>
+        /// The render order.
+        /// </value>
+        public uint RenderOrder
+        {
+            set
+            {
+                if(Set(ref renderOrder, value))
+                {
+                    InvalidatePerFrameRenderables();
+                }
+            }
+            get { return renderOrder; }
+        }
+                
 
         /// <summary>
         /// Gets or sets a value indicating whether [need matrix update].
@@ -456,7 +487,16 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 TotalModelMatrix = modelMatrix * parentMatrix;
                 needMatrixUpdate = false;
-            }           
+            }
+            UpdateRenderOrderKey(context);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void UpdateRenderOrderKey(RenderContext context)
+        {
+            //var dist = Math.Abs((BoundsSphereWithTransform.Center - context.Camera.Position).Length() - BoundsSphereWithTransform.Radius);           
+            //RenderOrderKey = OrderKey.Create(RenderOrder, dist);
+            RenderOrderKey = OrderKey.Create(RenderOrder, 0);
         }
 
         /// <summary>

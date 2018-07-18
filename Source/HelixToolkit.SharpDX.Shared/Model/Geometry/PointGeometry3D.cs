@@ -47,7 +47,7 @@ namespace HelixToolkit.Wpf.SharpDX
             { return false; }
             if (Octree != null)
             {
-                return Octree.HitTest(context, originalSource, modelMatrix, rayWS, ref hits, hitThickness);
+                return Octree.HitTest(context, originalSource, this, modelMatrix, rayWS, ref hits, hitThickness);
             }
             else
             {
@@ -85,6 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         result.ModelHit = originalSource;
                         result.IsValid = true;
                         result.Tag = index;
+                        result.Geometry = this;
                     }
 
                     index++;

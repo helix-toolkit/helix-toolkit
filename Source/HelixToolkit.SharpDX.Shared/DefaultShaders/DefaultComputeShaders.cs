@@ -16,24 +16,18 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] CSParticleInsert
+        public static string CSParticleInsert
         {
-            get
-            {
-                return UWPShaderBytePool.Read("csParticleInsert");
-            }
-        }
+            get;
+        } = "csParticleInsert";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] CSParticleUpdate
+        public static string CSParticleUpdate
         {
-            get
-            {
-                return UWPShaderBytePool.Read("csParticleUpdate");
-            }
-        }
+            get;
+        } = "csParticleUpdate";
     }
 
 
