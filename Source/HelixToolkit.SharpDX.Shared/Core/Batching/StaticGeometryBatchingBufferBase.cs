@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿//#define OutputBuildTime
+using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
@@ -6,13 +7,16 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Core
 #else
 namespace HelixToolkit.UWP.Core
 #endif
 {
-    using Render;    
+    using Render;
+
     using Utilities;
     public interface IBatchedGeometry
     {
@@ -107,41 +111,75 @@ namespace HelixToolkit.UWP.Core
                 vertexBufferBindings = new VertexBufferBinding[0];
                 return;
             }
+#if OutputBuildTime
+            var time = System.Diagnostics.Stopwatch.GetTimestamp();
+#endif
             int totalVertex = 0;
             int totalIndices = 0;
-
+            int[] vertRange = new int[Geometries.Length];
+            int[] idxRange = new int[Geometries.Length];
             for(int i=0; i < Geometries.Length; ++i)
             {
+                vertRange[i] = totalVertex;
                 totalVertex += Geometries[i].Geometry.Positions.Count;
                 if (Geometries[i].Geometry.Indices != null)
                 {
+                    idxRange[i] = totalIndices;
                     totalIndices += Geometries[i].Geometry.Indices.Count;
                 }
             }
+
             var tempVerts = new VertStruct[totalVertex];
             var tempIndices = new int[totalIndices];
-            int vertOffset = 0;
-            int indexOffset = 0;
-
-            for(int i = 0; i < Geometries.Length; ++i)
+            if(Geometries.Length > 50 && totalVertex > 5000)
             {
-                var geo = Geometries[i];
-                var transform = geo.ModelTransform;
-                OnFillVertArray(tempVerts, vertOffset, ref geo, ref transform);
-                
-                if(IndexBuffer != null && geo.Geometry.Indices != null)
+                Parallel.For(0, Geometries.Length, (i) =>
                 {
-                    //Fill Indices, make sure to correct the offset
-                    int count = geo.Geometry.Indices.Count;
-                    int tempIdx = indexOffset;
-                    for (int j = 0; j < count; ++j, ++tempIdx)
+                    var geo = Geometries[i];
+                    var transform = geo.ModelTransform;
+                    var vertStart = vertRange[i];
+                    OnFillVertArray(tempVerts, vertStart, ref geo, ref transform);
+
+                    if (IndexBuffer != null && geo.Geometry.Indices != null)
                     {
-                        tempIndices[tempIdx] = geo.Geometry.Indices[j] + vertOffset;
+                        //Fill Indices, make sure to correct the offset
+                        int count = geo.Geometry.Indices.Count;
+                        int tempIdx = idxRange[i];
+                        for (int j = 0; j < count; ++j, ++tempIdx)
+                        {
+                            tempIndices[tempIdx] = geo.Geometry.Indices[j] + vertStart;
+                        }
                     }
-                    indexOffset += geo.Geometry.Indices.Count;
-                }
-                vertOffset += geo.Geometry.Positions.Count;                
+                });
             }
+            else
+            {
+                int vertOffset = 0;
+                int indexOffset = 0;
+                for (int i = 0; i < Geometries.Length; ++i)
+                {
+                    var geo = Geometries[i];
+                    var transform = geo.ModelTransform;
+                    OnFillVertArray(tempVerts, vertOffset, ref geo, ref transform);
+
+                    if (IndexBuffer != null && geo.Geometry.Indices != null)
+                    {
+                        //Fill Indices, make sure to correct the offset
+                        int count = geo.Geometry.Indices.Count;
+                        int tempIdx = indexOffset;
+                        for (int j = 0; j < count; ++j, ++tempIdx)
+                        {
+                            tempIndices[tempIdx] = geo.Geometry.Indices[j] + vertOffset;
+                        }
+                        indexOffset += geo.Geometry.Indices.Count;
+                    }
+                    vertOffset += geo.Geometry.Positions.Count;
+                }
+            }
+#if OutputBuildTime
+            time = System.Diagnostics.Stopwatch.GetTimestamp() - time;
+            Console.WriteLine($"Build Batch Time: {(float)time / System.Diagnostics.Stopwatch.Frequency * 1000} ms");
+#endif
             VertexBuffer[0].UploadDataToBuffer(deviceContext, tempVerts, tempVerts.Length);
             IndexBuffer?.UploadDataToBuffer(deviceContext, tempIndices, tempIndices.Length);
             vertexBufferBindings = new[] { new VertexBufferBinding(VertexBuffer[0].Buffer, VertexBuffer[0].StructureSize, VertexBuffer[0].Offset) };

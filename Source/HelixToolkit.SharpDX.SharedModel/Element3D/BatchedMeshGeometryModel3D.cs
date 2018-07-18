@@ -22,9 +22,9 @@ namespace HelixToolkit.Wpf.SharpDX
     using Model;
     using Model.Scene;
     /// <summary>
-    /// Static mesh batching. Supports multiple <see cref="Materials"/>. All geometries are merged into single buffer for rendering. Indivisual material color infomations are encoded into vertex buffer.
+    /// Static mesh batching. Supports multiple <see cref="BatchedMaterials"/>. All geometries are merged into single buffer for rendering. Indivisual material color infomations are encoded into vertex buffer.
     /// <para>
-    /// <see cref="Material"/> is used if <see cref="Materials"/> = null. And also used for shared material texture binding.
+    /// <see cref="Material"/> is used if <see cref="BatchedMaterials"/> = null. And also used for shared material texture binding.
     /// </para>
     /// </summary>
     public class BatchedMeshGeometryModel3D : Element3D, IHitable, IThrowingShadow
