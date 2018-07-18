@@ -18,6 +18,8 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Blinn = "RenderBlinn";
+
+        public const string BlinnBatched = "RenderBlinnBatch";
         ///// <summary>
         ///// 
         ///// </summary>

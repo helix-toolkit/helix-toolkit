@@ -22,6 +22,8 @@ namespace HelixToolkit.UWP.Shaders
         /// The empty input layout
         /// </summary>
         public static readonly InputLayoutDescription EmptyInputLayout = new InputLayoutDescription();
+
+        private byte[] shaderByteCode;
         /// <summary>
         /// Gets or sets the shader byte code.
         /// </summary>
@@ -29,7 +31,24 @@ namespace HelixToolkit.UWP.Shaders
         /// The shader byte code.
         /// </value>
         [DataMember]
-        public byte[] ShaderByteCode { set; get; } = null;
+        public byte[] ShaderByteCode
+        {
+            set
+            {
+                shaderByteCode = value;
+            }
+            get
+            {
+                if(shaderByteCode == null && !string.IsNullOrEmpty(ShaderByteCodeName))
+                {
+                    shaderByteCode = Helper.UWPShaderBytePool.Read(ShaderByteCodeName);
+                }
+                return shaderByteCode;
+            }
+        }
+
+        [IgnoreDataMember]
+        public string ShaderByteCodeName { private set; get; }
         /// <summary>
         /// Gets or sets the input elements.
         /// </summary>
@@ -48,6 +67,16 @@ namespace HelixToolkit.UWP.Shaders
         public InputLayoutDescription(byte[] byteCode, InputElement[] elements)
         {
             ShaderByteCode = byteCode;
+            InputElements = elements;
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InputLayoutDescription"/> class.
+        /// </summary>
+        /// <param name="byteCodeName">The byte code name.</param>
+        /// <param name="elements">The elements.</param>
+        public InputLayoutDescription(string byteCodeName, InputElement[] elements)
+        {
+            ShaderByteCodeName = byteCodeName;
             InputElements = elements;
         }
         /// <summary>

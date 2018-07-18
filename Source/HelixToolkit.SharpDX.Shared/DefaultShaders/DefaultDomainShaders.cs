@@ -15,17 +15,14 @@ namespace HelixToolkit.UWP.Shaders
     /// 
     /// </summary>
     public static class DefaultDomainShaders
-    {        
+    {
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] DSMeshTessellation
+        public static string DSMeshTessellation
         {
-            get
-            {
-                return UWPShaderBytePool.Read("dsMeshTriTessellation");
-            }
-        }
+            get;
+        } = "dsMeshTriTessellation";
     }
 
     public static class DefaultDomainShaderDescriptions

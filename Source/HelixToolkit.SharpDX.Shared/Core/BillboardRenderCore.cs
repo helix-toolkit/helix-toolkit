@@ -137,7 +137,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override void OnGeometryBufferChanged(IGeometryBufferModel buffer)
+        protected override void OnGeometryBufferChanged(IAttachableBufferModel buffer)
         {
             billboardBuffer = buffer as IBillboardBufferModel;
         }

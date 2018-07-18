@@ -55,6 +55,8 @@ HSInput main(VSInstancingInput input)
 	output.n = inputn;
 	output.t1 = inputt1;
 	output.t2 = inputt2;
+    float tess = saturate((minTessDistance - distance(output.p, vEyePos)) / (minTessDistance - maxTessDistance));
+    output.tessF = mad(tess, (maxTessFactor - minTessFactor), minTessFactor);
 	return output;
 }
 #endif
