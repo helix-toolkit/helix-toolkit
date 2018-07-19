@@ -5,7 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 namespace HelixToolkit.Wpf.SharpDX.Tests.Utilities
 {
-    using global::SharpDX;
+    using System.Numerics;
     using System.IO;
     using System.Threading;
     using System.Windows.Media.Media3D;

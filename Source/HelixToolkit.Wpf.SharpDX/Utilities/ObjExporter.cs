@@ -5,7 +5,7 @@ Copyright (c) 2018 Helix Toolkit contributors
 
 namespace HelixToolkit.Wpf.SharpDX
 {
-    using global::SharpDX;
+    using HelixToolkit.Mathematics;
     using Model;
     using Model.Scene;
     using System;

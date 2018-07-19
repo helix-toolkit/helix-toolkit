@@ -12,6 +12,8 @@ using Media3D = System.Windows.Media.Media3D;
 using System.Windows.Media;
 using System.Numerics;
 using Matrix = System.Numerics.Matrix4x4;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace BoneSkinDemo
 {
