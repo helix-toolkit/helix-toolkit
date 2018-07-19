@@ -91,15 +91,18 @@ namespace HelixToolkit.UWP.Core
         {
             if (isGeometryChanged)
             {
-                OnSubmitGeometries(deviceContext);
-                isGeometryChanged = false;
-                OnInvalidateRender?.Invoke(this, EventArgs.Empty);
-                return true;
+                lock (VertexBuffer)
+                {
+                    if (isGeometryChanged)
+                    {
+                        OnSubmitGeometries(deviceContext);
+                        isGeometryChanged = false;
+                        OnInvalidateRender?.Invoke(this, EventArgs.Empty);
+                        return true;
+                    }
+                }
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         protected virtual void OnSubmitGeometries(DeviceContextProxy deviceContext)
