@@ -122,7 +122,20 @@ namespace HelixToolkit.UWP.Utilities
         ///
         /// </summary>
         public ResourceOptionFlags OptionFlags { private set; get; }
-
+        /// <summary>
+        /// Gets the capacity in bytes.
+        /// </summary>
+        /// <value>
+        /// The capacity.
+        /// </value>
+        public int Capacity { private set; get; }
+        /// <summary>
+        /// Gets the capacity used in bytes.
+        /// </summary>
+        /// <value>
+        /// The capacity used.
+        /// </value>
+        public int CapacityUsed { private set; get; }
         /// <summary>
         ///
         /// </summary>
@@ -159,11 +172,12 @@ namespace HelixToolkit.UWP.Utilities
         public void UploadDataToBuffer<T>(DeviceContextProxy context, IList<T> data, int count, int offset, int minBufferCount = default(int)) where T : struct
         {
             ElementCount = count;
+            int newSizeInBytes = StructureSize * count;
             if (count == 0)
             {
                 return;
             }
-            else if (buffer == null || buffer.Description.SizeInBytes < StructureSize * count)
+            else if (buffer == null || Capacity < newSizeInBytes)
             {
                 RemoveAndDispose(ref buffer);
                 var buffdesc = new BufferDescription()
@@ -175,15 +189,32 @@ namespace HelixToolkit.UWP.Utilities
                     StructureByteStride = StructureSize,
                     Usage = ResourceUsage.Dynamic
                 };
-                //buffer = Collect(SDX11::Buffer.Create(context, data.GetArrayByType(), buffdesc));
+                Capacity = buffdesc.SizeInBytes;
+                CapacityUsed = 0;
                 buffer = Collect(new Buffer(context, buffdesc));
             }
-            context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
-            using (stream)
+            if(CapacityUsed + newSizeInBytes <= Capacity)
             {
-                stream.WriteRange(data.GetArrayByType(), offset, count);                    
+                Offset = CapacityUsed;
+                context.MapSubresource(this.buffer, MapMode.WriteNoOverwrite, MapFlags.None, out DataStream stream);
+                using (stream)
+                {
+                    stream.Position = Offset;
+                    stream.WriteRange(data.GetArrayByType(), offset, count);                    
+                }
+                context.UnmapSubresource(this.buffer, 0);
+                CapacityUsed += newSizeInBytes;
             }
-            context.UnmapSubresource(this.buffer, 0);
+            else
+            {
+                context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
+                using (stream)
+                {
+                    stream.WriteRange(data.GetArrayByType(), offset, count);
+                }
+                context.UnmapSubresource(this.buffer, 0);
+                Offset = CapacityUsed = 0;
+            }
         }
     }
 }

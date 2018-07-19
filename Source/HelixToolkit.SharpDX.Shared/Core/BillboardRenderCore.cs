@@ -131,8 +131,7 @@ namespace HelixToolkit.UWP.Core
                 }
                 else
                 {
-                    context.DrawInstanced(GeometryBuffer.VertexBuffer[0].ElementCount, instanceModel.Buffer.ElementCount,
-                        0, instanceModel.Buffer.Offset);
+                    context.DrawInstanced(GeometryBuffer.VertexBuffer[0].ElementCount, instanceModel.Buffer.ElementCount, 0, 0);
                 }
             }
         }
