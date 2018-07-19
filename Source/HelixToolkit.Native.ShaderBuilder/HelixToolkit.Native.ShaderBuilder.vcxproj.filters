@@ -264,5 +264,17 @@
     <FxCompile Include="PS\psEffectMeshDiffuseXRayGrid.hlsl">
       <Filter>PS</Filter>
     </FxCompile>
+    <FxCompile Include="PS\psMeshDiffuseMapOIT.hlsl">
+      <Filter>PS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS\vsMeshBatched.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS\vsMeshBatchedWireframe.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
+    <FxCompile Include="VS\vsMeshBatchedShadow.hlsl">
+      <Filter>VS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -17,12 +17,25 @@ namespace HelixToolkit.UWP.Core
 
     public sealed class PostEffectFXAA : RenderCoreBase<BorderEffectStruct>, IPostEffect
     {
-        public string EffectName { set; get; } = DefaultRenderTechniqueNames.PostEffectFXAA;
+        private string effectName = DefaultRenderTechniqueNames.PostEffectFXAA;
+        public string EffectName
+        {
+            set { SetAffectsCanRenderFlag(ref effectName, value); }
+            get { return effectName; }
+        }
 
+        private FXAALevel fxaaLevel = FXAALevel.None;
+        /// <summary>
+        /// Gets or sets the fxaa level.
+        /// </summary>
+        /// <value>
+        /// The fxaa level.
+        /// </value>
         public FXAALevel FXAALevel
         {
-            set; get;
-        } = FXAALevel.Medium;
+            set { SetAffectsCanRenderFlag(ref fxaaLevel, value); }
+            get { return fxaaLevel; }
+        }
 
         private int textureSlot;
         private int samplerSlot;
@@ -60,9 +73,9 @@ namespace HelixToolkit.UWP.Core
             base.OnDetach();
         }
 
-        protected override bool CanRender(RenderContext context)
+        protected override bool OnUpdateCanRenderFlag()
         {
-            return base.CanRender(context) && FXAALevel != FXAALevel.None;
+            return IsAttached && !string.IsNullOrEmpty(EffectName) && FXAALevel != FXAALevel.None;
         }
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)

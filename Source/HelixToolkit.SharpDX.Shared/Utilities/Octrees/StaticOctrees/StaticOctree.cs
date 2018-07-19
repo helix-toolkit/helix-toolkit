@@ -529,13 +529,14 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <returns></returns>
-        public bool HitTest(RenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
+        public bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
         {
-            return HitTest(context, model, modelMatrix, rayWS, ref hits, 0);
+            return HitTest(context, model, geometry, modelMatrix, rayWS, ref hits, 0);
         }
 
         /// <summary>
@@ -543,12 +544,13 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// </summary>
         /// <param name="context"></param>
         /// <param name="model"></param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
         /// <param name="rayWS"></param>
         /// <param name="hits"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        public virtual bool HitTest(RenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness)
+        public virtual bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness)
         {
             if (hits == null)
             {
@@ -578,7 +580,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                         var octant = octants[parentOctant[curr]];
                         bool isIntersect = false;
                         bool nodeHit = HitTestCurrentNodeExcludeChild(ref octant,
-                            context, model, modelMatrix, ref rayWS, ref rayModel, ref modelHits, ref isIntersect, hitThickness);
+                            context, model, geometry, modelMatrix, ref rayWS, ref rayModel, ref modelHits, ref isIntersect, hitThickness);
                         isHit |= nodeHit;
                         if (isIntersect && octant.HasChildren)
                         {
@@ -776,6 +778,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="octant"></param>
         /// <param name="context"></param>
         /// <param name="model"></param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
         /// <param name="rayWS"></param>
         /// <param name="rayModel"></param>
@@ -783,7 +786,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="isIntersect"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        protected abstract bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model,
+        protected abstract bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, Geometry3D geometry,
             Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel,
             ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness);
         /// <summary>

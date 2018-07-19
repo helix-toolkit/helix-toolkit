@@ -49,6 +49,16 @@ namespace HelixToolkit.UWP.Core
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance can be rendered. Update this flag using <see cref="UpdateCanRenderFlag"/>
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance can render; otherwise, <c>false</c>.
+        /// </value>
+        public bool CanRenderFlag
+        {
+            private set; get;
+        } = false;
+        /// <summary>
         /// Indicate whether render host should call <see cref="Update(RenderContext, DeviceContextProxy)"/> before <see cref="Render(RenderContext, DeviceContextProxy)"/>
         /// <para><see cref="Update(RenderContext, DeviceContextProxy)"/> is used to run such as compute shader before rendering. </para>
         /// <para>Compute shader can be run at the beginning of any other <see cref="Render(RenderContext, DeviceContextProxy)"/> routine to avoid waiting.</para>
@@ -102,6 +112,7 @@ namespace HelixToolkit.UWP.Core
         /// 
         /// </summary>
         public Device Device { get { return EffectTechnique?.Device; } }
+
         /// <summary>
         /// Is render core has been attached
         /// </summary>
@@ -128,6 +139,7 @@ namespace HelixToolkit.UWP.Core
             }
             EffectTechnique = technique;
             IsAttached = OnAttach(technique);
+            UpdateCanRenderFlag();
         }
 
         /// <summary>
@@ -144,6 +156,7 @@ namespace HelixToolkit.UWP.Core
         {
             IsAttached = false;
             OnDetach();
+            UpdateCanRenderFlag();
         }
         /// <summary>
         /// On detaching, default is to release all resources
@@ -168,6 +181,27 @@ namespace HelixToolkit.UWP.Core
         public virtual void Update(RenderContext context, DeviceContextProxy deviceContext) { }
 
         /// <summary>
+        /// Updates the can render flag.
+        /// </summary>
+        public void UpdateCanRenderFlag()
+        {
+            bool flag = OnUpdateCanRenderFlag();
+            if(CanRenderFlag != flag)
+            {
+                CanRenderFlag = flag;
+                InvalidateRenderer();
+            }
+        }
+
+        /// <summary>
+        /// Called when [update can render flag].
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool OnUpdateCanRenderFlag()
+        {
+            return IsAttached;
+        }
+        /// <summary>
         /// Resets the invalidate handler.
         /// </summary>
         public void ResetInvalidateHandler()
@@ -178,6 +212,7 @@ namespace HelixToolkit.UWP.Core
         /// <summary>
         /// Invalidates the renderer.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void InvalidateRenderer()
         {
             OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
@@ -191,6 +226,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="value"></param>
         /// <param name="propertyName"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected bool SetAffectsRender<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(backingField, value))
@@ -200,6 +236,29 @@ namespace HelixToolkit.UWP.Core
 
             backingField = value;
             this.RaisePropertyChanged(propertyName);
+            InvalidateRenderer();
+            return true;
+        }
+
+        /// <summary>
+        /// Sets the affects can render flag. This will also invalidate renderer.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="backingField">The backing field.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected bool SetAffectsCanRenderFlag<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(backingField, value))
+            {
+                return false;
+            }
+
+            backingField = value;
+            this.RaisePropertyChanged(propertyName);
+            UpdateCanRenderFlag();
             InvalidateRenderer();
             return true;
         }

@@ -87,10 +87,10 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         private Vector3 clickPoint;
         private Matrix smvpm;
         #endregion
-        public override bool HitTest(RenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness)
+        public override bool HitTest(RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits, float hitThickness)
         {
             needRecalculate = true;
-            return base.HitTest(context, model, modelMatrix, rayWS, ref hits, hitThickness);
+            return base.HitTest(context, model, geometry, modelMatrix, rayWS, ref hits, hitThickness);
         }
         /// <summary>
         /// 
@@ -98,6 +98,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="octant"></param>
         /// <param name="context"></param>
         /// <param name="model"></param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix"></param>
         /// <param name="rayWS"></param>
         /// <param name="rayModel"></param>
@@ -105,7 +106,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="isIntersect"></param>
         /// <param name="hitThickness"></param>
         /// <returns></returns>
-        protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
+        protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
         {
             isIntersect = false;
             if (!octant.IsBuilt || context == null)
@@ -148,6 +149,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                         result.PointHit = px;
                         result.Distance = (rayWS.Position - px).Length();
                         result.Tag = Objects[i];
+                        result.Geometry = geometry;
                         isHit = true;
                     }
                 }

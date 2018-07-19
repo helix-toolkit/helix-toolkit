@@ -147,12 +147,12 @@ namespace HelixToolkit.UWP
             int idx = line.IndexOf(' ');
             if (idx == -1)
             {
-                id = line;
+                id = line.ToLowerInvariant();
                 values = string.Empty;
             }
             else
             {
-                id = line.Substring(0, idx).ToLower();
+                id = line.Substring(0, idx).ToLowerInvariant();
                 values = line.Substring(idx + 1);
             }
         }
@@ -168,6 +168,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         private static Vector3D ParseNormal(string input)
         {
+            input = input.ToLowerInvariant();
             var match = NormalRegex.Match(input);
             if (!match.Success)
             {
@@ -268,6 +269,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         private static bool TryParseVertex(string line, out Point3D point)
         {
+            line = line.ToLowerInvariant();
             var match = VertexRegex.Match(line);
             if (!match.Success)
             {
@@ -302,6 +304,13 @@ namespace HelixToolkit.UWP
             while (true)
             {
                 var line = reader.ReadLine();
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
+
+                line = line.Trim();
+
                 Point3D point;
                 if (TryParseVertex(line, out point))
                 {

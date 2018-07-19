@@ -51,7 +51,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             if(Octree != null) 
             {
-                return Octree.HitTest(context, originalSource, modelMatrix, rayWS, ref hits, hitTestThickness);
+                return Octree.HitTest(context, originalSource, this, modelMatrix, rayWS, ref hits, hitTestThickness);
             }
             else
             {
@@ -85,6 +85,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         result.TriangleIndices = null; // Since triangles are shader-generated
                         result.RayHitPointScalar = sc;
                         result.LineHitPointScalar = tc;
+                        result.Geometry = this;
                     }
 
                     lineIndex++;

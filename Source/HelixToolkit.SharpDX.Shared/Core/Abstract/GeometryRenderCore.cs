@@ -40,16 +40,16 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if (instanceBuffer != value)
+                var old = instanceBuffer;
+                if(SetAffectsCanRenderFlag(ref instanceBuffer, value))
                 {
-                    if (instanceBuffer != null)
+                    if (old != null)
                     {
-                        instanceBuffer.OnElementChanged -= InvalidateRenderEvent;
+                        old.OnElementChanged -= OnElementChanged;
                     }
-                    instanceBuffer = value;
                     if (instanceBuffer != null)
                     {
-                        instanceBuffer.OnElementChanged += InvalidateRenderEvent;
+                        instanceBuffer.OnElementChanged += OnElementChanged;
                     }
                 }
             }
@@ -59,28 +59,27 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private IGeometryBufferModel geometryBuffer;
+        private IAttachableBufferModel geometryBuffer;
         /// <summary>
         /// 
         /// </summary>
-        public IGeometryBufferModel GeometryBuffer
+        public IAttachableBufferModel GeometryBuffer
         {
             set
             {
-                if(geometryBuffer == value)
+                var old = geometryBuffer;
+                if(SetAffectsCanRenderFlag(ref geometryBuffer, value))
                 {
-                    return;
+                    if(old != null)
+                    {
+                        old.OnInvalidateRender -= OnInvalidateRendererEvent;
+                    }
+                    if (geometryBuffer != null)
+                    {
+                        geometryBuffer.OnInvalidateRender += OnInvalidateRendererEvent;
+                    }
+                    OnGeometryBufferChanged(value);
                 }
-                if(geometryBuffer != null)
-                {
-                    geometryBuffer.OnInvalidateRender -= InvalidateRenderEvent;
-                }
-                geometryBuffer = value;
-                if (geometryBuffer != null)
-                {
-                    geometryBuffer.OnInvalidateRender += InvalidateRenderEvent;
-                }
-                OnGeometryBufferChanged(value);
             }
             get { return geometryBuffer; }
         }
@@ -252,7 +251,7 @@ namespace HelixToolkit.UWP.Core
         /// Called when [geometry buffer changed].
         /// </summary>
         /// <param name="buffer">The buffer.</param>
-        protected virtual void OnGeometryBufferChanged(IGeometryBufferModel buffer) { }
+        protected virtual void OnGeometryBufferChanged(IAttachableBufferModel buffer) { }
         /// <summary>
         /// Set all necessary states and buffers
         /// </summary>
@@ -281,13 +280,12 @@ namespace HelixToolkit.UWP.Core
             return succ;
         }
         /// <summary>
-        /// 
+        /// Called when [update can render flag].
         /// </summary>
-        /// <param name="context"></param>
         /// <returns></returns>
-        protected override bool CanRender(RenderContext context)
+        protected override bool OnUpdateCanRenderFlag()
         {
-            return base.CanRender(context) && GeometryBuffer != null;
+            return base.OnUpdateCanRenderFlag() && GeometryBuffer != null;
         }
 
         /// <summary>
@@ -301,11 +299,11 @@ namespace HelixToolkit.UWP.Core
             {
                 if (instanceModel == null || !instanceModel.HasElements)
                 {
-                    context.DrawIndexed(GeometryBuffer.IndexBuffer.ElementCount, GeometryBuffer.IndexBuffer.Offset, 0);
+                    context.DrawIndexed(GeometryBuffer.IndexBuffer.ElementCount, 0, 0);
                 }
                 else
                 {
-                    context.DrawIndexedInstanced(GeometryBuffer.IndexBuffer.ElementCount, instanceModel.Buffer.ElementCount, GeometryBuffer.IndexBuffer.Offset, 0, instanceModel.Buffer.Offset);
+                    context.DrawIndexedInstanced(GeometryBuffer.IndexBuffer.ElementCount, instanceModel.Buffer.ElementCount, 0, 0, 0);
                 }
             }
             else if (GeometryBuffer.VertexBuffer.Length > 0)
@@ -317,7 +315,7 @@ namespace HelixToolkit.UWP.Core
                 else
                 {
                     context.DrawInstanced(GeometryBuffer.VertexBuffer[0].ElementCount, instanceModel.Buffer.ElementCount,
-                        0, instanceModel.Buffer.Offset);
+                        0, 0);
                 }
             }
         }
@@ -336,7 +334,13 @@ namespace HelixToolkit.UWP.Core
             OnDraw(deviceContext, InstanceBuffer);
         }
 
-        protected void InvalidateRenderEvent(object sender, EventArgs e)
+        protected void OnElementChanged(object sender, EventArgs e)
+        {
+            UpdateCanRenderFlag();
+            InvalidateRenderer();
+        }
+
+        protected void OnInvalidateRendererEvent(object sender, EventArgs e)
         {
             InvalidateRenderer();
         }

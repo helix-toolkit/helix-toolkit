@@ -51,7 +51,7 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public IElementsBufferProxy[] VertexBuffer { private set; get; } = new IElementsBufferProxy[0];
         private static readonly VertexBufferBinding[] emptyBinding = new VertexBufferBinding[0];
-        private VertexBufferBinding[] vertexBufferBindings = emptyBinding;
+        protected VertexBufferBinding[] VertexBufferBindings { private set; get; } = emptyBinding;
         /// <summary>
         /// Gets the size of the vertex structure.
         /// </summary>
@@ -227,7 +227,7 @@ namespace HelixToolkit.UWP.Core
                     }  
                     if (updateVBinding)
                     {
-                        vertexBufferBindings = VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray();
+                        VertexBufferBindings = VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray();
                         updateVBinding = false;
                     }
                 }
@@ -273,9 +273,9 @@ namespace HelixToolkit.UWP.Core
         {
             if (VertexBuffer.Length > 0)
             {
-                if (VertexBuffer.Length == vertexBufferBindings.Length)
+                if (VertexBuffer.Length == VertexBufferBindings.Length)
                 {
-                    context.SetVertexBuffers(vertexBufferStartSlot, vertexBufferBindings);
+                    context.SetVertexBuffers(vertexBufferStartSlot, VertexBufferBindings);
                     vertexBufferStartSlot += VertexBuffer.Length;
                 }
                 else
@@ -309,7 +309,7 @@ namespace HelixToolkit.UWP.Core
                 geometry.PropertyChanged -= Geometry_PropertyChanged;
             }
             geometry = null;
-            vertexBufferBindings = emptyBinding;
+            VertexBufferBindings = emptyBinding;
             base.OnDispose(disposeManagedResources);
         }
     }

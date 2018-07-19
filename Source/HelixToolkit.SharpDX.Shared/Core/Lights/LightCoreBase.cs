@@ -57,7 +57,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="deviceContext">The device context.</param>
-        public override void Render(RenderContext context, DeviceContextProxy deviceContext)
+        public sealed override void Render(RenderContext context, DeviceContextProxy deviceContext)
         {
             if (CanRender(context.LightScene))
             {

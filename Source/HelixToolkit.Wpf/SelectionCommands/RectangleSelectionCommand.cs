@@ -38,9 +38,30 @@ namespace HelixToolkit.Wpf
         /// Initializes a new instance of the <see cref="RectangleSelectionCommand" /> class.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <param name="eventHandler">The selection event handler.</param>
-        public RectangleSelectionCommand(Viewport3D viewport, EventHandler<ModelsSelectedEventArgs> eventHandler)
-            : base(viewport, eventHandler)
+        /// <param name="modelsSelectedEventHandler">The selection event handler.</param>
+        public RectangleSelectionCommand(Viewport3D viewport, EventHandler<ModelsSelectedEventArgs> modelsSelectedEventHandler)
+            : base(viewport, modelsSelectedEventHandler, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RectangleSelectionCommand" /> class.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="visualsSelectedEventHandler">The selection event handler.</param>
+        public RectangleSelectionCommand(Viewport3D viewport, EventHandler<VisualsSelectedEventArgs> visualsSelectedEventHandler)
+            : base(viewport, null, visualsSelectedEventHandler)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RectangleSelectionCommand" /> class.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="modelsSelectedEventHandler">The selection event handler.</param>
+        /// <param name="visualsSelectedEventHandler">The selection event handler.</param>
+        public RectangleSelectionCommand(Viewport3D viewport, EventHandler<ModelsSelectedEventArgs> modelsSelectedEventHandler, EventHandler<VisualsSelectedEventArgs> visualsSelectedEventHandler)
+            : base(viewport, modelsSelectedEventHandler, visualsSelectedEventHandler)
         {
         }
 
@@ -76,8 +97,9 @@ namespace HelixToolkit.Wpf
         {
             this.HideRectangle();
 
-            var selectedModels =
-                    this.Viewport.FindHits(this.selectionRect, this.SelectionHitMode).Select(hit => hit.Model).ToList();
+            var res = this.Viewport.FindHits(this.selectionRect, this.SelectionHitMode);
+            
+            var selectedModels = res.Select(hit => hit.Model).ToList();
 
             // We do not handle the point selection, unless no models are selected. If no models are selected, we clear the
             // existing selection.
@@ -87,6 +109,8 @@ namespace HelixToolkit.Wpf
             }
 
             this.OnModelsSelected(new ModelsSelectedByRectangleEventArgs(selectedModels, this.selectionRect));
+            var selectedVisuals = res.Select(hit => hit.Visual).ToList();
+            this.OnVisualsSelected(new VisualsSelectedByRectangleEventArgs(selectedVisuals, this.selectionRect));
         }
 
         /// <summary>

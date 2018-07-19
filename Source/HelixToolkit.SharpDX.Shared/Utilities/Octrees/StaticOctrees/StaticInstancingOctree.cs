@@ -74,6 +74,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="octant">The octant.</param>
         /// <param name="context">The context.</param>
         /// <param name="model">The model.</param>
+        /// <param name="geometry"></param>
         /// <param name="modelMatrix">The model matrix.</param>
         /// <param name="rayWS">The ray ws.</param>
         /// <param name="rayModel">The ray model.</param>
@@ -81,7 +82,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <param name="isIntersect">if set to <c>true</c> [is intersect].</param>
         /// <param name="hitThickness">The hit thickness.</param>
         /// <returns></returns>
-        protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
+        protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
         {
             isIntersect = false;
             if (!octant.IsBuilt)
@@ -104,6 +105,115 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
                         };
                         hits.Add(result);
                         isHit = true;
+                    }
+                }
+            }
+            return isHit;
+        }
+        /// <summary>
+        /// Finds the nearest point by sphere exclude child.
+        /// </summary>
+        /// <param name="octant">The octant.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="sphere">The sphere.</param>
+        /// <param name="points">The points.</param>
+        /// <param name="isIntersect">if set to <c>true</c> [is intersect].</param>
+        /// <returns></returns>
+        protected override bool FindNearestPointBySphereExcludeChild(ref Octant octant, RenderContext context, ref BoundingSphere sphere, ref List<HitTestResult> points, ref bool isIntersect)
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Octree for batched geometry array
+    /// </summary>
+    public class StaticBatchedGeometryBoundsOctree : StaticOctree<KeyValuePair<int, BoundingBox>>
+    {
+        protected readonly BatchedMeshGeometryConfig[] Geometries;
+        protected readonly BoundingBox[] GeometryBound;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StaticInstancingModelOctree"/> class.
+        /// </summary>
+        /// <param name="geometries">Batched geometries.</param>
+        /// <param name="parameter">The parameter.</param>
+        public StaticBatchedGeometryBoundsOctree(BatchedMeshGeometryConfig[] geometries, OctreeBuildParameter parameter)
+            : base(parameter)
+        {
+            Geometries = geometries;
+            GeometryBound = geometries.Select(x=>x.Geometry.Bound.Transform(x.ModelTransform)).ToArray();
+        }
+        /// <summary>
+        /// Gets the bounding box from item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
+        protected override BoundingBox GetBoundingBoxFromItem(ref KeyValuePair<int, BoundingBox> item)
+        {
+            return item.Value;
+        }
+        /// <summary>
+        /// Gets the maximum bound.
+        /// </summary>
+        /// <returns></returns>
+        protected override BoundingBox GetMaxBound()
+        {
+            var totalBound = GeometryBound[0];
+            for (int i = 0; i < GeometryBound.Length; ++i)
+            {
+                BoundingBox.Merge(ref totalBound, ref GeometryBound[i], out totalBound);
+            }
+            return totalBound;
+        }
+        /// <summary>
+        /// Gets the objects.
+        /// </summary>
+        /// <returns></returns>
+        protected override KeyValuePair<int, BoundingBox>[] GetObjects()
+        {
+            var bounds = new KeyValuePair<int, BoundingBox>[GeometryBound.Length];
+            for (int i = 0; i < GeometryBound.Length; ++i)
+            {
+                bounds[i] = new KeyValuePair<int, BoundingBox>(i, GeometryBound[i]);
+            }
+            return bounds;
+        }
+        /// <summary>
+        /// Hits the test current node exclude child.
+        /// </summary>
+        /// <param name="octant">The octant.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="model">The model.</param>
+        /// <param name="geometry"></param>
+        /// <param name="modelMatrix">The model matrix.</param>
+        /// <param name="rayWS">The ray ws.</param>
+        /// <param name="rayModel">The ray model.</param>
+        /// <param name="hits">The hits.</param>
+        /// <param name="isIntersect">if set to <c>true</c> [is intersect].</param>
+        /// <param name="hitThickness">The hit thickness.</param>
+        /// <returns></returns>
+        protected override bool HitTestCurrentNodeExcludeChild(ref Octant octant, RenderContext context, object model, Geometry3D geometry, Matrix modelMatrix, ref Ray rayWS, ref Ray rayModel, ref List<HitTestResult> hits, ref bool isIntersect, float hitThickness)
+        {
+            isIntersect = false;
+            if (!octant.IsBuilt)
+            {
+                return false;
+            }
+            bool isHit = false;
+            var bound = octant.Bound.Transform(modelMatrix);
+            if (rayWS.Intersects(ref bound))
+            {
+                isIntersect = true;
+                for (int i = octant.Start; i < octant.End; ++i)
+                {
+                    var b = Objects[i].Value.Transform(modelMatrix);
+                    if (b.Intersects(ref rayWS))
+                    {
+                        var geo = Geometries[Objects[i].Key];
+                        if(geo.Geometry is MeshGeometry3D mesh)
+                        {
+                            isHit |= mesh.HitTest(context, geo.ModelTransform * modelMatrix, ref rayWS, ref hits, model);
+                        }
                     }
                 }
             }

@@ -69,9 +69,15 @@ namespace HelixToolkit.UWP.Core
             {
                 if (instanceChanged)
                 {
-                    elementBuffer.UploadDataToBuffer(context, elements, elements.Count);
-                    instanceChanged = false;
-                    bufferBinding = new VertexBufferBinding(Buffer.Buffer, Buffer.StructureSize, Buffer.Offset);
+                    lock (elementBuffer)
+                    {
+                        if (instanceChanged)
+                        {
+                            elementBuffer.UploadDataToBuffer(context, elements, elements.Count);
+                            instanceChanged = false;
+                            bufferBinding = new VertexBufferBinding(Buffer.Buffer, Buffer.StructureSize, Buffer.Offset);
+                        }
+                    }
                 }
                 context.SetVertexBuffers(vertexBufferStartSlot, bufferBinding);
             }

@@ -136,6 +136,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         private int numRendered = 0;
 
+        private static readonly Comparison<SceneNode> sortingDelegate = delegate (SceneNode a, SceneNode b) { return a.RenderOrderKey.Key > b.RenderOrderKey.Key ? 1 : a.RenderOrderKey.Key < b.RenderOrderKey.Key ? -1 : 0; };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
         /// </summary>
@@ -227,6 +229,14 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                             break;
                     }
                 }
+                if (RenderConfiguration.EnableRenderOrder)
+                {
+                    preProcNodes.Sort(sortingDelegate);
+                    opaqueNodes.Sort(sortingDelegate);
+                    postProcNodes.Sort(sortingDelegate);
+                    particleNodes.Sort(sortingDelegate);
+                    screenSpacedNodes.Sort(sortingDelegate);
+                }
             }
             else
             {
@@ -256,7 +266,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     ++i;
                 }
             }
-
             //Get RenderCores with post effect specified.
             if(postProcNodes.Count > 0)
             {
@@ -322,16 +331,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     {
                         if (core is IGeometryRenderCore c)
                         {
-                            if(c.GeometryBuffer != null && c.GeometryBuffer.Geometry != null && c.GeometryBuffer.Geometry.Indices != null)
-                                count += c.GeometryBuffer.Geometry.Indices.Count / 3;
+                            if(c.GeometryBuffer is IGeometryBufferModel geo && geo.Geometry != null && geo.Geometry.Indices != null)
+                                count += geo.Geometry.Indices.Count / 3;
                         }
                     }
                     foreach (var core in transparentNodes.Select(x => x.RenderCore))
                     {
                         if (core is IGeometryRenderCore c)
                         {
-                            if (c.GeometryBuffer != null && c.GeometryBuffer.Geometry != null && c.GeometryBuffer.Geometry.Indices != null)
-                                count += c.GeometryBuffer.Geometry.Indices.Count / 3;
+                            if (c.GeometryBuffer is IGeometryBufferModel geo && geo.Geometry != null && geo.Geometry.Indices != null)
+                                count += geo.Geometry.Indices.Count / 3;
                         }
                     }
                     renderStatistics.NumTriangles = count;

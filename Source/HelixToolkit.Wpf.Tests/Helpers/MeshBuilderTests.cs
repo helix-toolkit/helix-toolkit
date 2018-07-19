@@ -6,7 +6,9 @@
 
 namespace HelixToolkit.Wpf.Tests
 {
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Windows;
     using System.Windows.Media.Media3D;
 
     using HelixToolkit.Wpf;
@@ -60,5 +62,63 @@ namespace HelixToolkit.Wpf.Tests
                 Assert.AreEqual(new Point3D(0, 0, 1), normal);
             }
         }
+
+        [Test]
+        public void AddInvalidPolygon()
+        {
+            var meshBuilder = new MeshBuilder(false, false);
+            Assert.AreEqual(0, meshBuilder.Positions.Count);
+            Assert.AreEqual(0, meshBuilder.TriangleIndices.Count);
+            var p = new List<Point>
+                {
+                    new Point(0, 0 ),
+                    new Point(1, 1 ),
+                };
+
+            meshBuilder.AddPolygon(p, new Vector3D(0, 1, 0), new Vector3D(1, 0, 0), new Point3D(0, 0, 0));
+            Assert.AreEqual(0, meshBuilder.Positions.Count);
+            Assert.AreEqual(0, meshBuilder.TriangleIndices.Count);
+
+            var p3 = new List<Point3D>
+                {
+                    new Point3D(0, 0, 0),
+                    new Point3D(1, 1, 0),
+                };
+            meshBuilder.AddPolygon(p3);
+            Assert.AreEqual(0, meshBuilder.Positions.Count);
+            Assert.AreEqual(0, meshBuilder.TriangleIndices.Count);
+        }
+
+        [Test]
+        public void AddValidPolygon()
+        {
+            var meshBuilder = new MeshBuilder(false, false);
+            Assert.AreEqual(0, meshBuilder.Positions.Count);
+            Assert.AreEqual(0, meshBuilder.TriangleIndices.Count);
+            var p = new List<Point>
+                {
+                    new Point(0, 0 ),
+                    new Point(1, 1 ),
+                    new Point(2, 2 ),
+                };
+
+            meshBuilder.AddPolygon(p, new Vector3D(0, 1, 0), new Vector3D(1, 0, 0), new Point3D(0, 0, 0));
+            Assert.AreEqual(3, meshBuilder.Positions.Count);
+            Assert.AreEqual(3, meshBuilder.TriangleIndices.Count);
+
+            var p3 = new List<Point3D>
+                {
+                    new Point3D(0, 0, 0),
+                    new Point3D(1, 1, 0),
+                    new Point3D(2, 2, 0),
+                };
+            meshBuilder.AddPolygon(p3);
+            Assert.AreEqual(6, meshBuilder.Positions.Count);
+            Assert.AreEqual(6, meshBuilder.TriangleIndices.Count);
+
+
+
+        }
+
     }
 }

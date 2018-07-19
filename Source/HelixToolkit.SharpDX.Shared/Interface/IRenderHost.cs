@@ -390,5 +390,13 @@ namespace HelixToolkit.UWP
         /// Enable FXAA. If MSAA used, FXAA will be disabled automatically
         /// </summary>
         public FXAALevel FXAALevel { set; get; } = FXAALevel.None;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable render order] specified by user.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable render order]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableRenderOrder { set; get; } = false;
     }
 }

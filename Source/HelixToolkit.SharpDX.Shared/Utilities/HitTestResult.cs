@@ -51,7 +51,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// This is a tag to add additional data.
         /// </summary>
         public object Tag { get; set; }
-
+        /// <summary>
+        /// Gets or sets the geometry.
+        /// </summary>
+        /// <value>
+        /// The geometry.
+        /// </value>
+        public Geometry3D Geometry { set; get; }
         /// <summary>
         /// The hitted triangle vertex indices.
         /// </summary>

@@ -158,6 +158,7 @@ namespace HelixToolkit.Wpf.SharpDX
                         result.IsValid = true;
                         result.PointHit = rayWS.Position + (rayWS.Direction * distance);
                         result.Distance = distance;
+                        result.Geometry = this;
                         Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Bound={1}; Distance={2}", result.PointHit, b, distance));
                         break;
                     }

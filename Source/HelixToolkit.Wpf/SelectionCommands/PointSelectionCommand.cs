@@ -30,9 +30,30 @@ namespace HelixToolkit.Wpf
         /// Initializes a new instance of the <see cref="PointSelectionCommand" /> class.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <param name="eventHandler">The selection event handler.</param>
-        public PointSelectionCommand(Viewport3D viewport, EventHandler<ModelsSelectedEventArgs> eventHandler)
-            : base(viewport, eventHandler)
+        /// <param name="modelsSelectedEventHandler">The selection event handler.</param>
+        public PointSelectionCommand(Viewport3D viewport, EventHandler<ModelsSelectedEventArgs> modelsSelectedEventHandler)
+            : base(viewport, modelsSelectedEventHandler, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointSelectionCommand" /> class.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="visualsSelectedEventHandler">The selection event handler.</param>
+        public PointSelectionCommand(Viewport3D viewport, EventHandler<VisualsSelectedEventArgs> visualsSelectedEventHandler)
+            : base(viewport, null, visualsSelectedEventHandler)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PointSelectionCommand" /> class.
+        /// </summary>
+        /// <param name="viewport">The viewport.</param>
+        /// <param name="modelsSelectedEventHandler">The selection event handler.</param>
+        /// <param name="visualsSelectedEventHandler">The selection event handler.</param>
+        public PointSelectionCommand(Viewport3D viewport, EventHandler<ModelsSelectedEventArgs> modelsSelectedEventHandler, EventHandler<VisualsSelectedEventArgs> visualsSelectedEventHandler)
+            : base(viewport, modelsSelectedEventHandler, visualsSelectedEventHandler)
         {
         }
 
@@ -45,8 +66,11 @@ namespace HelixToolkit.Wpf
             base.Started(e);
             this.position = e.CurrentPosition;
 
-            var selectedModels = this.Viewport.FindHits(this.position).Select(hit => hit.Model).ToList();
+            var res = this.Viewport.FindHits(this.position);
+            var selectedModels = res.Select(hit => hit.Model).ToList();
+            var selectedVisuals = res.Select(hit => hit.Visual).ToList();
             this.OnModelsSelected(new ModelsSelectedByPointEventArgs(selectedModels, this.position));
+            this.OnVisualsSelected(new VisualsSelectedByPointEventArgs(selectedVisuals, this.position));
         }
 
         /// <summary>

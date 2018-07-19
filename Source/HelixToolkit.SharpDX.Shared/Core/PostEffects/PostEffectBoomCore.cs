@@ -54,7 +54,8 @@ namespace HelixToolkit.UWP.Core
       
         private int width, height;
         #endregion
-        #region Properties        
+        #region Properties   
+        private string effectName = DefaultRenderTechniqueNames.PostEffectBloom;
         /// <summary>
         /// Gets or sets the name of the effect.
         /// </summary>
@@ -63,8 +64,9 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public string EffectName
         {
-            set; get;
-        } = DefaultRenderTechniqueNames.PostEffectBloom;
+            set { SetAffectsCanRenderFlag(ref effectName, value); }
+            get { return effectName; }
+        }
 
         /// <summary>
         /// Gets or sets the color of the border.
@@ -187,7 +189,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool CanRender(RenderContext context)
+        protected override bool OnUpdateCanRenderFlag()
         {
             return IsAttached && !string.IsNullOrEmpty(EffectName);
         }

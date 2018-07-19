@@ -43,6 +43,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         public EnvironmentMapNode()
         {
+            RenderOrder = 1000;
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="EnvironmentMapNode"/> class. Default is using SkyBox. To use SkyDome, pass true into the constructor
@@ -51,6 +52,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         public EnvironmentMapNode(bool useSkyDome)
         {
             UseSkyDome = useSkyDome;
+            RenderOrder = 1000;
         }
         /// <summary>
         /// Called when [create render core].

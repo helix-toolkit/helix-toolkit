@@ -146,7 +146,6 @@ namespace HelixToolkit.Wpf.SharpDX.Core
         {
             set; get;
         } = true;
-
         private DuplicationResource duplicationResource;
         private FrameProcessing frameProcessor;
         private ShaderPass DefaultShaderPass;
@@ -200,16 +199,10 @@ namespace HelixToolkit.Wpf.SharpDX.Core
             frameProcessor = Collect(new FrameProcessing());
             return true;
         }
-        /// <summary>
-        /// Determines whether this instance can render the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        ///   <c>true</c> if this instance can render the specified context; otherwise, <c>false</c>.
-        /// </returns>
-        protected override bool CanRender(RenderContext context)
+
+        protected override bool OnUpdateCanRenderFlag()
         {
-            return base.CanRender(context) && duplicationResource != null;
+            return base.OnUpdateCanRenderFlag() && duplicationResource != null;
         }
         /// <summary>
         /// Called when [render].

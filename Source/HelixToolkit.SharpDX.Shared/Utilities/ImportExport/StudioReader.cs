@@ -183,10 +183,10 @@ namespace HelixToolkit.UWP
                     throw new FileFormatException("Unknown file");
                 }
                 int headerSize = this.ReadChunkSize(reader);
-                if (headerSize != length)
-                {
-                    throw new FileFormatException("Incomplete file (file length does not match header)");
-                }
+                //if (headerSize != length)
+                //{
+                //    throw new FileFormatException("Incomplete file (file length does not match header)");
+                //}
                 while (reader.BaseStream.Position < reader.BaseStream.Length)
                 {
                     var id = this.ReadChunkId(reader);
@@ -422,7 +422,7 @@ namespace HelixToolkit.UWP
 
             if (facesets == null || facesets.Count == 0)
             {
-                triangleIndices = ConvertFaceIndices(faces, faces);
+                triangleIndices = faces;
                 CreateMesh(positions, textureCoordinates, triangleIndices, transforms, out normals, out tangents, out bitangents, new PhongMaterial()
                 {
                     Name = "Gray",
@@ -811,8 +811,6 @@ namespace HelixToolkit.UWP
             {
                 case ChunkID.COL_RGB:
                     {
-                        // this code has not been tested...
-                        Debug.Assert(false);
                         float r = reader.ReadSingle();
                         float g = reader.ReadSingle();
                         float b = reader.ReadSingle();

@@ -42,7 +42,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The geometry buffer.
         /// </value>
-        IGeometryBufferModel GeometryBuffer { set; get; }
+        IAttachableBufferModel GeometryBuffer { set; get; }
         /// <summary>
         /// Gets or sets the raster description.
         /// </summary>

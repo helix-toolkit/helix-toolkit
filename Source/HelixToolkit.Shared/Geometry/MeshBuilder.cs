@@ -2054,15 +2054,18 @@ namespace HelixToolkit.Wpf
         public void AddPolygon(IList<Point> points, Vector3D axisX, Vector3D axisY, Point3D origin)
         {
             var indices = SweepLinePolygonTriangulator.Triangulate(points);
-            var index0 = this.positions.Count;
-            foreach (var p in points)
+            if (indices != null)
             {
-                this.positions.Add(origin + (axisX * p.X) + (axisY * p.Y));
-            }
+                var index0 = this.positions.Count;
+                foreach (var p in points)
+                {
+                    this.positions.Add(origin + (axisX * p.X) + (axisY * p.Y));
+                }
 
-            foreach (var i in indices)
-            {
-                this.triangleIndices.Add(index0 + i);
+                foreach (var i in indices)
+                {
+                    this.triangleIndices.Add(index0 + i);
+                }
             }
         }
         /// <summary>
@@ -3484,6 +3487,9 @@ namespace HelixToolkit.Wpf
             {
                 throw new ArgumentNullException("fanTextureCoordinates");
             }
+
+            if (fanPositions.Count < 3)
+                return;
 
             int index0 = this.positions.Count;
             foreach (var p in fanPositions)

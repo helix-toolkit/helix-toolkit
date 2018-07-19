@@ -88,6 +88,7 @@ namespace HelixToolkit.UWP.Core
         };
         #endregion
         #region Properties
+        private string effectName = DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur;
         /// <summary>
         /// Gets or sets the name of the effect.
         /// </summary>
@@ -96,8 +97,15 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public string EffectName
         {
-            set; get;
-        } = DefaultRenderTechniqueNames.PostEffectMeshOutlineBlur;
+            set
+            {
+                SetAffectsCanRenderFlag(ref effectName, value);
+            }
+            get
+            {
+                return effectName;
+            }
+        }
 
         private Color4 color = Mathematics.Color.Red;
         /// <summary>
@@ -198,7 +206,7 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        protected override bool CanRender(RenderContext context)
+        protected override bool OnUpdateCanRenderFlag()
         {
             return IsAttached && !string.IsNullOrEmpty(EffectName);
         }

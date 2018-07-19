@@ -130,7 +130,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
         /// <returns></returns>
         public virtual bool HitTest(RenderContext context, object model, Matrix modelMatrix, Ray rayWS, ref List<HitTestResult> hits)
         {
-            return Octree.HitTest(context, model, modelMatrix, rayWS, ref hits);
+            return Octree.HitTest(context, model, null, modelMatrix, rayWS, ref hits);
         }
     }
 
@@ -432,7 +432,7 @@ namespace HelixToolkit.Wpf.SharpDX.Utilities
             {
                 return false;
             }
-            var hit = Octree.HitTest(context, model, modelMatrix, rayWS, ref hits);
+            var hit = Octree.HitTest(context, model, null, modelMatrix, rayWS, ref hits);
             foreach(var item in NonBoundableItems)
             {
                 hit |= item.HitTest(context, rayWS, ref hits);

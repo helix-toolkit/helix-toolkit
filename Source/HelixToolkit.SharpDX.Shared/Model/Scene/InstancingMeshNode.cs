@@ -169,7 +169,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 if (octreeManager != null && octreeManager.Octree != null)
                 {
                     var boundHits = new List<HitTestResult>();
-                    isHit = octreeManager.Octree.HitTest(context, this, TotalModelMatrix, rayWS, ref boundHits);
+                    isHit = octreeManager.Octree.HitTest(context, this, Geometry, TotalModelMatrix, rayWS, ref boundHits);
                     if (isHit)
                     {
                         isHit = false;

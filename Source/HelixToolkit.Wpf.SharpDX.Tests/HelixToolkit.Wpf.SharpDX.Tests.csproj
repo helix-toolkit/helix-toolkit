@@ -94,6 +94,7 @@
     <Compile Include="Importers\ObjReaderTests.cs" />
     <Compile Include="Properties\AssemblyDescription.cs" />
     <Compile Include="Utilities\MeshBuilderTests.cs" />
+    <Compile Include="Utilities\ObjExporterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\Models\obj\obj_format_tests\face_relative_vertex_normals.obj">

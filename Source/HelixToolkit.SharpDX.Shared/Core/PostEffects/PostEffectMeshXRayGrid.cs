@@ -35,6 +35,7 @@ namespace HelixToolkit.UWP.Core
         private DepthPrepassCore depthPrepassCore;
         #endregion
         #region Properties
+        private string effectName = DefaultRenderTechniqueNames.PostEffectMeshXRayGrid; 
         /// <summary>
         /// Gets or sets the name of the effect.
         /// </summary>
@@ -43,8 +44,9 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public string EffectName
         {
-            set; get;
-        } = DefaultRenderTechniqueNames.PostEffectMeshXRayGrid;
+            set { SetAffectsCanRenderFlag(ref effectName, value); }
+            get { return effectName; }
+        }
 
         private Color4 color = Mathematics.Color.DarkBlue;
         /// <summary>
@@ -150,6 +152,11 @@ namespace HelixToolkit.UWP.Core
             depthPrepassCore.Detach();
             depthPrepassCore = null;
             base.OnDetach();
+        }
+
+        protected override bool OnUpdateCanRenderFlag()
+        {
+            return IsAttached && !string.IsNullOrEmpty(EffectName);
         }
         /// <summary>
         /// Called when [render].

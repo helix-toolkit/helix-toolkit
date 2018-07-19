@@ -1100,6 +1100,23 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty EnableDesignModeRenderingProperty =
             DependencyProperty.Register("EnableDesignModeRendering", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false));
 
+
+        /// <summary>
+        /// The enable render order property. <see cref="EnableRenderOrder"/>
+        /// </summary>
+        public static readonly DependencyProperty EnableRenderOrderProperty =
+            DependencyProperty.Register("EnableRenderOrder", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false,
+                (d,e)=>
+                {
+                    var viewport = d as Viewport3DX;
+                    if (viewport.renderHostInternal != null)
+                    {
+                        viewport.renderHostInternal.RenderConfiguration.EnableRenderOrder = (bool)e.NewValue;
+                        viewport.renderHostInternal.InvalidatePerFrameRenderables();
+                    }
+                }));
+
+
         /// <summary>
         /// Background Color
         /// </summary>
@@ -2881,6 +2898,20 @@ namespace HelixToolkit.Wpf.SharpDX
         {
             get { return (bool)GetValue(EnableDesignModeRenderingProperty); }
             set { SetValue(EnableDesignModeRenderingProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable render order]. 
+        /// Specify render order in <see cref="Element3D.RenderOrder"/>. 
+        /// Scene node will be sorted by the <see cref="Element3D.RenderOrder"/> during rendering.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable manual render order]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableRenderOrder
+        {
+            get { return (bool)GetValue(EnableRenderOrderProperty); }
+            set { SetValue(EnableRenderOrderProperty, value); }
         }
     }
 }

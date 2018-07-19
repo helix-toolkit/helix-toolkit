@@ -18,6 +18,8 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Blinn = "RenderBlinn";
+
+        public const string BlinnBatched = "RenderBlinnBatch";
         ///// <summary>
         ///// 
         ///// </summary>
@@ -138,6 +140,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Diffuse = "RenderDiffuse";
+        /// <summary>
+        /// The diffuse oit
+        /// </summary>
+        public const string DiffuseOIT = "RenderDiffuseOIT";
         /// <summary>
         /// 
         /// </summary>
