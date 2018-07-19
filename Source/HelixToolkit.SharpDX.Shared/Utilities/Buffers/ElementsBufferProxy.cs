@@ -177,7 +177,7 @@ namespace HelixToolkit.UWP.Utilities
             {
                 return;
             }
-            else if (buffer == null || buffer.Description.SizeInBytes < newSizeInBytes)
+            else if (buffer == null || Capacity < newSizeInBytes)
             {
                 RemoveAndDispose(ref buffer);
                 var buffdesc = new BufferDescription()
