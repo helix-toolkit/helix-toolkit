@@ -1,4 +1,6 @@
-﻿using SharpDX;
+﻿using Matrix = System.Numerics.Matrix4x4;
+using HelixToolkit.Mathematics;
+using System.Numerics;
 using SharpDX.Direct3D;
 using System.Linq;
 #if !NETFX_CORE
@@ -101,7 +103,7 @@ namespace HelixToolkit.UWP.Core
                         textures.MoveNext();
                         array[i] = new BatchedMeshVertex()
                         {
-                            Position = Vector3.Transform(positions.Current, transform),
+                            Position = Vector4.Transform(positions.Current, transform),
                             Normal = Vector3.TransformNormal(normals.Current, transform),
                             Tangent = Vector3.TransformNormal(tangents.Current, transform),
                             BiTangent = Vector3.TransformNormal(bitangents.Current, transform),

@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SharpDX;
+using HelixToolkit.Mathematics;
 using HelixToolkit.Wpf.SharpDX;
+using System.Numerics;
 using System.Threading;
 using Point3D = System.Windows.Media.Media3D.Point3D;
 using Vector3D = System.Windows.Media.Media3D.Vector3D;
+using Matrix = System.Numerics.Matrix4x4;
 using HelixToolkit.Wpf.SharpDX.Model;
 using Media3D = System.Windows.Media.Media3D;
 
