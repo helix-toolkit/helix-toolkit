@@ -13,6 +13,8 @@ using System.Windows.Media;
 using Vector3 = global::SharpDX.Vector3;
 using Matrix = global::SharpDX.Matrix;
 using Vector4 = global::SharpDX.Vector4;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace BoneSkinDemo
 {
@@ -145,11 +147,11 @@ namespace BoneSkinDemo
                 OnPropertyChanged();
                 if (enableAnimation)
                 {
-                    timer.Start();
+                    StartAnimation();
                 }
                 else
                 {
-                    timer.Stop();
+                    cts.Cancel();
                 }
             }
             get
@@ -164,7 +166,6 @@ namespace BoneSkinDemo
 
         private readonly Matrix[] boneInternal = new Matrix[BoneMatricesStruct.NumberOfBones];
         private readonly List<BoneIds> boneParams = new List<BoneIds>();
-        private DispatcherTimer timer = new DispatcherTimer();
         private int frame = 0;
         private bool direction = false;
 
@@ -172,6 +173,8 @@ namespace BoneSkinDemo
         private const int Theta = 24;
         private IList<SharpDX.Vector3> path;
         private int numSegmentPerBone;
+        private CancellationTokenSource cts = new CancellationTokenSource();
+        private SynchronizationContext context = SynchronizationContext.Current;
         public MainViewModel()
         {
             this.Title = "BoneSkin Demo";
@@ -255,14 +258,26 @@ namespace BoneSkinDemo
             {
                 Instances.Add(Matrix.Translation(new Vector3(-5 + i * 4, 0, 10)));
             }
-
-            timer.Tick += Timer_Tick;
-            timer.Interval = TimeSpan.FromMilliseconds(30);
-            timer.Start();
+            StartAnimation();
         }
     
+        private void StartAnimation()
+        {
+            cts.Cancel();
+            cts.Dispose();
+            cts = new CancellationTokenSource();
+            var token = cts.Token;
+            Task.Run(() =>
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    Timer_Tick();
+                    Task.Delay(20).Wait();
+                }
+            }, token);
+        }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick()
         {
             double angle = (0.05f*frame) * Math.PI / 180;
             var xAxis = new Vector3(1, 0, 0);
@@ -292,7 +307,11 @@ namespace BoneSkinDemo
                     boneInternal[i] = rot * trans;
                 }
             }
-            Bones = new BoneMatricesStruct() { Bones = boneInternal.ToArray() };
+            var newBone =  new BoneMatricesStruct() { Bones = boneInternal.ToArray() };
+            context.Post((o) =>
+            {
+                Bones = newBone;
+            }, null);
 
             if (frame > 40 || frame < -40)
             {
@@ -326,8 +345,7 @@ namespace BoneSkinDemo
 
         protected override void Dispose(bool disposing)
         {
-            timer.Stop();
-            timer.Tick -= this.Timer_Tick;
+            cts.Cancel(true);
             base.Dispose(disposing);
         }
     }

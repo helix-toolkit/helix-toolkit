@@ -299,11 +299,11 @@ namespace HelixToolkit.UWP.Core
             {
                 if (instanceModel == null || !instanceModel.HasElements)
                 {
-                    context.DrawIndexed(GeometryBuffer.IndexBuffer.ElementCount, GeometryBuffer.IndexBuffer.Offset, 0);
+                    context.DrawIndexed(GeometryBuffer.IndexBuffer.ElementCount, 0, 0);
                 }
                 else
                 {
-                    context.DrawIndexedInstanced(GeometryBuffer.IndexBuffer.ElementCount, instanceModel.Buffer.ElementCount, GeometryBuffer.IndexBuffer.Offset, 0, instanceModel.Buffer.Offset);
+                    context.DrawIndexedInstanced(GeometryBuffer.IndexBuffer.ElementCount, instanceModel.Buffer.ElementCount, 0, 0, 0);
                 }
             }
             else if (GeometryBuffer.VertexBuffer.Length > 0)
@@ -315,7 +315,7 @@ namespace HelixToolkit.UWP.Core
                 else
                 {
                     context.DrawInstanced(GeometryBuffer.VertexBuffer[0].ElementCount, instanceModel.Buffer.ElementCount,
-                        0, instanceModel.Buffer.Offset);
+                        0, 0);
                 }
             }
         }
