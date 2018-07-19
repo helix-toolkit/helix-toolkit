@@ -285,7 +285,7 @@ namespace HelixToolkit.UWP.Core
             }
             if (IndexBuffer != null)
             {
-                context.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, IndexBuffer.Offset);
+                context.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, 0);
             }
             else
             {
