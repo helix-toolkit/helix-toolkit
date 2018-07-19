@@ -178,7 +178,7 @@ namespace HelixToolkit.UWP.Utilities
                 //buffer = Collect(SDX11::Buffer.Create(context, data.GetArrayByType(), buffdesc));
                 buffer = Collect(new Buffer(context, buffdesc));
             }
-            context.MapSubresource(this.buffer, MapMode.WriteDiscard, MapFlags.None, out DataStream stream);
+            context.MapSubresource(this.buffer, MapMode.WriteNoOverwrite, MapFlags.None, out DataStream stream);
             using (stream)
             {
                 stream.WriteRange(data.GetArrayByType(), offset, count);                    
