@@ -33,7 +33,6 @@ namespace HelixToolkit.UWP.Core
             {
                 if(Set(ref material, value) && IsAttached)
                 {
-                    materialVariables.OnInvalidateRenderer -= MaterialVariables_OnInvalidateRenderer;
                     RemoveAndDispose(ref materialVariables);
                     if (value != null)
                     {
@@ -113,21 +112,13 @@ namespace HelixToolkit.UWP.Core
 
         private void AssignMaterialVariableProperties(IRenderTechnique technique)
         {
-            materialVariables.OnInvalidateRenderer -= MaterialVariables_OnInvalidateRenderer;
             materialVariables.RenderShadowMap = this.RenderShadowMap;
             materialVariables.RenderEnvironmentMap = this.RenderEnvironmentMap;
-            materialVariables.OnInvalidateRenderer += MaterialVariables_OnInvalidateRenderer;
             materialVariables.Attach(technique);
-        }
-
-        private void MaterialVariables_OnInvalidateRenderer(object sender, System.EventArgs e)
-        {
-            InvalidateRenderer();
         }
 
         protected override void OnDetach()
         {
-            materialVariables.OnInvalidateRenderer -= MaterialVariables_OnInvalidateRenderer;
             materialVariables = EmptyMaterialVariable.EmptyVariable;
             base.OnDetach();
         }

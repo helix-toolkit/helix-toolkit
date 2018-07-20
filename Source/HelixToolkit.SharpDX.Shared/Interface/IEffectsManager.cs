@@ -185,5 +185,13 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   <c>true</c> if the specified name has technique; otherwise, <c>false</c>.
         /// </returns>
         bool HasTechnique(string name);
+        /// <summary>
+        /// Occurs when [on invalidate renderer].
+        /// </summary>
+        event EventHandler<EventArgs> OnInvalidateRenderer;
+        /// <summary>
+        /// Invalidates the renderer.
+        /// </summary>
+        void InvalidateRenderer();
     }
 }

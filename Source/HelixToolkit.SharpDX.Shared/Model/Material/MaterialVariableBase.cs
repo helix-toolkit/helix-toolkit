@@ -18,18 +18,12 @@ namespace HelixToolkit.UWP.Model
 
     public abstract class MaterialVariable : ReferenceCountDisposeObject
     {
-        public event EventHandler<EventArgs> OnInvalidateRenderer;
         public abstract string DefaultShaderPassName { set; get; }
         public abstract bool RenderShadowMap { set; get; }
         public abstract bool RenderEnvironmentMap { set; get; }
         public abstract ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context);
         public abstract bool BindMaterial(DeviceContextProxy deviceContext, ShaderPass shaderPass);
         public abstract bool Attach(IRenderTechnique technique);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected void InvalidateRenderer()
-        {
-            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
-        }
     }
     /// <summary>
     /// 
@@ -114,6 +108,12 @@ namespace HelixToolkit.UWP.Model
             needUpdate = true;
             this.RaisePropertyChanged(propertyName);
             return true;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected void InvalidateRenderer()
+        {
+            Technique?.EffectsManager?.InvalidateRenderer();
         }
     }
 }

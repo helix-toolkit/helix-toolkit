@@ -49,6 +49,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public event EventHandler<EventArgs> OnDisposeResources;
         /// <summary>
+        /// Occurs when [on invalidate renderer].
+        /// </summary>
+        public event EventHandler<EventArgs> OnInvalidateRenderer;
+        /// <summary>
         /// The minimum supported feature level.
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
@@ -548,7 +552,10 @@ namespace HelixToolkit.UWP
         {
             Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
         }
+
+        public void InvalidateRenderer()
+        {
+            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
+        }
     }
-
-
 }
