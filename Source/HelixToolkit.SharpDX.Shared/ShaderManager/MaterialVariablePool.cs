@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using HelixToolkit.Wpf.SharpDX.Model;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -9,6 +8,7 @@ namespace HelixToolkit.Wpf.SharpDX
 namespace HelixToolkit.UWP
 #endif
 {
+    using Model;
     public class MaterialVariablePool : DisposeObject, IMaterialVariablePool
     {
         private readonly Dictionary<Guid, MaterialVariable> dictionary = new Dictionary<Guid, MaterialVariable>();
