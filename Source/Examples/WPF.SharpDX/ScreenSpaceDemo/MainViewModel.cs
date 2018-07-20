@@ -29,7 +29,7 @@ namespace ScreenSpaceDemo
 
     public class MainViewModel : BaseViewModel
     {
-        public Element3DCollection ModelGeometry { get; private set; }
+        public ObservableElement3DCollection ModelGeometry { get; private set; }
         public MeshGeometry3D Model { get; private set; }
         public LineGeometry3D Lines { get; private set; }
         public LineGeometry3D Grid { get; private set; }
@@ -76,8 +76,11 @@ namespace ScreenSpaceDemo
             var reader = new ObjReader();
             var objModel = reader.Read(@"./Media/CornellBox-Glossy.obj");                              
                         
-            this.ModelGeometry = new Element3DCollection();
-            this.ModelGeometry.AddRange(objModel.Select(x => new MeshGeometryModel3D() { Geometry = x.Geometry as MeshGeometry3D, Material = x.Material, }));            
+            this.ModelGeometry = new ObservableElement3DCollection();
+            foreach(var model in objModel.Select(x => new MeshGeometryModel3D() { Geometry = x.Geometry as MeshGeometry3D, Material = x.Material, }))
+            {
+              this.ModelGeometry.Add(model);
+            }
                           
             // model trafos
             this.ModelTransform = new Media3D.TranslateTransform3D(0, 0, 0);            
