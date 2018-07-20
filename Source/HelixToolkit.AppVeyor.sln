@@ -135,13 +135,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Viewport3DXCodeBehindTester
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XRayDemo", "Examples\WPF.SharpDX\XRayDemo\XRayDemo.csproj", "{C4F7AE1D-C03F-4060-A89B-C8CE47AD5EB0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UWP", "UWP", "{8F0A8E1D-B76B-4C42-A5BB-6E096BE40441}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo", "Examples\UWP\SimpleDemo\SimpleDemo.csproj", "{94B07B3F-AE9A-428E-B420-CC05827FB6D0}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{4ee18e80-7609-4fff-bd4b-f02728ec0688}*SharedItemsImports = 13
 		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{1eaf532e-d750-497b-bb8f-ee85359c78a2}*SharedItemsImports = 13
 		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{1aefcb64-e997-425a-8c84-dc93263cc4a7}*SharedItemsImports = 13
-		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
 		HelixToolkit.SharpDX.SharedModel\HelixToolkit.SharpDX.SharedModel.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
+		HelixToolkit.SharpDX.Shared\HelixToolkit.SharpDX.Shared.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{39740654-f5f1-4936-b4ea-9bc97d4cde37}*SharedItemsImports = 4
 		HelixToolkit.Shared\HelixToolkit.Shared.projitems*{3f3b4548-a9db-4874-86f7-e7c4fec8a351}*SharedItemsImports = 4
 	EndGlobalSection
@@ -956,6 +960,26 @@ Global
 		{C4F7AE1D-C03F-4060-A89B-C8CE47AD5EB0}.Release|x64.Build.0 = Release|Any CPU
 		{C4F7AE1D-C03F-4060-A89B-C8CE47AD5EB0}.Release|x86.ActiveCfg = Release|Any CPU
 		{C4F7AE1D-C03F-4060-A89B-C8CE47AD5EB0}.Release|x86.Build.0 = Release|Any CPU
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|ARM.ActiveCfg = Debug|ARM
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|ARM.Build.0 = Debug|ARM
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|ARM.Deploy.0 = Debug|ARM
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|x64.ActiveCfg = Debug|x64
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|x64.Build.0 = Debug|x64
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|x64.Deploy.0 = Debug|x64
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|x86.ActiveCfg = Debug|x86
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|x86.Build.0 = Debug|x86
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Debug|x86.Deploy.0 = Debug|x86
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|Any CPU.ActiveCfg = Release|x86
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|ARM.ActiveCfg = Release|ARM
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|ARM.Build.0 = Release|ARM
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|ARM.Deploy.0 = Release|ARM
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|x64.ActiveCfg = Release|x64
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|x64.Build.0 = Release|x64
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|x64.Deploy.0 = Release|x64
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|x86.ActiveCfg = Release|x86
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|x86.Build.0 = Release|x86
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1016,6 +1040,8 @@ Global
 		{82BB6745-9D34-453A-851C-01C8FD7A0F20} = {8DB21D26-08EA-4A24-BDE8-FFE08F2C30EE}
 		{812C2A21-CD7E-4344-A83C-99050A8843D2} = {8DB21D26-08EA-4A24-BDE8-FFE08F2C30EE}
 		{C4F7AE1D-C03F-4060-A89B-C8CE47AD5EB0} = {8DB21D26-08EA-4A24-BDE8-FFE08F2C30EE}
+		{8F0A8E1D-B76B-4C42-A5BB-6E096BE40441} = {BAACBCBA-B8F0-4D37-9F31-9A3FD148DE50}
+		{94B07B3F-AE9A-428E-B420-CC05827FB6D0} = {8F0A8E1D-B76B-4C42-A5BB-6E096BE40441}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FDED8F31-C7C8-41E4-ACAC-293F326BAE9F}
