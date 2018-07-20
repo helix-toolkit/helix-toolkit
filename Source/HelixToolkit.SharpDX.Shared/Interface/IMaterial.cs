@@ -181,11 +181,11 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <returns></returns>
         bool Attach(IRenderTechnique technique);
         /// <summary>
-        /// 
+        /// Update the material constant buffer
         /// </summary>
-        /// <param name="modelstruct"></param>
+        /// <param name="deviceContext"></param>
         /// <returns></returns>
-        bool UpdateMaterialVariables(ref ModelStruct modelstruct);
+        bool UpdateMaterialVariables(DeviceContextProxy deviceContext);
 
         /// <summary>
         /// Bind material texture maps to multiple shaders

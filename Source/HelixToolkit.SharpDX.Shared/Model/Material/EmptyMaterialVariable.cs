@@ -38,7 +38,7 @@ namespace HelixToolkit.UWP.Model
             return false;
         }
 
-        public bool UpdateMaterialVariables(ref ModelStruct modelstruct)
+        public bool UpdateMaterialVariables(DeviceContextProxy deviceContext)
         {
             return false;
         }

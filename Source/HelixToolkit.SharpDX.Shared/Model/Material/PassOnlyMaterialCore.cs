@@ -93,8 +93,9 @@ namespace HelixToolkit.UWP.Model
             return true;
         }
 
-        public bool UpdateMaterialVariables(ref ModelStruct modelstruct)
+        public bool UpdateMaterialVariables(DeviceContextProxy deviceContext)
         {
+            deviceContext.SetCurrentMaterial(this);
             return true;
         }
         public ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context)

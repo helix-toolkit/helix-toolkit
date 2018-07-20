@@ -210,6 +210,8 @@ namespace HelixToolkit.UWP.Model
         private readonly ColorStripeMaterialCore material;
         private IRenderTechnique technique;
         private readonly IDevice3DResources deviceResources;
+        private PhongMaterialStruct materialStruct = new PhongMaterialStruct();
+        private readonly ConstantBufferProxy materialCB;
         /// <summary>
         /// 
         /// </summary>
@@ -227,6 +229,7 @@ namespace HelixToolkit.UWP.Model
             statePoolManager = manager.StateManager;
             CreateTextureViews();
             CreateSamplers();
+            materialCB = manager.ConstantBufferPool.Register(DefaultBufferNames.MeshPhongCB, PhongMaterialStruct.SizeInBytes);
             this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, EventArgs.Empty); };
         }
 
@@ -304,28 +307,35 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        private void AssignVariables(ref ModelStruct modelstruct)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void AssignVariables()
         {
-            modelstruct.Diffuse = material.DiffuseColor;
-            modelstruct.HasDiffuseMap = material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0;
-            modelstruct.HasDiffuseAlphaMap = material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0;
+            materialStruct.Diffuse = material.DiffuseColor;
+            materialStruct.HasDiffuseMap = material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0;
+            materialStruct.HasDiffuseAlphaMap = material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0;
         }
 
         /// <summary>
         /// Updates the material variables.
         /// </summary>
-        /// <param name="modelstruct">The modelstruct.</param>
+        /// <param name="deviceContext"></param>
         /// <returns></returns>
-        public bool UpdateMaterialVariables(ref ModelStruct modelstruct)
+        public bool UpdateMaterialVariables(DeviceContextProxy deviceContext)
         {
             if (material == null)
             {
                 return false;
             }
+            bool cbUpdate = deviceContext.SetCurrentMaterial(this);
             if (needUpdate)
             {
-                AssignVariables(ref modelstruct);
+                AssignVariables();
                 needUpdate = false;
+                cbUpdate = true;
+            }
+            if (cbUpdate)
+            {
+                materialCB.UploadDataToBuffer(deviceContext, ref materialStruct);
             }
             return true;
         }

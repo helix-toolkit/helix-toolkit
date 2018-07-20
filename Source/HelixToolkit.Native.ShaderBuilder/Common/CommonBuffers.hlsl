@@ -41,6 +41,13 @@ cbuffer cbMeshModel : register(b1)
     float4 vColor = float4(1, 1, 1, 1); //Shared with models
     bool3 bParams = bool3(false, false, false); // Shared with models for enable/disable features
     bool bBatched = false;
+    bool bRenderOIT = false;
+    float3 padding1 = float3(0,0,0);
+    float4 wireframeColor = float4(0,0,1,1);
+};
+
+cbuffer cbMeshPhongMaterial : register(b4)
+{
 	float minTessDistance = 1;
 	float maxTessDistance = 100;
 	float minTessFactor = 4;
@@ -58,9 +65,8 @@ cbuffer cbMeshModel : register(b1)
     bool bHasDisplacementMap = false;
     bool bHasCubeMap = false;
     bool bRenderShadowMap = false;
-    bool bRenderOIT = false;
+    float padding2;
     float4 displacementMapScaleMask = float4(0, 0, 0, 1);
-    float4 wireframeColor = float4(0,0,1,1);
 };
 #endif
 

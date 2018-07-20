@@ -146,8 +146,7 @@ namespace HelixToolkit.UWP.Core
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
         {
             model.World = ModelMatrix * context.WorldMatrix;
-            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
-            MaterialVariables.UpdateMaterialVariables(ref model);
+            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;            
         }
         /// <summary>
         /// 
@@ -157,6 +156,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         public bool BindMaterialTextures(DeviceContextProxy context, ShaderPass shader)
         {
+            MaterialVariables.UpdateMaterialVariables(context);
             return MaterialVariables.BindMaterialTextures(context, shader);
         }
     }
