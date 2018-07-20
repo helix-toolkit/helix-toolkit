@@ -78,7 +78,7 @@ namespace ScreenSpaceDemo
             var objModel = reader.Read(@"./Media/CornellBox-Glossy.obj");                              
                         
             this.ModelGeometry = new ObservableElement3DCollection();
-            foreach(var model in objModel.Select(x => new MeshGeometryModel3D() { Geometry = x.Geometry as MeshGeometry3D, Material = GetMaterialFromMaterialCore(x.Material), }))
+            foreach(var model in objModel.Select(x => new MeshGeometryModel3D() { Geometry = x.Geometry as MeshGeometry3D, Material = GetMaterialFromMaterialCore(x.Material as PhongMaterialCore), }))
             {
               this.ModelGeometry.Add(model);
             }
