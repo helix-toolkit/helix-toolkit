@@ -309,12 +309,6 @@ namespace HelixToolkit.UWP.Model
             materialStruct.HasDiffuseAlphaMap = material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0;
         }
 
-        /// <summary>
-        /// <see cref="IEffectMaterialVariables.BindMaterial(DeviceContextProxy, ShaderPass)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="shaderPass"></param>
-        /// <returns></returns>
         protected override bool OnBindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)
         {
             if (textureIndex != 0)
