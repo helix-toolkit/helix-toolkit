@@ -97,6 +97,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         ITextureResourceManager MaterialTextureManager { get; }
         /// <summary>
+        /// Gets the material variable manager.
+        /// </summary>
+        /// <value>
+        /// The material variable manager.
+        /// </value>
+        IMaterialVariablePool MaterialVariableManager { get; }
+        /// <summary>
         /// 
         /// </summary>
         IConstantBufferPool ConstantBufferPool { get; }

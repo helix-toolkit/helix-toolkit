@@ -13,15 +13,15 @@ namespace HelixToolkit.UWP
 namespace HelixToolkit.Wpf.SharpDX
 #endif
 {
-    using Shaders;
-    using Core;
-    using Render;
+    using Model;
     /// <summary>
     /// 
     /// </summary>
     public interface IMaterial : INotifyPropertyChanged
     {
         string Name { set; get; }
+        Guid Guid { get; }
+        MaterialVariable CreateMaterialVariables(IEffectsManager manager);
     }
     /// <summary>
     /// 
@@ -148,47 +148,10 @@ namespace HelixToolkit.Wpf.SharpDX
     }
 
     /// <summary>
-    /// A material proxy variable interface to manage all the material related resources
+    /// 
     /// </summary>
-    public interface IEffectMaterialVariables : IDisposable
+    public interface IMaterialVariablePool
     {
-        /// <summary>
-        /// Gets or sets the default name of the shader pass.
-        /// </summary>
-        /// <value>
-        /// The default name of the shader pass.
-        /// </value>
-        string DefaultShaderPassName { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render shadow map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render shadow map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderShadowMap { set; get; }
-        /// <summary>
-        /// Reflect the environment cube map
-        /// </summary>
-        bool RenderEnvironmentMap { set; get; }
-        /// <summary>
-        /// Occurs when [on invalidate renderer].
-        /// </summary>
-        event EventHandler<EventArgs> OnInvalidateRenderer;
-        /// <summary>
-        /// Attaches the specified technique.
-        /// </summary>
-        /// <param name="technique">The technique.</param>
-        /// <returns></returns>
-        bool Attach(IRenderTechnique technique);
-
-        /// <summary>
-        /// Bind material texture maps to multiple shaders
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="shaderPass"></param>
-        /// <returns></returns>
-        bool BindMaterial(DeviceContextProxy context, ShaderPass shaderPass);
-
-        ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context);
+        MaterialVariable Register(IMaterial material);
     }
 }

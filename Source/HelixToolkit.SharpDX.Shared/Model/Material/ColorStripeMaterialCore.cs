@@ -101,7 +101,7 @@ namespace HelixToolkit.UWP.Model
             get { return colorStripeSampler; }
         }
 
-        public override IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager)
+        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager)
         {
             return new ColorStripeMaterialVariables(manager, this);
         }

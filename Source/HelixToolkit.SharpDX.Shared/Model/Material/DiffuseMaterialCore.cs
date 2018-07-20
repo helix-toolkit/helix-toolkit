@@ -20,7 +20,7 @@ namespace HelixToolkit.UWP.Model
 
     public sealed class DiffuseMaterialCore : PhongMaterialCore
     {
-        public override IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager)
+        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager)
         {
             return new DiffuseMaterialVariables(DefaultPassNames.Diffuse, manager, this);
         }
@@ -28,7 +28,7 @@ namespace HelixToolkit.UWP.Model
 
     public sealed class ViewCubeMaterialCore : PhongMaterialCore
     {
-        public override IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager)
+        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager)
         {
             return new DiffuseMaterialVariables(DefaultPassNames.ViewCube, manager, this);
         }

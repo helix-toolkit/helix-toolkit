@@ -15,43 +15,51 @@ namespace HelixToolkit.UWP.Model
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
     using Utilities;
+
+    public abstract class MaterialVariable : ReferenceCountDisposeObject
+    {
+        public event EventHandler<EventArgs> OnInvalidateRenderer;
+        public abstract string DefaultShaderPassName { set; get; }
+        public abstract bool RenderShadowMap { set; get; }
+        public abstract bool RenderEnvironmentMap { set; get; }
+        public abstract ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context);
+        public abstract bool BindMaterial(DeviceContextProxy deviceContext, ShaderPass shaderPass);
+        public abstract bool Attach(IRenderTechnique technique);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected void InvalidateRenderer()
+        {
+            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
+        }
+    }
     /// <summary>
     /// 
     /// </summary>
     /// <typeparam name="MaterialStruct">The type of the material structure.</typeparam>
-    public abstract class MaterialVariableBase<MaterialStruct> : DisposeObject, IEffectMaterialVariables where MaterialStruct : struct
+    public abstract class MaterialVariableBase<MaterialStruct> : MaterialVariable where MaterialStruct : struct
     {
-        public event EventHandler<EventArgs> OnInvalidateRenderer;
-
-        public abstract string DefaultShaderPassName { set; get; }
-        public abstract bool RenderShadowMap { set; get; }
-        public abstract bool RenderEnvironmentMap { set; get; }
         protected IRenderTechnique Technique { private set; get; }
         protected bool IsAttached { private set; get; } = false;
-
         private readonly ConstantBufferProxy materialCB;
         protected bool needUpdate = true;
         protected MaterialStruct materialStruct = new MaterialStruct();
 
-        public MaterialVariableBase(IEffectsManager manager, string constBufferName, int materialStructSize)
+        public MaterialVariableBase(IEffectsManager manager, string constBufferName = "", int materialStructSize = 0)
         {
-            materialCB = manager.ConstantBufferPool.Register(constBufferName, materialStructSize);
-            this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, EventArgs.Empty); };
+            if (!string.IsNullOrEmpty(constBufferName) && materialStructSize != 0)
+            {
+                materialCB = manager.ConstantBufferPool.Register(constBufferName, materialStructSize);
+            }
+            this.PropertyChanged += (s, e) => { InvalidateRenderer(); };
         }
 
-        public MaterialVariableBase(IEffectsManager manager)
-        {
-            this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, EventArgs.Empty); };
-        }
-
-        public virtual bool Attach(IRenderTechnique technique)
+        public override bool Attach(IRenderTechnique technique)
         {
             Technique = technique;
             IsAttached = true;
             return !technique.IsNull;
         }
 
-        public bool BindMaterial(DeviceContextProxy deviceContext, ShaderPass shaderPass)
+        public sealed override bool BindMaterial(DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
             if (CanUpdateMaterial())
             {
@@ -64,7 +72,7 @@ namespace HelixToolkit.UWP.Model
                 }
                 if (cbUpdate)
                 {
-                    materialCB.UploadDataToBuffer(deviceContext, ref materialStruct);
+                    materialCB?.UploadDataToBuffer(deviceContext, ref materialStruct);
                     return OnBindMaterialTextures(deviceContext, shaderPass);
                 }
                 return true;
@@ -76,8 +84,6 @@ namespace HelixToolkit.UWP.Model
         }
 
         protected abstract bool OnBindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass);
-
-        public abstract ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context);
 
         protected abstract void AssignVariables();
 
@@ -93,9 +99,7 @@ namespace HelixToolkit.UWP.Model
             {
                 IsAttached = false;
                 Technique = null;
-                OnInvalidateRenderer = null;
             }
-
             base.OnDispose(disposeManagedResources);
         }
 
@@ -110,12 +114,6 @@ namespace HelixToolkit.UWP.Model
             needUpdate = true;
             this.RaisePropertyChanged(propertyName);
             return true;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected void InvalidateRenderer()
-        {
-            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
         }
     }
 }

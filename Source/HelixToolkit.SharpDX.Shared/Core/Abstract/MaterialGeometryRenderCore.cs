@@ -18,11 +18,11 @@ namespace HelixToolkit.UWP.Core
     /// </summary>
     public abstract class MaterialGeometryRenderCore : GeometryRenderCore<ModelStruct>, IMaterialRenderParams
     {
-        private IEffectMaterialVariables materialVariables = EmptyMaterialVariable.EmptyVariable;
+        private MaterialVariable materialVariables = EmptyMaterialVariable.EmptyVariable;
         /// <summary>
         /// Used to wrap all material resources
         /// </summary>
-        public IEffectMaterialVariables MaterialVariables { get { return materialVariables; } }
+        public MaterialVariable MaterialVariables { get { return materialVariables; } }
         private MaterialCore material = null;
         /// <summary>
         /// 
@@ -33,10 +33,11 @@ namespace HelixToolkit.UWP.Core
             {
                 if(Set(ref material, value) && IsAttached)
                 {
+                    materialVariables.OnInvalidateRenderer -= MaterialVariables_OnInvalidateRenderer;
                     RemoveAndDispose(ref materialVariables);
                     if (value != null)
                     {
-                        materialVariables = Collect(value.CreateMaterialVariables(EffectTechnique.EffectsManager));
+                        materialVariables = Collect(EffectTechnique.EffectsManager.MaterialVariableManager.Register(value));
                         AssignMaterialVariableProperties(technique);
                     }
                     else
@@ -59,7 +60,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(Set(ref renderShadowMap, value) && materialVariables != null)
+                if(Set(ref renderShadowMap, value))
                 {
                     materialVariables.RenderShadowMap = value;
                 }
@@ -74,7 +75,7 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                if(Set(ref renderEnvironmentMap, value) && materialVariables != null)
+                if(Set(ref renderEnvironmentMap, value))
                 {
                     materialVariables.RenderEnvironmentMap = value;
                 }
@@ -95,7 +96,7 @@ namespace HelixToolkit.UWP.Core
                 this.technique = technique;
                 if (material != null)
                 {
-                    materialVariables = Collect(material.CreateMaterialVariables(technique.EffectsManager));
+                    materialVariables = Collect(technique.EffectsManager.MaterialVariableManager.Register(material));
                     AssignMaterialVariableProperties(technique);
                 }
                 else
@@ -126,6 +127,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnDetach()
         {
+            materialVariables.OnInvalidateRenderer -= MaterialVariables_OnInvalidateRenderer;
             materialVariables = EmptyMaterialVariable.EmptyVariable;
             base.OnDetach();
         }

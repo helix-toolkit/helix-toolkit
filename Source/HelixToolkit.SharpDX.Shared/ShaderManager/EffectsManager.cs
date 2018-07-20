@@ -95,6 +95,9 @@ namespace HelixToolkit.UWP
         /// </value>
         public ITextureResourceManager MaterialTextureManager { get { return materialTextureManager; } }
         private ITextureResourceManager materialTextureManager;
+
+        public IMaterialVariablePool MaterialVariableManager { get { return materialVariableManager; } }
+        private IMaterialVariablePool materialVariableManager;
         #region 3D Resoruces
 
         private global::SharpDX.Direct3D11.Device device;
@@ -300,6 +303,9 @@ namespace HelixToolkit.UWP
 
             RemoveAndDispose(ref materialTextureManager);
             materialTextureManager = Collect(new TextureResourceManager(Device));
+
+            RemoveAndDispose(ref materialVariableManager);
+            materialVariableManager = Collect(new MaterialVariablePool(this));
 
             RemoveAndDispose(ref deviceContextPool);
             deviceContextPool = Collect(new DeviceContextPool(Device));

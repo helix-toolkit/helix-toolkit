@@ -423,7 +423,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 if (Set(ref material, value))
                 {
-                    (RenderCore as IMaterialRenderParams).Material = material;
                     if (RenderHost != null)
                     {
                         if (IsAttached)
@@ -538,8 +537,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         protected virtual void AttachMaterial()
         {
-            var core = RenderCore as IMaterialRenderParams;
-            core.Material = this.Material;
+            if (RenderCore is IMaterialRenderParams core)
+            {
+                core.Material = this.Material;
+            }
+            
             if(Materials == null && Material is PhongMaterialCore p)
             {
                 batchingBuffer.Materials = new PhongMaterialCore[] { p };

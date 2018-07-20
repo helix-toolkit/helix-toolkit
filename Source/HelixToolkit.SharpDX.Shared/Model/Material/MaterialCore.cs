@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
@@ -24,6 +25,8 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        public abstract IEffectMaterialVariables CreateMaterialVariables(IEffectsManager manager);
+        public Guid Guid { get; } = Guid.NewGuid();
+
+        public abstract MaterialVariable CreateMaterialVariables(IEffectsManager manager);
     }
 }
