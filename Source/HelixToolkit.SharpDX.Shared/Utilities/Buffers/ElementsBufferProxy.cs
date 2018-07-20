@@ -193,7 +193,7 @@ namespace HelixToolkit.UWP.Utilities
                 CapacityUsed = 0;
                 buffer = Collect(new Buffer(context, buffdesc));
             }
-            if(CapacityUsed + newSizeInBytes <= Capacity)
+            if(CapacityUsed + newSizeInBytes <= Capacity && !context.IsDeferred)
             {
                 Offset = CapacityUsed;
                 context.MapSubresource(this.buffer, MapMode.WriteNoOverwrite, MapFlags.None, out DataStream stream);
