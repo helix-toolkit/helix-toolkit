@@ -125,6 +125,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\DiffuseMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\EmptyMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\MaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\MaterialVariableBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PassOnlyMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\ExposedArrayList.cs" />

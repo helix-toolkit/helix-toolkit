@@ -33,7 +33,7 @@ namespace HelixToolkit.UWP.Model
             return false;
         }
 
-        public bool BindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)
+        public bool BindMaterial(DeviceContextProxy context, ShaderPass shaderPass)
         {
             return false;
         }

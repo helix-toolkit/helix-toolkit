@@ -34,15 +34,11 @@ namespace HelixToolkit.UWP.Model
         }
     }
 
-    public sealed class DiffuseMaterialVariables : DisposeObject, IEffectMaterialVariables
+    public sealed class DiffuseMaterialVariables : MaterialVariableBase<PhongMaterialStruct>
     {
         private const int NUMTEXTURES = 1;
         private const int NUMSAMPLERS = 1;
         private const int DiffuseIdx = 0;
-        /// <summary>
-        /// <see cref="IEffectMaterialVariables.OnInvalidateRenderer"/> 
-        /// </summary>
-        public event EventHandler<EventArgs> OnInvalidateRenderer;
 
         private readonly ITextureResourceManager textureManager;
         private readonly IStatePoolManager statePoolManager;
@@ -82,11 +78,11 @@ namespace HelixToolkit.UWP.Model
         /// <summary>
         /// 
         /// </summary>
-        public bool RenderShadowMap
+        public override bool RenderShadowMap
         {
             set
             {
-                if (Set(ref renderShadowMap, value))
+                if (SetAffectsRender(ref renderShadowMap, value))
                 {
                     needUpdate = true;
                 }
@@ -98,13 +94,13 @@ namespace HelixToolkit.UWP.Model
         }
 
         private string defaultShaderPassName = DefaultPassNames.Default;
-        public string DefaultShaderPassName
+        public override string DefaultShaderPassName
         {
             set
             {
-                if (!fixedPassName && Set(ref defaultShaderPassName, value) && isAttached)
+                if (!fixedPassName && SetAffectsRender(ref defaultShaderPassName, value) && IsAttached)
                 {
-                    MaterialPass = technique[value];
+                    MaterialPass = Technique[value];
                     UpdateMappings(MaterialPass);
                 }
             }
@@ -125,9 +121,9 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if (!fixedPassName && Set(ref transparentPassName, value) && isAttached)
+                if (!fixedPassName && Set(ref transparentPassName, value) && IsAttached)
                 {
-                    TransparentPass = technique[value];
+                    TransparentPass = Technique[value];
                 }
             }
             get
@@ -138,24 +134,19 @@ namespace HelixToolkit.UWP.Model
         /// <summary>
         /// Reflect the environment cube map
         /// </summary>
-        public bool RenderEnvironmentMap { set; get; }
-        private bool needUpdate = true;
+        public override bool RenderEnvironmentMap { set; get; }
         private readonly PhongMaterialCore material;
-        private bool isAttached = false;
-        private IRenderTechnique technique;
         private readonly bool fixedPassName = false;
 
-        private PhongMaterialStruct materialStruct = new PhongMaterialStruct();
-        private readonly ConstantBufferProxy materialCB;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="manager"></param>
         /// <param name="material"></param>
         private DiffuseMaterialVariables(IEffectsManager manager, PhongMaterialCore material)
+            : base(manager, DefaultBufferNames.MeshPhongCB, PhongMaterialStruct.SizeInBytes)
         {
             this.material = material;
-            needUpdate = true;
             material.PropertyChanged += Material_OnMaterialPropertyChanged;
             texDiffuseSlot = -1;
             samplerDiffuseSlot = samplerShadowSlot = -1;
@@ -163,8 +154,6 @@ namespace HelixToolkit.UWP.Model
             statePoolManager = manager.StateManager;
             CreateTextureViews();
             CreateSamplers();
-            materialCB = manager.ConstantBufferPool.Register(DefaultBufferNames.MeshPhongCB, PhongMaterialStruct.SizeInBytes);
-            this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, EventArgs.Empty); };
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureSharedPhongMaterialVariables"/> class. This construct will be using the PassName pass into constructor only.
@@ -179,14 +168,19 @@ namespace HelixToolkit.UWP.Model
             fixedPassName = true;
         }
 
-        public bool Attach(IRenderTechnique technique)
+        public override bool Attach(IRenderTechnique technique)
         {
-            this.technique = technique;
-            MaterialPass = technique[DefaultShaderPassName];
-            TransparentPass = technique[TransparentPassName];
-            UpdateMappings(MaterialPass);
-            isAttached = true;
-            return !MaterialPass.IsNULL;
+            if (base.Attach(technique))
+            {
+                MaterialPass = technique[DefaultShaderPassName];
+                TransparentPass = technique[TransparentPassName];
+                UpdateMappings(MaterialPass);
+                return !MaterialPass.IsNULL;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -204,9 +198,10 @@ namespace HelixToolkit.UWP.Model
             {
                 RemoveAndDispose(ref SamplerResources[DiffuseIdx]);
                 SamplerResources[DiffuseIdx] = Collect(statePoolManager.Register((sender as PhongMaterialCore).DiffuseMapSampler));
-            }            
-            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
+            }
+            InvalidateRenderer();
         }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CreateTextureView(System.IO.Stream stream, int index)
         {
@@ -248,7 +243,7 @@ namespace HelixToolkit.UWP.Model
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void AssignVariables()
+        protected override void AssignVariables()
         {
             materialStruct.Ambient = material.AmbientColor;
             materialStruct.Diffuse = material.DiffuseColor;
@@ -265,43 +260,8 @@ namespace HelixToolkit.UWP.Model
             materialStruct.HasCubeMap = 0;
         }
 
-        /// <summary>
-        /// Updates the material variables.
-        /// </summary>
-        /// <param name="deviceContext"></param>
-        /// <returns></returns>
-        public bool UpdateMaterialVariables(DeviceContextProxy deviceContext)
+        protected override bool OnBindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)
         {
-            if (material == null)
-            {
-                return false;
-            }
-            bool cbUpdate = deviceContext.SetCurrentMaterial(this);
-            if (needUpdate)
-            {
-                AssignVariables();
-                needUpdate = false;
-                cbUpdate = true;
-            }
-            if (cbUpdate)
-            {
-                materialCB.UploadDataToBuffer(deviceContext, ref materialStruct);
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContextProxy, ShaderPass)"/>
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="shaderPass"></param>
-        /// <returns></returns>
-        public bool BindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)
-        {
-            if (material == null)
-            {
-                return false;
-            }
             if (HasTextures)
             {
                 OnBindMaterialTextures(context, shaderPass.PixelShader);
@@ -347,8 +307,6 @@ namespace HelixToolkit.UWP.Model
         {
             if (disposeManagedResources)
             {
-                isAttached = false;
-                technique = null;
                 material.PropertyChanged -= Material_OnMaterialPropertyChanged;
                 for (int i = 0; i < NUMTEXTURES; ++i)
                 {
@@ -358,30 +316,14 @@ namespace HelixToolkit.UWP.Model
                 {
                     SamplerResources[i] = null;
                 }
-
-                OnInvalidateRenderer = null;
             }
 
             base.OnDispose(disposeManagedResources);
         }
 
-        public ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context)
+        public override ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context)
         {
             return core.RenderType == RenderType.Transparent && context.IsOITPass ? TransparentPass : MaterialPass;
-        }
-
-        private bool SetAffectsRender<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(backingField, value))
-            {
-                return false;
-            }
-
-            backingField = value;
-            this.RaisePropertyChanged(propertyName);
-            needUpdate = true;
-            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
-            return true;
         }
     }
 }

@@ -180,12 +180,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="technique">The technique.</param>
         /// <returns></returns>
         bool Attach(IRenderTechnique technique);
-        /// <summary>
-        /// Update the material constant buffer
-        /// </summary>
-        /// <param name="deviceContext"></param>
-        /// <returns></returns>
-        bool UpdateMaterialVariables(DeviceContextProxy deviceContext);
 
         /// <summary>
         /// Bind material texture maps to multiple shaders
@@ -193,7 +187,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="context"></param>
         /// <param name="shaderPass"></param>
         /// <returns></returns>
-        bool BindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass);
+        bool BindMaterial(DeviceContextProxy context, ShaderPass shaderPass);
 
         ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context);
     }

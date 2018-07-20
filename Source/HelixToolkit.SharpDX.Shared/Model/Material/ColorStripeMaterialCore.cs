@@ -110,13 +110,8 @@ namespace HelixToolkit.UWP.Model
     /// <summary>
     /// 
     /// </summary>
-    public sealed class ColorStripeMaterialVariables : DisposeObject, IEffectMaterialVariables
+    public sealed class ColorStripeMaterialVariables : MaterialVariableBase<PhongMaterialStruct>
     {
-        /// <summary>
-        /// <see cref="IEffectMaterialVariables.OnInvalidateRenderer"/> 
-        /// </summary>
-        public event EventHandler<EventArgs> OnInvalidateRenderer;
-
         private readonly ITextureResourceManager textureManager;
         private readonly IStatePoolManager statePoolManager;
         private readonly ShaderResourceViewProxy[] textures = new ShaderResourceViewProxy[2];
@@ -184,7 +179,7 @@ namespace HelixToolkit.UWP.Model
         /// <summary>
         /// 
         /// </summary>
-        public bool RenderShadowMap
+        public override bool RenderShadowMap
         {
             set; get;
         }
@@ -195,29 +190,26 @@ namespace HelixToolkit.UWP.Model
         /// <value>
         ///   <c>true</c> if [render environment map]; otherwise, <c>false</c>.
         /// </value>
-        public bool RenderEnvironmentMap
+        public override bool RenderEnvironmentMap
         {
             set; get;
         }
 
         private readonly string defaultShaderPassName = DefaultPassNames.ColorStripe1D;
-        public string DefaultShaderPassName
+        public override string DefaultShaderPassName
         {
             set;get;
         }
 
-        private bool needUpdate = true;
         private readonly ColorStripeMaterialCore material;
-        private IRenderTechnique technique;
         private readonly IDevice3DResources deviceResources;
-        private PhongMaterialStruct materialStruct = new PhongMaterialStruct();
-        private readonly ConstantBufferProxy materialCB;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="manager"></param>
         /// <param name="material"></param>
         public ColorStripeMaterialVariables(IEffectsManager manager, ColorStripeMaterialCore material)
+            : base(manager, DefaultBufferNames.MeshPhongCB, PhongMaterialStruct.SizeInBytes)
         {
             this.material = material;
             deviceResources = manager;
@@ -229,16 +221,20 @@ namespace HelixToolkit.UWP.Model
             statePoolManager = manager.StateManager;
             CreateTextureViews();
             CreateSamplers();
-            materialCB = manager.ConstantBufferPool.Register(DefaultBufferNames.MeshPhongCB, PhongMaterialStruct.SizeInBytes);
-            this.PropertyChanged += (s, e) => { OnInvalidateRenderer?.Invoke(this, EventArgs.Empty); };
         }
 
-        public bool Attach(IRenderTechnique technique)
+        public override bool Attach(IRenderTechnique technique)
         {
-            this.technique = technique;
-            MaterialPass = technique[defaultShaderPassName];
-            UpdateMappings(MaterialPass);
-            return !MaterialPass.IsNULL;
+            if (base.Attach(technique))
+            {
+                MaterialPass = technique[defaultShaderPassName];
+                UpdateMappings(MaterialPass);
+                return !MaterialPass.IsNULL;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -261,8 +257,7 @@ namespace HelixToolkit.UWP.Model
                 RemoveAndDispose(ref sampler);
                 sampler = Collect(statePoolManager.Register((sender as ColorStripeMaterialCore).ColorStripeSampler));
             }
-            
-            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
+            InvalidateRenderer();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -307,8 +302,7 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void AssignVariables()
+        protected override void AssignVariables()
         {
             materialStruct.Diffuse = material.DiffuseColor;
             materialStruct.HasDiffuseMap = material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0;
@@ -316,42 +310,13 @@ namespace HelixToolkit.UWP.Model
         }
 
         /// <summary>
-        /// Updates the material variables.
-        /// </summary>
-        /// <param name="deviceContext"></param>
-        /// <returns></returns>
-        public bool UpdateMaterialVariables(DeviceContextProxy deviceContext)
-        {
-            if (material == null)
-            {
-                return false;
-            }
-            bool cbUpdate = deviceContext.SetCurrentMaterial(this);
-            if (needUpdate)
-            {
-                AssignVariables();
-                needUpdate = false;
-                cbUpdate = true;
-            }
-            if (cbUpdate)
-            {
-                materialCB.UploadDataToBuffer(deviceContext, ref materialStruct);
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// <see cref="IEffectMaterialVariables.BindMaterialTextures(DeviceContextProxy, ShaderPass)"/>
+        /// <see cref="IEffectMaterialVariables.BindMaterial(DeviceContextProxy, ShaderPass)"/>
         /// </summary>
         /// <param name="context"></param>
         /// <param name="shaderPass"></param>
         /// <returns></returns>
-        public bool BindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)
+        protected override bool OnBindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)
         {
-            if (material == null)
-            {
-                return false;
-            }
             if (textureIndex != 0)
             {
                 OnBindMaterialTextures(context, shaderPass.PixelShader);
@@ -393,20 +358,18 @@ namespace HelixToolkit.UWP.Model
         {
             if (disposeManagedResources)
             {
-                technique = null;
                 material.PropertyChanged -= Material_OnMaterialPropertyChanged;
                 for(int i =0; i < textures.Length; ++i)
                 {
                     textures[i] = null;
                 }
                 sampler = null;
-                OnInvalidateRenderer = null;
             }
 
             base.OnDispose(disposeManagedResources);
         }
 
-        public ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context)
+        public override ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context)
         {
             return MaterialPass;
         }

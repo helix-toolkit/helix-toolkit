@@ -156,8 +156,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         public bool BindMaterialTextures(DeviceContextProxy context, ShaderPass shader)
         {
-            MaterialVariables.UpdateMaterialVariables(context);
-            return MaterialVariables.BindMaterialTextures(context, shader);
+            return MaterialVariables.BindMaterial(context, shader);
         }
     }
 }
