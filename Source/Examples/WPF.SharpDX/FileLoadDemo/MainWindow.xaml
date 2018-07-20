@@ -43,6 +43,7 @@
             VerticalAlignment="Top">
             <MenuItem Header="File">
                 <MenuItem Command="{Binding OpenFileCommand}" Header="Open File" />
+                <MenuItem Command="{Binding ExportCommand}" Header="Export"/>
             </MenuItem>
         </Menu>
         <StackPanel

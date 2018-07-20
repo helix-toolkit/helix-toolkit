@@ -18,6 +18,7 @@ namespace FileLoadDemo
     using HelixToolkit.Wpf.SharpDX.Model;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Windows;
 
     public class MainViewModel : BaseViewModel
     {
@@ -60,6 +61,8 @@ namespace FileLoadDemo
             set;get;
         }
 
+        public ICommand ExportCommand { private set; get; }
+
         private SynchronizationContext context = SynchronizationContext.Current;
         public MainViewModel()
         {
@@ -70,7 +73,12 @@ namespace FileLoadDemo
                 LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -10, -10),
                 Position = new System.Windows.Media.Media3D.Point3D(0, 10, 10),
                 FarPlaneDistance = 10000, NearPlaneDistance = 0.1 };
-            ResetCameraCommand = new DelegateCommand(() => { Camera.Reset(); });
+            ResetCameraCommand = new DelegateCommand(() =>
+            {
+                Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -10, -10);
+                Camera.Position = new System.Windows.Media.Media3D.Point3D(0, 10, 10);
+            });
+            ExportCommand = new DelegateCommand(() => { ExportFile(); });
         }
 
         private void OpenFile()
@@ -101,6 +109,20 @@ namespace FileLoadDemo
             });
 
         }
+
+        private void ExportFile()
+        {
+            string path = SaveFileDialog("3D model files (*.obj;|*.obj;");
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+            var exporter = new ObjExporter(path);
+            exporter.Export(ModelGeometry[0]);
+            exporter.Close();
+            MessageBox.Show($"Export Finished. {path}");
+        }
+
         public void Load3ds(string path)
         {
             var reader = new StudioReader();
@@ -164,6 +186,17 @@ namespace FileLoadDemo
             }
 
             return d.FileName;
+        }
+
+        private string SaveFileDialog(string filter)
+        {
+            var d = new SaveFileDialog();
+            d.Filter = filter;
+            if (d.ShowDialog() == true)
+            {
+                return d.FileName;
+            }
+            else { return ""; }
         }
     }
 
