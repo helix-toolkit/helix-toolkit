@@ -28,7 +28,7 @@ after_build:
   - nuget pack Source\HelixToolkit.Wpf\HelixToolkit.Wpf.nuspec -version "%GitVersion_NuGetVersion%"
   - nuget pack Source\HelixToolkit.Wpf.SharpDX\HelixToolkit.Wpf.Sharpdx.nuspec -version "%GitVersion_NuGetVersion%"
   - nuget pack Source\HelixToolkit.UWP\HelixToolkit.UWP.nuspec -version "%GitVersion_NuGetVersion%"
-  - Source\build-dist-examples.cmd
+  - if %APPVEYOR_REPO_NAME%=="helix-toolkit/helix-toolkit" Source\build-dist-examples.cmd
 
 artifacts:
   - path: '*.nupkg'
