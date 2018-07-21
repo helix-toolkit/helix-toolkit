@@ -45,11 +45,6 @@ namespace HelixToolkit.Wpf.SharpDX
 
             foreach (var element in viewport.Items)
             {
-                if (element.SceneNode is T node)
-                {
-                    action(node, element.Transform);
-                }
-
                 Traverse(element, action);
             }
         }
@@ -68,16 +63,15 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </param>
         private static void Traverse<T>(SceneNode model, Action<T, Transform3D> action) where T : SceneNode
         {
+            if (model is T)
+            {
+                if (model.WrapperSource is Element3D m)
+                {
+                    action((T)model, m.Transform);
+                }
+            }
             foreach (var element in model.Items)
             {
-                if (element is T)
-                {
-                    if (element.WrapperSource is Element3D)
-                    {
-                        action((T)element, ((Element3D)element.WrapperSource).Transform);
-                    }
-                }
-
                 Traverse(element, action);
             }
         }
