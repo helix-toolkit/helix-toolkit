@@ -12,6 +12,7 @@ namespace HelixToolkit.Wpf.SharpDX.Shaders
 namespace HelixToolkit.UWP.Shaders
 #endif
 {
+    using Helper;
     /// <summary>
     /// 
     /// </summary>
@@ -41,7 +42,7 @@ namespace HelixToolkit.UWP.Shaders
             {
                 if(shaderByteCode == null && !string.IsNullOrEmpty(ShaderByteCodeName))
                 {
-                    shaderByteCode = Helper.UWPShaderBytePool.Read(ShaderByteCodeName);
+                    shaderByteCode = UWPShaderBytePool.Read(ShaderByteCodeName, byteCodeReader);
                 }
                 return shaderByteCode;
             }
@@ -59,6 +60,8 @@ namespace HelixToolkit.UWP.Shaders
         public InputElement[] InputElements { set; get; } = new InputElement[0];
 
         public KeyValuePair<byte[], InputElement[]> Description { get { return new KeyValuePair<byte[], InputElement[]>(ShaderByteCode, InputElements); } }
+
+        private readonly IShaderByteCodeReader byteCodeReader;
         /// <summary>
         /// Initializes a new instance of the <see cref="InputLayoutDescription"/> class.
         /// </summary>
@@ -70,14 +73,16 @@ namespace HelixToolkit.UWP.Shaders
             InputElements = elements;
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="InputLayoutDescription"/> class.
+        /// Initializes a new instance of the <see cref="InputLayoutDescription"/> class. Pass custom <see cref="IShaderByteCodeReader"/> to read external shader bytecodes.
         /// </summary>
         /// <param name="byteCodeName">The byte code name.</param>
         /// <param name="elements">The elements.</param>
-        public InputLayoutDescription(string byteCodeName, InputElement[] elements)
+        /// <param name="byteCodeReader"></param>
+        public InputLayoutDescription(string byteCodeName, InputElement[] elements, IShaderByteCodeReader byteCodeReader = null)
         {
             ShaderByteCodeName = byteCodeName;
             InputElements = elements;
+            this.byteCodeReader = byteCodeReader ?? UWPShaderBytePool.InternalByteCodeReader;
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="InputLayoutDescription"/> class.

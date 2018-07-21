@@ -15,7 +15,7 @@ namespace HelixToolkit.UWP.Shaders
 {
     using HelixToolkit.Logger;
     using ShaderManager;
-
+    using Helper;
     /// <summary>
     /// 
     /// </summary>
@@ -68,7 +68,7 @@ namespace HelixToolkit.UWP.Shaders
             {
                 if (byteCode == null && !string.IsNullOrEmpty(ByteCodeName))
                 {
-                    byteCode = Helper.UWPShaderBytePool.Read(ByteCodeName);
+                    byteCode = UWPShaderBytePool.Read(ByteCodeName, byteCodeReader);
                 }
                 return byteCode;
             }
@@ -122,6 +122,7 @@ namespace HelixToolkit.UWP.Shaders
         /// </value>
         public IShaderReflector ShaderReflector { set; get; }
 
+        private readonly IShaderByteCodeReader byteCodeReader;
         /// <summary>
         /// Create a empty description
         /// </summary>
@@ -178,18 +179,20 @@ namespace HelixToolkit.UWP.Shaders
             ShaderReflector = reflector;
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShaderDescription"/> class.
+        /// Initializes a new instance of the <see cref="ShaderDescription"/> class. Pass <see cref="IShaderByteCodeReader"/> to read external custom shader bytecodes.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="type">The type.</param>
         /// <param name="reflector">The reflector.</param>
         /// <param name="byteCodeName">Name of the byte code.</param>
-        public ShaderDescription(string name, ShaderStage type, IShaderReflector reflector, string byteCodeName)
+        /// <param name="byteCodeReader">Used to read external custom shader byte codes</param>
+        public ShaderDescription(string name, ShaderStage type, IShaderReflector reflector, string byteCodeName, IShaderByteCodeReader byteCodeReader = null)
         {
             Name = name;
             ShaderType = type;
             ByteCodeName = byteCodeName;
             ShaderReflector = reflector;
+            this.byteCodeReader = byteCodeReader ?? UWPShaderBytePool.InternalByteCodeReader;
         }
         /// <summary>
         /// Create Shader.
