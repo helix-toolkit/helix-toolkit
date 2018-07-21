@@ -106,11 +106,11 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         {
             if(background == null)
             {
-                Background = new D2D.SolidColorBrush(context.DeviceContext, Color.Blue);
+                Background = new D2D.SolidColorBrush(context.DeviceContext, new Color4(0.8f, 0.8f, 0.8f, 0.6f));
             }
             if(foreground == null)
             {
-                Foreground = new D2D.SolidColorBrush(context.DeviceContext, Color.Black);
+                Foreground = new D2D.SolidColorBrush(context.DeviceContext, Color.Blue);
             }
             var str = statistics.GetDetailString();
             if (str != previousStr)
