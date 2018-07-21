@@ -144,13 +144,25 @@ namespace HelixToolkit.SharpDX.Core.Controls
 
         private SceneNode2D root2D = new OverlayNode2D() { EnableBitmapCache = false };
 
-        public ViewportCore(IntPtr nativeWindowPointer)
+        public ViewportCore(IntPtr nativeWindowPointer, bool deferred = false)
         {
-            RenderHost = new SwapChainRenderHost(nativeWindowPointer)
+            if (deferred)
             {
-                ShowRenderDetail = RenderDetail.Statistics | RenderDetail.FPS,
-                Viewport = this,
-            };
+                RenderHost = new SwapChainRenderHost(nativeWindowPointer,
+                    (device) => { return new DeferredContextRenderer(device, new AutoRenderTaskScheduler()); })
+                {
+                    ShowRenderDetail = RenderDetail.Statistics | RenderDetail.FPS,
+                    Viewport = this,
+                };
+            }
+            else
+            {
+                RenderHost = new SwapChainRenderHost(nativeWindowPointer)
+                {
+                    ShowRenderDetail = RenderDetail.Statistics | RenderDetail.FPS,
+                    Viewport = this,
+                };
+            }
             BackgroundColor = Color.Black;
             RenderHost.StartRenderLoop += RenderHost_StartRenderLoop;
             RenderHost.StopRenderLoop += RenderHost_StopRenderLoop;
