@@ -29,7 +29,6 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public sealed class RenderContext : DisposeObject
     {
-        private Matrix worldMatrix = Matrix.Identity;
         private Matrix viewMatrix;
         private Matrix projectionMatrix;
 
@@ -78,26 +77,6 @@ namespace HelixToolkit.Wpf.SharpDX
                     return;
                 }
                 projectionMatrix = value;
-                matrixChanged = true;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the world matrix.
-        /// </summary>
-        /// <value>
-        /// The world matrix.
-        /// </value>
-        public Matrix WorldMatrix
-        {
-            get { return worldMatrix; }
-            set
-            {
-                if (worldMatrix == value)
-                {
-                    return;
-                }
-                worldMatrix = value;
                 matrixChanged = true;
             }
         }

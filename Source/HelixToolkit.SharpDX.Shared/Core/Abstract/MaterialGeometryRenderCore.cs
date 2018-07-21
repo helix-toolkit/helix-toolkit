@@ -145,7 +145,7 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context"></param>
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
         {
-            model.World = ModelMatrix * context.WorldMatrix;
+            model.World = ModelMatrix;// * context.WorldMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             MaterialVariables.UpdateMaterialVariables(ref model);
         }
