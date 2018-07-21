@@ -3,10 +3,9 @@ The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
 using SharpDX;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 #if !NETFX_CORE
@@ -15,11 +14,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model
 namespace HelixToolkit.UWP.Model
 #endif
 {
-    using Render;
-    using Shaders;
-    using ShaderManager;
-    using Utilities;
     using Core;
+    using Render;
+    using ShaderManager;
+    using Shaders;
+    using Utilities;
 
     public class ColorStripeMaterialCore : MaterialCore
     {
@@ -110,7 +109,7 @@ namespace HelixToolkit.UWP.Model
     /// <summary>
     /// 
     /// </summary>
-    public sealed class ColorStripeMaterialVariables : MaterialVariableBase<PhongMaterialStruct>
+    public sealed class ColorStripeMaterialVariables : MaterialVariable
     {
         private readonly ITextureResourceManager textureManager;
         private readonly IStatePoolManager statePoolManager;
@@ -141,10 +140,7 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if (Set(ref renderDiffuseMap, value))
-                {
-                    needUpdate = true;
-                }
+                SetAffectsRender(ref renderDiffuseMap, value);
             }
             get
             {
@@ -203,17 +199,17 @@ namespace HelixToolkit.UWP.Model
 
         private readonly ColorStripeMaterialCore material;
         private readonly IDevice3DResources deviceResources;
+        private PhongMaterialStruct materialStruct = new PhongMaterialStruct();
         /// <summary>
         /// 
         /// </summary>
         /// <param name="manager"></param>
         /// <param name="material"></param>
         public ColorStripeMaterialVariables(IEffectsManager manager, ColorStripeMaterialCore material)
-            : base(manager, DefaultBufferNames.MeshPhongCB, PhongMaterialStruct.SizeInBytes)
+            : base(manager)
         {
             this.material = material;
             deviceResources = manager;
-            needUpdate = true;
             material.PropertyChanged += Material_OnMaterialPropertyChanged;
             texStripeXSlot = texStripeYSlot = -1;
             samplerDiffuseSlot = -1;
@@ -239,7 +235,6 @@ namespace HelixToolkit.UWP.Model
 
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            needUpdate = true;
             if (IsDisposed)
             {
                 return;
@@ -257,7 +252,7 @@ namespace HelixToolkit.UWP.Model
                 RemoveAndDispose(ref sampler);
                 sampler = Collect(statePoolManager.Register((sender as ColorStripeMaterialCore).ColorStripeSampler));
             }
-            InvalidateRenderer();
+            NotifyUpdateNeeded();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -302,11 +297,19 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        protected override void AssignVariables()
+        protected override void AssignVariables(ref ModelStruct model)
         {
-            materialStruct.Diffuse = material.DiffuseColor;
-            materialStruct.HasDiffuseMap = material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0;
-            materialStruct.HasDiffuseAlphaMap = material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0;
+            if (NeedUpdate)
+            {
+                materialStruct = new PhongMaterialStruct
+                {
+                    Diffuse = material.DiffuseColor,
+                    HasDiffuseMap = material.ColorStripeXEnabled && (textureIndex & 1u) != 0 ? 1 : 0,
+                    HasDiffuseAlphaMap = material.ColorStripeYEnabled && (textureIndex & 1u << 1) != 0 ? 1 : 0
+                };
+                NeedUpdate = false;
+            }
+            model.Material = materialStruct;
         }
 
         protected override bool OnBindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)

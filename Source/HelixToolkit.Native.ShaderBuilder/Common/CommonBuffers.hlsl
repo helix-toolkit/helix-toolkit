@@ -44,10 +44,7 @@ cbuffer cbMeshModel : register(b1)
     bool bRenderOIT = false;
     float3 padding1 = float3(0,0,0);
     float4 wireframeColor = float4(0,0,1,1);
-};
 
-cbuffer cbMeshPhongMaterial : register(b4)
-{
 	float minTessDistance = 1;
 	float maxTessDistance = 100;
 	float minTessFactor = 4;

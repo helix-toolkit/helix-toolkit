@@ -19,7 +19,7 @@ namespace HelixToolkit.UWP.Model
     /// <summary>
     /// Default PhongMaterial Variables
     /// </summary>
-    public sealed class TextureSharedPhongMaterialVariables : MaterialVariableBase<PhongMaterialStruct>
+    public sealed class TextureSharedPhongMaterialVariables : MaterialVariable
     {
         private const int NUMTEXTURES = 4;
         private const int NUMSAMPLERS = 5;
@@ -33,6 +33,7 @@ namespace HelixToolkit.UWP.Model
         private int texDiffuseSlot, texAlphaSlot, texNormalSlot, texDisplaceSlot;
         private int samplerDiffuseSlot, samplerAlphaSlot, samplerNormalSlot, samplerDisplaceSlot, samplerShadowSlot;
         private uint textureIndex = 0;
+        private PhongMaterialStruct materialStruct = new PhongMaterialStruct();
 
         private bool HasTextures
         {
@@ -199,9 +200,8 @@ namespace HelixToolkit.UWP.Model
         /// <param name="manager"></param>
         /// <param name="material"></param>
         public TextureSharedPhongMaterialVariables(IEffectsManager manager, PhongMaterialCore material)
-            :base(manager, DefaultBufferNames.MeshPhongCB, PhongMaterialStruct.SizeInBytes)
+            :base(manager)
         {
-            needUpdate = true;
             this.material = material;
             material.PropertyChanged += Material_OnMaterialPropertyChanged;
             texDiffuseSlot = texAlphaSlot = texDisplaceSlot = texNormalSlot = -1;
@@ -212,6 +212,7 @@ namespace HelixToolkit.UWP.Model
             CreateSamplers();
             EnableTessellation = material.EnableTessellation;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TextureSharedPhongMaterialVariables"/> class. This construct will be using the PassName pass into constructor only.
         /// </summary>
@@ -239,7 +240,6 @@ namespace HelixToolkit.UWP.Model
 
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            needUpdate = true;
             if (IsDisposed)
             {
                 return;
@@ -284,7 +284,7 @@ namespace HelixToolkit.UWP.Model
             {
                 EnableTessellation = material.EnableTessellation;
             }
-            InvalidateRenderer();
+            NotifyUpdateNeeded();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -338,25 +338,33 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        protected override void AssignVariables()
+        protected override void AssignVariables(ref ModelStruct modelStruct)
         {
-            materialStruct.Ambient = material.AmbientColor;
-            materialStruct.Diffuse = material.DiffuseColor;
-            materialStruct.Emissive = material.EmissiveColor;
-            materialStruct.Reflect = material.ReflectiveColor;
-            materialStruct.Specular = material.SpecularColor;
-            materialStruct.Shininess = material.SpecularShininess;
-            materialStruct.HasDiffuseMap = material.RenderDiffuseMap && TextureResources[DiffuseIdx] != null ? 1 : 0;
-            materialStruct.HasDiffuseAlphaMap = material.RenderDiffuseAlphaMap && TextureResources[AlphaIdx] != null ? 1 : 0;
-            materialStruct.HasNormalMap = material.RenderNormalMap && TextureResources[NormalIdx] != null ? 1 : 0;
-            materialStruct.HasDisplacementMap = material.RenderDisplacementMap && TextureResources[DisplaceIdx] != null ? 1 : 0;
-            materialStruct.DisplacementMapScaleMask = material.DisplacementMapScaleMask;
-            materialStruct.RenderShadowMap = RenderShadowMap ? 1 : 0;
-            materialStruct.HasCubeMap = RenderEnvironmentMap ? 1 : 0;
-            materialStruct.MaxTessDistance = material.MaxTessellationDistance;
-            materialStruct.MinTessDistance = material.MinTessellationDistance;
-            materialStruct.MaxDistTessFactor = material.MaxDistanceTessellationFactor;
-            materialStruct.MinDistTessFactor = material.MinDistanceTessellationFactor;
+            if (NeedUpdate)
+            {
+                materialStruct = new PhongMaterialStruct
+                {
+                    Ambient = material.AmbientColor,
+                    Diffuse = material.DiffuseColor,
+                    Emissive = material.EmissiveColor,
+                    Reflect = material.ReflectiveColor,
+                    Specular = material.SpecularColor,
+                    Shininess = material.SpecularShininess,
+                    HasDiffuseMap = material.RenderDiffuseMap && TextureResources[DiffuseIdx] != null ? 1 : 0,
+                    HasDiffuseAlphaMap = material.RenderDiffuseAlphaMap && TextureResources[AlphaIdx] != null ? 1 : 0,
+                    HasNormalMap = material.RenderNormalMap && TextureResources[NormalIdx] != null ? 1 : 0,
+                    HasDisplacementMap = material.RenderDisplacementMap && TextureResources[DisplaceIdx] != null ? 1 : 0,
+                    DisplacementMapScaleMask = material.DisplacementMapScaleMask,
+                    RenderShadowMap = RenderShadowMap ? 1 : 0,
+                    HasCubeMap = RenderEnvironmentMap ? 1 : 0,
+                    MaxTessDistance = material.MaxTessellationDistance,
+                    MinTessDistance = material.MinTessellationDistance,
+                    MaxDistTessFactor = material.MaxDistanceTessellationFactor,
+                    MinDistTessFactor = material.MinDistanceTessellationFactor
+                };
+                NeedUpdate = false;
+            }
+            modelStruct.Material = materialStruct;
         }
 
         protected override bool OnBindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)

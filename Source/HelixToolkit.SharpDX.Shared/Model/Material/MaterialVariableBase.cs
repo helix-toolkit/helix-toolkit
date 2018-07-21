@@ -14,59 +14,35 @@ namespace HelixToolkit.UWP.Model
     using System;
     using System.Collections.Generic;
     using System.Runtime.CompilerServices;
-    using Utilities;
 
     public abstract class MaterialVariable : ReferenceCountDisposeObject
     {
         public abstract string DefaultShaderPassName { set; get; }
         public abstract bool RenderShadowMap { set; get; }
         public abstract bool RenderEnvironmentMap { set; get; }
-        public abstract ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context);
-        public abstract bool BindMaterial(DeviceContextProxy deviceContext, ShaderPass shaderPass);
-        public abstract bool Attach(IRenderTechnique technique);
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="MaterialStruct">The type of the material structure.</typeparam>
-    public abstract class MaterialVariableBase<MaterialStruct> : MaterialVariable where MaterialStruct : struct
-    {
+
+        public event EventHandler OnUpdateNeeded;
+
         protected IRenderTechnique Technique { private set; get; }
         protected bool IsAttached { private set; get; } = false;
-        private readonly ConstantBufferProxy materialCB;
-        protected bool needUpdate = true;
-        protected MaterialStruct materialStruct = new MaterialStruct();
-
-        public MaterialVariableBase(IEffectsManager manager, string constBufferName = "", int materialStructSize = 0)
+        protected bool NeedUpdate { set; get; } = true;
+        public MaterialVariable(IEffectsManager manager)
         {
-            if (!string.IsNullOrEmpty(constBufferName) && materialStructSize != 0)
-            {
-                materialCB = manager.ConstantBufferPool.Register(constBufferName, materialStructSize);
-            }
-            this.PropertyChanged += (s, e) => { InvalidateRenderer(); };
         }
 
-        public override bool Attach(IRenderTechnique technique)
+        public virtual bool Attach(IRenderTechnique technique)
         {
             Technique = technique;
             IsAttached = true;
             return !technique.IsNull;
         }
 
-        public sealed override bool BindMaterial(DeviceContextProxy deviceContext, ShaderPass shaderPass)
+        public bool BindMaterial(DeviceContextProxy deviceContext, ShaderPass shaderPass)
         {
             if (CanUpdateMaterial())
             {
-                bool cbUpdate = deviceContext.SetCurrentMaterial(this);
-                if (needUpdate)
+                if (deviceContext.SetCurrentMaterial(this))
                 {
-                    AssignVariables();
-                    needUpdate = false;
-                    cbUpdate = true;
-                }
-                if (cbUpdate)
-                {
-                    materialCB?.UploadDataToBuffer(deviceContext, ref materialStruct);
                     return OnBindMaterialTextures(deviceContext, shaderPass);
                 }
                 return true;
@@ -79,9 +55,16 @@ namespace HelixToolkit.UWP.Model
 
         protected abstract bool OnBindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass);
 
-        protected abstract void AssignVariables();
+        protected abstract void AssignVariables(ref ModelStruct model);
 
         protected virtual bool CanUpdateMaterial() { return !IsDisposed; }
+
+        public abstract ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context);
+
+        public void UpdateMaterialStruct(ref ModelStruct model)
+        {
+            AssignVariables(ref model);
+        }
 
         /// <summary>
         /// 
@@ -93,6 +76,7 @@ namespace HelixToolkit.UWP.Model
             {
                 IsAttached = false;
                 Technique = null;
+                OnUpdateNeeded = null;
             }
             base.OnDispose(disposeManagedResources);
         }
@@ -105,7 +89,7 @@ namespace HelixToolkit.UWP.Model
             }
 
             backingField = value;
-            needUpdate = true;
+            NotifyUpdateNeeded();
             this.RaisePropertyChanged(propertyName);
             return true;
         }
@@ -114,6 +98,13 @@ namespace HelixToolkit.UWP.Model
         protected void InvalidateRenderer()
         {
             Technique?.EffectsManager?.InvalidateRenderer();
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected void NotifyUpdateNeeded()
+        {
+            NeedUpdate = true;
+            OnUpdateNeeded?.Invoke(this, EventArgs.Empty);
+            InvalidateRenderer();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace HelixToolkit.UWP.Model
     using Core;
     using Render;
     using Shaders;
-    public sealed class EmptyMaterialVariable : MaterialVariableBase<bool>
+    public sealed class EmptyMaterialVariable : MaterialVariable
     {
         public static readonly EmptyMaterialVariable EmptyVariable = new EmptyMaterialVariable();
 
@@ -45,7 +45,7 @@ namespace HelixToolkit.UWP.Model
             return MaterialPass;
         }
 
-        protected override void AssignVariables()
+        protected override void AssignVariables(ref ModelStruct model)
         {
         }
     }

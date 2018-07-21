@@ -2,6 +2,8 @@
 The MIT License (MIT)
 Copyright (c) 2018 Helix Toolkit contributors
 */
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX.Model
 #else
@@ -12,11 +14,7 @@ namespace HelixToolkit.UWP.Model
     using Render;
     using ShaderManager;
     using Shaders;
-    using System;
-    using System.Collections.Generic;
-    using System.Runtime.CompilerServices;
     using Utilities;
-    using System.ComponentModel;
 
     public sealed class DiffuseMaterialCore : PhongMaterialCore
     {
@@ -34,7 +32,7 @@ namespace HelixToolkit.UWP.Model
         }
     }
 
-    public sealed class DiffuseMaterialVariables : MaterialVariableBase<PhongMaterialStruct>
+    public sealed class DiffuseMaterialVariables : MaterialVariable
     {
         private const int NUMTEXTURES = 1;
         private const int NUMSAMPLERS = 1;
@@ -82,10 +80,7 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if (SetAffectsRender(ref renderShadowMap, value))
-                {
-                    needUpdate = true;
-                }
+                SetAffectsRender(ref renderShadowMap, value);
             }
             get
             {
@@ -137,14 +132,14 @@ namespace HelixToolkit.UWP.Model
         public override bool RenderEnvironmentMap { set; get; }
         private readonly PhongMaterialCore material;
         private readonly bool fixedPassName = false;
-
+        private PhongMaterialStruct materialStruct = new PhongMaterialStruct();
         /// <summary>
         /// 
         /// </summary>
         /// <param name="manager"></param>
         /// <param name="material"></param>
         private DiffuseMaterialVariables(IEffectsManager manager, PhongMaterialCore material)
-            : base(manager, DefaultBufferNames.MeshPhongCB, PhongMaterialStruct.SizeInBytes)
+            : base(manager)
         {
             this.material = material;
             material.PropertyChanged += Material_OnMaterialPropertyChanged;
@@ -185,7 +180,6 @@ namespace HelixToolkit.UWP.Model
 
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            needUpdate = true;
             if (IsDisposed)
             {
                 return;
@@ -199,7 +193,7 @@ namespace HelixToolkit.UWP.Model
                 RemoveAndDispose(ref SamplerResources[DiffuseIdx]);
                 SamplerResources[DiffuseIdx] = Collect(statePoolManager.Register((sender as PhongMaterialCore).DiffuseMapSampler));
             }
-            InvalidateRenderer();
+            NotifyUpdateNeeded();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -242,22 +236,29 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected override void AssignVariables()
+        protected override void AssignVariables(ref ModelStruct model)
         {
-            materialStruct.Ambient = material.AmbientColor;
-            materialStruct.Diffuse = material.DiffuseColor;
-            materialStruct.Emissive = material.EmissiveColor;
-            materialStruct.Reflect = material.ReflectiveColor;
-            materialStruct.Specular = material.SpecularColor;
-            materialStruct.Shininess = material.SpecularShininess;
-            materialStruct.HasDiffuseMap = material.RenderDiffuseMap && TextureResources[DiffuseIdx] != null ? 1 : 0;
-            materialStruct.HasDiffuseAlphaMap = 0;
-            materialStruct.HasNormalMap = 0;
-            materialStruct.HasDisplacementMap = 0;
-            materialStruct.DisplacementMapScaleMask = material.DisplacementMapScaleMask;
-            materialStruct.RenderShadowMap = RenderShadowMap ? 1 : 0;
-            materialStruct.HasCubeMap = 0;
+            if (NeedUpdate)
+            {
+                materialStruct = new PhongMaterialStruct
+                {
+                    Ambient = material.AmbientColor,
+                    Diffuse = material.DiffuseColor,
+                    Emissive = material.EmissiveColor,
+                    Reflect = material.ReflectiveColor,
+                    Specular = material.SpecularColor,
+                    Shininess = material.SpecularShininess,
+                    HasDiffuseMap = material.RenderDiffuseMap && TextureResources[DiffuseIdx] != null ? 1 : 0,
+                    HasDiffuseAlphaMap = 0,
+                    HasNormalMap = 0,
+                    HasDisplacementMap = 0,
+                    DisplacementMapScaleMask = material.DisplacementMapScaleMask,
+                    RenderShadowMap = RenderShadowMap ? 1 : 0,
+                    HasCubeMap = 0
+                };
+                NeedUpdate = false;
+            }
+            model.Material = materialStruct;
         }
 
         protected override bool OnBindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass)

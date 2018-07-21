@@ -285,7 +285,9 @@ namespace HelixToolkit.Wpf.SharpDX
         public int RenderOIT;
         Vector3 padding;
         public Color4 WireframeColor;
-        public const int SizeInBytes = 4 * (4 * 4 + 4 + 4 * 2 + 4 + 4 * 2);
+
+        public PhongMaterialStruct Material;
+        public const int SizeInBytes = 4 * (4 * 4 + 4 + 4 * 2 + 4 + 4 * 2) + PhongMaterialStruct.SizeInBytes;
     }
 
     /// <summary>

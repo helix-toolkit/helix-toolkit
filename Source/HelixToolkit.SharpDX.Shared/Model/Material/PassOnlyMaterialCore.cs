@@ -60,7 +60,7 @@ namespace HelixToolkit.UWP.Model
     /// <summary>
     /// 
     /// </summary>
-    public sealed class PassOnlyMaterialVariable : MaterialVariableBase<bool>
+    public sealed class PassOnlyMaterialVariable : MaterialVariable
     {
         public ShaderPass MaterialPass { private set; get; }
 
@@ -96,18 +96,12 @@ namespace HelixToolkit.UWP.Model
             return true;
         }
 
-        public bool UpdateMaterialVariables(DeviceContextProxy deviceContext)
-        {
-            deviceContext.SetCurrentMaterial(this);
-            return true;
-        }
-
         public override ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context)
         {
             return MaterialPass;
         }
 
-        protected override void AssignVariables()
+        protected override void AssignVariables(ref ModelStruct model)
         {
         }
     }

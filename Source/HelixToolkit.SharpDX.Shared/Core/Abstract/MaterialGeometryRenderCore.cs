@@ -13,12 +13,14 @@ namespace HelixToolkit.UWP.Core
     using Model;
     using Render;
     using Shaders;
+
     /// <summary>
     /// 
     /// </summary>
     public abstract class MaterialGeometryRenderCore : GeometryRenderCore<ModelStruct>, IMaterialRenderParams
     {
         private MaterialVariable materialVariables = EmptyMaterialVariable.EmptyVariable;
+        private bool needMaterialUpdate = false;
         /// <summary>
         /// Used to wrap all material resources
         /// </summary>
@@ -33,6 +35,10 @@ namespace HelixToolkit.UWP.Core
             {
                 if(Set(ref material, value) && IsAttached)
                 {
+                    if(materialVariables != null)
+                    {
+                        materialVariables.OnUpdateNeeded -= MaterialVariables_OnUpdateNeeded;
+                    }
                     RemoveAndDispose(ref materialVariables);
                     if (value != null)
                     {
@@ -115,10 +121,21 @@ namespace HelixToolkit.UWP.Core
             materialVariables.RenderShadowMap = this.RenderShadowMap;
             materialVariables.RenderEnvironmentMap = this.RenderEnvironmentMap;
             materialVariables.Attach(technique);
+            materialVariables.OnUpdateNeeded += MaterialVariables_OnUpdateNeeded;
+            needMaterialUpdate = true;
+        }
+
+        private void MaterialVariables_OnUpdateNeeded(object sender, System.EventArgs e)
+        {
+            needMaterialUpdate = true;
         }
 
         protected override void OnDetach()
         {
+            if (materialVariables != null)
+            {
+                materialVariables.OnUpdateNeeded -= MaterialVariables_OnUpdateNeeded;
+            }
             materialVariables = EmptyMaterialVariable.EmptyVariable;
             base.OnDetach();
         }
@@ -138,9 +155,15 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context"></param>
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
         {
-            model.World = ModelMatrix * context.WorldMatrix;
-            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;            
+            model.World = ModelMatrix;
+            model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
+            if (needMaterialUpdate)
+            {
+                MaterialVariables.UpdateMaterialStruct(ref model);
+                needMaterialUpdate = false;
+            }
         }
+
         /// <summary>
         /// 
         /// </summary>
