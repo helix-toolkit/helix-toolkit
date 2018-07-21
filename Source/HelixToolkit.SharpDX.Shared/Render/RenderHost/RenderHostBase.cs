@@ -624,7 +624,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     viewport.Update(t0);                    
                     renderContext.TimeStamp = t0;
                     renderContext.Camera = viewport.CameraCore;
-                    renderContext.WorldMatrix = viewport.WorldMatrix;
                     renderContext.OITWeightPower = RenderConfiguration.OITWeightPower;
                     renderContext.OITWeightDepthSlope = RenderConfiguration.OITWeightDepthSlope;
                     renderContext.OITWeightMode = RenderConfiguration.OITWeightMode;

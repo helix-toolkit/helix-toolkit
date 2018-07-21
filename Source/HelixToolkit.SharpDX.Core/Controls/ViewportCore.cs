@@ -60,8 +60,6 @@ namespace HelixToolkit.SharpDX.Core.Controls
             set;
         }
 
-        public Matrix WorldMatrix { set; get; } = Matrix.Identity;
-
         public IEnumerable<SceneNode> Renderables => Items;
 
         public IEnumerable<SceneNode2D> D2DRenderables => Items2D;
