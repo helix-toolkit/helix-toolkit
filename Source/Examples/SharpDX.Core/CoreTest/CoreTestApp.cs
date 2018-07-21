@@ -25,6 +25,7 @@ namespace CoreTest
         private Random rnd = new Random((int)Stopwatch.GetTimestamp());
         private Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();
         private long previousTime;
+        private bool resizeRequested = false;
 
         public CoreTestApp(Form window)
         {
@@ -38,6 +39,7 @@ namespace CoreTest
             viewport.OnStartRendering += Viewport_OnStartRendering;
             viewport.OnStopRendering += Viewport_OnStopRendering;
             viewport.OnErrorOccurred += Viewport_OnErrorOccurred;
+            viewport.FXAALevel = FXAALevel.Low;
             InitializeScene();
         }
 
@@ -110,6 +112,12 @@ namespace CoreTest
             bool isGoingOut = true;
             RenderLoop.Run(window, () => 
             {
+                if (resizeRequested)
+                {
+                    viewport.Resize(window.Width, window.Height);
+                    resizeRequested = false;
+                    return;
+                }
                 var pos = camera.Position;
                 var t = Stopwatch.GetTimestamp();
                 var elapse = t - previousTime;
@@ -139,14 +147,9 @@ namespace CoreTest
             });
         }
 
-        public void NextFrame()
-        {
-
-        }
-
         private void Window_ResizeEnd(object sender, EventArgs e)
         {
-            viewport.Resize(window.Width, window.Height);
+            resizeRequested = true;
         }
 
         private void Window_FormClosing(object sender, FormClosingEventArgs e)
