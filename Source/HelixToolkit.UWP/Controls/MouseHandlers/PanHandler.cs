@@ -43,7 +43,7 @@ namespace HelixToolkit.UWP
         public override void Delta(Point e)
         {
             base.Delta(e);
-            var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.LookDirection);
+            var thisPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
             if (this.LastPoint3D == null || thisPoint3D == null)
             {
@@ -54,7 +54,7 @@ namespace HelixToolkit.UWP
             this.Pan(delta3D);
 
             this.LastPoint = e;
-            this.LastPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.LookDirection);
+            this.LastPoint3D = this.UnProject(e, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
         }
 
         /// <summary>
@@ -63,19 +63,22 @@ namespace HelixToolkit.UWP
         /// <param name="delta">
         /// The panning vector.
         /// </param>
-        public void Pan(Vector3D delta)
+        /// <param name="stopOther">Stop other manipulation</param>
+        public void Pan(Vector3D delta, bool stopOther = true)
         {
-            if (!this.CameraController.IsPanEnabled)
+            if (!this.Controller.IsPanEnabled)
             {
                 return;
             }
-
+            if (stopOther)
+            {
+                this.Controller.StopSpin();
+                this.Controller.StopZooming();
+            }
             if (this.CameraMode == CameraMode.FixedPosition)
             {
                 return;
             }
-            this.CameraController.StopSpin();
-            this.CameraController.StopZooming();
             this.Camera.Position += delta;
         }
 
@@ -85,11 +88,17 @@ namespace HelixToolkit.UWP
         /// <param name="delta">
         /// The delta.
         /// </param>
-        public void Pan(Vector2 delta)
+        /// <param name="stopOther">Stop other manipulation</param>
+        public void Pan(Vector2 delta, bool stopOther = true)
         {
+            if (stopOther)
+            {
+                this.Controller.StopSpin();
+                this.Controller.StopZooming();
+            }
             var mousePoint = (this.LastPoint.ToVector2() + delta).ToPoint();
 
-            var thisPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.LookDirection);
+            var thisPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
             if (this.LastPoint3D == null || thisPoint3D == null)
             {
@@ -99,7 +108,7 @@ namespace HelixToolkit.UWP
             var delta3D = this.LastPoint3D.Value - thisPoint3D.Value;
             this.Pan(delta3D);
 
-            this.LastPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.LookDirection);
+            this.LastPoint3D = this.UnProject(mousePoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
 
             this.LastPoint = mousePoint;
         }
@@ -111,13 +120,13 @@ namespace HelixToolkit.UWP
         public override void Started(Point e)
         {
             base.Started(e);
-            this.panPoint3D = this.Camera.Target;
+            this.panPoint3D = this.Camera.CameraInternal.Target;
             if (this.MouseDownNearestPoint3D != null)
             {
                 this.panPoint3D = this.MouseDownNearestPoint3D.Value;
             }
 
-            this.LastPoint3D = this.UnProject(this.MouseDownPoint, this.panPoint3D, this.Camera.LookDirection);
+            this.LastPoint3D = this.UnProject(this.MouseDownPoint, this.panPoint3D, this.Camera.CameraInternal.LookDirection);
         }
 
         /// <summary>
@@ -128,7 +137,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected override bool CanExecute()
         {
-            return this.CameraController.IsPanEnabled && this.CameraController.CameraMode != CameraMode.FixedPosition;
+            return this.Controller.IsPanEnabled && this.Controller.CameraMode != CameraMode.FixedPosition;
         }
 
         /// <summary>
@@ -139,7 +148,7 @@ namespace HelixToolkit.UWP
         /// </returns>
         protected override CoreCursorType GetCursor()
         {
-            return this.CameraController.PanCursor;
+            return this.Controller.PanCursor;
         }
 
         /// <summary>
@@ -151,7 +160,7 @@ namespace HelixToolkit.UWP
         protected override void OnInertiaStarting(double elapsedTime)
         {
             var speed = (this.LastPoint.ToVector2() - this.MouseDownPoint.ToVector2()) * (40.0f / (float)elapsedTime);
-            this.CameraController.AddPanForce(speed.X, speed.Y);
+            this.Controller.AddPanForce(speed.X, speed.Y);
         }
     }
 }

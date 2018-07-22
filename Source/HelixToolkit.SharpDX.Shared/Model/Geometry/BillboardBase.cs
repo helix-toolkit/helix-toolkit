@@ -95,6 +95,15 @@ namespace HelixToolkit.Wpf.SharpDX
 
         }
 
+        protected override void OnAssignTo(Geometry3D target)
+        {
+            base.OnAssignTo(target);
+            if(target is BillboardBase billboard)
+            {
+                billboard.Texture = Texture;
+                IsInitialized = false;
+            }
+        }
         /// <summary>
         /// Hits the test.
         /// </summary>
@@ -109,8 +118,10 @@ namespace HelixToolkit.Wpf.SharpDX
             object originalSource, bool fixedSize)
         {
             var h = false;
-            var result = new BillboardHitResult();
-            result.Distance = double.MaxValue;
+            var result = new BillboardHitResult
+            {
+                Distance = double.MaxValue
+            };
 
             if (context == null || Width == 0 || Height == 0 || (!fixedSize && !BoundingSphere.TransformBoundingSphere(modelMatrix).Intersects(ref rayWS)))
             {
@@ -140,14 +151,14 @@ namespace HelixToolkit.Wpf.SharpDX
                     fixedSize, (float)context.ActualWidth, (float)context.ActualHeight);
                 if (rayWS.Intersects(ref b))
                 {
-                    float distance;
-                    if (Collision.RayIntersectsBox(ref rayWS, ref b, out distance))
+                    if (Collision.RayIntersectsBox(ref rayWS, ref b, out float distance))
                     {
                         h = true;
                         result.ModelHit = originalSource;
                         result.IsValid = true;
                         result.PointHit = rayWS.Position + (rayWS.Direction * distance);
                         result.Distance = distance;
+                        result.Geometry = this;
                         Debug.WriteLine(string.Format("Hit; HitPoint:{0}; Bound={1}; Distance={2}", result.PointHit, b, distance));
                         break;
                     }
@@ -180,8 +191,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Y = -(2 * y / viewportHeight / spw - 1) / projectionMatrix.M22;
                 v.Z = spz;
 
-                Vector3 bl;
-                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out bl);
+                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out Vector3 bl);
 
 
                 x = spx + right * spw;
@@ -190,8 +200,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Y = -(2 * y / viewportHeight / spw - 1) / projectionMatrix.M22;
                 v.Z = spz;
 
-                Vector3 br;
-                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out br);
+                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out Vector3 br);
 
                 x = spx + right * spw;
                 y = spy + top * spw;
@@ -199,8 +208,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Y = -(2 * y / viewportHeight / spw - 1) / projectionMatrix.M22;
                 v.Z = spz;
 
-                Vector3 tr;
-                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out tr);
+                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out Vector3 tr);
 
                 x = spx + left * spw;
                 y = spy + top * spw;
@@ -208,8 +216,7 @@ namespace HelixToolkit.Wpf.SharpDX
                 v.Y = -(2 * y / viewportHeight / spw - 1) / projectionMatrix.M22;
                 v.Z = spz;
 
-                Vector3 tl;
-                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out tl);
+                Vector3.TransformCoordinate(ref v, ref viewMatrixInv, out Vector3 tl);
                 return BoundingBox.FromPoints(new Vector3[] { tl, tr, bl, br });
             }
             else

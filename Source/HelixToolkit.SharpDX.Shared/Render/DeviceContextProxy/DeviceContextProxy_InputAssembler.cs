@@ -15,6 +15,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 {
     public partial class DeviceContextProxy
     {
+        private PrimitiveTopology currPrimitiveTopology = PrimitiveTopology.Undefined;
         /// <summary>
         /// Gets or sets the primitive topology.
         /// </summary>
@@ -25,14 +26,20 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             set
             {
+                if(currPrimitiveTopology == value)
+                {
+                    return;
+                }
+                currPrimitiveTopology = value;
                 deviceContext.InputAssembler.PrimitiveTopology = value;
             }
             get
             {
-                return deviceContext.InputAssembler.PrimitiveTopology;
+                return currPrimitiveTopology;
             }
         }
 
+        private InputLayout currInputLayout;
         /// <summary>
         /// Gets or sets the input layout.
         /// </summary>
@@ -43,11 +50,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             set
             {
+                if(currInputLayout == value) { return; }
+                currInputLayout = value;
                 deviceContext.InputAssembler.InputLayout = value;
             }
             get
             {
-                return deviceContext.InputAssembler.InputLayout;
+                return currInputLayout;
             }
         }
 

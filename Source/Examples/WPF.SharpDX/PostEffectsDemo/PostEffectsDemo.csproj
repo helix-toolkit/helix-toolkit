@@ -92,10 +92,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="skeleton.3ds">
+    <None Include="..\..\..\..\Models\3ds\skeleton.3ds">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="suzanne.obj">
+    <None Include="..\..\..\..\Models\obj\suzanne.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

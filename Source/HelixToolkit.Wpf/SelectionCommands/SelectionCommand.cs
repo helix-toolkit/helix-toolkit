@@ -33,11 +33,13 @@ namespace HelixToolkit.Wpf
         /// Initializes a new instance of the <see cref="SelectionCommand"/> class.
         /// </summary>
         /// <param name="viewport">The viewport.</param>
-        /// <param name="eventHandler">The selection event handler.</param>
-        protected SelectionCommand(Viewport3D viewport, EventHandler<ModelsSelectedEventArgs> eventHandler)
+        /// <param name="eventHandlerModels">The selection event handler for models.</param>
+        /// <param name="eventHandlerVisuals">The selection event handler for visuals.</param>
+        protected SelectionCommand(Viewport3D viewport, EventHandler<ModelsSelectedEventArgs> eventHandlerModels, EventHandler<VisualsSelectedEventArgs> eventHandlerVisuals)
         {
             this.Viewport = viewport;
-            this.ModelsSelected = eventHandler;
+            this.ModelsSelected = eventHandlerModels;
+            this.VisualsSelected = eventHandlerVisuals;
         }
 
         /// <summary>
@@ -49,6 +51,11 @@ namespace HelixToolkit.Wpf
         /// Occurs when models are selected.
         /// </summary>
         private event EventHandler<ModelsSelectedEventArgs> ModelsSelected;
+
+        /// <summary>
+        /// Occurs when visuals are selected.
+        /// </summary>
+        private event EventHandler<VisualsSelectedEventArgs> VisualsSelected;
 
         /// <summary>
         /// Gets or sets the selection hit mode.
@@ -123,6 +130,19 @@ namespace HelixToolkit.Wpf
         protected virtual void OnModelsSelected(ModelsSelectedEventArgs e)
         {
             var handler = this.ModelsSelected;
+            if (handler != null)
+            {
+                handler(this.Viewport, e);
+            }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="E:VisualsSelected" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="VisualsSelectedEventArgs"/> instance containing the event data.</param>
+        protected virtual void OnVisualsSelected(VisualsSelectedEventArgs e)
+        {
+            var handler = this.VisualsSelected;
             if (handler != null)
             {
                 handler(this.Viewport, e);

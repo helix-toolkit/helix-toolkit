@@ -131,13 +131,12 @@ namespace HelixToolkit.UWP.Core
                 }
                 else
                 {
-                    context.DrawInstanced(GeometryBuffer.VertexBuffer[0].ElementCount, instanceModel.Buffer.ElementCount,
-                        0, instanceModel.Buffer.Offset);
+                    context.DrawInstanced(GeometryBuffer.VertexBuffer[0].ElementCount, instanceModel.Buffer.ElementCount, 0, 0);
                 }
             }
         }
 
-        protected override void OnGeometryBufferChanged(IGeometryBufferModel buffer)
+        protected override void OnGeometryBufferChanged(IAttachableBufferModel buffer)
         {
             billboardBuffer = buffer as IBillboardBufferModel;
         }
@@ -168,7 +167,7 @@ namespace HelixToolkit.UWP.Core
 
         protected override void OnUpdatePerModelStruct(ref PointLineModelStruct model, RenderContext context)
         {
-            model.World = ModelMatrix * context.WorldMatrix;
+            model.World = ModelMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
             model.BoolParams.X = FixedSize;
             var type = billboardBuffer.Type;

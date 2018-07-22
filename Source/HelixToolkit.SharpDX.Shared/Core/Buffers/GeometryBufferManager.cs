@@ -135,8 +135,7 @@ namespace HelixToolkit.UWP.Core
             }
             lock (bufferDictionary)
             {
-                GeometryBufferContainer container = null;
-                if(bufferDictionary.TryGetValue(typeof(T), geometry.GUID, out container))
+                if(bufferDictionary.TryGetValue(typeof(T), geometry.GUID, out GeometryBufferContainer container))
                 {
 #if DEBUGDETAIL
                     Debug.WriteLine("Existing buffer found, GeomoetryGUID = " + geometry.GUID);
@@ -180,8 +179,7 @@ namespace HelixToolkit.UWP.Core
             }
             lock (bufferDictionary)
             {
-                GeometryBufferContainer container = null;
-                if(bufferDictionary.TryGetValue(typeof(T), proxy.GeometryGuid, out container))
+                if(bufferDictionary.TryGetValue(typeof(T), proxy.GeometryGuid, out GeometryBufferContainer container))
                 {
 #if DEBUGDETAIL
                     Debug.WriteLine("Existing buffer found, Detach model from buffer. ModelGUID = " + proxy.ModelGuid);

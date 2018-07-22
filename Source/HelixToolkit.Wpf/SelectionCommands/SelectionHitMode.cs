@@ -23,5 +23,6 @@ namespace HelixToolkit.Wpf
         /// Selects models completely inside selection range.
         /// </summary>
         Inside,
+
     }
 }

@@ -51,7 +51,7 @@ namespace HelixToolkit.UWP.Core
         /// </value>
         public IElementsBufferProxy[] VertexBuffer { private set; get; } = new IElementsBufferProxy[0];
         private static readonly VertexBufferBinding[] emptyBinding = new VertexBufferBinding[0];
-        private VertexBufferBinding[] vertexBufferBindings = emptyBinding;
+        protected VertexBufferBinding[] VertexBufferBindings { private set; get; } = emptyBinding;
         /// <summary>
         /// Gets the size of the vertex structure.
         /// </summary>
@@ -227,7 +227,7 @@ namespace HelixToolkit.UWP.Core
                     }  
                     if (updateVBinding)
                     {
-                        vertexBufferBindings = VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray();
+                        VertexBufferBindings = VertexBuffer.Select(x => x != null ? new VertexBufferBinding(x.Buffer, x.StructureSize, x.Offset) : new VertexBufferBinding()).ToArray();
                         updateVBinding = false;
                     }
                 }
@@ -271,8 +271,18 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         protected virtual bool OnAttachBuffer(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot)
         {
-            context.InputLayout = vertexLayout;
-            context.PrimitiveTopology = Topology;
+            if (VertexBuffer.Length > 0)
+            {
+                if (VertexBuffer.Length == VertexBufferBindings.Length)
+                {
+                    context.SetVertexBuffers(vertexBufferStartSlot, VertexBufferBindings);
+                    vertexBufferStartSlot += VertexBuffer.Length;
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (IndexBuffer != null)
             {
                 context.SetIndexBuffer(IndexBuffer.Buffer, Format.R32_UInt, IndexBuffer.Offset);
@@ -281,18 +291,8 @@ namespace HelixToolkit.UWP.Core
             {
                 context.SetIndexBuffer(null, Format.Unknown, 0);
             }
-            if (VertexBuffer.Length > 0)
-            {
-                if (VertexBuffer.Length == vertexBufferBindings.Length)
-                {
-                    context.SetVertexBuffers(vertexBufferStartSlot, vertexBufferBindings);
-                    vertexBufferStartSlot += VertexBuffer.Length;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            context.InputLayout = vertexLayout;
+            context.PrimitiveTopology = Topology;
             return true;
         }
 
@@ -309,7 +309,7 @@ namespace HelixToolkit.UWP.Core
                 geometry.PropertyChanged -= Geometry_PropertyChanged;
             }
             geometry = null;
-            vertexBufferBindings = emptyBinding;
+            VertexBufferBindings = emptyBinding;
             base.OnDispose(disposeManagedResources);
         }
     }

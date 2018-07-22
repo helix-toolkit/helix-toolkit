@@ -29,7 +29,7 @@ namespace HelixToolkit.UWP.Utilities
         /// </summary>
         int ElementCount { get; }
         /// <summary>
-        /// Buffer offset
+        /// Buffer offset in bytes
         /// </summary>
         int Offset { set; get; }
         /// <summary>
@@ -57,6 +57,7 @@ namespace HelixToolkit.UWP.Utilities
         /// </summary>
         public int ElementCount { get; protected set; } = 0;
         /// <summary>
+        /// Buffer data offset in bytes.
         /// <see cref="IBufferProxy.Offset"/> 
         /// </summary>
         public int Offset { get; set; } = 0;
@@ -77,6 +78,13 @@ namespace HelixToolkit.UWP.Utilities
         {
             StructureSize = structureSize;
             BindFlags = bindFlags;
+        }
+
+        public override void DisposeAndClear()
+        {
+            buffer = null;
+            ElementCount = 0;
+            base.DisposeAndClear();
         }
     }
 }

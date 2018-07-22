@@ -122,7 +122,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 { return; }
                 Disposer.RemoveAndDispose(ref bufferModelInternal);
                 bufferModelInternal = value;
-                ((IGeometryRenderCore)RenderCore).GeometryBuffer = bufferModelInternal == null ? null : bufferModelInternal.BufferModel;
+                ((IGeometryRenderCore)RenderCore).GeometryBuffer = bufferModelInternal?.BufferModel;
             }
             get
             {
@@ -545,7 +545,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     foreach (var modelMatrix in InstanceBuffer.Elements)
                     {
                         var b = this.Bounds;
-                        if (OnHitTest(context, TotalModelMatrix * modelMatrix, ref rayWS, ref hits))
+                        if (OnHitTest(context, modelMatrix * TotalModelMatrix, ref rayWS, ref hits))
                         {
                             hit = true;
                             var lastHit = hits[hits.Count - 1];

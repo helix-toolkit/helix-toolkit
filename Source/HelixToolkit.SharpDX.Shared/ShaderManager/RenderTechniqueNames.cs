@@ -18,6 +18,8 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string Blinn = "RenderBlinn";
+
+        public const string BlinnBatched = "RenderBlinnBatch";
         ///// <summary>
         ///// 
         ///// </summary>
@@ -139,6 +141,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public const string Diffuse = "RenderDiffuse";
         /// <summary>
+        /// The diffuse oit
+        /// </summary>
+        public const string DiffuseOIT = "RenderDiffuseOIT";
+        /// <summary>
         /// 
         /// </summary>
         public const string Colors = "RenderColors";
@@ -232,6 +238,10 @@ namespace HelixToolkit.UWP
         /// 
         /// </summary>
         public const string EffectMeshXRayGridP3 = "EffectMeshXRayGridP3";
+        /// <summary>
+        /// The effect mesh diffuse x ray grid p3
+        /// </summary>
+        public const string EffectMeshDiffuseXRayGridP3 = "EffectMeshDiffueXRayGridP3";
         /// <summary>
         /// 
         /// </summary>

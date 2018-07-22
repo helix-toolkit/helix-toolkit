@@ -40,7 +40,7 @@ namespace HelixToolkit.UWP.Core
         /// <value>
         /// The geometry buffer.
         /// </value>
-        IGeometryBufferModel GeometryBuffer { set; get; }
+        IAttachableBufferModel GeometryBuffer { set; get; }
         /// <summary>
         /// Gets or sets the raster description.
         /// </summary>
@@ -62,34 +62,6 @@ namespace HelixToolkit.UWP.Core
         /// The material.
         /// </value>
         MaterialCore Material { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render diffuse map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render diffuse map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderDiffuseMap { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render diffuse alpha map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render diffuse alpha map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderDiffuseAlphaMap { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render normal map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render normal map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderNormalMap { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render displacement map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render displacement map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderDisplacementMap { set; get; }
         /// <summary>
         /// Gets or sets a value indicating whether [render shadow map].
         /// </summary>
@@ -308,36 +280,6 @@ namespace HelixToolkit.UWP.Core
                 yield return MeshTopologyEnum.PNQuads;
             }
         }
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IPatchRenderParams
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        float MinTessellationDistance { set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        float MaxTessellationDistance { set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        float MinTessellationFactor { set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        float MaxTessellationFactor { set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        MeshTopologyEnum MeshType { set; get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        bool EnableTessellation { set; get; }
     }
 
 

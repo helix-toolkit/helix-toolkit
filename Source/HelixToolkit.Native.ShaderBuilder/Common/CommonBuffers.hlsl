@@ -39,7 +39,8 @@ cbuffer cbMeshModel : register(b1)
     bool bHasBones = false;
     float4 vParams = float4(0, 0, 0, 0); //Shared with models
     float4 vColor = float4(1, 1, 1, 1); //Shared with models
-    bool4 bParams = bool4(false, false, false, false); // Shared with models for enable/disable features
+    bool3 bParams = bool3(false, false, false); // Shared with models for enable/disable features
+    bool bBatched = false;
 	float minTessDistance = 1;
 	float maxTessDistance = 100;
 	float minTessFactor = 4;

@@ -146,6 +146,18 @@ namespace HelixToolkit.Wpf.SharpDX
             return new StaticMeshGeometryOctree(this.Positions, this.Indices, parameter);
         }
 
+        protected override void OnAssignTo(Geometry3D target)
+        {
+            base.OnAssignTo(target);
+            if(target is MeshGeometry3D mesh)
+            {
+                mesh.Normals = this.Normals;
+                mesh.TextureCoordinates = this.TextureCoordinates;
+                mesh.Tangents = this.Tangents;
+                mesh.BiTangents = this.BiTangents;
+            }
+        }
+
         public virtual bool HitTest(RenderContext context, Matrix modelMatrix, ref Ray rayWS, ref List<HitTestResult> hits, object originalSource)
         {
             if(Positions == null || Positions.Count == 0
@@ -156,12 +168,14 @@ namespace HelixToolkit.Wpf.SharpDX
             bool isHit = false;
             if (Octree != null)
             {
-                isHit = Octree.HitTest(context, originalSource, modelMatrix, rayWS, ref hits);
+                isHit = Octree.HitTest(context, originalSource, this, modelMatrix, rayWS, ref hits);
             }
             else
             {
-                var result = new HitTestResult();
-                result.Distance = double.MaxValue;
+                var result = new HitTestResult
+                {
+                    Distance = double.MaxValue
+                };
                 var modelInvert = modelMatrix.Inverted();
                 if (modelInvert == Matrix.Zero)//Check if model matrix can be inverted.
                 {
@@ -177,11 +191,10 @@ namespace HelixToolkit.Wpf.SharpDX
                     int index = 0;
                     foreach (var t in Triangles)
                     {
-                        float d;
                         var v0 = t.P0;
                         var v1 = t.P1;
                         var v2 = t.P2;
-                        if (Collision.RayIntersectsTriangle(ref rayModel, ref v0, ref v1, ref v2, out d))
+                        if (Collision.RayIntersectsTriangle(ref rayModel, ref v0, ref v1, ref v2, out float d))
                         {
                             if (d > 0 && d < result.Distance) // If d is NaN, the condition is false.
                             {
@@ -200,6 +213,7 @@ namespace HelixToolkit.Wpf.SharpDX
                                 result.NormalAtHit = n;// Vector3.TransformNormal(n, m).ToVector3D();
                                 result.TriangleIndices = new System.Tuple<int, int, int>(Indices[index], Indices[index + 1], Indices[index + 2]);
                                 result.Tag = index / 3;
+                                result.Geometry = this;
                                 isHit = true;
                             }
                         }
@@ -212,6 +226,20 @@ namespace HelixToolkit.Wpf.SharpDX
                 }
             }
             return isHit;
+        }
+    }
+
+
+    public struct BatchedMeshGeometryConfig : IBatchedGeometry
+    {
+        public Geometry3D Geometry { private set; get; }
+        public Matrix ModelTransform { private set; get; }
+        public int MaterialIndex { private set; get; }
+        public BatchedMeshGeometryConfig(Geometry3D geometry, Matrix modelTransform, int materialIndex)
+        {
+            Geometry = geometry;
+            ModelTransform = modelTransform;
+            MaterialIndex = materialIndex;
         }
     }
 }

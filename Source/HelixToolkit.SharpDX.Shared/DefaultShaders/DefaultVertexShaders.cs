@@ -20,238 +20,198 @@ namespace HelixToolkit.UWP.Shaders
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshDefault
+        public static string VSMeshDefault
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshDefault");
-            }
-        }
+            get;
+        } = "vsMeshDefault";
+        /// <summary>
+        /// Gets the vs mesh batched.
+        /// </summary>
+        /// <value>
+        /// The vs mesh batched.
+        /// </value>
+        public static string VSMeshBatched
+        {
+            get;
+        } = "vsMeshBatched";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshTessellation
+        public static string VSMeshTessellation
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshTessellation");
-            }
-        }
+            get;
+        } = "vsMeshTessellation";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshShadow
+        public static string VSMeshShadow
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshShadow");
-            }
-        }
+            get;
+        } = "vsMeshShadow";
+        /// <summary>
+        ///
+        /// </summary>
+        public static string VSMeshBatchedShadow
+        {
+            get;
+        } = "vsMeshBatchedShadow";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshInstancing
+        public static string VSMeshInstancing
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshInstancing");
-            }
-        }
+            get;
+        } = "vsMeshInstancing";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshInstancingTessellation
+        public static string VSMeshInstancingTessellation
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshInstancingTessellation");
-            }
-        }
+            get;
+        } = "vsMeshInstancingTessellation";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshBoneSkinning
+        public static string VSMeshBoneSkinning
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsBoneSkinning");
-            }
-        }
+            get;
+        } = "vsBoneSkinning";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshBoneSkinningShadow
+        public static string VSMeshBoneSkinningShadow
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsBoneSkinningShadow");
-            }
-        }
+            get;
+        } = "vsBoneSkinningShadow";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshBoneSkinningTessellation
+        public static string VSMeshBoneSkinningTessellation
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsBoneSkinningTessellation");
-            }
-        }
+            get;
+        } = "vsBoneSkinningTessellation";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSPoint
+        public static string VSPoint
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsPoint");
-            }
-        }
+            get;
+        } = "vsPoint";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSPointShadow
+        public static string VSPointShadow
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsPointShadow");
-            }
-        }
+            get;
+        } = "vsPointShadow";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSBillboard
+        public static string VSBillboard
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsBillboard");
-            }
-        }
+            get;
+        } = "vsBillboard";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSBillboardInstancing
+        public static string VSBillboardInstancing
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsBillboardInstancing");
-            }
-        }
+            get;
+        } = "vsBillboardInstancing";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshClipPlane
+        public static string VSMeshClipPlane
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshClipPlane");
-            }
-        }
+            get;
+        } = "vsMeshClipPlane";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshClipPlaneQuad
+        public static string VSMeshClipPlaneQuad
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshClipPlaneQuad");
-            }
-        }
+            get;
+        } = "vsMeshClipPlaneQuad";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSParticle
+        public static string VSParticle
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsParticle");
-            }
-        }
+            get;
+        } = "vsParticle";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSSkybox
+        public static string VSSkybox
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsSkybox");
-            }
-        }
+            get;
+        } = "vsSkybox";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshWireframe
+        public static string VSMeshWireframe
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshWireframe");
-            }
-        }
+            get;
+        } = "vsMeshWireframe";
+        /// <summary>
+        /// Gets the vs mesh batched wireframe.
+        /// </summary>
+        /// <value>
+        /// The vs mesh batched wireframe.
+        /// </value>
+        public static string VSMeshBatchedWireframe
+        {
+            get;
+        } = "vsMeshBatchedWireframe";
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string VSMeshBoneSkinningWireframe
+        {
+            get;
+        } = "vsBoneSkinningWireframe";
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshBoneSkinningWireframe
+        public static string VSMeshOutlineP1
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsBoneSkinningWireframe");
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static byte[] VSMeshOutlineP1
-        {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshOutlinePass1");
-            }
-        }
+            get;
+        } = "vsMeshOutlinePass1";
 
 
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSMeshOutlineScreenQuad
+        public static string VSMeshOutlineScreenQuad
         {
-            get
-            {
-                return UWPShaderBytePool.Read("vsMeshOutlineScreenQuad");
-            }
-        }
+            get;
+        } = "vsMeshOutlineScreenQuad";
 
 #if !NETFX_CORE
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSScreenDup
+        public static string VSScreenDup
         {
-            get
-            {
-                return Properties.Resources.vsScreenDup;
-            }
-        }
+            get;
+        } = "vsScreenDup";
         /// <summary>
         /// 
         /// </summary>
-        public static byte[] VSScreenDupCursor
+        public static string VSScreenDupCursor
         {
-            get
-            {
-                return Properties.Resources.vsScreenDupCursor;
-            }
-        }
+            get;
+        } = "vsScreenDupCursor";
 #endif
     }
 
@@ -267,17 +227,27 @@ namespace HelixToolkit.UWP.Shaders
         public static InputElement[] VSInput { get; } = new InputElement[]
         {
             new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-            new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-            new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
             new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
             new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
             new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),  
-           
+            new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 1),  
+            new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2),             
             //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
-            new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1)
+            new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1)
+        };
+
+        public static InputElement[] VSMeshBatchedInput { get; } = new InputElement[]
+        {
+            new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+            new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+            new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+            new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
+            new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+            new InputElement("COLOR",    1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
         };
         /// <summary>
         /// 
@@ -285,21 +255,20 @@ namespace HelixToolkit.UWP.Shaders
         public static InputElement[] VSInputInstancing { get; } = new InputElement[]
         {
             new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-            new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-            new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
             new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
             new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
             new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),  
-           
+            new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 1),       
+            new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2),             
             //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
-            new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("COLOR", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
-            new InputElement("COLOR", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
-            new InputElement("COLOR", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 5, Format.R32G32_Float, InputElement.AppendAligned, 2, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
+            new InputElement("COLOR", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 4, InputClassification.PerInstanceData, 1),
+            new InputElement("COLOR", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 4, InputClassification.PerInstanceData, 1),
+            new InputElement("COLOR", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 4, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 5, Format.R32G32_Float, InputElement.AppendAligned, 4, InputClassification.PerInstanceData, 1),
         };
         /// <summary>
         /// 
@@ -307,18 +276,18 @@ namespace HelixToolkit.UWP.Shaders
         public static InputElement[] VSInputBoneSkinning { get; } = new InputElement[]
         {
             new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-            new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
-            new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 0),
             new InputElement("NORMAL",   0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
             new InputElement("TANGENT",  0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
             new InputElement("BINORMAL", 0, Format.R32G32B32_Float,    InputElement.AppendAligned, 0),
+            new InputElement("TEXCOORD", 0, Format.R32G32_Float,       InputElement.AppendAligned, 1),
+            new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2),
             //INSTANCING: die 4 texcoords sind die matrix, die mit jedem buffer reinwandern
-            new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 1, InputClassification.PerInstanceData, 1),
-            new InputElement("BONEIDS", 0, Format.R32G32B32A32_SInt, InputElement.AppendAligned, 2),
-            new InputElement("BONEWEIGHTS", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 2),
+            new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 2, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 3, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
+            new InputElement("TEXCOORD", 4, Format.R32G32B32A32_Float, InputElement.AppendAligned, 3, InputClassification.PerInstanceData, 1),
+            new InputElement("BONEIDS", 0, Format.R32G32B32A32_SInt, InputElement.AppendAligned, 4),
+            new InputElement("BONEWEIGHTS", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 4),
         };
         /// <summary>
         /// 
@@ -412,6 +381,13 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription VSMeshDefault = new ShaderDescription(nameof(VSMeshDefault), ShaderStage.Vertex, 
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshDefault);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSMeshBatched = new ShaderDescription(nameof(VSMeshBatched), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshBatched);
         /// <summary>
         /// 
         /// </summary>
@@ -424,6 +400,12 @@ namespace HelixToolkit.UWP.Shaders
         public static ShaderDescription VSMeshShadow = new ShaderDescription(nameof(VSMeshShadow), ShaderStage.Vertex,
             new ShaderReflector(),
             DefaultVSShaderByteCodes.VSMeshShadow);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ShaderDescription VSMeshBatchedShadow = new ShaderDescription(nameof(VSMeshBatchedShadow), ShaderStage.Vertex,
+            new ShaderReflector(),
+            DefaultVSShaderByteCodes.VSMeshBatchedShadow);
         /// <summary>
         /// 
         /// </summary>
@@ -510,7 +492,10 @@ namespace HelixToolkit.UWP.Shaders
         /// The vs mesh wireframe
         /// </summary>
         public static ShaderDescription VSMeshWireframe = new ShaderDescription(nameof(VSMeshWireframe), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshWireframe);
-
+        /// <summary>
+        /// The vs mesh batched wireframe
+        /// </summary>
+        public static ShaderDescription VSMeshBatchedWireframe = new ShaderDescription(nameof(VSMeshBatchedWireframe), ShaderStage.Vertex, new ShaderReflector(), DefaultVSShaderByteCodes.VSMeshBatchedWireframe);
         /// <summary>
         /// The vs bone skinning wireframe
         /// </summary>

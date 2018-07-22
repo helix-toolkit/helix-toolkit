@@ -46,7 +46,7 @@ namespace HelixToolkit.Wpf.SharpDX
             { return false; }
             if (Octree != null)
             {
-                return Octree.HitTest(context, originalSource, modelMatrix, rayWS, ref hits, hitThickness);
+                return Octree.HitTest(context, originalSource, this, modelMatrix, rayWS, ref hits, hitThickness);
             }
             else
             {
@@ -76,15 +76,15 @@ namespace HelixToolkit.Wpf.SharpDX
                     if (dist < lastDist && dist <= maxDist)
                     {
                         lastDist = dist;
-                        Vector4 res;
                         var lp0 = point;
-                        Vector3.Transform(ref lp0, ref modelMatrix, out res);
+                        Vector3.Transform(ref lp0, ref modelMatrix, out Vector4 res);
                         var pvv = res.ToVector3();
                         result.Distance = (rayWS.Position - res.ToVector3()).Length();
                         result.PointHit = pvv;
                         result.ModelHit = originalSource;
                         result.IsValid = true;
                         result.Tag = index;
+                        result.Geometry = this;
                     }
 
                     index++;

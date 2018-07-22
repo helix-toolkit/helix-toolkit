@@ -18,10 +18,11 @@ namespace FileLoadDemo
     using HelixToolkit.Wpf.SharpDX.Model;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Windows;
 
     public class MainViewModel : BaseViewModel
     {
-        private const string OpenFileFilter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;";
+        private const string OpenFileFilter = "3D model files (*.obj;*.3ds;*.stl|*.obj;*.3ds;*.stl;*.ply;";
 
         public ObservableElement3DCollection ModelGeometry { get; private set; }
 
@@ -60,6 +61,8 @@ namespace FileLoadDemo
             set;get;
         }
 
+        public ICommand ExportCommand { private set; get; }
+
         private SynchronizationContext context = SynchronizationContext.Current;
         public MainViewModel()
         {
@@ -70,7 +73,12 @@ namespace FileLoadDemo
                 LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -10, -10),
                 Position = new System.Windows.Media.Media3D.Point3D(0, 10, 10),
                 FarPlaneDistance = 10000, NearPlaneDistance = 0.1 };
-            ResetCameraCommand = new DelegateCommand(() => { Camera.Reset(); });
+            ResetCameraCommand = new DelegateCommand(() =>
+            {
+                Camera.LookDirection = new System.Windows.Media.Media3D.Vector3D(0, -10, -10);
+                Camera.Position = new System.Windows.Media.Media3D.Point3D(0, 10, 10);
+            });
+            ExportCommand = new DelegateCommand(() => { ExportFile(); });
         }
 
         private void OpenFile()
@@ -94,9 +102,27 @@ namespace FileLoadDemo
                 {
                     LoadStl(path);
                 }
+                else if(Path.GetExtension(path).ToLower() == ".ply")
+                {
+                    LoadPly(path);
+                }
             });
 
         }
+
+        private void ExportFile()
+        {
+            string path = SaveFileDialog("3D model files (*.obj;|*.obj;");
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+            var exporter = new ObjExporter(path);
+            exporter.Export(ModelGeometry[0]);
+            exporter.Close();
+            MessageBox.Show($"Export Finished. {path}");
+        }
+
         public void Load3ds(string path)
         {
             var reader = new StudioReader();
@@ -114,6 +140,13 @@ namespace FileLoadDemo
         public void LoadStl(string path)
         {
             var reader = new StLReader();
+            var objCol = reader.Read(path);
+            AttachModelList(objCol);
+        }
+
+        public void LoadPly(string path)
+        {
+            var reader = new PlyReader();
             var objCol = reader.Read(path);
             AttachModelList(objCol);
         }
@@ -153,6 +186,17 @@ namespace FileLoadDemo
             }
 
             return d.FileName;
+        }
+
+        private string SaveFileDialog(string filter)
+        {
+            var d = new SaveFileDialog();
+            d.Filter = filter;
+            if (d.ShowDialog() == true)
+            {
+                return d.FileName;
+            }
+            else { return ""; }
         }
     }
 

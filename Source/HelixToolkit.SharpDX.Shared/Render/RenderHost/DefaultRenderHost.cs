@@ -137,6 +137,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
 
         private int numRendered = 0;
 
+        private static readonly Comparison<SceneNode> sortingDelegate = delegate (SceneNode a, SceneNode b) { return a.RenderOrderKey.Key > b.RenderOrderKey.Key ? 1 : a.RenderOrderKey.Key < b.RenderOrderKey.Key ? -1 : 0; };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRenderHost"/> class.
         /// </summary>
@@ -173,12 +175,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 Debug.WriteLine("Flatten Scene Graph");
 #endif
             }
+            int sceneCount = perFrameFlattenedScene.Count;
             if (invalidatePerFrameRenderables)
             {
 #if DEBUG
                 Debug.WriteLine("Get PerFrameRenderables");
-#endif
-                for (int i = 0; i < perFrameFlattenedScene.Count;)
+#endif               
+                for (int i = 0; i < sceneCount;)
                 {
                     var renderable = perFrameFlattenedScene[i];
                     renderable.Value.Update(context);
@@ -188,7 +191,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         //Skip scene graph depth larger than current node
                         int depth = renderable.Key;
                         ++i;
-                        for (; i < perFrameFlattenedScene.Count; ++i)
+                        for (; i < sceneCount; ++i)
                         {
                             if (perFrameFlattenedScene[i].Key <= depth)
                             {
@@ -228,10 +231,18 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                             break;
                     }
                 }
+                if (RenderConfiguration.EnableRenderOrder)
+                {
+                    preProcNodes.Sort(sortingDelegate);
+                    opaqueNodes.Sort(sortingDelegate);
+                    postProcNodes.Sort(sortingDelegate);
+                    particleNodes.Sort(sortingDelegate);
+                    screenSpacedNodes.Sort(sortingDelegate);
+                }
             }
             else
-            {
-                for (int i = 0; i < perFrameFlattenedScene.Count;)
+            {                
+                for (int i = 0; i < sceneCount;)
                 {
                     var renderable = perFrameFlattenedScene[i];
                     renderable.Value.Update(context);
@@ -240,7 +251,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         //Skip scene graph depth larger than current node
                         int depth = renderable.Key;
                         ++i;
-                        for (; i < perFrameFlattenedScene.Count; ++i)
+                        for (; i < sceneCount; ++i)
                         {
                             if (perFrameFlattenedScene[i].Key <= depth)
                             {
@@ -257,7 +268,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     ++i;
                 }
             }
-
             //Get RenderCores with post effect specified.
             if(postProcNodes.Count > 0)
             {
@@ -323,16 +333,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     {
                         if (core is IGeometryRenderCore c)
                         {
-                            if(c.GeometryBuffer != null && c.GeometryBuffer.Geometry != null && c.GeometryBuffer.Geometry.Indices != null)
-                                count += c.GeometryBuffer.Geometry.Indices.Count / 3;
+                            if(c.GeometryBuffer is IGeometryBufferModel geo && geo.Geometry != null && geo.Geometry.Indices != null)
+                                count += geo.Geometry.Indices.Count / 3;
                         }
                     }
                     foreach (var core in transparentNodes.Select(x => x.RenderCore))
                     {
                         if (core is IGeometryRenderCore c)
                         {
-                            if (c.GeometryBuffer != null && c.GeometryBuffer.Geometry != null && c.GeometryBuffer.Geometry.Indices != null)
-                                count += c.GeometryBuffer.Geometry.Indices.Count / 3;
+                            if (c.GeometryBuffer is IGeometryBufferModel geo && geo.Geometry != null && geo.Geometry.Indices != null)
+                                count += geo.Geometry.Indices.Count / 3;
                         }
                     }
                     renderStatistics.NumTriangles = count;

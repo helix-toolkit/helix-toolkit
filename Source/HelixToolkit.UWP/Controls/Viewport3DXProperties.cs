@@ -2173,5 +2173,33 @@ namespace HelixToolkit.UWP
         /// </summary>
         public static readonly DependencyProperty RenderDetailOutputProperty =
             DependencyProperty.Register("RenderDetailOutput", typeof(string), typeof(Viewport3DX), new PropertyMetadata(""));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable render order]. 
+        /// Specify render order in <see cref="Element3D.RenderOrder"/>. 
+        /// Scene node will be sorted by the <see cref="Element3D.RenderOrder"/> during rendering.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable manual render order]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableRenderOrder
+        {
+            get { return (bool)GetValue(EnableManualRenderOrderProperty); }
+            set { SetValue(EnableManualRenderOrderProperty, value); }
+        }
+        /// <summary>
+        /// The enable manual render order property
+        /// </summary>
+        public static readonly DependencyProperty EnableManualRenderOrderProperty =
+            DependencyProperty.Register("EnableRenderOrder", typeof(bool), typeof(Viewport3DX), new PropertyMetadata(false,
+                (d, e) =>
+                {
+                    var viewport = d as Viewport3DX;
+                    if (viewport.renderHostInternal != null)
+                    {
+                        viewport.renderHostInternal.RenderConfiguration.EnableRenderOrder = (bool)e.NewValue;
+                        viewport.renderHostInternal.InvalidatePerFrameRenderables();
+                    }
+                }));
     }
 }

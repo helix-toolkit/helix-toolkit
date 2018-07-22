@@ -9,10 +9,16 @@
     <Import_RootNamespace>HelixToolkit.SharpDX.SharedModel</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Camera\Camera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Camera\MatrixCamera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Camera\OrthographicCamera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Camera\PerspectiveCamera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Camera\ProjectionCamera.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\HelixItemsControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ModelContainer3DX.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\GeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\Abstract\MaterialGeometryModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\BatchedMeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\BillboardTextModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\BoneSkinmeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\CoordinateSystemModel3D.cs" />
@@ -28,13 +34,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\MeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\OutLineMeshGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\ParticleStormModel3D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Element3D\PatchGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PointGeometryModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectBloom.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshBorderHighlight.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshOutlineBlur.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRay.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Element3D\PostEffects\PostEffectMeshXRayGrid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\ScreenSpacedGroup3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Element3D\TransformManipulator3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\MaterialExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Light3D\ShadowMap3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Material\ColorStripeMaterial.cs" />

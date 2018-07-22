@@ -42,6 +42,11 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
             get { return upDirection; }
         }
 
+        public Vector3 Target
+        {
+            get { return position + lookDirection; }
+        }
+
         private bool createLeftHandSystem = false;
         /// <summary>
         /// Gets or sets a value indicating whether to create a left hand system.
@@ -149,17 +154,6 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
             }
         }
 
-        /// <summary>
-        /// Gets the target position.
-        /// </summary>
-        /// <value>
-        /// The target.
-        /// </value>
-        public Vector3 Target
-        {
-            get { return this.Position + this.LookDirection; }
-        }
-
         public override Matrix CreateViewMatrix()
         {
             return CreateLeftHandSystem ? Matrix.LookAtLH(this.Position, this.Position + this.LookDirection, this.UpDirection)
@@ -216,7 +210,7 @@ namespace HelixToolkit.Wpf.SharpDX.Cameras
         public float FieldOfView
         {
             set; get;
-        }
+        } = 45;
 
         public override Matrix CreateProjectionMatrix(float aspectRatio)
         {

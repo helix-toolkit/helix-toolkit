@@ -130,6 +130,21 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The displacement map sampler.
         /// </value>
         SamplerStateDescription DisplacementMapSampler { set; get; }
+
+        bool RenderDiffuseMap { set; get; }
+        bool RenderDiffuseAlphaMap { set; get; }
+        bool RenderNormalMap { set; get; }
+        bool RenderDisplacementMap { set; get; }
+
+        bool EnableTessellation { set; get; }
+
+        float MaxDistanceTessellationFactor { set; get; }
+
+        float MinDistanceTessellationFactor { set; get; }
+
+        float MaxTessellationDistance { set; get; }
+
+        float MinTessellationDistance { set; get; }
     }
 
     /// <summary>
@@ -144,41 +159,6 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The default name of the shader pass.
         /// </value>
         string DefaultShaderPassName { set; get; }
-        /// <summary>
-        /// Gets the material pass.
-        /// </summary>
-        /// <value>
-        /// The material pass.
-        /// </value>
-        ShaderPass MaterialPass { get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render diffuse map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render diffuse map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderDiffuseMap { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render diffuse alpha map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render diffuse alpha map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderDiffuseAlphaMap { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render normal map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render normal map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderNormalMap { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render displacement map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render displacement map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderDisplacementMap { set; get; }
         /// <summary>
         /// Gets or sets a value indicating whether [render shadow map].
         /// </summary>
@@ -214,5 +194,7 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <param name="shaderPass"></param>
         /// <returns></returns>
         bool BindMaterialTextures(DeviceContextProxy context, ShaderPass shaderPass);
+
+        ShaderPass GetPass(MaterialGeometryRenderCore core, RenderContext context);
     }
 }

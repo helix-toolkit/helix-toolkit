@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 
 namespace HelixToolkit.UWP
@@ -14,27 +11,9 @@ namespace HelixToolkit.UWP
     public class ItemsModel3D : Element3D, IHitable
     {
         /// <summary>
-        ///     The item template property
-        /// </summary>
-        public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.Register(
-            "ItemTemplate", typeof(DataTemplate), typeof(ItemsModel3D), new PropertyMetadata(null));
-
-        /// <summary>
-        ///     Gets or sets the <see cref="DataTemplate" /> used to display each item.
-        /// </summary>
-        /// <value>
-        ///     The item template.
-        /// </value>
-        public DataTemplate ItemTemplate
-        {
-            get { return (DataTemplate)this.GetValue(ItemTemplateProperty); }
-            set { this.SetValue(ItemTemplateProperty, value); }
-        }
-
-        /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
-        public static readonly DependencyProperty ItemsSourceProperty =
+        public new static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ItemsModel3D),
                 new PropertyMetadata(null,
                     (d, e) => {
@@ -51,12 +30,12 @@ namespace HelixToolkit.UWP
                 var d = s as ItemsModel3D;
                 if (e.OldValue != null)
                 {
-                    d.itemsContainer?.Items.Remove(e.OldValue);
+                    d.Items.Remove(e.OldValue);
                 }
 
                 if (e.NewValue != null)
                 {
-                    d.itemsContainer?.Items.Add(e.NewValue);
+                    d.Items.Add(e.NewValue);
                 }
                 (d.SceneNode as GroupNode).OctreeManager = e.NewValue == null ? null : (e.NewValue as IOctreeManagerWrapper).Manager;
             }));
@@ -64,7 +43,7 @@ namespace HelixToolkit.UWP
         /// <summary>
         /// ItemsSource for binding to collection. Please use ObservableElement3DCollection for observable, otherwise may cause memory leak.
         /// </summary>
-        public IEnumerable ItemsSource
+        public new IEnumerable ItemsSource
         {
             get { return (IEnumerable)this.GetValue(ItemsSourceProperty); }
             set { this.SetValue(ItemsSourceProperty, value); }
@@ -83,7 +62,7 @@ namespace HelixToolkit.UWP
 
         private IOctreeBasic Octree
         {
-            get { return (SceneNode as GroupNode).OctreeManager == null ? null : (SceneNode as GroupNode).OctreeManager.Octree; }
+            get { return (SceneNode as GroupNode).OctreeManager?.Octree; }
         }
 
         /// <summary>
@@ -109,20 +88,17 @@ namespace HelixToolkit.UWP
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            if (itemsContainer != null)
+            Items.Clear();
+            foreach (var item in Children)
             {
-                itemsContainer.Items.Clear();
-                foreach (var item in Children)
+                if (item.Parent != this)
                 {
-                    if (item.Parent != itemsContainer)
-                    {
-                        itemsContainer.Items.Add(item);
-                    }
+                    Items.Add(item);
                 }
-                if (OctreeManager != null)
-                {
-                    itemsContainer.Items.Add(OctreeManager);
-                }
+            }
+            if (OctreeManager != null)
+            {
+                Items.Add(OctreeManager);
             }
         }
 
@@ -143,13 +119,13 @@ namespace HelixToolkit.UWP
             }
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
-                itemsContainer?.Items.Clear();
+                Items.Clear();
                 var node = SceneNode as GroupNode;
                 node.Clear();
                 AttachChildren(sender as IList);
                 if (OctreeManager != null)
                 {
-                    itemsContainer?.Items.Add(OctreeManager);
+                    Items.Add(OctreeManager);
                 }
             }
             else if (e.NewItems != null)
@@ -166,9 +142,9 @@ namespace HelixToolkit.UWP
             var node = SceneNode as GroupNode;
             foreach (Element3D c in children)
             {
-                if (node.AddChildNode(c) && itemsContainer != null)
+                if (node.AddChildNode(c))
                 {
-                    itemsContainer.Items.Add(c);
+                    Items.Add(c);
                 }
             }
         }
@@ -181,9 +157,9 @@ namespace HelixToolkit.UWP
             var node = SceneNode as GroupNode;
             foreach (Element3D c in children)
             {
-                if (node.RemoveChildNode(c) && itemsContainer != null)
+                if (node.RemoveChildNode(c))
                 {
-                    itemsContainer.Items.Remove(c);
+                    Items.Remove(c);
                 }
             }
         }
@@ -217,8 +193,7 @@ namespace HelixToolkit.UWP
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    var model = item as Element3D;
-                    if (model != null)
+                    if (item is Element3D model)
                     {
                         this.Children.Add(model);
                         elementDict.Add(item, model);
@@ -233,8 +208,7 @@ namespace HelixToolkit.UWP
             {
                 foreach (var item in this.ItemsSource)
                 {
-                    var model = this.ItemTemplate.LoadContent() as Element3D;
-                    if (model != null)
+                    if (this.ItemTemplate.LoadContent() is Element3D model)
                     {
                         model.DataContext = item;
                         this.Children.Add(model);
@@ -263,8 +237,7 @@ namespace HelixToolkit.UWP
                     {
                         foreach (var item in e.OldItems)
                         {
-                            Element3D element;
-                            if (elementDict.TryGetValue(item, out element))
+                            if (elementDict.TryGetValue(item, out Element3D element))
                             {
                                 Children.Remove(element);
                                 elementDict.Remove(item);
@@ -287,8 +260,7 @@ namespace HelixToolkit.UWP
                         {
                             foreach (var item in this.ItemsSource)
                             {
-                                var model = item as Element3D;
-                                if (model != null)
+                                if (item is Element3D model)
                                 {
                                     this.Children.Add(model);
                                     elementDict.Add(item, model);
@@ -303,8 +275,7 @@ namespace HelixToolkit.UWP
                         {
                             foreach (var item in this.ItemsSource)
                             {
-                                var model = this.ItemTemplate.LoadContent() as Element3D;
-                                if (model != null)
+                                if (this.ItemTemplate.LoadContent() is Element3D model)
                                 {
                                     model.DataContext = item;
                                     this.Children.Add(model);
@@ -327,8 +298,7 @@ namespace HelixToolkit.UWP
                         {
                             foreach (var item in e.NewItems)
                             {
-                                var model = this.ItemTemplate.LoadContent() as Element3D;
-                                if (model != null)
+                                if (this.ItemTemplate.LoadContent() is Element3D model)
                                 {
                                     model.DataContext = item;
                                     this.Children.Add(model);
@@ -344,8 +314,7 @@ namespace HelixToolkit.UWP
                         {
                             foreach (var item in e.NewItems)
                             {
-                                var model = item as Element3D;
-                                if (model != null)
+                                if (item is Element3D model)
                                 {
                                     this.Children.Add(model);
                                     elementDict.Add(item, model);

@@ -15,22 +15,12 @@ namespace HelixToolkit.UWP
     using Render;
     using System.Collections.Generic;
     using Utilities;
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IGeometryBufferModel : IGUID, IDisposable
+    public interface IAttachableBufferModel : IGUID, IDisposable
     {
         /// <summary>
         /// Occurs when [on invalidate renderer].
         /// </summary>
         event EventHandler<EventArgs> OnInvalidateRender;
-        /// <summary>
-        /// Gets or sets the geometry.
-        /// </summary>
-        /// <value>
-        /// The geometry.
-        /// </value>
-        Geometry3D Geometry { get; set; }
         /// <summary>
         /// Gets or sets the topology.
         /// </summary>
@@ -69,17 +59,20 @@ namespace HelixToolkit.UWP
         /// <param name="deviceResources"></param>
         /// <returns></returns>
         bool AttachBuffers(DeviceContextProxy context, InputLayout vertexLayout, ref int vertexBufferStartSlot, IDeviceResources deviceResources);
+    }
 
-        ///// <summary>
-        ///// Attaches the render host.
-        ///// </summary>
-        ///// <param name="host">The host.</param>
-        //void AttachRenderHost(IRenderHost host);
-        ///// <summary>
-        ///// Detaches the render host.
-        ///// </summary>
-        ///// <param name="host">The host.</param>
-        //void DetachRenderHost(IRenderHost host);
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IGeometryBufferModel : IAttachableBufferModel
+    {
+        /// <summary>
+        /// Gets or sets the geometry.
+        /// </summary>
+        /// <value>
+        /// The geometry.
+        /// </value>
+        Geometry3D Geometry { get; set; }
     }
     /// <summary>
     /// 

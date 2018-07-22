@@ -21,19 +21,16 @@ namespace HelixToolkit.UWP.Core
     /// <typeparam name="VertexStruct"></typeparam>
     public abstract class PointGeometryBufferModel<VertexStruct> : GeometryBufferModel where VertexStruct : struct
     {
-        /// <summary>
-        /// Called when [build vertex array].
-        /// </summary>
-        /// <param name="geometry">The geometry.</param>
-        /// <returns></returns>
-        protected abstract VertexStruct[] OnBuildVertexArray(PointGeometry3D geometry);
-
+        protected static readonly VertexStruct[] emptyVerts = new VertexStruct[0];
         /// <summary>
         /// Initializes a new instance of the <see cref="PointGeometryBufferModel{VertexStruct}"/> class.
         /// </summary>
         /// <param name="structSize">Size of the structure.</param>
-        public PointGeometryBufferModel(int structSize) : base(PrimitiveTopology.PointList,
-            new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer), null)
+        /// <param name="dynamic">Create dynamic buffer or immutable buffer</param>
+        public PointGeometryBufferModel(int structSize, bool dynamic = false) 
+            : base(PrimitiveTopology.PointList,
+            dynamic ? new DynamicBufferProxy(structSize, BindFlags.VertexBuffer) : new ImmutableBufferProxy(structSize, BindFlags.VertexBuffer) as IElementsBufferProxy,
+            null)
         {
         }
 
@@ -54,29 +51,8 @@ namespace HelixToolkit.UWP.Core
             vertexBuffer, null)
         {
         }
-        /// <summary>
-        /// Called when [create vertex buffer].
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="geometry">The geometry.</param>
-        /// <param name="deviceResources">The device resources.</param>
-        /// <param name="bufferIndex"></param>
-        protected override void OnCreateVertexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
-        {
-            // -- set geometry if given
-            if (geometry != null && geometry.Positions != null && geometry.Positions.Count > 0)
-            {
-                // --- get geometry
-                var mesh = geometry as PointGeometry3D;
-                var data = OnBuildVertexArray(mesh);
-                buffer.UploadDataToBuffer(context, data, geometry.Positions.Count);
-            }
-            else
-            {
-                buffer.DisposeAndClear();
-            }
-        }
+
+
         /// <summary>
         /// Called when [create index buffer].
         /// </summary>
@@ -93,7 +69,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// 
     /// </summary>
-    public sealed class DefaultPointGeometryBufferModel : PointGeometryBufferModel<PointsVertex>
+    public class DefaultPointGeometryBufferModel : PointGeometryBufferModel<PointsVertex>
     {
         [ThreadStatic]
         private static PointsVertex[] vertexArrayBuffer;
@@ -103,11 +79,45 @@ namespace HelixToolkit.UWP.Core
         public DefaultPointGeometryBufferModel() : base(PointsVertex.SizeInBytes) { }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultPointGeometryBufferModel"/> class.
+        /// </summary>
+        /// <param name="isDynamic"></param>
+        public DefaultPointGeometryBufferModel(bool isDynamic) : base(PointsVertex.SizeInBytes, isDynamic) { }
+
+        /// <summary>
+        /// Called when [create vertex buffer].
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="geometry">The geometry.</param>
+        /// <param name="deviceResources">The device resources.</param>
+        /// <param name="bufferIndex"></param>
+        protected override void OnCreateVertexBuffer(DeviceContextProxy context, IElementsBufferProxy buffer, int bufferIndex, Geometry3D geometry, IDeviceResources deviceResources)
+        {
+            // -- set geometry if given
+            if (geometry != null && geometry.Positions != null && geometry.Positions.Count > 0)
+            {
+                // --- get geometry
+                var data = OnBuildVertexArray(geometry);
+                buffer.UploadDataToBuffer(context, data, geometry.Positions.Count, 0, geometry.PreDefinedVertexCount);
+            }
+            else
+            {
+                buffer.UploadDataToBuffer(context, emptyVerts, 0);
+            }
+        }
+
+
+        protected override bool IsVertexBufferChanged(string propertyName, int vertexBufferIndex)
+        {
+            return base.IsVertexBufferChanged(propertyName, vertexBufferIndex) || propertyName.Equals(nameof(Geometry3D.Colors));
+        }
+        /// <summary>
         /// Called when [build vertex array].
         /// </summary>
         /// <param name="geometry">The geometry.</param>
         /// <returns></returns>
-        protected override PointsVertex[] OnBuildVertexArray(PointGeometry3D geometry)
+        private PointsVertex[] OnBuildVertexArray(Geometry3D geometry)
         {
             var positions = geometry.Positions;
             var vertexCount = geometry.Positions.Count;
@@ -123,5 +133,16 @@ namespace HelixToolkit.UWP.Core
             colors.Dispose();
             return array;
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public sealed class DynamicPointGeometryBufferModel : DefaultPointGeometryBufferModel
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicPointGeometryBufferModel"/> class.
+        /// </summary>
+        public DynamicPointGeometryBufferModel() : base(true) { }
     }
 }

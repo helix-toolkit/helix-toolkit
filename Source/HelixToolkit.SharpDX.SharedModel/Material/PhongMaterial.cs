@@ -150,6 +150,73 @@ namespace HelixToolkit.Wpf.SharpDX
                 (d, e) => { ((d as Material).Core as IPhongMaterial).DisplacementMapSampler = (SamplerStateDescription)e.NewValue; }));
 
         /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty RenderDiffuseMapProperty =
+            DependencyProperty.Register("RenderDiffuseMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(true,
+                (d, e) =>
+                {
+                    ((d as Material).Core as IPhongMaterial).RenderDiffuseMap = (bool)e.NewValue;
+                }));
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty RenderDiffuseAlphaMapProperty =
+            DependencyProperty.Register("RenderDiffuseAlphaMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(true,
+                (d, e) =>
+                {
+                    ((d as Material).Core as IPhongMaterial).RenderDiffuseAlphaMap = (bool)e.NewValue;
+                }));
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty RenderNormalMapProperty =
+            DependencyProperty.Register("RenderNormalMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(true,
+                (d, e) =>
+                {
+                    ((d as Material).Core as IPhongMaterial).RenderNormalMap = (bool)e.NewValue;
+                }));
+        /// <summary>
+        /// 
+        /// </summary>
+        public static readonly DependencyProperty RenderDisplacementMapProperty =
+            DependencyProperty.Register("RenderDisplacementMap", typeof(bool), typeof(PhongMaterial), new PropertyMetadata(true,
+                (d, e) =>
+                {
+                    ((d as Material).Core as IPhongMaterial).RenderDisplacementMap = (bool)e.NewValue;
+                }));
+
+        /// <summary>
+        /// The enable tessellation property
+        /// </summary>
+        public static readonly DependencyProperty EnableTessellationProperty = DependencyProperty.Register("EnableTessellation", typeof(bool), typeof(PhongMaterial),
+            new PropertyMetadata(false, (d, e) => { ((d as Material).Core as IPhongMaterial).EnableTessellation = (bool)e.NewValue; }));
+        /// <summary>
+        /// The tessellation factor at <see cref="MaxTessellationDistance"/> property
+        /// </summary>
+        public static readonly DependencyProperty MaxDistanceTessellationFactorProperty =
+            DependencyProperty.Register("MaxDistanceTessellationFactor", typeof(double), typeof(PhongMaterial), new PropertyMetadata(1.0, (d, e) =>
+            { ((d as Material).Core as IPhongMaterial).MaxDistanceTessellationFactor = (float)(double)e.NewValue; }));
+        /// <summary>
+        /// The tessellation factor at <see cref="MinTessellationDistance"/> property
+        /// </summary>
+        public static readonly DependencyProperty MinDistanceTessellationFactorProperty =
+            DependencyProperty.Register("MinDistanceTessellationFactor", typeof(double), typeof(PhongMaterial), new PropertyMetadata(2.0, (d, e) =>
+            { ((d as Material).Core as IPhongMaterial).MinDistanceTessellationFactor = (float)(double)e.NewValue; }));
+        /// <summary>
+        /// The maximum tessellation distance property
+        /// </summary>
+        public static readonly DependencyProperty MaxTessellationDistanceProperty =
+            DependencyProperty.Register("MaxTessellationDistance", typeof(double), typeof(PhongMaterial), new PropertyMetadata(50.0, (d, e) =>
+            { ((d as Material).Core as IPhongMaterial).MaxTessellationDistance = (float)(double)e.NewValue; }));
+        /// <summary>
+        /// The minimum tessellation distance property
+        /// </summary>
+        public static readonly DependencyProperty MinTessellationDistanceProperty =
+            DependencyProperty.Register("MinTessellationDistance", typeof(double), typeof(PhongMaterial), new PropertyMetadata(1.0, (d, e) =>
+            { ((d as Material).Core as IPhongMaterial).MinTessellationDistance = (float)(double)e.NewValue; }));
+
+        /// <summary>
         /// Constructs a Shading Material which correspnds with 
         /// the Phong and BlinnPhong lighting models.
         /// </summary>
@@ -289,6 +356,105 @@ namespace HelixToolkit.Wpf.SharpDX
             get { return (Vector4)GetValue(DisplacementMapScaleMaskProperty); }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderDiffuseMap
+        {
+            get { return (bool)this.GetValue(RenderDiffuseMapProperty); }
+            set { this.SetValue(RenderDiffuseMapProperty, value); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderNormalMap
+        {
+            get { return (bool)this.GetValue(RenderNormalMapProperty); }
+            set { this.SetValue(RenderNormalMapProperty, value); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderDiffuseAlphaMap
+        {
+            get { return (bool)this.GetValue(RenderDiffuseAlphaMapProperty); }
+            set { this.SetValue(RenderDiffuseAlphaMapProperty, value); }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderDisplacementMap
+        {
+            get { return (bool)this.GetValue(RenderDisplacementMapProperty); }
+            set { this.SetValue(RenderDisplacementMapProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [enable tessellation].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [enable tessellation]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnableTessellation
+        {
+            set
+            {
+                SetValue(EnableTessellationProperty, value);
+            }
+            get
+            {
+                return (bool)GetValue(EnableTessellationProperty);
+            }
+        }
+        /// <summary>
+        /// Gets or sets the tessellation factor at <see cref="MaxTessellationDistance"/>.
+        /// </summary>
+        /// <value>
+        /// The maximum tessellation factor.
+        /// </value>
+        public double MaxDistanceTessellationFactor
+        {
+            get { return (double)GetValue(MaxDistanceTessellationFactorProperty); }
+            set { SetValue(MaxDistanceTessellationFactorProperty, value); }
+        }
+        /// <summary>
+        /// Gets or sets the tessellation factor at <see cref="MinTessellationDistance"/>
+        /// </summary>
+        /// <value>
+        /// The minimum tessellation factor.
+        /// </value>
+        public double MinDistanceTessellationFactor
+        {
+            get { return (double)GetValue(MinDistanceTessellationFactorProperty); }
+            set { SetValue(MinDistanceTessellationFactorProperty, value); }
+        }
+        /// <summary>
+        /// Gets or sets the maximum tessellation distance.
+        /// </summary>
+        /// <value>
+        /// The maximum tessellation distance.
+        /// </value>
+        public double MaxTessellationDistance
+        {
+            get { return (double)GetValue(MaxTessellationDistanceProperty); }
+            set { SetValue(MaxTessellationDistanceProperty, value); }
+        }
+        /// <summary>
+        /// Gets or sets the minimum tessellation distance.
+        /// </summary>
+        /// <value>
+        /// The minimum tessellation distance.
+        /// </value>
+        public double MinTessellationDistance
+        {
+            get { return (double)GetValue(MinTessellationDistanceProperty); }
+            set { SetValue(MinTessellationDistanceProperty, value); }
+        }
+
         public PhongMaterial Clone()
         {
             return new PhongMaterial()
@@ -308,7 +474,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseAlphaMapSampler = this.DiffuseAlphaMapSampler,
                 DiffuseMapSampler = this.DiffuseMapSampler,
                 DisplacementMapSampler = this.DisplacementMapSampler,
-                NormalMapSampler = this.NormalMapSampler
+                NormalMapSampler = this.NormalMapSampler,
+                MaxTessellationDistance = (float)this.MaxTessellationDistance,
+                MinTessellationDistance = (float)this.MinTessellationDistance,
+                MaxDistanceTessellationFactor = (float)this.MaxDistanceTessellationFactor,
+                MinDistanceTessellationFactor = (float)this.MinDistanceTessellationFactor,
+                EnableTessellation = EnableTessellation,
+                RenderDiffuseAlphaMap = RenderDiffuseAlphaMap,
+                RenderDiffuseMap = RenderDiffuseMap,
+                RenderDisplacementMap = RenderDisplacementMap,
+                RenderNormalMap = RenderNormalMap
             };
         }
 
@@ -331,7 +506,16 @@ namespace HelixToolkit.Wpf.SharpDX
                 DiffuseAlphaMapSampler = this.DiffuseAlphaMapSampler,
                 DiffuseMapSampler = this.DiffuseMapSampler,
                 DisplacementMapSampler = this.DisplacementMapSampler,
-                NormalMapSampler = this.NormalMapSampler
+                NormalMapSampler = this.NormalMapSampler,
+                MaxTessellationDistance = (float)this.MaxTessellationDistance,
+                MinTessellationDistance = (float)this.MinTessellationDistance,
+                MaxDistanceTessellationFactor = (float)this.MaxDistanceTessellationFactor,
+                MinDistanceTessellationFactor = (float)this.MinDistanceTessellationFactor,
+                EnableTessellation = EnableTessellation,
+                RenderDiffuseAlphaMap = RenderDiffuseAlphaMap,
+                RenderDiffuseMap = RenderDiffuseMap,
+                RenderDisplacementMap = RenderDisplacementMap,
+                RenderNormalMap = RenderNormalMap
             };
         }
     }

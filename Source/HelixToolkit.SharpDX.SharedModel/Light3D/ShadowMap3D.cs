@@ -53,9 +53,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// The light camera property
         /// </summary>
         public static readonly DependencyProperty LightCameraProperty =
-                DependencyProperty.Register("LightCamera", typeof(ProjectionCamera), typeof(ShadowMap3D), new PropertyMetadata(null, (d, e) =>
+                DependencyProperty.Register("LightCamera", typeof(IProjectionCameraModel), typeof(ShadowMap3D), new PropertyMetadata(null, (d, e) =>
                 {
-                    ((d as Element3DCore).SceneNode as ShadowMapNode).LightCamera = (e.NewValue as ProjectionCamera).CameraInternal as ProjectionCameraCore;
+                    ((d as Element3DCore).SceneNode as ShadowMapNode).LightCamera = (e.NewValue as Camera).CameraInternal as ProjectionCameraCore;
                 }));
 
         /// <summary>
@@ -130,9 +130,9 @@ namespace HelixToolkit.Wpf.SharpDX
         /// <summary>
         /// Distance of the directional light from origin
         /// </summary>
-        public ProjectionCamera LightCamera
+        public IProjectionCameraModel LightCamera
         {
-            get { return (ProjectionCamera)this.GetValue(LightCameraProperty); }
+            get { return (IProjectionCameraModel)this.GetValue(LightCameraProperty); }
             set { this.SetValue(LightCameraProperty, value); }
         }
 

@@ -35,7 +35,7 @@ namespace CustomShaderDemo
         {
             set
             {
-                if (SetAffectsRender(ref colorGradients, value))
+                if (SetAffectsCanRenderFlag(ref colorGradients, value))
                 {
                     colorChanged = true;
                 }
@@ -107,9 +107,9 @@ namespace CustomShaderDemo
             }
         }
 
-        protected override bool CanRender(RenderContext context)
+        protected override bool OnUpdateCanRenderFlag()
         {
-            return base.CanRender(context) && ColorGradients != null;
+            return base.OnUpdateCanRenderFlag() && ColorGradients != null;
         }
 
         protected override void OnRender(RenderContext context, DeviceContextProxy deviceContext)
