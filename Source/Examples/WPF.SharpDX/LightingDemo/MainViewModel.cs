@@ -284,7 +284,7 @@ namespace LightingDemo
             ModelMaterial.DiffuseMap = FloorMaterial.DiffuseMap;
             
             ReflectMaterial = PhongMaterials.PolishedSilver;
-            ReflectMaterial.ReflectiveColor = global::SharpDX.Color.Silver;
+            ReflectMaterial.ReflectiveColor = Colors.Silver;
             ReflectMaterial.RenderEnvironmentMap = true;
             InitialObjectTransforms();           
         }

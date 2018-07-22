@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using global::SharpDX;
+using HelixToolkit.Mathematics;
 
 namespace HelixToolkit.SharpDX.Core.Controls
 {   

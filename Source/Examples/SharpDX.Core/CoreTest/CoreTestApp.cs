@@ -11,6 +11,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using System.Numerics;
+using HelixToolkit.Mathematics;
+using Matrix = System.Numerics.Matrix4x4;
 
 namespace CoreTest
 {
@@ -71,14 +74,14 @@ namespace CoreTest
             
             for(int i = 0; i < 2000; ++i)
             {
-                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
+                var transform = Matrix.CreateTranslation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
                 group.Items.Add(new MeshNode() { Geometry = sphere, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
             }
             viewport.Items.Add(group);
             group = new GroupNode();
             for (int i = 0; i < 2000; ++i)
             {
-                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                var transform = Matrix.CreateTranslation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
                 group.Items.Add(new MeshNode() { Geometry = box, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
             }
             viewport.Items.Add(group);
@@ -123,8 +126,8 @@ namespace CoreTest
                 var elapse = t - previousTime;
                 previousTime = t;
                 var angle = ((double)elapse / Stopwatch.Frequency) * 0.05;
-                var camRotate = Matrix.RotationAxis(Vector3.UnitY, (float)(angle * Math.PI));
-                camera.Position = Vector3.TransformCoordinate(pos, camRotate);
+                var camRotate = Matrix.CreateFromAxisAngle(Vector3.UnitY, (float)(angle * Math.PI));
+                camera.Position = Vector3Helper.TransformCoordinate(pos, camRotate);
                 camera.LookDirection = -camera.Position;
                 if (isGoingOut)
                 {
