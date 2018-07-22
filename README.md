@@ -52,8 +52,12 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 #### 4. [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki)
 
 ## News
-#### Pending Release
-[V2.3.0] Release
+
+#### 2018-07-22
+[V2.3.0](https://github.com/helix-toolkit/helix-toolkit/edit/release/2.3.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
+- [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.3.0)
+- [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.3.0)
+- [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.3.0)
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
 1. Dynamic Buffer Support for geometry data streaming. (WPF.SharpDX and UWP) [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki/Dynamic-Geometry3D-for-Data-Streaming)
