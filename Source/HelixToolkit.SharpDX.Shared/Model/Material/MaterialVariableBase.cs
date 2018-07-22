@@ -18,8 +18,6 @@ namespace HelixToolkit.UWP.Model
     public abstract class MaterialVariable : ReferenceCountDisposeObject
     {
         public abstract string DefaultShaderPassName { set; get; }
-        public abstract bool RenderShadowMap { set; get; }
-        public abstract bool RenderEnvironmentMap { set; get; }
 
         public event EventHandler OnUpdateNeeded;
 

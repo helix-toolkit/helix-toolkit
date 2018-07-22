@@ -83,43 +83,6 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         public string ShaderSamplerShadowMapName { set; get; } = DefaultSamplerStateNames.ShadowMapSampler;
 
-        private bool renderShadowMap = false;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool RenderShadowMap
-        {
-            set
-            {
-                SetAffectsRender(ref renderShadowMap, value);
-            }
-            get
-            {
-                return renderShadowMap;
-            }
-        }
-
-        private bool renderEnvironmentMap = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [render environment map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render environment map]; otherwise, <c>false</c>.
-        /// </value>
-        public override bool RenderEnvironmentMap
-        {
-            set
-            {
-                SetAffectsRender(ref renderEnvironmentMap, value);
-            }
-            get
-            {
-                return renderEnvironmentMap;
-            }
-        }
-
         private string defaultShaderPassName = DefaultPassNames.Default;
         public override string DefaultShaderPassName
         {
@@ -355,8 +318,8 @@ namespace HelixToolkit.UWP.Model
                     HasNormalMap = material.RenderNormalMap && TextureResources[NormalIdx] != null ? 1 : 0,
                     HasDisplacementMap = material.RenderDisplacementMap && TextureResources[DisplaceIdx] != null ? 1 : 0,
                     DisplacementMapScaleMask = material.DisplacementMapScaleMask,
-                    RenderShadowMap = RenderShadowMap ? 1 : 0,
-                    HasCubeMap = RenderEnvironmentMap ? 1 : 0,
+                    RenderShadowMap = material.RenderShadowMap ? 1 : 0,
+                    HasCubeMap = material.RenderEnvironmentMap ? 1 : 0,
                     MaxTessDistance = material.MaxTessellationDistance,
                     MinTessDistance = material.MinTessellationDistance,
                     MaxDistTessFactor = material.MaxDistanceTessellationFactor,
@@ -375,7 +338,7 @@ namespace HelixToolkit.UWP.Model
                 OnBindMaterialTextures(context, shaderPass.DomainShader);
                 OnBindMaterialTextures(context, shaderPass.PixelShader);
             }
-            if (RenderShadowMap)
+            if (material.RenderShadowMap)
             {
                 shaderPass.PixelShader.BindSampler(context, samplerShadowSlot, SamplerResources[NUMSAMPLERS - 1]);
             }

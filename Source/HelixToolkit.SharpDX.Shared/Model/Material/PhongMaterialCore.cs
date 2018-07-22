@@ -370,6 +370,32 @@ namespace HelixToolkit.UWP.Model
             }
         }
 
+        private bool renderShadowMap = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderShadowMap
+        {
+            set
+            {
+                Set(ref renderShadowMap, value);
+            }
+            get { return renderShadowMap; }
+        }
+
+        private bool renderEnvironmentMap = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RenderEnvironmentMap
+        {
+            set
+            {
+                Set(ref renderEnvironmentMap, value);
+            }
+            get { return renderEnvironmentMap; }
+        }
+
         public override MaterialVariable CreateMaterialVariables(IEffectsManager manager)
         {
             return new TextureSharedPhongMaterialVariables(manager, this);

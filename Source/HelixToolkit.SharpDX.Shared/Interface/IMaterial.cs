@@ -135,7 +135,8 @@ namespace HelixToolkit.Wpf.SharpDX
         bool RenderDiffuseAlphaMap { set; get; }
         bool RenderNormalMap { set; get; }
         bool RenderDisplacementMap { set; get; }
-
+        bool RenderEnvironmentMap { set; get; }
+        bool RenderShadowMap { set; get; }
         bool EnableTessellation { set; get; }
 
         float MaxDistanceTessellationFactor { set; get; }

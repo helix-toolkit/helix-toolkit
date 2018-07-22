@@ -132,65 +132,6 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         public string ShaderSamplerDiffuseTexName { set; get; } = DefaultSamplerStateNames.DiffuseMapSampler;
 
-        private bool renderDiffuseMap = true;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderDiffuseMap
-        {
-            set
-            {
-                SetAffectsRender(ref renderDiffuseMap, value);
-            }
-            get
-            {
-                return renderDiffuseMap;
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public bool RenderDiffuseAlphaMap
-        {
-            set; get;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public bool RenderNormalMap
-        {
-            set; get;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public bool RenderDisplacementMap
-        {
-            set; get;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool RenderShadowMap
-        {
-            set; get;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [render environment map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render environment map]; otherwise, <c>false</c>.
-        /// </value>
-        public override bool RenderEnvironmentMap
-        {
-            set; get;
-        }
-
         private readonly string defaultShaderPassName = DefaultPassNames.ColorStripe1D;
         public override string DefaultShaderPassName
         {

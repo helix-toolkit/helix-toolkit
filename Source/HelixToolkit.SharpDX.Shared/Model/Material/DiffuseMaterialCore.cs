@@ -71,23 +71,6 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         public string ShaderSamplerShadowMapName { set; get; } = DefaultSamplerStateNames.ShadowMapSampler;
 
-        private bool renderShadowMap = false;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool RenderShadowMap
-        {
-            set
-            {
-                SetAffectsRender(ref renderShadowMap, value);
-            }
-            get
-            {
-                return renderShadowMap;
-            }
-        }
-
         private string defaultShaderPassName = DefaultPassNames.Default;
         public override string DefaultShaderPassName
         {
@@ -126,10 +109,6 @@ namespace HelixToolkit.UWP.Model
                 return transparentPassName;
             }
         }
-        /// <summary>
-        /// Reflect the environment cube map
-        /// </summary>
-        public override bool RenderEnvironmentMap { set; get; }
         private readonly PhongMaterialCore material;
         private readonly bool fixedPassName = false;
         private PhongMaterialStruct materialStruct = new PhongMaterialStruct();
@@ -253,7 +232,7 @@ namespace HelixToolkit.UWP.Model
                     HasNormalMap = 0,
                     HasDisplacementMap = 0,
                     DisplacementMapScaleMask = material.DisplacementMapScaleMask,
-                    RenderShadowMap = RenderShadowMap ? 1 : 0,
+                    RenderShadowMap = 0,
                     HasCubeMap = 0
                 };
                 NeedUpdate = false;
@@ -266,10 +245,6 @@ namespace HelixToolkit.UWP.Model
             if (HasTextures)
             {
                 OnBindMaterialTextures(context, shaderPass.PixelShader);
-            }
-            if (RenderShadowMap)
-            {
-                shaderPass.PixelShader.BindSampler(context, samplerShadowSlot, SamplerResources[NUMSAMPLERS - 1]);
             }
             return true;
         }

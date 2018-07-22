@@ -17,12 +17,6 @@ namespace HelixToolkit.UWP.Model
 
         public ShaderPass MaterialPass => ShaderPass.NullPass;
 
-        public bool RenderDiffuseMap { set; get; }
-        public bool RenderDiffuseAlphaMap { set; get; }
-        public bool RenderNormalMap { set; get; }
-        public bool RenderDisplacementMap { set; get; }
-        public override bool RenderShadowMap { set; get; }
-        public override bool RenderEnvironmentMap { set; get; }
         public override string DefaultShaderPassName { set; get; }
 
         public EmptyMaterialVariable() : base(null)

@@ -57,37 +57,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private bool renderShadowMap = false;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderShadowMap
-        {
-            set
-            {
-                if(Set(ref renderShadowMap, value))
-                {
-                    materialVariables.RenderShadowMap = value;
-                }
-            }
-            get { return renderShadowMap; }
-        }
-        private bool renderEnvironmentMap = false;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderEnvironmentMap
-        {
-            set
-            {
-                if(Set(ref renderEnvironmentMap, value))
-                {
-                    materialVariables.RenderEnvironmentMap = value;
-                }
-            }
-            get { return renderEnvironmentMap; }
-        }
-
         private IRenderTechnique technique;
         /// <summary>
         /// <see cref="RenderCoreBase{TModelStruct}.OnAttach(IRenderTechnique)"/>
@@ -118,8 +87,6 @@ namespace HelixToolkit.UWP.Core
 
         private void AssignMaterialVariableProperties(IRenderTechnique technique)
         {
-            materialVariables.RenderShadowMap = this.RenderShadowMap;
-            materialVariables.RenderEnvironmentMap = this.RenderEnvironmentMap;
             materialVariables.Attach(technique);
             materialVariables.OnUpdateNeeded += MaterialVariables_OnUpdateNeeded;
             needMaterialUpdate = true;

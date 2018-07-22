@@ -95,7 +95,6 @@
                 Instances="{Binding Instances}"
                 IsThrowingShadow="True"
                 Material="{Binding RedMaterial}"
-                RenderShadowMap="True"
                 Transform="{Binding Model1Transform}" />
             <hx:MeshGeometryModel3D
                 x:Name="model2"
@@ -104,7 +103,6 @@
                 Instances="{Binding Instances}"
                 IsThrowingShadow="True"
                 Material="{Binding GreenMaterial}"
-                RenderShadowMap="True"
                 Transform="{Binding Model2Transform}" />
             <hx:MeshGeometryModel3D
                 x:Name="model3"
@@ -112,7 +110,6 @@
                 Geometry="{Binding Model}"
                 IsThrowingShadow="True"
                 Material="{Binding BlueMaterial}"
-                RenderShadowMap="True"
                 Transform="{Binding Model3Transform}" />
             <hx:MeshGeometryModel3D
                 x:Name="plane"
@@ -120,7 +117,6 @@
                 Geometry="{Binding Plane}"
                 IsThrowingShadow="false"
                 Material="{Binding GrayMaterial}"
-                RenderShadowMap="True"
                 Transform="{Binding PlaneTransform}" />
             <hx:LineGeometryModel3D
                 x:Name="lines"

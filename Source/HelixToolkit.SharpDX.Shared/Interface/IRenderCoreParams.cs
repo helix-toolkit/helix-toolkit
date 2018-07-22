@@ -62,17 +62,6 @@ namespace HelixToolkit.UWP.Core
         /// The material.
         /// </value>
         MaterialCore Material { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render shadow map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render shadow map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderShadowMap { set; get; }
-        /// <summary>
-        /// Reflect the environment cube map
-        /// </summary>
-        bool RenderEnvironmentMap { set; get; }
     }
 
     /// <summary>
