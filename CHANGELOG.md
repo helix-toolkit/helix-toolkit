@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 3. Ply format reader. (All)
 4. Support Order Independent Transparency for DiffuseMaterial. (WPF.SharpDX and UWP)
 5. Add BatchedMeshGeometryModel3D for mesh batching, supports multiple material color properties.(WPF.SharpDX and UWP)
+6. Support Manual Render Ordering. (WPF.SharpDX and UWP)
 
 ### Improvement and Changes
 1. Move tessellation parameters into PhongMaterial. (WPF.SharpDX and UWP)
@@ -18,6 +19,7 @@ All notable changes to this project will be documented in this file.
 6. Change to use `CanRenderFlag` in render core instead of calling `CanRender` during rendering. Use `UpdateCanRenderFlag` or `SetAffectsCanRenderFlag` to update the flag during property change. (WPF.SharpDX and UWP)
 7. Add Geometry property in HitTestResult. (WPF.SharpDX and UWP)
 8. Change shader byte array to lazy loading. (WPF.SharpDX and UWP)
+9. Obsolete Viewport3DX.WorldMatrix.
 
 ### Fixed
 1. Fixed model transform matrix multiplication wrong sequence on HitTest with GroupModel and Instancing.(WPF.SharpDX and UWP)
