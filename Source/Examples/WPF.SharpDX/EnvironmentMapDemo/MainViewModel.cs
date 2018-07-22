@@ -54,7 +54,7 @@ namespace EnvironmentMapDemo
             this.ModelTransform = new Media3D.TranslateTransform3D();
             this.ModelMaterial = PhongMaterials.PolishedSilver;
             this.ModelMaterial.ReflectiveColor = Color.Silver;
-
+            this.ModelMaterial.RenderEnvironmentMap = true;
             var b1 = new MeshBuilder(true);
             b1.AddSphere(new Vector3(0, 0, 0), 1.0, 64, 64);
             b1.AddBox(new Vector3(0, 0, 0), 1, 0.5, 3, BoxFaces.All);
@@ -88,12 +88,13 @@ namespace EnvironmentMapDemo
             //Instances.Add(Matrix.Translation(new Vector3(t, t, -t)));
             this.ModelMaterial1 = PhongMaterials.Red;
             this.ModelMaterial1.AmbientColor = Color.Red;
-
+            this.ModelMaterial1.RenderEnvironmentMap = true;
             this.ModelMaterial2 = PhongMaterials.Green;
             this.ModelMaterial2.AmbientColor = Color.Green;
-
+            this.ModelMaterial2.RenderEnvironmentMap = true;
             this.ModelMaterial3 = PhongMaterials.Blue;
             this.ModelMaterial3.AmbientColor = Color.Blue;
+            this.ModelMaterial3.RenderEnvironmentMap = true;
         }
 
         /// <summary>

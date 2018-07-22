@@ -87,7 +87,7 @@ namespace MaterialDemo
             MeshTitles.TextInfo.Add(new TextInfo("Position", Transform4.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
             MeshTitles.TextInfo.Add(new TextInfo("VertexColor", Transform5.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
             MeshTitles.TextInfo.Add(new TextInfo("ColorStripe", Transform6.ToVector3()) { Scale = 0.08f, Background = new Color4(1, 1, 1, 1) });
-
+            (FloorMaterial as PhongMaterial).RenderShadowMap = true;
         }
 
         public void LoadObj(string path)
@@ -115,8 +115,6 @@ namespace MaterialDemo
                         Geometry = ob.Geometry,
                         CullMode = SharpDX.Direct3D11.CullMode.Back,
                         IsThrowingShadow = true,
-                        RenderShadowMap = true,
-                        RenderEnvironmentMap = true,
                         Transform = scaleTransform
                     };
 
@@ -124,6 +122,7 @@ namespace MaterialDemo
                     if (ob.Material is PhongMaterialCore p)
                     {
                         s.Material = p;
+                        (s.Material as PhongMaterial).RenderShadowMap = true;
                         diffuseMaterial.DiffuseColor = p.DiffuseColor;
                         diffuseMaterial.DiffuseMap = p.DiffuseMap;
                     }

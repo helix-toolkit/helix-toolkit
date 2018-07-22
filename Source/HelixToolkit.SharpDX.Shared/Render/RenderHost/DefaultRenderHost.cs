@@ -174,12 +174,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 Debug.WriteLine("Flatten Scene Graph");
 #endif
             }
+            int sceneCount = perFrameFlattenedScene.Count;
             if (invalidatePerFrameRenderables)
             {
 #if DEBUG
                 Debug.WriteLine("Get PerFrameRenderables");
-#endif
-                for (int i = 0; i < perFrameFlattenedScene.Count;)
+#endif               
+                for (int i = 0; i < sceneCount;)
                 {
                     var renderable = perFrameFlattenedScene[i];
                     renderable.Value.Update(context);
@@ -189,7 +190,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         //Skip scene graph depth larger than current node
                         int depth = renderable.Key;
                         ++i;
-                        for (; i < perFrameFlattenedScene.Count; ++i)
+                        for (; i < sceneCount; ++i)
                         {
                             if (perFrameFlattenedScene[i].Key <= depth)
                             {
@@ -239,8 +240,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                 }
             }
             else
-            {
-                for (int i = 0; i < perFrameFlattenedScene.Count;)
+            {                
+                for (int i = 0; i < sceneCount;)
                 {
                     var renderable = perFrameFlattenedScene[i];
                     renderable.Value.Update(context);
@@ -249,7 +250,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                         //Skip scene graph depth larger than current node
                         int depth = renderable.Key;
                         ++i;
-                        for (; i < perFrameFlattenedScene.Count; ++i)
+                        for (; i < sceneCount; ++i)
                         {
                             if (perFrameFlattenedScene[i].Key <= depth)
                             {

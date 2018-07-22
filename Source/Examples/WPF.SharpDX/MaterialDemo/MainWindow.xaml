@@ -55,8 +55,7 @@
                 x:Name="floor"
                 CullMode="Back"
                 Geometry="{Binding Floor}"
-                Material="{Binding FloorMaterial}"
-                RenderShadowMap="True" />
+                Material="{Binding FloorMaterial}" />
             <hx:GroupModel3D
                 x:Name="model1"
                 ItemsSource="{Binding Model1}"

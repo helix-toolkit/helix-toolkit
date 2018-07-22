@@ -49,6 +49,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public event EventHandler<EventArgs> OnDisposeResources;
         /// <summary>
+        /// Occurs when [on invalidate renderer].
+        /// </summary>
+        public event EventHandler<EventArgs> OnInvalidateRenderer;
+        /// <summary>
         /// The minimum supported feature level.
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
@@ -95,6 +99,9 @@ namespace HelixToolkit.UWP
         /// </value>
         public ITextureResourceManager MaterialTextureManager { get { return materialTextureManager; } }
         private ITextureResourceManager materialTextureManager;
+
+        public IMaterialVariablePool MaterialVariableManager { get { return materialVariableManager; } }
+        private IMaterialVariablePool materialVariableManager;
         #region 3D Resoruces
 
         private global::SharpDX.Direct3D11.Device device;
@@ -300,6 +307,9 @@ namespace HelixToolkit.UWP
 
             RemoveAndDispose(ref materialTextureManager);
             materialTextureManager = Collect(new TextureResourceManager(Device));
+
+            RemoveAndDispose(ref materialVariableManager);
+            materialVariableManager = Collect(new MaterialVariablePool(this));
 
             RemoveAndDispose(ref deviceContextPool);
             deviceContextPool = Collect(new DeviceContextPool(Device));
@@ -542,7 +552,10 @@ namespace HelixToolkit.UWP
         {
             Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
         }
+
+        public void InvalidateRenderer()
+        {
+            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
+        }
     }
-
-
 }

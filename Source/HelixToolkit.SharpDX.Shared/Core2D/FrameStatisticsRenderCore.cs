@@ -105,6 +105,14 @@ namespace HelixToolkit.Wpf.SharpDX.Core2D
         /// <param name="context">The context.</param>
         protected override void OnRender(RenderContext2D context)
         {
+            if(background == null)
+            {
+                Background = new D2D.SolidColorBrush(context.DeviceContext, new Color4(0.8f, 0.8f, 0.8f, 0.6f));
+            }
+            if(foreground == null)
+            {
+                Foreground = new D2D.SolidColorBrush(context.DeviceContext, Color.Blue);
+            }
             var str = statistics.GetDetailString();
             if (str != previousStr)
             {

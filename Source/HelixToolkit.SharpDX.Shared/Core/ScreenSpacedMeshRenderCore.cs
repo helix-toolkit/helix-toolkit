@@ -368,7 +368,6 @@ namespace HelixToolkit.UWP.Core
             {
                 return;
             }
-            context.WorldMatrix = Matrix.Identity;
             DepthStencilView dsView;
             if (clearDepthBuffer)
             {

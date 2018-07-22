@@ -196,11 +196,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     if (currentManager != null)
                     {
                         currentManager.OnDisposeResources -= OnManagerDisposed;
+                        effectsManager.OnInvalidateRenderer -= EffectsManager_OnInvalidateRenderer;
                     }
                     RemoveAndDispose(ref immediateDeviceContext);
                     if (effectsManager != null)
                     {
                         effectsManager.OnDisposeResources += OnManagerDisposed;
+                        effectsManager.OnInvalidateRenderer += EffectsManager_OnInvalidateRenderer;
                         RenderTechnique = viewport == null || viewport.RenderTechnique == null ? EffectsManager?[DefaultRenderTechniqueNames.Blinn] : viewport.RenderTechnique;
                         FeatureLevel = effectsManager.Device.FeatureLevel;
 #if DX11_1
@@ -227,6 +229,11 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             {
                 return effectsManager;
             }
+        }
+
+        private void EffectsManager_OnInvalidateRenderer(object sender, EventArgs e)
+        {
+            InvalidateRender();
         }
 
         /// <summary>
@@ -618,7 +625,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     viewport.Update(t0);                    
                     renderContext.TimeStamp = t0;
                     renderContext.Camera = viewport.CameraCore;
-                    renderContext.WorldMatrix = viewport.WorldMatrix;
                     renderContext.OITWeightPower = RenderConfiguration.OITWeightPower;
                     renderContext.OITWeightDepthSlope = RenderConfiguration.OITWeightDepthSlope;
                     renderContext.OITWeightMode = RenderConfiguration.OITWeightMode;
@@ -977,12 +983,16 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void OnDispose(bool disposeManagedResources)
         {
-            IsInitialized = false;
-            OnNewRenderTargetTexture = null;
-            ExceptionOccurred = null;
-            StartRenderLoop = null;
-            StopRenderLoop = null;
-            OnRendered = null;
+            if (disposeManagedResources)
+            {
+                EffectsManager = null;
+                IsInitialized = false;
+                OnNewRenderTargetTexture = null;
+                ExceptionOccurred = null;
+                StartRenderLoop = null;
+                StopRenderLoop = null;
+                OnRendered = null;                
+            }
             base.OnDispose(disposeManagedResources);
         }
 

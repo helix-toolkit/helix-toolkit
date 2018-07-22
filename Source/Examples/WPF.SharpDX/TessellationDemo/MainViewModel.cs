@@ -130,9 +130,9 @@ namespace TessellationDemo
                 SpecularShininess = 100f,
                 DiffuseMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2.dds", System.UriKind.RelativeOrAbsolute).ToString()),
                 NormalMap = LoadFileToMemory(new System.Uri(@"./Media/TextureCheckerboard2_dot3.dds", System.UriKind.RelativeOrAbsolute).ToString()),
-                EnableTessellation = true
+                EnableTessellation = true, RenderShadowMap = true
             };
-
+            FloorMaterial.RenderShadowMap = true;
             // ---------------------------------------------
             // init model
             this.LoadModel(@"./Media/teapot_quads_tex.obj", this.meshTopology == MeshTopologyEnum.PNTriangles ?

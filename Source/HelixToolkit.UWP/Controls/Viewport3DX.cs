@@ -75,13 +75,11 @@ namespace HelixToolkit.UWP
         /// </value>
         public CameraCore CameraCore { get { return this.Camera; } }
         /// <summary>
-        /// Gets the world matrix.
+        /// Gets the items.
         /// </summary>
         /// <value>
-        /// The world matrix.
+        /// The items.
         /// </value>
-        public Matrix WorldMatrix { get; } = Matrix.Identity;
-
         public ObservableElement3DCollection Items { get; } = new ObservableElement3DCollection();
         /// <summary>
         /// Gets the renderables.

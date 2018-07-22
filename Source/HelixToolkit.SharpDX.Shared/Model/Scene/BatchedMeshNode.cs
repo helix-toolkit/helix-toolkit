@@ -424,7 +424,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             {
                 if (Set(ref material, value))
                 {
-                    (RenderCore as IMaterialRenderParams).Material = material;
                     if (RenderHost != null)
                     {
                         if (IsAttached)
@@ -441,26 +440,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Render environment map on this mesh if has environment map
-        /// <para>Default: false</para>
-        /// </summary>
-        public bool RenderEnvironmentMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderEnvironmentMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderEnvironmentMap = value; }
-        }
-
-        /// <summary>
-        /// Render shadow on this mesh if has shadow map
-        /// <para>Default: false</para>
-        /// </summary>
-        public bool RenderShadowMap
-        {
-            get { return (RenderCore as IMaterialRenderParams).RenderShadowMap; }
-            set { (RenderCore as IMaterialRenderParams).RenderShadowMap = value; }
         }
 
         /// <summary>
@@ -539,8 +518,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         protected virtual void AttachMaterial()
         {
-            var core = RenderCore as IMaterialRenderParams;
-            core.Material = this.Material;
+            if (RenderCore is IMaterialRenderParams core)
+            {
+                core.Material = this.Material;
+            }
+            
             if(Materials == null && Material is PhongMaterialCore p)
             {
                 batchingBuffer.Materials = new PhongMaterialCore[] { p };

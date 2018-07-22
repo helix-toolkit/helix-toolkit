@@ -279,14 +279,13 @@ namespace LightingDemo
                 SpecularShininess = 100f,
                 DiffuseMap = LoadFileToMemory(new System.Uri(SelectedDiffuseTexture, System.UriKind.RelativeOrAbsolute).ToString()),
                 NormalMap = ModelMaterial.NormalMap,
-                //DisplacementMap = LoadFileToMemory(new System.Uri("Particle.png", System.UriKind.RelativeOrAbsolute).ToString()),
-                //DisplacementMapScaleMask = new Vector4(-1f,0,0,-1f)
+                RenderShadowMap = true
             };
             ModelMaterial.DiffuseMap = FloorMaterial.DiffuseMap;
             
             ReflectMaterial = PhongMaterials.PolishedSilver;
-            ReflectMaterial.ReflectiveColor = Colors.Silver.ToColor4();
-
+            ReflectMaterial.ReflectiveColor = global::SharpDX.Color.Silver;
+            ReflectMaterial.RenderEnvironmentMap = true;
             InitialObjectTransforms();           
         }
 

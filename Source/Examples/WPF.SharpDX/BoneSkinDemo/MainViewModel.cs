@@ -207,8 +207,10 @@ namespace BoneSkinDemo
             }
             Material = new PhongMaterial()
             {
-                DiffuseColor = Colors.SteelBlue.ToColor4()
+                DiffuseColor = Colors.SteelBlue.ToColor4(),
+                RenderShadowMap=true,
             };
+            FloorMaterial.RenderShadowMap = true;
             for(int i=0; i< numBonesInModel; ++i)
             {
                 boneInternal[i] = Matrix.Identity;
