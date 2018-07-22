@@ -39,7 +39,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             }
         }
 
-        private InputLayout inputLayout;
+        private InputLayout currInputLayout;
         /// <summary>
         /// Gets or sets the input layout.
         /// </summary>
@@ -50,13 +50,13 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         {
             set
             {
-                if(inputLayout == value) { return; }
-                inputLayout = value;
+                if(currInputLayout == value) { return; }
+                currInputLayout = value;
                 deviceContext.InputAssembler.InputLayout = value;
             }
             get
             {
-                return inputLayout;
+                return currInputLayout;
             }
         }
 
