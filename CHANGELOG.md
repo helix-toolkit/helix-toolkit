@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 6. Change to use `CanRenderFlag` in render core instead of calling `CanRender` during rendering. Use `UpdateCanRenderFlag` or `SetAffectsCanRenderFlag` to update the flag during property change. (WPF.SharpDX and UWP)
 7. Add Geometry property in HitTestResult. (WPF.SharpDX and UWP)
 8. Change shader byte array to lazy loading. (WPF.SharpDX and UWP)
+9. Obsolete Viewport3DX.WorldMatrix.
 
 ### Fixed
 1. Fixed model transform matrix multiplication wrong sequence on HitTest with GroupModel and Instancing.(WPF.SharpDX and UWP)
