@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## Next Release
+## [2.3.0] - 2018-7-22
 ### Added
 1. Dynamic Buffer Support for geometry data streaming. (WPF.SharpDX and UWP) [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki/Dynamic-Geometry3D-for-Data-Streaming)
 2. New TransformManipulator. See Manipulator Demo. (WPF.SharpDX and UWP)
