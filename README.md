@@ -56,7 +56,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 [V2.3.0] Release
 
 #### Changes (Please refer to [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md) for details)
-1. Dynamic Buffer Support for geometry data streaming. (WPF.SharpDX and UWP) Wiki
+1. Dynamic Buffer Support for geometry data streaming. (WPF.SharpDX and UWP) [Wiki](https://github.com/helix-toolkit/helix-toolkit/wiki/Dynamic-Geometry3D-for-Data-Streaming)
 2. New TransformManipulator. See Manipulator Demo. (WPF.SharpDX and UWP)
 3. Ply format reader. (All)
 4. Support Order Independent Transparency for DiffuseMaterial. (WPF.SharpDX and UWP)
