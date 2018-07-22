@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 3. Ply format reader. (All)
 4. Support Order Independent Transparency for DiffuseMaterial. (WPF.SharpDX and UWP)
 5. Add BatchedMeshGeometryModel3D for mesh batching, supports multiple material color properties.(WPF.SharpDX and UWP)
+6. Support Manual Render Ordering. (WPF.SharpDX and UWP)
 
 ### Improvement and Changes
 1. Move tessellation parameters into PhongMaterial. (WPF.SharpDX and UWP)
