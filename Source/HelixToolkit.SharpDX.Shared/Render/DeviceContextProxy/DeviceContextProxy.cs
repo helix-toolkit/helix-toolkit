@@ -121,6 +121,8 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             currBlendFactor = null;
             currSampleMask = uint.MaxValue;
             currStencilRef = 0;
+            currInputLayout = null;
+            currPrimitiveTopology = PrimitiveTopology.Undefined;
         }
 
         /// <summary>
