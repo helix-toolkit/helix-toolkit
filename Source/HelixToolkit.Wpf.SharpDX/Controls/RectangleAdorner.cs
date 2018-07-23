@@ -137,10 +137,25 @@ namespace HelixToolkit.Wpf.SharpDX
             this.crossHairSize = crossHairSize;
         }
 
+        private Rect rectangle;
         /// <summary>
         /// Gets or sets Rectangle.
         /// </summary>
-        public Rect Rectangle { get; set; }
+        public Rect Rectangle
+        {
+            get
+            {
+                return rectangle;
+            }
+            set
+            {
+                if(rectangle != value)
+                {
+                    rectangle = value;
+                    InvalidateVisual();
+                }
+            }
+        }
 
         /// <summary>
         /// Called when rendering.
