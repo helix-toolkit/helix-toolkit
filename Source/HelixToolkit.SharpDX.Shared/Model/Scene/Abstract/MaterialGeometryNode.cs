@@ -14,9 +14,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
     public abstract class MaterialGeometryNode : GeometryNode
     {
         private bool isTransparent = false;
-
-        private MaterialCore material;
-
         /// <summary>
         /// Specifiy if model material is transparent.
         /// During rendering, transparent objects are rendered after opaque objects. Transparent objects' order in scene graph are preserved.
@@ -35,7 +32,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 }
             }
         }
-
+        private MaterialVariable materialVariable;
+        private MaterialCore material;
         /// <summary>
         ///
         /// </summary>
@@ -64,27 +62,36 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
         protected virtual void AttachMaterial()
         {
-            if(RenderCore is IMaterialRenderParams core)
+            RemoveAndDispose(ref materialVariable);
+            if(material != null && RenderCore is IMaterialRenderParams core)
             {
-                core.Material = this.Material;
+                materialVariable = core.MaterialVariables = Collect(EffectsManager.MaterialVariableManager.Register(material, renderTechnique));
             }
         }
 
         protected override bool OnAttach(IRenderHost host)
         {
-            // --- attach
-            if (!base.OnAttach(host))
+            if (base.OnAttach(host))
+            {
+                AttachMaterial();
+                return true;
+            }
+            else
             {
                 return false;
             }
-            // --- material
-            this.AttachMaterial();
-            return true;
+        }
+
+        protected override void OnDetach()
+        {
+            materialVariable = null;
+            if (RenderCore is IMaterialRenderParams core)
+            {
+                core.MaterialVariables = null;
+            }
+            base.OnDetach();
         }
     }
 }

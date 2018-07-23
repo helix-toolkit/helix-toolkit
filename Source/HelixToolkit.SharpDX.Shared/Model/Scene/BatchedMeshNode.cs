@@ -391,9 +391,6 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         }
 
         private bool isTransparent = false;
-
-        private MaterialCore material;
-
         /// <summary>
         /// Specifiy if model material is transparent.
         /// During rendering, transparent objects are rendered after opaque objects. Transparent objects' order in scene graph are preserved.
@@ -413,6 +410,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             }
         }
 
+        private MaterialVariable materialVariable;
+        private MaterialCore material;
         /// <summary>
         ///
         /// </summary>
@@ -517,11 +516,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         protected virtual void AttachMaterial()
         {
-            if (RenderCore is IMaterialRenderParams core)
+            RemoveAndDispose(ref materialVariable);
+            if (material != null && RenderCore is IMaterialRenderParams core)
             {
-                core.Material = this.Material;
-            }
-            
+                core.MaterialVariables = materialVariable = Collect(EffectsManager.MaterialVariableManager.Register(material, EffectTechnique));
+            }            
             if(Materials == null && Material is PhongMaterialCore p)
             {
                 batchingBuffer.Materials = new PhongMaterialCore[] { p };
@@ -570,6 +569,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         protected override void OnDetach()
         {
             batchingBuffer = null;
+            materialVariable = null;
+            if (RenderCore is IMaterialRenderParams core)
+            {
+                core.MaterialVariables = null;
+            }
             base.OnDetach();
         }
 
