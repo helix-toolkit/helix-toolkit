@@ -52,7 +52,6 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private IRenderTechnique technique;
         /// <summary>
         /// <see cref="RenderCoreBase{TModelStruct}.OnAttach(IRenderTechnique)"/>
         /// </summary>
@@ -62,7 +61,6 @@ namespace HelixToolkit.UWP.Core
         {
             if(base.OnAttach(technique))
             {
-                this.technique = technique;
                 needMaterialUpdate = true;
                 return true;
             }
