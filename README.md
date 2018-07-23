@@ -54,7 +54,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 ## News
 
 #### 2018-07-22
-[V2.3.0](https://github.com/helix-toolkit/helix-toolkit/edit/release/2.3.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
+[V2.3.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.3.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.3.0)
 - [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.3.0)
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.3.0)
@@ -69,7 +69,7 @@ FXAA, Order Independant Transparent Rendering, Particle system, Tessellation.
 7. Support Manual Render Ordering. (WPF.SharpDX and UWP)
 
 #### 2018-06-17
-[V2.2.0](https://github.com/helix-toolkit/helix-toolkit/edit/release/2.2.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
+[V2.2.0](https://github.com/helix-toolkit/helix-toolkit/tree/release/2.2.0) releases are available on nuget. [Release Note](https://github.com/helix-toolkit/helix-toolkit/blob/master/CHANGELOG.md)
 - [WPF](https://www.nuget.org/packages/HelixToolkit.Wpf/2.2.0)
 - [WPF.SharpDX](https://www.nuget.org/packages/HelixToolkit.Wpf.SharpDX/2.2.0)
 - [UWP](https://www.nuget.org/packages/HelixToolkit.UWP/2.2.0)
