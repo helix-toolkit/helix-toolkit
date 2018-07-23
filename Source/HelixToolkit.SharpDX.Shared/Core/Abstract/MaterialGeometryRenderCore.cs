@@ -42,7 +42,7 @@ namespace HelixToolkit.UWP.Core
                     RemoveAndDispose(ref materialVariables);
                     if (value != null)
                     {
-                        materialVariables = Collect(EffectTechnique.EffectsManager.MaterialVariableManager.Register(value));
+                        materialVariables = Collect(EffectTechnique.EffectsManager.MaterialVariableManager.Register(value, EffectTechnique));
                         AssignMaterialVariableProperties(technique);
                     }
                     else
@@ -70,7 +70,7 @@ namespace HelixToolkit.UWP.Core
                 this.technique = technique;
                 if (material != null)
                 {
-                    materialVariables = Collect(technique.EffectsManager.MaterialVariableManager.Register(material));
+                    materialVariables = Collect(technique.EffectsManager.MaterialVariableManager.Register(material, technique));
                     AssignMaterialVariableProperties(technique);
                 }
                 else
@@ -87,7 +87,6 @@ namespace HelixToolkit.UWP.Core
 
         private void AssignMaterialVariableProperties(IRenderTechnique technique)
         {
-            materialVariables.Attach(technique);
             materialVariables.OnUpdateNeeded += MaterialVariables_OnUpdateNeeded;
             needMaterialUpdate = true;
         }

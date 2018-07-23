@@ -396,9 +396,9 @@ namespace HelixToolkit.UWP.Model
             get { return renderEnvironmentMap; }
         }
 
-        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager)
+        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new TextureSharedPhongMaterialVariables(manager, this);
+            return new TextureSharedPhongMaterialVariables(manager, technique, this);
         }
     }
 }

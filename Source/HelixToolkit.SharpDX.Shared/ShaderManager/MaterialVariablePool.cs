@@ -11,7 +11,7 @@ namespace HelixToolkit.UWP
     using Model;
     public class MaterialVariablePool : DisposeObject, IMaterialVariablePool
     {
-        private readonly Dictionary<Guid, MaterialVariable> dictionary = new Dictionary<Guid, MaterialVariable>();
+        private readonly DoubleKeyDictionary<Guid, Guid, MaterialVariable> dictionary = new DoubleKeyDictionary<Guid, Guid, MaterialVariable>();
         private readonly IEffectsManager effectsManager;
 
         public MaterialVariablePool(IEffectsManager manager)
@@ -19,31 +19,32 @@ namespace HelixToolkit.UWP
             effectsManager = manager;
         }
 
-        public MaterialVariable Register(IMaterial material)
+        public MaterialVariable Register(IMaterial material, IRenderTechnique technique)
         {
-            if (material == null)
+            if (material == null || technique.IsNull)
             {
                 return EmptyMaterialVariable.EmptyVariable;
             }
             var guid = material.Guid;
+            var techGuid = technique.GUID;
             lock (dictionary)
             {
-                if(dictionary.TryGetValue(guid, out MaterialVariable value))
+                if(dictionary.TryGetValue(guid, techGuid, out MaterialVariable value))
                 {
                     value.IncRef();
                     return value;
                 }
                 else
                 {
-                    var v = material.CreateMaterialVariables(effectsManager);                  
+                    var v = material.CreateMaterialVariables(effectsManager, technique);                  
                     v.Disposed += (s, e) => 
                     {
                         lock (dictionary)
                         {
-                            dictionary.Remove(guid);
+                            dictionary.Remove(guid, techGuid);
                         }
                     };
-                    dictionary.Add(guid, v);
+                    dictionary.Add(guid, techGuid, v);
                     return v;
                 }
             }

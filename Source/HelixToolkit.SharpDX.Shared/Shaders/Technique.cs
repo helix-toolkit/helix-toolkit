@@ -18,6 +18,14 @@ namespace HelixToolkit.UWP.Shaders
     using ShaderManager;
     public sealed class Technique :  DisposeObject, IRenderTechnique
     {
+        public static IRenderTechnique NullTechnique { get; } = new Technique(new TechniqueDescription() { IsNull = true }, null, null);
+        /// <summary>
+        /// Gets the unique identifier.
+        /// </summary>
+        /// <value>
+        /// The unique identifier.
+        /// </value>
+        public Guid GUID { get; } = Guid.NewGuid();
         /// <summary>
         /// Gets or sets the description.
         /// </summary>

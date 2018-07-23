@@ -18,17 +18,17 @@ namespace HelixToolkit.UWP.Model
 
     public sealed class DiffuseMaterialCore : PhongMaterialCore
     {
-        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager)
+        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new DiffuseMaterialVariables(DefaultPassNames.Diffuse, manager, this);
+            return new DiffuseMaterialVariables(DefaultPassNames.Diffuse, manager, technique, this);
         }
     }
 
     public sealed class ViewCubeMaterialCore : PhongMaterialCore
     {
-        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager)
+        public override MaterialVariable CreateMaterialVariables(IEffectsManager manager, IRenderTechnique technique)
         {
-            return new DiffuseMaterialVariables(DefaultPassNames.ViewCube, manager, this);
+            return new DiffuseMaterialVariables(DefaultPassNames.ViewCube, manager, technique, this);
         }
     }
 
@@ -76,7 +76,7 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if (!fixedPassName && SetAffectsRender(ref defaultShaderPassName, value) && IsAttached)
+                if (!fixedPassName && SetAffectsRender(ref defaultShaderPassName, value))
                 {
                     MaterialPass = Technique[value];
                     UpdateMappings(MaterialPass);
@@ -99,7 +99,7 @@ namespace HelixToolkit.UWP.Model
         {
             set
             {
-                if (!fixedPassName && Set(ref transparentPassName, value) && IsAttached)
+                if (!fixedPassName && Set(ref transparentPassName, value))
                 {
                     TransparentPass = Technique[value];
                 }
@@ -116,9 +116,10 @@ namespace HelixToolkit.UWP.Model
         /// 
         /// </summary>
         /// <param name="manager"></param>
+        /// <param name="technique"></param>
         /// <param name="material"></param>
-        private DiffuseMaterialVariables(IEffectsManager manager, PhongMaterialCore material)
-            : base(manager)
+        private DiffuseMaterialVariables(IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
+            : base(manager, technique)
         {
             this.material = material;
             material.PropertyChanged += Material_OnMaterialPropertyChanged;
@@ -126,6 +127,9 @@ namespace HelixToolkit.UWP.Model
             samplerDiffuseSlot = samplerShadowSlot = -1;
             textureManager = manager.MaterialTextureManager;
             statePoolManager = manager.StateManager;
+            MaterialPass = technique[DefaultShaderPassName];
+            TransparentPass = technique[TransparentPassName];
+            UpdateMappings(MaterialPass);
             CreateTextureViews();
             CreateSamplers();
         }
@@ -134,27 +138,13 @@ namespace HelixToolkit.UWP.Model
         /// </summary>
         /// <param name="passName">Name of the pass.</param>
         /// <param name="manager">The manager.</param>
+        /// <param name="technique"></param>
         /// <param name="material">The material.</param>
-        public DiffuseMaterialVariables(string passName, IEffectsManager manager, PhongMaterialCore material)
-            : this(manager, material)
+        public DiffuseMaterialVariables(string passName, IEffectsManager manager, IRenderTechnique technique, PhongMaterialCore material)
+            : this(manager, technique, material)
         {
             DefaultShaderPassName = passName;
             fixedPassName = true;
-        }
-
-        public override bool Attach(IRenderTechnique technique)
-        {
-            if (base.Attach(technique))
-            {
-                MaterialPass = technique[DefaultShaderPassName];
-                TransparentPass = technique[TransparentPassName];
-                UpdateMappings(MaterialPass);
-                return !MaterialPass.IsNULL;
-            }
-            else
-            {
-                return false;
-            }
         }
 
         private void Material_OnMaterialPropertyChanged(object sender, PropertyChangedEventArgs e)
