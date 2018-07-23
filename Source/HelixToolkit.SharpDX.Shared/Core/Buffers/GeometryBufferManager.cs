@@ -112,13 +112,13 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         private readonly DoubleKeyDictionary<Type, Guid, GeometryBufferContainer> bufferDictionary
             = new DoubleKeyDictionary<Type, Guid, GeometryBufferContainer>();
-
+        private readonly IEffectsManager manager;
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryBufferManager"/> class.
         /// </summary>
-        public GeometryBufferManager()
+        public GeometryBufferManager(IEffectsManager manager)
         {
-
+            this.manager = manager;
         }
         /// <summary>
         /// Registers the specified model unique identifier.
@@ -156,6 +156,7 @@ namespace HelixToolkit.UWP.Core
                             bufferDictionary.Remove(typeof(T), id);
                         }
                     };
+                    container.Buffer.EffectsManager = manager;
                     container.Buffer.Geometry = geometry;
                     container.Attach(modelGuid);
                     bufferDictionary.Add(typeof(T), geometry.GUID, container);

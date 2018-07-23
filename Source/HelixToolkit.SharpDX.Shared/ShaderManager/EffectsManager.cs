@@ -303,7 +303,7 @@ namespace HelixToolkit.UWP
             statePoolManager = Collect(new StatePoolManager(Device));
 
             RemoveAndDispose(ref geometryBufferManager);
-            geometryBufferManager = Collect(new GeometryBufferManager());
+            geometryBufferManager = Collect(new GeometryBufferManager(this));
 
             RemoveAndDispose(ref materialTextureManager);
             materialTextureManager = Collect(new TextureResourceManager(Device));
