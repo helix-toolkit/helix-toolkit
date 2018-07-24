@@ -424,10 +424,11 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             if (IsAttached)
             {
                 IsAttached = false;
+                InvalidateSceneGraph();
                 RenderCore.Detach();
                 OnDetach();
-                OnDetached?.Invoke(this, EventArgs.Empty);
-                InvalidateSceneGraph();
+                DisposeAndClear();
+                OnDetached?.Invoke(this, EventArgs.Empty);              
             }
         }
 
@@ -436,7 +437,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         protected virtual void OnDetach()
         {
-            renderHost = null;
+            renderHost = null;           
         }
 
         protected void InvalidateRenderEvent(object sender, EventArgs arg)

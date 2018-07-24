@@ -21,9 +21,8 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// General Geometry Buffer Model.
     /// </summary>
-    public abstract class GeometryBufferModel : DisposeObject, IGUID, IGeometryBufferModel
+    public abstract class GeometryBufferModel : ReferenceCountDisposeObject, IGUID, IGeometryBufferModel
     {
-        public event EventHandler<EventArgs> OnInvalidateRender;
         /// <summary>
         /// Gets the unique identifier.
         /// </summary>
@@ -109,6 +108,8 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
+        public IEffectsManager EffectsManager { set; get; }
+
         #region Constructors        
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryBufferModel"/> class.
@@ -169,7 +170,7 @@ namespace HelixToolkit.UWP.Core
         /// </summary>
         protected void InvalidateRenderer()
         {
-            OnInvalidateRender?.Invoke(this, EventArgs.Empty);
+            EffectsManager?.InvalidateRenderer();
         }
         /// <summary>
         /// Determines whether [is vertex buffer changed] [the specified property name].
@@ -303,7 +304,6 @@ namespace HelixToolkit.UWP.Core
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected override void OnDispose(bool disposeManagedResources)
         {
-            OnInvalidateRender = null;
             if (geometry != null)
             {
                 geometry.PropertyChanged -= Geometry_PropertyChanged;

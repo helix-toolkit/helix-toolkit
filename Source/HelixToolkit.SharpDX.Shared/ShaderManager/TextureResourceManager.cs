@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System;
 
 #if !NETFX_CORE
 namespace HelixToolkit.Wpf.SharpDX
@@ -9,14 +10,16 @@ namespace HelixToolkit.UWP
 #endif
 {
     using global::SharpDX.Direct3D11;
+    
     using Utilities;
     /// <summary>
     /// Use for texture resource sharing between models. It uses texture stream as key for each texture.
     /// <para>Call Register to get(if already exists) or create a new shared texture.</para>
     /// <para>Call Unregister to detach the texture from model. Call detach from SharedTextureResourceProxy achieves the same result.</para>
     /// </summary>
-    public class TextureResourceManager : DisposeObject, ITextureResourceManager
+    public sealed class TextureResourceManager : IDisposable, ITextureResourceManager
     {
+        public int Count { get { return resourceDictionaryMipMaps.Count + resourceDictionaryNoMipMaps.Count; } }
         private readonly Dictionary<Stream, ShaderResourceViewProxy> resourceDictionaryMipMaps = new Dictionary<Stream, ShaderResourceViewProxy>();
         private readonly Dictionary<Stream, ShaderResourceViewProxy> resourceDictionaryNoMipMaps = new Dictionary<Stream, ShaderResourceViewProxy>();
         private readonly Device device;
@@ -75,32 +78,56 @@ namespace HelixToolkit.UWP
             }
         }
 
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void OnDispose(bool disposeManagedResources)
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        private void Dispose(bool disposing)
         {
-            if (disposeManagedResources)
+            if (!disposedValue)
             {
-                lock (resourceDictionaryMipMaps)
+                if (disposing)
                 {
-                    foreach(var resource in resourceDictionaryMipMaps.Values.ToArray())
+                    lock (resourceDictionaryMipMaps)
                     {
-                        resource.ForceDispose();
+                        foreach (var resource in resourceDictionaryMipMaps.Values.ToArray())
+                        {
+                            resource.ForceDispose();
+                        }
+                        resourceDictionaryMipMaps.Clear();
                     }
-                    resourceDictionaryMipMaps.Clear();
-                }
-                lock (resourceDictionaryNoMipMaps)
-                {
-                    foreach (var resource in resourceDictionaryNoMipMaps.Values.ToArray())
+                    lock (resourceDictionaryNoMipMaps)
                     {
-                        resource.ForceDispose();
+                        foreach (var resource in resourceDictionaryNoMipMaps.Values.ToArray())
+                        {
+                            resource.ForceDispose();
+                        }
+                        resourceDictionaryNoMipMaps.Clear();
                     }
-                    resourceDictionaryNoMipMaps.Clear();
                 }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
             }
-            base.OnDispose(disposeManagedResources);
         }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~TextureResourceManager() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
+
+
     }
 }

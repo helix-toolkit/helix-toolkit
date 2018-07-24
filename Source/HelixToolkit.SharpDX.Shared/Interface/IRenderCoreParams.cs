@@ -56,23 +56,12 @@ namespace HelixToolkit.UWP.Core
     public interface IMaterialRenderParams
     {
         /// <summary>
-        /// Gets or sets the material.
+        /// Gets or sets the material variables used for rendering.
         /// </summary>
         /// <value>
-        /// The material.
+        /// The material variable.
         /// </value>
-        MaterialCore Material { set; get; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [render shadow map].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [render shadow map]; otherwise, <c>false</c>.
-        /// </value>
-        bool RenderShadowMap { set; get; }
-        /// <summary>
-        /// Reflect the environment cube map
-        /// </summary>
-        bool RenderEnvironmentMap { set; get; }
+        MaterialVariable MaterialVariables { set; get; }
     }
 
     /// <summary>

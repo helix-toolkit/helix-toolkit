@@ -67,17 +67,8 @@ namespace HelixToolkit.UWP.Core
         {
             set
             {
-                var old = geometryBuffer;
                 if(SetAffectsCanRenderFlag(ref geometryBuffer, value))
                 {
-                    if(old != null)
-                    {
-                        old.OnInvalidateRender -= OnInvalidateRendererEvent;
-                    }
-                    if (geometryBuffer != null)
-                    {
-                        geometryBuffer.OnInvalidateRender += OnInvalidateRendererEvent;
-                    }
                     OnGeometryBufferChanged(value);
                 }
             }

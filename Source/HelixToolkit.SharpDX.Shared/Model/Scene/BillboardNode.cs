@@ -70,7 +70,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <param name="modelGuid"></param>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected override IGeometryBufferProxy OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
+        protected override IGeometryBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
             return geometry != null && geometry.IsDynamic ? EffectsManager.GeometryBufferManager.Register<DynamicBillboardBufferModel>(modelGuid, geometry) 
                 : EffectsManager.GeometryBufferManager.Register<DefaultBillboardBufferModel>(modelGuid, geometry);

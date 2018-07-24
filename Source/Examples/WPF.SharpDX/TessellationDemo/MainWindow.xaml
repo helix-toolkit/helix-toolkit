@@ -58,10 +58,7 @@
                 Material="{Binding DefaultMaterial}"
                 Transform="{Binding DefaultTransform}"
                 FillMode="{Binding FillMode}" ReuseVertexArrayBuffer="True"/>-->
-            <hx:MeshGeometryModel3D
-                Geometry="{Binding FloorModel}"
-                Material="{Binding FloorMaterial}"
-                RenderShadowMap="True" />
+            <hx:MeshGeometryModel3D Geometry="{Binding FloorModel}" Material="{Binding FloorMaterial}" />
         </hx:Viewport3DX>
 
         <StackPanel Grid.Row="1">

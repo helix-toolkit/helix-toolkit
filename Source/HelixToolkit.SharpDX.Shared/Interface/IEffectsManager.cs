@@ -97,6 +97,13 @@ namespace HelixToolkit.Wpf.SharpDX
         /// </value>
         ITextureResourceManager MaterialTextureManager { get; }
         /// <summary>
+        /// Gets the material variable manager.
+        /// </summary>
+        /// <value>
+        /// The material variable manager.
+        /// </value>
+        IMaterialVariablePool MaterialVariableManager { get; }
+        /// <summary>
         /// 
         /// </summary>
         IConstantBufferPool ConstantBufferPool { get; }
@@ -178,5 +185,18 @@ namespace HelixToolkit.Wpf.SharpDX
         ///   <c>true</c> if the specified name has technique; otherwise, <c>false</c>.
         /// </returns>
         bool HasTechnique(string name);
+        /// <summary>
+        /// Occurs when [on invalidate renderer].
+        /// </summary>
+        event EventHandler<EventArgs> OnInvalidateRenderer;
+        /// <summary>
+        /// Invalidates the renderer.
+        /// </summary>
+        void InvalidateRenderer();
+        /// <summary>
+        /// Outputs the resource count summary.
+        /// </summary>
+        /// <returns></returns>
+        string GetResourceCountSummary();
     }
 }

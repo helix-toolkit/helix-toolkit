@@ -24,25 +24,6 @@ namespace HelixToolkit.Wpf.SharpDX
     {
         #region Dependency Properties
         /// <summary>
-        /// Render shadow on this mesh if has shadow map
-        /// </summary>
-        public static readonly DependencyProperty RenderShadowMapProperty =
-            DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false,
-                (d, e) =>
-                {
-                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderShadowMap = (bool)e.NewValue;
-                }));
-
-        /// <summary>
-        /// Render environment reflection map on this mesh if has environment map
-        /// </summary>
-        public static readonly DependencyProperty RenderEnvironmentMapProperty =
-            DependencyProperty.Register("RenderEnvironmentMap", typeof(bool), typeof(MaterialGeometryModel3D), new PropertyMetadata(false,
-                (d, e) =>
-                {
-                    ((d as Element3DCore).SceneNode as MaterialGeometryNode).RenderEnvironmentMap = (bool)e.NewValue;
-                }));
-        /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty MaterialProperty =
@@ -60,26 +41,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 ((d as Element3DCore).SceneNode as MaterialGeometryNode).IsTransparent = (bool)e.NewValue;
             }));
-
-        /// <summary>
-        /// Render shadow on this mesh if has shadow map
-        /// <para>Default: false</para>
-        /// </summary>
-        public bool RenderShadowMap
-        {
-            get { return (bool)this.GetValue(RenderShadowMapProperty); }
-            set { this.SetValue(RenderShadowMapProperty, value); }
-        }
-
-        /// <summary>
-        /// Render environment map on this mesh if has environment map
-        /// <para>Default: false</para>
-        /// </summary>
-        public bool RenderEnvironmentMap
-        {
-            get { return (bool)this.GetValue(RenderEnvironmentMapProperty); }
-            set { this.SetValue(RenderEnvironmentMapProperty, value); }
-        }
 
         /// <summary>
         /// 
@@ -109,8 +70,6 @@ namespace HelixToolkit.Wpf.SharpDX
             if (node is MaterialGeometryNode n)
             {
                 n.Material = this.Material;
-                n.RenderEnvironmentMap = this.RenderEnvironmentMap;
-                n.RenderShadowMap = this.RenderShadowMap;
             }
             base.AssignDefaultValuesToSceneNode(node);
         }

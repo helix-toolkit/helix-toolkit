@@ -16,6 +16,7 @@ namespace HelixToolkit.UWP.Shaders
     {
         public static string GlobalTransformCB = "cbTransforms";
         public static string ModelCB = "cbMeshModel";
+        public static string MeshPhongCB = "cbMeshPhongMaterial";
         public static string PointLineModelCB = "cbPointLineModel";
         public static string LightCB = "cbLights";
         public static string BoneCB = "cbBoneSkinning";

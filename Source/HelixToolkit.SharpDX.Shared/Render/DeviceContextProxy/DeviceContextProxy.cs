@@ -31,7 +31,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private BlendStateProxy currBlendState = null;
         private Color4? currBlendFactor = null;
         private uint currSampleMask = uint.MaxValue;
-
+        private object currMaterial = null;
         public readonly bool IsDeferred = false;
 
         #region Properties
@@ -109,6 +109,22 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         #endregion Cast
 
         /// <summary>
+        /// Sets the current material variable. Returns true if current material is changed. Use this to notify if constant buffer needs to be updated for differnet material
+        /// </summary>
+        /// <param name="material">The material.</param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool SetCurrentMaterial(object material)
+        {
+            if(currMaterial == material)
+            {
+                return false;
+            }
+            currMaterial = material;
+            return true;
+        }
+
+        /// <summary>
         /// Resets this instance.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -122,6 +138,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
             currSampleMask = uint.MaxValue;
             currStencilRef = 0;
             currInputLayout = null;
+            currMaterial = null;
             currPrimitiveTopology = PrimitiveTopology.Undefined;
         }
 
