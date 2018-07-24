@@ -125,6 +125,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\DiffuseMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\EmptyMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\MaterialCore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Material\MaterialVariableBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PassOnlyMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\PhongMaterialCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Collection\ExposedArrayList.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\BatchedMeshNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\DynamicCodeSurface3DNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Scene\PostEffects\NodePostEffectXRayGrid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\MaterialVariablePool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ShaderManager\TextureResourceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Material\TextureSharedPhongMaterialVariable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ObservableObject.cs" />
@@ -324,7 +326,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Octrees\StaticOctrees\StaticPointGeometryOctree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RandomVectorGenerators.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\RelayExceptionEventArgs.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ResourceSharedObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\SimpleRingBuffer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\StateProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Buffers\ShaderResourceViewProxy.cs" />

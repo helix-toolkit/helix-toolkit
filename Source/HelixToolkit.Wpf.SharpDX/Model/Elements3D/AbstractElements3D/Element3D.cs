@@ -128,7 +128,7 @@ namespace HelixToolkit.Wpf.SharpDX
         public static readonly DependencyProperty RenderOrderProperty =
             DependencyProperty.Register("RenderOrder", typeof(int), typeof(Element3D), new PropertyMetadata(0, (d,e) =>
             {
-                (d as Element3D).SceneNode.RenderOrder = (uint)Math.Max(0, (int)e.NewValue);
+                (d as Element3D).SceneNode.RenderOrder = (ushort)Math.Max(0, Math.Min(ushort.MaxValue, (int)e.NewValue));
             }));
         #endregion
 

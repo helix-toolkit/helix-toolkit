@@ -115,7 +115,6 @@
                     Geometry="{Binding Model}"
                     IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
                     Material="{Binding ModelMaterial}"
-                    RenderShadowMap="True"
                     Transform="{Binding ModelTransform}" />
                 <hx:DynamicReflectionMap3D>
                     <hx:MeshGeometryModel3D
@@ -124,8 +123,6 @@
                         Geometry="{Binding Sphere}"
                         IsThrowingShadow="{Binding ElementName=view1, Path=IsShadowMappingEnabled}"
                         Material="{Binding ReflectMaterial}"
-                        RenderEnvironmentMap="True"
-                        RenderShadowMap="True"
                         Transform="{Binding Model1Transform}" />
                 </hx:DynamicReflectionMap3D>
 
@@ -185,7 +182,6 @@
                     CullMode="Back"
                     Geometry="{Binding Floor}"
                     Material="{Binding FloorMaterial}"
-                    RenderShadowMap="True"
                     Transform="{Binding FloorTransform}" />
             </hx:GroupModel3D>
             <hx:PostEffectBloom x:Name="bloom" />

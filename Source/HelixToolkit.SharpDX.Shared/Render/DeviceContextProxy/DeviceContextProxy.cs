@@ -31,7 +31,6 @@ namespace HelixToolkit.Wpf.SharpDX.Render
         private BlendStateProxy currBlendState = null;
         private Color4? currBlendFactor = null;
         private uint currSampleMask = uint.MaxValue;
-
         public readonly bool IsDeferred = false;
 
         #region Properties

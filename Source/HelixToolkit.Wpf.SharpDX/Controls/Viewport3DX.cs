@@ -496,8 +496,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.targetAdorner = null;
 
-            // the adorner sometimes leaves some 'dust', so refresh the viewport
-            this.RefreshViewport();
+            InvalidateRender();
         }
 
         /// <summary>
@@ -518,7 +517,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
             this.rectangleAdorner = null;
 
-            this.RefreshViewport();
+            InvalidateRender();
         }
 
         /// <summary>
@@ -1422,14 +1421,6 @@ namespace HelixToolkit.Wpf.SharpDX
             {
                 projectionCamera.CopyTo(this.Camera);
             }
-        }
-
-        /// <summary>
-        ///   Refreshes viewport.
-        /// </summary>
-        private void RefreshViewport()
-        {
-            // todo
         }
 
         /// <summary>

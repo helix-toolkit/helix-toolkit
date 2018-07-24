@@ -84,12 +84,13 @@ namespace HelixToolkit.UWP.Core
         /// The size of the vertex structure.
         /// </value>
         public IEnumerable<int> VertexStructSize { get { yield return 0; } }
-#pragma warning disable 0067
         /// <summary>
-        /// Occurs when [invalidate renderer].
+        /// Gets or sets the effects manager.
         /// </summary>
-        public event EventHandler<EventArgs> OnInvalidateRender;
-#pragma warning restore 0067
+        /// <value>
+        /// The effects manager.
+        /// </value>
+        public IEffectsManager EffectsManager { set; get; }
         /// <summary>
         /// Attaches this instance.
         /// </summary>

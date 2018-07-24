@@ -49,6 +49,10 @@ namespace HelixToolkit.UWP
         /// </summary>
         public event EventHandler<EventArgs> OnDisposeResources;
         /// <summary>
+        /// Occurs when [on invalidate renderer].
+        /// </summary>
+        public event EventHandler<EventArgs> OnInvalidateRenderer;
+        /// <summary>
         /// The minimum supported feature level.
         /// </summary>
         private const FeatureLevel MinimumFeatureLevel = FeatureLevel.Level_10_0;
@@ -95,6 +99,9 @@ namespace HelixToolkit.UWP
         /// </value>
         public ITextureResourceManager MaterialTextureManager { get { return materialTextureManager; } }
         private ITextureResourceManager materialTextureManager;
+
+        public IMaterialVariablePool MaterialVariableManager { get { return materialVariableManager; } }
+        private IMaterialVariablePool materialVariableManager;
         #region 3D Resoruces
 
         private global::SharpDX.Direct3D11.Device device;
@@ -296,10 +303,13 @@ namespace HelixToolkit.UWP
             statePoolManager = Collect(new StatePoolManager(Device));
 
             RemoveAndDispose(ref geometryBufferManager);
-            geometryBufferManager = Collect(new GeometryBufferManager());
+            geometryBufferManager = Collect(new GeometryBufferManager(this));
 
             RemoveAndDispose(ref materialTextureManager);
             materialTextureManager = Collect(new TextureResourceManager(Device));
+
+            RemoveAndDispose(ref materialVariableManager);
+            materialVariableManager = Collect(new MaterialVariablePool(this));
 
             RemoveAndDispose(ref deviceContextPool);
             deviceContextPool = Collect(new DeviceContextPool(Device));
@@ -542,7 +552,26 @@ namespace HelixToolkit.UWP
         {
             Logger.Log(level, msg, nameof(EffectsManager), caller, sourceLineNumber);
         }
+
+        public void InvalidateRenderer()
+        {
+            OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Outputs the resource cout summary.
+        /// </summary>
+        /// <returns></returns>
+        public string GetResourceCountSummary()
+        {
+            return $"ConstantBuffer Count: {constantBufferPool.Count}\n" +
+                $"BlendState Count: {statePoolManager.BlendStatePool.Count}\n" +
+                $"DepthStencilState Count: {statePoolManager.DepthStencilStatePool.Count}\n" +
+                $"RasterState Count: {statePoolManager.RasterStatePool.Count}\n" +
+                $"SamplerState Count: {statePoolManager.SamplerStatePool.Count}\n" +
+                $"GeometryBuffer Count:{geometryBufferManager.Count}\n" +
+                $"MaterialTexture Count:{materialTextureManager.Count}\n" +
+                $"MaterialVariable Count:{materialVariableManager.Count}\n";
+        }
     }
-
-
 }

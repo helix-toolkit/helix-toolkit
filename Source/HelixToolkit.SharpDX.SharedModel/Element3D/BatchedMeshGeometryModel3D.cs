@@ -137,25 +137,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 ((d as Element3DCore).SceneNode as BatchedMeshNode).PostEffects = e.NewValue as string;
             }));
         /// <summary>
-        /// Render shadow on this mesh if has shadow map
-        /// </summary>
-        public static readonly DependencyProperty RenderShadowMapProperty =
-            DependencyProperty.Register("RenderShadowMap", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(false,
-                (d, e) =>
-                {
-                    ((d as Element3DCore).SceneNode as BatchedMeshNode).RenderShadowMap = (bool)e.NewValue;
-                }));
-
-        /// <summary>
-        /// Render environment reflection map on this mesh if has environment map
-        /// </summary>
-        public static readonly DependencyProperty RenderEnvironmentMapProperty =
-            DependencyProperty.Register("RenderEnvironmentMap", typeof(bool), typeof(BatchedMeshGeometryModel3D), new PropertyMetadata(false,
-                (d, e) =>
-                {
-                    ((d as Element3DCore).SceneNode as BatchedMeshNode).RenderEnvironmentMap = (bool)e.NewValue;
-                }));
-        /// <summary>
         /// 
         /// </summary>
         public static readonly DependencyProperty MaterialProperty =
@@ -362,26 +343,6 @@ namespace HelixToolkit.Wpf.SharpDX
         }
 
         /// <summary>
-        /// Render shadow on this mesh if has shadow map
-        /// <para>Default: false</para>
-        /// </summary>
-        public bool RenderShadowMap
-        {
-            get { return (bool)this.GetValue(RenderShadowMapProperty); }
-            set { this.SetValue(RenderShadowMapProperty, value); }
-        }
-
-        /// <summary>
-        /// Render environment map on this mesh if has environment map
-        /// <para>Default: false</para>
-        /// </summary>
-        public bool RenderEnvironmentMap
-        {
-            get { return (bool)this.GetValue(RenderEnvironmentMapProperty); }
-            set { this.SetValue(RenderEnvironmentMapProperty, value); }
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         public Material Material
@@ -490,8 +451,6 @@ namespace HelixToolkit.Wpf.SharpDX
                 n.EnableViewFrustumCheck = this.EnableViewFrustumCheck;
                 n.PostEffects = this.PostEffects;
                 n.Material = this.Material;
-                n.RenderEnvironmentMap = this.RenderEnvironmentMap;
-                n.RenderShadowMap = this.RenderShadowMap;
                 n.InvertNormal = this.InvertNormal;
                 n.WireframeColor = this.WireframeColor.ToColor4();
                 n.RenderWireframe = this.RenderWireframe;

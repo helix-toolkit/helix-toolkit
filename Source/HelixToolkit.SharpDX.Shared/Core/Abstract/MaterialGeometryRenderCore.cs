@@ -13,31 +13,32 @@ namespace HelixToolkit.UWP.Core
     using Model;
     using Render;
     using Shaders;
+
     /// <summary>
     /// 
     /// </summary>
     public abstract class MaterialGeometryRenderCore : GeometryRenderCore<ModelStruct>, IMaterialRenderParams
     {
-        private IEffectMaterialVariables materialVariables = EmptyMaterialVariable.EmptyVariable;
+        private bool needMaterialUpdate = false;
+        private MaterialVariable materialVariables = EmptyMaterialVariable.EmptyVariable;
         /// <summary>
         /// Used to wrap all material resources
         /// </summary>
-        public IEffectMaterialVariables MaterialVariables { get { return materialVariables; } }
-        private MaterialCore material = null;
-        /// <summary>
-        /// 
-        /// </summary>
-        public MaterialCore Material
+        public MaterialVariable MaterialVariables
         {
             set
             {
-                if(Set(ref material, value) && IsAttached)
+                var old = materialVariables;
+                if(Set(ref materialVariables, value))
                 {
-                    RemoveAndDispose(ref materialVariables);
+                    if (old != null)
+                    {
+                        old.OnUpdateNeeded -= MaterialVariables_OnUpdateNeeded;
+                    }
                     if (value != null)
                     {
-                        materialVariables = Collect(value.CreateMaterialVariables(EffectTechnique.EffectsManager));
-                        AssignMaterialVariableProperties(technique);
+                        value.OnUpdateNeeded += MaterialVariables_OnUpdateNeeded;
+                        needMaterialUpdate = true;
                     }
                     else
                     {
@@ -47,42 +48,10 @@ namespace HelixToolkit.UWP.Core
             }
             get
             {
-                return material;
+                return materialVariables;
             }
         }
 
-        private bool renderShadowMap = false;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderShadowMap
-        {
-            set
-            {
-                if(Set(ref renderShadowMap, value) && materialVariables != null)
-                {
-                    materialVariables.RenderShadowMap = value;
-                }
-            }
-            get { return renderShadowMap; }
-        }
-        private bool renderEnvironmentMap = false;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool RenderEnvironmentMap
-        {
-            set
-            {
-                if(Set(ref renderEnvironmentMap, value) && materialVariables != null)
-                {
-                    materialVariables.RenderEnvironmentMap = value;
-                }
-            }
-            get { return renderEnvironmentMap; }
-        }
-
-        private IRenderTechnique technique;
         /// <summary>
         /// <see cref="RenderCoreBase{TModelStruct}.OnAttach(IRenderTechnique)"/>
         /// </summary>
@@ -92,16 +61,7 @@ namespace HelixToolkit.UWP.Core
         {
             if(base.OnAttach(technique))
             {
-                this.technique = technique;
-                if (material != null)
-                {
-                    materialVariables = Collect(material.CreateMaterialVariables(technique.EffectsManager));
-                    AssignMaterialVariableProperties(technique);
-                }
-                else
-                {
-                    materialVariables = EmptyMaterialVariable.EmptyVariable;
-                }  
+                needMaterialUpdate = true;
                 return true;
             }
             else
@@ -110,25 +70,11 @@ namespace HelixToolkit.UWP.Core
             }
         }
 
-        private void AssignMaterialVariableProperties(IRenderTechnique technique)
+        private void MaterialVariables_OnUpdateNeeded(object sender, System.EventArgs e)
         {
-            materialVariables.OnInvalidateRenderer -= MaterialVariables_OnInvalidateRenderer;
-            materialVariables.RenderShadowMap = this.RenderShadowMap;
-            materialVariables.RenderEnvironmentMap = this.RenderEnvironmentMap;
-            materialVariables.OnInvalidateRenderer += MaterialVariables_OnInvalidateRenderer;
-            materialVariables.Attach(technique);
+            needMaterialUpdate = true;
         }
 
-        private void MaterialVariables_OnInvalidateRenderer(object sender, System.EventArgs e)
-        {
-            InvalidateRenderer();
-        }
-
-        protected override void OnDetach()
-        {
-            materialVariables = EmptyMaterialVariable.EmptyVariable;
-            base.OnDetach();
-        }
         /// <summary>
         /// <see cref="RenderCoreBase{TModelStruct}.GetModelConstantBufferDescription"/>
         /// </summary>
@@ -145,10 +91,15 @@ namespace HelixToolkit.UWP.Core
         /// <param name="context"></param>
         protected override void OnUpdatePerModelStruct(ref ModelStruct model, RenderContext context)
         {
-            model.World = ModelMatrix;// * context.WorldMatrix;
+            model.World = ModelMatrix;
             model.HasInstances = InstanceBuffer == null ? 0 : InstanceBuffer.HasElements ? 1 : 0;
-            MaterialVariables.UpdateMaterialVariables(ref model);
+            if (needMaterialUpdate)
+            {
+                MaterialVariables.UpdateMaterialStruct(ref model);
+                needMaterialUpdate = false;
+            }
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -157,7 +108,7 @@ namespace HelixToolkit.UWP.Core
         /// <returns></returns>
         public bool BindMaterialTextures(DeviceContextProxy context, ShaderPass shader)
         {
-            return MaterialVariables.BindMaterialTextures(context, shader);
+            return MaterialVariables.BindMaterial(context, shader);
         }
     }
 }

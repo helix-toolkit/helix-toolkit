@@ -104,9 +104,7 @@
                         CullMode="Back"
                         Geometry="{Binding Sphere}"
                         IsThrowingShadow="True"
-                        Material="{Binding Material1}"
-                        RenderEnvironmentMap="True"
-                        RenderShadowMap="True" />
+                        Material="{Binding Material1}" />
                 </hx:DynamicReflectionMap3D>
                 <hx:LineGeometryModel3D
                     Geometry="{Binding LineGeometry}"
@@ -123,24 +121,18 @@
                     Geometry="{Binding Geometry}"
                     IsThrowingShadow="True"
                     Material="{Binding Material}"
-                    RenderEnvironmentMap="True"
-                    RenderShadowMap="True"
                     Transform3D="{Binding Transform1}" />
                 <hx:MeshGeometryModel3D
                     CullMode="Back"
                     Geometry="{Binding Geometry}"
                     IsThrowingShadow="True"
                     Material="{Binding Material}"
-                    RenderEnvironmentMap="True"
-                    RenderShadowMap="True"
                     Transform3D="{Binding Transform2}" />
                 <hx:MeshGeometryModel3D
                     CullMode="Back"
                     Geometry="{Binding Geometry}"
                     IsThrowingShadow="True"
                     Material="{Binding Material}"
-                    RenderEnvironmentMap="True"
-                    RenderShadowMap="True"
                     Transform3D="{Binding Transform3}" />
             </hx:GroupModel3D>
             <hx:GroupModel3D Transform3D="{Binding Transform4}">
@@ -154,8 +146,7 @@
                 CullMode="Back"
                 Geometry="{Binding FloorModel}"
                 IsHitTestVisible="False"
-                Material="{Binding FloorMaterial}"
-                RenderShadowMap="True" />
+                Material="{Binding FloorMaterial}" />
             <hx:ParticleStormModel3D
                 Acceleration="{Binding Acceleration}"
                 AnimateSpriteByEnergy="False"

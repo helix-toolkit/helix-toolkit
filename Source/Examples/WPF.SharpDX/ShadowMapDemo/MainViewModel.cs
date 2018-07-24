@@ -100,7 +100,7 @@ namespace ShadowMapDemo
             RedMaterial = PhongMaterials.Glass;
             GreenMaterial = PhongMaterials.Green;
             BlueMaterial = PhongMaterials.Blue;
-
+            RedMaterial.RenderShadowMap = GreenMaterial.RenderShadowMap = BlueMaterial.RenderShadowMap = true;
             //var b3 = new MeshBuilder();
             //b3.AddBox(new Vector3(), 0.3f, 0.3f, 0.3f, BoxFaces.All);
             //b3.AddCone(new Vector3(0, 0.3f, 0), new Vector3(0, 0f, 0), 0.2f, true, 24);
