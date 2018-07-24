@@ -110,8 +110,8 @@ namespace CoreTest
             groupSphere.AddChildNode(groupPoints);
             groupSphere.AddChildNode(groupLines);
 
-            //var viewbox = new ViewBoxNode();
-            //viewport.Items.Add(viewbox);
+            var viewbox = new ViewBoxNode();
+            viewport.Items.Add(viewbox);
         }
 
         private void InitializeMaterials()
@@ -174,13 +174,16 @@ namespace CoreTest
                 viewport.Render();
                 viewport.InvalidateRender();
 #if TESTADDREMOVE
-                if(groupSphere.Items.Count > 0 && !isAddingNode)
+                if (groupSphere.Items.Count > 0 && !isAddingNode)
                 {
                     groupSphere.RemoveChildNode(groupSphere.Items.First());
-                    if(groupSphere.Items.Count == 0)
+                    if (groupSphere.Items.Count == 0)
                     {
                         isAddingNode = true;
                         Console.WriteLine($"{effectsManager.GetResourceCountSummary()}");
+                        groupSphere.AddChildNode(groupBox);
+                        groupSphere.AddChildNode(groupPoints);
+                        groupPoints.AddChildNode(groupLines);
                     }
                 }
                 else
