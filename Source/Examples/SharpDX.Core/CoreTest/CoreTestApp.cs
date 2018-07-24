@@ -24,6 +24,7 @@ namespace CoreTest
         private GroupNode group;
         private Random rnd = new Random((int)Stopwatch.GetTimestamp());
         private Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();
+        private MaterialCore[] materialList;
         private long previousTime;
         private bool resizeRequested = false;
 
@@ -66,20 +67,19 @@ namespace CoreTest
             box = builder.ToMesh();
             group = new GroupNode();
             InitializeMaterials();
-            var materialList = materials.Values.ToArray();
+            materialList = materials.Values.ToArray();
             var materialCount = materialList.Length;
-            
-            for(int i = 0; i < 2000; ++i)
+
+            for (int i = 0; i < 2000; ++i)
             {
                 var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
-                group.Items.Add(new MeshNode() { Geometry = sphere, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
+                group.AddChildNode(new MeshNode() { Geometry = sphere, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
             }
-            viewport.Items.Add(group);
-            group = new GroupNode();
+
             for (int i = 0; i < 2000; ++i)
             {
                 var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
-                group.Items.Add(new MeshNode() { Geometry = box, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
+                group.AddChildNode(new MeshNode() { Geometry = box, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
             }
             viewport.Items.Add(group);
             var viewbox = new ViewBoxNode();
@@ -110,6 +110,7 @@ namespace CoreTest
         private void Viewport_OnStartRendering(object sender, EventArgs e)
         {
             bool isGoingOut = true;
+            bool isAddingNode = false;
             RenderLoop.Run(window, () => 
             {
                 if (resizeRequested)
@@ -144,6 +145,28 @@ namespace CoreTest
                 }
                 viewport.Render();
                 viewport.InvalidateRender();
+
+                if(group.Items.Count > 0 && !isAddingNode)
+                {
+                    group.RemoveChildNode(group.Items.First());
+                    if(group.Items.Count == 0)
+                    {
+                        isAddingNode = true;
+                        Console.WriteLine($"Num  = {effectsManager.GetResourceCountSummary()}");
+                    }
+                }
+                else
+                {
+                    var materialCount = materialList.Length;
+                    var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                    group.AddChildNode(new MeshNode() { Geometry = box, Material = materialList[group.Items.Count % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
+                    transform = Matrix.Translation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
+                    group.AddChildNode(new MeshNode() { Geometry = sphere, Material = materialList[group.Items.Count % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
+                    if (group.Items.Count > 5000)
+                    {
+                        isAddingNode = false;
+                    }
+                }
             });
         }
 

@@ -21,6 +21,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public interface IGeometryBufferManager : IDisposable
     {
+        int Count { get; }
         /// <summary>
         /// Registers the specified model unique identifier.
         /// </summary>

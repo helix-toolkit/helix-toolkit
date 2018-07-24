@@ -557,5 +557,21 @@ namespace HelixToolkit.UWP
         {
             OnInvalidateRenderer?.Invoke(this, EventArgs.Empty);
         }
+
+        /// <summary>
+        /// Outputs the resource cout summary.
+        /// </summary>
+        /// <returns></returns>
+        public string GetResourceCountSummary()
+        {
+            return $"ConstantBuffer Count: {constantBufferPool.Count}\n" +
+                $"BlendState Count: {statePoolManager.BlendStatePool.Count}\n" +
+                $"DepthStencilState Count: {statePoolManager.DepthStencilStatePool.Count}\n" +
+                $"RasterState Count: {statePoolManager.RasterStatePool.Count}\n" +
+                $"SamplerState Count: {statePoolManager.SamplerStatePool.Count}\n" +
+                $"GeometryBuffer Count:{geometryBufferManager.Count}\n" +
+                $"MaterialTexture Count:{materialTextureManager.Count}\n" +
+                $"MaterialVariable Count:{materialVariableManager.Count}\n";
+        }
     }
 }

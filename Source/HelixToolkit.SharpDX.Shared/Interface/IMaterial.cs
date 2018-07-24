@@ -153,6 +153,7 @@ namespace HelixToolkit.Wpf.SharpDX
     /// </summary>
     public interface IMaterialVariablePool
     {
+        int Count { get; }
         MaterialVariable Register(IMaterial material, IRenderTechnique technique);
     }
 }

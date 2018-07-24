@@ -11,6 +11,7 @@ namespace HelixToolkit.Wpf.SharpDX
 
     public interface ITextureResourceManager
     {
+        int Count { get; }
         /// <summary>
         /// Registers the specified texture stream. This creates mipmaps automatically
         /// </summary>
