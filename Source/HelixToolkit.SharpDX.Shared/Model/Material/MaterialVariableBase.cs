@@ -44,11 +44,7 @@ namespace HelixToolkit.UWP.Model
         {
             if (CanUpdateMaterial())
             {
-                if (deviceContext.SetCurrentMaterial(this))
-                {
-                    return OnBindMaterialTextures(deviceContext, shaderPass);
-                }
-                return true;
+                return OnBindMaterialTextures(deviceContext, shaderPass);
             }
             else
             {
