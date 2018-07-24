@@ -37,8 +37,8 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
                 {
                     BoundManager.Geometry = value;
                     if (IsAttached)
-                    {                       
-                        BufferModelInternal = OnCreateBufferModel(this.GUID, value);
+                    {
+                        CreateGeometryBuffer();
                     }
                     OnGeometryChanged(value, old);
                     InvalidateRender();                   
@@ -109,26 +109,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         public CreateRasterStateFunc OnCreateRasterState;
 
-        private IGeometryBufferProxy bufferModelInternal;
-
-        /// <summary>
-        /// The buffer model internal
-        /// </summary>
-        protected IGeometryBufferProxy BufferModelInternal
-        {
-            set
-            {
-                if (bufferModelInternal == value)
-                { return; }
-                Disposer.RemoveAndDispose(ref bufferModelInternal);
-                bufferModelInternal = value;
-                ((IGeometryRenderCore)RenderCore).GeometryBuffer = bufferModelInternal?.BufferModel;
-            }
-            get
-            {
-                return bufferModelInternal;
-            }
-        }
+        private IGeometryBufferModel bufferModelInternal;
 
         /// <summary>
         /// Gets a value indicating whether [geometry valid].
@@ -416,9 +397,9 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// Called when [create buffer model].
         /// </summary>
         /// <returns></returns>
-        protected virtual IGeometryBufferProxy OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
+        protected virtual IGeometryBufferModel OnCreateBufferModel(Guid modelGuid, Geometry3D geometry)
         {
-            return GeometryBufferProxy<EmptyGeometryBufferModel>.Empty;
+            return EmptyGeometryBufferModel.Empty;
         }
 
         /// <summary>
@@ -459,7 +440,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         {
             if (base.OnAttach(host))
             {
-                BufferModelInternal = OnCreateBufferModel(this.GUID, geometry);
+                CreateGeometryBuffer();
                 BoundManager.Geometry = Geometry;
                 InstanceBuffer.Initialize();
                 InstanceBuffer.Elements = this.Instances;
@@ -472,6 +453,16 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
             else
             {
                 return false;
+            }
+        }
+
+        private void CreateGeometryBuffer()
+        {
+            RemoveAndDispose(ref bufferModelInternal);
+            bufferModelInternal = Collect(OnCreateBufferModel(this.GUID, geometry));
+            if(RenderCore is IGeometryRenderCore core)
+            {
+                core.GeometryBuffer = bufferModelInternal;
             }
         }
         /// <summary>
@@ -493,7 +484,7 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// </summary>
         protected override void OnDetach()
         {
-            BufferModelInternal = null;
+            bufferModelInternal = null;
             InstanceBuffer.DisposeAndClear();
             BoundManager.DisposeAndClear();
             base.OnDetach();

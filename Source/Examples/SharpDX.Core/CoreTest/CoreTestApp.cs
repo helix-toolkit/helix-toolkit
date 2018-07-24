@@ -1,6 +1,9 @@
-﻿using HelixToolkit.SharpDX.Core.Controls;
+﻿#define TESTADDREMOVE
+
+using HelixToolkit.SharpDX.Core.Controls;
 using HelixToolkit.UWP;
 using HelixToolkit.UWP.Cameras;
+using HelixToolkit.UWP.Core;
 using HelixToolkit.UWP.Model;
 using HelixToolkit.UWP.Model.Scene;
 using SharpDX;
@@ -20,8 +23,9 @@ namespace CoreTest
         private readonly Form window;
         private readonly EffectsManager effectsManager;
         private CameraCore camera;
-        private Geometry3D box, sphere;
-        private GroupNode group;
+        private Geometry3D box, sphere, points, lines;
+        private GroupNode groupSphere, groupBox, groupPoints, groupLines;
+        private const int NumItems = 2000;
         private Random rnd = new Random((int)Stopwatch.GetTimestamp());
         private Dictionary<string, MaterialCore> materials = new Dictionary<string, MaterialCore>();
         private MaterialCore[] materialList;
@@ -65,25 +69,49 @@ namespace CoreTest
             builder = new MeshBuilder(true, true, true);
             builder.AddBox(Vector3.Zero, 1, 1, 1);
             box = builder.ToMesh();
-            group = new GroupNode();
+            points = new PointGeometry3D() { Positions = sphere.Positions };
+            var lineBuilder = new LineBuilder();
+            lineBuilder.AddBox(Vector3.Zero, 2, 2, 2);
+            lines = lineBuilder.ToLineGeometry3D();
+            groupSphere = new GroupNode();
+            groupBox = new GroupNode();
+            groupLines = new GroupNode();
+            groupPoints = new GroupNode();
             InitializeMaterials();
             materialList = materials.Values.ToArray();
             var materialCount = materialList.Length;
 
-            for (int i = 0; i < 2000; ++i)
+            for (int i = 0; i < NumItems; ++i)
             {
                 var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
-                group.AddChildNode(new MeshNode() { Geometry = sphere, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
+                groupSphere.AddChildNode(new MeshNode() { Geometry = sphere, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
             }
 
-            for (int i = 0; i < 2000; ++i)
+            for (int i = 0; i < NumItems; ++i)
             {
                 var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
-                group.AddChildNode(new MeshNode() { Geometry = box, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
+                groupBox.AddChildNode(new MeshNode() { Geometry = box, Material = materialList[i % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
             }
-            viewport.Items.Add(group);
-            var viewbox = new ViewBoxNode();
-            viewport.Items.Add(viewbox);
+
+            for(int i=0; i< NumItems; ++i)
+            {
+                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                groupPoints.AddChildNode(new PointNode() { Geometry = points, ModelMatrix = transform, Color = Color.Red, Size = new Size2F(0.5f, 0.5f) });
+            }
+
+            for (int i = 0; i < NumItems; ++i)
+            {
+                var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
+                groupLines.AddChildNode(new LineNode() { Geometry = lines, ModelMatrix = transform, Color = Color.LightBlue, Thickness = 0.5f });
+            }
+
+            viewport.Items.Add(groupSphere);
+            groupSphere.AddChildNode(groupBox);
+            groupSphere.AddChildNode(groupPoints);
+            groupSphere.AddChildNode(groupLines);
+
+            //var viewbox = new ViewBoxNode();
+            //viewport.Items.Add(viewbox);
         }
 
         private void InitializeMaterials()
@@ -145,28 +173,29 @@ namespace CoreTest
                 }
                 viewport.Render();
                 viewport.InvalidateRender();
-
-                if(group.Items.Count > 0 && !isAddingNode)
+#if TESTADDREMOVE
+                if(groupSphere.Items.Count > 0 && !isAddingNode)
                 {
-                    group.RemoveChildNode(group.Items.First());
-                    if(group.Items.Count == 0)
+                    groupSphere.RemoveChildNode(groupSphere.Items.First());
+                    if(groupSphere.Items.Count == 0)
                     {
                         isAddingNode = true;
-                        Console.WriteLine($"Num  = {effectsManager.GetResourceCountSummary()}");
+                        Console.WriteLine($"{effectsManager.GetResourceCountSummary()}");
                     }
                 }
                 else
                 {
                     var materialCount = materialList.Length;
                     var transform = Matrix.Translation(new Vector3(rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50), rnd.NextFloat(-50, 50)));
-                    group.AddChildNode(new MeshNode() { Geometry = box, Material = materialList[group.Items.Count % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
+                    groupSphere.AddChildNode(new MeshNode() { Geometry = box, Material = materialList[groupSphere.Items.Count % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
                     transform = Matrix.Translation(new Vector3(rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20), rnd.NextFloat(-20, 20)));
-                    group.AddChildNode(new MeshNode() { Geometry = sphere, Material = materialList[group.Items.Count % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
-                    if (group.Items.Count > 5000)
+                    groupSphere.AddChildNode(new MeshNode() { Geometry = sphere, Material = materialList[groupSphere.Items.Count % materialCount], ModelMatrix = transform, CullMode = SharpDX.Direct3D11.CullMode.Back });
+                    if (groupSphere.Items.Count > NumItems)
                     {
                         isAddingNode = false;
                     }
                 }
+#endif
             });
         }
 

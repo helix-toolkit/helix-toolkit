@@ -21,7 +21,7 @@ namespace HelixToolkit.UWP.Core
     /// <summary>
     /// General Geometry Buffer Model.
     /// </summary>
-    public abstract class GeometryBufferModel : DisposeObject, IGUID, IGeometryBufferModel
+    public abstract class GeometryBufferModel : ReferenceCountDisposeObject, IGUID, IGeometryBufferModel
     {
         /// <summary>
         /// Gets the unique identifier.
