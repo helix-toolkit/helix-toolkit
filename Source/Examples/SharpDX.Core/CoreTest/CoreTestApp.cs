@@ -1,4 +1,4 @@
-﻿#define TESTADDREMOVE
+﻿//#define TESTADDREMOVE
 
 using HelixToolkit.SharpDX.Core.Controls;
 using HelixToolkit.UWP;
@@ -11,6 +11,7 @@ using SharpDX.Windows;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -45,6 +46,8 @@ namespace CoreTest
             viewport.OnStopRendering += Viewport_OnStopRendering;
             viewport.OnErrorOccurred += Viewport_OnErrorOccurred;
             viewport.FXAALevel = FXAALevel.Low;
+            //viewport.RenderHost.EnableRenderFrustum = false;
+            viewport.RenderHost.RenderConfiguration.EnableRenderOrder = true;
             InitializeScene();
         }
 
@@ -64,7 +67,7 @@ namespace CoreTest
             viewport.Items.Add(new PointLightNode() { Position = new Vector3(0, 0, -20), Color = Color.Yellow, Range = 20, Attenuation = Vector3.One });
 
             var builder = new MeshBuilder(true, true, true);
-            builder.AddSphere(Vector3.Zero);
+            builder.AddSphere(Vector3.Zero, 1, 12, 12);
             sphere = builder.ToMesh();
             builder = new MeshBuilder(true, true, true);
             builder.AddBox(Vector3.Zero, 1, 1, 1);
@@ -116,12 +119,23 @@ namespace CoreTest
 
         private void InitializeMaterials()
         {
-            materials.Add("red", new DiffuseMaterialCore() { DiffuseColor = Color.Red });
-            materials.Add("green", new DiffuseMaterialCore() { DiffuseColor = Color.Green });
-            materials.Add("blue", new DiffuseMaterialCore() { DiffuseColor = Color.Blue });
-            materials.Add("DodgerBlue", new PhongMaterialCore() { DiffuseColor = Color.DodgerBlue, ReflectiveColor = Color.DarkGray, SpecularShininess = 10, SpecularColor = Color.Red });
-            materials.Add("Orange", new PhongMaterialCore() { DiffuseColor = Color.Orange, ReflectiveColor = Color.DarkGray, SpecularShininess = 10, SpecularColor = Color.Red });
-            materials.Add("PaleGreen", new PhongMaterialCore() { DiffuseColor = Color.PaleGreen, ReflectiveColor = Color.DarkGray, SpecularShininess = 10, SpecularColor = Color.Red });
+            var diffuse = new MemoryStream();
+            using (var fs = File.Open("TextureCheckerboard2.jpg", FileMode.Open))
+            {
+                fs.CopyTo(diffuse);
+            }
+
+            var normal = new MemoryStream();
+            using (var fs = File.Open("TextureCheckerboard2_dot3.jpg", FileMode.Open))
+            {
+                fs.CopyTo(normal);
+            }
+            materials.Add("red", new DiffuseMaterialCore() { DiffuseColor = Color.Red, DiffuseMap = diffuse });
+            materials.Add("green", new DiffuseMaterialCore() { DiffuseColor = Color.Green, DiffuseMap = diffuse });
+            materials.Add("blue", new DiffuseMaterialCore() { DiffuseColor = Color.Blue, DiffuseMap = diffuse });
+            materials.Add("DodgerBlue", new PhongMaterialCore() { DiffuseColor = Color.DodgerBlue, ReflectiveColor = Color.DarkGray, SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal });
+            materials.Add("Orange", new PhongMaterialCore() { DiffuseColor = Color.Orange, ReflectiveColor = Color.DarkGray, SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal });
+            materials.Add("PaleGreen", new PhongMaterialCore() { DiffuseColor = Color.PaleGreen, ReflectiveColor = Color.DarkGray, SpecularShininess = 10, SpecularColor = Color.Red, DiffuseMap = diffuse, NormalMap = normal });
             materials.Add("normal", new NormalMaterialCore());
         }
 
