@@ -108,7 +108,13 @@ namespace HelixToolkit.Wpf.SharpDX.Model.Scene
         /// <para>If <see cref="OnCreateRasterState"/> is set, then <see cref="CreateRasterState"/> will not be called.</para>
         /// </summary>
         public CreateRasterStateFunc OnCreateRasterState;
-
+        /// <summary>
+        /// Gets the buffer model internal.
+        /// </summary>
+        /// <value>
+        /// The buffer model internal.
+        /// </value>
+        protected IGeometryBufferModel BufferModelInternal { get { return bufferModelInternal; } }
         private IGeometryBufferModel bufferModelInternal;
 
         /// <summary>
