@@ -195,7 +195,7 @@ namespace HelixToolkit.Wpf.SharpDX.Render
                     if (currentManager != null)
                     {
                         currentManager.OnDisposeResources -= OnManagerDisposed;
-                        effectsManager.OnInvalidateRenderer -= EffectsManager_OnInvalidateRenderer;
+                        currentManager.OnInvalidateRenderer -= EffectsManager_OnInvalidateRenderer;
                     }
                     RemoveAndDispose(ref immediateDeviceContext);
                     if (effectsManager != null)
